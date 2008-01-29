@@ -1,0 +1,3 @@
+#!/usr/bin/ruby18 -w
+require File.dirname(__FILE__) + '/../config/boot'
+require 'commands/runner'

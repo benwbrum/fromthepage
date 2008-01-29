@@ -1,0 +1,7 @@
+if @comment.comment_type == 'review'
+page << 'restfulComments.hideReviewForm();'
+	page.insert_html :after, ( @comment.parent_id.to_i == 0 ? 'review_form_0' : 'review_' + @comment.parent_id.to_s ), :partial => 'comment', :locals => { :comment => @comment, :odd => 3 }
+else
+page << 'restfulComments.hideForm();'
+	page.insert_html :after, ( @comment.parent_id.to_i == 0 ? 'comment_form_0' : 'comment_' + @comment.parent_id.to_s ), :partial => 'comment', :locals => { :comment => @comment, :odd => 3 }
+end	

@@ -1,0 +1,95 @@
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+      <div>
+        <p>
+          Collections:
+          <ul>
+            <% for collection in @collections %>
+              <li>
+                <%= link_to(collection.title,
+                            { :controller => 'collection',
+                              :action => 'show',
+                              :collection_id => collection.id }) %>
+              </li>
+            <% end %>
+          </ul>
+        </p>
+      </div>
+      <% if logged_in? && current_user.owner %>
+        <div>
+          <p>
+            Owner Dashboard Contents Go Here
+          </p>
+          <div>
+          <%= link_to("Create an empty work", 
+                      { :controller => 'work',
+                        :action => 'new' })%>
+          </div>
+          <div>
+          <%= link_to("Create an empty collection", 
+                      { :controller => 'collection',
+                        :action => 'new' })%>
+          </div>
+          <div>
+            <%= link_to("Create an image set", 
+                        { :controller => 'transform' })%>
+          </div>
+          <div>
+            <p>
+              Image Sets I own:
+              <ul>
+                <% for set in @image_sets %>
+                  <li>
+                    <%= "Set #{set.id} (#{set.summary})" %>
+                    <%= link_to("Title",
+                                { :controller => 'title',
+                                  :action => 'list',
+                                  :image_set_id => set.id }) %>
+                    <%= link_to("Delete",
+                                { :controller => 'image_set',
+                                  :action => 'delete',
+                                  :image_set_id => set.id }) %>
+                    <%= link_to("Append",
+                                { :controller => 'image_set',
+                                  :action => 'append',
+                                  :image_set_id => set.id }) %>
+                    <%= link_to("Merge",
+                                { :controller => 'collation',
+                                  :action => 'select_target',
+                                  :image_set_id => set.id }) %>
+                    <%= link_to("Publish",
+                                { :controller => 'image_set',
+                                  :action => 'convert_to_work',
+                                  :image_set_id => set.id }) %>
+                  </li>			        
+			          <% end %>
+              </ul>
+            </p>
+          </div>
+        </div>
+      <% end %>
+      <% if logged_in? && current_user.admin %>
+        <div>
+          <p>
+            Admin Dashboard Contents Go Here
+          </p>
+          <p>
+            Users
+            <ul>
+	            <% for user in @users %>
+	              <li>
+	                <%= user.display_name %>
+	                <%= link_to("Edit",
+	                            { :controller => 'admin',
+	                              :action => 'edit_user',
+	                              :user_id => user.id }) %>
+	              </li>
+	            <% end %>
+            </ul>
+          </p>
+        </div>
+      <% end %>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,23 @@
+<div>
+  Changes made by 
+  <%= link_to(@page_version.user.display_name,
+              { :controller => 'user',
+                :action => 'versions',
+                :user_id => @page_version.user.id }) %> 
+  to 
+  <%= link_to(@page_version.page.title,
+              { :controller => 'page_version',
+                :action => 'list',
+                :page_id => @page_version.page.id }) %> 
+  on <%= @page_version.created_on %>:
+</div>
+<div>
+  <p>Title:<br />
+  <%= @page_version.title %>
+  </p>
+</div>
+<div>
+  <p>Source:<br />
+    <pre><%= @page_version.transcription %></pre>
+  </p>
+</div>

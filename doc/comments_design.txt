@@ -1,0 +1,32 @@
+Comments Design
+
+System Comments page:
+Lists comments across all items by date.  Optional filter "show my 
+comments only"
+
+Listing is of format: Item name (linked to item), comment text, user, 
+date
+
+
+Item Comments section of Item page:
+Lists comments for this item by date
+
+Listing is of format: Comment Text, user, date, edit/delete links
+
+
+
+Item page: "add a comment" button
+Button appears on both edit and view actions of item component
+
+Pressing "add a comment" button persists any unsaved item text to 
+session and reloads the page in the same mode, but with an additional 
+textarea.
+
+Pressing "save comment" or "cancel" perform appropriate comment action 
+but also persist unsaved item text to session.  User is then returned to 
+edit/show view.
+
+Pressing "save" persists the item text -- what does it do if the comment 
+was in edit mode and is unsaved?
+
+

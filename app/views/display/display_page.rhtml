@@ -1,0 +1,38 @@
+
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>1,
+                          :page_id => @page.id }}) %>
+<%= restful_comments_include %>
+<div class="two-columns">
+  <div class="left-column">
+    <div>
+      <%= render :partial => '/shared/page_navigation' %>
+
+      <div class="inside-column">
+        <h2><%= @page.title %></h2>
+      </div>
+
+      <div id="transcription_display_area" class="inside-column">
+        <% if @page.xml_text != nil && 
+              !@page.xml_text.empty? %>
+          <%= xml_to_html(@page.xml_text) %>
+        <% else %>
+          <i>No Transcription Provided</i>
+        <% end %>
+      </div>
+
+      <div class="inside-column">
+        <%= restful_annotations_for @page %>
+      </div>
+    </div>
+  </div>
+  
+  
+	<div class="right-column">
+	   <%= render :partial => '/shared/zoom_div' %>
+	  <div class="inside-column">
+	    <%= restful_reviews_for @page %>
+	  </div>
+	</div>
+
+</div>

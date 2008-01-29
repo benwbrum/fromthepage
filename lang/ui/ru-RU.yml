@@ -1,0 +1,17 @@
+locale_name: Русский
+flag: ru.png
+
+do_create: Создать
+do_edit: Редактировать
+do_add: Добавить
+do_remove: Удалить
+do_comment: Комментировать
+do_cite: Цитировать
+do_hide: Скрыть
+
+comments: Комментарии
+citations: Цитаты
+title: Заголовок
+text: Текст
+
+confirm_remove: Восстановление невозможно. Вы уверены, что хотите удалить объект?

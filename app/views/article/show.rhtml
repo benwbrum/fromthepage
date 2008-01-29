@@ -1,0 +1,33 @@
+<%= render( :partial => '/shared/article_tabs',
+            :locals => { :selected => 1,
+                         :article_id => @article.id }) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <span class="left-link">
+	      <%= link_to("articles", 
+	                  {:controller => 'article',
+	                   :action => 'list'}) %>
+       </span>
+    </div>
+    <div class="inside-column">
+      <h2><%= @article.title %></h2>
+    </div>
+
+    <div id="article_display_area" class="inside-column">
+		  <% if @article.xml_text != nil && !@article.xml_text.empty? %>
+		    <%= xml_to_html(@article.xml_text) %>
+		  <% else %>
+		    <i>No Contents Provided</i>
+		  <% end %>
+		</div>
+
+  </div>
+		
+  <div class="right-column">
+    <%= render :partial => 'article_links' %>
+
+  </div>
+</div>
+		

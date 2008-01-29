@@ -1,0 +1,54 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 7,
+                          :work_id => @work.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+<% form_for(:work, 
+            @work, 
+            :url => { :action => 'update_work' }) do |f| %>
+  <p>Restrict Scribes: <%= f.check_box(:restrict_scribes) %></p>
+  <%= hidden_field_tag(:work_id, @work.id) %>  
+  <p><%= submit_tag('Save') %></p>
+<% end %>
+
+<% if @work.restrict_scribes %>
+		<div>
+			Scribes<br />
+			<% for user in @scribes %>
+			  <%= user.display_name %>
+			  <%= link_to("Remove", 
+			              { :action => 'remove_scribe', 
+			                :user_id => user.id, 
+			                :work_id => @work.id }) %>
+	      <br />
+			<% end %>
+		  <br />
+		</div>
+<% end %>
+
+    </div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+
+<% if @work.restrict_scribes %>
+		<div>
+			Non-Scribes<br />
+			<% for user in @nonscribes %>
+			  <%= user.display_name %> 		  
+			  <%= link_to("Add", 
+			              { :action => 'add_scribe', 
+			                :user_id => user.id, 
+			                :work_id => @work.id }) %>
+			  <br />
+			<% end %>
+		  <br />
+		</div>
+    </div>
+  </div>
+</div>
+
+
+<% end %>

@@ -1,0 +1,18 @@
+graph G {
+  graph [label="Subjects Appearing on Pages Mentioning <%=@article.title %>"];
+  node [fontsize=8,fontname="Helvetica"];
+  <%= @article.id %> 
+    [style=filled,
+     label="<%= @article.title.gsub(/ /, '\n') %>",
+     color="/blues9/8"];
+  <% for link in article_links %>
+    <% length =  1 - ( link['link_count'].to_f / link_total.to_f)
+       length *= 1.75
+       color = ((link['link_count'].to_f / link_max.to_f)*7).to_i %>
+    <%= link['article_id'] %> 
+      [style=filled,
+       label="<%= link['title'].gsub(/ /, '\n') %>",
+       color="/blues9/<%= color %>"];
+    <%= @article.id %> -- <%= link['article_id'] %> [len=<%= length %>];
+  <% end %>
+}

@@ -1,0 +1,12 @@
+<span id='<%= "cat_#{category.id}" %>'>
+<% if category.articles.empty? %>
+<%= category.title %>
+<% else %>
+<%= link_to_remote(category.title,
+                   :url => { :controller => 'category',
+                             :action => 'expand_category',
+                             :category_id => category.id },
+                   :update => "cat_#{category.id}") %>
+<% end %>
+</span>
+

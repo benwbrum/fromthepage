@@ -1,0 +1,19 @@
+Thanks to all who have contributed. Please let me know if I missed anyone.
+
+Saimon Moore for writing the generators and rake tasks to make this work as a plugin. 
+
+Werner Bohl for making the css/js progress example. It's much appreciated.
+
+Michael Klien for the timestamp expiry options. :accessed or :created
+
+David Lemstra for the threading and job control enhancements.
+
+Georg Friedrich for configurable ACL lists.
+
+Gunter Ladwig for singleton workers.
+
+Ben Johnson for bug reports and fixes
+
+Michael Siebert for patch to support cron style workers. And for autostart workers.
+
+Chris Hulbert for win32 daemon and service implementation

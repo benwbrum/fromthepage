@@ -1,0 +1,54 @@
+<!-- 
+Collection Tabs
+
+Tab                         Access
+-----------------------     ------
+1 Show (works/articles)     V
+2 Settings                  O
+
+-->
+<div id="navcontainer">
+  <ul id="navlist">
+    <% if selected == 1 %> 
+      <li id="current">
+        <span>read</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('browse', 
+                    { :controller => 'collection', 
+                      :action => 'show', 
+                      :collection_id => collection_id }) %>
+      </li>     
+    <% end %>
+
+    <% if @collection.owner == current_user %>
+	    <% if selected == 2 %> 
+	      <li id="current">
+	        <span>settings</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('settings', 
+	                    { :controller => 'collection', 
+	                      :action => 'edit', 
+	                      :collection_id => collection_id }) %>
+	      </li>     
+	    <% end %>
+	    <% if selected == 3 %> 
+	      <li id="current">
+	        <span>categories</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('categories', 
+	                    { :controller => 'category', 
+	                      :action => 'manage', 
+	                      :collection_id => collection_id }) %>
+	      </li>     
+	    <% end %>
+    <% end %>
+
+  </ul>
+</div>
+

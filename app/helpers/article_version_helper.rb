@@ -1,0 +1,2 @@
+module ArticleVersionHelper
+end

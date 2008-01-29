@@ -1,0 +1,24 @@
+<div>
+  User ID:<%= @user.id %><br />
+  Login:<%= @user.login %><br />
+  Display Name:<%= @user.display_name %><br />
+  Print Name:<%= @user.print_name %>
+</div>
+
+<div>
+	<% form_for(:user, 
+                    @user, 
+                    :url => { :action => 'update_user' }) do |f| %>
+		<p>Owner: <%= f.check_box(:owner) %></p>
+    <%= hidden_field_tag(:user_id, @user.id) %>  
+    <p><%= submit_tag('Save') %></p>
+	<% end %>
+	
+	<%= button_to("Delete User",
+            { :action => 'delete_user',
+              :user_id => @user.id },
+            { :confirm => 'Are you sure?' }) %>
+</div>
+
+
+

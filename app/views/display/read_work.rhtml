@@ -1,0 +1,110 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected =>1,
+                          :work_id => @work.id }}) %>
+
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+		  <span class="left-link">
+		    <% if @page_pages.current.previous %>
+		      <%= link_to('Previous Pages',
+		                  { :page => @page_pages.current.previous,
+		                    :work_id => @work.id }) %>
+		    <% else %>
+		      &nbsp;
+		    <% end %>
+		  </span>
+		  <span class="right-link">
+		    <% if @page_pages.current.next %>
+		      <%= link_to('Next Pages',
+		                  { :page => @page_pages.current.next,
+		                    :work_id => @work.id }) %>
+		    <% else %>
+		      &nbsp;
+		    <% end %>
+		  </span>
+		</div>
+
+
+	  <% for page in @pages %>
+	    <div class="inside-column">
+	      <h2><%= page.title %></h2>
+	      <div>
+	        <% if page.xml_text %>
+	          <%= xml_to_html(page.xml_text, false) %>
+	        <% else %>
+	          <p><i>No Transcription</i></p>
+	        <% end %>
+	      </div>
+	      <div class="footer-links">
+	        <%= link_to('page',
+	                    { :action => 'display_page',
+	                      :page_id => page.id }) %>
+	      </div>
+	
+	    </div>
+	  <% end %>
+		<div class="inside-column">
+		  <span class="left-link">
+		    <% if @page_pages.current.previous %>
+		      <%= link_to('Previous Pages',
+		                  { :page => @page_pages.current.previous,
+		                    :work_id => @work.id }) %>
+		    <% else %>
+		      &nbsp;
+		    <% end %>
+		  </span>
+		  <span class="right-link">
+		    <% if @page_pages.current.next %>
+		      <%= link_to('Next Pages',
+		                  { :page => @page_pages.current.next,
+		                    :work_id => @work.id }) %>
+		    <% else %>
+		      &nbsp;
+		    <% end %>
+		  </span>
+		</div>
+	</div>
+	
+	<div class="right-column">
+		<div class="inside-column">
+        <h2>Categories in these pages</h2>
+	      <p>
+        <%= display_categories(@collection.categories, nil) do |category|
+                controller.render_to_string(:partial => '/category/category_link',
+                       :locals => { :category => category })
+            end %>
+      </p>
+		</div>
+		<div class="inside-column">
+      <h2>Pages needing review</h2>
+      <p>
+        <% reviews = @work.reviews.reject { |r| r.comment_status == 'answered' || r.depth > 0 } %>
+        <% for comment in reviews %>
+	        <%= link_to(comment.commentable.title,
+	                    { :action => 'display_page',
+	                      :page_id => comment.commentable.id }) %>
+          <%= comment.title %>
+          (<%= comment.user.display_name if comment.user %>)
+          <br />
+        <% end%>      
+      </p>
+		</div>
+
+		<div class="inside-column">
+      <h2>Recent Annotations</h2>
+      <p>
+        <% for comment in @work.recent_annotations %>
+	        <%= link_to(comment.commentable.title,
+	                    { :action => 'display_page',
+	                      :page_id => comment.commentable.id }) %>
+          <%= comment.title %>
+          (<%= comment.user.display_name if comment.user %>)
+          <br />
+        <% end%>      
+      </p>
+		</div>
+
+
+	</div>
+</div>

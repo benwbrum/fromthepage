@@ -1,0 +1,2 @@
+module CollationHelper
+end

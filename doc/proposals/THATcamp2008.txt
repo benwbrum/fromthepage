@@ -1,0 +1,53 @@
+What should I present?
+
+   That's up to you. Sessions at THATCamp will range from full-blown
+   papers (not many of those, we hope) to software demos to training
+   sessions to debates to discussions of research findings to half-baked
+   rants. You should come to THATCamp with something in mind, and on the
+   first day find a time, a place, and people to share it with. Once
+   you're at THATCamp, you may also find people with similar topics and
+   interests to team up with for a joint session.
+
+How do I sign up?
+
+   Unfortunately, we only have space for about 40-45 participants, so
+   we'll have to do some vetting. To apply for a spot, simply send us an
+   email saying who you are, what you're thinking about presenting, and
+   what you think you will get out of the experience. Please don't send
+   full proposals. We're talking about an informal email of maybe 200 or
+   300 words, max. If you want to attach a C.V., that's OK too. Send your
+   email to thatcamp.info@gmail.com.
+
+
+
+
+APPLICATION
+I'm Ben Brumfield, a software developer from Austin, Texas.  Over the past two years, I've 
+been developing FromThePage, a web-app for transcribing handwritten documents.  I've finally finished the 
+first version, and would love to demo it for THATcamp.
+
+FromThePage is a wiki-like system that allows users to transcribe and annotate manuscript texts.  
+It provides high-quality 
+image zoom optimized for low-bandwidth connections, and supports automatic indexing via wikilink-style 
+mark-up.  The same system that produces the transcriptions also hosts them for online display and public 
+annotation.
+
+Future versions will include PDF download of transcribed documents with programmatically-generated 
+footnotes and indexes, as well as graphical analysis of relationships between subjects mentioned within 
+the text.  Although these features won't be enabled for the first public version, I will be able to demo 
+the work-in-progress in my presentation.
+
+While the intended users for FromThePage are non-institutional (family/military/amateur) historians, I've 
+gotten a lot of guidance from the work of academic digital humanists.  I'd absolutely love to get feedback 
+from potential users -- especially people famililar with the problems faced by editors of 
+primary texts.  I'd like advice on a dual open-source/commercial strategy for deploying 
+FromThePage.  And I really need some more direction on my analysis and printing tools.
+
+I feel that in addition to discussing my own software, I would be able to contribute to the conference 
+from my eight years of experience developing web 
+applications for non-profit organizations, technical skills (Ruby on Rails, Java, ER and OO design) ,
+and
+perhaps from my perspective as an outsider to the academy.
+
+For more on my project, feel free to consult http://manuscripttranscription.blogspot.com/ , my product 
+development blog.

@@ -1,0 +1,21 @@
+
+<div class="two-columns">
+  <div class="left-column">
+		<div class="inside-column">
+			<p>
+			    All Articles
+			</p>
+			
+			<p>
+			  <% for article in @articles %>
+			    <%= link_to(article.title,
+			                { :action => 'show',
+			                  :article_id => article.id} ) %>
+			                  
+			    <br />  
+			  <% end %>
+			</p>    
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require "win32/service"
+include Win32
+
+class MyDaemon < Daemon
+   def service_main
+    load File.expand_path(File.dirname(__FILE__) + "/start")
+   end
+end
+
+d = MyDaemon.new
+d.mainloop

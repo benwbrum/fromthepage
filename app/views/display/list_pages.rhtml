@@ -1,0 +1,20 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 2,
+                          :work_id => @work.id }}) %>
+
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <p>
+        <% for page in @work.pages %>
+
+          <%= link_to(page.title,
+                      { :action => 'display_page',
+                        :page_id => page.id} ) %>
+          <br />  
+        <% end %>
+      </p>    
+    </div>
+  </div>
+</div>

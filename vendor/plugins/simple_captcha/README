@@ -1,0 +1,137 @@
+SimpleCaptcha
+=============
+##############################################################################
+ Version:	1.0 - beta						     
+ Author:	Sur -- http://expressica.com				     
+ Contributors:	Manik, Akhil, Ritu, Hemant, Gaurav -- http://vinsol.com/team 
+ License:	Ruby MIT						     
+##############################################################################
+
+
+SimpleCaptcha is a plugin for rubyonrails applications to provide the captcha functionality.
+Its implementation is really very simple, it requires only a single line of code in view and a single line of code in controller/model.
+For more details see the plugin's documentation on http://expressica.com .
+
+
+Pre-requisites
+==============
+1.) RMagick
+RMagick is the image handling library in ruby and is required to implement the SimpleCaptcha.
+RMagick is available on RubyForge http://rubyforge.org
+
+
+Installation
+============
+
+(recommended... to sync with latest revisions)
+SVN checkout the plugin as
+svn co svn://rubyforge.org/var/svn/expressica/plugins/simple_captcha simple_captcha
+Now put this directory simple_captcha in your application as /vendor/plugins/simple_captcha
+
+OR
+
+SimpleCaptcha plugin can be installed by running this command from the application root
+>> ruby script/plugin install svn://rubyforge.org/var/svn/expressica/plugins/simple_captcha
+
+
+Usage
+======
+
+=>Controller Based 
+
+
+In the view file within the form tags write this code
+
+<%= show_simple_captcha %>
+
+and in the controller' action authenticate it as 
+
+if simple_captcha_valid?
+ do this
+else
+ do that
+end
+
+
+=>Model Based
+
+
+In the view file within the form tags write this code
+
+<%= show_simple_captcha(:object=>"user") %>
+
+and in the model class add this code
+
+class User < ActiveRecord::Basse
+  apply_simple_captcha
+end
+
+We may need to save the instance where captcha is not at all needed, actually captcha is usually needed
+on some particular screen only eg. signing up of a new user.
+So, here is the detail of explicit methods to authenticate and validate the instance with captcha.
+
+
+-> for validating 
+
+use @user.valid_with_captcha? when captcha authentication is required
+and use @user.valid? when captcha authentication is not required.
+
+
+-> for saving
+
+use @user.save_with_captcha when captcha authentication is required
+and use @user.save when captcha authentication is not required.
+
+
+-------------------------------------------------------------------------------
+
+
+
+Options for View Helper method show_simple_captcha
+---------------------------------------------------
+1.) :label
+	provide the custom text b/w the image and the text field, 
+	the default is "type the text from the image"
+2.) :image_style
+	we can provide the specific image style out of the eight styles available,
+	
+	"simply_blue"
+	"simply_red"
+	"simply_green"
+	"distorted_black"
+	"all_black"
+	"embosed_silver"
+	"charcoal_grey"
+	"almost_invisible"
+
+	the default is "simply_blue".
+3.) :object
+	the name of the object of the model class, to implement the model based captcha.
+4.) :distortion
+	there are three level of distortion, which measures the complexity of the text of the image as
+	"low"
+	"medium"
+	"high"
+	the default is "medium"
+
+example --  
+
+<%= show_simple_captcha(:object => "user", :image_style => "embosed_silver", :label => "human authentication", :distortion => "low") %>
+
+
+Options for Model method apply_simple_captcha
+---------------------------------------------
+
+1.) :message
+	we can provide the custom message on failure of captcha authentication
+	the default is "image did not match with text"
+
+example --
+
+	apply_simple_captcha :message => " image and text were different"
+
+==============================================================================================================================================
+
+
+For more detailed examples with sample images visit http://expressica.com
+All Feedbacks/Comments/Issues are welcome.

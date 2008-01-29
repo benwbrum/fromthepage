@@ -1,0 +1,346 @@
+<html>
+<body>
+<pre>
+Copyright (c) 2006 Ezra Zygmuntowicz
+
+BackgrounDRb is a small framework for divorcing long running tasks from
+Rails request/response cycle. With HTTP it is usually not a very good
+idea to keep a request waiting for a response for long running actions.
+BackgrounDRb also allows for status updates that in combination with
+ajax can render live progress bars in the browser while the background
+worker task gets completed. The MiddleMan can also be used as a cache.
+You can store rendered templates or compute intensive results in the
+MiddleMan for use later.
+
+The MiddleMan drb server is a front controller or factory/delegate type
+of object. It straddles the relationship between the drb server and your
+rails app. It takes instructions from you and instantiates your worker
+objects with the args you send from rails. It uses a hash to keep a  key
+pointing to a running worker that is also put into the session in rails
+so railscan find the same Worker object that is running its job on
+subsequent requests. The MiddleMan front object has a method that takes
+a class type as a symbol  and instantiates a new instance of said
+class type. Then it returns a job_key to the client(rails). Rails can
+then call a method on that object through the MiddleMan class.
+
+There are many possible use cases for this system. More will be implemented
+soon. This is an open request for comments and feature requests. 
+
+Let's look at how this system works in detail.
+
+*Home page: http://backgroundrb.rubyforge.org
+*svn repo: svn://rubyforge.org//var/svn/backgroundrb
+*Mailing list: http://rubyforge.org/mailman/listinfo/backgroundrb-devel
+
+To install BackgrounDRb you need to follow these steps:
+
+**Important**
+  if you have already installed this plugin and you are upgrading you
+  need to blow away your config/backgroundrb.yml file and let it get
+  generated again to pick up new options.
+
+1. Install the plugin in your vendor/plugins directory
+$ script/plugin install svn://rubyforge.org//var/svn/backgroundrb
+
+2. To install start stop scripts and worker dir:
+$ rake backgroundrb:setup
+
+3. After you run the setup task take a look in RAILS_ROOT/config/backgroundrb.log.
+  This is the config file for the drb server where you can set the port and host
+  as well as whether or not to load your rails models for use in a worker class.
+
+4. There are now rake tasks to start and stop the drb server.
+$ rake backgroundrb:start
+and
+$ rake backgroundrb:stop
+
+*** If you are on windows you can't use the rake tasks to start and stop the server.
+Instead use the script directly but don't supply the -d option. In windows there is
+no fork so until I get time to create a windows service you need to have a console
+windows open with backgroundrb running in n it.
+
+> ruby script/backgroundrb/start
+
+
+# start the server on port 11111 in the background.
+$ script/backgroundrb/start -p 11111 -d
+
+5. Here are some capistrano tasks for stopping, starting and restarting the drb server
+
+# for deploy.rb
+
+desc <<-DESC
+Stop the backgroundrb server
+DESC
+task :stop_backgroundrb , :roles => :drb do
+  run "#{current_path}/script/backgroundrb/stop"
+end
+
+desc <<-DESC
+Start the backgroundrb server
+DESC
+task :start_backgroundrb , :roles => :drb do
+  run "#{current_path}/script/backgroundrb/start -d"
+end
+
+desc <<-DESC
+Start the backgroundrb server
+DESC
+task :restart_backgroundrb , :roles => :app do
+  stop_backgroundrb
+  start_backgroundrb
+end
+
+
+6. There is also a worker class generator. 
+Description:
+    The worker generator creates stubs for a new worker.
+
+    The generator takes a worker name as its argument.  The worker name may be
+    given in CamelCase or under_score and should not be suffixed with 'Worker'.
+
+    The generator creates a worker class in lib/workers and a test suite in
+    test/unit.
+
+Example:
+    ./script/generate worker Tail
+
+    This will create an Tail worker:
+        Model:      lib/workers/tail_worker.rb
+        Test:       test/unit/tail_worker_test.rb
+
+
+
+Lets look at a simple worker class. This is a new improved way to 
+create your worker classes. You just need to inherit from
+BackgrounDRb::Rails and define a do_work(args) method. This
+method will automatically get called in its own thread when you
+create a new worker from rails. So when you say:
+
+MiddleMan.new_worker :class => :foo_worker, :args => "Hello!"
+
+The "Hello" argument gets sent to your do_work method.
+
+# Put your code that runs your task inside the do_work method
+# it will be run automatically in a thread. You have access to
+# all of your rails models if you set load_rails to true in the
+# config file. You also get @logger inside of this class by default.
+class FooWorker < BackgrounDRb::Rails
+  
+  def do_work(args)
+    # This method is called in it's own new thread when you
+    # call new worker. args is set to :args
+  end
+
+end
+
+When you are done with work in your worker class you can delete the worker
+from the MiddleMan from within your worker class by calling kill()
+
+Your worker classes go into the RAILS_ROOT/lib/workers/ directory.
+Use the rake task to generate new workers. It will first check to
+make sure your worker classes don't conflict with other class names
+in your application. 
+
+You can then use your worker class in rails like this:
+
+# in a controller
+
+# start new worker and put the job_key into the session so you can
+# get the status of your job later.
+def background_task
+  session[:job_key] = MiddleMan.new_worker(:class => :foo_worker,
+                                           :args => {:baz => 'hello!', :qux => 'another arg!'})
+end
+
+def task_progress
+  if request.xhr?
+    progress_percent = MiddleMan.get_worker(session[:job_key]).progress
+    render :update do |page|
+      page.call('progressPercent', 'progressbar', progress_percent)        
+      page.redirect_to( :action => 'done')   if progress_percent >= 100
+    end
+  else
+    redirect_to :action => 'index'   
+  end
+end
+
+def results
+  @results = MiddleMan.get_worker(session[:job_key]).results
+  MiddleMan.delete_worker(session[:job_key])
+end
+
+Note that new_worker takes a hash as the argument. the :class  part of 
+the hash is required so MiddleMan knows which worker class to instantiate.
+You can give it either an underscore version like :foo_worker or normal 
+like :FooWorker. Also the :args key points to a value that will be 
+given to your worker class when initialized. By default your worker 
+classes will be :immortal. Which means the only way to kill one is
+to use delete_worker or gc!. But you can specify a 
+:ttl(time to live) in seconds and your worker will get killed after
+those seconds run out. The following will start a FooWorker class
+with a text argument of "Bar" and a time to live of 5 minutes
+
+session[:job_key] = MiddleMan.new_worker(:class => :foo_worker,
+                                         :args => "Bar",
+                                         :ttl => 300)	
+**NEW** There is another option you can specify when creating new workers.
+It sets the time to live to act like a session. So it will update the timestamp
+when it gets accessed and push the time to live forward again. This allows the
+worker to expire based on time to live since the worker was last accessed. So
+this worker will expire 300 seconds after the last time it was accessed.
+
+session[:job_key] = MiddleMan.new_worker(:class => :foo_worker,
+                                         :args => "Bar",
+                                         :ttl => 300,
+                                         :expire_type => :accessed )
+
+
+
+In the background_task view you can use periodically_call_remote
+to ping the task_progress method to get the progress of your job and update
+the progress bar. Once progress is equal to 100(or whatever you want) you
+redirect to the results page to display the results of the worker task.
+
+See examples/css.js.progressbar.txt for pure css/js progress bar graphic 
+examples. Thanks to Werner Bohl for making the css/js progress example.
+
+There are a few simple examples in the workers dir.
+
+If you want to have a named key instead of generated key you can specify the
+key yourself. This is handy for creating shared resources that more then one
+user will access so that multiple users and backends can get the same object
+by name. Remember since we don't set a :ttl here this worker will be immortal
+and you will need to delete_worker on it yourself or use MiddeleMan.gc! to over
+ride the immortality and kill the worker.
+
+MiddleMan.new_worker(:class => :foo_worker,
+                     :args => "Bar",
+                     :job_key => :shared_resource)
+
+Then you can access it by name:
+
+MiddleMan[:shared_resource]
+or
+MiddleMan.get_worker(:shared_resource)
+
+There is also now an option to have a singleton worker so there is always
+only one of a certain worker. Even if you call new_worker twice with this
+option enabled you will get back the same instance of the class. Do not
+create a worker class and use it as a singleton and a non singleton worker
+at the same time. This is not supported.
+
+MiddleMan.new_worker(:class => :foo_worker,
+                     :args => "Bar",
+                     :job_key => :singleton_worker,
+                     :singleton => true)
+
+For caching ActiveRecord Objects you can now use the following syntax.
+**Notice that MiddleMan.cache_get can take an optional block so that if
+there is nothing in the cache, it will get filled with the contents of
+the block. The second parameter to cache_as is a time to live setting
+in *seconds* so in the examples 300 is 5 minutes before the cache will 
+expire. If you don't specify a :ttl then the cache will be held for 10 
+minutes and then get terminated.
+
+# fill cache, expire in 5 minutes
+@tags = Tag.find(:all, :include => :meta_tags)
+MiddleMan.cache_as(:post_cache, 300, @posts)
+#OR
+
+@tags = MiddleMan.cache_as :tags_cache, 300 do
+  Tag.find(:all, :include => :meta_tags)
+end
+
+#retrieve_cache, if the cache for the :tags_cache key
+# is empty, rebuild it with the data inside the block
+# and return the query to fill @tags. 
+@tags = MiddleMan.cache_get : tags_cache, 300 do
+  Tag.find(:all, :include => :meta_tags)
+end
+
+
+When you cache AR objects MiddleMan needs to have access to the model classes.
+When your objects get cached they first get marshaled into memory in the drb
+server. And when you want to get one back and unmarshal it you need the classes
+of whatever you cached available. So until I come up with something better, you 
+will need to specify your models that you plan on caching in application.rb 
+like this:
+
+model :post
+model :comment
+
+You could create this cache and then have an ActiveRecord observer
+expire the cache and create a new one when the data changes.
+
+If you know you are done with an object then its a good idea to explicitely flush
+it. So you can run delete_worker on the job_key to get rid of it. But with the new
+built in timer/gc you can just specify a time to live when you create a new worker.
+
+MiddleMan.delete_worker(session[:job_key])
+
+There is also a MiddleMan.gc! method that you can run and give a time object
+that will expire everything older then the timestamp you pass in. You should use
+the new timer and :ttl code instead of doing this though as it is fewer moving
+parts. But here is a ruby script you could run from cron that will delete all workers and cached items older then 30 minutes if you still need it.
+ **WARNING** using gc! overrides immortal workers and deletes them as well.
+
+#!/usr/bin/env ruby
+require "drb"
+DRb.start_service
+MiddleMan = DRbObject.new(nil, "druby://localhost:22222")
+MiddleMan.gc!(Time.now - 60*30)
+
+**NEW FEATURES**
+
+You can now have workers that autostart when the drb server is started, and you can also
+have cron like workers that run at intervals. To specify a worker to startup when the 
+drb server does you can add something liek this to your backgroundrb.yml config file:
+
+autostart:
+  1:
+    job_key: email_checker1
+    class: email_checker_worker
+  2:
+    job_key: email_checker2
+    class: email_checker_worker
+
+Change job_key to be the actual named key you want to use for this autostart worker. 
+In you workers you can now have timed tasks that repeat themselves at intervals that you set.
+A simple example looks like this:
+
+class CronWorker <BackgrounDRb::Rails  
+
+  repeat_every 10.minutes
+  first_run Time.now
+
+  def do_work(args)
+    @progress ||= 0
+    @progress += 1
+  end
+  
+  def progress
+    @progress
+  end      
+end
+
+repeat_every takes anything that can be made into a Time object via Time.parse. Same 
+thing with first_run. You can use all the nice rails active support time methods in these
+declarations like 2.hours and friends.
+
+** ROADMAP **
+1. **DONE** Add better ActiveRecord caching facilities. Right now you can cache any object
+   that can be marshalled with Marshal.dump
+2. More examples. A chat room is forthcoming as well as an email queue.
+3. **DONE** More documentation.
+4. **DONE** Make an installer?
+5. **DONE** Possibly add a thread in MiddleMan that sleeps for a certain amount of time and wakes 
+   up to call MiddleMan#gc! and garbage collect old or orphaned objects. Could also possibly have
+   callbacks to call certain workers at timed intervals.
+6. **DONE** Finally get a rubyforge project and mailing lists and all that jazz.
+7. **DONE** Added support for using AR models in the workers.
+8. Profit.. ?
+</pre>
+</body>
+</html>
+

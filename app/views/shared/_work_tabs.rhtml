@@ -1,0 +1,152 @@
+<!-- 
+Work Tabs
+
+Tab                     Access
+-------------------     ------
+1 Read (blog view)      V
+2 Contents (page list)  V
+3 About                 V
+4 Versions              V
+5 Print                 V
+6 Settings              O
+7 Access                O
+
+-->
+<div id="navcontainer">
+  <ul id="navlist">
+    <% if selected == 1 %> 
+      <li id="current">
+        <span>read</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('read', 
+                    { :controller => 'display', 
+                      :action => 'read_work', 
+                      :work_id => work_id }) %>
+      </li>     
+    <% end %>
+
+    <% if selected == 2 %> 
+      <li id="current">
+        <span>contents</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('contents', 
+                    { :controller => 'display', 
+                      :action => 'list_pages', 
+                      :work_id => work_id }) %>
+      </li>     
+    <% end %>
+
+    <% if selected == 3 %> 
+      <li id="current">
+        <span>about</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('about', 
+                    { :controller => 'work', 
+                      :action => 'show', 
+                      :work_id => work_id }) %>
+      </li>     
+    <% end %>
+
+    <% if selected == 4 %> 
+      <li id="current">
+        <span>versions</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('versions', 
+                    { :controller => 'work', 
+                      :action => 'versions', 
+                      :work_id => work_id }) %>
+      </li>     
+    <% end %>
+
+    <% if selected == 5 %> 
+      <li id="current">
+        <span>print</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('print', 
+                    { :controller => 'work', 
+                      :action => 'print', 
+                      :work_id => work_id }) %>
+      </li>     
+    <% end %>
+
+    <% if @work.owner == current_user %>
+	    <% if selected == 6 %> 
+	      <li id="current">
+	        <span>settings</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('settings', 
+	                    { :controller => 'work', 
+	                      :action => 'edit', 
+	                      :work_id => work_id }) %>
+	      </li>     
+	    <% end %>
+	
+	    <% if selected == 7 %> 
+	      <li id="current">
+	        <span>access</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('access', 
+	                    { :controller => 'work', 
+	                      :action => 'scribes_tab', 
+	                      :work_id => work_id }) %>
+	      </li>     
+	    <% end %>
+    <% end %>
+
+  </ul>
+</div>
+
+<% if false %>
+<div>
+ Tabs:
+  <span>
+    <% if selected == 1 %>
+      show
+    <% else %>
+      <%= link_to('show', { :action => 'show', :work_id => work_id }) %>
+    <% end %>
+  </span>    
+  <span>
+    <% if selected == 2 %>
+      versions
+    <% else %>
+      <%= link_to('versions', { :action => 'versions', :work_id => work_id }) %>
+    <% end %>
+  </span>    
+  <span>
+    <% if selected == 3 %>
+      pages
+    <% else %>
+      <%= link_to('pages', { :action => 'pages_tab', :work_id => work_id }) %>
+    <% end %>
+  </span>    
+  <span>
+    <% if selected == 4 %>
+      edit
+    <% else %>
+      <%= link_to('edit', { :action => 'edit', :work_id => work_id }) %>
+    <% end %>
+  </span>    
+  <span>
+    <% if selected == 5 %>
+      scribes
+    <% else %>
+      <%= link_to('scribes', { :action => 'scribes_tab', :work_id => work_id }) %>
+    <% end %>
+  </span>    
+</div>
+<% end %>

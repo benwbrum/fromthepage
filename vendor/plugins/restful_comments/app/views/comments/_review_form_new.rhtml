@@ -1,0 +1,28 @@
+<!-- form_remote_tag :url => comments_path, :html => { :id => 'comment_form', :class => 'comment-form', :style => 'display:none;' } -->
+<!-- form_tag comments_path, { :id => 'comment_form', :class => 'comment-form', :style => 'display:none;' } -->
+<!--form action="/comments" 
+      class="comment-form" 
+      id="comment_form" 
+      method="post" 
+      onsubmit="new Ajax.Request('/comments', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this), onComplete: function(request) { eval(request.responseText); } }); return false;" 
+      style="display:none;"-->
+
+<%= hack_form_remote_tag :url => comments_path, :html => { :id => 'review_form', :class => 'comment-form', :style => 'display:none;' } %>
+	<input name="comment[commentable_id]" type="hidden" value="<%=commentable.id%>" />
+	<input name="comment[commentable_type]" type="hidden" value="<%=commentable.class%>" />
+	<input name="comment[parent_id]" type="hidden" id="review_parent_id" />
+	<input name="comment[comment_type]" type="hidden" value="review" />
+
+  <% 
+    typename=commentable.class.to_s.downcase
+  %>		
+	<input name="<%=typename%>_id" type="hidden" value="<%=commentable.id%>" />
+
+	<table width="100%"><tr>
+		<td class="label" width="">Title:</td><td width="100%"><input name="comment[title]" type="text" style="width:100%"/></td>
+	</tr><tr>
+		<td class="label">Text:</td><td><textarea name="comment[body]" id="comment_text_area" style="width:100%"></textarea></td>
+	</tr><tr>
+		<td></td><td><%=submit_tag 'Comment' %></td>
+	</tr></table>
+</form>

@@ -1,0 +1,50 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<book>
+	<title>
+		<%= @work.title %>
+	</title>
+	<bookinfo>
+		<title>
+			<%= @collection.title %>
+		</title>
+		<subtitle>
+			<%= @work.title %>
+		</subtitle>
+		<revhistory>
+<revision>
+<revnumber>
+			(transcription version) <%= @work.transcription_version %>,
+</revnumber>
+<date>
+<%= DateTime.now.strftime("%e %B, %Y") %>
+</date>
+</revision>
+</revhistory>
+ 	  <authorgroup>
+	  	<author>
+	  		<firstname>
+          Julia
+        </firstname>
+	  		<othername>
+          Ann
+        </othername>
+	  		<othername>
+          Craddock
+        </othername>
+	  		<surname>
+          Brumfield
+        </surname>
+  		</author>
+	  </authorgroup>
+	</bookinfo>
+
+	<chapter>
+		<title>
+			Entries
+		</title>
+		<% for page in @work.pages %>
+				<%= xml_to_docbook(page) %>
+		<% end %>
+	</chapter>
+	<%= docbook_index_from_work(@work) %>
+</book>

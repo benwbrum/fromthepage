@@ -1,0 +1,17 @@
+locale_name: English
+flag: us.png
+
+do_create: Create
+do_edit: Edit
+do_add: Add
+do_remove: Remove
+do_comment: Comment
+do_cite: Cite
+do_hide: Hide
+
+comments: Comments
+citations: Citations
+title: Title
+text: Text
+
+confirm_remove: Are you sure to remove it?

@@ -1,0 +1,2 @@
+class ArticleVersionController < ApplicationController
+end

@@ -1,0 +1,23 @@
+<%= render({ :partial => '/shared/article_tabs',
+             :locals => { :selected =>3,
+                          :article_id => @article.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+			<p>
+			        <%= link_to("articles", 
+			                    {:controller => 'article',
+			                     :action => 'list'}) %>
+			</p>
+			<p>
+			    <%= @article.title %>
+			</p>
+			
+			<p>
+			<%= image_tag(file_to_url(@article.graph_image)) %>
+			</p>
+    </div>
+  </div>
+</div>
+		

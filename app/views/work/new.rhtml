@@ -1,0 +1,12 @@
+New Work<br />
+<% form_for(:work, 
+            @work, 
+            { :url => { :action => 'create' }}) do |f| %>
+  Title:
+  <%= f.text_field(:title) %>
+  <br />
+  Description:
+  <%= f.text_field(:description) %>
+  <br />
+  <%= submit_tag('create') %>
+<% end %>

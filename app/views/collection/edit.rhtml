@@ -1,0 +1,82 @@
+<%= render({ :partial => '/shared/collection_tabs',
+             :locals => { :selected => 2,
+                          :collection_id => @collection.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <p>
+				Title: <span id="title_<%= @collection.id %>"><%= @collection.title %></span>
+				<%= in_place_editor("title_#{@collection.id}",
+				                    { :url => url_for({ :action => "set_collection_title", 
+				                                        :id => @collection.id }) }) %>
+				<br />
+				Owner: <%= @collection.owner.display_name %>
+				<br />
+				
+				<%= button_to("Delete",
+				            { :controller => 'collection',
+				              :action => 'delete',
+				              :collection_id => @collection.id },
+				            { :confirm => 'Are you sure?' }) %>
+				<br />
+			</p>
+      <p>
+        Works not in <%= @collection.title %>:<br />
+        <table>
+          <tr>
+            <th>
+              Title
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+	        <% for work in @collection.works %>
+	          <tr>
+	            <td>
+    	          <%= work.title %>
+  	          </td>
+  	          <td>
+			          <%= link_to('remove', 
+			                      { :action => 'remove_work_from_collection',
+			                        :work_id => work.id,
+			                        :collection_id => @collection.id })%><br />
+              </td>
+            </tr>
+	        <% end %>
+        </table>
+      </p>
+    </div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+      <p>
+        Works not in <%= @collection.title %>:<br />
+        <table>
+          <tr>
+            <th>
+              Title
+            </th>
+            <th>
+              Action
+            </th>
+          </tr>
+	        <% for work in @works_not_in_collection %>
+	          <tr>
+	            <td>
+    	          <%= work.title %>
+  	          </td>
+  	          <td>
+			          <%= link_to('add', 
+			                      { :action => 'add_work_to_collection',
+			                        :work_id => work.id,
+			                        :collection_id => @collection.id })%>
+              </td>
+            </tr>
+	        <% end %>
+        </table>
+      </p>
+    </div>
+  </div>
+</div>

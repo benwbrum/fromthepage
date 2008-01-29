@@ -1,0 +1,26 @@
+<div id="link_wrapper" class="inside-column">
+	<div>
+		<p>Pages that refer to <%= @article.title %>:</p>
+		<p>
+		 <% for link in @article.page_article_links %>
+		   <%= link_to(link.page.title, 
+		               { :controller => 'display', 
+		                 :action=> 'display_page', 
+		                 :page_id => link.page.id })%>
+		   (<%= link.display_text %>)<br />
+		 <% end %>
+		</p>
+	</div>
+	<div>
+		<p>Articles that refer to <%= @article.title %>:</p>
+		<p>
+		 <% for link in @article.target_article_links %>
+		   <%= link_to(link.source_article.title, 
+		               { :controller => 'article', 
+		                 :action=> 'show', 
+		                 :article_id => link.source_article.id })%>
+		   (<%= link.display_text %>)<br />
+		 <% end %>
+		</p>
+	</div>
+</div>

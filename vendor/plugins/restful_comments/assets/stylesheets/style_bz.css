@@ -1,0 +1,69 @@
+	
+.comment {
+	padding: 10px;
+}
+
+.comment a {
+	color: #354A81;
+	background-color: transparent;
+	text-decoration: none;
+}
+
+.comment a:hover {
+	text-decoration: underline;
+}
+
+.comment .header {
+	padding: 10px;
+}
+
+.comment .header a {
+	font-weight: bold;
+}
+
+.comment .text {
+	background-color: #FFFFFF;
+	padding: 10px;
+}
+
+.comment .links {
+	background-color: #FFFFFF;
+}
+
+.comment .links a {
+	font-size: smaller;
+}
+	
+.comment-1 .header {
+	background-color: #d3e1f6;
+}
+	
+.comment-2 .header {
+	background-color: #a3b1d6;
+}
+	
+.comment-3 .header {
+	background-color: #919cb8;
+}
+		
+.comment-form {
+	border: solid 1px;
+	padding: 10px;
+	padding-left: 40px;
+	padding-right: 40px;
+	
+	margin: 10px;
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+.comment-form .label {
+	font-weight: bold;
+	vertical-align: top;
+	text-align: right;
+}
+
+.comment-form input, .comment-form textarea {
+	border: solid 1px;
+	border-color: #909090;
+}

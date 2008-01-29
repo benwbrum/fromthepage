@@ -1,0 +1,45 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 4,
+                          :work_id => @work.id }}) %>
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <table border="1">
+        <tr>
+          <th>
+            Page
+          </th>
+          <th>
+            Version
+         </th>
+         <th>
+           Date
+         </th>
+         <th>
+           User
+         </th>
+         <th>
+          Action
+        </th>
+      </tr>
+      <% for version in @page_versions %>
+        <tr>
+         <td>
+           <%= link_to(version.page.title, 
+                       { :controller => 'page_version', 
+                         :action => 'list', 
+                         :page_id => version.page.id }) %>
+         </td>
+         <td><%= version.page_version %></td>
+         <td><%= version.created_on %></td>
+         <td><%= version.user.display_name %></td>
+         <td><%= link_to('view', 
+                         { :controller => 'page_version',
+                           :action => 'show', 
+                           :page_version_id => version.id}) %></td>
+       </tr>
+       <% end %>
+     </table>
+    </div>
+  </div>
+</div>

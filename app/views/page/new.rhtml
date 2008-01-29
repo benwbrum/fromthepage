@@ -1,0 +1,10 @@
+<% form_for(:page, 
+            @page, 
+            { :url => { :action => 'create' }}) do |f| %>
+  <%= hidden_field_tag(:work_id, @page.work.id) %>
+  <%= f.hidden_field(:work_id) %>
+  Page Title:
+  <%= f.text_field(:title) %>
+  <br />
+  <%= submit_tag('create') %>
+<% end %>
