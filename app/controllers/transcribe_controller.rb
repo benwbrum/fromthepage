@@ -5,7 +5,7 @@ class TranscribeController  < ApplicationController
   require 'RMagick'
   require 'rexml/document'
   include Magick
-  before_filter :authorized?
+  before_filter :authorized?, :except => :zoom
 
   def authorized?
     if logged_in? 
