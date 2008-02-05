@@ -1,0 +1,15 @@
+0.0.4
+
+* Fixed regexp for ignored files [Scott Taylor]
+
+0.0.3
+
+* Change grep to a ruby method. Search in parallel. Exclude scm files. [Hugh Sasse]
+
+0.0.2
+
+* Added render :partial, @request, and @env
+
+0.0.1
+
+* First release

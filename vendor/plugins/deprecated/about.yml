@@ -1,0 +1,7 @@
+author: topfunky
+summary: Check for deprecated code in your Rails app.
+homepage: http://nubyonrails.com/pages/deprecated
+plugin: http://topfunky.net/svn/plugins/deprecated
+license: MIT
+version: 0.0.2
+rails_version: 1.0+
