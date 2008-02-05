@@ -1,0 +1,25 @@
+deprecated plugin
+=================
+
+Searches your code to see if you are using techniques that are no longer approved by Rails.
+
+Gently warns you and advises you about what you should do instead.
+
+Usage:
+
+  rake deprecated
+
+A report will be printed to the screen.
+
+==========
+Geoffrey Grosenbach
+boss@topfunky.com
+http://nubyonrails.com/pages/deprecated
+
+==========
+TODO
+
+* Use pure Ruby so it works on Windows
+* Make criteria more specific
+* Update to check for new items that are deprecated in edge
+* A test assertion that does the check
