@@ -1,7 +1,7 @@
-<%= start_form_tag( {:action => 'numeric_format_start_process'} ) %>
+<% form_tag( {:action => 'numeric_format_start_process'} ) do %>
 
-    <% if @flash['error'] %>
-      <div style="color: red"><%= @flash['error'] %></div>
+    <% if flash['error'] %>
+      <div style="color: red"><%= flash['error'] %></div>
     <% end %>
 
 
@@ -12,4 +12,4 @@
     <%= text_field_tag :numeric_start, nil, :size => 60, :maxlength => 256 %></p>
 
     <p><%= submit_tag 'Next' %></p>
-<%= end_form_tag %>
+<% end %>

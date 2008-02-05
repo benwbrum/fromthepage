@@ -1,4 +1,4 @@
-<%= start_form_tag( {:action => 'select_target_process'} ) %>
+<% form_tag( {:action => 'select_target_process'} ) do %>
 
 Choose an image set to merge <%= @right_set.summary %> into:
 <br />
@@ -9,4 +9,4 @@ Choose an image set to merge <%= @right_set.summary %> into:
 <br />
 
 <input type="submit" value="Next">
-<%= end_form_tag() %>
+<% end %>

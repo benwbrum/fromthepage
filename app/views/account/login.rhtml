@@ -2,7 +2,7 @@
 	<div class="left-column">
 		<div class="inside-column">
 
-			<%= start_form_tag( { :action => 'login' }) %>
+			<% form_tag( { :action => 'login' }) do %>
 				<p><label for="login">Login</label><br/>
 				<%= text_field_tag 'login' %></p>
 				<p><label for="password">Password</label><br/>
@@ -12,11 +12,14 @@
 				<%= check_box_tag 'remember_me' %></p>
 				
 				<p><%= submit_tag 'Log in' %></p>
-			<%= end_form_tag %>
+			<% end %>
 		</div>
 	</div>
 	<div class="right-column">
 		<div class="inside-column">
+		  <p>
+		    Welcome back to FromThePage!
+		  </p>
 		</div>
 	</div>
 </div>

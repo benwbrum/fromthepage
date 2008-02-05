@@ -1,6 +1,6 @@
-<%= start_form_tag( {:action => 'number_location_process'} ) %>
+<% form_tag( {:action => 'number_location_process'} ) do %>
     <p>Please click on the page number in this image.
     </p>
     <input type="image" src="<%= file_to_url(@image.shrunk_file) %>" name="coordinate" />
 
-<%= end_form_tag %>
+<% end %>

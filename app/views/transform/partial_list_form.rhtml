@@ -1,4 +1,4 @@
-<%= start_form_tag( {:action => 'directory_form'} ) %>
+<% form_tag( {:action => 'directory_form'} ) %>
     <pre><%= @current.inspect %>.
     </pre>
     
@@ -9,4 +9,4 @@
     <% end %>
 
     <p><%= submit_tag 'Next' %></p>
-<%= end_form_tag %>
+<% end %>

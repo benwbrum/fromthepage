@@ -1,7 +1,7 @@
-<%= start_form_tag( {:action => 'date_format_process'} ) %>
+<% form_tag( {:action => 'date_format_process'} ) do %>
 
-    <% if @flash['error'] %>
-      <div style="color: red"><%= @flash['error'] %></div>
+    <% if flash['error'] %>
+      <div style="color: red"><%= flash['error'] %></div>
     <% end %>
 
     <p><%= image_tag(file_to_url(@image.crop_file)) %></p>
@@ -75,4 +75,4 @@
 
 
     <p><%= submit_tag 'Next' %></p>
-<%= end_form_tag %>
+<% end %>
