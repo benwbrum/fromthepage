@@ -6,7 +6,7 @@
 	<div class="left-column">
 		<div class="inside-column">
 		  <span class="left-link">
-		    <% if @page_pages.current.previous %>
+		    <% if false && @page_pages.current.previous %>
 		      <%= link_to('Previous Pages',
 		                  { :page => @page_pages.current.previous,
 		                    :work_id => @work.id }) %>
@@ -15,7 +15,7 @@
 		    <% end %>
 		  </span>
 		  <span class="right-link">
-		    <% if @page_pages.current.next %>
+		    <% if false && @page_pages.current.next %>
 		      <%= link_to('Next Pages',
 		                  { :page => @page_pages.current.next,
 		                    :work_id => @work.id }) %>
@@ -46,7 +46,7 @@
 	  <% end %>
 		<div class="inside-column">
 		  <span class="left-link">
-		    <% if @page_pages.current.previous %>
+		    <% if false && @page_pages.current.previous %>
 		      <%= link_to('Previous Pages',
 		                  { :page => @page_pages.current.previous,
 		                    :work_id => @work.id }) %>
@@ -55,7 +55,7 @@
 		    <% end %>
 		  </span>
 		  <span class="right-link">
-		    <% if @page_pages.current.next %>
+		    <% if false && @page_pages.current.next %>
 		      <%= link_to('Next Pages',
 		                  { :page => @page_pages.current.next,
 		                    :work_id => @work.id }) %>
@@ -76,35 +76,7 @@
             end %>
       </p>
 		</div>
-		<div class="inside-column">
-      <h2>Pages needing review</h2>
-      <p>
-        <% reviews = @work.reviews.reject { |r| r.comment_status == 'answered' || r.depth > 0 } %>
-        <% for comment in reviews %>
-	        <%= link_to(comment.commentable.title,
-	                    { :action => 'display_page',
-	                      :page_id => comment.commentable.id }) %>
-          <%= comment.title %>
-          (<%= comment.user.display_name if comment.user %>)
-          <br />
-        <% end%>      
-      </p>
-		</div>
-
-		<div class="inside-column">
-      <h2>Recent Annotations</h2>
-      <p>
-        <% for comment in @work.recent_annotations %>
-	        <%= link_to(comment.commentable.title,
-	                    { :action => 'display_page',
-	                      :page_id => comment.commentable.id }) %>
-          <%= comment.title %>
-          (<%= comment.user.display_name if comment.user %>)
-          <br />
-        <% end%>      
-      </p>
-		</div>
-
+		<!-- Check SVN for review code formerly here before bug 12 -->
 
 	</div>
 </div>

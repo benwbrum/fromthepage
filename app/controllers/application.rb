@@ -1,11 +1,16 @@
-# Filters added to this controller will be run for all controllers in the application.
+# Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 require_dependency "login_system"
 
 class ApplicationController < ActionController::Base
+  helper :all # include all helpers, all the time
   include AuthenticatedSystem
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
+
+  # See ActionController::RequestForgeryProtection for details
+  # Uncomment the :secret if you're not using the cookie session store
+  protect_from_forgery # :secret => '84a8eb6b8cd3ab40640d70c396f27334'
 
 
   def load_objects_from_params

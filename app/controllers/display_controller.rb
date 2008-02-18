@@ -2,10 +2,16 @@ class DisplayController < ApplicationController
   public :render_to_string
 
   def read_work
-    @page_pages, @pages  = paginate(:pages,
-                                    { :per_page => 5,
-                                      :conditions => "work_id = #{@work.id}",
-                                      :order => 'position' })
+  # disabling for v2.0 upgrade 
+#    @page_pages, @pages  = paginate(:pages,
+#                                    { :per_page => 5,
+#                                      :conditions => "work_id = #{@work.id}",
+#                                      :order => 'position' })
+    @pages = @work.pages;
+
+
+
+
 #    articles = []
 #    @pages.each { |page| articles += page.articles }
 #    articles.uniq!
