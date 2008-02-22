@@ -17,7 +17,8 @@ test:
 
 production:
   adapter: mysql
-  database: diary_production
+  database: fromthepage_production
   socket: /var/run/mysqld/mysqld.sock
-  username: rails
-  password: rails
+  username: fromthepagedb
+  password: fromthepagedb
+  host: mysql.fromthepage.com
