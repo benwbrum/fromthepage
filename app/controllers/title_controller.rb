@@ -15,10 +15,10 @@ class TitleController < ApplicationController
   def list
     @titled_images = @image_set.titled_images
     conditions = "image_set_id = #{@image_set.id}"
-    @image_pages, @titled_images = paginate(:titled_image,
-                                            {:per_page => 10,
-                                             :conditions => conditions,
-                                             :order => 'position' }) 
+#    @image_pages, @titled_images = paginate(:titled_image,
+#                                            {:per_page => 10,
+#                                             :conditions => conditions,
+#                                             :order => 'position' }) 
   end
 
   def delete_image
