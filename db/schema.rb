@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 25) do
+ActiveRecord::Schema.define(:version => 26) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -99,6 +99,16 @@ ActiveRecord::Schema.define(:version => 25) do
     t.text     "xml_text"
   end
 
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :default => "", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
   create_table "titled_images", :force => true do |t|
     t.string   "original_file",                  :default => "",    :null => false
     t.string   "title_seed",       :limit => 20
@@ -135,11 +145,11 @@ ActiveRecord::Schema.define(:version => 25) do
 
   create_table "works", :force => true do |t|
     t.string   "title"
-    t.text     "description"
+    t.string   "description",               :limit => 4000
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",          :default => false
-    t.integer  "transcription_version",     :default => 0
+    t.boolean  "restrict_scribes",                          :default => false
+    t.integer  "transcription_version",                     :default => 0
     t.text     "physical_description"
     t.text     "document_history"
     t.text     "permission_description"

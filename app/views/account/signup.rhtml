@@ -21,7 +21,7 @@
 			<p><label for="email">Email</label><br/>
 			<%= f.text_field :email %></p>
 			
-			<%= show_simple_captcha :label => "Please type the text from the image below" %>
+			<%= show_simple_captcha :label => "Please type the text from the image below (case sensitive)" %>
 			
 			<p><%= submit_tag 'Sign up' %></p>
 			<% end -%>
@@ -78,7 +78,8 @@
 		      What's that funny image thing?
 		    </dt>
 		    <dd>
-		      We're trying to make sure you're a real person, rather than a spambot.  
+		      We're trying to make sure you're a real person, rather than a spambot.  Don't 
+		      forget to use upper or lower case just like the image displays.
 		    </dd>
 		  </dl>
 		</div>

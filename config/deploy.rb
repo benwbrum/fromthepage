@@ -40,6 +40,7 @@ desc "Link shared files"
 task :before_symlink do
   run "rm -drf #{release_path}/public/images/working"
   run "ln -s #{shared_path}/bin #{release_path}/public/images_working"
+  run "ln #{shared_path}/system/images/working #{release_path}/public/images/working"
 end
 
 set :use_sudo, false
