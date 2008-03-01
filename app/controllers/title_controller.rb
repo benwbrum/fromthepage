@@ -25,7 +25,7 @@ class TitleController < ApplicationController
     @image_set.titled_images.delete(@titled_image)
     @image_set.save!
     @titled_image.destroy
-    redirect_to :action => 'list', :image_set_id => @image_set.id, :page => params[:page]  
+    redirect_to :action => 'list', :image_set_id => @image_set.id
   end
   
   def increment_by_one
