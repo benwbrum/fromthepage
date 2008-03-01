@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery # :secret => '84a8eb6b8cd3ab40640d70c396f27334'
+  protect_from_forgery :secret => '84a8eb6b8cd3ab40640d70c396f27334'
 
 
   def load_objects_from_params
