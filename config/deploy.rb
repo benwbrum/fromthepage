@@ -41,6 +41,8 @@ task :before_symlink do
   run "rm -drf #{release_path}/public/images/working"
   run "ln -s #{shared_path}/bin #{release_path}/public/images_working"
   run "ln -s #{shared_path}/system/images/working #{release_path}/public/images/"
+  run "chmod +w #{release_path}/tmp"
+  
 end
 
 set :use_sudo, false
