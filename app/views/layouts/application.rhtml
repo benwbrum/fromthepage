@@ -1,10 +1,10 @@
 <html>
 <head>
-  <% if @page 
+  <% if @page && @work && @collection
        title = @collection.title + ' -- ' + @work.title + ' -- ' + @page.title + ' (FromThePage)'
-     elsif @work
+     elsif @work && @collection
        title = @collection.title + ' -- ' + @work.title + ' (FromThePage)'
-     elsif @article
+     elsif @article && @collection
        title = @collection.title + ' -- ' + @article.title + ' (FromThePage)'
      elsif @collection
        title = @collection.title + ' (FromThePage)'
