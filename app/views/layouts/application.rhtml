@@ -6,7 +6,7 @@
        title = @collection.title + ' -- ' + @work.title + ' (FromThePage)'
      elsif @article && @collection
        title = @collection.title + ' -- ' + @article.title + ' (FromThePage)'
-     elsif @collection
+     elsif @collection && @collection.title
        title = @collection.title + ' (FromThePage)'
      else
        title = 'FromThePage'
