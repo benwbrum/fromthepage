@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 26) do
+ActiveRecord::Schema.define(:version => 27) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -17,6 +17,9 @@ ActiveRecord::Schema.define(:version => 26) do
     t.string   "display_text"
     t.datetime "created_on"
   end
+
+  add_index "article_article_links", ["source_article_id"], :name => "index_article_article_links_on_source_article_id"
+  add_index "article_article_links", ["target_article_id"], :name => "index_article_article_links_on_target_article_id"
 
   create_table "article_versions", :force => true do |t|
     t.string   "title"
@@ -28,6 +31,9 @@ ActiveRecord::Schema.define(:version => 26) do
     t.datetime "created_on"
   end
 
+  add_index "article_versions", ["article_id"], :name => "index_article_versions_on_article_id"
+  add_index "article_versions", ["user_id"], :name => "index_article_versions_on_user_id"
+
   create_table "articles", :force => true do |t|
     t.string   "title"
     t.text     "source_text"
@@ -37,6 +43,8 @@ ActiveRecord::Schema.define(:version => 26) do
     t.string   "graph_image"
     t.integer  "collection_id"
   end
+
+  add_index "articles", ["collection_id"], :name => "index_articles_on_collection_id"
 
   create_table "articles_categories", :id => false, :force => true do |t|
     t.integer "article_id"
@@ -50,11 +58,16 @@ ActiveRecord::Schema.define(:version => 26) do
     t.datetime "created_on"
   end
 
+  add_index "categories", ["collection_id"], :name => "index_categories_on_collection_id"
+  add_index "categories", ["parent_id"], :name => "index_categories_on_parent_id"
+
   create_table "collections", :force => true do |t|
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
   end
+
+  add_index "collections", ["owner_user_id"], :name => "index_collections_on_owner_user_id"
 
   create_table "image_sets", :force => true do |t|
     t.string   "path"
@@ -67,12 +80,17 @@ ActiveRecord::Schema.define(:version => 26) do
     t.integer  "owner_user_id"
   end
 
+  add_index "image_sets", ["owner_user_id"], :name => "index_image_sets_on_owner_user_id"
+
   create_table "page_article_links", :force => true do |t|
     t.integer  "page_id"
     t.integer  "article_id"
     t.string   "display_text"
     t.datetime "created_on"
   end
+
+  add_index "page_article_links", ["page_id"], :name => "index_page_article_links_on_page_id"
+  add_index "page_article_links", ["article_id"], :name => "index_page_article_links_on_article_id"
 
   create_table "page_versions", :force => true do |t|
     t.string   "title"
@@ -84,6 +102,9 @@ ActiveRecord::Schema.define(:version => 26) do
     t.integer  "page_version",      :default => 0
     t.datetime "created_on"
   end
+
+  add_index "page_versions", ["page_id"], :name => "index_page_versions_on_page_id"
+  add_index "page_versions", ["user_id"], :name => "index_page_versions_on_user_id"
 
   create_table "pages", :force => true do |t|
     t.string   "title"
@@ -98,6 +119,8 @@ ActiveRecord::Schema.define(:version => 26) do
     t.integer  "lock_version",  :default => 0
     t.text     "xml_text"
   end
+
+  add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
@@ -123,6 +146,8 @@ ActiveRecord::Schema.define(:version => 26) do
     t.integer  "lock_version",                   :default => 0
   end
 
+  add_index "titled_images", ["image_set_id"], :name => "index_titled_images_on_image_set_id"
+
   create_table "transcribe_authorizations", :id => false, :force => true do |t|
     t.integer "user_id"
     t.integer "work_id"
@@ -143,6 +168,8 @@ ActiveRecord::Schema.define(:version => 26) do
     t.datetime "remember_token_expires_at"
   end
 
+  add_index "users", ["login"], :name => "index_users_on_login"
+
   create_table "works", :force => true do |t|
     t.string   "title"
     t.string   "description",               :limit => 4000
@@ -158,5 +185,8 @@ ActiveRecord::Schema.define(:version => 26) do
     t.text     "transcription_conventions"
     t.integer  "collection_id"
   end
+
+  add_index "works", ["owner_user_id"], :name => "index_works_on_owner_user_id"
+  add_index "works", ["collection_id"], :name => "index_works_on_collection_id"
 
 end
