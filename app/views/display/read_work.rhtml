@@ -4,28 +4,6 @@
 
 <div class="two-columns">
 	<div class="left-column">
-		<div class="inside-column">
-		  <span class="left-link">
-		    <% if false && @page_pages.current.previous %>
-		      <%= link_to('Previous Pages',
-		                  { :page => @page_pages.current.previous,
-		                    :work_id => @work.id }) %>
-		    <% else %>
-		      &nbsp;
-		    <% end %>
-		  </span>
-		  <span class="right-link">
-		    <% if false && @page_pages.current.next %>
-		      <%= link_to('Next Pages',
-		                  { :page => @page_pages.current.next,
-		                    :work_id => @work.id }) %>
-		    <% else %>
-		      &nbsp;
-		    <% end %>
-		  </span>
-		</div>
-
-
 	  <% for page in @pages %>
 	    <div class="inside-column">
 	      <h2><%= page.title %></h2>
@@ -43,27 +21,8 @@
 	      </div>
 	
 	    </div>
-	  <% end %>
-		<div class="inside-column">
-		  <span class="left-link">
-		    <% if false && @page_pages.current.previous %>
-		      <%= link_to('Previous Pages',
-		                  { :page => @page_pages.current.previous,
-		                    :work_id => @work.id }) %>
-		    <% else %>
-		      &nbsp;
-		    <% end %>
-		  </span>
-		  <span class="right-link">
-		    <% if false && @page_pages.current.next %>
-		      <%= link_to('Next Pages',
-		                  { :page => @page_pages.current.next,
-		                    :work_id => @work.id }) %>
-		    <% else %>
-		      &nbsp;
-		    <% end %>
-		  </span>
-		</div>
+	  <% end %>	 
+      <%= will_paginate @pages %>
 	</div>
 	
 	<div class="right-column">
