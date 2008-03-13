@@ -30,9 +30,14 @@ module AbstractXmlHelper
       e.children.each { |c| anchor.add(c) }
       e.replace_with(anchor)
     end
-    if preserve_lb
-      doc.elements.each("//lb") do |e| 
+    doc.elements.each("//lb") do |e| 
+      if preserve_lb
         e.replace_with(REXML::Element.new('br'))
+      else
+        lb = REXML::Element.new('span')
+        lb.add_text(' ')
+        lb.add_attribute('class', 'line-break')
+        e.replace_with(lb)
       end
     end
     # now our doc is correct - what do we do with it?
