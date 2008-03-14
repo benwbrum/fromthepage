@@ -5,39 +5,31 @@
 
 <div class="two-columns">
   <div class="left-column">
-    <%= render({ :partial => '/shared/page_navigation' }) %>
+    <!-- <%= render({ :partial => '/shared/page_navigation' }) %> --> 
 
 		<div class="inside-column">
-		 <table>
+		 <table class="revisions">
 		 <tr>
-		    <th>
-		        Page Version
-		    </th>
-		    <th>
-		        Work Version
-		    </th>
-		    <th>
+		    <th class="revision_title" width="45%">
 		        User
 		    </th>
-		    <th>
+		    <th class="revision_title" width="45%">
 		        Date
 		    </th>
-		    <th>
-		        Actions
+		    <th class="revision_title" width="10%">
+		        Revision
 		    </th>
 		 </tr>
 		 <% for version in @page.page_versions %>
 		   <tr>
-		     <td><%= version.page_version %></td>
-		     <td><%= version.work_version %></td>
-		     <td>
+		     <td class="revision" width="45%">
 		        <%= link_to(version.user.display_name,
 		                    { :controller => 'user',
 		                      :action => 'versions',
 		                      :user_id => version.user.id}) %>
 		      </td>
-		     <td><%= version.created_on %></td>
-		     <td><%= link_to('view', { :action => 'show', :page_version_id => version.id}) %></td>
+		     <td class="revision" width="45%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p")  %></td>
+		     <td class="revision" width="10%"><%= link_to('view', { :action => 'show', :page_version_id => version.id}) %></td>
 		   </tr>
 		 <% end %>
 		 </table>

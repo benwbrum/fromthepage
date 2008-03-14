@@ -53,7 +53,7 @@
 				padding: 1px 10px;	/* 1px is there to get past a margin rendering
 							   bug in Netscape 7 and older FireFox */
 				margin-top: 1em;
-				margin-bottom: -.5em;
+				margin-bottom: 1em;
 			}
 
     span.left-link
@@ -68,6 +68,7 @@
     div.footer-links
     { 
       border-top: 1px solid #ddd;
+      font-size: 80%;
     }
 @charset "iso-8859-1";
 
@@ -409,3 +410,42 @@ text-align: right;
     border: 1px solid #eee;
     #color: #ddd;
   }
+  
+table.revisions
+{ width: 580px;
+#background-color: #fafafa;
+#border: 1px #000000 solid;
+border-collapse: collapse;
+border-spacing: 0px; 
+}
+
+th.revision_title
+{ border-bottom: 1px #6699CC dotted;
+text-align: left;
+font-family: Verdana, sans-serif, Arial;
+font-weight: bold;
+font-size: .7em;
+color: #404040;
+background-color: #fafafa;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 8px;
+padding-right: 0px; }
+
+td.revision
+{ border-bottom: 1px #6699CC dotted;
+text-align: left;
+font-family: Verdana, sans-serif, Arial;
+font-weight: normal;
+font-size: .7em;
+color: #404040;
+background-color: #fafafa;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 8px;
+padding-right: 0px; }
+
+div.revision_meta
+{
+background-color: #DEE7EC
+}

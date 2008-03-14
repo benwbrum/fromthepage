@@ -1,23 +1,38 @@
-<div>
-  Changes made by 
-  <%= link_to(@page_version.user.display_name,
-              { :controller => 'user',
-                :action => 'versions',
-                :user_id => @page_version.user.id }) %> 
-  to 
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>2,
+                          :page_id => @page.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+		<div class="inside-column">
+<div class="revision_meta">
+  Revision 
+    to 
   <%= link_to(@page_version.page.title,
               { :controller => 'page_version',
                 :action => 'list',
                 :page_id => @page_version.page.id }) %> 
-  on <%= @page_version.created_on %>:
+  at <%= @page_version.created_on.strftime("%m/%d/%Y %I:%M %p")  %>
+  as edited by
+    <%= link_to(@page_version.user.display_name,
+              { :controller => 'user',
+                :action => 'versions',
+                :user_id => @page_version.user.id }) %>.  <!--<%= link_to ("Full Revision List")%>-->
+
 </div>
-<div>
-  <p>Title:<br />
-  <%= @page_version.title %>
-  </p>
 </div>
-<div>
-  <p>Source:<br />
-    <pre><%= @page_version.transcription %></pre>
-  </p>
+      <div class="inside-column">
+        <h2><%= @page_version.title %></h2>
+      </div>
+
+      <div id="transcription_display_area" class="inside-column">
+        <% if @page_version.xml_transcription != nil && 
+              !@page_version.xml_transcription.empty? %>
+          <%= xml_to_html(@page_version.xml_transcription) %>
+        <% else %>
+          <i>No Transcription Provided</i>
+        <% end %>
+      </div>
+		</div>
+  </div>
 </div>
