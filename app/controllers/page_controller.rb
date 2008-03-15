@@ -61,7 +61,7 @@ class PageController < ApplicationController
     @page.shrink_factor = 0
     set_dimensions(@page)
     reduce_by_one(@page)
-    reduce_by_one(page)
+    reduce_by_one(@page)
     redirect_to :action => 'image_tab', :page_id => @page.id
   end
 

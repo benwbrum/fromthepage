@@ -1,7 +1,7 @@
 <html>
 <head>
   <% if @page && @work && @collection
-       title = @collection.title + ' -- ' + @work.title + ' -- ' + @page.title + ' (FromThePage)'
+       title = "#{@collection.title} -- #{@work.title} -- #{@page.title} (FromThePage)"
      elsif @work && @collection
        title = @collection.title + ' -- ' + @work.title + ' (FromThePage)'
      elsif @article && @collection
