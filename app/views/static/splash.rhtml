@@ -1,0 +1,72 @@
+<div class="two-columns">
+        <div class="left-column">
+		<div class="inside-column">
+<div class="splash-block">
+<h3>What is FromThePage?</h3>
+
+<p>
+        FromThePage is software that allows volunteers to 
+transcribe handwritten documents online.  Currently it hosts
+the <%= link_to('Julia Brumfield Diaries',
+                { :controller => 'collection',
+                  :action => 'show',
+                  :collection_id => 1})%>, an incomplete collection 
+of diaries written between 1915 and 1938 chronicling life
+on a tobacco farm in Pittsylvania County, Virginia.
+</p>
+<p>
+The FromThePage software is still under development, but we'd like 
+to invite people to look around and send suggestions and
+bug reports to <b>alpha.info@fromthepage.com</b>.  If anything looks broken, hard
+to understand, or just odd, please let us know!  For a behind-the-scenes look
+at the development effort, check out the <a 
+href="http://manuscriptttranscription.blogspot.com">product development 
+blog</a>.
+</p>
+
+</div>
+
+<div class="splash-block">
+<h3>Read Transcriptions</h3>
+<p>
+        The 1918 diary was originally transcribed and published by 
+        Neil Brumfield in 1993.  It covers daily farm life, a neighbor's 
+        draft to fight the First World War, and the death of Julia's son 
+        Charles in the influenza epidemic.  Capitalization and 
+        punctuation has been modernized throughout, while spelling 
+        has been retained
+</p>
+<p>     
+        <b><%= link_to('Read the 1918 diary',
+                        { :controller => 'display',
+                          :action => 'read_work',
+                          :work_id => 2 }) %></b>
+</p>
+<p>
+</p>
+</div>
+
+<div class="splash-block">
+<h3>Transcribe Manuscripts</h3>
+<p>
+        The 1919 diary awaits volunteers to transcribe it.  To help, or just
+        to try out the FromThePage software, you'll need to 
+        <%= link_to('create an account',
+                    { :controller => 'account',
+                      :action => 'signup' }) %>.  
+        Then <b><%= link_to('visit the 1919 diary',
+                            { :controller => 'display',
+                              :action => 'read_work',
+                              :work_id => 3 }) %></b> 
+        and click the edit tab on any page,
+        <%= link_to('like this one, for January 11',
+                    { :controller => 'transcribe',
+                      :action => 'display_page',
+                      :page_id => 764 }) %>.
+</p>
+</div>
+
+
+</div>
+</div>
+</div>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 27) do
+ActiveRecord::Schema.define(:version => 28) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -81,6 +81,22 @@ ActiveRecord::Schema.define(:version => 27) do
   end
 
   add_index "image_sets", ["owner_user_id"], :name => "index_image_sets_on_owner_user_id"
+
+  create_table "interactions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "collection_id"
+    t.integer  "work_id"
+    t.integer  "page_id"
+    t.string   "action",        :limit => 20
+    t.string   "description"
+    t.string   "params",        :limit => 128
+    t.string   "browser",       :limit => 128
+    t.string   "session_id",    :limit => 40
+    t.string   "ip_address",    :limit => 16
+    t.datetime "created_on"
+  end
+
+  add_index "interactions", ["session_id"], :name => "index_interactions_on_session_id"
 
   create_table "page_article_links", :force => true do |t|
     t.integer  "page_id"
