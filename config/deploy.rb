@@ -63,7 +63,7 @@ task :after_deploy, :roles => [:app, :db, :web] do
 
   run "sed 's/# ENV\\[/ENV\\[/g' #{deploy_to}/current/config/environment.rb > #{deploy_to}/current/config/environment.temp"
   run "mv #{deploy_to}/current/config/environment.temp #{deploy_to}/current/config/environment.rb"
-  run "cp #{deploy_to}/current/public/.htaccess.prod {deploy_to}/current/public/.htaccess"
+  run "cp #{deploy_to}/current/public/.htaccess.prod #{deploy_to}/current/public/.htaccess"
 end
 
 desc "Restarting after rollback"
