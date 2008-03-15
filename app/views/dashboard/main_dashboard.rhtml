@@ -74,6 +74,13 @@
           <p>
             Admin Dashboard Contents Go Here
           </p>
+          
+				  <p>
+				      <%= link_to("View Logfile", 
+				                  { :controller => 'admin',
+				                    :action => 'tail_logfile', 
+				                    :lines => 500 }) %>
+				  </p>
           <p>
             Users
             <ul>
@@ -84,8 +91,17 @@
 	                            { :controller => 'admin',
 	                              :action => 'edit_user',
 	                              :user_id => user.id }) %>
+                  <%= link_to("Sessions",
+                              { :controller => 'admin',
+                                :action => 'session_list',
+                                :user_id => user.id }) %>  
 	              </li>
 	            <% end %>
+	            <li>
+                <%= link_to("Anonymous Sessions",
+                            { :controller => 'admin',
+                              :action => 'session_list' }) %>  
+	            </li>
             </ul>
           </p>
         </div>

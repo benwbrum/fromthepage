@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
+  after_filter :log_interaction
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -71,5 +72,33 @@ class ApplicationController < ActionController::Base
   def set_current_user_in_model
     User.current_user = current_user
   end 
+
+  # log what was done
+  def log_interaction
+    interaction = Interaction.new
+    interaction.session_id = session.session_id
+    interaction.browser = request.env['HTTP_USER_AGENT']
+    interaction.ip_address = request.env['REMOTE_ADDR']
+    if(current_user)
+      interaction.user_id = current_user.id
+    end
+    if(action_name != :login && action_name != :signup)
+      interaction.params = params.inspect
+    end
+
+    # app specific stuff
+    interaction.action = action_name
+    if @collection
+      interaction.collection_id = @collection.id
+    end
+    if @work
+      interaction.work_id = @work.id
+    end
+    if @page
+      interaction.page_id = @page.id
+    end
+    interaction.save
+  end
+
 
 end
