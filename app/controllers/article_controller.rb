@@ -3,7 +3,18 @@ class ArticleController < ApplicationController
   include AbstractXmlController
 
   def list
-    @articles = Article.find(:all)
+    # Differences from previous implementation:
+    # 1. List of articles needs to be collection-specific
+    # 2. List should be displayed within the category treeview
+    # 3. Uncategorized articles should be listed below
+    #@articles = Article.find(:all)
+    
+    @uncategorized_articles = 
+      Article.find(:all, 
+                   { :joins => 'LEFT JOIN articles_categories ac ON id = ac.article_id',
+                     :conditions => ['ac.category_id IS NULL AND collection_id = ?',
+                                     @collection.id]})
+     
   end
 
   def update

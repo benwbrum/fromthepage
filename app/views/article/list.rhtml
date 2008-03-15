@@ -1,3 +1,6 @@
+<%= render({ :partial => '/shared/collection_tabs',
+             :locals => { :selected => 0,
+                          :collection_id => @collection.id }}) %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -7,14 +10,28 @@
 			</p>
 			
 			<p>
-			  <% for article in @articles %>
-			    <%= link_to(article.title,
-			                { :action => 'show',
-			                  :article_id => article.id} ) %>
-			                  
-			    <br />  
-			  <% end %>
-			</p>    
+        <%= display_categories(@collection.categories, nil) do |category|
+              ret = '<i>' + category.title + '</i><br />'
+              category.articles.each do |article|
+                ret += link_to(article.title,
+			                         { :action => 'show',
+			                           :article_id => article.id} )
+                ret += '<br />'
+              end
+              ret
+            end %>
+      </p>
+
+      <p>
+        Uncategorized Articles:
+      </p>
+      <p>
+        <% for article in @uncategorized_articles %>
+		      <%= link_to(article.title,
+			                 { :action => 'show',
+			                   :article_id => article.id} ) %><br />
+        <% end %>
+      </p>
 
     </div>
   </div>

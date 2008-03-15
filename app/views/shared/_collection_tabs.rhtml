@@ -11,7 +11,7 @@ Tab                         Access
   <ul id="navlist">
     <% if selected == 1 %> 
       <li id="current">
-        <span>read</span>
+        <span>browse</span>
       </li>
     <% else %>
       <li>
@@ -20,6 +20,19 @@ Tab                         Access
                       :action => 'show', 
                       :collection_id => collection_id }) %>
       </li>     
+    <% end %>
+
+    <% article_list_options = { :controller => 'article',
+                                 :action => 'list',
+                                 :collection_id => collection_id } %>
+    <% if current_page? article_list_options %>
+	      <li id="current">
+	        <span>subjects</span>
+	      </li>
+    <% else %>
+	      <li>
+  	      <%= link_to('subjects', article_list_options)%>
+	      </li>
     <% end %>
 
     <% if @collection.owner == current_user %>
