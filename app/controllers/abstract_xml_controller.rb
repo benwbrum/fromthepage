@@ -15,7 +15,7 @@ module AbstractXmlController
     matches = 
       Page.connection.select_all(sql)
 
-    # Bug 18
+    # Bug 18 -- longest possible match is best
     matches.sort! { |x,y| x['display_text'].length <=> y['display_text'].length }
     matches.reverse!
 
@@ -33,7 +33,12 @@ module AbstractXmlController
           # not within a link, so create a new one
           logger.debug("DEBUG #{display_text} is not a link 2")
           article = Article.find(match['article_id'].to_i)
-          text.sub!(display_text, "[[#{article.title}|#{display_text}]]")
+          # Bug 19 -- simplify when possible
+          if article.title == display_text
+            text.sub!(display_text, "[[#{article.title}]]")
+          else
+            text.sub!(display_text, "[[#{article.title}|#{display_text}]]")
+          end
         end 
       end
     end  
