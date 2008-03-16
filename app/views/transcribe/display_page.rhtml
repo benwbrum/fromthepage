@@ -27,9 +27,9 @@
 		    <%= submit_tag "Autolink", :name => 'autolink' %>
 		    <%= submit_tag "Save", :name => 'save' %>
 		  <% end%>
+		  
+			<%= render({ :partial => 'shared/markup_help'}) %>
 		  </div>
-		  <div id='xdebug'><pre><%= @xlinks %></pre></div>
-		  <div id='xsource'><pre><% h @page.xml_text %></pre></div>
 		</div>
 	</div>
 
