@@ -79,7 +79,7 @@ class ApplicationController < ActionController::Base
     interaction.session_id = session.session_id
     interaction.browser = request.env['HTTP_USER_AGENT']
     interaction.ip_address = request.env['REMOTE_ADDR']
-    if(current_user)
+    if(logged_in?)
       interaction.user_id = current_user.id
     end
     if(action_name != :login && action_name != :signup)

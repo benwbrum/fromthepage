@@ -12,16 +12,22 @@ class Article < ActiveRecord::Base
 
   validates_presence_of :title
 
-  has_and_belongs_to_many :categories
+  has_and_belongs_to_many :categories 
   belongs_to :collection
   has_many(:target_article_links,
            { :foreign_key => "target_article_id",
-             :class_name => 'ArticleArticleLink' })
+             :class_name => 'ArticleArticleLink',
+             :include => [:source_article],
+		     :order => "articles.title ASC"})
   has_many(:source_article_links,
            { :foreign_key => "source_article_id",
              :class_name => 'ArticleArticleLink' })
-  has_many :page_article_links
-  has_many :pages, :through => :page_article_links
+  has_many(:page_article_links,
+           { :include => [:page],
+		     :order => "pages.work_id, pages.position ASC" })
+
+  has_many :pages, :through => :page_article_links, :order => :position
+
   has_many :article_versions, :order => :version
 
   
