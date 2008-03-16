@@ -14,6 +14,11 @@ module AbstractXmlController
     logger.debug(sql)
     matches = 
       Page.connection.select_all(sql)
+
+    # Bug 18
+    matches.sort! { |x,y| x['display_text'].length <=> y['display_text'].length }
+    matches.reverse!
+
     for match in matches
       display_text = match['display_text']
       logger.debug("DEBUG looking for #{display_text}")
