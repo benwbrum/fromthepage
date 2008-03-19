@@ -4,7 +4,7 @@ module DashboardHelper
     delta_seconds = (Time.new - time).floor
     delta_minutes = (delta_seconds / 60).floor
     delta_hours = (delta_minutes / 60).floor
-    delta_days = (delta_minutes / 24).floor
+    delta_days = (delta_hours / 24).floor
     
     if delta_days > 1
       "#{delta_days} days ago"
