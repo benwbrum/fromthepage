@@ -12,6 +12,20 @@ class DashboardController < ApplicationController
     end
     @collections = Collection.find(:all)    
     @users = User.find(:all)
+
+    @recent_versions = 
+      PageVersion.find(:all,
+                       :limit => 20,
+                       :include => [:user, :page],
+                       :order => 'page_versions.created_on desc')
+
+    sql = 
+      'select count(distinct session_id) count ' +
+      'from interactions '+
+      'where created_on > date_sub(now(), interval 20 minute)'
+    
+    @user_count = 
+      Interaction.connection.select_value(sql)
   end
 
 end
