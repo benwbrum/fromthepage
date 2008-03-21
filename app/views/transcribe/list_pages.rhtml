@@ -6,7 +6,8 @@
   <% for page in @work.pages %>
     <%= link_to(page.title,
                 { :action => 'display_page',
-                  :page_id => page.id} ) %>
+                  :page_id => page.id,
+                  :ol => 'dead_code_tlp'} ) %>
                   
     <br />  
   <% end %>

@@ -21,13 +21,20 @@
 <body>
 
   <div id="undernav">
-    <%= link_to('Dashboard', { :controller => 'dashboard' }) %> |     
+    <%= link_to('Dashboard', { :controller => 'dashboard',
+                               :ol => 'l_hd_dlink' }) %> |     
     <% if logged_in? %>
-	    <%= link_to('Log out', { :controller => 'account', :action => 'logout' }) %>
+	    <%= link_to('Log out', { :controller => 'account', 
+	                             :action => 'logout',
+                               :ol => 'l_hd_lo' }) %>
     <% else %>
-	    <%= link_to('Log in', { :controller => 'account', :action => 'login' }) %>
+	    <%= link_to('Log in', { :controller => 'account', 
+	                            :action => 'login',
+                               :ol => 'l_hd_li' }) %>
 	    |
-	    <%= link_to('Sign Up', { :controller => 'account', :action => 'signup' }) %>
+	    <%= link_to('Sign Up', { :controller => 'account', 
+	                             :action => 'signup',
+                               :ol => 'l_hd_signup' }) %>
     <% end %>
   </div>
 
@@ -35,7 +42,8 @@
       <h2 class="site-logo">
         <%= link_to('FromThePage', 
                     { :controller => 'static',
-                      :action => 'splash' },
+                      :action => 'splash',
+                      :ol => 'l_hd_logo' },
                     { :class => 'site-logo' }) %>
       </h2>
     </div>
@@ -46,14 +54,16 @@
 		        <%= link_to(@collection.title,
 		                    { :controller => 'collection',
 		                      :action => 'show',
-		                      :collection_id => @collection.id }) %>
+		                      :collection_id => @collection.id,
+                          :ol => 'l_hd_c_link' }) %>
 	        <% end %>
 	        <%= "&mdash;" if @collection && @work %>
 	        <% if @work %>
 		        <%= link_to(@work.title,
 		                    { :controller => 'display',
 		                      :action => 'read_work',
-		                      :work_id => @work.id }) %>
+		                      :work_id => @work.id,
+                          :ol => 'l_hd_w_link' }) %>
 	        <% end %>
         </h1>
       <% end %>

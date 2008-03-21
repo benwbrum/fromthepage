@@ -17,7 +17,8 @@
                   <%= link_to('Help transcribe this page!',
                               { :controller => 'transcribe',
                                 :action => 'display_page',
-                                :page_id => page.id }) %>
+                                :page_id => page.id,
+                                :ol => 'w_rw_p_tl' }) %>
                 </i>
               </p>
             <% else %>
@@ -28,7 +29,8 @@
 	      <div class="footer-links">
 	        <%= link_to('page',
 	                    { :action => 'display_page',
-	                      :page_id => page.id }) %>
+	                      :page_id => page.id,
+                        :ol => 'w_rw_p_pl' }) %>
 	      </div>
 	
 	    </div>

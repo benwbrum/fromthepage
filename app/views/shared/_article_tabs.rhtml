@@ -7,7 +7,8 @@
      ><%= link_to('article', 
                   { :controller => 'article', 
                     :action => 'show', 
-                    :article_id => article_id }) %>
+                    :article_id => article_id,
+                    :ol => 'a_tab_art' }) %>
     <% end %>
     </li>  
 
@@ -19,7 +20,8 @@
      ><%= link_to('versions', 
                   { :controller => 'article_version', 
                     :action => 'list', 
-                    :article_id => article_id }) %>
+                    :article_id => article_id,
+                    :ol => 'a_tab_ver' }) %>
     <% end %>
     </li>  
 
@@ -33,7 +35,8 @@
      ><%= link_to('graph', 
                   { :controller => 'article', 
                     :action => 'graph', 
-                    :article_id => article_id }) %>
+                    :article_id => article_id,
+                    :ol => 'a_tab_graph' }) %>
     <% end %>
     </li>  
 
@@ -47,7 +50,8 @@
 	     ><%= link_to('edit', 
 	                  { :controller => 'article', 
 	                    :action => 'edit', 
-	                    :article_id => article_id }) %>
+	                    :article_id => article_id,
+                      :ol => 'a_tab_edit' }) %>
 	    <% end %>
           </li>  
 

@@ -9,6 +9,12 @@
 	    Action
 	  </th>
 	  <th>
+	    Status
+	  </th>
+	  <th>
+	    Origin
+	  </th>
+	  <th>
 	    User
 	  </th>
 	  <th>
@@ -33,11 +39,18 @@
 			<%= interaction.action %>
 		</td>
 		<td>
+			<%= interaction.status %>
+		</td>
+		<td>
+			<%= interaction.origin_link %>
+		</td>
+		<td>
       <% if interaction.user %>
 				<%= link_to(interaction.user.login, 
 				            { :controller => 'user',
 				              :action => 'versions',
-				              :user_id => interaction.user_id })%>
+				              :user_id => interaction.user_id, 
+				              :ol => 'adm_il_user' })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -47,7 +60,8 @@
 				<%= link_to(interaction.collection.title, 
 				            { :controller => 'collection',
 			                :action => 'show',
-			                :collection_id => interaction.collection_id })%>
+			                :collection_id => interaction.collection_id, 
+				              :ol => 'adm_il_col' })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -57,7 +71,8 @@
 				<%= link_to(interaction.work.title, 
 				            { :controller => 'display',
 				              :action => 'read_work',
-				              :work_id => interaction.work_id })%>
+				              :work_id => interaction.work_id, 
+				              :ol => 'adm_il_work' })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -67,7 +82,8 @@
 				<%= link_to(interaction.page.title, 
 				            { :controller => 'display',
 				              :action => 'display_page',
-				              :page_id => interaction.page_id })%>
+				              :page_id => interaction.page_id, 
+				              :ol => 'adm_il_page' })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -80,7 +96,3 @@
 </table>
 
 
-<% if @interaction_pages %>
-<%=  link_to 'Previous page', { :page => @interaction_pages.current.previous } if @interaction_pages.current.previous %>
-<%=  link_to 'Next page', { :page => @interaction_pages.current.next } if @interaction_pages.current.next %> 
-<% end %>

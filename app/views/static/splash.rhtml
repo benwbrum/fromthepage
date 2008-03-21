@@ -10,7 +10,8 @@ transcribe handwritten documents online.  Currently it hosts
 the <%= link_to('Julia Brumfield Diaries',
                 { :controller => 'collection',
                   :action => 'show',
-                  :collection_id => 1})%>, an incomplete collection 
+                  :collection_id => 1,
+                  :ol => 's_sp_diaries'})%>, an incomplete collection 
 of diaries written between 1915 and 1938 chronicling life
 on a tobacco farm in Pittsylvania County, Virginia.
 </p>
@@ -40,7 +41,8 @@ blog</a>.
         <b><%= link_to('Read the 1918 diary',
                         { :controller => 'display',
                           :action => 'read_work',
-                          :work_id => 2 }) %></b>
+                          :work_id => 2,
+                          :ol => 's_sp_1918' }) %></b>
 </p>
 <p>
 </p>
@@ -53,16 +55,19 @@ blog</a>.
         to try out the FromThePage software, you'll need to 
         <%= link_to('create an account',
                     { :controller => 'account',
-                      :action => 'signup' }) %>.  
+                      :action => 'signup',
+                      :ol => 's_sp_signup' }) %>.  
         Then <b><%= link_to('visit the 1919 diary',
                             { :controller => 'display',
                               :action => 'read_work',
-                              :work_id => 3 }) %></b> 
+                              :work_id => 3,
+                              :ol => 's_sp_1919' }) %></b> 
         and click the edit tab on any page,
         <%= link_to('like this one, for January 11',
                     { :controller => 'transcribe',
                       :action => 'display_page',
-                      :page_id => 764 }) %>.
+                      :page_id => 764,
+                      :ol => 's_sp_jan11' }) %>.
 </p>
 </div>
 

@@ -26,10 +26,14 @@
 		        <%= link_to(version.user.display_name,
 		                    { :controller => 'user',
 		                      :action => 'versions',
-		                      :user_id => version.user.id}) %>
+		                      :user_id => version.user.id,
+                          :ol => 'p_pv_user' }) %>
 		      </td>
 		     <td class="revision" width="45%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p")  %></td>
-		     <td class="revision" width="10%"><%= link_to('view', { :action => 'show', :page_version_id => version.id}) %></td>
+		     <td class="revision" width="10%"><%= link_to('view', 
+		                                                  { :action => 'show', 
+		                                                    :page_version_id => version.id,
+                                                        :ol => 'p_pv_view' }) %></td>
 		   </tr>
 		 <% end %>
 		 </table>

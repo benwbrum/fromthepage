@@ -25,7 +25,9 @@
 		</td>
 		<td>
 			<%= link_to(sess['total'], 
-			            { :action => 'interaction_list', :session_id => sess['session_id']}) %>
+			            { :action => 'interaction_list', 
+			              :session_id => sess['session_id'],
+			              :ol => 'adm_sl_total' }) %>
 		</td>
 		<td>
 			<%= sess['ip_address'] %>

@@ -11,13 +11,15 @@
   <%= link_to(@page_version.page.title,
               { :controller => 'page_version',
                 :action => 'list',
-                :page_id => @page_version.page.id }) %> 
+                :page_id => @page_version.page.id,
+                :ol => 'p_pv_page_rev'  }) %> 
   at <%= @page_version.created_on.strftime("%m/%d/%Y %I:%M %p")  %>
   as edited by
     <%= link_to(@page_version.user.display_name,
               { :controller => 'user',
                 :action => 'versions',
-                :user_id => @page_version.user.id }) %>.  <!--<%= link_to ("Full Revision List")%>-->
+                :user_id => @page_version.user.id,
+                :ol => 'p_pv_user' }) %>.
 
 </div>
 </div>

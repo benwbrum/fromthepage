@@ -2,7 +2,8 @@
 <%= link_to_remote(article.title,
                    :url => { :action => 'expand_article',
                              :category_id => category.id,
-                             :article_id => article.id },
+                             :article_id => article.id,
+                             :ol => 'cat_nav_alink' },
                    :update => "cat_#{category.id}_art_#{article.id}") %>
 </span>
 

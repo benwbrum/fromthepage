@@ -4,11 +4,13 @@
 <%= link_to("Swap left and right sets", 
             { :action => 'swap',
               :left_set_id => @left_set.id,
-              :right_set_id => @right_set.id }) %>
+              :right_set_id => @right_set.id,
+              :ol => 'merge_swap' }) %>
 <%= link_to("Merge", 
             { :action => 'merge',
               :left_set_id => @left_set.id,
-              :right_set_id => @right_set.id }) %>
+              :right_set_id => @right_set.id,
+              :ol => 'merge_merge' }) %>
 <table border="1">
   <% 0.upto(m-1) do |i| %>
     <tr>
@@ -27,7 +29,8 @@
               :right_set_id => @right_set.id,
               :insert_set_id => @right_set.id,
               :index => i,
-              :where => 'before' }) %>
+              :where => 'before',
+              :ol => 'merge_ins_rt' }) %>
         <% else %>
           &nbsp;
         <% end %>
@@ -42,7 +45,8 @@
               :right_set_id => @right_set.id,
               :insert_set_id => @left_set.id,
               :index => i,
-              :where => 'after' }) %>
+              :where => 'after',
+              :ol => 'merge_ins_lf' }) %>
         <% else %>
           &nbsp;
         <% end %>

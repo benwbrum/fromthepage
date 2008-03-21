@@ -7,7 +7,8 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
-  after_filter :log_interaction
+  before_filter :log_interaction
+  after_filter :complete_interaction
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -75,30 +76,35 @@ class ApplicationController < ActionController::Base
 
   # log what was done
   def log_interaction
-    interaction = Interaction.new
-    interaction.session_id = session.session_id
-    interaction.browser = request.env['HTTP_USER_AGENT']
-    interaction.ip_address = request.env['REMOTE_ADDR']
+    @interaction = Interaction.new
+    @interaction.session_id = session.session_id
+    @interaction.browser = request.env['HTTP_USER_AGENT']
+    @interaction.ip_address = request.env['REMOTE_ADDR']
     if(logged_in?)
-      interaction.user_id = current_user.id
+      @interaction.user_id = current_user.id
     end
     if(action_name != :login && action_name != :signup)
-      interaction.params = params.inspect
+      @interaction.params = params.inspect
     end
-
+    @interaction.status = 'incomplete'
+    if(params[:ol])
+      @interaction.origin_link = params[:ol]
+    end
     # app specific stuff
-    interaction.action = action_name
+    @interaction.action = action_name
     if @collection
-      interaction.collection_id = @collection.id
+      @interaction.collection_id = @collection.id
     end
     if @work
-      interaction.work_id = @work.id
+      @interaction.work_id = @work.id
     end
     if @page
-      interaction.page_id = @page.id
+      @interaction.page_id = @page.id
     end
-    interaction.save
+    @interaction.save
   end
 
-
+  def complete_interaction
+    @interaction.update_attribute(:status, 'complete')
+  end   
 end

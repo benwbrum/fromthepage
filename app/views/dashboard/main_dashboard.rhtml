@@ -10,7 +10,8 @@
                 <%= link_to(collection.title,
                             { :controller => 'collection',
                               :action => 'show',
-                              :collection_id => collection.id }) %>
+                              :collection_id => collection.id,
+                              :ol => 'd_col_list' }) %>
               </li>
             <% end %>
           </ul>
@@ -24,16 +25,19 @@
           <div>
           <%= link_to("Create an empty work", 
                       { :controller => 'work',
-                        :action => 'new' })%>
+                        :action => 'new',
+                        :ol => 'd_new_work' })%>
           </div>
           <div>
           <%= link_to("Create an empty collection", 
                       { :controller => 'collection',
-                        :action => 'new' })%>
+                        :action => 'new',
+                        :ol => 'd_new_col' })%>
           </div>
           <div>
             <%= link_to("Create an image set", 
-                        { :controller => 'transform' })%>
+                        { :controller => 'transform',
+                          :ol => 'd_new_is' })%>
           </div>
           <div>
             <p>
@@ -45,23 +49,28 @@
                     <%= link_to("Title",
                                 { :controller => 'title',
                                   :action => 'list',
-                                  :image_set_id => set.id }) %>
+                                  :image_set_id => set.id,
+                                  :ol => 'd_isl_title' }) %>
                     <%= link_to("Delete",
                                 { :controller => 'image_set',
                                   :action => 'delete',
-                                  :image_set_id => set.id }) %>
+                                  :image_set_id => set.id,
+                                  :ol => 'd_isl_delete' }) %>
                     <%= link_to("Append",
                                 { :controller => 'image_set',
                                   :action => 'append',
-                                  :image_set_id => set.id }) %>
+                                  :image_set_id => set.id,
+                                  :ol => 'd_isl_append' }) %>
                     <%= link_to("Merge",
                                 { :controller => 'collation',
                                   :action => 'select_target',
-                                  :image_set_id => set.id }) %>
+                                  :image_set_id => set.id,
+                                  :ol => 'd_isl_merge' }) %>
                     <%= link_to("Publish",
                                 { :controller => 'image_set',
                                   :action => 'convert_to_work',
-                                  :image_set_id => set.id }) %>
+                                  :image_set_id => set.id,
+                                  :ol => 'd_isl_pub' }) %>
                   </li>			        
 			          <% end %>
               </ul>
@@ -79,7 +88,8 @@
 				      <%= link_to("View Logfile", 
 				                  { :controller => 'admin',
 				                    :action => 'tail_logfile', 
-				                    :lines => 500 }) %>
+				                    :lines => 500,
+                            :ol => 'd_tail_log' }) %>
 				  </p>
           <p>
             Users
@@ -90,17 +100,20 @@
 	                <%= link_to("Edit",
 	                            { :controller => 'admin',
 	                              :action => 'edit_user',
-	                              :user_id => user.id }) %>
+	                              :user_id => user.id,
+                                :ol => 'd_users_edit' }) %>
                   <%= link_to("Sessions",
                               { :controller => 'admin',
                                 :action => 'session_list',
-                                :user_id => user.id }) %>  
+                                :user_id => user.id,
+                                :ol => 'd_users_sl' }) %>  
 	              </li>
 	            <% end %>
 	            <li>
                 <%= link_to("Anonymous Sessions",
                             { :controller => 'admin',
-                              :action => 'session_list' }) %>  
+                              :action => 'session_list',
+                                :ol => 'd_anon_sl' }) %>  
 	            </li>
             </ul>
           </p>
@@ -124,7 +137,8 @@
              <%= link_to(version.page.title,
                          { :controller => 'display',
                            :action => 'display_page',
-                           :page_id => version.page.id }) %>
+                           :page_id => version.page.id,
+                           :ol => 'd_act_page' }) %>
              <%= time_ago(version.created_on) %>
 	         </li>          
           <% end %>

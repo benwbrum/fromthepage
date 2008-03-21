@@ -6,7 +6,8 @@
 		   <%= link_to(link.page.title, 
 		               { :controller => 'display', 
 		                 :action=> 'display_page', 
-		                 :page_id => link.page.id })%>
+		                 :page_id => link.page.id,
+		                 :ol => 'a_alinks_page' })%>
 		   (<%= link.display_text %>)<br />
 		 <% end %>
 		</p>
@@ -18,7 +19,8 @@
 		   <%= link_to(link.source_article.title, 
 		               { :controller => 'article', 
 		                 :action=> 'show', 
-		                 :article_id => link.source_article.id })%>
+		                 :article_id => link.source_article.id,
+		                 :ol => 'a_alinks_art' })%>
 		   (<%= link.display_text %>)<br />
 		 <% end %>
 		</p>
