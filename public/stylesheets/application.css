@@ -375,9 +375,6 @@ text-align: right;
 /* comment style */
 
 
-#image_div {
-    cursor:crosshair;
-}
 
 /* styles for pagination*/
  .pagination {
@@ -448,4 +445,14 @@ padding-right: 0px; }
 div.revision_meta
 {
 background-color: #DEE7EC
+}
+
+#zoom_out
+{
+  visibility: hidden;
+}
+
+#zoom_in
+{
+  visibility: visible;
 }

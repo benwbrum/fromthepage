@@ -1,17 +1,49 @@
-		<div class="inside-column">
+		<div class="inside-column" id="zoom_div">
 			<script type="text/javascript" language="javascript">
+        set_zoom_cursors = function(cursor) {
+      	 	$('zoom_div').style.cursor=cursor;	         
+          // need to also change the cursor over the zoom links, since that
+          // gives immediate user feedback 
+      	 	$('zi_text').style.cursor=cursor;	         
+      	 	$('zi_icon').style.cursor=cursor;	         
+        
+        }
+        set_cursor_for_ready_to_zoom = function() {
+          set_zoom_cursors("url('Enlarge.cur'), crosshair");
+        }
+        set_cursor_for_normal = function() {
+          set_zoom_cursors(null);        
+        }
+        set_cursor_for_zoom_in_progress = function() {
+          set_zoom_cursors("wait");        
+        }
+
 			  unzoom_image = function() {
 			    $('image_div').innerHTML=
 			      '<%= render :partial => '/shared/image_div', :locals => { :file => @page.scaled_image } %>';
 			    scale_factor = <%= @page.shrink_factor %>;
 			    x_offset = 0;
 			    y_offset = 0;
-			  }
+			    set_cursor_for_normal();
+          $('zoom_in').style.visibility='visible';
+   		  }
+			  zoom_image = function() {
+			    set_cursor_for_ready_to_zoom();
+		  }
 			</script>
 			<div id="image_sidebar">
 				<div id="image_icons">
-				<%= link_to_function(image_tag("/images/icons/magifier_zoom_out.png",{:border => 0}), 'unzoom_image()') %>
-			    <%= link_to_function('zoom out', 'unzoom_image()') %>
+	        <span id="zoom_in">
+	  				<%= link_to_function(image_tag("/images/icons/magnifier_zoom_in.png",
+	  				                               {:border => 0}), 
+  				                       'zoom_image()',
+  				                       {:id => 'zi_icon'}) %>
+				    <%= link_to_function('zoom in', 'zoom_image()', :id => 'zi_text') %>
+	        </span>
+	        <span id="zoom_out">
+	  				<%= link_to_function(image_tag("/images/icons/magifier_zoom_out.png",{:border => 0}), 'unzoom_image()') %>
+				    <%= link_to_function('zoom out', 'unzoom_image()') %>
+	        </span>
 				</div>
 				<div id="image_div">
 				   <%= render :partial => '/shared/image_div', :locals => { :file => @page.scaled_image } %>
@@ -60,9 +92,16 @@
                                         function(request) {
                                                 // $('debug').innerHTML = request.responseText; 
                                                 eval(request.responseText);
-                                                element.style.cursor = 'crosshair' }
+                                                set_cursor_for_normal();
+                                                $('zoom_out').style.visibility='visible';
+                                                if(scale_factor==0) {
+                                                  $('zoom_in').style.visibility='hidden';
+                                                } else {
+                                                  $('zoom_in').style.visibility='visible';
+                                                }
+                                         }
 	 		         });
-	 	element.style.cursor='wait';	         
+	 	set_cursor_for_zoom_in_progress();	         
     // alert('<%= @page.id %>');
     return false;
   }
