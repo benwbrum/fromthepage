@@ -19,18 +19,8 @@
                     :page_id => page_id }) %>
     <% end %>
     </li>
-  <li <% if selected == 2 %> 
-    id="current">
-      <span>versions</span>
-    <% else %>
-      ><%= link_to('versions', 
-                  { :controller => 'page_version', 
-                    :action => 'list', 
-                    :page_id => page_id }) %>
-    <% end %>
-    </li>
-
-  <% if logged_in? && current_user.can_transcribe?(@work) %>
+    
+      <% if logged_in? && current_user.can_transcribe?(@work) %>
   <li <% if selected == 3 %> 
     id="current">
       <span>transcribe</span>
@@ -42,6 +32,17 @@
 	    <% end %>  
   <% end %>
       </li>
+    
+  <li <% if selected == 2 %> 
+    id="current">
+      <span>versions</span>
+    <% else %>
+      ><%= link_to('versions', 
+                  { :controller => 'page_version', 
+                    :action => 'list', 
+                    :page_id => page_id }) %>
+    <% end %>
+    </li>
   
   <% if @work.owner == current_user %>
   <li <% if selected == 4 %> 
