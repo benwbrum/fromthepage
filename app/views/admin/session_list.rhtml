@@ -1,5 +1,7 @@
 <h2>Session List for <%= @user_name %></h2>
-
+<%= link_to('Next 50', 
+            { :offset => (@offset.to_i + 50).to_s,
+              :ol => 'adm_sl_next50' } ) %>
 <table>
   <tr>
 	  <th>

@@ -26,7 +26,7 @@ class AdminController < ApplicationController
       condition = "user_id = #{@user.id} "
     else
       @user_name = 'Anonymous'
-      condition = "user_id is null "
+      condition = "user_id is null and browser not like '%google%'"
     end
     sql = 'select session_id, '+
           'browser, '+
@@ -36,10 +36,17 @@ class AdminController < ApplicationController
           'from interactions '+
           'where ' + condition +
           'group by session_id, browser, ip_address ' +
-          'order by started desc'
+          'order by started desc '
+
+    limit = params[:limit] || 50
+    @offset = params[:offset] || 0
+    Interaction.connection.add_limit_offset!(sql, 
+                                             { :limit => limit,
+                                               :offset => @offset } )
     logger.debug(sql)
     @sessions = 
       Interaction.connection.select_all(sql)
+      
   end
   
   
