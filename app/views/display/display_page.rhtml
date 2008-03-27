@@ -16,7 +16,19 @@
               !@page.xml_text.empty? %>
           <%= xml_to_html(@page.xml_text) %>
         <% else %>
-          <i>No Transcription Provided</i>
+            <% if logged_in? && current_user.can_transcribe?(@work) %>
+              <p>
+                <i>
+                  <%= link_to('Help transcribe this page!',
+                              { :controller => 'transcribe',
+                                :action => 'display_page',
+                                :page_id => @page.id,
+                                :ol => 'p_dp_tl' }) %>
+                </i>
+              </p>
+            <% else %>
+		          <p><i>No Transcription</i></p>
+		        <% end %>
         <% end %>
       </div>
 

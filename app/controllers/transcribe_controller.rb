@@ -72,6 +72,24 @@ class TranscribeController  < ApplicationController
     crop_x = scaled_x - (display_width/2)
     crop_y = scaled_y - (display_height/2)
 
+#    # problem: the images are displaying too high and left.
+#
+#    logger.debug("DEBUG: values pre-adjustment:")
+#    logger.debug("DEBUG:    click_x: #{click_x}")
+#    logger.debug("DEBUG:    click_y: #{click_y}")
+#    logger.debug("DEBUG:    old_x_offset: #{old_x_offset}")
+#    logger.debug("DEBUG:    old_y_offset: #{old_y_offset}")
+#    logger.debug("DEBUG:    old_scale: #{old_scale}")
+#    logger.debug("DEBUG:    new_scale: #{new_scale}")
+#    logger.debug("DEBUG:    display_width: #{display_width}")
+#    logger.debug("DEBUG:    display_height: #{display_height}")
+#    logger.debug("DEBUG:    full_x: #{full_x}")
+#    logger.debug("DEBUG:    full_y: #{full_y}")
+#    logger.debug("DEBUG:    scaled_x: #{scaled_x}")
+#    logger.debug("DEBUG:    scaled_y: #{scaled_y}")
+#    logger.debug("DEBUG:    crop_x: #{crop_x}")
+#    logger.debug("DEBUG:    crop_y: #{crop_y}")
+
     # adjust to top, left borders
     if(crop_x < 0)
       # the click was near a border
@@ -83,6 +101,8 @@ class TranscribeController  < ApplicationController
       # adjust the crop to zero
       crop_y = 0
     end
+#    logger.debug("DEBUG:    crop_x (post-origin-adjustment): #{crop_x}")
+#    logger.debug("DEBUG:    crop_y (post-origin-adjustment): #{crop_y}")
 
     # adjust to bottom, left borders
     scaled_width = @page.base_width / (2 ** new_scale)
@@ -93,13 +113,22 @@ class TranscribeController  < ApplicationController
     if(crop_y + display_height > scaled_height)
       crop_y = scaled_height - display_height
     end
+#    logger.debug("DEBUG:    scaled_width: #{scaled_width}")
+#    logger.debug("DEBUG:    scaled_height: #{scaled_height}")
+#    logger.debug("DEBUG:    crop_x (post-edge-adjustment): #{crop_x}")
+#    logger.debug("DEBUG:    crop_y (post-edge-adjustment): #{crop_y}")
     
     # actually crop the image
     scaled = Magick::ImageList.new(@page.scaled_image(new_scale))
     crop = scaled.crop(crop_x, crop_y, display_width, display_height)
     @zoomed_file = @page.scaled_image(new_scale).sub(/.jpg/, ".zoom.jpg")
-    crop.write(@zoomed_file)
-
+    logger.debug("DEBUG:    writing #{@zoomed_file}")
+    
+    val = crop.write(@zoomed_file)
+    unless val
+      logger.debug("DEBUG:    could not write #{@zoomed_file}")
+    end
+    
     # set variables to pass to the client
     @scale = new_scale    
     @x_offset = crop_x
