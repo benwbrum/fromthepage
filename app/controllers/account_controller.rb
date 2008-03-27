@@ -19,6 +19,13 @@ class AccountController < ApplicationController
       end
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
       flash[:notice] = "Logged in successfully"
+    else
+      if(User.find_by_login(params[:login])) 
+        flash[:error] = 
+          "Your login and password did not match.  Feel free to contact alpha.info@fromthepage.com for help."
+      else
+        flash[:error] = "We could not find any user with the login #{params[:login]}.  Feel free to contact alpha.info@fromthepage.com for help."
+      end
     end
   end
 
