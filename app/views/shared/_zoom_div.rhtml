@@ -56,9 +56,10 @@
   var y_offset = 0;
   var element = $('image_div');
 
-  element.onclick = function(event) { 
+  function clickOnImage(event) { 
     if(scale_factor == 0) return false;
-    var imgXY = Position.cumulativeOffset(Event.element(event));
+        Event.extend(event);
+    var imgXY = Position.cumulativeOffset(event.element());
 
     if((Event.pointerX(event)-imgXY[0]) < 0) {
       new Ajax.Request('<%= url_for(:action => 'log', 
@@ -105,4 +106,8 @@
     // alert('<%= @page.id %>');
     return false;
   }
+
+        $('image_div').observe('click', clickOnImage);
+
+
 </script>

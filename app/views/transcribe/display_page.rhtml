@@ -15,7 +15,7 @@
     <% if @preview_xml  %>
   		<div class="inside-column">
         <%= xml_to_html(@preview_xml) %>
-  		</div>
+  		</div><!-- in col -->
     <% end %>
 		<div id="transcription_form_area" class="inside-column">
 		  <div id="transcription_form">
@@ -29,14 +29,18 @@
 		  <% end%>
 		  
 			<%= render({ :partial => 'shared/markup_help'}) %>
-		  </div>
-		</div>
-	</div>
+
+    <% if @work.transcription_conventions  %>
+        <%= @work.transcription_conventions %>
+    <% end %>
+		  </div><!-- in col 2 -->
+		</div><!-- in col -->
+	</div><!-- left col -->
 
 	<div class="right-column">
 	   <%= render :partial => '/shared/zoom_div' %>
-	</div>
-</div>
+	</div><!-- right col -->
+</div><!-- two col -->
 
 <script>
     Event.observe(window, "load", function() {

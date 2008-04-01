@@ -28,7 +28,7 @@
            <%= link_to(version.page.title, 
                        { :controller => 'page_version', 
                          :action => 'list', 
-                         :page_id => version.page.id 
+                         :page_id => version.page.id ,
                          :ol => 'w_ver_page_title' }) %>
          </td>
          <td><%= version.page_version %></td>
@@ -37,7 +37,7 @@
          <td><%= link_to('view', 
                          { :controller => 'page_version',
                            :action => 'show', 
-                           :page_version_id => version.id 
+                           :page_version_id => version.id ,
                            :ol => 'w_ver_page_view'}) %></td>
        </tr>
        <% end %>
