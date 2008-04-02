@@ -24,7 +24,9 @@ class DashboardController < ApplicationController
     sql = 
       'select count(distinct session_id) count ' +
       'from interactions '+
-      'where created_on > date_sub(now(), interval 20 minute)'
+      'where created_on > date_sub(now(), interval 20 minute) ' +
+      "and browser not like '%Googlebot%' " +
+      "and browser not like '%Yahoo! Slurp%' " 
     
     @user_count = 
       Interaction.connection.select_value(sql)
