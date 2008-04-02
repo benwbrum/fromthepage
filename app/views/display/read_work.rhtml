@@ -44,15 +44,25 @@
 	</div>
 	
 	<div class="right-column">
+    <% if @article %>
+      <div class="inside-column">
+		    <h2><%= @article.title %></h2>
+		    <% if @article.xml_text != nil && !@article.xml_text.empty? %>
+		    <%=  xml_to_html(@article.xml_text) %>
+		    <% end %>
+  		</div>
+		  <%= render :partial => 'article/article_links' %>
+		<% end %>
 		<div class="inside-column">
-        <h2>Categories in these pages</h2>
+        <h2>Subjects</h2>
 	      <p>
         <%= display_categories(@collection.categories, nil) do |category|
                 controller.render_to_string(:partial => '/category/category_link',
-                       :locals => { :category => category })
+                       :locals => { :category => category, :article_partial => '/category/article_link_for_work' })
             end %>
       </p>
 		</div>
+
 		<!-- Check SVN for review code formerly here before bug 12 -->
 
 	</div>

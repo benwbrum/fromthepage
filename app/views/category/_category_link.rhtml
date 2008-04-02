@@ -2,11 +2,16 @@
 <% if category.articles.empty? %>
 <%= category.title %>
 <% else %>
+<%   if defined? article_partial 
+       @article_partial = article_partial
+     end %>
 <%= link_to_remote(category.title,
                    :url => { :controller => 'category',
                              :action => 'expand_category',
                              :category_id => category.id,
-                             :ol => 'cat_nav_catlink' },
+                             :work_id => (@work ? @work.id : nil),
+                             :ol => 'cat_nav_catlink',
+                             :article_partial => @article_partial },
                    :update => "cat_#{category.id}") %>
 <% end %>
 </span>

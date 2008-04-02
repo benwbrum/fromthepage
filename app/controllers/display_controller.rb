@@ -2,9 +2,19 @@ class DisplayController < ApplicationController
   public :render_to_string
 
   def read_work
-    @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
-                                      :order => 'position',
-                                      :per_page => 5
+    if @article
+      # restrict to pages that include that subject
+      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
+                                        :order => 'position',
+                                        :per_page => 5,
+                                        :joins => 'INNER JOIN page_article_links pal ON pages.id = pal.page_id',
+                                        :conditions => [ 'pal.article_id = ?', @article.id ]
+    else
+      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
+                                        :order => 'position',
+                                        :per_page => 5
+    end                                      
+                                      
 
 #    articles = []
 #    @pages.each { |page| articles += page.articles }

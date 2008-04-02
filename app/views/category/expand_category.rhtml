@@ -3,8 +3,9 @@
 <ul>
 <% for article in @category.articles %>
 	<li>
-		<%= render(:partial => '/category/article_link',
-               :locals => { :category => @category, :article => article }) %>
+		<%= render(:partial => @article_partial,
+               :locals => { :category => @category, 
+                            :article => article }) %>
 	</li>
 <% end %>
 </ul>
