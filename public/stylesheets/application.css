@@ -99,7 +99,7 @@ ul, ol, dl, p, h1, h2, h3, h4, h5, h6
 	padding-bottom: 0;
 }
 h1 {
-color: #8d1703;
+/*color: #8d1703;*/
 border-bottom: 3px dotted #dee7ec;
 }
 ul ul, ul ol, ol ul, ol ol
@@ -455,4 +455,9 @@ background-color: #DEE7EC
 #zoom_in
 {
   visibility: visible;
+}
+
+p.right
+{  
+text-align: right;
 }

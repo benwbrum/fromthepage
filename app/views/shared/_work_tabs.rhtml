@@ -70,6 +70,7 @@ Tab                     Access
       </li>     
     <% end %>
 
+<% if false %>
     <% if selected == 5 %> 
       <li id="current">
         <span>print</span>
@@ -83,6 +84,7 @@ Tab                     Access
                       :ol => 'w_tab_print' }) %>
       </li>     
     <% end %>
+<% end %>
 
     <% if @work.owner == current_user %>
 	    <% if selected == 6 %> 
