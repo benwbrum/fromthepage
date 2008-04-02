@@ -41,8 +41,11 @@
 				    <%= link_to_function('zoom in', 'zoom_image()', :id => 'zi_text') %>
 	        </span>
 	        <span id="zoom_out">
-	  				<%= link_to_function(image_tag("/images/icons/magifier_zoom_out.png",{:border => 0}), 'unzoom_image()') %>
-				    <%= link_to_function('zoom out', 'unzoom_image()') %>
+	  				<%= link_to_function(image_tag("/images/icons/magifier_zoom_out.png",
+	  				                               {:border => 0}), 
+  				                       'unzoom_image()',
+  				                       {:id => 'zo_icon'}) %>
+				    <%= link_to_function('zoom out', 'unzoom_image()', :id => 'zo_text') %>
 	        </span>
 				</div>
 				<div id="image_div">

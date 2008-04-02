@@ -4,7 +4,7 @@
 // checkModifications.js
 // see http://blog.tremend.ro/2007/10/03/prototype-based-script-for-notifying-users-for-unsaved-changes-when-leaving-a-page/
 var mustConfirmLeave = false;
-function initCheckingForModifications() {
+function initCheckingForModifications(exceptions) {
     //var elems = $(formId).elements;
     var inputs = document.getElementsByTagName("input");
     for(var i = 0; i < inputs.length; i++) {
@@ -27,10 +27,14 @@ function initCheckingForModifications() {
     // for all a-s - intercept onclick
     var as = document.getElementsByTagName("a");
     for(var i = 0; i < as.length; i++) {
-        var href = as[i].getAttribute("href");
-        as[i]._href = href;
-        as[i].removeAttribute("href");
-        Event.observe(as[i], "click", navigateAway.bindAsEventListener(as[i]));
+        // don't intercept for exceptions
+        var linkId = as[i].getAttribute("id");
+        if(exceptions == null || exceptions.indexOf(linkId) == -1) { 
+	        var href = as[i].getAttribute("href");
+	        as[i]._href = href;
+	        as[i].removeAttribute("href");
+	        Event.observe(as[i], "click", navigateAway.bindAsEventListener(as[i]));
+        }
     }
 }
 
