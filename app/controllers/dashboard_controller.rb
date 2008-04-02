@@ -13,9 +13,11 @@ class DashboardController < ApplicationController
     @collections = Collection.find(:all)    
     @users = User.find(:all)
 
+    @offset = params[:offset] || 0
     @recent_versions = 
       PageVersion.find(:all,
                        :limit => 20,
+                       :offset => @offset,
                        :include => [:user, :page],
                        :order => 'page_versions.created_on desc')
 

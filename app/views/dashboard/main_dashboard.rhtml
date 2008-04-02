@@ -144,6 +144,11 @@
           <% end %>
         </ul>
         <p>
+          <%= link_to('Older',
+                      { :offset => (@offset.to_i + 20),
+                        :ol => 'd_act_older' })%>
+        </p>
+        <p>
           <%= pluralize(@user_count, 'user') %> online.
         </p>
       </div>
