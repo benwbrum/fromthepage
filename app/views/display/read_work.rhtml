@@ -25,6 +25,11 @@
 		          <p><i>No Transcription</i></p>
 		        <% end %>
 	        <% end %>
+	        <!--
+          <%= image_tag(file_to_url(page.scaled_image),
+                        { :height => (page.base_height/page.shrink_factor/8), 
+                          :width => (page.base_width/page.shrink_factor/8)}) %>
+          -->
 	      </div>
 	      <div class="footer-links">
 	        <%= link_to('page',
