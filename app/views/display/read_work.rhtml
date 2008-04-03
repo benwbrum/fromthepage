@@ -57,8 +57,8 @@
         <h2>Subjects</h2>
 	      <p>
         <%= display_categories(@collection.categories, nil) do |category|
-                controller.render_to_string(:partial => '/category/category_link',
-                       :locals => { :category => category, :article_partial => '/category/article_link_for_work' })
+                controller.render_to_string(:partial => '/category/category_link_for_work',
+                       :locals => { :category => category })
             end %>
       </p>
 		</div>

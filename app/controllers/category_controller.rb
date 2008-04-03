@@ -1,11 +1,12 @@
 class CategoryController < ApplicationController
   public :render_to_string
   def expand_category
-    @article_partial = params[:article_partial]
-    render :layout => false, :locals => { :article_partial => @article_partial }
+    render :layout => false
+  end
+  def expand_category_for_work
+    render :layout => false
   end
   def expand_article
-    @article_partial = params[:article_partial]
     render :layout => false
   end
 
