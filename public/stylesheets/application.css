@@ -409,7 +409,9 @@ text-align: right;
   }
   
 table.revisions
-{ width: 580px;
+{ 
+    width: 100%;
+#width: 580px;
 #background-color: #fafafa;
 #border: 1px #000000 solid;
 border-collapse: collapse;
