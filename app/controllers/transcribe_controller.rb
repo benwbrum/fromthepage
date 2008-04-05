@@ -19,11 +19,15 @@ class TranscribeController  < ApplicationController
   def save_transcription
     @page.attributes=params[:page]
     if params['save']
-      @page.save!
-      # use the new links to blank the graphs
-      @page.clear_article_graphs
-      #redirect_to :action => 'display_page', :page_id => @page.id, :controller => 'display'
-      redirect_to :action => 'assign_categories', :page_id => @page.id
+      if @page.save
+        # use the new links to blank the graphs
+        @page.clear_article_graphs
+        #redirect_to :action => 'display_page', :page_id => @page.id, :controller => 'display'
+        redirect_to :action => 'assign_categories', :page_id => @page.id
+      else
+        flash[:error] = @page.errors[:base].join('<br />')
+        render :action => 'display_page'
+      end    
     elsif params['preview']
       @preview_xml = @page.generate_preview
       render :action => 'display_page'
