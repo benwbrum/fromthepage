@@ -87,9 +87,6 @@ class ApplicationController < ActionController::Base
       @interaction.params = params.inspect
     end
     @interaction.status = 'incomplete'
-    if(params[:ol])
-      @interaction.origin_link = params[:ol]
-    end
     # app specific stuff
     @interaction.action = action_name
     if @collection

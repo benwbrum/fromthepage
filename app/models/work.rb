@@ -2,6 +2,8 @@ class Work < ActiveRecord::Base
   has_many :pages, :order => :position
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
+  has_many :deeds, :order => 'created_at DESC'
+  
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
 
   def articles

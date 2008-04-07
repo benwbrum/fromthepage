@@ -122,36 +122,12 @@
 		</div>
 	</div>
 	<div class="right-column">
-		<div class="inside-column">
-      <div>
-        <h3>Recent Activity</h3>
-        <ul>
-	        <% for version in @recent_versions %>
-	         <li>
-	           <%= version.user.display_name %>
-	           <% if version.page_version > 1 %>
-	             edited
-             <% else %>
-               transcribed
-             <% end %>
-             <%= link_to(version.page.title,
-                         { :controller => 'display',
-                           :action => 'display_page',
-                           :page_id => version.page.id,
-                           :ol => 'd_act_page' }) %>
-             <%= time_ago(version.created_on) %>
-	         </li>          
-          <% end %>
-        </ul>
-        <p>
-          <%= link_to('Older',
-                      { :offset => (@offset.to_i + 20),
-                        :ol => 'd_act_older' })%>
-        </p>
-        <p>
-          <%= pluralize(@user_count, 'user') %> online.
-        </p>
-      </div>
-		</div>
+
+    <div class="inside-column">
+      <%= deeds_for() %>
+	    <p>
+	      <%= pluralize(@user_count, 'user') %> online.
+	    </p>
+    </div>
 	</div>
 </div>

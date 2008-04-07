@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 30) do
+ActiveRecord::Schema.define(:version => 32) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -81,6 +81,25 @@ ActiveRecord::Schema.define(:version => 30) do
     t.string   "comment_type",     :limit => 10, :default => "annotation"
     t.string   "comment_status",   :limit => 10
   end
+
+  create_table "deeds", :force => true do |t|
+    t.string   "deed_type",     :limit => 10
+    t.integer  "page_id"
+    t.integer  "work_id"
+    t.integer  "collection_id"
+    t.integer  "article_id"
+    t.integer  "user_id"
+    t.integer  "note_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "deeds", ["article_id"], :name => "index_deeds_on_article_id"
+  add_index "deeds", ["page_id"], :name => "index_deeds_on_page_id"
+  add_index "deeds", ["work_id"], :name => "index_deeds_on_work_id"
+  add_index "deeds", ["collection_id"], :name => "index_deeds_on_collection_id"
+  add_index "deeds", ["user_id"], :name => "index_deeds_on_user_id"
+  add_index "deeds", ["note_id"], :name => "index_deeds_on_note_id"
 
   create_table "image_sets", :force => true do |t|
     t.string   "path"

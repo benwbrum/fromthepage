@@ -1,0 +1,13 @@
+<div class="two-columns">
+	<div class="inside-column">
+		<div>
+			<h3>Recent Activity</h3>
+			<ul>
+		    <% for deed in @deeds %>
+			     <li><%= render :partial => deed.long_partial, :locals => { :deed => deed } %></li>
+		    <% end %>
+			</ul>
+			<%= link_to('More', { :offset => (@offset.to_i+50) }) %>
+		</div>
+  </div>
+</div>

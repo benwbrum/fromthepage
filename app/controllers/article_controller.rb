@@ -26,6 +26,7 @@ class ArticleController < ApplicationController
         if old_title != @article.title
           rename_article(old_title, @article.title)
         end
+        record_deed
         redirect_to :action => 'show', :article_id => @article.id
         return
       end
@@ -107,6 +108,15 @@ protected
       link.article.rename_article_links(old_name, new_name)
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
     end
+  end
+
+  def record_deed
+    deed = Deed.new
+    deed.article = @article
+    deed.deed_type = Deed::ARTICLE_EDIT
+    deed.collection = @article.collection
+    deed.user = current_user
+    deed.save!
   end
   
 
