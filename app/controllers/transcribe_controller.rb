@@ -20,6 +20,7 @@ class TranscribeController  < ApplicationController
     @page.attributes=params[:page]
     if params['save']
       if @page.save
+        record_deed
         # use the new links to blank the graphs
         @page.clear_article_graphs
         #redirect_to :action => 'display_page', :page_id => @page.id, :controller => 'display'
@@ -141,4 +142,19 @@ class TranscribeController  < ApplicationController
 
 protected
 
+  def record_deed
+    deed = Deed.new
+    deed.note = @note
+    deed.page = @page
+    deed.work = @work
+    deed.collection = @collection
+    current_version = @page.page_versions[0]
+    if current_version.page_version > 1
+      deed.deed_type = Deed::PAGE_EDIT
+    else
+      deed.deed_type = Deed::PAGE_TRANSCRIPTION
+    end
+    deed.user = current_user
+    deed.save!
+  end
 end

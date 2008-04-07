@@ -173,8 +173,10 @@ EOF
       link_element = REXML::Element.new("link")
       element.children.each { |c| link_element.add(c) }
       link_element.add_attribute('target_title', title)
-      link_element.add_attribute('target_id', article.id) unless preview_mode
-      link_element.add_attribute('link_id', link_id) unless preview_mode
+      debug("element="+link_element.inspect)
+      debug("article="+article.inspect)
+      link_element.add_attribute('target_id', article.id.to_s) unless preview_mode
+      link_element.add_attribute('link_id', link_id.to_s) unless preview_mode
       element.replace_with(link_element)
     end
     doc.write(processed)
