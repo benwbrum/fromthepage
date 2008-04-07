@@ -1,0 +1,9 @@
+<%= form_remote_tag(:url => { :action => 'create', :controller => 'note' }, :method => :post, :html => { :id => 'comment_form', :class => 'comment-form', :style => 'display:none;' }) %>
+	<input name="note[parent_id]" type="hidden" id="comment_parent_id" />
+  <%= hidden_field_tag(:page_id, @page.id) %>
+	
+	Enter your note:<br />
+	<textarea name="note[body]" id="comment_text_area" style="width:100%"></textarea><br />
+	<%=submit_tag 'Save' %>
+
+</form>

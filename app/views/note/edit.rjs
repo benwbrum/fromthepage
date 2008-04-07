@@ -1,0 +1,2 @@
+page << 'restfulComments.hideForm();'
+page.replace 'comment_' + @comment.id.to_s, :partial => 'form_edit', :locals => { :comment => @comment }

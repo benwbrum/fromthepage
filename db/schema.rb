@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 29) do
+ActiveRecord::Schema.define(:version => 30) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -69,6 +69,19 @@ ActiveRecord::Schema.define(:version => 29) do
 
   add_index "collections", ["owner_user_id"], :name => "index_collections_on_owner_user_id"
 
+  create_table "comments", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                                               :null => false
+    t.integer  "commentable_id",                 :default => 0,            :null => false
+    t.string   "commentable_type",               :default => "",           :null => false
+    t.integer  "depth"
+    t.string   "title"
+    t.text     "body"
+    t.string   "comment_type",     :limit => 10, :default => "annotation"
+    t.string   "comment_status",   :limit => 10
+  end
+
   create_table "image_sets", :force => true do |t|
     t.string   "path"
     t.string   "title_format"
@@ -98,6 +111,19 @@ ActiveRecord::Schema.define(:version => 29) do
   end
 
   add_index "interactions", ["session_id"], :name => "index_interactions_on_session_id"
+
+  create_table "notes", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.integer  "user_id"
+    t.integer  "collection_id"
+    t.integer  "work_id"
+    t.integer  "page_id"
+    t.integer  "parent_id"
+    t.integer  "depth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "page_article_links", :force => true do |t|
     t.integer  "page_id"
@@ -138,6 +164,11 @@ ActiveRecord::Schema.define(:version => 29) do
   end
 
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
+
+  create_table "plugin_schema_info", :id => false, :force => true do |t|
+    t.string  "plugin_name"
+    t.integer "version"
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
@@ -189,11 +220,11 @@ ActiveRecord::Schema.define(:version => 29) do
 
   create_table "works", :force => true do |t|
     t.string   "title"
-    t.string   "description",               :limit => 4000
+    t.text     "description"
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                          :default => false
-    t.integer  "transcription_version",                     :default => 0
+    t.boolean  "restrict_scribes",          :default => false
+    t.integer  "transcription_version",     :default => 0
     t.text     "physical_description"
     t.text     "document_history"
     t.text     "permission_description"

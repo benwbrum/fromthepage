@@ -24,7 +24,8 @@ class Page < ActiveRecord::Base
   has_many :articles, :through => :page_article_links
   has_many :page_versions, :order => :page_version
 
-  acts_as_restful_commentable
+  #acts_as_restful_commentable
+  has_many :notes, :order => :created_at
   
   after_save :create_version
   
