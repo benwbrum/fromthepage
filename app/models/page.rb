@@ -24,6 +24,8 @@ class Page < ActiveRecord::Base
   has_many :articles, :through => :page_article_links
   has_many :page_versions, :order => 'page_version DESC'
 
+  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id'
+
   #acts_as_restful_commentable
   has_many :notes, :order => :created_at
   

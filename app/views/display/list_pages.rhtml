@@ -12,6 +12,25 @@
           <%= link_to(page.title,
                       { :action => 'display_page',
                         :page_id => page.id} ) %>
+          <% if page.current_version %>
+            <% if page.current_version.page_version > 1 %>
+              <% if logged_in? && current_user.can_transcribe?(@work) %>
+                <i>(<%= link_to('edit', 
+	                            { :controller => 'transcribe',
+	                              :action => 'display_page',
+	                              :page_id => page.id }) %>)</i>
+              <% end %>
+            <% else %>
+              <% if logged_in? && current_user.can_transcribe?(@work) %>
+                <i>(<%= link_to('transcribe', 
+	                            { :controller => 'transcribe',
+	                              :action => 'display_page',
+	                              :page_id => page.id }) %>)</i>
+              <% else %>
+                <i>(No Transcription)</i>
+              <% end %>
+            <% end %>
+          <% end %>
           <br />  
         <% end %>
       </p>    

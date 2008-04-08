@@ -4,14 +4,14 @@
 <div id="comment_<%=note.id%>" class="comment comment-<%= odd %>" style="margin-left:<%= note.depth * 5 %>em">
 	<a name="comment_<%=note.id%>"></a>
 	
-	<div>
-		<%= note.user.display_name unless note.user.nil? %>
-	</div>
 				
 	<div class="text">
 		<%= note.to_html %>
 	</div>	
 		
+	<div>
+		<i>by <%= note.user.display_name %></i>
+	</div>
 	
 		
 	<div id="comment_form_<%= note.id %>"></div>	
