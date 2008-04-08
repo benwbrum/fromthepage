@@ -114,7 +114,22 @@ Tab                     Access
                         :ol => 'w_tab_access' }) %>
 	      </li>     
 	    <% end %>
+
+	    <% if selected == 8 %> 
+	      <li id="current">
+	        <span>pages</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('pages', 
+	                    { :controller => 'work', 
+	                      :action => 'pages_tab', 
+	                      :work_id => work_id,
+                        :ol => 'w_tab_pages' }) %>
+	      </li>     
+	    <% end %>
     <% end %>
+
 
   </ul>
 </div>

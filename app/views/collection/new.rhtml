@@ -1,9 +1,9 @@
-New Collection<br />
+<h3>Create a New Collection</h3>
 <% form_for(:collection, 
             @collection, 
             { :url => { :action => 'create' }}) do |f| %>
-  Title:
+  Title (you can edit this later):
   <%= f.text_field(:title) %>
   <br />
-  <%= submit_tag('create') %>
+  <%= submit_tag('Create') %>
 <% end %>

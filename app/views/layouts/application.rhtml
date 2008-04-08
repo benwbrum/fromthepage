@@ -48,7 +48,7 @@
       </h2>
     </div>
     <div id="work-logo">
-      <% if @work || @collection%>
+      <% if (@work && @work.title) || (@collection && @collection.title) %>
         <h1 class="work-logo">
 	        <% if @collection %>
 		        <%= link_to(@collection.title,
@@ -58,7 +58,7 @@
                           :ol => 'l_hd_c_link' }) %>
 	        <% end %>
 	        <%= "&mdash;" if @collection && @work %>
-	        <% if @work %>
+	        <% if @work && @work.title %>
 		        <%= link_to(@work.title,
 		                    { :controller => 'display',
 		                      :action => 'read_work',

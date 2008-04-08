@@ -26,9 +26,11 @@
 		        <% end %>
 	        <% end %>
 	        <!--
+	        <% if page.base_image %>
           <%= image_tag(file_to_url(page.scaled_image),
                         { :height => (page.base_height/page.shrink_factor/8), 
                           :width => (page.base_width/page.shrink_factor/8)}) %>
+          <% end %>
           -->
 	      </div>
 	      <div class="footer-links">

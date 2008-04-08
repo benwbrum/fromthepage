@@ -20,7 +20,7 @@
       <% if logged_in? && current_user.owner %>
         <div>
           <p>
-            Owner Dashboard Contents Go Here
+            Owner Actions
           </p>
           <div>
           <%= link_to("Create an empty work", 
@@ -39,43 +39,63 @@
                         { :controller => 'transform',
                           :ol => 'd_new_is' })%>
           </div>
-          <div>
-            <p>
-              Image Sets I own:
-              <ul>
-                <% for set in @image_sets %>
-                  <li>
-                    <%= "Set #{set.id} (#{set.summary})" %>
-                    <%= link_to("Title",
-                                { :controller => 'title',
-                                  :action => 'list',
-                                  :image_set_id => set.id,
-                                  :ol => 'd_isl_title' }) %>
-                    <%= link_to("Delete",
-                                { :controller => 'image_set',
-                                  :action => 'delete',
-                                  :image_set_id => set.id,
-                                  :ol => 'd_isl_delete' }) %>
-                    <%= link_to("Append",
-                                { :controller => 'image_set',
-                                  :action => 'append',
-                                  :image_set_id => set.id,
-                                  :ol => 'd_isl_append' }) %>
-                    <%= link_to("Merge",
-                                { :controller => 'collation',
-                                  :action => 'select_target',
-                                  :image_set_id => set.id,
-                                  :ol => 'd_isl_merge' }) %>
-                    <%= link_to("Publish",
-                                { :controller => 'image_set',
-                                  :action => 'convert_to_work',
-                                  :image_set_id => set.id,
-                                  :ol => 'd_isl_pub' }) %>
-                  </li>			        
-			          <% end %>
+          <% if @current_user.owner_works && @current_user.owner_works.size > 0 %>
+	          <div>
+	            <p>
+	              Works I own:
+	            </p>
+	            <ul> 
+	              <% for work in @current_user.owner_works %>
+	                <li>
+	                  <%= link_to(work.title, 
+	                              { :controller => 'work',
+	                                :action => 'edit',
+	                                :work_id => work.id,
+	                                :ol => 'd_wl_work' }) %>
+	                </li>
+                <% end %>
               </ul>
-            </p>
-          </div>
+	          </div>
+          <% end %>
+          <% if @image_sets && @image_sets.size > 0 %>
+	          <div>
+	            <p>
+	              Image Sets I own:
+	              <ul>
+	                <% for set in @image_sets %>
+	                  <li>
+	                    <%= "Set #{set.id} (#{set.summary})" %>
+	                    <%= link_to("Title",
+	                                { :controller => 'title',
+	                                  :action => 'list',
+	                                  :image_set_id => set.id,
+	                                  :ol => 'd_isl_title' }) %>
+	                    <%= link_to("Delete",
+	                                { :controller => 'image_set',
+	                                  :action => 'delete',
+	                                  :image_set_id => set.id,
+	                                  :ol => 'd_isl_delete' }) %>
+	                    <%= link_to("Append",
+	                                { :controller => 'image_set',
+	                                  :action => 'append',
+	                                  :image_set_id => set.id,
+	                                  :ol => 'd_isl_append' }) %>
+	                    <%= link_to("Merge",
+	                                { :controller => 'collation',
+	                                  :action => 'select_target',
+	                                  :image_set_id => set.id,
+	                                  :ol => 'd_isl_merge' }) %>
+	                    <%= link_to("Publish",
+	                                { :controller => 'image_set',
+	                                  :action => 'convert_to_work',
+	                                  :image_set_id => set.id,
+	                                  :ol => 'd_isl_pub' }) %>
+	                  </li>			        
+				          <% end %>
+	              </ul>
+	            </p>
+	          </div>
+           <% end %>
         </div>
       <% end %>
       <% if logged_in? && current_user.admin %>
