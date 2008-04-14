@@ -67,7 +67,7 @@ class ArticleController < ApplicationController
       '  ON from_links.article_id = a.id '+
       "WHERE to_links.article_id = #{@article.id} "+
       " AND from_links.article_id != #{@article.id} "
-    if @categories
+    if params[:category_ids]
       sql += " AND from_links.article_id IN "+
         "(SELECT article_id "+
         "FROM articles_categories "+
