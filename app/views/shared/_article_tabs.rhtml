@@ -42,20 +42,20 @@
     </li>  
 
 
-
- <!--   <li 
-    <% if selected == 3 %>
-    id="current">
-      <span>graph</span>
-    <% else %>
-     ><%= link_to('graph', 
-                  { :controller => 'article', 
-                    :action => 'graph', 
-                    :article_id => article_id,
-                    :ol => 'a_tab_graph' }) %>
+    <% if session[:demo_mode] %>
+	    <li 
+	    <% if selected == 3 %>
+	    id="current">
+	      <span>graph</span>
+	    <% else %>
+	     ><%= link_to('graph', 
+	                  { :controller => 'article', 
+	                    :action => 'graph', 
+	                    :article_id => article_id,
+	                    :ol => 'a_tab_graph' }) %>
+	    <% end %>
+	    </li> 
     <% end %>
-    </li>  -->
-
 
 
   </ul>

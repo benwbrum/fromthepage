@@ -49,7 +49,11 @@ class ArticleController < ApplicationController
   end 
 
   def graph
-    if @article.graph_image
+    @categories = []
+    if params[:category_ids]
+      @categories = Category.find(params[:category_ids])
+    end
+    if @article.graph_image && !params[:category_ids]
       return
     end
     sql = 
@@ -62,8 +66,14 @@ class ArticleController < ApplicationController
       'INNER JOIN articles a '+
       '  ON from_links.article_id = a.id '+
       "WHERE to_links.article_id = #{@article.id} "+
-      " AND from_links.article_id != #{@article.id} "+
-      "GROUP BY a.title, a.id "
+      " AND from_links.article_id != #{@article.id} "
+    if @categories
+      sql += " AND from_links.article_id IN "+
+        "(SELECT article_id "+
+        "FROM articles_categories "+
+        "WHERE category_id IN (#{params[:category_ids].join(',')}))"
+    end
+    sql += "GROUP BY a.title, a.id "
     logger.debug(sql)
     article_links = Article.connection.select_all(sql)
     link_total = 0
@@ -88,7 +98,7 @@ class ArticleController < ApplicationController
       f.write(dot_source)
     end
     dot_out = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.png"
-    system "/usr/bin/neato -Tpng #{dot_file} -o #{dot_out}" 
+    system "neato -Tpng #{dot_file} -o #{dot_out}" 
     @article.graph_image = dot_out
     @article.save!
   end

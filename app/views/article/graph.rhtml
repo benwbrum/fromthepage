@@ -9,16 +9,29 @@
 			        <%= link_to("articles", 
 			                    {:controller => 'article',
 			                     :action => 'list',
+			                     :collection_id => @collection.id, 
       		                 :ol => 'a_graph_articles'}) %>
-			</p>
-			<p>
-			    <%= @article.title %>
 			</p>
 			
 			<p>
 			<%= image_tag(file_to_url(@article.graph_image)) %>
 			</p>
     </div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+      <% form_for(:article, @article, :url => { :action => 'graph' }) do |f| %>
+				Limit graph to subjects in these categories:<br />
+				<%= display_categories(@collection.categories, nil) do |category|
+			    check_box_tag("category_ids[]",
+			                  category.id,
+			                  @categories.include?(category)) +
+			    category.title
+		  	end %>
+		  	<%= hidden_field_tag(:article_id, @article.id) %>
+        <%= submit_tag "Generate Graph", :name => 'graph' %>  	
+  	  <% end %>
+	  </div>
   </div>
 </div>
 		
