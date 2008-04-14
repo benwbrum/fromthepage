@@ -98,7 +98,7 @@ class ArticleController < ApplicationController
       f.write(dot_source)
     end
     dot_out = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.png"
-    system "neato -Tpng #{dot_file} -o #{dot_out}" 
+    system "#{NEATO} -Tpng #{dot_file} -o #{dot_out}" 
     @article.graph_image = dot_out
     @article.save!
   end
