@@ -52,8 +52,9 @@ class ArticleController < ApplicationController
     @categories = []
     if params[:category_ids]
       @categories = Category.find(params[:category_ids])
+      @article.graph_image = nil
     end
-    if @article.graph_image && !params[:category_ids]
+    if @article.graph_image && !params[:force]
       return
     end
     sql = 
@@ -99,8 +100,9 @@ class ArticleController < ApplicationController
     end
     dot_out = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.png"
     system "#{NEATO} -Tpng #{dot_file} -o #{dot_out}" 
+
     @article.graph_image = dot_out
-    @article.save!
+    @article.save! 
   end
 
 protected

@@ -29,6 +29,7 @@
 			    category.title
 		  	end %>
 		  	<%= hidden_field_tag(:article_id, @article.id) %>
+		  	<%= hidden_field_tag(:force, true) %>
         <%= submit_tag "Generate Graph", :name => 'graph' %>  	
   	  <% end %>
 	  </div>

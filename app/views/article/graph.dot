@@ -6,13 +6,17 @@ graph G {
      label="<%= @article.title.gsub(/ /, '\n') %>",
      color="/blues9/8"];
   <% for link in article_links %>
-    <% length =  1 - ( link['link_count'].to_f / link_total.to_f)
-       length *= 1.75
-       color = ((link['link_count'].to_f / link_max.to_f)*7).to_i + 1 %>
+    <% rank = "#{link['link_count']} of #{link_max}" %>
+    <% length =  1 + ( link_max.to_i - link['link_count'].to_i  )
+       # convert from 1:N to (1:N)/N
+       normalized = length / link_max.to_f
+       # stretch and pad a bit
+       scaled = (normalized * 1) + 0.75
+       color = ((1-normalized)*7).to_i + 1 %>
     <%= link['article_id'] %> 
       [style=filled,
-       label="<%= link['title'].gsub(/ /, '\n') %>",
+       label="<%= link['title'].gsub(/ /, '\n')  %>",
        color="/blues9/<%= color %>"];
-    <%= @article.id %> -- <%= link['article_id'] %> [len=<%= length %>];
+    <%= @article.id %> -- <%= link['article_id'] %> [len=<%= scaled %>];
   <% end %>
 }
