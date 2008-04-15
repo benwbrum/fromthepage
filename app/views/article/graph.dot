@@ -15,6 +15,7 @@ graph G {
        color = ((1-normalized)*7).to_i + 1 %>
     <%= link['article_id'] %> 
       [style=filled,
+       URL="<%= url_for :article_id => link['article_id'] %>",
        label="<%= link['title'].gsub(/ /, '\n')  %>",
        color="/blues9/<%= color %>"];
     <%= @article.id %> -- <%= link['article_id'] %> [len=<%= scaled %>];

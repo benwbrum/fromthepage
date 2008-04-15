@@ -99,8 +99,9 @@ class ArticleController < ApplicationController
       f.write(dot_source)
     end
     dot_out = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.png"
-    system "#{NEATO} -Tpng #{dot_file} -o #{dot_out}" 
-
+    dot_out_map = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.map"
+    system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}" 
+    @map = File.read(dot_out_map)
     @article.graph_image = dot_out
     @article.save! 
   end
