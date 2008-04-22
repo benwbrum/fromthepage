@@ -7,7 +7,6 @@ class UserTest < Test::Unit::TestCase
   fixtures :users
 
   def test_should_create_user
-    p 'grool'
     assert_difference User, :count do
       user = create_user
       assert !user.new_record?, "#{user.errors.full_messages.to_sentence}"

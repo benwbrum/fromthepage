@@ -69,6 +69,17 @@ ActiveRecord::Schema.define(:version => 33) do
 
   add_index "collections", ["owner_user_id"], :name => "index_collections_on_owner_user_id"
 
+  create_table "comments", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                       :null => false
+    t.integer  "commentable_id",   :default => 0,  :null => false
+    t.string   "commentable_type", :default => "", :null => false
+    t.integer  "depth"
+    t.string   "title"
+    t.text     "body"
+  end
+
   create_table "deeds", :force => true do |t|
     t.string   "deed_type",     :limit => 10
     t.integer  "page_id"
@@ -173,6 +184,11 @@ ActiveRecord::Schema.define(:version => 33) do
 
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
 
+  create_table "plugin_schema_info", :id => false, :force => true do |t|
+    t.string  "plugin_name"
+    t.integer "version"
+  end
+
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
     t.text     "data"
@@ -223,11 +239,11 @@ ActiveRecord::Schema.define(:version => 33) do
 
   create_table "works", :force => true do |t|
     t.string   "title"
-    t.string   "description",               :limit => 4000
+    t.text     "description"
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                          :default => false
-    t.integer  "transcription_version",                     :default => 0
+    t.boolean  "restrict_scribes",          :default => false
+    t.integer  "transcription_version",     :default => 0
     t.text     "physical_description"
     t.text     "document_history"
     t.text     "permission_description"
