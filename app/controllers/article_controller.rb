@@ -54,9 +54,9 @@ class ArticleController < ApplicationController
       @categories = Category.find(params[:category_ids])
       @article.graph_image = nil
     end
-    if @article.graph_image && !params[:force]
-      return
-    end
+#    if @article.graph_image && !params[:force]
+#      return
+#    end
     sql = 
       'SELECT count(*) as link_count, '+
       'a.title as title, '+
