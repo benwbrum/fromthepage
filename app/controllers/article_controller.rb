@@ -1,7 +1,9 @@
 class ArticleController < ApplicationController
 
   include AbstractXmlController
-
+  
+  DEFAULT_ARTICLES_PER_GRAPH = 40
+  
   def list
     # Differences from previous implementation:
     # 1. List of articles needs to be collection-specific
@@ -54,6 +56,7 @@ class ArticleController < ApplicationController
       @categories = Category.find(params[:category_ids])
       @article.graph_image = nil
     end
+
 #    if @article.graph_image && !params[:force]
 #      return
 #    end
@@ -79,10 +82,39 @@ class ArticleController < ApplicationController
     article_links = Article.connection.select_all(sql)
     link_total = 0
     link_max = 0
+    count_per_rank = { 0 => 0}
     article_links.each do |l| 
-      link_total += l['link_count'].to_i 
-      if l['link_count'].to_i > link_max
-        link_max = l['link_count'].to_i
+      link_count = l['link_count'].to_i 
+      link_total += link_count
+      if link_count > link_max
+        link_max = link_count
+      end
+      # initialize for this rank if necessary
+      if count_per_rank[link_count]
+        # set this rank
+        count_per_rank[link_count] += 1  
+      else
+        count_per_rank[link_count] = 1
+      end
+      #logger.debug("DEBUG: \tcount_per_rank[#{link_count}]=#{count_per_rank[link_count]}\n")
+    end
+
+    #logger.debug("DEBUG: count per rank=#{count_per_rank.inspect}\n")
+
+    min_rank=0
+    # now we know how many articles each link count has, as well as the size
+    if params[:min_rank]
+      # use the min rank from the params
+      min_rank = params[:min_rank].to_i
+    else
+      # calculate whether we should reduce the rank
+      num_articles = article_links.size
+      while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
+        # remove the outer rank
+        #logger.debug("DEBUG: \tinvestigating rank #{min_rank} for #{num_articles}\n")
+        num_articles -= count_per_rank[min_rank] || 0 # hash is sparse
+        min_rank += 1
+        logger.debug("DEBUG: \tnum articles now #{num_articles}\n")
       end
     end
 
@@ -92,7 +124,8 @@ class ArticleController < ApplicationController
       render_to_string({:file => dot_path,
                         :locals => { :article_links => article_links,
                                      :link_total => link_total,
-                                     :link_max => link_max  }} )
+                                     :link_max => link_max,
+                                     :min_rank => min_rank }} )
 
     dot_file = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|
@@ -103,6 +136,7 @@ class ArticleController < ApplicationController
     system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}" 
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out
+    @min_rank = min_rank
     @article.save! 
   end
 
