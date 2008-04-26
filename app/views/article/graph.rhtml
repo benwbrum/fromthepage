@@ -43,7 +43,7 @@
 		  	end %>
 		  	Show subjects that appear on at least 
 		  	<%= text_field_tag('min_rank', @min_rank, :size => 3) %> 
-		  	pages in common with <i><%= @article.title %></i>.
+		  	pages in common with <i><%= @article.title %></i>.<br />
 		  	<%= hidden_field_tag(:article_id, @article.id) %>
 		  	<%= hidden_field_tag(:force, true) %>
         <%= submit_tag "Generate New Graph", :name => 'graph' %>  	
