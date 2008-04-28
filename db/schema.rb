@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 33) do
+ActiveRecord::Schema.define(:version => 34) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -72,12 +72,14 @@ ActiveRecord::Schema.define(:version => 33) do
   create_table "comments", :force => true do |t|
     t.integer  "parent_id"
     t.integer  "user_id"
-    t.datetime "created_at",                       :null => false
-    t.integer  "commentable_id",   :default => 0,  :null => false
-    t.string   "commentable_type", :default => "", :null => false
+    t.datetime "created_at",                                               :null => false
+    t.integer  "commentable_id",                 :default => 0,            :null => false
+    t.string   "commentable_type",               :default => "",           :null => false
     t.integer  "depth"
     t.string   "title"
     t.text     "body"
+    t.string   "comment_type",     :limit => 10, :default => "annotation"
+    t.string   "comment_status",   :limit => 10
   end
 
   create_table "deeds", :force => true do |t|
@@ -98,7 +100,6 @@ ActiveRecord::Schema.define(:version => 33) do
   add_index "deeds", ["collection_id"], :name => "index_deeds_on_collection_id"
   add_index "deeds", ["user_id"], :name => "index_deeds_on_user_id"
   add_index "deeds", ["note_id"], :name => "index_deeds_on_note_id"
-  add_index "deeds", ["created_at"], :name => "index_deeds_on_created_at"
 
   create_table "image_sets", :force => true do |t|
     t.string   "path"
@@ -233,6 +234,9 @@ ActiveRecord::Schema.define(:version => 33) do
     t.datetime "updated_at"
     t.string   "remember_token"
     t.datetime "remember_token_expires_at"
+    t.string   "location"
+    t.string   "website"
+    t.string   "about"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"
