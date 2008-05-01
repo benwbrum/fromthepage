@@ -40,6 +40,37 @@ class Article < ActiveRecord::Base
     super
   end
 
+
+  #######################
+  # Related Articles 
+  #######################
+  def related_article_ranks
+
+  end
+
+  #######################
+  # De-Dup Support
+  #######################
+  def possible_duplicates
+    # take each element of this article name
+    words = self.title.split(' ')
+    # sort it by word length, longest to shortest
+
+    # for each word
+    # find articles in the same collection
+    # whose title contains that word
+
+    # merge with articles for previous words
+    #    keep sort order for new words (append to previous list)
+    #    if there's a match with the previous list, bump up that
+    #    article
+
+    # sort according to some smartness
+  end
+
+
+
+
   #######################
   # XML Source support
   #######################
