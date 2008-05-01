@@ -1,6 +1,5 @@
 
 <div>
-	<h3>Recent Activity</h3>
 	<ul>
     <% for deed in deeds %>
 	     <li><%= render :partial => deed.short_partial, :locals => { :deed => deed } %></li>

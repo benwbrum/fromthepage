@@ -17,6 +17,16 @@
       </p>    
     </div>
     <div class="inside-column">
+      <h2>Subjects</h2>
+	      <p>
+        <%= display_categories(@collection.categories, nil) do |category|
+                controller.render_to_string(:partial => '/category/category_link',
+                       :locals => { :category => category, 
+                                    :article_partial => '/category/article_link' })
+            end %>
+      </p>
+    </div>
+    <div class="inside-column">
       <p>
         Owner: <%= @collection.owner.display_name %>
         <br />
@@ -25,13 +35,35 @@
   </div>
   <div class="right-column">
     <div class="inside-column">
-      <h2>Subjects</h2>
-	      <p>
-        <%= display_categories(@collection.categories, nil) do |category|
-                controller.render_to_string(:partial => '/category/category_link',
-                       :locals => { :category => category, 
-                                    :article_partial => '/category/article_link' })
-            end %>
+      <h3>Recent Notes</h3>
+	  <p>
+		<ul>
+			<% @collection.notes.find(:all, :limit => 10).each do |note| %>
+				<li>
+					<%= link_to(truncate(note.title, 40),
+								{ :controller => 'display',
+								  :action => 'display_page',
+								  :page_id => note.page_id,
+								  :anchor => "comment_#{note.id}" }) %>
+				    by
+					<%= link_to(note.user.display_name,
+								{ :controller => 'user',
+								  :action => 'profile',
+ 								  :user_id => note.user.id })%>
+   					<%= time_ago(note.created_at) %>
+				</li>
+			<% end%>
+		</ul>
+      </p>
+    </div>
+    <div class="inside-column">
+      <h3>Recent Edits</h3>
+	  <p>
+	    <%= deeds_for({:collection => true,
+					   :limit => 10, 
+					   :types => [Deed::PAGE_TRANSCRIPTION,
+								  Deed::PAGE_EDIT,
+								  Deed::ARTICLE_EDIT]}) %>
       </p>
     </div>
   </div>

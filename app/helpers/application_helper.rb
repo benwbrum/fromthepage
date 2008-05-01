@@ -24,11 +24,24 @@ module ApplicationHelper
     ret << "</li>\n" 
   end
 
+  
+
+
   def deeds_for(options={}) 
     limit = options[:limit] || 20
-    # TODO make this polymorphic for collection/works
-    unless options[:collection] 
-      deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC')
+
+    conditions = nil;
+    if options[:types]
+      types = options[:types]
+      types = types.map { |t| "'#{t}'"}
+      conditions = "deed_type IN (#{types.join(',')})"      
+    end
+    
+
+    if options[:collection]
+      deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
+    else
+      deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions)
     end
     render({ :partial => 'deed/deeds', 
              :locals => 
