@@ -17,7 +17,10 @@
 		<div>
 			Scribes<br />
 			<% for user in @scribes %>
-			  <%= user.display_name %>
+			  <%= link_to (user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => user.id }) %>
 			  <%= link_to("Remove", 
 			              { :action => 'remove_scribe', 
 			                :user_id => user.id, 
@@ -38,7 +41,10 @@
 		<div>
 			Non-Scribes<br />
 			<% for user in @nonscribes %>
-			  <%= user.display_name %> 		  
+			  <%= link_to (user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => user.id }) %>		  
 			  <%= link_to("Add", 
 			              { :action => 'add_scribe', 
 			                :user_id => user.id, 

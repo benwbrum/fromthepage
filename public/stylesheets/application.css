@@ -463,3 +463,8 @@ p.right
 {  
 text-align: right;
 }
+
+.help-text
+{
+font-size: .8em;
+}

@@ -23,11 +23,10 @@
 		   <tr>
 		     <td><%= version.version %></td>
 		     <td>
-		        <%= link_to(version.user.display_name,
-		                    { :controller => 'user',
-		                      :action => 'versions',
-		                      :user_id => version.user.id,
-            		          :ol => 'av_vl_user' }) %>
+		        <%= link_to (version.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => version.user.id }) %>
 		      </td>
 		     <td><%= version.created_on %></td>
 		     <td><%= link_to('view', 

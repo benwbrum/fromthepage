@@ -1,10 +1,9 @@
 <div>
   Changes made by 
-  <%= link_to(@article_version.user.display_name,
-              { :controller => 'user',
-                :action => 'versions',
-                :user_id => @article_version.user.id,
-            		:ol => 'av_ver_user' }) %> 
+  <%= link_to (@article_version.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => @article_version.user.id }) %>
   to 
   <%= link_to(@article.title,
               { :controller => 'article_version',

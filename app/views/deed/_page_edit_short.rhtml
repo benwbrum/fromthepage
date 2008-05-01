@@ -1,4 +1,7 @@
-<%= deed.user.display_name %>
+<%= link_to (deed.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => deed.user.id }) %>
 edited
 <%= link_to(deed.page.title,
              { :controller => 'display',

@@ -15,11 +15,10 @@
 			                :ol => 'p_pv_page_rev'  }) %> 
 			  at <%= @page_version.created_on.strftime("%m/%d/%Y %I:%M %p")  %>
 			  as edited by
-			    <%= link_to(@page_version.user.display_name,
-			              { :controller => 'user',
-			                :action => 'versions',
-			                :user_id => @page_version.user.id,
-			                :ol => 'p_pv_user' }) %>.
+			    <%= link_to (@page_version.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => @page_version.user.id }) %>.
 			
 			</div>
     </div>

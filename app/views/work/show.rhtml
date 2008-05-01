@@ -12,7 +12,10 @@
 	        Description: <%= @work.description %>
 	        <br />
         <% end %>
-        Owner: <%= @work.owner.display_name %>
+        Owner: <%= link_to (work.owner.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => work.owner.id }) %>
         <br />
         <% if @work.transcription_version %>
 	        Transcription Version: <%= @work.transcription_version %>

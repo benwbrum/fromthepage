@@ -1,7 +1,10 @@
 <div>
   User ID:<%= @user.id %><br />
   Login:<%= @user.login %><br />
-  Display Name:<%= @user.display_name %><br />
+  Display Name:<%= link_to (user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => user.id }) %><br />
   Print Name:<%= @user.print_name %>
 </div>
 
