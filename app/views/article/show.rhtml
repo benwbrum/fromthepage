@@ -23,8 +23,21 @@
 		  <% else %>
 		    <i>No Contents Provided</i>
 		  <% end %>
-		</div>
-
+	</div>
+	<div class="inside-column">
+		<h3>Possible Duplicates</h3>
+		<p>
+			<% @article.possible_duplicates.each do |dup| %>
+				<%= link_to(dup.title, :article_id => dup.id) %>
+				<!--<i>(<%= link_to("combine into #{@article.title}",
+								{ :action => 'combine',
+								  :article_id => dup.id,
+								  :into_article_id => @article.id})%>)</i>
+								  -->
+			  <br />
+			<% end %>
+		</p>
+	</div>
   </div>
 		
   <div class="right-column">
