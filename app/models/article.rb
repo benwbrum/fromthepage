@@ -64,7 +64,7 @@ class Article < ActiveRecord::Base
       # find articles in the same collection
       # whose title contains that word
       current_matches =
-        @collection.articles.find(:all, :conditions => "title like '%#{word}%'" )
+        @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )
       current_matches.delete self
 #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
       #    keep sort order for new words (append to previous list)
