@@ -10,7 +10,10 @@ module AbstractXmlController
   def autolink(text)
     sql = 'select distinct article_id, '+
           'display_text '+
-          'from page_article_links '
+          'from page_article_links ' +
+          'inner join articles a '+
+          'on a.id = article_id ' +
+          "where a.collection_id = #{@collection.id}" 
     logger.debug(sql)
     matches = 
       Page.connection.select_all(sql)
