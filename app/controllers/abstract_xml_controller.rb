@@ -30,7 +30,7 @@ module AbstractXmlController
         # is this already within a link?
         
         match_start = text.index display_text
-        if within_link(text, match_start)
+        if word_not_okay(text, match_start, display_text)||within_link(text, match_start)
           # within a link, but try again somehow
         else
           # not within a link, so create a new one
@@ -47,6 +47,31 @@ module AbstractXmlController
     end  
     return text
   end 
+  # check for word boundaries on preceding and following sides
+  def word_not_okay(text, index, display_text)
+    # test for characters before the display text
+    if index > 1
+      if text[(index-1),1].match /\w/
+        return true
+      end
+    end
+    # possibly do something for after the match.
+    # reject word boundaries that aren't inflectional, plus special cases
+    # i.e. (Mr shouldn't link Mrs)
+    if index + display_text.size + 2 < text.size
+      next_two = text[index + display_text.size, 2]
+      unless next_two.match /\w/
+        # we're not in a word boundary
+        # check for inflectional endings that might pass
+        unless (next_two.match(/.+s/) || next_two.match(/.+d/) || display_text != 'Mr')
+          return false
+        end
+      end
+    end
+
+    # consider rejecting some words
+    return false
+  end
 
   def within_link(text, index)
     if open_link = text.rindex('[[', index)
