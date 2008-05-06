@@ -194,7 +194,15 @@ protected
       link.article.rename_article_links(old_from_title, to_article.title)
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
     end
+
+    for link in from_article.source_article_links
+      link.destroy
+    end
     # thankfully, rename_article_links is source-agnostic!
+
+    # change links
+    Deed.update_all("article_id='#{to_article.id}'", 
+                    "article_id = #{from_article.id}")
 
     # append old from_article text to to_article text  
     if from_article.source_text
