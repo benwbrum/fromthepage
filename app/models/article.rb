@@ -53,7 +53,7 @@ class Article < ActiveRecord::Base
   #######################
   def possible_duplicates
     # take each element of this article name
-    words = self.title.split(' ')
+    words = self.title.tr(',.', ' ').split(' ')
     # sort it by word length, longest to shortest
     words.sort! { |x,y| x.length <=> y.length }
     words.reverse!
