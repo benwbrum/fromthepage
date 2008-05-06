@@ -50,6 +50,15 @@ class ArticleController < ApplicationController
     render :text => "success"
   end 
 
+  def combine
+    # @article contains "to" article
+    from_article = Article.find(params[:from_article_id])
+    combine_articles(from_article, @article)
+    flash[:notice] = "All links now point to #{@article.title}."
+    redirect_to :action => 'show', :article_id => @article.id
+  end
+
+
   def graph
     @categories = []
     if params[:category_ids]
@@ -165,6 +174,39 @@ protected
     deed.user = current_user
     deed.save!
   end
-  
+
+  def combine_articles(from_article, to_article) 
+    # rename the article to something bizarre in case they have the same name
+    old_from_title = from_article.title
+    from_article.title = 'TO_BE_DELETED:'+old_from_title
+    from_article.save!
+    
+    # walk through all pages referring to from_article
+    # walk through all pages referring to this
+    for link in from_article.page_article_links
+      source_text = link.page.source_text
+      link.page.rename_article_links(old_from_title, to_article.title)
+      logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
+    end
+    # walk through all articles referring to this
+    for link in from_article.target_article_links
+      source_text = link.article.source_text
+      link.article.rename_article_links(old_from_title, to_article.title)
+      logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
+    end
+    # thankfully, rename_article_links is source-agnostic!
+
+    # append old from_article text to to_article text  
+    if from_article.source_text
+      if to_article.source_text
+        to_article.source_text += from_article.source_text
+      else
+        to_article.source_text = from_article.source_text
+      end
+    end
+    # write to the DB
+    to_article.save!
+    from_article.destroy
+  end
 
 end

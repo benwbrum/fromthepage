@@ -29,11 +29,13 @@
 		<p>
 			<% @article.possible_duplicates.each do |dup| %>
 				<%= link_to(dup.title, :article_id => dup.id) %>
-				<!--<i>(<%= link_to("combine into #{@article.title}",
+				<i>(<%= link_to("combine into #{@article.title}",
 								{ :action => 'combine',
-								  :article_id => dup.id,
-								  :into_article_id => @article.id})%>)</i>
-								  -->
+								  :from_article_id => dup.id,
+								  :article_id => @article.id},
+								{ :confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>)
+								</i>
+								  
 			  <br />
 			<% end %>
 		</p>
