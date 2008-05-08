@@ -38,6 +38,12 @@
 	                    { :action => 'display_page',
 	                      :page_id => page.id,
                         :ol => 'w_rw_p_pl' }) %>
+			<% if page.current_version %>
+				<%= page.current_version.user.display_name %>
+				<%= page.current_version.created_on %>
+			<% else %>
+				<!--No version info for page.id=<%= page.id %>-->
+			<% end %>
 	      </div>
 	
 	    </div>
