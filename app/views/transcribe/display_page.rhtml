@@ -3,15 +3,18 @@
 <%= render({ :partial => '/shared/page_tabs',
              :locals => { :selected =>3,
                           :page_id => @page.id }}) %>
-    <div id="subundernav">
-      <h4><%= @page.title %></h4>
-    </div>
-    
+  
 
 
 <div class="two-columns">
 	<div class="left-column">
+		
     <%= render :partial => '/shared/page_navigation' %>
+      <div class="inside-column">
+        <h2><%= @page.title %></h2>
+      </div>
+
+
     <% if @preview_xml  %>
   		<div class="inside-column">
         <%= xml_to_html(@preview_xml) %>
@@ -21,8 +24,7 @@
 		  <div id="transcription_form">
 		  <% form_for(:page, @page, :url => { :action => 'save_transcription' }) do |f| %>
 		    <%= hidden_field_tag(:page_id, @page.id) %>
-		    <p>Transcription:</p>
-		    <p><%= f.text_area :source_text, { :cols => 60 } %></p>
+		    <%= f.text_area :source_text, { :cols => 60 } %>
 		    <%= submit_tag "Preview", :name => 'preview' %>
 		    <%= submit_tag "Autolink", :name => 'autolink' %>
 		    <%= submit_tag "Save", :name => 'save' %>
