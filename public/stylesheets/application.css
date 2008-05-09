@@ -444,6 +444,19 @@ padding-bottom: 4px;
 padding-left: 8px;
 padding-right: 0px; }
 
+ul.revision
+{ border-bottom: 1px #6699CC dotted;
+text-align: left;
+font-family: Verdana, sans-serif, Arial;
+font-weight: normal;
+font-size: .7em;
+color: #404040;
+background-color: #fafafa;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 8px;
+padding-right: 0px; }
+
 div.revision_meta
 {
 background-color: #DEE7EC

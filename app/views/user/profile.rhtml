@@ -11,9 +11,33 @@
 
 	<div class="right-column">
 		<div class="inside-column">
-<div>
+<p>Recent Notes</p>
+ <table class="revision" border="1">
+ <tr>
+    <th>
+        Note
+    </th>
+    <th>
+        Page
+    </th>
+    <th>
+        Date
+    </th>
+ </tr>
+			<% @user.notes.find(:all, :limit => 10).each do |note| %>
+    <tr>
+					<td class="revision" width="33%"><%= link_to(truncate(note.title, 40),
+								{ :controller => 'display',
+								  :action => 'display_page',
+								  :page_id => note.page_id,
+								  :anchor => "comment_#{note.id}" }) %></td>
+					<td class="revision" width="33%">"<%= note.page.title  %>"</td>
+   					<td class="revision" width="33%"><%= note.created_at.strftime("%m/%d/%Y %I:%M %p")%></td>
+   	</tr>
+			<% end%>
+			</table>
  <p>Recent Page Edits</p>
- <table border="1">
+ <table class="revision" border="1">
  <tr>
     <th>
         Work
@@ -33,17 +57,17 @@
  </tr>
  <% for version in @user.page_versions.find(:all, :limit => 10) %>
    <tr>
-     <td><%= version.page.work.title %></td>
-     <td>
+     <td class="revision" width="20%"><%= version.page.work.title %></td>
+     <td class="revision" width="35%">
        <%= link_to(version.page.title, 
                   { :controller => 'page_version', 
                     :action => 'list', 
                     :page_id => version.page.id, 
                     :ol => 'u_ver_p_page' }) %>
      </td>
-     <td><%= version.page_version %></td>
-     <td><%= version.created_on %></td>
-     <td><%= link_to('view', 
+     <td class="revision" width="10%"><%= version.page_version %></td>
+     <td class="revision" width="25%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p") %></td>
+     <td class="revision" width="10%"><%= link_to('view', 
                      { :controller => 'page_version',
                        :action => 'show', 
                        :page_version_id => version.id, 
@@ -51,11 +75,9 @@
    </tr>
  <% end %>
  </table>
-</div>
 
-<div>
  <p>Recent Article Edits</p>
- <table border="1">
+ <table class="revision" border="1">
  <tr>
     <th>
         Article
@@ -72,16 +94,16 @@
  </tr>
  <% for version in @user.article_versions.find(:all, :limit => 10) %>
    <tr>
-     <td>
+     <td class="revision" width="55%">
        <%= link_to(version.article.title, 
                   { :controller => 'article_version', 
                     :action => 'list', 
                     :page_id => version.article.id, 
                     :ol => 'u_ver_a_article' }) %>
      </td>
-     <td><%= version.version %></td>
-     <td><%= version.created_on %></td>
-     <td><%= link_to('view', 
+     <td class="revision" width="10%"><%= version.version %></td>
+     <td class="revision" width="25%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p") %></td>
+     <td class="revision" width="10%"><%= link_to('view', 
                      { :controller => 'article_version',
                        :action => 'show', 
                        :page_version_id => version.id, 
@@ -90,9 +112,5 @@
  <% end %>
  </table>
 </div>
-
-
-<p>Recent Notes</p>
-
-		</div>
-	</div>
+</div>
+</div>

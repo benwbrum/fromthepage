@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
                             :class_name => 'Work'})
   has_many :page_versions, :order => 'created_on DESC'
   has_many :article_versions, :order => 'created_on DESC'
-
+  has_many :notes, :order => 'created_at DESC'
 
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
