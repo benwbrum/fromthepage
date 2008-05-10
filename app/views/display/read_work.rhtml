@@ -34,16 +34,18 @@
           -->
 	      </div>
 	      <div class="footer-links">
-			Edited by <% if page.current_version %>
+	      <% if false %>
+					Edited by <% if page.current_version %>
 				  <%= link_to (page.current_version.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => page.current_version.user.id }) %>
-				<%= distance_of_time_in_words(page.current_version.created_on, Time.now, include_seconds = true)%> ago.
-			<% else %>
-				<!--No version info for page.id=<%= page.id %>-->
-			<% end %>
-	        <%= link_to('View this page',
+  				<%= distance_of_time_in_words(page.current_version.created_on, Time.now, include_seconds = true)%> ago.
+					<% else %>
+						<!--No version info for page.id=<%= page.id %>-->
+					<% end %>
+				<% end %>
+		      <%= link_to('View this page',
 	                    { :action => 'display_page',
 	                      :page_id => page.id,
                         :ol => 'w_rw_p_pl' }) %>.
