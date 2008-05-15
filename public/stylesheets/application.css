@@ -18,26 +18,25 @@
 			{
 			    content: "."; 
 			    display: block; 
-			    height: 0; 
+			    height: 0;
 			    clear: both; 
 			    visibility: hidden;
 			}
-			div.two-columns, 
-			div.two-columns div.left-column,
-			div.two-columns div.right-column
-			{
-				border: solid 1px #ddd;
-				border-width: 1px;
-			}
-			div.two-columns div.left-column,
-			div.two-columns div.right-column
-			{
-				float: left;
-				width: 50%;
-				border-width: 0 1px 0 0;
-				margin: 0 -1px;
-			}
-			* html div.two-columns div.left-column,
+div.two-columns {
+	width: 1000px;
+}
+div.two-columns div.left-column
+{
+	border-right: solid 1px #ddd;
+	float: left;
+	width: 470px;
+}
+div.two-columns div.right-column
+{
+	overflow-x: scroll;
+	width: 460px;
+}
+			/* * html div.two-columns div.left-column,
 			* html div.two-columns div.right-column
 			{
 				position: relative;	/* IE/Win 6 and earlier need this */
@@ -47,7 +46,7 @@
 				border-width: 0 0 0 1px;
 				margin-right: -3px;
 				margin-left: 0;	
-			}
+			} */
 			div.two-columns div.inside-column
 			{
 				padding: 1px 10px;	/* 1px is there to get past a margin rendering
