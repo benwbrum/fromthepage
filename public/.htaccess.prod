@@ -1,5 +1,5 @@
 # General Apache options
-AddHandler fastcgi-script .fcgi
+#AddHandler fastcgi-script .fcgi
 AddHandler cgi-script .cgi
 Options +FollowSymLinks +ExecCGI
 

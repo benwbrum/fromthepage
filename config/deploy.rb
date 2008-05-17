@@ -21,7 +21,8 @@
 # The host where people will access my site
 set :application, "fromthepage"
 set :user, "my dreamhost username set to access this project"
-set :admin_login, "benwbrum"
+#set :admin_login, "benwbrum"
+set :admin_login, "fromthe"
 
 set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
 
@@ -31,7 +32,8 @@ set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
 set :deploy_to, "/home/#{admin_login}/#{application}"
 
 # My DreamHost-assigned server
-set :domain, "#{admin_login}@chalmers.dreamhost.com"
+#set :domain, "#{admin_login}@chalmers.dreamhost.com"
+set :domain, "#{admin_login}@75.126.138.240"
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
@@ -52,10 +54,10 @@ set :checkout, "export"
 set :svn, "/usr/bin/svn"
 set :svn_user, 'benwbrum'
 set :svn_password, 'benwbrum'
-#set :repository,
-#  Proc.new { "--username #{svn_user} " +
-#       "--password #{svn_password} " +
-#       "http://svn.gamelizard.com/rgamelizard/trunk/" }
+set :repository,
+  Proc.new { "--username #{svn_user} " +
+       "--password #{svn_password} " +
+       "http://svn.fromthepage.com/fromthepage/trunk/diary" }
 
 desc "Restarting after deployment"
 task :after_deploy, :roles => [:app, :db, :web] do

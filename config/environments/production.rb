@@ -19,4 +19,4 @@ config.action_view.cache_template_loading            = true
 # config.action_mailer.raise_delivery_errors = false
 
 # Where is neato?
-NEATO = '/home/benwbrum/bin/neato'
+NEATO = '/usr/local/bin/neato'
