@@ -39,7 +39,7 @@ div.two-columns div.right-column
 			/* * html div.two-columns div.left-column,
 			* html div.two-columns div.right-column
 			{
-				position: relative;	/* IE/Win 6 and earlier need this */
+				position: relative;	/ * IE/Win 6 and earlier need this * /
 			}
 			div.two-columns div.right-column
 			{
@@ -53,6 +53,9 @@ div.two-columns div.right-column
 							   bug in Netscape 7 and older FireFox */
 				margin-top: 1em;
 				margin-bottom: 1em;
+			}
+			h2 {
+				clear: both;
 			}
 
     span.left-link
