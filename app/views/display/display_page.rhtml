@@ -1,46 +1,46 @@
 
 <%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected =>1,
-                          :page_id => @page.id }}) %>
+						 :locals => { :selected =>1,
+													:page_id => @page.id }}) %>
 <div class="two-columns">
-  <div class="left-column">
-    <div>
-      <%= render :partial => '/shared/page_navigation' %>
+	<div class="left-column">
+		<div>
+			<%= render :partial => '/shared/page_navigation' %>
 
-      <div class="inside-column">
-        <h2><%= @page.title %></h2>
-      </div>
+			<div class="inside-column">
+				<h2><%= @page.title %></h2>
+			</div>
 
-      <div id="transcription_display_area" class="inside-column">
-        <% if @page.xml_text != nil && 
-              !@page.xml_text.empty? %>
-          <%= xml_to_html(@page.xml_text) %>
-        <% else %>
-            <% if logged_in? && current_user.can_transcribe?(@work) %>
-              <p>
-                <i>
-                  <%= link_to('Help transcribe this page!',
-                              { :controller => 'transcribe',
-                                :action => 'display_page',
-                                :page_id => @page.id,
-                                :ol => 'p_dp_tl' }) %>
-                </i>
-              </p>
-            <% else %>
-		          <p><i>No Transcription</i></p>
-		        <% end %>
-        <% end %>
-      </div>
-    </div>
+			<div id="transcription_display_area" class="inside-column">
+				<% if @page.xml_text != nil && 
+							!@page.xml_text.empty? %>
+					<%= xml_to_html(@page.xml_text) %>
+				<% else %>
+						<% if logged_in? && current_user.can_transcribe?(@work) %>
+							<p>
+								<em>
+									<%= link_to('Help transcribe this page!',
+															{ :controller => 'transcribe',
+																:action => 'display_page',
+																:page_id => @page.id,
+																:ol => 'p_dp_tl' }) %>
+								</em>
+							</p>
+						<% else %>
+							<p><em>No Transcription</em></p>
+						<% end %>
+				<% end %>
+			</div>
+		</div>
 
-    <div class="inside-column">
-      <%= notes_for(@page) %>
-    </div>
-  </div>
-  
-  
+		<div class="inside-column">
+			<%= notes_for(@page) %>
+		</div>
+	</div>
+	
+	
 	<div class="right-column">
-	   <%= render :partial => '/shared/zoom_div' %>
+		 <%= render :partial => '/shared/zoom_div' %>
 	</div>
 
 </div>
