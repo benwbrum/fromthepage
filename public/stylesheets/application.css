@@ -46,10 +46,6 @@ h1.work-logo {
 	left: 8px;
 }
 
-div#navcontainer {
-	background-image: url(../images/design01/nav_back.gif);
-	height: 30px;
-}
 
 div.two-columns {
 	background-image: url(../images/design01/gutter.gif);
@@ -207,33 +203,6 @@ td, th {
 }
 
 
-
-
-/******************************************************************************/
-
-/* container */
-#undernav {
-	color: #fc6;
-	float: right;
-	font: bold x-small tahoma, verdana, arial, sans-serif;
-	padding: 8px 4px 0px 0px;
-}
-
-#undernav a,
-#undernav a:link {
-	color: #fc6;
-}
-
-
-#subundernav {
-border-bottom: 1px solid #749EA9;
-background: #fff;
-text-align: left;
-padding: 1px;
-}
-
-
-
 #leftbar{
 border: 1px solid #dee7ec;
 float: left;
@@ -261,6 +230,13 @@ width:100%;
 
 
 /* Top Navigation */
+
+div#navcontainer {
+	background-image: url(../images/design01/nav_back.gif);
+	height: 30px;
+	margin: 0px;
+}
+
 div#navlist {
 	color: white;
 	font: bold small tahoma, verdana, arial, sans-serif;
@@ -272,6 +248,7 @@ div#navlist a {
 	color: white;
 	display: block;
 	float: left;
+	font: bold small tahoma, verdana, arial, sans-serif;
 	text-decoration: none;
 	margin: 4px 0px 0px 8px;
 	padding: 0px;
@@ -285,6 +262,7 @@ div#navlist a:hover {
 div#navlist div#current {
 	color: gray;
 	float: left;
+	font: bold small tahoma, verdana, arial, sans-serif;
 	margin: 4px 0px 0px 8px;
 	padding: 0px;
 }
@@ -292,7 +270,43 @@ div#navlist div#current {
 div.tweennav {
 	color: white;
 	float: left;
+	font: bold small tahoma, verdana, arial, sans-serif;
 	margin: 4px 0px 0px 8px;
+	padding: 0px;
+}
+
+div#undernavcontainer {
+	background-image: url(../images/design01/nav_back.gif);
+	/* margin: 161px 0px 0px 0px; */
+	position: absolute;
+	top: 161px;
+	height: 30px;
+	width: 200px;
+	right: 0px;
+}
+
+div#undernav {
+	color: #fc6;
+	font: bold small tahoma, verdana, arial, sans-serif;
+	height: 21px;
+	margin: 0px;
+	text-align: right;
+}
+
+div#undernav a {
+	color: #fc6;
+	display: block;
+	float: right;
+	font: bold small tahoma, verdana, arial, sans-serif;
+	margin: 4px 8px 0px 0px;
+	padding: 0px;
+}
+
+div#undernav div.tweennav {
+	color: #fc6;
+	float: right;
+	font: bold small tahoma, verdana, arial, sans-serif;
+	margin: 4px 8px 0px 0px;
 	padding: 0px;
 }
 
