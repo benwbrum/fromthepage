@@ -1,51 +1,51 @@
 
 
 <%= render({ :partial => '/shared/page_tabs',
-						 :locals => { :selected =>3,
-													:page_id => @page.id }}) %>
-	
+             :locals => { :selected =>3,
+                          :page_id => @page.id }}) %>
+  
 
 
 <div class="two-columns">
 	<div class="left-column">
 		
-		<%= render :partial => '/shared/page_navigation' %>
-			<div class="inside-column">
-				<h2><%= @page.title %></h2>
-			</div>
+    <%= render :partial => '/shared/page_navigation' %>
+      <div class="inside-column">
+        <h2><%= @page.title %></h2>
+      </div>
 
 
-		<% if @preview_xml	%>
-			<div class="inside-column">
-				<%= xml_to_html(@preview_xml) %>
-			</div><!-- in col -->
-		<% end %>
+    <% if @preview_xml  %>
+  		<div class="inside-column">
+        <%= xml_to_html(@preview_xml) %>
+  		</div><!-- in col -->
+    <% end %>
 		<div id="transcription_form_area" class="inside-column">
-			<div id="transcription_form">
-				<% form_for(:page, @page, :url => { :action => 'save_transcription' }) do |f| %>
-					<%= hidden_field_tag(:page_id, @page.id) %>
-					<%= f.text_area :source_text, { :cols => 40 } %>
-					<%= submit_tag "Preview", :name => 'preview' %>
-					<%= submit_tag "Autolink", :name => 'autolink' %>
-					<%= submit_tag "Save", :name => 'save' %>
-				<% end%>
-				
-				<%= render({ :partial => 'shared/markup_help'}) %>
-	
-				<% if @work.transcription_conventions	%>
-					<%= @work.transcription_conventions %>
-				<% end %>
-			</div><!-- in col 2 -->
+		  <div id="transcription_form">
+		  <% form_for(:page, @page, :url => { :action => 'save_transcription' }) do |f| %>
+		    <%= hidden_field_tag(:page_id, @page.id) %>
+		    <%= f.text_area :source_text, { :cols => 60 } %>
+		    <%= submit_tag "Preview", :name => 'preview' %>
+		    <%= submit_tag "Autolink", :name => 'autolink' %>
+		    <%= submit_tag "Save", :name => 'save' %>
+		  <% end%>
+		  
+			<%= render({ :partial => 'shared/markup_help'}) %>
+
+    <% if @work.transcription_conventions  %>
+        <%= @work.transcription_conventions %>
+    <% end %>
+		  </div><!-- in col 2 -->
 		</div><!-- in col -->
 	</div><!-- left col -->
 
 	<div class="right-column">
-		 <%= render :partial => '/shared/zoom_div' %>
+	   <%= render :partial => '/shared/zoom_div' %>
 	</div><!-- right col -->
 </div><!-- two col -->
 
-<script type="text/javascript">
-	Event.observe(window, "load", function() {
-		initCheckingForModifications(['zi_icon', 'zi_text', 'zo_icon', 'zo_text']);
-	});
+<script>
+    Event.observe(window, "load", function() {
+        initCheckingForModifications(['zi_icon', 'zi_text', 'zo_icon', 'zo_text']);
+    });
 </script>

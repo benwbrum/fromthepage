@@ -1,110 +1,135 @@
 <!-- 
 Work Tabs
 
-Tab										 Access
--------------------		 ------
-1 Read (blog view)			V
-2 Contents (page list)	V
-3 About								 V
-4 Versions							V
-5 Print								 V
-6 Settings							O
-7 Access								O
+Tab                     Access
+-------------------     ------
+1 Read (blog view)      V
+2 Contents (page list)  V
+3 About                 V
+4 Versions              V
+5 Print                 V
+6 Settings              O
+7 Access                O
 
 -->
 <div id="navcontainer">
-	<div id="navlist">
-		<% if selected == 1 %> 
-			<div id="current">read</div>
-		<% else %>
-				<%= link_to('read', 
-										{ :controller => 'display', 
-											:action => 'read_work', 
-											:work_id => work_id,
-											:ol => 'w_tab_read' }) %>
-		<% end %>
-		<div class="tweennav">|</div>
+  <ul id="navlist">
+    <% if selected == 1 %> 
+      <li id="current">
+        <span>read</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('read', 
+                    { :controller => 'display', 
+                      :action => 'read_work', 
+                      :work_id => work_id,
+                      :ol => 'w_tab_read' }) %>
+      </li>     
+    <% end %>
 
-		<% if selected == 2 %> 
-			<div id="current">contents</div>
-		<% else %>
-				<%= link_to('contents', 
-										{ :controller => 'display', 
-											:action => 'list_pages', 
-											:work_id => work_id,
-											:ol => 'w_tab_contents' }) %>
-		<% end %>
-		<div class="tweennav">|</div>
+    <% if selected == 2 %> 
+      <li id="current">
+        <span>contents</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('contents', 
+                    { :controller => 'display', 
+                      :action => 'list_pages', 
+                      :work_id => work_id,
+                      :ol => 'w_tab_contents' }) %>
+      </li>     
+    <% end %>
 
-		<% if selected == 3 %> 
-			<div id="current">about</div>
-		<% else %>
-				<%= link_to('about', 
-										{ :controller => 'work', 
-											:action => 'show', 
-											:work_id => work_id,
-											:ol => 'w_tab_about' }) %>
-		<% end %>
-		<div class="tweennav">|</div>
+    <% if selected == 3 %> 
+      <li id="current">
+        <span>about</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('about', 
+                    { :controller => 'work', 
+                      :action => 'show', 
+                      :work_id => work_id,
+                      :ol => 'w_tab_about' }) %>
+      </li>     
+    <% end %>
 
-		<% if selected == 4 %> 
-			<div id="current">versions</div>
-		<% else %>
-				<%= link_to('versions', 
-										{ :controller => 'work', 
-											:action => 'versions', 
-											:work_id => work_id,
-											:ol => 'w_tab_versions' }) %>
-		<% end %>
-		<div class="tweennav">|</div>
+    <% if selected == 4 %> 
+      <li id="current">
+        <span>versions</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('versions', 
+                    { :controller => 'work', 
+                      :action => 'versions', 
+                      :work_id => work_id,
+                      :ol => 'w_tab_versions' }) %>
+      </li>     
+    <% end %>
 
-		<% if session[:demo_mode] %>
-			<% if selected == 5 %> 
-				<div id="current">print</div>
-			<% else %>
-					<%= link_to('print', 
-											{ :controller => 'work', 
-												:action => 'print', 
-												:work_id => work_id,
-												:ol => 'w_tab_print' }) %>
-			<% end %>
-		<% end %>
+<% if session[:demo_mode] %>
+    <% if selected == 5 %> 
+      <li id="current">
+        <span>print</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('print', 
+                    { :controller => 'work', 
+                      :action => 'print', 
+                      :work_id => work_id,
+                      :ol => 'w_tab_print' }) %>
+      </li>     
+    <% end %>
+<% end %>
 
-		<% if @work.owner == current_user %>
-			<div class="tweennav">|</div>
-
-			<% if selected == 6 %>
-				<div id="current">settings</div>
-			<% else %>
-					<%= link_to('settings', 
-											{ :controller => 'work', 
-												:action => 'edit', 
-												:work_id => work_id,
-												:ol => 'w_tab_settings' }) %>
-			<% end %>
-			<div class="tweennav">|</div>
+    <% if @work.owner == current_user %>
+	    <% if selected == 6 %> 
+	      <li id="current">
+	        <span>settings</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('settings', 
+	                    { :controller => 'work', 
+	                      :action => 'edit', 
+	                      :work_id => work_id,
+                        :ol => 'w_tab_settings' }) %>
+	      </li>     
+	    <% end %>
 	
-			<% if selected == 7 %> 
-				<div id="current">access</div>
-			<% else %>
-					<%= link_to('access', 
-											{ :controller => 'work', 
-												:action => 'scribes_tab', 
-												:work_id => work_id,
-												:ol => 'w_tab_access' }) %>
-			<% end %>
-			<div class="tweennav">|</div>
+	    <% if selected == 7 %> 
+	      <li id="current">
+	        <span>access</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('access', 
+	                    { :controller => 'work', 
+	                      :action => 'scribes_tab', 
+	                      :work_id => work_id,
+                        :ol => 'w_tab_access' }) %>
+	      </li>     
+	    <% end %>
 
-			<% if selected == 8 %> 
-				<div id="current">pages</div>
-			<% else %>
-					<%= link_to('pages', 
-											{ :controller => 'work', 
-												:action => 'pages_tab', 
-												:work_id => work_id,
-												:ol => 'w_tab_pages' }) %>
-			<% end %>
-		<% end %>
+	    <% if selected == 8 %> 
+	      <li id="current">
+	        <span>pages</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('pages', 
+	                    { :controller => 'work', 
+	                      :action => 'pages_tab', 
+	                      :work_id => work_id,
+                        :ol => 'w_tab_pages' }) %>
+	      </li>     
+	    <% end %>
+    <% end %>
 
-	</div><!-- end id="navlist" -->
-</div><!-- end id="navcontainer" -->
+
+  </ul>
+</div>

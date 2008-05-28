@@ -1,55 +1,71 @@
 <!-- 
 Collection Tabs
 
-Tab												 Access
------------------------		 ------
-1 Show (works/articles)		 V
-2 Settings									O
+Tab                         Access
+-----------------------     ------
+1 Show (works/articles)     V
+2 Settings                  O
 
 -->
 <div id="navcontainer">
-	<div id="navlist">
-		<% if selected == 1 %> 
-			<div id="current">browse</div>
-		<% else %>
-			<%= link_to('browse', 
-				{ :controller => 'collection', 
-				  :action => 'show', 
-				  :collection_id => collection_id,
-				  :ol => 'c_tab_browse' }) %>
-		<% end %>
+  <ul id="navlist">
+    <% if selected == 1 %> 
+      <li id="current">
+        <span>browse</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('browse', 
+                    { :controller => 'collection', 
+                      :action => 'show', 
+                      :collection_id => collection_id,
+                      :ol => 'c_tab_browse' }) %>
+      </li>     
+    <% end %>
 
-		<% article_list_options =
-				{ :controller => 'article',
-				  :action => 'list',
-				  :collection_id => collection_id,
-				  :ol => 'c_tab_subjects' } %>
-		<% if current_page? article_list_options %>
-			<div id="current">articles</div>
-		<% else %>
-			<%= link_to('articles', article_list_options)%>
-		<% end %>
+    <% article_list_options = { :controller => 'article',
+                                 :action => 'list',
+                                 :collection_id => collection_id,
+                                :ol => 'c_tab_subjects' } %>
+    <% if current_page? article_list_options %>
+	      <li id="current">
+	        <span>articles</span>
+	      </li>
+    <% else %>
+	      <li>
+  	      <%= link_to('articles', article_list_options)%>
+	      </li>
+    <% end %>
 
-		<% if @collection.owner == current_user %>
-			<% if selected == 2 %> 
-				<div id="current">settings</div>
-			<% else %>
-				<%= link_to('settings', 
-					{ :controller => 'collection', 
-					  :action => 'edit', 
-					  :collection_id => collection_id,
-					  :ol => 'c_tab_setting' }) %>
-			<% end %>
-			<% if selected == 3 %> 
-				<div id="current">categories</div>
-			<% else %>
-					<%= link_to('categories', 
-							{ :controller => 'category', 
-							  :action => 'manage', 
-							  :collection_id => collection_id,
-							  :ol => 'c_tab_cats' }) %>
-			<% end %>
-		<% end %>
-	</div><!-- end id="navlist" -->
-</div><!-- end id="navcontainer" -->
+    <% if @collection.owner == current_user %>
+	    <% if selected == 2 %> 
+	      <li id="current">
+	        <span>settings</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('settings', 
+	                    { :controller => 'collection', 
+	                      :action => 'edit', 
+	                      :collection_id => collection_id,
+                        :ol => 'c_tab_setting' }) %>
+	      </li>     
+	    <% end %>
+	    <% if selected == 3 %> 
+	      <li id="current">
+	        <span>categories</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('categories', 
+	                    { :controller => 'category', 
+	                      :action => 'manage', 
+	                      :collection_id => collection_id,
+                        :ol => 'c_tab_cats' }) %>
+	      </li>     
+	    <% end %>
+    <% end %>
+
+  </ul>
+</div>
 
