@@ -14,6 +14,7 @@ module WorkHelper
       # create a new section
       docbook_sec = REXML::Element.new('section')
       docbook_sec.add_attribute('id', "page_#{page.id}")
+      docbook_sec.add_attribute('label', "")
 
       # put a title in the section
       sec_title = REXML::Element.new('title')
@@ -28,6 +29,7 @@ module WorkHelper
     # convert p to para
     internal.elements.each("//p") do |e| 
       docbook_para = REXML::Element.new('para')
+      docbook_para.add(REXML::Text.new("")) # docbook can't handle <para/>
       e.children.each { |c| docbook_para.add(c)}
       e.replace_with(docbook_para)
     end

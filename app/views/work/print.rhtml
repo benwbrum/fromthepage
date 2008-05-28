@@ -5,23 +5,29 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
+      <% form_tag ({ :controller => 'work',
+                     :action => 'create_pdf'}) do %>
+	      <%= hidden_field_tag('work_id', @work.id ) %>
+	
+	      <% field_set_tag 'Footnotes' do %>
+		      <%= check_box_tag('name_footnotes') %>
+		      Expand subject full names in footnotes<br />      
+		
+		      <%= check_box_tag('name_footnotes') %>
+		      Include subject articles as footnotes<br />      
+	      <% end %>
+	      <% field_set_tag 'Print Size' do %>
+	        <%= radio_button_tag('visual_acuity', 'normal', true) %>
+          Normal<br />
+	        <%= radio_button_tag('visual_acuity', 'large-type', false) %>
+          Large Type<br />
+	        <%= radio_button_tag('visual_acuity', 'tiny', false) %>
+          Tiny<br />
+	      <% end %>
 
-Possible options:
-Display subject full names as footnotes
-Display subject articles as footnotes
-Large Text 
--V %visual-acuity%=large-type
--V %visual-acuity%=presbyopic
-Double-sided Text (can't get this to work now)
-Paper Size (not sure what's appropriate)
-Print Index
+        <%= submit_tag 'Create PDF' %>
 
-form should include checkboxes for article footnotes, expansion footnotes, and comments.  
-Possibly display a chapter controller here as well.
-<%= button_to("Print",
-            { :controller => 'work',
-              :action => 'create_pdf',
-              :work_id => @work.id }) %>
+      <% end %>
     </div>
   </div>
 </div>
