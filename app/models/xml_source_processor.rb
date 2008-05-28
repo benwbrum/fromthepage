@@ -20,6 +20,9 @@ module XmlSourceProcessor
 
   def validate_source
     debug('validate_source')
+    if self.source_text.blank?
+      return
+    end
     # split on all begin-braces
     tags = self.source_text.split('[[')
     # remove the initial string which occurs before the first tag
@@ -64,7 +67,7 @@ module XmlSourceProcessor
     self.xml_text = ""
 
     # convert the source to xml
-    xml_string = self.source_text
+    xml_string = self.source_text || ""
     xml_string = process_square_braces(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
