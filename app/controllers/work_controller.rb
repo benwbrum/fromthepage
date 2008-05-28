@@ -38,7 +38,7 @@ class WorkController < ApplicationController
     end
 
     
-    dp_cmd = "/usr/bin/docbook2pdf #{doc_tmp_path} -o #{tmp_path}  -V bop-footnotes=t -V tex-backend > #{tmp_path}/d2p.out 2> #{tmp_path}/d2p.err"
+    dp_cmd = "#{DOCBOOK_2_PDF} #{doc_tmp_path} -o #{tmp_path}  -V bop-footnotes=t -V tex-backend > #{tmp_path}/d2p.out 2> #{tmp_path}/d2p.err"
     logger.debug("DEBUG #{dp_cmd}")
     #IO.popen(dp_cmd)
     

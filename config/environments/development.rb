@@ -19,3 +19,4 @@ config.action_mailer.raise_delivery_errors = false
 
 # Where is neato?
 NEATO = '/usr/bin/neato'
+DOCBOOK_2_PDF = '/usr/bin/docbook2pdf'

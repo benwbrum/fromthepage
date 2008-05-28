@@ -20,3 +20,4 @@ config.action_view.cache_template_loading            = true
 
 # Where is neato?
 NEATO = '/usr/local/bin/neato'
+DOCBOOK_2_PDF = '/usr/local/bin/docbook2pdf'
