@@ -116,7 +116,7 @@
             <ul>
 	            <% for user in @users %>
 	              <li>
-	                <%= link_to (user.display_name,
+	                <%= link_to(user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => user.id }) %>
