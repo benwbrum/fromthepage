@@ -70,6 +70,13 @@
       border-top: 1px solid #ddd;
       font-size: 80%;
     }
+    
+    div.thumbnail-container
+    {
+        float: right;
+				margin-left: 2em;	
+				margin-bottom: 1em;	
+    }
 @charset "iso-8859-1";
 
 /*******************************************************************************
@@ -470,6 +477,13 @@ background-color: #DEE7EC
 #zoom_in
 {
   visibility: visible;
+}
+
+
+#page-title
+{
+	font-size: 180%;
+  font-weight:bold;
 }
 
 p.right
