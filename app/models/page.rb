@@ -14,6 +14,8 @@
 # t.column :lock_version, :integer, :default => 0
 
 class Page < ActiveRecord::Base
+  require 'RMagick'
+  
   include XmlSourceProcessor
   before_update :process_source
   
@@ -68,6 +70,15 @@ class Page < ActiveRecord::Base
       self[:base_image].sub(/.jpg/, "_#{factor}.jpg")
     end
   end
+  
+  # Returns the thumbnail filename
+  # creates the image if it's not present
+  def thumbnail_image
+    if !File.exists?(thumbnail_filename())
+      generate_thumbnail      
+    end
+    return thumbnail_filename 
+  end
 
 
   def create_version
@@ -121,6 +132,20 @@ class Page < ActiveRecord::Base
     link.save!
     return link.id        
   end
+
+private
+  def thumbnail_filename
+    self[:base_image].sub(/.jpg/, "_thumb.jpg")
+  end
+
+  def generate_thumbnail
+    image = Magick::ImageList.new(self[:base_image])
+    factor = 110.to_f / self[:base_height].to_f
+    image.thumbnail!(factor)
+    image.write(thumbnail_filename)
+    image = nil
+  end
+
 
 
 end
