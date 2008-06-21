@@ -24,22 +24,25 @@
 		    <i>No Contents Provided</i>
 		  <% end %>
 	</div>
-	<div class="inside-column">
-		<h3>Possible Duplicates</h3>
-		<p>
-			<% @article.possible_duplicates.each do |dup| %>
-				<%= link_to(dup.title, :article_id => dup.id) %>
-				<i>(<%= link_to("combine into #{@article.title}",
-								{ :action => 'combine',
-								  :from_article_id => dup.id,
-								  :article_id => @article.id},
-								{ :confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>)
-								</i>
-								  
-			  <br />
-			<% end %>
-		</p>
-	</div>
+	<% if logged_in? %>
+		<div class="inside-column">
+			<h3>Possible Duplicates</h3>
+			<p>
+				<% @article.possible_duplicates.each do |dup| %>
+					<%= link_to(dup.title, :article_id => dup.id) %>
+					<i><%= button_to("Combine",
+									{ :action => 'combine',
+									  :from_article_id => dup.id,
+									  :article_id => @article.id},
+									{ :title => "Combines #{dup.title} into #{@article.title}",
+										:confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>
+									</i>
+									  
+				  <br />
+				<% end %>
+			</p>
+		</div>
+	<% end %>
   </div>
 		
   <div class="right-column">
