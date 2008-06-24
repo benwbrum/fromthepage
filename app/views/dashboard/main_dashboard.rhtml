@@ -100,9 +100,9 @@
       <% end %>
       <% if logged_in? && current_user.admin %>
         <div>
-          <p>
-            Admin Dashboard Contents Go Here
-          </p>
+          <h3>
+            Admin Dashboard
+          </h3>
           
 				  <p>
 				      <%= link_to("View Logfile", 
@@ -110,6 +110,14 @@
 				                    :action => 'tail_logfile', 
 				                    :lines => 500,
                             :ol => 'd_tail_log' }) %>
+				  </p>
+         
+				  <p>
+				      <%= link_to("Recent Errors", 
+				                  { :controller => 'admin',
+				                    :action => 'error_list', 
+				                    :limit => 50,
+                            :ol => 'd_recent_errors' }) %>
 				  </p>
           <p>
             Users

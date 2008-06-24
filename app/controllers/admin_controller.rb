@@ -69,6 +69,17 @@ class AdminController < ApplicationController
       Interaction.find(:all, {:conditions => conditions , :order => 'id ASC'})
   end
   
+  # display last interactions, including who did what to which
+  # actor, action, object, detail 
+  def error_list
+    # interactions with errors
+    limit = params[:limit] || 50
+    @interactions = 
+      Interaction.find(:all, 
+                       {:conditions => "status='incomplete'", 
+                        :order => 'id DESC',
+                        :limit => limit})
+  end
   
   def tail_logfile
     @lines = params[:lines].to_i
