@@ -1,8 +1,13 @@
 class ArticleController < ApplicationController
+  before_filter :authorized?, :except => [:graph, :list, :show]
 
   include AbstractXmlController
   
   DEFAULT_ARTICLES_PER_GRAPH = 40
+  
+  def authorized?
+    return logged_in?
+  end
   
   def list
     # Differences from previous implementation:
