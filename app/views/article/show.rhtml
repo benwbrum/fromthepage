@@ -31,7 +31,7 @@
 				<% @article.possible_duplicates.each do |dup| %>
 					<%= link_to(dup.title, :article_id => dup.id) %>
 					<i><%= button_to("Combine",
-									{ :action => 'combine',
+									{ :action => 'combine_duplicate',
 									  :from_article_id => dup.id,
 									  :article_id => @article.id},
 									{ :title => "Combines #{dup.title} into #{@article.title}",

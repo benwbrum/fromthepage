@@ -55,7 +55,7 @@ class ArticleController < ApplicationController
     render :text => "success"
   end 
 
-  def combine
+  def combine_duplicate
     # @article contains "to" article
     from_article = Article.find(params[:from_article_id])
     combine_articles(from_article, @article)
