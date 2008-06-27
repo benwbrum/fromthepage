@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
   before_filter :log_interaction
+  before_filter :store_location_for_login
   after_filter :complete_interaction
 
   # See ActionController::RequestForgeryProtection for details
@@ -104,4 +105,11 @@ class ApplicationController < ActionController::Base
   def complete_interaction
     @interaction.update_attribute(:status, 'complete')
   end   
+
+  
+  def store_location_for_login
+    unless action_name == 'login'
+      store_location
+    end
+  end
 end
