@@ -1,0 +1,24 @@
+<div id="trends">
+	<div class="block">
+		<h2>trends</h2>
+		<div class="chart">
+			<h4>24 hour</h4>
+			<%= chart_for(@uri.last_24_hours) %>
+		</div>
+		<div class="chart">
+			<h4>30 day</h4>
+			<%= chart_for(@uri.last_30_days)%>
+		</div>	
+	</div>
+</div>
+<div id="summary">
+	<div class="block">
+		<h2>summary</h2>
+		<ul>
+			<li><span>measured:</span><b><%= @uri.clientperf_results.count %></b> times</li>
+			<li><span>average time:</span><b><%= number_with_precision(@uri.clientperf_results.average(:milliseconds) / 1000.to_f, 2) %></b> seconds</li>
+			<li><span>first seen:</span><b><%= @uri.created_at.strftime("%m/%d/%Y") %></b></li>
+			<li><span>last seen:</span><b><%= distance_of_time_in_words(@uri.updated_at, Time.now) %></b> ago</li>
+		</ul>		
+	</div>
+</div>
