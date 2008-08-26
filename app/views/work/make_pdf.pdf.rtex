@@ -1,0 +1,23 @@
+\documentclass[12pt,leqno]{book}
+
+\title{1918 Diary}
+
+\begin{document}
+\maketitle
+ \addcontentsline{toc}{chapter}{Contents}
+\pagenumbering{roman}
+\tableofcontents
+
+
+\chapter{Basics of Extension and Lifting Problems}
+\begin{center}
+{\small\em To boldly go where no map has gone before}
+\end{center}
+
+\section{Existence problems}
+We begin with some metamathematics.
+All problems about the existence of maps can be cast into one of the
+following two forms, which are in a sense mutually dual.
+
+
+\end{document}

@@ -6,7 +6,7 @@
   <div class="left-column">
     <div class="inside-column">
       <% form_tag ({ :controller => 'work',
-                     :action => 'create_pdf'}) do %>
+                     :action => 'make_pdf.pdf'}) do %>
 	      <%= hidden_field_tag('work_id', @work.id ) %>
 	
 	      <% field_set_tag 'Footnotes' do %>
