@@ -1,1 +1,2 @@
-File.dirname(__FILE__) << "/rails/init"
+require 'rtex'
+RTeX.framework :rails
