@@ -1,0 +1,48 @@
+% This percent indicates a comment.
+% This is a very simple latex article that introduces the way 
+% equations are typeset.  Do this in linux:
+%
+% latex first.tex
+% latex first.tex
+% xdvi first.dvi
+% dvips -o first.ps first.dvi
+% gv first.ps
+% lpr first.ps
+% pdflatex first.tex
+% acroread first.pdf
+\documentclass[12pt]{article}
+\title{First \LaTeX} 
+\author{<%= @author %>}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\abstract{This is a very simple example of using \LaTeX\ for typesetting.
+The procedure for typesetting equations is introduced.}
+
+\section{A few equations}
+Equations can be typeset inline like so: $\vec{F}=m\vec{a}$ .
+Equations can also be separated form the text: $$ \vec{F}=m\vec{a} \ . $$
+Notice the punctuation, the ``.'', had to be included with the equation. 
+Equations can also have a number assigned and a label attached,
+as in the following:
+\begin{equation}
+\frac{D\vec{\omega}}{Dt} =
+( \vec{\omega} + \vec{\Omega}) \cdot \nabla  \vec{U}
++ \frac{1}{\rho^2} \nabla \rho \times \nabla p 
++ \nu \nabla^2  \vec{\omega} 
+\label{vorteq}
+\end{equation}
+The vorticity equation (\ref{vorteq}) is referenced by label,
+not by number.  The numbers may change as the document grows and
+more equations are added.
+
+New paragraphs are indicated with a blank line in the source code.
+
+\section{The End}
+
+Further examples of \LaTeX\ can be found at {\tt it.metr.ou.edu}
+
+\end{document}
