@@ -1,0 +1,16 @@
+\documentclass{book}
+
+\title{<%= @collection.title %>\\<%= @work.title %>}
+\author{<%= @work.author %>}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+\chapter{Diary Entries}
+
+\section{Page Title goes here}
+Page contents go here
+
+\end{document}
