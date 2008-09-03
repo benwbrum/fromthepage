@@ -1,0 +1,6 @@
+\title{<%= @collection.title %>\\<%= @work.title %>}
+\author{<%= @work.author %>}
+
+\maketitle
+
+This is some text between the title and the TOC
