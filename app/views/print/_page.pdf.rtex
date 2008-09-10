@@ -1,3 +1,4 @@
 
 \section*{<%= page.title %>}
-{\sc Page} contents go here
+
+<%= xml_to_latex(page.xml_text) %>

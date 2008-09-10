@@ -21,7 +21,7 @@ module PrintHelper
     page.elements.each("//p") do |para|
       latex << '\n\n' 
       para.each do |e|
-        p e
+        #p e
         latex << e.to_s
       end
     end
