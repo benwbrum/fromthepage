@@ -86,7 +86,7 @@ module PrintHelper
     end
     
     article.elements.each("//p") do |para|
-      latex << "\n\n" 
+      latex << "\n \n \n" 
       para.each do |e|
         #p e
         latex << e.to_s
