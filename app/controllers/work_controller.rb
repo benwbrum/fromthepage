@@ -73,7 +73,8 @@ class WorkController < ApplicationController
   def versions
     @page_versions = 
       PageVersion.find(:all, 
-                       :conditions => ['page_id IN (SELECT page_id FROM pages WHERE work_id = ?)',
+                       :joins => :page,
+                       :conditions => ['pages.work_id = ?',
                                        @work.id],
                        :order => "work_version desc")
   end
