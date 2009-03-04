@@ -92,7 +92,7 @@
         Action
     </th>
  </tr>
- <% for version in @user.article_versions.find(:all, :limit => 10) %>
+ <% for version in @user.article_versions.find(:all, :limit => 10, :joins => :article) %>
    <tr>
      <td class="revision" width="55%">
        <%= link_to(version.article.title, 
