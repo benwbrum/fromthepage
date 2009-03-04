@@ -69,12 +69,13 @@
     { 
       border-top: 1px solid #ddd;
       font-size: 80%;
+      clear: both;
     }
     
     div.thumbnail-container
     {
         float: right;
-				margin-left: 2em;	
+				margin-left: 1em;	
 				margin-bottom: 1em;	
     }
 @charset "iso-8859-1";

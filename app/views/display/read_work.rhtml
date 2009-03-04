@@ -7,10 +7,10 @@
 	  <% for page in @pages %>
 	    <div class="inside-column">
 	   		<div class="thumbnail-container">
-			      <!-- link_to(image_tag(file_to_url(page.thumbnail_image)),
+			      <%= link_to(image_tag(file_to_url(page.thumbnail_image)),
 		                    { :action => 'display_page',
 		                      :page_id => page.id,
-	                        :ol => 'w_rw_p_pl' }) -->
+	                        :ol => 'w_rw_p_pl' })  %>
         </div>
 	  
 	      <div>

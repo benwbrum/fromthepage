@@ -75,7 +75,9 @@ class Page < ActiveRecord::Base
   # creates the image if it's not present
   def thumbnail_image
     if !File.exists?(thumbnail_filename())
-      generate_thumbnail      
+      if File.exists? self.base_image
+        generate_thumbnail      
+      end
     end
     return thumbnail_filename 
   end
@@ -140,7 +142,7 @@ private
 
   def generate_thumbnail
     image = Magick::ImageList.new(self[:base_image])
-    factor = 110.to_f / self[:base_height].to_f
+    factor = 100.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil
