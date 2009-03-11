@@ -40,6 +40,11 @@ module AbstractXmlHelper
         e.replace_with(lb)
       end
     end
+    unless logged_in?
+      doc.elements.each("//sensitive") do |e|
+        e.replace_with(REXML::Comment.new("sensitive information suppressed"))
+      end
+    end
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
