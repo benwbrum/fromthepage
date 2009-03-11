@@ -45,29 +45,38 @@ blog</a>.
                           :ol => 's_sp_1918' }) %></b>
 </p>
 <p>
+        The 1919 diary was transcribed by volunteers using FromThePage.
+        The majority of the transcription was performed by Linda Tucker,
+        while editing and annotation was performed by Ben Brumfield.  
+        The subject matter and transcription conventions are similar 
+        to those of the 1918 diary.
+</p>
+<p>     
+        <b><%= link_to('Read the 1919 diary',
+                        { :controller => 'display',
+                          :action => 'read_work',
+                          :work_id => 3,
+                          :ol => 's_sp_1919' }) %></b>
+</p>
+<p>
 </p>
 </div>
 
 <div class="splash-block">
 <h3>Transcribe Manuscripts</h3>
 <p>
-        The 1919 diary awaits volunteers to transcribe it.  To help, or just
+        The 1921 diary awaits volunteers to transcribe it.  To help, or just
         to try out the FromThePage software, you'll need to 
         <%= link_to('create an account',
                     { :controller => 'account',
                       :action => 'signup',
                       :ol => 's_sp_signup' }) %>.  
-        Then <b><%= link_to('visit the 1919 diary',
+        Then <b><%= link_to('visit the 1921 diary',
                             { :controller => 'display',
                               :action => 'read_work',
-                              :work_id => 3,
-                              :ol => 's_sp_1919' }) %></b> 
-        and click the edit tab on any page,
-        <%= link_to('like this one, for January 11',
-                    { :controller => 'transcribe',
-                      :action => 'display_page',
-                      :page_id => 764,
-                      :ol => 's_sp_jan11' }) %>.
+                              :work_id => 6,
+                              :ol => 's_sp_1921' }) %></b> 
+        and click the <code>transcribe</code> tab on any page.
 </p>
 </div>
 
