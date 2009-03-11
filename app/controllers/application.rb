@@ -84,9 +84,7 @@ class ApplicationController < ActionController::Base
     if(logged_in?)
       @interaction.user_id = current_user.id
     end
-    if(action_name != :login && action_name != :signup)
-      @interaction.params = params.inspect
-    end
+    @interaction.params = params.reject{|k,v| k=='password'}.inspect
     @interaction.status = 'incomplete'
     # app specific stuff
     @interaction.action = action_name
