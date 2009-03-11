@@ -30,11 +30,11 @@
 		    <%= submit_tag "Save", :name => 'save' %>
 		  <% end%>
 		  
-			<%= render({ :partial => 'shared/markup_help'}) %>
 
     <% if @work.transcription_conventions  %>
         <%= @work.transcription_conventions %>
     <% end %>
+			<%= render({ :partial => 'shared/markup_help'}) %>
 		  </div><!-- in col 2 -->
 		</div><!-- in col -->
 	</div><!-- left col -->
