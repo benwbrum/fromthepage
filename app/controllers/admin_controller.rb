@@ -27,7 +27,11 @@ class AdminController < ApplicationController
     else
       @user_name = 'Anonymous'
       condition = "user_id is null and browser not like '%google%' "+
-        "and browser not like '%Yahoo! Slurp%' " 
+        "and browser not like '%Yahoo! Slurp%' "+ 
+        "and browser not like '%msnbot%' "+ 
+        "and browser not like '%Twiceler%' "+ 
+        "and browser not like '%Alexa Toolbar%' "+ 
+        "and browser not like '%majestic12%' " 
     end
     sql = 'select session_id, '+
           'browser, '+
