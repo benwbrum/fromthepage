@@ -1,3 +1,9 @@
+<div id="context_wrapper" class="inside-column">
+  <%= link_to("Read pages that mention <i>#{@article.title}</i> in all works.",
+              :controller => 'display',
+              :action => 'read_all_works',
+              :article_id => @article.id) %>
+</div>
 <div id="link_wrapper" class="inside-column">
 	<div>
 		<p>Pages that refer to <%= @article.title %>:</p>
