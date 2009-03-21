@@ -5,10 +5,14 @@
 	<a name="comment_<%=note.id%>"></a>
 	
 				
-	<div class="text">
+	<div class="text" id="note_<%=note.id%>">
 		<%= note.to_html %>
 	</div>	
-		
+<% if user && user == note.user %>
+<%= in_place_editor("note_#{note.id}",
+                    { :url => url_for({ :action => "set_note_body", 
+                                        :id => note.id }) }) %>
+<% end %>		
 	<div>
 		<i>by <%= link_to (note.user.display_name,
 	                           { :controller => 'user',
