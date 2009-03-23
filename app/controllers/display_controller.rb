@@ -34,4 +34,18 @@ class DisplayController < ApplicationController
     end                                      
   end
 
+  def search
+    @search_string = params[:search_string]
+    # restrict to pages that include that subject
+    @pages = Page.paginate :all, :page => params[:page],  
+                                      :order => 'work_id, position',
+                                      :per_page => 5,
+                                      :joins => :work,
+                                      :conditions =>
+                                        ["works.collection_id = ? AND match(xml_text) AGAINST(? IN BOOLEAN MODE)", 
+                                        @collection.id,
+                                        @search_string.gsub(/(\S+)/, '+\1*')]
+                                      
+  end
+
 end
