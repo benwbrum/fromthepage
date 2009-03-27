@@ -26,6 +26,11 @@
 			    y_offset = 0;
 			    set_cursor_for_normal();
           $('zoom_in').style.visibility='visible';
+          new Ajax.Request('<%= url_for(:controller => 'transcribe', :action => 'unzoom') %>',
+	 		        { parameters: 
+	 		              'page_id='
+	 		            + '<%= @page.id %>'
+	 		         });
    		  }
 			  zoom_image = function() {
 			    set_cursor_for_ready_to_zoom();

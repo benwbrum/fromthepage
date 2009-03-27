@@ -6,7 +6,7 @@ class TranscribeController  < ApplicationController
   require 'rexml/document'
   include Magick
   before_filter :authorized?, :except => :zoom
-  protect_from_forgery :except => :zoom
+  protect_from_forgery :except => [:zoom, :unzoom]
   
   def authorized?
     if logged_in? 
@@ -139,6 +139,16 @@ class TranscribeController  < ApplicationController
     @x_offset = crop_x
     @y_offset = crop_y
   end  
+  
+  def unzoom
+    @zoomed_files = @page.base_image.sub(/.jpg/, "*.zoom.jpg")
+    logger.debug("DEBUG: rm #{@zoomed_files}")
+    Dir.glob(@zoomed_files) do |filename|
+      logger.debug("DEBUG: unlinking #{filename}")
+      File.unlink(filename)
+    end
+    render :text => ""  
+  end
 
 protected
 
