@@ -35,17 +35,48 @@ class DisplayController < ApplicationController
   end
 
   def search
-    @search_string = params[:search_string]
-    # restrict to pages that include that subject
-    @pages = Page.paginate :all, :page => params[:page],  
-                                      :order => 'work_id, position',
-                                      :per_page => 5,
-                                      :joins => :work,
-                                      :conditions =>
-                                        ["works.collection_id = ? AND match(xml_text) AGAINST(? IN BOOLEAN MODE)", 
-                                        @collection.id,
-                                        @search_string.gsub(/(\S+)/, '+\1*')]
-                                      
+    if @article
+      # get the unique search terms
+      terms = []
+      @search_string = ""
+      @article.page_article_links.each do |link|
+        terms << link.display_text.gsub(/\s+/, ' ')
+      end
+      terms.uniq!
+      # process them for display and search
+      terms.each do |term|
+        # don't add required text
+        if term.match(/ /)
+          @search_string += "\"#{term}\" "
+        else
+          @search_string += term + "* "
+        end
+      end
+      @pages = Page.paginate :all, :page => params[:page],  
+                                        :order => 'work_id, position',
+                                        :per_page => 5,
+                                        :joins => :work,
+                                        :conditions =>
+                                          ["works.collection_id = ? AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", 
+                                          @collection.id,
+                                          @search_string]
+    else  
+      @search_string = params[:search_string]
+      # convert 'natural' search strings unless they're precise
+      unless @search_string.match(/["+-]/)
+        @search_string.gsub!(/(\S+)/, '+\1*')
+      end
+      # restrict to pages that include that subject
+      @pages = Page.paginate :all, :page => params[:page],  
+                                        :order => 'work_id, position',
+                                        :per_page => 5,
+                                        :joins => :work,
+                                        :conditions =>
+                                          ["works.collection_id = ? AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", 
+                                          @collection.id,
+                                          @search_string]
+    end                                      
+    logger.debug "DEBUG #{@search_string}"
   end
 
 end

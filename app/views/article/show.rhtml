@@ -46,6 +46,16 @@
   </div>
 		
   <div class="right-column">
+		<div class="inside-column">
+		  <h3>References</h3>
+		  <p>
+		    Search the text for:<br />
+        <%=link_to("All references to #{@article.title}",
+                   { :controller => 'display',
+                     :action => 'search',
+                     :article_id => @article.id }) %>
+		  </p>
+    </div>
     <%= render :partial => 'article_links' %>
 
   </div>

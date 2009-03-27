@@ -7,5 +7,6 @@ class PagesAreFulltext < ActiveRecord::Migration
   end
 
   def self.down
+    execute "DROP INDEX pages_xml_text_index ON pages;"
   end
 end

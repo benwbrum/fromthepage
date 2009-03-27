@@ -85,8 +85,8 @@
 	
 	<div class="right-column">
 	  <% if @search_string %>
-      <h2>Search</h2>
       <div class="inside-column">
+        <h2>Search</h2>
 		      <% form_tag({:controller => 'display', :action => 'search'}, :method => :get) do %>
 	        <%=  text_field_tag 'search_string', @search_string %>
 	        <%=  hidden_field_tag('collection_id', @collection.id) %>
