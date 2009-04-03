@@ -52,14 +52,28 @@ class DisplayController < ApplicationController
           @search_string += term + "* "
         end
       end
+      if params[:unlinked_only]
+        conditions = 
+          ["works.collection_id = ? "+
+          "AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)"+
+          " AND pages.id not in "+
+          "    (SELECT page_id FROM page_article_links WHERE article_id = ?)",
+          @collection.id,
+          @search_string,
+          @article.id]
+
+      else
+        conditions = 
+          ["works.collection_id = ? "+
+          "AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", 
+          @collection.id,
+          @search_string]
+      end
       @pages = Page.paginate :all, :page => params[:page],  
                                         :order => 'work_id, position',
                                         :per_page => 5,
                                         :joins => :work,
-                                        :conditions =>
-                                          ["works.collection_id = ? AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", 
-                                          @collection.id,
-                                          @search_string]
+                                        :conditions => conditions
     else  
       @search_string = params[:search_string]
       # convert 'natural' search strings unless they're precise

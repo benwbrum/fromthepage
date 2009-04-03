@@ -54,6 +54,12 @@
                    { :controller => 'display',
                      :action => 'search',
                      :article_id => @article.id }) %>
+                     </br>
+  <%= link_to("All references to <i>#{@article.title}</i> in pages that do not link to this article",
+              :controller => 'display',
+              :action => 'search',
+              :article_id => @article.id,
+              :unlinked_only => true) %>
 		  </p>
     </div>
     <%= render :partial => 'article_links' %>
