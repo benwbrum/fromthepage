@@ -23,24 +23,25 @@ module AbstractXmlController
     matches.reverse!
 
     for match in matches
+      match_regex = Regexp.new('\b'+match['display_text'].gsub('?', '\?')+'\b')
       display_text = match['display_text']
-      logger.debug("DEBUG looking for #{display_text}")
-      if text.include? display_text
-        logger.debug("DEBUG found #{display_text}")
+      logger.debug("DEBUG looking for #{match_regex}")
+      if text.match match_regex
+        logger.debug("DEBUG found #{match_regex}")
         # is this already within a link?
         
-        match_start = text.index display_text
+        match_start = text.index match_regex
         if word_not_okay(text, match_start, display_text)||within_link(text, match_start)
           # within a link, but try again somehow
         else
           # not within a link, so create a new one
-          logger.debug("DEBUG #{display_text} is not a link 2")
+          logger.debug("DEBUG #{match_regex} is not a link 2")
           article = Article.find(match['article_id'].to_i)
           # Bug 19 -- simplify when possible
           if article.title == display_text
-            text.sub!(display_text, "[[#{article.title}]]")
+            text.sub!(match_regex, "[[#{article.title}]]")
           else
-            text.sub!(display_text, "[[#{article.title}|#{display_text}]]")
+            text.sub!(match_regex, "[[#{article.title}|#{display_text}]]")
           end
         end 
       end
