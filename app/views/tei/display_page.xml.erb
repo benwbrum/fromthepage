@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<teiCorpus.2 id="entries1935-07">
+−
+<teiHeader>
+−
+<fileDesc>
+−
+<titleStmt>
+−
+<title>
+Diary of Robert Graves 1935-39 and ancillary material
+</title>
+<author>Graves, Robert (1895-1985)</author>
+−
+<respStmt>
+<resp>compiled by</resp>
+<name>Beryl Graves, C.G. Petter, L.R. Roberts</name>
+</respStmt>
+</titleStmt>
+−
+<publicationStmt>
+<publisher>University of Victoria Libraries</publisher>
+<pubPlace>Victoria B.C., Canada</pubPlace>
+<idno>RG No. 50</idno>
+−
+<availability status="unknown">
+<p>available by permission of the Robert Graves Trust</p>
+</availability>
+<date>2002</date>
+</publicationStmt>
+−
+<sourceDesc>
+−
+<biblFull>
+−
+<titleStmt>
+−
+<title>
+Diary of Robert Graves 1935-39 and ancillary material
+</title>
+<author>Graves, Robert (1895-1985)</author>
+</titleStmt>
+−
+<publicationStmt>
+<publisher>University of Victoria Libraries</publisher>
+<pubPlace>Victoria B.C., Canada</pubPlace>
+<date>2002</date>
+</publicationStmt>
+</biblFull>
+</sourceDesc>
+</fileDesc>
+</teiHeader>
+−
+<TEI.2 id="diary-1935-07">
+−
+<teiHeader>
+−
+<fileDesc>
+−
+<titleStmt>
+<title>Diary entries for July 1935</title>
+</titleStmt>
+−
+<publicationStmt>
+<p/>
+</publicationStmt>
+−
+<sourceDesc>
+<p/>
+</sourceDesc>
+</fileDesc>
+−
+<profileDesc>
+−
+<handList>
+<hand id="RG" style="ink correction" ink="black" character="regular" first="yes" resp="eds"/>
+<hand id="BG" style="typewritten" ink="black" character="schooled" first="no" resp="eds"/>
+<hand id="KG" style="ink correction of BG tss" ink="red" character="schooled" first="no" resp="eds"/>
+</handList>
+</profileDesc>
+</teiHeader>
+−
+<text>
+−
+<body>
+−
+<div type="diaryentry" n="<%= @page.id %>">
+<head>
+<%= @page.title %>
+</head>
+        <% if @page.xml_text != nil && 
+              !@page.xml_text.empty? %>
+          <%= xml_to_html(@page.xml_text) %>
+        <% else %>
+          <p><i>No Transcription</i></p>
+        <% end %>
+  
+<p>
+
+	Up at 7.30. Wedding of 
+<rs type="person" key="FM1">Francisca</rs>
+ the 
+<foreign>Modista</foreign>
+<note>Dressmaker. KG</note>
+ and 
+<rs type="person" key="JM1">Juan Gelat</rs>
+'s nephew. At 
+<rs type="place" key="BLP01">new café</rs>
+: nice atmosphere. Bride wore hat: innovation. 
+<rs type="person" key="MM3">Magdalena</rs>
+ joking. 
+−
+<add hand="RG" place="supralinear">
+Visit to changed 
+<rs type="place" key="Vin01">Viña Vieja</rs>
+.
+</add>
+ In morning more work on 
+<rs type="person" key="FR2">Richards</rs>
+−
+<note>
+−
+<bibl>
+−
+<rs type="cita" key="OSS">
+<hi rend="underline">Old Soldier Sahib</hi>
+</rs>
+</bibl>
+ eds
+</note>
+. Girls cooked up blackberries with sugar only leaving me to pour out. 5 lb pots & about 16 tiny pots. Success. ex-mustard. Sea: left wristwatch there. Went over 
+−
+<bibl>
+<rs type="cita" key="EpI">Epilogue</rs>
+</bibl>
+ blurb with 
+<rs type="person" key="LR1">Laura</rs>
+ & made lemonade-ice. Nice letter from 
+<rs type="person" key="MR2">Michael Roberts</rs>
+. 
+<rs type="person" key="LR1">Laura</rs>
+ cabled 
+<del hand="RG" status="unremarkable">would</del>
+ he could come if he liked. Put paper in jelly-jars. Went over 
+<rs type="person" key="JR1">James Reeves</rs>
+ blurb with 
+<rs type="person" key="LR1">Laura</rs>
+. 
+<rs type="person" key="Ca6">Catalina</rs>
+ came (owed 24p
+<supplied>[ts]</supplied>
+.) & had ice, also 
+<rs type="person" key="Is1">Isabel</rs>
+, her mother, 
+<rs type="person" key="Jo4">Josepha</rs>
+ & 
+<rs type="person" key="Ca6">Catalina</rs>
+'s boy who also got 1 pes.
+<note>peseta. KG</note>
+</p>
+−
+<p>
+ Then worked with 
+<rs type="person" key="LR1">Laura</rs>
+ at 
+−
+<bibl>
+<rs type="cita" key="EpI">Epilogue</rs>
+</bibl>
+ blurb & she did 
+−
+<bibl>
+−
+<rs type="cita" key="PoS">
+<hi rend="underline">Progress of Stories</hi>
+</rs>
+</bibl>
+ blurb & I went over it, and then there was a statement to make about 
+<rs type="organization" key="SP1">Seizin Press Publishing</rs>
+ in the 
+<rs type="organization" key="Co2">Constable</rs>
+ list 
+<del hand="RG" status="unremarkable">& we nearly fell asleep working out a point,</del>
+ & I went over the proofs of 
+<rs type="person" key="JR1">James Reeves</rs>
+' poems 
+<add hand="RG" place="inline">& we nearly fell asleep working out a point</add>
+ in one of the blurbs & then it was 3.30 a.m. again.
+</p>
+</div>
+</body>
+</text>
+</TEI.2>
+</teiCorpus.2>
