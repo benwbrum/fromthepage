@@ -3,63 +3,53 @@
 −
 <teiHeader>
 −
-<fileDesc>
-−
-<titleStmt>
-−
-<title>
-Diary of Robert Graves 1935-39 and ancillary material
-</title>
-<author>Graves, Robert (1895-1985)</author>
-−
-<respStmt>
-<resp>compiled by</resp>
-<name>Beryl Graves, C.G. Petter, L.R. Roberts</name>
-</respStmt>
-</titleStmt>
-−
-<publicationStmt>
-<publisher>University of Victoria Libraries</publisher>
-<pubPlace>Victoria B.C., Canada</pubPlace>
-<idno>RG No. 50</idno>
-−
-<availability status="unknown">
-<p>available by permission of the Robert Graves Trust</p>
-</availability>
-<date>2002</date>
-</publicationStmt>
-−
-<sourceDesc>
-−
-<biblFull>
-−
-<titleStmt>
-−
-<title>
-Diary of Robert Graves 1935-39 and ancillary material
-</title>
-<author>Graves, Robert (1895-1985)</author>
-</titleStmt>
-−
-<publicationStmt>
-<publisher>University of Victoria Libraries</publisher>
-<pubPlace>Victoria B.C., Canada</pubPlace>
-<date>2002</date>
-</publicationStmt>
-</biblFull>
-</sourceDesc>
-</fileDesc>
+	<fileDesc>
+	−
+		<titleStmt>
+		−
+			<title>
+				<%=@work.title%>
+			</title>
+			<author><%=@work.author%></author>
+			−
+			<respStmt>
+				<resp>transcribed by</resp>
+				<name>work editors go here</name>
+			</respStmt>
+			<respStmt>
+				<resp>edited by</resp>
+				<name>article editors go here</name>
+			</respStmt>
+		</titleStmt>
+		−
+		<publicationStmt>
+			<authority><%=@work.owner.print_name%></authority>
+			<availability status="free"><%=@work.permission_description%></availability>
+		</publicationStmt>
+		−
+		<sourceDesc>
+			<msDesc>
+				<physDesc><%=@work.physical_description%></physDesc>
+				<history>
+					<provenance>
+						<p><%=@work.document_history%></p>
+						<placename><%=@work.location_of_composition%></placename>
+					</provenance>
+				</history>		
+			</msdesc>−
+		</sourceDesc>
+	</fileDesc>
 </teiHeader>
 −
-<TEI.2 id="diary-1935-07">
+<TEI.2 id="<%=@page.id%>">
 −
 <teiHeader>
 −
 <fileDesc>
 −
-<titleStmt>
-<title>Diary entries for July 1935</title>
-</titleStmt>
+	<titleStmt>
+		<title><%=@page.title%></title>
+	</titleStmt>
 −
 <publicationStmt>
 <p/>
@@ -71,12 +61,8 @@ Diary of Robert Graves 1935-39 and ancillary material
 </fileDesc>
 −
 <profileDesc>
+<p/>
 −
-<handList>
-<hand id="RG" style="ink correction" ink="black" character="regular" first="yes" resp="eds"/>
-<hand id="BG" style="typewritten" ink="black" character="schooled" first="no" resp="eds"/>
-<hand id="KG" style="ink correction of BG tss" ink="red" character="schooled" first="no" resp="eds"/>
-</handList>
 </profileDesc>
 </teiHeader>
 −
