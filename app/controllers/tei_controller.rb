@@ -4,6 +4,6 @@ class TeiController < DisplayController
     params[:format] = 'xml' if params[:format].blank?
     
 #    render :text => 'done'
-
+    render :content_type => "application/xml"
   end
 end
