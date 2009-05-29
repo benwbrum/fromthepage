@@ -1,0 +1,62 @@
+
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <p>
+      	<% @list_records_response.each do |record| %>
+			ID: <%= record.header.identifier %><br />
+			Status: <%= record.header.status %><br />
+			SetSpec: <%= record.header.set_spec %><br />
+			Metadata: <%= record.metadata.to_s %><br />
+			<br />
+	    <% end %>
+      </p>    
+    </div>
+  </div>
+  <div class="right-column">
+  	<div class="inside-column">
+<pre>  		−
+&lt;metadata&gt;
+−
+&lt;oai_dc:dc xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/            http://www.openarchives.org/OAI/2.0/oai_dc.xsd"&gt;
+−
+&lt;dc:title&gt;
+"To The Voters of The First Congressional District"
+&lt;/dc:title&gt;
+−
+&lt;dc:subject&gt;
+Correspondence; Universities & colleges; Churches; Nacogdoches, Tx.; San Augustine, Tx.
+&lt;/dc:subject&gt;
+−
+&lt;dc:description&gt;
+TO THE VOTERS OF THE FIRST CONGRESSIONAL DISTRICT, William S. Herndon, 1872? Broadside.
+&lt;/dc:description&gt;
+&lt;dc:identifier&gt;http://tides.sfasu.edu:2006/u?/EastTexRC,111&lt;/dc:identifier&gt;
+&lt;/oai_dc:dc&gt;
+&lt;/metadata&gt;
+</pre>
+<hr>
+−<pre>
+&lt;metadata&gt;
+−
+&lt;qdc:qualifieddc xsi:schemaLocation="http://epubs.cclrc.ac.uk/xmlns/qdc/            http://epubs.cclrc.ac.uk/xsd/qdc.xsd"&gt;
+−
+&lt;dc:title&gt;
+"To The Voters of The First Congressional District"
+&lt;/dc:title&gt;
+−
+&lt;dc:subject&gt;
+Correspondence; Universities & colleges; Churches; Nacogdoches, Tx.; San Augustine, Tx.
+&lt;/dc:subject&gt;
+−
+&lt;dc:description&gt;
+TO THE VOTERS OF THE FIRST CONGRESSIONAL DISTRICT, William S. Herndon, 1872? Broadside.
+&lt;/dc:description&gt;
+&lt;dc:identifier&gt;http://tides.sfasu.edu:2006/u?/EastTexRC,111&lt;/dc:identifier&gt;
+&lt;/qdc:qualifieddc&gt;
+&lt;/metadata&gt;
+</pre>
+  	</div>
+  </div>
+</div>
