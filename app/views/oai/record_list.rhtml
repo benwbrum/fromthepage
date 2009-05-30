@@ -8,7 +8,12 @@
 			ID: <%= record.header.identifier %><br />
 			Status: <%= record.header.status %><br />
 			SetSpec: <%= record.header.set_spec %><br />
-			Metadata: <%= record.metadata.to_s %><br />
+			Metadata: 
+			<br />
+			Title: <%= record.metadata.elements['.//dc:title'].text %><br />
+			ID URL: <%= link_to(record.metadata.elements['.//dc:identifier'].text,
+								record.metadata.elements['.//dc:identifier'].text) %>
+			<br />
 			<br />
 	    <% end %>
       </p>    
