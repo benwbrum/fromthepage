@@ -2,6 +2,8 @@
 class CollectionController < ApplicationController
   public :render_to_string
   in_place_edit_for :collection, :title
+  in_place_edit_for :collection, :intro_block
+  in_place_edit_for :collection, :footer_block
 
   before_filter :authorized?, :only => [:edit, :delete, :new, :create]
 

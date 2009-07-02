@@ -55,6 +55,11 @@
 				margin-top: 1em;
 				margin-bottom: 1em;
 			}
+			div.outside-column
+			{
+				padding: 0px 10px;	/* 1px is there to get past a margin rendering
+							   bug in Netscape 7 and older FireFox */
+			}
 
     span.left-link
     {

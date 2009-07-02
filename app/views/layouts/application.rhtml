@@ -38,7 +38,7 @@
     <% end %>
   </div>
 
-   <div id="header">
+   <div id="header" class="outside-column">
       <h2 class="site-logo">
         <%= link_to('FromThePage', 
                     { :controller => 'static',
@@ -53,7 +53,7 @@
         </h3>  
 	    <% end%>
     </div>
-    <div id="work-logo">
+    <div id="work-logo" class="outside-column">
       <% if (@work && @work.title) || (@collection && @collection.title) %>
         <h1 class="work-logo">
 	        <% if @collection %>
@@ -85,6 +85,9 @@
 <div><!-- layout content -->
 <%= @content_for_layout %>
 </div><!-- layout content -->
+<% if @collection && @collection.footer_block %>
+	<div class="outside-column"><%=@collection.footer_block%></div>
+<% end %>
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

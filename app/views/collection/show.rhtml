@@ -4,6 +4,14 @@
 
 <div class="two-columns">
   <div class="left-column">
+	<% if @collection.intro_block %>
+    <div class="inside-column">
+      <h2>About</h2>
+	  <p>
+	  	<%= @collection.intro_block %>
+	  </p>
+	</div>	
+	<% end %>
     <div class="inside-column">
       <h2>Works</h2>
       <p>

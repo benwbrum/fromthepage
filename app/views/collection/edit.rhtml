@@ -16,6 +16,23 @@
 	                               :action => 'profile',
 	                               :user_id => @collection.owner.id }) %>
 				<br />
+				Introductory Block: 
+				<br />
+				<span id="intro_block_<%= @collection.id %>"><%= @collection.intro_block || "<i>none</i>" %></span>
+				<%= in_place_editor("intro_block_#{@collection.id}",
+				                    { :url => url_for({ :action => "set_collection_intro_block", 
+				                                        :id => @collection.id }),
+				                      :rows => 8  }) %>
+				<br />
+				
+				Footer Block: 
+				<br />
+				<span id="footer_block_<%= @collection.id %>"><%= @collection.footer_block || "<i>none</i>" %></span>
+				<%= in_place_editor("footer_block_#{@collection.id}",
+				                    { :url => url_for({ :action => "set_collection_footer_block", 
+				                                        :id => @collection.id }),
+				                      :rows => 8  }) %>
+				<br />
 				
 				<%= button_to("Delete",
 				            { :controller => 'collection',
