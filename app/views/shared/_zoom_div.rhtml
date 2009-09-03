@@ -20,7 +20,7 @@
 
 			  unzoom_image = function() {
 			    $('image_div').innerHTML=
-			      '<%= render :partial => '/shared/image_div', :locals => { :file => @page.scaled_image } %>';
+			      '<%= render :partial => '/shared/image_div', :locals => { :file => @page.scaled_image(@page.shrink_factor) } %>';
 			    scale_factor = <%= @page.shrink_factor %>;
 			    x_offset = 0;
 			    y_offset = 0;
@@ -54,7 +54,7 @@
 	        </span>
 				</div>
 				<div id="image_div">
-				   <%= render :partial => '/shared/image_div', :locals => { :file => @page.scaled_image } %>
+				   <%= render :partial => '/shared/image_div', :locals => { :file => @page.scaled_image(@page.shrink_factor) } %>
 				</div>
       </div>
     </div>
