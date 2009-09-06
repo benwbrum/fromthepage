@@ -24,7 +24,11 @@ at the development effort, check out the <a
 href="http://manuscripttranscription.blogspot.com">product development 
 blog</a>.
 </p>
-
+<p>
+  If you're interested in using FromThePage to host a transcription
+  project, we're looking for you.  The software is free to use, but
+  currently requires users to be fairly tech-savvy and patient.  Please
+  email <b>alpha.info@fromthepage.com</b> and tell us about your project.
 </div>
 
 
@@ -51,7 +55,7 @@ blog</a>.
                           :ol => 's_sp_1918' }) %></b>
 </p>
 <p>
-        The 1919 diary was transcribed by volunteers using FromThePage.
+        The 1919 and 1921 diaries were transcribed by volunteers using FromThePage.
         The majority of the transcription was performed by Linda Tucker,
         while editing and annotation was performed by Ben Brumfield.  
         The subject matter and transcription conventions are similar 
@@ -62,7 +66,12 @@ blog</a>.
                         { :controller => 'display',
                           :action => 'read_work',
                           :work_id => 3,
-                          :ol => 's_sp_1919' }) %></b>
+                          :ol => 's_sp_1919' }) %></b><br />
+        <b><%= link_to('Read the 1921 diary',
+                        { :controller => 'display',
+                          :action => 'read_work',
+                          :work_id => 6,
+                          :ol => 's_sp_1921' }) %></b>
 </p>
 <p>
 </p>
@@ -71,17 +80,18 @@ blog</a>.
 <div class="splash-block">
 <h3>Transcribe Manuscripts</h3>
 <p>
-        The 1921 diary awaits volunteers to transcribe it.  To help, or just
+        The 1920 diary was discovered and scanned through the efforts of Linda Tucker.  
+        It awaits volunteers to transcribe it.  To help, or just
         to try out the FromThePage software, you'll need to 
         <%= link_to('create an account',
                     { :controller => 'account',
                       :action => 'signup',
                       :ol => 's_sp_signup' }) %>.  
-        Then <b><%= link_to('visit the 1921 diary',
+        Then <b><%= link_to('visit the 1920 diary',
                             { :controller => 'display',
                               :action => 'read_work',
-                              :work_id => 6,
-                              :ol => 's_sp_1921' }) %></b> 
+                              :work_id => 9,
+                              :ol => 's_sp_1920' }) %></b> 
         and click the <code>transcribe</code> tab on any page.
 </p>
 </div>
