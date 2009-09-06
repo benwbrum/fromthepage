@@ -15,7 +15,7 @@ class CollationController < ApplicationController
       return set.owner == current_user
     end
   end
-  
+    
   def select_target
     @right_set = @image_set
     @left_sets = current_user.image_sets
@@ -67,6 +67,8 @@ class CollationController < ApplicationController
                 :right_set_id => params[:right_set_id])
 
   end
+
+  
 
   def merge
     # load up the sets
