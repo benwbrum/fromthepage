@@ -1,5 +1,5 @@
 class Collection < ActiveRecord::Base
-  has_many :works #, :order => :position
+  has_many :works, :order=> :title #, :order => :position
   has_many :notes, :order => 'created_at DESC'
   has_many :articles
   has_many :categories, :order => 'title'
