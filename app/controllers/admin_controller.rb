@@ -31,6 +31,7 @@ class AdminController < ApplicationController
         "and browser not like '%msnbot%' "+ 
         "and browser not like '%Twiceler%' "+ 
         "and browser not like '%Alexa Toolbar%' "+ 
+        "and browser not like '%Baiduspider%' "+ 
         "and browser not like '%majestic12%' " 
     end
     sql = 'select session_id, '+

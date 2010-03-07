@@ -29,7 +29,10 @@ set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
+
+# BWB real is #
 set :deploy_to, "/home/#{admin_login}/#{application}"
+#set :deploy_to, "/home/#{admin_login}/scratch/staging"
 
 # My DreamHost-assigned server
 #set :domain, "#{admin_login}@chalmers.dreamhost.com"
@@ -51,14 +54,19 @@ end
 set :use_sudo, false
 set :checkout, "export"
 
-# I used the handy quick tool to set up an SVN repository on DreamHost and this is where it lives
-set :svn, "/usr/bin/svn"
-set :svn_user, 'benwbrum'
-set :svn_password, 'benwbrum'
-set :repository,
-  Proc.new { "--username #{svn_user} " +
-       "--password #{svn_password} " +
-       "http://svn.fromthepage.com/fromthepage/trunk/diary" }
+## I used the handy quick tool to set up an SVN repository on DreamHost and this is where it lives
+#set :svn, "/usr/bin/svn"
+#set :svn_user, 'benwbrum'
+#set :svn_password, 'benwbrum'
+#set :repository,
+#  Proc.new { "--username #{svn_user} " +
+#       "--password #{svn_password} " +
+#       "http://svn.fromthepage.com/fromthepage/trunk/diary" }
+
+default_run_options[:pty] = true
+set :repository,  "git://github.com/benwbrum/fromthepage.git"
+set :scm, "git"
+
 
 desc "Restarting after deployment"
 task :after_deploy, :roles => [:app, :db, :web] do
