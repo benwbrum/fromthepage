@@ -32,7 +32,10 @@
 			              :ol => 'adm_sl_total' }) %>
 		</td>
 		<td>
-			<%= sess['ip_address'] %>
+			<%= link_to(sess['ip_address'], 
+			            { :action => 'session_list', 
+			              :ip_address => sess['ip_address'],
+			              :ol => 'adm_sl_ip' }) %>
 		</td>
 		<td>
 			<%= sess['browser'] %>
@@ -43,4 +46,6 @@
 	</tr>
 	<% end%>
 </table>
+<%= link_to('Delete Spiders', 
+            { :action => 'delete_spiders' } ) %>
 
