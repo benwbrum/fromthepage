@@ -36,7 +36,7 @@ set :deploy_to, "/home/#{admin_login}/#{application}"
 
 # My DreamHost-assigned server
 #set :domain, "#{admin_login}@chalmers.dreamhost.com"
-set :domain, "#{admin_login}@75.126.138.240"
+set :domain, "#{admin_login}@beta.fromthepage.com"
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
