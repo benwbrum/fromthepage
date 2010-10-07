@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
 #  include AuthenticatedSystem
-
+  
   def index
     redirect_to :action => 'main_dashboard'
   end

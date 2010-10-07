@@ -37,28 +37,6 @@ class Page < ActiveRecord::Base
     work.collection
   end
 
-  def related_pages
-    # need to solve performance problems before this is deployed
-    return []
-    sql = 
-      "select page_id "+
-      "from page_article_links "+
-      "where article_id in "+
-        "(select article_id "+
-        "from (select article_id, count(*) "+
-               "from page_article_links "+
-               "where article_id in "+
-                  "(select article_id "+
-                  "from page_article_links "+
-                  "where page_id = #{self[:id]}) "+
-                  "group by article_id "+
-                  "having count(*) > 1 "+
-                  "order by count(*) "+
-                  "limit 1) rare_articles)"+
-      "and page_id <> #{self[:id]}"
-    Page.find(:all, :conditions => "id in (#{sql})")
-  end
-
 
   # we need a short pagename for index entries
   # in this case this will refer to an entry without

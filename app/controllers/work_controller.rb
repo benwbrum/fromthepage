@@ -12,6 +12,14 @@ class WorkController < ApplicationController
   in_place_edit_for :work, :author
   in_place_edit_for :work, :transcription_conventions
 
+  protect_from_forgery :except => [:set_work_title, 
+                                   :set_work_description, 
+                                   :set_work_physical_description, 
+                                   :set_work_document_history, 
+                                   :set_work_permission_description, 
+                                   :set_work_location_of_composition, 
+                                   :set_work_author, 
+                                   :set_work_transcription_conventions]
   before_filter :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
 
   def authorized?

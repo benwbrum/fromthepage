@@ -1,5 +1,7 @@
 class CategoryController < ApplicationController
   public :render_to_string
+  protect_from_forgery :except => [:expand_category_for_work, :expand_category, :expand_article]
+
   def expand_category
     render :layout => false
   end

@@ -4,7 +4,9 @@ class CollectionController < ApplicationController
   in_place_edit_for :collection, :title
   in_place_edit_for :collection, :intro_block
   in_place_edit_for :collection, :footer_block
-
+  protect_from_forgery :except => [:set_collection_title, 
+                                    :set_collection_intro_block, 
+                                    :set_collection_footer_block]
   before_filter :authorized?, :only => [:edit, :delete, :new, :create]
 
   def authorized?

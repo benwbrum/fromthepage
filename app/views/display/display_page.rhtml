@@ -36,14 +36,6 @@
     <div class="inside-column">
       <%= notes_for(@page) %>
     </div>
-    <!-- Need to solve performance/usability problems
-    <div class="inside-column">
-      <h3>Related Pages:</h3>
-      <% for page in @page.related_pages %>
-        <%= link_to(page.title, :page_id => page.id, :ol => 'p_db_rl') %><br />
-      <% end%>
-    </div>
-    -->
   </div>
   
   

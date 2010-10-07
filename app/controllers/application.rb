@@ -4,7 +4,9 @@ require_dependency "login_system"
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
+
   include AuthenticatedSystem
+  helper_method :logged_in?
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
   before_filter :log_interaction
@@ -13,8 +15,9 @@ class ApplicationController < ActionController::Base
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  protect_from_forgery :secret => '84a8eb6b8cd3ab40640d70c396f27334'
+ # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
 
+this should be totally bogus stuff
 
   def load_objects_from_params
 

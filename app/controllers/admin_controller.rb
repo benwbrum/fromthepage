@@ -21,26 +21,40 @@ class AdminController < ApplicationController
 
   # display sessions for a user 
   def session_list
+    if(@user)
+      @user_name = @user.login
+      condition = "user_id = #{@user.id} "
+    else
+      @user_name = 'Anonymous'
+      condition = "user_id is null and browser not like '%google%' "+
+        "and browser not like '%Yahoo! Slurp%' "+ 
+        "and browser not like '%msnbot%' "+ 
+        "and browser not like '%Twiceler%' "+ 
+        "and browser not like '%Alexa Toolbar%' "+ 
+        "and browser not like '%Baiduspider%' "+ 
+        "and browser not like '%majestic12%' " 
+    end
+    sql = 'select session_id, '+
+          'browser, '+
+          'ip_address, '+
+          'count(*) as total, '+
+          'min(created_on) as started '+
+          'from interactions '+
+          'where ' + condition +
+          'group by session_id, browser, ip_address ' +
+          'order by started desc '
+
     limit = params[:limit] || 50
     @offset = params[:offset] || 0
-    if(params[:ip_address])
-      @user_name = 'IP '+params[:ip_address]
-      @sessions = Interaction.sessions_for_ip(params[:ip_address], limit, @offset)      
-    else      
-      if(@user)
-        @user_name = @user.login
-        @sessions = Interaction.sessions_for_user(@user.id, limit, @offset)      
-      else
-        @user_name = 'Anonymous'
-        @sessions = Interaction.sessions_for_anonymous(limit, @offset)      
-      end
-    end
+    Interaction.connection.add_limit_offset!(sql, 
+                                             { :limit => limit,
+                                               :offset => @offset } )
+    logger.debug(sql)
+    @sessions = 
+      Interaction.connection.select_all(sql)
+      
   end
   
-  def delete_spiders
-    Interaction.delete_spiders
-    redirect_to :action => 'session_list'
-  end
   
   # display last interactions, including who did what to which
   # actor, action, object, detail 
