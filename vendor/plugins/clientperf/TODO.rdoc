@@ -1,4 +1,0 @@
-= TODO
-* tests (how to test a plugin?)
-* indexes? other small optimizations?
-* rake-based installation rather than a gem binary? how to behave as a rail 2.1 gem when it comes to the migration?

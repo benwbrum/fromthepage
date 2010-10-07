@@ -1,4 +1,0 @@
-This is a list:
-* One
-* Two
-* _three_
