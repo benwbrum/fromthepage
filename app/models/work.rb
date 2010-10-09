@@ -3,6 +3,7 @@ class Work < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
   has_many :deeds, :order => 'created_at DESC'
+  has_one :ia_work
   
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
 

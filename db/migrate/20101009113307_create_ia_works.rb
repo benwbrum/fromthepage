@@ -4,6 +4,7 @@ class CreateIaWorks < ActiveRecord::Migration
       # known beforehand
       t.string :detail_url
       t.integer :user_id
+      t.integer :work_id #foreign key to FromThePage works
       
       t.string :server
       t.string :ia_path

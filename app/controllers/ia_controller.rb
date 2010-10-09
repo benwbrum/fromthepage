@@ -4,8 +4,58 @@ class IaController < ApplicationController
   before_filter :load_ia_work_from_params
 
   def load_ia_work_from_params
-    @ia_work = IaWork.find(params[:ia_work_id])   
+    unless params[:ia_work_id].blank?
+      @ia_work = IaWork.find(params[:ia_work_id])   
+    end
   end
+
+  def convert
+    work = Work.new
+    work.owner = current_user
+    work.title = @ia_work.title
+    work.description = @ia_work.description
+    work.physical_description = @ia_work.notes
+    work.author = @ia_work.creator
+    work.description += "<br/>Sponsored by: "+ @ia_work.sponsor
+    work.description += "<br/>Contributed by: "+ @ia_work.contributor
+    work.save!
+
+    @ia_work.ia_leaves.each do |leaf|
+      page = Page.new
+      page.base_image = nil
+      page.base_height = leaf.page_h
+      page.base_width = leaf.page_w
+      page.title = leaf.page_number
+      work.pages << page #necessary to make acts_as_list work here
+      work.save!
+      leaf.page_id = page.id
+      leaf.save!
+    end
+    work.save!
+    redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
+    
+    #
+#    @image_set.titled_images.each do |titled_image|
+#      page = Page.new
+#      page.base_image = titled_image.original_file
+#      if File.exists?(page.base_image)
+#        image = Magick::ImageList.new(page.base_image)
+#        page.base_height = image.rows
+#        page.base_width = image.columns
+#        image = nil
+#        GC.start
+#      end   
+#      # width
+#      # height
+#      page.shrink_factor = @image_set.original_to_base_halvings
+#      page.title = titled_image.title
+#      work.pages << page
+#    end
+#    work.save!
+#    redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
+  end
+
+
 
   def purge_type_delete
     leaves_to_delete = @ia_work.ia_leaves.find_all_by_page_type('Delete')
@@ -101,6 +151,7 @@ class IaController < ApplicationController
     @ia_work.save!
     flash[:notice] = "#{@ia_work.title} has been imported into your staging area."
    
+    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
   
 end

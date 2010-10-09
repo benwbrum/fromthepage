@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20101009122417) do
 
   create_table "ia_leaves", :force => true do |t|
     t.integer  "ia_work_id"
+    t.integer  "page_id"
     t.integer  "page_w"
     t.integer  "page_h"
     t.integer  "leaf_number"
@@ -135,6 +136,7 @@ ActiveRecord::Schema.define(:version => 20101009122417) do
   create_table "ia_works", :force => true do |t|
     t.string   "detail_url"
     t.integer  "user_id"
+    t.integer  "work_id"
     t.string   "server"
     t.string   "ia_path"
     t.string   "book_id"
