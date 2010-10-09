@@ -1,0 +1,106 @@
+class IaController < ApplicationController
+  require 'hpricot'
+  require 'open-uri'
+  before_filter :load_ia_work_from_params
+
+  def load_ia_work_from_params
+    @ia_work = IaWork.find(params[:ia_work_id])   
+  end
+
+  def purge_type_delete
+    leaves_to_delete = @ia_work.ia_leaves.find_all_by_page_type('Delete')
+    leaves_to_delete.each do |l|
+      IaLeaf.destroy(l.id)
+    end
+    flash[:notice] = "Delete leaves have been purged"
+    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+  end
+
+  def title_from_ocr
+    djvu_url =  "http://#{@ia_work.server}#{@ia_work.ia_path}/#{@ia_work.book_id}_djvu.xml"
+    logger.debug(djvu_url)
+    djvu_doc = Hpricot(open(djvu_url))
+    leaf_objects = djvu_doc.search('object')
+    leaf_objects.each do |e|
+
+      page_id = e.search('/param[@name="PAGE"]').first['value']
+      page_id[/\w*_0*/]=""
+      page_id[/\.djvu/]=''
+      logger.debug(page_id)
+      # there may well be an off-by-one error in the source.  I'm seeing page_id 7
+      # correspond with leaf_id 6
+      leaf_number = page_id.to_i
+
+      line = e.search('line').first
+      if(line) 
+        words = []
+        
+        line.search('word').each { |e| words << e.inner_text.capitalize }
+        title = words.join(" ")
+        logger.debug(title)
+        
+        ia_leaf = @ia_work.ia_leaves.find_by_leaf_number(leaf_number)
+        ia_leaf.page_number = title
+        ia_leaf.save!
+
+      end
+    end
+    flash[:notice] = "Pages have been renamed."
+    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+  end
+    
+  def import_work 
+    detail_url = params[:detail_url]
+    id = detail_url.split('/').last
+
+    # first get the call the location API and parse that document
+    api_url = 'http://www.archive.org/services/find_file.php?file='+id
+    logger.debug(api_url)
+    loc_doc = Hpricot(open(api_url))
+    location = loc_doc.search('results').first
+    server = location['server']
+    dir = location['dir']
+    
+    # pull relevant info about the work from here
+    @ia_work = IaWork.new
+    @ia_work.server = server
+    @ia_work.ia_path = dir
+    @ia_work.user_id = @current_user.id
+    @ia_work.detail_url = detail_url
+    
+    @ia_work.book_id = loc_doc.search('identifier').text
+    @ia_work[:title] = loc_doc.search('title').text             #work title
+    @ia_work[:creator] = loc_doc.search('creator').text          #work author
+    @ia_work[:collection] = loc_doc.search('collection').text   #?
+    @ia_work[:description] = loc_doc.search('description').text #description
+    @ia_work[:subject] = loc_doc.search('subject').text         #description
+    @ia_work[:notes] = loc_doc.search('notes').text             #physical description
+    @ia_work[:contributor] = loc_doc.search('contributor').text #description
+    @ia_work[:sponsor] = loc_doc.search('sponsor').text         #description
+    @ia_work[:image_count] = loc_doc.search('imagecount').text   
+
+    @ia_work.save!
+    # now fetch the scandata.xml file and parse it
+    scandata_url = "http://#{server}#{dir}/#{id}_scandata.xml"
+    sd_doc = Hpricot(open(scandata_url))
+    
+    @pages = sd_doc.search('page')
+    @pages.each do |page|
+      leaf = IaLeaf.new
+      leaf.leaf_number = page['leafNum']
+      leaf.page_number = page.search('pagenumber').text
+      leaf.page_type = page.search('pagetype').text
+      leaf.page_w = page.search('w').text
+      leaf.page_h = page.search('h').text
+      @ia_work.ia_leaves << leaf
+      
+      if leaf.page_type == 'Title'
+        @ia_work.title_leaf = leaf.leaf_number
+      end
+    end
+    @ia_work.save!
+    flash[:notice] = "#{@ia_work.title} has been imported into your staging area."
+   
+  end
+  
+end
