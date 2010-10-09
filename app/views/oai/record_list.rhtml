@@ -5,15 +5,15 @@
     <div class="inside-column">
       <p>
       	<% @list_records_response.each do |record| %>
-			ID: <%= record.header.identifier %><br />
-			Status: <%= record.header.status %><br />
-			SetSpec: <%= record.header.set_spec %><br />
-			Metadata: 
-			<br />
-			Title: <%= record.metadata.elements['.//dc:title'].text %><br />
-			ID URL: <%= link_to(record.metadata.elements['.//dc:identifier'].text,
+			OAI ID: <%= record.header.identifier %><br />
+			ID URL: <%= link_to(record.metadata.elements['.//dc:title'].text,
 								record.metadata.elements['.//dc:identifier'].text) %>
-			<br />
+			<% if record.header.identifier.include? 'archive.org' %>
+				<%= button_to("Import", 
+							  { :controller => 'ia', 
+								:action => 'import_work',
+								:detail_url => record.metadata.elements['.//dc:identifier'].text})%>
+			<% end %>
 			<br />
 	    <% end %>
       </p>    
@@ -21,47 +21,11 @@
   </div>
   <div class="right-column">
   	<div class="inside-column">
-<pre>  		−
-&lt;metadata&gt;
-−
-&lt;oai_dc:dc xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/            http://www.openarchives.org/OAI/2.0/oai_dc.xsd"&gt;
-−
-&lt;dc:title&gt;
-"To The Voters of The First Congressional District"
-&lt;/dc:title&gt;
-−
-&lt;dc:subject&gt;
-Correspondence; Universities & colleges; Churches; Nacogdoches, Tx.; San Augustine, Tx.
-&lt;/dc:subject&gt;
-−
-&lt;dc:description&gt;
-TO THE VOTERS OF THE FIRST CONGRESSIONAL DISTRICT, William S. Herndon, 1872? Broadside.
-&lt;/dc:description&gt;
-&lt;dc:identifier&gt;http://tides.sfasu.edu:2006/u?/EastTexRC,111&lt;/dc:identifier&gt;
-&lt;/oai_dc:dc&gt;
-&lt;/metadata&gt;
-</pre>
-<hr>
-−<pre>
-&lt;metadata&gt;
-−
-&lt;qdc:qualifieddc xsi:schemaLocation="http://epubs.cclrc.ac.uk/xmlns/qdc/            http://epubs.cclrc.ac.uk/xsd/qdc.xsd"&gt;
-−
-&lt;dc:title&gt;
-"To The Voters of The First Congressional District"
-&lt;/dc:title&gt;
-−
-&lt;dc:subject&gt;
-Correspondence; Universities & colleges; Churches; Nacogdoches, Tx.; San Augustine, Tx.
-&lt;/dc:subject&gt;
-−
-&lt;dc:description&gt;
-TO THE VOTERS OF THE FIRST CONGRESSIONAL DISTRICT, William S. Herndon, 1872? Broadside.
-&lt;/dc:description&gt;
-&lt;dc:identifier&gt;http://tides.sfasu.edu:2006/u?/EastTexRC,111&lt;/dc:identifier&gt;
-&lt;/qdc:qualifieddc&gt;
-&lt;/metadata&gt;
-</pre>
+		<p>
+			This is a list of works that OAI-PMH finds in the set 
+			<code><%=@set_spec%></code> at the repository at
+			<code><%=@repository_url%></code> 
+		</p>
   	</div>
   </div>
 </div>

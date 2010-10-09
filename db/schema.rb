@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 38) do
+ActiveRecord::Schema.define(:version => 20101009122417) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -83,10 +83,23 @@ ActiveRecord::Schema.define(:version => 38) do
     t.integer  "owner_user_id"
     t.datetime "created_on"
     t.text     "intro_block"
-    t.string   "footer_block",  :limit => 2000
+    t.text     "footer_block"
   end
 
   add_index "collections", ["owner_user_id"], :name => "index_collections_on_owner_user_id"
+
+  create_table "comments", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                                               :null => false
+    t.integer  "commentable_id",                 :default => 0,            :null => false
+    t.string   "commentable_type",               :default => "",           :null => false
+    t.integer  "depth"
+    t.string   "title"
+    t.text     "body"
+    t.string   "comment_type",     :limit => 10, :default => "annotation"
+    t.string   "comment_status",   :limit => 10
+  end
 
   create_table "deeds", :force => true do |t|
     t.string   "deed_type",     :limit => 10
@@ -107,6 +120,37 @@ ActiveRecord::Schema.define(:version => 38) do
   add_index "deeds", ["page_id"], :name => "index_deeds_on_page_id"
   add_index "deeds", ["user_id"], :name => "index_deeds_on_user_id"
   add_index "deeds", ["work_id"], :name => "index_deeds_on_work_id"
+
+  create_table "ia_leaves", :force => true do |t|
+    t.integer  "ia_work_id"
+    t.integer  "page_w"
+    t.integer  "page_h"
+    t.integer  "leaf_number"
+    t.string   "page_number"
+    t.string   "page_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ia_works", :force => true do |t|
+    t.string   "detail_url"
+    t.integer  "user_id"
+    t.string   "server"
+    t.string   "ia_path"
+    t.string   "book_id"
+    t.string   "title"
+    t.string   "creator"
+    t.string   "collection"
+    t.string   "description"
+    t.string   "subject"
+    t.string   "notes"
+    t.string   "contributor"
+    t.string   "sponsor"
+    t.string   "image_count"
+    t.integer  "title_leaf"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "image_sets", :force => true do |t|
     t.string   "path"
@@ -147,6 +191,20 @@ ActiveRecord::Schema.define(:version => 38) do
     t.integer  "page_id"
     t.integer  "parent_id"
     t.integer  "depth"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "oai_repositories", :force => true do |t|
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "oai_sets", :force => true do |t|
+    t.string   "set_spec"
+    t.string   "repository_url"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -193,8 +251,17 @@ ActiveRecord::Schema.define(:version => 38) do
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
   add_index "pages", ["xml_text"], :name => "pages_xml_text_index"
 
+  create_table "plugin_schema_info", :id => false, :force => true do |t|
+    t.string  "plugin_name"
+    t.integer "version"
+  end
+
+  create_table "schema_info", :id => false, :force => true do |t|
+    t.integer "version"
+  end
+
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
+    t.string   "session_id", :default => "", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -204,7 +271,7 @@ ActiveRecord::Schema.define(:version => 38) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "titled_images", :force => true do |t|
-    t.string   "original_file",                                     :null => false
+    t.string   "original_file",                  :default => "",    :null => false
     t.string   "title_seed",       :limit => 20
     t.string   "title_override"
     t.string   "title"
@@ -246,11 +313,11 @@ ActiveRecord::Schema.define(:version => 38) do
 
   create_table "works", :force => true do |t|
     t.string   "title"
-    t.string   "description",               :limit => 4000
+    t.text     "description"
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                          :default => false
-    t.integer  "transcription_version",                     :default => 0
+    t.boolean  "restrict_scribes",          :default => false
+    t.integer  "transcription_version",     :default => 0
     t.text     "physical_description"
     t.text     "document_history"
     t.text     "permission_description"

@@ -39,6 +39,29 @@
                         { :controller => 'transform',
                           :ol => 'd_new_is' })%>
           </div>
+		  <div>
+		  	<%= link_to("Explore OAI repositories",
+						{ :controller => 'oai',
+						  :action => 'repository_list',
+					      :ol => 'd_explore_oai'}) %>
+		  </div>
+		  <div>
+		  	<% if @current_user.oai_sets %>
+				Import a work from an OAI collection.
+				<ul>
+					<% for set in @current_user.oai_sets%>
+						<li>
+							<%= link_to('List works to import from '+set.set_spec,
+								 { :action => 'record_list',
+								   :controller => 'oai',
+								   :repository_url => set.repository_url,
+								   :set_spec => set.set_spec }) %>
+						</li>
+					<% end %>
+					
+				</ul>
+			<% end %>
+		  </div>
           <% if @current_user.owner_works && @current_user.owner_works.size > 0 %>
 	          <div>
 	            <p>
@@ -57,6 +80,26 @@
               </ul>
 	          </div>
           <% end %>
+          <% if (@image_sets && @image_sets.size > 0) || 
+				(@current_user.ia_works && @current_user.ia_works.size > 0) %>
+				<h3>Staging Area</h3>
+		  <% end %>
+          <% if (@current_user.ia_works && @current_user.ia_works.size > 0) %>
+			<div>
+				<h4>Imported Archive.org Books</h4>
+				<ul>
+					<% for ia_work in @current_user.ia_works %>
+					<li>
+						<%= link_to(ia_work.title,
+									{ :controller => 'ia',
+									  :action => 'manage',
+									  :ia_work_id => ia_work.id}) %>
+					</li>
+					<% end %>
+				</ul>
+			</div>			 			  
+		  <% end %>
+		  
           <% if @image_sets && @image_sets.size > 0 %>
 	          <div>
 	            <p>

@@ -16,18 +16,27 @@ class OaiController < ApplicationController
     @list_sets_response = client.list_sets
   end
 
+  def save_spec
+    spec = OaiSet.new
+    spec.set_spec = params[:set_spec]
+    spec.repository_url = params[:repository_url]
+    spec.user_id = current_user.id
+    spec.save
+    redirect_to(:controller => "dashboard", :action => "main_dashboard")
+  end
+
   def record_list
     client = OAI::Client.new params[:repository_url]
     set_spec = params[:set_spec]
     @list_records_response = 
       client.list_records({:metadata_prefix => 'oai_dc',
                            :set => set_spec})
+    @repository_url = params[:repository_url]
+    @set_spec = params[:set_spec]
   end
 
   def repository_list
-    @repository_urls = 
-      ['http://tides.sfasu.edu:2006/cgi-bin/oai.exe',
-       'http://digital.lib.uiowa.edu/cgi-bin/oai.exe']
+    @repositories = OaiRepository.find :all
   end
 
 end
