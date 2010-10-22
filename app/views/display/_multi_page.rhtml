@@ -23,11 +23,15 @@
 	    <% end %>
 	    <div class="inside-column">
 	   		<div class="thumbnail-container">
+		    	<% if page.ia_leaf %>
+					ia thumbnail goes here
+				<% else %>
 			      <%= link_to(image_tag(file_to_url(page.thumbnail_image)),
 		                    { :action => 'display_page',
 		                      :page_id => page.id,
 	                        :ol => 'w_rw_p_pl' })  %>
-        </div>
+				<% end %>
+	        </div>
 	  
 	      <div>
 		      <h2>
@@ -98,15 +102,17 @@
   		</div>
 		  <%= render :partial => 'article/article_links' %>
 		<% end %>
-		<div class="inside-column">
-        <h2>Subjects</h2>
-	      <p>
-        <%= display_categories(@collection.categories, nil) do |category|
-                controller.render_to_string(:partial => '/category/category_link_for_work',
-                       :locals => { :category => category })
-            end %>
-      </p>
-		</div>
+		<% if @collection && @collection.categories %>
+			<div class="inside-column">
+		      <h2>Subjects</h2>
+		      <p>
+	        <%= display_categories(@collection.categories, nil) do |category|
+	                controller.render_to_string(:partial => '/category/category_link_for_work',
+	                       :locals => { :category => category })
+	            end %>
+		      </p>
+			</div>
+		<% end %>
 
 		<!-- Check SVN for review code formerly here before bug 12 -->
 

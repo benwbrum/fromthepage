@@ -32,6 +32,9 @@ class IaController < ApplicationController
       leaf.save!
     end
     work.save!
+    @ia_work.work = work
+    @ia_work.save!
+    
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
     
     #

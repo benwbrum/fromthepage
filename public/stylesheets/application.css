@@ -83,6 +83,15 @@
 				margin-left: 1em;	
 				margin-bottom: 1em;	
     }
+
+#containerdiv
+{
+	position: relative;
+	height: 100%;
+}
+
+	
+	poetslap
 @charset "iso-8859-1";
 
 /*******************************************************************************

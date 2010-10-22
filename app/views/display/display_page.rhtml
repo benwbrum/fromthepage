@@ -39,8 +39,12 @@
   </div>
   
   
-	<div class="right-column">
-	   <%= render :partial => '/shared/zoom_div' %>
+	<div class="right-column" style="position: relative; top: 0px;">
+		<% if @page.ia_leaf %>
+			<%= render :partial => '/ia/ia_bookreader_div' %>
+		<% else %>
+			<%= render :partial => '/shared/zoom_div' %>
+		<% end %>
 	</div>
 
 </div>

@@ -75,6 +75,9 @@ class Page < ActiveRecord::Base
   # Returns the thumbnail filename
   # creates the image if it's not present
   def thumbnail_image
+    if self.ia_leaf 
+      return nil
+    end
     if !File.exists?(thumbnail_filename())
       if File.exists? self.base_image
         generate_thumbnail      
