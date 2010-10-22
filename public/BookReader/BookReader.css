@@ -1,0 +1,262 @@
+#BookReader {
+ border:1px solid black;
+ position:absolute;
+ font-family: arial, sans-serif;
+}
+
+#BRtoolbar {
+    height:25px;
+    width:100%;
+    background-color: #E6E4E1;
+    overflow: hidden;
+}
+
+#BRtoolbar .label {
+    font-size: 0.9em;
+}
+
+#BRcontainer {
+    /*height:95%;*/
+    top:25px;
+    bottom:0px;
+    width:100%;
+    overflow-x:auto;
+    overflow-y:scroll;    
+    /*text-align: center;*/
+    background-color: #FCFCFC;
+    position:absolute;
+}
+
+#BRpageview {
+    background-color: #FCFCFC;
+}
+
+.BRpagediv1up {
+    background-color: #FFFFEE;
+    overflow:hidden;
+    border-right: 2px solid #717171;
+    border-bottom: 2px solid #717171;
+    border-left: 1px solid #909090;
+    border-top: 1px solid #909090;
+    cursor: move;
+}
+
+.BRpagedivthumb {
+    background-color: #FFFFEE;
+    overflow:hidden;
+    border: 1px solid #909090;
+}
+
+.BRpagedivthumb a {
+    border: 0;
+}
+
+.BRpagedivthumb img {
+    border: 0;
+}
+
+/* Must come after .BRpagedivthumb rules in order to override them */
+.BRpagedivthumb_highlight {
+    background-color: #FFFFEE;
+    overflow:hidden;
+    border: 1px solid #000000;
+}
+
+.BRpagediv2up {
+    background-color: rgb(234, 226, 205);
+    overflow:hidden;
+}
+
+#BRbookcover {
+    border: 1px solid rgb(68, 25, 17);
+    background-color: #663929;
+    -moz-border-radius: 6px;
+    -moz-box-shadow: 3px 3px 8px #222;
+    -webkit-border-radius: 6px;
+    -webkit-box-shadow: 2px 2px 8px #222;
+}
+
+.BRpageimage {
+    background-color: rgb(234, 226, 205);
+}
+
+.BRleafEdgeR {
+    border-style: solid solid solid none;
+    border-color: rgb(51, 51, 34);
+    border-width: 1px 1px 1px 0px;
+    background: transparent url(images/right_edges.png) repeat scroll 0% 0%;
+    position: absolute;
+}
+
+.BRleafEdgeL {
+    border-style: solid none solid solid;
+    border-color: rgb(51, 51, 34);
+    border-width: 1px 0px 1px 1px;
+    background: transparent url(images/left_edges.png) repeat scroll 0% 0%;
+    position: absolute;
+}
+
+.BRleafEdgeTmp {
+    border-style: solid none solid solid;
+    border-color: rgb(51, 51, 34);
+    border-width: 1px 0px 1px 1px;
+    background: transparent url(images/left_edges.png) repeat scroll 0% 0%;
+    position: absolute;
+}
+
+#BRbookspine {
+    border: 1px solid rgb(68, 25, 17);
+    background-color: rgb(68, 25, 17);
+    position: absolute;
+}
+
+/* search sidebar */
+#BookReaderSearch {
+    border:1px solid black;
+    position:absolute;
+    background-color: #E6E4E1;
+    font-family: arial, sans-serif;
+}
+
+#BookReaderSearchResults {
+    background-color: #FCFCFC;
+    top: 25px;
+    bottom: 0px;
+    overflow:auto;    
+    position: absolute;
+    left: 0px;
+    right: 0px;    
+    font-family: arial, san-serif;
+    font-size: 0.85em; 
+    padding: 2px;
+}
+
+.BookReaderSearchHilite {
+    opacity: 0.20; 
+    filter: alpha(opacity = 20);
+    background-color: #00f;
+    position:absolute;
+}
+
+.BRpageform {
+    display: inline; 
+}
+
+.BRicon {
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+    vertical-align: middle;
+    border: none;
+}
+
+/* Absolute path used since the html might be generated at /stream/id or elsewhere */
+.BRicon.logo { background: url(images/logo_icon.png) no-repeat; }
+.BRicon.zoom_out { background: url(images/zoom_out_icon.png) no-repeat; }
+.BRicon.zoom_in { background: url(images/zoom_in_icon.png) no-repeat; }
+.BRicon.one_page_mode { background: url(images/one_page_mode_icon.png) no-repeat; }
+.BRicon.two_page_mode { background: url(images/two_page_mode_icon.png) no-repeat; }
+.BRicon.thumbnail_mode { background: url(images/thumbnail_mode_icon.png) no-repeat; }
+.BRicon.embed { background: url(images/embed_icon.png) no-repeat; }
+.BRicon.print { background: url(images/print_icon.png) no-repeat; }
+.BRicon.book_left { background: url(images/book_left_icon.png) no-repeat; }
+.BRicon.book_right { background: url(images/book_right_icon.png) no-repeat; }
+.BRicon.book_up { background: url(images/book_up_icon.png) no-repeat; }
+.BRicon.book_down { background: url(images/book_down_icon.png) no-repeat; }
+.BRicon.book_leftmost { background: url(images/book_leftmost_icon.png) no-repeat; }
+.BRicon.book_rightmost { background: url(images/book_rightmost_icon.png) no-repeat; }
+.BRicon.book_top { background: url(images/book_top_icon.png) no-repeat; }
+.BRicon.book_bottom { background: url(images/book_bottom_icon.png) no-repeat; }
+
+
+.BRicon.play { background: url(images/control_play_icon.png) no-repeat; }
+.BRicon.pause { background: url(images/control_pause_icon.png) no-repeat; }
+
+/* Icons with this class should have a 48x24 image which contains
+   the regular and hover images side-by-side */
+.BRicon.rollover:hover { background-position: -24px 0; }
+
+/* Special logic for the logo, which is an actual link */
+a.BRicon {
+    display: block;
+    text-decoration: none;
+    border: none;
+    float: left;
+}
+
+/* footer stuff, from Rebecca's demo */
+#BRfooter { 
+    position:absolute;
+    bottom: 1px;        /* ensure no vertical scroll bar in FF */
+    left: 0px;
+    /*width: 100%;*/    /* this causes horizontal scroll bar in FF */
+    right: 0px;
+    clear: both; 
+    color: #000000; 
+    padding: 0px 0px 0px 10px; 
+    background: #CCCCCC; 
+    height: 2em; 
+    line-height: 25px; 
+    vertical-align: middle; 
+    font-family: arial, sans-serif;
+    font-size: 12px;
+}
+
+.BRlogotype {
+    float:left;
+    font-weight: bold; 
+    height: 25px; 
+    line-height: 25px; 
+    vertical-align: middle; 
+}
+
+a.BRwhite               { color: #fff }
+a.BRwhite:hover         { text-decoration: none; }
+a.BRwhite:visited       { color: #fff }
+
+a.BRblack           { color: #000000 }
+a.BRblack:hover     { text-decoration: none; }
+a.BRblack:visited   { color: #000000 }
+
+.BRnavlinks {
+    float:right; 
+    padding: 0px 20px 0px 0px; 
+    margin: 0px; 
+    height: 25px; 
+    line-height: 25px; 
+    vertical-align: middle;
+}
+
+/* thumnbail view, from Rebecca's demo */
+.BRpdstatus-footer {
+    position:absolute;
+    height: 65px;
+    bottom: 25px;
+    width: 100%;
+    background-color: #f8f8f8;
+    border-top: 1px solid #ccc; 
+    text-align: right; 
+    padding: 0px 0px 0px 0px; 
+}
+
+.BRwidgetlabel { 
+    color: #919070; 
+    padding: 8px 8px 4px 8px; 
+    font-family: verdana, arial, helvetica, sans-serif; 
+    font-size: 10px; 
+    float: left; 
+}
+
+.BRfliparea {
+    background-image: url(images/transparent.png); # Required to capture mouse on IE
+}
+
+.BRtwoPagePopUp {
+    border: 1px solid black;
+    padding: 2px 6px;
+    position: absolute;
+    font-family: sans-serif;
+    font-size: 14px;
+    background-color: rgb(255, 255, 238);
+    opacity: 0.85;
+}
