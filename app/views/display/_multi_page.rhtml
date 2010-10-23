@@ -24,7 +24,11 @@
 	    <div class="inside-column">
 	   		<div class="thumbnail-container">
 		    	<% if page.ia_leaf %>
-					ia thumbnail goes here
+					<% thumb_url = "http://www.archive.org/download/#{@work.ia_work.book_id}/page/leaf#{page.ia_leaf.leaf_number}_thumb.jpg" %>
+			      <%= link_to(image_tag(thumb_url),
+		                    { :action => 'display_page',
+		                      :page_id => page.id,
+	                        :ol => 'w_rw_p_pl' })  %>
 				<% else %>
 			      <%= link_to(image_tag(file_to_url(page.thumbnail_image)),
 		                    { :action => 'display_page',
