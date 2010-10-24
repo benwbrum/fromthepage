@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
+  before_filter :update_ia_work_server
   before_filter :log_interaction
   before_filter :store_location_for_login
   after_filter :complete_interaction
@@ -76,6 +77,20 @@ class ApplicationController < ActionController::Base
   def set_current_user_in_model
     User.current_user = current_user
   end 
+
+  # perform appropriate API call for updating the IA server
+  def update_ia_work_server
+    if @work && @work.ia_work
+      ia_servers = session[:ia_servers] ||= {}
+      unless ia_servers[@work.ia_work.book_id]
+        # fetch it and update it
+        server = IaWork.refresh_server(@work.ia_work.book_id)
+        ia_servers[@work.ia_work.book_id] = server
+      end
+      @work.ia_work.server=ia_servers[@work.ia_work.book_id]
+    end
+    
+  end
 
   # log what was done
   def log_interaction
