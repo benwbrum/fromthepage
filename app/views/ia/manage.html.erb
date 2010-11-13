@@ -57,8 +57,41 @@
   <div class="right-column">
   	<div class="inside-column">
 		<p>
-			<%= debug(@ia_work) %>
+			This page displays a book that has been imported from the Internet Archive
+			but has not yet been converted to a FromThePage work.  
 		</p>
+		<dl>
+		    <dt>
+		      Retitle from OCR
+		    </dt>
+		    <dd>
+		      This replaces the Archive.org page numbers with the first line of OCR text
+			  on each page.  This is useful for diaries and daybooks, since the first line
+			  is generally a date.  This process will take several minutes to run, since
+			  it requires parsing the entire OCR text for the book and updating each page
+			  number.  After the book has been converted to a FromThePage work, you will
+			  be able to correct any page titles. 
+			  
+		    </dd>
+		    <dt>
+		      Purge Delete Scans
+		    </dt>
+		    <dd>
+			  Some leaves in an Archive.org scan are used for color calibration and never
+			  displayed.  Archive.org marks these as type <i>Delete</i>.  Purging these
+			  will remove these leaves from the work and prevent the need to manually
+			  delete them later.
+		    </dd>
+		    <dt>
+		      Convert to FromThePage
+		    </dt>
+		    <dd>
+		      Once you've got titles and leaves ready, this button will convert the book
+			  to a ready-to-transcribe FromThePage work.  This process will take several
+			  minutes to run.
+		    </dd>
+		  </dl>
+
   	</div>
   </div>
 </div>

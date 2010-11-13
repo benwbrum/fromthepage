@@ -54,17 +54,11 @@ default_run_options[:pty] = true
 set :repository,  "git://github.com/klauberpilot/fromthepage.git"
 set :scm, "git"
 
-
-desc "Restarting after deployment"
-task :after_deploy, :roles => [:app, :db, :web] do
-  run "touch #{deploy_to}/current/public/dispatch.fcgi" 
-
-  run "sed 's/# ENV\\[/ENV\\[/g' #{deploy_to}/current/config/environment.rb > #{deploy_to}/current/config/environment.temp"
-  run "mv #{deploy_to}/current/config/environment.temp #{deploy_to}/current/config/environment.rb"
-  run "cp #{deploy_to}/current/public/.htaccess.prod #{deploy_to}/current/public/.htaccess"
+namespace :passenger do
+  desc "Restart Application"
+  task :restart do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
 end
 
-desc "Restarting after rollback"
-task :after_rollback, :roles => [:app, :db, :web] do
-  run "touch #{deploy_to}/current/public/dispatch.fcgi"
-end
+after :deploy, "passenger:restart"
