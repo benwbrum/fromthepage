@@ -21,8 +21,7 @@
 # The host where people will access my site
 set :application, "fromthepage"
 set :user, "my dreamhost username set to access this project"
-#set :admin_login, "benwbrum"
-set :admin_login, "fromthe"
+set :admin_login, "fromthepage" #bpoc user
 
 set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
 
@@ -30,13 +29,9 @@ set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
 
-# BWB real is #
 set :deploy_to, "/home/#{admin_login}/#{application}"
-#set :deploy_to, "/home/#{admin_login}/scratch/staging"
 
-# My DreamHost-assigned server
-#set :domain, "#{admin_login}@chalmers.dreamhost.com"
-set :domain, "#{admin_login}@beta.fromthepage.com"
+set :domain, "#{admin_login}@fromthepage.bpoc.org" #bpoc user
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
@@ -54,17 +49,9 @@ end
 set :use_sudo, false
 set :checkout, "export"
 
-## I used the handy quick tool to set up an SVN repository on DreamHost and this is where it lives
-#set :svn, "/usr/bin/svn"
-#set :svn_user, 'benwbrum'
-#set :svn_password, 'benwbrum'
-#set :repository,
-#  Proc.new { "--username #{svn_user} " +
-#       "--password #{svn_password} " +
-#       "http://svn.fromthepage.com/fromthepage/trunk/diary" }
 
 default_run_options[:pty] = true
-set :repository,  "git://github.com/benwbrum/fromthepage.git"
+set :repository,  "git://github.com/klauberpilot/fromthepage.git"
 set :scm, "git"
 
 
