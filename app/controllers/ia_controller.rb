@@ -141,6 +141,9 @@ class IaController < ApplicationController
     @pages.each do |page|
       leaf = IaLeaf.new
       leaf.leaf_number = page['leafNum']
+      if nil == leaf.leaf_number
+        leaf.leaf_number = page['leafnum'] #bpoc installation downcases this for some reason
+      end
       leaf.page_number = page.search('pagenumber').text
       leaf.page_type = page.search('pagetype').text
       leaf.page_w = page.search('w').text
