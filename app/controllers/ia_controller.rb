@@ -34,6 +34,7 @@ class IaController < ApplicationController
     work.save!
     @ia_work.work = work
     @ia_work.save!
+    flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work."
     
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
     
