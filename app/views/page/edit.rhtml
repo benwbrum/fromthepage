@@ -13,7 +13,7 @@
 <%= render({ :partial => '/shared/page_navigation' }) %>
 <div class="inside-column">
 <p>
-Title: <span id="title_<%= @page.id %>"><%= @page.title %></span>
+Title: <span id="title_<%= @page.id %>"><%= @page.title || "<i>none</i>" %></span>
 <%= in_place_editor("title_#{@page.id}",
                     { :url => url_for({ :action => "set_page_title", 
                                         :id => @page.id }) }) %>
@@ -29,4 +29,12 @@ Position: <%= @page.position %>
 </p>
 </div>
   </div>
+  <div class="right-column">
+    <div class="inside-column">
+      <p>
+      	The settings for this page are only accessible to the work owner.  Hover over the title field and click the text to edit it.		
+      </p>
+    </div>
+  </div>
+
 </div>
