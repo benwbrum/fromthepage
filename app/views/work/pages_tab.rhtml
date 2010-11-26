@@ -2,6 +2,9 @@
              :locals => { :selected => 8,
                           :work_id => @work.id }}) %>
 
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
 
 Title: <span id="title_<%= @work.id %>"><%= @work.title %></span>
 <br />
@@ -63,3 +66,14 @@ Pages:<br />
     </td>
   </tr>
 <% end %>
+</table>
+
+
+   </div>
+  </div>
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
+</div>

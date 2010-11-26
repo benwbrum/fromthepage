@@ -12,6 +12,8 @@
     <%= render :partial => '/shared/page_navigation' %>
       <div class="inside-column">
         <h2><%= @page.title %></h2>
+      <%= html_block('left') %>
+
       </div>
 
 
@@ -40,6 +42,8 @@
 	</div><!-- left col -->
 
 	<div class="right-column" style="position: relative; top: 0px;">
+
+                <%= html_block('right') %>
 		<% if @page.ia_leaf %>
 			<%= render :partial => '/ia/ia_bookreader_div' %>
 		<% else %>

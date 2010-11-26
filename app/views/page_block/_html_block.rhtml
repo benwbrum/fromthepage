@@ -1,0 +1,13 @@
+<% if page_block %>
+   <% if page_block.html %>
+      <%= page_block.html %>
+   <% end %>
+   <% if logged_in? && current_user.admin %>
+	<p>
+	  <%= link_to('Edit Help Text',
+	              { :controller => 'page_block',
+	                :action => 'edit',
+	                :page_block_id => page_block.id })%>
+	</p>
+   <% end %>
+<% end %>

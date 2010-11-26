@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_filter :update_ia_work_server
   before_filter :log_interaction
   before_filter :store_location_for_login
+  before_filter :load_html_blocks
   after_filter :complete_interaction
 
   # See ActionController::RequestForgeryProtection for details
@@ -121,6 +122,14 @@ class ApplicationController < ActionController::Base
     @interaction.update_attribute(:status, 'complete')
   end   
 
+  def load_html_blocks
+    @html_blocks = {}
+    page_blocks = 
+    	PageBlock.find_all_by_controller_and_view(controller_name, action_name)
+    page_blocks.each do |b|
+        @html_blocks[b.tag] = b
+    end
+  end
   
   def store_location_for_login
     unless action_name == 'login'

@@ -1,6 +1,9 @@
 <%= render({ :partial => '/shared/work_tabs',
              :locals => { :selected => 8,
                           :work_id => @work.id }}) %>
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
 
 <% form_for(:page, 
             @page, 
@@ -12,3 +15,14 @@
   <br />
   <%= submit_tag('create') %>
 <% end %>
+
+   </div>
+  </div>
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+
+        </div>
+  </div>
+</div>
+

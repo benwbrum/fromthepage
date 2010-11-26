@@ -1,3 +1,7 @@
+<div class="two-columns">
+        <div class="left-column">
+                <div class="inside-column">
+
 <div>
   Changes made by 
   <%= link_to (@article_version.user.display_name,
@@ -21,4 +25,13 @@
   <p>Source:<br />
     <pre><%= @article_version.source_text %></pre>
   </p>
+</div>
+                </div>
+        </div>
+
+        <div class="right-column">
+                <div class="inside-column">
+                  <%= html_block('right') %>
+                </div>
+        </div>
 </div>

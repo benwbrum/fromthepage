@@ -1,10 +1,14 @@
+<div class="two-columns">
+     <div class="left-column">
+                <div class="inside-column">
+
 <div>
   User ID:<%= @user.id %><br />
   Login:<%= @user.login %><br />
-  Display Name:<%= link_to (user.display_name,
+  Display Name:<%= link_to (@user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
-	                               :user_id => user.id }) %><br />
+	                               :user_id => @user.id }) %><br />
   Print Name:<%= @user.print_name %>
 </div>
 
@@ -21,6 +25,15 @@
             { :action => 'delete_user',
               :user_id => @user.id },
             { :confirm => 'Are you sure?' }) %>
+</div>
+		</div>
+		</div>
+
+		<div class="right-column">
+		     <div class="inside-column">
+                  <%= html_block('right') %>
+		      </div>
+		      </div>
 </div>
 
 

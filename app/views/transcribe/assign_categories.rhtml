@@ -13,6 +13,8 @@
 	<div class="left-column">
     <%= render :partial => '/shared/page_navigation' %>
     <div class="inside-column">
+
+                <%= html_block('left') %>
       <p>
         Assign categories to the subjects mentioned in this page:
       </p>
@@ -29,5 +31,11 @@
                       :page_id => @page.id }) %>
     </div>
 	</div>
+
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
 
 </div>

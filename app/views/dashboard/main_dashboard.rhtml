@@ -1,6 +1,8 @@
 <div class="two-columns">
 	<div class="left-column">
 		<div class="inside-column">
+                  <%= html_block('left') %>
+
       <div>
         <p>
           <h3>Collections</h3>
@@ -146,6 +148,11 @@
           <h3>
             Admin Dashboard
           </h3>
+		  <p>
+		  	<%= link_to("Edit Page Blocks",
+						{ :controller => 'page_block',
+						  :action => 'list' }) %>
+  	  	  </p>
           
 				  <p>
 				      <%= link_to("View Logfile", 
@@ -198,6 +205,7 @@
 	<div class="right-column">
 
     <div class="inside-column">
+                  <%= html_block('right') %>
 	<h3>Recent Activity</h3>
       <%= deeds_for() %>
 	    <p>

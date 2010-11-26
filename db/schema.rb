@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101009122417) do
+ActiveRecord::Schema.define(:version => 20101124091725) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -220,6 +220,18 @@ ActiveRecord::Schema.define(:version => 20101009122417) do
 
   add_index "page_article_links", ["article_id"], :name => "index_page_article_links_on_article_id"
   add_index "page_article_links", ["page_id"], :name => "index_page_article_links_on_page_id"
+
+  create_table "page_blocks", :force => true do |t|
+    t.string   "controller"
+    t.string   "view"
+    t.string   "tag"
+    t.string   "description"
+    t.text     "html"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "page_blocks", ["controller", "view"], :name => "index_page_blocks_on_controller_and_view"
 
   create_table "page_versions", :force => true do |t|
     t.string   "title"

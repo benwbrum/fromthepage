@@ -1,5 +1,15 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+    
+  def html_block(tag)
+    render({ :partial => 'page_block/html_block', 
+             :locals => 
+              { :tag => tag,
+                :page_block => @html_blocks[tag]
+              }
+          })
+  end
+
 
   def file_to_url(filename)
     filename.sub(/.*public/, "") 

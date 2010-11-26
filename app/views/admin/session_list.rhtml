@@ -1,4 +1,5 @@
 <h2>Session List for <%= @user_name %></h2>
+<%= html_block('top') %>
 <%= link_to('Next 50', 
             { :offset => (@offset.to_i + 50).to_s,
               :ol => 'adm_sl_next50' } ) %>
