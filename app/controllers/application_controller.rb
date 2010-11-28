@@ -127,6 +127,11 @@ class ApplicationController < ActionController::Base
     page_blocks = 
     	PageBlock.find_all_by_controller_and_view(controller_name, action_name)
     page_blocks.each do |b|
+        if b && b.html
+          b.rendered_html = render_to_string(:inline => b.html)
+        else
+          b.rendered_html = ''
+        end
         @html_blocks[b.tag] = b
     end
   end

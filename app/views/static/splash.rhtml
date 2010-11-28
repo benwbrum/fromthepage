@@ -1,102 +1,12 @@
 <div class="two-columns">
-        <div class="left-column">
+	<div class="left-column">
 		<div class="inside-column">
-<div class="splash-block">
-
-<%= html_block('left') %>
-<h3>What is FromThePage?</h3>
-
-<p>
-        FromThePage is software that allows volunteers to 
-transcribe handwritten documents online.  Currently it hosts
-the <%= link_to('Julia Brumfield Diaries',
-                { :controller => 'collection',
-                  :action => 'show',
-                  :collection_id => 1,
-                  :ol => 's_sp_diaries'})%>, an incomplete collection 
-of diaries written between 1915 and 1938 chronicling life
-on a tobacco farm in Pittsylvania County, Virginia.
-</p>
-<p>
-The FromThePage software is still under development, but we'd like 
-to invite people to look around and send suggestions and
-bug reports to <b>benwbrum@gmail.com</b>.  If anything looks broken, hard
-to understand, or just odd, please let us know!  For a behind-the-scenes look
-at the development effort, check out the <a 
-href="http://manuscripttranscription.blogspot.com">product development 
-blog</a>.
-</p>
-<p>
-  If you're interested in using FromThePage to host a transcription
-  project, we're looking for you.  The software is free to use.  Please
-  email <b>benwbrum@gmail.com</b> and tell us about your project.
-</div>
-
-
-
-</div>
-</div>
-        <div class="right-column">
+			<%= html_block('left') %>
+		</div>
+	</div>
+	<div class="right-column">
 		<div class="inside-column">
-<div class="splash-block">
-<%= html_block('right') %>
-<h3>Read Transcriptions</h3>
-<p>
-        The 1918 diary was originally transcribed and published by 
-        Neil Brumfield in 1993.  It covers daily farm life, a neighbor's 
-        draft to fight the First World War, and the death of Julia's son 
-        Charles in the influenza epidemic.  Capitalization and 
-        punctuation has been modernized throughout, while spelling 
-        has been retained
-</p>
-<p>     
-        <b><%= link_to('Read the 1918 diary',
-                        { :controller => 'display',
-                          :action => 'read_work',
-                          :work_id => 2,
-                          :ol => 's_sp_1918' }) %></b>
-</p>
-<p>
-        The 1919 and 1921 diaries were transcribed by volunteers using FromThePage.
-        The majority of the transcription was performed by Linda Tucker,
-        while editing and annotation was performed by Ben Brumfield.  
-        The subject matter and transcription conventions are similar 
-        to those of the 1918 diary.
-</p>
-<p>     
-        <b><%= link_to('Read the 1919 diary',
-                        { :controller => 'display',
-                          :action => 'read_work',
-                          :work_id => 3,
-                          :ol => 's_sp_1919' }) %></b><br />
-        <b><%= link_to('Read the 1921 diary',
-                        { :controller => 'display',
-                          :action => 'read_work',
-                          :work_id => 6,
-                          :ol => 's_sp_1921' }) %></b>
-</p>
-<p>
-</p>
-</div>
-
-<div class="splash-block">
-<h3>Transcribe Manuscripts</h3>
-<p>
-        The 1920 diary was discovered and scanned through the efforts of Linda Tucker.  
-        It awaits volunteers to transcribe it.  To help, or just
-        to try out the FromThePage software, you'll need to 
-        <%= link_to('create an account',
-                    { :controller => 'account',
-                      :action => 'signup',
-                      :ol => 's_sp_signup' }) %>.  
-        Then <b><%= link_to('visit the 1920 diary',
-                            { :controller => 'display',
-                              :action => 'read_work',
-                              :work_id => 9,
-                              :ol => 's_sp_1920' }) %></b> 
-        and click the <code>transcribe</code> tab on any page.
-</p>
-</div>
-</div>
-</div>
+			<%= html_block('right') %>
+		</div>
+	</div>
 </div>
