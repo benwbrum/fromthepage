@@ -12,10 +12,12 @@ class CollectionController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @collection
-        return @collection.owner == current_user
+        unless @collection.owner == current_user
+          redirect_to :controller => 'dashboard'
+        end
       end
     else
-      return false
+      redirect_to :controller => 'dashboard'
     end
   end
 

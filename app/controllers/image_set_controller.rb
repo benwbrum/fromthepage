@@ -16,9 +16,11 @@ class ImageSetController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @set_to_append
-        return false if @set_to_append.owner == current_user
+        redirect_to :controller => 'dashboard' unless @set_to_append.owner == current_user
       end
-      return @image_set.owner == current_user
+      unless @image_set.owner == current_user
+        redirect_to :controller => 'dashboard'
+      end
     end
   end
   

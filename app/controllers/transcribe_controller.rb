@@ -9,10 +9,8 @@ class TranscribeController  < ApplicationController
   protect_from_forgery :except => [:zoom, :unzoom]
   
   def authorized?
-    if logged_in? 
-      current_user.can_transcribe?(@work)
-    else
-      false
+    unless logged_in? && current_user.can_transcribe?(@work)
+      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
     end
   end
 

@@ -2,7 +2,9 @@ class AdminController < ApplicationController
   before_filter :authorized?
 
   def authorized?
-    logged_in? && current_user.admin
+    unless logged_in? && current_user.admin
+      redirect_to :controller => 'dashboard'
+    end
   end
 
   def edit_user

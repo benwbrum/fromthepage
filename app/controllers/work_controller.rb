@@ -20,16 +20,18 @@ class WorkController < ApplicationController
                                    :set_work_location_of_composition, 
                                    :set_work_author, 
                                    :set_work_transcription_conventions]
-  before_filter :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
+  before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
   def authorized?
-    if logged_in? && current_user.owner
-      if @work
-        return @work.owner == current_user
-      end
+    unless logged_in? && 
+           current_user.owner 
+      redirect_to :controller => 'dashboard'
     else
-      return false
+      if @work && @work.owner != current_user
+        redirect_to :controller => 'dashboard'
+      end
     end
+
   end
 
   def make_pdf

@@ -8,10 +8,10 @@ class PageController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @work
-        return @work.owner == current_user
+        redirect_to :controller => 'dashboard' unless @work.owner == current_user
       end
     else
-      return false
+      redirect_to :controller => 'dashboard' 
     end
   end
 

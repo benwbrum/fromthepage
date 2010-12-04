@@ -1,4 +1,4 @@
-class PageBlockController < ApplicationController
+class PageBlockController < AdminController
   def list
     @page_blocks = PageBlock.find(:all, {:order => "description"})
   end

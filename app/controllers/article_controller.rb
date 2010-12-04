@@ -6,7 +6,9 @@ class ArticleController < ApplicationController
   DEFAULT_ARTICLES_PER_GRAPH = 40
   
   def authorized?
-    return logged_in?
+    unless logged_in?
+      redirect_to :controller => 'dashboard'
+    end
   end
   
   def list
