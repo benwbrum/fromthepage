@@ -8,6 +8,10 @@
 <% form_for(:work, 
             @work, 
             :url => { :action => 'update_work' }) do |f| %>
+  <p>
+	Allow Scribes to Edit Page Titles: 
+	<%= f.check_box(:scribes_can_edit_titles) %>
+  </p>
   <p>Restrict Scribes: <%= f.check_box(:restrict_scribes) %></p>
   <%= hidden_field_tag(:work_id, @work.id) %>  
   <p><%= submit_tag('Save') %></p>
