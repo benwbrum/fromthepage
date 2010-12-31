@@ -30,6 +30,9 @@ module AbstractXmlHelper
       e.children.each { |c| anchor.add(c) }
       e.replace_with(anchor)
     end
+    # get rid of line breaks within other html mark-up
+    doc.elements.delete_all("//table//lb")
+    # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e| 
       if preserve_lb
         e.replace_with(REXML::Element.new('br'))
