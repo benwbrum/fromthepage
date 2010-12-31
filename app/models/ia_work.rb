@@ -13,8 +13,10 @@ class IaWork < ActiveRecord::Base
     loc_doc = Hpricot(open(api_url))
     location = loc_doc.search('results').first
     server = location['server']
+    dir = location['dir']
     logger.debug "DEBUG Server=#{server}"
-    return server
+    logger.debug "DEBUG Dir=#{dir}"
+    return {:server => server, :ia_path => dir}
   end
   
   

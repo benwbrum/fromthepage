@@ -85,10 +85,12 @@ class ApplicationController < ActionController::Base
       ia_servers = session[:ia_servers] ||= {}
       unless ia_servers[@work.ia_work.book_id]
         # fetch it and update it
-        server = IaWork.refresh_server(@work.ia_work.book_id)
-        ia_servers[@work.ia_work.book_id] = server
+        server_and_path = IaWork.refresh_server(@work.ia_work.book_id)
+        ia_servers[@work.ia_work.book_id] = server_and_path
       end
-      @work.ia_work.server=ia_servers[@work.ia_work.book_id]
+      logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
+      @work.ia_work.server=ia_servers[@work.ia_work.book_id][:server]
+      @work.ia_work.ia_path=ia_servers[@work.ia_work.book_id][:ia_path]
     end
     
   end
