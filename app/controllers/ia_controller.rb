@@ -133,6 +133,11 @@ class IaController < ApplicationController
     @ia_work[:sponsor] = loc_doc.search('sponsor').text         #description
     @ia_work[:image_count] = loc_doc.search('imagecount').text   
 
+    image_format, archive_format = formats_from_loc(loc_doc)
+    logger.debug("image_format, archive_format = #{image_format}, #{archive_format}")
+    @ia_work[:image_format] = image_format
+    @ia_work[:archive_format] = archive_format
+
     @ia_work.save!
     # now fetch the scandata.xml file and parse it
     scandata_url = "http://#{server}#{dir}/#{id}_scandata.xml"
@@ -159,6 +164,23 @@ class IaController < ApplicationController
     flash[:notice] = "#{@ia_work.title} has been imported into your staging area."
    
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+  end
+  
+private
+  ARCHIVE_FORMATS = ['zip', 'tar']
+  IMAGE_FORMATS = ['jp2', 'jpg']
+
+  def formats_from_loc(loc_doc)
+    files = loc_doc.search 'file'
+    locations = files.map { |f| f['location'] }
+    ARCHIVE_FORMATS.each do |aft|
+      IMAGE_FORMATS.each do |ift|
+        suffix = "#{ift}.#{aft}"
+        if locations.count { |l| l.end_with? suffix} > 0
+          return [ift, aft]
+        end        
+      end
+    end
   end
   
 end

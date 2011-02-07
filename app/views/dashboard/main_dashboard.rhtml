@@ -36,6 +36,12 @@
                         :action => 'new',
                         :ol => 'd_new_col' })%>
           </div>
+	  <div>
+	  <%= link_to("Import a book from the Internet Archive",
+	      	      { :controller => 'ia',
+		        :action => 'ia_book_form',
+			:ol => 'd_ia_import' }) %>
+	  </div>
           <div>
             <%= link_to("Create an image set", 
                         { :controller => 'transform',

@@ -230,14 +230,14 @@ br.bookId   = '<%=@work.ia_work.book_id%>';
 // output js include file
 
 // filename aone may be derived from ID_files.xml
-br.zip      = '<%=@work.ia_work.ia_path%>/<%=@work.ia_work.book_id%>_jp2.zip';//'/10/items/1941fieldnotesla00klau/1941fieldnotesla00klau_jp2.zip';
+br.zip      = '<%=@work.ia_work.ia_path%>/<%=@work.ia_work.book_id%>_<%=@work.ia_work.image_format%>.<%=@work.ia_work.archive_format%>';//'/10/items/1941fieldnotesla00klau/1941fieldnotesla00klau_jp2.zip';
 br.subPrefix = '<%=@work.ia_work.book_id%>'; //'1941fieldnotesla00klau';
 br.server   = '<%=@work.ia_work.server %>';  //'ia360700.us.archive.org';
 br.bookTitle= '<%=@work.ia_work.title%>';//'1941 Field Notes Laurence M. Klauber';
 br.bookPath = '<%=@work.ia_work.ia_path%>';
 br.bookUrl  = 'http://www.archive.org/details/<%=@work.ia_work.book_id%>';
-br.imageFormat = 'jp2';
-br.archiveFormat = 'zip';
+br.imageFormat = '<%=@work.ia_work.image_format%>';
+br.archiveFormat = '<%=@work.ia_work.archive_format%>';
 
 br.pageProgression = 'lr';
 // Check for config object
