@@ -26,3 +26,5 @@ config.action_view.cache_template_loading            = true
 
 # Enable threaded mode
 # config.threadsafe!
+# where is NEATO located on this machine?
+NEATO = '/usr/bin/neato'
