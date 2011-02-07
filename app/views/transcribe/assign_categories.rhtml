@@ -15,8 +15,21 @@
 <div class="two-columns">
 	<div class="left-column">
     <%= render :partial => '/shared/page_navigation' %>
+
+
     <div class="inside-column">
         <%= html_block('left') %>
+	    <% if @collection.owner == current_user %>
+			<p>
+			<%= link_to('Manage Categories',
+						{ :controller => 'category',
+						  :action => 'manage',
+						  :page_id => @page.id }) %>
+				
+			</p>
+		<% end %>
+
+
 	    <% for article in @page.articles %>
 	      <% if article.categories.length == 0 %>
 		      <h3><%= article.title %></h3>

@@ -45,6 +45,14 @@
                                { :title => "Add a subcategory underneath #{category.title}"} )
             end %>
       </p>
+	  <% if @page %>
+	  	<p>
+	  		<%= link_to("Return to categories for #{@page.title}",
+						{ :controller => 'transcribe',
+						  :action => 'assign_categories',
+						  :page_id => @page.id }) %>
+	  	</p>
+	  <% end %>
     </div>
   </div>
   <div class="right-column">
