@@ -103,7 +103,24 @@ class IaController < ApplicationController
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
     
+  def confirm_import
+    @detail_url = params[:detail_url]
+    #id = detail_url.split('/').last
+
+    @matches = IaWork.find_all_by_detail_url(@detail_url)
+    if @matches.size() == 0
+      # nothing to do here
+      redirect_to :action => 'import_work', :detail_url => @detail_url    
+      return 
+    end
+  end
+    
   def import_work 
+    # bail if the user bailed
+    if params[:commit] == 'Cancel'
+      redirect_to :controller => 'dashboard', :action => 'main_dashboard'
+      return
+    end
     detail_url = params[:detail_url]
     id = detail_url.split('/').last
 

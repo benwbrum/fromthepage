@@ -11,7 +11,7 @@
 			<% if record.header.identifier.include? 'archive.org' %>
 				<%= button_to("Import", 
 							  { :controller => 'ia', 
-								:action => 'import_work',
+								:action => 'confirm_import',
 								:detail_url => record.metadata.elements['.//dc:identifier'].text})%>
 			<% end %>
 			<br />
