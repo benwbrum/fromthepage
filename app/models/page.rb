@@ -38,6 +38,10 @@ class Page < ActiveRecord::Base
     work.collection
   end
 
+  def title
+    self[:title].blank? ? "untitled page #{self[:position]}" : self[:title]
+  end
+
 
   # we need a short pagename for index entries
   # in this case this will refer to an entry without
