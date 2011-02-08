@@ -12,7 +12,7 @@ class Article < ActiveRecord::Base
 
   validates_presence_of :title
 
-  has_and_belongs_to_many :categories 
+  has_and_belongs_to_many :categories, :uniq => true
   belongs_to :collection
   has_many(:target_article_links,
            { :foreign_key => "target_article_id",
