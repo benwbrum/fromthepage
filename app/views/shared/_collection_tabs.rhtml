@@ -37,6 +37,21 @@ Tab                         Access
 	      </li>
     <% end %>
 
+    <% collection_stat_options = { :controller => 'statistics',
+                                 :action => 'collection',
+                                 :collection_id => collection_id,
+                                :ol => 'c_tab_statistics' } %>
+    <% if current_page? collection_stat_options %> 
+      <li id="current">
+        <span>stats</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('stats', 
+                    collection_stat_options) %>
+      </li>     
+    <% end %>
+
     <% if @collection.owner == current_user %>
 	    <% if selected == 2 %> 
 	      <li id="current">

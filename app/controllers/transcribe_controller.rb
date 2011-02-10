@@ -21,6 +21,7 @@ class TranscribeController  < ApplicationController
         record_deed
         # use the new links to blank the graphs
         @page.clear_article_graphs
+        @work.work_statistic.recalculate if @work.work_statistic
         #redirect_to :action => 'display_page', :page_id => @page.id, :controller => 'display'
         redirect_to :action => 'assign_categories', :page_id => @page.id
       else

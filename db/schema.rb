@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101208164957) do
+ActiveRecord::Schema.define(:version => 20110209224455) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -152,6 +152,8 @@ ActiveRecord::Schema.define(:version => 20101208164957) do
     t.integer  "title_leaf"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "image_format",   :default => "jp2"
+    t.string   "archive_format", :default => "zip"
   end
 
   create_table "image_sets", :force => true do |t|
@@ -325,6 +327,15 @@ ActiveRecord::Schema.define(:version => 20101208164957) do
 
   add_index "users", ["login"], :name => "index_users_on_login"
 
+  create_table "work_statistics", :force => true do |t|
+    t.integer  "work_id"
+    t.integer  "transcribed_pages"
+    t.integer  "annotated_pages"
+    t.integer  "total_pages"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "works", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -339,7 +350,6 @@ ActiveRecord::Schema.define(:version => 20101208164957) do
     t.string   "author"
     t.text     "transcription_conventions"
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",   :default => false
   end
 
   add_index "works", ["collection_id"], :name => "index_works_on_collection_id"

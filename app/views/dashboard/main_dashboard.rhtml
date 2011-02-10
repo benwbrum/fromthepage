@@ -14,6 +14,10 @@
                               :action => 'show',
                               :collection_id => collection.id,
                               :ol => 'd_col_list' }) %>
+				(<%= link_to('statistics',
+							 { :controller => 'statistics',
+							   :action => 'collection',
+							   :collection_id => collection.id } )%>)
               </li>
             <% end %>
           </ul>

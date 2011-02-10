@@ -1,0 +1,33 @@
+<%= render({ :partial => '/shared/collection_tabs',
+             :locals => { :selected => 0,
+			 :collection_id => @collection.id }}) %>
+
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+			<!-- no page navigation? -->
+            <%= html_block('left') %>
+			<p>
+				<b>All Transcribers</b><br />
+				<% for entry in @t_all_users_and_deeds %>
+					<%=entry[0].display_name%>
+					(<%= entry[1]%>)
+					<br />
+				<% end %>
+			</p>
+		</div>
+	</div>
+	<div class="right-column">
+		<div class="inside-column">
+			<!-- user stats across collections -->
+			<p>
+				<b>All Editors</b><br />
+				<% for entry in @e_all_users_and_deeds %>
+					<%=entry[0].display_name%>
+					(<%= entry[1]%>)
+					<br />
+				<% end %>
+			</p>
+		</div>
+	</div>
+</div>
