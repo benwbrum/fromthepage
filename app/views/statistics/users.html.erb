@@ -12,6 +12,11 @@
 				<% for entry in @t_all_users_and_deeds %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
+					<% if current_user.like_owner? @collection %>
+						<i>
+							<%= entry[0].email %>
+						</i>
+					<% end %>
 					<br />
 				<% end %>
 			</p>
@@ -25,6 +30,11 @@
 				<% for entry in @e_all_users_and_deeds %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
+					<% if current_user.like_owner? @collection %>
+						<i>
+							<%= entry[0].email %>
+						</i>
+					<% end %>
 					<br />
 				<% end %>
 			</p>
