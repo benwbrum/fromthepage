@@ -24,6 +24,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many(:scribe_works, 
                           { :join_table => 'transcribe_authorizations', 
                             :class_name => 'Work'})
+  has_and_belongs_to_many(:owned_collections, 
+                          { :join_table => 'collection_owners', 
+                            :class_name => 'Collection'})
   has_many :page_versions, :order => 'created_on DESC'
   has_many :article_versions, :order => 'created_on DESC'
   has_many :notes, :order => 'created_at DESC'
@@ -31,6 +34,13 @@ class User < ActiveRecord::Base
 
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
+  end
+  
+  def like_owner?(obj)
+    if Collection == obj.class
+      return self == obj.owner || obj.owners.include?(self)      
+    end
+    return false
   end
   
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.

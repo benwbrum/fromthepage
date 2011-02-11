@@ -12,7 +12,7 @@ class CollectionController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @collection
-        unless @collection.owner == current_user
+        unless current_user.like_owner? @collection
           redirect_to :controller => 'dashboard'
         end
       end
@@ -21,6 +21,21 @@ class CollectionController < ApplicationController
     end
   end
 
+  def owners
+    @main_owner = @collection.owner
+    @owners = @collection.owners + [@main_owner]
+    @nonowners = User.find(:all) - @owners
+  end
+
+  def add_owner
+    @collection.owners << @user
+    redirect_to :action => 'owners', :collection_id => @collection.id
+  end
+
+  def remove_owner
+    @collection.owners.delete(@user)
+    redirect_to :action => 'owners', :collection_id => @collection.id
+  end
   def delete
     @collection.destroy
     redirect_to :controller => 'dashboard'

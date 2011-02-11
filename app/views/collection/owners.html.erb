@@ -1,0 +1,95 @@
+<%= render({ :partial => '/shared/collection_tabs',
+             :locals => { :selected => 0,
+                          :collection_id => @collection.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+    	<table>
+    	  <thead>
+    	  	<tr>
+    	  	  <th>
+    	  	  	User
+			  </th>
+			  <th>
+			  	Contributions
+			  </th>
+			  <th>
+			  	Action
+			  </th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<% for user in @owners %>
+		  	<tr>
+		  	  <td>		  			
+			  <%= link_to (user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => user.id }) %>
+		      </td>
+			  <td align="right">
+			  	<%=user.deeds.count :conditions => "collection_id = #{@collection.id}"%>
+			  </td>
+			  <td>
+			  	<% if @main_owner == user %>
+				  <i>none</i>
+				<% else %>
+				  <%= button_to("Remove", 
+				              { :action => 'remove_owner', 
+				                :user_id => user.id, 
+				                :collection_id => @collection.id, 
+	                      :ol => 'w_st_sl_remove' }) %>
+			    <% end %>
+			  </td>
+		  	</tr>
+			<% end %>
+		</tbody>
+  	  </table>
+    </div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+        <%= html_block('right') %>
+    	<table>
+    	  <thead>
+    	  	<tr>
+    	  	  <th>
+    	  	  	User
+			  </th>
+			  <th>
+			  	Contributions
+			  </th>
+			  <th>
+			  	Action
+			  </th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<% for user in @nonowners %>
+		  	<tr>
+		  	  <td>		  			
+			  <%= link_to (user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => user.id }) %>
+		      </td>
+			  <td align="right">
+			  	<%=user.deeds.count :conditions => "collection_id = #{@collection.id}"%>
+			  </td>
+			  <td>
+			  	
+				  <%= button_to("Add", 
+				              { :action => 'add_owner', 
+				                :user_id => user.id, 
+				                :collection_id => @collection.id, 
+	                      :ol => 'w_st_sl_remove' }) %>
+			  </td>
+		  	</tr>
+			<% end %>
+		</tbody>
+  	  </table>
+    </div>
+  </div>
+</div>
+

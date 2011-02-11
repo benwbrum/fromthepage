@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110209224455) do
+ActiveRecord::Schema.define(:version => 20110211220710) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -78,12 +78,19 @@ ActiveRecord::Schema.define(:version => 20110209224455) do
 
   add_index "clientperf_uris", ["uri"], :name => "index_clientperf_uris_on_uri"
 
+  create_table "collection_owners", :id => false, :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "collection_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "collections", :force => true do |t|
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
     t.text     "intro_block"
-    t.text     "footer_block"
+    t.string   "footer_block",  :limit => 2000
   end
 
   add_index "collections", ["owner_user_id"], :name => "index_collections_on_owner_user_id"
@@ -165,6 +172,9 @@ ActiveRecord::Schema.define(:version => 20110209224455) do
     t.integer  "original_height"
     t.integer  "original_to_base_halvings"
     t.integer  "owner_user_id"
+    t.string   "step"
+    t.string   "status"
+    t.string   "status_message"
   end
 
   add_index "image_sets", ["owner_user_id"], :name => "index_image_sets_on_owner_user_id"
@@ -277,7 +287,7 @@ ActiveRecord::Schema.define(:version => 20110209224455) do
   end
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :default => "", :null => false
+    t.string   "session_id", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -287,7 +297,7 @@ ActiveRecord::Schema.define(:version => 20110209224455) do
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "titled_images", :force => true do |t|
-    t.string   "original_file",                  :default => "",    :null => false
+    t.string   "original_file",                                     :null => false
     t.string   "title_seed",       :limit => 20
     t.string   "title_override"
     t.string   "title"
@@ -338,11 +348,11 @@ ActiveRecord::Schema.define(:version => 20110209224455) do
 
   create_table "works", :force => true do |t|
     t.string   "title"
-    t.text     "description"
+    t.string   "description",               :limit => 4000
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",          :default => false
-    t.integer  "transcription_version",     :default => 0
+    t.boolean  "restrict_scribes",                          :default => false
+    t.integer  "transcription_version",                     :default => 0
     t.text     "physical_description"
     t.text     "document_history"
     t.text     "permission_description"
@@ -350,6 +360,7 @@ ActiveRecord::Schema.define(:version => 20110209224455) do
     t.string   "author"
     t.text     "transcription_conventions"
     t.integer  "collection_id"
+    t.boolean  "scribes_can_edit_titles",                   :default => false
   end
 
   add_index "works", ["collection_id"], :name => "index_works_on_collection_id"

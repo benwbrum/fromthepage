@@ -52,7 +52,7 @@ Tab                         Access
       </li>     
     <% end %>
 
-    <% if @collection.owner == current_user %>
+    <% if current_user.like_owner? @collection %>
 	    <% if selected == 2 %> 
 	      <li id="current">
 	        <span>settings</span>
@@ -81,6 +81,23 @@ Tab                         Access
 	    <% end %>
     <% end %>
 
+    <% if current_user.like_owner? @collection %>
+	    <% collection_owners_options = { :controller => 'collection',
+	                                     :action => 'owners',
+	                                     :collection_id => collection_id,
+	                                     :ol => 'c_tab_owners' } %>
+	    <% if current_page? collection_owners_options %> 
+	      <li id="current">
+	        <span>owners</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('owners', 
+	                    collection_owners_options) %>
+	      </li>     
+	    <% end %>
+
+    <% end %>
   </ul>
 </div>
 
