@@ -46,9 +46,21 @@
   </div>
 		
   <div class="right-column">
+  		<% unless html_block('right').blank? %>
         <div class="inside-column">
               <%= html_block('right') %>
         </div>
+		<% end %>
+    <div class="inside-column">
+	  <h3>Categories</h3>
+      <ul>
+      	<% for cat in @article.categories %>
+	      	<li>
+	      		<%= cat.title %>
+	      	</li>
+		<% end %>
+      </ul>
+    </div>
 	<div class="inside-column">
 		  <h3>References</h3>
 		  <p>
