@@ -24,6 +24,12 @@
   </div>
   <div class="right-column">
     <div class="inside-column">
+	  <p>
+	  	  <%= link_to("Read pages that mention <i>#{@article.title}</i> in all works.",
+              :controller => 'display',
+              :action => 'read_all_works',
+              :article_id => @article.id) %>
+	  </p>
       <p>
         The graph displays the other subjects mentioned on the same pages as the 
         subject <i><%= @article.title %></i>.  If the same subject occurs a page
