@@ -19,7 +19,7 @@
 
     <div class="inside-column">
         <%= html_block('left') %>
-	    <% if current_user.like_owner? @collection %>
+	    <% if logged_in? && current_user.like_owner?(@collection) %>
 			<p>
 			<%= link_to('Manage Categories',
 						{ :controller => 'category',
