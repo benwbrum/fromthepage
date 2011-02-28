@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110211220710) do
+ActiveRecord::Schema.define(:version => 20110225022301) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -272,6 +272,7 @@ ActiveRecord::Schema.define(:version => 20110211220710) do
     t.integer  "lock_version",    :default => 0
     t.text     "xml_text"
     t.integer  "page_version_id"
+    t.string   "status"
   end
 
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
@@ -344,6 +345,8 @@ ActiveRecord::Schema.define(:version => 20110211220710) do
     t.integer  "total_pages"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "blank_pages",       :default => 0
+    t.integer  "incomplete_pages",  :default => 0
   end
 
   create_table "works", :force => true do |t|

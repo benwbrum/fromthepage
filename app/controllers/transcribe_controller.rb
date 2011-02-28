@@ -14,6 +14,13 @@ class TranscribeController  < ApplicationController
     end
   end
 
+  def mark_page_blank
+    @page.status = Page::STATUS_BLANK
+    @page.save
+    @work.work_statistic.recalculate if @work.work_statistic
+    redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+  end
+
   def save_transcription
     @page.attributes=params[:page]
     if params['save']

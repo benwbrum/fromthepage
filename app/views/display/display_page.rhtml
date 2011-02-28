@@ -26,7 +26,14 @@
                                 :ol => 'p_dp_tl' }) %>
                 </i>
               </p>
-            <% else %>
+			  <% unless @page.status == Page::STATUS_BLANK %>
+				  <%= button_to('mark this page blank',
+								{ :controller => 'transcribe',
+								  :action => 'mark_page_blank',
+		                          :page_id => @page.id,
+		                          :ol => 'p_dp_tl' }) %>
+			  <% end %>
+        <% else %>
 		          <p><i>No Transcription</i></p>
 		        <% end %>
         <% end %>
