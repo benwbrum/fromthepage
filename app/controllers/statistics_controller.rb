@@ -16,8 +16,11 @@ class StatisticsController < ApplicationController
     @users.each { |u| @t_all_users_and_deeds << [u, @t_deeds_by_user[u.id]] if @t_deeds_by_user[u.id]}
     @e_all_users_and_deeds = []
     @users.each { |u| @e_all_users_and_deeds << [u, @e_deeds_by_user[u.id]]  if @e_deeds_by_user[u.id]}
+    @i_all_users_and_deeds = []
+    @users.each { |u| @i_all_users_and_deeds << [u, @i_deeds_by_user[u.id]]  if @i_deeds_by_user[u.id]}
     @t_all_users_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
     @e_all_users_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
+    @i_all_users_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
   
   end
 
@@ -30,10 +33,13 @@ private
     
     @t_deeds_by_user = 
       Deed.count({:group => 'user_id', 
-                  :conditions => [cond_string, 'page_trans']})
+                  :conditions => [cond_string, Deed::PAGE_TRANSCRIPTION]})
     @e_deeds_by_user = 
       Deed.count({:group => 'user_id', 
-                  :conditions => [cond_string, 'page_edit']})
+                  :conditions => [cond_string, Deed::PAGE_EDIT]})
+    @i_deeds_by_user = 
+      Deed.count({:group => 'user_id', 
+                  :conditions => [cond_string, Deed::PAGE_INDEXED]})
   end
 
   def load_users
@@ -45,6 +51,9 @@ private
   
     @e_top_ten_users_and_deeds = 
       build_top_ten_array(@e_deeds_by_user)
+  
+    @i_top_ten_users_and_deeds = 
+      build_top_ten_array(@i_deeds_by_user)
   
   end
 

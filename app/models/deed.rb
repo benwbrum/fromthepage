@@ -2,12 +2,15 @@ class Deed < ActiveRecord::Base
   # constants
   PAGE_TRANSCRIPTION = 'page_trans'
   PAGE_EDIT = 'page_edit'
+  PAGE_INDEXED = 'page_index'
   ARTICLE_EDIT = 'art_edit'
   NOTE_ADDED = 'note_add'
+  
 
   SHORT_PARTIALS = 
     { PAGE_TRANSCRIPTION => 'deed/page_transcription_short.rhtml', 
       PAGE_EDIT => 'deed/page_edit_short.rhtml',
+      PAGE_INDEXED => 'deed/page_indexed_short.rhtml',
       ARTICLE_EDIT => 'deed/article_edit_short.rhtml',
       NOTE_ADDED => 'deed/note_added_short.rhtml' }
 

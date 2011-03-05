@@ -20,6 +20,19 @@
 					<br />
 				<% end %>
 			</p>
+			<p>
+				<b>All Indexers</b><br />
+				<% for entry in @i_all_users_and_deeds %>
+					<%=entry[0].display_name%>
+					(<%= entry[1]%>)
+					<% if logged_in? && current_user.like_owner?(@collection) %>
+						<i>
+							<%= entry[0].email %>
+						</i>
+					<% end %>
+					<br />
+				<% end %>
+			</p>
 		</div>
 	</div>
 	<div class="right-column">

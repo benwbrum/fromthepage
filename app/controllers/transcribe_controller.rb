@@ -22,12 +22,19 @@ class TranscribeController  < ApplicationController
   end
 
   def save_transcription
+    old_link_count = @page.page_article_links.count
     @page.attributes=params[:page]
     if params['save']
       if @page.save
         record_deed
         # use the new links to blank the graphs
         @page.clear_article_graphs
+        
+        new_link_count = @page.page_article_links.count
+        logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
+        if old_link_count == 0 && new_link_count > 0
+          record_index_deed
+        end
         @work.work_statistic.recalculate if @work.work_statistic
         #redirect_to :action => 'display_page', :page_id => @page.id, :controller => 'display'
         redirect_to :action => 'assign_categories', :page_id => @page.id
@@ -159,17 +166,29 @@ class TranscribeController  < ApplicationController
 protected
 
   def record_deed
-    deed = Deed.new
-    deed.note = @note
-    deed.page = @page
-    deed.work = @work
-    deed.collection = @collection
+    deed = stub_deed
     current_version = @page.page_versions[0]
     if current_version.page_version > 1
       deed.deed_type = Deed::PAGE_EDIT
     else
       deed.deed_type = Deed::PAGE_TRANSCRIPTION
     end
+    deed.user = current_user
+    deed.save!
+  end
+  
+  def stub_deed
+    deed = Deed.new
+    deed.note = @note
+    deed.page = @page
+    deed.work = @work
+    deed.collection = @collection
+    deed
+  end
+  
+  def record_index_deed
+    deed = stub_deed
+    deed.deed_type = Deed::PAGE_INDEXED
     deed.user = current_user
     deed.save!
   end

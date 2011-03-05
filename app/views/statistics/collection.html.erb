@@ -73,6 +73,14 @@
 				<% end %>
 			</p>
 			<p>
+				<b>Top 10 Indexers for <%=@collection.title %></b><br />
+				<% for entry in @i_top_ten_users_and_deeds %>
+					<%=entry[0].display_name%>
+					(<%= entry[1]%>)
+					<br />
+				<% end %>
+			</p>
+			<p>
 				<b>Top 10 Editors for <%=@collection.title %></b><br />
 				<% for entry in @e_top_ten_users_and_deeds %>
 					<%=entry[0].display_name%>

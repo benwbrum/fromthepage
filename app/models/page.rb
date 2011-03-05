@@ -146,6 +146,7 @@ class Page < ActiveRecord::Base
                                :article => article,
                                :display_text => display_text)
     link.save!
+    
     return link.id        
   end
 
