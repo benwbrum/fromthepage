@@ -20,11 +20,10 @@
 # updating from http://www.glennfu.com/2008/02/01/deploying-ruby-on-rails-with-capistrano-on-dreamhost/
 # The host where people will access my site
 set :application, "fromthepage"
-set :user, "my dreamhost username set to access this project"
+#set :user, "my dreamhost username set to access this project"
 #set :admin_login, "benwbrum"
-set :admin_login, "fromthe"
+set :admin_login, "fromthepage"
 
-set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
@@ -36,7 +35,7 @@ set :deploy_to, "/home/#{admin_login}/#{application}"
 
 # My DreamHost-assigned server
 #set :domain, "#{admin_login}@chalmers.dreamhost.com"
-set :domain, "#{admin_login}@beta.fromthepage.com"
+set :domain, "#{admin_login}@66.228.49.247"
 role :app, domain
 role :web, domain
 role :db,  domain, :primary => true
@@ -44,7 +43,7 @@ role :db,  domain, :primary => true
 desc "Link shared files"
 task :before_symlink do
   run "rm -drf #{release_path}/public/images/working"
-  run "ln -s #{shared_path}/bin #{release_path}/public/images_working"
+#  run "ln -s #{shared_path}/bin #{release_path}/public/images_working"
   run "ln -s #{shared_path}/system/images/working #{release_path}/public/images/"
   run "chmod +w #{release_path}/tmp"
   run "chmod -R g-w #{release_path}"
@@ -67,17 +66,11 @@ default_run_options[:pty] = true
 set :repository,  "git://github.com/benwbrum/fromthepage.git"
 set :scm, "git"
 
-
-desc "Restarting after deployment"
-task :after_deploy, :roles => [:app, :db, :web] do
-  run "touch #{deploy_to}/current/public/dispatch.fcgi" 
-
-  run "sed 's/# ENV\\[/ENV\\[/g' #{deploy_to}/current/config/environment.rb > #{deploy_to}/current/config/environment.temp"
-  run "mv #{deploy_to}/current/config/environment.temp #{deploy_to}/current/config/environment.rb"
-  run "cp #{deploy_to}/current/public/.htaccess.prod #{deploy_to}/current/public/.htaccess"
+namespace :passenger do
+  desc "Restart Application"
+  task :restart do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
 end
 
-desc "Restarting after rollback"
-task :after_rollback, :roles => [:app, :db, :web] do
-  run "touch #{deploy_to}/current/public/dispatch.fcgi"
-end
+after :deploy, "passenger:restart"
