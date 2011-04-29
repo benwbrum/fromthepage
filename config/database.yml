@@ -38,11 +38,10 @@ test:
 production:
   adapter: mysql
   encoding: utf8
-  database: fromthe_production
+  database: fromthepage_production
   pool: 5
-  username: fromthe_db
-  password: fromthe_db
-  socket: /var/run/mysqld/mysqld.sock
+  username: rails
+  password: rails
+#  socket: /var/run/mysqld/mysqld.sock
+  host: localhost
 
-  
-  
