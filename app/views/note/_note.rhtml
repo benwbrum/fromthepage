@@ -1,10 +1,7 @@
 <%
 	user = if defined? current_user then current_user else nil end
 %>
-<!-- Prevent JQuery from conflicting with prototype -->
-<script type="text/javascript">
-		 jQuery.noConflict();
-</script>
+
 
 <div id="comment_<%=note.id%>" class="comment comment-<%= odd %>" style="margin-left:<%= note.depth * 5 %>em">
 	<a name="comment_<%=note.id%>"></a>
