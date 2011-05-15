@@ -221,19 +221,35 @@ br.pageNums = [ '<%=@page.ia_leaf.page_number%>'];
       
 br.numLeafs = br.pageW.length;
 
-// derived by text input or browser
-br.bookId   = '<%=@work.ia_work.book_id%>';
 
 // bookPath and server may be derived from hitting the stream url -- see
 //  lynx -source "http://www.archive.org/stream/1941fieldnosla00klau"
 // output js include file
 
-// filename aone may be derived from ID_files.xml
-br.zip      = '<%=@work.ia_work.ia_path%>/<%=@work.ia_work.book_id%>_<%=@work.ia_work.image_format%>.<%=@work.ia_work.archive_format%>';//'/10/items/1941fieldnotesla00klau/1941fieldnotesla00klau_jp2.zip';
-br.subPrefix = '<%=@work.ia_work.book_id%>'; //'1941fieldnotesla00klau';
-br.server   = '<%=@work.ia_work.server %>';  //'ia360700.us.archive.org';
-br.bookTitle= '<%=@work.ia_work.title%>';//'1941 Field Notes Laurence M. Klauber';
-br.bookPath = '<%=@work.ia_work.ia_path%>';
+
+/*
+ * 
+ * br.bookId   = 'Jeremiah_White_Graves_Diary_Volume_2_Book_01';
+ * br.zip      = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01_jp2.zip';
+ * br.subPrefix = 'JWGravesVol2Book01';
+ * br.server   = 'ia600607.us.archive.org';
+ * br.bookTitle= 'Diary of Jeremiah White Graves, Volume 2, Book 1';
+ * br.bookPath = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01';
+ * br.bookUrl  = 'http://www.archive.org/details/Jeremiah_White_Graves_Diary_Volume_2_Book_01';
+ * br.imageFormat = 'jp2';
+ * br.archiveFormat = 'zip';
+
+ * 
+ */
+
+
+// derived by text input or browser
+br.bookId   = '<%=@work.ia_work.book_id%>';
+br.zip      = '<%=@work.ia_work.ia_path%>/<%=@work.ia_work.zip_file%>';
+br.subPrefix = '<%=@work.ia_work.sub_prefix%>';
+br.server   = '<%=@work.ia_work.server %>';
+br.bookTitle= '<%=@work.ia_work.title%>';
+br.bookPath = '<%=@work.ia_work.book_path%>';
 br.bookUrl  = 'http://www.archive.org/details/<%=@work.ia_work.book_id%>';
 br.imageFormat = '<%=@work.ia_work.image_format%>';
 br.archiveFormat = '<%=@work.ia_work.archive_format%>';
