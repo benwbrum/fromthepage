@@ -20,7 +20,7 @@ class IaWork < ActiveRecord::Base
   end
   
   def zip_file
-    self[:zip_file] || "<%=self[:book_id]%>_<%=self[:image_format]%>.<%=self[:archive_format]%>"
+    self[:zip_file] || "#{self[:book_id]}_#{self[:image_format]}.#{self[:archive_format]}"
   end
   
   def book_path
