@@ -2,11 +2,21 @@ class WorkStatistic < ActiveRecord::Base
   belongs_to :work
 
   def pct_transcribed
-    (self[:transcribed_pages].to_f / (self[:total_pages] - self[:blank_pages])) * 100
+    raw = (self[:transcribed_pages].to_f / (self[:total_pages] - self[:blank_pages])) * 100
+    if raw > 100
+      100
+    else
+      raw
+    end
   end
 
   def pct_annotated
-    (self[:annotated_pages].to_f / (self[:total_pages] - self[:blank_pages])) * 100    
+    raw = (self[:annotated_pages].to_f / (self[:total_pages] - self[:blank_pages])) * 100    
+    if raw > 100
+      100
+    else
+      raw
+    end
   end
   
   def recalculate
