@@ -1,8 +1,4 @@
 
-<!-- Prevent JQuery from conflicting with prototype -->
-<script type="text/javascript">
-		 jQuery.noConflict();
-</script>
 <table>
         <tr>
                 <th>
@@ -40,6 +36,10 @@
                                 { :action => 'increment_by_ten',
                                   :titled_image_id => image.id,
                                   :ol => 'ti_il_inc10' }) %>
+                    <%= link_to('+365', 
+                                { :action => 'increment_by_365',
+                                  :titled_image_id => image.id,
+                                  :ol => 'ti_il_inc10' }) %>
                     <%= link_to('-', 
                                 { :action => 'decrement_by_one',
                                   :titled_image_id => image.id,
@@ -50,6 +50,10 @@
                                   :ol => 'ti_il_dec2' }) %>
                     <%= link_to('-10', 
                                 { :action => 'decrement_by_ten',
+                                  :titled_image_id => image.id,
+                                  :ol => 'ti_il_dec10' }) %>
+                    <%= link_to('-365', 
+                                { :action => 'decrement_by_365',
                                   :titled_image_id => image.id,
                                   :ol => 'ti_il_dec10' }) %>
                 </td>

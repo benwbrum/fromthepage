@@ -15,6 +15,9 @@ class TitleController < ApplicationController
   end
   
   def list
+    unless @image_set.status == ImageSet::STATUS_COMPLETE 
+      redirect_to :controller => 'transform', :action => 'process_meter', :image_set_id => @image_set.id
+    end
     @titled_images = @image_set.titled_images
     conditions = "image_set_id = #{@image_set.id}"
 #    @image_pages, @titled_images = paginate(:titled_image,
@@ -42,6 +45,10 @@ class TitleController < ApplicationController
     renumber_images(10)
   end
   
+  def increment_by_365
+    renumber_images(365)
+  end
+  
   def decrement_by_one
     renumber_images(-1)
   end
@@ -52,6 +59,10 @@ class TitleController < ApplicationController
   
   def decrement_by_ten
     renumber_images(-10)
+  end
+  
+  def decrement_by_365
+    renumber_images(-365)
   end
   
 private

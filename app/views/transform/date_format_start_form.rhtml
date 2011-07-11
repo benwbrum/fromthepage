@@ -1,5 +1,6 @@
 <% form_tag( {:action => 'date_format_start_process'} ) do %>
 
+	<%= hidden_field_tag('image_set_id', @image_set.id) %>
     <% if flash['error'] %>
       <div style="color: red"><%= flash['error'] %></div>
     <% end %>

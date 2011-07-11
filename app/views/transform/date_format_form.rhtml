@@ -1,10 +1,11 @@
 <% form_tag( {:action => 'date_format_process'} ) do %>
 
+	<%= hidden_field_tag('image_set_id', @image_set.id) %>
     <% if flash['error'] %>
       <div style="color: red"><%= flash['error'] %></div>
     <% end %>
 
-    <p><%= image_tag(file_to_url(@image.crop_file)) %></p>
+    <p><%= image_tag(file_to_url(@image_set.sample_image.crop_file)) %></p>
 
 
     <p>Enter a format string to be used for your dates

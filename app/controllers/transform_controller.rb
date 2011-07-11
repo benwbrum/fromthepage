@@ -6,25 +6,49 @@ class TransformController < ApplicationController
   include ImageHelper
 # TODO add before filters
 
+  NEXT_STEP = 
+    { 
+      ImageSet::STEP_DIRECTORY_PROCESS => 'orientation_form',
+      ImageSet::STEP_ORIENTATION_PROCESS => 'number_location_form',
+      ImageSet::STEP_NUMBER_LOCATION_PROCESS => 'number_format_form'
+    }
+
   def index
-    render :action => 'directory_form'
+    if @image_set
+      reprise      
+    else
+      render :action => 'directory_form'
+    end
   end
 
-  def splash_page
-  
-  end
-  
-  def test_backgroundrb
-    # don't call new_worker each time -- rather call get_worker and a method off that.
-    session[:job_key] = MiddleMan.new_worker(:class => :image_transformer_worker,
-                                             :args => { :directory => config[:working_directory],
-                                               :files => config[:original_files]} )
-    MiddleMan.get_worker(session[:job_key]).begin_shrink_to_sextodecimo
-    MiddleMan.get_worker(session[:job_key]).begin_rotate_sextodecimo
-    MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo
-    render :action => 'directory_form'
-  end
+  def reprise
+    debug('L 1')
+    unless @image_set
+      debug('L 2')
+      redirect_to :action => 'directory_form' 
+      return
+    end
+    debug('L 3')
+    debug("RAW IMAGE_SET STEP= #{@image_set.step}")
 
+    next_step = NEXT_STEP[@image_set.step]
+    
+    # figure out the current step    
+    # if it's completed, redirect to the next step
+    if @image_set.status = ImageSet::STATUS_COMPLETE
+      debug('L 4')
+      debug("REDIRECTING TO #{next_step}")
+      redirect_to :action => next_step, :image_set_id => @image_set.id
+      debug('L 5')
+
+      return
+    end
+    debug('L 6')
+    # if it's not, show an apologetic explanation
+    render :text => @image_set.status + ' ' + @image_set.status_message
+    debug('L 7')
+
+  end
 
   #############################################################################
   # Main Flow
@@ -62,13 +86,14 @@ class TransformController < ApplicationController
     else
       config[:source_directory] = source_dir
       process_source_directory(source_dir)
-      redirect_to :action => 'orientation_form'
+      redirect_to :action => 'reprise', :image_set_id => config[:image_set_id]
     end
   end
   
   def orientation_form
-    sample = config[:sample_image]
-    filename = sample.shrunk_file
+    # pick a randomish file to use as a sample
+    sample_image = @image_set.sample_image
+    filename = sample_image.shrunk_file
     
     debug("begin orient #{Time.now}")
     # shrink the sample image even more
@@ -77,8 +102,8 @@ class TransformController < ApplicationController
     base = orig.resize(quarter)
     @img_files = Hash.new
     
-    debug(config[:image_set].inspect)
-    dirname = config[:image_set].path
+    debug(@image_set.inspect)
+    dirname = @image_set.path
     # loop through each orientation and produce samples
     [0, 90, 180, 270].each do |angle|
       image = base.rotate(angle)
@@ -92,18 +117,45 @@ class TransformController < ApplicationController
   def orientation_process
     # get the orientation
     orientation = params[:orientation].to_f
-    image_set = config[:image_set]
-    image_set.orientation = orientation
-    image_set.save!
+    @image_set.orientation = orientation
+    @image_set.save!
 
-    rotate_sextodecimo(config[:sample_image], orientation)
-    MiddleMan.get_worker(session[:job_key]).begin_rotate_sextodecimo(orientation)
+    #rotate_sextodecimo(@image_set.sample_image, orientation)
+    # MiddleMan.get_worker(session[:job_key]).begin_rotate_sextodecimo(orientation)
+
+    @image_set.process_sample_orientation
+    call_rake :process_orientation 
+    
     # TODO set orientation on image_set
-    redirect_to :action => 'number_location_form'
+    redirect_to :action => 'size_form', :image_set_id => config[:image_set_id]
+  end
+  
+  def size_form
+    
+  end
+  
+  
+  def size_process
+    action = params['size']
+    if 'just_right' == action
+      call_rake :process_size
+      redirect_to :action => 'number_location_form', :image_set_id => @image_set.id
+      return
+    end
+    # otherwise shrink/enlarge the image and re-display the form
+    if 'too_small' == action
+      @image_set.original_to_base_halvings -= 1
+    else
+      @image_set.original_to_base_halvings += 1      
+    end
+    @image_set.save!
+    @image_set.resize_sample_image
+    
+    render :action => 'size_form'
   end
   
   def number_location_form
-    @image = config[:sample_image]
+    @image = @image_set.sample_image
   end
 
   # TODO move the image dimensions onto the titled_image object
@@ -113,7 +165,7 @@ class TransformController < ApplicationController
     debug y
 
     # TODO refactor to pull the image dimensions from the image_set object
-    sample_image = config[:sample_image]
+    sample_image = @image_set.sample_image
     sample_file = sample_image.shrunk_file
     sample = Magick::ImageList.new(sample_file)
     height = sample.rows
@@ -129,16 +181,19 @@ class TransformController < ApplicationController
     end
     start_of_band = center_of_band - (band_height/2)
 
+    @image_set.crop_band_start = start_of_band
+    @image_set.crop_band_height = band_height
+    @image_set.save!
+
     # TODO refactor this to use the lib code
     crop_sextodecimo(sample_image, start_of_band, band_height)
-#    sample_image.crop_completed = true
-#    sample_image.save!    
     safe_update(sample_image, { :crop_completed => true })
     # apply the crop to the rest of the pages
     debug("Cropping other files...")
-    MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
+    call_rake :process_crop
+#    MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
     
-    redirect_to :action => 'number_format_form'
+    redirect_to :action => 'number_format_form', :image_set_id => config[:image_set_id]
   end
   
 
@@ -156,9 +211,9 @@ class TransformController < ApplicationController
     config[:number_format] = params[:format]
     config[:interval_sequential] = (params[:interval] == 'Sequential')
     if('Date' == config[:number_format])
-      redirect_to :action => 'date_format_form'
+      redirect_to :action => 'date_format_form', :image_set_id => config[:image_set_id]
     else
-      redirect_to :action => 'numeric_format_start_form'
+      redirect_to :action => 'numeric_format_start_form', :image_set_id => config[:image_set_id]
     end
   end
 
@@ -168,7 +223,7 @@ class TransformController < ApplicationController
 
   def numeric_format_start_process
     config[:numeric_start] = params[:numeric_start]
-    redirect_to :action => 'partial_list_form'
+    redirect_to :action => 'partial_list_form', :image_set_id => config[:image_set_id]
   end
 
   #############################################################################
@@ -192,9 +247,9 @@ class TransformController < ApplicationController
       flash.now['error'] = "Your date format was invalid"
       render :action => 'date_format_form'
     end
-    config[:image_set].title_format = date_format
-    config[:image_set].save!
-    redirect_to :action => 'date_format_start_form'
+    @image_set.title_format = date_format
+    @image_set.save!
+    redirect_to :action => 'date_format_start_form', :image_set_id => config[:image_set_id]
   end
 
   def date_format_ajax_test
@@ -219,7 +274,30 @@ class TransformController < ApplicationController
     # redirect 
     redirect_to(:controller => 'title', 
                 :action => 'list', 
-                :image_set_id => config[:image_set].id)
+                :image_set_id => config[:image_set_id])
+  end
+
+  #############################################################################
+  # Process meter 
+  #
+  # Displays status of different processing steps.
+  #############################################################################
+  def process_meter
+    @total_images = @image_set.titled_images.count
+    @shrunk_images = @image_set.titled_images.count(:conditions => ['shrink_completed = ?', true])
+    @rotated_images = @image_set.titled_images.count(:conditions => ['rotate_completed = ?', true])
+    @cropped_images = @image_set.titled_images.count(:conditions => ['crop_completed = ?', true])
+    @shrink_process_count = `ps -p #{@image_set.shrink_pid} h| wc -l`.chomp.to_i
+    @rotate_process_count = `ps -p #{@image_set.rotate_pid} h| wc -l`.chomp.to_i
+    @crop_process_count = `ps -p #{@image_set.crop_pid} h| wc -l`.chomp.to_i
+  end
+
+  def restart
+    call_rake :process_orientation 
+    call_rake :process_size
+    call_rake :process_crop
+    
+    redirect_to :action => 'process_meter', :image_set_id => @image_set.id
   end
 
 
@@ -237,73 +315,34 @@ class TransformController < ApplicationController
   end
 
 private
+
+  
+  def call_rake(task, options = {})
+    options[:rails_env] ||= Rails.env
+    options[:image_set_id] = @image_set.id
+    args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
+    rake_call = "/usr/bin/rake #{task} #{args.join(' ')}  --trace 2>&1 >> #{Rails.root}/log/rake.log &"
+    debug("DEBUG: #{rake_call}")
+    system rake_call
+  end
+
+
   def process_source_directory(source_directory_name)
     # create a working directory
     debug("current directory is #{Dir.getwd}")
-    new_set = ImageSet.new
-    new_set.owner = current_user
-    new_set.save!
+    @image_set = ImageSet.new
+    @image_set.owner = current_user
+    @image_set.save!
+    
+    # do the inline work
+    @image_set.directory_setup(source_directory_name)
+
+    # do the background work
+    call_rake :process_image_dir, :source_directory_name => source_directory_name 
 
     # looks lame
-    new_dir_name = File.join(File.join(Dir.getwd, 
-                                       File.join("images",
-                                                 "working")), 
-                             new_set.id.to_s) 
-   
-    if(!Dir.mkdir(new_dir_name))
-      debug("could not create directory #{new_dir_name}")
-    end
-    if(!File.chmod(0777, new_dir_name))
-      debug("could not chmod directory #{new_dir_name}")
-    end
-    new_set.path = new_dir_name
-        
-    # copy all jpegs into that directory
-    debug("begin cp #{Time.now}")
-    cp(Dir.glob(File.join(source_directory_name, "*.jpg")), "#{new_dir_name}")
-    debug("end   cp #{Time.now}")
-    debug("begin dir #{Time.now}")
-    original_files = Dir.glob(File.join(new_dir_name, "*.jpg"))
-    original_files.each { |f| File.chmod(0777, f) }
-    debug("end   dir #{Time.now}")
-
-    original_files.sort!
-    original_files.each do |image_filename|
-      image = TitledImage.new
-      image.original_file = image_filename
-      new_set.titled_images << image
-    end
-    new_set.save!
+    config[:image_set_id] = @image_set.id
     
-    config[:image_set] = new_set
-    # TODO move most of this config stuff to the image set object
-    
-
-    # pick a randomish file to use as a sample
-    sample_image = new_set.titled_images[(new_set.titled_images.length / 3)]
-    config[:sample_image] = sample_image
-      
-    # set default image data
-    orig = Magick::ImageList.new(sample_image.original_file)
-    new_set.original_width = orig.columns
-    new_set.original_height = orig.rows
-    
-    # set shrinkage -- eventually will be its own workflow
-    new_set.original_to_base_halvings = 2
-    new_set.save!
-    
-
-    debug("begin shrink #{Time.now}")
-    # shrink the sample file to 1:4
-    shrink_to_sextodecimo(sample_image)
-    debug("end   shrink #{Time.now}")
-
-    # spawn a 1:4 shrink of the remaining files
-    session[:job_key] = MiddleMan.new_worker(:class => :image_transformer_worker,
-                                             :args => { :image_set_id => new_set.id } )
-
-    MiddleMan.get_worker(session[:job_key]).begin_shrink_to_sextodecimo
-
   end
 
   def auto_title
@@ -311,10 +350,9 @@ private
     date_string = config[:date_start]
     current_date = Date.parse(date_string)
     debug(current_date.to_s)
-    iset = config[:image_set]
-    date_format = iset.title_format
+    date_format = @image_set.title_format
     # walk through each image
-    for image in iset.titled_images
+    for image in @image_set.titled_images
       image = TitledImage.find(image.id)
       safe_update(image, 
                   { :title_seed => current_date.to_s, 

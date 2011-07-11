@@ -28,6 +28,7 @@ module ImageHelper
   end
 
   def shrink_file(input_file, output_file, factor) 
+    RAILS_DEFAULT_LOGGER.debug("DEBUG ImageHelper if=#{input_file} of=#{output_file}")
     orig = Magick::ImageList.new(input_file)
     fraction = 1.to_f / (2.to_f ** factor)
     smaller = orig.resize(fraction)
@@ -68,6 +69,7 @@ module ImageHelper
     end
   end
   
+  # This may now be dead code
   def rotate_sextodecimo(image, orientation)
     rotate(image, orientation, 2)
     safe_update(image, { :rotate_completed => true })
@@ -78,6 +80,7 @@ module ImageHelper
     width = orig.columns
     crop = orig.crop(0, start_y, width, height)
     crop.write(image.crop_file)    
+    RAILS_DEFAULT_LOGGER.debug("DEBUG cropping #{image.shrunk_file} to #{image.crop_file}")
     orig = nil
     crop = nil
     GC.start

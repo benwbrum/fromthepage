@@ -1,4 +1,5 @@
 class CollationController < ApplicationController
+  include FileUtils::Verbose
 
   before_filter :authorized?
 
@@ -42,6 +43,7 @@ class CollationController < ApplicationController
   def insert
     image = TitledImage.new
     image.title = 'Blank'
+    image.original_file = 'blank'
     insert_set = ImageSet.find(params[:insert_set_id])
     index = params[:index].to_i 
     index += 1
@@ -80,6 +82,10 @@ class CollationController < ApplicationController
     # copy the relevant image set data
     new_set.title_format = left_set.title_format
     new_set.original_to_base_halvings = left_set.original_to_base_halvings
+    new_set.step = ImageSet::STEP_PROCESSING_COMPLETE
+    new_set.status = ImageSet::STATUS_COMPLETE
+    new_set.save!
+    new_set.create_new_directory
     # now start copying images over
     # the associations will not be saved until the
     # parent is saved.  who knows what will happen to
@@ -103,6 +109,9 @@ class CollationController < ApplicationController
     1.upto(new_set.titled_images.size) do |i|
       new_set.titled_images[i-1].position=i
     end
+    # actually copy the files over
+    mv(Dir.glob(File.join(left_set.path, "*.jpg")), new_set.path, :force => true)
+    mv(Dir.glob(File.join(right_set.path, "*.jpg")), new_set.path, :force => true)
     new_set.save!
     redirect_to :controller => 'title', :action => 'list', :image_set_id => new_set.id
   end

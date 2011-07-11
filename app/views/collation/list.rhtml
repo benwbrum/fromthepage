@@ -16,7 +16,9 @@
     <tr>
       <td>
         <% if i < @left_set.titled_images.size %>
-          <%= @left_set.titled_images[i].title %>
+          <b>
+          	<%= @left_set.titled_images[i].title %>
+          </b>
         <% else %>
           &nbsp;
         <% end %>
@@ -53,7 +55,9 @@
       </td>
       <td>
         <% if i < @right_set.titled_images.size %>
-          <%= @right_set.titled_images[i].title %>
+          <b>
+          	<%= @right_set.titled_images[i].title %>
+          </b>
         <% else %>
           &nbsp;
         <% end %>
