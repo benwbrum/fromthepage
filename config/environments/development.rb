@@ -19,3 +19,4 @@ config.action_mailer.raise_delivery_errors = false
 
 # where is NEATO located on this machine?
 NEATO = '/usr/bin/neato'
+RAKE = '/usr/bin/rake'

@@ -321,7 +321,7 @@ private
     options[:rails_env] ||= Rails.env
     options[:image_set_id] = @image_set.id
     args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
-    rake_call = "/usr/bin/rake #{task} #{args.join(' ')}  --trace 2>&1 >> #{Rails.root}/log/rake.log &"
+    rake_call = "#{RAKE} #{task} #{args.join(' ')}  --trace 2>&1 >> #{Rails.root}/log/rake.log &"
     debug("DEBUG: #{rake_call}")
     system rake_call
   end

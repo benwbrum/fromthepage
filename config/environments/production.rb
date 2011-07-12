@@ -28,3 +28,4 @@ config.action_view.cache_template_loading            = true
 # config.threadsafe!
 # where is NEATO located on this machine?
 NEATO = '/usr/bin/neato'
+RAKE = '/usr/local/bin/rake'
