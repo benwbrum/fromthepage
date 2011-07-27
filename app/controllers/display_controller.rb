@@ -95,4 +95,15 @@ class DisplayController < ApplicationController
     logger.debug "DEBUG #{@search_string}"
   end
 
+  def too_small
+    # change the page-to-base halvings
+    session[:myopic] = 1
+    redirect_to :controller => params[:origin_controller], :action => params[:origin_action], :page_id => @page.id
+  end
+
+  def too_big
+    session[:myopic] = nil   
+    redirect_to :controller => params[:origin_controller], :action => params[:origin_action], :page_id => @page.id
+  end
+
 end
