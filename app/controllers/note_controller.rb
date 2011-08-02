@@ -61,6 +61,14 @@ def create
   end
 end
 
+  def delete
+    @note = Note.find(params[:note_id])
+    @note.deed.delete
+    @note.delete
+    flash[:notice] = "Deleted!}"
+    redirect_to :controller => params[:original_controller], :action => params[:original_action], :page_id => @page.id
+  end
+
   def record_deed
     deed = Deed.new
     deed.note = @note

@@ -16,10 +16,19 @@
                                         :id => note.id }) }) %>
 <% end %>		
 	<div>
-		<i>by <%= link_to (note.user.display_name,
+		<span>
+			<i>by <%= link_to (note.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => note.user.id }) %></i>
+		</span>
+		<% if user && user != :false && user.like_owner?(@collection) %>
+		<span>
+			<%= link_to('delete', 
+						{ :controller => 'note', :action => 'delete', :note_id => note.id, :page_id => @page.id, :original_controller => controller_name, :original_action => action_name },
+            			{ :confirm => 'Are you sure?' }) %>
+		</span>
+		<% end %>
 	</div>
 	
 		
