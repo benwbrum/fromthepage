@@ -8,6 +8,9 @@ class Work < ActiveRecord::Base
   
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
 
+  after_save :update_statistic
+
+
   def articles
     my_articles = []
     for page in self.pages
@@ -43,5 +46,14 @@ class Work < ActiveRecord::Base
     my_annotations.sort! { |a,b| b.created_at <=> a.created_at }
     return my_annotations[0..9]
   end
+
+  def update_statistic
+    unless self.work_statistic     
+        self.work_statistic = WorkStatistic.new
+    end
+    self.work_statistic.recalculate
+    
+  end
+
 
 end
