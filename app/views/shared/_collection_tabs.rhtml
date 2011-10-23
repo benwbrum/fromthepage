@@ -11,11 +11,11 @@ Tab                         Access
   <ul id="navlist">
     <% if selected == 1 %> 
       <li id="current">
-        <span>browse</span>
+        <span>home</span>
       </li>
     <% else %>
       <li>
-        <%= link_to('browse', 
+        <%= link_to('home', 
                     { :controller => 'collection', 
                       :action => 'show', 
                       :collection_id => collection_id,
