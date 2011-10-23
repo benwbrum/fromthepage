@@ -21,7 +21,7 @@
   
           <%= hidden_field_tag(:article_id, @article.id) %>
           Title: <%= f.text_field :title %><br />
-          Contents:<br />
+          Article:<br />
           <%= f.text_area :source_text %><br />
 		    <%= submit_tag "Preview", :name => 'preview' %>
           <%= submit_tag "Autolink", :name => 'autolink' %>

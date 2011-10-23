@@ -22,7 +22,7 @@
 		   (<%= link.display_text %>)<br />
 		 <% end %>
 		</p>
-		<p>Articles that refer to <%= @article.title %>:</p>
+		<p>Subject articles that refer to <%= @article.title %>:</p>
 		<p>
 		 <% for link in @article.target_article_links %>
 		   <%= link_to(link.source_article.title, 

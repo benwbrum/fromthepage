@@ -6,7 +6,7 @@
   <div class="left-column">
     <div class="inside-column">
       <span class="left-link">
-	      <%= link_to("articles", 
+	      <%= link_to("subjects", 
 	                  {:controller => 'article',
 	                   :action => 'list',
                                 :collection_id => @article.collection_id,
@@ -70,7 +70,7 @@
                      :action => 'search',
                      :article_id => @article.id }) %>
                      </br>
-  <%= link_to("All references to <i>#{@article.title}</i> in pages that do not link to this article",
+  <%= link_to("All references to <i>#{@article.title}</i> in pages that do not link to this subject",
               :controller => 'display',
               :action => 'search',
               :article_id => @article.id,

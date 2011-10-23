@@ -2,9 +2,9 @@
   <ul id="navlist">
   <li <% if selected == 1 %> 
     id="current">
-      <span>article</span>
+      <span>subject</span>
     <% else %>
-     ><%= link_to('article', 
+     ><%= link_to('subject', 
                   { :controller => 'article', 
                     :action => 'show', 
                     :article_id => article_id,
