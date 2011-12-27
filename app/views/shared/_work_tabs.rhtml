@@ -130,6 +130,19 @@ Tab                     Access
 	    <% end %>
     <% end %>
 
+    <% if selected == 9 %> 
+      <li id="current">
+        <span>help</span>
+      </li>
+    <% else %>
+      <li>
+        <%= link_to('help', 
+                    { :controller => 'static', 
+                      :action => 'transcribe_help', 
+                      :work_id => work_id,
+                    :ol => 'w_tab_help' }) %>
+      </li>     
+    <% end %>
 
   </ul>
 </div>
