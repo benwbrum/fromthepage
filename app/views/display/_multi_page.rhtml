@@ -46,7 +46,6 @@
 		        <% if page.xml_text %>
 		          <%= xml_to_html(page.xml_text, false) %>
 		        <% else %>
-	            <% if logged_in? && current_user.can_transcribe?(@work) %>
 	              <p>
 	                <i>
 	                  <%= link_to('Help transcribe this page!',
@@ -56,9 +55,6 @@
 	                                :ol => 'w_rw_p_tl' }) %>
 	                </i>
 	              </p>
-	            <% else %>
-			          <p><i>No Transcription</i></p>
-			        <% end %>
 		        <% end %>
 		      </div>
 		      <div class="footer-links">

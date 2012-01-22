@@ -12,22 +12,16 @@
                       { :action => 'display_page',
                         :page_id => page.id} ) %>
             <% if page.source_text.blank? %>
-              <% if logged_in? && current_user.can_transcribe?(@work) %>
                 <i>(<%= link_to('Transcribe this page', 
 	                            { :controller => 'transcribe',
 	                              :action => 'display_page',
 	                              :page_id => page.id }) %>)</i>
-              <% else %>
-                <i>(No Transcription)</i>
-              <% end %>
           <% else %>
             <% if page.page_article_links.size == 0 %>
-              <% if logged_in? && current_user.can_transcribe?(@work) %>
                 <i>(<%= link_to('Annotate this page', 
 	                            { :controller => 'transcribe',
 	                              :action => 'display_page',
 	                              :page_id => page.id }) %>)</i>                
-              <% end %>            
             <% end %>          
           <% end %>
           <br />  

@@ -20,7 +20,6 @@
     <% end %>
     </li>
     
-      <% if logged_in? && current_user.can_transcribe?(@work) %>
   <li <% if selected == 3 %> 
     id="current">
       <span>transcribe</span>
@@ -31,7 +30,6 @@
 	                    :page_id => page_id }) %>
 	    <% end %>  
       </li>
-  <% end %>
     
   <li <% if selected == 2 %> 
     id="current">

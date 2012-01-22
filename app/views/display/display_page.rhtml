@@ -16,7 +16,6 @@
               !@page.xml_text.empty? %>
           <%= xml_to_html(@page.xml_text) %>
         <% else %>
-            <% if logged_in? && current_user.can_transcribe?(@work) %>
               <p>
                 <i>
                   <%= link_to('Help transcribe this page!',
@@ -33,13 +32,24 @@
 		                          :page_id => @page.id,
 		                          :ol => 'p_dp_tl' }) %>
 			  <% end %>
-        <% else %>
-		          <p><i>No Transcription</i></p>
-		        <% end %>
         <% end %>
       </div>
     </div>
-
+	<% if false %>
+	    <div class="inside-column">
+	      <hr/>
+	      <% @page.articles_with_text.each do |article| %>
+				<dl>
+			    <% if article.xml_text != nil && !article.xml_text.empty? %>
+				
+				    <dt><b><%= article.title %></b></dt>
+				    <dd><%=  xml_to_html(article.xml_text) %></dd>
+			    <% end %>
+					
+				</dl>  	
+	      <% end %>
+	    </div>
+	<% end %>
     <div class="inside-column">
       <%= notes_for(@page) %>
     </div>

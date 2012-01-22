@@ -43,6 +43,10 @@ class Page < ActiveRecord::Base
   def collection
     work.collection
   end
+  
+  def articles_with_text
+    articles :conditions => ['articles.source_text is not null']
+  end
 
   def title
     self[:title].blank? ? "untitled page #{self[:position]}" : self[:title]
