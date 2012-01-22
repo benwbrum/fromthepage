@@ -8,7 +8,7 @@
 			     <li><%= render :partial => deed.long_partial, :locals => { :deed => deed } %></li>
 		    <% end %>
 			</ul>
-			<%= link_to('More', { :offset => (@offset.to_i+50) }) %>
+			<%= link_to('More', { :offset => (@offset.to_i+50), :collection_id => @collection ? @collection.id : nil }) %>
 		</div>
   </div>
 </div>

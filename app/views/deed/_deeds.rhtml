@@ -9,6 +9,7 @@
 	  <%= link_to('More',
 	              { :controller => 'deed',
 	                :action => 'list',
+					:collection_id => @collection ? @collection.id : nil,
 	                :ol => 'dp_more' })%>
 	</p>
 </div>
