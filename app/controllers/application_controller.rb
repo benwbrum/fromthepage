@@ -145,7 +145,7 @@ class ApplicationController < ActionController::Base
   end
   
   def store_location_for_login
-    unless action_name == 'login'
+    unless action_name == 'login' || action_name == 'signup'
       store_location
     end
   end
