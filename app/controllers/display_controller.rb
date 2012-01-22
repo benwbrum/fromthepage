@@ -4,19 +4,21 @@ class DisplayController < ApplicationController
   
   protect_from_forgery :except => [:set_note_body]
 
+  PAGES_PER_SCREEN = 5
+
   def read_work
     if @article
       # restrict to pages that include that subject
       @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
                                         :order => 'position',
-                                        :per_page => 5,
+                                        :per_page => PAGES_PER_SCREEN,
                                         :joins => 'INNER JOIN page_article_links pal ON pages.id = pal.page_id',
                                         :conditions => [ 'pal.article_id = ?', @article.id ]
       @pages.uniq!
     else
       @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
                                         :order => 'position',
-                                        :per_page => 5
+                                        :per_page => PAGES_PER_SCREEN
     end                                      
   end
 
