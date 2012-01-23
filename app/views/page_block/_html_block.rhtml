@@ -10,4 +10,14 @@
 	                :page_block_id => page_block.id })%>
 	</p>
    <% end %>
+<% else %>
+	<% if logged_in? && current_user.admin %>
+	  <%= link_to('Create Help Text',
+	              { :controller => 'page_block',
+	                :action => 'new',
+					:origin_action => action_name,
+					:origin_controller => controller_name,
+	                :tag => tag })%>
+		
+	<% end %>
 <% end %>

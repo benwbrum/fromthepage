@@ -5,7 +5,9 @@ module ApplicationHelper
     render({ :partial => 'page_block/html_block', 
              :locals => 
               { :tag => tag,
-                :page_block => @html_blocks[tag]
+                :page_block => @html_blocks[tag],
+                :origin_controller => controller_name,
+                :origin_action => action_name
               }
           })
   end
