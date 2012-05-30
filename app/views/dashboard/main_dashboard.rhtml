@@ -8,17 +8,19 @@
           <h3>Collections</h3>
           <ul>
             <% for collection in @collections %>
-              <li>
-                <%= link_to(collection.title,
-                            { :controller => 'collection',
-                              :action => 'show',
-                              :collection_id => collection.id,
-                              :ol => 'd_col_list' }) %>
-				(<%= link_to('statistics',
-							 { :controller => 'statistics',
-							   :action => 'collection',
-							   :collection_id => collection.id } )%>)
-              </li>
+			  <% if !collection.restricted || (logged_in? && current_user.like_owner?(collection)) %>	
+	              <li>
+	                <%= link_to(collection.title,
+	                            { :controller => 'collection',
+	                              :action => 'show',
+	                              :collection_id => collection.id,
+	                              :ol => 'd_col_list' }) %>
+					(<%= link_to('statistics',
+								 { :controller => 'statistics',
+								   :action => 'collection',
+								   :collection_id => collection.id } )%>)
+	              </li>
+			  <% end %>
             <% end %>
           </ul>
         </p>

@@ -5,6 +5,15 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
+
+		<h3>
+			Owners of this collection
+		</h3>
+		<p>
+			Owners of a collection may add new works to the collection and 
+			upload page images as well as transcribing and reading works in 
+			the collection.
+		</p>
     	<table>
     	  <thead>
     	  	<tr>
@@ -23,7 +32,7 @@
 			<% for user in @owners %>
 		  	<tr>
 		  	  <td>		  			
-			  <%= link_to (user.display_name,
+			  <%= link_to(user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => user.id }) %>
@@ -46,11 +55,33 @@
 			<% end %>
 		</tbody>
   	  </table>
+	  <h3>
+	  	Collection Privacy
+	  </h3>
+	  <% if @collection.restricted %>
+	  	  <p>
+	  	  	Currently <i><%= @collection.title %></i> can only be viewed by users in the list above.  You may make the collection publicly readable.
+	  	  </p>
+		  <%= button_to("Make Collection Public", 
+              { :action => 'publish_collection', 
+                :collection_id => @collection.id }) %>
+	  <% else %>
+	  	  <p>
+	  	  	Currently <i><%= @collection.title %></i> may be ready by anyone on the internet.  You may make the collection private if you want to restrict its visiblity to collection owners.
+	  	  </p>
+		  <%= button_to("Make Collection Private", 
+              { :action => 'restrict_collection', 
+                :collection_id => @collection.id }) %>
+	  <% end %>
+
     </div>
   </div>
   <div class="right-column">
     <div class="inside-column">
         <%= html_block('right') %>
+		<h3>
+			Other Users
+		</h3>
     	<table>
     	  <thead>
     	  	<tr>
@@ -69,7 +100,7 @@
 			<% for user in @nonowners %>
 		  	<tr>
 		  	  <td>		  			
-			  <%= link_to (user.display_name,
+			  <%= link_to(user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => user.id }) %>

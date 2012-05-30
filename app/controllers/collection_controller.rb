@@ -36,6 +36,20 @@ class CollectionController < ApplicationController
     @collection.owners.delete(@user)
     redirect_to :action => 'owners', :collection_id => @collection.id
   end
+
+  def publish_collection
+    @collection.restricted = false
+    @collection.save!
+    redirect_to :action => 'owners', :collection_id => @collection.id
+  end
+
+  def restrict_collection
+    @collection.restricted = true
+    @collection.save!
+    redirect_to :action => 'owners', :collection_id => @collection.id
+  end
+
+  
   def delete
     @collection.destroy
     redirect_to :controller => 'dashboard'

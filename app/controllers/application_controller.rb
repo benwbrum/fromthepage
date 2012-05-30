@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   before_filter :store_location_for_login
   before_filter :load_html_blocks
   after_filter :complete_interaction
+  before_filter :authorize_collection
+
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -149,4 +151,17 @@ class ApplicationController < ActionController::Base
       store_location
     end
   end
+  
+  
+
+  def authorize_collection
+    # skip irrelevant cases
+    return unless @collection
+    return unless @collection.restricted
+    
+    unless logged_in? && current_user.like_owner?(@collection)
+      redirect_to :controller => 'dashboard'
+    end
+  end
+
 end

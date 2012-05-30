@@ -53,7 +53,9 @@ module ApplicationHelper
     if options[:collection]
       deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
     else
-      deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions)
+      restrict = " collections.restricted = 0 "
+      conditions = conditions ? conditions + " AND " + restrict : restrict
+      deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
     end
     render({ :partial => 'deed/deeds', 
              :locals => 
