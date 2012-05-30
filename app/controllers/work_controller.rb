@@ -1,6 +1,6 @@
 # handles administrative tasks for the work object
 class WorkController < ApplicationController
-  require 'ftools'
+#  require 'ftools'
 
   in_place_edit_for :work, :title
   in_place_edit_for :work, :description

@@ -8,7 +8,7 @@ gem 'hpricot'
 gem 'oai'
 #gem 'mysql2'
 gem 'mysql2','0.2.7'
-
+#gem 'ftools'
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
