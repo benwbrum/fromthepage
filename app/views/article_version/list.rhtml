@@ -23,7 +23,7 @@
 		   <tr>
 		     <td><%= version.version %></td>
 		     <td>
-		        <%= link_to (version.user.display_name,
+		        <%= link_to(version.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => version.user.id }) %>

@@ -17,7 +17,7 @@
 <% end %>		
 	<div>
 		<span>
-			<i>by <%= link_to (note.user.display_name,
+			<i>by <%= link_to(note.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => note.user.id }) %></i>

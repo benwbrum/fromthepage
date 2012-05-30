@@ -5,7 +5,7 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
-      <% form_tag ({ :controller => 'work',
+      <% form_tag({ :controller => 'work',
                      :action => 'make_pdf.pdf'}) do %>
 	      <%= hidden_field_tag('work_id', @work.id ) %>
 	

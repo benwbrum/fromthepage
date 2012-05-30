@@ -60,7 +60,7 @@
 		      <div class="footer-links">
 		      <% if false %>
 						Edited by <% if page.current_version %>
-					  <%= link_to (page.current_version.user.display_name,
+					  <%= link_to(page.current_version.user.display_name,
 		                           { :controller => 'user',
 		                               :action => 'profile',
 		                               :user_id => page.current_version.user.id }) %>

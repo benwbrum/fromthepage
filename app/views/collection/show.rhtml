@@ -37,7 +37,7 @@
     </div>
     <div class="inside-column">
       <p>
-        Owner: <%= link_to (@collection.owner.display_name,
+        Owner: <%= link_to(@collection.owner.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => @collection.owner.id }) %>

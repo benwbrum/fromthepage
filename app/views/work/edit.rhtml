@@ -18,7 +18,7 @@ Description: <span id="description_<%= @work.id %>"><%= @work.description %></sp
                                         :id => @work.id }),
                       :rows => 6  }) %>
 <br />
-Owner: <%= link_to (@work.owner.display_name,
+Owner: <%= link_to(@work.owner.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => @work.owner.id }) %>

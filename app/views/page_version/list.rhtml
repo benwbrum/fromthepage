@@ -22,7 +22,7 @@
 		 <% for version in @page.page_versions %>
 		   <tr>
 		     <td class="revision" width="45%">
-		        <%= link_to (version.user.display_name,
+		        <%= link_to(version.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => version.user.id }) %>

@@ -35,7 +35,7 @@
                          :ol => 'w_ver_page_title' }) %>
          </td>
          <td class="revision" width="30%"><%= version.created_on %></td>
-         <td class="revision" width="30%"><%= link_to (version.user.display_name,
+         <td class="revision" width="30%"><%= link_to(version.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => version.user.id }) %></td>

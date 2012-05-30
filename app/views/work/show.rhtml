@@ -12,7 +12,7 @@
 	        Description: <%= @work.description %>
 	        <br />
         <% end %>
-        Owner: <%= link_to (@work.owner.display_name,
+        Owner: <%= link_to(@work.owner.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => @work.owner.id }) %>

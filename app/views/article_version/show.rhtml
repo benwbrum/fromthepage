@@ -4,7 +4,7 @@
 
 <div>
   Changes made by 
-  <%= link_to (@article_version.user.display_name,
+  <%= link_to(@article_version.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => @article_version.user.id }) %>
