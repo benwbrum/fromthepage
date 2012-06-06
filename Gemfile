@@ -6,9 +6,10 @@ gem 'will_paginate' , '~> 2'
 gem 'rmagick'
 gem 'hpricot'
 gem 'oai'
-#gem 'mysql2'
-gem 'mysql2','0.2.7'
-#gem 'ftools'
+gem 'capistrano'
+
+gem 'mysql'
+
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
@@ -17,6 +18,7 @@ gem 'mysql2','0.2.7'
 group :development do
   # bundler requires these gems in development
   # gem "rails-footnotes"
+	gem 'mysql2','0.2.7'
 end
 
 group :test do
@@ -24,3 +26,10 @@ group :test do
   # gem "rspec"
   # gem "faker"
 end
+
+group :production do
+  # bundler requires these gems in development
+  # gem "rails-footnotes"
+#	gem 'ftools'
+end
+
