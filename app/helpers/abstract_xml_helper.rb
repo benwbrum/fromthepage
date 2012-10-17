@@ -6,7 +6,9 @@ module AbstractXmlHelper
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
+    debug("Called on #{xml_text}")
+    return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     doc = REXML::Document.new(xml_text)
     doc.elements.each("//link") do |e| 
@@ -16,11 +18,16 @@ module AbstractXmlHelper
       anchor = REXML::Element.new("a")
 #      anchor.text = display_text
       if id
-        anchor.add_attribute("href",
-                             url_for(:controller => 'article',
-                                     :action => 'show',
-                                     :article_id => id,
-                                     :title=> title))
+        if flatten_links
+          anchor.add_attribute("href", "#article-#{id}")        
+        else
+          anchor.add_attribute("href",
+                               url_for(:controller => 'article',
+                                       :action => 'show',
+                                       :article_id => id,
+                                       :title=> title))
+            
+        end
       else
         # preview mode for this link
         anchor.add_attribute("href", "#")
