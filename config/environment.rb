@@ -41,6 +41,12 @@ Rails::Initializer.run do |config|
   # Run "rake -D time" for a list of tasks for finding time zone names.
   config.time_zone = 'UTC'
 
+  
+  # Added 2012-10-17 to deal with this issue:
+  # http://stackoverflow.com/questions/2090851/rails-ruby-1-9-invalid-byte-squence-in-us-ascii
+  Encoding.default_external = Encoding::UTF_8
+  Encoding.default_internal = Encoding::UTF_8
+
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
