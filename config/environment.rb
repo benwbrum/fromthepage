@@ -2,7 +2,7 @@
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 #RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
-RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.15' unless defined? RAILS_GEM_VERSION
 
 
 
