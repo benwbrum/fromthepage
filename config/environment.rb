@@ -44,8 +44,10 @@ Rails::Initializer.run do |config|
   
   # Added 2012-10-17 to deal with this issue:
   # http://stackoverflow.com/questions/2090851/rails-ruby-1-9-invalid-byte-squence-in-us-ascii
-  Encoding.default_external = Encoding::UTF_8
-  Encoding.default_internal = Encoding::UTF_8
+  # 
+  # Commented out 2013-01-09 for deployment on 1.8.7 ruby version still installed in production
+#  Encoding.default_external = Encoding::UTF_8
+#  Encoding.default_internal = Encoding::UTF_8
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
