@@ -22,7 +22,7 @@ These should be fairly standard unless you’re using Fedora, in which case see 
 
 Install required gems
 gem install hpricot oai will_paginate rmagick
-gem install -v 2.3.5 rails
+gem install -v 2.3.15 rails
 
 Install Graphviz
 apt-get install graphviz (or see the graphviz documentation at http://www.graphviz.org/)
