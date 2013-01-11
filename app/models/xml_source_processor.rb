@@ -87,7 +87,14 @@ module XmlSourceProcessor
   def process_square_braces(text)
     processed = ""
     # find every string beginning with [[
-    text.each('[[') do |raw|
+    # Ruby 1.8 uses "each", 1.9 uses "each_line"
+    if text.respond_to? :each
+      each_method_name = :each
+    else
+      each_method_name = :each_line
+    end
+    
+    text.send(each_method_name, '[[') do |raw|
       # remove the open brace 
       raw.gsub!('[[', '')
 
