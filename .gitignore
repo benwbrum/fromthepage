@@ -30,7 +30,7 @@ mongo.log
 /public/assets/images/working
 
 # Ignore RVM-related files
-.rvmrc
+# .rvmrc
 
 # Ignore Ctags
 
