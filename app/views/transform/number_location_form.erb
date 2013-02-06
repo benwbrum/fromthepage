@@ -1,0 +1,8 @@
+<% form_tag( {:action => 'number_location_process'} ) do %>
+
+	<%= hidden_field_tag('image_set_id', @image_set.id) %>
+    <p>Please click on the page number in this image.
+    </p>
+    <input type="image" src="<%= file_to_url(@image.shrunk_file) %>" name="coordinate" />
+
+<% end %>

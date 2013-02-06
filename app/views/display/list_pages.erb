@@ -1,0 +1,38 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 2,
+                          :work_id => @work.id }}) %>
+
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <p>
+        <% for page in @work.pages %>
+          <%= link_to(page.title,
+                      { :action => 'display_page',
+                        :page_id => page.id} ) %>
+            <% if page.source_text.blank? %>
+                <i>(<%= link_to('Transcribe this page', 
+	                            { :controller => 'transcribe',
+	                              :action => 'display_page',
+	                              :page_id => page.id }) %>)</i>
+          <% else %>
+            <% if page.page_article_links.size == 0 %>
+                <i>(<%= link_to('Annotate this page', 
+	                            { :controller => 'transcribe',
+	                              :action => 'display_page',
+	                              :page_id => page.id }) %>)</i>                
+            <% end %>          
+          <% end %>
+          <br />  
+        <% end %>
+      </p>    
+    </div>
+  </div>
+
+       <div class="right-column">
+            <div class="inside-column">
+                  <%= html_block('right') %>
+              </div>
+      </div>
+</div>

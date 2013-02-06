@@ -1,0 +1,67 @@
+<% r = @right_set.titled_images({ :order => 'position'}).size
+   l = @left_set.titled_images({ :order => 'position'}).size 
+   m = r > l ? r : l %>
+<%= link_to("Swap left and right sets", 
+            { :action => 'swap',
+              :left_set_id => @left_set.id,
+              :right_set_id => @right_set.id,
+              :ol => 'merge_swap' }) %>
+<%= link_to("Merge", 
+            { :action => 'merge',
+              :left_set_id => @left_set.id,
+              :right_set_id => @right_set.id,
+              :ol => 'merge_merge' }) %>
+<table border="1">
+  <% 0.upto(m-1) do |i| %>
+    <tr>
+      <td>
+        <% if i < @left_set.titled_images.size %>
+          <b>
+          	<%= @left_set.titled_images[i].title %>
+          </b>
+        <% else %>
+          &nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% if i < @right_set.titled_images.size %>
+          <%= link_to("Insert Blank", 
+            { :action => 'insert',
+              :left_set_id => @left_set.id,
+              :right_set_id => @right_set.id,
+              :insert_set_id => @right_set.id,
+              :index => i,
+              :where => 'before',
+              :ol => 'merge_ins_rt' }) %>
+        <% else %>
+          &nbsp;
+        <% end %>
+      </td>
+    </tr>
+   <tr>
+      <td>
+        <% if i < @left_set.titled_images.size %>
+          <%= link_to("Insert Blank", 
+            { :action => 'insert',
+              :left_set_id => @left_set.id,
+              :right_set_id => @right_set.id,
+              :insert_set_id => @left_set.id,
+              :index => i,
+              :where => 'after',
+              :ol => 'merge_ins_lf' }) %>
+        <% else %>
+          &nbsp;
+        <% end %>
+      </td>
+      <td>
+        <% if i < @right_set.titled_images.size %>
+          <b>
+          	<%= @right_set.titled_images[i].title %>
+          </b>
+        <% else %>
+          &nbsp;
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

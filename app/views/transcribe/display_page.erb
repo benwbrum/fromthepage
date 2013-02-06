@@ -1,0 +1,62 @@
+
+
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>3,
+                          :page_id => @page.id }}) %>
+  
+
+
+<div class="two-columns">
+	<div class="left-column">
+		
+    <%= render :partial => '/shared/page_navigation' %>
+    <% if @preview_xml  %>
+  		<div class="inside-column">
+        <%= xml_to_html(@preview_xml) %>
+  		</div><!-- in col -->
+    <% end %>
+		<div id="transcription_form_area" class="inside-column">
+		  <div id="transcription_form">
+		  <% form_for(:page, @page, :url => { :action => 'save_transcription' }) do |f| %>
+      	   <%= html_block('left') %>
+		   <% if @work.scribes_can_edit_titles %>
+		    <br /><%= f.label :title, "Page Title:" %><br />
+	   	    <%= f.text_field :title %><br />
+		    <%= f.label :source_text, "Transcription:" %><br />
+      	           <% else %>
+      	            <h2><%= @page.title %></h2>
+      	           <% end %>
+		    <%= hidden_field_tag(:page_id, @page.id) %>
+		    <%= f.text_area :source_text, { :cols => 60 } %><br />
+		    <%= f.label :status, "Page Status:" %>
+			<%= f.select :status, Page::STATUSES, {:include_blank => true}, { :title => Page::STATUS_HELP } %><br />
+		    <%= submit_tag "Preview", :name => 'preview' %>
+		    <%= submit_tag "Autolink", :name => 'autolink' %>
+		    <%= submit_tag "Save", :name => 'save' %>
+		  <% end%>
+		  
+
+    <% if @work.transcription_conventions  %>
+        <%= @work.transcription_conventions %>
+    <% end %>
+			<%= render({ :partial => 'shared/markup_help'}) %>
+		  </div><!-- in col 2 -->
+		</div><!-- in col -->
+	</div><!-- left col -->
+
+	<div class="right-column" style="position: relative; top: 0px;">
+
+                <%= html_block('right') %>
+		<% if @page.ia_leaf %>
+			<%= render :partial => '/ia/ia_bookreader_div' %>
+		<% else %>
+			<%= render :partial => '/shared/zoom_div' %>
+		<% end %>
+	</div>
+</div><!-- two col -->
+
+<script>
+    Event.observe(window, "load", function() {
+        initCheckingForModifications(['zi_icon', 'zi_text', 'zo_icon', 'zo_text']);
+    });
+</script>

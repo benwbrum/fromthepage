@@ -1,7 +1,6 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-    
-  def html_block(tag)
+
+    def html_block(tag)
     render({ :partial => 'page_block/html_block', 
              :locals => 
               { :tag => tag,
@@ -51,11 +50,13 @@ module ApplicationHelper
     
 
     if options[:collection]
-      deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
+      # deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
+      deeds = @collection.deeds.find_all(:limit => limit, :order => 'created_at DESC', :conditions => conditions)
     else
       restrict = " collections.restricted = 0 "
       conditions = conditions ? conditions + " AND " + restrict : restrict
-      deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
+      # deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
+      deeds = Deed.find(:limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
     end
     render({ :partial => 'deed/deeds', 
              :locals => 
@@ -90,5 +91,6 @@ module ApplicationHelper
       "1 second ago"
     end
   end
+
 
 end

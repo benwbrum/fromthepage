@@ -13,10 +13,10 @@ module SimpleCaptcha #:nodoc
   # The path can be modified as needed.
   # The same modification is also required in the rake file.
   module Config #:nodoc
-    IMAGE_PATH = "#{RAILS_ROOT}/public/images/"
-    DATA_PATH = "#{RAILS_ROOT}/tmp/"
-    CAPTCHA_IMAGE_PATH = "#{RAILS_ROOT}/public/images/simple_captcha/"
-    CAPTCHA_DATA_PATH = "#{RAILS_ROOT}/tmp/simple_captcha/"
+    IMAGE_PATH = "#{Rails.root}/public/images/"
+    DATA_PATH = "#{Rails.root}/tmp/"
+    CAPTCHA_IMAGE_PATH = "#{Rails.root}/public/images/simple_captcha/"
+    CAPTCHA_DATA_PATH = "#{Rails.root}/tmp/simple_captcha/"
   end
   
   module ConfigTasks #:nodoc

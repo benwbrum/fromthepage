@@ -1,0 +1,29 @@
+
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <p>
+      	<% @repositories.each do |repository| %>
+			<%= repository.url %>:
+			<%= link_to('Identify',
+						{ :action => 'identify_repository',
+						  :repository_url => repository.url}) %>
+<!--			<%= link_to('m',
+						{ :action => 'metadata_format_list',
+						  :repository_url => repository.url}) %> -->
+			<%= link_to('Show All Sets',
+						{ :action => 'set_list',
+						  :repository_url => repository.url}) %>
+						  <br />
+	    <% end %>
+      </p>    
+    </div>
+  </div>
+
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
+</div>

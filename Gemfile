@@ -1,8 +1,8 @@
 source :gemcutter
-gem "rails", "~> 2.3.15"
+gem "rails", "3.2.11"
 #gem "sqlite3-ruby", :require => "sqlite3"
 
-gem 'will_paginate' , '~> 2'
+gem 'will_paginate' , '3.0.4'
 gem 'rmagick'
 gem 'hpricot'
 gem 'oai'

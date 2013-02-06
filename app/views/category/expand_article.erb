@@ -1,0 +1,14 @@
+<%= render(:partial => '/category/article_link',
+           :locals => { :category => @category,
+                        :article => @article }) %>
+<ul>
+	<% for page in @article.pages %>
+		<li>
+			<%= link_to(page.title,
+			            { :controller => 'display',
+			              :action => 'display_page',
+			              :page_id => page.id,
+                    :ol => 'cat_nav_plink' }) %>
+		</li>
+	<% end %>
+</ul>

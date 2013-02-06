@@ -1,0 +1,22 @@
+<hr />
+<div>
+<h3>Notes</h3>
+<% if logged_in? %>
+	(<%=link_to_function 'Add Note', 'restfulComments.showForm( 0 )' %>)
+<% end %>
+
+<div id="comment_form_0">
+	<%=render :partial => 'note/form_new', :locals => { :commentable => commentable } %>	
+</div>
+
+<% odd = 1 %>
+<% Note.for_each(commentable.notes) do |note|%>
+	<%=render({ :partial => 'note/note', 
+	            :locals => { :note => note, 
+	                         :odd => odd }
+	          })%>
+
+	<% odd = 3 - odd %>
+<% end %>
+
+</div>

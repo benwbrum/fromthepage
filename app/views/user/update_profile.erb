@@ -1,0 +1,24 @@
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+    <% form_for :user, @user, :url => { :action => "update" } do |f| %>
+      <p>Screen Name: <%= f.text_field :display_name %> </p>
+      <p class="help-text">What's displayed with the pages you edit and comments you make.</p>
+      <p>Location:  <%= f.text_field :location %> </p>
+      <p class="help-text">Where in the world are you?</p>
+      <p>Website:  <%= f.text_field :website %> </p>
+      <p class="help-text">If you have a blog or homepage, enter it here.</p>
+      <p>About:  <%= f.text_field :about %>   </p>
+      <p class="help-text">Tell the From The Page community a little bit about yourself.  255 characters only!</p>    
+       <p><%= submit_tag 'Save' %> </p>
+       <%= hidden_field_tag 'user_id', @user.id %>
+    <% end %>
+		</div>
+	</div>
+
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
+</div>

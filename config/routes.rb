@@ -1,3 +1,15 @@
+Fromthepage::Application.routes.draw do
+  get '/account/login' => 'account#login' # , :as => 'websites'
+  get '/static/splash' => 'static#splash'
+  match '/' => 'static#splash'
+  match 'ZenasMatthews' => 'collection#show', :collection_id => 7
+  match 'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  match '/:controller(/:action(/:id))'
+  
+  
+end
+
+=begin
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -44,3 +56,4 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
 end
+=end
