@@ -1,0 +1,8 @@
+<span id='<%= "cat_#{category.id}_art_#{article.id}" %>'>
+<%= link_to(article.title,
+           { :controller => 'article',
+				      :action => 'show',
+                     :article_id => article.id,
+                     :ol => 'cat_nav_alink' }) %>
+</span>
+

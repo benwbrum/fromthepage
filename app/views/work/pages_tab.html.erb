@@ -1,0 +1,79 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 8,
+                          :work_id => @work.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+
+Title: <span id="title_<%= @work.id %>"><%= @work.title %></span>
+<br />
+<%= link_to("Add a page", { :controller => 'page',
+                    :action => 'new',
+                    :work_id => @work.id, 
+                    :ol => 'w_pt_new_page' }) %>
+<br />
+Pages:<br />
+<table>
+  <tr>
+    <th>
+      Title
+    </th>
+    <th>
+      Actions
+    </th>
+    <th>
+      Status
+    </th>
+    <th>
+      Position
+    </th>
+  </tr>
+<% for page in @work.pages %>
+  <tr>
+    <td>
+      <%= page.title %>
+    </td>
+    <td>
+      <%= link_to("Edit", { :controller => 'page',
+                            :action => 'edit',
+                            :page_id => page.id, 
+                            :ol => 'w_pt_pl_edit' }) %>
+    </td>
+    <td>
+      <% if page.base_image == nil || page.base_image == "" %>
+        No Image
+	      (<%= link_to("add", 
+	                   { :controller => 'page',
+	                     :action => 'image_tab',
+	                     :page_id => page.id, 
+                       :ol => 'w_pt_pl_image_add' }) %>)
+      <% else %>
+        Ready to Transcribe
+      <% end %>
+    </td>
+    <td>
+      <%= link_to("Up", { :controller => 'page',
+                            :action => 'reorder_page',
+                            :direction => 'up',
+                            :page_id => page.id, 
+                            :ol => 'w_pt_pl_up' }) %>
+      <%= link_to("Down", { :controller => 'page',
+                            :action => 'reorder_page',
+                            :direction => 'down',
+                            :page_id => page.id, 
+                            :ol => 'w_pt_pl_down' }) %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+
+   </div>
+  </div>
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
+</div>

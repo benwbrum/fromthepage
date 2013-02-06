@@ -1,0 +1,46 @@
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>2,
+                          :page_id => @page.id }}) %>
+
+
+<div class="two-columns">
+  <div class="left-column">
+
+		<div class="inside-column">
+		 <table class="revisions">
+		 <tr>
+		    <th class="revision_title" width="45%">
+		        User
+		    </th>
+		    <th class="revision_title" width="45%">
+		        Date
+		    </th>
+		    <th class="revision_title" width="10%">
+		        Revision
+		    </th>
+		 </tr>
+		 <% for version in @page.page_versions %>
+		   <tr>
+		     <td class="revision" width="45%">
+		        <%= link_to(version.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => version.user.id }) %>
+		      </td>
+		     <td class="revision" width="45%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p")  %></td>
+		     <td class="revision" width="10%"><%= link_to('view', 
+		                                                  { :action => 'show', 
+		                                                    :page_version_id => version.id,
+                                                        :ol => 'p_pv_view' }) %></td>
+		   </tr>
+		 <% end %>
+		 </table>
+		</div>
+  </div>
+
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
+</div>

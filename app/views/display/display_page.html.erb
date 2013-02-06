@@ -1,0 +1,72 @@
+
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>1,
+                          :page_id => @page.id }}) %>
+<div class="two-columns">
+  <div class="left-column">
+    <div>
+      <%= render :partial => '/shared/page_navigation' %>
+      <div class="inside-column">
+	<%=  html_block('left') %>
+        <h2><%= @page.title %></h2>
+      </div>
+
+      <div id="transcription_display_area" class="inside-column">
+        <% if @page.xml_text != nil && 
+              !@page.xml_text.empty? %>
+          <%= xml_to_html(@page.xml_text) %>
+        <% else %>
+              <p>
+                <i>
+                  <%= link_to('Help transcribe this page!',
+                              { :controller => 'transcribe',
+                                :action => 'display_page',
+                                :page_id => @page.id,
+                                :ol => 'p_dp_tl' }) %>
+                </i>
+              </p>
+			  <% unless @page.status == Page::STATUS_BLANK %>
+				  <%= button_to('mark this page blank',
+								{ :controller => 'transcribe',
+								  :action => 'mark_page_blank',
+		                          :page_id => @page.id,
+		                          :ol => 'p_dp_tl' }) %>
+			  <% end %>
+        <% end %>
+      </div>
+    </div>
+	<% if false %>
+	    <div class="inside-column">
+	      <hr/>
+	      <% @page.articles_with_text.each do |article| %>
+				<dl>
+			    <% if article.xml_text != nil && !article.xml_text.empty? %>
+				
+				    <dt><b><%= article.title %></b></dt>
+				    <dd><%=  xml_to_html(article.xml_text) %></dd>
+			    <% end %>
+					
+				</dl>  	
+	      <% end %>
+	    </div>
+	<% end %>
+    <div class="inside-column">
+      <%= notes_for(@page) %>
+    </div>
+  </div>
+  
+  
+	<div class="right-column" style="position: relative; top: 0px;">
+	        <%=  html_block('right') %>
+		<% if @page.ia_leaf %>
+			<%= render :partial => '/ia/ia_bookreader_div' %>
+		<% else %>
+			<%= render :partial => '/shared/zoom_div' %>
+		<% end %>
+	</div>
+<script type="text/javascript">
+                 jQuery.noConflict();
+</script>
+
+
+</div>

@@ -1,0 +1,34 @@
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>4,
+                          :page_id => @page.id }}) %>
+
+
+<div class="two-columns">
+  <div class="left-column">
+
+<%= render({ :partial => '/shared/page_navigation' }) %>
+<div class="inside-column">
+<p>
+Title: <span id="title_<%= @page.id %>"><%= @page.title.blank? ? "<i>none</i>" : @page.title %></span>
+<%= in_place_editor("title_#{@page.id}",
+                    { :url => url_for({ :action => "set_page_title", 
+                                        :id => @page.id }) }) %>
+
+<br />
+Position: <%= @page.position %>
+<br />
+<%= button_to("Delete",
+            { :action => 'delete',
+              :page_id => @page.id },
+            { :confirm => 'Are you sure?' }) %>
+<br />
+</p>
+</div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+      <%= html_block('right') %>
+    </div>
+  </div>
+
+</div>

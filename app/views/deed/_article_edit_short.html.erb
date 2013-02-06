@@ -1,0 +1,11 @@
+<%= link_to(deed.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => deed.user.id }) %>
+edited
+<%= link_to(deed.article.title,
+             { :controller => 'article',
+               :action => 'show',
+               :article_id => deed.article.id,
+               :ol => 'd_act_art' }) %>
+ <%= time_ago(deed.created_at) %>

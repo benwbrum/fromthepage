@@ -1,0 +1,28 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 8,
+                          :work_id => @work.id }}) %>
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+
+<% form_for(:page, 
+            @page, 
+            { :url => { :action => 'create' }}) do |f| %>
+  <%= hidden_field_tag(:work_id, @page.work.id) %>
+  <%= f.hidden_field(:work_id) %>
+  Page Title:
+  <%= f.text_field(:title) %>
+  <br />
+  <%= submit_tag('create') %>
+<% end %>
+
+   </div>
+  </div>
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+
+        </div>
+  </div>
+</div>
+

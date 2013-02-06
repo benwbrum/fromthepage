@@ -1,0 +1,11 @@
+<%= html_block('top') %>
+<h2>Last <%= @lines %> lines of development logfile:</h2>
+<pre>
+<%= @dev_tail %>
+</pre>
+<hr />
+<h2>Last <%= @lines %> lines of production logfile:</h2>
+
+<pre>
+<%= @prod_tail %>
+</pre>
