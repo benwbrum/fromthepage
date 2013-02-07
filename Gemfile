@@ -5,7 +5,7 @@ gem "rails", "3.2.11"
 gem 'will_paginate' , '3.0.4'
 gem 'rmagick'
 gem 'hpricot'
-gem 'oai'
+gem 'oai', "0.3.0"
 gem 'capistrano'
 
 gem 'mysql'
