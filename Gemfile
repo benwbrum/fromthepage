@@ -18,7 +18,7 @@ gem 'mysql'
 group :development do
   # bundler requires these gems in development
   # gem "rails-footnotes"
-	gem 'mysql2','0.2.7'
+	gem 'mysql2','0.3.11'
 end
 
 group :test do
