@@ -1,0 +1,26 @@
+<div class="inside-column">
+  <span class="left-link">
+    <% if !@page.first? %>
+      <% higher_item = @page.higher_item %>
+      <%= link_to('Previous Page',
+                  { :controller => 'display',
+                    :action => 'display_page',
+                    :page_id => higher_item.id,
+                    :ol => 'p_nav_prev' }) %>
+    <% else %>
+      &nbsp;
+    <% end %>
+  </span>
+  <span class="right-link">
+    <% if !@page.last? %>
+      <% lower_item = @page.lower_item %>
+      <%= link_to('Next Page',
+                  { :controller => 'display',
+                    :action => 'display_page',
+                    :page_id => lower_item.id,
+                    :ol => 'p_nav_next' }) %>
+    <% else %>
+      &nbsp;
+    <% end %>
+  </span>
+</div><!-- in col page_nav -->

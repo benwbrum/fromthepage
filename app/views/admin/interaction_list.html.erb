@@ -1,0 +1,98 @@
+<h2>Interaction List</h2>
+<%= html_block('top') %>
+<table>
+  <tr>
+	  <th>
+	    Time
+	  </th>
+	  <th>
+	    Action
+	  </th>
+	  <th>
+	    Status
+	  </th>
+	  <th>
+	    Origin
+	  </th>
+	  <th>
+	    User
+	  </th>
+	  <th>
+	    Collection
+	  </th>
+	  <th>
+	    Work
+	  </th>
+	  <th>
+	    Page
+	  </th>
+	  <th>
+	    Parameters
+	  </th>
+  </tr>
+	<% for interaction in @interactions %>
+	<tr>
+		<td>
+			<%= interaction.created_on.strftime("%Y-%m-%d %H:%M:%S") %>
+		</td>
+		<td>
+			<%= interaction.action %>
+		</td>
+		<td>
+			<%= interaction.status %>
+		</td>
+		<td>
+			<%= interaction.origin_link %>
+		</td>
+		<td>
+      <% if interaction.user %>
+				<%= link_to(interaction.user.login, 
+				            { :controller => 'user',
+				              :action => 'versions',
+				              :user_id => interaction.user_id, 
+				              :ol => 'adm_il_user' })%>
+      <% else %>
+        &nbsp;
+	    <% end %>
+		</td>
+		<td>
+      <% if interaction.collection %>
+				<%= link_to(interaction.collection.title, 
+				            { :controller => 'collection',
+			                :action => 'show',
+			                :collection_id => interaction.collection_id, 
+				              :ol => 'adm_il_col' })%>
+      <% else %>
+        &nbsp;
+	    <% end %>
+		</td>
+		<td>
+      <% if interaction.work %>
+				<%= link_to(interaction.work.title, 
+				            { :controller => 'display',
+				              :action => 'read_work',
+				              :work_id => interaction.work_id, 
+				              :ol => 'adm_il_work' })%>
+      <% else %>
+        &nbsp;
+	    <% end %>
+		</td>
+		<td>
+      <% if interaction.page %>
+				<%= link_to(interaction.page.title, 
+				            { :controller => 'display',
+				              :action => 'display_page',
+				              :page_id => interaction.page_id, 
+				              :ol => 'adm_il_page' })%>
+      <% else %>
+        &nbsp;
+	    <% end %>
+		</td>
+		<td>
+			<%= interaction.params %>
+		</td>
+	</tr>
+	<% end%>
+</table>
+
+

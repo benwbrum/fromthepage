@@ -1,0 +1,58 @@
+<%= render({ :partial => '/shared/work_tabs',
+             :locals => { :selected => 3,
+                          :work_id => @work.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <p>
+        Title: <%= @work.title %>
+        <br />
+        <% if @work.description %>
+	        Description: <%= @work.description %>
+	        <br />
+        <% end %>
+        Owner: <%= link_to(@work.owner.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => @work.owner.id }) %>
+        <br />
+        <% if @work.transcription_version %>
+	        Transcription Version: <%= @work.transcription_version %>
+	        <br />
+        <% end %>
+        <% if @work.physical_description %>
+	        Physical Description: <%= @work.physical_description %>
+	        <br />
+        <% end %>
+        <% if @work.document_history %>
+	        Document History: <%= @work.document_history %>
+	        <br />
+        <% end %>
+        <% if @work.permission_description %>
+	        Permissions: <%= @work.permission_description %>
+	        <br />
+        <% end %>
+        <% if @work.location_of_composition %>
+	        Location of Composition: <%= @work.location_of_composition %>
+	        <br />
+        <% end %>
+        <% if @work.author %>
+	        Author: <%= @work.author %>
+	        <br />
+        <% end %>
+        <% if @work.transcription_conventions %>
+	        Transcription Conventions: <%= @work.transcription_conventions %>
+	        <br />
+        <% end %>
+        Transcription Version: <%= @work.transcription_version %>
+      </p>    
+    </div>
+  </div>
+
+  <div class="right-column">
+        <div class="inside-column">
+                <%= html_block('right') %>
+        </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<div class="two-columns">
+     <div class="left-column">
+                <div class="inside-column">
+
+
+<h3>Create a New Collection</h3>
+<% form_for(:collection, 
+            @collection, 
+            { :url => { :action => 'create' }}) do |f| %>
+  Title (you can edit this later):
+  <%= f.text_field(:title) %>
+  <br />
+  <%= submit_tag('Create') %>
+<% end %>
+
+       </div>
+       </div>
+
+       <div class="right-column">
+       	    <div class="inside-column">
+                  <%= html_block('right') %>
+		      </div>
+		      </div>
+</div>
+
+

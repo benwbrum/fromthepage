@@ -1,0 +1,36 @@
+<%
+	user = if defined? current_user then current_user else nil end
+%>
+
+
+<div id="comment_<%=note.id%>" class="comment comment-<%= odd %>" style="margin-left:<%= note.depth * 5 %>em">
+	<a name="comment_<%=note.id%>"></a>
+	
+				
+	<div class="text" id="note_<%=note.id%>">
+		<%= note.to_html %>
+	</div>	
+<% if user && user == note.user %>
+<%= in_place_editor("note_#{note.id}",
+                    { :url => url_for({ :action => "set_note_body", 
+                                        :id => note.id }) }) %>
+<% end %>		
+	<div>
+		<span>
+			<i>by <%= link_to(note.user.display_name,
+	                           { :controller => 'user',
+	                               :action => 'profile',
+	                               :user_id => note.user.id }) %></i>
+		</span>
+		<% if user && user != :false && user.like_owner?(@collection) %>
+		<span>
+			<%= link_to('delete', 
+						{ :controller => 'note', :action => 'delete', :note_id => note.id, :page_id => @page.id, :original_controller => controller_name, :original_action => action_name },
+            			{ :confirm => 'Are you sure?' }) %>
+		</span>
+		<% end %>
+	</div>
+	
+		
+	<div id="comment_form_<%= note.id %>"></div>	
+</div>

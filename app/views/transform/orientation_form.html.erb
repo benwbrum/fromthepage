@@ -1,0 +1,27 @@
+    <p>This is a sample page from your upload.  Click on the
+        image with the correct orientation, and the same
+        rotation will be applied to your other pages.
+    </p>
+
+<table>
+<tr>
+<td>
+<%= link_to(image_tag(file_to_url(@img_files["0"])), 
+            :action => 'orientation_process', :orientation => '0', :ol => 'tf_of_0', :image_set_id => @image_set.id ) %>
+</td>
+<td>
+<%= link_to(image_tag(file_to_url(@img_files["90"])), 
+            :action => 'orientation_process', :orientation => '90', :ol => 'tf_of_90', :image_set_id => @image_set.id ) %>
+</td>
+</tr>
+<tr>
+<td>
+<%= link_to(image_tag(file_to_url(@img_files["270"])), 
+            :action => 'orientation_process', :orientation => '270', :ol => 'tf_of_270', :image_set_id => @image_set.id ) %>
+</td>
+<td>
+<%= link_to(image_tag(file_to_url(@img_files["180"])), 
+            :action => 'orientation_process', :orientation => '180', :ol => 'tf_of_180', :image_set_id => @image_set.id ) %>
+</td>
+</tr>
+</table>

@@ -1,0 +1,47 @@
+<%= render({ :partial => '/shared/collection_tabs',
+             :locals => { :selected => 0,
+                          :collection_id => @collection.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+		<div class="inside-column">
+			<p>
+			    All Subjects
+			</p>
+			
+			<p>
+        <%= display_categories(@collection.categories, nil) do |category|
+              ret = '<i>' + category.title + '</i><br />'
+              category.articles.each do |article|
+                ret += link_to(article.title,
+			                         { :action => 'show',
+			                           :article_id => article.id,
+            		                 :ol => 'a_alist_cats_art' } )
+                ret += '<br />'
+              end
+              ret
+            end %>
+      </p>
+
+      <p>
+        Uncategorized Articles:
+      </p>
+      <p>
+        <% for article in @uncategorized_articles %>
+		      <%= link_to(article.title,
+			                 { :action => 'show',
+			                   :article_id => article.id,
+     		                 :ol => 'a_alist_uncat_art' } ) %><br />
+        <% end %>
+      </p>
+
+    </div>
+  </div>
+
+  <div class="right-column">
+       <div class="inside-column">
+          <%= html_block('right') %>
+       </div>
+   </div>
+
+</div>

@@ -1,0 +1,17 @@
+<div>
+ Tabs:
+  <span>
+    <% if selected == 1 %>
+      edit
+    <% else %>
+      <%= link_to('edit', { :action => 'edit', :page_id => page_id, :ol => 'adm_ut_ed' }) %>
+    <% end %>
+  </span>    
+  <span>
+    <% if selected == 2 %>
+      image
+    <% else %>
+      <%= link_to('image', { :action => 'image_tab', :page_id => page_id, :ol => 'adm_ut_img' }) %>
+    <% end %>
+  </span>    
+</div>

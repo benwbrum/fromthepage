@@ -1,0 +1,16 @@
+<% form_tag( {:action => 'date_format_start_process'} ) do %>
+
+	<%= hidden_field_tag('image_set_id', @image_set.id) %>
+    <% if flash['error'] %>
+      <div style="color: red"><%= flash['error'] %></div>
+    <% end %>
+
+
+    <p>Enter a start date in YYYY-MM-DD format.
+    </p>
+
+    <p><label for="directory">Start Date:</label><br/>
+    <%= text_field_tag :date_start, nil, :size => 60, :maxlength => 256 %></p>
+
+    <p><%= submit_tag 'Next' %></p>
+<% end %>

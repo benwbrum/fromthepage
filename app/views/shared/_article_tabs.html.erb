@@ -1,0 +1,60 @@
+<div id="navcontainer">
+  <ul id="navlist">
+  <li <% if selected == 1 %> 
+    id="current">
+      <span>subject</span>
+    <% else %>
+     ><%= link_to('subject', 
+                  { :controller => 'article', 
+                    :action => 'show', 
+                    :article_id => article_id,
+                    :ol => 'a_tab_art' }) %>
+    <% end %>
+    </li>  
+
+  <% if logged_in? %>
+    <li 	  
+	    <% if selected == 4 %>
+            id="current">
+	      <span>edit</span>
+	    <% else %>
+	     ><%= link_to('edit', 
+	                  { :controller => 'article', 
+	                    :action => 'edit', 
+	                    :article_id => article_id,
+                      	:ol => 'a_tab_edit'  }) %>
+	    <% end %>
+          </li>  
+
+  <% end %>
+
+    <li 
+    <% if selected == 2 %>
+    id="current">
+      <span>versions</span>    
+    <% else %>
+     ><%= link_to('versions', 
+                  { :controller => 'article_version', 
+                    :action => 'list', 
+                    :article_id => article_id,
+                    :ol => 'a_tab_ver' }) %>
+    <% end %>
+    </li>  
+
+
+    <li 
+    <% if selected == 3 %>
+    id="current">
+      <span>graph</span>
+    <% else %>
+     ><%= link_to('graph', 
+                  { :controller => 'article', 
+                    :action => 'graph', 
+                    :article_id => article_id,
+                    :ol => 'a_tab_graph' }) %>
+    <% end %>
+    </li> 
+
+
+  </ul>
+</div>

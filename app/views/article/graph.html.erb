@@ -1,0 +1,60 @@
+<%= render({ :partial => '/shared/article_tabs',
+             :locals => { :selected =>3,
+                          :article_id => @article.id }}) %>
+
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+			<p>
+			        <%= link_to("subjects", 
+			                    {:controller => 'article',
+			                     :action => 'list',
+			                     :collection_id => @collection.id, 
+      		                 :ol => 'a_graph_articles'}) %>
+			</p>
+
+      <h3>
+        Related Subjects Graph for <i><%= @article.title %></i>
+      </h3>			
+			<p>
+			<%= image_tag(file_to_url(@article.graph_image), :usemap => '#G') %>
+			<%= @map %>
+			</p>
+    </div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+	  <p>
+	  	  <%= link_to("Read pages that mention <i>#{@article.title}</i> in all works.",
+              :controller => 'display',
+              :action => 'read_all_works',
+              :article_id => @article.id) %>
+	  </p>
+      <p>
+        The graph displays the other subjects mentioned on the same pages as the 
+        subject <i><%= @article.title %></i>.  If the same subject occurs a page
+        with <i><%= @article.title %></i> more than once, it appears closer to  
+        <i><%= @article.title %></i> on the graph, and is colored in a darker shade.
+        The closer a subject is to the center, the more "related" the subjects
+        are. 
+      </p>
+
+      <% form_for(:article, @article, :url => { :action => 'graph' }) do |f| %>
+				Limit the graph to subjects in these categories:<br />
+				<%= display_categories(@collection.categories, nil) do |category|
+			    check_box_tag("category_ids[]",
+			                  category.id,
+			                  @categories.include?(category)) +
+			    category.title
+		  	end %>
+		  	Show subjects that appear on at least 
+		  	<%= text_field_tag('min_rank', @min_rank, :size => 3) %> 
+		  	pages in common with <i><%= @article.title %></i>.<br />
+		  	<%= hidden_field_tag(:article_id, @article.id) %>
+		  	<%= hidden_field_tag(:force, true) %>
+        <%= submit_tag "Generate New Graph", :name => 'graph' %>  	
+  	  <% end %>
+	  </div>
+  </div>
+</div>
+		
