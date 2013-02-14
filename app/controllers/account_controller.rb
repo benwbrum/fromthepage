@@ -9,8 +9,11 @@ class AccountController < ApplicationController
     redirect_to(:action => 'signup') unless logged_in? || User.count > 0
   end
 
-  def login
+  def signin
+    logger.debug "saofjsdl;afjl;sdfsl;dfj"
+
     return unless request.post?
+    logger.debug "In accountcontroller signin"
     self.current_user = User.authenticate(params[:login], params[:password])
     if logged_in?
       if params[:remember_me] == "1"
@@ -27,6 +30,11 @@ class AccountController < ApplicationController
         flash[:error] = "We could not find any user with the login #{params[:login]}.  Feel free to contact alpha.info@fromthepage.com for help."
       end
     end
+
+  end
+
+  def login
+    
   end
 
   def signup      
@@ -51,4 +59,7 @@ class AccountController < ApplicationController
     flash[:notice] = "You have been logged out."
     redirect_back_or_default(:controller => 'dashboard', :action => 'index')
   end
+
+
+
 end

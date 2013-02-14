@@ -54,7 +54,7 @@ class PageController < ApplicationController
     filename = @page.base_image
     if filename == nil || filename == ""
       # create a new filename
-      filename = "#{RAILS_ROOT}/public/images/working/upload/#{@page.id}.jpg"
+      filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
     end
     File.open(filename, "wb") do |f| 
       f.write(params['page']['base_image'].read)

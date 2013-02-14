@@ -41,7 +41,7 @@ class WorkController < ApplicationController
   # TODO: refactor author to include docbook elements like fn, ln, on, hon, lin
   def create_pdf
     # render to string
-    string = render_to_string :file => "#{RAILS_ROOT}/app/views/work/work.docbook"
+    string = render_to_string :file => "#{Rails.root}/app/views/work/work.docbook"
 #    # spew string to docbook tempfile
 
     File.open(doc_tmp_path, "w") { |f| f.write(string) }
@@ -136,11 +136,11 @@ private
   end
 
   def tmp_path
-    "#{RAILS_ROOT}/tmp"
+    "#{Rails.root}/tmp"
   end
   
   def pub_path
-    "#{RAILS_ROOT}/public/docs"
+    "#{Rails.root}/public/docs"
   end
   
   def pdf_tmp_path

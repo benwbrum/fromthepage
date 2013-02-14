@@ -1,5 +1,6 @@
 Fromthepage::Application.routes.draw do
   get '/account/login' => 'account#login' # , :as => 'websites'
+  post '/account/signin' => 'account#signin'
   get '/static_splash' => 'static#splash'
   # match '/static/splash' => 'static#splash'
   match '/' => 'static#splash'

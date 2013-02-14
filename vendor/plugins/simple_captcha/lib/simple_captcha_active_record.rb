@@ -44,7 +44,7 @@ module SimpleCaptcha #:nodoc
     def turing_valid_method #:nodoc
       ret = <<-EOS
       def valid?
-        return valid_without_captcha? if RAILS_ENV == 'test'
+        return valid_without_captcha? if Rails.env == 'test'
         if authenticate_with_captcha
           ret = valid_without_captcha?
           data = PStore.new(CAPTCHA_DATA_PATH + "data")
@@ -63,7 +63,7 @@ module SimpleCaptcha #:nodoc
         end
       end
       def valid_with_captcha?
-        return valid_without_captcha? if RAILS_ENV == 'test'
+        return valid_without_captcha? if Rails.env == 'test'
         self.authenticate_with_captcha = true
         ret = self.valid?
         self.authenticate_with_captcha = false

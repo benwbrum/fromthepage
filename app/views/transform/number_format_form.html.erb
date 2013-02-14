@@ -1,4 +1,4 @@
-<% form_tag( {:action => 'number_format_process'} ) do %>
+<%= form_tag( {:action => 'number_format_process'} ) do %>
  
 	<%= hidden_field_tag('image_set_id', @image_set.id) %>
    <p>We will auto-generate page numbers for you.  Should we start

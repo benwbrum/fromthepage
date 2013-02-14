@@ -134,7 +134,7 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_path = "#{RAILS_ROOT}/app/views/article/graph.dot"
+    dot_path = "#{Rails.root}/app/views/article/graph.dot"
 
     dot_source = 
       render_to_string({:file => dot_path,
@@ -143,12 +143,12 @@ class ArticleController < ApplicationController
                                      :link_max => link_max,
                                      :min_rank => min_rank }} )
 
-    dot_file = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.dot"
+    dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|
       f.write(dot_source)
     end
-    dot_out = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.png"
-    dot_out_map = "#{RAILS_ROOT}/public/images/working/dot/#{@article.id}.map"
+    dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
+    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
     system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}" 
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out

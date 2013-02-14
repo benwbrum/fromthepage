@@ -1,8 +1,8 @@
 require 'pstore'
 desc "Remove unuseful captcha images and sessions data"
 task :remove_simple_captcha_files do
-  image_path = "#{RAILS_ROOT}/public/images/simple_captcha/"
-  data_path = "#{RAILS_ROOT}/tmp/simple_captcha/"
+  image_path = "#{Rails.root}/public/images/simple_captcha/"
+  data_path = "#{Rails.root}/tmp/simple_captcha/"
   ttl = 1.hours.ago
   Dir.foreach(image_path) do |file_name| 
 	file = image_path + file_name

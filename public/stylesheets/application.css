@@ -510,3 +510,7 @@ text-align: right;
 {
 font-size: .8em;
 }
+
+#image_sidebar {
+    float: right;
+}

@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
   before_filter :update_ia_work_server
-  # before_filter :log_interaction
+  before_filter :log_interaction
   # before_filter :store_location_for_login
   before_filter :load_html_blocks
   # after_filter :complete_interaction
@@ -99,13 +99,19 @@ class ApplicationController < ActionController::Base
   def log_interaction
     @interaction = Interaction.new
     puts "session is a #{session.class}"
-    logger.debug "session is a #{session.class}"
-    logger.debug "session methods: #{session.methods.sort}"
-    logger.debug "session.inspect: #{session.inspect}"
-    logger.debug "session.nil?: #{session.nil?}"
-    logger.debug "session.keys: #{session.keys}"
-    logger.debug "session.id: #{session.id}"
-    @interaction.session_id = session.session_id
+    # logger.debug "session is a #{session.class}"
+    # logger.debug "session methods: #{session.methods.sort}"
+    # logger.debug "session.inspect: #{session.inspect}"
+    # logger.debug "session.nil?: #{session.nil?}"
+    # logger.debug "session.keys: #{session.keys}"
+    # logger.debug "session.id: #{session.id}"
+    if !session.respond_to?(:session_id)
+      # 
+      @interaction.session_id = Interaction.count + 1 
+    else
+      @interaction.session_id = session.session_id
+    end
+    
     @interaction.browser = request.env['HTTP_USER_AGENT']
     @interaction.ip_address = request.env['REMOTE_ADDR']
     if(logged_in?)

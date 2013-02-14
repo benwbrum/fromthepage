@@ -17,7 +17,7 @@
     <% end %>
 		<div id="transcription_form_area" class="inside-column">
 		  <div id="transcription_form">
-		  <% form_for(:page, @page, :url => { :action => 'save_transcription' }) do |f| %>
+		  <%= form_for(:page, @page, :url => { :action => 'save_transcription' }) do |f| %>
       	   <%= html_block('left') %>
 		   <% if @work.scribes_can_edit_titles %>
 		    <br /><%= f.label :title, "Page Title:" %><br />

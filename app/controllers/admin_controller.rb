@@ -90,8 +90,8 @@ class AdminController < ApplicationController
   
   def tail_logfile
     @lines = params[:lines].to_i
-    development_logfile = "#{RAILS_ROOT}/log/development.log"
-    production_logfile = "#{RAILS_ROOT}/log/production.log"
+    development_logfile = "#{Rails.root}/log/development.log"
+    production_logfile = "#{Rails.root}/log/production.log"
     @dev_tail = `tail -#{@lines} #{development_logfile}`
     @prod_tail = `tail -#{@lines} #{production_logfile}`
   end

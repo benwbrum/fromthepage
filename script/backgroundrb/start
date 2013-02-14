@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'drb/acl'
 require File.dirname(__FILE__) + "/../../config/boot.rb"
-require RAILS_ROOT + '/vendor/plugins/backgroundrb/backgroundrb.rb'
+require Rails.root + '/vendor/plugins/backgroundrb/backgroundrb.rb'
 require 'rubygems'
 require 'active_record'
 require 'yaml'
@@ -59,17 +59,17 @@ defaults = {'host' => 'localhost',
             
            
 begin
-  CONFIG = defaults.merge(YAML.load(ERB.new(IO.read("#{RAILS_ROOT}/config/#{OPTIONS[:configfile]}.yml")).result)) 
+  CONFIG = defaults.merge(YAML.load(ERB.new(IO.read("#{Rails.root}/config/#{OPTIONS[:configfile]}.yml")).result)) 
 rescue
   CONFIG = defaults
 end            
 if CONFIG['load_rails']
   ActiveRecord::Base.allow_concurrency = true
   require File.dirname(__FILE__) + "/../../config/environment.rb"
-  ActiveRecord::Base.establish_connection(YAML.load(ERB.new(IO.read("#{RAILS_ROOT}/#{CONFIG['database_yml']}")).result)[CONFIG['environment']])
+  ActiveRecord::Base.establish_connection(YAML.load(ERB.new(IO.read("#{Rails.root}/#{CONFIG['database_yml']}")).result)[CONFIG['environment']])
 end
 # Require all worker classes in lib/workers/
-Dir["#{RAILS_ROOT}/lib/workers/*.rb"].each{ |worker| require worker }
+Dir["#{Rails.root}/lib/workers/*.rb"].each{ |worker| require worker }
 
 # DRb has an access control feature. Here we are installing the acl specified
 # in the config file.
@@ -96,7 +96,7 @@ if OPTIONS[:detach]
       middleman.set_sleep(CONFIG['timer_sleep'] || 60)
       middleman.start_timer
       DRb.start_service("druby://#{CONFIG['host']}:#{CONFIG['port']}", middleman)
-      File.open("#{RAILS_ROOT}/log/backgroundrb.pid", 'w+'){|f| f.write(Process.pid)}
+      File.open("#{Rails.root}/log/backgroundrb.pid", 'w+'){|f| f.write(Process.pid)}
       Auto.start
       DRb.thread.join
     } and exit!
@@ -108,7 +108,7 @@ else
   DRb.start_service("druby://#{CONFIG['host']}:#{CONFIG['port']}", middleman)
   puts "DRb URI: #{DRb.uri}"
   puts "Pid: #{Process.pid}"
-  File.open("#{RAILS_ROOT}/log/backgroundrb.pid", 'w+'){|f| f.write(Process.pid)}
+  File.open("#{Rails.root}/log/backgroundrb.pid", 'w+'){|f| f.write(Process.pid)}
   Auto.start
   DRb.thread.join
 end

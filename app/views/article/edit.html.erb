@@ -13,7 +13,7 @@
     <div class="inside-column">
 
       <div id="article_edit_area">
-        <% form_for(:article, @article, :url => { :action => 'update' }) do |f| %>
+        <%= form_for(:article, @article, :url => { :action => 'update' }) do |f| %>
 
           <% @article.errors.each_full do |msg| %>
             <%= msg %><br />
