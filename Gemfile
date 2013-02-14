@@ -18,7 +18,7 @@ gem 'mysql'
 group :development do
   # bundler requires these gems in development
   # gem "rails-footnotes"
-	gem 'mysql2','0.3.11'
+  gem 'mysql2','0.3.11'
 end
 
 group :test do
@@ -35,6 +35,11 @@ group :production do
   # gem "rails-footnotes"
   # gem 'ftools'
 end
+gem "rspec-rails", "2.12.2", :group => [:development, :test]
+gem "database_cleaner", "0.9.1", :group => :test
+
+gem "capybara", "2.0.2", :group => :test
+gem "factory_girl_rails", "4.2.1", :group => [:development, :test]
 
 gem "rspec-rails", "2.12.2", :group => [:development, :test]
 
