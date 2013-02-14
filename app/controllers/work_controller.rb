@@ -86,10 +86,9 @@ class WorkController < ApplicationController
       #                 :joins => :page,
       #                 :conditions => ['pages.work_id = ?',
       #                                 @work.id],
-                       :order => "work_version desc")
+      #                 :order => "work_version desc")
       PageVersion.find_all( :joins => :page,
-                       :conditions => ['pages.work_id = ?',
-                                       @work.id],
+                        :conditions => ['pages.work_id = ?', @work.id],
                        :order => "work_version desc")
 
   end
