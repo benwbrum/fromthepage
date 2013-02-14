@@ -284,7 +284,7 @@ ActiveRecord::Schema.define(:version => 20111227032246) do
   end
 
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
-  add_index "pages", ["xml_text"], :name => "pages_xml_text_index", :length => 100
+  add_index "pages", ["xml_text"], :name => "pages_xml_text_index", :length => 1000
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
     t.string  "plugin_name"
