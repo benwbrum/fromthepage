@@ -8,9 +8,9 @@
     end
   end
 
-desc 'Remove erb files'
-task :removeerb => :environment do
-  Dir.glob('app/views/**/*.erb').each do |file|
+desc 'Remove rhtml files'
+task :removerhtml => :environment do
+  Dir.glob('app/views/**/*.rhtml').each do |file|
     puts `git rm #{file}`
     puts "removing #{file}"
   end
