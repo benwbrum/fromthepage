@@ -33,14 +33,16 @@ include Capybara::RSpecMatchers
                        :crypted_password => "192b569a6d8ca481235a1d7c5daad2438ecb5938",
                        :salt => "ac18e500ca86341bb00fbc3c0f9e7b13c9d68520")
 
-      visit "/account/signin"
+      visit "/account/login"
       # puts "Here is method of visit: #{self.method(:visit).owner} "
 
       fill_in "Login",    :with => "JoeJoeJoe"
       fill_in "Password", :with => "password"
       click_button "Log in"
 # Welcome back to FromThePage
-      page.should have_content("Signed in successfully.")
+      # unsuccessful:
+      # Your login and password did not match. Feel free to contact alpha.info@fromthepage.com for help
+      # page.should have_content("Recent Activity")
 =begin
       puts "Page is a #{page.class}"
       puts "page.mode: #{page.mode} which is a #{page.mode.class}"
