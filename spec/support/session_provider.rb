@@ -28,7 +28,7 @@ include Capybara::RSpecMatchers
 
     private
     def self.create_session
-
+=begin
       user = User.new
       user.login = "joejoejoe"
       user.password = "password"
@@ -44,8 +44,8 @@ include Capybara::RSpecMatchers
       puts "user id: #{fu.id}"
       # user.reload
       # puts "user id: #{user.id}"
-
-      # user = FactoryGirl.create(:user)
+=end
+      user = FactoryGirl.create(:user)
 =begin
       user = User.create(:login => "joejoejoe",
                          :password => "password", 
