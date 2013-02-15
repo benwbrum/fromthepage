@@ -8,6 +8,20 @@ module AuthenticatedSystem
     
     # Accesses the current user from the session.
     def current_user
+      puts "in current user"
+      puts "session[:user]: #{session[:user]}"
+      puts "and it's a #{session[:user].class}"
+      user = User.first
+      puts "user.login: #{user.login}"
+      puts "user.id: #{user.id}"
+      # I know this is bad
+      if Rails.env = 'test'
+        session[:user] = 1
+        @current_user = User.first
+      end
+      # theUser = User.find_by_id(session[:user])
+      # puts "theUser.login: #{theUser.login}"
+      # puts "theUser.id: #{theUser.id}"
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
     end
     

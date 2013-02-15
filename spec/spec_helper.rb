@@ -23,6 +23,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
+  # this started out true
   config.use_transactional_fixtures = true
 
   # If true, the base class of anonymous controllers will be inferred
@@ -39,7 +40,7 @@ RSpec.configure do |config|
     # Clean up the database                                                                                                                             
   require 'database_cleaner'
   config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.orm = "activerecord"
   end
 
