@@ -16,6 +16,7 @@ class AccountController < ApplicationController
     logger.debug "In accountcontroller signin"
     self.current_user = User.authenticate(params[:login], params[:password])
     if logged_in?
+      logger.debug "User is logged in"
       if params[:remember_me] == "1"
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
@@ -23,6 +24,7 @@ class AccountController < ApplicationController
       redirect_back_or_default(:controller => 'dashboard', :action => 'index')
       flash[:notice] = "Logged in successfully"
     else
+      logger.debug "User is NOT logged in"
       if(User.find_by_login(params[:login])) 
         flash[:error] = 
           "Your login and password did not match.  Feel free to contact alpha.info@fromthepage.com for help."
