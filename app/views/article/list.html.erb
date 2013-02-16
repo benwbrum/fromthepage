@@ -10,7 +10,7 @@
 			</p>
 			
 			<p>
-        <%= display_categories(@collection.categories, nil) do |category|
+        <%= raw(display_categories(@collection.categories, nil) do |category|
               ret = '<i>' + category.title + '</i><br />'
               category.articles.each do |article|
                 ret += link_to(article.title,
@@ -20,7 +20,7 @@
                 ret += '<br />'
               end
               ret
-            end %>
+            end) %>
       </p>
 
       <p>

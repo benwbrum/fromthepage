@@ -1,0 +1,5 @@
+Deeds: activitity stream. Like an event log
+
+Logged in as admin, at http://localhost:3000/dashboard/main_dashboard
+Clicking on a collection, "julia blumfield diaries"
+

@@ -16,9 +16,14 @@ class DisplayController < ApplicationController
                                         :conditions => [ 'pal.article_id = ?', @article.id ]
       @pages.uniq!
     else
+            @pages = Page.paginate @work.id, :page => params[:page],  
+                                        :order => 'position',
+                                        :per_page => PAGES_PER_SCREEN
+=begin
       @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
                                         :order => 'position',
                                         :per_page => PAGES_PER_SCREEN
+=end
     end                                      
   end
 
