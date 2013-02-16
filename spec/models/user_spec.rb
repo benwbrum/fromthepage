@@ -46,6 +46,29 @@ describe User do
     it { should_not be_valid }
   end
 
+  # It seems like this should work
+  xit "checks the length of the username" do
+    test_name = "e" * 200
+    user3 = User.new
+    user3.login = test_name
+    user3.password = "123467"
+    user3.password_confirmation = "1234657"
+    user3.should_not be_valid
+    # user3.save!
+    puts "test_name: #{test_name}"
+  end
+
+  describe "when login is too long" do
+    before { @user.login = "a" * 41 }
+    it { should_not be_valid }
+  end
+
+  describe "when login is too short" do
+    before { @user.login = "a" * 2 }
+    it { should_not be_valid }
+  end
+
+
   it "gets the count" do
     puts "User count: #{User.count}"
   end
