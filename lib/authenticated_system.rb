@@ -14,14 +14,31 @@ module AuthenticatedSystem
       user = User.first
       puts "user.login: #{user.login}"
       puts "user.id: #{user.id}"
+      puts "params[:login]: #{params[:login]}"
+      puts "params[:login].class: #{params[:login].class}"
+      puts "params[:password]: #{params[:password]}"
       # I know this is bad
-      if Rails.env = 'test'
-        session[:user] = 1
-        @current_user = User.first
+      logger.debug "Rails.env: #{Rails.env}"
+      if Rails.env == "test"
+        if !params[:login].nil? && params[:login].length > 0
+          fu = User.find_by_login(params[:login])
+          session[:user] = fu.id
+          puts "session[:user] in the if: #{session[:user]} and it's a #{session[:user].class}"
+          the_num = session[:user].to_i
+          puts "the_num: #{the_num}"
+          theUser = User.find_by_id(the_num)
+          puts "theUser.login: #{theUser.login}"
+          puts "theUser.id: #{theUser.id}"
+          # @current_user ||= User.authenticate(params[:login], params[:password])
+          # @current_user = User.first
+        end
       end
-      # theUser = User.find_by_id(session[:user])
-      # puts "theUser.login: #{theUser.login}"
-      # puts "theUser.id: #{theUser.id}"
+
+      
+      puts "session[:user] after the if: #{session[:user]}"
+      # puts "gets"
+      # input = gets
+      
       @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
     end
     
@@ -94,7 +111,14 @@ module AuthenticatedSystem
     #
     # We can return to this location by calling #redirect_back_or_default.
     def store_location
-      session[:return_to] = request.request_uri
+      logger.debug "in store_location"
+      logger.debug "request is a #{request.class}"
+      rp = request.request_parameters
+      logger.debug "rp is a #{rp.class}"
+      logger.debug "rp.keys.inspect: #{rp.keys.inspect}"
+      logger.debug "request.url: #{request.url}"
+      # session[:return_to] = request.request_uri
+      session[:return_to] = request.url
       logger.debug("DEBUG store_location: session[:return_to]=#{session[:return_to]}")
     end
     

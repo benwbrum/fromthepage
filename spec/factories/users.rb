@@ -1,4 +1,5 @@
 FactoryGirl.define do
+
   factory :user do
     login  "joejoejoe"
     password  "password"
@@ -7,6 +8,16 @@ FactoryGirl.define do
     print_name  "joejoejoe"
     email  "joe@example.com"
   end
+
+  factory :user2, class: User do
+    login  "moemoemoe"
+    password  "password"
+    password_confirmation  "password"
+    display_name  "moemoemoe"
+    print_name  "moemoemoe"
+    email  "moe@example.com"
+  end
+
 =begin
 
   factory :user2, class: User do

@@ -64,7 +64,7 @@ include Capybara::RSpecMatchers
       visit "/account/login"
       # puts "Here is method of visit: #{self.method(:visit).owner} "
 
-      fill_in "Login",    :with => "JoeJoeJoe"
+      fill_in "Login",    :with => "joejoejoe"
       fill_in "Password", :with => "password"
       click_button "Log in"
 # Welcome back to FromThePage

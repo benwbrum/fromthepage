@@ -21,13 +21,16 @@ describe "index page" do
 =end
 
   it "gets a session from Provider " do
+
+    user2 = FactoryGirl.create(:user2)
+
     fd = Deed.new 
     fd.note_id = 1
     fd.page_id = 1
     fd.work_id = 1
     fd.collection_id = 1
     fd.deed_type = Deed::PAGE_TRANSCRIPTION
-    fd.user = User.first
+    fd.user_id = user2.id
     fd.save!
 =begin
 deedid: 1, deed_type: "page_trans", page_id: 632, work_id: 2, collection_id: 1, article_id: nil, user_id: 2, note_id: nil, created_at: "2008-03-10 12:42:23", updated_at: "2008-04-07 22:34:06"> 
