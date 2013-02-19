@@ -1,17 +1,19 @@
 require 'spec_helper'
 
-describe User do
+describe Collection do
 
   before(:each) do
-    @user = FactoryGirl.create(:user) # User.new(login: "ExampleUser", password: "1234567", password_confirmation: "123467")
+    # @collection = Collection.new
+    @collection = FactoryGirl.create(:collection)
   end
 
-  subject { @user }
+  subject { @collection }
 
-  it { should respond_to(:login) }
-  it { should respond_to(:password) }
-  it { should respond_to(:password_confirmation) }
+  it { should respond_to(:title) }
+  it { should respond_to(:intro_block) }
+  it { should respond_to(:footer_block) }
 
+=begin
   it "login must be unique" do
     user2 = User.new
     user2.login = @user.login
@@ -79,11 +81,9 @@ describe User do
     it { should_not be_valid }
   end
 
-
-
-
   it "gets the count" do
     puts "User count: #{User.count}"
   end
+=end
 
 end
