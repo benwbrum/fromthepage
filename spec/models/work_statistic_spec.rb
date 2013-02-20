@@ -1,23 +1,26 @@
 require 'spec_helper'
 
-describe Work do
+describe WorkStatistic do
 
   before(:each) do
     @work = FactoryGirl.create(:work) # User.new(login: "ExampleUser", password: "1234567", password_confirmation: "123467")
   end
 
-  subject { @work }
+  subject { @work_statistic }
 
-  it { should respond_to(:title) }
-  it { should respond_to(:description) }
+  # it { should respond_to(:transcribed_pages) }
+  # it { should respond_to(:annotated_pages) }
 
   it "creates a work statistic" do
     # puts "WorkStatistic.count before: #{WorkStatistic.count}"
     expect{FactoryGirl.create(:work)}.to change{WorkStatistic.count}.by(1)
     # puts "WorkStatistic.count after: #{WorkStatistic.count}"
-    puts "@work.transcription_version: #{@work.transcription_version}"
   end
 
+  it "does stuff" do
+    work_stat = @work.work_statistic
+    puts "work_stat.inspect: #{work_stat.inspect}"
+  end
 
   # it { should respond_to(:password_confirmation) }
 =begin
