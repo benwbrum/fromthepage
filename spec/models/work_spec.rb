@@ -10,6 +10,13 @@ describe Work do
 
   it { should respond_to(:title) }
   it { should respond_to(:description) }
+
+  it "creates a work statistic" do
+    # puts "WorkStatistic.count before: #{WorkStatistic.count}"
+    expect{FactoryGirl.create(:work)}.to change{WorkStatistic.count}.by(1)
+    # puts "WorkStatistic.count after: #{WorkStatistic.count}"
+  end
+
   # it { should respond_to(:password_confirmation) }
 =begin
   it "login must be unique" do

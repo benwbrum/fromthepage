@@ -31,7 +31,7 @@ mongo.log
 
 # Ignore RVM-related files
 # .rvmrc
-
+notes*txt
 # Ignore Ctags
 
 tags
