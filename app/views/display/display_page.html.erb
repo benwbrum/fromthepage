@@ -14,7 +14,7 @@
       <div id="transcription_display_area" class="inside-column">
         <% if @page.xml_text != nil && 
               !@page.xml_text.empty? %>
-          <%= xml_to_html(@page.xml_text) %>
+          <%= raw(xml_to_html(@page.xml_text)) %>
         <% else %>
               <p>
                 <i>

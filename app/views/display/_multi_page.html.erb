@@ -44,7 +44,7 @@
 	        </h2>
 		      <div>
 		        <% if page.xml_text %>
-		          <%= xml_to_html(page.xml_text, false) %>
+		          <%= raw(xml_to_html(page.xml_text, false)) %>
 		        <% else %>
 	              <p>
 	                <i>
