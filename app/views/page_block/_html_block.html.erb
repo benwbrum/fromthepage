@@ -1,6 +1,6 @@
 <% if page_block %>
    <% if page_block.html %>
-      <%= page_block.rendered_html %>
+      <%= raw(page_block.rendered_html) %>
    <% end %>
    <% if logged_in? && current_user.admin %>
 	<p>

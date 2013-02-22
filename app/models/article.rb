@@ -63,6 +63,7 @@ class Article < ActiveRecord::Base
     words.each do |word|
       # find articles in the same collection
       # whose title contains that word
+      logger.debug("the word is #{word}")
       current_matches =
         @collection.articles.where("title like ?", "%#{word}%" )
         # @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )

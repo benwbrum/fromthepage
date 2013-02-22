@@ -9,6 +9,7 @@ module ApplicationHelper
                 :origin_action => action_name
               }
           })
+        
   end
 
 
