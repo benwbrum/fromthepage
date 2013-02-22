@@ -98,7 +98,7 @@
       <div class="inside-column">
 		    <h2><%= @article.title %></h2>
 		    <% if @article.xml_text != nil && !@article.xml_text.empty? %>
-		    <%=  xml_to_html(@article.xml_text) %>
+		    <%=  raw(xml_to_html(@article.xml_text)) %>
 		    <% end %>
   		</div>
 		  <%= render :partial => 'article/article_links' %>
@@ -107,10 +107,10 @@
 			<div class="inside-column">
 		      <h2>Subjects</h2>
 		      <p>
-	        <%= display_categories(@collection.categories, nil) do |category|
+	        <%= raw(display_categories(@collection.categories, nil) do |category|
 	                controller.render_to_string(:partial => '/category/category_link_for_work',
 	                       :locals => { :category => category })
-	            end %>
+	            end) %>
 		      </p>
 			</div>
 		<% end %>
