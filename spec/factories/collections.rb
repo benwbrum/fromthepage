@@ -1,7 +1,8 @@
 FactoryGirl.define do
 
   factory :collection_owner do
-    :user
+    # :user
+    :user2
   end
   
 
@@ -10,7 +11,8 @@ FactoryGirl.define do
     intro_block  "password"
     footer_block  "password"
     # restricted 0
-    :collection_owner
+    # :collection_owner
+    association :owner_user_id, factory: :user
   end
 
 =begin

@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
   has_many :notes, :order => 'created_at DESC'
   has_many :deeds
 
+  def to_i
+    self.id
+  end
+
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
   end

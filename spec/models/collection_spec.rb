@@ -3,7 +3,11 @@ require 'spec_helper'
 describe Collection do
 
   before(:each) do
-    @collection = FactoryGirl.create(:collection)
+    begin
+      @collection = FactoryGirl.create(:collection)
+    rescue Exception => e
+      puts e.backtrace
+    end
   end
 
   subject { @collection }

@@ -110,6 +110,7 @@ class Article < ActiveRecord::Base
     if !@text_dirty or !@title_dirty
       return
     end
+
     version = ArticleVersion.new
     # copy article data
     version.title = self.title
@@ -120,14 +121,15 @@ class Article < ActiveRecord::Base
     version.user = User.current_user
     
     # now do the complicated version update thing
+
     previous_version = 
-      ArticleVersion.find(:conditions => ["article_id = ?", self.id],
+      ArticleVersion.find(:all, :conditions => ["article_id = ?", self.id],
                        :order => "version DESC")
 #       ArticleVersion.find(:first, 
 #                        :conditions => ["article_id = ?", self.id],
 #                        :order => "version DESC")
-    if previous_version
-      version.version = previous_version.version + 1
+    if previous_version.first
+      version.version = previous_version.first.version + 1
     end
     version.save!      
   end
