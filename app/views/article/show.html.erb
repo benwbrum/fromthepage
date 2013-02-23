@@ -19,7 +19,7 @@
 
     <div id="article_display_area" class="inside-column">
 		  <% if @article.xml_text != nil && !@article.xml_text.empty? %>
-		    <%= xml_to_html(@article.xml_text) %>
+		    <%= raw(xml_to_html(@article.xml_text)) %>
 		  <% else %>
 		    <i>No Contents Provided</i>
 		  <% end %>
