@@ -94,6 +94,7 @@ class Article < ActiveRecord::Base
     ArticleArticleLink.delete_all("source_article_id = #{self.id}")     
   end
 
+  # tested
   def create_link(article, display_text)
     link = ArticleArticleLink.new
     link.source_article = self
@@ -107,6 +108,7 @@ class Article < ActiveRecord::Base
   #######################
   # Version support
   #######################
+  # tested
   def create_version
     if !@text_dirty or !@title_dirty
       return

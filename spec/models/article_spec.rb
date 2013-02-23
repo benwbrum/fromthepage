@@ -21,11 +21,11 @@ describe Article do
     puts "article title: #{@article.title}"
     puts "@article.instance_variable_names: #{@article.instance_variable_names.sort}"
     puts "@article.instance_variable_get(@title_dirty): #{@article.instance_variable_get("@title_dirty")}"
-    # puts "@article.title_dirty: #{@article.title_dirty}"
+    
     puts "ArticleVersion.count: #{ArticleVersion.count}"
     @article.source_text = "Chumba My Wumba"
     puts "@article.id: #{@article.id}"
-    # @article.save
+    
     expect{ @article.save }.to change{ ArticleVersion.count }.by(1)
     puts "ArticleVersion.count: #{ArticleVersion.count}"
   end
