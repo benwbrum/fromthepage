@@ -8,34 +8,34 @@ module AuthenticatedSystem
     
     # Accesses the current user from the session.
     def current_user
-      puts "in current user"
-      puts "session[:user]: #{session[:user]}"
-      puts "and it's a #{session[:user].class}"
+      # puts "in current user"
+      # puts "session[:user]: #{session[:user]}"
+      # puts "and it's a #{session[:user].class}"
       user = User.first
-      puts "user.login: #{user.login}"
-      puts "user.id: #{user.id}"
-      puts "params[:login]: #{params[:login]}"
-      puts "params[:login].class: #{params[:login].class}"
-      puts "params[:password]: #{params[:password]}"
+      # puts "user.login: #{user.login}"
+      # puts "user.id: #{user.id}"
+      # puts "params[:login]: #{params[:login]}"
+      # puts "params[:login].class: #{params[:login].class}"
+      # puts "params[:password]: #{params[:password]}"
       # I know this is bad
       logger.debug "Rails.env: #{Rails.env}"
       if Rails.env == "test"
         if !params[:login].nil? && params[:login].length > 0
           fu = User.find_by_login(params[:login])
           session[:user] = fu.id
-          puts "session[:user] in the if: #{session[:user]} and it's a #{session[:user].class}"
+          # puts "session[:user] in the if: #{session[:user]} and it's a #{session[:user].class}"
           the_num = session[:user].to_i
-          puts "the_num: #{the_num}"
+          # puts "the_num: #{the_num}"
           theUser = User.find_by_id(the_num)
-          puts "theUser.login: #{theUser.login}"
-          puts "theUser.id: #{theUser.id}"
+          # puts "theUser.login: #{theUser.login}"
+          # puts "theUser.id: #{theUser.id}"
           # @current_user ||= User.authenticate(params[:login], params[:password])
           # @current_user = User.first
         end
       end
 
       
-      puts "session[:user] after the if: #{session[:user]}"
+      # puts "session[:user] after the if: #{session[:user]}"
       # puts "gets"
       # input = gets
       

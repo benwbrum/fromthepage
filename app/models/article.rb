@@ -52,6 +52,8 @@ class Article < ActiveRecord::Base
   # De-Dup Support
   #######################
   def possible_duplicates
+    logger.debug "------------------------------"
+    logger.debug "article.possible_duplicates"
     # take each element of this article name
     words = self.title.tr(',.', ' ').split(' ')
     # sort it by word length, longest to shortest
@@ -59,13 +61,14 @@ class Article < ActiveRecord::Base
     words.reverse!
     # for each word
     all_matches = []
-#    logger.debug("DEBUG: matching #{words}")
+    logger.debug("DEBUG: matching #{words}")
     words.each do |word|
       # find articles in the same collection
       # whose title contains that word
       logger.debug("the word is #{word}")
+      logger.debug("@collection.id: #{self.collection.id}")
       current_matches =
-        @collection.articles.where("title like ?", "%#{word}%" )
+        self.collection.articles.where("title like ?", "%#{word}%" )
         # @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )
       current_matches.delete self
 #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
@@ -80,6 +83,8 @@ class Article < ActiveRecord::Base
     end
 #    logger.debug("DEBUG: found #{all_matches.size} matches:")
 #    logger.debug("DEBUG: #{all_matches.inspect}")
+    logger.debug("at the end of article.possible_duplicates")
+    logger.debug("--------------------------------------")
     return all_matches
   end
 
