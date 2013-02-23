@@ -28,11 +28,11 @@
       <div class="inside-column">
       <h2>Subjects</h2>
 	      <p>
-        <%= display_categories(@collection.categories, nil) do |category|
+        <%= raw(display_categories(@collection.categories, nil) do |category|
                 controller.render_to_string(:partial => '/category/category_link',
                        :locals => { :category => category, 
                                     :article_partial => '/category/article_link' })
-            end %>
+            end) %>
       </p>
     </div>
     <div class="inside-column">
