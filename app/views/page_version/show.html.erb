@@ -31,7 +31,7 @@
 	  <div id="transcription_display_area" class="inside-column">
 	    <% if @page_version.xml_transcription != nil && 
 	          !@page_version.xml_transcription.empty? %>
-	      <%= xml_to_html(@page_version.xml_transcription) %>
+	      <%= raw(xml_to_html(@page_version.xml_transcription)) %>
 	    <% else %>
 	      <i>No Transcription Provided</i>
 	    <% end %>
@@ -56,7 +56,7 @@
 	  <div id="transcription_display_area" class="inside-column">
 	    <% if @page_version.page.xml_text != nil && 
 	          !@page_version.page.xml_text.empty? %>
-	      <%= xml_to_html(@page_version.page.xml_text) %>
+	      <%= raw(xml_to_html(@page_version.page.xml_text)) %>
 	    <% else %>
 	      <i>No Transcription Provided</i>
 	    <% end %>
