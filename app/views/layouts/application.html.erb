@@ -69,7 +69,7 @@
 		                      :collection_id => @collection.id,
                           :ol => 'l_hd_c_link' }) %>
 	        <% end %>
-	        <%= "&mdash;" if @collection && @work %>
+	        <%= raw("&mdash;") if @collection && @work %>
 	        <% if @work && @work.title %>
 		        <%= link_to(@work.title,
 		                    { :controller => 'display',

@@ -42,7 +42,7 @@
 	        <br />
         <% end %>
         <% if @work.transcription_conventions %>
-	        Transcription Conventions: <%= @work.transcription_conventions %>
+	        Transcription Conventions: <%= raw(@work.transcription_conventions) %>
 	        <br />
         <% end %>
         Transcription Version: <%= @work.transcription_version %>
