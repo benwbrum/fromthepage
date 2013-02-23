@@ -7,9 +7,9 @@ describe Article do
     @article.title = "Hello"
     @article.collection_id = FactoryGirl.create(:collection).id
     @article.save
-    puts "article.id: #{@article.id}"
-    puts "article.title: #{@article.title}"
-    puts "article.inspect: #{@article.inspect}"
+    # puts "article.id: #{@article.id}"
+    # puts "article.title: #{@article.title}"
+    # puts "article.inspect: #{@article.inspect}"
   end
 
   subject { @article }
@@ -25,7 +25,8 @@ describe Article do
     puts "ArticleVersion.count: #{ArticleVersion.count}"
     @article.source_text = "Chumba My Wumba"
     puts "@article.id: #{@article.id}"
-    @article.save
+    # @article.save
+    expect{ @article.save }.to change{ArticleVersion.count}.by(1)
     puts "ArticleVersion.count: #{ArticleVersion.count}"
   end
 
