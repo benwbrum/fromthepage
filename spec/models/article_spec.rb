@@ -26,10 +26,17 @@ describe Article do
     @article.source_text = "Chumba My Wumba"
     puts "@article.id: #{@article.id}"
     # @article.save
-    expect{ @article.save }.to change{ArticleVersion.count}.by(1)
+    expect{ @article.save }.to change{ ArticleVersion.count }.by(1)
     puts "ArticleVersion.count: #{ArticleVersion.count}"
   end
 
+  it "should create links" do
+    article2 = Article.new
+    article2.title = "Hello 2"
+    article2.collection_id = Collection.first.id
+    article2.save
+    expect{ @article.create_link(article2, "display_text") }.to change{ ArticleArticleLink.count }.by(1)
+  end
 
 =begin
   it "login must be unique" do

@@ -95,9 +95,10 @@ class Article < ActiveRecord::Base
   end
 
   def create_link(article, display_text)
-    link = ArticleArticleLink.new(:source_article => self,
-                                  :target_article => article,
-                                  :display_text => display_text)
+    link = ArticleArticleLink.new
+    link.source_article = self
+    link.target_article = article
+    link.display_text = display_text
     link.save!
     return link.id        
   end
