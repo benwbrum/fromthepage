@@ -7,7 +7,7 @@ class DisplayController < ApplicationController
   PAGES_PER_SCREEN = 5
 
   def read_work
-    logger.debug("in display controller, work.id is #{@work.id}")
+
     if @article
               logger.debug("in display controller, work.id is #{@work.id}, if @article is true")
       # restrict to pages that include that subject
@@ -18,13 +18,13 @@ class DisplayController < ApplicationController
                                         :conditions => [ 'pal.article_id = ?', @article.id ]
       @pages.uniq!
     else
-      logger.debug("in display controller, work.id is #{@work.id}, if @article is false, params[:page]: #{params[:page]}, and params[:page] is a #{params[:page].class}")
+
       puts "params[:page]: #{params[:page]}"
             # @pages = Page.paginate @work.id, :page => params[:page],  
             @pages = Page.paginate :page => params[:page],  
                                         :order => 'position',
                                         :per_page => PAGES_PER_SCREEN,
-      :conditions => { :work_id => @work.id }
+                                        :conditions => { :work_id => @work.id }
 =begin
       @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
                                         :order => 'position',
