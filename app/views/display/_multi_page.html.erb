@@ -1,4 +1,4 @@
-<%= logger.debug("In views/display/_mulit_page.html, and work.id=#{@work.id}") %>
+
 
 <div class="two-columns">
 	<div class="left-column">
@@ -24,7 +24,7 @@
 	    <% end %>
 	    <div class="inside-column">
 	   		<div class="thumbnail-container">
-			  <%= logger.debug("In views/display/_mulit_page.html, and work.id=#{@work.id} and page.id=#{page.id}") %>
+
 		    	<% if page.ia_leaf %>
 					<% thumb_url = "http://www.archive.org/download/#{page.work.ia_work.book_id}/page/leaf#{page.ia_leaf.leaf_number}_thumb.jpg" %>
 			      <%= link_to(image_tag(thumb_url),
@@ -40,7 +40,7 @@
 	        </div>
 	  
 	      <div>
-		      <h2>LLL
+		      <h2>
 		        <%= page.title %>
 	        </h2>
 		      <div>
