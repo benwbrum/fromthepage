@@ -71,7 +71,6 @@ GEM
     mime-types (1.20.1)
     multi_json (1.5.0)
     multipart-post (1.1.5)
-    mysql (2.8.1)
     mysql2 (0.3.11)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -154,7 +153,6 @@ DEPENDENCIES
   database_cleaner (= 0.9.1)
   factory_girl_rails (= 4.2.1)
   hpricot
-  mysql
   mysql2 (= 0.3.11)
   oai (= 0.3.0)
   rails (= 3.2.11)

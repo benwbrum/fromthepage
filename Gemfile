@@ -8,8 +8,8 @@ gem 'hpricot'
 gem 'oai', "0.3.0"
 gem 'capistrano'
 
-gem 'mysql'
-
+# gem 'mysql'
+gem 'mysql2','0.3.11'
 
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
@@ -18,7 +18,7 @@ gem 'mysql'
 group :development do
   # bundler requires these gems in development
   # gem "rails-footnotes"
-  gem 'mysql2','0.3.11'
+  # 
 end
 
 group :test do
