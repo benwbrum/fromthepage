@@ -18,9 +18,7 @@
   <div class="left-column">
     <div class="inside-column">
       <p>
-        <% form_for(:category, 
-                    @category, 
-                    { :url => { :action => 'create' }}) do |f| %>
+        <% form_for(@category, { :url => { :action => 'create' }}) do |f| %>
         <%= hidden_field_tag(:collection_id, @collection.id) %>
         <%= f.hidden_field(:collection_id) %>
         Category Title:
@@ -30,7 +28,7 @@
 			</p>
       <p>
         Categories in <%= @collection.title %>:<br />
-        <%= display_categories(@collection.categories, nil) do |category|
+        <%= raw(display_categories(@collection.categories, nil) do |category|
               category.title +
               " " +
               link_to('delete', 
@@ -43,7 +41,7 @@
               link_to_function('add child', 
                                "add_child_prompt('#{category.id}', '#{category.title}')", 
                                { :title => "Add a subcategory underneath #{category.title}"} )
-            end %>
+            end) %>
       </p>
 	  <% if @page %>
 	  	<p>

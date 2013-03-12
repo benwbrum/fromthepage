@@ -4,9 +4,7 @@
 
 
 New Work<br />
-<% form_for(:work, 
-            @work, 
-            { :url => { :action => 'create' }}) do |f| %>
+<% form_for(:work, @work, { :url => { :action => 'create' }}) do |f| %>
   Title:
   <%= f.text_field(:title) %>
   <br />

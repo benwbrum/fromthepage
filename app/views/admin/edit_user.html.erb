@@ -13,9 +13,7 @@
 </div>
 
 <div>
-	<% form_for(:user, 
-                    @user, 
-                    :url => { :action => 'update_user' }) do |f| %>
+	<% form_for(:user, @user, :url => { :action => 'update_user' }) do |f| %>
 		<p>Owner: <%= f.check_box(:owner) %></p>
     <%= hidden_field_tag(:user_id, @user.id) %>  
     <p><%= submit_tag('Save') %></p>

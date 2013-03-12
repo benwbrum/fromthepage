@@ -2,7 +2,7 @@
 	<div class="left-column">
 		<div class="inside-column">
 			<%= @user.errors.full_messages %>
-			<%= form_for :user do |f| -%>
+			<%= form_for :user do |f| %>
 			<p><label for="login">Login</label><br/>
 			<%= f.text_field :login %></p>
 			

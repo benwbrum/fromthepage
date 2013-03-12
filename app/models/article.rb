@@ -72,7 +72,7 @@ class Article < ActiveRecord::Base
       current_matches =
         self.collection.articles.where("title like ?", "%#{word}%" )
         # @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )
-      current_matches.delete self
+      # current_matches.delete self
 #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
       #    keep sort order for new words (append to previous list)
       #    if there's a match with the previous list, bump up that
