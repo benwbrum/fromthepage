@@ -28,7 +28,7 @@
  </tr>
 			<% @user.notes.find(:all, :limit => 10).each do |note| %>
     <tr>
-					<td class="revision" width="33%"><%= link_to(truncate(note.title, 40),
+					<td class="revision" width="33%"><%= link_to(truncate(note.title, :length => 40),
 								{ :controller => 'display',
 								  :action => 'display_page',
 								  :page_id => note.page_id,

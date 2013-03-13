@@ -147,9 +147,14 @@ class ArticleController < ApplicationController
     File.open(dot_file, "w") do |f|
       f.write(dot_source)
     end
+    # TEMP HACK: copy something to the .map file and png
     dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
-    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
-    system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}" 
+    # THIS IS ORIG
+    # dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
+    # THIS IS HACK
+    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
+    # system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}" 
+    
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out
     @min_rank = min_rank

@@ -39,14 +39,14 @@
         are. 
       </p>
 
-      <%= form_for(:article, @article, :url => { :action => 'graph' }) do |f| %>
+      <%= form_for(@article, :url => { :action => 'graph' }) do |f| %>
 				Limit the graph to subjects in these categories:<br />
-				<%= display_categories(@collection.categories, nil) do |category|
+				<%= raw(display_categories(@collection.categories, nil) do |category|
 			    check_box_tag("category_ids[]",
 			                  category.id,
 			                  @categories.include?(category)) +
 			    category.title
-		  	end %>
+		  	end) %>
 		  	Show subjects that appear on at least 
 		  	<%= text_field_tag('min_rank', @min_rank, :size => 3) %> 
 		  	pages in common with <i><%= @article.title %></i>.<br />
