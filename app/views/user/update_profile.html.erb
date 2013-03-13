@@ -1,7 +1,7 @@
 <div class="two-columns">
 	<div class="left-column">
 		<div class="inside-column">
-    <%= form_for :user, @user, :url => { :action => "update" } do |f| %>
+    <%= form_for @user, :url => { :action => "update" } do |f| %>
       <p>Screen Name: <%= f.text_field :display_name %> </p>
       <p class="help-text">What's displayed with the pages you edit and comments you make.</p>
       <p>Location:  <%= f.text_field :location %> </p>

@@ -18,7 +18,7 @@
   <div class="left-column">
     <div class="inside-column">
       <p>
-        <% form_for(@category, { :url => { :action => 'create' }}) do |f| %>
+        <%= form_for(@category, { :url => { :action => 'create' }}) do |f| %>
         <%= hidden_field_tag(:collection_id, @collection.id) %>
         <%= f.hidden_field(:collection_id) %>
         Category Title:

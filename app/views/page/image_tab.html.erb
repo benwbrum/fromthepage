@@ -9,7 +9,7 @@
     <div class="inside-column">
       <p>
         Title: <span id="title_<%= @page.id %>"><%= @page.title %></span>
-        <% form_for(:page, @page, { :url => { :action => 'upload' }, :html => {:multipart => true }}) do |f| %><br />
+        <%= form_for(@page, { :url => { :action => 'upload' }, :html => {:multipart => true }}) do |f| %><br />
           Replace Image:
           <%= hidden_field_tag(:page_id, @page.id) %>
           <%= f.file_field(:base_image) %>

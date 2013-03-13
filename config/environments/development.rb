@@ -39,7 +39,8 @@ Fromthepage::Application.configure do
 
   # from Rails 2. Is this still needed?
   # Show full error reports and disable caching
-  config.action_view.debug_rjs = true
+  # CAUSES ERROR
+  # config.action_view.debug_rjs = true
 
   # where is NEATO located on this machine?
   NEATO = '/usr/bin/neato'

@@ -4,12 +4,12 @@
 
 
 New Work<br />
-<% form_for(:work, @work, { :url => { :action => 'create' }}) do |f| %>
+<%= form_for(@work, { :url => { :action => 'create' }}) do |f| %>
   Title:
-  <%= f.text_field(:title) %>
+  <%= f.text_field :title %>
   <br />
   Description (optional):
-  <%= f.text_field(:description) %>
+  <%= f.text_field :description %>
   <br />
   <%= submit_tag('Create') %>
 <% end %>

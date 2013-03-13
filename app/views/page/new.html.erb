@@ -5,7 +5,7 @@
   <div class="left-column">
     <div class="inside-column">
 
-<% form_for(:page, @page, { :url => { :action => 'create' }}) do |f| %>
+<%= form_for(@page, { :url => { :action => 'create' }}) do |f| %>
   <%= hidden_field_tag(:work_id, @page.work.id) %>
   <%= f.hidden_field(:work_id) %>
   Page Title:
