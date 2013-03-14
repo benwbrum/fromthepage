@@ -52,4 +52,17 @@ describe Article do
     # ArticleArticleLink.count
   end
 
+  it "tests possible_duplicates" do
+    liv = FactoryGirl.create(:liv)
+    lin = FactoryGirl.create(:lin)
+    rva = FactoryGirl.create(:rva)
+    cent_il = FactoryGirl.create(:cent_il)
+    pd = liv.possible_duplicates
+    puts "pd is a #{pd.class}"
+    puts "pd.size: #{pd.size}"
+    puts "pd.include?(cent_il): #{pd.include?(cent_il)}"
+    pd.include?(cent_il).should be_false
+    pd.size.should == 2
+  end
+
 end
