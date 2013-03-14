@@ -14,9 +14,17 @@ class Article < ActiveRecord::Base
 
   has_and_belongs_to_many :categories, :uniq => true
   belongs_to :collection
-  has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink', :include => [:source_article], :order => "articles.title ASC"})
-  has_many(:source_article_links, { :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink' })
-  has_many(:page_article_links, { :include => [:page], :order => "pages.work_id, pages.position ASC" })
+  has_many(:target_article_links, 
+           { :foreign_key => "target_article_id", 
+             :class_name => 'ArticleArticleLink', 
+             :include => [:source_article], 
+             :order => "articles.title ASC"})
+  has_many(:source_article_links, 
+           { :foreign_key => "source_article_id", 
+             :class_name => 'ArticleArticleLink' })
+  has_many(:page_article_links, 
+           { :include => [:page], 
+             :order => "pages.work_id, pages.position ASC" })
 
   has_many :pages, :through => :page_article_links, :order => "pages.work_id, pages.position ASC"
 
@@ -43,6 +51,7 @@ class Article < ActiveRecord::Base
   #######################
   # De-Dup Support
   #######################
+  # tested
   def possible_duplicates
     logger.debug "------------------------------"
     logger.debug "article.possible_duplicates"
@@ -63,7 +72,6 @@ class Article < ActiveRecord::Base
 
       current_matches =
         self.collection.articles.where("id <> ? AND title like ?", self.id, "%#{word}%" )
-      puts "current_matches is a #{current_matches.class}"
       # @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )
       # current_matches.delete self
       #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
