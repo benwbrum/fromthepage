@@ -23,6 +23,11 @@ class WorkController < ApplicationController
   before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
   def authorized?
+    puts "Rails.env: #{Rails.env}"
+    # puts "in work_controller.authorized?"
+    # puts "logged_in?: #{logged_in?}"
+    # puts "current_user.owner: #{current_user.owner}"
+    puts "Here is method of logged_in: #{self.method(:logged_in?).owner}"
     unless logged_in? && 
            current_user.owner 
       redirect_to :controller => 'dashboard'
@@ -115,7 +120,12 @@ class WorkController < ApplicationController
   end
   
   def create
-    work = Work.new(params[:work])
+    puts "here are the params: #{params}"
+    # "work"=>{"title"=>"New Work", "description"=>"Description"}, "commit"=>"Create"}
+
+    work = Work.new # (params[:work])
+    work.title = params[:work][:title]
+    work.description = params[:work][:description]
     work.owner = current_user
     work.save!
     redirect_to :controller => 'dashboard'
