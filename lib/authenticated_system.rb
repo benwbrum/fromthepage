@@ -8,16 +8,17 @@ module AuthenticatedSystem
     
     # Accesses the current user from the session.
     def current_user
-      # puts "in current user"
-      # puts "session[:user]: #{session[:user]}"
-      # puts "and it's a #{session[:user].class}"
+      puts "in current user"
+      puts "session[:user]: #{session[:user]}"
+      puts "and it's a #{session[:user].class}"
       user = User.first
-      # puts "user.login: #{user.login}"
-      # puts "user.id: #{user.id}"
-      # puts "params[:login]: #{params[:login]}"
-      # puts "params[:login].class: #{params[:login].class}"
-      # puts "params[:password]: #{params[:password]}"
+      puts "user.login: #{user.login}"
+      puts "user.id: #{user.id}"
+      puts "params[:login]: #{params[:login]}"
+      puts "params[:login].class: #{params[:login].class}"
+      puts "params[:password]: #{params[:password]}"
       # I know this is bad
+=begin
       logger.debug "Rails.env: #{Rails.env}"
       if Rails.env == "test"
         if !params[:login].nil? && params[:login].length > 0
@@ -33,13 +34,27 @@ module AuthenticatedSystem
           # @current_user = User.first
         end
       end
-
+=end
       
-      # puts "session[:user] after the if: #{session[:user]}"
+      puts "session[:user] after the if: #{session[:user]}"
+      logger.debug("qqq- session[:user] after the if: #{session[:user]}")
+      aa = session[:user]
+      puts "aa is a #{aa.class}"
+      logger.debug("qqq- aa is a #{aa.class}")
+      # find for tests
+      bb = nil 
+      if Rails.env == "test"
+        User.find(session[:user])
+        else
+        User.find_by_id(session[:user])
+       end
+      
+      puts "bb is a #{bb.class}"
+      logger.debug("qqq- bb is a #{bb.class}")
       # puts "gets"
       # input = gets
       
-      @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
+      @current_user ||= (session[:user] && User.find(session[:user])) || :false
     end
     
     # Store the given user in the session.

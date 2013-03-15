@@ -76,6 +76,9 @@ class ApplicationController < ActionController::Base
   
   # Set the current user in User
   def set_current_user_in_model
+    puts "in set_current_user_in_model"
+    puts "session[:user]: #{session[:user]}"
+    puts "and it's a #{session[:user].class}"
     User.current_user = current_user
   end 
 

@@ -66,13 +66,16 @@ describe WorkController do
   def valid_session
     {
       # good: "user_id"=> @user.id
-      "user_id"=> user.id      
+      "user_id"=> user.id,
+      "user" => user.id
+      
     }
   end
 
   def valid_session_from_user(user_id)
     {
       "user_id" => user_id
+      
     }
   end
 
@@ -146,13 +149,28 @@ describe WorkController do
         # obj.stub(:message).with('an argument')
         # puts "WorkController.authorized?: #{WorkController.authorized?}"
         WorkController.stub(:logged_in?).with(true)
+        #
+        # User.current_user = user
         controller.class.skip_before_filter :authorized?
+        session[:user] = user
+
+        puts "in controller spec"
+        puts "session[:user]: #{session[:user]}"
+        puts "and it's a #{session[:user].class}"
+
+
         expect {
           post :create, {:work => valid_attributes}, valid_session
         }.to change(Work, :count).by(1)
       end
 
       it "assigns a newly created work as @work" do
+        # @user = FactoryGirl.create(:user)
+        # controller.current_user.should == @user
+        # current_user.send(:user)
+        obj = double()
+        obj.stub(:current_user) { :user }
+
         controller.class.skip_before_filter :authorized?
         post :create, {:work => valid_attributes}, valid_session
         assigns(:work).should be_a(Work)

@@ -121,6 +121,7 @@ class WorkController < ApplicationController
   
   def create
     puts "here are the params: #{params}"
+    logger.debug("here are the params: #{params}")
     # "work"=>{"title"=>"New Work", "description"=>"Description"}, "commit"=>"Create"}
 
     work = Work.new # (params[:work])
