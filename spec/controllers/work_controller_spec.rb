@@ -65,17 +65,14 @@ describe WorkController do
   # WebsitesController. Be sure to keep this updated too.
   def valid_session
     {
-      # good: "user_id"=> @user.id
       "user_id"=> user.id,
-      "user" => user.id
-      
+      "user" => user.id 
     }
   end
 
   def valid_session_from_user(user_id)
     {
       "user_id" => user_id
-      
     }
   end
 
@@ -85,29 +82,6 @@ describe WorkController do
     }
   end
 
-  def generate_factory_sites
-    # the_sites = Array.new
-    # the_sites.push(FactoryGirl.create(:website1))
-    # the_sites.push(FactoryGirl.create(:website2))
-    # the_sites.push(FactoryGirl.create(:website3))
-    # the_sites.push(FactoryGirl.create(:website4))
-    # the_sites.push(FactoryGirl.create(:website5))
-    # the_sites.push(FactoryGirl.create(:website6))
-    # return the_sites
-  end
-
-  def generate_website_hashes(uid = 1)
-    site_hashes = Array.new
-    site_hashes.push({:user_id => uid, :url => "http://valid-url-5374.herokuapp.com/users/1/edit", 
-      :minute => 1, :name => "MyString", :summary => "MyText",
-      :failed_tries => 0, :successful_tries => 0, :good_site => true})
-    for x in 1..6
-      site_hashes.push({user_id: uid, url: "http://website#{x}.com", 
-        minute: 1, name: "Website #{x}", summary: "This is website #{x}",
-        failed_tries: 0, successful_tries: 0, good_site: true})
-    end
-    return site_hashes
-  end
 =begin
   describe "GET index" do
     it "assigns all websites as @websites" do
@@ -142,29 +116,19 @@ describe WorkController do
     end
   end
 =end
+
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Work" do
-        session[:user_id] = 1
-        # obj.stub(:message).with('an argument')
-        # puts "WorkController.authorized?: #{WorkController.authorized?}"
-        WorkController.stub(:logged_in?).with(true)
-        #
-        # User.current_user = user
+        # this is the magic
         controller.class.skip_before_filter :authorized?
-        session[:user] = user
-
-        puts "in controller spec"
-        puts "session[:user]: #{session[:user]}"
-        puts "and it's a #{session[:user].class}"
-
-
+        
         expect {
           post :create, {:work => valid_attributes}, valid_session
         }.to change(Work, :count).by(1)
       end
 
-      it "assigns a newly created work as @work" do
+      xit "assigns a newly created work as @work" do
         # @user = FactoryGirl.create(:user)
         # controller.current_user.should == @user
         # current_user.send(:user)
@@ -177,14 +141,14 @@ describe WorkController do
         assigns(:work).should be_persisted
       end
 
-      it "assigns a newly created work as string" do
+      xit "assigns a newly created work as string" do
         controller.class.skip_before_filter :authorized?
         post :create, {:work => valid_attributes}, valid_session
         assigns(:work).should be_a(Work)
         assigns(:work).should be_persisted
       end
 
-      it "redirects to the created website" do
+      xit "redirects to the created website" do
         # post :create, {:website => valid_attributes}, valid_session
         # response.should redirect_to(Website.last)
       end
@@ -192,14 +156,14 @@ describe WorkController do
     end
 
     describe "with invalid params" do
-      it "assigns a newly created but unsaved website as @website" do
+      xit "assigns a newly created but unsaved website as @website" do
         # Trigger the behavior that occurs when invalid params are submitted
         # Website.any_instance.stub(:save).and_return(false)
         # post :create, {:website => {}}, valid_session
         # assigns(:website).should be_a_new(Website)
       end
 
-      it "re-renders the 'new' template" do
+      xit "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         # Website.any_instance.stub(:save).and_return(false)
         # post :create, {:website => {}}, valid_session
@@ -207,122 +171,5 @@ describe WorkController do
       end
     end
   end
-=begin
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested website" do
-        website = Website.create! valid_attributes
-        # Assuming there are no other websites in the database, this
-        # specifies that the Website created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        Website.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => website.to_param, :website => {'these' => 'params'}}, valid_session
-      end
 
-      it "assigns the requested website as @website" do
-        website = Website.create! valid_attributes
-        put :update, {:id => website.to_param, :website => valid_attributes}, valid_session
-        assigns(:website).should eq(website)
-      end
-
-      it "redirects to the website" do
-        website = Website.create! valid_attributes
-        put :update, {:id => website.to_param, :website => valid_attributes}, valid_session
-        response.should redirect_to(website)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the website as @website" do
-        website = Website.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Website.any_instance.stub(:save).and_return(false)
-        put :update, {:id => website.to_param, :website => {}}, valid_session
-        assigns(:website).should eq(website)
-      end
-
-      it "re-renders the 'edit' template" do
-        website = Website.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        Website.any_instance.stub(:save).and_return(false)
-        put :update, {:id => website.to_param, :website => {}}, valid_session
-        response.should render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    it "destroys the requested website" do
-      website = Website.create! valid_attributes
-      expect {
-        delete :destroy, {:id => website.to_param}, valid_session
-      }.to change(Website, :count).by(-1)
-    end
-
-    it "decrements the user count after deleting" do
-      site_hashes = generate_website_hashes
-      user = FactoryGirl.create(:user)
-      user.number_of_sites.should == 0
-      final_user_num_of_sites = 0
-      five_sites = site_hashes[0..4]
-      five_sites.each do |site|
-        post :create, {:website => valid_attributes_from_site(site[:url])}, valid_session_from_user(user.id)
-        x = assigns(:website).should be_a(Website)
-        y = assigns(:website).should be_persisted
-        final_user_num_of_sites += 1
-        user.reload
-        user.number_of_sites.should == final_user_num_of_sites
-      end
-      
-      # now delete them
-      final_user_num_of_sites = 0
-      five_sites = Website.find_all_by_user_id(user.id)
-      final_user_num_of_sites = five_sites.size
-      five_sites.each do |site|
-        delete :destroy, {:id => site.id}, valid_session_from_user(user.id)
-        final_user_num_of_sites -= 1
-        user.reload
-        user.number_of_sites.should == final_user_num_of_sites
-      end
-    end
-
-
-    it "prevents a user from deleting another user's website with hashes" do
-      site_hashes = generate_website_hashes(3)
-      user_deleter = FactoryGirl.create(:user)
-      user_deleter.number_of_sites.should == 0
-      final_user_num_of_sites = 0
-      temp_var = 0
-      five_sites = site_hashes[0..4]
-      five_sites.each do |site|
-        w = Website.create(:user_id => site[:user_id], :url => site[:url], :minute => site[:minute], :name => site[:name], :summary => site[:summary], :failed_tries => site[:failed_tries], :successful_tries => site[:successful_tries], :good_site => site[:good_site])
-        w.save
-        final_user_num_of_sites += 1
-        temp_var += 1
-      end
-      ws_count_before_destroy = Website.count
-      final_user_num_of_sites = 0
-      five_sites = Website.find_all_by_user_id(3)
-      
-      final_user_num_of_sites = five_sites.size
-      five_sites.each do |site|
-        delete :destroy, {:id => site.id}, valid_session_from_user(user_deleter.id)
-        final_user_num_of_sites -= 1
-        user_deleter.reload
-      end
-      # user_creator.reload
-      # user_creator_sites = Website.find_all_by_user_id(user_creator.id).size
-      ws_count_after_destroy = Website.count
-      ws_count_before_destroy.should == ws_count_after_destroy
-
-    end
-
-    it "redirects to the websites list" do
-      website = Website.create! valid_attributes
-      delete :destroy, {:id => website.to_param}, valid_session
-      response.should redirect_to(websites_url)
-    end
-  end
-=end
 end
