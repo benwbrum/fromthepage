@@ -156,6 +156,17 @@ describe WorkController do
     end
 
     describe "with invalid params" do
+      it "does not create a new Work" do
+        # this is the magic
+        # controller.class.skip_before_filter :authorized?
+        
+        expect {
+          begin
+            post :create, {:work => valid_attributes}, invalid_session
+          rescue
+          end
+        }.to change(Work, :count).by(0)
+      end
       xit "assigns a newly created but unsaved website as @website" do
         # Trigger the behavior that occurs when invalid params are submitted
         # Website.any_instance.stub(:save).and_return(false)
