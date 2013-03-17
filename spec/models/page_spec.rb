@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Page do
   before(:each) do
+    @user = FactoryGirl.create(:user)
+    User.current_user = @user
     # WorkController.class.skip_before_filter :authorized?
     @work = FactoryGirl.create(:work)
     puts "@work is a #{@work.class}"

@@ -3,10 +3,14 @@ require 'spec_helper'
 describe Article do
 
   before(:each) do
+    # @user = User.first || FactoryGirl.create(:user)
+    # FactoryGirl does not seem to work here
     @article = Article.new
     @article.title = "Hello"
     @article.collection_id = FactoryGirl.create(:collection).id
     @article.save
+    @user = User.first
+    User.current_user = @user
   end
 
   subject { @article }

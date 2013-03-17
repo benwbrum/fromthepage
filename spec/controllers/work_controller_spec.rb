@@ -24,13 +24,14 @@ describe WorkController do
 
   before (:each) do
     # this works: 
-    # @user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:user)
+    User.current_user = @user
     # this also works:
     # @user = User.new( :provider => "twitter", :uid => "12345", :name => "the user")
     # @user.save
   end
   let (:user) {
-     FactoryGirl.create(:user)
+     # FactoryGirl.create(:user)
   }
 
   # This should return the minimal set of attributes required to create a valid
@@ -65,8 +66,8 @@ describe WorkController do
   # WebsitesController. Be sure to keep this updated too.
   def valid_session
     {
-      "user_id"=> user.id,
-      "user" => user.id 
+      "user_id"=> @user.id,
+      "user" => @user.id 
     }
   end
 
