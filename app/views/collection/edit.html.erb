@@ -18,7 +18,7 @@
 				<br />
 				Introductory Block: 
 				<br />
-				<span id="intro_block_<%= @collection.id %>"><%= @collection.intro_block || "<i>none</i>" %></span>
+				<span id="intro_block_<%= @collection.id %>"><%= @collection.intro_block || raw("<i>none</i>") %></span>
 				<%= in_place_editor("intro_block_#{@collection.id}",
 				                    { :url => url_for({ :action => "set_collection_intro_block", 
 				                                        :id => @collection.id }),
@@ -27,7 +27,7 @@
 				
 				Footer Block: 
 				<br />
-				<span id="footer_block_<%= @collection.id %>"><%= @collection.footer_block || "<i>none</i>" %></span>
+				<span id="footer_block_<%= @collection.id %>"><%= @collection.footer_block || raw("<i>none</i>") %></span>
 				<%= in_place_editor("footer_block_#{@collection.id}",
 				                    { :url => url_for({ :action => "set_collection_footer_block", 
 				                                        :id => @collection.id }),

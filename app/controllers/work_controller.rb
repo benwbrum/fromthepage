@@ -20,6 +20,7 @@ class WorkController < ApplicationController
                                    :set_work_location_of_composition, 
                                    :set_work_author, 
                                    :set_work_transcription_conventions]
+  # tested
   before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
   def authorized?
@@ -101,7 +102,7 @@ class WorkController < ApplicationController
   def scribes_tab
     @scribes = @work.scribes
     # @nonscribes = User.find(:all) - @scribes
-    @nonscribes = User.find_all - @scribes
+    @nonscribes = User.all - @scribes
   end
 
   def add_scribe
@@ -119,12 +120,9 @@ class WorkController < ApplicationController
     redirect_to :action => 'scribes_tab', :work_id => @work.id
   end
   
+  # tested
   def create
-    puts "here are the params: #{params}"
-    logger.debug("here are the params: #{params}")
-    # "work"=>{"title"=>"New Work", "description"=>"Description"}, "commit"=>"Create"}
-
-    work = Work.new # (params[:work])
+    work = Work.new 
     work.title = params[:work][:title]
     work.description = params[:work][:description]
     work.owner = current_user

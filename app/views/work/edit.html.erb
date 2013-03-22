@@ -25,42 +25,42 @@ Owner: <%= link_to(@work.owner.display_name,
 <br />
 
 Physical Description: <br />
-<span id="physical_description_<%= @work.id %>"><%= @work.physical_description || "<i>none</i>" %></span>
+<span id="physical_description_<%= @work.id %>"><%= @work.physical_description || raw("<i>none</i>") %></span>
 <%= in_place_editor("physical_description_#{@work.id}",
                     { :url => url_for({ :action => "set_work_physical_description", 
                                         :id => @work.id }),
                       :rows => 6  }) %>
 <br />
 Document History: <br />
-<span id="document_history_<%= @work.id %>"><%= @work.document_history || "<i>none</i>" %></span>
+<span id="document_history_<%= @work.id %>"><%= @work.document_history || raw("<i>none</i>") %></span>
 <%= in_place_editor("document_history_#{@work.id}",
                     { :url => url_for({ :action => "set_work_document_history", 
                                         :id => @work.id }),
                       :rows => 6  }) %>
 <br />
 Permissions: <br />
-<span id="permission_description_<%= @work.id %>"><%= @work.permission_description || "<i>none</i>" %></span>
+<span id="permission_description_<%= @work.id %>"><%= @work.permission_description || raw("<i>none</i>") %></span>
 <%= in_place_editor("permission_description_#{@work.id}",
                     { :url => url_for({ :action => "set_work_permission_description", 
                                         :id => @work.id }),
                       :rows => 6  }) %>
 <br />
 Location of Composition: <br />
-<span id="location_of_composition_<%= @work.id %>"><%= @work.location_of_composition || "<i>none</i>" %></span>
+<span id="location_of_composition_<%= @work.id %>"><%= @work.location_of_composition || raw("<i>none</i>") %></span>
 <%= in_place_editor("location_of_composition_#{@work.id}",
                     { :url => url_for({ :action => "set_work_location_of_composition", 
                                         :id => @work.id }),
                       :rows => 6  }) %>
 <br />
 Author: <br />
-<span id="author_<%= @work.id %>"><%= @work.author || "<i>none</i>" %></span>
+<span id="author_<%= @work.id %>"><%= @work.author || raw("<i>none</i>") %></span>
 <%= in_place_editor("author_#{@work.id}",
                     { :url => url_for({ :action => "set_work_author", 
                                         :id => @work.id }) }) %>
 <br />
 Transcription Conventions: 
 <br />
-<span id="transcription_conventions_<%= @work.id %>"><%= @work.transcription_conventions || "<i>none</i>" %></span>
+<span id="transcription_conventions_<%= @work.id %>"><%= @work.transcription_conventions || raw("<i>none</i>") %></span>
 <%= in_place_editor("transcription_conventions_#{@work.id}",
                     { :url => url_for({ :action => "set_work_transcription_conventions", 
                                         :id => @work.id }),

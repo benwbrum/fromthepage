@@ -20,7 +20,7 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-describe WorkController do
+describe CollectionController do
 
   before (:each) do
     # this works: 
@@ -102,10 +102,10 @@ describe WorkController do
   end
 =end
   describe "GET new" do
-    it "assigns a new work as @work" do
-      # aa = FactoryGirl.create(:work)
+    it "assigns a new collection as @collection" do
+      # aa = FactoryGirl.create(:collection)
       get :new, {} # , valid_session
-      # assigns(:work).should be_a_new(Work)
+      # assigns(:collection).should be_a_new(Collection)
     end
   end
 =begin
@@ -120,17 +120,18 @@ describe WorkController do
 
   describe "POST create" do
     describe "with valid params" do
-      it "creates a new Work" do
+      it "creates a new Collection" do
         # this is the magic
         controller.class.skip_before_filter :authorized?
-        # puts "controller is a #{controller.class}"
-        # prints: controller is a WorkController
+        
         expect {
-          post :create, {:work => valid_attributes}, valid_session
-        }.to change(Work, :count).by(1)
+          post :create, {:collection => valid_attributes}, valid_session
+        }.to change(Collection, :count).by(1)
+        # This fails right now: undefined method `collection_url'
+        # response.should redirect_to(Collection.last)
       end
 
-      xit "assigns a newly created work as @work" do
+      xit "assigns a newly created collection as @collection" do
         # @user = FactoryGirl.create(:user)
         # controller.current_user.should == @user
         # current_user.send(:user)
@@ -138,16 +139,16 @@ describe WorkController do
         obj.stub(:current_user) { :user }
 
         controller.class.skip_before_filter :authorized?
-        post :create, {:work => valid_attributes}, valid_session
-        assigns(:work).should be_a(Work)
-        assigns(:work).should be_persisted
+        post :create, {:collection => valid_attributes}, valid_session
+        assigns(:collection).should be_a(Collection)
+        assigns(:collection).should be_persisted
       end
 
       xit "assigns a newly created work as string" do
         controller.class.skip_before_filter :authorized?
-        post :create, {:work => valid_attributes}, valid_session
-        assigns(:work).should be_a(Work)
-        assigns(:work).should be_persisted
+        post :create, {:collection => valid_attributes}, valid_session
+        assigns(:collection).should be_a(Collection)
+        assigns(:collection).should be_persisted
       end
 
       xit "redirects to the created website" do
@@ -158,16 +159,16 @@ describe WorkController do
     end
 
     describe "with invalid params" do
-      it "does not create a new Work" do
+      it "does not create a new Collection" do
         # this is the magic
         # controller.class.skip_before_filter :authorized?
         
         expect {
           begin
-            post :create, {:work => valid_attributes}, invalid_session
+            post :create, {:collection => valid_attributes}, invalid_session
           rescue
           end
-        }.to change(Work, :count).by(0)
+        }.to change(Collection, :count).by(0)
       end
       xit "assigns a newly created but unsaved website as @website" do
         # Trigger the behavior that occurs when invalid params are submitted

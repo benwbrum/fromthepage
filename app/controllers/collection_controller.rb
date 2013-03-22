@@ -73,8 +73,10 @@ class CollectionController < ApplicationController
     end
   end
   
+  # tested
   def create
-    @collection = Collection.new(params[:collection])
+    @collection = Collection.new
+    @collection.title = params[:collection][:title]
     @collection.owner = current_user
     @collection.save!
     redirect_to :action => 'show', :collection_id => @collection.id
