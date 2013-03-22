@@ -76,9 +76,6 @@ class ApplicationController < ActionController::Base
   
   # Set the current user in User
   def set_current_user_in_model
-    # puts "in set_current_user_in_model"
-    # puts "session[:user]: #{session[:user]}"
-    # puts "and it's a #{session[:user].class}"
     User.current_user = current_user
   end 
 
@@ -101,15 +98,7 @@ class ApplicationController < ActionController::Base
   # log what was done
   def log_interaction
     @interaction = Interaction.new
-    # puts "session is a #{session.class}"
-    # logger.debug "session is a #{session.class}"
-    # logger.debug "session methods: #{session.methods.sort}"
-    # logger.debug "session.inspect: #{session.inspect}"
-    # logger.debug "session.nil?: #{session.nil?}"
-    # logger.debug "session.keys: #{session.keys}"
-    # logger.debug "session.id: #{session.id}"
     if !session.respond_to?(:session_id)
-      # 
       @interaction.session_id = Interaction.count + 1 
     else
       @interaction.session_id = session.session_id

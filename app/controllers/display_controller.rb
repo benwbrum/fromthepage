@@ -18,8 +18,6 @@ class DisplayController < ApplicationController
                                         :conditions => [ 'pal.article_id = ?', @article.id ]
       @pages.uniq!
     else
-
-      puts "params[:page]: #{params[:page]}"
             # @pages = Page.paginate @work.id, :page => params[:page],  
             @pages = Page.paginate :page => params[:page],  
                                         :order => 'position',

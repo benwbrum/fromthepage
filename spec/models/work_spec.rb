@@ -13,7 +13,6 @@ describe Work do
 
   it "creates a work statistic" do
     expect{ FactoryGirl.create(:work) }.to change{ WorkStatistic.count }.by(1)
-    puts "@work.transcription_version: #{@work.transcription_version}"
   end
 
 end

@@ -13,9 +13,4 @@ describe WorkStatistic do
     expect{ FactoryGirl.create(:work) }.to change{ WorkStatistic.count }.by(1)
   end
 
-  it "does stuff" do
-    work_stat = @work.work_statistic
-    puts "work_stat.inspect: #{work_stat.inspect}"
-  end
-
 end

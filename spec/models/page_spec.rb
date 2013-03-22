@@ -4,9 +4,7 @@ describe Page do
   before(:each) do
     @user = FactoryGirl.create(:user)
     User.current_user = @user
-    # WorkController.class.skip_before_filter :authorized?
     @work = FactoryGirl.create(:work)
-    puts "@work is a #{@work.class}"
     @page = Page.new
     
     @page.title = "Wednesday, January 2, 1918"
@@ -20,9 +18,6 @@ describe Page do
     @page.xml_text = "<?xml version='1.0' encoding='ISO-8859-15'?> \n <page>\n <p/>\n
 \ </page>\n"
     @work.pages << @page 
-    # @page = 
-    
-    # @work.pages << @page
   end
 
   subject { @page }

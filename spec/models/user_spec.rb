@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
 
   before(:each) do
-    @user = FactoryGirl.create(:user) # User.new(login: "ExampleUser", password: "1234567", password_confirmation: "123467")
+    @user = FactoryGirl.create(:user) 
   end
 
   subject { @user }
@@ -55,8 +55,6 @@ describe User do
     user3.password_confirmation = "1234657"
     user3.should_not be_valid
    
-    puts "test_name: #{test_name}"
-    puts "User count: #{User.count}"
   end
 
   describe "when login is too long" do
@@ -79,11 +77,5 @@ describe User do
     it { should_not be_valid }
   end
 
-
-
-
-  it "gets the count" do
-    puts "User count: #{User.count}"
-  end
 
 end
