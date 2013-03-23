@@ -66,6 +66,7 @@ GEM
     hike (1.2.1)
     hpricot (0.8.6)
     i18n (0.6.1)
+    in_place_editing (1.2.0)
     journey (1.0.4)
     json (1.7.6)
     mail (2.4.4)
@@ -159,6 +160,7 @@ DEPENDENCIES
   database_cleaner (= 0.9.1)
   factory_girl_rails (= 4.2.1)
   hpricot
+  in_place_editing (= 1.2.0)
   mysql2 (= 0.3.11)
   oai (= 0.3.0)
   rails (= 3.2.11)
