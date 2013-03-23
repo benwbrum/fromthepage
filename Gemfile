@@ -11,6 +11,9 @@ gem 'capistrano'
 # gem 'mysql'
 gem 'mysql2','0.3.11'
 
+# replacing the old Rails 2.3-style plugins
+gem "acts_as_list", "0.2.0"
+
 # bundler requires these gems in all environments
 # gem "nokogiri", "1.4.2"
 # gem "geokit"
