@@ -5,21 +5,34 @@ describe "index page" do
     # @book = FactoryGirl.create(:book)
     # @book2 = FactoryGirl.create(:book2)
   end
-=begin
+
   it "should have a link to add a new book if logged in" do
-    get_login_mine
-    visit "/"
+    # get_login_mine
+    # visit "/"
     # puts "page.html: #{page.html}"
-    page.should have_content("Add a new book")
+    # page.should have_content("Add a new book")
     
   end
 
-  it "should not have a link to add a book if not logged in" do
+  it "should have a link to log in and sign up if not logged in" do
     visit "/"
-    page.should_not have_content("Add a new book")
+    page.should_not have_content("Log out")
+    page.should have_content("Log in")
+    page.should have_content("Sign Up")
   end
-=end
 
+  it "should have link to log out if logged in" do
+    
+    p = SessionProvider.get_session
+    visit "/"
+    page.should have_content("Log out")
+    page.should_not have_content("Log in")
+    page.should_not have_content("Sign Up")
+    
+  end
+
+
+=begin
   it "gets a session from Provider " do
 
     user2 = FactoryGirl.create(:user2)
@@ -32,6 +45,7 @@ describe "index page" do
     fd.deed_type = Deed::PAGE_TRANSCRIPTION
     fd.user_id = user2.id
     fd.save!
+=end
 =begin
 deedid: 1, deed_type: "page_trans", page_id: 632, work_id: 2, collection_id: 1, article_id: nil, user_id: 2, note_id: nil, created_at: "2008-03-10 12:42:23", updated_at: "2008-04-07 22:34:06"> 
 1.9.3-p0 :002 > ld = Deed.last
@@ -48,10 +62,11 @@ deedid: 1, deed_type: "page_trans", page_id: 632, work_id: 2, collection_id: 1, 
 =end
 ################
 
-    
+=begin    
     p = SessionProvider.get_session
     visit "/dashboard/main_dashboard"
     page.should have_content("Log out")
   end
+=end
 
 end

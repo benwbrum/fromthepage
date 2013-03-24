@@ -10,7 +10,7 @@ FactoryGirl.define do
     title  "joejoejoe"
     intro_block  "password"
     footer_block  "password"
-    # restricted 0
+    restricted false
     # :collection_owner
     association :owner_user_id, factory: :user
   end
