@@ -1,6 +1,6 @@
 == Welcome to Rails
 
-modules001: A branch to get rid of some of the Rails 2.3-style plugins, ideally by replacing themm with modules.  
+modules001: A branch to get rid of some of the Rails 2.3-style plugins, ideally by replacing them with modules.  
 
 
 == Debugging Rails
