@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120530153202) do
+ActiveRecord::Schema.define(:version => 20130324195452) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -287,7 +287,7 @@ ActiveRecord::Schema.define(:version => 20120530153202) do
   end
 
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
-  add_index "pages", ["xml_text"], :name => "pages_xml_text_index", :length => 1000
+  add_index "pages", ["xml_text"], :name => "pages_xml_text_index", :length => {"xml_text"=>1000}
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
     t.string  "plugin_name"
