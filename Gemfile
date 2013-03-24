@@ -1,6 +1,5 @@
 source :gemcutter
 gem "rails", "3.2.11"
-#gem "sqlite3-ruby", :require => "sqlite3"
 
 gem 'will_paginate' , '3.0.4'
 gem 'rmagick'
@@ -8,7 +7,6 @@ gem 'hpricot'
 gem 'oai', "0.3.0"
 gem 'capistrano'
 
-# gem 'mysql'
 gem 'mysql2','0.3.11'
 
 # replacing the old Rails 2.3-style plugins
@@ -32,7 +30,6 @@ group :test do
   # gem "faker"
   gem "database_cleaner", "0.9.1"
   gem "capybara", "2.0.2"
-
 end
 
 group :production do
@@ -40,14 +37,8 @@ group :production do
   # gem "rails-footnotes"
   # gem 'ftools'
 end
-gem "rspec-rails", "2.12.2", :group => [:development, :test]
-gem "database_cleaner", "0.9.1", :group => :test
-
-gem "capybara", "2.0.2", :group => :test
-gem "factory_girl_rails", "4.2.1", :group => [:development, :test]
 
 gem "rspec-rails", "2.12.2", :group => [:development, :test]
-
 gem "factory_girl_rails", "4.2.1", :group => [:development, :test]
 
-
+#- EOF
