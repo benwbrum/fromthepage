@@ -6,13 +6,6 @@ describe "index page" do
     # @book2 = FactoryGirl.create(:book2)
   end
 
-  it "should have a link to add a new book if logged in" do
-    # get_login_mine
-    # visit "/"
-    # puts "page.html: #{page.html}"
-    # page.should have_content("Add a new book")
-    
-  end
 
   it "should have a link to log in and sign up if not logged in" do
     visit "/"
