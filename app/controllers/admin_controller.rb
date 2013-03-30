@@ -22,42 +22,22 @@ class AdminController < ApplicationController
   end
 
   # display sessions for a user 
+  # not tested
   def session_list
+    sql_limit = params[:limit] || 50
+    @offset = params[:offset] || 0
+    
     if(@user)
       @user_name = @user.login
-      condition = "user_id = #{@user.id} "
+      which_where = 1
     else
       @user_name = 'Anonymous'
-      condition = "user_id is null and browser not like '%google%' "+
-        "and browser not like '%Yahoo! Slurp%' "+ 
-        "and browser not like '%msnbot%' "+ 
-        "and browser not like '%Twiceler%' "+ 
-        "and browser not like '%Alexa Toolbar%' "+ 
-        "and browser not like '%Baiduspider%' "+ 
-        "and browser not like '%majestic12%' " 
+      which_where = 2
     end
-    sql = 'select session_id, '+
-          'browser, '+
-          'ip_address, '+
-          'count(*) as total, '+
-          'min(created_on) as started '+
-          'from interactions '+
-          'where ' + condition +
-          'group by session_id, browser, ip_address ' +
-          'order by started desc '
-
-    limit = params[:limit] || 50
-    @offset = params[:offset] || 0
-    Interaction.connection.add_limit_offset!(sql, 
-                                             { :limit => limit,
-                                               :offset => @offset } )
-    logger.debug(sql)
-    @sessions = 
-      Interaction.connection.select_all(sql)
-      
+    
+    @sessions = Interaction.list_sessions(sql_limit, @offset, which_where)
   end
-  
-  
+    
   # display last interactions, including who did what to which
   # actor, action, object, detail 
   def interaction_list
