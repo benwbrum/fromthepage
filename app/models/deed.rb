@@ -5,7 +5,6 @@ class Deed < ActiveRecord::Base
   PAGE_INDEXED = 'page_index'
   ARTICLE_EDIT = 'art_edit'
   NOTE_ADDED = 'note_add'
-  
 
   SHORT_PARTIALS = 
     { PAGE_TRANSCRIPTION => 'deed/page_transcription_short.html.erb', 

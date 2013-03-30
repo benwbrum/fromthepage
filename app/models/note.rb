@@ -6,15 +6,12 @@ class Note < ActiveRecord::Base
   # automated stuff  
   acts_as_tree
   
-  
   # associations
   belongs_to :user
   belongs_to :page
   belongs_to :work
   belongs_to :collection
   has_one :deed
-
-
 
   #########################
   # from restful_comments

@@ -24,4 +24,12 @@ describe Page do
 
   it { should respond_to(:title) }
 
+  it { should belong_to(:work) }
+  it { should have_many(:page_article_links) }
+  it { should have_many(:articles).through(:page_article_links) }
+  it { should have_many(:page_versions).order('page_version DESC') }
+  it { should belong_to(:current_version).class_name('PageVersion') }
+  it { should have_many(:notes).order(:created_at) }
+  it { should have_one(:ia_leaf) }
+  
 end
