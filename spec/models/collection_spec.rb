@@ -16,5 +16,6 @@ describe Collection do
   it { should respond_to(:intro_block) }
   it { should respond_to(:footer_block) }
 
+  it { should have_many(:articles) }
 
 end

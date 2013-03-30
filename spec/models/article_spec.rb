@@ -11,15 +11,26 @@ describe Article do
     User.current_user = @user
   end
 
-  subject { @article }
+  # subject { @article }
 
   it { should respond_to(:title) }
   it { should respond_to(:source_text) }
 
+  it { should have_and_belong_to_many(:categories) }
+  it { should belong_to(:collection) }
+  it { should have_many(:target_article_links).order("articles.title ASC") }
+  it { should have_many(:source_article_links) }
+  it { should have_many(:page_article_links) }
+  it { should have_many(:pages).through(:page_article_links) }
+  it { should have_many(:article_versions).order(:version) }
+
+  # validator
+  it "should be invalid without a title" do
+    FactoryGirl.build(:article1, title: nil).should_not be_valid
+  end
+
   it "should create version" do
-   
-    @article.source_text = "Chumba My Wumba"
-    
+    @article.source_text = "Chumba My Wumba"    
     expect{ @article.save }.to change{ ArticleVersion.count }.by(1)
   end
 

@@ -11,6 +11,15 @@ describe User do
   it { should respond_to(:login) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should have_many(:deeds) }
+  it { should have_many(:notes) }
+  it { should have_many(:image_sets) }
+  it { should have_many(:oai_sets) }
+  it { should have_and_belong_to_many(:owned_collections) }
+  it { should have_many(:owner_works) }
+  it { should have_many(:ia_works) }
+  it { should have_many(:page_versions) }
+  it { should have_many(:article_versions) }
 
   it "login must be unique" do
     user2 = User.new

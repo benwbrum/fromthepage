@@ -95,7 +95,7 @@ class Article < ActiveRecord::Base
   #######################
   # XML Source support
   #######################
-  # tests
+  # tested
   def clear_links
     # clear out the existing links to this page
     ArticleArticleLink.delete_all("source_article_id = #{self.id}")     

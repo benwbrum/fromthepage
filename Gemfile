@@ -30,6 +30,7 @@ group :test do
   # gem "faker"
   gem "database_cleaner", "0.9.1"
   gem "capybara", "2.0.2"
+  gem "shoulda", "3.4.0"
 end
 
 group :production do
