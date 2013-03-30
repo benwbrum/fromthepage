@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
 
   before(:each) do
-    @user = FactoryGirl.create(:user) 
+    @user = FactoryGirl.create(:user1) 
   end
 
   subject { @user }

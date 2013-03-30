@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory :article do
+  factory :article1, class: Article do
     title  "joejoejoe"
     lock_version 0
     collection_id 1

@@ -6,13 +6,13 @@ FactoryGirl.define do
   end
   
 
-  factory :collection do
+  factory :collection1, class: Collection do
     title  "joejoejoe"
     intro_block  "password"
     footer_block  "password"
     restricted false
     # :collection_owner
-    association :owner_user_id, factory: :user
+    association :owner_user_id, factory: :user1
   end
 
 =begin

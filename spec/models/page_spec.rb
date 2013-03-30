@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Page do
   before(:each) do
-    @user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:user1)
     User.current_user = @user
-    @work = FactoryGirl.create(:work)
+    @work = FactoryGirl.create(:work1)
     @page = Page.new
     
     @page.title = "Wednesday, January 2, 1918"

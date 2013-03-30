@@ -4,7 +4,7 @@ describe Collection do
 
   before(:each) do
     begin
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryGirl.create(:collection1)
     rescue Exception => e
       puts e.backtrace
     end

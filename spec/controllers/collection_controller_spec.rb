@@ -24,7 +24,7 @@ describe CollectionController do
 
   before (:each) do
     # this works: 
-    @user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:user1)
     User.current_user = @user
     # this also works:
     # @user = User.new( :provider => "twitter", :uid => "12345", :name => "the user")

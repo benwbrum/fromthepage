@@ -24,15 +24,15 @@ describe WorkController do
 
   before (:each) do
     # this works: 
-    @user = FactoryGirl.create(:user)
+    @user = FactoryGirl.create(:user1)
     User.current_user = @user
     # this also works:
     # @user = User.new( :provider => "twitter", :uid => "12345", :name => "the user")
     # @user.save
   end
-  let (:user) {
+  # let (:user) {
      # FactoryGirl.create(:user)
-  }
+  # }
 
   # This should return the minimal set of attributes required to create a valid
   # Website. As you add validations to Website, be sure to

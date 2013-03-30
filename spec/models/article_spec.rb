@@ -5,7 +5,7 @@ describe Article do
   before(:each) do
     @article = Article.new
     @article.title = "Hello"
-    @article.collection_id = FactoryGirl.create(:collection).id
+    @article.collection_id = FactoryGirl.create(:collection1).id
     @article.save
     @user = User.first
     User.current_user = @user

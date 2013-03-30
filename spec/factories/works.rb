@@ -1,10 +1,10 @@
 FactoryGirl.define do
 
-  factory :work do
+  factory :work1, class: Work do
     title  "joejoejoe"
     description  "password"
     # I did not think this would work
-    owner_user_id FactoryGirl.build(:user).id
+    owner_user_id FactoryGirl.build(:user1).id
     transcription_version 2
   end
 
