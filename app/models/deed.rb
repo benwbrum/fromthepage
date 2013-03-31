@@ -24,6 +24,8 @@ class Deed < ActiveRecord::Base
   belongs_to :user
   belongs_to :work
 
+  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED ]
+
   def short_partial
     SHORT_PARTIALS[self.deed_type]
   end
