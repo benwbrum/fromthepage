@@ -24,6 +24,9 @@ describe Article do
   it { should have_many(:pages).through(:page_article_links) }
   it { should have_many(:article_versions).order(:version) }
 
+  # one way to test validation
+  it { should validate_presence_of(:title) }
+
   # validator
   it "should be invalid without a title" do
     FactoryGirl.build(:article1, title: nil).should_not be_valid

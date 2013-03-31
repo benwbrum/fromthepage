@@ -23,6 +23,17 @@ describe User do
   it { should have_many(:notes).order("created_at DESC") }
   it { should have_many(:deeds) }
 
+  it { should validate_presence_of(:login) }
+  
+  # this one does not seem to work right now.
+  # it { should validate_presence_of(:password) } # :if => :password_required?
+  # it { should validate_presence_of(:password).with_message("can't be blank") } # :if => :password_required?
+  it { should ensure_length_of(:password).is_at_least(4).is_at_most(40) }
+  it { should validate_presence_of(:password_confirmation) } # :if => :password_required?
+  it { should validate_confirmation_of(:password) } # :if => :password_required?
+  it { should ensure_length_of(:login).is_at_least(3).is_at_most(40) }
+  it { should validate_uniqueness_of(:login).case_insensitive }
+
   it "login must be unique" do
     user2 = User.new
     user2.login = @user.login

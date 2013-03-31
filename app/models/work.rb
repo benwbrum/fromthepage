@@ -10,7 +10,6 @@ class Work < ActiveRecord::Base
 
   after_save :update_statistic
 
-
   def articles
     my_articles = []
     for page in self.pages
@@ -22,7 +21,6 @@ class Work < ActiveRecord::Base
     logger.debug("DEBUG: articles=#{my_articles}")
     return my_articles
   end
-
 
   # TODO make not awful
   def reviews
@@ -54,6 +52,5 @@ class Work < ActiveRecord::Base
     self.work_statistic.recalculate
     
   end
-
 
 end

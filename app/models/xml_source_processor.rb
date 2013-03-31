@@ -1,6 +1,5 @@
 module XmlSourceProcessor 
 
-
   @text_dirty = false
   def source_text=(text)
     @text_dirty = true
@@ -16,7 +15,6 @@ module XmlSourceProcessor
 #    debug("validate valid=#{valid}")
     debug("validate errors=#{errors.count}")
   end
-
 
   def validate_source
     debug('validate_source')
@@ -74,7 +72,6 @@ module XmlSourceProcessor
     self.xml_text = update_links_and_xml(xml_string)
   end
 
-
   def generate_preview
     xml_string = self.source_text
     xml_string = process_square_braces(xml_string)
@@ -122,7 +119,6 @@ module XmlSourceProcessor
     return processed
   end
 
-
   def canonicalize_title(title)
     # linebreaks -> spaces
     title = title.gsub(/\n/, ' ')
@@ -151,7 +147,6 @@ module XmlSourceProcessor
       </page>
 EOF
   end
-
 
   def update_links_and_xml(xml_string, preview_mode=false)
     # first clear out the existing links
@@ -209,4 +204,5 @@ EOF
   def debug(msg)
     logger.debug("DEBUG: #{msg}")
   end
+
 end

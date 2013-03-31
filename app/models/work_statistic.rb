@@ -27,4 +27,5 @@ class WorkStatistic < ActiveRecord::Base
     self[:incomplete_pages] = work.pages.count :conditions=> "status = '#{Page::STATUS_INCOMPLETE}'"
     save!
   end
+
 end
