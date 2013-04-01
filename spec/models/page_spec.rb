@@ -48,13 +48,17 @@ describe Page do
     PageArticleLink.count.should == 0
     @page.create_link(article, d_text)
     PageArticleLink.count.should == 1
-    puts "PageArticleLink.count: #{PageArticleLink.count}"
     pal = PageArticleLink.last
     pal.article_id.should == article.id
     pal.display_text.should == d_text
 
     # this does it all in one line, but I think the above gives more validation
     # expect{ @page.create_link(a_id, d_text).to change{ PageArticleLink.count }.by(1) }
+  end
+
+  it 'tests collection' do
+    work1 = FactoryGirl.create(:work1)
+    @page.collection.should == work1.collection
   end
 
 end

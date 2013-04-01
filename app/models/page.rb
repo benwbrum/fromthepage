@@ -40,6 +40,7 @@ class Page < ActiveRecord::Base
   STATUSES = { "Blank/Nothing to Transcribe" => STATUS_BLANK, "Incomplete Transcription" => STATUS_INCOMPLETE } 
   STATUS_HELP = "Mark a page as blank if there is nothing to be transcribed on this page.  Mark a page as incomplete to list it for review by others."
 
+  # tested
   def collection
     work.collection
   end

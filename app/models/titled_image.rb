@@ -10,6 +10,7 @@ class TitledImage < ActiveRecord::Base
     end
   end
   
+  # tested
   def crop_file
     original_file.sub(/.jpg/, "_crop.jpg")
   end
