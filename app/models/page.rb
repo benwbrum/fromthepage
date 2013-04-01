@@ -132,7 +132,7 @@ class Page < ActiveRecord::Base
                        "       where page_id = #{self.id})")
   end
 =begin
-Here is the ActiveRecord call (with sql in it) in methdo clear_article_graphs:
+Here is the ActiveRecord call (with sql in it) in method clear_article_graphs:
 Article.update_all('graph_image=NULL', "id in (select article_id from page_article_links  where page_id = 1)")
 It produces this SQL:
 UPDATE `articles` SET graph_image=NULL WHERE (id in (select article_id from page_article_links where page_id = 1))
@@ -142,7 +142,6 @@ Article.update_all('graph_image=NULL', :id => PageArticleLink.select(:article_id
 it produces this sql:
 UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_id FROM `page_article_links` WHERE (page_id = 1))
 =end
-
   
   #######################
   # XML Source support
@@ -177,7 +176,5 @@ private
     image.write(thumbnail_filename)
     image = nil
   end
-
-
 
 end
