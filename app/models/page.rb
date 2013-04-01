@@ -77,7 +77,6 @@ class Page < ActiveRecord::Base
     end
   end
 
-
   def scaled_image(factor = 2)
     if 0 == factor
       self[:base_image]
@@ -132,6 +131,17 @@ class Page < ActiveRecord::Base
                        "       from page_article_links "+
                        "       where page_id = #{self.id})")
   end
+=begin
+Here is the ActiveRecord call (with sql in it) in methdo clear_article_graphs:
+Article.update_all('graph_image=NULL', "id in (select article_id from page_article_links  where page_id = 1)")
+It produces this SQL:
+UPDATE `articles` SET graph_image=NULL WHERE (id in (select article_id from page_article_links where page_id = 1))
+
+There is a more idiomatic ActiveRecord call:
+Article.update_all('graph_image=NULL', :id => PageArticleLink.select(:article_id).where('page_id = ?', 1))
+it produces this sql:
+UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_id FROM `page_article_links` WHERE (page_id = 1))
+=end
 
   
   #######################
@@ -145,6 +155,7 @@ class Page < ActiveRecord::Base
     PageArticleLink.delete_all("page_id = #{self.id}")     
   end
 
+  # tested
   def create_link(article, display_text)
     link = PageArticleLink.new(:page => self,
                                :article => article,
