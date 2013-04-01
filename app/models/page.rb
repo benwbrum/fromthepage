@@ -100,7 +100,7 @@ class Page < ActiveRecord::Base
     return thumbnail_filename 
   end
 
-
+  # tested
   def create_version
     version = PageVersion.new
     version.page = self

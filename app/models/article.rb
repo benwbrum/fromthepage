@@ -110,7 +110,6 @@ class Article < ActiveRecord::Base
     link.save!
     return link.id        
   end
-  
 
   #######################
   # Version support

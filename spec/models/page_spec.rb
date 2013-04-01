@@ -31,5 +31,16 @@ describe Page do
   it { should belong_to(:current_version).class_name('PageVersion') }
   it { should have_many(:notes).order(:created_at) }
   it { should have_one(:ia_leaf) }
+
+  describe "create version tests" do
+
+    it "should create version" do
+      @page.source_text = "jdjdaohflasdfhpoagh"
+      expect{ @page.save }.to change{ PageVersion.count }.by(1)
+      @page.source_text = "kdkdkdkddk"
+      expect{ @page.save }.to change{ PageVersion.count }.by(1)
+    end
+
+  end
   
 end

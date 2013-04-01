@@ -11,7 +11,7 @@ describe Article do
     User.current_user = @user
   end
 
-  # subject { @article }
+  subject { @article }
 
   it { should respond_to(:title) }
   it { should respond_to(:source_text) }
@@ -32,9 +32,26 @@ describe Article do
     FactoryGirl.build(:article1, title: nil).should_not be_valid
   end
 
-  it "should create version" do
-    @article.source_text = "Chumba My Wumba"    
-    expect{ @article.save }.to change{ ArticleVersion.count }.by(1)
+  describe "create version tests" do
+
+    it "should create version" do
+      @article.source_text = "Chumba My Wumba"    
+      puts "@article.instance_variable_get(@title_dirty): #{@article.instance_variable_get("@title_dirty")}"
+      expect{ @article.save }.to change{ ArticleVersion.count }.by(1)
+    end
+
+    it "should not create version if title_dirty is false" do
+      @article.instance_variable_set("@title_dirty", false)
+      # to view it, do this:
+      # puts "@article.instance_variable_get(@title_dirty): #{@article.instance_variable_get("@title_dirty")}"
+      expect{ @article.save }.to change{ ArticleVersion.count }.by(0)
+    end
+
+    it "should not create version if text_dirty is false" do
+      @article.instance_variable_set("@text_dirty", false)
+      expect{ @article.save }.to change{ ArticleVersion.count }.by(0)
+    end
+
   end
 
   it "should create links" do
