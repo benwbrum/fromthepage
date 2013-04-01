@@ -26,10 +26,12 @@ class Deed < ActiveRecord::Base
 
   validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED ]
 
+  # tested
   def short_partial
     SHORT_PARTIALS[self.deed_type]
   end
 
+  # tested
   def long_partial
     LONG_PARTIALS[self.deed_type] || SHORT_PARTIALS[self.deed_type]
   end
