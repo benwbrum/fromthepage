@@ -2,6 +2,7 @@ class TitledImage < ActiveRecord::Base
   belongs_to :image_set
   acts_as_list :scope => :image_set
   
+  # tested
   def original_file(raw=false)
     if raw || nil == image_set.path
       self[:original_file]
