@@ -18,6 +18,7 @@ class ImageSet < ActiveRecord::Base
   STATUS_ERROR = 'error'
   STATUS_RUNNING = 'running'
   
+  # tested
   def page_count
     if titled_images == nil
       return 0
