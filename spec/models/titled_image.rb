@@ -13,11 +13,10 @@ describe TitledImage do
   end
 
   describe 'original_file tests' do
-    # the method will either return the variable or 
+    # the method will either return the variable or add stuff to it
     let(:orig_file) { '/fromthepage/images/working/1/img_3556.jpg' }
         
     it 'sends false' do
-      # orig_file = @titled_image.original_file
       @titled_image.original_file(false).should == @titled_image.image_set.path + orig_file
     end
 
@@ -28,6 +27,29 @@ describe TitledImage do
     it 'calls original_file with image_set.path as nil' do
       @titled_image.image_set.path = nil
       @titled_image.original_file().should == orig_file
+    end
+
+  end
+
+  describe 'shrunk file tests' do
+    
+    it 'sends nil for factor' do
+      factor = @titled_image.image_set.original_to_base_halvings
+      orig_file = @titled_image.original_file
+      orig_file = orig_file.sub(/.jpg/, "_#{factor}.jpg")
+      @titled_image.shrunk_file(nil).should == orig_file
+    end
+
+    it 'sends 0 for factor' do
+      orig_file = @titled_image.original_file
+      @titled_image.shrunk_file(0).should == orig_file
+    end
+
+    it 'sends numbers for factor' do
+      orig_file = @titled_image.original_file
+      [1, 2, 3].each do |num|
+        @titled_image.shrunk_file(num).should == orig_file.sub(/.jpg/, "_#{num}.jpg")
+      end
     end
 
   end

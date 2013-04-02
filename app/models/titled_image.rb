@@ -15,7 +15,8 @@ class TitledImage < ActiveRecord::Base
   def crop_file
     original_file.sub(/.jpg/, "_crop.jpg")
   end
-  
+
+  # tested
   def shrunk_file(factor=nil)
     factor ||= self.image_set.original_to_base_halvings
     if 0 == factor
