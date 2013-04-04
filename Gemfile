@@ -16,7 +16,6 @@ gem 'acts_as_list', '0.2.0'
 gem 'acts_as_tree', '1.2.0'
 gem 'in_place_editing', '1.2.0'
 
-
 group :development do
   
 end

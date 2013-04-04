@@ -52,7 +52,8 @@ class AccountController < ApplicationController
     @user.email = params[:user][:email]
     return unless request.post?
 
-    if verify_recaptcha
+    if request.post?
+    # if verify_recaptcha
       logger.debug "It's good!!!!!!!!!!!!!!!!!!!!!!!!"
       @user.save!
       self.current_user = @user
@@ -63,16 +64,6 @@ class AccountController < ApplicationController
       flash[:error] = "There was an error with the recaptcha code below. Please re-enter the code and click submit."
       render :action => 'new'
     end 
-=begin
-    if !simple_captcha_valid?
-      flash[:error] = "Please retype the image text"
-      return
-    end
-@user.save!
-    self.current_user = @user
-    redirect_back_or_default(:controller => 'dashboard', :action => 'index')
-    flash[:notice] = "Thanks for signing up!"
-=end
     
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
@@ -85,7 +76,5 @@ class AccountController < ApplicationController
     flash[:notice] = "You have been logged out."
     redirect_back_or_default(:controller => 'dashboard', :action => 'index')
   end
-
-
 
 end
