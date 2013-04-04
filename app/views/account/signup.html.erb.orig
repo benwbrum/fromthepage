@@ -1,19 +1,9 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
-<!--
       <%= @user.errors.full_messages %>
-      <%= form_tag( { :action => 'process_signup' }) do %>
-      <p><label for="login">Login</label><br/>
-	<%= text_field_tag 'login' %></p>
-      <p><label for="password">Password</label><br/>
-	<%= password_field_tag 'password' %></p>
-      <p><label for="remember_me">Remember me:</label>
-	<%= check_box_tag 'remember_me' %></p>
-      <p><%= submit_tag 'Sign up' %></p>
-      <% end %>
--->
-      <%= form_for @user, :url => url_for(:controller => 'account', :action => 'process_signup') do |f| %>
+
+      <%= form_for :user do |f| %>
       <p><label for="login">Login</label><br/>
 	<%= f.text_field :login %></p>
       
@@ -32,7 +22,7 @@
       <p><label for="email">Email</label><br/>
 	<%= f.text_field :email %></p>
 
-      <!-- %= recaptcha_tags % -->
+      <%= recaptcha_tags %>
       <p><%= submit_tag 'Sign up' %></p>
       <% end %> <!--  end of form tag -->
 

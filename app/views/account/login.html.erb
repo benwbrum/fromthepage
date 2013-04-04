@@ -2,34 +2,30 @@
 
 <div class="two-columns">
 
-	<div class="left-column">
-		<div class="inside-column">
+  <div class="left-column">
+    <div class="inside-column">
 
-
-
-
-
-			<%= form_tag( { :action => 'signin' }) do %>
-				<p><label for="login">Login</label><br/>
-				<%= text_field_tag 'login' %></p>
-				<p><label for="password">Password</label><br/>
-				<%= password_field_tag 'password' %></p>
+      <%= form_tag( { :action => 'signin' }) do %>
+      <p><label for="login">Login</label><br/>
+	<%= text_field_tag 'login' %></p>
+      <p><label for="password">Password</label><br/>
+	<%= password_field_tag 'password' %></p>
+      
+      <p><label for="remember_me">Remember me:</label>
+	<%= check_box_tag 'remember_me' %></p>
 				
-				<p><label for="remember_me">Remember me:</label>
-				<%= check_box_tag 'remember_me' %></p>
-				
-				<p><%= submit_tag 'Log in' %></p>
-			<% end %>
+      <p><%= submit_tag 'Log in' %></p>
+      <% end %>
 
 
-		</div>
-	</div>
+    </div>
+  </div>
 
-	<div class="right-column">
-		<div class="inside-column">
-            <%= html_block('right') %>
-		</div>
-	</div>
+  <div class="right-column">
+    <div class="inside-column">
+      <%= html_block('right') %>
+    </div>
+  </div>
 
 </div>
 		

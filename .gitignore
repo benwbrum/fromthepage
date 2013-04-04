@@ -35,5 +35,8 @@ notes*txt
 upgrade.check.txt
 # Ignore Ctags
 
+# for environmental variables
+env_vars
+
 tags
 

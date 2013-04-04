@@ -10,8 +10,6 @@ class AccountController < ApplicationController
   end
 
   def signin
-    logger.debug "saofjsdl;afjl;sdfsl;dfj"
-
     return unless request.post?
     logger.debug "In accountcontroller signin"
     self.current_user = User.authenticate(params[:login], params[:password])
@@ -25,7 +23,7 @@ class AccountController < ApplicationController
       flash[:notice] = "Logged in successfully"
     else
       logger.debug "User is NOT logged in"
-      if(User.find_by_login(params[:login])) 
+      if (User.find_by_login(params[:login])) 
         flash[:error] = 
           "Your login and password did not match.  Feel free to contact alpha.info@fromthepage.com for help."
       else
@@ -36,20 +34,46 @@ class AccountController < ApplicationController
   end
 
   def login
-    
   end
 
-  def signup      
-    @user = User.new(params[:user])
+  def signup
+    @user = User.new
+  end
+
+  def process_signup
+    logger.debug("in process_signup ---------------------")
+    logger.debug("Here is request.post?: #{request.post?}")
+    @user = User.new # (params[:user])
+    @user.login = params[:user][:login]
+    @user.password = params[:user][:password]
+    @user.password_confirmation = params[:user][:password_confirmation]
+    @user.display_name = params[:user][:display_name]
+    @user.print_name = params[:user][:print_name]
+    @user.email = params[:user][:email]
     return unless request.post?
+
+    if verify_recaptcha
+      logger.debug "It's good!!!!!!!!!!!!!!!!!!!!!!!!"
+      @user.save!
+      self.current_user = @user
+      flash[:notice] = "Thanks for signing up!"
+      redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+    else
+      logger.debug "It's Bad :(((((((((((((((((((((((((((((((((("
+      flash[:error] = "There was an error with the recaptcha code below. Please re-enter the code and click submit."
+      render :action => 'new'
+    end 
+=begin
     if !simple_captcha_valid?
       flash[:error] = "Please retype the image text"
       return
     end
-    @user.save!
+@user.save!
     self.current_user = @user
     redirect_back_or_default(:controller => 'dashboard', :action => 'index')
     flash[:notice] = "Thanks for signing up!"
+=end
+    
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
   end
