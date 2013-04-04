@@ -1,104 +1,44 @@
-[31m[1mSoon-to-be-deprecated ActiveRecord calls[0m
-[37mMethods such as find(:all), find(:first), finds with conditions, and the :joins option will soon be deprecated.
-[1mMore information:[0m [36mhttp://m.onkey.org/2010/1/22/active-record-query-interface
+Javascript: 
+1. http://localhost:3000/JuliaBrumfield?ol=l_hd_c_link
+List the subjects down below should expand lists
+2. http://localhost:3000/article/show?article_id=8026&ol=a_alist_cats_art
+Click on Edit tab, it blows up
+3. http://localhost:3000/article/graph?article_id=8026&ol=a_tab_graph
+More HTML
 
-[37mThe culprits: 
-[33m	- app/helpers/application_helper.rb
-[33m	- app/models/article.rb
-[33m	- app/controllers/work_controller.rb
-[33m	- app/controllers/collection_controller.rb
-[33m	- app/controllers/page_block_controller.rb
-[33m	- app/controllers/demo_controller.rb
-[33m	- app/models/article.rb
-[33m	- app/models/page.rb
-[33m	- app/helpers/application_helper.rb
-[33m	- app/models/article.rb
-[33m	- app/controllers/demo_controller.rb
-[33m	- app/controllers/admin_controller.rb
-[33m	- app/controllers/work_controller.rb
-[33m	- app/controllers/article_controller.rb
-[33m	- app/controllers/display_controller.rb
-[33m	- app/views/user/profile.rhtml
-[0m
-[31m[1mOld router API[0m
-[37mThe router API has totally changed.
-[1mMore information:[0m [36mhttp://yehudakatz.com/2009/12/26/the-rails-3-router-rack-it-up/
+Install graphviz and neato
 
-[37mThe culprits: 
-[33m	- config/routes.rb
-[0m
-[31m[1mDeprecated test_help path[0m
-[37mYou now must require 'rails/test_help' not just 'test_help'.
-[1mMore information:[0m [36mhttp://weblog.rubyonrails.org/2009/9/1/gem-packaging-best-practices
+4. http://localhost:3000/display/display_page?ol=d_act_page&page_id=2357
+add note: Should use_javascript
 
-[37mThe culprits: 
-[33m	- test/test_helper.rb
-[0m
-[31m[1mDeprecated constant(s)[0m
-[37mConstants like RAILS_ENV, RAILS_ROOT, and RAILS_DEFAULT_LOGGER are now deprecated.
-[1mMore information:[0m [36mhttp://litanyagainstfear.com/blog/2010/02/03/the-rails-module/
+Save script may be using some Javascript
 
-[37mThe culprits: 
-[33m	- app/views/layouts/application.rhtml
-[33m	- lib/workers/image_transformer_worker.rb
-[33m	- app/controllers/work_controller.rb
-[33m	- app/controllers/article_controller.rb
-[33m	- app/controllers/page_controller.rb
-[33m	- app/controllers/admin_controller.rb
-[33m	- lib/image_helper.rb
-[33m	- lib/tasks/image_set_processor.rake
-[0m
-[31m[1mOld Rails generator API[0m
-[37mA plugin in the app is using the old generator API (a new one may be available at http://github.com/trydionel/rails3-generators).
-[1mMore information:[0m [36mhttp://blog.plataformatec.com.br/2010/01/discovering-rails-3-generators/
+The infamous RJS is at it again
 
-[37mThe culprits: 
-[33m	- vendor/plugins/acts_as_authenticated/generators/
-[33m	- vendor/plugins/acts_as_authenticated/generators/authenticated/
-[33m	- vendor/plugins/acts_as_authenticated/generators/authenticated_mailer/
-[0m
-[31m[1mDeprecated ERb helper calls[0m
-[37mBlock helpers that use concat (e.g., form_for) should use <%= instead of <%.  The current form will continue to work for now, but you will get deprecation warnings since this form will go away in the future.
-[1mMore information:[0m [36mhttp://weblog.rubyonrails.org/
+Get a comment library
 
-[37mThe culprits: 
-[33m	- app/views/account/signup.rhtml
-[33m	- app/views/article/edit.rhtml
-[33m	- app/views/article/graph.rhtml
-[33m	- app/views/page_block/edit.html.erb
-[33m	- app/views/transcribe/display_page.rhtml
-[33m	- app/views/user/update_profile.rhtml
-[33m	- app/views/account/login.rhtml
-[33m	- app/views/collation/select_target.rhtml
-[33m	- app/views/collection/show.rhtml
-[33m	- app/views/display/_multi_page.rhtml
-[33m	- app/views/ia/confirm_import.html.erb
-[33m	- app/views/ia/ia_book_form.html.erb
-[33m	- app/views/image_set/select_target.rhtml
-[33m	- app/views/transform/date_format_form.rhtml
-[33m	- app/views/transform/date_format_start_form.rhtml
-[33m	- app/views/transform/directory_form.rhtml
-[33m	- app/views/transform/number_format_form.rhtml
-[33m	- app/views/transform/number_location_form.rhtml
-[33m	- app/views/transform/numeric_format_start_form.rhtml
-[33m	- app/views/transform/size_form.html.erb
-[33m	- app/views/print/work.html.erb
-[33m	- app/views/work/print.rhtml
-[0m
-[31m[1mDeprecated AJAX helper calls[0m
-[37mAJAX javascript helpers have been switched to be unobtrusive and use :remote => true instead of having a seperate function to handle remote requests.
-[1mMore information:[0m [36mhttp://blog.jordanwest.me/modest-rubyist-archive/rails-3-ujs-and-csrf-meta-tags
+5. http://localhost:3000/transcribe/display_page?page_id=2357
+More html
 
-[37mThe culprits: 
-[33m	- app/views/category/_category_link.rhtml
-[33m	- app/views/category/_category_link_for_work.rhtml
-[33m	- app/views/note/_form_edit.rhtml
-[33m	- app/views/note/_form_new.rhtml
-[0m
-[31m[1mDeprecated session secret setting[0m
-[37mPreviously, session secret was set directly on ActionController::Base; it's now config.secret_token.
-[1mMore information:[0m [36mhttp://lindsaar.net/2010/4/7/rails_3_session_secret_and_session_store
+6. Clicking on "Auto link" makes it blow up
 
-[37mThe culprits: 
-[33m	- config/initializers/session_store.rb
-[0m
+ ActiveModel::MassAssignmentSecurity::Error in TranscribeController#save_transcription
+
+Can't mass-assign protected attributes: source_text, status
+
+7. http://localhost:3000/display/display_page?ol=p_nav_next&page_id=2359
+Clicking "Edit Help Text" causes Template Missing error, another RHTML issue
+
+
+8. http://localhost:3000/work/show?ol=w_tab_about&work_id=17 
+If not logged in as admin, there should be some mouse over stuff
+
+http://localhost:3000/work/edit?ol=w_tab_settings&work_id=17  - look at HTML
+
+9. Clicking the form causes a blowup: http://localhost:3000/work/scribes_tab?ol=w_tab_access&work_id=17
+
+10. http://localhost:3000/work/edit?ol=w_tab_settings&work_id=17
+HTML: Could it be a WYSIWYG? ("Transcription Conventions" only)
+
+11. Simple captcha- DONE
+
