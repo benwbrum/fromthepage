@@ -6,7 +6,7 @@ Click on Edit tab, it blows up
 3. http://localhost:3000/article/graph?article_id=8026&ol=a_tab_graph
 More HTML
 
-Install graphviz and neato
+Install graphviz and neato: DONE
 
 4. http://localhost:3000/display/display_page?ol=d_act_page&page_id=2357
 add note: Should use_javascript
@@ -42,3 +42,4 @@ HTML: Could it be a WYSIWYG? ("Transcription Conventions" only)
 
 11. Simple captcha- DONE
 
+grep -rin jquery *  | vgrep '.js' | vgrep 'Binary file' | vgrep 'log/' | vgrep '/dragonfly/' | vgrep '/cache/' | vgrep 'wordpress-unit-tests' |  grep jquery

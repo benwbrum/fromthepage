@@ -1,0 +1,16 @@
+.BRicon.thumbnail_mode  { display:none; }
+.BRicon.embed  { display:none; }
+.BRicon.print { display:none; }
+.BRicon.book_left  { display:none; }
+.BRicon.book_right  { display:none; }
+.BRicon.book_up  { display:none; }
+.BRicon.book_down  { display:none; }
+.BRicon.book_leftmost  { display:none; }
+.BRicon.book_rightmost  { display:none; }
+.BRicon.book_top  { display:none; }
+.BRicon.book_bottom  { display:none; }
+
+
+.BRpageform {
+    display: none; 
+}

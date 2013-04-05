@@ -1,3 +1,5 @@
+require 'RMagick'
+
 class ImageSet < ActiveRecord::Base
   include FileUtils::Verbose
   include Magick

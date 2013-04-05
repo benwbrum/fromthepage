@@ -11,3 +11,520 @@
  *= require_self
  *= require_tree .
  */
+
+/* much of this is taken from Ruthsarian Layouts at 
+   http://webhost.bridgew.edu/etribou/layouts/rMenu/index.html */
+body { background-color: #eee; color: #000; }
+p { margin: 1em 0; padding: 0; }
+
+div.two-columns
+{
+    width: 100%;
+    display: inline-block;/* for IE/Mac to contain its child elements */
+    /* \*/ display: block;/* override above rule for every other 
+			        browser using IE/Mac backslash hack */
+    font-family: arial, helvetica, sans-serif;
+    font-size: 100%; /* Changed from 80% BWB */
+    background-color: #fcfcfc;
+    color: #000;
+    }
+div.two-columns:after
+{
+        content: "."; 
+	    display: block; 
+	        height: 0; 
+		    clear: both; 
+		        visibility: hidden;
+			}
+div.two-columns, 
+div.two-columns div.left-column,
+div.two-columns div.right-column
+{
+    border: solid 1px #ddd;
+    border-width: 1px;
+    }
+div.two-columns div.left-column,
+div.two-columns div.right-column
+{
+    float: left;
+    width: 50%;
+    border-width: 0 1px 0 0;
+    margin: 0 -1px;
+    }
+* html div.two-columns div.left-column,
+* html div.two-columns div.right-column
+{
+    position: relative;/* IE/Win 6 and earlier need this */
+    }
+div.two-columns div.right-column
+{
+    border-width: 0 0 0 1px;
+    margin-right: -3px;
+    margin-left: 0;
+    }
+div.two-columns div.inside-column
+{
+    padding: 1px 10px;/* 1px is there to get past a margin rendering
+			    bug in Netscape 7 and older FireFox */
+    margin-top: 1em;
+    margin-bottom: 1em;
+    }
+div.outside-column
+{
+    padding: 0px 10px;/* 1px is there to get past a margin rendering
+			    bug in Netscape 7 and older FireFox */
+    }
+
+    span.left-link
+    {
+        float: left;
+    }
+    span.right-link
+    {
+        float: right;
+    }
+
+    div.footer-links
+    { 
+      border-top: 1px solid #ddd;
+      font-size: 80%;
+      clear: both;
+    }
+    
+    div.thumbnail-container
+    {
+        float: right;
+	margin-left: 1em;
+	margin-bottom: 1em;
+    }
+
+#containerdiv
+{
+    position: relative;
+    height: 100%;
+}
+
+
+poetslap
+@charset "iso-8859-1";
+
+/*******************************************************************************
+*  visual_consistencies.css : 2005.09.07 : Ruthsarian Layouts
+* -----------------------------------------------------------------------------
+*  Font sizes on heading elements and the margin/padding applied to these
+*  same elements will vary from browser to browser. This is an attempt to pull
+*  the font sizes and spacing together for a consistent look across all
+*  browsers. 
+*
+*  There are other rules included in this stylesheet (with comments on each)
+*  to handle other visual consistency issues. You do not need to use this
+*  stylesheet, nor do you need to follow it exactly. You can make changes
+*  anywhere you want to make things look the way you want to. Nothing here
+*  _should_ break a layout if modified.
+*******************************************************************************/
+
+ul, ol, dl, p, h1, h2, h3, h4, h5, h6
+{
+    /* pixels are used here, rather than ems, because I want a consistent 
+        * margin on the different headings. if I use ems, 1em for an h1 element 
+	 * is much larger than 1em on an h6 element. I don't want this.
+	  */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+h1 {
+/*color: #8d1703;*/
+border-bottom: 3px dotted #dee7ec;
+}
+ul ul, ul ol, ol ul, ol ol
+{
+    /* kill margins on sub-lists
+        */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+h1
+{
+    font-size: 240%;
+}
+h2
+{
+    font-size: 180%;
+}
+h3
+{
+    font-size: 140%;
+}
+h4
+{
+    font-size: 100%;
+}
+h5
+{
+    font-size: 70%;
+}
+h6
+{
+    font-size: 50%;
+}
+a, a:link, a:visited, a:active
+{
+    text-decoration: underline;
+}
+a:hover
+{
+    /* because I like the visual feedback a user gets when they
+        * mouse over a link and see the underline of the link
+	 * disappear.
+	  */
+    text-decoration: none;
+}
+code, pre
+{
+    /* Make sure we're all using the same monospaced font for CODE
+        * and PRE elements
+	 */
+    font-family: "Courier New", Courier, monospace;
+}
+label
+{
+    /* It's all about the visual feedback. In this case, label 
+        * elements are usually clickable which then set focus on
+	 * their target. I want to show that to the user in a manner
+	  * they are used to and understand.
+	   */
+    cursor: pointer;
+}
+table
+{
+    /* Some browsers won't carry the font size down into the 
+        * browser like they're suppose to.
+	 */
+    font-size: 100%;
+}
+td, th
+{
+    /* I never like or use the default vertical centering "feature"
+        * provided by tables. 
+	 */
+    vertical-align: top;
+}
+body
+{
+    /* I've seen several comments that setting the base font size to 100.1%
+        * fixes some browser bugs. Which bugs? I don't know. I believe it's
+	 * to fix some rounding-error bugs that some browsers (Mozilla) are
+	  * prone to. It doesn't hurt anything, so I keep it here.
+	   */
+    font-size: 100.1%;
+    background-color: white;
+    color:black;
+font-family:sans-serif;
+font-size:small;
+font-size-adjust:none;
+font-stretch:normal;
+font-style:normal;
+font-variant:normal;
+font-weight:normal;
+line-height:normal;
+margin:0pt;
+padding:0pt;
+}
+
+
+/******************************************************************************/
+
+/* container */
+#undernav {
+border-bottom: 1px solid #749EA9;
+background: #dee7ec;
+text-align: right;
+padding: 1px;
+}
+
+#subundernav {
+border-bottom: 1px solid #749EA9;
+background: #fff;
+text-align: left;
+padding: 1px;
+}
+
+#header {
+height: 150px:
+background: #749EA9;
+width: 100%;
+
+}
+
+.site-logo a
+{
+text-decoration: none;
+}
+.work-logo a
+{
+text-decoration: none;
+}
+
+#leftbar{
+border: 1px solid #dee7ec;
+float: left;
+text-align: left;
+width: 100%;
+}
+
+#rightcontent{
+float: right;
+width: 80%;
+}
+
+#footer {
+position: relative;
+bottom: 0;
+border-bottom: 1px solid #749EA9;
+border-top: 1px solid #749EA9;
+background: #dee7ec;
+text-align: left;
+padding: 1px;
+width:100%;
+}
+
+/* Top Navigation */
+ul#navlist
+{
+font: bold 11px verdana, arial, sans-serif;
+list-style-type: none;
+padding-bottom: 24px;
+border-bottom: 1px solid #749EA9;
+margin: 0;
+}
+
+ul#navlist li
+{
+float: left;
+height: 21px;
+background-color: white;
+margin: 2px 2px 0 2px;
+border: 1px solid #749EA9;
+}
+
+li#active a
+{
+border-bottom: 1px solid #dee7ec;
+background-color: #dee7ec;
+}
+
+li#active a { color: #000; }
+
+#navlist a
+{
+float: left;
+display: block;
+color: #666;
+text-decoration: none;
+padding: 4px;
+}
+
+#navlist a:hover { background: #dee7ec; }
+
+
+#navlist span
+{
+float: left;
+background-color: white;
+padding: 4px;
+}
+
+/* side navigationn */
+ul#leftbar
+{
+margin: 0 0 0 30px;
+padding: 0;
+width: 12.5%;
+}
+
+#leftbar li
+{
+list-style-type: none;
+background-color: white;
+color: #dee7ec;
+border: 1px solid #blue;
+font-weight: 600;
+text-align: left;
+padding: .3em;
+margin-bottom: .1em;
+}
+
+#leftbar li a
+{
+color: #888888;
+text-decoration: none;
+display: block;
+}
+
+#leftbar li a:hover
+{
+background-color: #dee7ec;
+color: #888888;
+}
+
+/* pull quote */
+.pullquote 
+{width: 145px;
+background: #dee7ec;
+color:black;
+float: right;
+border:1px solid #749EA9;
+font-weight:bold;
+line-height:140%;
+padding:5px;
+margin-top:10px;
+margin-left:10px;
+}
+
+/* drop cap */
+.dropcap {
+float:left;
+color:#D4D4C7;
+font-size:100px;
+line-height:70px;
+padding-top:2px;
+font-family: Times, serif, Georgia;
+}
+
+/* important box */
+#important 
+{
+width: 96%;
+background: rgb(255,235,205);
+color:black;
+border-top:1px solid rgb(255,160,122);
+border-bottom:1px solid rgb(255,160,122);
+font-weight:bold;
+line-height:140%;
+padding:5px;
+margin-top:10px;
+margin-left:10px;
+text-align: right;
+}
+/* comment style */
+
+
+
+/* styles for pagination*/
+ .pagination {
+    padding: 3px;
+    margin: 20px;
+    text-align: center;
+  }
+  .pagination a {
+    padding: 2px 5px 2px 5px;
+    margin: 2px;
+    border: 1px solid #aaaadd;
+    text-decoration: none;
+    #color: #000099;
+  }
+  .pagination a:hover, .pagination a:active {
+    border: 1px solid #000099;
+    color: #000;
+  }
+  .pagination span.current {
+    padding: 2px 5px 2px 5px;
+    margin: 2px;
+    border: 1px solid #000099;
+    font-weight: bold;
+    background-color: #dee7ec;
+    #color: #FFF;
+  }
+  .pagination span.disabled {
+    padding: 2px 5px 2px 5px;
+    margin: 2px;
+    border: 1px solid #eee;
+    #color: #ddd;
+  }
+  
+table.revisions
+{ 
+    width: 100%;
+#width: 580px;
+#background-color: #fafafa;
+#border: 1px #000000 solid;
+border-collapse: collapse;
+border-spacing: 0px; 
+}
+
+th.revision_title
+{ border-bottom: 1px #6699CC dotted;
+text-align: left;
+font-family: Verdana, sans-serif, Arial;
+font-weight: bold;
+font-size: .7em;
+color: #404040;
+background-color: #fafafa;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 8px;
+padding-right: 0px; }
+
+td.revision
+{ border-bottom: 1px #6699CC dotted;
+text-align: left;
+font-family: Verdana, sans-serif, Arial;
+font-weight: normal;
+font-size: .7em;
+color: #404040;
+background-color: #fafafa;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 8px;
+padding-right: 0px; }
+
+ul.revision
+{ border-bottom: 1px #6699CC dotted;
+text-align: left;
+font-family: Verdana, sans-serif, Arial;
+font-weight: normal;
+font-size: .7em;
+color: #404040;
+background-color: #fafafa;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 8px;
+padding-right: 0px; }
+
+div.revision_meta
+{
+background-color: #DEE7EC
+}
+
+#zoom_out
+{
+  visibility: hidden;
+}
+
+#zoom_in
+{
+  visibility: visible;
+}
+
+
+#page-title
+{
+    font-size: 180%;
+  font-weight:bold;
+}
+
+p.right
+{  
+text-align: right;
+}
+
+.help-text
+{
+font-size: .8em;
+}
+
+#image_sidebar {
+    float: right;
+}

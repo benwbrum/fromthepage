@@ -2,10 +2,11 @@ source :gemcutter
 gem "rails", "3.2.11"
 
 gem 'will_paginate' , '3.0.4'
-gem 'rmagick'
-gem 'hpricot'
+gem 'rmagick', '2.13.1'
+gem 'hpricot', '0.8.6'
 gem 'oai', "0.3.0"
-gem 'capistrano'
+gem 'capistrano', '2.12.0'
+gem 'jquery-rails', '2.2.1'
 
 gem 'mysql2','0.3.11'
 
