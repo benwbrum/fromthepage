@@ -1,6 +1,8 @@
 source :gemcutter
 gem "rails", "3.2.11"
 
+
+
 gem 'will_paginate' , '3.0.4'
 gem 'rmagick', '2.13.1'
 gem 'hpricot', '0.8.6'
