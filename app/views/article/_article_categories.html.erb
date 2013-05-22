@@ -1,4 +1,4 @@
-<p>
+<p> HHHH
 	<% my_categories = article.categories %>
 		Categories for <%= @collection.title %>:<br />
 		<%= display_categories(@collection.categories, nil) do |category|
@@ -6,7 +6,8 @@
 	                  "1",
 	                  my_categories.include?(category),
 	                  { :id => "#{article.id}_#{category.id}" }) +
-	    
+
+# call javascript from here	    
 #	    observe_field("#{article.id}_#{category.id}",
 #	                  { :url => url_for({ :controller => 'article',
 #	                                      :action => 'article_category',
