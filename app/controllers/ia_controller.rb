@@ -224,7 +224,12 @@ private
     formats = loc_doc.search('file').search('format')
     scandata = formats.select{|e| e.inner_text=='Scandata'}.first.parent['name']
     djvu = formats.select{|e| e.inner_text=='Djvu XML'}.first.parent['name']
-    zip = formats.select{|e| e.inner_text=='Single Page Processed JP2 ZIP'}.first.parent['name']
+    zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 ZIP'}
+    if zips.size < 1
+      zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 Tar'}
+    end
+    zip = zips.first.parent['name']
+    
     return [scandata, djvu, zip]    
   end
   
