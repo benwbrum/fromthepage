@@ -1,7 +1,7 @@
 source :gemcutter
 gem "rails", "3.2.11"
 
-
+gem 'pry'
 
 gem 'will_paginate' , '3.0.4'
 gem 'rmagick', '2.13.1'

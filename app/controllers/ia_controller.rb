@@ -155,7 +155,7 @@ class IaController < ApplicationController
     logger.debug("image_format, archive_format = #{image_format}, #{archive_format}")
     @ia_work[:image_format] = image_format
     @ia_work[:archive_format] = archive_format
-
+    binding.pry
     scandata_file, djvu_file, zip_file = files_from_loc(loc_doc)
     @ia_work[:scandata_file] = scandata_file
     @ia_work[:djvu_file] = djvu_file
@@ -224,7 +224,12 @@ private
     formats = loc_doc.search('file').search('format')
     scandata = formats.select{|e| e.inner_text=='Scandata'}.first.parent['name']
     djvu = formats.select{|e| e.inner_text=='Djvu XML'}.first.parent['name']
-    zip = formats.select{|e| e.inner_text=='Single Page Processed JP2 ZIP'}.first.parent['name']
+    binding.pry
+    archive_formats = formats.select{|e| e.inner_text=='Single Page Processed JP2 ZIP'}
+    if archive_formats.size < 1
+      archive_formats = formats.select{|e| e.inner_text=='Single Page Processed JP2 Tar'}
+    end
+    zip = archive_formats.first.parent['name']
     return [scandata, djvu, zip]    
   end
   

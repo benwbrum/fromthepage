@@ -1,0 +1,22 @@
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <%= form_tag( {:action => 'confirm_import'} ) do %>
+	
+	      <% if flash['error'] %>
+	        <div style="color: red"><%= flash['error'] %></div>
+	      <% end %>
+	
+	      <p>Cut-and-paste the URL of the book you'd like to import from Archive.org
+	      </p>
+	
+	    <p><label for="directory">URL:</label><br/>
+	    <%= text_field_tag 'detail_url', nil, :size => 60, :maxlength => 256 %></p>
+	
+	
+	    <p><%= submit_tag 'Next' %></p>
+	<% end %>
+
+      </div>
+  </div>
+</div>

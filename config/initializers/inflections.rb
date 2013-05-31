@@ -13,3 +13,7 @@
 # ActiveSupport::Inflector.inflections do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+ActiveSupport::Inflector.inflections do |inflect|
+  inflect.plural /(lea)f$/i, '\1ves'
+  inflect.singular /(lea)ves$/i, '\1f'
+end

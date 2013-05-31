@@ -1,0 +1,47 @@
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+      <%= form_tag( {:action => 'import_work'} ) do %>
+
+      <div style="color: red">Warning: This book may have already imported!</div>
+
+
+      <p>
+		The following works look like they may have been imported from the same 
+		source as <code><%=@detail_url%></code>.
+ 	  </p>
+	  
+	  <p>
+	  	<ul>
+		  	<% for match in @matches %>
+			  <li>
+			  	Internet Archive book <i><%=match.title%></i> was imported by 
+				<%=match.user.display_name%> on <%=match.created_at %>
+				<% if match.work %>
+					and was converted into FromThePage work 
+					<%= link_to(match.work.title,
+								{ :work_id => match.work.id,
+								  :controller => 'display',
+								  :action => 'read_work' })%>
+				<% else %>
+					but has not been converted into a FromThePage work.
+				<% end %>
+			  </li>				
+			<% end %>
+	  		
+	  	</ul>
+      </p>
+	  
+      <p>
+		  After reviewing the list,
+		press Cancel to abandon importing this work or Next to continue
+      </p>
+
+	 <%= hidden_field_tag(:detail_url, @detail_url) %>
+    <p><%= submit_tag 'Cancel' %><%= submit_tag 'Next' %></p>
+<% end %>
+
+
+      </div>
+  </div>
+</div>

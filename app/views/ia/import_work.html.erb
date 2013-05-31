@@ -1,0 +1,21 @@
+<div class="two-columns">
+  <div class="left-column">
+    <div class="inside-column">
+		<% for page in @pages %>
+			<p>
+				Leaf <%= page['leafNum'] %>, type <%= page.search('pagetype').text %>
+				, xy=<%= page.search('w').text %> x <%= page.search('h').text %>
+				, pageNum=<b><%= page.search('pagenumber').text %></b>
+			</p>
+		<% end %>
+   </div>
+  </div>
+  <div class="right-column">
+  	<div class="inside-column">
+                <%= html_block('right') %>
+		<p>
+			<%= debug(@ia_work) %>
+		</p>
+  	</div>
+  </div>
+</div>
