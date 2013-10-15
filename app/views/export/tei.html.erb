@@ -142,7 +142,7 @@ xml:id="APB4051">
     <body>
 	  <% @work.pages.each do |page| %>
 	  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= file_to_url(page.base_image) %>"/>
-		<div1 xml:id="P<%=page.id%>">
+		<div xml:id="P<%=page.id%>">
 			<head>
 				<%= page.title %>
 			</head>
@@ -155,7 +155,7 @@ xml:id="APB4051">
 					</note>
 				<% end %>
 			<% end %>
-		</div1>
+		</div>
 	
 	  <% end %>
     </body>
