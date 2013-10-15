@@ -25,7 +25,7 @@ class ExportController < ApplicationController
 
     @work_versions = PageVersion.find(:all, :joins => :page,
                         :conditions => ['pages.work_id = ?', @work.id],
-                       :order => "work_version")
+                       :order => "work_version DESC")
 
     @all_articles = @work.articles
     @person_articles = []
