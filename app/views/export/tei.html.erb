@@ -143,9 +143,9 @@ xml:id="APB4051">
 	  <% @work.pages.each do |page| %>
 	  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= file_to_url(page.base_image) %>"/>
 		<div xml:id="P<%=page.id%>">
-			<head>
+			<fw type="pageNum">
 				<%= page.title %>
-			</head>
+			</fw>
 			<%= raw(xml_to_export_tei(page.xml_text))%>
 			<% notes = page.notes %>
 			<% if notes && notes.length > 0 %>
