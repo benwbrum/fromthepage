@@ -87,13 +87,15 @@ xml:id="APB4051">
             <listPerson>
 				<% @person_articles.each do |person| %>
 	                <person xml:id="S<%=person.id%>">
-	                    <p>
-	                    	<persName>
-		                        <%= person.title %>
-	                        </persName>
-	                    </p>
-	                    <% unless person.source_text.blank? %>
-                    		<%= raw(xml_to_export_tei(person.xml_text, 'person')) %>
+                    	<persName>
+	                        <%= person.title %>
+                        </persName>
+                        <% unless person.source_text.blank? %>
+	                        <note>
+			                    <% unless person.source_text.blank? %>
+		                    		<%= raw(xml_to_export_tei(person.xml_text, 'person')) %>
+			                    <% end %>
+		                    </note>
 	                    <% end %>
 	                </person>
 				<% end %>
@@ -102,13 +104,15 @@ xml:id="APB4051">
             <listPlace>
 				<% @place_articles.each do |place| %>
 	                <place xml:id="S<%=place.id%>">
-	                	<p>
-		                    <placeName>
-		                        <%= place.title %>
-		                    </placeName>
-	                    </p>
-	                    <% unless place.source_text.blank? %>
-                    		<%= raw(xml_to_export_tei(place.xml_text, 'place')) %>
+	                    <placeName>
+	                        <%= place.title %>
+	                    </placeName>
+                        <% unless place.source_text.blank? %>
+		                    <note>
+			                    <% unless place.source_text.blank? %>
+		                    		<%= raw(xml_to_export_tei(place.xml_text, 'place')) %>
+			                    <% end %>
+		                    </note>
 	                    <% end %>
 	                </place>
 				<% end %>
