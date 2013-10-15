@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 /home/sgmr29/code/digital-austin-papers/tei-2.0.2/xml/tei/custom/schema/xsd/tei_all.xsd "
+xml:lang="EN"
+xml:id="APB4051">
+<teiHeader>
+    <fileDesc>
+        <titleStmt>
+            <title type="full">
+            	<title type="main">
+            		<%= @work.title %>
+        		</title>
+        		<title type="desc">
+        			<%= @work.description %>
+    			</title>
+        	</title>
+            <author>
+                <persName><%= @work.author %></persName>
+            </author>
+		</titleStmt>
+		<editionStmt>
+			<edition>Edition created from new transcripts of this manuscript.</edition>
+			<respStmt xml:id="AU<%= @work.owner.id%>">
+				<resp>Initial upload of this work's facsimile images and metadata to FromThePage.com for editing</resp>
+				<persName><%= @work.owner.print_name%></persName>
+			</respStmt>
+
+			<respStmt xml:id="OU<%= @collection.owner.id%>">
+				<resp>Adminstrator of the <%=@collection.title%> transcription project on FromThePage.com</resp>
+				<persName><%= @collection.owner.print_name %></persName>
+			</respStmt>
+
+			<% @user_contributions.each do |user| %>
+				<respStmt xml:id="U<%= user[:user_id]%>">
+					<persName><%= user[:print_name] %></persName>
+					<% if user[:edit_count] == 1 %>
+						<resp>
+							made one edit on 
+							<date type="only_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date>.
+						</resp>
+					<% else %>
+						<resp>
+							made <%= user[:edit_count] %> edits between 
+							<date type="first_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date> and 
+							<date type="last_edit" when="<%= user[:last_edit].iso8601 %>"><%= user[:last_edit].strftime("%B %e, %Y") %></date>.
+						</resp>						
+					<% end %>
+				</respStmt>
+			<% end %>
+				
+        </editionStmt>
+        <publicationStmt>
+            <publisher>Dynamic TEI export from FromThePage</publisher>
+            <availability>
+            	<p>
+            		<%= @work.permission_description %>
+        		</p>
+        	</availability>
+            <date when="<%= Time.now.iso8601 %>"><%= Time.now.strftime("%B %e, %Y") %></date>
+        </publicationStmt>
+        <sourceDesc>
+        	<msDesc>
+        		<msIdentifier>
+        			<collection>
+        				<%= @collection.title %>
+        			</collection>
+    			</msIdentifier>
+        		<physDesc>
+        			<p>
+        				<%= @work.physical_description%>
+    				</p>
+        		</physDesc>
+        		<history>
+    				<origin>
+    					<placeName>
+    						<%= @work.location_of_composition %>
+    					</placeName>
+					</origin>
+        			<provenance>
+        				<%= @work.document_history %>
+    				</provenance>
+    			</history>
+    		</msDesc>
+        	
+        	
+            <listPerson>
+				<% @person_articles.each do |person| %>
+	                <person xml:id="S<%=person.id%>">
+	                    <p>
+	                    	<persName>
+		                        <%= person.title %>
+	                        </persName>
+	                    </p>
+	                    <% unless person.source_text.blank? %>
+                    		<%= raw(xml_to_export_tei(person.xml_text, 'person')) %>
+	                    <% end %>
+	                </person>
+				<% end %>
+
+            </listPerson>
+            <listPlace>
+				<% @place_articles.each do |place| %>
+	                <place xml:id="S<%=place.id%>">
+	                	<p>
+		                    <placeName>
+		                        <%= place.title %>
+		                    </placeName>
+	                    </p>
+	                    <% unless place.source_text.blank? %>
+                    		<%= raw(xml_to_export_tei(place.xml_text, 'place')) %>
+	                    <% end %>
+	                </place>
+				<% end %>
+            </listPlace>
+        </sourceDesc>
+    </fileDesc>
+    <profileDesc>
+    	
+    </profileDesc>
+    <revisionDesc>
+    	<listChange ordered="true">
+    		<% @work_versions.each do |page_version| %>
+    			<change xml:id="CHG<%= page_version.work_version %>" who="U<%= page_version.user_id %>" when="<%= page_version.created_on.iso8601 %>">
+    				Version <%= page_version.page_version %> of page "<%= page_version.page.title %>":
+    				<% if page_version.transcription.blank? %>
+    					Empty transcript -- probably initial upload of page facsimile.
+					<% else %>
+						Changes to page transcript.
+    				<% end%>
+				</change>
+    		<% end %>
+		</listChange>
+    </revisionDesc>
+</teiHeader>
+
+<text>
+    <body>
+	  <% @work.pages.each do |page| %>
+	  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= file_to_url(page.base_image) %>"/>
+		<div1 xml:id="P<%=page.id%>">
+			<head>
+				<%= page.title %>
+			</head>
+			<%= raw(xml_to_export_tei(page.xml_text))%>
+			<% notes = page.notes %>
+			<% if notes && notes.length > 0 %>
+				<% notes.each do |note| %>
+					<note resp="#U<%= note.user_id %>">
+						<%= note.body %>
+					</note>
+				<% end %>
+			<% end %>
+		</div1>
+	
+	  <% end %>
+    </body>
+</text>
+</TEI>
