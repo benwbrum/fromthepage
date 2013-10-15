@@ -48,6 +48,13 @@ module ExportHelper
       strike.children.each { |c| del.add(c) }
       strike.replace_with(del)
     end
+    p_element.elements.each('//s') do |strike|
+      del = REXML::Element.new("del")
+
+      del.add_attribute("rend", "overstrike")
+      strike.children.each { |c| del.add(c) }
+      strike.replace_with(del)
+    end
     p_element.elements.each('//u') do |u|
       hi = REXML::Element.new("hi")
 
