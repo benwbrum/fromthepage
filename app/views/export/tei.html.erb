@@ -125,7 +125,7 @@ xml:id="APB4051">
     <revisionDesc>
     	<listChange ordered="true">
     		<% @work_versions.each do |page_version| %>
-    			<change xml:id="CHG<%= page_version.work_version %>" who="U<%= page_version.user_id %>" when="<%= page_version.created_on.iso8601 %>">
+    			<change xml:id="CHG<%= page_version.work_version %>" who="U<%= page_version.user_id %>" when="<%= page_version.created_on.iso8601 %>" target="#P<%= page_version.page_id %>">
     				Version <%= page_version.page_version %> of page "<%= page_version.page.title %>":
     				<% if page_version.transcription.blank? %>
     					Empty transcript -- probably initial upload of page facsimile.
