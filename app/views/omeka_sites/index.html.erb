@@ -1,0 +1,41 @@
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+
+			
+			<h1>Omeka Connections</h1>
+			
+			<table>
+			  <tr>
+			    <th>Title</th>
+			    <th>Api url</th>
+			    <th>Api key</th>
+			    <th></th>
+			    <th></th>
+			  </tr>
+			
+			<% @omeka_sites.each do |omeka_site| %>
+			  <tr>
+			    <td><%= omeka_site.title %></td>
+			    <td><%= omeka_site.api_url %></td>
+			    <td><%= omeka_site.api_key %></td>
+			    <td><%= link_to 'Show', omeka_site %></td>
+			    <td><%= link_to 'Edit', edit_omeka_site_path(omeka_site) %></td>
+			  </tr>
+			<% end %>
+			</table>
+			
+			<br />
+			
+			<%= link_to 'New Omeka Connection', new_omeka_site_path %>
+
+	</div>
+	<div class="right-column">
+
+	    <div class="inside-column">
+              <%= html_block('right') %>
+	    </div>
+	</div>
+</div>
+
+

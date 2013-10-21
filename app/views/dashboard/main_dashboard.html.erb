@@ -43,6 +43,11 @@
                         :ol => 'd_new_col' })%>
           </div>
 	  <div>
+	  <%= link_to("Import works from Omeka",
+	      	      { :controller => 'omeka_sites',
+			        :action => 'index' }) %>
+	  </div>
+	  <div>
 	  <%= link_to("Import a book from the Internet Archive",
 	      	      { :controller => 'ia',
 		        :action => 'ia_book_form',

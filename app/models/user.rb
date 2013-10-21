@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   has_many :image_sets, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
+  has_many :omeka_sites
   has_and_belongs_to_many(:scribe_works, 
                           { :join_table => 'transcribe_authorizations', 
                             :class_name => 'Work'})

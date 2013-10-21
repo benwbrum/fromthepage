@@ -1,0 +1,29 @@
+<%= form_for(@omeka_site) do |f| %>
+  <% if @omeka_site.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@omeka_site.errors.count, "error") %> prohibited this omeka_site from being saved:</h2>
+
+      <ul>
+      <% @omeka_site.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><i>(filled in by querying the server)</i><br />
+    <%= f.text_field :title, { :disabled => true } %>
+  </div>
+  <div class="field">
+    <%= f.label :api_url %> <i>(e.g. <code>http://my.site.com/omeka/api</code> or <code>http://omekasite.com/api</code>)</i><br />
+    <%= f.text_field :api_url %>
+  </div>
+  <div class="field">
+    <%= f.label :api_key %><i>(e.g. <code>3bc367575d6ad9fd2c57917b360422adf9f36966</code>)</i><br />
+    <%= f.text_field :api_key %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

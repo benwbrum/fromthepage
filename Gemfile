@@ -14,6 +14,9 @@ gem 'mysql2','0.3.11'
 
 gem 'recaptcha', '0.3.5'
 
+gem 'omeka_client', :path => '/home/benwbrum/dev/products/fromthepage/integration/omeka/omeka_client'
+
+
 # replacing the old Rails 2.3-style plugins
 gem 'acts_as_list', '0.2.0'
 gem 'acts_as_tree', '1.2.0'

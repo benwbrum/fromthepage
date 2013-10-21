@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @omeka_site.title %>
+</p>
+
+<p>
+  <b>Api url:</b>
+  <%= @omeka_site.api_url %>
+</p>
+
+<p>
+  <b>Api key:</b>
+  <%= @omeka_site.api_key %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @omeka_site.user_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_omeka_site_path(@omeka_site) %> |
+<%= link_to 'Back', omeka_sites_path %>

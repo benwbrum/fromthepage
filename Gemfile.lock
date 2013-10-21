@@ -1,3 +1,10 @@
+PATH
+  remote: /home/benwbrum/dev/products/fromthepage/integration/omeka/omeka_client
+  specs:
+    omeka_client (1.0.0.a)
+      recursive-open-struct (~> 0.4.3)
+      rest (~> 2.6.3)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -87,6 +94,7 @@ GEM
     multi_json (1.5.0)
     multipart-post (1.1.5)
     mysql2 (0.3.11)
+    net-http-persistent (2.9)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -130,6 +138,12 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     recaptcha (0.3.5)
+    recursive-open-struct (0.4.4)
+    rest (2.6.3)
+      net-http-persistent
+      rest-client (>= 0.3.0)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rmagick (2.13.1)
     rspec-core (2.12.2)
     rspec-expectations (2.12.1)
@@ -187,6 +201,7 @@ DEPENDENCIES
   jquery-rails (= 2.2.1)
   mysql2 (= 0.3.11)
   oai (= 0.3.0)
+  omeka_client!
   pry
   rails (= 3.2.11)
   recaptcha (= 0.3.5)

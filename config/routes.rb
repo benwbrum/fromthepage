@@ -1,5 +1,8 @@
 Fromthepage::Application.routes.draw do
 
+  resources :omeka_sites
+
+
   get '/account/login' => 'account#login' # , :as => 'websites'
   post '/account/signin' => 'account#signin'
   post '/account/process_signup' => 'account#process_signup'

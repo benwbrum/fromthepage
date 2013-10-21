@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130324195452) do
+ActiveRecord::Schema.define(:version => 20131021201227) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -131,6 +131,14 @@ ActiveRecord::Schema.define(:version => 20130324195452) do
   add_index "deeds", ["user_id"], :name => "index_deeds_on_user_id"
   add_index "deeds", ["work_id"], :name => "index_deeds_on_work_id"
 
+  create_table "exports", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "work_id"
+    t.string   "export_format"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "ia_leaves", :force => true do |t|
     t.integer  "ia_work_id"
     t.integer  "page_id"
@@ -232,6 +240,15 @@ ActiveRecord::Schema.define(:version => 20130324195452) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "omeka_sites", :force => true do |t|
+    t.string   "title"
+    t.string   "api_url"
+    t.string   "api_key"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "page_article_links", :force => true do |t|
