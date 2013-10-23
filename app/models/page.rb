@@ -31,6 +31,7 @@ class Page < ActiveRecord::Base
   #acts_as_restful_commentable
   has_many :notes, :order => :created_at
   has_one :ia_leaf
+  has_one :omeka_file
   
   after_save :create_version
   

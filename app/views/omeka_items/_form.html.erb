@@ -1,0 +1,65 @@
+<%= form_for(@omeka_item) do |f| %>
+  <% if @omeka_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@omeka_item.errors.count, "error") %> prohibited this omeka_item from being saved:</h2>
+
+      <ul>
+      <% @omeka_item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :subject %><br />
+    <%= f.text_field :subject %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :rights %><br />
+    <%= f.text_field :rights %>
+  </div>
+  <div class="field">
+    <%= f.label :creator %><br />
+    <%= f.text_field :creator %>
+  </div>
+  <div class="field">
+    <%= f.label :format %><br />
+    <%= f.text_field :format %>
+  </div>
+  <div class="field">
+    <%= f.label :coverage %><br />
+    <%= f.text_field :coverage %>
+  </div>
+  <div class="field">
+    <%= f.label :omeka_site_id %><br />
+    <%= f.number_field :omeka_site_id %>
+  </div>
+  <div class="field">
+    <%= f.label :omeka_id %><br />
+    <%= f.number_field :omeka_id %>
+  </div>
+  <div class="field">
+    <%= f.label :omeka_url %><br />
+    <%= f.text_field :omeka_url %>
+  </div>
+  <div class="field">
+    <%= f.label :omeka_collection_id %><br />
+    <%= f.number_field :omeka_collection_id %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br />
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<h1>Listing omeka_items</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Subject</th>
+    <th>Description</th>
+    <th>Rights</th>
+    <th>Creator</th>
+    <th>Format</th>
+    <th>Coverage</th>
+    <th>Omeka site</th>
+    <th>Omeka</th>
+    <th>Omeka url</th>
+    <th>Omeka collection</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @omeka_items.each do |omeka_item| %>
+  <tr>
+    <td><%= omeka_item.title %></td>
+    <td><%= omeka_item.subject %></td>
+    <td><%= omeka_item.description %></td>
+    <td><%= omeka_item.rights %></td>
+    <td><%= omeka_item.creator %></td>
+    <td><%= omeka_item.format %></td>
+    <td><%= omeka_item.coverage %></td>
+    <td><%= omeka_item.omeka_site_id %></td>
+    <td><%= omeka_item.omeka_id %></td>
+    <td><%= omeka_item.omeka_url %></td>
+    <td><%= omeka_item.omeka_collection_id %></td>
+    <td><%= omeka_item.user_id %></td>
+    <td><%= link_to 'Show', omeka_item %></td>
+    <td><%= link_to 'Edit', edit_omeka_item_path(omeka_item) %></td>
+    <td><%= link_to 'Destroy', omeka_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Omeka item', new_omeka_item_path %>

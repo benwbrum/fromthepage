@@ -1,25 +1,76 @@
-<p id="notice"><%= notice %></p>
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+			
+			<p id="notice"><%= notice %></p>
+			
+			<p>
+			  <b>Collections from Omeka Connection :</b>
+			  <%= @omeka_site.title %>
+			</p>
+			
+			<ul>
+				
+				<% @omeka_collections.each do |omeka_collection| %>
+					<li>
+						<%= omeka_collection.dublin_core.title %>
+						(<%= omeka_collection.data.items.count %> items)
+						<%= button_to("Import Entire Collection", { :action => :import_omeka_collection, :omeka_collection_id => omeka_collection.data.id } ) %>
+						<% if omeka_collection.data.items.count > 0  %>
+							<ul>
+								<% omeka_collection.items.each do |item| %>
+									<li>
+										<%= item.dublin_core.title %>
+										<br />
+										<%= item.dublin_core.description %>
+										<br />
+										<%= item.data.id %>										
+										<br />
+										<%= item.data.files.url %>			
+										<br />
+										<% if item.data.item_type && item.data.item_type.name == 'Text'%>										
+											<%= button_to("Import Item", new_omeka_item_path(:omeka_site_id => @omeka_site.id, :client_item_id => item.data.id) ) %>
+										<% end %>
+									</li>
+								<% end %>
+							</ul>
+						<% end %>
+					</li>
+				<% end %>
+			</ul>
 
-<p>
-  <b>Title:</b>
-  <%= @omeka_site.title %>
-</p>
-
-<p>
-  <b>Api url:</b>
-  <%= @omeka_site.api_url %>
-</p>
-
-<p>
-  <b>Api key:</b>
-  <%= @omeka_site.api_key %>
-</p>
-
-<p>
-  <b>User:</b>
-  <%= @omeka_site.user_id %>
-</p>
 
 
-<%= link_to 'Edit', edit_omeka_site_path(@omeka_site) %> |
-<%= link_to 'Back', omeka_sites_path %>
+			<%= link_to 'Back', omeka_sites_path %>
+			
+			
+	    </div>
+	</div>
+	<div class="right-column">
+
+	    <div class="inside-column">
+			<%= html_block('right') %>
+			<ul>
+				<% @omeka_collectionless_items.each do |item| %>
+					<li>
+						<%= item.dublin_core.title %>
+						<br />
+						<%= item.dublin_core.description %>
+						<br />
+						<%= item.data.id %>										
+						<br />
+						<%= item.data.files.url %>			
+						<br />
+						<% if item.data.item_type && item.data.item_type.name == 'Text'%>										
+							<%= button_to("Import Item", { :action => :import_omeka_item, :omeka_item_id => item.data.id } ) %>
+						<% end %>
+						
+					</li>
+		
+				<% end%>
+				
+			</ul>
+	    </div>
+	</div>
+</div>
+

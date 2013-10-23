@@ -19,6 +19,9 @@ class OmekaSitesController < ApplicationController
   # GET /omeka_sites/1.json
   def show
     @omeka_site = OmekaSite.find(params[:id])
+    @omeka_collections = @omeka_site.client.get_all_collections()
+    omeka_items = @omeka_site.client.get_all_items()
+    @omeka_collectionless_items = omeka_items.reject { |i| i.data.collection != nil }
 
     respond_to do |format|
       format.html # show.html.erb

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131021201227) do
+ActiveRecord::Schema.define(:version => 20131022212008) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -240,6 +240,47 @@ ActiveRecord::Schema.define(:version => 20131021201227) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "omeka_collections", :force => true do |t|
+    t.integer  "omeka_id"
+    t.integer  "collection_id"
+    t.string   "title"
+    t.string   "description"
+    t.integer  "omeka_site_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "omeka_files", :force => true do |t|
+    t.integer  "omeka_id"
+    t.integer  "omeka_item_id"
+    t.string   "mime_type"
+    t.string   "fullsize_url"
+    t.string   "thumbnail_url"
+    t.string   "original_filename"
+    t.integer  "omeka_order"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "page_id"
+  end
+
+  create_table "omeka_items", :force => true do |t|
+    t.string   "title"
+    t.string   "subject"
+    t.string   "description"
+    t.string   "rights"
+    t.string   "creator"
+    t.string   "format"
+    t.string   "coverage"
+    t.integer  "omeka_site_id"
+    t.integer  "omeka_id"
+    t.string   "omeka_url"
+    t.integer  "omeka_collection_id"
+    t.integer  "user_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "work_id"
   end
 
   create_table "omeka_sites", :force => true do |t|

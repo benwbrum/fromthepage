@@ -31,6 +31,11 @@
 		                    { :action => 'display_page',
 		                      :page_id => page.id,
 	                        :ol => 'w_rw_p_pl' })  %>
+				<% elsif page.omeka_file %>
+			      <%= link_to(image_tag(page.omeka_file.thumbnail_url),
+		                    { :action => 'display_page',
+		                      :page_id => page.id,
+	                        :ol => 'w_rw_p_pl' })  %>
 				<% else %>
 			      <%= link_to(image_tag(file_to_url(page.thumbnail_image)),
 		                    { :action => 'display_page',

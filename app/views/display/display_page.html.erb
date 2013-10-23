@@ -60,6 +60,8 @@
 	        <%=  html_block('right') %>
 		<% if @page.ia_leaf %>
 			<%= render :partial => '/ia/ia_bookreader_div' %>
+		<% elsif @page.omeka_file %>
+			<%= render :partial => '/shared/external_image_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url } %>
 		<% else %>
 			<%= render :partial => '/shared/zoom_div' %>
 		<% end %>
