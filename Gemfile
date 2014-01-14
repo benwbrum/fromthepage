@@ -5,7 +5,7 @@ gem 'pry'
 
 gem 'will_paginate' , '3.0.4'
 gem 'rmagick', '2.13.1'
-gem 'hpricot', '0.8.6'
+gem 'nokogiri'
 gem 'oai', "0.3.0"
 gem 'capistrano', '2.12.0'
 gem 'jquery-rails', '2.2.1'
