@@ -55,6 +55,7 @@ def create
     elsif @note.save
       record_deed
       format.js
+      format.html { redirect_to :back }
     else
       format.js
     end
