@@ -3,7 +3,7 @@ gem "rails", "3.2.16"
 
 gem 'pry'
 
-gem 'will_paginate' , '3.0.4'
+gem 'will_paginate' , '3.0.5'
 gem 'rmagick', '2.13.2'
 gem 'nokogiri'
 gem 'oai', "0.3.1"
