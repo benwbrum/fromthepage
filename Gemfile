@@ -1,20 +1,20 @@
-source :gemcutter
-gem "rails", "3.2.11"
+source 'https://rubygems.org'
+gem "rails", "3.2.16"
 
 gem 'pry'
 
 gem 'will_paginate' , '3.0.4'
-gem 'rmagick', '2.13.1'
+gem 'rmagick', '2.13.2'
 gem 'nokogiri'
-gem 'oai', "0.3.0"
+gem 'oai', "0.3.1"
 gem 'capistrano', '2.12.0'
 gem 'jquery-rails', '2.2.1'
 
-gem 'mysql2','0.3.11'
+gem 'mysql2','0.3.12'
 
 gem 'recaptcha', '0.3.5'
 
-gem 'omeka_client', :path => '/home/benwbrum/dev/products/fromthepage/integration/omeka/omeka_client'
+gem 'omeka_client', :git => 'https://github.com/benwbrum/omeka_client'
 
 
 # replacing the old Rails 2.3-style plugins
