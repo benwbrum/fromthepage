@@ -51,11 +51,7 @@
 	    </div>
 	<% end %>
     <div class="inside-column">
-      <%= form_for :note, url: note_index_path do |f| %>
-      <%= f.text_area :body %>
-      <%= hidden_field_tag(:page_id, @page.id) %>
-      <%= f.submit %>
-      <%end%>
+      <%= render :partial => "note/form_new" %>
 
       <% @page.notes.each do |note| %>
 	<p>
