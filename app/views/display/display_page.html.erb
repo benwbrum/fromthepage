@@ -58,6 +58,7 @@
 	<%= note.user.display_name %>
 	<br>
 	<%= note.body %>
+	<%= link_to "edit", edit_note_path(note) %>
 	</p>
       <% end %>
     </div>

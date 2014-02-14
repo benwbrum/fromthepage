@@ -70,6 +70,23 @@ class NoteController < ApplicationController
     redirect_to :controller => params[:original_controller], :action => params[:original_action], :page_id => @page.id
   end
 
+  def edit
+    @note = Note.find(params[:id])
+  end
+
+  def update
+    @note = Note.find(params[:id])
+
+    if @note.update_attributes(params[:note])
+      flash[:success] = "Note successfully updated."
+      redirect_to @note
+    end
+  end
+
+  def show
+    @note = Note.find(params[:id])
+  end
+
   def record_deed
     deed = Deed.new
     deed.note = @note
@@ -80,5 +97,4 @@ class NoteController < ApplicationController
     deed.user = current_user
     deed.save!
   end
-
 end
