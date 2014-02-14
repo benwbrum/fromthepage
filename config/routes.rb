@@ -2,7 +2,6 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_items
 
-
   resources :omeka_sites
 
   resources :note
