@@ -58,7 +58,7 @@
 	<%= note.user.display_name %>
 	<br>
 	<%= note.body %>
-	<%= link_to "edit", edit_note_path(note) %>
+	<%= link_to "edit", edit_note_path(note) if note.user == current_user %>
 	</p>
       <% end %>
     </div>
