@@ -8,7 +8,7 @@ gem 'rmagick', '2.13.2'
 gem 'nokogiri'
 gem 'oai', "0.3.1"
 gem 'capistrano', '2.12.0'
-gem 'jquery-rails', '2.2.1'
+gem 'jquery-rails'
 
 gem 'mysql2','0.3.12'
 

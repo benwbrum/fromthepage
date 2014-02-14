@@ -62,12 +62,12 @@ class NoteController < ApplicationController
     end
   end
 
-  def delete
-    @note = Note.find(params[:note_id])
+  def destroy
+    @note = Note.find(params[:id])
     @note.deed.delete
     @note.delete
-    flash[:notice] = "Deleted!}"
-    redirect_to :controller => params[:original_controller], :action => params[:original_action], :page_id => @page.id
+    flash[:notice] = "Deleted!"
+    redirect_to :back
   end
 
   def edit

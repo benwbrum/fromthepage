@@ -198,7 +198,7 @@ DEPENDENCIES
   database_cleaner (= 0.9.1)
   factory_girl_rails (= 4.2.1)
   in_place_editing (= 1.2.0)
-  jquery-rails (= 2.2.1)
+  jquery-rails
   mysql2 (= 0.3.12)
   nokogiri
   oai (= 0.3.1)
