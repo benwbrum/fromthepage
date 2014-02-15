@@ -82,11 +82,11 @@
 		<% end %>
 	</div>
 
-<script type="text/javascript">
+<%= javascript_tag do %>
   $( document ).ready(function() {
     $('#toggle').click(function() { $("#note_container").toggleClass('hideme'); });
   });
-</script>
+<% end %>
 
 <style media="screen" type="text/css">
  .hideme { display: none; }
