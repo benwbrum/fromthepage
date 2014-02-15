@@ -51,7 +51,10 @@
 	    </div>
 	<% end %>
     <div class="inside-column">
+      <div id="note_container" class="hideme">
       <%= render :partial => "note/form_new" %>
+      </div>
+      <a href="#" id="toggle">add comment</a>
 
       <hr>
       <h3>Notes</h3>
@@ -78,9 +81,16 @@
 			<%= render :partial => '/shared/zoom_div' %>
 		<% end %>
 	</div>
+
 <script type="text/javascript">
-                 jQuery.noConflict();
+  $( document ).ready(function() {
+    $('#toggle').click(function() { $("#note_container").toggleClass('hideme'); });
+  });
 </script>
+
+<style media="screen" type="text/css">
+ .hideme { display: none; }
+</style>
 
 
 </div>
