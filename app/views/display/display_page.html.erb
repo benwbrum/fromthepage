@@ -50,24 +50,13 @@
 	      <% end %>
 	    </div>
 	<% end %>
-    <div class="inside-column">
-      <div id="note_container" class="hideme">
-      <%= render :partial => "note/form_new" %>
-      </div>
-      <%= link_to "add comment", "#", id: "toggle" %>
-
-      <hr>
-      <h3>Notes</h3>
-      <% @page.notes.each do |note| %>
-	<p>
-	<%= note.body %>
-	<%= link_to "edit", edit_note_path(note) if note.user == current_user %>
-	<%= link_to "delete", note, :method => :delete, :confirm => "Are you sure?" if note.user == current_user %>
-	<br>
-	<i>by: <%= link_to(note.user.display_name, { :controller => "user", :action => "profile", :user_id => note.user.id }) %></i>
-	</p>
-      <% end %>
-    </div>
+	<div class="inside-column">
+	  <div id="note_container" class="hideme">
+	    <%= render :partial => "note/form_new" %>
+	  </div>
+	  <%= link_to "add comment", "#", id: "toggle" %>
+	  <%= render :partial => "note/notes" %>
+	</div>
   </div>
   
   
