@@ -1,11 +1,12 @@
 class Note < ActiveRecord::Base
+  attr_accessible :body
   # Notes are comments on pages.  In the future they may 
   # be comments on works, comments on image fragments, 
   # comments on articles, or questions and answers 
 
   # automated stuff  
   acts_as_tree
-  
+
   # associations
   belongs_to :user
   belongs_to :page
@@ -33,7 +34,7 @@ class Note < ActiveRecord::Base
     end
     result
   end
-   
+
   def self.for_each( comments, &block )
     for_each_children( nil, comments, &block ).to_s
   end
@@ -44,15 +45,14 @@ class Note < ActiveRecord::Base
     # TODO add whitelist, possibly RedCloth
   end
 
-private
+  private
   def self.for_each_children( parent_id, nodes, &block )
     for node in nodes
       if node.parent_id.to_i == parent_id.to_i
-        yield node 
-        for_each_children( node.id, nodes, &block )
+	yield node 
+	for_each_children( node.id, nodes, &block )
       end
     end
   end
 
-	
 end

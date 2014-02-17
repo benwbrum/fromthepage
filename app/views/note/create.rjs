@@ -1,2 +1,0 @@
-page << 'restfulComments.hideForm();'
-page.insert_html :after, ( @note.parent_id.to_i == 0 ? 'comment_form_0' : 'comment_' + @comment.parent_id.to_s ), :partial => 'note', :locals => { :note => @note, :odd => 3 }
