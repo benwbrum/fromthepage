@@ -25,8 +25,7 @@
 </head>
 <body>
   <div id="undernav">
-    <%= link_to('Dashboard', { :controller => 'dashboard',
-                               :ol => 'l_hd_dlink' }) %> |     
+    <%= link_to "Dashboard", dashboard_path %>
     <% if logged_in? %>
 	    <%= link_to('Log out', { :controller => 'account', 
 	                             :action => 'logout',

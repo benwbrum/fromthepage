@@ -12,12 +12,12 @@ class CollectionController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @collection
-        unless current_user.like_owner? @collection
-          redirect_to :controller => 'dashboard'
-        end
+	unless current_user.like_owner? @collection
+	  redirect_to dashboard_path
+	end
       end
     else
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
 
@@ -52,7 +52,7 @@ class CollectionController < ApplicationController
   
   def delete
     @collection.destroy
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
   def new

@@ -19,7 +19,7 @@ class AccountController < ApplicationController
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+      redirect_to dashboard_path
       flash[:notice] = "Logged in successfully"
     else
       logger.debug "User is NOT logged in"
@@ -58,7 +58,7 @@ class AccountController < ApplicationController
       @user.save!
       self.current_user = @user
       flash[:notice] = "Thanks for signing up!"
-      redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+      redirect_to dashboard_path
     else
       logger.debug "It's Bad :(((((((((((((((((((((((((((((((((("
       flash[:error] = "There was an error with the recaptcha code below. Please re-enter the code and click submit."
@@ -74,7 +74,7 @@ class AccountController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+    redirect_to dashboard_path
   end
 
 end

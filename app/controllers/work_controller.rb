@@ -25,14 +25,13 @@ class WorkController < ApplicationController
 
   def authorized?
     unless logged_in? && 
-           current_user.owner 
-      redirect_to :controller => 'dashboard'
+      current_user.owner 
+      redirect_to dashboard_path
     else
       if @work && @work.owner != current_user
-        redirect_to :controller => 'dashboard'
+	redirect_to dashboard_path
       end
     end
-
   end
 
   def make_pdf
@@ -74,7 +73,7 @@ class WorkController < ApplicationController
 
   def delete
     @work.destroy
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
   def new
@@ -122,7 +121,7 @@ class WorkController < ApplicationController
     work.description = params[:work][:description]
     work.owner = current_user
     work.save!
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
 private

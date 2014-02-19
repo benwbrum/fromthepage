@@ -3,7 +3,7 @@ class AdminController < ApplicationController
 
   def authorized?
     unless logged_in? && current_user.admin
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
 
@@ -18,7 +18,7 @@ class AdminController < ApplicationController
 
   def delete_user
     @user.destroy
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
   # display sessions for a user 
