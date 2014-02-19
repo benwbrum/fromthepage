@@ -46,11 +46,7 @@
 
    <div id="header" class="outside-column">
       <h2 class="site-logo">
-        <%= link_to('FromThePage', 
-                    { :controller => 'static',
-                      :action => 'splash',
-                      :ol => 'l_hd_logo' },
-                    { :class => 'site-logo' }) %>
+	<%= link_to "FromThePage", root_path %>
       </h2>
 	    <% if 'development' == Rails.env %>
 	      <h3>
