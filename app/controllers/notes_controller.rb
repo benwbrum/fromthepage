@@ -1,4 +1,4 @@
-class NoteController < ApplicationController
+class NotesController < ApplicationController
 #	
 #	# GET /comments
 #	# GET /comments.xml

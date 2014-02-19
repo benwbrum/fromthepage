@@ -4,7 +4,7 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_sites
 
-  resources :note
+  resources :notes
 
   get '/account/login' => 'account#login' # , :as => 'websites'
   post '/account/signin' => 'account#signin'
