@@ -11,7 +11,7 @@ class DemoController < ApplicationController
   
   def next_untranscribed_page
     work = Work.find DEMO_WORK
-    work.pages.find(:all, :conditions => "xml_text is null").first
+    work.pages.where("xml_text is null").first
   end
   
 end
