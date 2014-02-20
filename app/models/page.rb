@@ -114,10 +114,7 @@ class Page < ActiveRecord::Base
     version.work_version = self.work.transcription_version
     self.work.increment!(:transcription_version)    
 
-    previous_version = 
-      PageVersion.find(:first, 
-                       :conditions => ["page_id = ?", self.id],
-                       :order => "page_version DESC")
+    previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
     if previous_version
       version.page_version = previous_version.page_version + 1
     end
