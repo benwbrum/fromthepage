@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <% if @page && @work && @collection
@@ -24,8 +25,7 @@
 </head>
 <body>
   <div id="undernav">
-    <%= link_to('Dashboard', { :controller => 'dashboard',
-                               :ol => 'l_hd_dlink' }) %> |     
+    <%= link_to "Dashboard", dashboard_path %>
     <% if logged_in? %>
 	    <%= link_to('Log out', { :controller => 'account', 
 	                             :action => 'logout',
@@ -45,11 +45,7 @@
 
    <div id="header" class="outside-column">
       <h2 class="site-logo">
-        <%= link_to('FromThePage', 
-                    { :controller => 'static',
-                      :action => 'splash',
-                      :ol => 'l_hd_logo' },
-                    { :class => 'site-logo' }) %>
+	<%= link_to "FromThePage", root_path %>
       </h2>
 	    <% if 'development' == Rails.env %>
 	      <h3>

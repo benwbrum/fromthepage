@@ -3,7 +3,7 @@ class AdminController < ApplicationController
 
   def authorized?
     unless logged_in? && current_user.admin
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
 
@@ -18,7 +18,7 @@ class AdminController < ApplicationController
 
   def delete_user
     @user.destroy
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
   # display sessions for a user 
@@ -52,8 +52,7 @@ class AdminController < ApplicationController
         conditions = nil
       end
     end
-    @interactions = 
-      Interaction.find(:all, {:conditions => conditions , :order => 'id ASC'})
+    @interactions = Interaction.where(conditions).order('id ASC').all
   end
   
   # display last interactions, including who did what to which
@@ -61,11 +60,7 @@ class AdminController < ApplicationController
   def error_list
     # interactions with errors
     limit = params[:limit] || 50
-    @interactions = 
-      Interaction.find(:all, 
-                       {:conditions => "status='incomplete'", 
-                        :order => 'id DESC',
-                        :limit => limit})
+    @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit).all
   end
   
   def tail_logfile

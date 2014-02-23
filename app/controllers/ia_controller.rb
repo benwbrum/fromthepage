@@ -121,7 +121,7 @@ class IaController < ApplicationController
   def import_work 
     # bail if the user bailed
     if params[:commit] == 'Cancel'
-      redirect_to :controller => 'dashboard', :action => 'main_dashboard'
+      redirect_to dashboard_path
       return
     end
     detail_url = params[:detail_url]

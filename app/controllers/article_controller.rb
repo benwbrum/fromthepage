@@ -7,7 +7,7 @@ class ArticleController < ApplicationController
   
   def authorized?
     unless logged_in?
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
   

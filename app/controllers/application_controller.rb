@@ -163,7 +163,7 @@ class ApplicationController < ActionController::Base
     return unless @collection.restricted
     
     unless logged_in? && current_user.like_owner?(@collection)
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
 
