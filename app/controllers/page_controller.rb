@@ -16,8 +16,6 @@ class PageController < ApplicationController
   end
 
 
-  in_place_edit_for :page, :title
-  
   protect_from_forgery :except => [:set_page_title]
 
   def delete

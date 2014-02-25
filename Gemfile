@@ -19,9 +19,6 @@ gem 'omeka_client', :git => 'https://github.com/benwbrum/omeka_client'
 gem 'acts_as_list'
 gem 'acts_as_tree'
 
-# replacing the old Rails 2.3-style plugins
-gem 'in_place_editing', '1.2.0'
-
 group :development do
 end
 

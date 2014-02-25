@@ -7,7 +7,7 @@
     <div class="inside-column">
       <p>
 				Title: <span id="title_<%= @collection.id %>"><%= @collection.title %></span>
-				<%= in_place_editor("title_#{@collection.id}",
+				<%#= in_place_editor("title_#{@collection.id}",
 				                    { :url => url_for({ :action => "set_collection_title", 
 				                                        :id => @collection.id }) }) %>
 				<br />
@@ -19,7 +19,7 @@
 				Introductory Block: 
 				<br />
 				<span id="intro_block_<%= @collection.id %>"><%= @collection.intro_block || raw("<i>none</i>") %></span>
-				<%= in_place_editor("intro_block_#{@collection.id}",
+				<%#= in_place_editor("intro_block_#{@collection.id}",
 				                    { :url => url_for({ :action => "set_collection_intro_block", 
 				                                        :id => @collection.id }),
 				                      :rows => 8  }) %>
@@ -28,7 +28,7 @@
 				Footer Block: 
 				<br />
 				<span id="footer_block_<%= @collection.id %>"><%= @collection.footer_block || raw("<i>none</i>") %></span>
-				<%= in_place_editor("footer_block_#{@collection.id}",
+				<%#= in_place_editor("footer_block_#{@collection.id}",
 				                    { :url => url_for({ :action => "set_collection_footer_block", 
 				                                        :id => @collection.id }),
 				                      :rows => 8  }) %>

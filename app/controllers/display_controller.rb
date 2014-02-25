@@ -1,6 +1,5 @@
 class DisplayController < ApplicationController
   public :render_to_string
-  in_place_edit_for :note, :body
   
   protect_from_forgery :except => [:set_note_body]
 

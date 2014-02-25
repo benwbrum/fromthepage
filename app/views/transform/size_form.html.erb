@@ -10,7 +10,7 @@
 				much scrolling.
 			</p>
 			<p>
-				<% form_tag({:action => 'size_process'}) do %>				
+				<%= form_tag({:action => 'size_process'}) do %>				
 					<%= hidden_field_tag('image_set_id', @image_set.id) %>
 					<%= radio_button_tag('size', 'just_right')%>
 					<%= label('size', 'just_right', "This is just right") %><br />
