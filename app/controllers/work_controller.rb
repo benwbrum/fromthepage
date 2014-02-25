@@ -2,16 +2,6 @@
 class WorkController < ApplicationController
 #  require 'ftools'
 
-  in_place_edit_for :work, :title
-  in_place_edit_for :work, :description
-  in_place_edit_for :work, :physical_description #binding, condition
-  in_place_edit_for :work, :document_history #provenance, acquisition, origin
-  in_place_edit_for :work, :permission_description #what permission was given for this to be transcribed?
-    # what permission is given for the transription to be shared?
-  in_place_edit_for :work, :location_of_composition
-  in_place_edit_for :work, :author
-  in_place_edit_for :work, :transcription_conventions
-
   protect_from_forgery :except => [:set_work_title, 
                                    :set_work_description, 
                                    :set_work_physical_description, 
