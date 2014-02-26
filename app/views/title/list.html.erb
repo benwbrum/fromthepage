@@ -8,18 +8,17 @@
                         Title
                 </th>
         </tr>
-<% for image in @titled_images %>
+<% @titled_images.each do |image| %>
         <tr>
                 <td>
                         <a href="<%= file_to_url(image.shrunk_file) %>"><%= image_tag(file_to_url(image.crop_file)) %></a>
                 </td>
                 <td>
-                    <span id="title_<%= image.id %>"><%= image.title %></span>
-                    
-            		  <%= in_place_editor("title_#{image.id}",
-		                      { :url => url_for({ :action => "set_titled_image_title", 
-		                                          :id => image.id }) }) %><br />
-                    <br />
+		  <section id="<%= image.id %>">
+		    <div contenteditable="true"><%= image.title %></div>
+		  </section>
+		  <br>
+		  <br>
                     <%= link_to('X', 
                                 { :action => 'delete_image',
                                   :titled_image_id => image.id,
@@ -60,4 +59,6 @@
         </tr>        
 <% end %>
 </table>
+
+<%= javascript_include_tag "title" %>
 
