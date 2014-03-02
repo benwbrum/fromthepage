@@ -14,9 +14,11 @@
                         <a href="<%= file_to_url(image.shrunk_file) %>"><%= image_tag(file_to_url(image.crop_file)) %></a>
                 </td>
                 <td>
-		  <section id="<%= image.id %>">
-		    <div contenteditable="true"><%= image.title %></div>
-		  </section>
+		  <%= form_for :image, url: { action: :update } do |f| %>
+		    <%= f.text_field :title, value: image.title %>
+		    <%= f.hidden_field :image_id, value: image.id %>
+		    <%= f.submit "Update Title" %>
+		  <% end %>
 		  <br>
 		  <br>
                     <%= link_to('X', 
