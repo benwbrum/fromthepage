@@ -15,7 +15,7 @@
                 </td>
                 <td>
 		  <%= form_for :image, url: { action: :update } do |f| %>
-		    <%= f.text_field :title, value: image.title %>
+		    <%= f.text_field :title, value: image.title, class: "image_title" %>
 		    <%= f.hidden_field :image_id, value: image.id %>
 		    <%= f.submit "Update Title" %>
 		  <% end %>
@@ -62,5 +62,12 @@
 <% end %>
 </table>
 
-<%= javascript_include_tag "title" %>
+<%#= javascript_include_tag "title" %>
+<%= javascript_tag do %>
+  $(document).ready(function () {
+    $('.image_title').change(function () {
+      window.onbeforeunload = function () { return "Your changes have not been saved?" };
+    });
+  });
+<% end %>
 
