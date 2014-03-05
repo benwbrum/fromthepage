@@ -75,13 +75,9 @@
   $( document ).ready(function() {
     $('#toggle').click(function() { $("#note_container").toggleClass('hideme'); });
   });
-
-  $(document).ready(function () {
-    $('textarea').change(function () {
-      window.onbeforeunload = function () { return "Your changes have not been saved?" };
-    });
-  });
 <% end %>
+
+<%= javascript_include_tag "display" %>
 
 <style media="screen" type="text/css">
  .hideme { display: none; }
