@@ -13,14 +13,12 @@
                 <td>
                         <a href="<%= file_to_url(image.shrunk_file) %>"><%= image_tag(file_to_url(image.crop_file)) %></a>
                 </td>
-                <td>
+                <td style="padding-bottom: 1em">
 		  <%= form_for :image, url: { action: :update } do |f| %>
 		    <%= f.text_field :title, value: image.title, class: "image_title" %>
 		    <%= f.hidden_field :image_id, value: image.id %>
 		    <%= f.submit "Update Title" %>
 		  <% end %>
-		  <br>
-		  <br>
                     <%= link_to('X', 
                                 { :action => 'delete_image',
                                   :titled_image_id => image.id,
