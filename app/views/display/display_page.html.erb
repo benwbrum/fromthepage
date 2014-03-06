@@ -71,17 +71,11 @@
 		<% end %>
 	</div>
 
+<%= javascript_include_tag "jquery.are-you-sure.js" %>
 <%= javascript_tag do %>
   $( document ).ready(function() {
-    $('#toggle').click(function() { $("#note_container").toggleClass('hideme'); });
+    $('#toggle').click(function() { $("#note_container").toggle(); });
+    $('form').areYouSure();
   });
 <% end %>
-
-<%= javascript_include_tag "display" %>
-
-<style media="screen" type="text/css">
- .hideme { display: none; }
-</style>
-
-
 </div>
