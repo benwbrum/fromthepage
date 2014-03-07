@@ -58,7 +58,6 @@
 <%= javascript_include_tag "jquery.are-you-sure.js" %>
 <%= javascript_tag do %>
   $( document ).ready(function() {
-    $('#toggle').click(function() { $("#note_container").toggle(); });
     $('form').areYouSure();
   });
 <% end %>
