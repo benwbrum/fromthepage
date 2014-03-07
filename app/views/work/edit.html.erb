@@ -7,24 +7,42 @@
   <div class="left-column">
     <div class="inside-column">
       <%= form_for :work, url: { action: :update } do |f| %>
-	Title: <%= f.text_field :title, value: @work.title %>
-	<br>
-	Description: <%= f.text_field :description, value: @work.description %>
-	<br>
-	Owner: <%= link_to(@work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }) %>
-	<br>
-	Physical Description: <%= f.text_field :physical_description, value: @work.physical_description %>
-	<br>
-	Document History: <%= f.text_field :document_history, value: @work.document_history %>
-	<br>
-	Permissions: <%= f.text_field :permission_description, value: @work.permission_description %>
-	<br>
-	Location of Composition: <%= f.text_field :location_of_composition, value: @work.location_of_composition %>
-	<br>
-	Author: <%= f.text_field :author, value: @work.author %>
-	<br>
-	Transcription Conventions: <%= f.text_area :transcription_conventions, value: @work.transcription_conventions %>
-	<br>
+	<div>
+	  <label style="width:100px; display:inline-block">Title:</label>
+	  <%= f.text_field :title, value: @work.title %>
+	</div>
+	<div>
+	  <label style="width:100px; display:inline-block">Description:</label>
+	  <%= f.text_field :description, value: @work.description %>
+	</div>
+	<div>
+	  <label style="width:100px; display:inline-block">Owner:</label>
+	  <%= link_to(@work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }) %>
+        </div>
+	<div>
+	  <label style="width:100px; display:inline-block">Physical Description:</label>
+	  <%= f.text_field :physical_description, value: @work.physical_description %>
+	</div>
+	<div>
+	  <label style="width:100px; display:inline-block">Document History:</label>
+	  <%= f.text_field :document_history, value: @work.document_history %>
+	</div>
+	<div>
+	  <label style="width:100px; display:inline-block">Permissions:</label>
+	  <%= f.text_field :permission_description, value: @work.permission_description %>
+	</div>
+	<div>
+	  <label style="width:100px; display:inline-block">Location of Composition:</label>
+	  <%= f.text_field :location_of_composition, value: @work.location_of_composition %>
+	</div>
+	<div>
+	  <label style="width:100px; display:inline-block">Author:</label>
+	  <%= f.text_field :author, value: @work.author %>
+	</div>
+	<div>
+	  <label>Transcription Conventions:</label>
+	  <%= f.text_area :transcription_conventions, value: @work.transcription_conventions, cols: 90 %>
+	</div>
 	<%= f.hidden_field :work_id, value: @work.id %>
 	<%= f.submit %>
       <% end %>
