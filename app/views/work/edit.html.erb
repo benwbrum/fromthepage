@@ -8,10 +8,6 @@
     <div class="inside-column">
       <%= form_for :work, url: { action: :update } do |f| %>
 	<p>
-	  <%= f.label :transcription_conventions, style: "width: 150px; display: inline-block" %>
-	  <%= f.text_area :transcription_conventions, value: @work.transcription_conventions, cols: 90 %>
-	</p>
-	<p>
 	  <%= f.label :title, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :title, value: @work.title %>
 	</p>
@@ -42,6 +38,10 @@
 	<p>
 	  <%= f.label :author, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :author, value: @work.author %>
+	</p>
+	<p>
+	  <%= f.label :transcription_conventions, style: "width: 150px; display: inline-block" %>
+	  <%= f.text_area :transcription_conventions, value: @work.transcription_conventions, cols: 90 %>
 	</p>
 	<%= f.hidden_field :work_id, value: @work.id %>
 	<%= f.submit %>
