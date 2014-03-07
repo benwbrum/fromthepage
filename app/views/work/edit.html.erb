@@ -8,39 +8,39 @@
     <div class="inside-column">
       <%= form_for :work, url: { action: :update } do |f| %>
 	<div>
-	  <label style="width: 150px; display: inline-block">Title:</label>
+	  <%= f.label :title, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :title, value: @work.title %>
 	</div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Description:</label>
+	  <%= f.label :description, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :description, value: @work.description %>
 	</div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Owner:</label>
+	  <%= f.label :owner, style: "width: 150px; display: inline-block" %>
 	  <%= link_to(@work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }) %>
         </div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Physical Description:</label>
+	  <%= f.label :physical_description, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :physical_description, value: @work.physical_description %>
 	</div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Document History:</label>
+	  <%= f.label :document_history, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :document_history, value: @work.document_history %>
 	</div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Permissions:</label>
+	  <%= f.label :permission_description, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :permission_description, value: @work.permission_description %>
 	</div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Location of Composition:</label>
+	  <%= f.label :location_of_composition, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :location_of_composition, value: @work.location_of_composition %>
 	</div>
 	<div>
-	  <label style="width: 150px; display: inline-block">Author:</label>
+	  <%= f.label :author, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :author, value: @work.author %>
 	</div>
 	<div>
-	  <label>Transcription Conventions:</label>
+	  <%= f.label :transcription_conventions, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_area :transcription_conventions, value: @work.transcription_conventions, cols: 90 %>
 	</div>
 	<%= f.hidden_field :work_id, value: @work.id %>
@@ -51,7 +51,6 @@
   </div>
   <div class="right-column">
     <div class="inside-column">
-
       <%= html_block('right') %>
     </div>
   </div>
