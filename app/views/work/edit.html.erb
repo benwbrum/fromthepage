@@ -6,74 +6,29 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
-
-Title: <span id="title_<%= @work.id %>"><%= @work.title %></span>
-<%= in_place_editor("title_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_title", 
-                                        :id => @work.id }) }) %>
-<br />
-Description: <span id="description_<%= @work.id %>"><%= @work.description %></span>
-<%= in_place_editor("description_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_description", 
-                                        :id => @work.id }),
-                      :rows => 6  }) %>
-<br />
-Owner: <%= link_to(@work.owner.display_name,
-	                           { :controller => 'user',
-	                               :action => 'profile',
-	                               :user_id => @work.owner.id }) %>
-<br />
-
-Physical Description: <br />
-<span id="physical_description_<%= @work.id %>"><%= @work.physical_description || raw("<i>none</i>") %></span>
-<%= in_place_editor("physical_description_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_physical_description", 
-                                        :id => @work.id }),
-                      :rows => 6  }) %>
-<br />
-Document History: <br />
-<span id="document_history_<%= @work.id %>"><%= @work.document_history || raw("<i>none</i>") %></span>
-<%= in_place_editor("document_history_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_document_history", 
-                                        :id => @work.id }),
-                      :rows => 6  }) %>
-<br />
-Permissions: <br />
-<span id="permission_description_<%= @work.id %>"><%= @work.permission_description || raw("<i>none</i>") %></span>
-<%= in_place_editor("permission_description_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_permission_description", 
-                                        :id => @work.id }),
-                      :rows => 6  }) %>
-<br />
-Location of Composition: <br />
-<span id="location_of_composition_<%= @work.id %>"><%= @work.location_of_composition || raw("<i>none</i>") %></span>
-<%= in_place_editor("location_of_composition_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_location_of_composition", 
-                                        :id => @work.id }),
-                      :rows => 6  }) %>
-<br />
-Author: <br />
-<span id="author_<%= @work.id %>"><%= @work.author || raw("<i>none</i>") %></span>
-<%= in_place_editor("author_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_author", 
-                                        :id => @work.id }) }) %>
-<br />
-Transcription Conventions: 
-<br />
-<span id="transcription_conventions_<%= @work.id %>"><%= @work.transcription_conventions || raw("<i>none</i>") %></span>
-<%= in_place_editor("transcription_conventions_#{@work.id}",
-                    { :url => url_for({ :action => "set_work_transcription_conventions", 
-                                        :id => @work.id }),
-                      :rows => 6  }) %>
-<br />
-	<% if @work.transcription_version < 10 %>
-	<%= button_to("Delete",
-	            { :controller => 'work',
-	              :action => 'delete',
-	              :work_id => @work.id },
-	            { :confirm => "Are you sure you want to delete all of #{@work.title}?" }) %>
-	<% end %>		
-	<br />
+      <%= form_for :work, url: { action: :update } do |f| %>
+	Title: <%= f.text_field :title, value: @work.title %>
+	<br>
+	Description: <%= f.text_field :description, value: @work.description %>
+	<br>
+	Owner: <%= link_to(@work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }) %>
+	<br>
+	Physical Description: <%= f.text_field :physical_description, value: @work.physical_description %>
+	<br>
+	Document History: <%= f.text_field :document_history, value: @work.document_history %>
+	<br>
+	Permissions: <%= f.text_field :permission_description, value: @work.permission_description %>
+	<br>
+	Location of Composition: <%= f.text_field :location_of_composition, value: @work.location_of_composition %>
+	<br>
+	Author: <%= f.text_field :author, value: @work.author %>
+	<br>
+	Transcription Conventions: <%= f.text_area :transcription_conventions, value: @work.transcription_conventions %>
+	<br>
+	<%= f.hidden_field :work_id, value: @work.id %>
+	<%= f.submit %>
+      <% end %>
+      <br />
     </div>
   </div>
   <div class="right-column">

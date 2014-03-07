@@ -1,9 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
   public :render_to_string
-  in_place_edit_for :collection, :title
-  in_place_edit_for :collection, :intro_block
-  in_place_edit_for :collection, :footer_block
   protect_from_forgery :except => [:set_collection_title, 
                                     :set_collection_intro_block, 
                                     :set_collection_footer_block]
@@ -65,12 +62,13 @@ class CollectionController < ApplicationController
   end
 
   def update
-    @collection.attributes=params[:collection]
-    if @collection.save
-      redirect_to :action => 'show', :collection_id => @collection.id
-    else
-      render :action => 'edit'
-    end
+    collection = Collection.find(params[:collection][:collection_id])
+    collection.title = params[:collection][:title]
+    collection.intro_block = params[:collection][:intro_block]
+    collection.footer_block = params[:collection][:footer_block]
+    collection.save
+    flash[:notice] = "Collection updated successfully."
+    redirect_to :back
   end
   
   # tested

@@ -8,21 +8,22 @@
 
 <%= render({ :partial => '/shared/page_navigation' }) %>
 <div class="inside-column">
-<p>
-Title: <span id="title_<%= @page.id %>"><%= @page.title.blank? ? "<i>none</i>" : @page.title %></span>
-<%= in_place_editor("title_#{@page.id}",
-                    { :url => url_for({ :action => "set_page_title", 
-                                        :id => @page.id }) }) %>
-
-<br />
-Position: <%= @page.position %>
-<br />
-<%= button_to("Delete",
-            { :action => 'delete',
-              :page_id => @page.id },
-            { :confirm => 'Are you sure?' }) %>
-<br />
-</p>
+  <p>
+    <%= form_for :page, url: {action: :update} do |f| %>
+      <%= f.text_field :title, value: @page.title %>
+      <br>
+      <%= f.hidden_field :page_id, value: @page.id %>
+      <%= f.submit %>
+    <% end %>
+    <br />
+    Position: <%= @page.position %>
+  <br />
+  <%= button_to("Delete",
+	      { :action => 'delete',
+		:page_id => @page.id },
+	      { :confirm => 'Are you sure?' }) %>
+  <br />
+  </p>
 </div>
   </div>
   <div class="right-column">
