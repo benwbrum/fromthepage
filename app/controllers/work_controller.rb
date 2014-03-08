@@ -115,21 +115,13 @@ class WorkController < ApplicationController
   end
 
   def update
-    work = Work.find(params[:work][:work_id])
-    work.title = params[:work][:title]
-    work.description = params[:work][:description]
-    work.physical_description = params[:work][:physical_description]
-    work.document_history = params[:work][:document_history]
-    work.permission_description = params[:work][:permission_description]
-    work.location_of_composition = params[:work][:location_of_composition]
-    work.author = params[:work][:author]
-    work.transcription_conventions = params[:work][:transcription_conventions]
-    work.save
+    work = Work.find(params[:id])
+    work.update_attributes(params[:work])
     flash[:notice] = "Work updated successfully."
     redirect_to :back
   end
 
-private
+  private
   def print_fn_stub
     @stub ||= DateTime.now.strftime("w#{@work.id}v#{@work.transcription_version}d%Y%m%dt%H%M%S")
   end

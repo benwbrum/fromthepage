@@ -6,7 +6,7 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
-      <%= form_for :work, url: { action: :update } do |f| %>
+      <%= form_for :work, url: { action: :update, id: @work.id } do |f| %>
 	<p>
 	  <%= f.label :title, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_field :title, value: @work.title %>
@@ -43,7 +43,6 @@
 	  <%= f.label :transcription_conventions, style: "width: 150px; display: inline-block" %>
 	  <%= f.text_area :transcription_conventions, value: @work.transcription_conventions, cols: 90 %>
 	</p>
-	<%= f.hidden_field :work_id, value: @work.id %>
 	<%= f.submit %>
       <% end %>
     </div>

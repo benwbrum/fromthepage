@@ -11,6 +11,8 @@ class Work < ActiveRecord::Base
 
   after_save :update_statistic
 
+  attr_accessible :title, :description, :physical_description, :document_history, :permission_description, :location_of_composition, :author, :transcription_conventions
+
   def articles
     my_articles = []
     for page in self.pages
