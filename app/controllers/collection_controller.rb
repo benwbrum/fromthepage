@@ -62,11 +62,8 @@ class CollectionController < ApplicationController
   end
 
   def update
-    collection = Collection.find(params[:collection][:collection_id])
-    collection.title = params[:collection][:title]
-    collection.intro_block = params[:collection][:intro_block]
-    collection.footer_block = params[:collection][:footer_block]
-    collection.save
+    collection = Collection.find(params[:id])
+    collection.update_attributes(params[:collection])
     flash[:notice] = "Collection updated successfully."
     redirect_to :back
   end

@@ -6,7 +6,7 @@
   <div class="left-column">
     <div class="inside-column">
       <p>
-	<%= form_for :collection, url: {action: :update} do |f| %>
+	<%= form_for :collection, url: {action: :update, id: @collection.id} do |f| %>
 	  Title: <%= f.text_field :title, value: @collection.title %>
 	  <br>
 	  Owner: <%= link_to(@collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }) %>
@@ -15,7 +15,6 @@
 	  <br>
 	  Footer Block: <%= f.text_area :footer_block, value: @collection.footer_block %>
 	  <br>
-	  <%= f.hidden_field :collection_id, value: @collection.id %>
 	  <%= f.submit %>
 	<% end %>
 	<%= button_to("Delete", { :controller => 'collection', :action => 'delete', :collection_id => @collection.id, :ol => 'c_del' }, { :confirm => 'Are you sure?' }) %>
