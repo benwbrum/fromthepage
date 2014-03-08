@@ -64,9 +64,8 @@ class TitleController < ApplicationController
   end
 
   def update
-    image = TitledImage.find(params[:image][:image_id])
-    image.title = params[:image][:title]
-    image.save
+    image = TitledImage.find(params[:id])
+    image.update_attributes(params[:image])
     flash[:notice] = "Title updated successfully."
     redirect_to :back
   end
