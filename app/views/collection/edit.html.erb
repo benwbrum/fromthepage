@@ -8,19 +8,19 @@
       <p>
 	<%= form_for :collection, url: {action: :update, id: @collection.id} do |f| %>
 	  <p>
-	    <%= f.label :title, style: "width: 150px; display: inline-block" %>
+	    <%= f.label :title, style: "width: 100px; display: inline-block" %>
 	    <%= f.text_field :title, value: @collection.title %>
 	  </p>
 	  <p>
-	    <%= f.label :owner, style: "width: 150px; display: inline-block" %>
+	    <%= f.label :owner, style: "width: 100px; display: inline-block" %>
 	    <%= link_to(@collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }) %>
 	  </p>
 	  <p>
-	    <%= f.label :intro_block, style: "width: 150px; display: inline-block" %>
+	    <%= f.label :intro_block, style: "width: 100px; display: inline-block" %>
 	    <%= f.text_area :intro_block, value: @collection.intro_block, cols: 90 %>
 	  </p>
 	  <p>
-	    <%= f.label :footer_block, style: "width: 150px; display: inline-block" %>
+	    <%= f.label :footer_block, style: "width: 100px; display: inline-block" %>
 	    <%= f.text_area :footer_block, value: @collection.footer_block, cols: 90 %>
 	  </p>
 	  <%= f.submit %>
