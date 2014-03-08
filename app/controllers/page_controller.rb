@@ -87,9 +87,8 @@ class PageController < ApplicationController
   end
 
   def update
-    page = Page.find(params[:page][:page_id])
-    page.title = params[:page][:title]
-    page.save
+    page = Page.find(params[:id])
+    page.update_attributes(params[:page])
     flash[:notice] = "Page updated successfully."
     redirect_to :back
   end

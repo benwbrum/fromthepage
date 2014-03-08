@@ -9,10 +9,9 @@
 <%= render({ :partial => '/shared/page_navigation' }) %>
 <div class="inside-column">
   <p>
-    <%= form_for :page, url: {action: :update} do |f| %>
+    <%= form_for :page, url: {action: :update, id: @page.id} do |f| %>
       <%= f.text_field :title, value: @page.title %>
       <br>
-      <%= f.hidden_field :page_id, value: @page.id %>
       <%= f.submit %>
     <% end %>
     <br />
