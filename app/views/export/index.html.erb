@@ -1,0 +1,44 @@
+<%= render({ :partial => '/shared/collection_tabs',
+             :locals => { :selected => 1,
+                          :collection_id => @collection.id }}) %>
+
+<div class="two-columns">
+    <div class="left-column">
+		<div class="inside-column">
+			<h2>Export <%=@collection.title%></h2>
+			Subject index export as CSV: 
+			<%= button_to('CSV Export',
+						  :controller => 'export',
+						  :action => 'subject_csv',
+						  :collection_id => @collection.id ) %>
+	  		<h2>Export Individual Works</h2>
+	  		<p>
+			<% for work in @collection.works %>
+			  <span "width='80%'"><%=work.title%></span>
+			  <span "width='10%'">
+				  <%= link_to('XHTML', 
+							  { :controller => 'export',
+								:action => 'show',
+								:work_id => work.id })%>
+			  </span>
+			  <span "width='10%'">
+				  <%= link_to('TEI', 
+							  { :controller => 'export',
+								:action => 'tei',
+								:work_id => work.id })%>
+			  </span><br/>
+			<% end %>
+	  </p>    
+	</div>
+
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+        <%= html_block('right') %>
+		<h2>Export Formats</h2>
+		<p><b>CSV</b> exports subject indexes from the entire collection.</p>
+		<p><b>XHTML</b> exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.</p>
+		<p><b>TEI</b> exports a work as a P5-compliant TEI-XML document.</p>
+	</div>
+  </div>
+</div>

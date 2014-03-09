@@ -48,8 +48,15 @@ class ExportController < ApplicationController
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
 
+  def index
+    
+  end
 
-
-
+  def subject_csv
+    send_data(@collection.export_subjects_as_csv,
+              :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+#    redirect_to(:action => index, :collection_id=>@collection.id)
+  end
 
 end

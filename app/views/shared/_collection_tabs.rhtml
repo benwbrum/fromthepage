@@ -98,6 +98,23 @@ Tab                         Access
 	    <% end %>
 
     <% end %>
+
+    <% if logged_in? && current_user.like_owner?(@collection) %>
+	    <% collection_export_options = { :controller => 'export',
+				                         :action => 'index',
+				                         :collection_id => collection_id} %>
+	    <% if current_page? collection_export_options %> 
+	      <li id="current">
+	        <span>export</span>
+	      </li>
+	    <% else %>
+	      <li>
+	        <%= link_to('export', 
+	                    collection_export_options) %>
+	      </li>     
+	    <% end %>
+
+    <% end %>
   </ul>
 </div>
 
