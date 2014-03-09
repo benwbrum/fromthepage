@@ -8,18 +8,16 @@
                         Title
                 </th>
         </tr>
-<% for image in @titled_images %>
+<% @titled_images.each do |image| %>
         <tr>
                 <td>
                         <a href="<%= file_to_url(image.shrunk_file) %>"><%= image_tag(file_to_url(image.crop_file)) %></a>
                 </td>
-                <td>
-                    <span id="title_<%= image.id %>"><%= image.title %></span>
-                    
-            		  <%= in_place_editor("title_#{image.id}",
-		                      { :url => url_for({ :action => "set_titled_image_title", 
-		                                          :id => image.id }) }) %><br />
-                    <br />
+                <td style="padding-bottom: 1em">
+		  <%= form_for :image, url: { action: :update, id: image.id } do |f| %>
+		    <%= f.text_field :title, value: image.title, class: "image_title" %>
+		    <%= f.submit "Update Title" %>
+		  <% end %>
                     <%= link_to('X', 
                                 { :action => 'delete_image',
                                   :titled_image_id => image.id,
@@ -60,4 +58,12 @@
         </tr>        
 <% end %>
 </table>
+
+<%= javascript_include_tag "jquery.are-you-sure.js" %>
+
+<%= javascript_tag do %>
+  $( document ).ready(function() {
+    $('form').areYouSure();
+  });
+<% end %>
 

@@ -1,16 +1,6 @@
 # handles administrative tasks for the work object
 class WorkController < ApplicationController
-#  require 'ftools'
-
-  in_place_edit_for :work, :title
-  in_place_edit_for :work, :description
-  in_place_edit_for :work, :physical_description #binding, condition
-  in_place_edit_for :work, :document_history #provenance, acquisition, origin
-  in_place_edit_for :work, :permission_description #what permission was given for this to be transcribed?
-    # what permission is given for the transription to be shared?
-  in_place_edit_for :work, :location_of_composition
-  in_place_edit_for :work, :author
-  in_place_edit_for :work, :transcription_conventions
+  #  require 'ftools'
 
   protect_from_forgery :except => [:set_work_title, 
                                    :set_work_description, 
@@ -124,7 +114,14 @@ class WorkController < ApplicationController
     redirect_to dashboard_path
   end
 
-private
+  def update
+    work = Work.find(params[:id])
+    work.update_attributes(params[:work])
+    flash[:notice] = "Work updated successfully."
+    redirect_to :back
+  end
+
+  private
   def print_fn_stub
     @stub ||= DateTime.now.strftime("w#{@work.id}v#{@work.transcription_version}d%Y%m%dt%H%M%S")
   end

@@ -15,9 +15,6 @@ class PageController < ApplicationController
     end
   end
 
-
-  in_place_edit_for :page, :title
-  
   protect_from_forgery :except => [:set_page_title]
 
   def delete
@@ -87,6 +84,13 @@ class PageController < ApplicationController
     page = Page.new(params[:page])
     page.save!
     redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id  
+  end
+
+  def update
+    page = Page.find(params[:id])
+    page.update_attributes(params[:page])
+    flash[:notice] = "Page updated successfully."
+    redirect_to :back
   end
 
 private

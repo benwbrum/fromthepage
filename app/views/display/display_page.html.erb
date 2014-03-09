@@ -51,7 +51,7 @@
 	    </div>
 	<% end %>
 	<div class="inside-column">
-	  <div id="note_container" class="hideme">
+	  <div id="note_container" style="display: none">
 	    <%= render :partial => "notes/form_new" %>
 	  </div>
 	  <%= link_to "add comment", "#", id: "toggle" %>
@@ -71,21 +71,11 @@
 		<% end %>
 	</div>
 
+<%= javascript_include_tag "jquery.are-you-sure.js" %>
 <%= javascript_tag do %>
   $( document ).ready(function() {
-    $('#toggle').click(function() { $("#note_container").toggleClass('hideme'); });
-  });
-
-  $(document).ready(function () {
-    $('textarea').change(function () {
-      window.onbeforeunload = function () { return "Your changes have not been saved?" };
-    });
+    $('#toggle').click(function() { $("#note_container").toggle(); });
+    $('form').areYouSure();
   });
 <% end %>
-
-<style media="screen" type="text/css">
- .hideme { display: none; }
-</style>
-
-
 </div>
