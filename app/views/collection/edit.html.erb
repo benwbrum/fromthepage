@@ -17,11 +17,11 @@
 	  </p>
 	  <p>
 	    <%= f.label :intro_block %>
-	    <%= f.text_area :intro_block, value: @collection.intro_block, cols: 90 %>
+	    <%= f.text_area :intro_block, value: @collection.intro_block, cols: 90, style: "width: 100%" %>
 	  </p>
 	  <p>
 	    <%= f.label :footer_block %>
-	    <%= f.text_area :footer_block, value: @collection.footer_block, cols: 90 %>
+	    <%= f.text_area :footer_block, value: @collection.footer_block, cols: 90, style: "width: 100%" %>
 	  </p>
 	  <%= f.submit %>
 	<% end %>
