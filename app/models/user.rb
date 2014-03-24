@@ -1,9 +1,24 @@
 require 'digest/sha1'
 class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable,
+	 :encryptable, :encryptor => :restful_authentication_sha1
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :email, :password, :password_confirmation, :remember_me
   # Virtual attribute for the unencrypted password
   attr_accessor :password
   # allows me to get at the user from other models
   cattr_accessor :current_user
+
+  # move this to the db?
+  attr_accessor :current_sign_in_at
+  attr_accessor :last_sign_in_at
+  attr_accessor :current_sign_in_ip
+  attr_accessor :last_sign_in_ip
+  attr_accessor :sign_in_count
   
   validates_presence_of     :login
   validates_presence_of     :password,                    :if => :password_required?
@@ -56,12 +71,12 @@ class User < ActiveRecord::Base
 
   # Encrypts some data with the salt.
   def self.encrypt(password, salt)
-    Digest::SHA1.hexdigest("--#{salt}--#{password}--")
+    Digest::SHA1.hexdigest("--#{password_salt}--#{password}--")
   end
 
   # Encrypts the password with the user salt
   def encrypt(password)
-    self.class.encrypt(password, salt)
+    self.class.encrypt(password, password_salt)
   end
 
   def authenticated?(password)
@@ -76,7 +91,7 @@ class User < ActiveRecord::Base
   def remember_me
     self.remember_token_expires_at = 2.weeks.from_now.utc
     self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
-    save(false)
+    save(:validate => false)
   end
 
   def forget_me
