@@ -8,7 +8,7 @@
           <h3>Collections</h3>
           <ul>
             <% for collection in @collections %>
-			  <% if !collection.restricted || (logged_in? && current_user.like_owner?(collection)) %>	
+			  <% if !collection.restricted || (user_signed_in? && current_user.like_owner?(collection)) %>	
 	              <li>
 	                <%= link_to(collection.title,
 	                            { :controller => 'collection',
@@ -25,7 +25,7 @@
           </ul>
         </p>
       </div>
-      <% if logged_in? && current_user.owner %>
+      <% if user_signed_in? && current_user.owner %>
         <div>
           <p>
             Owner Actions
@@ -160,7 +160,7 @@
            <% end %>
         </div>
       <% end %>
-      <% if logged_in? && current_user.admin %>
+      <% if user_signed_in? && current_user.admin %>
         <div>
           <h3>
             Admin Dashboard

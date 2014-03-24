@@ -14,7 +14,7 @@ class ImageSetController < ApplicationController
   end
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       if @set_to_append
         redirect_to dashboard_path unless @set_to_append.owner == current_user
       end

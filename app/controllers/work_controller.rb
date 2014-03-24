@@ -14,7 +14,7 @@ class WorkController < ApplicationController
   before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
   def authorized?
-    unless logged_in? && 
+    unless user_signed_in? && 
       current_user.owner 
       redirect_to dashboard_path
     else
