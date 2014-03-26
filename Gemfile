@@ -35,6 +35,6 @@ group :production do
 end
 
 gem "rspec-rails", :group => [:development, :test]
-gem "factory_girl_rails", :group => [:development, :test]
+gem "factory_girl_rails", :group => [:development, :test], require: false
 
 #- EOF
