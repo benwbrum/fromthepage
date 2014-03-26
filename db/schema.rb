@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140324183740) do
+ActiveRecord::Schema.define(:version => 20140326054020) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -384,10 +384,10 @@ ActiveRecord::Schema.define(:version => 20140324183740) do
     t.string   "display_name"
     t.string   "print_name"
     t.string   "email"
-    t.boolean  "owner",                                    :default => false
-    t.boolean  "admin",                                    :default => false
-    t.string   "encrypted_password",        :limit => 128, :default => "",    :null => false
-    t.string   "password_salt",                            :default => "",    :null => false
+    t.boolean  "owner",                     :default => false
+    t.boolean  "admin",                     :default => false
+    t.string   "encrypted_password",        :default => "",    :null => false
+    t.string   "password_salt",             :default => "",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
@@ -398,7 +398,7 @@ ActiveRecord::Schema.define(:version => 20140324183740) do
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                            :default => 0,     :null => false
+    t.integer  "sign_in_count",             :default => 0,     :null => false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(:version => 20140324183740) do
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "work_statistics", :force => true do |t|
     t.integer  "work_id"
