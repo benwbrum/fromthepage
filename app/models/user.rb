@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 	 :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :password, :password_confirmation, :remember_me
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me
   # Virtual attribute for the unencrypted password
   attr_accessor :password
   # allows me to get at the user from other models

@@ -14,6 +14,8 @@ class ConvertRaToDevise < ActiveRecord::Migration
 
     #reset password related fields
     #rename_column :users, "password_reset_code", "reset_password_token"
+    add_column :users, "reset_password_token", :string
+    add_column :users, "reset_password_sent_at", :datetime
 
     #rememberme related fields
     add_column :users, "remember_created_at", :datetime #additional field required for devise.

@@ -2,9 +2,11 @@
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
+  <div><%= f.label :login %><br />
+  <%= f.text_field :login, autofocus: true %></div>
 
   <div><%= f.label :email %><br />
-  <%= f.email_field :email, autofocus: true %></div>
+  <%= f.email_field :email %></div>
 
   <div><%= f.label :password %><br />
     <%= f.password_field :password, autocomplete: "off" %></div>
