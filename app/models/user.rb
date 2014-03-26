@@ -12,13 +12,6 @@ class User < ActiveRecord::Base
   # allows me to get at the user from other models
   cattr_accessor :current_user
 
-  # move this to the db?
-  attr_accessor :current_sign_in_at
-  attr_accessor :last_sign_in_at
-  attr_accessor :current_sign_in_ip
-  attr_accessor :last_sign_in_ip
-  attr_accessor :sign_in_count
-  
   validates_presence_of     :login
   validates_presence_of     :password,                    :if => :password_required?
   validates_presence_of     :password_confirmation,       :if => :password_required?
