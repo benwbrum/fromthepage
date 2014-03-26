@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :email, :password, :password_confirmation, :remember_me
-  # Virtual attribute for the unencrypted password
-  attr_accessor :password
   # allows me to get at the user from other models
   cattr_accessor :current_user
 
