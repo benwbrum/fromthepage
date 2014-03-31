@@ -11,7 +11,7 @@ class TranscribeController  < ApplicationController
   def authorized?
     unless user_signed_in? && current_user.can_transcribe?(@work)
 #      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
-      redirect_to :controller => 'account', :action => 'login'
+      redirect_to new_user_session_path
     end
   end
 
