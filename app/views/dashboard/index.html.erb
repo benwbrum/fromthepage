@@ -8,7 +8,7 @@
           <h3>Collections</h3>
           <ul>
             <% for collection in @collections %>
-			  <% if !collection.restricted || (user_signed_in? && current_user.like_owner?(collection)) %>	
+			  <% if !collection.restricted || (user_signed_in? && current_user.like_owner?(collection)) %>
 	              <li>
 	                <%= link_to(collection.title,
 	                            { :controller => 'collection',
