@@ -47,7 +47,7 @@ class NotesController < ApplicationController
     @note.user = current_user
 
     respond_to do |format|
-      if not logged_in?
+      if not user_signed_in?
 	flash[:notice] = 'You must log in to create notes'
 	format.html { render :text => "redirect_to comment_url(@comment)" }
 	format.xml  { head :err }

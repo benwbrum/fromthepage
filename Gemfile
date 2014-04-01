@@ -19,6 +19,9 @@ gem 'omeka_client', :git => 'https://github.com/benwbrum/omeka_client'
 gem 'acts_as_list'
 gem 'acts_as_tree'
 
+gem 'devise'
+gem 'devise-encryptable'
+
 group :development do
 end
 
@@ -32,6 +35,6 @@ group :production do
 end
 
 gem "rspec-rails", :group => [:development, :test]
-gem "factory_girl_rails", :group => [:development, :test]
+gem "factory_girl_rails", :group => [:development, :test], require: false
 
 #- EOF

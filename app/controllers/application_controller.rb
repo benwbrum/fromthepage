@@ -3,8 +3,6 @@ require_dependency "login_system"
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
-  include AuthenticatedSystem
-  helper_method :logged_in?
   before_filter :load_objects_from_params
   before_filter :set_current_user_in_model
   before_filter :update_ia_work_server
@@ -106,7 +104,7 @@ class ApplicationController < ActionController::Base
     
     @interaction.browser = request.env['HTTP_USER_AGENT']
     @interaction.ip_address = request.env['REMOTE_ADDR']
-    if(logged_in?)
+    if(user_signed_in?)
       @interaction.user_id = current_user.id
     end
     clean_params = params.reject{|k,v| k=='password'}
@@ -162,7 +160,7 @@ class ApplicationController < ActionController::Base
     return unless @collection
     return unless @collection.restricted
     
-    unless logged_in? && current_user.like_owner?(@collection)
+    unless user_signed_in? && current_user.like_owner?(@collection)
       redirect_to dashboard_path
     end
   end
