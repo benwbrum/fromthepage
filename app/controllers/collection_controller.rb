@@ -7,7 +7,7 @@ class CollectionController < ApplicationController
   before_filter :authorized?, :only => [:edit, :delete, :new, :create]
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       if @collection
 	unless current_user.like_owner? @collection
 	  redirect_to dashboard_path

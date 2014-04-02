@@ -7,7 +7,7 @@ class TitleController < ApplicationController
       [:list]
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       return @image_set.owner == current_user
     end
   end

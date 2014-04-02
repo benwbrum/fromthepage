@@ -1,5 +1,7 @@
 Fromthepage::Application.routes.draw do
 
+  devise_for :users
+
   resources :omeka_items
 
   resources :omeka_sites
@@ -7,10 +9,6 @@ Fromthepage::Application.routes.draw do
   resources :notes
 
   get "/dashboard" => "dashboard#index"
-
-  get '/account/login' => 'account#login' # , :as => 'websites'
-  post '/account/signin' => 'account#signin'
-  post '/account/process_signup' => 'account#process_signup'
 
   root :to => 'static#splash'
   match 'ZenasMatthews' => 'collection#show', :collection_id => 7
