@@ -1,0 +1,7 @@
+<div class="viewer" style="height: 500px; width: 500px;">
+  <%= image_tag "working/1/#{File.basename(@page.base_image)}" %>
+</div>
+
+<%= javascript_tag do%>
+  $(".viewer").zoomer();
+<% end %>
