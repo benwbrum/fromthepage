@@ -14,7 +14,11 @@ module ApplicationHelper
 
 
   def file_to_url(filename)
-    filename.sub(/.*public/, "") 
+    if filename
+      filename.sub(/.*public/, "")
+    else
+      ""
+    end
   end
 
   # ripped off from
