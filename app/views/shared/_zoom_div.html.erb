@@ -1,5 +1,5 @@
 <div class="viewer" style="height: 500px; width: 500px;">
-  <%= image_tag Pathname.new(@page.base_image).relative_path_from(Pathname.new("/home/fromthe/fromthepage/current/public/images")) %>
+  <%= image_tag file_to_url(@page.base_image) %>
 </div>
 
 <%= javascript_tag do%>
