@@ -81,11 +81,20 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def base_image
+    self[:base_image] || ""
+  end
+  
+  def shrink_factor
+    self[:shrink_factor] || 0
+  end
+
+
   def scaled_image(factor = 2)
     if 0 == factor
-      self[:base_image]
+      self.base_image
     else
-      self[:base_image].sub(/.jpg/, "_#{factor}.jpg")
+      self.base_image.sub(/.jpg/, "_#{factor}.jpg")
     end
   end
   
@@ -167,7 +176,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
 private
   def thumbnail_filename
-    self[:base_image].sub(/.jpg/, "_thumb.jpg")
+    self.base_image.sub(/.jpg/, "_thumb.jpg")
   end
 
   def generate_thumbnail

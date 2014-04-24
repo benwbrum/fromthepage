@@ -45,7 +45,7 @@ class ExportController < ApplicationController
       end
       @other_articles << article if other                  
     end
-    render :layout => false, :content_type => "application/xml"
+    render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
 
 
