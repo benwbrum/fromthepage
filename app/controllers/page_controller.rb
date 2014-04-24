@@ -6,7 +6,7 @@ class PageController < ApplicationController
   before_filter :authorized?
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       if @work
         redirect_to dashboard_path unless @work.owner == current_user
       end

@@ -35,7 +35,7 @@ module TeiHelper
         e.replace_with(lb)
       end
     end
-    unless logged_in?
+    unless user_signed_in?
       doc.elements.each("//sensitive") do |e|
         e.replace_with(REXML::Comment.new("sensitive information suppressed"))
       end

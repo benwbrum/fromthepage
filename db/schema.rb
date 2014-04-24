@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131022212008) do
+ActiveRecord::Schema.define(:version => 20140326054020) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -130,14 +130,6 @@ ActiveRecord::Schema.define(:version => 20131022212008) do
   add_index "deeds", ["page_id"], :name => "index_deeds_on_page_id"
   add_index "deeds", ["user_id"], :name => "index_deeds_on_user_id"
   add_index "deeds", ["work_id"], :name => "index_deeds_on_work_id"
-
-  create_table "exports", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "work_id"
-    t.string   "export_format"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
 
   create_table "ia_leaves", :force => true do |t|
     t.integer  "ia_work_id"
@@ -392,10 +384,10 @@ ActiveRecord::Schema.define(:version => 20131022212008) do
     t.string   "display_name"
     t.string   "print_name"
     t.string   "email"
-    t.boolean  "owner",                                   :default => false
-    t.boolean  "admin",                                   :default => false
-    t.string   "crypted_password",          :limit => 40
-    t.string   "salt",                      :limit => 40
+    t.boolean  "owner",                     :default => false
+    t.boolean  "admin",                     :default => false
+    t.string   "encrypted_password",        :default => "",    :null => false
+    t.string   "password_salt",             :default => "",    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
@@ -403,9 +395,18 @@ ActiveRecord::Schema.define(:version => 20131022212008) do
     t.string   "location"
     t.string   "website"
     t.string   "about"
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",             :default => 0,     :null => false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
   end
 
   add_index "users", ["login"], :name => "index_users_on_login"
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "work_statistics", :force => true do |t|
     t.integer  "work_id"

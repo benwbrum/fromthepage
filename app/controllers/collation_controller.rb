@@ -4,7 +4,7 @@ class CollationController < ApplicationController
   before_filter :authorized?
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       logger.debug("testing params")
       id = if params[:image_set_id] == nil || params[:image_set_id] == ""
         params[:left_set_id]
