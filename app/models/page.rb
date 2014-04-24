@@ -31,8 +31,11 @@ class Page < ActiveRecord::Base
   #acts_as_restful_commentable
   has_many :notes, :order => :created_at
   has_one :ia_leaf
+  has_one :omeka_file
   
   after_save :create_version
+
+  attr_accessible :title
   
   STATUS_BLANK = 'blank'
   STATUS_INCOMPLETE = 'incomplete'
@@ -40,6 +43,7 @@ class Page < ActiveRecord::Base
   STATUSES = { "Blank/Nothing to Transcribe" => STATUS_BLANK, "Incomplete Transcription" => STATUS_INCOMPLETE } 
   STATUS_HELP = "Mark a page as blank if there is nothing to be transcribed on this page.  Mark a page as incomplete to list it for review by others."
 
+  # tested
   def collection
     work.collection
   end
@@ -85,6 +89,7 @@ class Page < ActiveRecord::Base
     self[:shrink_factor] || 0
   end
 
+
   def scaled_image(factor = 2)
     if 0 == factor
       self.base_image
@@ -107,7 +112,7 @@ class Page < ActiveRecord::Base
     return thumbnail_filename 
   end
 
-
+  # tested
   def create_version
     version = PageVersion.new
     version.page = self
@@ -120,10 +125,7 @@ class Page < ActiveRecord::Base
     version.work_version = self.work.transcription_version
     self.work.increment!(:transcription_version)    
 
-    previous_version = 
-      PageVersion.find(:first, 
-                       :conditions => ["page_id = ?", self.id],
-                       :order => "page_version DESC")
+    previous_version = PageVersion.where("page_id = ?", self.id).order("page_version DESC").first
     if previous_version
       version.page_version = previous_version.page_version + 1
     end
@@ -139,7 +141,17 @@ class Page < ActiveRecord::Base
                        "       from page_article_links "+
                        "       where page_id = #{self.id})")
   end
+=begin
+Here is the ActiveRecord call (with sql in it) in method clear_article_graphs:
+Article.update_all('graph_image=NULL', "id in (select article_id from page_article_links  where page_id = 1)")
+It produces this SQL:
+UPDATE `articles` SET graph_image=NULL WHERE (id in (select article_id from page_article_links where page_id = 1))
 
+There is a more idiomatic ActiveRecord call:
+Article.update_all('graph_image=NULL', :id => PageArticleLink.select(:article_id).where('page_id = ?', 1))
+it produces this sql:
+UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_id FROM `page_article_links` WHERE (page_id = 1))
+=end
   
   #######################
   # XML Source support
@@ -152,6 +164,7 @@ class Page < ActiveRecord::Base
     PageArticleLink.delete_all("page_id = #{self.id}")     
   end
 
+  # tested
   def create_link(article, display_text)
     link = PageArticleLink.new(:page => self,
                                :article => article,
@@ -173,7 +186,5 @@ private
     image.write(thumbnail_filename)
     image = nil
   end
-
-
 
 end

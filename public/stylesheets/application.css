@@ -511,6 +511,7 @@ text-align: right;
 font-size: .8em;
 }
 
+<<<<<<< HEAD
 #image_div
 {
 	width: 100%;
@@ -526,3 +527,8 @@ font-size: .8em;
 {
 	width: 100%;
 }
+=======
+#image_sidebar {
+    float: right;
+}
+>>>>>>> rails3_nohpricot

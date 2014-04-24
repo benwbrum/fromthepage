@@ -8,16 +8,13 @@ class PageController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @work
-        redirect_to :controller => 'dashboard' unless @work.owner == current_user
+        redirect_to dashboard_path unless @work.owner == current_user
       end
     else
-      redirect_to :controller => 'dashboard' 
+      redirect_to dashboard_path
     end
   end
 
-
-  in_place_edit_for :page, :title
-  
   protect_from_forgery :except => [:set_page_title]
 
   def delete
@@ -54,7 +51,7 @@ class PageController < ApplicationController
     filename = @page.base_image
     if filename == nil || filename == ""
       # create a new filename
-      filename = "#{RAILS_ROOT}/public/images/working/upload/#{@page.id}.jpg"
+      filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
     end
     File.open(filename, "wb") do |f| 
       f.write(params['page']['base_image'].read)
@@ -87,6 +84,13 @@ class PageController < ApplicationController
     page = Page.new(params[:page])
     page.save!
     redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id  
+  end
+
+  def update
+    page = Page.find(params[:id])
+    page.update_attributes(params[:page])
+    flash[:notice] = "Page updated successfully."
+    redirect_to :back
   end
 
 private

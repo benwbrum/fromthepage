@@ -1,8 +1,6 @@
 class TitleController < ApplicationController
   include ImageHelper
   
-  in_place_edit_for :titled_image, :title
-  
   protect_from_forgery :except => [:set_titled_image_title]
   before_filter :authorized?, 
     :only => 
@@ -64,7 +62,14 @@ class TitleController < ApplicationController
   def decrement_by_365
     renumber_images(-365)
   end
-  
+
+  def update
+    image = TitledImage.find(params[:id])
+    image.update_attributes(params[:image])
+    flash[:notice] = "Title updated successfully."
+    redirect_to :back
+  end
+
 private
 
   def renumber_images(change_by)

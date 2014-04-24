@@ -35,11 +35,11 @@ class ExportController < ApplicationController
     @all_articles.each do |article|
       # TODO replace this with legitimate flow control once I get to a ruby lang doc
       other = true 
-      if article.categories.find_all_by_title('Places').count > 0
+      if article.categories.where(:title => 'Places').count > 0
         @place_articles << article
         other = false
       end
-      if article.categories.find_all_by_title('People').count > 0
+      if article.categories.where(:title => 'People').count > 0
         @person_articles << article
         other = false
       end

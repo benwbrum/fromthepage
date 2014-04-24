@@ -16,10 +16,10 @@ class ImageSetController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @set_to_append
-        redirect_to :controller => 'dashboard' unless @set_to_append.owner == current_user
+        redirect_to dashboard_path unless @set_to_append.owner == current_user
       end
       unless @image_set.owner == current_user
-        redirect_to :controller => 'dashboard'
+	redirect_to dashboard_path
       end
     end
   end
@@ -57,7 +57,7 @@ class ImageSetController < ApplicationController
       rm_r(@image_set.path)
     end
     @image_set.destroy
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
   def select_target

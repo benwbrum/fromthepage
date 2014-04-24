@@ -1,0 +1,24 @@
+<div class="two-columns">
+	<div class="left-column">
+		<div class="inside-column">
+
+			
+			<h1>Editing Omeka Connection <%= @omeka_site.title %></h1>
+			
+			<%= render 'form' %>
+			
+			<%= link_to 'Delete This Site', @omeka_site, method: :delete, data: { confirm: 'Are you sure?  You will need to re-create the site confiuration in FromThePage to import from this site again.' } %></td>
+			
+			
+			<%= link_to 'Show', @omeka_site %> |
+			<%= link_to 'Back', omeka_sites_path %>
+
+		</div>
+	</div>
+	<div class="right-column">
+		<div class="inside-column">
+			<%= html_block('right') %>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,34 @@
+<%= render({ :partial => '/shared/page_tabs',
+             :locals => { :selected =>4,
+                          :page_id => @page.id }}) %>
+
+
+<div class="two-columns">
+  <div class="left-column">
+
+<%= render({ :partial => '/shared/page_navigation' }) %>
+<div class="inside-column">
+  <p>
+    <%= form_for :page, url: {action: :update, id: @page.id} do |f| %>
+      <%= f.text_field :title, value: @page.title %>
+      <br>
+      <%= f.submit %>
+    <% end %>
+    <br />
+    Position: <%= @page.position %>
+  <br />
+  <%= button_to("Delete",
+	      { :action => 'delete',
+		:page_id => @page.id },
+	      { :confirm => 'Are you sure?' }) %>
+  <br />
+  </p>
+</div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+      <%= html_block('right') %>
+    </div>
+  </div>
+
+</div>

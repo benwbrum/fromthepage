@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
   has_many :image_sets, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
+  has_many :omeka_sites
   has_and_belongs_to_many(:scribe_works, 
                           { :join_table => 'transcribe_authorizations', 
                             :class_name => 'Work'})
@@ -31,6 +32,10 @@ class User < ActiveRecord::Base
   has_many :article_versions, :order => 'created_on DESC'
   has_many :notes, :order => 'created_at DESC'
   has_many :deeds
+
+  def to_i
+    self.id
+  end
 
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
@@ -77,7 +82,8 @@ class User < ActiveRecord::Base
   def forget_me
     self.remember_token_expires_at = nil
     self.remember_token            = nil
-    save(false)
+    # save(false)
+    save(:validate => false)
   end
 
   protected

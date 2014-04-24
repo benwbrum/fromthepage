@@ -30,9 +30,13 @@ mongo.log
 /public/assets/images/working
 
 # Ignore RVM-related files
-.rvmrc
-
+# .rvmrc
+notes*txt
+upgrade.check.txt
 # Ignore Ctags
+
+# for environmental variables
+env_vars
 
 tags
 

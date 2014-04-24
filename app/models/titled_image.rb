@@ -1,7 +1,9 @@
 class TitledImage < ActiveRecord::Base
   belongs_to :image_set
   acts_as_list :scope => :image_set
+  attr_accessible :title_seed, :title
   
+  # tested
   def original_file(raw=false)
     if raw || nil == image_set.path
       self[:original_file]
@@ -10,10 +12,12 @@ class TitledImage < ActiveRecord::Base
     end
   end
   
+  # tested
   def crop_file
     original_file.sub(/.jpg/, "_crop.jpg")
   end
-  
+
+  # tested
   def shrunk_file(factor=nil)
     factor ||= self.image_set.original_to_base_halvings
     if 0 == factor

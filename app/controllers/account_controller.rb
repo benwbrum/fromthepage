@@ -9,37 +9,62 @@ class AccountController < ApplicationController
     redirect_to(:action => 'signup') unless logged_in? || User.count > 0
   end
 
-  def login
+  def signin
     return unless request.post?
+    logger.debug "In accountcontroller signin"
     self.current_user = User.authenticate(params[:login], params[:password])
     if logged_in?
+      logger.debug "User is logged in"
       if params[:remember_me] == "1"
         self.current_user.remember_me
         cookies[:auth_token] = { :value => self.current_user.remember_token , :expires => self.current_user.remember_token_expires_at }
       end
-      redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+      redirect_to dashboard_path
       flash[:notice] = "Logged in successfully"
     else
-      if(User.find_by_login(params[:login])) 
+      logger.debug "User is NOT logged in"
+      if (User.find_by_login(params[:login])) 
         flash[:error] = 
           "Your login and password did not match.  Feel free to contact alpha.info@fromthepage.com for help."
       else
         flash[:error] = "We could not find any user with the login #{params[:login]}.  Feel free to contact alpha.info@fromthepage.com for help."
       end
     end
+
   end
 
-  def signup      
-    @user = User.new(params[:user])
+  def login
+  end
+
+  def signup
+    @user = User.new
+  end
+
+  def process_signup
+    logger.debug("in process_signup ---------------------")
+    logger.debug("Here is request.post?: #{request.post?}")
+    @user = User.new # (params[:user])
+    @user.login = params[:user][:login]
+    @user.password = params[:user][:password]
+    @user.password_confirmation = params[:user][:password_confirmation]
+    @user.display_name = params[:user][:display_name]
+    @user.print_name = params[:user][:print_name]
+    @user.email = params[:user][:email]
     return unless request.post?
-    if !simple_captcha_valid?
-      flash[:error] = "Please retype the image text"
-      return
-    end
-    @user.save!
-    self.current_user = @user
-    redirect_back_or_default(:controller => 'dashboard', :action => 'index')
-    flash[:notice] = "Thanks for signing up!"
+
+    if request.post?
+    # if verify_recaptcha
+      logger.debug "It's good!!!!!!!!!!!!!!!!!!!!!!!!"
+      @user.save!
+      self.current_user = @user
+      flash[:notice] = "Thanks for signing up!"
+      redirect_to dashboard_path
+    else
+      logger.debug "It's Bad :(((((((((((((((((((((((((((((((((("
+      flash[:error] = "There was an error with the recaptcha code below. Please re-enter the code and click submit."
+      render :action => 'new'
+    end 
+    
   rescue ActiveRecord::RecordInvalid
     render :action => 'signup'
   end
@@ -49,6 +74,7 @@ class AccountController < ApplicationController
     cookies.delete :auth_token
     reset_session
     flash[:notice] = "You have been logged out."
-    redirect_back_or_default(:controller => 'dashboard', :action => 'index')
+    redirect_to dashboard_path
   end
+
 end

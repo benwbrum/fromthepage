@@ -1,9 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
   public :render_to_string
-  in_place_edit_for :collection, :title
-  in_place_edit_for :collection, :intro_block
-  in_place_edit_for :collection, :footer_block
   protect_from_forgery :except => [:set_collection_title, 
                                     :set_collection_intro_block, 
                                     :set_collection_footer_block]
@@ -12,12 +9,12 @@ class CollectionController < ApplicationController
   def authorized?
     if logged_in? && current_user.owner
       if @collection
-        unless current_user.like_owner? @collection
-          redirect_to :controller => 'dashboard'
-        end
+	unless current_user.like_owner? @collection
+	  redirect_to dashboard_path
+	end
       end
     else
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
 
@@ -52,7 +49,7 @@ class CollectionController < ApplicationController
   
   def delete
     @collection.destroy
-    redirect_to :controller => 'dashboard'
+    redirect_to dashboard_path
   end
 
   def new
@@ -65,16 +62,16 @@ class CollectionController < ApplicationController
   end
 
   def update
-    @collection.attributes=params[:collection]
-    if @collection.save
-      redirect_to :action => 'show', :collection_id => @collection.id
-    else
-      render :action => 'edit'
-    end
+    collection = Collection.find(params[:id])
+    collection.update_attributes(params[:collection])
+    flash[:notice] = "Collection updated successfully."
+    redirect_to :back
   end
   
+  # tested
   def create
-    @collection = Collection.new(params[:collection])
+    @collection = Collection.new
+    @collection.title = params[:collection][:title]
     @collection.owner = current_user
     @collection.save!
     redirect_to :action => 'show', :collection_id => @collection.id

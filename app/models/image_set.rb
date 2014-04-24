@@ -1,3 +1,5 @@
+require 'RMagick'
+
 class ImageSet < ActiveRecord::Base
   include FileUtils::Verbose
   include Magick
@@ -18,6 +20,7 @@ class ImageSet < ActiveRecord::Base
   STATUS_ERROR = 'error'
   STATUS_RUNNING = 'running'
   
+  # tested
   def page_count
     if titled_images == nil
       return 0

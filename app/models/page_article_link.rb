@@ -8,4 +8,8 @@
 class PageArticleLink < ActiveRecord::Base
   belongs_to :page
   belongs_to :article
+
+  # there were mass assignment errors in test
+  attr_accessible :display_text, :page, :article
+
 end

@@ -1,0 +1,3 @@
+there is an issue with not finding session.session_id
+there are two fields in database called session_id:
+one in interactions, one in session

@@ -1,5 +1,3 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
 require_dependency "login_system"
 
 class ApplicationController < ActionController::Base
@@ -11,9 +9,9 @@ class ApplicationController < ActionController::Base
   before_filter :set_current_user_in_model
   before_filter :update_ia_work_server
   before_filter :log_interaction
-  before_filter :store_location_for_login
+  # before_filter :store_location_for_login
   before_filter :load_html_blocks
-  after_filter :complete_interaction
+  # after_filter :complete_interaction
   before_filter :authorize_collection
 
 
@@ -100,7 +98,12 @@ class ApplicationController < ActionController::Base
   # log what was done
   def log_interaction
     @interaction = Interaction.new
-    @interaction.session_id = session.session_id
+    if !session.respond_to?(:session_id)
+      @interaction.session_id = Interaction.count + 1 
+    else
+      @interaction.session_id = session.session_id
+    end
+    
     @interaction.browser = request.env['HTTP_USER_AGENT']
     @interaction.ip_address = request.env['REMOTE_ADDR']
     if(logged_in?)
@@ -108,8 +111,8 @@ class ApplicationController < ActionController::Base
     end
     clean_params = params.reject{|k,v| k=='password'}
     if clean_params['user']
-       clean_params['user'] = clean_params['user'].reject{|k,v| k=~/password/}
-    end		    
+      clean_params['user'] = clean_params['user'].reject{|k,v| k=~/password/}
+    end    
 
     @interaction.params = clean_params.inspect
 
@@ -135,7 +138,7 @@ class ApplicationController < ActionController::Base
   def load_html_blocks
     @html_blocks = {}
     page_blocks = 
-    	PageBlock.find_all_by_controller_and_view(controller_name, action_name)
+      PageBlock.find_all_by_controller_and_view(controller_name, action_name)
     page_blocks.each do |b|
         if b && b.html
           b.rendered_html = render_to_string(:inline => b.html)
@@ -160,8 +163,12 @@ class ApplicationController < ActionController::Base
     return unless @collection.restricted
     
     unless logged_in? && current_user.like_owner?(@collection)
-      redirect_to :controller => 'dashboard'
+      redirect_to dashboard_path
     end
   end
 
 end
+
+# class ApplicationController < ActionController::Base
+#   protect_from_forgery
+# end

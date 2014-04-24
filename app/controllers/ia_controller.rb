@@ -1,5 +1,5 @@
 class IaController < ApplicationController
-  require 'hpricot'
+  require 'nokogiri'
   require 'open-uri'
   before_filter :load_ia_work_from_params
 
@@ -71,17 +71,16 @@ class IaController < ApplicationController
   end
 
   def title_from_ocr
-    
     loc_doc = fetch_loc_doc(@ia_work.book_id)
     scandata_file, djvu_file = files_from_loc(loc_doc)
     
     djvu_url =  "http://#{@ia_work.server}#{@ia_work.ia_path}/#{djvu_file}"
     logger.debug(djvu_url)
-    djvu_doc = Hpricot(open(djvu_url))
-    leaf_objects = djvu_doc.search('object')
+    djvu_doc = Nokogiri::XML(open(djvu_url))
+    leaf_objects = djvu_doc.search('OBJECT')
     leaf_objects.each do |e|
 
-      page_id = e.search('/param[@name="PAGE"]').first['value']
+      page_id = e.search('PARAM[@name="PAGE"]').first['value']
       page_id[/\w*_0*/]=""
       page_id[/\.djvu/]=''
       logger.debug(page_id)
@@ -89,11 +88,11 @@ class IaController < ApplicationController
       # correspond with leaf_id 6
       leaf_number = page_id.to_i
 
-      line = e.search('line').first
+      line = e.search('LINE').first
       if(line) 
         words = []
         
-        line.search('word').each { |e| words << e.inner_text.capitalize }
+        line.search('WORD').each { |e| words << e.inner_text.capitalize }
         title = words.join(" ")
         logger.debug(title)
         
@@ -122,7 +121,7 @@ class IaController < ApplicationController
   def import_work 
     # bail if the user bailed
     if params[:commit] == 'Cancel'
-      redirect_to :controller => 'dashboard', :action => 'main_dashboard'
+      redirect_to dashboard_path
       return
     end
     detail_url = params[:detail_url]
@@ -155,7 +154,6 @@ class IaController < ApplicationController
     logger.debug("image_format, archive_format = #{image_format}, #{archive_format}")
     @ia_work[:image_format] = image_format
     @ia_work[:archive_format] = archive_format
-
     scandata_file, djvu_file, zip_file = files_from_loc(loc_doc)
     @ia_work[:scandata_file] = scandata_file
     @ia_work[:djvu_file] = djvu_file
@@ -165,7 +163,7 @@ class IaController < ApplicationController
     # now fetch the scandata.xml file and parse it
     scandata_url = "http://#{server}#{dir}/#{scandata_file}" # will not work on new format: we cannot assume filenames are re-named with their content
     
-    sd_doc = Hpricot(open(scandata_url))
+    sd_doc = Nokogiri::XML(open(scandata_url))
     
     @pages = sd_doc.search('page')
     @pages.each do |page|
@@ -178,6 +176,7 @@ class IaController < ApplicationController
       leaf.page_type = page.search('pagetype').text
       leaf.page_w = page.search('w').text
       leaf.page_h = page.search('h').text
+      binding.pry
       @ia_work.ia_leaves << leaf
       
       if leaf.page_type == 'Title'
@@ -216,7 +215,7 @@ private
     # first get the call the location API and parse that document
     api_url = 'http://www.archive.org/services/find_file.php?file='+id
     logger.debug(api_url)
-    loc_doc = Hpricot(open(api_url))
+    loc_doc = Nokogiri::XML(open(api_url))
     return loc_doc
   end
   

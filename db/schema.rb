@@ -1,15 +1,17 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111227032246) do
+ActiveRecord::Schema.define(:version => 20131022212008) do
 
   create_table "article_article_links", :force => true do |t|
     t.integer  "source_article_id"
@@ -91,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20111227032246) do
     t.datetime "created_on"
     t.text     "intro_block"
     t.text     "footer_block"
+    t.boolean  "restricted",    :default => false
   end
 
   add_index "collections", ["owner_user_id"], :name => "index_collections_on_owner_user_id"
@@ -127,6 +130,14 @@ ActiveRecord::Schema.define(:version => 20111227032246) do
   add_index "deeds", ["page_id"], :name => "index_deeds_on_page_id"
   add_index "deeds", ["user_id"], :name => "index_deeds_on_user_id"
   add_index "deeds", ["work_id"], :name => "index_deeds_on_work_id"
+
+  create_table "exports", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "work_id"
+    t.string   "export_format"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "ia_leaves", :force => true do |t|
     t.integer  "ia_work_id"
@@ -231,6 +242,56 @@ ActiveRecord::Schema.define(:version => 20111227032246) do
     t.datetime "updated_at"
   end
 
+  create_table "omeka_collections", :force => true do |t|
+    t.integer  "omeka_id"
+    t.integer  "collection_id"
+    t.string   "title"
+    t.string   "description"
+    t.integer  "omeka_site_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "omeka_files", :force => true do |t|
+    t.integer  "omeka_id"
+    t.integer  "omeka_item_id"
+    t.string   "mime_type"
+    t.string   "fullsize_url"
+    t.string   "thumbnail_url"
+    t.string   "original_filename"
+    t.integer  "omeka_order"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "page_id"
+  end
+
+  create_table "omeka_items", :force => true do |t|
+    t.string   "title"
+    t.string   "subject"
+    t.string   "description"
+    t.string   "rights"
+    t.string   "creator"
+    t.string   "format"
+    t.string   "coverage"
+    t.integer  "omeka_site_id"
+    t.integer  "omeka_id"
+    t.string   "omeka_url"
+    t.integer  "omeka_collection_id"
+    t.integer  "user_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "work_id"
+  end
+
+  create_table "omeka_sites", :force => true do |t|
+    t.string   "title"
+    t.string   "api_url"
+    t.string   "api_key"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "page_article_links", :force => true do |t|
     t.integer  "page_id"
     t.integer  "article_id"
@@ -284,7 +345,7 @@ ActiveRecord::Schema.define(:version => 20111227032246) do
   end
 
   add_index "pages", ["work_id"], :name => "index_pages_on_work_id"
-  add_index "pages", ["xml_text"], :name => "pages_xml_text_index"
+  add_index "pages", ["xml_text"], :name => "pages_xml_text_index", :length => {"xml_text"=>1000}
 
   create_table "plugin_schema_info", :id => false, :force => true do |t|
     t.string  "plugin_name"

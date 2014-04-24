@@ -70,6 +70,6 @@ def prereq_is_done? (prereq)
 end
 
 def debug(msg)
-  RAILS_DEFAULT_LOGGER.debug("RAKE DEBUG #{msg}")
-  RAILS_DEFAULT_LOGGER.flush
+  Rails.logger.debug("RAKE DEBUG #{msg}")
+  Rails.logger.flush
 end

@@ -1,7 +1,6 @@
-# Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-    
-  def html_block(tag)
+
+    def html_block(tag)
     render({ :partial => 'page_block/html_block', 
              :locals => 
               { :tag => tag,
@@ -10,6 +9,7 @@ module ApplicationHelper
                 :origin_action => action_name
               }
           })
+        
   end
 
 
@@ -55,11 +55,22 @@ module ApplicationHelper
     
 
     if options[:collection]
-      deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
+      # deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
+      deeds = @collection.deeds.where(conditions).order('created_at DESC').limit(limit)
     else
       restrict = " collections.restricted = 0 "
       conditions = conditions ? conditions + " AND " + restrict : restrict
-      deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
+      # deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
+      logger.debug "in application helper"
+      logger.debug "limit: #{limit}"
+      # logger.debug "collection is a: #{collection.class}"
+      # This is the original
+      # deeds = Deed.find(:limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
+      # this did not work either
+      # deeds = Deed.find(:limit => limit, :order => 'created_at DESC', :conditions => conditions)
+      # this works for now
+      # deeds = [Deed.first, Deed.last] # I just need an array
+      deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit)
     end
     render({ :partial => 'deed/deeds', 
              :locals => 
@@ -94,5 +105,6 @@ module ApplicationHelper
       "1 second ago"
     end
   end
+
 
 end

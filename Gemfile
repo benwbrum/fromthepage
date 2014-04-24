@@ -1,35 +1,37 @@
-source :gemcutter
-gem "rails", "~> 2.3.17"
-#gem "sqlite3-ruby", :require => "sqlite3"
+source 'https://rubygems.org'
+gem "rails", "3.2.17"
 
-gem 'will_paginate' , '~> 2'
-gem 'rmagick'
-gem 'hpricot'
-gem 'oai'
-gem 'capistrano'
+gem 'pry'
 
-gem 'mysql'
+gem 'will_paginate' , '3.0.5'
+gem 'rmagick', '2.13.2'
+gem 'nokogiri'
+gem 'oai', "0.3.1"
+gem 'capistrano', '~> 3.1.0'
+gem 'jquery-rails'
 
+gem 'mysql2','0.3.15'
 
-# bundler requires these gems in all environments
-# gem "nokogiri", "1.4.2"
-# gem "geokit"
+gem 'recaptcha', '0.3.6'
+
+gem 'omeka_client', :git => 'https://github.com/benwbrum/omeka_client'
+
+gem 'acts_as_list'
+gem 'acts_as_tree'
 
 group :development do
-  # bundler requires these gems in development
-  # gem "rails-footnotes"
-	gem 'mysql2','0.2.7'
 end
 
 group :test do
-  # bundler requires these gems while running tests
-  # gem "rspec"
-  # gem "faker"
+  gem "database_cleaner"
+  gem "capybara"
+  gem "shoulda"
 end
 
 group :production do
-  # bundler requires these gems in development
-  # gem "rails-footnotes"
-#	gem 'ftools'
 end
 
+gem "rspec-rails", :group => [:development, :test]
+gem "factory_girl_rails", :group => [:development, :test]
+
+#- EOF

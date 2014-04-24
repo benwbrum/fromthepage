@@ -13,7 +13,7 @@ class ImageTransformerWorker < BackgrounDRb::Rails
   # you stated in the new_worker call. Setup your
   # vars here and call start_working.
   def do_work(args)
-    @logger.debug("RAILS_ENV=#{RAILS_ENV}")
+    @logger.debug("Rails.env=#{Rails.env}")
     @args = args
 
     @image_set = ImageSet.find(@args[:image_set_id].to_i)

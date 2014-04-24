@@ -8,7 +8,7 @@ module AuthenticatedSystem
     
     # Accesses the current user from the session.
     def current_user
-      @current_user ||= (session[:user] && User.find_by_id(session[:user])) || :false
+      @current_user ||= (session[:user] && User.find(session[:user])) || :false
     end
     
     # Store the given user in the session.
@@ -80,7 +80,14 @@ module AuthenticatedSystem
     #
     # We can return to this location by calling #redirect_back_or_default.
     def store_location
-      session[:return_to] = request.request_uri
+      logger.debug "in store_location"
+      logger.debug "request is a #{request.class}"
+      rp = request.request_parameters
+      logger.debug "rp is a #{rp.class}"
+      logger.debug "rp.keys.inspect: #{rp.keys.inspect}"
+      logger.debug "request.url: #{request.url}"
+      # session[:return_to] = request.request_uri
+      session[:return_to] = request.url
       logger.debug("DEBUG store_location: session[:return_to]=#{session[:return_to]}")
     end
     

@@ -22,7 +22,7 @@ class OaiController < ApplicationController
     spec.repository_url = params[:repository_url]
     spec.user_id = current_user.id
     spec.save
-    redirect_to(:controller => "dashboard", :action => "main_dashboard")
+    redirect_to dashboard_path
   end
 
   def record_list

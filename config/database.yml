@@ -36,12 +36,4 @@ test:
   password: rails
   socket: /var/run/mysqld/mysqld.sock
 
-production:
-  adapter: mysql
-  encoding: utf8
-  database: fromthepage_production
-  pool: 5
-  username: rails
-  password: rails
-#  socket: /var/run/mysqld/mysqld.sock
-  host: localhost
+

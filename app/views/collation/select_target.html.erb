@@ -1,0 +1,12 @@
+<%= form_tag( {:action => 'select_target_process'} ) do %>
+
+Choose an image set to merge <%= @right_set.summary %> into:
+<br />
+<select name='left_set_id'>
+<%= options_from_collection_for_select(@left_sets, 'id', 'summary') %>
+</select>
+<%= hidden_field_tag('right_set_id', @right_set.id) %>
+<br />
+
+<input type="submit" value="Next">
+<% end %>

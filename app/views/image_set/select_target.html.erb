@@ -1,0 +1,12 @@
+<%= form_tag( {:action => 'append'} ) do %>
+
+Choose an image set to merge <%= @image_set.summary %> into:
+<br />
+<select name='set_to_append_id'>
+<%= options_from_collection_for_select(@left_sets, 'id', 'summary') %>
+</select>
+<%= hidden_field_tag('image_set_id', @image_set.id) %>
+<br />
+
+<input type="submit" value="Next">
+<% end %>
