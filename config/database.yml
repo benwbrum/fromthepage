@@ -21,7 +21,7 @@ development:
   pool: 5
   username: rails
   password: rails
-#  socket: /var/run/mysqld/mysqld.sock
+  #socket: /var/run/mysqld/mysqld.sock
   host: localhost
 
 # Warning: The database defined as "test" will be erased and
