@@ -32,9 +32,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many(:owned_collections, 
                           { :join_table => 'collection_owners', 
                             :class_name => 'Collection'})
-  has_many :page_versions, :order => 'created_on DESC'
-  has_many :article_versions, :order => 'created_on DESC'
-  has_many :notes, :order => 'created_at DESC'
+  has_many :page_versions, -> { order 'created_on DESC' }
+  has_many :article_versions, -> { order 'created_on DESC' }
+  has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
   def to_i
