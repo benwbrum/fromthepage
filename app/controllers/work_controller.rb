@@ -162,4 +162,9 @@ class WorkController < ApplicationController
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
     render(:text => msg )
   end
+
+  private
+  def work_params
+    params.require(:work).permit(:title, :description, :physical_description, :document_history, :permission_description, :location_of_composition, :author, :transcription_conventions)
+  end
 end

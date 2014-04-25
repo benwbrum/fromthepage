@@ -34,4 +34,9 @@ class CategoryController < ApplicationController
     redirect_to :action => 'manage', :collection_id => @collection.id
   end
 
+  private
+  def category_params
+    params.require(:category).permit(:collection_id)
+  end
+
 end

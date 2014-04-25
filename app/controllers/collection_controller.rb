@@ -89,7 +89,7 @@ class CollectionController < ApplicationController
     redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
-private
+  private
  
   def set_collection_for_work(collection, work)
     # first update the id on the work
@@ -101,5 +101,9 @@ private
       article.collection = collection
       article.save!
     end
+  end
+
+  def collection_params
+    params.require(:collection).permit(:title, :intro_block, :footer_block)
   end
 end

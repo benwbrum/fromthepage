@@ -93,7 +93,7 @@ class PageController < ApplicationController
     redirect_to :back
   end
 
-private
+  private
 
   def reduce_by_one(page)
     page.shrink_factor = page.shrink_factor + 1
@@ -109,6 +109,10 @@ private
     page.base_height = image.rows
     image = nil
     page.save!
+  end
+
+  def page_params
+    params.require(:page).permit(:title)
   end
 
 end
