@@ -1,7 +1,6 @@
 class TitledImage < ActiveRecord::Base
   belongs_to :image_set
   acts_as_list :scope => :image_set
-  attr_accessible :title_seed, :title
   
   # tested
   def original_file(raw=false)
