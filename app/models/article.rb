@@ -28,7 +28,7 @@ class Article < ActiveRecord::Base
 
   has_many :pages, :through => :page_article_links, :order => "pages.work_id, pages.position ASC"
 
-  has_many :article_versions, :order => :version
+  has_many :article_versions, -> { order 'version' }
 
   
   after_save :create_version
