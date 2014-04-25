@@ -14,19 +14,17 @@ class Article < ActiveRecord::Base
 
   has_and_belongs_to_many :categories, :uniq => true
   belongs_to :collection
-  has_many(:target_article_links, 
-           { :foreign_key => "target_article_id", 
-             :class_name => 'ArticleArticleLink', 
-             :include => [:source_article], 
-             :order => "articles.title ASC"})
-  has_many(:source_article_links, 
-           { :foreign_key => "source_article_id", 
-             :class_name => 'ArticleArticleLink' })
-  has_many(:page_article_links, 
-           { :include => [:page], 
-             :order => "pages.work_id, pages.position ASC" })
+  has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink'})
+  scope :target_article_links, -> { include 'source_article' }
+  scope :target_article_links, -> { order 'articles.title ASC' }
 
-  has_many :pages, :through => :page_article_links
+  has_many(:source_article_links, { :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink' })
+
+  has_many(:page_article_links)
+  scope :page_article_links, -> { include([:page]) }
+  scope :page_article_links, -> { order "pages.work_id, pages.position ASC" }
+
+  has_many :pages, through: :page_article_links
   scope :pages, -> { order "pages.work_id, pages.position ASC" }
 
   has_many :article_versions, -> { order 'version' }
