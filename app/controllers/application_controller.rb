@@ -136,7 +136,7 @@ class ApplicationController < ActionController::Base
   def load_html_blocks
     @html_blocks = {}
     page_blocks = 
-      PageBlock.find_all_by_controller_and_view(controller_name, action_name)
+      PageBlock.where(controller: controller_name, view: action_name)
     page_blocks.each do |b|
         if b && b.html
           b.rendered_html = render_to_string(:inline => b.html)
