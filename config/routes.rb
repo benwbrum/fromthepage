@@ -11,8 +11,8 @@ Fromthepage::Application.routes.draw do
   get "/dashboard" => "dashboard#index"
 
   root :to => 'static#splash'
-  match 'ZenasMatthews' => 'collection#show', :collection_id => 7
-  match 'JuliaBrumfield' => 'collection#show', :collection_id => 1
-  match '/:controller(/:action(/:id))'
+  get 'ZenasMatthews' => 'collection#show', :collection_id => 7
+  get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  get '/:controller(/:action(/:id))'
 
 end
