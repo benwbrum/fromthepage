@@ -26,7 +26,8 @@ class Article < ActiveRecord::Base
            { :include => [:page], 
              :order => "pages.work_id, pages.position ASC" })
 
-  has_many :pages, :through => :page_article_links, -> { order "pages.work_id, pages.position ASC" }
+  has_many :pages, :through => :page_article_links
+  scope :pages, -> { order "pages.work_id, pages.position ASC" }
 
   has_many :article_versions, -> { order 'version' }
 
