@@ -24,7 +24,7 @@ class StatisticsController < ApplicationController
   
   end
 
-private
+  private
   def load_deeds
     cond_string = 'deed_type = ?'
     if @collection
@@ -43,7 +43,7 @@ private
   end
 
   def load_users
-    @users = User.find :all   
+    @users = User.all
 
     @t_users = @users.reject { |u| !@t_deeds_by_user.keys.include? u.id }
     @t_top_ten_users_and_deeds = 
@@ -72,6 +72,4 @@ private
 
     return top_ten_user_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
   end
-
-
 end
