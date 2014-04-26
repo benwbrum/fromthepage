@@ -8,7 +8,7 @@ class StatisticsController < ApplicationController
   
   def collection
     @works = @collection.works :include => 'work_statistics'
-    @works.sort! { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
+    @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
   end
 
   def users
@@ -31,15 +31,9 @@ class StatisticsController < ApplicationController
       cond_string = "collection_id = #{@collection.id} AND " + cond_string
     end
     
-    @t_deeds_by_user = 
-      Deed.count({:group => 'user_id', 
-                  :conditions => [cond_string, Deed::PAGE_TRANSCRIPTION]})
-    @e_deeds_by_user = 
-      Deed.count({:group => 'user_id', 
-                  :conditions => [cond_string, Deed::PAGE_EDIT]})
-    @i_deeds_by_user = 
-      Deed.count({:group => 'user_id', 
-                  :conditions => [cond_string, Deed::PAGE_INDEXED]})
+    @t_deeds_by_user = Deed.group('user_id').where([cond_string, Deed::PAGE_TRANSCRIPTION]).count
+    @e_deeds_by_user = Deed.group('user_id').where([cond_string, Deed::PAGE_EDIT]).count
+    @i_deeds_by_user = Deed.group('user_id').where([cond_string, Deed::PAGE_INDEXED]).count
   end
 
   def load_users
