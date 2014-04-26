@@ -23,9 +23,7 @@ class ExportController < ApplicationController
                         GROUP BY user_id 
                         ORDER BY count(*) DESC")
 
-    @work_versions = PageVersion.find(:all, :joins => :page,
-                        :conditions => ['pages.work_id = ?', @work.id],
-                       :order => "work_version DESC")
+    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").all
 
     @all_articles = @work.articles
     @person_articles = []
@@ -47,9 +45,4 @@ class ExportController < ApplicationController
     end
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
-
-
-
-
-
 end

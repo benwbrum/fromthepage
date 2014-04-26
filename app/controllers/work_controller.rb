@@ -76,7 +76,6 @@ class WorkController < ApplicationController
   
   def scribes_tab
     @scribes = @work.scribes
-    # @nonscribes = User.find(:all) - @scribes
     @nonscribes = User.all - @scribes
   end
 

@@ -21,7 +21,7 @@ class CollectionController < ApplicationController
   def owners
     @main_owner = @collection.owner
     @owners = @collection.owners + [@main_owner]
-    @nonowners = User.find(:all) - @owners
+    @nonowners = User.all - @owners
   end
 
   def add_owner
