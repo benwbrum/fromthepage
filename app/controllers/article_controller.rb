@@ -118,7 +118,7 @@ class ArticleController < ApplicationController
       min_rank = params[:min_rank].to_i
     else
       # calculate whether we should reduce the rank
-      num_articles = article_links.size
+      num_articles = article_links.count
       while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
         # remove the outer rank
         #logger.debug("DEBUG: \tinvestigating rank #{min_rank} for #{num_articles}\n")
