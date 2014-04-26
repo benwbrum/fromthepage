@@ -71,16 +71,7 @@ class WorkController < ApplicationController
   end
 
   def versions
-    @page_versions = 
-      # PageVersion.find(:all, 
-      #                 :joins => :page,
-      #                 :conditions => ['pages.work_id = ?',
-      #                                 @work.id],
-      #                 :order => "work_version desc")
-      PageVersion.find(:all, :joins => :page,
-                        :conditions => ['pages.work_id = ?', @work.id],
-                       :order => "work_version desc")
-
+    @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version desc")
   end
   
   def scribes_tab
