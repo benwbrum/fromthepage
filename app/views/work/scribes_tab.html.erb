@@ -26,8 +26,7 @@
 			  <%= link_to("Remove", 
 			              { :action => 'remove_scribe', 
 			                :user_id => user.id, 
-			                :work_id => @work.id, 
-                      :ol => 'w_st_sl_remove' }) %>
+			                :work_id => @work.id }) %>
 	      <br />
 			<% end %>
 		  <br />
@@ -52,8 +51,7 @@
 			  <%= link_to("Add", 
 			              { :action => 'add_scribe', 
 			                :user_id => user.id, 
-			                :work_id => @work.id,  
-                      :ol => 'w_st_ul_add'}) %>
+			                :work_id => @work.id }) %>
 			  <br />
 			<% end %>
 		  <br />

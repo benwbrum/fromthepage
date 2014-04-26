@@ -5,8 +5,7 @@
       <%= link_to('Previous Page',
                   { :controller => 'display',
                     :action => 'display_page',
-                    :page_id => higher_item.id,
-                    :ol => 'p_nav_prev' }) %>
+                    :page_id => higher_item.id }) %>
     <% else %>
       &nbsp;
     <% end %>
@@ -17,8 +16,7 @@
       <%= link_to('Next Page',
                   { :controller => 'display',
                     :action => 'display_page',
-                    :page_id => lower_item.id,
-                    :ol => 'p_nav_next' }) %>
+                    :page_id => lower_item.id }) %>
     <% else %>
       &nbsp;
     <% end %>

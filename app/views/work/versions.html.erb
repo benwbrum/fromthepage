@@ -31,8 +31,7 @@
            <%= link_to(version.page.title, 
                        { :controller => 'page_version', 
                          :action => 'list', 
-                         :page_id => version.page.id ,
-                         :ol => 'w_ver_page_title' }) %>
+                         :page_id => version.page.id }) %>
          </td>
          <td class="revision" width="30%"><%= version.created_on %></td>
          <td class="revision" width="30%"><%= link_to(version.user.display_name,
@@ -42,8 +41,7 @@
          <td class="revision" width="10%"><%= link_to('view', 
                          { :controller => 'page_version',
                            :action => 'show', 
-                           :page_version_id => version.id ,
-                           :ol => 'w_ver_page_view'}) %></td>
+                           :page_version_id => version.id }) %></td>
        </tr>
        <% end %>
      </table>

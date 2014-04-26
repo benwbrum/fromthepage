@@ -29,18 +29,15 @@
 					<% thumb_url = "http://www.archive.org/download/#{page.work.ia_work.book_id}/page/leaf#{page.ia_leaf.leaf_number}_thumb.jpg" %>
 			      <%= link_to(image_tag(thumb_url),
 		                    { :action => 'display_page',
-		                      :page_id => page.id,
-	                        :ol => 'w_rw_p_pl' })  %>
+		                      :page_id => page.id })  %>
 				<% elsif page.omeka_file %>
 			      <%= link_to(image_tag(page.omeka_file.thumbnail_url),
 		                    { :action => 'display_page',
-		                      :page_id => page.id,
-	                        :ol => 'w_rw_p_pl' })  %>
+		                      :page_id => page.id })  %>
 				<% else %>
 			      <%= link_to(image_tag(file_to_url(page.thumbnail_image)),
 		                    { :action => 'display_page',
-		                      :page_id => page.id,
-	                        :ol => 'w_rw_p_pl' })  %>
+		                      :page_id => page.id })  %>
 				<% end %>
 	        </div>
 	  
@@ -57,8 +54,7 @@
 	                  <%= link_to('Help transcribe this page!',
 	                              { :controller => 'transcribe',
 	                                :action => 'display_page',
-	                                :page_id => page.id,
-	                                :ol => 'w_rw_p_tl' }) %>
+	                                :page_id => page.id }) %>
 	                </i>
 	              </p>
 		        <% end %>
@@ -77,8 +73,7 @@
 					<% end %>
 			      <%= link_to('View this page',
 		                    { :action => 'display_page',
-		                      :page_id => page.id,
-	                        :ol => 'w_rw_p_pl' }) %>.
+		                      :page_id => page.id }) %>.
 	          
   	      </div>
 	      </div>

@@ -163,8 +163,7 @@ IAMANAGE
         If you don't have an account yet and wish to transcribe works, please 
         <%= link_to("sign up", 
                     { :controller => 'account',
-                      :action => 'signup', 
-                      :ol => 'acct_login_sulnk' } )%>.
+                      :action => 'signup' } )%>.
       </p>
 ACCOUNTLOGIN
 
@@ -241,8 +240,7 @@ transcribe handwritten documents online.  Currently it hosts
 the <%= link_to('Julia Brumfield Diaries',
                 { :controller => 'collection',
                   :action => 'show',
-                  :collection_id => 1,
-                  :ol => 's_sp_diaries'})%>, an incomplete collection 
+                  :collection_id => 1 })%>, an incomplete collection 
 of diaries written between 1915 and 1938 chronicling life
 on a tobacco farm in Pittsylvania County, Virginia.
 </p>
@@ -278,8 +276,7 @@ STATICSPLASHLEFT
         <b><%= link_to('Read the 1918 diary',
                         { :controller => 'display',
                           :action => 'read_work',
-                          :work_id => 2,
-                          :ol => 's_sp_1918' }) %></b>
+                          :work_id => 2 }) %></b>
 </p>
 <p>
         The 1919 and 1921 diaries were transcribed by volunteers using FromThePage.
@@ -292,13 +289,11 @@ STATICSPLASHLEFT
         <b><%= link_to('Read the 1919 diary',
                         { :controller => 'display',
                           :action => 'read_work',
-                          :work_id => 3,
-                          :ol => 's_sp_1919' }) %></b><br />
+                          :work_id => 3 }) %></b><br />
         <b><%= link_to('Read the 1921 diary',
                         { :controller => 'display',
                           :action => 'read_work',
-                          :work_id => 6,
-                          :ol => 's_sp_1921' }) %></b>
+                          :work_id => 6 }) %></b>
 </p>
 <p>
 </p>
@@ -312,13 +307,11 @@ STATICSPLASHLEFT
         to try out the FromThePage software, you'll need to 
         <%= link_to('create an account',
                     { :controller => 'account',
-                      :action => 'signup',
-                      :ol => 's_sp_signup' }) %>.  
+                      :action => 'signup' }) %>.  
         Then <b><%= link_to('visit the 1920 diary',
                             { :controller => 'display',
                               :action => 'read_work',
-                              :work_id => 9,
-                              :ol => 's_sp_1920' }) %></b> 
+                              :work_id => 9 }) %></b> 
         and click the <code>transcribe</code> tab on any page.
 </p>
 </div>

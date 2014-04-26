@@ -34,8 +34,7 @@
               link_to('delete', 
 	                    { :action => 'delete',
 	                      :category_id => category.id,
-	                      :collection_id => @collection.id,
-                        :ol => 'cat_mg_delete' },
+	                      :collection_id => @collection.id },
 	                    { :confirm => "Are you sure you want to delete #{category.title} and all its subcategories?"}) +
 	            " " +
               link_to_function('add child', 
