@@ -7,7 +7,7 @@ class CollectionController < ApplicationController
   before_filter :authorized?, :only => [:edit, :delete, :new, :create]
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       if @collection
 	unless current_user.like_owner? @collection
 	  redirect_to dashboard_path
@@ -21,7 +21,7 @@ class CollectionController < ApplicationController
   def owners
     @main_owner = @collection.owner
     @owners = @collection.owners + [@main_owner]
-    @nonowners = User.find(:all) - @owners
+    @nonowners = User.all - @owners
   end
 
   def add_owner
@@ -89,7 +89,7 @@ class CollectionController < ApplicationController
     redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
-private
+  private
  
   def set_collection_for_work(collection, work)
     # first update the id on the work
@@ -101,5 +101,9 @@ private
       article.collection = collection
       article.save!
     end
+  end
+
+  def collection_params
+    params.require(:collection).permit(:title, :intro_block, :footer_block)
   end
 end

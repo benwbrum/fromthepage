@@ -6,7 +6,7 @@ class ArticleController < ApplicationController
   DEFAULT_ARTICLES_PER_GRAPH = 40
   
   def authorized?
-    unless logged_in?
+    unless user_signed_in?
       redirect_to dashboard_path
     end
   end
@@ -16,14 +16,8 @@ class ArticleController < ApplicationController
     # 1. List of articles needs to be collection-specific
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
-    #@articles = Article.find(:all)
-    
-    @uncategorized_articles = 
-      Article.find(:all, 
-                   { :joins => 'LEFT JOIN articles_categories ac ON id = ac.article_id',
-                     :conditions => ['ac.category_id IS NULL AND collection_id = ?',
-                                     @collection.id]})
-     
+
+    @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])
   end
 
   def update
@@ -124,7 +118,7 @@ class ArticleController < ApplicationController
       min_rank = params[:min_rank].to_i
     else
       # calculate whether we should reduce the rank
-      num_articles = article_links.size
+      num_articles = article_links.count
       while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
         # remove the outer rank
         #logger.debug("DEBUG: \tinvestigating rank #{min_rank} for #{num_articles}\n")

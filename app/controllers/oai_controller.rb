@@ -36,7 +36,6 @@ class OaiController < ApplicationController
   end
 
   def repository_list
-    @repositories = OaiRepository.find :all
+    @repositories = OaiRepository.all
   end
-
 end

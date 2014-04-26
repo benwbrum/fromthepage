@@ -21,16 +21,14 @@
                   <%= link_to('Help transcribe this page!',
                               { :controller => 'transcribe',
                                 :action => 'display_page',
-                                :page_id => @page.id,
-                                :ol => 'p_dp_tl' }) %>
+                                :page_id => @page.id }) %>
                 </i>
               </p>
 			  <% unless @page.status == Page::STATUS_BLANK %>
 				  <%= button_to('mark this page blank',
 								{ :controller => 'transcribe',
 								  :action => 'mark_page_blank',
-		                          :page_id => @page.id,
-		                          :ol => 'p_dp_tl' }) %>
+		                          :page_id => @page.id }) %>
 			  <% end %>
         <% end %>
       </div>
@@ -71,7 +69,6 @@
 		<% end %>
 	</div>
 
-<%= javascript_include_tag "jquery.are-you-sure.js" %>
 <%= javascript_tag do %>
   $( document ).ready(function() {
     $('#toggle').click(function() { $("#note_container").toggle(); });

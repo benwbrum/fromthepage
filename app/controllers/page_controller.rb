@@ -6,7 +6,7 @@ class PageController < ApplicationController
   before_filter :authorized?
 
   def authorized?
-    if logged_in? && current_user.owner
+    if user_signed_in? && current_user.owner
       if @work
         redirect_to dashboard_path unless @work.owner == current_user
       end
@@ -93,7 +93,7 @@ class PageController < ApplicationController
     redirect_to :back
   end
 
-private
+  private
 
   def reduce_by_one(page)
     page.shrink_factor = page.shrink_factor + 1
@@ -109,6 +109,10 @@ private
     page.base_height = image.rows
     image = nil
     page.save!
+  end
+
+  def page_params
+    params.require(:page).permit(:title)
   end
 
 end

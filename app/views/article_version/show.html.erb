@@ -12,8 +12,7 @@
   <%= link_to(@article.title,
               { :controller => 'article_version',
                 :action => 'list',
-                :article_id => @article.id,
-            		:ol => 'av_ver_art' }) %> 
+                :article_id => @article.id }) %> 
   on <%= @article_version.created_on %>:
 </div>
 <div>

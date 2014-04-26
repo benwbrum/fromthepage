@@ -14,10 +14,8 @@
      end
   %>
   <title><%= title %></title>
-  <%= javascript_include_tag :defaults %>  
-
+  <%= javascript_include_tag 'application' %>
   <%= stylesheet_link_tag 'application' %>
-
   <%= stylesheet_link_tag 'transcribe' %>
 
   <meta name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=" />
@@ -26,18 +24,12 @@
 <body>
   <div id="undernav">
     <%= link_to "Dashboard", dashboard_path %>
-    <% if logged_in? %>
-	    <%= link_to('Log out', { :controller => 'account', 
-	                             :action => 'logout',
-                               :ol => 'l_hd_lo' }) %>
+    <% if user_signed_in? %>
+	    <%= link_to('Log out', destroy_user_session_path, method: :delete) %>
     <% else %>
-	    <%= link_to('Log in', { :controller => 'account', 
-	                            :action => 'login',
-                               :ol => 'l_hd_li' }) %>
+	    <%= link_to('Log in', new_user_session_path) %>
 	    |
-	    <%= link_to('Sign Up', { :controller => 'account', 
-	                             :action => 'signup',
-                               :ol => 'l_hd_signup' }) %>
+	    <%= link_to('Sign Up', new_user_registration_path) %>
     <% end %>
 	|
 	<%= link_to('FAQ', { :controller => 'static', :action => 'faq' }) %>
@@ -61,16 +53,14 @@
 		        <%= link_to(@collection.title,
 		                    { :controller => 'collection',
 		                      :action => 'show',
-		                      :collection_id => @collection.id,
-                          :ol => 'l_hd_c_link' }) %>
+		                      :collection_id => @collection.id }) %>
 	        <% end %>
 	        <%= raw("&mdash;") if @collection && @work %>
 	        <% if @work && @work.title %>
 		        <%= link_to(@work.title,
 		                    { :controller => 'display',
 		                      :action => 'read_work',
-		                      :work_id => @work.id,
-                          :ol => 'l_hd_w_link' }) %>
+		                      :work_id => @work.id }) %>
 	        <% end %>
         </h1>
       <% end %>
@@ -82,6 +72,8 @@
 <% if(flash[:error]) %>
         <p style="color: red"><%= flash[:error] %></p>
 <% end %>
+
+<%= flash[:alert] %>
 
 <div><!-- layout content -->
 <%= @content_for_layout %>

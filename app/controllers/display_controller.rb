@@ -6,7 +6,6 @@ class DisplayController < ApplicationController
   PAGES_PER_SCREEN = 5
 
   def read_work
-
     if params.has_key?(:work_id)
       @work = Work.find_by_id(params[:work_id])
     elsif params.has_key?(:url)
@@ -23,17 +22,7 @@ class DisplayController < ApplicationController
                                         :conditions => [ 'pal.article_id = ?', @article.id ]
       @pages.uniq!
     else
-          
-#            @pages = Page.paginate @work.id, :page => params[:page]
-            @pages = Page.paginate :page => params[:page],  
-                                        :order => 'position',
-                                        :per_page => PAGES_PER_SCREEN,
-                                        :conditions => { :work_id => @work.id }
-=begin
-      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],  
-                                        :order => 'position',
-                                        :per_page => PAGES_PER_SCREEN
-=end
+      @pages = Page.order('position').where({ :work_id => @work.id }).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
     end                                      
   end
 
@@ -111,16 +100,4 @@ class DisplayController < ApplicationController
     end                                      
     logger.debug "DEBUG #{@search_string}"
   end
-
-  def too_small
-    # change the page-to-base halvings
-    session[:myopic] = 1
-    redirect_to :controller => params[:origin_controller], :action => params[:origin_action], :page_id => @page.id
-  end
-
-  def too_big
-    session[:myopic] = nil   
-    redirect_to :controller => params[:origin_controller], :action => params[:origin_action], :page_id => @page.id
-  end
-
 end

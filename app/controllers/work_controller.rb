@@ -14,7 +14,7 @@ class WorkController < ApplicationController
   before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
   def authorized?
-    unless logged_in? && 
+    unless user_signed_in? &&
       current_user.owner 
       redirect_to dashboard_path
     else
@@ -71,21 +71,11 @@ class WorkController < ApplicationController
   end
 
   def versions
-    @page_versions = 
-      # PageVersion.find(:all, 
-      #                 :joins => :page,
-      #                 :conditions => ['pages.work_id = ?',
-      #                                 @work.id],
-      #                 :order => "work_version desc")
-      PageVersion.find(:all, :joins => :page,
-                        :conditions => ['pages.work_id = ?', @work.id],
-                       :order => "work_version desc")
-
+    @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version desc")
   end
   
   def scribes_tab
     @scribes = @work.scribes
-    # @nonscribes = User.find(:all) - @scribes
     @nonscribes = User.all - @scribes
   end
 
@@ -161,5 +151,10 @@ class WorkController < ApplicationController
     msg += "<br />stderr:<br />"
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
     render(:text => msg )
+  end
+
+  private
+  def work_params
+    params.require(:work).permit(:title, :description, :physical_description, :document_history, :permission_description, :location_of_composition, :author, :transcription_conventions)
   end
 end
