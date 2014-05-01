@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   before_filter :authorized?
 
   def authorized?
-    unless logged_in? && current_user.admin
+    unless user_signed_in? && current_user.admin
       redirect_to dashboard_path
     end
   end

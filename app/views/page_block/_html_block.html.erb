@@ -2,7 +2,7 @@
    <% if page_block.html %>
       <%= raw(page_block.rendered_html) %>
    <% end %>
-   <% if logged_in? && current_user.admin %>
+   <% if user_signed_in? && current_user.admin %>
 	<p>
 	  <%= link_to('Edit Help Text',
 	              { :controller => 'page_block',
@@ -11,7 +11,7 @@
 	</p>
    <% end %>
 <% else %>
-	<% if logged_in? && current_user.admin %>
+	<% if user_signed_in? && current_user.admin %>
 	  <%= link_to('Create Help Text',
 	              { :controller => 'page_block',
 	                :action => 'new',

@@ -6,7 +6,7 @@ class ArticleController < ApplicationController
   DEFAULT_ARTICLES_PER_GRAPH = 40
   
   def authorized?
-    unless logged_in?
+    unless user_signed_in?
       redirect_to dashboard_path
     end
   end
