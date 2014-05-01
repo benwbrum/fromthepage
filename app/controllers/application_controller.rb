@@ -1,5 +1,3 @@
-require_dependency "login_system"
-
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 

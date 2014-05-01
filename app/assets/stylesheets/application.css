@@ -1,79 +1,65 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
- *
- *= require_self
- *= require_tree .
- */
-
 /* much of this is taken from Ruthsarian Layouts at 
    http://webhost.bridgew.edu/etribou/layouts/rMenu/index.html */
-body { background-color: #eee; color: #000; }
-p { margin: 1em 0; padding: 0; }
+			body { background-color: #eee; color: #000; }
+			p { margin: 1em 0; padding: 0; }
 
-div.two-columns
-{
-    width: 100%;
-    display: inline-block;/* for IE/Mac to contain its child elements */
-    /* \*/ display: block;/* override above rule for every other 
-			        browser using IE/Mac backslash hack */
-    font-family: arial, helvetica, sans-serif;
-    font-size: 100%; /* Changed from 80% BWB */
-    background-color: #fcfcfc;
-    color: #000;
-    }
-div.two-columns:after
-{
-        content: "."; 
-	    display: block; 
-	        height: 0; 
-		    clear: both; 
-		        visibility: hidden;
+			div.two-columns
+			{
+				width: 100%;
+				display: inline-block;	/* for IE/Mac to contain its child elements */
+				/* \*/ display: block;	/* override above rule for every other 
+							   browser using IE/Mac backslash hack */
+				font-family: arial, helvetica, sans-serif;
+				font-size: 100%; /* Changed from 80% BWB */
+				background-color: #fcfcfc;
+				color: #000;
 			}
-div.two-columns, 
-div.two-columns div.left-column,
-div.two-columns div.right-column
-{
-    border: solid 1px #ddd;
-    border-width: 1px;
-    }
-div.two-columns div.left-column,
-div.two-columns div.right-column
-{
-    float: left;
-    width: 50%;
-    border-width: 0 1px 0 0;
-    margin: 0 -1px;
-    }
-* html div.two-columns div.left-column,
-* html div.two-columns div.right-column
-{
-    position: relative;/* IE/Win 6 and earlier need this */
-    }
-div.two-columns div.right-column
-{
-    border-width: 0 0 0 1px;
-    margin-right: -3px;
-    margin-left: 0;
-    }
-div.two-columns div.inside-column
-{
-    padding: 1px 10px;/* 1px is there to get past a margin rendering
-			    bug in Netscape 7 and older FireFox */
-    margin-top: 1em;
-    margin-bottom: 1em;
-    }
-div.outside-column
-{
-    padding: 0px 10px;/* 1px is there to get past a margin rendering
-			    bug in Netscape 7 and older FireFox */
-    }
+			div.two-columns:after
+			{
+			    content: "."; 
+			    display: block; 
+			    height: 0; 
+			    clear: both; 
+			    visibility: hidden;
+			}
+			div.two-columns, 
+			div.two-columns div.left-column,
+			div.two-columns div.right-column
+			{
+				border: solid 1px #ddd;
+				border-width: 1px;
+			}
+			div.two-columns div.left-column,
+			div.two-columns div.right-column
+			{
+				float: left;
+				width: 50%;
+				border-width: 0 1px 0 0;
+				margin: 0 -1px;
+			}
+			* html div.two-columns div.left-column,
+			* html div.two-columns div.right-column
+			{
+				position: relative;	/* IE/Win 6 and earlier need this */
+			}
+			div.two-columns div.right-column
+			{
+				border-width: 0 0 0 1px;
+				margin-right: -3px;
+				margin-left: 0;	
+			}
+			div.two-columns div.inside-column
+			{
+				padding: 1px 10px;	/* 1px is there to get past a margin rendering
+							   bug in Netscape 7 and older FireFox */
+				margin-top: 1em;
+				margin-bottom: 1em;
+			}
+			div.outside-column
+			{
+				padding: 0px 10px;	/* 1px is there to get past a margin rendering
+							   bug in Netscape 7 and older FireFox */
+			}
 
     span.left-link
     {
@@ -94,18 +80,18 @@ div.outside-column
     div.thumbnail-container
     {
         float: right;
-	margin-left: 1em;
-	margin-bottom: 1em;
+				margin-left: 1em;	
+				margin-bottom: 1em;	
     }
 
 #containerdiv
 {
-    position: relative;
-    height: 100%;
+	position: relative;
+	height: 100%;
 }
 
-
-poetslap
+	
+	poetslap
 @charset "iso-8859-1";
 
 /*******************************************************************************
@@ -125,14 +111,14 @@ poetslap
 
 ul, ol, dl, p, h1, h2, h3, h4, h5, h6
 {
-    /* pixels are used here, rather than ems, because I want a consistent 
-        * margin on the different headings. if I use ems, 1em for an h1 element 
+	/* pixels are used here, rather than ems, because I want a consistent 
+	 * margin on the different headings. if I use ems, 1em for an h1 element 
 	 * is much larger than 1em on an h6 element. I don't want this.
-	  */
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-top: 0;
-    padding-bottom: 0;
+	 */
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 h1 {
 /*color: #8d1703;*/
@@ -140,87 +126,87 @@ border-bottom: 3px dotted #dee7ec;
 }
 ul ul, ul ol, ol ul, ol ol
 {
-    /* kill margins on sub-lists
-        */
-    margin-top: 0;
-    margin-bottom: 0;
+	/* kill margins on sub-lists
+	 */
+	margin-top: 0;
+	margin-bottom: 0;
 }
 h1
 {
-    font-size: 240%;
+	font-size: 240%;
 }
 h2
 {
-    font-size: 180%;
+	font-size: 180%;
 }
 h3
 {
-    font-size: 140%;
+	font-size: 140%;
 }
 h4
 {
-    font-size: 100%;
+	font-size: 100%;
 }
 h5
 {
-    font-size: 70%;
+	font-size: 70%;
 }
 h6
 {
-    font-size: 50%;
+	font-size: 50%;
 }
 a, a:link, a:visited, a:active
 {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 a:hover
 {
-    /* because I like the visual feedback a user gets when they
-        * mouse over a link and see the underline of the link
+	/* because I like the visual feedback a user gets when they
+	 * mouse over a link and see the underline of the link
 	 * disappear.
-	  */
-    text-decoration: none;
+	 */
+	text-decoration: none;
 }
 code, pre
 {
-    /* Make sure we're all using the same monospaced font for CODE
-        * and PRE elements
+	/* Make sure we're all using the same monospaced font for CODE
+	 * and PRE elements
 	 */
-    font-family: "Courier New", Courier, monospace;
+	font-family: "Courier New", Courier, monospace;
 }
 label
 {
-    /* It's all about the visual feedback. In this case, label 
-        * elements are usually clickable which then set focus on
+	/* It's all about the visual feedback. In this case, label 
+	 * elements are usually clickable which then set focus on
 	 * their target. I want to show that to the user in a manner
-	  * they are used to and understand.
-	   */
-    cursor: pointer;
+	 * they are used to and understand.
+	 */
+	cursor: pointer;
 }
 table
 {
-    /* Some browsers won't carry the font size down into the 
-        * browser like they're suppose to.
+	/* Some browsers won't carry the font size down into the 
+	 * browser like they're suppose to.
 	 */
-    font-size: 100%;
+	font-size: 100%;
 }
 td, th
 {
-    /* I never like or use the default vertical centering "feature"
-        * provided by tables. 
+	/* I never like or use the default vertical centering "feature"
+	 * provided by tables. 
 	 */
-    vertical-align: top;
+	vertical-align: top;
 }
 body
 {
-    /* I've seen several comments that setting the base font size to 100.1%
-        * fixes some browser bugs. Which bugs? I don't know. I believe it's
+	/* I've seen several comments that setting the base font size to 100.1%
+	 * fixes some browser bugs. Which bugs? I don't know. I believe it's
 	 * to fix some rounding-error bugs that some browsers (Mozilla) are
-	  * prone to. It doesn't hurt anything, so I keep it here.
-	   */
-    font-size: 100.1%;
-    background-color: white;
-    color:black;
+	 * prone to. It doesn't hurt anything, so I keep it here.
+	 */
+	font-size: 100.1%;
+	background-color: white;
+	color:black;
 font-family:sans-serif;
 font-size:small;
 font-size-adjust:none;
@@ -511,7 +497,7 @@ background-color: #DEE7EC
 
 #page-title
 {
-    font-size: 180%;
+	font-size: 180%;
   font-weight:bold;
 }
 
@@ -525,6 +511,24 @@ text-align: right;
 font-size: .8em;
 }
 
+<<<<<<< HEAD
+#image_div
+{
+	width: 100%;
+}
+
+#page_image_tag
+{
+	width: 100%;
+}
+
+
+#page_source_text
+{
+	width: 100%;
+}
+=======
 #image_sidebar {
     float: right;
 }
+>>>>>>> rails3_nohpricot
