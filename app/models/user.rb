@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :display_name
-  # allows me to get at the user from other models
-  cattr_accessor :current_user
 
   validates_presence_of     :login
   validates_presence_of     :password,                    :if => :password_required?

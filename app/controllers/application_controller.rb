@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
 
   before_filter :load_objects_from_params
-  before_filter :set_current_user_in_model
   before_filter :update_ia_work_server
   before_filter :log_interaction
   # before_filter :store_location_for_login
@@ -72,11 +71,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  # Set the current user in User
-  def set_current_user_in_model
-    User.current_user = current_user
-  end 
-
   # perform appropriate API call for updating the IA server
   def update_ia_work_server
     if @work && @work.ia_work
