@@ -1,8 +1,7 @@
 <h2>Session List for <%= @user_name %></h2>
 <%= html_block('top') %>
 <%= link_to('Next 50', 
-            { :offset => (@offset.to_i + 50).to_s,
-              :ol => 'adm_sl_next50' } ) %>
+            { :offset => (@offset.to_i + 50).to_s } ) %>
 <table>
   <tr>
 	  <th>
@@ -29,8 +28,7 @@
 		<td>
 			<%= link_to(sess['total'], 
 			            { :action => 'interaction_list', 
-			              :session_id => sess['session_id'],
-			              :ol => 'adm_sl_total' }) %>
+			              :session_id => sess['session_id'] }) %>
 		</td>
 		<td>
 			<%= sess['ip_address'] %>

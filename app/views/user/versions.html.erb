@@ -29,16 +29,14 @@
        <%= link_to(version.page.title, 
                   { :controller => 'page_version', 
                     :action => 'list', 
-                    :page_id => version.page.id, 
-                    :ol => 'u_ver_p_page' }) %>
+                    :page_id => version.page.id }) %>
      </td>
      <td><%= version.page_version %></td>
      <td><%= version.created_on %></td>
      <td><%= link_to('view', 
                      { :controller => 'page_version',
                        :action => 'show', 
-                       :page_version_id => version.id, 
-                       :ol => 'u_ver_p_view'}) %></td>
+                       :page_version_id => version.id }) %></td>
    </tr>
  <% end %>
  </table>
@@ -67,16 +65,14 @@
        <%= link_to(version.article.title, 
                   { :controller => 'article_version', 
                     :action => 'list', 
-                    :page_id => version.article.id, 
-                    :ol => 'u_ver_a_article' }) %>
+                    :page_id => version.article.id }) %>
      </td>
      <td><%= version.version %></td>
      <td><%= version.created_on %></td>
      <td><%= link_to('view', 
                      { :controller => 'article_version',
                        :action => 'show', 
-                       :page_version_id => version.id, 
-                       :ol => 'u_ver_a_view'}) %></td>
+                       :page_version_id => version.id }) %></td>
    </tr>
  <% end %>
  </table>

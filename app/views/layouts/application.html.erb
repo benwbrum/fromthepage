@@ -53,16 +53,14 @@
 		        <%= link_to(@collection.title,
 		                    { :controller => 'collection',
 		                      :action => 'show',
-		                      :collection_id => @collection.id,
-                          :ol => 'l_hd_c_link' }) %>
+		                      :collection_id => @collection.id }) %>
 	        <% end %>
 	        <%= raw("&mdash;") if @collection && @work %>
 	        <% if @work && @work.title %>
 		        <%= link_to(@work.title,
 		                    { :controller => 'display',
 		                      :action => 'read_work',
-		                      :work_id => @work.id,
-                          :ol => 'l_hd_w_link' }) %>
+		                      :work_id => @work.id }) %>
 	        <% end %>
         </h1>
       <% end %>

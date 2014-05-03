@@ -49,8 +49,7 @@
 				<%= link_to(interaction.user.login, 
 				            { :controller => 'user',
 				              :action => 'versions',
-				              :user_id => interaction.user_id, 
-				              :ol => 'adm_il_user' })%>
+				              :user_id => interaction.user_id })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -60,8 +59,7 @@
 				<%= link_to(interaction.collection.title, 
 				            { :controller => 'collection',
 			                :action => 'show',
-			                :collection_id => interaction.collection_id, 
-				              :ol => 'adm_il_col' })%>
+			                :collection_id => interaction.collection_id })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -71,8 +69,7 @@
 				<%= link_to(interaction.work.title, 
 				            { :controller => 'display',
 				              :action => 'read_work',
-				              :work_id => interaction.work_id, 
-				              :ol => 'adm_il_work' })%>
+				              :work_id => interaction.work_id })%>
       <% else %>
         &nbsp;
 	    <% end %>
@@ -82,8 +79,7 @@
 				<%= link_to(interaction.page.title, 
 				            { :controller => 'display',
 				              :action => 'display_page',
-				              :page_id => interaction.page_id, 
-				              :ol => 'adm_il_page' })%>
+				              :page_id => interaction.page_id })%>
       <% else %>
         &nbsp;
 	    <% end %>

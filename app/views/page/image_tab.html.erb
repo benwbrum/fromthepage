@@ -35,45 +35,37 @@ Reduced Image:
 <br />
         <% if @page.base_image != nil && @page.base_image != "" %>  ( size:  <%= link_to(image_tag("/images/icons/arrow_in.png",{:border => 0}),
                     { :action => 'reduce', 
-                      :page_id => @page.id,
-                      :ol => 'w_pt_red_ico' }) %>
+                      :page_id => @page.id }) %>
   <%= link_to('reduce', 
                       { :action => 'reduce', 
-                        :page_id => @page.id,
-                        :ol => 'w_pt_red_txt' }) %>
+                        :page_id => @page.id }) %>
   <% if @page.shrink_factor > 0 %>
       | <%= link_to(image_tag("/images/icons/arrow_out.png",{:border => 0}), 
                        { :action => 'enlarge', 
-                         :page_id => @page.id,
-                         :ol => 'w_pt_enl_ico' }) %>
+                         :page_id => @page.id }) %>
       <%= link_to('enlarge', 
                     { :action => 'enlarge', 
-                      :page_id => @page.id,
-                      :ol => 'w_pt_enl_txt' }) %>
+                      :page_id => @page.id }) %>
   <% end %>
   )
   (	rotate: 
   <%= link_to(image_tag("/images/icons/arrow_rotate_clockwise.png",{:border => 0}),
               { :action => 'rotate', 
                 :page_id => @page.id,
-                :orientation => 90,
-                :ol => 'w_pt_rot_90_ico' }) %>   
+                :orientation => 90 }) %>   
   <%= link_to('clockwise', 
               { :action => 'rotate', 
                 :page_id => @page.id,
-                :orientation => 90,
-                :ol => 'w_pt_rot_90_txt' }) %>
+                :orientation => 90 }) %>
   |
     <%= link_to(image_tag("/images/icons/arrow_rotate_anticlockwise.png",{:border => 0}),
               { :action => 'rotate', 
                 :page_id => @page.id,
-                :orientation => 270,
-                :ol => 'w_pt_rot_270_ico' }) %>   
+                :orientation => 270 }) %>   
   <%= link_to('counterclockwise', 
               { :action => 'rotate', 
                 :page_id => @page.id,
-                :orientation => 270,
-                :ol => 'w_pt_rot_270_txt' }) %> )
+                :orientation => 270 }) %> )
   <br />
   <%= image_tag(file_to_url(@page.scaled_image(@page.shrink_factor))) %>
 <% end %>

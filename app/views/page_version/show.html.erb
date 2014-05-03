@@ -13,8 +13,7 @@
 			  <%= link_to(@page_version.page.title,
 			              { :controller => 'page_version',
 			                :action => 'list',
-			                :page_id => @page_version.page.id,
-			                :ol => 'p_pv_page_rev'  }) %> 
+			                :page_id => @page_version.page.id }) %> 
 			  at <%= @page_version.created_on.strftime("%m/%d/%Y %I:%M %p")  %>
 			  as edited by
 			    <%= link_to(@page_version.user.display_name,
@@ -45,8 +44,7 @@
 			  <%= link_to(@page_version.page.title,
 			              { :controller => 'page_version',
 			                :action => 'list',
-			                :page_id => @page_version.page.id,
-			                :ol => 'p_pv_page_rev'  }) %> 
+			                :page_id => @page_version.page.id }) %> 
       </div>
     </div>
 	  <div class="inside-column">

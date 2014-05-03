@@ -25,7 +25,7 @@
 	  </p>
 	  <%= f.submit %>
 	<% end %>
-	<%= button_to("Delete", { :controller => 'collection', :action => 'delete', :collection_id => @collection.id, :ol => 'c_del' }, { :confirm => 'Are you sure?' }) %>
+	<%= button_to("Delete", { :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, { :confirm => 'Are you sure?' }) %>
 	<br />
       </p>
       <p>
@@ -48,8 +48,7 @@
 			          <%= link_to('remove', 
 			                      { :action => 'remove_work_from_collection',
 			                        :work_id => work.id,
-			                        :collection_id => @collection.id,
-                              :ol => 'c_rmv_work' })%><br />
+			                        :collection_id => @collection.id })%><br />
               </td>
             </tr>
 	        <% end %>
@@ -80,8 +79,7 @@
 			          <%= link_to('add', 
 			                      { :action => 'add_work_to_collection',
 			                        :work_id => work.id,
-			                        :collection_id => @collection.id,
-                              :ol => 'c_add_work' })%>
+			                        :collection_id => @collection.id })%>
               </td>
             </tr>
 	        <% end %>
