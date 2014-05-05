@@ -23,8 +23,7 @@ Tab                     Access
         <%= link_to('read', 
                     { :controller => 'display', 
                       :action => 'read_work', 
-                      :work_id => work_id,
-                      :ol => 'w_tab_read' }) %>
+                      :work_id => work_id }) %>
       </li>     
     <% end %>
 
@@ -37,8 +36,7 @@ Tab                     Access
         <%= link_to('contents', 
                     { :controller => 'display', 
                       :action => 'list_pages', 
-                      :work_id => work_id,
-                      :ol => 'w_tab_contents' }) %>
+                      :work_id => work_id }) %>
       </li>     
     <% end %>
 
@@ -51,8 +49,7 @@ Tab                     Access
         <%= link_to('about', 
                     { :controller => 'work', 
                       :action => 'show', 
-                      :work_id => work_id,
-                      :ol => 'w_tab_about' }) %>
+                      :work_id => work_id }) %>
       </li>     
     <% end %>
 
@@ -65,8 +62,7 @@ Tab                     Access
         <%= link_to('versions', 
                     { :controller => 'work', 
                       :action => 'versions', 
-                      :work_id => work_id,
-                      :ol => 'w_tab_versions' }) %>
+                      :work_id => work_id }) %>
       </li>     
     <% end %>
 
@@ -80,8 +76,7 @@ Tab                     Access
         <%= link_to('print', 
                     { :controller => 'print', 
                       :action => 'work', 
-                      :work_id => work_id,
-                      :ol => 'w_tab_print' }) %>
+                      :work_id => work_id }) %>
       </li>     
     <% end %>
 <% end %>
@@ -96,8 +91,7 @@ Tab                     Access
 	        <%= link_to('settings', 
 	                    { :controller => 'work', 
 	                      :action => 'edit', 
-	                      :work_id => work_id,
-                        :ol => 'w_tab_settings' }) %>
+	                      :work_id => work_id }) %>
 	      </li>     
 	    <% end %>
 	
@@ -110,8 +104,7 @@ Tab                     Access
 	        <%= link_to('access', 
 	                    { :controller => 'work', 
 	                      :action => 'scribes_tab', 
-	                      :work_id => work_id,
-                        :ol => 'w_tab_access' }) %>
+	                      :work_id => work_id }) %>
 	      </li>     
 	    <% end %>
 
@@ -124,8 +117,7 @@ Tab                     Access
 	        <%= link_to('pages', 
 	                    { :controller => 'work', 
 	                      :action => 'pages_tab', 
-	                      :work_id => work_id,
-                        :ol => 'w_tab_pages' }) %>
+	                      :work_id => work_id }) %>
 	      </li>     
 	    <% end %>
     <% end %>
@@ -139,8 +131,7 @@ Tab                     Access
         <%= link_to('help', 
                     { :controller => 'static', 
                       :action => 'transcribe_help', 
-                      :work_id => work_id,
-                    :ol => 'w_tab_help' }) %>
+                      :work_id => work_id }) %>
       </li>     
     <% end %>
 

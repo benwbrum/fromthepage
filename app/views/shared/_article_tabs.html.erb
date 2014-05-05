@@ -4,11 +4,10 @@
     id="current">
       <span>subject</span>
     <% else %>
-     ><%= link_to('subject', 
+     <%= link_to('subject', 
                   { :controller => 'article', 
                     :action => 'show', 
-                    :article_id => article_id,
-                    :ol => 'a_tab_art' }) %>
+                    :article_id => article_id }) %>
     <% end %>
     </li>  
 
@@ -18,11 +17,10 @@
             id="current">
 	      <span>edit</span>
 	    <% else %>
-	     ><%= link_to('edit', 
+	     <%= link_to('edit', 
 	                  { :controller => 'article', 
 	                    :action => 'edit', 
-	                    :article_id => article_id,
-                      	:ol => 'a_tab_edit'  }) %>
+	                    :article_id => article_id }) %>
 	    <% end %>
           </li>  
 
@@ -33,11 +31,10 @@
     id="current">
       <span>versions</span>    
     <% else %>
-     ><%= link_to('versions', 
+     <%= link_to('versions', 
                   { :controller => 'article_version', 
                     :action => 'list', 
-                    :article_id => article_id,
-                    :ol => 'a_tab_ver' }) %>
+                    :article_id => article_id }) %>
     <% end %>
     </li>  
 
@@ -47,11 +44,10 @@
     id="current">
       <span>graph</span>
     <% else %>
-     ><%= link_to('graph', 
+     <%= link_to('graph', 
                   { :controller => 'article', 
                     :action => 'graph', 
-                    :article_id => article_id,
-                    :ol => 'a_tab_graph' }) %>
+                    :article_id => article_id }) %>
     <% end %>
     </li> 
 

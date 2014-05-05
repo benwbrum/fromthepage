@@ -13,8 +13,7 @@
 	                <%= link_to(collection.title,
 	                            { :controller => 'collection',
 	                              :action => 'show',
-	                              :collection_id => collection.id,
-	                              :ol => 'd_col_list' }) %>
+	                              :collection_id => collection.id }) %>
 					(<%= link_to('statistics',
 								 { :controller => 'statistics',
 								   :action => 'collection',
@@ -33,14 +32,12 @@
           <div>
           <%= link_to("Create an empty work", 
                       { :controller => 'work',
-                        :action => 'new',
-                        :ol => 'd_new_work' })%>
+                        :action => 'new' })%>
           </div>
           <div>
           <%= link_to("Create an empty collection", 
                       { :controller => 'collection',
-                        :action => 'new',
-                        :ol => 'd_new_col' })%>
+                        :action => 'new' })%>
           </div>
 	  <div>
 	  <%= link_to("Import works from Omeka",
@@ -50,19 +47,16 @@
 	  <div>
 	  <%= link_to("Import a book from the Internet Archive",
 	      	      { :controller => 'ia',
-		        :action => 'ia_book_form',
-			:ol => 'd_ia_import' }) %>
+		        :action => 'ia_book_form' }) %>
 	  </div>
           <div>
             <%= link_to("Create an image set", 
-                        { :controller => 'transform',
-                          :ol => 'd_new_is' })%>
+                        { :controller => 'transform' })%>
           </div>
 		  <div>
 		  	<%= link_to("Explore OAI repositories",
 						{ :controller => 'oai',
-						  :action => 'repository_list',
-					      :ol => 'd_explore_oai'}) %>
+						  :action => 'repository_list' }) %>
 		  </div>
 		  <div>
 		  	<% if @current_user.oai_sets %>
@@ -92,8 +86,7 @@
 	                  <%= link_to(work.title, 
 	                              { :controller => 'work',
 	                                :action => 'edit',
-	                                :work_id => work.id,
-	                                :ol => 'd_wl_work' }) %>
+	                                :work_id => work.id }) %>
 	                </li>
                 <% end %>
               </ul>
@@ -130,28 +123,23 @@
 	                    <%= link_to("Title",
 	                                { :controller => 'title',
 	                                  :action => 'list',
-	                                  :image_set_id => set.id,
-	                                  :ol => 'd_isl_title' }) %>
+	                                  :image_set_id => set.id }) %>
 	                    <%= link_to("Delete",
 	                                { :controller => 'image_set',
 	                                  :action => 'delete',
-	                                  :image_set_id => set.id,
-	                                  :ol => 'd_isl_delete' }) %>
+	                                  :image_set_id => set.id }) %>
 	                    <%= link_to("Append",
 	                                { :controller => 'image_set',
 	                                  :action => 'select_target',
-	                                  :image_set_id => set.id,
-	                                  :ol => 'd_isl_append' }) %>
+	                                  :image_set_id => set.id }) %>
 	                    <%= link_to("Merge",
 	                                { :controller => 'collation',
 	                                  :action => 'select_target',
-	                                  :image_set_id => set.id,
-	                                  :ol => 'd_isl_merge' }) %>
+	                                  :image_set_id => set.id }) %>
 	                    <%= link_to("Publish",
 	                                { :controller => 'image_set',
 	                                  :action => 'convert_to_work',
-	                                  :image_set_id => set.id,
-	                                  :ol => 'd_isl_pub' }) %>
+	                                  :image_set_id => set.id }) %>
 	                  </li>			        
 				          <% end %>
 	              </ul>
@@ -175,16 +163,14 @@
 				      <%= link_to("View Logfile", 
 				                  { :controller => 'admin',
 				                    :action => 'tail_logfile', 
-				                    :lines => 500,
-                            :ol => 'd_tail_log' }) %>
+				                    :lines => 500 }) %>
 				  </p>
          
 				  <p>
 				      <%= link_to("Recent Errors", 
 				                  { :controller => 'admin',
 				                    :action => 'error_list', 
-				                    :limit => 50,
-                            :ol => 'd_recent_errors' }) %>
+				                    :limit => 50 }) %>
 				  </p>
           <p>
             Users
@@ -198,20 +184,17 @@
 	                <%= link_to("Edit",
 	                            { :controller => 'admin',
 	                              :action => 'edit_user',
-	                              :user_id => user.id,
-                                :ol => 'd_users_edit' }) %>
+	                              :user_id => user.id }) %>
                   <%= link_to("Sessions",
                               { :controller => 'admin',
                                 :action => 'session_list',
-                                :user_id => user.id,
-                                :ol => 'd_users_sl' }) %>  
+                                :user_id => user.id }) %>  
 	              </li>
 	            <% end %>
 	            <li>
                 <%= link_to("Anonymous Sessions",
                             { :controller => 'admin',
-                              :action => 'session_list',
-                                :ol => 'd_anon_sl' }) %>  
+                              :action => 'session_list' }) %>  
 	            </li>
             </ul>
           </p>
