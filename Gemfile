@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
-gem "rails", "4.0.4"
+gem "rails", "4.1.0"
 
 gem 'pry'
 
 gem 'will_paginate' , '3.0.5'
 gem 'rmagick', '2.13.2'
 gem 'nokogiri'
-gem 'oai', "0.3.1"
+#gem 'oai', "0.3.1"
 gem 'capistrano', '~> 3.1.0'
 gem 'jquery-rails'
 
