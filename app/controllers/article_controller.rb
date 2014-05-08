@@ -18,11 +18,7 @@ class ArticleController < ApplicationController
     # 3. Uncategorized articles should be listed below
     #@articles = Article.find(:all)
     
-    @uncategorized_articles = 
-      Article.find(:all, 
-                   { :joins => 'LEFT JOIN articles_categories ac ON id = ac.article_id',
-                     :conditions => ['ac.category_id IS NULL AND collection_id = ?',
-                                     @collection.id]})
+    @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id]).all
      
   end
 

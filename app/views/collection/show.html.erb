@@ -58,7 +58,7 @@
       <h3>Recent Notes</h3>
 	  <p>
 		<ul>
-			<% @collection.notes.find(:all, :limit => 10).each do |note| %>
+			<% @collection.notes.limit(10).each do |note| %>
 				<li>
 					<%= link_to(truncate(note.title, :length => 40),
 								{ :controller => 'display',
