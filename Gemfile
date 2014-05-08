@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gem "rails", "3.2.17"
+gem "rails", "4.0.4"
 
 gem 'pry'
 
@@ -21,6 +21,8 @@ gem 'acts_as_tree'
 
 gem 'devise'
 gem 'devise-encryptable'
+
+gem 'protected_attributes'
 
 group :development do
 end
