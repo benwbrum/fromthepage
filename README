@@ -13,16 +13,17 @@ License
 FromThePage is currently issued under the Affero GPL. This license remains controversial, however, so we are trying to preserve the option to dual-license the code.
 
 Platform
-FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 2.3.5 and the RMagick, hpricot, will_paginate, and OAI gems.
+FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 3.2.17 and the RMagick, hpricot, will_paginate, and OAI gems.
 
 Installation
 
-Install Ruby, rubygems, Apache, ImageMagick and MySQL
-These should be fairly standard unless you’re using Fedora, in which case see https://github.com/benwbrum/fromthepage/wiki/Installing-Rails-on-Fedora-13. Most hosting providers (like hostingrails.com) will have these installed already.
+Install Ruby, RubyGems, ImageMagick, MySQL and Git
+
+Clone the repository
+git clone git://github.com/benwbrum/fromthepage.git
 
 Install required gems
-gem install hpricot oai will_paginate rmagick
-gem install -v 2.3.15 rails
+bundle install
 
 Install Graphviz
 apt-get install graphviz (or see the graphviz documentation at http://www.graphviz.org/)
@@ -30,16 +31,11 @@ apt-get install graphviz (or see the graphviz documentation at http://www.graphv
 Configure MySQL
 Create a database and user account for FromThePage to use.
 
-Install FromThePage
-First install git.
-
-Then
-git clone git://github.com/benwbrum/fromthepage.git
-
-Next, point the DocumentRoot of your webserver to the public subdirectory of the FromThePage installation you just checked out.
-
 Then update the config/database.yml file to point to the MySQL user account and database you created above.
 
-Finally, run
+Run
 rake db:migrate
-to load the schema definition into the database account. 
+to load the schema definition into the database account.
+
+Finally, to start the application, run
+rails server
