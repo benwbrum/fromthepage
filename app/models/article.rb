@@ -71,7 +71,6 @@ class Article < ActiveRecord::Base
 
       current_matches =
         self.collection.articles.where("id <> ? AND title like ?", self.id, "%#{word}%" )
-      # @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )
       # current_matches.delete self
       #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
       #    keep sort order for new words (append to previous list)
@@ -130,12 +129,7 @@ class Article < ActiveRecord::Base
     
     # now do the complicated version update thing
 
-    previous_version = 
-      ArticleVersion.find(:all, :conditions => ["article_id = ?", self.id],
-                       :order => "version DESC")
-    #       ArticleVersion.find(:first, 
-    #                        :conditions => ["article_id = ?", self.id],
-    #                        :order => "version DESC")
+    previous_version = ArticleVersion.where(["article_id = ?", self.id]).order("version DESC").all
     if previous_version.first
       version.version = previous_version.first.version + 1
     end

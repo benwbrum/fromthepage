@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
   def index
     logger.debug("DEBUG: #{current_user.inspect}")
     if user_signed_in?
-      @image_sets = current_user.image_sets #ImageSet.find(:all)  
+      @image_sets = current_user.image_sets
     end
     @collections = Collection.all
     @users = User.all
