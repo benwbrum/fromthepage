@@ -70,7 +70,7 @@ module ApplicationHelper
       # deeds = Deed.find(:limit => limit, :order => 'created_at DESC', :conditions => conditions)
       # this works for now
       # deeds = [Deed.first, Deed.last] # I just need an array
-      deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit)
+      deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit).references(:collection)
     end
     render({ :partial => 'deed/deeds', 
              :locals => 
