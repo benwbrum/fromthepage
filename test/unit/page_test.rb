@@ -130,10 +130,10 @@ EOF
 
   def check_canonical_creation(page_text)
     assert_difference PageArticleLink, :count do
-      assert_equal(0, Article.find(:all, :conditions => "title = '#{CANONICAL_TITLE}'").length)
+      assert_equal(0, Article.where(title: CANONICAL_TITLE).length)
       @page_one.source_text = page_text
       @page_one.save!
-      assert_equal(1, Article.find(:all, :conditions => "title = '#{CANONICAL_TITLE}'").length)
+      assert_equal(1, Article.where(title: CANONICAL_TITLE).length)
     end
   end
 
