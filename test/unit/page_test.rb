@@ -57,25 +57,25 @@ class PageTest < Test::Unit::TestCase
   end
 
   def test_twice_in_same_page
-    assert_equal(0, Article.find(:all, :conditions => "title = 'bar'").length)
+    assert_equal(0, Article.where(title: 'bar').length)
     @page_one.source_text = "foo [[bar]] baz [[bar]] quux"
     @page_one.save!
-    assert_equal(1, Article.find(:all, :conditions => "title = 'bar'").length)
+    assert_equal(1, Article.where(title: 'bar').length)
   end
 
   # base tags with display text
   def test_basic_display
-    assert_equal(0, Article.find(:all, :conditions => "title = 'bar'").length)
+    assert_equal(0, Article.where(title: 'bar').length)
     @page_one.source_text = "foo [[bar|baz]] quux"
     @page_one.save!
-    assert_equal(1, Article.find(:all, :conditions => "title = 'bar'").length)      
+    assert_equal(1, Article.where(title: 'bar').length)
   end
   
   def test_basic_display_twice_in_same_page
-    assert_equal(0, Article.find(:all, :conditions => "title = 'bar'").length)
+    assert_equal(0, Article.where(title: 'bar').length)
     @page_one.source_text = "foo [[bar|baz]] quux [[bar|quuux]] quuuuux"
     @page_one.save!
-    assert_equal(1, Article.find(:all, :conditions => "title = 'bar'").length)      
+    assert_equal(1, Article.where(title: 'bar').length)
   end
   
   def test_basic_display_with_existing_article
