@@ -53,11 +53,5 @@ class Work < ActiveRecord::Base
         self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate
-    
   end
-
-  
-
-
-
 end
