@@ -15,7 +15,7 @@
     <div class="inside-column">
       <h2>Works</h2>
       <p>
-        <% for work in @collection.works %>
+        <% @collection.works.each do |work| %>
           <%= link_to(work.title, 
 		                  { :controller => 'display',
 		                    :action => 'read_work',
