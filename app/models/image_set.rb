@@ -1,4 +1,5 @@
 require 'RMagick'
+require 'image_helper'
 
 class ImageSet < ActiveRecord::Base
   include FileUtils::Verbose
