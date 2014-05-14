@@ -176,7 +176,6 @@ class IaController < ApplicationController
       leaf.page_type = page.search('pagetype').text
       leaf.page_w = page.search('w').text
       leaf.page_h = page.search('h').text
-      binding.pry
       @ia_work.ia_leaves << leaf
       
       if leaf.page_type == 'Title'
