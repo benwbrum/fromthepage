@@ -10,7 +10,7 @@ gem 'oai', git: "https://github.com/mispy/ruby-oai.git"
 gem 'capistrano', '~> 3.2.0'
 gem 'jquery-rails'
 
-gem 'mysql2','0.3.15'
+gem 'mysql2','0.3.16'
 
 gem 'recaptcha', '0.3.6'
 
