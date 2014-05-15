@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_html_blocks
   # after_filter :complete_interaction
   before_filter :authorize_collection
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
 
   # See ActionController::RequestForgeryProtection for details
@@ -143,8 +144,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  
-
   def authorize_collection
     # skip irrelevant cases
     return unless @collection
@@ -155,6 +154,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation) }
+  end
 end
 
 # class ApplicationController < ActionController::Base
