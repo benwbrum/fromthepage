@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
-
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
   before_filter :log_interaction
