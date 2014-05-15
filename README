@@ -37,5 +37,5 @@ Run
 rake db:migrate
 to load the schema definition into the database account.
 
-Finally, to start the application, run
+Finally, start the application
 rails server
