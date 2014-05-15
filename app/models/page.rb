@@ -14,7 +14,6 @@
 # t.column :lock_version, :integer, :default => 0
 
 class Page < ActiveRecord::Base
-  require 'RMagick'
   
   include XmlSourceProcessor
   before_update :process_source

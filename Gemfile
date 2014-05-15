@@ -4,7 +4,7 @@ gem "rails", "4.1.1"
 gem 'pry'
 
 gem 'will_paginate' , '3.0.5'
-gem 'rmagick', '2.13.2'
+gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'nokogiri'
 gem 'oai', git: "https://github.com/mispy/ruby-oai.git"
 gem 'capistrano', '~> 3.2.0'

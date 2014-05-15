@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'RMagick'
 include FileUtils::Verbose
 include Magick
 class ImageSetController < ApplicationController

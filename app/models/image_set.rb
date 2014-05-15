@@ -1,4 +1,3 @@
-require 'RMagick'
 require 'image_helper'
 
 class ImageSet < ActiveRecord::Base
