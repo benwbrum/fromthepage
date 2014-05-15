@@ -8,11 +8,9 @@ class ApplicationController < ActionController::Base
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
 
-
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
- # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
-
+  # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
 
   def load_objects_from_params
 
@@ -81,7 +79,6 @@ class ApplicationController < ActionController::Base
       @work.ia_work.server=ia_servers[@work.ia_work.book_id][:server]
       @work.ia_work.ia_path=ia_servers[@work.ia_work.book_id][:ia_path]
     end
-    
   end
 
   # log what was done
