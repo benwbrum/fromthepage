@@ -6,6 +6,15 @@ GIT
       recursive-open-struct (~> 0.4.3)
       rest (~> 2.6.3)
 
+GIT
+  remote: https://github.com/mispy/ruby-oai.git
+  revision: 8a2fa086814f5c6e5a206a6adce18cf0593951a7
+  specs:
+    oai (0.3.0)
+      builder (>= 3.1.0)
+      faraday
+      faraday_middleware
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -69,6 +78,10 @@ GEM
     factory_girl_rails (4.4.1)
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.9.1)
+      faraday (>= 0.7.4, < 0.10)
     hike (1.2.3)
     i18n (0.6.9)
     jquery-rails (3.1.0)
@@ -83,6 +96,7 @@ GEM
     mini_portile (0.6.0)
     minitest (5.3.3)
     multi_json (1.10.0)
+    multipart-post (2.0.0)
     mysql2 (0.3.15)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
@@ -189,6 +203,7 @@ DEPENDENCIES
   jquery-rails
   mysql2 (= 0.3.15)
   nokogiri
+  oai!
   omeka_client!
   protected_attributes
   pry
