@@ -1,12 +1,11 @@
-<%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected =>4,
-                          :page_id => @page.id }}) %>
+<%= render '/shared/page_tabs', :selected =>4, :page_id => @page.id %>
 
 
 <div class="two-columns">
   <div class="left-column">
 
-<%= render({ :partial => '/shared/page_navigation' }) %>
+<%= render '/shared/page_navigation' %>
+
 <div class="inside-column">
   <p>
     <%= form_for :page, url: {action: :update, id: @page.id} do |f| %>

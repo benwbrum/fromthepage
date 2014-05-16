@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 3,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 3, :collection_id => @collection.id %>
 
 <script type="text/javascript" language="javascript">
   add_child_prompt = function(parent_id, parent_title) {

@@ -1,7 +1,4 @@
-<%= render({ :partial => '/shared/article_tabs',
-             :locals => { :selected =>4,
-                          :article_id => @article.id }}) %>
-
+<%= render '/shared/article_tabs', :selected =>4, :article_id => @article.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -28,7 +25,7 @@
           <%= submit_tag "Autolink", :name => 'autolink' %>
           <%= submit_tag "Save", :name => 'save' %>
         <% end %>
-				<%= render({ :partial => 'shared/markup_help'}) %>
+	<%= render 'shared/markup_help' %>
       </div>
 
     </div>
@@ -39,9 +36,8 @@
      </div>
      <div class="inside-column">
 
-			<%= render({ :partial => 'article_categories',
-			             :locals => { :article => @article }}) %>
-	  </div>
-  </div>
-</div>
+       <%= render 'article_categories', :article => @article %>
+     </div>
+   </div>
+ </div>
 

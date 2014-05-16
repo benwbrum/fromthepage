@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 1,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 1, :collection_id => @collection.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -27,11 +25,9 @@
       <div class="inside-column">
       <h2>Subjects</h2>
 	      <p>
-        <%= raw(display_categories(@collection.categories, nil) do |category|
-                controller.render_to_string(:partial => '/category/category_link',
-                       :locals => { :category => category,
-                                    :article_partial => '/category/article_link' })
-            end) %>
+		<%= raw(display_categories(@collection.categories, nil) do |category|
+		  controller.render_to_string('/category/category_link', :category => category, :article_partial => '/category/article_link')
+		end) %>
       </p>
     </div>
     <div class="inside-column">
