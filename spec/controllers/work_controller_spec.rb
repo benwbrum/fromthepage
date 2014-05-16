@@ -23,7 +23,7 @@ require 'spec_helper'
 describe WorkController do
 
   before (:each) do
-    # this works: 
+    # this works:
     @user = FactoryGirl.create(:user1)
     User.current_user = @user
     # this also works:
@@ -67,7 +67,7 @@ describe WorkController do
   def valid_session
     {
       "user_id"=> @user.id,
-      "user" => @user.id 
+      "user" => @user.id
     }
   end
 
@@ -77,9 +77,9 @@ describe WorkController do
     }
   end
 
-  def invalid_session 
-    { 
-    "user_id" => 5 
+  def invalid_session
+    {
+    "user_id" => 5
     }
   end
 
@@ -161,7 +161,7 @@ describe WorkController do
       it "does not create a new Work" do
         # this is the magic
         # controller.class.skip_before_filter :authorized?
-        
+
         expect {
           begin
             post :create, {:work => valid_attributes}, invalid_session

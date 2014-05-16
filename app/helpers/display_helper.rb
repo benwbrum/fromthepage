@@ -3,9 +3,9 @@ module DisplayHelper
 
 
   def notes_for( commentable )
-    render({:partial => 'note/notes', 
-            :locals => 
-              { :commentable => commentable 
+    render({:partial => 'note/notes',
+            :locals =>
+              { :commentable => commentable
               }
             })
   end

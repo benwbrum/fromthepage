@@ -15,7 +15,7 @@ describe Category do
 
   # it { should respond_to(:title) }
   # it { should respond_to(:source_text) }
-  
+
   it { should belong_to(:collection) }
   it { should have_and_belong_to_many(:articles).order(:title) }
 

@@ -6,7 +6,7 @@ describe Page do
     User.current_user = @user
     @work = FactoryGirl.create(:work1)
     @page = Page.new
-    
+
     @page.title = "Wednesday, January 2, 1918"
     @page.source_text  = "From the Page is awesoooooome"
     @page.base_image = "/home/fromthe/fromthepage/current/public/images/working/6/img_3862.jpg"
@@ -17,7 +17,7 @@ describe Page do
     @page.lock_version = 3
     @page.xml_text = "<?xml version='1.0' encoding='ISO-8859-15'?> \n <page>\n <p/>\n
 \ </page>\n"
-    @work.pages << @page 
+    @work.pages << @page
   end
 
   subject { @page }

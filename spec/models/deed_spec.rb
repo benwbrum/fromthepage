@@ -10,14 +10,14 @@ describe Deed do
 
   # subject { @article }
 
-  it { should belong_to(:article) } 
+  it { should belong_to(:article) }
   it { should belong_to(:collection) }
   it { should belong_to(:note) }
   it { should belong_to(:page) }
-  it { should belong_to(:user) } 
+  it { should belong_to(:user) }
   it { should belong_to(:work) }
 
-  it { should ensure_inclusion_of(:deed_type).in_array( types ) } 
+  it { should ensure_inclusion_of(:deed_type).in_array( types ) }
 
   it 'tests short and long partials methods' do
     deed = Deed.new
@@ -38,6 +38,6 @@ describe Deed do
     end
   end
 
-  
+
 
 end

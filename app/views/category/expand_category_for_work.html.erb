@@ -4,7 +4,7 @@
 <% for article in @category.articles %>
 	<li>
 		<%= render(:partial => '/category/article_link_for_work',
-               :locals => { :category => @category, 
+               :locals => { :category => @category,
                             :article => article }) %>
 	</li>
 <% end %>

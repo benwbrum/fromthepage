@@ -5,8 +5,8 @@ class TransformController < ApplicationController
   include ImageHelper
   # TODO add before filters
 
-  NEXT_STEP = 
-    { 
+  NEXT_STEP =
+    {
       ImageSet::STEP_DIRECTORY_PROCESS => 'orientation_form',
       ImageSet::STEP_ORIENTATION_PROCESS => 'number_location_form',
       ImageSet::STEP_NUMBER_LOCATION_PROCESS => 'number_format_form'
@@ -14,7 +14,7 @@ class TransformController < ApplicationController
 
   def index
     if @image_set
-      reprise      
+      reprise
     else
       render :action => 'directory_form'
     end
@@ -24,15 +24,15 @@ class TransformController < ApplicationController
     debug('L 1')
     unless @image_set
       debug('L 2')
-      redirect_to :action => 'directory_form' 
+      redirect_to :action => 'directory_form'
       return
     end
     debug('L 3')
     debug("RAW IMAGE_SET STEP= #{@image_set.step}")
 
     next_step = NEXT_STEP[@image_set.step]
-    
-    # figure out the current step    
+
+    # figure out the current step
     # if it's completed, redirect to the next step
     if @image_set.status = ImageSet::STATUS_COMPLETE
       debug('L 4')
@@ -51,8 +51,8 @@ class TransformController < ApplicationController
 
   #############################################################################
   # Main Flow
-  # 
-  # Gathers information about images for the config object and  launches image 
+  #
+  # Gathers information about images for the config object and  launches image
   # manipulation
   #############################################################################
 
@@ -71,15 +71,15 @@ class TransformController < ApplicationController
       flash.now['error'] = "The directory (#{source_dir}) entered is not a valid directory"
       render :action => 'directory_form'
     elsif(!File.executable?(source_dir))
-      flash.now['error'] = 
+      flash.now['error'] =
         "The application does not have execute permission on the directory #{source_dir}"
       render :action => 'directory_form'
     elsif(!File.readable?(source_dir))
-      flash.now['error'] = 
+      flash.now['error'] =
         "The application does not have read permission on the directory #{source_dir}"
       render :action => 'directory_form'
     elsif(Dir.entries(source_dir).length < 3)
-      flash.now['error'] = 
+      flash.now['error'] =
         "There are no files in the directory #{source_dir}"
       render :action => 'directory_form'
     else
@@ -88,19 +88,19 @@ class TransformController < ApplicationController
       redirect_to :action => 'reprise', :image_set_id => config[:image_set_id]
     end
   end
-  
+
   def orientation_form
     # pick a randomish file to use as a sample
     sample_image = @image_set.sample_image
     filename = sample_image.shrunk_file
-    
+
     debug("begin orient #{Time.now}")
     # shrink the sample image even more
     orig = Magick::ImageList.new(filename)
     quarter = 1.to_f / 2.to_f
     base = orig.resize(quarter)
     @img_files = Hash.new
-    
+
     debug(@image_set.inspect)
     dirname = @image_set.path
     # loop through each orientation and produce samples
@@ -112,7 +112,7 @@ class TransformController < ApplicationController
     end
     debug("end   orient #{Time.now}")
   end
-  
+
   def orientation_process
     # get the orientation
     orientation = params[:orientation].to_f
@@ -123,17 +123,17 @@ class TransformController < ApplicationController
     # MiddleMan.get_worker(session[:job_key]).begin_rotate_sextodecimo(orientation)
 
     @image_set.process_sample_orientation
-    call_rake :process_orientation 
-    
+    call_rake :process_orientation
+
     # TODO set orientation on image_set
     redirect_to :action => 'size_form', :image_set_id => config[:image_set_id]
   end
-  
+
   def size_form
-    
+
   end
-  
-  
+
+
   def size_process
     action = params['size']
     if 'just_right' == action
@@ -145,14 +145,14 @@ class TransformController < ApplicationController
     if 'too_small' == action
       @image_set.original_to_base_halvings -= 1
     else
-      @image_set.original_to_base_halvings += 1      
+      @image_set.original_to_base_halvings += 1
     end
     @image_set.save!
     @image_set.resize_sample_image
-    
+
     render :action => 'size_form'
   end
-  
+
   def number_location_form
     @image = @image_set.sample_image
   end
@@ -191,21 +191,21 @@ class TransformController < ApplicationController
     debug("Cropping other files...")
     call_rake :process_crop
 #    MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
-    
+
     redirect_to :action => 'number_format_form', :image_set_id => config[:image_set_id]
   end
-  
+
 
   #############################################################################
   # Numeric Format Branch
-  # 
+  #
   # Gathers numeric-specific information for the config object
   #############################################################################
   def number_format_form
     # TODO: fix title controller
     @image = config[:sample_image]
   end
-  
+
   def number_format_process
     config[:number_format] = params[:format]
     config[:interval_sequential] = (params[:interval] == 'Sequential')
@@ -217,7 +217,7 @@ class TransformController < ApplicationController
   end
 
   def numeric_format_start_form
-    
+
   end
 
   def numeric_format_start_process
@@ -227,7 +227,7 @@ class TransformController < ApplicationController
 
   #############################################################################
   # Date Format Branch
-  # 
+  #
   # Gathers date-specific information for the config object
   #############################################################################
   def date_format_form
@@ -254,30 +254,30 @@ class TransformController < ApplicationController
   def date_format_ajax_test
     date_format = params[:date_format_string]
     test_date = Time.now
-    
-    if request.xhr? 
+
+    if request.xhr?
       render(:text => test_date.strftime(date_format), :layout => false)
-    else  
+    else
       render :action => 'date_format_form'
     end
   end
 
   def date_format_start_form
-  
+
   end
 
   def date_format_start_process
     config[:date_start] = params[:date_start]
     # date all the titled images
     auto_title
-    # redirect 
-    redirect_to(:controller => 'title', 
-                :action => 'list', 
+    # redirect
+    redirect_to(:controller => 'title',
+                :action => 'list',
                 :image_set_id => config[:image_set_id])
   end
 
   #############################################################################
-  # Process meter 
+  # Process meter
   #
   # Displays status of different processing steps.
   #############################################################################
@@ -292,17 +292,17 @@ class TransformController < ApplicationController
   end
 
   def restart
-    call_rake :process_orientation 
+    call_rake :process_orientation
     call_rake :process_size
     call_rake :process_crop
-    
+
     redirect_to :action => 'process_meter', :image_set_id => @image_set.id
   end
 
 
   #############################################################################
   # List Flow
-  # 
+  #
   # Manipulates partial lists
   #############################################################################
   def partial_list_form
@@ -315,7 +315,7 @@ class TransformController < ApplicationController
 
 private
 
-  
+
   def call_rake(task, options = {})
     options[:rails_env] ||= Rails.env
     options[:image_set_id] = @image_set.id
@@ -332,16 +332,16 @@ private
     @image_set = ImageSet.new
     @image_set.owner = current_user
     @image_set.save!
-    
+
     # do the inline work
     @image_set.directory_setup(source_directory_name)
 
     # do the background work
-    call_rake :process_image_dir, :source_directory_name => source_directory_name 
+    call_rake :process_image_dir, :source_directory_name => source_directory_name
 
     # looks lame
     config[:image_set_id] = @image_set.id
-    
+
   end
 
   def auto_title
@@ -353,11 +353,11 @@ private
     # walk through each image
     for image in @image_set.titled_images
       image = TitledImage.find(image.id)
-      safe_update(image, 
-                  { :title_seed => current_date.to_s, 
-                    :title => current_date.strftime(date_format)})  
+      safe_update(image,
+                  { :title_seed => current_date.to_s,
+                    :title => current_date.strftime(date_format)})
       if(config[:interval_sequential])
-        current_date += 1 
+        current_date += 1
       else
         current_date += 2
       end
@@ -365,13 +365,13 @@ private
   end
 
   def config
-    if(nil == session[:collation_config]) 
+    if(nil == session[:collation_config])
       session[:collation_config] = {}
     end
     session[:collation_config]
   end
 
-  def debug(message) 
+  def debug(message)
     logger.debug("  DEBUG: #{message}")
   end
 

@@ -15,7 +15,7 @@
 #role :db,  "staging.aspengrovefarm.com", :primary => true
 #
 #
-#set :runner, :benwbrum 
+#set :runner, :benwbrum
 
 # updating from http://www.glennfu.com/2008/02/01/deploying-ruby-on-rails-with-capistrano-on-dreamhost/
 # The host where people will access my site
@@ -47,7 +47,7 @@ task :before_symlink do
   run "ln -s #{shared_path}/system/images/working #{release_path}/public/images/"
   run "chmod +w #{release_path}/tmp"
   run "chmod -R g-w #{release_path}"
-  
+
 end
 
 set :use_sudo, false

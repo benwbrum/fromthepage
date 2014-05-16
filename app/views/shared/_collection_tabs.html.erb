@@ -1,16 +1,16 @@
 <div id="navcontainer">
   <ul id="navlist">
-    <% if selected == 1 %> 
+    <% if selected == 1 %>
       <li id="current">
         <span>home</span>
       </li>
     <% else %>
       <li>
-        <%= link_to('home', 
-                    { :controller => 'collection', 
-                      :action => 'show', 
+        <%= link_to('home',
+                    { :controller => 'collection',
+                      :action => 'show',
                       :collection_id => collection_id }) %>
-      </li>     
+      </li>
     <% end %>
 
     <% article_list_options = { :controller => 'article',
@@ -29,41 +29,41 @@
     <% collection_stat_options = { :controller => 'statistics',
                                  :action => 'collection',
                                  :collection_id => collection_id } %>
-    <% if current_page? collection_stat_options %> 
+    <% if current_page? collection_stat_options %>
       <li id="current">
         <span>stats</span>
       </li>
     <% else %>
       <li>
-        <%= link_to('stats', 
+        <%= link_to('stats',
                     collection_stat_options) %>
-      </li>     
+      </li>
     <% end %>
 
     <% if user_signed_in? && current_user.like_owner?(@collection) %>
-	    <% if selected == 2 %> 
+	    <% if selected == 2 %>
 	      <li id="current">
 	        <span>settings</span>
 	      </li>
 	    <% else %>
 	      <li>
-	        <%= link_to('settings', 
-	                    { :controller => 'collection', 
-	                      :action => 'edit', 
+	        <%= link_to('settings',
+	                    { :controller => 'collection',
+	                      :action => 'edit',
 	                      :collection_id => collection_id }) %>
-	      </li>     
+	      </li>
 	    <% end %>
-	    <% if selected == 3 %> 
+	    <% if selected == 3 %>
 	      <li id="current">
 	        <span>categories</span>
 	      </li>
 	    <% else %>
 	      <li>
-	        <%= link_to('categories', 
-	                    { :controller => 'category', 
-	                      :action => 'manage', 
+	        <%= link_to('categories',
+	                    { :controller => 'category',
+	                      :action => 'manage',
 	                      :collection_id => collection_id }) %>
-	      </li>     
+	      </li>
 	    <% end %>
     <% end %>
 
@@ -71,15 +71,15 @@
 	    <% collection_owners_options = { :controller => 'collection',
 	                                     :action => 'owners',
 	                                     :collection_id => collection_id } %>
-	    <% if current_page? collection_owners_options %> 
+	    <% if current_page? collection_owners_options %>
 	      <li id="current">
 	        <span>owners</span>
 	      </li>
 	    <% else %>
 	      <li>
-	        <%= link_to('owners', 
+	        <%= link_to('owners',
 	                    collection_owners_options) %>
-	      </li>     
+	      </li>
 	    <% end %>
 
     <% end %>

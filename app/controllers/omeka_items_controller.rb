@@ -60,7 +60,7 @@ class OmekaItemsController < ApplicationController
 
   def import
     @omeka_item = OmekaItem.find(params[:id])
-    @omeka_item.import    
+    @omeka_item.import
     respond_to do |format|
       format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully imported.' }
     end

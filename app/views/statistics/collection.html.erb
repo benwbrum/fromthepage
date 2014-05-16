@@ -26,14 +26,14 @@
 						<th align="left">
 							Progress
 						</th>
-					</tr>				
+					</tr>
 				</thead>
 				<tbody>
 				<% for work in @works %>
 					<tr>
 						<td align="left">
-							<%= link_to(work.title, 
-										{ :controller=>'display', 
+							<%= link_to(work.title,
+										{ :controller=>'display',
 										  :action=>'list_pages',
 										  :work_id => work.id }) %>
 						</td>
@@ -56,7 +56,7 @@
 						</td>
 					</tr>
 				<% end %>
-					
+
 				</tbody>
 			</table>
 		</div>

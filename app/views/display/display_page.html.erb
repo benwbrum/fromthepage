@@ -12,7 +12,7 @@
       </div>
 
       <div id="transcription_display_area" class="inside-column">
-        <% if @page.xml_text != nil && 
+        <% if @page.xml_text != nil &&
               !@page.xml_text.empty? %>
           <%= raw(xml_to_html(@page.xml_text)) %>
         <% else %>
@@ -39,12 +39,12 @@
 	      <% @page.articles_with_text.each do |article| %>
 				<dl>
 			    <% if article.xml_text != nil && !article.xml_text.empty? %>
-				
+
 				    <dt><b><%= article.title %></b></dt>
 				    <dd><%=  xml_to_html(article.xml_text) %></dd>
 			    <% end %>
-					
-				</dl>  	
+
+				</dl>
 	      <% end %>
 	    </div>
 	<% end %>
@@ -56,8 +56,8 @@
 	  <%= render :partial => "notes/notes" %>
 	</div>
   </div>
-  
-  
+
+
 	<div class="right-column" style="position: relative; top: 0px;">
 	        <%=  html_block('right') %>
 		<% if @page.ia_leaf %>

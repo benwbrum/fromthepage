@@ -3,16 +3,16 @@
                 <div class="inside-column">
 
 <div>
-  Changes made by 
+  Changes made by
   <%= link_to(@article_version.user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => @article_version.user.id }) %>
-  to 
+  to
   <%= link_to(@article.title,
               { :controller => 'article_version',
                 :action => 'list',
-                :article_id => @article.id }) %> 
+                :article_id => @article.id }) %>
   on <%= @article_version.created_on %>:
 </div>
 <div>

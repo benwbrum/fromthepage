@@ -1,30 +1,30 @@
 module PrintHelper
   MINIMUM_TITLE_TO_EXPAND = 8
   TITLE_TO_TEXT_THRESHOLD = 4
-  
+
   def xml_to_latex(page)
     latex = ""
     internal = REXML::Document.new(page.gsub(/\n/, ''))
     page = internal.elements.to_a("//page").first
-    
+
     # first do some scrubbing
     page.elements.each("//lb") do |lb|
       lb.replace_with(REXML::Text.new("\n"))
     end
-    
+
     page.elements.each("//link") do |link|
       title = link.attributes['target_title']
       id = link.attributes['target_id']
       latex_link = link.children.to_s
-#      if print_footnote?(id, title, latex_link) 
+#      if print_footnote?(id, title, latex_link)
 #        latex_link += "\\footnote{#{title}}"
 #      end
       latex_link += make_footnote_if_necessary(id, title, latex_link)
       link.replace_with(REXML::Text.new(latex_link))
     end
-    
+
     page.elements.each("//p") do |para|
-      latex << "\n\n" 
+      latex << "\n\n"
       para.each do |e|
         #p e
         latex << e.to_s
@@ -32,10 +32,10 @@ module PrintHelper
     end
     # clear the footnote array in case render is called twice for debugging
     return latex
-    
+
   end
-  
-  
+
+
   private
   def make_footnote_if_necessary(id, title, text)
     @printed_before ||= {}
@@ -69,24 +69,24 @@ module PrintHelper
     end
     ""
   end
-  
+
   def article_to_latex(article)
     latex = ""
     internal = REXML::Document.new(article.gsub(/\n/, ''))
     article = internal.elements.to_a("//page").first
-    
+
     # first do some scrubbing
     article.elements.each("//lb") do |lb|
       lb.replace_with(REXML::Text.new("\n"))
     end
-    
+
     article.elements.each("//link") do |link|
       latex_link = link.children.to_s
       link.replace_with(REXML::Text.new(latex_link))
     end
-    
+
     article.elements.each("//p") do |para|
-      latex << "\n \n \n" 
+      latex << "\n \n \n"
       para.each do |e|
         #p e
         latex << e.to_s

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe WorkStatistic do
 
   before(:each) do
-    @work = FactoryGirl.create(:work1) 
+    @work = FactoryGirl.create(:work1)
     @work_statistic = FactoryGirl.create(:work_statistic1)
   end
 

@@ -12,7 +12,7 @@ class CreatePages < ActiveRecord::Migration
       t.column :base_width, :integer
       t.column :base_height, :integer
       t.column :shrink_factor, :integer
-      
+
       # foreign keys
       t.column :work_id, :integer
 

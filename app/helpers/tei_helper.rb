@@ -1,10 +1,10 @@
-module TeiHelper 
+module TeiHelper
   include DisplayHelper
 
   def xml_to_tei(xml_text, preserve_lb=true)
     xml_text.gsub!(/\n/, "")
     doc = REXML::Document.new(xml_text)
-    doc.elements.each("//link") do |e| 
+    doc.elements.each("//link") do |e|
       title = e.attributes['target_title']
       id = e.attributes['target_id']
       # first find the articles
@@ -25,7 +25,7 @@ module TeiHelper
       e.children.each { |c| anchor.add(c) }
       e.replace_with(anchor)
     end
-    doc.elements.each("//lb") do |e| 
+    doc.elements.each("//lb") do |e|
       if preserve_lb
         e.replace_with(REXML::Element.new('br'))
       else

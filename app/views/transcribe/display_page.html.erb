@@ -3,12 +3,12 @@
 <%= render({ :partial => '/shared/page_tabs',
              :locals => { :selected =>3,
                           :page_id => @page.id }}) %>
-  
+
 
 
 <div class="two-columns">
 	<div class="left-column">
-		
+
     <%= render :partial => '/shared/page_navigation' %>
     <% if @preview_xml  %>
   		<div class="inside-column">
@@ -17,7 +17,7 @@
     <% end %>
 		<div id="transcription_form_area" class="inside-column">
 		  <div id="transcription_form">
-		  
+
 		    <%= form_for(@page, :url => { :action => 'save_transcription' }) do |f| %>
       	   <%= html_block('left') %>
 		   <% if @work.scribes_can_edit_titles %>
@@ -35,7 +35,7 @@
 		    <%= submit_tag "Autolink", :name => 'autolink' %>
 		    <%= submit_tag "Save", :name => 'save' %>
 		  <% end%>
-		  
+
 
     <% if @work.transcription_conventions  %>
         <%= @work.transcription_conventions %>

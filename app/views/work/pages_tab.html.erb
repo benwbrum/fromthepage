@@ -41,7 +41,7 @@ Pages:<br />
     <td>
       <% if page.base_image == nil || page.base_image == "" %>
         No Image
-	      (<%= link_to("add", 
+	      (<%= link_to("add",
 	                   { :controller => 'page',
 	                     :action => 'image_tab',
 	                     :page_id => page.id }) %>)

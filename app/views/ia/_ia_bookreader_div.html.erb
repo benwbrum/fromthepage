@@ -1,17 +1,17 @@
 <div class="inside-column" id="zoom_div">
 	<div id="containerdiv">
 		<div id="BookReader" style="left:10px; right:10px; top:10px; bottom:2em;">x</div>
-		    <link rel="stylesheet" type="text/css" href="../BookReader/BookReader.css">    
+		    <link rel="stylesheet" type="text/css" href="../BookReader/BookReader.css">
 		    <script type="text/javascript" src="http://www.archive.org/download/BookReader/lib/jquery-1.2.6.min.js"></script>
 		    <script type="text/javascript" src="http://www.archive.org/download/BookReader/lib/jquery.easing.1.3.js"></script>
-		    <script type="text/javascript" src="../BookReader/BookReader.js"></script>    
+		    <script type="text/javascript" src="../BookReader/BookReader.js"></script>
 		    <script type="text/javascript" src="../BookReader/dragscrollable.js"></script>
 		    <%= stylesheet_link_tag 'iaoverride' %>
 
 	<script type="text/javascript" language="javascript">
 		     jQuery.noConflict();
 
-// 
+//
 // This file is a copy of the dynamically-generated Internet Archive stuff
 //
 br = new BookReader();
@@ -47,9 +47,9 @@ br.getPageURI = function(index, reduce, rotate) {
     } else {
         _rotate = rotate;
     }
-    
+
     var file = this._getPageFile(index);
-        
+
     // $$$ add more image stack formats here
     return 'http://'+this.server+'/BookReader/BookReaderImages.php?zip='+this.zip+'&file='+file+'&scale='+_reduce+'&rotate='+_rotate;
 }
@@ -58,18 +58,18 @@ br._getPageFile = function(index) {
     var leafStr = '0000';
     var imgStr = this.leafMap[index].toString();
     var re = new RegExp("0{"+imgStr.length+"}$");
-    
+
     var insideZipPrefix = this.subPrefix.match('[^/]+$');
     var file = insideZipPrefix + '_' + this.imageFormat + '/' + insideZipPrefix + '_' + leafStr.replace(re, imgStr) + '.' + this.imageFormat;
-    
+
     return file;
 }
 
 br.getPageSide = function(index) {
     //assume the book starts with a cover (right-hand leaf)
     //we should really get handside from scandata.xml
-    
-        
+
+
     // $$$ we should get this from scandata instead of assuming the accessible
     //     leafs are contiguous
     if ('rl' != this.pageProgression) {
@@ -116,7 +116,7 @@ br.leafNumToIndex = function(leafNum) {
             return index;
         }
     }
-    
+
     return null;
 }
 
@@ -127,8 +127,8 @@ br.getSpreadIndices = function(pindex) {
     // $$$ we could make a separate function for the RTL case and
     //      only bind it if necessary instead of always checking
     // $$$ we currently assume there are no gaps
-    
-    var spreadIndices = [null, null]; 
+
+    var spreadIndices = [null, null];
     if ('rl' == this.pageProgression) {
         // Right to Left
         if (this.getPageSide(pindex) == 'R') {
@@ -150,9 +150,9 @@ br.getSpreadIndices = function(pindex) {
             spreadIndices[0] = pindex - 1;
         }
     }
-    
+
     //console.log("   index %d mapped to spread %d,%d", pindex, spreadIndices[0], spreadIndices[1]);
-    
+
     return spreadIndices;
 }
 
@@ -161,7 +161,7 @@ br.getSpreadIndices = function(pindex) {
 // e.g. the last page asserted as page 5 retains that assertion.
 br.uniquifyPageNums = function() {
     var seen = {};
-    
+
     for (var i = br.pageNums.length - 1; i--; i >= 0) {
         var pageNum = br.pageNums[i];
         if ( !seen[pageNum] ) {
@@ -217,8 +217,8 @@ br.pageH = [ <%= @page.ia_leaf.page_h %>];
 br.leafMap = [<%= @page.ia_leaf.leaf_number %>];
 
 br.pageNums = [ '<%=@page.ia_leaf.page_number%>'];
-            
-      
+
+
 br.numLeafs = br.pageW.length;
 
 
@@ -228,7 +228,7 @@ br.numLeafs = br.pageW.length;
 
 
 /*
- * 
+ *
  * br.bookId   = 'Jeremiah_White_Graves_Diary_Volume_2_Book_01';
  * br.zip      = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01_jp2.zip';
  * br.subPrefix = 'JWGravesVol2Book01';
@@ -239,7 +239,7 @@ br.numLeafs = br.pageW.length;
  * br.imageFormat = 'jp2';
  * br.archiveFormat = 'zip';
 
- * 
+ *
  */
 
 
@@ -258,7 +258,7 @@ br.pageProgression = 'lr';
 // Check for config object
 // $$$ change this to use the newer params object
 if (typeof(brConfig) != 'undefined') {
-    if (typeof(brConfig["ui"]) != 'undefined') { 
+    if (typeof(brConfig["ui"]) != 'undefined') {
         br.ui = brConfig["ui"];
     }
 
@@ -269,13 +269,13 @@ if (typeof(brConfig) != 'undefined') {
         }
     } else if (brConfig['mode'] == 2) {
         br.mode = 2;
-      
+
     }
 } // brConfig
 
 br.cleanupMetadata();
 br.init();
-  
+
 	</script>
 		</div>
     </div>

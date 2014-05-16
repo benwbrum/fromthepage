@@ -22,7 +22,7 @@ describe ImageSet do
       @image_set.titled_images << ti
       @image_set.page_count.should == 1
     end
-    
+
     it 'returns as many as there are' do
       the_times = 4
       1.upto(the_times) do |num|

@@ -19,7 +19,7 @@
 	  <% @article.errors.full_messages do |msg| %>
             <%= msg %><br />
           <% end %>
-  
+
           <%= hidden_field_tag(:article_id, @article.id) %>
           Title: <%= f.text_field :title %><br />
           Article:<br />
@@ -38,10 +38,10 @@
           <%= html_block('right') %>
      </div>
      <div class="inside-column">
-	  
+
 			<%= render({ :partial => 'article_categories',
 			             :locals => { :article => @article }}) %>
 	  </div>
   </div>
 </div>
-		
+

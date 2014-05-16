@@ -9,7 +9,7 @@
       <p>Website:  <%= f.text_field :website %> </p>
       <p class="help-text">If you have a blog or homepage, enter it here.</p>
       <p>About:  <%= f.text_field :about %>   </p>
-      <p class="help-text">Tell the From The Page community a little bit about yourself.  255 characters only!</p>    
+      <p class="help-text">Tell the From The Page community a little bit about yourself.  255 characters only!</p>
        <p><%= submit_tag 'Save' %> </p>
        <%= hidden_field_tag 'user_id', @user.id %>
     <% end %>
