@@ -1,6 +1,4 @@
-<%= render( :partial => '/shared/article_tabs',
-            :locals => { :selected => 1,
-                         :article_id => @article.id }) %>
+<%= render '/shared/article_tabs', :selected => 1, :article_id => @article.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -76,7 +74,7 @@
               :unlinked_only => true) %>
 		  </p>
     </div>
-    <%= render :partial => 'article_links' %>
+    <%= render 'article_links' %>
 
   </div>
 </div>
