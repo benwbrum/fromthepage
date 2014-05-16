@@ -30,7 +30,7 @@
 	    Parameters
 	  </th>
   </tr>
-	<% for interaction in @interactions %>
+	<% @interactions.each do |interaction| %>
 	<tr>
 		<td>
 			<%= interaction.created_on.strftime("%Y-%m-%d %H:%M:%S") %>

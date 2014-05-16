@@ -22,7 +22,7 @@
         Action
     </th>
  </tr>
- <% for version in @user.page_versions %>
+ <% @user.page_versions.each do |version| %>
    <tr>
      <td><%= version.page.work.title %></td>
      <td>
@@ -59,7 +59,7 @@
         Action
     </th>
  </tr>
- <% for version in @user.article_versions %>
+ <% @user.article_versions.each do |version| %>
    <tr>
      <td>
        <%= link_to(version.article.title,

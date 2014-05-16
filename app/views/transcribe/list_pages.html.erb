@@ -3,7 +3,7 @@
 </p>
 
 <p>
-  <% for page in @work.pages %>
+  <% @work.pages.each do |page| %>
     <%= link_to(page.title,
                 { :action => 'display_page',
                   :page_id => page.id } ) %>

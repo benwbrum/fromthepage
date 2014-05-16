@@ -51,7 +51,7 @@
     <div class="inside-column">
 	  <h3>Categories</h3>
       <ul>
-      	<% for cat in @article.categories %>
+      	<% @article.categories.each do |cat| %>
 	      	<li>
 	      		<%= cat.title %>
 	      	</li>

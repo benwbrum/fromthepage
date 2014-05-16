@@ -1,11 +1,9 @@
 
-<%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected =>1,
-                          :page_id => @page.id }}) %>
+<%= render '/shared/page_tabs', :selected =>1, :page_id => @page.id %>
 <div class="two-columns">
   <div class="left-column">
     <div>
-      <%= render :partial => '/shared/page_navigation' %>
+      <%= render '/shared/page_navigation' %>
       <div class="inside-column">
 	<%=  html_block('left') %>
         <h2><%= @page.title %></h2>
@@ -50,10 +48,10 @@
 	<% end %>
 	<div class="inside-column">
 	  <div id="note_container" style="display: none">
-	    <%= render :partial => "notes/form_new" %>
+	    <%= render "notes/form_new" %>
 	  </div>
 	  <%= link_to "add comment", "#", id: "toggle" %>
-	  <%= render :partial => "notes/notes" %>
+	  <%= render "notes/notes" %>
 	</div>
   </div>
 
@@ -61,11 +59,11 @@
 	<div class="right-column" style="position: relative; top: 0px;">
 	        <%=  html_block('right') %>
 		<% if @page.ia_leaf %>
-			<%= render :partial => '/ia/ia_bookreader_div' %>
+			<%= render '/ia/ia_bookreader_div' %>
 		<% elsif @page.omeka_file %>
-			<%= render :partial => '/shared/external_image_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url } %>
+			<%= render '/shared/external_image_div', :fullsize_url => @page.omeka_file.fullsize_url %>
 		<% else %>
-			<%= render :partial => '/shared/zoom_div' %>
+			<%= render '/shared/zoom_div' %>
 		<% end %>
 	</div>
 

@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 2,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 2, :collection_id => @collection.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -39,7 +37,7 @@
               Actions
             </th>
           </tr>
-	        <% for work in @collection.works %>
+	        <% @collection.works.each do |work| %>
 	          <tr>
 	            <td>
     	          <%= work.title %>
@@ -70,7 +68,7 @@
               Action
             </th>
           </tr>
-	        <% for work in @works_not_in_collection %>
+	        <% @works_not_in_collection.each do |work| %>
 	          <tr>
 	            <td>
     	          <%= work.title %>

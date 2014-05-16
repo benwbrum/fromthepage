@@ -19,7 +19,7 @@
 		        Revision
 		    </th>
 		 </tr>
-		 <% for version in @page.page_versions %>
+		 <% @page.page_versions.each do |version| %>
 		   <tr>
 		     <td class="revision" width="45%">
 		        <%= link_to(version.user.display_name,

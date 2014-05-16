@@ -1,13 +1,11 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 2,
-                          :work_id => @work.id }}) %>
+<%= render '/shared/work_tabs', :selected => 2, :work_id => @work.id %>
 
 
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
       <p>
-        <% for page in @work.pages %>
+        <% @work.pages.each do |page| %>
           <%= link_to(page.title,
                       { :action => 'display_page',
                         :page_id => page.id} ) %>

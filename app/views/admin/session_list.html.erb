@@ -20,7 +20,7 @@
 	    Session ID
 	  </th>
   </tr>
-	<% for sess in @sessions %>
+	<% @sessions.each do |sess| %>
 	<tr>
 		<td>
 			<%= sess['started'] %>

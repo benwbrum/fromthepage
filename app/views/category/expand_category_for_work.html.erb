@@ -1,11 +1,8 @@
-<%= render(:partial => '/category/category_link_for_work',
-          :locals => { :category => @category }) %>
+<%= render '/category/category_link_for_work', :category => @category %>
 <ul>
-<% for article in @category.articles %>
+<% @category.articles.each do |article| %>
 	<li>
-		<%= render(:partial => '/category/article_link_for_work',
-               :locals => { :category => @category,
-                            :article => article }) %>
+	  <%= render '/category/article_link_for_work', :category => @category, :article => article %>
 	</li>
 <% end %>
 </ul>

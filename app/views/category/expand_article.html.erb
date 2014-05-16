@@ -1,8 +1,6 @@
-<%= render(:partial => '/category/article_link',
-           :locals => { :category => @category,
-                        :article => @article }) %>
+<%= render '/category/article_link', :category => @category, :article => @article %>
 <ul>
-	<% for page in @article.pages %>
+	<% @article.pages.each do |page| %>
 		<li>
 			<%= link_to(page.title,
 			            { :controller => 'display',

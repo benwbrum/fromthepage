@@ -1,6 +1,5 @@
-<%= render({ :partial => '/shared/article_tabs',
-             :locals => { :selected =>2,
-                          :article_id => @article.id }}) %>
+<%= render '/shared/article_tabs', :selected => 2, :article_id => @article.id %>
+
 <div class="two-columns">
   <div class="left-column">
 		<div class="inside-column">
@@ -19,7 +18,7 @@
 		        Actions
 		    </th>
 		 </tr>
-		 <% for version in @article.article_versions %>
+		 <% @article.article_versions.each do |version| %>
 		   <tr>
 		     <td><%= version.version %></td>
 		     <td>

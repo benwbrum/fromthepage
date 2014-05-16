@@ -42,7 +42,7 @@
 		<title>
 			Entries
 		</title>
-		<% for page in @work.pages %>
+		<% @work.pages.each do |page| %>
 				<%= xml_to_docbook(page) %>
 		<% end %>
 	</chapter>

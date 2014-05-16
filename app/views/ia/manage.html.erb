@@ -36,7 +36,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% for leaf in @ia_work.ia_leaves %>
+					<% @ia_work.ia_leaves.each do |leaf| %>
 						<tr>
 							<td>
 								<%= leaf.leaf_number %>

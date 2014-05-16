@@ -62,7 +62,7 @@
 		  	<% if @current_user.oai_sets %>
 				Import a work from an OAI collection.
 				<ul>
-					<% for set in @current_user.oai_sets%>
+					<% @current_user.oai_sets.each do |set| %>
 						<li>
 							<%= link_to('List works to import from '+set.set_spec,
 								 { :action => 'record_list',
@@ -81,7 +81,7 @@
 	              Works I own:
 	            </p>
 	            <ul>
-	              <% for work in @current_user.owner_works %>
+	              <% @current_user.owner_works.each do |work| %>
 	                <li>
 	                  <%= link_to(work.title,
 	                              { :controller => 'work',
@@ -100,7 +100,7 @@
 			<div>
 				<h4>Imported Archive.org Books</h4>
 				<ul>
-					<% for ia_work in @current_user.ia_works %>
+					<% @current_user.ia_works.each do |ia_work| %>
 					<li>
 						<%= link_to(ia_work.title,
 									{ :controller => 'ia',

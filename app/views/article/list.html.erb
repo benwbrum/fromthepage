@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 0,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 0, :collection_id => @collection.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -26,7 +24,7 @@
         Uncategorized Articles:
       </p>
       <p>
-        <% for article in @uncategorized_articles %>
+        <% @uncategorized_articles.each do |article| %>
 		      <%= link_to(article.title,
 			                 { :action => 'show',
 			                   :article_id => article.id } ) %><br />
@@ -41,5 +39,4 @@
           <%= html_block('right') %>
        </div>
    </div>
-
 </div>

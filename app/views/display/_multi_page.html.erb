@@ -1,5 +1,3 @@
-
-
 <div class="two-columns">
 	<div class="left-column">
 	  <% if @search_string %>
@@ -14,7 +12,7 @@
     <% end %>
 
 	  <% work_title = nil %>
-	  <% for page in @pages %>
+	  <% @pages.each do |page| %>
 	    <% old_work_title = work_title %>
 	    <% work_title = page.work.title %>
 	    <% if !@work && work_title != old_work_title %>
@@ -102,7 +100,7 @@
 		    <%=  raw(xml_to_html(@article.xml_text)) %>
 		    <% end %>
   		</div>
-		  <%= render :partial => 'article/article_links' %>
+		  <%= render 'article/article_links' %>
 		<% end %>
 		<% if @collection && @collection.categories %>
 			<div class="inside-column">
@@ -115,8 +113,5 @@
 		      </p>
 			</div>
 		<% end %>
-
-		<!-- Check SVN for review code formerly here before bug 12 -->
-
 	</div>
 </div>

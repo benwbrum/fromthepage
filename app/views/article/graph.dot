@@ -5,7 +5,7 @@ graph G {
     [style=filled,
      label="<%= @article.title.gsub(/ /, '\n') %>",
      color="/blues9/8"];
-  <% for link in article_links %>
+  <% article_links.each do |link| %>
     <% if link['link_count'].to_i >= min_rank %>
       <% length =  1 + ( link_max.to_i - link['link_count'].to_i  )
          # convert from 1:N to (1:N)/N

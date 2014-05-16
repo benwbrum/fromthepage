@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 0,
-			 :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 0, :collection_id => @collection.id %>
 
 <div class="two-columns">
 	<div class="left-column">
@@ -9,7 +7,7 @@
             <%= html_block('left') %>
 			<p>
 				<b>All Transcribers</b><br />
-				<% for entry in @t_all_users_and_deeds %>
+				<% @t_all_users_and_deeds.each do |entry| %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
 					<% if user_signed_in? && current_user.like_owner?(@collection) %>
@@ -22,7 +20,7 @@
 			</p>
 			<p>
 				<b>All Indexers</b><br />
-				<% for entry in @i_all_users_and_deeds %>
+				<% @i_all_users_and_deeds.each do |entry| %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
 					<% if user_signed_in? && current_user.like_owner?(@collection) %>
@@ -40,7 +38,7 @@
 			<!-- user stats across collections -->
 			<p>
 				<b>All Editors</b><br />
-				<% for entry in @e_all_users_and_deeds %>
+				<% @e_all_users_and_deeds.each do |entry| %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
 					<% if user_signed_in? && current_user.like_owner?(@collection) %>

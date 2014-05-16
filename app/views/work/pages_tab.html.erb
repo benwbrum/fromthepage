@@ -28,7 +28,7 @@ Pages:<br />
       Position
     </th>
   </tr>
-<% for page in @work.pages %>
+<% @work.pages.each do |page| %>
   <tr>
     <td>
       <%= page.title %>

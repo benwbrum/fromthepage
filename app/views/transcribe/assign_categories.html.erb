@@ -1,17 +1,12 @@
+<%= render '/shared/page_tabs', :selected =>3, :page_id => @page.id %>
 
-
-<%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected =>3,
-                          :page_id => @page.id }}) %>
-    <div id="subundernav">
-      <h4><%= @page.title %></h4>
-    </div>
-
-
+<div id="subundernav">
+  <h4><%= @page.title %></h4>
+</div>
 
 <div class="two-columns">
 	<div class="left-column">
-    <%= render :partial => '/shared/page_navigation' %>
+	  <%= render '/shared/page_navigation' %>
 
 
     <div class="inside-column">
@@ -27,11 +22,10 @@
 		<% end %>
 
 
-	    <% for article in @page.articles %>
+	    <% @page.articles.each do |article| %>
 	      <% if article.categories.length == 0 %>
 		      <h3><%= article.title %></h3>
-					<%= render({ :partial => '/article/article_categories',
-					             :locals => { :article => article }}) %>
+		      <%= render '/article/article_categories', :article => article %>
   	    <% end %>
 	    <% end %>
       <%= button_to("Done",
