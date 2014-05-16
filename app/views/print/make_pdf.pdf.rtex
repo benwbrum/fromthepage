@@ -4,10 +4,10 @@
 
 \begin{document}
 
-<%= render :partial => 'title_pages' %>
+<%= render 'title_pages' %>
 
 \tableofcontents
 
-<%= render :partial => 'content' %>
+<%= render 'content' %>
 
 \end{document}
