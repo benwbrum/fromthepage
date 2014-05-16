@@ -70,8 +70,6 @@ class CollationController < ApplicationController
 
   end
 
-
-
   def merge
     # load up the sets
     left_set = ImageSet.find(params[:left_set_id])
@@ -115,6 +113,4 @@ class CollationController < ApplicationController
     new_set.save!
     redirect_to :controller => 'title', :action => 'list', :image_set_id => new_set.id
   end
-
-
 end

@@ -8,7 +8,6 @@ class DemoController < ApplicationController
     redirect_to :controller => 'display', :action => 'read_work', :work_id => DEMO_WORK, :page => screen
   end
 
-
   def next_untranscribed_page
     work = Work.find DEMO_WORK
     work.pages.where("xml_text is null").first

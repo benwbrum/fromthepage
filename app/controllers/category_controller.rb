@@ -12,7 +12,6 @@ class CategoryController < ApplicationController
     render :layout => false
   end
 
-
   def create
     category = Category.new(params[:category])
     category.save!

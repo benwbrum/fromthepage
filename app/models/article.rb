@@ -39,14 +39,6 @@ class Article < ActiveRecord::Base
     super
   end
 
-
-  #######################
-  # Related Articles
-  #######################
-  def related_article_ranks
-
-  end
-
   #######################
   # De-Dup Support
   #######################

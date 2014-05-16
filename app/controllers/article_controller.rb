@@ -18,7 +18,6 @@ class ArticleController < ApplicationController
     # 3. Uncategorized articles should be listed below
 
     @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id]).all
-
   end
 
   def update

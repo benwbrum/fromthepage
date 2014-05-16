@@ -70,6 +70,4 @@ class AdminController < ApplicationController
     @dev_tail = `tail -#{@lines} #{development_logfile}`
     @prod_tail = `tail -#{@lines} #{production_logfile}`
   end
-
-
 end
