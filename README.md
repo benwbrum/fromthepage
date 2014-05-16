@@ -1,4 +1,4 @@
-FromThePage is an open-source tool that allows volunteers to collaborate to transcribe handwritten documents.
+**FromThePage** is an open-source tool that allows volunteers to collaborate to transcribe handwritten documents.
 
 ### Features
 
