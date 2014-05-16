@@ -1,5 +1,4 @@
 class IaController < ApplicationController
-  require 'nokogiri'
   require 'open-uri'
   before_filter :load_ia_work_from_params
 

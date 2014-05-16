@@ -1,5 +1,4 @@
 class IaWork < ActiveRecord::Base
-  require 'nokogiri'
   require 'open-uri'
 
   belongs_to :user
