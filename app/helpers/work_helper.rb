@@ -1,7 +1,4 @@
 module WorkHelper
-
-
-
   def xml_to_docbook(page)
  #   docbook = REXML::Document.new
     internal = REXML::Document.new(page.xml_text)
@@ -66,7 +63,6 @@ module WorkHelper
       end
     end
 
-
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     internal.write(my_display_html)
@@ -75,8 +71,6 @@ module WorkHelper
     logger.debug("DEBUG after slice!=#{my_display_html}")
     return my_display_html
   end
-
-
 
   def docbook_index_from_work(work)
     doc = REXML::Document.new();
@@ -113,5 +107,4 @@ module WorkHelper
     doc.write(string_xml)
     return string_xml
   end
-
 end

@@ -32,9 +32,7 @@ module PrintHelper
     end
     # clear the footnote array in case render is called twice for debugging
     return latex
-
   end
-
 
   private
   def make_footnote_if_necessary(id, title, text)

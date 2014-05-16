@@ -1,17 +1,8 @@
 module ApplicationHelper
 
     def html_block(tag)
-    render({ :partial => 'page_block/html_block',
-             :locals =>
-              { :tag => tag,
-                :page_block => @html_blocks[tag],
-                :origin_controller => controller_name,
-                :origin_action => action_name
-              }
-          })
-
+    render 'page_block/html_block', :tag => tag, :page_block => @html_blocks[tag], :origin_controller => controller_name, :origin_action => action_name
   end
-
 
   def file_to_url(filename)
     if filename
@@ -40,9 +31,6 @@ module ApplicationHelper
     ret << "</li>\n"
   end
 
-
-
-
   def deeds_for(options={})
     limit = options[:limit] || 20
 
@@ -53,7 +41,6 @@ module ApplicationHelper
       conditions = "deed_type IN (#{types.join(',')})"
     end
 
-
     if options[:collection]
       deeds = @collection.deeds.where(conditions).order('created_at DESC').limit(limit)
     else
@@ -63,13 +50,7 @@ module ApplicationHelper
       logger.debug "limit: #{limit}"
       deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit).references(:collection)
     end
-    render({ :partial => 'deed/deeds',
-             :locals =>
-              { :limit => limit,
-                :deeds => deeds,
-                :options => options
-              }
-          })
+    render 'deed/deeds', :limit => limit, :deeds => deeds, :options => options
   end
 
   def time_ago(time)
@@ -96,6 +77,4 @@ module ApplicationHelper
       "1 second ago"
     end
   end
-
-
 end
