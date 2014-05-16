@@ -22,13 +22,16 @@ FromThePage has been run successfully under both Linux and Windows. It currently
 Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
 Clone the repository
-git clone git://github.com/benwbrum/fromthepage.git
+
+    git clone git://github.com/benwbrum/fromthepage.git
 
 Install required gems
-bundle install
+
+    bundle install
 
 Install Graphviz
-apt-get install graphviz (or see the graphviz documentation at http://www.graphviz.org/)
+
+    apt-get install graphviz (or see the graphviz documentation at http://www.graphviz.org/)
 
 Configure MySQL
 Create a database and user account for FromThePage to use.
@@ -36,8 +39,11 @@ Create a database and user account for FromThePage to use.
 Then update the config/database.yml file to point to the MySQL user account and database you created above.
 
 Run
-rake db:migrate
+
+    rake db:migrate
+
 to load the schema definition into the database account.
 
 Finally, start the application
-rails server
+
+    rails server
