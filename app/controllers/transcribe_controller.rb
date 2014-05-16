@@ -2,7 +2,6 @@ class TranscribeController  < ApplicationController
 
   include AbstractXmlController
 
-  require 'RMagick'
   require 'rexml/document'
   include Magick
   before_filter :authorized?, :except => :zoom

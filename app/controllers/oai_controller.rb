@@ -1,5 +1,4 @@
 class OaiController < ApplicationController
-  require 'oai'
 
   def identify_repository
     client = OAI::Client.new params[:repository_url]
@@ -36,7 +35,7 @@ class OaiController < ApplicationController
   end
 
   def repository_list
-    @repositories = OaiRepository.find :all
+    @repositories = OaiRepository.all
   end
 
 end

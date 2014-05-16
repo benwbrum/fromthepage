@@ -1,4 +1,3 @@
-require 'RMagick'
 require 'image_helper'
 
 class ImageSet < ActiveRecord::Base
@@ -6,7 +5,7 @@ class ImageSet < ActiveRecord::Base
   include Magick
   include ImageHelper
   
-  has_many :titled_images, :order => :position
+  has_many :titled_images, -> { order 'position' }
   belongs_to :owner, :class_name => "User", :foreign_key => "owner_user_id"
   
   

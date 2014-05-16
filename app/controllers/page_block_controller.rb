@@ -1,6 +1,6 @@
 class PageBlockController < AdminController
   def list
-    @page_blocks = PageBlock.find(:all, {:order => "description"})
+    @page_blocks = PageBlock.order("description").all
   end
   
   def edit

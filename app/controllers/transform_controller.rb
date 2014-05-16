@@ -1,10 +1,9 @@
 class TransformController < ApplicationController
   require 'fileutils'
-  require 'RMagick'
   include FileUtils::Verbose
   include Magick
   include ImageHelper
-# TODO add before filters
+  # TODO add before filters
 
   NEXT_STEP = 
     { 

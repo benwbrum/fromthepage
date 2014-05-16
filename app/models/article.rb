@@ -14,21 +14,20 @@ class Article < ActiveRecord::Base
 
   has_and_belongs_to_many :categories, :uniq => true
   belongs_to :collection
-  has_many(:target_article_links, 
-           { :foreign_key => "target_article_id", 
-             :class_name => 'ArticleArticleLink', 
-             :include => [:source_article], 
-             :order => "articles.title ASC"})
-  has_many(:source_article_links, 
-           { :foreign_key => "source_article_id", 
-             :class_name => 'ArticleArticleLink' })
-  has_many(:page_article_links, 
-           { :include => [:page], 
-             :order => "pages.work_id, pages.position ASC" })
+  has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink'})
+  scope :target_article_links, -> { include 'source_article' }
+  scope :target_article_links, -> { order "articles.title ASC" }
 
-  has_many :pages, :through => :page_article_links, :order => "pages.work_id, pages.position ASC"
+  has_many(:source_article_links, { :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink' })
+  has_many(:page_article_links)
+  scope :page_article_links, -> { include 'page' }
+  scope :page_article_links, -> { order "pages.work_id, pages.position ASC" }
 
-  has_many :article_versions, :order => :version
+  has_many :pages, :through => :page_article_links
+  scope :pages, -> { order "pages.work_id, pages.position ASC" }
+
+  has_many :article_versions
+  scope :article_versions, -> { order 'version' }
 
   
   after_save :create_version
@@ -72,7 +71,6 @@ class Article < ActiveRecord::Base
 
       current_matches =
         self.collection.articles.where("id <> ? AND title like ?", self.id, "%#{word}%" )
-      # @collection.articles.find(:all, :conditions => ["title like ?", "%#{word}%"] )
       # current_matches.delete self
       #      logger.debug("DEBUG: #{current_matches.size} matches for #{word}")
       #    keep sort order for new words (append to previous list)
@@ -131,12 +129,7 @@ class Article < ActiveRecord::Base
     
     # now do the complicated version update thing
 
-    previous_version = 
-      ArticleVersion.find(:all, :conditions => ["article_id = ?", self.id],
-                       :order => "version DESC")
-    #       ArticleVersion.find(:first, 
-    #                        :conditions => ["article_id = ?", self.id],
-    #                        :order => "version DESC")
+    previous_version = ArticleVersion.where(["article_id = ?", self.id]).order("version DESC").all
     if previous_version.first
       version.version = previous_version.first.version + 1
     end

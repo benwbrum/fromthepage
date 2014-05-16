@@ -9,7 +9,7 @@ class CreateWorkStatistics < ActiveRecord::Migration
     end
     
     # actually process the existing works here
-    works = Work.find :all
+    works = Work.all
     works.each do |work|
       unless work.work_statistic
         work.work_statistic = WorkStatistic.new

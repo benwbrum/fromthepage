@@ -26,7 +26,7 @@
         Date
     </th>
  </tr>
-			<% @user.notes.find(:all, :limit => 10).each do |note| %>
+			<% @user.notes.limit(10).each do |note| %>
     <tr>
 					<td class="revision" width="33%"><%= link_to(truncate(note.title, :length => 40),
 								{ :controller => 'display',
@@ -57,7 +57,7 @@
         Action
     </th>
  </tr>
- <% for version in @user.page_versions.find(:all, :limit => 10) %>
+ <% for version in @user.page_versions.limit(10) %>
    <tr>
      <td class="revision" width="20%"><%= version.page.work.title %></td>
      <td class="revision" width="35%">
@@ -92,7 +92,7 @@
         Action
     </th>
  </tr>
- <% for version in @user.article_versions.find(:all, :limit => 10, :joins => :article) %>
+ <% for version in @user.article_versions.limit(10).joins(:article) %>
    <tr>
      <td class="revision" width="55%">
        <%= link_to(version.article.title, 

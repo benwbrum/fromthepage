@@ -2,7 +2,7 @@ class CurrentVersionOnPage < ActiveRecord::Migration
   def self.up
     add_column :pages, :page_version_id, :integer
 
-    for page in Page.find(:all)
+    for page in Page.all
       print "#{page.id} v.s=#{page.page_versions.size}\n"
       versions = page.page_versions
       if versions && versions.size > 0

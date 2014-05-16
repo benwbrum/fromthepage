@@ -1,6 +1,6 @@
 # handles administrative tasks for the page object
 class PageController < ApplicationController
-  require 'RMagick'
+  require 'image_helper'
   include ImageHelper
 
   before_filter :authorized?

@@ -1,5 +1,4 @@
 class IaController < ApplicationController
-  require 'nokogiri'
   require 'open-uri'
   before_filter :load_ia_work_from_params
 
@@ -176,7 +175,6 @@ class IaController < ApplicationController
       leaf.page_type = page.search('pagetype').text
       leaf.page_w = page.search('w').text
       leaf.page_h = page.search('h').text
-
       @ia_work.ia_leaves << leaf
       
       if leaf.page_type == 'Title'

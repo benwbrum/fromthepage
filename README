@@ -13,7 +13,7 @@ License
 FromThePage is currently issued under the Affero GPL. This license remains controversial, however, so we are trying to preserve the option to dual-license the code.
 
 Platform
-FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 3.2.17 and the RMagick, hpricot, will_paginate, and OAI gems.
+FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
 
 Installation
 
@@ -37,5 +37,5 @@ Run
 rake db:migrate
 to load the schema definition into the database account.
 
-Finally, to start the application, run
+Finally, start the application
 rails server
