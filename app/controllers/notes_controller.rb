@@ -1,40 +1,4 @@
 class NotesController < ApplicationController
-#	
-#	# GET /comments
-#	# GET /comments.xml
-#	def index
-#		@comments = Comment.find(:all)
-#		
-#		respond_to do |format|
-#			format.html # index.rhtml
-#			format.xml  { render :xml => @comments.to_xml }
-#		end
-#	end
-#	
-#	# GET /comments/1
-#	# GET /comments/1.xml
-#	def show
-#		@comment = Comment.find( params[:id] )
-#		
-#		respond_to do |format|
-#			format.html { redirect_to @comment.commentable_path + '#' + 'comment_' + @comment.id.to_s }
-#			format.xml  { render :xml => @comment.to_xml }
-#		end
-#	end
-#	
-#	# GET /comments/1;edit
-#	# GET /comments/1.xml;edit
-#	def edit
-#		@comment = Comment.find( params[:id] )
-#		respond_to do |format|
-#			format.html { render :partial => 'form_edit', :locals => { :comment => @comment } }
-#			format.xml  { render :xml => @comment.to_xml }
-#			format.js
-#		end
-#	end
-#	
-#	# POST /comments
-#	# POST /comments.xml
   def create
     @note = Note.new( params[:note] )
     # truncate the body for the title

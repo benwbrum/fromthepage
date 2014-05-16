@@ -14,14 +14,14 @@ class CreateDeeds < ActiveRecord::Migration
     end
     
     # migrate data
-    transcriptions = PageVersion.find(:all, :conditions => 'page_version=1')
+    transcriptions = PageVersion.where('page_version=1').all
     transcriptions.each do |pv|
       deed = self.deed_from_version(pv)
       deed.deed_type = Deed::PAGE_TRANSCRIPTION
       deed.save!
     end
     
-    edits = PageVersion.find(:all, :conditions => 'page_version>1')
+    edits = PageVersion.where('page_version>1').all
     edits.each do |pv|
       deed = self.deed_from_version(pv)
       deed.deed_type = Deed::PAGE_EDIT

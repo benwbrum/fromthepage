@@ -1,8 +1,8 @@
 class Work < ActiveRecord::Base
-  has_many :pages, :order => :position
+  has_many :pages, -> { order 'position' }
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
-  has_many :deeds, :order => 'created_at DESC'
+  has_many :deeds, -> { order 'created_at DESC' }
   has_one :ia_work
   has_one :omeka_item
   has_one :work_statistic
@@ -53,11 +53,5 @@ class Work < ActiveRecord::Base
         self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate
-    
   end
-
-  
-
-
-
 end

@@ -1,21 +1,15 @@
 class DashboardController < ApplicationController
-#  include AuthenticatedSystem
   
   def index
     logger.debug("DEBUG: #{current_user.inspect}")
     if user_signed_in?
-      @image_sets = current_user.image_sets #ImageSet.find(:all)  
+      @image_sets = current_user.image_sets
     end
-    @collections = Collection.find(:all)    
-    @users = User.find(:all)
+    @collections = Collection.all
+    @users = User.all
 
     @offset = params[:offset] || 0
-    @recent_versions = 
-      PageVersion.find(:all,
-                       :limit => 20,
-                       :offset => @offset,
-                       :include => [:user, :page],
-                       :order => 'page_versions.created_on desc')
+    @recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
 
     sql = 
       'select count(distinct session_id) count ' +

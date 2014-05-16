@@ -7,7 +7,7 @@
         <p>
           <h3>Collections</h3>
           <ul>
-            <% for collection in @collections %>
+            <% @collections.each do |collection| %>
 			  <% if !collection.restricted || (user_signed_in? && current_user.like_owner?(collection)) %>
 	              <li>
 	                <%= link_to(collection.title,
@@ -117,7 +117,7 @@
 	            <p>
 	              Image Sets I own:
 	              <ul>
-	                <% for set in @image_sets %>
+	                <% @image_sets.each do |set| %>
 	                  <li>
 	                    <%= "Set #{set.id} (#{set.summary})" %>
 	                    <%= link_to("Title",
@@ -175,7 +175,7 @@
           <p>
             Users
             <ul>
-	            <% for user in @users %>
+	            <% @users.each do |user| %>
 	              <li>
 	                <%= link_to(user.display_name,
 	                           { :controller => 'user',

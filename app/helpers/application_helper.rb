@@ -55,22 +55,13 @@ module ApplicationHelper
     
 
     if options[:collection]
-      # deeds = @collection.deeds.find(:all,  :limit => limit, :order => 'created_at DESC', :conditions => conditions)
       deeds = @collection.deeds.where(conditions).order('created_at DESC').limit(limit)
     else
       restrict = " collections.restricted = 0 "
       conditions = conditions ? conditions + " AND " + restrict : restrict
-      # deeds = Deed.find(:all, :limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
       logger.debug "in application helper"
       logger.debug "limit: #{limit}"
-      # logger.debug "collection is a: #{collection.class}"
-      # This is the original
-      # deeds = Deed.find(:limit => limit, :order => 'created_at DESC', :conditions => conditions, :include => :collection)
-      # this did not work either
-      # deeds = Deed.find(:limit => limit, :order => 'created_at DESC', :conditions => conditions)
-      # this works for now
-      # deeds = [Deed.first, Deed.last] # I just need an array
-      deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit)
+      deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit).references(:collection)
     end
     render({ :partial => 'deed/deeds', 
              :locals => 

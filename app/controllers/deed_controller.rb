@@ -4,16 +4,9 @@ class DeedController < ApplicationController
     limit = params[:limit] || 50
     @offset = params[:offset] || 0
     if @collection
-      @deeds = Deed.find(:all, 
-                        {:limit => limit, 
-                         :offset => @offset, 
-                         :order => 'created_at DESC',
-                         :conditions => [ 'collection_id = ?', @collection.id ]})
+      @deeds = Deed.where(['collection_id = ?', @collection.id]).limit(limit).offset(@offset).order('created_at DESC').all
     else
-      @deeds = Deed.find(:all, 
-                        {:limit => limit, 
-                         :offset => @offset, 
-                         :order => 'created_at DESC'})
+      @deeds = Deed.order('created_at DESC').limit(limit).offset(@offset).all
     end
   end
 

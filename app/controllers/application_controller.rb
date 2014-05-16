@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
-
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
   before_filter :log_interaction
@@ -8,12 +6,11 @@ class ApplicationController < ActionController::Base
   before_filter :load_html_blocks
   # after_filter :complete_interaction
   before_filter :authorize_collection
-
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
- # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
-
+  # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
 
   def load_objects_from_params
 
@@ -82,7 +79,6 @@ class ApplicationController < ActionController::Base
       @work.ia_work.server=ia_servers[@work.ia_work.book_id][:server]
       @work.ia_work.ia_path=ia_servers[@work.ia_work.book_id][:ia_path]
     end
-    
   end
 
   # log what was done
@@ -128,7 +124,7 @@ class ApplicationController < ActionController::Base
   def load_html_blocks
     @html_blocks = {}
     page_blocks = 
-      PageBlock.find_all_by_controller_and_view(controller_name, action_name)
+      PageBlock.where(controller: controller_name, view: action_name)
     page_blocks.each do |b|
         if b && b.html
           b.rendered_html = render_to_string(:inline => b.html)
@@ -145,8 +141,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  
-
   def authorize_collection
     # skip irrelevant cases
     return unless @collection
@@ -157,6 +151,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation) }
+  end
 end
 
 # class ApplicationController < ActionController::Base

@@ -1,7 +1,7 @@
 class FixStatistics < ActiveRecord::Migration
   def self.up   
     # catch up existing works
-    works = Work.find :all
+    works = Work.all
     works.each do |work|
       unless work.work_statistic
         work.work_statistic = WorkStatistic.new
