@@ -1,6 +1,6 @@
 FromThePage is an open-source tool that allows volunteers to collaborate to transcribe handwritten documents.
 
-Features
+### Features
 
 - Wiki-style Editing: Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
 - Version Control: Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
@@ -9,13 +9,15 @@ Features
 - Automatic Markup: FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
 - Internet Archive integration: FromThePage can be pointed at manuscripts hosted on Archive.org. It will import the page structure and any printed page titles into its native format for transcription, while serving page images from the Internet Archive.
 
-License
+### License
+
 FromThePage is currently issued under the Affero GPL. This license remains controversial, however, so we are trying to preserve the option to dual-license the code.
 
-Platform
+### Platform
+
 FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
 
-Installation
+### Installation
 
 Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
