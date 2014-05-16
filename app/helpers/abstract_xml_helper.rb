@@ -60,6 +60,4 @@ module AbstractXmlHelper
     doc.write(my_display_html)
     return my_display_html
   end
-
-
 end

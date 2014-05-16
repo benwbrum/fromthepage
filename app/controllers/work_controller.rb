@@ -24,10 +24,6 @@ class WorkController < ApplicationController
     end
   end
 
-  def make_pdf
-    # don't think there should be much to do here.
-  end
-
   # TODO: refactor author to include docbook elements like fn, ln, on, hon, lin
   def create_pdf
     # render to string

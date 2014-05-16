@@ -1,11 +1,9 @@
 
-<%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected => 5,
-                          :page_id => @page.id }}) %>
+<%= render '/shared/page_tabs', :selected => 5, :page_id => @page.id %>
 
 <div class="two-columns">
   <div class="left-column">
-    <%= render({ :partial => '/shared/page_navigation' }) %>
+    <%= render '/shared/page_navigation' %>
     <div class="inside-column">
       <p>
         Title: <span id="title_<%= @page.id %>"><%= @page.title %></span>
