@@ -39,7 +39,7 @@ class ArticleController < ApplicationController
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
     end
-    render :action => 'edit'
+    render 'edit'
   end
 
   def article_category

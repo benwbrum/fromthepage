@@ -16,7 +16,7 @@ class TransformController < ApplicationController
     if @image_set
       reprise
     else
-      render :action => 'directory_form'
+      render 'directory_form'
     end
   end
 
@@ -66,22 +66,22 @@ class TransformController < ApplicationController
     # check that input appeared
     if(source_dir == nil || "" == source_dir)
       flash.now['error'] = "You must enter a directory"
-      render :action => 'directory_form'
+      render 'directory_form'
     elsif(!File.directory?(source_dir))      # check for a valid directory
       flash.now['error'] = "The directory (#{source_dir}) entered is not a valid directory"
-      render :action => 'directory_form'
+      render 'directory_form'
     elsif(!File.executable?(source_dir))
       flash.now['error'] =
         "The application does not have execute permission on the directory #{source_dir}"
-      render :action => 'directory_form'
+      render 'directory_form'
     elsif(!File.readable?(source_dir))
       flash.now['error'] =
         "The application does not have read permission on the directory #{source_dir}"
-      render :action => 'directory_form'
+      render 'directory_form'
     elsif(Dir.entries(source_dir).length < 3)
       flash.now['error'] =
         "There are no files in the directory #{source_dir}"
-      render :action => 'directory_form'
+      render 'directory_form'
     else
       config[:source_directory] = source_dir
       process_source_directory(source_dir)
@@ -150,7 +150,7 @@ class TransformController < ApplicationController
     @image_set.save!
     @image_set.resize_sample_image
 
-    render :action => 'size_form'
+    render 'size_form'
   end
 
   def number_location_form
@@ -244,7 +244,7 @@ class TransformController < ApplicationController
     if(test_date.strftime(date_format) == date_format)
       # re-render with an error message if it's not
       flash.now['error'] = "Your date format was invalid"
-      render :action => 'date_format_form'
+      render 'date_format_form'
     end
     @image_set.title_format = date_format
     @image_set.save!
@@ -258,7 +258,7 @@ class TransformController < ApplicationController
     if request.xhr?
       render(:text => test_date.strftime(date_format), :layout => false)
     else
-      render :action => 'date_format_form'
+      render 'date_format_form'
     end
   end
 
