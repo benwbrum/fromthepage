@@ -1,5 +1,4 @@
 class OaiController < ApplicationController
-  require 'oai'
 
   def identify_repository
     client = OAI::Client.new params[:repository_url]
