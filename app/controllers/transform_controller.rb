@@ -364,7 +364,7 @@ private
     end
   end
 
-  def configuration
+  def configure
     if(nil == session[:collation_config])
       session[:collation_config] = {}
     end
