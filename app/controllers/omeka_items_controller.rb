@@ -52,7 +52,7 @@ class OmekaItemsController < ApplicationController
         format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully created.' }
         format.json { render json: @omeka_item, status: :created, location: @omeka_item }
       else
-        format.html { render action: "new" }
+        format.html { render "new" }
         format.json { render json: @omeka_item.errors, status: :unprocessable_entity }
       end
     end
@@ -60,7 +60,7 @@ class OmekaItemsController < ApplicationController
 
   def import
     @omeka_item = OmekaItem.find(params[:id])
-    @omeka_item.import    
+    @omeka_item.import
     respond_to do |format|
       format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully imported.' }
     end
@@ -77,7 +77,7 @@ class OmekaItemsController < ApplicationController
         format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render "edit" }
         format.json { render json: @omeka_item.errors, status: :unprocessable_entity }
       end
     end

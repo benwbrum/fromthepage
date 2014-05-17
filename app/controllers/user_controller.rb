@@ -23,5 +23,4 @@ class UserController < ApplicationController
     deed.user = current_user
     deed.save!
   end
-
 end

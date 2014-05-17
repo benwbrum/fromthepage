@@ -1,7 +1,4 @@
-<%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected =>2,
-                          :page_id => @page.id }}) %>
-
+<%= render '/shared/page_tabs', :selected =>2, :page_id => @page.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -19,7 +16,7 @@
 		        Revision
 		    </th>
 		 </tr>
-		 <% for version in @page.page_versions %>
+		 <% @page.page_versions.each do |version| %>
 		   <tr>
 		     <td class="revision" width="45%">
 		        <%= link_to(version.user.display_name,
@@ -28,8 +25,8 @@
 	                               :user_id => version.user.id }) %>
 		      </td>
 		     <td class="revision" width="45%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p")  %></td>
-		     <td class="revision" width="10%"><%= link_to('view', 
-		                                                  { :action => 'show', 
+		     <td class="revision" width="10%"><%= link_to('view',
+		                                                  { :action => 'show',
 		                                                    :page_version_id => version.id }) %></td>
 		   </tr>
 		 <% end %>

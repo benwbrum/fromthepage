@@ -1,8 +1,8 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
   public :render_to_string
-  protect_from_forgery :except => [:set_collection_title, 
-                                    :set_collection_intro_block, 
+  protect_from_forgery :except => [:set_collection_title,
+                                    :set_collection_intro_block,
                                     :set_collection_footer_block]
   before_filter :authorized?, :only => [:edit, :delete, :new, :create]
 
@@ -46,7 +46,7 @@ class CollectionController < ApplicationController
     redirect_to :action => 'owners', :collection_id => @collection.id
   end
 
-  
+
   def delete
     @collection.destroy
     redirect_to dashboard_path
@@ -67,7 +67,7 @@ class CollectionController < ApplicationController
     flash[:notice] = "Collection updated successfully."
     redirect_to :back
   end
-  
+
   # tested
   def create
     @collection = Collection.new
@@ -83,14 +83,14 @@ class CollectionController < ApplicationController
     logger.debug("DEBUG collection2=#{@collection}")
     redirect_to :action => 'edit', :collection_id => @collection.id
   end
-  
+
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
     redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
-private
- 
+  private
+
   def set_collection_for_work(collection, work)
     # first update the id on the work
     work.collection = collection

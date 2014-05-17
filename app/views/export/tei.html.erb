@@ -36,19 +36,19 @@ xml:id="APB4051">
 					<persName><%= user[:print_name] %></persName>
 					<% if user[:edit_count] == 1 %>
 						<resp>
-							made one edit on 
+							made one edit on
 							<date type="only_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date>.
 						</resp>
 					<% else %>
 						<resp>
-							made <%= user[:edit_count] %> edits between 
-							<date type="first_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date> and 
+							made <%= user[:edit_count] %> edits between
+							<date type="first_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date> and
 							<date type="last_edit" when="<%= user[:last_edit].iso8601 %>"><%= user[:last_edit].strftime("%B %e, %Y") %></date>.
-						</resp>						
+						</resp>
 					<% end %>
 				</respStmt>
 			<% end %>
-				
+
         </editionStmt>
         <publicationStmt>
             <publisher>Dynamic TEI export from FromThePage</publisher>
@@ -82,8 +82,8 @@ xml:id="APB4051">
     				</provenance>
     			</history>
     		</msDesc>
-        	
-        	
+
+
             <listPerson>
 				<% @person_articles.each do |person| %>
 	                <person xml:id="S<%=person.id%>">
@@ -120,7 +120,7 @@ xml:id="APB4051">
         </sourceDesc>
     </fileDesc>
     <profileDesc>
-    	
+
     </profileDesc>
     <revisionDesc>
     	<listChange ordered="true">
@@ -156,7 +156,7 @@ xml:id="APB4051">
 				<% end %>
 			<% end %>
 		</div>
-	
+
 	  <% end %>
     </body>
 </text>

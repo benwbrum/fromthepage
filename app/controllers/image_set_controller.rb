@@ -7,9 +7,9 @@ class ImageSetController < ApplicationController
 
   def load_objects_from_params
     super
-    if(params[:set_to_append_id]) 
+    if(params[:set_to_append_id])
       @set_to_append = ImageSet.find(params[:set_to_append_id])
-    end  
+    end
   end
 
   def authorized?
@@ -22,8 +22,8 @@ class ImageSetController < ApplicationController
       end
     end
   end
-  
-  
+
+
   def convert_to_work
     work = Work.new
     work.owner = current_user
@@ -38,7 +38,7 @@ class ImageSetController < ApplicationController
         page.base_width = image.columns
         image = nil
         GC.start
-      end   
+      end
       # width
       # height
       page.shrink_factor = @image_set.original_to_base_halvings
@@ -52,7 +52,7 @@ class ImageSetController < ApplicationController
   # TODO don't delete images if they're in a different set
   def delete
     @image_set.titled_images.each { |image| image.destroy }
-    if @image_set.path 
+    if @image_set.path
       rm_r(@image_set.path)
     end
     @image_set.destroy
@@ -74,14 +74,14 @@ class ImageSetController < ApplicationController
     # the position attributes?
     append_size = @set_to_append.titled_images.size
     original_size = @image_set.titled_images.size
-    
+
     logger.debug("DEBUG: setting positions")
     @set_to_append.titled_images.each_with_index do |image, i|
       image.position=i+original_size
       image.save!
       logger.debug("DEBUG: set #{image.id}.position=#{i}")
     end
-     
+
     0.upto(append_size-1) do |i|
       @image_set.titled_images << @set_to_append.titled_images[i]
     end
@@ -91,7 +91,7 @@ class ImageSetController < ApplicationController
     # this has no effect on acts as list unless I do it manually
     #1.upto(@image_set.titled_images.size) do |i|
     redirect_to :controller => 'title', :action => 'list', :image_set_id => @image_set.id
-    
+
   end
 
 end

@@ -1,13 +1,7 @@
 module DisplayHelper
   include AbstractXmlHelper
 
-
   def notes_for( commentable )
-    render({:partial => 'note/notes', 
-            :locals => 
-              { :commentable => commentable 
-              }
-            })
+    render 'note/notes', :commentable => commentable
   end
-
 end

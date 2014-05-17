@@ -12,7 +12,6 @@ class CategoryController < ApplicationController
     render :layout => false
   end
 
-
   def create
     category = Category.new(params[:category])
     category.save!
@@ -23,7 +22,7 @@ class CategoryController < ApplicationController
     @category.destroy #_but_attach_children_to_parent
     redirect_to :action => 'manage', :collection_id => @collection.id
   end
-  
+
   def manage
     @category = Category.new({ :collection_id => @collection.id })
   end

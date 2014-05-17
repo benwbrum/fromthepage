@@ -1,12 +1,10 @@
-<%= render( :partial => '/shared/article_tabs',
-            :locals => { :selected => 1,
-                         :article_id => @article.id }) %>
+<%= render '/shared/article_tabs', :selected => 1, :article_id => @article.id %>
 
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
       <span class="left-link">
-	      <%= link_to("subjects", 
+	      <%= link_to("subjects",
 	                  {:controller => 'article',
 	                   :action => 'list',
                                 :collection_id => @article.collection_id }) %>
@@ -36,14 +34,14 @@
 									{ :title => "Combines #{dup.title} into #{@article.title}",
 										:confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>
 									</i>
-									  
+
 				  <br />
 				<% end %>
 			</p>
 		</div>
 	<% end %>
   </div>
-		
+
   <div class="right-column">
   		<% unless html_block('right').blank? %>
         <div class="inside-column">
@@ -53,7 +51,7 @@
     <div class="inside-column">
 	  <h3>Categories</h3>
       <ul>
-      	<% for cat in @article.categories %>
+      	<% @article.categories.each do |cat| %>
 	      	<li>
 	      		<%= cat.title %>
 	      	</li>
@@ -76,8 +74,8 @@
               :unlinked_only => true) %>
 		  </p>
     </div>
-    <%= render :partial => 'article_links' %>
+    <%= render 'article_links' %>
 
   </div>
 </div>
-		
+

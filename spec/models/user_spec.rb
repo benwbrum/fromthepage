@@ -3,7 +3,7 @@ require 'spec_helper'
 describe User do
 
   before(:each) do
-    @user = FactoryGirl.create(:user1) 
+    @user = FactoryGirl.create(:user1)
   end
 
   subject { @user }
@@ -11,7 +11,7 @@ describe User do
   it { should respond_to(:login) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
-  
+
   it { should have_many(:owner_works).class_name(:Work) }
   it { should have_many(:image_sets) }
   it { should have_many(:oai_sets) }
@@ -24,7 +24,7 @@ describe User do
   it { should have_many(:deeds) }
 
   it { should validate_presence_of(:login) }
-  
+
   # this one does not seem to work right now.
   # it { should validate_presence_of(:password) } # :if => :password_required?
   # it { should validate_presence_of(:password).with_message("can't be blank") } # :if => :password_required?
@@ -76,7 +76,7 @@ describe User do
     user3.password = "123467"
     user3.password_confirmation = "1234657"
     user3.should_not be_valid
-   
+
   end
 
   describe "when login is too long" do

@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 2,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 2, :collection_id => @collection.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -39,13 +37,13 @@
               Actions
             </th>
           </tr>
-	        <% for work in @collection.works %>
+	        <% @collection.works.each do |work| %>
 	          <tr>
 	            <td>
     	          <%= work.title %>
   	          </td>
   	          <td>
-			          <%= link_to('remove', 
+			          <%= link_to('remove',
 			                      { :action => 'remove_work_from_collection',
 			                        :work_id => work.id,
 			                        :collection_id => @collection.id })%><br />
@@ -70,13 +68,13 @@
               Action
             </th>
           </tr>
-	        <% for work in @works_not_in_collection %>
+	        <% @works_not_in_collection.each do |work| %>
 	          <tr>
 	            <td>
     	          <%= work.title %>
   	          </td>
   	          <td>
-			          <%= link_to('add', 
+			          <%= link_to('add',
 			                      { :action => 'add_work_to_collection',
 			                        :work_id => work.id,
 			                        :collection_id => @collection.id })%>

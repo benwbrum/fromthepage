@@ -7,7 +7,7 @@ describe Note do
   end
 
   # subject { @article }
-  
+
   it { should belong_to(:user) }
   it { should belong_to(:page) }
   it { should belong_to(:work) }

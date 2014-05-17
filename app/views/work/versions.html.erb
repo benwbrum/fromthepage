@@ -1,11 +1,10 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 4,
-                          :work_id => @work.id }}) %>
+<%= render '/shared/work_tabs', :selected => 4, :work_id => @work.id %>
+
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
 	    <p>
-	      The current version of this work is 
+	      The current version of this work is
 	      <b>
 	        <%= @work.transcription_version %>
 	      </b>
@@ -25,12 +24,12 @@
           Revision
         </th>
       </tr>
-      <% for version in @page_versions %>
+      <% @page_versions.each do |version| %>
         <tr>
          <td class="revision" width="30%">
-           <%= link_to(version.page.title, 
-                       { :controller => 'page_version', 
-                         :action => 'list', 
+           <%= link_to(version.page.title,
+                       { :controller => 'page_version',
+                         :action => 'list',
                          :page_id => version.page.id }) %>
          </td>
          <td class="revision" width="30%"><%= version.created_on %></td>
@@ -38,9 +37,9 @@
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => version.user.id }) %></td>
-         <td class="revision" width="10%"><%= link_to('view', 
+         <td class="revision" width="10%"><%= link_to('view',
                          { :controller => 'page_version',
-                           :action => 'show', 
+                           :action => 'show',
                            :page_version_id => version.id }) %></td>
        </tr>
        <% end %>

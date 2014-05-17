@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 3,
-                          :work_id => @work.id }}) %>
+<%= render '/shared/work_tabs', :selected => 3, :work_id => @work.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -46,7 +44,7 @@
 	        <br />
         <% end %>
         Transcription Version: <%= @work.transcription_version %>
-      </p>    
+      </p>
     </div>
   </div>
 

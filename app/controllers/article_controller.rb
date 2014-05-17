@@ -2,23 +2,22 @@ class ArticleController < ApplicationController
   before_filter :authorized?, :except => [:graph, :list, :show]
 
   include AbstractXmlController
-  
+
   DEFAULT_ARTICLES_PER_GRAPH = 40
-  
+
   def authorized?
     unless user_signed_in?
       redirect_to dashboard_path
     end
   end
-  
+
   def list
     # Differences from previous implementation:
     # 1. List of articles needs to be collection-specific
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
-    
+
     @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id]).all
-     
   end
 
   def update
@@ -39,7 +38,7 @@ class ArticleController < ApplicationController
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
     end
-    render :action => 'edit'
+    render 'edit'
   end
 
   def article_category
@@ -48,9 +47,9 @@ class ArticleController < ApplicationController
       @article.categories << @category
     else
       @article.categories.delete(@category)
-    end    
+    end
     render :text => "success"
-  end 
+  end
 
   def combine_duplicate
     # @article contains "to" article
@@ -71,7 +70,7 @@ class ArticleController < ApplicationController
 #    if @article.graph_image && !params[:force]
 #      return
 #    end
-    sql = 
+    sql =
       'SELECT count(*) as link_count, '+
       'a.title as title, '+
       'a.id as article_id '+
@@ -94,8 +93,8 @@ class ArticleController < ApplicationController
     link_total = 0
     link_max = 0
     count_per_rank = { 0 => 0}
-    article_links.each do |l| 
-      link_count = l['link_count'].to_i 
+    article_links.each do |l|
+      link_count = l['link_count'].to_i
       link_total += link_count
       if link_count > link_max
         link_max = link_count
@@ -103,7 +102,7 @@ class ArticleController < ApplicationController
       # initialize for this rank if necessary
       if count_per_rank[link_count]
         # set this rank
-        count_per_rank[link_count] += 1  
+        count_per_rank[link_count] += 1
       else
         count_per_rank[link_count] = 1
       end
@@ -131,7 +130,7 @@ class ArticleController < ApplicationController
 
     dot_path = "#{Rails.root}/app/views/article/graph.dot"
 
-    dot_source = 
+    dot_source =
       render_to_string({:file => dot_path,
                         :locals => { :article_links => article_links,
                                      :link_total => link_total,
@@ -148,12 +147,12 @@ class ArticleController < ApplicationController
     # dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
     # THIS IS HACK
     dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
-    # system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}" 
-    
+    # system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}"
+
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out
     @min_rank = min_rank
-    @article.save! 
+    @article.save!
   end
 
 protected
@@ -182,12 +181,12 @@ protected
     deed.save!
   end
 
-  def combine_articles(from_article, to_article) 
+  def combine_articles(from_article, to_article)
     # rename the article to something bizarre in case they have the same name
     old_from_title = from_article.title
     from_article.title = 'TO_BE_DELETED:'+old_from_title
     from_article.save!
-    
+
     # walk through all pages referring to from_article
     # walk through all pages referring to this
     for link in from_article.page_article_links
@@ -208,10 +207,10 @@ protected
     # thankfully, rename_article_links is source-agnostic!
 
     # change links
-    Deed.update_all("article_id='#{to_article.id}'", 
+    Deed.update_all("article_id='#{to_article.id}'",
                     "article_id = #{from_article.id}")
 
-    # append old from_article text to to_article text  
+    # append old from_article text to to_article text
     if from_article.source_text
       if to_article.source_text
         to_article.source_text += from_article.source_text

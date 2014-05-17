@@ -9,7 +9,7 @@ class CreateIaLeaves < ActiveRecord::Migration
       t.integer :leaf_number
       t.string  :page_number
       t.string  :page_type
-      
+
       t.timestamps
     end
   end

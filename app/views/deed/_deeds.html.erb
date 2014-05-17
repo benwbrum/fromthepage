@@ -1,8 +1,8 @@
 
 <div>
 	<ul>
-    <% for deed in deeds %>
-	     <li><%= render :partial => deed.short_partial, :locals => { :deed => deed } %></li>
+    <% deeds.each do |deed| %>
+	     <li><%= render deed.short_partial, :deed => deed %></li>
     <% end %>
 	</ul>
 	<p>

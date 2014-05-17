@@ -1,6 +1,5 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 8,
-                          :work_id => @work.id }}) %>
+<%= render '/shared/work_tabs', :selected => 8, :work_id => @work.id %>
+
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
@@ -17,10 +16,9 @@
    </div>
   </div>
   <div class="right-column">
-        <div class="inside-column">
-                <%= html_block('right') %>
-
-        </div>
+    <div class="inside-column">
+      <%= html_block('right') %>
+    </div>
   </div>
 </div>
 

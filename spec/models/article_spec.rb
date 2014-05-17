@@ -35,7 +35,7 @@ describe Article do
   describe "create version tests" do
 
     it "should create version" do
-      @article.source_text = "Chumba My Wumba"    
+      @article.source_text = "Chumba My Wumba"
       puts "@article.instance_variable_get(@title_dirty): #{@article.instance_variable_get("@title_dirty")}"
       expect{ @article.save }.to change{ ArticleVersion.count }.by(1)
     end
@@ -64,14 +64,14 @@ describe Article do
 
   it "should delete links" do
     aa = 10
-    aa.times { |i| 
+    aa.times { |i|
       article_i = Article.new
       article_i.title = "x" * i
       article_i.collection_id = Collection.first.id
       article_i.save
       expect{ @article.create_link(article_i, "display text" + i.to_s) }.to change{ ArticleArticleLink.count }.by(1)
     }
-    
+
     expect{ @article.clear_links }.to change{ ArticleArticleLink.count }.to(0)
 
   end

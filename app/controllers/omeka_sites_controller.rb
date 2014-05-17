@@ -3,13 +3,13 @@ class OmekaSitesController < ApplicationController
   # GET /omeka_sites.json
   def index
     @omeka_sites = current_user.omeka_sites
-    
+
     respond_to do |format|
       if @omeka_sites.size == 0
         format.html { redirect_to new_omeka_site_path }
       else
         format.html # index.html.erb
-        
+
       end
       format.json { render json: @omeka_sites }
     end
@@ -56,7 +56,7 @@ class OmekaSitesController < ApplicationController
         format.html { redirect_to @omeka_site, notice: 'Omeka site was successfully created.' }
         format.json { render json: @omeka_site, status: :created, location: @omeka_site }
       else
-        format.html { render action: "new" }
+        format.html { render "new" }
         format.json { render json: @omeka_site.errors, status: :unprocessable_entity }
       end
     end
@@ -73,7 +73,7 @@ class OmekaSitesController < ApplicationController
         format.html { redirect_to @omeka_site, notice: 'Omeka site was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render "edit" }
         format.json { render json: @omeka_site.errors, status: :unprocessable_entity }
       end
     end

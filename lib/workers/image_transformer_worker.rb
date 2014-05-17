@@ -9,7 +9,7 @@ class ImageTransformerWorker < BackgrounDRb::Rails
   include ImageHelper
 
   # This gets called by the MiddleMan when you call
-  # new_worker in your app. args is set to whatever 
+  # new_worker in your app. args is set to whatever
   # you stated in the new_worker call. Setup your
   # vars here and call start_working.
   def do_work(args)
@@ -18,9 +18,9 @@ class ImageTransformerWorker < BackgrounDRb::Rails
 
     @image_set = ImageSet.find(@args[:image_set_id].to_i)
 
-    @logger.debug("initialize called with #{args.inspect}")  
+    @logger.debug("initialize called with #{args.inspect}")
 
-    
+
     @shrink_thread = nil
     @rotate_thread = nil
   end
@@ -35,7 +35,7 @@ class ImageTransformerWorker < BackgrounDRb::Rails
       for image in @image_set.titled_images
         image = TitledImage.find(image.id)
         @logger.debug("shrink_to_sextodecimo testing #{image.id}")
-        if(!image.shrink_completed) 
+        if(!image.shrink_completed)
           shrink_to_sextodecimo(image)
         end #if
       end #for
@@ -48,7 +48,7 @@ class ImageTransformerWorker < BackgrounDRb::Rails
         # refresh the image from the db
         image = TitledImage.find(image.id)
         @logger.debug("rotate_sextodecimo testing #{image.id}")
-        if(!image.shrink_completed) 
+        if(!image.shrink_completed)
           # wait on the shrink thread to finish
           @logger.debug("rotate_sextodecimo waiting for shrink at #{image.id}")
           @shrink_thread.join
@@ -64,13 +64,13 @@ class ImageTransformerWorker < BackgrounDRb::Rails
   # TODO redo this
   def begin_crop_sextodecimo(start_of_band, band_height)
     @logger.debug("Crop: worker begins cropping")
-    # do stuff with the xy values   
+    # do stuff with the xy values
     @crop_thread = Thread.new do
       for image in @image_set.titled_images
         # refresh the image from the db
         image = TitledImage.find(image.id)
         @logger.debug("crop_sextodecimo testing #{image.id}")
-        if(!image.rotate_completed) 
+        if(!image.rotate_completed)
           # wait on the shrink thread to finish
           @logger.debug("crop_sextodecimo waiting for rotate at #{image.id}")
           @rotate_thread.join

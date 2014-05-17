@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 3,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 3, :collection_id => @collection.id %>
 
 <script type="text/javascript" language="javascript">
   add_child_prompt = function(parent_id, parent_title) {
@@ -31,14 +29,14 @@
         <%= raw(display_categories(@collection.categories, nil) do |category|
               category.title +
               " " +
-              link_to('delete', 
+              link_to('delete',
 	                    { :action => 'delete',
 	                      :category_id => category.id,
 	                      :collection_id => @collection.id },
 	                    { :confirm => "Are you sure you want to delete #{category.title} and all its subcategories?"}) +
 	            " " +
-              link_to_function('add child', 
-                               "add_child_prompt('#{category.id}', '#{category.title}')", 
+              link_to_function('add child',
+                               "add_child_prompt('#{category.id}', '#{category.title}')",
                                { :title => "Add a subcategory underneath #{category.title}"} )
             end) %>
       </p>

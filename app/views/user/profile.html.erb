@@ -57,20 +57,20 @@
         Action
     </th>
  </tr>
- <% for version in @user.page_versions.limit(10) %>
+ <% @user.page_versions.limit(10).each do |version| %>
    <tr>
      <td class="revision" width="20%"><%= version.page.work.title %></td>
      <td class="revision" width="35%">
-       <%= link_to(version.page.title, 
-                  { :controller => 'page_version', 
-                    :action => 'list', 
+       <%= link_to(version.page.title,
+                  { :controller => 'page_version',
+                    :action => 'list',
                     :page_id => version.page.id }) %>
      </td>
      <td class="revision" width="10%"><%= version.page_version %></td>
      <td class="revision" width="25%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p") %></td>
-     <td class="revision" width="10%"><%= link_to('view', 
+     <td class="revision" width="10%"><%= link_to('view',
                      { :controller => 'page_version',
-                       :action => 'show', 
+                       :action => 'show',
                        :page_version_id => version.id }) %></td>
    </tr>
  <% end %>
@@ -92,19 +92,19 @@
         Action
     </th>
  </tr>
- <% for version in @user.article_versions.limit(10).joins(:article) %>
+ <% @user.article_versions.limit(10).joins(:article).each do |version| %>
    <tr>
      <td class="revision" width="55%">
-       <%= link_to(version.article.title, 
-                  { :controller => 'article_version', 
-                    :action => 'list', 
+       <%= link_to(version.article.title,
+                  { :controller => 'article_version',
+                    :action => 'list',
                     :page_id => version.article.id }) %>
      </td>
      <td class="revision" width="10%"><%= version.version %></td>
      <td class="revision" width="25%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p") %></td>
-     <td class="revision" width="10%"><%= link_to('view', 
+     <td class="revision" width="10%"><%= link_to('view',
                      { :controller => 'article_version',
-                       :action => 'show', 
+                       :action => 'show',
                        :page_version_id => version.id }) %></td>
    </tr>
  <% end %>

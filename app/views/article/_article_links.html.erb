@@ -3,29 +3,29 @@
   <%= link_to("Read pages that mention <i>#{@article.title}</i> in all works.",
               :controller => 'display',
               :action => 'read_all_works',
-              :article_id => @article.id) %>	
+              :article_id => @article.id) %>
   </p>
-		<p><%= link_to("Graph of subjects related to #{@article.title}", 
-                  { :controller => 'article', 
-                    :action => 'graph', 
+		<p><%= link_to("Graph of subjects related to #{@article.title}",
+                  { :controller => 'article',
+                    :action => 'graph',
                     :article_id => @article.id }) %>
 		</p>
 		<p>Pages that refer to <%= @article.title %>:</p>
 		<p>
-		 <% for link in @article.page_article_links %>
-		   <%= link_to(link.page.title, 
-		               { :controller => 'display', 
-		                 :action=> 'display_page', 
+		 <% @article.page_article_links.each do |link| %>
+		   <%= link_to(link.page.title,
+		               { :controller => 'display',
+		                 :action=> 'display_page',
 		                 :page_id => link.page.id })%>
 		   (<%= link.display_text %>)<br />
 		 <% end %>
 		</p>
 		<p>Subject articles that refer to <%= @article.title %>:</p>
 		<p>
-		 <% for link in @article.target_article_links %>
-		   <%= link_to(link.source_article.title, 
-		               { :controller => 'article', 
-		                 :action=> 'show', 
+		 <% @article.target_article_links.each do |link| %>
+		   <%= link_to(link.source_article.title,
+		               { :controller => 'article',
+		                 :action=> 'show',
 		                 :article_id => link.source_article.id })%>
 		   (<%= link.display_text %>)<br />
 		 <% end %>

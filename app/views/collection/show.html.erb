@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 1,
-                          :collection_id => @collection.id }}) %>
+<%= render '/shared/collection_tabs', :selected => 1, :collection_id => @collection.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -10,28 +8,26 @@
 	  <p>
 	  	<%= raw( @collection.intro_block) %>
 	  </p>
-	</div>	
+	</div>
 	<% end %>
     <div class="inside-column">
       <h2>Works</h2>
       <p>
         <% @collection.works.each do |work| %>
-          <%= link_to(work.title, 
+          <%= link_to(work.title,
 		                  { :controller => 'display',
 		                    :action => 'read_work',
 		                    :work_id => work.id })%><br />
         <% end %>
-      </p>    
+      </p>
     </div>
 
       <div class="inside-column">
       <h2>Subjects</h2>
 	      <p>
-        <%= raw(display_categories(@collection.categories, nil) do |category|
-                controller.render_to_string(:partial => '/category/category_link',
-                       :locals => { :category => category, 
-                                    :article_partial => '/category/article_link' })
-            end) %>
+		<%= raw(display_categories(@collection.categories, nil) do |category|
+		  controller.render_to_string(:partial => '/category/category_link', :locals => { :category => category, :article_partial => '/category/article_link'})
+		end) %>
       </p>
     </div>
     <div class="inside-column">
@@ -41,7 +37,7 @@
 	                               :action => 'profile',
 	                               :user_id => @collection.owner.id }) %>
         <br />
-      </p>    
+      </p>
     </div>
   </div>
   <div class="right-column">
@@ -80,7 +76,7 @@
       <h3>Recent Edits</h3>
 	  <p>
 	    <%= deeds_for({:collection => true,
-					   :limit => 10, 
+					   :limit => 10,
 					   :types => [Deed::PAGE_TRANSCRIPTION,
 								  Deed::PAGE_EDIT,
 								  Deed::ARTICLE_EDIT]}) %>

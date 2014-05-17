@@ -1,17 +1,15 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 7,
-                          :work_id => @work.id }}) %>
+<%= render '/shared/work_tabs', :selected => 7, :work_id => @work.id %>
 
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
 <%= form_for(@work, :url => { :action => 'update_work' }) do |f| %>
   <p>
-	Allow Scribes to Edit Page Titles: 
+	Allow Scribes to Edit Page Titles:
 	<%= f.check_box(:scribes_can_edit_titles) %>
   </p>
   <p>Restrict Scribes: <%= f.check_box(:restrict_scribes) %></p>
-  <%= hidden_field_tag(:work_id, @work.id) %>  
+  <%= hidden_field_tag(:work_id, @work.id) %>
   <p><%= submit_tag('Save') %></p>
 <% end %>
 
@@ -23,9 +21,9 @@
 	                           { :controller => 'user',
 	                               :action => 'profile',
 	                               :user_id => user.id }) %>
-			  <%= link_to("Remove", 
-			              { :action => 'remove_scribe', 
-			                :user_id => user.id, 
+			  <%= link_to("Remove",
+			              { :action => 'remove_scribe',
+			                :user_id => user.id,
 			                :work_id => @work.id }) %>
 	      <br />
 			<% end %>
@@ -47,10 +45,10 @@
 			  <%= link_to(user.display_name,
 	                           { :controller => 'user',
 	                               :action => 'profile',
-	                               :user_id => user.id }) %>		  
-			  <%= link_to("Add", 
-			              { :action => 'add_scribe', 
-			                :user_id => user.id, 
+	                               :user_id => user.id }) %>
+			  <%= link_to("Add",
+			              { :action => 'add_scribe',
+			                :user_id => user.id,
 			                :work_id => @work.id }) %>
 			  <br />
 			<% end %>

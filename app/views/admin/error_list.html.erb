@@ -32,7 +32,7 @@
 	    Parameters
 	  </th>
   </tr>
-	<% for interaction in @interactions %>
+	<% @interactions.each do |interaction| %>
 	<tr>
 		<td>
 			<%= interaction.created_on.strftime("%Y-%m-%d %H:%M:%S") %>
@@ -41,8 +41,8 @@
 			<%= interaction.action %>
 		</td>
 		<td>
-			<%= link_to('session', 
-			            { :action => 'interaction_list', 
+			<%= link_to('session',
+			            { :action => 'interaction_list',
 			              :session_id => interaction.session_id }) %>
 		</td>
 		<td>
@@ -50,7 +50,7 @@
 		</td>
 		<td>
       <% if interaction.user %>
-				<%= link_to(interaction.user.login, 
+				<%= link_to(interaction.user.login,
 				            { :controller => 'user',
 				              :action => 'versions',
 				              :user_id => interaction.user_id })%>
@@ -60,7 +60,7 @@
 		</td>
 		<td>
       <% if interaction.collection %>
-				<%= link_to(interaction.collection.title, 
+				<%= link_to(interaction.collection.title,
 				            { :controller => 'collection',
 			                :action => 'show',
 			                :collection_id => interaction.collection_id })%>
@@ -70,7 +70,7 @@
 		</td>
 		<td>
       <% if interaction.work %>
-				<%= link_to(interaction.work.title, 
+				<%= link_to(interaction.work.title,
 				            { :controller => 'display',
 				              :action => 'read_work',
 				              :work_id => interaction.work_id })%>
@@ -80,7 +80,7 @@
 		</td>
 		<td>
       <% if interaction.page %>
-				<%= link_to(interaction.page.title, 
+				<%= link_to(interaction.page.title,
 				            { :controller => 'display',
 				              :action => 'display_page',
 				              :page_id => interaction.page_id })%>

@@ -1,15 +1,15 @@
 class OmekaItem < ActiveRecord::Base
-  attr_accessible :coverage, :creator, :description, :format, :omeka_collection_id, :omeka_id, :omeka_url, :rights, :subject, :title 
+  attr_accessible :coverage, :creator, :description, :format, :omeka_collection_id, :omeka_id, :omeka_url, :rights, :subject, :title
   belongs_to :user
   belongs_to :omeka_site
   belongs_to :work
   has_many :omeka_files
- 
+
   def client_files
     client_item = omeka_site.client.get_item(omeka_id)
     client_item.files
-  end  
-  
+  end
+
   def import
     client_item = omeka_site.client.get_item(omeka_id)
 
@@ -24,10 +24,10 @@ class OmekaItem < ActiveRecord::Base
         omeka_collection.description = client_collection.dublin_core.description
         omeka_collection.omeka_site = omeka_site
         omeka_collection.save!
-      end      
+      end
     end
     # if the item was in an Omeka collection, there is now a mirror object
-    
+
     unless omeka_collection.collection
       # create a FromThePage collection
       fromthepage_collection = Collection.new
@@ -35,12 +35,12 @@ class OmekaItem < ActiveRecord::Base
       fromthepage_collection.title = omeka_collection.title
       fromthepage_collection.intro_block = omeka_collection.description
       fromthepage_collection.save!
-      
+
       omeka_collection.collection = fromthepage_collection
       omeka_collection.save!
     end
     # if the item was in an Omeka collection, there is now a FromThePage collection
-    
+
     # now create mirror file records
     client_item.files.each do |client_file|
       # binding.pry
@@ -80,25 +80,25 @@ class OmekaItem < ActiveRecord::Base
     self.save!
 
   end
-  
-  
-  
+
+
+
   def self.new_from_site_item_id(site, id)
     client_item = site.client.get_item(id)
-    
+
     attrs = attrs_from_dublin_core(client_item.dublin_core)
-    
+
     new_item = OmekaItem.new(attrs)
-    new_item.omeka_collection_id = client_item.data.collection.id if client_item.data.collection 
+    new_item.omeka_collection_id = client_item.data.collection.id if client_item.data.collection
     new_item.omeka_id = client_item.data.id
     new_item.omeka_url = client_item.data.url
     new_item.omeka_site=site
-    
-    new_item    
+
+    new_item
   end
 
-  
-  def self.attrs_from_dublin_core(dc) 
+
+  def self.attrs_from_dublin_core(dc)
     {
       :title => dc.title,
       :subject => dc.subject,
@@ -106,8 +106,8 @@ class OmekaItem < ActiveRecord::Base
       :rights => dc.rights,
       :creator => dc.creator,
       :format => dc.format,
-      :coverage => dc.coverage,     
-    }    
+      :coverage => dc.coverage,
+    }
   end
-  
+
 end

@@ -9,14 +9,14 @@
 			ID URL: <%= link_to(record.metadata.elements['.//dc:title'].text,
 								record.metadata.elements['.//dc:identifier'].text) %>
 			<% if record.header.identifier.include? 'archive.org' %>
-				<%= button_to("Import", 
-							  { :controller => 'ia', 
+				<%= button_to("Import",
+							  { :controller => 'ia',
 								:action => 'confirm_import',
 								:detail_url => record.metadata.elements['.//dc:identifier'].text})%>
 			<% end %>
 			<br />
 	    <% end %>
-      </p>    
+      </p>
     </div>
   </div>
   <div class="right-column">
@@ -24,9 +24,9 @@
 
                 <%= html_block('right') %>
 		<p>
-			This is a list of works that OAI-PMH finds in the set 
+			This is a list of works that OAI-PMH finds in the set
 			<code><%=@set_spec%></code> at the repository at
-			<code><%=@repository_url%></code> 
+			<code><%=@repository_url%></code>
 		</p>
   	</div>
   </div>

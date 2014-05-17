@@ -1,18 +1,16 @@
+<%= render '/shared/page_tabs', :selected =>1, :page_id => @page.id %>
 
-<%= render({ :partial => '/shared/page_tabs',
-             :locals => { :selected =>1,
-                          :page_id => @page.id }}) %>
 <div class="two-columns">
   <div class="left-column">
     <div>
-      <%= render :partial => '/shared/page_navigation' %>
+      <%= render '/shared/page_navigation' %>
       <div class="inside-column">
 	<%=  html_block('left') %>
         <h2><%= @page.title %></h2>
       </div>
 
       <div id="transcription_display_area" class="inside-column">
-        <% if @page.xml_text != nil && 
+        <% if @page.xml_text != nil &&
               !@page.xml_text.empty? %>
           <%= raw(xml_to_html(@page.xml_text)) %>
         <% else %>
@@ -39,33 +37,33 @@
 	      <% @page.articles_with_text.each do |article| %>
 				<dl>
 			    <% if article.xml_text != nil && !article.xml_text.empty? %>
-				
+
 				    <dt><b><%= article.title %></b></dt>
 				    <dd><%=  xml_to_html(article.xml_text) %></dd>
 			    <% end %>
-					
-				</dl>  	
+
+				</dl>
 	      <% end %>
 	    </div>
 	<% end %>
 	<div class="inside-column">
 	  <div id="note_container" style="display: none">
-	    <%= render :partial => "notes/form_new" %>
+	    <%= render "notes/form_new" %>
 	  </div>
 	  <%= link_to "add comment", "#", id: "toggle" %>
-	  <%= render :partial => "notes/notes" %>
+	  <%= render "notes/notes" %>
 	</div>
   </div>
-  
-  
+
+
 	<div class="right-column" style="position: relative; top: 0px;">
 	        <%=  html_block('right') %>
 		<% if @page.ia_leaf %>
-			<%= render :partial => '/ia/ia_bookreader_div' %>
+			<%= render '/ia/ia_bookreader_div' %>
 		<% elsif @page.omeka_file %>
-			<%= render :partial => '/shared/external_image_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url } %>
+			<%= render '/shared/external_image_div', :fullsize_url => @page.omeka_file.fullsize_url %>
 		<% else %>
-			<%= render :partial => '/shared/zoom_div' %>
+			<%= render '/shared/zoom_div' %>
 		<% end %>
 	</div>
 

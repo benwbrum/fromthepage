@@ -12,7 +12,7 @@
 			<!-- user stats across collections -->
 			<p>
 				<b>Top 10 Transcribers</b><br />
-				<% for entry in @t_top_ten_users_and_deeds %>
+				<% @t_top_ten_users_and_deeds.each do |entry| %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
 					<br />
@@ -20,7 +20,7 @@
 			</p>
 			<p>
 				<b>Top 10 Editors</b><br />
-				<% for entry in @e_top_ten_users_and_deeds %>
+				<% @e_top_ten_users_and_deeds.each do |entry| %>
 					<%=entry[0].display_name%>
 					(<%= entry[1]%>)
 					<br />

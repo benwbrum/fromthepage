@@ -4,7 +4,7 @@
 #      t.column :source_text, :text
 #      # automated stuff
 #      t.column :created_on, :datetime
-#      t.column :lock_version, :integer, :default => 0 
+#      t.column :lock_version, :integer, :default => 0
 #    end
 class Article < ActiveRecord::Base
   include XmlSourceProcessor
@@ -29,7 +29,7 @@ class Article < ActiveRecord::Base
   has_many :article_versions
   scope :article_versions, -> { order 'version' }
 
-  
+
   after_save :create_version
 
   @title_dirty = false
@@ -37,14 +37,6 @@ class Article < ActiveRecord::Base
   def title=(title)
     @title_dirty = true
     super
-  end
-
-
-  #######################
-  # Related Articles 
-  #######################
-  def related_article_ranks
-
   end
 
   #######################
@@ -96,7 +88,7 @@ class Article < ActiveRecord::Base
   # tested
   def clear_links
     # clear out the existing links to this page
-    ArticleArticleLink.delete_all("source_article_id = #{self.id}")     
+    ArticleArticleLink.delete_all("source_article_id = #{self.id}")
   end
 
   # tested
@@ -106,7 +98,7 @@ class Article < ActiveRecord::Base
     link.target_article = article
     link.display_text = display_text
     link.save!
-    return link.id        
+    return link.id
   end
 
   #######################
@@ -126,14 +118,14 @@ class Article < ActiveRecord::Base
     # set foreign keys
     version.article = self
     version.user = User.current_user
-    
+
     # now do the complicated version update thing
 
     previous_version = ArticleVersion.where(["article_id = ?", self.id]).order("version DESC").all
     if previous_version.first
       version.version = previous_version.first.version + 1
     end
-    version.save!      
+    version.save!
   end
 end
 

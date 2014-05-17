@@ -1,17 +1,8 @@
 module ApplicationHelper
 
     def html_block(tag)
-    render({ :partial => 'page_block/html_block', 
-             :locals => 
-              { :tag => tag,
-                :page_block => @html_blocks[tag],
-                :origin_controller => controller_name,
-                :origin_action => action_name
-              }
-          })
-        
+    render 'page_block/html_block', :tag => tag, :page_block => @html_blocks[tag], :origin_controller => controller_name, :origin_action => action_name
   end
-
 
   def file_to_url(filename)
     if filename
@@ -24,35 +15,31 @@ module ApplicationHelper
   # ripped off from
   # http://wiki.rubyonrails.org/rails/pages/CategoryTreeUsingActsAsTree
   def display_categories(categories, parent_id, &block)
-    ret = "<ul>\n" 
+    ret = "<ul>\n"
       for category in categories
         if category.parent_id == parent_id
           ret << display_category(category, &block)
         end
       end
-    ret << "</ul>\n" 
+    ret << "</ul>\n"
   end
 
   def display_category(category, &block)
-    ret = "<li>\n" 
-    ret << yield(category) 
+    ret = "<li>\n"
+    ret << yield(category)
     ret << display_categories(category.children, category.id, &block) if category.children.any?
-    ret << "</li>\n" 
+    ret << "</li>\n"
   end
 
-  
-
-
-  def deeds_for(options={}) 
+  def deeds_for(options={})
     limit = options[:limit] || 20
 
     conditions = nil;
     if options[:types]
       types = options[:types]
       types = types.map { |t| "'#{t}'"}
-      conditions = "deed_type IN (#{types.join(',')})"      
+      conditions = "deed_type IN (#{types.join(',')})"
     end
-    
 
     if options[:collection]
       deeds = @collection.deeds.where(conditions).order('created_at DESC').limit(limit)
@@ -63,13 +50,7 @@ module ApplicationHelper
       logger.debug "limit: #{limit}"
       deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit).references(:collection)
     end
-    render({ :partial => 'deed/deeds', 
-             :locals => 
-              { :limit => limit,
-                :deeds => deeds,
-                :options => options 
-              }
-          })
+    render 'deed/deeds', :limit => limit, :deeds => deeds, :options => options
   end
 
   def time_ago(time)
@@ -77,7 +58,7 @@ module ApplicationHelper
     delta_minutes = (delta_seconds / 60).floor
     delta_hours = (delta_minutes / 60).floor
     delta_days = (delta_hours / 24).floor
-    
+
     if delta_days > 1
       "#{delta_days} days ago"
     elsif delta_days == 1
@@ -96,6 +77,4 @@ module ApplicationHelper
       "1 second ago"
     end
   end
-
-
 end

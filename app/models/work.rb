@@ -6,7 +6,7 @@ class Work < ActiveRecord::Base
   has_one :ia_work
   has_one :omeka_item
   has_one :work_statistic
-  
+
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
 
   after_save :update_statistic
@@ -49,7 +49,7 @@ class Work < ActiveRecord::Base
   end
 
   def update_statistic
-    unless self.work_statistic     
+    unless self.work_statistic
         self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate

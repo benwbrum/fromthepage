@@ -6,7 +6,7 @@ module ExportHelper
 #    xml_text.gsub!(/\n/, "")
     doc = REXML::Document.new(xml_text)
     #paras_string = ""
-    
+
     my_display_html = ""
     doc.elements.each("//p") do |e|
       transform_links(e, type)
@@ -25,7 +25,7 @@ module ExportHelper
 
       link.children.each { |c| rs.add(c) }
       link.replace_with(rs)
-     
+
     end
     p_element.elements.each('//sensitive') do |sensitive|
       gap = REXML::Element.new("gap")

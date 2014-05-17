@@ -1,32 +1,29 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 2,
-                          :work_id => @work.id }}) %>
-
+<%= render '/shared/work_tabs', :selected => 2, :work_id => @work.id %>
 
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
       <p>
-        <% for page in @work.pages %>
+        <% @work.pages.each do |page| %>
           <%= link_to(page.title,
                       { :action => 'display_page',
                         :page_id => page.id} ) %>
             <% if page.source_text.blank? %>
-                <i>(<%= link_to('Transcribe this page', 
+                <i>(<%= link_to('Transcribe this page',
 	                            { :controller => 'transcribe',
 	                              :action => 'display_page',
 	                              :page_id => page.id }) %>)</i>
           <% else %>
             <% if page.page_article_links.size == 0 %>
-                <i>(<%= link_to('Annotate this page', 
+                <i>(<%= link_to('Annotate this page',
 	                            { :controller => 'transcribe',
 	                              :action => 'display_page',
-	                              :page_id => page.id }) %>)</i>                
-            <% end %>          
+	                              :page_id => page.id }) %>)</i>
+            <% end %>
           <% end %>
-          <br />  
+          <br />
         <% end %>
-      </p>    
+      </p>
     </div>
   </div>
 

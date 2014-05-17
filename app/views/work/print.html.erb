@@ -1,6 +1,4 @@
-<%= render({ :partial => '/shared/work_tabs',
-             :locals => { :selected => 5,
-                          :work_id => @work.id }}) %>
+<%= render '/shared/work_tabs', :selected => 5, :work_id => @work.id %>
 
 <div class="two-columns">
   <div class="left-column">
@@ -8,13 +6,13 @@
       <%= form_tag({ :controller => 'work',
                      :action => 'make_pdf.pdf'}) do %>
 	      <%= hidden_field_tag('work_id', @work.id ) %>
-	
+
 	      <%= field_set_tag 'Footnotes' do %>
 		      <%= check_box_tag('name_footnotes') %>
-		      Expand subject full names in footnotes<br />      
-		
+		      Expand subject full names in footnotes<br />
+
 		      <%= check_box_tag('name_footnotes') %>
-		      Include subject articles as footnotes<br />      
+		      Include subject articles as footnotes<br />
 	      <% end %>
 	      <%= field_set_tag 'Print Size' do %>
 	        <%= radio_button_tag('visual_acuity', 'normal', true) %>

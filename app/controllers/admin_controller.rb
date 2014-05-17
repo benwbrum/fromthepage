@@ -21,12 +21,12 @@ class AdminController < ApplicationController
     redirect_to dashboard_path
   end
 
-  # display sessions for a user 
+  # display sessions for a user
   # not tested
   def session_list
     sql_limit = params[:limit] || 50
     @offset = params[:offset] || 0
-    
+
     if(@user)
       @user_name = @user.login
       which_where = 1
@@ -34,12 +34,12 @@ class AdminController < ApplicationController
       @user_name = 'Anonymous'
       which_where = 2
     end
-    
+
     @sessions = Interaction.list_sessions(sql_limit, @offset, which_where)
   end
-    
+
   # display last interactions, including who did what to which
-  # actor, action, object, detail 
+  # actor, action, object, detail
   def interaction_list
     # interactions for a session
     if(params[:session_id])
@@ -47,22 +47,22 @@ class AdminController < ApplicationController
     else if(@user)
         # interactions for user
         conditions = "user_id = #{@user.id}"
-      else 
+      else
         # all interactions
         conditions = nil
       end
     end
     @interactions = Interaction.where(conditions).order('id ASC').all
   end
-  
+
   # display last interactions, including who did what to which
-  # actor, action, object, detail 
+  # actor, action, object, detail
   def error_list
     # interactions with errors
     limit = params[:limit] || 50
     @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit).all
   end
-  
+
   def tail_logfile
     @lines = params[:lines].to_i
     development_logfile = "#{Rails.root}/log/development.log"
@@ -70,6 +70,4 @@ class AdminController < ApplicationController
     @dev_tail = `tail -#{@lines} #{development_logfile}`
     @prod_tail = `tail -#{@lines} #{production_logfile}`
   end
-  
-
 end
