@@ -2,7 +2,7 @@ class CreateCategories < ActiveRecord::Migration
   def self.up
     create_table :categories do |t|
       t.column :title, :string, :size => 255
-      
+
       # heirarchy
       t.column :parent_id, :integer
 

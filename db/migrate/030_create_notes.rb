@@ -4,7 +4,7 @@ class CreateNotes < ActiveRecord::Migration
       # data
       t.column :title, :string, :limit => 255
       t.column :body, :text
-      
+
       # associations
       t.column :user_id,    :integer
       t.column :collection_id,    :integer

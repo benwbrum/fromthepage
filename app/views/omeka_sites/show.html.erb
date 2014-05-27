@@ -1,16 +1,16 @@
 <div class="two-columns">
 	<div class="left-column">
 		<div class="inside-column">
-			
+
 			<p id="notice"><%= notice %></p>
-			
+
 			<p>
 			  <b>Collections from Omeka Connection :</b>
 			  <%= @omeka_site.title %>
 			</p>
-			
+
 			<ul>
-				
+
 				<% @omeka_collections.each do |omeka_collection| %>
 					<li>
 						<%= omeka_collection.dublin_core.title %>
@@ -24,11 +24,11 @@
 										<br />
 										<%= item.dublin_core.description %>
 										<br />
-										<%= item.data.id %>										
+										<%= item.data.id %>
 										<br />
-										<%= item.data.files.url %>			
+										<%= item.data.files.url %>
 										<br />
-										<% if item.data.item_type && item.data.item_type.name == 'Text'%>										
+										<% if item.data.item_type && item.data.item_type.name == 'Text'%>
 											<%= button_to("Import Item", new_omeka_item_path(:omeka_site_id => @omeka_site.id, :client_item_id => item.data.id) ) %>
 										<% end %>
 									</li>
@@ -42,8 +42,8 @@
 
 
 			<%= link_to 'Back', omeka_sites_path %>
-			
-			
+
+
 	    </div>
 	</div>
 	<div class="right-column">
@@ -57,18 +57,18 @@
 						<br />
 						<%= item.dublin_core.description %>
 						<br />
-						<%= item.data.id %>										
+						<%= item.data.id %>
 						<br />
-						<%= item.data.files.url %>			
+						<%= item.data.files.url %>
 						<br />
-						<% if item.data.item_type && item.data.item_type.name == 'Text'%>										
+						<% if item.data.item_type && item.data.item_type.name == 'Text'%>
 							<%= button_to("Import Item", { :action => :import_omeka_item, :omeka_item_id => item.data.id } ) %>
 						<% end %>
-						
+
 					</li>
-		
+
 				<% end%>
-				
+
 			</ul>
 	    </div>
 	</div>

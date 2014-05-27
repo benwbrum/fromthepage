@@ -6,14 +6,14 @@ class Deed < ActiveRecord::Base
   ARTICLE_EDIT = 'art_edit'
   NOTE_ADDED = 'note_add'
 
-  SHORT_PARTIALS = 
-    { PAGE_TRANSCRIPTION => 'deed/page_transcription_short.html.erb', 
+  SHORT_PARTIALS =
+    { PAGE_TRANSCRIPTION => 'deed/page_transcription_short.html.erb',
       PAGE_EDIT => 'deed/page_edit_short.html.erb',
       PAGE_INDEXED => 'deed/page_indexed_short.html.erb',
       ARTICLE_EDIT => 'deed/article_edit_short.html.erb',
       NOTE_ADDED => 'deed/note_added_short.html.erb' }
 
-  LONG_PARTIALS = 
+  LONG_PARTIALS =
     { NOTE_ADDED => 'deed/note_added_long.html.erb' }
 
   # associations

@@ -4,7 +4,7 @@ FactoryGirl.define do
     # :user
     :user2
   end
-  
+
 
   factory :collection1, class: Collection do
     title  "joejoejoe"

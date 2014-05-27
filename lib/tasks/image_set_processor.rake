@@ -2,11 +2,11 @@ desc "Process source image directory"
 task :process_image_dir => :environment do
   debug('processing source dir rake task begins')
   puts 'process_image_dir begins'
-  
+
 	@image_set = ImageSet.find(ENV['IMAGE_SET_ID'])
 	source_directory_name = ENV['SOURCE_DIRECTORY_NAME']
 	@image_set.process_source_directory(source_directory_name)
-  
+
   puts 'process_image_dir ends'
   debug('processing source dir rake task ends')
 end
@@ -26,7 +26,7 @@ task :process_size => :environment do
   debug('process size rake task begins')
   wait_on_prior_jobs(ImageSet::STEP_SIZE_PROCESS, ImageSet::STEP_ORIENTATION_PROCESS)
   @image_set.process_size
-  
+
   debug('process size rake task ends')
   puts "process size ends"
 end
@@ -51,14 +51,14 @@ def wait_on_prior_jobs(this_step, prereq)
     sleep(1)
     # reload to see if the status changed
     @image_set = ImageSet.find(ENV['IMAGE_SET_ID'])
-    if tries > 3600 
+    if tries > 3600
       puts "waited an hour; bailing out!"
       break
-    end       
+    end
   end
   msg = "#{this_step}: image set is READY (#{@image_set.step}:#{@image_set.status})"
   debug msg
-  debug("ready to process image set #{@image_set}") 
+  debug("ready to process image set #{@image_set}")
 end
 
 def current_step? (this_step)

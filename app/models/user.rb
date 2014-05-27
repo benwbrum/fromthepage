@@ -17,18 +17,18 @@ class User < ActiveRecord::Base
 #  validates_length_of       :email,    :within => 3..100, :if => :email_required?
   validates_uniqueness_of   :login, :case_sensitive => false
 
-  has_many(:owner_works, 
+  has_many(:owner_works,
            { :foreign_key => "owner_user_id",
              :class_name => 'Work' })
   has_many :image_sets, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
   has_many :omeka_sites
-  has_and_belongs_to_many(:scribe_works, 
-                          { :join_table => 'transcribe_authorizations', 
+  has_and_belongs_to_many(:scribe_works,
+                          { :join_table => 'transcribe_authorizations',
                             :class_name => 'Work'})
-  has_and_belongs_to_many(:owned_collections, 
-                          { :join_table => 'collection_owners', 
+  has_and_belongs_to_many(:owned_collections,
+                          { :join_table => 'collection_owners',
                             :class_name => 'Collection'})
   has_many :page_versions, -> { order 'created_on DESC' }
   has_many :article_versions, -> { order 'created_on DESC' }
@@ -42,12 +42,12 @@ class User < ActiveRecord::Base
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
   end
-  
+
   def like_owner?(obj)
     if Collection == obj.class
-      return self == obj.owner || obj.owners.include?(self)      
+      return self == obj.owner || obj.owners.include?(self)
     end
     return false
   end
-  
+
 end

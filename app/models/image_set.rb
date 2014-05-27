@@ -4,22 +4,22 @@ class ImageSet < ActiveRecord::Base
   include FileUtils::Verbose
   include Magick
   include ImageHelper
-  
+
   has_many :titled_images, -> { order 'position' }
   belongs_to :owner, :class_name => "User", :foreign_key => "owner_user_id"
-  
-  
+
+
   STEP_DIRECTORY_PROCESS = 'directory_process'
   STEP_ORIENTATION_PROCESS = 'orientation_process'
   STEP_SIZE_PROCESS = 'size_process'
   STEP_NUMBER_LOCATION_PROCESS = 'number_location_process'
   STEP_PROCESSING_COMPLETE = 'processing_complete'
-  
-  
+
+
   STATUS_COMPLETE = 'complete'
   STATUS_ERROR = 'error'
   STATUS_RUNNING = 'running'
-  
+
   # tested
   def page_count
     if titled_images == nil
@@ -27,7 +27,7 @@ class ImageSet < ActiveRecord::Base
     end
     titled_images.size
   end
-  
+
   def summary
     if page_count == 0
       return 'empty'
@@ -40,12 +40,12 @@ class ImageSet < ActiveRecord::Base
     desc += "#{titled_images[0].title}, #{titled_images[1].title} ... #{titled_images[page_count-1].title}, #{titled_images[page_count-2].title}"
     return desc
   end
-  
+
   def sample_image
-    self.titled_images[(self.titled_images.length / 3)]   
+    self.titled_images[(self.titled_images.length / 3)]
   end
 
-  
+
   ##############################################################
   # This is intended to be run inline, and be fairly quick
   ##############################################################
@@ -60,8 +60,8 @@ class ImageSet < ActiveRecord::Base
     create_new_directory
     populate_titled_images(source_directory_name)
     process_sample_image(source_directory_name)
-    
-  end    
+
+  end
 
   def flag_error(message)
     debug(message)
@@ -75,15 +75,15 @@ class ImageSet < ActiveRecord::Base
     new_dir_name = File.join(Dir.getwd,
                              "public",
                              "images",
-                             "working", 
-                             self.id.to_s) 
+                             "working",
+                             self.id.to_s)
     if(!Dir.mkdir(new_dir_name))
       flag_error("could not create directory #{new_dir_name}")
     end
     if(!File.chmod(0777, new_dir_name))
       flag_error("could not chmod directory #{new_dir_name}")
     end
-    self.path = new_dir_name   
+    self.path = new_dir_name
   end
 
   def populate_titled_images(source_directory_name)
@@ -96,7 +96,7 @@ class ImageSet < ActiveRecord::Base
       self.titled_images << image
     end
     self.save!
-    
+
   end
 
   def process_sample_image(source_directory_name)
@@ -108,7 +108,7 @@ class ImageSet < ActiveRecord::Base
     orig = Magick::ImageList.new(sample_image.original_file)
     self.original_width = orig.columns
     self.original_height = orig.rows
-    
+
 
     debug("process_sample_image begin shrink #{Time.now}")
     # shrink the sample file to 1:4
@@ -121,7 +121,7 @@ class ImageSet < ActiveRecord::Base
     self.original_to_base_halvings = 2
     self.status = STATUS_COMPLETE
     self.save!
-    
+
   end
 
   def process_sample_orientation
@@ -131,17 +131,17 @@ class ImageSet < ActiveRecord::Base
       safe_update(sample_image, { :rotate_completed => true })
       shrink_to_sextodecimo(sample_image)
     end #if
-        
+
   end
-  
-  
-  
+
+
+
   def resize_sample_image
     unless File.exists? self.sample_image.shrunk_file
       shrink(sample_image, self.original_to_base_halvings)
     end
   end
-  
+
   ##############################################################
   # This will be slow, so it should be run in the background
   ##############################################################
@@ -162,7 +162,7 @@ class ImageSet < ActiveRecord::Base
   end
 
   # revision to earlier algorithm -- rotate full-sized images to be shrunk much later
-  def process_orientation   
+  def process_orientation
     self.step = STEP_ORIENTATION_PROCESS
     self.status = STATUS_RUNNING
     self.rotate_pid = Process.pid
@@ -180,7 +180,7 @@ class ImageSet < ActiveRecord::Base
     self.save!
   end
 
-  def process_size   
+  def process_size
     self.step = STEP_SIZE_PROCESS
     self.status = STATUS_RUNNING
     self.shrink_pid = Process.pid
@@ -214,10 +214,10 @@ class ImageSet < ActiveRecord::Base
     end #for
     self.step = STEP_PROCESSING_COMPLETE
     self.status = STATUS_COMPLETE
-    self.save!   
+    self.save!
   end
-  
-  def debug(message) 
+
+  def debug(message)
     logger.debug("  DEBUG: #{message}")
   end
 end

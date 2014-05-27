@@ -12,21 +12,21 @@
                       { :action => 'display_page',
                         :page_id => page.id} ) %>
             <% if page.source_text.blank? %>
-                <i>(<%= link_to('Transcribe this page', 
+                <i>(<%= link_to('Transcribe this page',
 	                            { :controller => 'transcribe',
 	                              :action => 'display_page',
 	                              :page_id => page.id }) %>)</i>
           <% else %>
             <% if page.page_article_links.size == 0 %>
-                <i>(<%= link_to('Annotate this page', 
+                <i>(<%= link_to('Annotate this page',
 	                            { :controller => 'transcribe',
 	                              :action => 'display_page',
-	                              :page_id => page.id }) %>)</i>                
-            <% end %>          
+	                              :page_id => page.id }) %>)</i>
+            <% end %>
           <% end %>
-          <br />  
+          <br />
         <% end %>
-      </p>    
+      </p>
     </div>
   </div>
 

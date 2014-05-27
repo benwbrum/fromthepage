@@ -1,9 +1,9 @@
 class TitleController < ApplicationController
   include ImageHelper
-  
+
   protect_from_forgery :except => [:set_titled_image_title]
-  before_filter :authorized?, 
-    :only => 
+  before_filter :authorized?,
+    :only =>
       [:list]
 
   def authorized?
@@ -11,9 +11,9 @@ class TitleController < ApplicationController
       return @image_set.owner == current_user
     end
   end
-  
+
   def list
-    unless @image_set.status == ImageSet::STATUS_COMPLETE 
+    unless @image_set.status == ImageSet::STATUS_COMPLETE
       redirect_to :controller => 'transform', :action => 'process_meter', :image_set_id => @image_set.id
     end
     @titled_images = @image_set.titled_images
@@ -21,7 +21,7 @@ class TitleController < ApplicationController
 #    @image_pages, @titled_images = paginate(:titled_image,
 #                                            {:per_page => 10,
 #                                             :conditions => conditions,
-#                                             :order => 'position' }) 
+#                                             :order => 'position' })
   end
 
   def delete_image
@@ -30,35 +30,35 @@ class TitleController < ApplicationController
     @titled_image.destroy
     redirect_to :action => 'list', :image_set_id => @image_set.id
   end
-  
+
   def increment_by_one
     renumber_images(1)
   end
-  
+
   def increment_by_two
     renumber_images(2)
   end
-  
+
   def increment_by_ten
     renumber_images(10)
   end
-  
+
   def increment_by_365
     renumber_images(365)
   end
-  
+
   def decrement_by_one
     renumber_images(-1)
   end
-  
+
   def decrement_by_two
     renumber_images(-2)
   end
-  
+
   def decrement_by_ten
     renumber_images(-10)
   end
-  
+
   def decrement_by_365
     renumber_images(-365)
   end
@@ -90,10 +90,10 @@ private
 #          image.title = date.strftime(date_format)
 #          image.save!
 #        end
-        
-        safe_update(image, 
-                    { :title_seed => date.to_s, 
-                      :title => date.strftime(date_format)})  
+
+        safe_update(image,
+                    { :title_seed => date.to_s,
+                      :title => date.strftime(date_format)})
       end
     end
     redirect_to :action => 'list', :image_set_id => @image_set.id, :page => params[:page]

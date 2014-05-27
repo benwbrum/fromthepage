@@ -2,9 +2,9 @@
 	<div class="left-column">
 		<div class="inside-column">
 
-			
+
 			<h1>Omeka Connections</h1>
-			
+
 			<table>
 			  <tr>
 			    <th>Title</th>
@@ -13,7 +13,7 @@
 			    <th></th>
 			    <th></th>
 			  </tr>
-			
+
 			<% @omeka_sites.each do |omeka_site| %>
 			  <tr>
 			    <td><%= omeka_site.title %></td>
@@ -24,9 +24,9 @@
 			  </tr>
 			<% end %>
 			</table>
-			
+
 			<br />
-			
+
 			<%= link_to 'New Omeka Connection', new_omeka_site_path %>
 
 	    </div>

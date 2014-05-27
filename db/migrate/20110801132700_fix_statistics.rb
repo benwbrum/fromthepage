@@ -1,5 +1,5 @@
 class FixStatistics < ActiveRecord::Migration
-  def self.up   
+  def self.up
     # catch up existing works
     works = Work.all
     works.each do |work|

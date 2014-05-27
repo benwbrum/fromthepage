@@ -11,7 +11,7 @@ module AbstractXmlHelper
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     doc = REXML::Document.new(xml_text)
-    doc.elements.each("//link") do |e| 
+    doc.elements.each("//link") do |e|
       title = e.attributes['target_title']
       id = e.attributes['target_id']
       # first find the articles
@@ -19,14 +19,14 @@ module AbstractXmlHelper
 #      anchor.text = display_text
       if id
         if flatten_links
-          anchor.add_attribute("href", "#article-#{id}")        
+          anchor.add_attribute("href", "#article-#{id}")
         else
           anchor.add_attribute("href",
                                url_for(:controller => 'article',
                                        :action => 'show',
                                        :article_id => id,
                                        :title=> title))
-            
+
         end
       else
         # preview mode for this link
@@ -40,7 +40,7 @@ module AbstractXmlHelper
     # get rid of line breaks within other html mark-up
     doc.elements.delete_all("//table//lb")
     # convert line breaks to br or nothing, depending
-    doc.elements.each("//lb") do |e| 
+    doc.elements.each("//lb") do |e|
       if preserve_lb
         e.replace_with(REXML::Element.new('br'))
       else

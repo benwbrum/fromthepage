@@ -8,7 +8,7 @@ class CollationController < ApplicationController
       logger.debug("testing params")
       id = if params[:image_set_id] == nil || params[:image_set_id] == ""
         params[:left_set_id]
-      else 
+      else
         params[:image_set_id]
       end
       set = ImageSet.find(id)
@@ -16,7 +16,7 @@ class CollationController < ApplicationController
       return set.owner == current_user
     end
   end
-    
+
   def select_target
     @right_set = @image_set
     @left_sets = current_user.image_sets
@@ -24,7 +24,7 @@ class CollationController < ApplicationController
   end
 
   def select_target_process
-    redirect_to(:action=>'list', 
+    redirect_to(:action=>'list',
                 :right_set_id => params[:right_set_id],
                 :left_set_id => params[:left_set_id])
   end
@@ -45,7 +45,7 @@ class CollationController < ApplicationController
     image.title = 'Blank'
     image.original_file = 'blank'
     insert_set = ImageSet.find(params[:insert_set_id])
-    index = params[:index].to_i 
+    index = params[:index].to_i
     index += 1
     if(params[:where]=='after')
       index += 1
@@ -70,7 +70,7 @@ class CollationController < ApplicationController
 
   end
 
-  
+
 
   def merge
     # load up the sets
@@ -94,7 +94,7 @@ class CollationController < ApplicationController
     right_size = right_set.titled_images.size
     min_size = left_size > right_size ? right_size : left_size
     max_size = left_size < right_size ? right_size : left_size
-    
+
     0.upto(max_size-1) do |i|
       # append the left element here
       if i < left_size

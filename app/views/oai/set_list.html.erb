@@ -7,7 +7,7 @@
       	<% @list_sets_response.each do |set_response| %>
 			Name: <%= set_response.name %><br />
 			Description: <%= set_response.description %><br />
-			Spec: <%= set_response.spec %> 
+			Spec: <%= set_response.spec %>
 				<%= link_to('Save for future use',
 							{ :action => 'save_spec',
 							  :repository_url => params[:repository_url],
@@ -18,7 +18,7 @@
 								   :set_spec => set_response.spec })%><br />
 			<br />
 	    <% end %>
-      </p>    
+      </p>
     </div>
   </div>
 

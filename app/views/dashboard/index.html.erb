@@ -30,12 +30,12 @@
             Owner Actions
           </p>
           <div>
-          <%= link_to("Create an empty work", 
+          <%= link_to("Create an empty work",
                       { :controller => 'work',
                         :action => 'new' })%>
           </div>
           <div>
-          <%= link_to("Create an empty collection", 
+          <%= link_to("Create an empty collection",
                       { :controller => 'collection',
                         :action => 'new' })%>
           </div>
@@ -50,7 +50,7 @@
 		        :action => 'ia_book_form' }) %>
 	  </div>
           <div>
-            <%= link_to("Create an image set", 
+            <%= link_to("Create an image set",
                         { :controller => 'transform' })%>
           </div>
 		  <div>
@@ -71,7 +71,7 @@
 								   :set_spec => set.set_spec }) %>
 						</li>
 					<% end %>
-					
+
 				</ul>
 			<% end %>
 		  </div>
@@ -80,10 +80,10 @@
 	            <p>
 	              Works I own:
 	            </p>
-	            <ul> 
+	            <ul>
 	              <% for work in @current_user.owner_works %>
 	                <li>
-	                  <%= link_to(work.title, 
+	                  <%= link_to(work.title,
 	                              { :controller => 'work',
 	                                :action => 'edit',
 	                                :work_id => work.id }) %>
@@ -92,7 +92,7 @@
               </ul>
 	          </div>
           <% end %>
-          <% if (@image_sets && @image_sets.size > 0) || 
+          <% if (@image_sets && @image_sets.size > 0) ||
 				(@current_user.ia_works && @current_user.ia_works.size > 0) %>
 				<h3>Staging Area</h3>
 		  <% end %>
@@ -109,9 +109,9 @@
 					</li>
 					<% end %>
 				</ul>
-			</div>			 			  
+			</div>
 		  <% end %>
-		  
+
           <% if @image_sets && @image_sets.size > 0 %>
 	          <div>
 	            <p>
@@ -140,7 +140,7 @@
 	                                { :controller => 'image_set',
 	                                  :action => 'convert_to_work',
 	                                  :image_set_id => set.id }) %>
-	                  </li>			        
+	                  </li>
 				          <% end %>
 	              </ul>
 	            </p>
@@ -158,18 +158,18 @@
 						{ :controller => 'page_block',
 						  :action => 'list' }) %>
   	  	  </p>
-          
+
 				  <p>
-				      <%= link_to("View Logfile", 
+				      <%= link_to("View Logfile",
 				                  { :controller => 'admin',
-				                    :action => 'tail_logfile', 
+				                    :action => 'tail_logfile',
 				                    :lines => 500 }) %>
 				  </p>
-         
+
 				  <p>
-				      <%= link_to("Recent Errors", 
+				      <%= link_to("Recent Errors",
 				                  { :controller => 'admin',
-				                    :action => 'error_list', 
+				                    :action => 'error_list',
 				                    :limit => 50 }) %>
 				  </p>
           <p>
@@ -188,13 +188,13 @@
                   <%= link_to("Sessions",
                               { :controller => 'admin',
                                 :action => 'session_list',
-                                :user_id => user.id }) %>  
+                                :user_id => user.id }) %>
 	              </li>
 	            <% end %>
 	            <li>
                 <%= link_to("Anonymous Sessions",
                             { :controller => 'admin',
-                              :action => 'session_list' }) %>  
+                              :action => 'session_list' }) %>
 	            </li>
             </ul>
           </p>

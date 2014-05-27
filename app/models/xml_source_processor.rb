@@ -1,4 +1,4 @@
-module XmlSourceProcessor 
+module XmlSourceProcessor
 
   @text_dirty = false
   def source_text=(text)
@@ -54,9 +54,9 @@ module XmlSourceProcessor
 
   ##############################################
   # All code to convert transcriptions from source
-  # format to canonical xml format belongs here. 
+  # format to canonical xml format belongs here.
   #
-  # 
+  #
   ##############################################
   def process_source
     if !@text_dirty
@@ -90,9 +90,9 @@ module XmlSourceProcessor
     else
       each_method_name = :each_line
     end
-    
+
     text.send(each_method_name, '[[') do |raw|
-      # remove the open brace 
+      # remove the open brace
       raw.gsub!('[[', '')
 
       # look for the closing brace ]]
@@ -103,7 +103,7 @@ module XmlSourceProcessor
           parts = tag.split('|')
           title = parts[0]
           display = parts[1]
-        else          
+        else
           title = tag.gsub(/\n/,' ')
           display = tag
         end
@@ -114,7 +114,7 @@ module XmlSourceProcessor
         end
       else
         processed << raw
-      end      
+      end
     end
     return processed
   end
@@ -139,7 +139,7 @@ module XmlSourceProcessor
     source = source || ""
     safe = source.gsub /\&/, '&amp;'
     safe.gsub! /\&amp;amp;/, '&amp;'
-    
+
     string = <<EOF
     <?xml version="1.0" encoding="ISO-8859-15"?>
       <page>
@@ -195,9 +195,9 @@ EOF
   ##############################################
   def rename_article_links(old_title, new_title)
     # handle links of the format [[Old Title|Display Text]]
-    self.source_text=self.source_text.gsub(/\[\[#{old_title}\|/, "[[#{new_title}|")    
+    self.source_text=self.source_text.gsub(/\[\[#{old_title}\|/, "[[#{new_title}|")
     # handle links of the format [[Old Title]]
-    self.source_text=self.source_text.gsub(/\[\[#{old_title}\]\]/, "[[#{new_title}|#{old_title}]]")    
+    self.source_text=self.source_text.gsub(/\[\[#{old_title}\]\]/, "[[#{new_title}|#{old_title}]]")
     self.save!
   end
 

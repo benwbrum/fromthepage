@@ -53,7 +53,7 @@ class PageController < ApplicationController
       # create a new filename
       filename = "#{Rails.root}/public/images/working/upload/#{@page.id}.jpg"
     end
-    File.open(filename, "wb") do |f| 
+    File.open(filename, "wb") do |f|
       f.write(params['page']['base_image'].read)
     end
     @page.base_image = filename
@@ -71,19 +71,19 @@ class PageController < ApplicationController
     else
       @page.move_lower
     end
-    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id  
+    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id
   end
-  
+
 # new page functions
   def new
     @page = Page.new
     @page.work = @work
   end
-  
+
   def create
     page = Page.new(params[:page])
     page.save!
-    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id  
+    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id
   end
 
   def update
@@ -97,12 +97,12 @@ private
 
   def reduce_by_one(page)
     page.shrink_factor = page.shrink_factor + 1
-    shrink_file(page.scaled_image(0), 
+    shrink_file(page.scaled_image(0),
                 page.scaled_image(page.shrink_factor),
                 page.shrink_factor)
     page.save!
   end
-  
+
   def set_dimensions(page)
     image = Magick::ImageList.new(page.base_image)
     page.base_width = image.columns

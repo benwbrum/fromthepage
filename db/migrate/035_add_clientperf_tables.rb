@@ -3,13 +3,13 @@ class AddClientperfTables < ActiveRecord::Migration
   def self.up
     create_table :clientperf_uris do |t|
       t.string :uri
-      t.timestamps 
+      t.timestamps
     end
 
     create_table :clientperf_results do |t|
       t.integer :clientperf_uri_id
       t.integer :milliseconds
-      t.timestamps 
+      t.timestamps
     end
   end
 

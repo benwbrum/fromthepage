@@ -23,7 +23,7 @@ require 'spec_helper'
 describe CollectionController do
 
   before (:each) do
-    # this works: 
+    # this works:
     @user = FactoryGirl.create(:user1)
     User.current_user = @user
     # this also works:
@@ -67,7 +67,7 @@ describe CollectionController do
   def valid_session
     {
       "user_id"=> @user.id,
-      "user" => @user.id 
+      "user" => @user.id
     }
   end
 
@@ -77,9 +77,9 @@ describe CollectionController do
     }
   end
 
-  def invalid_session 
-    { 
-    "user_id" => 5 
+  def invalid_session
+    {
+    "user_id" => 5
     }
   end
 
@@ -123,7 +123,7 @@ describe CollectionController do
       it "creates a new Collection" do
         # this is the magic
         controller.class.skip_before_filter :authorized?
-        
+
         expect {
           post :create, {:collection => valid_attributes}, valid_session
         }.to change(Collection, :count).by(1)
@@ -162,7 +162,7 @@ describe CollectionController do
       it "does not create a new Collection" do
         # this is the magic
         # controller.class.skip_before_filter :authorized?
-        
+
         expect {
           begin
             post :create, {:collection => valid_attributes}, invalid_session

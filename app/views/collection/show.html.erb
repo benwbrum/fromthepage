@@ -10,18 +10,18 @@
 	  <p>
 	  	<%= raw( @collection.intro_block) %>
 	  </p>
-	</div>	
+	</div>
 	<% end %>
     <div class="inside-column">
       <h2>Works</h2>
       <p>
         <% @collection.works.each do |work| %>
-          <%= link_to(work.title, 
+          <%= link_to(work.title,
 		                  { :controller => 'display',
 		                    :action => 'read_work',
 		                    :work_id => work.id })%><br />
         <% end %>
-      </p>    
+      </p>
     </div>
 
       <div class="inside-column">
@@ -29,7 +29,7 @@
 	      <p>
         <%= raw(display_categories(@collection.categories, nil) do |category|
                 controller.render_to_string(:partial => '/category/category_link',
-                       :locals => { :category => category, 
+                       :locals => { :category => category,
                                     :article_partial => '/category/article_link' })
             end) %>
       </p>
@@ -41,7 +41,7 @@
 	                               :action => 'profile',
 	                               :user_id => @collection.owner.id }) %>
         <br />
-      </p>    
+      </p>
     </div>
   </div>
   <div class="right-column">
@@ -80,7 +80,7 @@
       <h3>Recent Edits</h3>
 	  <p>
 	    <%= deeds_for({:collection => true,
-					   :limit => 10, 
+					   :limit => 10,
 					   :types => [Deed::PAGE_TRANSCRIPTION,
 								  Deed::PAGE_EDIT,
 								  Deed::ARTICLE_EDIT]}) %>

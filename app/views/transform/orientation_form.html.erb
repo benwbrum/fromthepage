@@ -6,21 +6,21 @@
 <table>
 <tr>
 <td>
-<%= link_to(image_tag(file_to_url(@img_files["0"])), 
+<%= link_to(image_tag(file_to_url(@img_files["0"])),
             :action => 'orientation_process', :orientation => '0', :image_set_id => @image_set.id ) %>
 </td>
 <td>
-<%= link_to(image_tag(file_to_url(@img_files["90"])), 
+<%= link_to(image_tag(file_to_url(@img_files["90"])),
             :action => 'orientation_process', :orientation => '90', :image_set_id => @image_set.id ) %>
 </td>
 </tr>
 <tr>
 <td>
-<%= link_to(image_tag(file_to_url(@img_files["270"])), 
+<%= link_to(image_tag(file_to_url(@img_files["270"])),
             :action => 'orientation_process', :orientation => '270', :image_set_id => @image_set.id ) %>
 </td>
 <td>
-<%= link_to(image_tag(file_to_url(@img_files["180"])), 
+<%= link_to(image_tag(file_to_url(@img_files["180"])),
             :action => 'orientation_process', :orientation => '180', :image_set_id => @image_set.id ) %>
 </td>
 </tr>
