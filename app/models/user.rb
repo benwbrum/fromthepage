@@ -8,15 +8,6 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :display_name
 
-  validates_presence_of     :login
-  validates_presence_of     :password,                    :if => :password_required?
-  validates_presence_of     :password_confirmation,       :if => :password_required?
-  validates_length_of       :password, :within => 4..40,  :if => :password_required?
-  validates_confirmation_of :password,                    :if => :password_required?
-  validates_length_of       :login,    :within => 3..40
-#  validates_length_of       :email,    :within => 3..100, :if => :email_required?
-  validates_uniqueness_of   :login, :case_sensitive => false
-
   has_many(:owner_works,
            { :foreign_key => "owner_user_id",
              :class_name => 'Work' })
@@ -35,10 +26,6 @@ class User < ActiveRecord::Base
   has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
-  def to_i
-    self.id
-  end
-
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
   end
@@ -49,5 +36,4 @@ class User < ActiveRecord::Base
     end
     return false
   end
-
 end
