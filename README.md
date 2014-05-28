@@ -46,3 +46,4 @@ to load the schema definition into the database account.
 Finally, start the application
 
     rails server
+
