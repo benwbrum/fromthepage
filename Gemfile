@@ -24,19 +24,15 @@ gem 'devise-encryptable'
 
 gem 'protected_attributes'
 
-group :development do
-end
-
 group :test do
   gem "database_cleaner"
   gem "capybara"
   gem "shoulda"
 end
 
-group :production do
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0.0.beta'
+  gem "factory_girl_rails", require: false
 end
-
-gem "rspec-rails", group: [:development, :test]
-gem "factory_girl_rails", group: [:development, :test], require: false
 
 #- EOF
