@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
     if params[:user_id]
       @user = User.find(params[:user_id])
     end
-    
+
     # category stuff may be orthogonal to collections and articles
     if params[:category_id]
       @category = Category.find(params[:category_id])
@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
       @collection = @article.collection
     end
   end
-  
+
   # perform appropriate API call for updating the IA server
   def update_ia_work_server
     if @work && @work.ia_work
@@ -85,11 +85,11 @@ class ApplicationController < ActionController::Base
   def log_interaction
     @interaction = Interaction.new
     if !session.respond_to?(:session_id)
-      @interaction.session_id = Interaction.count + 1 
+      @interaction.session_id = Interaction.count + 1
     else
       @interaction.session_id = session.session_id
     end
-    
+
     @interaction.browser = request.env['HTTP_USER_AGENT']
     @interaction.ip_address = request.env['REMOTE_ADDR']
     if(user_signed_in?)
@@ -98,7 +98,7 @@ class ApplicationController < ActionController::Base
     clean_params = params.reject{|k,v| k=='password'}
     if clean_params['user']
       clean_params['user'] = clean_params['user'].reject{|k,v| k=~/password/}
-    end    
+    end
 
     @interaction.params = clean_params.inspect
 
@@ -119,11 +119,11 @@ class ApplicationController < ActionController::Base
 
   def complete_interaction
     @interaction.update_attribute(:status, 'complete')
-  end   
+  end
 
   def load_html_blocks
     @html_blocks = {}
-    page_blocks = 
+    page_blocks =
       PageBlock.where(controller: controller_name, view: action_name)
     page_blocks.each do |b|
         if b && b.html
@@ -134,18 +134,18 @@ class ApplicationController < ActionController::Base
         @html_blocks[b.tag] = b
     end
   end
-  
+
   def store_location_for_login
     unless action_name == 'login' || action_name == 'signup'
       store_location
     end
   end
-  
+
   def authorize_collection
     # skip irrelevant cases
     return unless @collection
     return unless @collection.restricted
-    
+
     unless user_signed_in? && current_user.like_owner?(@collection)
       redirect_to dashboard_path
     end

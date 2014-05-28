@@ -5,12 +5,12 @@
 			<!-- page navigation -- collection tab -->
             <%= html_block('left') %>
 			<p>
-				This is the size of the page that will be shown to transcribers when they first see the page.  
+				This is the size of the page that will be shown to transcribers when they first see the page.
 				The text should be mostly legible, but the image should be small enough to fit on the screen without
 				much scrolling.
 			</p>
 			<p>
-				<% form_tag({:action => 'size_process'}) do %>				
+				<% form_tag({:action => 'size_process'}) do %>
 					<%= hidden_field_tag('image_set_id', @image_set.id) %>
 					<%= radio_button_tag('size', 'just_right')%>
 					<%= label('size', 'just_right', "This is just right") %><br />

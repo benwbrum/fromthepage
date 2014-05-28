@@ -5,8 +5,8 @@ class Category < ActiveRecord::Base
   attr_accessible :collection_id
 
 #  def destroy_but_attach_children_to_parent
-#    self.children.each do |child| 
-#      child.parent = self.parent 
+#    self.children.each do |child|
+#      child.parent = self.parent
 #      child.save!
 #    end
 #    self.destroy

@@ -1,10 +1,10 @@
-module AbstractXmlController 
+module AbstractXmlController
 #TODO rename this
 
 
   ##############################################
   # All code to manipulate source transcription
-  # belongs here. 
+  # belongs here.
   ##############################################
 
   def autolink(text)
@@ -13,9 +13,9 @@ module AbstractXmlController
           'from page_article_links ' +
           'inner join articles a '+
           'on a.id = article_id ' +
-          "where a.collection_id = #{@collection.id}" 
+          "where a.collection_id = #{@collection.id}"
     logger.debug(sql)
-    matches = 
+    matches =
       Page.connection.select_all(sql)
 
     # Bug 18 -- longest possible match is best
@@ -29,7 +29,7 @@ module AbstractXmlController
       if text.match match_regex
         logger.debug("DEBUG found #{match_regex}")
         # is this already within a link?
-        
+
         match_start = text.index match_regex
         if word_not_okay(text, match_start, display_text)||within_link(text, match_start)
           # within a link, but try again somehow
@@ -43,11 +43,11 @@ module AbstractXmlController
           else
             text.sub!(match_regex, "[[#{article.title}|#{display_text}]]")
           end
-        end 
+        end
       end
-    end  
+    end
     return text
-  end 
+  end
   # check for word boundaries on preceding and following sides
   def word_not_okay(text, index, display_text)
     # test for characters before the display text
@@ -95,6 +95,6 @@ module AbstractXmlController
     else
       # no open_link precedes this
       false
-    end   
+    end
   end
 end

@@ -16,6 +16,6 @@ class WorkMetadata < ActiveRecord::Migration
     remove_column :works, :location_of_composition
     remove_column :works, :author
     remove_column :works, :transcription_conventions
-    
+
   end
 end

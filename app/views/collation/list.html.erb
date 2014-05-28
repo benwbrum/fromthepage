@@ -1,11 +1,11 @@
 <% r = @right_set.titled_images({ :order => 'position'}).size
-   l = @left_set.titled_images({ :order => 'position'}).size 
+   l = @left_set.titled_images({ :order => 'position'}).size
    m = r > l ? r : l %>
-<%= link_to("Swap left and right sets", 
+<%= link_to("Swap left and right sets",
             { :action => 'swap',
               :left_set_id => @left_set.id,
               :right_set_id => @right_set.id }) %>
-<%= link_to("Merge", 
+<%= link_to("Merge",
             { :action => 'merge',
               :left_set_id => @left_set.id,
               :right_set_id => @right_set.id }) %>
@@ -23,7 +23,7 @@
       </td>
       <td>
         <% if i < @right_set.titled_images.size %>
-          <%= link_to("Insert Blank", 
+          <%= link_to("Insert Blank",
             { :action => 'insert',
               :left_set_id => @left_set.id,
               :right_set_id => @right_set.id,
@@ -38,7 +38,7 @@
    <tr>
       <td>
         <% if i < @left_set.titled_images.size %>
-          <%= link_to("Insert Blank", 
+          <%= link_to("Insert Blank",
             { :action => 'insert',
               :left_set_id => @left_set.id,
               :right_set_id => @right_set.id,

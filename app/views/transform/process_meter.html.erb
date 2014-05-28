@@ -7,7 +7,7 @@
 			<!-- work stats for this collection -->
 			Total images = <%= @total_images%><br />
 			Rotated images = <%= @rotated_images%>
-			
+
 			<div style="width:<%=@total_images%>px;height:10px;border:1px solid black;" >
 				<div style="float:left;valign:bottom;background-color:#32CD32;background-repeat:repeat;width:<%=((@rotated_images.to_f/@total_images)*100).to_i%>%;height:10px;">
 				</div>
@@ -18,7 +18,7 @@
 				<div style="float:left;valign:bottom;background-color:#32CD32;background-repeat:repeat;width:<%=((@shrunk_images.to_f/@total_images)*100).to_i%>%;height:10px;">
 				</div>
 			</div>
-			Cropped images = <%= @cropped_images%><br />	
+			Cropped images = <%= @cropped_images%><br />
 			<div style="width:<%=@total_images%>px;height:10px;border:1px solid black;" >
 				<div style="float:left;valign:bottom;background-color:#32CD32;background-repeat:repeat;width:<%=((@cropped_images.to_f/@total_images)*100).to_i%>%;height:10px;">
 				</div>
@@ -35,7 +35,7 @@
 					<p>
 						<b>Warning: the application thinks a process is running, but we can't find it!</b><br>
 						<%= button_to("Restart", {:action => 'restart', :image_set_id => @image_set.id } )%>
-					</p>			
+					</p>
 				<% end %>
 			<% end %>
 		</div>

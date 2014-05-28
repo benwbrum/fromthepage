@@ -5,12 +5,12 @@ module WorkHelper
   def xml_to_docbook(page)
  #   docbook = REXML::Document.new
     internal = REXML::Document.new(page.xml_text)
-#    doc.elements.each("//link") do |e| 
+#    doc.elements.each("//link") do |e|
 #      display_text = e.text
 #      e.replace_with(REXML::Text.new(display_text))
 #    end
     # convert page to section
-    internal.elements.each("//page") do |e| 
+    internal.elements.each("//page") do |e|
       # create a new section
       docbook_sec = REXML::Element.new('section')
       docbook_sec.add_attribute('id', "page_#{page.id}")
@@ -25,9 +25,9 @@ module WorkHelper
       e.children.each { |c| docbook_sec.add(c)}
       e.replace_with(docbook_sec)
     end
-    
+
     # convert p to para
-    internal.elements.each("//p") do |e| 
+    internal.elements.each("//p") do |e|
       docbook_para = REXML::Element.new('para')
       docbook_para.add(REXML::Text.new("")) # docbook can't handle <para/>
       e.children.each { |c| docbook_para.add(c)}
@@ -35,10 +35,10 @@ module WorkHelper
     end
 
     # remove lb
-    internal.elements.each("//lb") do |e| 
+    internal.elements.each("//lb") do |e|
       e.replace_with(REXML::Text.new(" "))
     end
-    
+
     # remove link (for now)
     # TODO convert to footnote
     logger.debug("DEBUG looking for link")
@@ -94,15 +94,15 @@ module WorkHelper
         em.add(title)
         pie.add(em)
         page_range = nil
-        article.pages.each do |p| 
+        article.pages.each do |p|
           # TODO make this handle hyphenated ranges
-          if page_range 
+          if page_range
             page_range += ", #{p.title_for_print_index}"
           else
             page_range = p.title_for_print_index
           end
         end
-        pie.add(REXML::Text.new(page_range)) 
+        pie.add(REXML::Text.new(page_range))
         # pie.add(REXML::Text.new(entry))
         ie.add(pie)
         index.add(ie)
@@ -111,7 +111,7 @@ module WorkHelper
 
     string_xml = ""
     doc.write(string_xml)
-    return string_xml    
+    return string_xml
   end
 
 end

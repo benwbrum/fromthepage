@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Work do
 
   before(:each) do
-    @work = FactoryGirl.create(:work1) 
+    @work = FactoryGirl.create(:work1)
   end
 
   subject { @work }
@@ -18,7 +18,7 @@ describe Work do
   it { should have_one(:ia_work) }
   it { should have_one(:work_statistic) }
   it { should have_and_belong_to_many(:scribes).class_name(:User) }
-  
+
   it "creates a work statistic" do
     expect{ FactoryGirl.create(:work1) }.to change{ WorkStatistic.count }.by(1)
   end

@@ -12,7 +12,7 @@ class PageTest < Test::Unit::TestCase
     @page_one = Page.find(1)
     @page_two = Page.find(2)
   end
-  
+
 
   # Replace this with your real tests.
   def test_truth
@@ -27,7 +27,7 @@ class PageTest < Test::Unit::TestCase
   ######################
   # Save Tests
   ######################
-  
+
   # base tags
   def test_no_tags_save
     assert_no_difference Article, :count do
@@ -70,14 +70,14 @@ class PageTest < Test::Unit::TestCase
     @page_one.save!
     assert_equal(1, Article.where(title: 'bar').length)
   end
-  
+
   def test_basic_display_twice_in_same_page
     assert_equal(0, Article.where(title: 'bar').length)
     @page_one.source_text = "foo [[bar|baz]] quux [[bar|quuux]] quuuuux"
     @page_one.save!
     assert_equal(1, Article.where(title: 'bar').length)
   end
-  
+
   def test_basic_display_with_existing_article
     assert_difference Article, :count do
       @page_one.source_text = "foo [[bar|baz]] baz"
@@ -92,7 +92,7 @@ class PageTest < Test::Unit::TestCase
 
   # base tags with linebreak
   CANONICAL_TITLE = 'John Smith'
-  
+
   TEXT_WITH_LB_TITLE =<<EOF
 foo bar [[John
 Smith]] baz quux
@@ -104,7 +104,7 @@ Smith]] baz [[John Smith]] quux
 EOF
 
   TEXT_WITH_LB_TITLE_PLUS_WS =<<EOF
-foo bar [[John  
+foo bar [[John
   Smith]] baz quux
 EOF
 
@@ -114,7 +114,7 @@ Smith]] baz quux
 EOF
 
   TEXT_WITH_LB_DISPLAY_PLUS_WS =<<EOF
-foo bar [[John Smith|John  
+foo bar [[John Smith|John
   Smith]] baz quux
 EOF
 
@@ -124,7 +124,7 @@ Smith|John Smith]] baz quux
 EOF
 
   TEXT_WITH_EXPLICIT_LB_PLUS_WS_TITLE =<<EOF
-foo bar [[John 
+foo bar [[John
  Smith|John Smith]] baz quux
 EOF
 
@@ -151,40 +151,40 @@ EOF
       @page_one.save!
     end
   end
-      
+
   # is the article retrievable if it doesn't have the linefeed?
   def test_retrievable_basic_lb_tag
     check_canonical_creation(TEXT_WITH_LB_TITLE)
     check_display_name
   end
 
-  # TODO: Fix this in the code!      
+  # TODO: Fix this in the code!
   # is the article retrievable if it doesn't have the linefeed?
   def test_padded_lb_tag
     check_canonical_creation(TEXT_WITH_LB_TITLE_PLUS_WS)
     check_display_name
   end
- 
+
   def test_lb_display
     check_canonical_creation(TEXT_WITH_LB_DISPLAY)
     check_display_name
   end
-  
+
   def test_padded_lb_display
     check_canonical_creation(TEXT_WITH_LB_DISPLAY_PLUS_WS)
     check_display_name
   end
- 
+
   def test_lb_title
     check_canonical_creation(TEXT_WITH_EXPLICIT_LB_TITLE)
     check_display_name
   end
-  
+
   def test_padded_lb_title
     check_canonical_creation(TEXT_WITH_EXPLICIT_LB_PLUS_WS_TITLE)
     check_display_name
   end
-      
+
 
 
 
@@ -208,8 +208,8 @@ EOF
 
 
   # invalid format tests
-  
-    
+
+
   ######################
   # Autolink Tests
   ######################
@@ -217,9 +217,9 @@ EOF
   # Basic autolink
   # No duplicate autolink
   # Ben Senior, Franklin
-  
+
   ######################
   # Preview Tests
   ######################
-  
+
 end

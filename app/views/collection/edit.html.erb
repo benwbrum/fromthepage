@@ -45,7 +45,7 @@
     	          <%= work.title %>
   	          </td>
   	          <td>
-			          <%= link_to('remove', 
+			          <%= link_to('remove',
 			                      { :action => 'remove_work_from_collection',
 			                        :work_id => work.id,
 			                        :collection_id => @collection.id })%><br />
@@ -76,7 +76,7 @@
     	          <%= work.title %>
   	          </td>
   	          <td>
-			          <%= link_to('add', 
+			          <%= link_to('add',
 			                      { :action => 'add_work_to_collection',
 			                        :work_id => work.id,
 			                        :collection_id => @collection.id })%>

@@ -28,8 +28,8 @@
 	                               :user_id => version.user.id }) %>
 		      </td>
 		     <td class="revision" width="45%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p")  %></td>
-		     <td class="revision" width="10%"><%= link_to('view', 
-		                                                  { :action => 'show', 
+		     <td class="revision" width="10%"><%= link_to('view',
+		                                                  { :action => 'show',
 		                                                    :page_version_id => version.id }) %></td>
 		   </tr>
 		 <% end %>

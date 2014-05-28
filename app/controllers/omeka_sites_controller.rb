@@ -3,13 +3,13 @@ class OmekaSitesController < ApplicationController
   # GET /omeka_sites.json
   def index
     @omeka_sites = current_user.omeka_sites
-    
+
     respond_to do |format|
       if @omeka_sites.size == 0
         format.html { redirect_to new_omeka_site_path }
       else
         format.html # index.html.erb
-        
+
       end
       format.json { render json: @omeka_sites }
     end

@@ -17,7 +17,7 @@
         <% end %>
 
         <% if @page.base_image != nil && @page.base_image != "" %>
-          Original Dimensions: 
+          Original Dimensions:
           <%= "#{@page.base_width}x#{@page.base_height}" %>
           <br />
           Shrink Factor: <%= @page.shrink_factor %>
@@ -30,40 +30,40 @@
 
                 <%= html_block('right') %>
 
-      <p>    
+      <p>
 Reduced Image:
 <br />
         <% if @page.base_image != nil && @page.base_image != "" %>  ( size:  <%= link_to(image_tag("/images/icons/arrow_in.png",{:border => 0}),
-                    { :action => 'reduce', 
+                    { :action => 'reduce',
                       :page_id => @page.id }) %>
-  <%= link_to('reduce', 
-                      { :action => 'reduce', 
+  <%= link_to('reduce',
+                      { :action => 'reduce',
                         :page_id => @page.id }) %>
   <% if @page.shrink_factor > 0 %>
-      | <%= link_to(image_tag("/images/icons/arrow_out.png",{:border => 0}), 
-                       { :action => 'enlarge', 
+      | <%= link_to(image_tag("/images/icons/arrow_out.png",{:border => 0}),
+                       { :action => 'enlarge',
                          :page_id => @page.id }) %>
-      <%= link_to('enlarge', 
-                    { :action => 'enlarge', 
+      <%= link_to('enlarge',
+                    { :action => 'enlarge',
                       :page_id => @page.id }) %>
   <% end %>
   )
-  (	rotate: 
+  (	rotate:
   <%= link_to(image_tag("/images/icons/arrow_rotate_clockwise.png",{:border => 0}),
-              { :action => 'rotate', 
+              { :action => 'rotate',
                 :page_id => @page.id,
-                :orientation => 90 }) %>   
-  <%= link_to('clockwise', 
-              { :action => 'rotate', 
+                :orientation => 90 }) %>
+  <%= link_to('clockwise',
+              { :action => 'rotate',
                 :page_id => @page.id,
                 :orientation => 90 }) %>
   |
     <%= link_to(image_tag("/images/icons/arrow_rotate_anticlockwise.png",{:border => 0}),
-              { :action => 'rotate', 
+              { :action => 'rotate',
                 :page_id => @page.id,
-                :orientation => 270 }) %>   
-  <%= link_to('counterclockwise', 
-              { :action => 'rotate', 
+                :orientation => 270 }) %>
+  <%= link_to('counterclockwise',
+              { :action => 'rotate',
                 :page_id => @page.id,
                 :orientation => 270 }) %> )
   <br />

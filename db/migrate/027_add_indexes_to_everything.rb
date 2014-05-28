@@ -3,7 +3,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| article_article_links       |
     add_index :article_article_links, :source_article_id
     add_index :article_article_links, :target_article_id
-    
+
     #| article_versions            |
     add_index :article_versions,  :article_id
     add_index :article_versions,  :user_id
@@ -17,7 +17,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| categories                  |
     add_index :categories, :collection_id
     add_index :categories, :parent_id
-    
+
     #| collections                 |
     add_index :collections, :owner_user_id
 
@@ -34,10 +34,10 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| page_versions               |
     add_index :page_versions, :page_id
     add_index :page_versions, :user_id
-    
+
     #| pages                       |
     add_index :pages, :work_id
-    
+
     #| plugin_schema_info          |
     #| schema_info                 |
     #| sessions                    |
@@ -50,10 +50,10 @@ class AddIndexesToEverything < ActiveRecord::Migration
 
     #| users                       |
     add_index :users, :login
-    
+
     #| works                       |
     add_index :works, :owner_user_id
-    add_index :works, :collection_id    
+    add_index :works, :collection_id
 
   end
 
@@ -61,7 +61,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| article_article_links       |
     remove_index :article_article_links, :source_article_id
     remove_index :article_article_links, :target_article_id
-    
+
     #| article_versions            |
     remove_index :article_versions,  :article_id
     remove_index :article_versions,  :user_id
@@ -75,7 +75,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| categories                  |
     remove_index :categories, :collection_id
     remove_index :categories, :parent_id
-    
+
     #| collections                 |
     remove_index :collections, :owner_user_id
 
@@ -92,10 +92,10 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| page_versions               |
     remove_index :page_versions, :page_id
     remove_index :page_versions, :user_id
-    
+
     #| pages                       |
     remove_index :pages, :work_id
-    
+
     #| plugin_schema_info          |
     #| schema_info                 |
     #| sessions                    |
@@ -108,9 +108,9 @@ class AddIndexesToEverything < ActiveRecord::Migration
 
     #| users                       |
     remove_index :users, :login
-    
+
     #| works                       |
     remove_index :works, :owner_user_id
-    remove_index :works, :collection_id    
+    remove_index :works, :collection_id
   end
 end

@@ -11,14 +11,14 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def pct_annotated
-    raw = (self[:annotated_pages].to_f / (self[:total_pages] - self[:blank_pages])) * 100    
+    raw = (self[:annotated_pages].to_f / (self[:total_pages] - self[:blank_pages])) * 100
     if raw > 100
       100
     else
       raw
     end
   end
-  
+
   def recalculate
     self[:total_pages] = work.pages.count
     self[:transcribed_pages] = work.pages.count :conditions => 'xml_text is not null'

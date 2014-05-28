@@ -6,7 +6,7 @@
     <div id="subundernav">
       <h4><%= @page.title %></h4>
     </div>
-    
+
 
 
 <div class="two-columns">
@@ -22,7 +22,7 @@
 						{ :controller => 'category',
 						  :action => 'manage',
 						  :page_id => @page.id }) %>
-				
+
 			</p>
 		<% end %>
 
@@ -34,9 +34,9 @@
 					             :locals => { :article => article }}) %>
   	    <% end %>
 	    <% end %>
-      <%= button_to("Done", 
-                    { :action => 'display_page', 
-                      :controller => 'display', 
+      <%= button_to("Done",
+                    { :action => 'display_page',
+                      :controller => 'display',
                       :page_id => @page.id }) %>
     </div>
 	</div>
