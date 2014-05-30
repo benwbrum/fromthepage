@@ -13,6 +13,6 @@ Fromthepage::Application.routes.draw do
   root :to => 'static#splash'
   get 'ZenasMatthews' => 'collection#show', :collection_id => 7
   get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
-  get '/:controller(/:action(/:id))'
+  match '/:controller(/:action(/:id))', via: [:get, :post]
 
 end
