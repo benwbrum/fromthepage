@@ -36,6 +36,7 @@ describe "dashboard page" do
 
 
   it "should have a list of collections if not logged in" do
+    binding.pry
 #   capybara code to make sure we're logged out
 #   visit dashboard_path
 #   expect(page).to have_content("Julia Brumfield Diaries")  #consider replacing with a fixture
