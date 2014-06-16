@@ -119,7 +119,7 @@ class ArticleController < ApplicationController
       min_rank = params[:min_rank].to_i
     else
       # calculate whether we should reduce the rank
-      num_articles = article_links.size
+      num_articles = article_links.count
       while num_articles > DEFAULT_ARTICLES_PER_GRAPH && min_rank < link_max
         # remove the outer rank
         #logger.debug("DEBUG: \tinvestigating rank #{min_rank} for #{num_articles}\n")
@@ -133,6 +133,7 @@ class ArticleController < ApplicationController
 
     dot_source =
       render_to_string({:file => dot_path,
+                        :layout => false,
                         :locals => { :article_links => article_links,
                                      :link_total => link_total,
                                      :link_max => link_max,
@@ -142,13 +143,10 @@ class ArticleController < ApplicationController
     File.open(dot_file, "w") do |f|
       f.write(dot_source)
     end
-    # TEMP HACK: copy something to the .map file and png
     dot_out = "#{Rails.root}/public/images/working/dot/#{@article.id}.png"
-    # THIS IS ORIG
-    # dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
-    # THIS IS HACK
-    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
-    # system "#{NEATO} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}"
+    dot_out_map = "#{Rails.root}/public/images/working/dot/#{@article.id}.map"
+
+    system "#{Rails.application.config.neato} -Tcmapx -o#{dot_out_map} -Tpng #{dot_file} -o #{dot_out}"
 
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out
