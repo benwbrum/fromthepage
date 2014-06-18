@@ -1,6 +1,6 @@
 <div id="context_wrapper" class="inside-column">
   <p>
-  <%= link_to("Read pages that mention <i>#{@article.title}</i> in all works.",
+  <%= link_to("Read pages that mention #{@article.title} in all works.",
               :controller => 'display',
               :action => 'read_all_works',
               :article_id => @article.id) %>
@@ -17,7 +17,7 @@
 		               { :controller => 'display',
 		                 :action=> 'display_page',
 		                 :page_id => link.page.id })%>
-		   (<%= link.display_text %>)<br />
+		   (<%= raw(link.display_text) %>)<br />
 		 <% end %>
 		</p>
 		<p>Subject articles that refer to <%= @article.title %>:</p>
