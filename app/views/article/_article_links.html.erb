@@ -20,15 +20,17 @@
 		   (<%= raw(link.display_text) %>)<br />
 		 <% end %>
 		</p>
-		<p>Subject articles that refer to <%= @article.title %>:</p>
-		<p>
-		 <% for link in @article.target_article_links %>
-		   <%= link_to(link.source_article.title,
-		               { :controller => 'article',
-		                 :action=> 'show',
-		                 :article_id => link.source_article.id })%>
-		   (<%= link.display_text %>)<br />
-		 <% end %>
-		</p>
+		<% if @article.target_article_links.count > 0 %>
+			<p>Subject articles that refer to <%= @article.title %>:</p>
+			<p>
+			 <% for link in @article.target_article_links %>
+			   <%= link_to(link.source_article.title,
+			               { :controller => 'article',
+			                 :action=> 'show',
+			                 :article_id => link.source_article.id })%>
+			   (<%= link.display_text %>)<br />
+			 <% end %>
+			</p>
+		<% end %>
 	</div>
 </div>
