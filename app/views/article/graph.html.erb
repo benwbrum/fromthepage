@@ -17,14 +17,14 @@
       </h3>
 			<p>
 			<%= image_tag(file_to_url(@article.graph_image), :usemap => '#G') %>
-			<%= @map %>
+			<%= raw(@map) %>
 			</p>
     </div>
   </div>
   <div class="right-column">
     <div class="inside-column">
 	  <p>
-	  	  <%= link_to("Read pages that mention <i>#{@article.title}</i> in all works.",
+	  	  <%= link_to(raw("Read pages that mention <i>#{@article.title}</i> in all works."),
               :controller => 'display',
               :action => 'read_all_works',
               :article_id => @article.id) %>

@@ -68,8 +68,8 @@
                    { :controller => 'display',
                      :action => 'search',
                      :article_id => @article.id }) %>
-                     </br>
-  <%= link_to("All references to <i>#{@article.title}</i> in pages that do not link to this subject",
+                     <br />
+  <%= link_to("All references to #{@article.title} in pages that do not link to this subject",
               :controller => 'display',
               :action => 'search',
               :article_id => @article.id,
