@@ -72,8 +72,17 @@ class ApplicationController < ActionController::Base
       ia_servers = session[:ia_servers] ||= {}
       unless ia_servers[@work.ia_work.book_id]
         # fetch it and update it
-        server_and_path = IaWork.refresh_server(@work.ia_work.book_id)
-        ia_servers[@work.ia_work.book_id] = server_and_path
+        begin
+          server_and_path = IaWork.refresh_server(@work.ia_work.book_id)
+          ia_servers[@work.ia_work.book_id] = server_and_path
+        rescue => ex
+          # TODO log exception
+          logger.error(ex.message)
+          logger.error(ex.backtrace.join("\n"))
+          flash[:error] = "The Internet Archive is experiencing difficulties.  Please try again later."
+          redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
+          return
+        end
       end
       logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
       @work.ia_work.server=ia_servers[@work.ia_work.book_id][:server]
