@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
       clean_params['user'] = clean_params['user'].reject{|k,v| k=~/password/}
     end
 
-    @interaction.params = clean_params.inspect
+    @interaction.params = clean_params.inspect.truncate(128)
 
     @interaction.status = 'incomplete'
     # app specific stuff
