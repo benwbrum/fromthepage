@@ -134,10 +134,10 @@ class Page < ActiveRecord::Base
   # It should be called twice whenever a page is changed
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
-    Article.update_all('graph_image=NULL',
-                       "id in (select article_id "+
+    binding.pry
+    Article.where("id in (select article_id "+
                        "       from page_article_links "+
-                       "       where page_id = #{self.id})")
+                       "       where page_id = #{self.id})").update_all(:graph_image=>nil)
   end
 =begin
 Here is the ActiveRecord call (with sql in it) in method clear_article_graphs:
