@@ -12,7 +12,7 @@
     <%= render :partial => '/shared/page_navigation' %>
     <% if @preview_xml  %>
   		<div class="inside-column">
-        <%= xml_to_html(@preview_xml) %>
+        <%= raw(xml_to_html(@preview_xml)) %>
   		</div><!-- in col -->
     <% end %>
 		<div id="transcription_form_area" class="inside-column">

@@ -7,7 +7,7 @@
   <div class="left-column">
     <% if @preview_xml  %>
   		<div class="inside-column">
-        <%= xml_to_html(@preview_xml) %>
+        <%= raw(xml_to_html(@preview_xml)) %>
   		</div>
     <% end %>
     <div class="inside-column">
@@ -23,7 +23,7 @@
           <%= hidden_field_tag(:article_id, @article.id) %>
           Title: <%= f.text_field :title %><br />
           Article:<br />
-     	  <%= f.text_area :source_text, { :cols => 60, :style => "height: #{@article.source_text.lines.count*1.5}em; min-height: 30em" } %><br />
+     	  <%= f.text_area :source_text, { :cols => 60, :style => "height: #{@article.source_text.lines.count*1.5}em; min-height: 15em" } %><br />
 
 		  <%= submit_tag "Preview", :name => 'preview' %>
           <%= submit_tag "Autolink", :name => 'autolink' %>

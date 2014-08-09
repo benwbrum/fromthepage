@@ -32,6 +32,10 @@ class Article < ActiveRecord::Base
 
   after_save :create_version
 
+  attr_accessible :title
+  attr_accessible :source_text
+
+
   @title_dirty = false
 
   def title=(title)
