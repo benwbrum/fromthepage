@@ -1,7 +1,7 @@
-<p> HHHH
+<p> 
 	<% my_categories = article.categories %>
 		Categories for <%= @collection.title %>:<br />
-		<%= display_categories(@collection.categories, nil) do |category|
+		<%= raw(display_categories(@collection.categories, nil) do |category|
 	    check_box_tag("#{article.id}_#{category.id}",
 	                  "1",
 	                  my_categories.include?(category),
@@ -17,5 +17,5 @@
 #	                  }) +
 
 	    category.title
-  	end %>
+  	end) %>
 </p>
