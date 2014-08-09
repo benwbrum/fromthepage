@@ -1,4 +1,4 @@
-<p> 
+<div> 
 	<% my_categories = article.categories %>
 		Categories for <%= @collection.title %>:<br />
 		<%= raw(display_categories(@collection.categories, nil) do |category|
@@ -18,4 +18,4 @@
 
 	    category.title
   	end) %>
-</p>
+</div>

@@ -15,6 +15,7 @@ Fromthepage::Application.routes.draw do
   get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
   
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
+  patch 'article/update', :to => 'article#update'
 
   
   match '/:controller(/:action(/:id))', via: [:get, :post]
