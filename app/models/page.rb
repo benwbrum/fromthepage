@@ -34,6 +34,8 @@ class Page < ActiveRecord::Base
   after_save :create_version
 
   attr_accessible :title
+  attr_accessible :source_text
+  attr_accessible :status
 
   STATUS_BLANK = 'blank'
   STATUS_INCOMPLETE = 'incomplete'
