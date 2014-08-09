@@ -7,6 +7,13 @@ class ApplicationController < ActionController::Base
   # after_filter :complete_interaction
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_filter :set_current_user_in_model
+
+  # Set the current user in User
+  def set_current_user_in_model
+    User.current_user = current_user
+  end 
+
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
