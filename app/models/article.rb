@@ -39,6 +39,10 @@ class Article < ActiveRecord::Base
     super
   end
 
+  def source_text
+    self[:source_text] || ''
+  end
+
 
   #######################
   # Related Articles
