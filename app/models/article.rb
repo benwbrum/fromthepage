@@ -20,11 +20,12 @@ class Article < ActiveRecord::Base
 
   has_many(:source_article_links, { :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink' })
   has_many(:page_article_links)
-  scope :page_article_links, -> { include 'page' }
-  scope :page_article_links, -> { order "pages.work_id, pages.position ASC" }
+  scope :page_article_links, -> { includes(:page) }
+  scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
+  
+  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").include(:page)}
 
   has_many :pages, :through => :page_article_links
-  scope :pages, -> { order "pages.work_id, pages.position ASC" }
 
   has_many :article_versions
   scope :article_versions, -> { order 'version' }
@@ -34,6 +35,15 @@ class Article < ActiveRecord::Base
 
   attr_accessible :title
   attr_accessible :source_text
+
+
+  def link_list
+    self.page_article_links.includes(:page).order("pages.work_id, pages.title")
+  end
+
+  def page_list
+    self.pages.order("pages.work_id, pages.position")
+  end
 
 
   @title_dirty = false
