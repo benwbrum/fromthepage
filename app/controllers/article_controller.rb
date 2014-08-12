@@ -206,8 +206,7 @@ protected
     # thankfully, rename_article_links is source-agnostic!
 
     # change links
-    Deed.update_all("article_id='#{to_article.id}'",
-                    "article_id = #{from_article.id}")
+    Deed.where(:article_id => from_article.id).update_all("article_id='#{to_article.id}'")
 
     # append old from_article text to to_article text
     if from_article.source_text
