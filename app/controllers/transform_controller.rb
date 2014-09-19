@@ -124,13 +124,13 @@ class TransformController < ApplicationController
 
     @image_set.process_sample_orientation
     call_rake :process_orientation
-
+    binding.pry
     # TODO set orientation on image_set
-    redirect_to :action => 'size_form', :image_set_id => config[:image_set_id]
+    redirect_to :action => 'size_form', :image_set_id => @image_set.id
   end
 
   def size_form
-
+    binding.pry
   end
 
 
