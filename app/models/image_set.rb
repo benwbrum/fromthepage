@@ -84,6 +84,7 @@ class ImageSet < ActiveRecord::Base
       flag_error("could not chmod directory #{new_dir_name}")
     end
     self.path = new_dir_name
+    self.save!
   end
 
   def populate_titled_images(source_directory_name)
