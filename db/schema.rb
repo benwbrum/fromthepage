@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140528213120) do
+ActiveRecord::Schema.define(version: 20140922134648) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -203,7 +203,7 @@ ActiveRecord::Schema.define(version: 20140528213120) do
     t.integer  "collection_id"
     t.integer  "work_id"
     t.integer  "page_id"
-    t.string   "action",        limit: 20
+    t.string   "action",        limit: 100
     t.string   "params"
     t.string   "browser",       limit: 128
     t.string   "session_id",    limit: 40
@@ -345,7 +345,7 @@ ActiveRecord::Schema.define(version: 20140528213120) do
   end
 
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
-  add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
+  add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>255}, using: :btree
 
   create_table "plugin_schema_info", id: false, force: true do |t|
     t.string  "plugin_name"
