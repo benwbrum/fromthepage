@@ -11,7 +11,7 @@
     <p>Are the pages you uploaded sequential, odd-numbered or even-numbered?
     </p>
     <p><label for="format">Interval:</label><br/>
-    <%= select_tag 'interval', "<option>Sequential</option><option>Every-other-page</option>"  %></p>
+    <%= select_tag 'interval', "<option>Sequential</option><option>Every-other-page</option>".html_safe  %></p>
 
     <p><%= submit_tag 'Next' %></p>
 <% end %>

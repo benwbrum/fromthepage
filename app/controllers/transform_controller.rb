@@ -271,7 +271,7 @@ class TransformController < ApplicationController
     # redirect
     redirect_to(:controller => 'title',
                 :action => 'list',
-                :image_set_id => config[:image_set_id])
+                :image_set_id => @image_set.id)
   end
 
   #############################################################################

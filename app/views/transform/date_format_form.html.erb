@@ -14,13 +14,6 @@
     <p><label for="directory">Format String:</label><br/>
     <%= text_field_tag :date_format_string, nil, :size => 60, :maxlength => 256 %></p>
 
-        <%= observe_field(:date_format_string,
-                 :frequency => 1,
-                 :update => "test_date",
-                 :with => 'date_format_string',
-                 :url => { :action => "date_format_ajax_test" }) %>
-
-    <p id="test_date"></p>
 
 <table valign="top" border="1">
     <tr>
