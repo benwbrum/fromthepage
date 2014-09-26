@@ -85,7 +85,7 @@ class TransformController < ApplicationController
     else
       config[:source_directory] = source_dir
       process_source_directory(source_dir)
-      redirect_to :action => 'reprise', :image_set_id => config[:image_set_id]
+      redirect_to :action => 'reprise', :image_set_id => @image_set.id
     end
   end
 
@@ -188,9 +188,9 @@ class TransformController < ApplicationController
     # apply the crop to the rest of the pages
     debug("Cropping other files...")
     call_rake :process_crop
-#    MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
+		#MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
 
-    redirect_to :action => 'number_format_form', :image_set_id => config[:image_set_id]
+    redirect_to :action => 'number_format_form', :image_set_id => @image_set.id
   end
 
 
@@ -208,9 +208,9 @@ class TransformController < ApplicationController
     config[:number_format] = params[:format]
     config[:interval_sequential] = (params[:interval] == 'Sequential')
     if('Date' == config[:number_format])
-      redirect_to :action => 'date_format_form', :image_set_id => config[:image_set_id]
+      redirect_to :action => 'date_format_form', :image_set_id => @image_set.id
     else
-      redirect_to :action => 'numeric_format_start_form', :image_set_id => config[:image_set_id]
+      redirect_to :action => 'numeric_format_start_form', :image_set_id => @image_set.id
     end
   end
 
@@ -220,7 +220,7 @@ class TransformController < ApplicationController
 
   def numeric_format_start_process
     config[:numeric_start] = params[:numeric_start]
-    redirect_to :action => 'partial_list_form', :image_set_id => config[:image_set_id]
+    redirect_to :action => 'partial_list_form', :image_set_id => @image_set.id
   end
 
   #############################################################################
@@ -246,7 +246,7 @@ class TransformController < ApplicationController
     end
     @image_set.title_format = date_format
     @image_set.save!
-    redirect_to :action => 'date_format_start_form', :image_set_id => config[:image_set_id]
+    redirect_to :action => 'date_format_start_form', :image_set_id => @image_set.id
   end
 
   def date_format_ajax_test
