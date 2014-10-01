@@ -28,7 +28,7 @@
       	            <h2><%= @page.title %></h2>
 				<% end %>
 		    	<%= hidden_field_tag(:page_id, @page.id) %>
-		    	<%= f.text_area :source_text, { :cols => 60, :style => "height: #{@page.source_text.lines.count*1.5}em; min-height: 30em" } %><br />
+		    	<%= f.text_area :source_text, { :cols => 60, :style => "height: #{@page.source_text ? @page.source_text.lines.count*1.5 : 30}em; min-height: 30em" } %><br />
 		    	<%= f.label :status, "Page Status:" %>
 				<%= f.select :status, Page::STATUSES, {:include_blank => true}, { :title => Page::STATUS_HELP } %><br />
 		    	<%= submit_tag "Preview", :name => 'preview' %>
