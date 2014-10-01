@@ -1,6 +1,6 @@
 class CreateOmekaFiles < ActiveRecord::Migration
   def change
-    unless ActiveRecord::Base.connection.tables.include? "omeka_collections"
+    unless ActiveRecord::Base.connection.tables.include? "omeka_files"
       create_table :omeka_files do |t|
         t.integer :omeka_id
         t.integer :omeka_item_id
