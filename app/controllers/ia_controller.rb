@@ -109,7 +109,7 @@ class IaController < ApplicationController
     @detail_url = params[:detail_url]
     #id = detail_url.split('/').last
 
-    @matches = IaWork.find_all_by_detail_url(@detail_url)
+    @matches = IaWork.where(:detail_url => @detail_url)
     if @matches.size() == 0
       # nothing to do here
       redirect_to :action => 'import_work', :detail_url => @detail_url
