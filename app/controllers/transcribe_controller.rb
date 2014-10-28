@@ -40,16 +40,30 @@ class TranscribeController  < ApplicationController
             record_index_deed
           end
           @work.work_statistic.recalculate if @work.work_statistic
-          #redirect_to :action => 'display_page', :page_id => @page.id, :controller => 'display'
           redirect_to :action => 'assign_categories', :page_id => @page.id
         else
           log_transcript_error
           flash[:error] = @page.errors[:base].join('<br />')
           render :action => 'display_page'
-        end    
-      rescue => ex
+        end
+      rescue REXML::ParseException => ex
         log_transcript_exception(ex)
-        raise ex
+	clean_message = ex.message.lines.first.gsub("#<REXML::ParseException: ",'')
+        flash[:error] = 
+          "There was an error parsing the mark-up in your transcript.  
+           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  
+           Check any instances of < or > symbols in your text.  <br />(The parser error was: #{clean_message})"
+        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
+        render :action => 'display_page'
+        flash[:error] = nil
+        # raise ex
+      rescue  => ex
+        log_transcript_exception(ex)
+        flash[:error] = ex.message
+        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
+        render :action => 'display_page'
+        flash[:error] = nil
+        # raise ex
       end
     elsif params['preview']
       @preview_xml = @page.generate_preview
