@@ -32,6 +32,7 @@ class Page < ActiveRecord::Base
   has_one :omeka_file
 
   after_save :create_version
+  after_initialize :defaults
 
   attr_accessible :title
   attr_accessible :source_text
@@ -52,9 +53,12 @@ class Page < ActiveRecord::Base
     articles :conditions => ['articles.source_text is not null']
   end
 
-  def title
-    self[:title].blank? ? "untitled page #{self[:position]}" : self[:title]
+  def defaults
+    if self[:title].blank? 
+      self[:title] = "untitled page #{self[:position]}"
+    end
   end
+
 
 
   # we need a short pagename for index entries
