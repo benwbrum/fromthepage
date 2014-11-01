@@ -172,7 +172,7 @@ EOF
       end
       debug("link display_text = #{display_text}")
       # create new blank articles if they don't exist already
-      if !article = Article.find_by_title(title)
+      if !article = Article.find(:first, :conditions => ["title = ? AND collection_id = ?", title, collection.id])
         article = Article.new
         article.title = title
         article.collection = collection
