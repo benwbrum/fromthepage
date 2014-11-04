@@ -75,7 +75,7 @@ class IaController < ApplicationController
     loc_doc = fetch_loc_doc(@ia_work.book_id)
     scandata_file, djvu_file = files_from_loc(loc_doc)
     
-    djvu_url =  "http://#{@ia_work.server}#{@ia_work.ia_path}/#{djvu_file}"
+    djvu_url =  URI::escape("http://#{@ia_work.server}#{@ia_work.ia_path}/#{djvu_file}")
     logger.debug(djvu_url)
     djvu_doc = Hpricot(open(djvu_url))
     leaf_objects = djvu_doc.search('object')
@@ -163,7 +163,7 @@ class IaController < ApplicationController
     
     @ia_work.save!
     # now fetch the scandata.xml file and parse it
-    scandata_url = "http://#{server}#{dir}/#{scandata_file}" # will not work on new format: we cannot assume filenames are re-named with their content
+    scandata_url = URI::escape("http://#{server}#{dir}/#{scandata_file}") # will not work on new format: we cannot assume filenames are re-named with their content
     
     sd_doc = Hpricot(open(scandata_url))
     
