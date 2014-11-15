@@ -129,6 +129,14 @@ class IaController < ApplicationController
     id = detail_url.split('/').last
 
     loc_doc = fetch_loc_doc(id)
+
+		# check derivation status
+		unless derivation_started?(loc_doc)
+			flash[:error] = 'It looks like the Internet Archive hasn\'t finished processing this work.  If you\'ve uploaded it recently, you can check the status of the necessary \'derive\' task <a href="http://archive.org/catalog.php?whereami=1">at the Internet Archive task queue</a>.'
+      redirect_to :controller => 'dashboard', :action => 'main_dashboard'
+      return		
+		end
+
     location = loc_doc.search('results').first
     server = location['server']
     dir = location['dir']
@@ -232,5 +240,11 @@ private
     
     return [scandata, djvu, zip]    
   end
+
+	def derivation_started?(loc_doc)
+    files = loc_doc.search 'file'
+		sources = files.map { |f| f['source'] }
+		sources.include? "derivative"
+	end
   
 end
