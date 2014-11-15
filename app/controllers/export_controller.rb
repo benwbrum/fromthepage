@@ -1,7 +1,7 @@
 class ExportController < ApplicationController
 
   def show
-    render :layout => false
+    render :layout => false, :encoding => 'utf-8'
   end
 
   def tei

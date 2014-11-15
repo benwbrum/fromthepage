@@ -21,5 +21,6 @@ module Fromthepage
     # config.i18n.default_locale = :de
     
     config.neato = '/usr/bin/env neato'
+    config.encoding = "utf-8"
   end
 end
