@@ -1,76 +1,69 @@
-#set :application, "fromthepage"
-#set :repository,  "http://svn.fromthepage.com/fromthepage/trunk/diary"
-#
-## If you aren't deploying to /u/apps/#{application} on the target
-## servers (which is the default), you can specify the actual location
-## via the :deploy_to variable:
-#set :deploy_to, "/home/benwbrum/dev/staging/#{application}"
-#
-## If you aren't using Subversion to manage your source code, specify
-## your SCM below:
-## set :scm, :subversion
-#
-#role :app, "staging.aspengrovefarm.com"
-#role :web, "staging.aspengrovefarm.com"
-#role :db,  "staging.aspengrovefarm.com", :primary => true
-#
-#
-#set :runner, :benwbrum
+# config valid only for Capistrano 3.1
+lock '3.2.1'
 
-# updating from http://www.glennfu.com/2008/02/01/deploying-ruby-on-rails-with-capistrano-on-dreamhost/
-# The host where people will access my site
-set :application, "fromthepage"
-#set :user, "my dreamhost username set to access this project"
-#set :admin_login, "benwbrum"
-set :admin_login, "fromthepage"
+set :application, 'fromthepage'
+set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
 
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
 
-# If you aren't deploying to /u/apps/#{application} on the target
-# servers (which is the default), you can specify the actual location
-# via the :deploy_to variable:
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, '/home/fromthepage/deployment'
 
-# BWB real is #
-set :deploy_to, "/home/#{admin_login}/#{application}"
-#set :deploy_to, "/home/#{admin_login}/scratch/staging"
+# Default value for :scm is :git
+# set :scm, :git
 
-# My DreamHost-assigned server
-#set :domain, "#{admin_login}@chalmers.dreamhost.com"
-set :domain, "#{admin_login}@66.228.49.247"
-role :app, domain
-role :web, domain
-role :db,  domain, :primary => true
+# Default value for :format is :pretty
+# set :format, :pretty
 
-desc "Link shared files"
-task :before_symlink do
-  run "rm -drf #{release_path}/public/images/working"
-#  run "ln -s #{shared_path}/bin #{release_path}/public/images_working"
-  run "ln -s #{shared_path}/system/images/working #{release_path}/public/images/"
-  run "chmod +w #{release_path}/tmp"
-  run "chmod -R g-w #{release_path}"
+# Default value for :log_level is :debug
+# set :log_level, :debug
 
-end
+# Default value for :pty is false
+# set :pty, true
 
-set :use_sudo, false
-set :checkout, "export"
+# Default value for :linked_files is []
+# set :linked_files, %w{config/database.yml}
 
-## I used the handy quick tool to set up an SVN repository on DreamHost and this is where it lives
-#set :svn, "/usr/bin/svn"
-#set :svn_user, 'benwbrum'
-#set :svn_password, 'benwbrum'
-#set :repository,
-#  Proc.new { "--username #{svn_user} " +
-#       "--password #{svn_password} " +
-#       "http://svn.fromthepage.com/fromthepage/trunk/diary" }
+# Default value for linked_dirs is []
+# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-default_run_options[:pty] = true
-set :repository,  "git://github.com/benwbrum/fromthepage.git"
-set :scm, "git"
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
-namespace :passenger do
-  desc "Restart Application"
+# Default value for keep_releases is 5
+# set :keep_releases, 5
+
+namespace :deploy do
+
+  desc 'Restart application'
   task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
+    on roles(:app), in: :sequence, wait: 5 do
+    # Your restart mechanism here, for example:
+    # execute :touch, release_path.join('tmp/restart.txt')
+    end
   end
-end
 
-after :deploy, "passenger:restart"
+  after :publishing, :restart
+
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+    # Here we can do anything such as:
+    # within release_path do
+    #   execute :rake, 'cache:clear'
+    # end
+    end
+  end
+
+  desc "Check that we can access everything"
+  task :check_write_permissions do
+    on roles(:all) do |host|
+      if test("[ -w #{fetch(:deploy_to)} ]")
+        info "#{fetch(:deploy_to)} is writable on #{host}"
+      else
+        error "#{fetch(:deploy_to)} is not writable on #{host}"
+      end
+    end
+  end
+
+end
