@@ -74,6 +74,7 @@ class IaWork < ActiveRecord::Base
       page.base_height = leaf.page_h
       page.base_width = leaf.page_w
       page.title = leaf.page_number
+      page.source_text = leaf.ocr_text
       work.pages << page #necessary to make acts_as_list work here
       work.save!
       leaf.page_id = page.id
@@ -141,9 +142,33 @@ class IaWork < ActiveRecord::Base
     end
     self.save!
 
+    text_from_ocr
+    self.save!
+
     self
   end
   
+  def text_from_ocr
+    djvu_doc = ocr_doc
+    
+    leaf_objects = djvu_doc.search('OBJECT')
+    leaf_objects.each do |e|
+      leaf_number = leaf_number_from_object(e)
+      ia_leaf = self.ia_leaves.find_by_leaf_number(leaf_number)
+      
+      ia_leaf.ocr_text = ""
+
+      e.search('PARAGRAPH').each do |para|
+        para.search('LINE').each do |line|
+          ia_leaf.ocr_text << ocr_line_to_text(line)
+          ia_leaf.ocr_text << "\n"
+        end
+        ia_leaf.ocr_text << "\n"
+      end
+      ia_leaf.save!
+    end
+  end
+ 
   def title_from_ocr(location)
     djvu_doc = ocr_doc
     
@@ -156,7 +181,7 @@ class IaWork < ActiveRecord::Base
       logger.debug(page_id)
       # there may well be an off-by-one error in the source.  I'm seeing page_id 7
       # correspond with leaf_id 6
-      leaf_number = page_id.to_i
+      leaf_number = leaf_number_from_object(e)
 
       if location == :top
         line = e.search('LINE').first
@@ -175,6 +200,18 @@ class IaWork < ActiveRecord::Base
   
   
 private
+  def leaf_number_from_object(object_element)
+
+      page_id = object_element.search('PARAM[@name="PAGE"]').first['value']
+      page_id[/\w*_0*/]=""
+      page_id[/\.djvu/]=''
+      logger.debug(page_id)
+      # there may well be an off-by-one error in the source.  I'm seeing page_id 7
+      # correspond with leaf_id 6
+      page_id.to_i
+    
+  end
+  
   def ocr_line_to_text(line)
     words = []
 

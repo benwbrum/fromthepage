@@ -33,6 +33,9 @@
 						<th>
 							Title
 						</th>
+						<th>
+							OCR Text
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -48,6 +51,9 @@
 							</td>
 							<td>
 								<%= leaf.page_number %>
+							</td>
+							<td>
+								<pre><%= leaf.ocr_text %></pre>
 							</td>
 						</tr>
 					<% end %>
