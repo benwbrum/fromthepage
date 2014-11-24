@@ -74,9 +74,10 @@ class IaWork < ActiveRecord::Base
       page.base_height = leaf.page_h
       page.base_width = leaf.page_w
       page.title = leaf.page_number
-      page.source_text = leaf.ocr_text
       work.pages << page #necessary to make acts_as_list work here
       work.save!
+      page.source_text = leaf.ocr_text
+      page.save!
       leaf.page_id = page.id
       leaf.save!
     end
@@ -217,6 +218,9 @@ private
 
     line.search('WORD').each { |e| words << e.inner_text }
     title = words.join(" ")
+    # clean any angle braces -- this source won't be HTML
+    title.gsub!("<", "&lt;")
+    title.gsub!(">", "&gt;")
 
     title    
   end
