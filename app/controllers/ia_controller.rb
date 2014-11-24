@@ -17,10 +17,17 @@ class IaController < ApplicationController
   end
 
 
-  def title_from_ocr
-    @ia_work.title_from_ocr
+  def title_from_ocr_top
+    @ia_work.title_from_ocr(:top)
     
-    flash[:notice] = "Pages have been renamed."
+    flash[:notice] = "Pages have been renamed with the top line of OCR text."
+    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+  end
+
+  def title_from_ocr_bottom
+    @ia_work.title_from_ocr(:bottom)
+    
+    flash[:notice] = "Pages have been renamed with the bottom line of OCR text."
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 

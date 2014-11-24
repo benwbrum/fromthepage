@@ -7,8 +7,11 @@
 			this import into a FromThePage work.
 		</p>
 		<p>
-			<%= button_to('Retitle from OCR',
-						  { :action => 'title_from_ocr',
+			<%= button_to('Retitle from top of page OCR',
+						  { :action => 'title_from_ocr_top',
+							:ia_work_id => @ia_work.id })%>
+			<%= button_to('Retitle from bottom of page OCR',
+						  { :action => 'title_from_ocr_bottom',
 							:ia_work_id => @ia_work.id })%>
 			<%= button_to('Convert to FromThePage',
 						  { :action => 'convert',
@@ -18,14 +21,14 @@
 			Leaves:
 		</h3>
 		<p>
-			<table>
+			<table border="1">
 				<thead>
 					<tr>
 						<th>
-							Number
+							Position
 						</th>
 						<th>
-							Type
+							Thumbnail
 						</th>
 						<th>
 							Title
@@ -39,7 +42,9 @@
 								<%= leaf.leaf_number %>
 							</td>
 							<td>
-								<%= leaf.page_type %>
+						   		<div class="thumbnail-container">
+									<%= image_tag(leaf.thumb_url) %>
+								</div>
 							</td>
 							<td>
 								<%= leaf.page_number %>

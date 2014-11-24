@@ -144,13 +144,9 @@ class IaWork < ActiveRecord::Base
     self
   end
   
-  def title_from_ocr
-        loc_doc = fetch_loc_doc(self.book_id)
-    scandata_file, djvu_file = files_from_loc(loc_doc)
-
-    djvu_url =  "http://#{self.server}#{self.ia_path}/#{djvu_file}"
-    logger.debug(djvu_url)
-    djvu_doc = Nokogiri::XML(open(djvu_url))
+  def title_from_ocr(location)
+    djvu_doc = ocr_doc
+    
     leaf_objects = djvu_doc.search('OBJECT')
     leaf_objects.each do |e|
 
@@ -162,18 +158,16 @@ class IaWork < ActiveRecord::Base
       # correspond with leaf_id 6
       leaf_number = page_id.to_i
 
-      line = e.search('LINE').first
+      if location == :top
+        line = e.search('LINE').first
+      else
+        line = e.search('LINE').last
+      end
+              
       if(line)
-        words = []
-
-        line.search('WORD').each { |e| words << e.inner_text.capitalize }
-        title = words.join(" ")
-        logger.debug(title)
-
         ia_leaf = self.ia_leaves.find_by_leaf_number(leaf_number)
-        ia_leaf.page_number = title
+        ia_leaf.page_number = ocr_line_to_text(line).titleize
         ia_leaf.save!
-
       end
     end
 
@@ -181,6 +175,27 @@ class IaWork < ActiveRecord::Base
   
   
 private
+  def ocr_line_to_text(line)
+    words = []
+
+    line.search('WORD').each { |e| words << e.inner_text }
+    title = words.join(" ")
+
+    title    
+  end
+
+  def ocr_doc
+    loc_doc = fetch_loc_doc(self.book_id)
+    scandata_file, djvu_file = files_from_loc(loc_doc)
+
+    djvu_url =  "http://#{self.server}#{self.ia_path}/#{djvu_file}"
+    logger.debug(djvu_url)
+    djvu_doc = Nokogiri::XML(open(djvu_url))
+
+    djvu_doc
+  end 
+
+
   ARCHIVE_FORMATS = ['zip', 'tar']
   IMAGE_FORMATS = ['jp2', 'jpg']
 
