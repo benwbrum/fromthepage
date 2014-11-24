@@ -26,8 +26,7 @@
 	   		<div class="thumbnail-container">
 
 		    	<% if page.ia_leaf %>
-					<% thumb_url = "http://www.archive.org/download/#{page.work.ia_work.book_id}/page/leaf#{page.ia_leaf.leaf_number}_thumb.jpg" %>
-			      <%= link_to(image_tag(thumb_url),
+			      <%= link_to(image_tag(page.ia_leaf.thumb_url),
 		                    { :action => 'display_page',
 		                      :page_id => page.id })  %>
 				<% elsif page.omeka_file %>
