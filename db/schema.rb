@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140922134648) do
+ActiveRecord::Schema.define(version: 20141128130324) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20140922134648) do
     t.string   "page_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "ocr_text"
   end
 
   create_table "ia_works", force: true do |t|
@@ -175,6 +176,7 @@ ActiveRecord::Schema.define(version: 20140922134648) do
     t.string   "scandata_file"
     t.string   "djvu_file"
     t.string   "zip_file"
+    t.boolean  "use_ocr",        default: false
   end
 
   create_table "image_sets", force: true do |t|
@@ -345,7 +347,7 @@ ActiveRecord::Schema.define(version: 20140922134648) do
   end
 
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
-  add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>255}, using: :btree
+  add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
 
   create_table "plugin_schema_info", id: false, force: true do |t|
     t.string  "plugin_name"

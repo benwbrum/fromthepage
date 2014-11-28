@@ -76,7 +76,7 @@ class IaWork < ActiveRecord::Base
       page.title = leaf.page_number
       work.pages << page #necessary to make acts_as_list work here
       work.save!
-      page.source_text = leaf.ocr_text
+      page.source_text = leaf.ocr_text if self.use_ocr
       page.save!
       leaf.page_id = page.id
       leaf.save!

@@ -6,6 +6,7 @@
 			Use this flow to manage page titles and convert
 			this import into a FromThePage work.
 		</p>
+		<h3>Page Titles</h3>
 		<p>
 			<%= button_to('Retitle from top of page OCR',
 						  { :action => 'title_from_ocr_top',
@@ -13,20 +14,24 @@
 			<%= button_to('Retitle from bottom of page OCR',
 						  { :action => 'title_from_ocr_bottom',
 							:ia_work_id => @ia_work.id })%>
-			<%= button_to('Convert to FromThePage',
-						  { :action => 'convert',
-							:ia_work_id => @ia_work.id })%>
+
+		</p>
+		<h3>Publish to Editors</h3>
+		<p>
+			<%= form_tag :action => :convert do  %>
+				<%= label_tag :use_ocr, 'Use OCR for page contents?' %>
+				<%= check_box_tag :use_ocr %>
+				<%= hidden_field_tag :ia_work_id, @ia_work.id %>
+				<br/>
+				<%= submit_tag "Publish" %>			
+			<% end %>
 		</p>
 		<h3>
 			Leaves:
 		</h3>
-		<p>
-			<table border="1">
+			<table border="1" width="100%">
 				<thead>
 					<tr>
-						<th>
-							Position
-						</th>
 						<th>
 							Thumbnail
 						</th>
@@ -42,9 +47,6 @@
 					<% for leaf in @ia_work.ia_leaves %>
 						<tr>
 							<td>
-								<%= leaf.leaf_number %>
-							</td>
-							<td>
 						   		<div class="thumbnail-container">
 									<%= image_tag(leaf.thumb_url) %>
 								</div>
@@ -53,13 +55,12 @@
 								<%= leaf.page_number %>
 							</td>
 							<td>
-								<pre><%= leaf.ocr_text %></pre>
+								<%= display_ocr(leaf) %>
 							</td>
 						</tr>
 					<% end %>
 				</tbody>
 			</table>
-		</p>
    </div>
   </div>
   <div class="right-column">

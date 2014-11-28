@@ -9,6 +9,11 @@ class IaController < ApplicationController
   end
 
   def convert
+    if params[:use_ocr]
+      @ia_work.use_ocr = true
+      @ia_work.save!
+    end
+
     work = @ia_work.convert_to_work
     flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work."
 
