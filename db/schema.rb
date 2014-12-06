@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141128205538) do
+ActiveRecord::Schema.define(version: 20141206132017) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -333,7 +333,7 @@ ActiveRecord::Schema.define(version: 20141128205538) do
 
   create_table "pages", force: true do |t|
     t.string   "title"
-    t.text     "source_text",     limit: 16777215
+    t.text     "source_text",        limit: 16777215
     t.string   "base_image"
     t.integer  "base_width"
     t.integer  "base_height"
@@ -341,10 +341,12 @@ ActiveRecord::Schema.define(version: 20141128205538) do
     t.integer  "work_id"
     t.datetime "created_on"
     t.integer  "position"
-    t.integer  "lock_version",                     default: 0
-    t.text     "xml_text",        limit: 16777215
+    t.integer  "lock_version",                        default: 0
+    t.text     "xml_text",           limit: 16777215
     t.integer  "page_version_id"
     t.string   "status"
+    t.text     "source_translation"
+    t.text     "xml_translation"
   end
 
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
@@ -445,6 +447,8 @@ ActiveRecord::Schema.define(version: 20141128205538) do
     t.text     "transcription_conventions", limit: 16777215
     t.integer  "collection_id"
     t.boolean  "scribes_can_edit_titles",                    default: false
+    t.boolean  "supports_translation",                       default: false
+    t.text     "translation_instructions"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

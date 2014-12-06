@@ -36,6 +36,7 @@ class Page < ActiveRecord::Base
 
   attr_accessible :title
   attr_accessible :source_text
+  attr_accessible :source_translation
   attr_accessible :status
 
   STATUS_BLANK = 'blank'

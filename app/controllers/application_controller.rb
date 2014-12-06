@@ -88,6 +88,8 @@ class ApplicationController < ActionController::Base
           logger.error(ex.backtrace.join("\n"))
           flash[:error] = "The Internet Archive is experiencing difficulties.  Please try again later."
           redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
+          ia_servers[@work.ia_work.book_id] = { :server => 'ia server', :ia_path => 'ia path'}
+
           return
         end
       end

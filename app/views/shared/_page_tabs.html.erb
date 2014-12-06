@@ -6,7 +6,6 @@
     View, Version, Transcribe, Settings, Image
  -->
 
-
 <div id="navcontainer">
   <ul id="navlist">
   <li <% if selected == 1 %>
@@ -30,6 +29,22 @@
 	                    :page_id => page_id }) %>
 	    <% end %>
       </li>
+
+
+	<% if @work.supports_translation %>
+		<% if current_page?({:controller => 'transcribe', :action => 'translate' }) %>
+  			<li id="current">
+				<span>translate</span>
+			</li>
+		<% else %>
+			<li>
+				<%= link_to('translate',
+		                  { :controller => 'transcribe',
+		                    :action => 'translate',
+		                    :page_id => page_id }) %>
+			</li>
+		<% end %>
+	<% end %>
 
   <li <% if selected == 2 %>
     id="current">

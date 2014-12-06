@@ -1,9 +1,16 @@
 module XmlSourceProcessor
 
   @text_dirty = false
+  @translation_dirty = false
+
   def source_text=(text)
     @text_dirty = true
     super
+  end
+  
+  def source_translation=(translation)
+    @translation_dirty = true
+    super    
   end
 
   def validate
@@ -59,24 +66,28 @@ module XmlSourceProcessor
   #
   ##############################################
   def process_source
-    if !@text_dirty
-      return
+    if @text_dirty
+      self.xml_text = wiki_to_xml(self.source_text)
     end
-    self.xml_text = ""
 
-    # convert the source to xml
-    xml_string = self.source_text || ""
-    xml_string = process_square_braces(xml_string)
-    xml_string = process_line_breaks(xml_string)
-    xml_string = valid_xml_from_source(xml_string)
-    self.xml_text = update_links_and_xml(xml_string)
+    if @translation_dirty
+      self.xml_translation = wiki_to_xml(self.source_translation)      
+    end
   end
 
-  def generate_preview
-    xml_string = self.source_text
+  def wiki_to_xml(wiki)
+    xml_string = wiki || ""
+
     xml_string = process_square_braces(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
+
+    xml_string    
+  end
+
+
+  def generate_preview
+    xml_string = wiki_to_xml(self.source_text)
     xml_string = update_links_and_xml(xml_string, true)
     return xml_string
   end
@@ -131,7 +142,9 @@ module XmlSourceProcessor
   def process_line_breaks(text)
     text="<p>#{text}</p>"
     text = text.gsub(/\n\s*\n/, "</p><p>")
+    text = text.gsub(/\r\n/, "<lb/>")
     text = text.gsub(/\n/, "<lb/>")
+    text = text.gsub(/\r/, "<lb/>")
     return text
   end
 

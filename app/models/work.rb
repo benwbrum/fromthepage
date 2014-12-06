@@ -11,7 +11,16 @@ class Work < ActiveRecord::Base
 
   after_save :update_statistic
 
-  attr_accessible :title, :description, :physical_description, :document_history, :permission_description, :location_of_composition, :author, :transcription_conventions
+  attr_accessible :title, 
+                  :description, 
+                  :physical_description, 
+                  :document_history, 
+                  :permission_description, 
+                  :location_of_composition, 
+                  :author, 
+                  :transcription_conventions, 
+                  :supports_translation, 
+                  :translation_instructions
 
   def articles
     my_articles = []
