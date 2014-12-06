@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141128130324) do
+ActiveRecord::Schema.define(version: 20141128205538) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -215,6 +215,7 @@ ActiveRecord::Schema.define(version: 20141128130324) do
     t.string   "origin_link",   limit: 20
   end
 
+  add_index "interactions", ["created_on", "user_id"], name: "user_query_idx", using: :btree
   add_index "interactions", ["session_id"], name: "index_interactions_on_session_id", using: :btree
 
   create_table "notes", force: true do |t|
