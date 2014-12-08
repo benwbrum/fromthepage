@@ -59,13 +59,51 @@
 
 
 	<div class="right-column" style="position: relative; top: 0px;">
-	        <%=  html_block('right') %>
-		<% if @page.ia_leaf %>
-			<%= render :partial => '/ia/ia_bookreader_div' %>
-		<% elsif @page.omeka_file %>
-			<%= render :partial => '/shared/external_image_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url } %>
+        <%=  html_block('right') %>
+    	<% if @work.supports_translation && !translation_mode? %>
+			<div class="inside-column" id="translation_button_div">
+				<%= link_to(button_tag('Show Translation'),
+							{ :translation => true, :page_id => @page.id })%>		
+			</div>
+		<% end %>
+    
+		<% if translation_mode? %>        
+		
+	   		<div class="thumbnail-container">
+				<figure>
+					<figcaption>
+						<%= link_to(button_tag('Show Facsimile'),
+									{ :translation => false, :page_id => @page.id })%>		
+					</figcaption>
+
+			    	<% if @page.ia_leaf %>
+				      <%= link_to(image_tag(@page.ia_leaf.thumb_url),
+			                    { :action => 'display_page',
+			                      :page_id => @page.id })  %>
+					<% elsif @page.omeka_file %>
+				      <%= link_to(image_tag(@page.omeka_file.thumbnail_url),
+			                    { :action => 'display_page',
+			                      :page_id => @page.id })  %>
+					<% else %>
+				      <%= link_to(image_tag(file_to_url(@page.thumbnail_image)),
+			                    { :action => 'display_page',
+			                      :page_id => @page.id })  %>
+					<% end %>
+				</figure>
+
+			</div>
+
+			<div class="inside-column" id="translation_button_div">
+			<%= raw(xml_to_html(@page.xml_translation)) %>
+			</div>
 		<% else %>
-			<%= render :partial => '/shared/zoom_div' %>
+			<% if @page.ia_leaf %>
+				<%= render :partial => '/ia/ia_bookreader_div' %>
+			<% elsif @page.omeka_file %>
+				<%= render :partial => '/shared/external_image_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url } %>
+			<% else %>
+				<%= render :partial => '/shared/zoom_div' %>
+			<% end %>
 		<% end %>
 	</div>
 
