@@ -101,7 +101,7 @@ class TranscribeController  < ApplicationController
 
           @work.work_statistic.recalculate if @work.work_statistic
           
-          redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id          
+          redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true          
         else
           log_translation_error
           flash[:error] = @page.errors[:base].join('<br />')
@@ -132,40 +132,6 @@ class TranscribeController  < ApplicationController
   end
 
 protected
-  def log_transcript_attempt
-    # we have access to @page, @user, and params
-    log_attept(TRANSCRIPTION, params[:page][:source_text])
-  end
-
-  def log_transcript_exception(ex)
-    log_exception(TRANSCRIPTION, ex)
-  end
-
-  def log_transcript_error
-    log_error(TRANSCRIPTION)
-  end
-
-  def log_transcript_success
-    log_success(TRANSCRIPTION)
-  end
-
-  def log_translation_attempt
-    # we have access to @page, @user, and params
-    log_attempt(TRANSLATION, params[:page][:source_translation])
-  end
-
-  def log_translation_exception(ex)
-    log_exception(TRANSLATION, ex)
-  end
-
-  def log_translation_error
-    log_error(TRANSLATION)
-  end
-
-  def log_translation_success
-    log_success(TRANSLATION)
-  end
-
 
   TRANSLATION="TRANSLATION"
   TRANSCRIPTION="TRANSCRIPTION"
@@ -197,6 +163,42 @@ protected
     log_message = "#{attempt_type}\t#{@transcript_date}\tSUCCESS\t"
     logger.info(log_message)    
   end
+
+
+  def log_transcript_attempt
+    # we have access to @page, @user, and params
+    log_attempt(TRANSCRIPTION, params[:page][:source_text])
+  end
+
+  def log_transcript_exception(ex)
+    log_exception(TRANSCRIPTION, ex)
+  end
+
+  def log_transcript_error
+    log_error(TRANSCRIPTION)
+  end
+
+  def log_transcript_success
+    log_success(TRANSCRIPTION)
+  end
+
+  def log_translation_attempt
+    # we have access to @page, @user, and params
+    log_attempt(TRANSLATION, params[:page][:source_translation])
+  end
+
+  def log_translation_exception(ex)
+    log_exception(TRANSLATION, ex)
+  end
+
+  def log_translation_error
+    log_error(TRANSLATION)
+  end
+
+  def log_translation_success
+    log_success(TRANSLATION)
+  end
+
 
 
 
