@@ -7,4 +7,8 @@ class IaLeaf < ActiveRecord::Base
     "http://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_thumb.jpg"
   end
   
+  def facsimile_url
+    "http://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}.jpg"
+  end
+  
 end

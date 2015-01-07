@@ -12,7 +12,8 @@ module ExportHelper
       transform_links(e, type)
       my_display_html << e.to_s
     end
-    return my_display_html
+
+    return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n")
   end
 
   def transform_links(p_element, type)

@@ -43,6 +43,10 @@ class ExportController < ApplicationController
       end
       @other_articles << article if other
     end
+
+    @work = Work.includes(:pages => [:notes, :ia_leaf => :ia_work]).find(@work.id)
+
+    
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
 

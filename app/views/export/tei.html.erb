@@ -141,7 +141,7 @@ xml:id="APB4051">
 <text>
     <body>
 	  <% @work.pages.each do |page| %>
-	  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= file_to_url(page.base_image) %>"/>
+	  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
 		<div xml:id="P<%=page.id%>">
 			<fw type="pageNum">
 				<%= page.title %>

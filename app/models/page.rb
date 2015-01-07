@@ -86,6 +86,14 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def canonical_facsimile_url
+    if self.ia_leaf
+      self.ia_leaf.facsimile_url
+    else
+      base_image
+    end
+  end
+
   def base_image
     self[:base_image] || ""
   end

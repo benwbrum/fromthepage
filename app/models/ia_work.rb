@@ -122,7 +122,7 @@ class IaWork < ActiveRecord::Base
     # now fetch the scandata.xml file and parse it
     scandata_url = "http://#{server}#{dir}/#{scandata_file}" # will not work on new format: we cannot assume filenames are re-named with their content
 
-    sd_doc = Nokogiri::XML(open(scandata_url))
+    sd_doc = open_doc(scandata_url)
 
     @pages = sd_doc.search('page')
     @pages.each do |page|
@@ -151,7 +151,6 @@ class IaWork < ActiveRecord::Base
   
   def text_from_ocr
     djvu_doc = ocr_doc
-    
     leaf_objects = djvu_doc.search('OBJECT')
     leaf_objects.each do |e|
       leaf_number = leaf_number_from_object(e)
@@ -201,10 +200,16 @@ class IaWork < ActiveRecord::Base
   
   
 private
+  def open_doc(url)
+    doc = Nokogiri::XML(open(url).read.force_encoding('utf-8'), nil, 'utf-8')
+    
+    doc    
+  end
+  
   def leaf_number_from_object(object_element)
 
       page_id = object_element.search('PARAM[@name="PAGE"]').first['value']
-      page_id[/\w*_0*/]=""
+      page_id[/\S*_0*/]=""
       page_id[/\.djvu/]=''
       logger.debug(page_id)
       # there may well be an off-by-one error in the source.  I'm seeing page_id 7
@@ -231,7 +236,7 @@ private
 
     djvu_url =  "http://#{self.server}#{self.ia_path}/#{djvu_file}"
     logger.debug(djvu_url)
-    djvu_doc = Nokogiri::XML(open(djvu_url))
+    djvu_doc = open_doc(djvu_url)
 
     djvu_doc
   end 
@@ -262,7 +267,7 @@ private
     # first get the call the location API and parse that document
     api_url = 'http://www.archive.org/services/find_file.php?file='+id
     logger.debug(api_url)
-    loc_doc = Nokogiri::XML(open(api_url))
+    loc_doc = open_doc(api_url)
     return loc_doc
   end
 

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 gem "rails", "4.1.1"
 
 gem 'pry'
+gem 'pry-byebug'
 
 gem 'will_paginate' , '3.0.5'
 gem 'rmagick', '2.13.2', require: "RMagick"
