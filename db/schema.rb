@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141206132017) do
+ActiveRecord::Schema.define(version: 20150115152502) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -347,8 +347,10 @@ ActiveRecord::Schema.define(version: 20141206132017) do
     t.string   "status"
     t.text     "source_translation"
     t.text     "xml_translation"
+    t.text     "search_text"
   end
 
+  add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
   add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
 

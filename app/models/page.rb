@@ -1,22 +1,10 @@
-# t.column :title, :string, :limit => 255
-# # transcription source (rudimentary for this version)
-# t.column :transcription, :text
-# # image info
-# t.column :base_image, :string, :limit => 255
-# t.column :base_width, :integer
-# t.column :base_height, :integer
-# t.column :shrink_factor, :integer
-# # foreign keys
-# t.column :work_id, :integer
-# # automated stuff
-# t.column :created_on, :datetime
-# t.column :position, :integer
-# t.column :lock_version, :integer, :default => 0
-
+require 'search_translator'
 class Page < ActiveRecord::Base
 
   include XmlSourceProcessor
+  
   before_update :process_source
+  before_update :populate_search
 
   belongs_to :work
   acts_as_list :scope => :work
@@ -164,6 +152,11 @@ Article.update_all('graph_image=NULL', :id => PageArticleLink.select(:article_id
 it produces this sql:
 UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_id FROM `page_article_links` WHERE (page_id = 1))
 =end
+
+  def populate_search
+    self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
+  end
+
 
   #######################
   # XML Source support

@@ -72,7 +72,7 @@ class DisplayController < ApplicationController
       if params[:unlinked_only]
         conditions =
           ["works.collection_id = ? "+
-          "AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)"+
+          "AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)"+
           " AND pages.id not in "+
           "    (SELECT page_id FROM page_article_links WHERE article_id = ?)",
           @collection.id,
@@ -82,7 +82,7 @@ class DisplayController < ApplicationController
       else
         conditions =
           ["works.collection_id = ? "+
-          "AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)",
+          "AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)",
           @collection.id,
           @search_string]
       end
@@ -96,7 +96,7 @@ class DisplayController < ApplicationController
       end
       # restrict to pages that include that subject
       #@pages = Page.paginate :all, :page => params[:page],  :order => 'work_id, position', :per_page => 5, :joins => :work, :conditions => ["works.collection_id = ? AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]
-      @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]).paginate(page: params[:page])
+      @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]).paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
   end

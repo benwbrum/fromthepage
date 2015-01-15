@@ -84,11 +84,16 @@ class ApplicationController < ActionController::Base
           ia_servers[@work.ia_work.book_id] = server_and_path
         rescue => ex
           # TODO log exception
-          logger.error(ex.message)
-          logger.error(ex.backtrace.join("\n"))
-          flash[:error] = "The Internet Archive is experiencing difficulties.  Please try again later."
-          redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
-          return
+          if params[:offline]
+            # we're doing development offline
+            ia_servers[@work.ia_work.book_id] = {:server => 'offlineserver', :ia_path => 'offlinepath'}
+          else
+            logger.error(ex.message)
+            logger.error(ex.backtrace.join("\n"))
+            flash[:error] = "The Internet Archive is experiencing difficulties.  Please try again later."
+            redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
+            return            
+          end
         end
       end
       logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
