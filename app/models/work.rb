@@ -20,7 +20,9 @@ class Work < ActiveRecord::Base
                   :author, 
                   :transcription_conventions, 
                   :supports_translation, 
-                  :translation_instructions
+                  :translation_instructions,
+                  :scribes_can_edit_titles,
+                  :restrict_scribes
 
   def articles
     my_articles = []
