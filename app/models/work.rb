@@ -22,7 +22,8 @@ class Work < ActiveRecord::Base
                   :supports_translation, 
                   :translation_instructions,
                   :scribes_can_edit_titles,
-                  :restrict_scribes
+                  :restrict_scribes,
+                  :pages_are_meaningful
 
   def articles
     my_articles = []

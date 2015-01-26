@@ -273,6 +273,7 @@ private
 
   def files_from_loc(loc_doc)
     formats = loc_doc.search('file').search('format')
+
     scandata = formats.select{|e| e.inner_text=='Scandata'}.first.parent['name']
     djvu = formats.select{|e| e.inner_text=='Djvu XML'}.first.parent['name']
     zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 ZIP'}

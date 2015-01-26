@@ -22,24 +22,33 @@
 			<% end %>
 			<div class="inside-column">
 				<div class="thumbnail-container">
-	
-					<% if page.ia_leaf %>
-						<%= link_to(image_tag(page.ia_leaf.thumb_url),
-						{ :action => 'display_page',
-						:page_id => page.id })  %>
-					<% elsif page.omeka_file %>
-						<%= link_to(image_tag(page.omeka_file.thumbnail_url),
-						{ :action => 'display_page',
-						:page_id => page.id })  %>
-					<% else %>
-						<%= link_to(image_tag(file_to_url(page.thumbnail_image)),
-						{ :action => 'display_page',
-						:page_id => page.id })  %>
-					<% end %>
+					<figure>		
+						<% if page.ia_leaf %>
+							<%= link_to(image_tag(page.ia_leaf.thumb_url),
+							{ :action => 'display_page',
+							:page_id => page.id })  %>
+						<% elsif page.omeka_file %>
+							<%= link_to(image_tag(page.omeka_file.thumbnail_url),
+							{ :action => 'display_page',
+							:page_id => page.id })  %>
+						<% else %>
+							<%= link_to(image_tag(file_to_url(page.thumbnail_image)),
+							{ :action => 'display_page',
+							:page_id => page.id })  %>
+						<% end %>
+						<figcaption>
+							<%= link_to(page.title,
+										{ :action => 'display_page',
+										:page_id => page.id }) %>.
+						</figcaption>
+
+					</figure>
 				</div>
 	
 				<div>
-					<h2> <%= page.title %> </h2>
+					<% if page.work.pages_are_meaningful %>
+						<h2> <%= page.title %> </h2>
+					<% end %>
 					<div>
 						<% if page.xml_text %>
 							<%= raw(xml_to_html(page.xml_text, false)).force_encoding('utf-8') %>
@@ -54,19 +63,22 @@
 					</div>
 					<div class="footer-links">
 						<% if false %>
-							Edited by <% if page.current_version %>
-							<%= link_to(page.current_version.user.display_name,
-							{ :controller => 'user',
-							:action => 'profile',
-							:user_id => page.current_version.user.id }) %>
-							<%= distance_of_time_in_words(page.current_version.created_on, Time.now, include_seconds = true)%> ago.
-						<% else %>
-							<!--No version info for page.id=<%= page.id %>-->
+							Edited by 
+							<% if page.current_version %>
+								<%= link_to(page.current_version.user.display_name,
+								{ :controller => 'user',
+								:action => 'profile',
+								:user_id => page.current_version.user.id }) %>
+								<%= distance_of_time_in_words(page.current_version.created_on, Time.now, include_seconds = true)%> ago.
+							<% else %>
+								<!--No version info for page.id=<%= page.id %>-->
+							<% end %>
 						<% end %>
+						<% if page.work.pages_are_meaningful %>
+							<%= link_to('View this page',
+							{ :action => 'display_page',
+							:page_id => page.id }) %>.
 						<% end %>
-						<%= link_to('View this page',
-						{ :action => 'display_page',
-						:page_id => page.id }) %>.
 	
 					</div>
 				</div>
@@ -104,10 +116,20 @@
 			<!-- END article_links PARTIAL -->
 		<% end %>
 
-		<% if @work && @work.supports_translation %>
-			<% for page in @pages %>
+		<% work_title = nil %>
+		<% for page in @pages %>
+			<% if page.work.supports_translation %>
+				<% old_work_title = work_title %>
+				<% work_title = page.work.title %>
+				<% if !@work && work_title != old_work_title %>
+					<div class="inside-column">
+						<h1><%= work_title %></h1>
+					</div>
+				<% end %>
 				<div class="inside-column">
-					<h2> <%= page.title %> </h2>
+					<% if page.work.pages_are_meaningful %>
+						<h2> <%= page.title %> </h2>
+					<% end %>
 					<div>
 						<% if page.xml_translation %>
 							<%= raw(xml_to_html(page.xml_translation, false)).force_encoding('utf-8') %>
@@ -122,7 +144,7 @@
 						
 					</div>
 				</div>
-						
+					
 			<% end %>
 		<% end %>
 		
