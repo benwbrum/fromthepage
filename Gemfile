@@ -1,8 +1,14 @@
 source 'https://rubygems.org'
-gem "rails", "4.1.1"
+
+gem 'rails', '4.1.1'
 
 gem 'pry'
 gem 'pry-byebug'
+
+# Use LESS for stylesheets
+gem 'less-rails'
+gem 'therubyracer'
+gem 'autoprefixer-rails'
 
 gem 'will_paginate' , '3.0.5'
 gem 'rmagick', '2.13.2', require: "RMagick"
