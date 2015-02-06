@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-    def html_block(tag)
+  def html_block(tag)
     render({ :partial => 'page_block/html_block',
              :locals =>
               { :tag => tag,
@@ -9,15 +9,19 @@ module ApplicationHelper
                 :origin_action => action_name
               }
           })
-
   end
-
 
   def file_to_url(filename)
     if filename
       filename.sub(/.*public/, "")
     else
       ""
+    end
+  end
+
+  def svg_symbol(id, classname=nil)
+    content_tag(:svg, :class => classname) do
+      content_tag(:use, nil, :'xlink:href' => asset_path('symbols.svg') + id)
     end
   end
 
