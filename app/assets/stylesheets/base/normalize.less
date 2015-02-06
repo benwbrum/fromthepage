@@ -1,0 +1,299 @@
+// ===================================================================
+// Modified version of normalize.css by Nicolas Gallagher
+// http://necolas.github.io/normalize.css/
+// ===================================================================
+
+// ---------------------------
+// BASE
+// ---------------------------
+// Corrects text resizing oddly in IE7 when body font-size is set using em units
+// Prevents iOS text size adjust after orientation change, without disabling user zoom
+html {
+  font-size: 100%;
+  text-size-adjust: 100%;
+}
+// Corrects margins handled incorrectly in IE7
+// Keeps page centered in all browsers regardless of content height
+html, body {
+  margin: 0;
+  padding: 0;
+  word-wrap: break-word;
+}
+
+// ---------------------------
+// HTML5 ELEMENTS
+// ---------------------------
+// Corrects 'block' display for HTML5 tags not defined in IE7/8/9 & FF3
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+  display: block;
+}
+// Corrects 'inline-block' display not defined in IE7/8/9 & FF3
+audio, canvas, progress, video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+// Prevents modern browsers from displaying 'audio' without controls
+// Remove excess height in iOS5 devices
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+// Styling for 'hidden' attribute not present in IE7/8/9, FF3, S4
+// Hide the 'template' element in IE, Safari, and FF<22
+[hidden], template {
+  display: none;
+}
+
+// ---------------------------
+// LINKS
+// ---------------------------
+// Remove the gray background color from active links in IE10
+a {
+  background: transparent;
+  // Addresses outline displayed oddly in Chrome
+  &:focus {
+    outline-offset: 1px;
+    outline: thin dotted;
+  }
+  // Improves readability when focused and also mouse hovered in all browsers
+  &:hover, &:active {
+    outline: 0;
+  }
+}
+
+// ---------------------------
+// TYPOGRAPHY
+// ---------------------------
+// Addresses styling not present in IE7/8/9, S5, Chrome
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+// Addresses style set to 'bolder' in FF3+, S4/5, Chrome
+b, strong {
+  font-weight: bold;
+}
+// Addresses styling not present in S5, Chrome
+dfn {
+  font-style: italic;
+}
+// Address differences between Firefox and other browsers
+hr {
+  height: 0;
+  box-sizing: content-box;
+}
+// Addresses styling not present in IE7/8/9
+mark {
+  color: #000;
+  background: #FF0;
+}
+// Set consistent font family
+code, kbd, pre, samp {
+  font-size: 1em;
+  font-family: monospace, serif;
+}
+// Improves readability of pre-formatted text in all browsers
+pre {
+  white-space: pre;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+// Set consistent quote types
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+// Prevents sub and sup affecting line-height in all browsers
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+
+// ---------------------------
+// IMAGES
+// ---------------------------
+// Corrects overflow displayed oddly in IE9
+svg:not(:root) {
+  overflow: hidden;
+}
+// Addresses margin not present in IE7/8/9, S5, O11
+figure {
+  margin: 0;
+}
+// Removes border when inside 'a' element in IE7/8/9, FF3
+// Improves image quality when scaled in IE7
+img {
+  border: 0;
+  color: transparent;
+  vertical-align: middle;
+  image-rendering: optimizeQuality;
+}
+
+// ---------------------------
+// LISTS
+// ---------------------------
+// Default style for lists
+menu, ol, ul {
+  padding: 0;
+  margin: 0.5em 0 0.5em 2em;
+}
+// Keeps bullets from disappearing if hasLayout is triggered in IE6/7
+li {
+  padding: 0;
+  margin: 0.4em 0;
+  display: list-item;
+}
+// Default style for navigation lists
+nav ul, nav ol {
+  margin: 0;
+  list-style: none;
+  list-style-image: none;
+}
+// Default style for definition lists
+dl, dt, dd {
+  margin: 0;
+  padding: 0;
+}
+
+// ---------------------------
+// TABLES
+// ---------------------------
+// Default style for tables
+table {
+  border: 0;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+th, td, caption {
+  padding: 0;
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+// ---------------------------
+// FORMS
+// ---------------------------
+// Corrects margin displayed oddly in IE7
+form {
+  margin: 0;
+}
+// Define consistent border, margin, and padding
+fieldset {
+  margin: 0 2px;
+  border: 1px solid mix(#000, #FFF, 20);
+  border-color: fade(#000, 20);
+  padding: 0.35em 0.625em 0.75em;
+}
+// Corrects color not being inherited in IE7/8/9
+// Correct text not wrapping in FF3
+legend {
+  border: 0;
+  padding: 0;
+  white-space: normal;
+}
+// Addresses margins set differently in IE7, FF3+, S5, Chrome
+// Corrects font size & font family not being inherited in all browsers
+// Improves appearance and consistency in all browsers
+button, input, select, textarea {
+  margin: 0;
+  font-size: 100%;
+  line-height: normal;
+  font-family: inherit;
+  font-weight: inherit;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+// Address inconsistent 'text-transform' inheritance
+button, select {
+  text-transform: none;
+}
+// Enables :active state in Opera
+// 'html' to avoid the bug in Android 4.0.* where 'appearance: button' destroys 'audio/video'
+// Improves usability and consistency of cursor style between image-type 'input' and others
+// Removes inner spacing in IE7 and makes shadow visible in IE9
+// Corrects inability to style clickable 'input' types in iOS
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+  cursor: pointer;
+  overflow: visible;
+  user-select: none;
+  -webkit-appearance: button;
+}
+// Removes excess padding in IE8/9
+// Override previously set alignment
+input[type="checkbox"], input[type="radio"] {
+  padding: 0;
+  top: 0.143em;
+  position: relative;
+  vertical-align: baseline;
+}
+// Addresses appearance set to searchfield in S5, Chrome
+// Remove inner padding and search cancel button in S5 and Chrome on OS X
+input[type="search"] {
+  -webkit-appearance: textfield;
+  &::-webkit-search-decoration, &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+}
+// Fix the cursor style for Chrome's increment/decrement buttons
+input[type="number"] {
+  &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+    height: auto;
+  }
+}
+// Removes default vertical scrollbar in IE7/8/9
+// Improves readability and alignment in all browsers
+textarea {
+  width: 100%;
+  overflow: auto;
+  resize: vertical;
+  vertical-align: top;
+}
+// Corrects font family not being inherited
+// Reset padding (looks like this affects only FF)
+optgroup, option {
+  padding: 0 2px;
+  font-family: inherit;
+}
+// Indent options inside option group
+optgroup option {
+  padding-left: 0.8em;
+}
+// Corrects optgroup appearance
+// Opera still ignores font weight and font style
+optgroup {
+  font-weight: bold;
+  font-style: normal;
+}
+// Basic style for disabled elements
+button[disabled], html input[disabled], select[disabled], textarea[disabled] {
+  cursor: default;
+  user-select: none;
+  color: mix(#000, #FFF, 50);
+  color: fade(#000, 50);
+}
+// Remove inner padding and border in FF3+
+button, input {
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+}
+// Remove dotted border for select in FF
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+// Default placeholder color
+:-ms-input-placeholder { color: fade(#000, 40) !important; }
+::placeholder { color: fade(#000, 40); }
+// Suppress red glow for invalid state in FF
+:invalid, :-moz-submit-invalid, :-moz-ui-invalid {
+  box-shadow: none;
+}
