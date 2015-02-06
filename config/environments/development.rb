@@ -34,7 +34,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  
+
   # location of system calls on this machine
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'

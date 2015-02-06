@@ -5,15 +5,10 @@ gem 'rails', '4.1.1'
 gem 'pry'
 gem 'pry-byebug'
 
-# Use LESS for stylesheets
-gem 'less-rails'
-gem 'therubyracer'
-gem 'autoprefixer-rails'
-
 gem 'will_paginate' , '3.0.5'
-gem 'rmagick', '2.13.2', require: "RMagick"
+gem 'rmagick', '2.13.2', require: 'RMagick'
 gem 'nokogiri'
-gem 'oai', git: "https://github.com/mispy/ruby-oai.git"
+gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.2.0'
 gem 'jquery-rails'
 
@@ -32,14 +27,22 @@ gem 'devise-encryptable'
 gem 'protected_attributes'
 
 group :test do
-  gem "database_cleaner"
-  gem "capybara"
-  gem "shoulda"
+  gem 'database_cleaner'
+  gem 'capybara'
+  gem 'shoulda'
 end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
-  gem "factory_girl_rails", require: false
+  gem 'factory_girl_rails', require: false
 end
 
-#- EOF
+# Use LESS for stylesheets
+gem 'less-rails'
+gem 'therubyracer'
+
+# Use Autoprefixer for vendor prefixes
+gem 'autoprefixer-rails'
+
+# Use Slim for templates
+gem 'slim'
