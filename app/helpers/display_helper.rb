@@ -7,7 +7,15 @@ module DisplayHelper
 
   def translation_mode?
     # this expects a page to exist
-    @work.supports_translation && params[:translation] && params[:translation] != 'false'
+    if @work.supports_translation
+      if params[:translation].blank?
+        true
+      else
+        params[:translation] != 'false'
+      end 
+    else
+      false
+    end
   end
 
 
