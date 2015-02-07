@@ -45,6 +45,12 @@ body
           =link_to 'Sign In', new_user_session_path
           =link_to 'Sign Up', new_user_registration_path
 
+  -if current_page?(root_path)
+    section.intro
+      .content: .intro_box
+        h1.intro_title What is FromThePage?
+        p.intro_text FromThePage is free software that allows volunteers to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.
+
   main.content role="main"
 
     #header.outside-column
