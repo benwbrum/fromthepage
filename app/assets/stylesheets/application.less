@@ -1,23 +1,267 @@
-/* much of this is taken from Ruthsarian Layouts at
-http://webhost.bridgew.edu/etribou/layouts/rMenu/index.html */
+// ---------------------------
+// TYPOGRAPHY
+// ---------------------------
 
+@remSize:										10px;
+@lineHeight:								1.286;
+@fontSize:									15px;
+@fontSizeSmall:							12px;
+@fontSizeBig:								16px;
+@fontSizeStrong:						18px;
+@fontSizeH5:								@fontSizeStrong;
+@fontSizeH4:								20px;
+@fontSizeH3:								24px;
+@fontSizeH2:								28px;
+@fontSizeH1:								32px;
+@fontFamily:								'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
+@fontFamilyHead:						'Crete Round', Georgia, 'Times New Roman', Times, serif;
+
+// ---------------------------
+// COLORS
+// ---------------------------
+
+@fgBody:										#000;
+@bgBody:										mix(#E4B665, #FFF, 12);
+
+@fgBlack:										#000;
+@fgWhite:										#FFF;
+@fgGray:										#888;
+@fgRed:											#D00;
+@fgGreen:										#490;
+@fgBlue:										#08D;
+@fgOrange:									#E60;
+@fgYellow:									#FC3;
+@fgPurple:									#939;
+@fgCyan:										#099;
+
+@bgWhite:										#FFF;
+@bgGray:										#F9F9F9;
+@bgRed:											#FFF0F0;
+@bgGreen:										#F0F9D9;
+@bgBlue:										#D9F0FF;
+@bgOrange:									#FFF6CC;
+@bgYellow:									#FFFCD6;
+@bgPink:										#FFF0F0;
+
+@fgSelected:								#FFF;
+@bgSelected:								#09E;
+@fgHover:										#07F;
+@bgHover:										lighten(@bgSelected, 47);
+
+@fgHeader:									#433;
+@bgHeader:									#EDB;
+@fgFooter:									#A99;
+@bgFooter:									#433;
+
+// ---------------------------
+// LAYOUT
+// ---------------------------
+
+@widthMax:									1280px;
+@widthMin:									768px;
+@gapSize:										20px;
+@footerHeight:							80px;
+
+
+@import "base/normalize";
+
+
+// ---------------------------
+// COMMON ELEMENTS
+// ---------------------------
+
+html {
+	height: 100%;
+	font-size: @remSize;
+	background: @bgBody;
+	min-width: @widthMin;
+}
 body {
-	user-select: none;
-	background-color: #eee;
-	color: #000;
+	color: @fgBody;
+	min-height: 100%;
+	position: relative;
+	text-align: center;
+	background: @bgBody;
+	box-sizing: border-box;
+	padding-bottom: @footerHeight;
+	text-rendering: optimizeLegibility;
+	//text-rendering: geometricPrecision;
+	font: normal unit((@fontSize / @remSize), em)/@lineHeight @fontFamily;
+	-webkit-tap-highlight-color: transparent;
+	-webkit-focus-ring-color: transparent;
+}
+h1, h2, h3, h4 {
+	font-weight: normal;
+	font-family: @fontFamilyHead;
+}
+h1 {
+	color: #433;
+	font-size: 260%;
+}
+h2 {
+	color: #544;
+	font-size: 200%;
+}
+h3 {
+	font-size: 160%;
+}
+h4 {
+	font-size: 130%;
+}
+h5 {
+	font-size: 100%;
 }
 p {
 	margin: 1em 0;
-	padding: 0;
 }
+a {
+	color: #07E;
+	text-decoration: underline;
+	transition: color 0.2s, background-color 0.2s;
+	&:hover { color: #05B; }
+}
+
+// ---------------------------
+// GENERAL LAYOUT
+// ---------------------------
+
+.header {
+	width: 100%;
+	display: table;
+	text-align: left;
+	padding: @gapSize;
+	background: @bgHeader;
+	box-sizing: border-box;
+	font-family: @fontFamilyHead;
+	box-shadow: 0 1px 0 fade(#000, 20);
+	&_logo {
+		margin: 0;
+		display: table-cell;
+		vertical-align: middle;
+		&-link {
+			width: 105px;
+			height: 40px;
+			vertical-align: top;
+			display: inline-block;
+			text-decoration: none;
+			svg {
+				width: 100%;
+				height: 100%;
+				display: block;
+			}
+		}
+	}
+	&_nav {
+		text-align: right;
+		display: table-cell;
+		vertical-align: middle;
+		&-menu {
+			vertical-align: top;
+			display: inline-block;
+			a {
+				float: left;
+				font-size: 125%;
+				color: @fgHeader;
+				margin-left: 1em;
+				text-decoration: none;
+				&.active { border-bottom: 2px solid currentColor; }
+			}
+		}
+	}
+}
+.footer {
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	display: table;
+	color: @fgFooter;
+	text-align: left;
+	padding: @gapSize;
+	position: absolute;
+	background: @bgFooter;
+	height: @footerHeight;
+	box-sizing: border-box;
+	&_copyright {
+		display: table-cell;
+		vertical-align: top;
+	}
+	&_nav {
+		text-align: right;
+		display: table-cell;
+		vertical-align: top;
+		a {
+			color: inherit;
+			margin-left: 1em;
+			padding-left: 1em;
+			display: inline-block;
+			border-left: 1px solid fade(@fgFooter, 50);
+			&:hover { color: lighten(@fgFooter, 20); }
+			&:first-child {
+				border: 0;
+				margin: 0;
+				padding: 0;
+			}
+		}
+	}
+}
+.content {
+	margin: 0 auto;
+	text-align: left;
+	padding: @gapSize;
+	max-width: @widthMax;
+	box-sizing: border-box;
+}
+
+
+// ---------------------------
+// HOME PAGE
+// ---------------------------
+
+.intro {
+	box-shadow: inset 0 1px 0 fade(#000, 30);
+	background: @bgFooter image-url('intro.jpg') no-repeat center bottom;
+	background-size: cover;
+	.content {
+		height: 500px;
+		&:after {
+			width: 0;
+			content: '';
+			height: 100%;
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+	&_box {
+		color: #FFF;
+		line-height: normal;
+		display: inline-block;
+		vertical-align: middle;
+		background: fade(#000, 35);
+		padding: @gapSize @gapSize * 1.2;
+	}
+	&_title {
+		margin: 0;
+		color: inherit;
+		font-size: 300%;
+	}
+	&_text {
+		font-size: 130%;
+		max-width: 600px;
+		margin: 1em 0 0 0;
+	}
+}
+
+
+
+
 div.two-columns {
 	width: 100%;
 	display: inline-block; /* for IE/Mac to contain its child elements */
 	/* \ */ display: block;
 	/* override above rule for every other
 	browser using IE/Mac backslash hack */
-	font-family: arial, helvetica, sans-serif;
-	font-size: 100%; /* Changed from 80% BWB */
+	//font-family: arial, helvetica, sans-serif;
+	//font-size: 100%; /* Changed from 80% BWB */
 	background-color: #fcfcfc;
 	color: #000; /* START - Fix horizontal scrollbar */
 	-webkit-box-sizing: border-box;
@@ -32,7 +276,7 @@ div.two-columns:after {
 	visibility: hidden;
 }
 div.two-columns, div.two-columns div.left-column, div.two-columns div.right-column {
-	border: solid 1px #ddd;
+	//border: solid 1px #ddd;
 	border-width: 1px;
 }
 div.two-columns div.left-column, div.two-columns div.right-column {
@@ -114,40 +358,12 @@ ul, ol, dl, p, h1, h2, h3, h4, h5, h6 {
 h1 {
 	/* color: #8d1703;
 	*/
-	border-bottom: 3px dotted #dee7ec;
+	//border-bottom: 3px dotted #dee7ec;
 }
 ul ul, ul ol, ol ul, ol ol {
 	/* kill margins on sub-lists */
 	margin-top: 0;
 	margin-bottom: 0;
-}
-h1 {
-	font-size: 240%;
-}
-h2 {
-	font-size: 180%;
-}
-h3 {
-	font-size: 140%;
-}
-h4 {
-	font-size: 100%;
-}
-h5 {
-	font-size: 70%;
-}
-h6 {
-	font-size: 50%;
-}
-a, a:link, a:visited, a:active {
-	text-decoration: underline;
-}
-a:hover {
-	/* because I like the visual feedback a user gets when they
-	* mouse over a link and see the underline of the link
-	* disappear.
-	*/
-	text-decoration: none;
 }
 code, pre {
 	/* Make sure we're all using the same monospaced font for CODE
@@ -181,6 +397,7 @@ body {
 	* to fix some rounding-error bugs that some browsers (Mozilla) are
 	* prone to. It doesn't hurt anything, so I keep it here.
 	*/
+	/*
 	font-size: 100.1%;
 	background-color: white;
 	color: black;
@@ -194,6 +411,7 @@ body {
 	line-height: normal;
 	margin: 0pt;
 	padding: 0pt;
+	*/
 }
 
 /******************************************************************************/
