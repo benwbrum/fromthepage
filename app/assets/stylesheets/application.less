@@ -21,7 +21,7 @@
 // ---------------------------
 
 @fgBody:										#000;
-@bgBody:										mix(#E4B665, #FFF, 12);
+@bgBody:										mix(#EDB, #FFF, 30);
 
 @fgBlack:										#000;
 @fgWhite:										#FFF;
@@ -60,6 +60,7 @@
 @widthMax:									1280px;
 @widthMin:									768px;
 @gapSize:										20px;
+@headerHeight:							80px;
 @footerHeight:							80px;
 
 
@@ -96,20 +97,25 @@ h1, h2, h3, h4 {
 }
 h1 {
 	color: #433;
-	font-size: 260%;
+	font-size: 300%;
+	margin: 0 0 0.5em 0;
 }
 h2 {
 	color: #544;
-	font-size: 200%;
+	font-size: 240%;
+	margin: 1em 0 0.5em 0;
 }
 h3 {
-	font-size: 160%;
+	font-size: 180%;
+	margin: 1em 0 0.5em 0;
 }
 h4 {
 	font-size: 130%;
+	margin: 1em 0 0.5em 0;
 }
 h5 {
 	font-size: 100%;
+	margin: 1em 0 0.5em 0;
 }
 p {
 	margin: 1em 0;
@@ -120,6 +126,34 @@ a {
 	transition: color 0.2s, background-color 0.2s;
 	&:hover { color: #05B; }
 }
+.legend {
+	margin: 1em 0;
+	overflow: hidden;
+	font-weight: bold;
+	position: relative;
+	text-align: center;
+	white-space: nowrap;
+	text-transform: uppercase;
+	&:before, &:after {
+		width: 50%;
+		height: 1px;
+		content: '';
+		position: relative;
+		display: inline-block;
+		vertical-align: middle;
+		background: mix(#000, #FFF, 15);
+		background: fade(#000, 15);
+	}
+	&:before {
+		left: -0.5em;
+		margin: 0 0 0 -50%;
+	}
+	&:after {
+		left: 0.5em;
+		margin: 0 -50% 0 0;
+	}
+}
+
 
 // ---------------------------
 // GENERAL LAYOUT
@@ -129,9 +163,10 @@ a {
 	width: 100%;
 	display: table;
 	text-align: left;
-	padding: @gapSize;
+	height: @headerHeight;
 	background: @bgHeader;
 	box-sizing: border-box;
+	border-spacing: @gapSize 0;
 	font-family: @fontFamilyHead;
 	box-shadow: 0 1px 0 fade(#000, 20);
 	&_logo {
@@ -207,9 +242,9 @@ a {
 .content {
 	margin: 0 auto;
 	text-align: left;
-	padding: @gapSize;
 	max-width: @widthMax;
 	box-sizing: border-box;
+	padding: @gapSize;
 }
 
 
@@ -218,7 +253,7 @@ a {
 // ---------------------------
 
 .intro {
-	box-shadow: inset 0 1px 0 fade(#000, 30);
+	box-shadow: inset 0 1px 0 fade(#000, 30), inset 0 -1px 0 fade(#000, 30);
 	background: @bgFooter image-url('intro.jpg') no-repeat center bottom;
 	background-size: cover;
 	.content {
@@ -238,16 +273,78 @@ a {
 		vertical-align: middle;
 		background: fade(#000, 35);
 		padding: @gapSize @gapSize * 1.2;
+		h1 {
+			margin: 0;
+			color: inherit;
+			font-size: 300%;
+		}
+		p {
+			font-size: 130%;
+			max-width: 600px;
+			margin: 0.5em 0 0 0;
+		}
 	}
-	&_title {
-		margin: 0;
-		color: inherit;
-		font-size: 300%;
+}
+.featured {
+	margin: @gapSize * 2 0 @gapSize * 3 0;
+	h2 { font-size: 160%; }
+	&_items {
+		display: table;
+		margin: 0 -@gapSize;
+		border-spacing: @gapSize 0;
 	}
-	&_text {
-		font-size: 130%;
-		max-width: 600px;
-		margin: 1em 0 0 0;
+	&_item {
+		width: 33.33%;
+		background: #FFF;
+		display: table-cell;
+		vertical-align: top;
+		box-sizing: border-box;
+		padding: @gapSize * 0.75;
+		border: 1px solid mix(#000, @bgBody, 10);
+		figure {
+			display: table;
+			border-spacing: 0;
+		}
+		img {
+			width: 100px;
+			height: 100px;
+			display: table-cell;
+			vertical-align: top;
+		}
+		figcaption {
+			overflow: hidden;
+			display: table-cell;
+			vertical-align: middle;
+			padding-left: @gapSize * 0.75;
+		}
+	}
+}
+.getstarted {
+	margin: @gapSize * 2 0 @gapSize * 3 0;
+	h2 { font-size: 160%; }
+	&_items {
+		width: calc(~'100% + 40px');
+		display: table;
+		margin: 0 -@gapSize;
+		border-spacing: @gapSize 0;
+	}
+	&_item {
+		width: 25%;
+		//background: #FFF;
+		display: table-cell;
+		vertical-align: top;
+		box-sizing: border-box;
+		padding: @gapSize * 0.75;
+		//border: 1px solid mix(#000, @bgBody, 10);
+		h4 { margin: 0.5em 0; }
+		svg {
+			width: 80px;
+			height: 80px;
+			color: #433;
+		}
+		p {
+			margin: 0;
+		}
 	}
 }
 
@@ -329,89 +426,6 @@ div.thumbnail-container {
 #containerdiv {
 	position: relative;
 	height: 100%;
-}
-
-/*******************************************************************************
-*  visual_consistencies.css:2005.09.07:Ruthsarian Layouts
-* -----------------------------------------------------------------------------
-*  Font sizes on heading elements and the margin/padding applied to these
-*  same elements will vary from browser to browser. This is an attempt to pull
-*  the font sizes and spacing together for a consistent look across all
-*  browsers.
-*
-*  There are other rules included in this stylesheet (with comments on each)
-*  to handle other visual consistency issues. You do not need to use this
-*  stylesheet, nor do you need to follow it exactly. You can make changes
-*  anywhere you want to make things look the way you want to. Nothing here
-*  _should_ break a layout if modified.
-*******************************************************************************/
-ul, ol, dl, p, h1, h2, h3, h4, h5, h6 {
-	/* pixels are used here, rather than ems, because I want a consistent
-	* margin on the different headings. if I use ems, 1em for an h1 element
-	* is much larger than 1em on an h6 element. I don't want this.
-	*/
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding-top: 0;
-	padding-bottom: 0;
-}
-h1 {
-	/* color: #8d1703;
-	*/
-	//border-bottom: 3px dotted #dee7ec;
-}
-ul ul, ul ol, ol ul, ol ol {
-	/* kill margins on sub-lists */
-	margin-top: 0;
-	margin-bottom: 0;
-}
-code, pre {
-	/* Make sure we're all using the same monospaced font for CODE
-	* and PRE elements
-	*/
-	font-family: "Courier New", Courier, monospace;
-}
-label {
-	/* It's all about the visual feedback. In this case, label
-	* elements are usually clickable which then set focus on
-	* their target. I want to show that to the user in a manner
-	* they are used to and understand.
-	*/
-	cursor: pointer;
-}
-table {
-	/* Some browsers won't carry the font size down into the
-	* browser like they're suppose to.
-	*/
-	font-size: 100%;
-}
-td, th {
-	/* I never like or use the default vertical centering "feature"
-	* provided by tables.
-	*/
-	vertical-align: top;
-}
-body {
-	/* I've seen several comments that setting the base font size to 100.1%
-	* fixes some browser bugs. Which bugs? I don't know. I believe it's
-	* to fix some rounding-error bugs that some browsers (Mozilla) are
-	* prone to. It doesn't hurt anything, so I keep it here.
-	*/
-	/*
-	font-size: 100.1%;
-	background-color: white;
-	color: black;
-	font-family: sans-serif;
-	font-size: small;
-	font-size-adjust: none;
-	font-stretch: normal;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	line-height: normal;
-	margin: 0pt;
-	padding: 0pt;
-	*/
 }
 
 /******************************************************************************/

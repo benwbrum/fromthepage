@@ -48,10 +48,44 @@ body
   -if current_page?(root_path)
     section.intro
       .content: .intro_box
-        h1.intro_title What is FromThePage?
-        p.intro_text FromThePage is free software that allows volunteers to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.
+        h1 What is FromThePage?
+        p FromThePage is free software that allows volunteers to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.
 
   main.content role="main"
+
+    -if current_page?(root_path)
+      section.featured
+        h2.legend Who uses FromThePage?
+        ul.featured_items
+          li.featured_item: figure
+            =image_tag 'cover-thenat.png', size: '200', alt: 'San Diego Museum of Natural History'
+            figcaption San Diego Museum of Natural History is transcribing the <a href="http://fromthepage.bpoc.org/">field notes of herpetologist Lawrence Klauber</a>.
+          li.featured_item: figure
+            =image_tag 'cover-southwestern.png', size: '200', alt: 'Southwestern University'
+            figcaption Southwestern University is transcribing the <a href="/ZenasMatthews">Mexican War Diary of Zenas Matthews</a>.
+          li.featured_item: figure
+            =image_tag 'cover-wenham.jpg', size: '200', alt: 'William Albert Wenham'
+            figcaption Gavin Robinson is transcribing his great-grandfather's <a href="/collection/show?collection_id=2">letters from a WWI prisoner of war camp</a>.
+
+      section.getstarted
+        h2.legend How do I get started?
+        ul.getstarted_items
+          li.getstarted_item
+            =svg_symbol '#start-reading'
+            h4 Start Reading
+            p You can choose from the many interesting projects hosted on FromThePage. Start reading the <a href="#{dashboard_path}">historical writings</a> that have been already transcribed by other members.
+          li.getstarted_item
+            =svg_symbol '#start-transcribing'
+            h4 Start Transcribing
+            p Help one of the great historical projects come into the digital age. Julia Brumfield's 1922 diary is only <a href="/JuliaBrumfield">partly transcribed</a>, so it would be a great place to test drive the software.
+          li.getstarted_item
+            =svg_symbol '#start-project'
+            h4 Start Your Project
+            p If you want to run a transcription project, we would be interested in hosting your effort. <a href="images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
+          li.getstarted_item
+            =svg_symbol '#start-server'
+            h4 Run Your Server
+            p The software is released under the GNU AGPL v3.0, a Free/Open Source license. If you want to install FromThePage on your server, see the <a href="https://github.com/benwbrum/fromthepage/wiki">installation instructions</a> on GitHub.
 
     #header.outside-column
       -if Rails.env == 'development'
