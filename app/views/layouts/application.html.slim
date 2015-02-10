@@ -14,119 +14,74 @@
 doctype html
 html
   head
-    meta charset="utf-8"
-    meta http-equiv="X-UA-Compatible" content="IE=edge"
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
     title =title
-    meta name="keywords" content=""
-    meta name="description" content=""
-    meta name="author" content="FromThePage.com"
-    meta name="copyright" content="(c) #{Time.now.year} FromThePage.com"
-    meta name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0="
+    meta(name="viewport" content="width=960, minimum-scale=0.333, maximum-scale=1, user-scalable=yes")
+    meta(name="keywords" content="")
+    meta(name="description" content="")
+    meta(name="author" content="FromThePage.com")
+    meta(name="copyright" content="(c) #{Time.now.year} FromThePage.com")
+    meta(name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=")
 
-    link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
+    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round")
     =stylesheet_link_tag 'application'
     = "\n"
     =javascript_include_tag 'application'
 
 body
   header.header
-    h2.header_logo
-      a.header_logo-link href=root_path
-        =svg_symbol '#site-logo'
+    .header_logo
+      a.site-logo(href=root_path) =svg_symbol '#site-logo'
 
-    nav.header_nav role="navigation"
-      .header_nav-menu
-        =link_to 'Home', root_path, { :class => ('active' if current_page?(root_path)) }
-        =link_to 'Dashboard', dashboard_path, { :class => ('active' if current_page?(dashboard_path)) }
-        =link_to 'FAQ', { :controller => 'static', :action => 'faq' }
-        -if user_signed_in?
-          =link_to 'Sign Out', destroy_user_session_path, method: :delete
-        -else
-          =link_to 'Sign In', new_user_session_path
-          =link_to 'Sign Up', new_user_registration_path
+    nav.header_nav(role="navigation")
+      =link_to 'Home', root_path, { :class => ('active' if current_page?(root_path)) }
+      =link_to 'Dashboard', dashboard_path, { :class => ('active' if current_page?(dashboard_path)) }
+      =link_to 'FAQ', { :controller => 'static', :action => 'faq' }
+      -if user_signed_in?
+        =link_to 'Sign Out', destroy_user_session_path, method: :delete
+      -else
+        =link_to 'Sign In', new_user_session_path
+        =link_to 'Sign Up', new_user_registration_path
 
-  -if current_page?(root_path)
-    section.intro
-      .content: .intro_box
-        h1 What is FromThePage?
-        p FromThePage is free software that allows volunteers to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.
+  #work-logo.outside-column
+    -if (@work && @work.title) || (@collection && @collection.title)
+      h1.work-logo
+        -if @collection
+          =link_to @collection.title,
+            { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
+        -if @collection && @work
+          | &mdash;
+        -if @work && @work.title
+          =link_to @work.title,
+            { :controller => 'display', :action => 'read_work', :work_id => @work.id }
 
-  main.content role="main"
+  -if flash[:notice]
+    p style="color: green" =flash[:notice]
+  -if flash[:error]
+    p style="color: red" =flash[:error]
+  -if flash[:alert]
+    p style="color: blue" =flash[:alert]
 
-    -if current_page?(root_path)
-      section.featured
-        h2.legend Who uses FromThePage?
-        ul.featured_items
-          li.featured_item: figure
-            =image_tag 'cover-thenat.png', size: '200', alt: 'San Diego Museum of Natural History'
-            figcaption San Diego Museum of Natural History is transcribing the <a href="http://fromthepage.bpoc.org/">field notes of herpetologist Lawrence Klauber</a>.
-          li.featured_item: figure
-            =image_tag 'cover-southwestern.png', size: '200', alt: 'Southwestern University'
-            figcaption Southwestern University is transcribing the <a href="/ZenasMatthews">Mexican War Diary of Zenas Matthews</a>.
-          li.featured_item: figure
-            =image_tag 'cover-wenham.jpg', size: '200', alt: 'William Albert Wenham'
-            figcaption Gavin Robinson is transcribing his great-grandfather's <a href="/collection/show?collection_id=2">letters from a WWI prisoner of war camp</a>.
+  /! layout content
+  =@content_for_layout
+  =yield.force_encoding 'UTF-8'
+  /! layout content
 
-      section.getstarted
-        h2.legend How do I get started?
-        ul.getstarted_items
-          li.getstarted_item
-            =svg_symbol '#start-reading'
-            h4 Start Reading
-            p You can choose from the many interesting projects hosted on FromThePage. Start reading the <a href="#{dashboard_path}">historical writings</a> that have been already transcribed by other members.
-          li.getstarted_item
-            =svg_symbol '#start-transcribing'
-            h4 Start Transcribing
-            p Help one of the great historical projects come into the digital age. Julia Brumfield's 1922 diary is only <a href="/JuliaBrumfield">partly transcribed</a>, so it would be a great place to test drive the software.
-          li.getstarted_item
-            =svg_symbol '#start-project'
-            h4 Start Your Project
-            p If you want to run a transcription project, we would be interested in hosting your effort. <a href="images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
-          li.getstarted_item
-            =svg_symbol '#start-server'
-            h4 Run Your Server
-            p The software is released under the GNU AGPL v3.0, a Free/Open Source license. If you want to install FromThePage on your server, see the <a href="https://github.com/benwbrum/fromthepage/wiki">installation instructions</a> on GitHub.
-
-    #header.outside-column
-      -if Rails.env == 'development'
-        h3
-          |This is the development version of FromThePage.
-          |The beta version is located at <a href="http://beta.fromthepage.com/">beta.fromthepage.com</a>.
-
-    #work-logo.outside-column
-      -if (@work && @work.title) || (@collection && @collection.title)
-        h1.work-logo
-          -if @collection
-            =link_to @collection.title,
-              { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
-          -if @collection && @work
-            | &mdash;
-          -if @work && @work.title
-            =link_to @work.title,
-              { :controller => 'display', :action => 'read_work', :work_id => @work.id }
-
-    -if flash[:notice]
-      p style="color: green" =flash[:notice]
-    -if flash[:error]
-      p style="color: red" =flash[:error]
-    -if flash[:alert]
-      p style="color: blue" =flash[:alert]
-
-    /! layout content
-    div
-      =@content_for_layout
-      =yield.force_encoding 'UTF-8'
-    /! layout content
-
-    -if @collection && @collection.footer_block
-      .outside-column =@collection.footer_block
+  -if @collection && @collection.footer_block
+    .outside-column ==@collection.footer_block
 
   footer.footer
-    .footer_copyright &copy; #{Time.now.year} FromThePage. All rights reserved.
+    .footer_copyright
+      |&copy; #{Time.now.year} <a href="#{root_path}">FromThePage</a>. All rights reserved.
+      -if Rails.env == 'development'
+        br
+        small This is the development version. The beta version is located at <a href="http://beta.fromthepage.com/">beta.fromthepage.com</a>
+
     nav.footer_nav
       =link_to 'Terms & Conditions', { :controller => 'static', :action => 'terms' }
       =link_to 'Privacy Policy', { :controller => 'static', :action => 'privacy' }
-      =link_to 'Contact Us', { :controller => 'static', :action => 'contact' }
+      =link_to 'Contact Us', 'mailto:benwbrum@gmail.com'
 
   javascript:
     var _gaq = _gaq || [];
