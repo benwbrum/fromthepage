@@ -1,0 +1,52 @@
+// ---------------------------
+// INLINE BLOCKS
+// ---------------------------
+
+// Inline blocks, wrapped into a container
+.wrapbox {
+  margin: 0;
+  font-size: 0;
+  list-style: none;
+  &_item {
+    margin: 0;
+    text-align: left;
+    white-space: normal;
+    vertical-align: top;
+    font-size: @fontSize;
+    display: inline-block;
+    box-sizing: border-box;
+  }
+  &.vmiddle &_item { vertical-align: middle; }
+  &.nowrap {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+// Inline blocks, justified to the available width
+.justify {
+  margin: 0;
+  font-size: 0;
+  list-style: none;
+  text-align: justify;
+  text-justify: newspaper;
+  text-align-last: justify;
+  &:after {
+    height: 0;
+    width: 100%;
+    content: '';
+    overflow: hidden;
+    visibility: hidden;
+    display: inline-block;
+  }
+  &_item {
+    margin: 0;
+    text-align: left;
+    font-size: @fontSize;
+    display: inline-block;
+    text-align-last: auto;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+  &.vtop &_item { vertical-align: top; }
+}

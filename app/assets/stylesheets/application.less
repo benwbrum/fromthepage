@@ -3,11 +3,11 @@
 // ---------------------------
 
 @remSize:										10px;
-@lineHeight:								1.286;
-@fontSize:									15px;
-@fontSizeSmall:							12px;
-@fontSizeBig:								16px;
-@fontSizeStrong:						18px;
+@lineHeight:								1.375;
+@fontSize:									16px;
+@fontSizeSmall:							14px;
+@fontSizeBig:								18px;
+@fontSizeStrong:						20px;
 @fontSizeH5:								@fontSizeStrong;
 @fontSizeH4:								20px;
 @fontSizeH3:								24px;
@@ -58,13 +58,14 @@
 // ---------------------------
 
 @widthMax:									1280px;
-@widthMin:									768px;
+@widthMin:									960px;
 @gapSize:										20px;
 @headerHeight:							80px;
 @footerHeight:							80px;
 
 
 @import "base/normalize";
+@import "base/common";
 
 
 // ---------------------------
@@ -94,42 +95,41 @@ body {
 h1, h2, h3, h4 {
 	font-weight: normal;
 	font-family: @fontFamilyHead;
+	margin: 1em 0 0.5em 0;
 }
 h1 {
-	color: #433;
+	color: #655;
 	font-size: 300%;
 	margin: 0 0 0.5em 0;
 }
 h2 {
 	color: #544;
 	font-size: 240%;
-	margin: 1em 0 0.5em 0;
 }
 h3 {
+	color: #433;
 	font-size: 180%;
-	margin: 1em 0 0.5em 0;
 }
 h4 {
-	font-size: 130%;
-	margin: 1em 0 0.5em 0;
+	color: #322;
+	font-size: 140%;
 }
 h5 {
-	font-size: 100%;
-	margin: 1em 0 0.5em 0;
+	color: #211;
+	font-size: 120%;
 }
 p {
 	margin: 1em 0;
 }
 a {
-	color: #07E;
+	color: #900;
 	text-decoration: underline;
 	transition: color 0.2s, background-color 0.2s;
-	&:hover { color: #05B; }
+	&:hover { color: #D50; }
 }
 .legend {
 	margin: 1em 0;
 	overflow: hidden;
-	font-weight: bold;
 	position: relative;
 	text-align: center;
 	white-space: nowrap;
@@ -153,6 +153,40 @@ a {
 		margin: 0 -50% 0 0;
 	}
 }
+.cover {
+	display: table;
+	&_image {
+		display: table-cell;
+		vertical-align: top;
+	}
+	&_caption {
+		display: table-cell;
+		vertical-align: middle;
+	}
+}
+.columns {
+	width: 100%;
+	display: table;
+	> * {
+		width: 50%;
+		padding: @gapSize;
+		display: table-cell;
+		&:first-child { padding-left: 0; }
+		&:last-child { padding-right: 0; }
+	}
+}
+.site-logo {
+	width: 134px;
+	height: 50px;
+	vertical-align: top;
+	display: inline-block;
+	text-decoration: none;
+	svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+}
 
 
 // ---------------------------
@@ -170,37 +204,20 @@ a {
 	font-family: @fontFamilyHead;
 	box-shadow: 0 1px 0 fade(#000, 20);
 	&_logo {
-		margin: 0;
 		display: table-cell;
 		vertical-align: middle;
-		&-link {
-			width: 105px;
-			height: 40px;
-			vertical-align: top;
-			display: inline-block;
-			text-decoration: none;
-			svg {
-				width: 100%;
-				height: 100%;
-				display: block;
-			}
-		}
 	}
 	&_nav {
 		text-align: right;
 		display: table-cell;
 		vertical-align: middle;
-		&-menu {
-			vertical-align: top;
+		a {
+			font-size: 125%;
+			color: @fgHeader;
+			margin-left: 1em;
 			display: inline-block;
-			a {
-				float: left;
-				font-size: 125%;
-				color: @fgHeader;
-				margin-left: 1em;
-				text-decoration: none;
-				&.active { border-bottom: 2px solid currentColor; }
-			}
+			text-decoration: none;
+			&.active { border-bottom: 2px solid currentColor; }
 		}
 	}
 }
@@ -211,11 +228,10 @@ a {
 	display: table;
 	color: @fgFooter;
 	text-align: left;
-	padding: @gapSize;
 	position: absolute;
 	background: @bgFooter;
 	height: @footerHeight;
-	box-sizing: border-box;
+	border-spacing: @gapSize;
 	&_copyright {
 		display: table-cell;
 		vertical-align: top;
@@ -225,18 +241,20 @@ a {
 		display: table-cell;
 		vertical-align: top;
 		a {
-			color: inherit;
 			margin-left: 1em;
 			padding-left: 1em;
 			display: inline-block;
 			border-left: 1px solid fade(@fgFooter, 50);
-			&:hover { color: lighten(@fgFooter, 20); }
 			&:first-child {
 				border: 0;
 				margin: 0;
 				padding: 0;
 			}
 		}
+	}
+	a {
+		color: inherit;
+		&:hover { color: lighten(@fgFooter, 20); }
 	}
 }
 .content {
@@ -253,6 +271,7 @@ a {
 // ---------------------------
 
 .intro {
+	margin-bottom: @gapSize;
 	box-shadow: inset 0 1px 0 fade(#000, 30), inset 0 -1px 0 fade(#000, 30);
 	background: @bgFooter image-url('intro.jpg') no-repeat center bottom;
 	background-size: cover;
@@ -285,69 +304,77 @@ a {
 		}
 	}
 }
-.featured {
-	margin: @gapSize * 2 0 @gapSize * 3 0;
-	h2 { font-size: 160%; }
-	&_items {
-		display: table;
-		margin: 0 -@gapSize;
-		border-spacing: @gapSize 0;
+.getstarted {
+	margin-bottom: @gapSize * 4;
+	.justify_item {
+		width: 22%;
+		color: mix(@bgBody, #000, 35);
 	}
-	&_item {
-		width: 33.33%;
+	svg {
+		width: 80px;
+		height: 80px;
+		color: mix(#433, #FFF, 80);
+	}
+	h4 { margin: 0.5em 0; }
+	p { margin: 0; }
+}
+.whouses {
+	margin-bottom: @gapSize * 4;
+	.justify_item { width: 32%; }
+	.cover {
 		background: #FFF;
-		display: table-cell;
-		vertical-align: top;
-		box-sizing: border-box;
-		padding: @gapSize * 0.75;
+		border-spacing: @gapSize * 0.75;
 		border: 1px solid mix(#000, @bgBody, 10);
-		figure {
-			display: table;
-			border-spacing: 0;
-		}
-		img {
+		&_image {
 			width: 100px;
 			height: 100px;
-			display: table-cell;
-			vertical-align: top;
-		}
-		figcaption {
-			overflow: hidden;
-			display: table-cell;
-			vertical-align: middle;
-			padding-left: @gapSize * 0.75;
 		}
 	}
 }
-.getstarted {
-	margin: @gapSize * 2 0 @gapSize * 3 0;
-	h2 { font-size: 160%; }
-	&_items {
-		width: calc(~'100% + 40px');
-		display: table;
-		margin: 0 -@gapSize;
-		border-spacing: @gapSize 0;
+.spotlight {
+	margin-bottom: @gapSize * 2;
+	.justify_item {
+		width: 48%;
+		padding-bottom: @gapSize * 2;
+		color: mix(@bgBody, #000, 35);
 	}
-	&_item {
-		width: 25%;
-		//background: #FFF;
-		display: table-cell;
-		vertical-align: top;
+	.cover {
+		&_image {
+			width: 150px;
+			height: 150px;
+		}
+		&_caption {
+			padding-left: @gapSize;
+		}
+	}
+}
+.features {
+	counter-reset: index;
+	margin-bottom: @gapSize * 2;
+	.justify_item {
+		width: 48%;
+		position: relative;
 		box-sizing: border-box;
-		padding: @gapSize * 0.75;
-		//border: 1px solid mix(#000, @bgBody, 10);
-		h4 { margin: 0.5em 0; }
-		svg {
-			width: 80px;
-			height: 80px;
-			color: #433;
-		}
-		p {
-			margin: 0;
+		padding: 0 0 @gapSize 60px;
+		&:before {
+			top: 0;
+			left: 0;
+			line-height: 1;
+			font-size: 500%;
+			font-weight: bold;
+			position: absolute;
+			color: fade(#433, 15);
+			content: counter(index);
+			counter-increment: index;
 		}
 	}
+	h4 { margin: 0; }
+	p {
+		margin: 0.5em 0;
+		font-size: @fontSizeBig;
+		color: mix(@bgBody, #000, 50);
+	}
 }
-
 
 
 
