@@ -2,66 +2,66 @@
 // TYPOGRAPHY
 // ---------------------------
 
-@remSize:										10px;
-@lineHeight:								1.375;
-@fontSize:									16px;
-@fontSizeSmall:							14px;
-@fontSizeBig:								18px;
-@fontSizeStrong:						20px;
-@fontSizeH5:								@fontSizeStrong;
-@fontSizeH4:								20px;
-@fontSizeH3:								24px;
-@fontSizeH2:								28px;
-@fontSizeH1:								32px;
-@fontFamily:								'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
-@fontFamilyHead:						'Crete Round', Georgia, 'Times New Roman', Times, serif;
+$remSize:										10px;
+$lineHeight:								1.375;
+$fontSize:									16px;
+$fontSizeSmall:							14px;
+$fontSizeBig:								18px;
+$fontSizeStrong:						20px;
+$fontSizeH5:								$fontSizeStrong;
+$fontSizeH4:								20px;
+$fontSizeH3:								24px;
+$fontSizeH2:								28px;
+$fontSizeH1:								32px;
+$fontFamily:								'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
+$fontFamilyHead:						'Crete Round', Georgia, 'Times New Roman', Times, serif;
 
 // ---------------------------
 // COLORS
 // ---------------------------
 
-@fgBody:										#000;
-@bgBody:										mix(#EDB, #FFF, 30);
+$fgBody:										#000;
+$bgBody:										mix(#EDB, #FFF, 30);
 
-@fgBlack:										#000;
-@fgWhite:										#FFF;
-@fgGray:										#888;
-@fgRed:											#D00;
-@fgGreen:										#490;
-@fgBlue:										#08D;
-@fgOrange:									#E60;
-@fgYellow:									#FC3;
-@fgPurple:									#939;
-@fgCyan:										#099;
+$fgBlack:										#000;
+$fgWhite:										#FFF;
+$fgGray:										#888;
+$fgRed:											#D00;
+$fgGreen:										#490;
+$fgBlue:										#08D;
+$fgOrange:									#E60;
+$fgYellow:									#FC3;
+$fgPurple:									#939;
+$fgCyan:										#099;
 
-@bgWhite:										#FFF;
-@bgGray:										#F9F9F9;
-@bgRed:											#FFF0F0;
-@bgGreen:										#F0F9D9;
-@bgBlue:										#D9F0FF;
-@bgOrange:									#FFF6CC;
-@bgYellow:									#FFFCD6;
-@bgPink:										#FFF0F0;
+$bgWhite:										#FFF;
+$bgGray:										#F9F9F9;
+$bgRed:											#FFF0F0;
+$bgGreen:										#F0F9D9;
+$bgBlue:										#D9F0FF;
+$bgOrange:									#FFF6CC;
+$bgYellow:									#FFFCD6;
+$bgPink:										#FFF0F0;
 
-@fgSelected:								#FFF;
-@bgSelected:								#09E;
-@fgHover:										#07F;
-@bgHover:										lighten(@bgSelected, 47);
+$fgSelected:								#FFF;
+$bgSelected:								#09E;
+$fgHover:										#07F;
+$bgHover:										lighten($bgSelected, 47);
 
-@fgHeader:									#433;
-@bgHeader:									#EDB;
-@fgFooter:									#A99;
-@bgFooter:									#433;
+$fgHeader:									#433;
+$bgHeader:									#EDB;
+$fgFooter:									#A99;
+$bgFooter:									#433;
 
 // ---------------------------
 // LAYOUT
 // ---------------------------
 
-@widthMax:									1280px;
-@widthMin:									960px;
-@gapSize:										20px;
-@headerHeight:							80px;
-@footerHeight:							80px;
+$widthMax:									1280px;
+$widthMin:									960px;
+$gapSize:										20px;
+$headerHeight:							80px;
+$footerHeight:							80px;
 
 
 @import "base/normalize";
@@ -74,27 +74,27 @@
 
 html {
 	height: 100%;
-	font-size: @remSize;
-	background: @bgBody;
-	min-width: @widthMin;
+	font-size: $remSize;
+	background: $bgBody;
+	min-width: $widthMin;
 }
 body {
-	color: @fgBody;
+	color: $fgBody;
 	min-height: 100%;
 	position: relative;
 	text-align: center;
-	background: @bgBody;
+	background: $bgBody;
 	box-sizing: border-box;
-	padding-bottom: @footerHeight;
+	padding-bottom: $footerHeight;
 	text-rendering: optimizeLegibility;
 	//text-rendering: geometricPrecision;
-	font: normal unit((@fontSize / @remSize), em)/@lineHeight @fontFamily;
+	font: normal #{$fontSize}/#{$lineHeight} $fontFamily;
 	-webkit-tap-highlight-color: transparent;
 	-webkit-focus-ring-color: transparent;
 }
 h1, h2, h3, h4 {
 	font-weight: normal;
-	font-family: @fontFamilyHead;
+	font-family: $fontFamilyHead;
 	margin: 1em 0 0.5em 0;
 }
 h1 {
@@ -141,8 +141,7 @@ a {
 		position: relative;
 		display: inline-block;
 		vertical-align: middle;
-		background: mix(#000, #FFF, 15);
-		background: fade(#000, 15);
+		background: rgba(#000, 0.15);
 	}
 	&:before {
 		left: -0.5em;
@@ -169,7 +168,7 @@ a {
 	display: table;
 	> * {
 		width: 50%;
-		padding: @gapSize;
+		padding: $gapSize;
 		display: table-cell;
 		&:first-child { padding-left: 0; }
 		&:last-child { padding-right: 0; }
@@ -197,12 +196,12 @@ a {
 	width: 100%;
 	display: table;
 	text-align: left;
-	height: @headerHeight;
-	background: @bgHeader;
+	height: $headerHeight;
+	background: $bgHeader;
 	box-sizing: border-box;
-	border-spacing: @gapSize 0;
-	font-family: @fontFamilyHead;
-	box-shadow: 0 1px 0 fade(#000, 20);
+	border-spacing: $gapSize 0;
+	font-family: $fontFamilyHead;
+	box-shadow: 0 1px 0 rgba(#000, 0.2);
 	&_logo {
 		display: table-cell;
 		vertical-align: middle;
@@ -213,7 +212,7 @@ a {
 		vertical-align: middle;
 		a {
 			font-size: 125%;
-			color: @fgHeader;
+			color: $fgHeader;
 			margin-left: 1em;
 			display: inline-block;
 			text-decoration: none;
@@ -226,12 +225,12 @@ a {
 	bottom: 0;
 	width: 100%;
 	display: table;
-	color: @fgFooter;
+	color: $fgFooter;
 	text-align: left;
 	position: absolute;
-	background: @bgFooter;
-	height: @footerHeight;
-	border-spacing: @gapSize;
+	background: $bgFooter;
+	height: $footerHeight;
+	border-spacing: $gapSize;
 	&_copyright {
 		display: table-cell;
 		vertical-align: top;
@@ -244,7 +243,7 @@ a {
 			margin-left: 1em;
 			padding-left: 1em;
 			display: inline-block;
-			border-left: 1px solid fade(@fgFooter, 50);
+			border-left: 1px solid rgba($fgFooter, 0.5);
 			&:first-child {
 				border: 0;
 				margin: 0;
@@ -254,15 +253,15 @@ a {
 	}
 	a {
 		color: inherit;
-		&:hover { color: lighten(@fgFooter, 20); }
+		&:hover { color: lighten($fgFooter, 20); }
 	}
 }
 .content {
 	margin: 0 auto;
 	text-align: left;
-	max-width: @widthMax;
+	max-width: $widthMax;
 	box-sizing: border-box;
-	padding: @gapSize;
+	padding: $gapSize;
 }
 
 
@@ -271,9 +270,9 @@ a {
 // ---------------------------
 
 .intro {
-	margin-bottom: @gapSize;
-	box-shadow: inset 0 1px 0 fade(#000, 30), inset 0 -1px 0 fade(#000, 30);
-	background: @bgFooter image-url('intro.jpg') no-repeat center bottom;
+	margin-bottom: $gapSize;
+	box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.3);
+	background: $bgFooter image-url('intro.jpg') no-repeat center bottom;
 	background-size: cover;
 	.content {
 		height: 500px;
@@ -290,8 +289,8 @@ a {
 		line-height: normal;
 		display: inline-block;
 		vertical-align: middle;
-		background: fade(#000, 35);
-		padding: @gapSize @gapSize * 1.2;
+		background: rgba(#000, 0.35);
+		padding: $gapSize $gapSize * 1.2;
 		h1 {
 			margin: 0;
 			color: inherit;
@@ -305,10 +304,10 @@ a {
 	}
 }
 .getstarted {
-	margin-bottom: @gapSize * 4;
+	margin-bottom: $gapSize * 4;
 	.justify_item {
 		width: 22%;
-		color: mix(@bgBody, #000, 35);
+		color: mix($bgBody, #000, 35);
 	}
 	svg {
 		width: 80px;
@@ -319,12 +318,12 @@ a {
 	p { margin: 0; }
 }
 .whouses {
-	margin-bottom: @gapSize * 4;
+	margin-bottom: $gapSize * 4;
 	.justify_item { width: 32%; }
 	.cover {
 		background: #FFF;
-		border-spacing: @gapSize * 0.75;
-		border: 1px solid mix(#000, @bgBody, 10);
+		border-spacing: $gapSize * 0.75;
+		border: 1px solid mix(#000, $bgBody, 10);
 		&_image {
 			width: 100px;
 			height: 100px;
@@ -332,11 +331,11 @@ a {
 	}
 }
 .spotlight {
-	margin-bottom: @gapSize * 2;
+	margin-bottom: $gapSize * 2;
 	.justify_item {
 		width: 48%;
-		padding-bottom: @gapSize * 2;
-		color: mix(@bgBody, #000, 35);
+		padding-bottom: $gapSize * 2;
+		color: mix($bgBody, #000, 35);
 	}
 	.cover {
 		&_image {
@@ -344,18 +343,18 @@ a {
 			height: 150px;
 		}
 		&_caption {
-			padding-left: @gapSize;
+			padding-left: $gapSize;
 		}
 	}
 }
 .features {
 	counter-reset: index;
-	margin-bottom: @gapSize * 2;
+	margin-bottom: $gapSize * 2;
 	.justify_item {
 		width: 48%;
 		position: relative;
 		box-sizing: border-box;
-		padding: 0 0 @gapSize 60px;
+		padding: 0 0 $gapSize 60px;
 		&:before {
 			top: 0;
 			left: 0;
@@ -363,7 +362,7 @@ a {
 			font-size: 500%;
 			font-weight: bold;
 			position: absolute;
-			color: fade(#433, 15);
+			color: rgba(#433, 0.15);
 			content: counter(index);
 			counter-increment: index;
 		}
@@ -371,8 +370,8 @@ a {
 	h4 { margin: 0; }
 	p {
 		margin: 0.5em 0;
-		font-size: @fontSizeBig;
-		color: mix(@bgBody, #000, 50);
+		font-size: $fontSizeBig;
+		color: mix($bgBody, #000, 50);
 	}
 }
 
@@ -717,5 +716,5 @@ p.right {
 }
 //>>>>>>> rails3_nohpricot
 
-@import (less) "jquery.fs.zoomer.css";
+@import "jquery.fs.zoomer.css";
 

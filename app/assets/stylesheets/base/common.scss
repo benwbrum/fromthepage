@@ -12,7 +12,7 @@
     text-align: left;
     white-space: normal;
     vertical-align: top;
-    font-size: @fontSize;
+    font-size: $fontSize;
     display: inline-block;
     box-sizing: border-box;
   }
@@ -42,7 +42,7 @@
   &_item {
     margin: 0;
     text-align: left;
-    font-size: @fontSize;
+    font-size: $fontSize;
     display: inline-block;
     text-align-last: auto;
     vertical-align: middle;

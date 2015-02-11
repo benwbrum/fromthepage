@@ -81,10 +81,10 @@ hr {
   height: 0;
   box-sizing: content-box;
 }
-// Addresses styling not present in IE7/8/9
+// Reset default styling
 mark {
-  color: #000;
-  background: #FF0;
+  color: inherit;
+  background: none;
 }
 // Set consistent font family
 code, kbd, pre, samp {
@@ -187,9 +187,8 @@ form {
 // Define consistent border, margin, and padding
 fieldset {
   margin: 0 2px;
-  border: 1px solid mix(#000, #FFF, 20);
-  border-color: fade(#000, 20);
   padding: 0.35em 0.625em 0.75em;
+  border: 1px solid rgba(#000, 0.2);
 }
 // Corrects color not being inherited in IE7/8/9
 // Correct text not wrapping in FF3
@@ -275,8 +274,7 @@ optgroup {
 button[disabled], html input[disabled], select[disabled], textarea[disabled] {
   cursor: default;
   user-select: none;
-  color: mix(#000, #FFF, 50);
-  color: fade(#000, 50);
+  color: rgba(#000, 0.5);
 }
 // Remove inner padding and border in FF3+
 button, input {
@@ -291,8 +289,8 @@ select:-moz-focusring {
   text-shadow: 0 0 0 #000;
 }
 // Default placeholder color
-:-ms-input-placeholder { color: fade(#000, 40) !important; }
-::placeholder { color: fade(#000, 40); }
+:-ms-input-placeholder { color: rgba(#000, 0.4) !important; }
+::placeholder { color: rgba(#000, 0.4); }
 // Suppress red glow for invalid state in FF
 :invalid, :-moz-submit-invalid, :-moz-ui-invalid {
   box-shadow: none;

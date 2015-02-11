@@ -37,12 +37,11 @@ group :development, :test do
   gem 'factory_girl_rails', require: false
 end
 
-# Use LESS for stylesheets
-gem 'less-rails'
-gem 'therubyracer'
+# Use SASS for stylesheets
+gem 'sass-rails', '~> 5.0.0'
 
 # Use Autoprefixer for vendor prefixes
 gem 'autoprefixer-rails'
 
 # Use Slim for templates
-gem 'slim'
+gem 'slim', '~> 3.0.0'
