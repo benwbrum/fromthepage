@@ -19,8 +19,8 @@ module ApplicationHelper
     end
   end
 
-  def svg_symbol(id, classname=nil)
-    content_tag(:svg, :class => classname) do
+  def svg_symbol(id, options={})
+    content_tag(:svg, options) do
       content_tag(:use, nil, :'xlink:href' => asset_path('symbols.svg') + id)
     end
   end

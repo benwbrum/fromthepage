@@ -32,29 +32,35 @@ html
 body
   header.header
     .header_logo
-      a.site-logo(href=root_path) =svg_symbol '#site-logo'
+      =link_to root_path, class: 'logo'
+        =svg_symbol '#logo'
 
     nav.header_nav(role="navigation")
-      =link_to 'Home', root_path, { :class => ('active' if current_page?(root_path)) }
-      =link_to 'Dashboard', dashboard_path, { :class => ('active' if current_page?(dashboard_path)) }
-      =link_to 'FAQ', { :controller => 'static', :action => 'faq' }
+      =link_to 'Home', root_path, class: 'header_link'
+      =link_to 'Dashboard', dashboard_path, class: 'header_link'
+      =link_to 'FAQ', { :controller => 'static', :action => 'faq' }, class: 'header_link'
+
+    .header_user
       -if user_signed_in?
-        =link_to 'Sign Out', destroy_user_session_path, method: :delete
+        =link_to destroy_user_session_path, method: :delete, class: 'header_link'
+          =svg_symbol '#profile'
+          span Sign Out
       -else
-        =link_to 'Sign In', new_user_session_path
-        =link_to 'Sign Up', new_user_registration_path
+        =link_to new_user_session_path, class: 'header_link'
+          =svg_symbol '#profile'
+          span Sign In
+        //=link_to 'Sign In', new_user_session_path
+        //=link_to 'Sign Up', new_user_registration_path
 
   #work-logo.outside-column
     -if (@work && @work.title) || (@collection && @collection.title)
       h1.work-logo
         -if @collection
-          =link_to @collection.title,
-            { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
+          =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
         -if @collection && @work
           | &mdash;
         -if @work && @work.title
-          =link_to @work.title,
-            { :controller => 'display', :action => 'read_work', :work_id => @work.id }
+          =link_to @work.title, { :controller => 'display', :action => 'read_work', :work_id => @work.id }
 
   -if flash[:notice]
     p style="color: green" =flash[:notice]
@@ -63,10 +69,8 @@ body
   -if flash[:alert]
     p style="color: blue" =flash[:alert]
 
-  /! layout content
   =@content_for_layout
   =yield.force_encoding 'UTF-8'
-  /! layout content
 
   -if @collection && @collection.footer_block
     .outside-column ==@collection.footer_block

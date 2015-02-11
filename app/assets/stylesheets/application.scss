@@ -174,7 +174,7 @@ a {
 		&:last-child { padding-right: 0; }
 	}
 }
-.site-logo {
+.logo {
 	width: 134px;
 	height: 50px;
 	vertical-align: top;
@@ -185,6 +185,12 @@ a {
 		height: 100%;
 		display: block;
 	}
+}
+svg.icon {
+	vertical-align: -10%;
+	margin-right: 0.5rem;
+	display: inline-block;
+	text-decoration: none;
 }
 
 
@@ -202,21 +208,32 @@ a {
 	border-spacing: $gapSize 0;
 	font-family: $fontFamilyHead;
 	box-shadow: 0 1px 0 rgba(#000, 0.2);
-	&_logo {
+	> * {
 		display: table-cell;
+		white-space: nowrap;
 		vertical-align: middle;
+		padding-left: $gapSize;
+		&:first-child {
+			width: 100%;
+			padding-left: 0;
+		}
 	}
-	&_nav {
-		text-align: right;
-		display: table-cell;
-		vertical-align: middle;
-		a {
-			font-size: 125%;
-			color: $fgHeader;
-			margin-left: 1em;
+	&_link {
+		font-size: 125%;
+		color: $fgHeader;
+		margin-left: 1em;
+		line-height: 28px;
+		display: inline-block;
+		text-decoration: none;
+		&:first-child { margin-left: 0; }
+		&:hover { color: lighten($fgHeader, 20); }
+		svg {
+			width: 28px;
+			height: 28px;
+			opacity: 0.9;
+			vertical-align: top;
+			margin-right: 0.3em;
 			display: inline-block;
-			text-decoration: none;
-			&.active { border-bottom: 2px solid currentColor; }
 		}
 	}
 }
