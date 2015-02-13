@@ -133,7 +133,7 @@ a {
 	position: relative;
 	text-align: center;
 	white-space: nowrap;
-	text-transform: uppercase;
+	//text-transform: uppercase;
 	&:before, &:after {
 		width: 50%;
 		height: 1px;
@@ -321,7 +321,7 @@ svg.icon {
 	}
 }
 .getstarted {
-	margin-bottom: $gapSize * 4;
+	margin: $gapSize 0 $gapSize * 3 0;
 	.justify_item {
 		width: 22%;
 		color: mix($bgBody, #000, 35);
@@ -335,7 +335,7 @@ svg.icon {
 	p { margin: 0; }
 }
 .whouses {
-	margin-bottom: $gapSize * 4;
+	margin-bottom: $gapSize * 3;
 	.justify_item { width: 32%; }
 	.cover {
 		background: #FFF;
@@ -348,7 +348,7 @@ svg.icon {
 	}
 }
 .spotlight {
-	margin-bottom: $gapSize * 2;
+	margin-bottom: $gapSize;
 	.justify_item {
 		width: 48%;
 		padding-bottom: $gapSize * 2;
@@ -366,7 +366,7 @@ svg.icon {
 }
 .features {
 	counter-reset: index;
-	margin-bottom: $gapSize * 2;
+	margin-bottom: $gapSize;
 	.justify_item {
 		width: 48%;
 		position: relative;
