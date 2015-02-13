@@ -78,9 +78,9 @@ body
   footer.footer
     .footer_copyright
       |&copy; #{Time.now.year} <a href="#{root_path}">FromThePage</a>. All rights reserved.
-      -if Rails.env == 'development'
-        br
-        small This is the development version. The beta version is located at <a href="http://beta.fromthepage.com/">beta.fromthepage.com</a>
+      //-if Rails.env == 'development'
+      //  br
+      //  small This is the development version. The beta version is located at <a href="http://beta.fromthepage.com/">beta.fromthepage.com</a>
 
     nav.footer_nav
       =link_to 'Terms & Conditions', { :controller => 'static', :action => 'terms' }

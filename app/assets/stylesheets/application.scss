@@ -58,7 +58,9 @@ $bgFooter:									#433;
 // ---------------------------
 
 $widthMax:									1280px;
-$widthMin:									960px;
+$widthL:										1024px;
+$widthM:										900px;
+$widthMin:									768px;
 $gapSize:										20px;
 $headerHeight:							80px;
 $footerHeight:							80px;
@@ -76,7 +78,6 @@ html {
 	height: 100%;
 	font-size: $remSize;
 	background: $bgBody;
-	min-width: $widthMin;
 }
 body {
 	color: $fgBody;
@@ -84,6 +85,7 @@ body {
 	position: relative;
 	text-align: center;
 	background: $bgBody;
+	min-width: $widthMin;
 	box-sizing: border-box;
 	padding-bottom: $footerHeight;
 	text-rendering: optimizeLegibility;
@@ -127,13 +129,13 @@ a {
 	transition: color 0.2s, background-color 0.2s;
 	&:hover { color: #D50; }
 }
+
 .legend {
 	margin: 1em 0;
 	overflow: hidden;
 	position: relative;
 	text-align: center;
 	white-space: nowrap;
-	//text-transform: uppercase;
 	&:before, &:after {
 		width: 50%;
 		height: 1px;
@@ -159,6 +161,7 @@ a {
 		vertical-align: top;
 	}
 	&_caption {
+		width: 100%;
 		display: table-cell;
 		vertical-align: middle;
 	}
@@ -241,21 +244,20 @@ svg.icon {
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	display: table;
 	color: $fgFooter;
 	text-align: left;
+	padding: $gapSize;
 	position: absolute;
+	vertical-align: top;
+	display: inline-block;
 	background: $bgFooter;
 	height: $footerHeight;
-	border-spacing: $gapSize;
+	box-sizing: border-box;
 	&_copyright {
-		display: table-cell;
-		vertical-align: top;
+		float: left;
 	}
 	&_nav {
-		text-align: right;
-		display: table-cell;
-		vertical-align: top;
+		float: right;
 		a {
 			margin-left: 1em;
 			padding-left: 1em;
@@ -303,6 +305,7 @@ svg.icon {
 	}
 	&_box {
 		color: #FFF;
+		text-align: left;
 		line-height: normal;
 		display: inline-block;
 		vertical-align: middle;
@@ -319,11 +322,26 @@ svg.icon {
 			margin: 0.5em 0 0 0;
 		}
 	}
+
+	@media screen and (max-width: $widthL) {
+		.content { height: 450px; }
+	}
+	@media screen and (max-width: $widthM) {
+		margin-bottom: 0;
+		.content { height: 400px; }
+	}
+	@media screen and (max-width: $widthMin) {
+		.content {
+			height: 350px;
+			text-align: center;
+		}
+	}
 }
 .getstarted {
-	margin: $gapSize 0 $gapSize * 3 0;
+	margin-bottom: $gapSize * 2;
 	.justify_item {
 		width: 22%;
+		padding: $gapSize 0;
 		color: mix($bgBody, #000, 35);
 	}
 	svg {
@@ -333,11 +351,19 @@ svg.icon {
 	}
 	h4 { margin: 0.5em 0; }
 	p { margin: 0; }
+
+	@media screen and (max-width: $widthM) {
+		.justify_item { width: 47%; }
+	}
 }
 .whouses {
 	margin-bottom: $gapSize * 3;
-	.justify_item { width: 32%; }
+	.justify_item {
+		width: 32%;
+		padding-bottom: $gapSize / 2;
+	}
 	.cover {
+		width: 100%;
 		background: #FFF;
 		border-spacing: $gapSize * 0.75;
 		border: 1px solid mix(#000, $bgBody, 10);
@@ -345,6 +371,10 @@ svg.icon {
 			width: 100px;
 			height: 100px;
 		}
+	}
+
+	@media screen and (max-width: $widthM) {
+		.justify_item { width: 100%; }
 	}
 }
 .spotlight {
@@ -362,6 +392,10 @@ svg.icon {
 		&_caption {
 			padding-left: $gapSize;
 		}
+	}
+
+	@media screen and (max-width: $widthM) {
+		.justify_item { width: 100%; }
 	}
 }
 .features {
@@ -389,6 +423,10 @@ svg.icon {
 		margin: 0.5em 0;
 		font-size: $fontSizeBig;
 		color: mix($bgBody, #000, 50);
+	}
+
+	@media screen and (max-width: $widthM) {
+		.justify_item { width: 100%; }
 	}
 }
 
