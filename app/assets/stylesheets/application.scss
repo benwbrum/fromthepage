@@ -396,6 +396,7 @@ svg.icon {
 
 div.two-columns {
 	width: 100%;
+	text-align: left;
 	display: inline-block; /* for IE/Mac to contain its child elements */
 	/* \ */ display: block;
 	/* override above rule for every other
@@ -441,6 +442,7 @@ div.two-columns div.inside-column {
 	margin-bottom: 1em;
 }
 div.outside-column {
+	text-align: left;
 	padding: 0px 10px;
 	/* 1px is there to get past a margin rendering
 	bug in Netscape 7 and older FireFox */
