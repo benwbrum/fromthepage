@@ -128,6 +128,7 @@ a {
 	text-decoration: underline;
 	transition: color 0.2s, background-color 0.2s;
 	&:hover { color: #D50; }
+	&:focus { outline: none; }
 }
 
 .legend {
@@ -166,17 +167,6 @@ a {
 		vertical-align: middle;
 	}
 }
-.columns {
-	width: 100%;
-	display: table;
-	> * {
-		width: 50%;
-		padding: $gapSize;
-		display: table-cell;
-		&:first-child { padding-left: 0; }
-		&:last-child { padding-right: 0; }
-	}
-}
 .logo {
 	width: 134px;
 	height: 50px;
@@ -189,11 +179,42 @@ a {
 		display: block;
 	}
 }
-svg.icon {
+.icon {
 	vertical-align: -10%;
 	margin-right: 0.5rem;
 	display: inline-block;
 	text-decoration: none;
+}
+.tabs {
+	$textColor: #322;
+	$borderColor: rgba(#000, 0.15);
+
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	vertical-align: top;
+	display: inline-block;
+	font-family: $fontFamilyHead;
+	border-bottom: 1px solid $borderColor;
+	a {
+		float: left;
+		padding: 0 0.8em;
+		line-height: 2.4em;
+		margin-bottom: -1px;
+		text-decoration: none;
+		font-size: $fontSizeBig;
+		border-radius: 3px 3px 0 0;
+		color: rgba($textColor, 0.5);
+		border: 1px solid transparent;
+		border-width: 1px 1px 0 1px;
+		&:hover { color: $textColor; }
+		&.active {
+			cursor: default;
+			color: $textColor;
+			border-color: $borderColor;
+			background: linear-gradient(to bottom, mix(#FFF, $bgBody, 50), $bgBody);
+		}
+	}
 }
 
 
@@ -282,7 +303,17 @@ svg.icon {
 	max-width: $widthMax;
 	box-sizing: border-box;
 }
-
+.columns {
+	width: 100%;
+	display: table;
+	> * {
+		width: 50%;
+		padding: $gapSize;
+		display: table-cell;
+		&:first-child { padding-left: 0; }
+		&:last-child { padding-right: 0; }
+	}
+}
 
 // ---------------------------
 // HOME PAGE
