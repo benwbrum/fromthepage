@@ -1,38 +1,40 @@
--collection_show_options   = { :controller => 'collection',
-                               :action => 'show',
-                               :collection_id => collection_id }
+-tabs = [{\
+  :name => 'Overview',
+  :controller => 'collection',
+  :action => 'show',
+},{\
+  :name => 'Subjects',
+  :controller => 'article',
+  :action => 'list',
+},{\
+  :name => 'Stats',
+  :controller => 'statistics',
+  :action => 'collection',
+}]
 
--article_list_options      = { :controller => 'article',
-                               :action => 'list',
-                               :collection_id => collection_id }
+-if user_signed_in? && current_user.like_owner?(@collection)
+  -tabs += [{\
+    :name => 'Settings',
+    :controller => 'collection',
+    :action => 'edit',
+  },{\
+    :name => 'Categories',
+    :controller => 'category',
+    :action => 'manage',
+  },{\
+    :name => 'Owners',
+    :controller => 'collection',
+    :action => 'owners',
+  },{\
+    :name => 'Export',
+    :controller => 'export',
+    :action => 'index',
+  }]
 
--collection_stat_options   = { :controller => 'statistics',
-                               :action => 'collection',
-                               :collection_id => collection_id }
-
--collection_edit_options   = { :controller => 'collection',
-                               :action => 'edit',
-                               :collection_id => collection_id }
-
--category_manage_options   = { :controller => 'category',
-                               :action => 'manage',
-                               :collection_id => collection_id }
-
--collection_owners_options = { :controller => 'collection',
-                               :action => 'owners',
-                               :collection_id => collection_id }
-
--collection_export_options = { :controller => 'export',
-                               :action => 'index',
-                               :collection_id => collection_id}
 
 .tabs
-  =link_to 'Overview', collection_show_options, :class => ('active' if selected == 1)
-  =link_to 'Subjects', article_list_options, :class => ('active' if current_page? article_list_options)
-  =link_to 'Stats', collection_stat_options, :class => ('active' if current_page? collection_stat_options)
-
-  -if user_signed_in? && current_user.like_owner?(@collection)
-    =link_to 'Settings', collection_edit_options, :class => ('active' if selected == 2)
-    =link_to 'Categories', category_manage_options, :class => ('active' if selected == 3)
-    =link_to 'Owners', collection_owners_options, :class => ('active' if current_page? collection_owners_options)
-    =link_to 'Export', collection_export_options, :class => ('active' if current_page? collection_export_options)
+  -for tab in tabs
+    =link_to_unless_current tab[:name], { :controller => tab[:controller],
+                                          :action => tab[:action],
+                                          :collection_id => collection_id }
+      a.active =tab[:name]
