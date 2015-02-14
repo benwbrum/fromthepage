@@ -1,0 +1,51 @@
+-display_read_work_options      = { :controller => 'display',
+                                    :action => 'read_work',
+                                    :work_id => work_id }
+
+-display_list_pages_options     = { :controller => 'display',
+                                    :action => 'list_pages',
+                                    :work_id => work_id }
+
+-work_show_options              = { :controller => 'work',
+                                    :action => 'show',
+                                    :work_id => work_id }
+
+-work_versions_options          = { :controller => 'work',
+                                    :action => 'versions',
+                                    :work_id => work_id }
+
+-print_work_options             = { :controller => 'print',
+                                    :action => 'work',
+                                    :work_id => work_id }
+
+-work_edit_options              = { :controller => 'work',
+                                    :action => 'edit',
+                                    :work_id => work_id }
+
+-work_scribes_tab_options       = { :controller => 'work',
+                                    :action => 'scribes_tab',
+                                    :work_id => work_id }
+
+-work_pages_tab_options         = { :controller => 'work',
+                                    :action => 'pages_tab',
+                                    :work_id => work_id }
+
+-static_transcribe_help_options = { :controller => 'static',
+                                    :action => 'transcribe_help',
+                                    :work_id => work_id }
+
+.tabs
+  =link_to 'Read', display_read_work_options, :class => ('active' if selected == 1)
+  =link_to 'Contents', display_list_pages_options, :class => ('active' if selected == 2)
+  =link_to 'About', work_show_options, :class => ('active' if selected == 3)
+  =link_to 'Versions', work_versions_options, :class => ('active' if selected == 4)
+
+  -if session[:demo_mode]
+    =link_to 'Print', print_work_options, :class => ('active' if selected == 5)
+
+  -if @work.owner == current_user
+    =link_to 'Settings', work_edit_options, :class => ('active' if selected == 6)
+    =link_to 'Access', work_scribes_tab_options, :class => ('active' if selected == 7)
+    =link_to 'Pages', work_pages_tab_options, :class => ('active' if selected == 8)
+
+  =link_to 'Help', static_transcribe_help_options, :class => ('active' if selected == 9)
