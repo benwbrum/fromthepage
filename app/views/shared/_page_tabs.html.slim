@@ -1,36 +1,41 @@
--display_display_page_options    = { :controller => 'display',
-                                     :action => 'display_page',
-                                     :page_id => page_id }
+-tabs = [{\
+  :name => 'Page',
+  :controller => 'display',
+  :action => 'display_page',
+},{\
+  :name => 'Transcribe',
+  :controller => 'transcribe',
+  :action => 'display_page',
+}]
 
--transcribe_display_page_options = { :controller => 'transcribe',
-                                     :action => 'display_page',
-                                     :page_id => page_id }
+-if @work.supports_translation
+  -tabs += [{\
+    :name => 'Translate',
+    :controller => 'transcribe',
+    :action => 'translate',
+  }]
 
--transcribe_translate_options    = { :controller => 'transcribe',
-                                     :action => 'translate',
-                                     :page_id => page_id }
+-tabs += [{\
+  :name => 'Versions',
+  :controller => 'page_version',
+  :action => 'list',
+}]
 
--page_version_list_options       = { :controller => 'page_version',
-                                     :action => 'list',
-                                     :page_id => page_id }
+-if @work.owner == current_user
+  -tabs += [{\
+    :name => 'Settings',
+    :controller => 'page',
+    :action => 'edit',
+  },{\
+    :name => 'Image',
+    :controller => 'page',
+    :action => 'image_tab',
+  }]
 
--page_edit_options               = { :controller => 'page',
-                                     :action => 'edit',
-                                     :page_id => page_id }
-
--page_image_tab_options          = { :controller => 'page',
-                                     :action => 'image_tab',
-                                     :page_id => page_id }
 
 .tabs
-  =link_to 'Page', display_display_page_options, :class => ('active' if selected == 1)
-  =link_to 'Transcribe', transcribe_display_page_options, :class => ('active' if selected == 3)
-
-  -if @work.supports_translation
-    =link_to 'Translate', transcribe_translate_options, :class => ('active' if current_page? transcribe_translate_options)
-
-  =link_to 'Versions', page_version_list_options, :class => ('active' if selected == 2)
-
-  -if @work.owner == current_user
-    =link_to 'Settings', page_edit_options, :class => ('active' if selected == 4)
-    =link_to 'Image', page_image_tab_options, :class => ('active' if selected == 5)
+  -for tab in tabs
+    =link_to_unless_current tab[:name], { :controller => tab[:controller],
+                                          :action => tab[:action],
+                                          :page_id => page_id }
+      a.active =tab[:name]
