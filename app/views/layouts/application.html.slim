@@ -52,8 +52,8 @@ body
         //=link_to 'Sign In', new_user_session_path
         //=link_to 'Sign Up', new_user_registration_path
 
-  #work-logo.outside-column
-    -if (@work && @work.title) || (@collection && @collection.title)
+  -if (@work && @work.title) || (@collection && @collection.title)
+    #work-logo.outside-column
       h1.work-logo
         -if @collection
           =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
@@ -69,8 +69,13 @@ body
   -if flash[:alert]
     p style="color: blue" =flash[:alert]
 
-  =@content_for_layout
-  =yield.force_encoding 'UTF-8'
+  =(yield :content_above).force_encoding 'UTF-8'
+
+  article.wrapper
+    //=@content_for_layout
+    =yield.force_encoding 'UTF-8'
+
+  =(yield :content_below).force_encoding 'UTF-8'
 
   -if @collection && @collection.footer_block
     .outside-column ==@collection.footer_block

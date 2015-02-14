@@ -275,12 +275,12 @@ svg.icon {
 		&:hover { color: lighten($fgFooter, 20); }
 	}
 }
-.content {
+.wrapper {
 	margin: 0 auto;
 	text-align: left;
+	padding: $gapSize;
 	max-width: $widthMax;
 	box-sizing: border-box;
-	padding: $gapSize;
 }
 
 
@@ -293,7 +293,7 @@ svg.icon {
 	box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.1);
 	background: $bgFooter image-url('intro3.jpg') no-repeat center bottom;
 	background-size: cover;
-	.content {
+	.wrapper {
 		height: 500px;
 		&:after {
 			width: 0;
@@ -309,7 +309,7 @@ svg.icon {
 		line-height: normal;
 		display: inline-block;
 		vertical-align: middle;
-		background: rgba(#000, 0.35);
+		background: rgba(#100, 0.35);
 		padding: $gapSize $gapSize * 1.2;
 		h1 {
 			margin: 0;
@@ -441,7 +441,7 @@ div.two-columns {
 	browser using IE/Mac backslash hack */
 	//font-family: arial, helvetica, sans-serif;
 	//font-size: 100%; /* Changed from 80% BWB */
-	background-color: #fcfcfc;
+	//background-color: #fcfcfc;
 	color: #000; /* START - Fix horizontal scrollbar */
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
