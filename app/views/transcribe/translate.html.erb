@@ -1,7 +1,5 @@
 <%= render({ :partial => '/shared/page_tabs',
-			 :locals => { :page_id => @page.id, 
-			 				:selected => -1 }
-			}) %>
+             :locals => { :selected => 6, :page_id => @page.id }}) %>
 
 <div class="two-columns">
 	<div class="left-column">
@@ -67,5 +65,5 @@
 <script>
 	Event.observe(window, "load", function() {
 		initCheckingForModifications(['zi_icon', 'zi_text', 'zo_icon', 'zo_text']);
-	}); 
+	});
 </script>

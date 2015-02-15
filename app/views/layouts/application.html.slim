@@ -17,7 +17,7 @@ html
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
     title =title
-    meta(name="viewport" content="width=960, minimum-scale=0.333, maximum-scale=1, user-scalable=yes")
+    meta(name="viewport" content="width=768, minimum-scale=0.4, maximum-scale=1, user-scalable=yes")
     meta(name="keywords" content="transcribe handwritten documents free open-source wiki historical crowdsourcing transcription")
     meta(name="description" content="FromThePage is free software that allows volunteers to transcribe handwritten documents online. Easy to index and annotate subjects within a text using a wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.")
     meta(name="author" content="FromThePage.com")
@@ -82,7 +82,7 @@ body
 
   footer.footer
     .footer_copyright
-      |&copy; #{Time.now.year} <a href="#{root_path}">FromThePage</a>. All rights reserved.
+      |&copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
       //-if Rails.env == 'development'
       //  br
       //  small This is the development version. The beta version is located at <a href="http://beta.fromthepage.com/">beta.fromthepage.com</a>

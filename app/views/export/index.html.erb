@@ -1,12 +1,11 @@
 <%= render({ :partial => '/shared/collection_tabs',
-             :locals => { :selected => 1,
-                          :collection_id => @collection.id }}) %>
+             :locals => { :selected => 5, :collection_id => @collection.id }}) %>
 
 <div class="two-columns">
     <div class="left-column">
 		<div class="inside-column">
 			<h2>Export <%=@collection.title%></h2>
-			Subject index export as CSV: 
+			Subject index export as CSV:
 			<%= button_to('CSV Export',
 						  :controller => 'export',
 						  :action => 'subject_csv',
@@ -16,19 +15,19 @@
 			<% for work in @collection.works %>
 			  <span "width='80%'"><%=work.title%></span>
 			  <span "width='10%'">
-				  <%= link_to('XHTML', 
+				  <%= link_to('XHTML',
 							  { :controller => 'export',
 								:action => 'show',
 								:work_id => work.id })%>
 			  </span>
 			  <span "width='10%'">
-				  <%= link_to('TEI', 
+				  <%= link_to('TEI',
 							  { :controller => 'export',
 								:action => 'tei',
 								:work_id => work.id })%>
 			  </span><br/>
 			<% end %>
-	  </p>    
+	  </p>
 	</div>
 
   </div>

@@ -355,14 +355,14 @@ a {
 	}
 
 	@media screen and (max-width: $widthL) {
-		.content { height: 450px; }
+		.wrapper { height: 450px; }
 	}
 	@media screen and (max-width: $widthM) {
 		margin-bottom: 0;
-		.content { height: 400px; }
+		.wrapper { height: 400px; }
 	}
 	@media screen and (max-width: $widthMin) {
-		.content {
+		.wrapper {
 			height: 350px;
 			text-align: center;
 		}
@@ -454,10 +454,6 @@ a {
 		margin: 0.5em 0;
 		font-size: $fontSizeBig;
 		color: mix($bgBody, #000, 50);
-	}
-
-	@media screen and (max-width: $widthM) {
-		.justify_item { width: 100%; }
 	}
 }
 

@@ -1,17 +1,20 @@
 -tabs = [{\
   :name => 'Overview',
+  :selected => 1,
   :options => {\
     :controller => 'collection',
     :action => 'show',
   },
 },{\
   :name => 'Subjects',
+  :selected => 6,
   :options => {\
     :controller => 'article',
     :action => 'list',
   },
 },{\
   :name => 'Stats',
+  :selected => 7,
   :options => {\
     :controller => 'statistics',
     :action => 'collection',
@@ -21,30 +24,33 @@
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
     :name => 'Settings',
+    :selected => 2,
     :options => {\
       :controller => 'collection',
       :action => 'edit',
     },
   },{\
     :name => 'Categories',
+    :selected => 3,
     :options => {\
       :controller => 'category',
       :action => 'manage',
     },
   },{\
     :name => 'Owners',
+    :selected => 0,
     :options => {\
       :controller => 'collection',
       :action => 'owners',
     },
   },{\
     :name => 'Export',
+    :selected => 5,
     :options => {\
       :controller => 'export',
       :action => 'index',
     },
   }]
-
 
 .tabs
   -for tab in tabs

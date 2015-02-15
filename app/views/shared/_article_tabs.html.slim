@@ -1,16 +1,17 @@
 // TODO: Does 'title' param required or it can be removed?
 -tabs = [{\
   :name => 'Subject',
+  :selected => 1,
   :options => {\
     :controller => 'article',
     :action => 'show',
-    :title => title,
   },
 }]
 
 -if user_signed_in?
   -tabs += [{\
     :name => 'Edit',
+    :selected => 4,
     :options => {\
       :controller => 'article',
       :action => 'edit',
@@ -19,12 +20,14 @@
 
 -tabs += [{\
   :name => 'Versions',
+  :selected => 2,
   :options => {\
     :controller => 'article_version',
     :action => 'list',
   },
 },{\
   :name => 'Graph',
+  :selected => 3,
   :options => {\
     :controller => 'article',
     :action => 'graph',
@@ -34,5 +37,5 @@
 
 .tabs
   -for tab in tabs
-    =link_to_unless_current tab[:name], tab[:options].merge(:article_id => article_id)
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:article_id => article_id)
       a.active =tab[:name]

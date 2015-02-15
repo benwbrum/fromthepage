@@ -1,23 +1,27 @@
 -tabs = [{\
   :name => 'Read',
+  :selected => 1,
   :options => {\
     :controller => 'display',
     :action => 'read_work',
   },
 },{\
   :name => 'Contents',
+  :selected => 2,
   :options => {\
     :controller => 'display',
     :action => 'list_pages',
   },
 },{\
   :name => 'About',
+  :selected => 3,
   :options => {\
     :controller => 'work',
     :action => 'show',
   },
 },{\
   :name => 'Versions',
+  :selected => 4,
   :options => {\
     :controller => 'work',
     :action => 'versions',
@@ -27,6 +31,7 @@
 -if session[:demo_mode]
   -tabs += [{\
     :name => 'Print',
+    :selected => 5,
     :options => {\
       :controller => 'print',
       :action => 'work',
@@ -36,18 +41,21 @@
 -if @work.owner == current_user
   -tabs += [{\
     :name => 'Settings',
+    :selected => 6,
     :options => {\
       :controller => 'work',
       :action => 'edit',
     },
   },{\
     :name => 'Access',
+    :selected => 7,
     :options => {\
       :controller => 'work',
       :action => 'scribes_tab',
     },
   },{\
     :name => 'Pages',
+    :selected => 8,
     :options => {\
       :controller => 'work',
       :action => 'pages_tab',
@@ -56,6 +64,7 @@
 
 -tabs += [{\
   :name => 'Help',
+  :selected => 9,
   :options => {\
     :controller => 'static',
     :action => 'transcribe_help',
@@ -65,5 +74,5 @@
 
 .tabs
   -for tab in tabs
-    =link_to_unless_current tab[:name], tab[:options].merge(:work_id => work_id)
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:work_id => work_id)
       a.active =tab[:name]
