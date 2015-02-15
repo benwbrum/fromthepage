@@ -1,41 +1,51 @@
 -tabs = [{\
   :name => 'Page',
-  :controller => 'display',
-  :action => 'display_page',
+  :options => {\
+    :controller => 'display',
+    :action => 'display_page',
+  },
 },{\
   :name => 'Transcribe',
-  :controller => 'transcribe',
-  :action => 'display_page',
+  :options => {\
+    :controller => 'transcribe',
+    :action => 'display_page',
+  },
 }]
 
 -if @work.supports_translation
   -tabs += [{\
     :name => 'Translate',
-    :controller => 'transcribe',
-    :action => 'translate',
+    :options => {\
+      :controller => 'transcribe',
+      :action => 'translate',
+    },
   }]
 
 -tabs += [{\
   :name => 'Versions',
-  :controller => 'page_version',
-  :action => 'list',
+  :options => {\
+    :controller => 'page_version',
+    :action => 'list',
+  },
 }]
 
 -if @work.owner == current_user
   -tabs += [{\
     :name => 'Settings',
-    :controller => 'page',
-    :action => 'edit',
+    :options => {\
+      :controller => 'page',
+      :action => 'edit',
+    },
   },{\
     :name => 'Image',
-    :controller => 'page',
-    :action => 'image_tab',
+    :options => {\
+      :controller => 'page',
+      :action => 'image_tab',
+    },
   }]
 
 
 .tabs
   -for tab in tabs
-    =link_to_unless_current tab[:name], { :controller => tab[:controller],
-                                          :action => tab[:action],
-                                          :page_id => page_id }
+    =link_to_unless_current tab[:name], tab[:options].merge(:page_id => page_id)
       a.active =tab[:name]

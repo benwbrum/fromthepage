@@ -1,53 +1,69 @@
 -tabs = [{\
   :name => 'Read',
-  :controller => 'display',
-  :action => 'read_work',
+  :options => {\
+    :controller => 'display',
+    :action => 'read_work',
+  },
 },{\
   :name => 'Contents',
-  :controller => 'display',
-  :action => 'list_pages',
+  :options => {\
+    :controller => 'display',
+    :action => 'list_pages',
+  },
 },{\
   :name => 'About',
-  :controller => 'work',
-  :action => 'show',
+  :options => {\
+    :controller => 'work',
+    :action => 'show',
+  },
 },{\
   :name => 'Versions',
-  :controller => 'work',
-  :action => 'versions',
+  :options => {\
+    :controller => 'work',
+    :action => 'versions',
+  },
 }]
 
 -if session[:demo_mode]
   -tabs += [{\
     :name => 'Print',
-    :controller => 'print',
-    :action => 'work',
+    :options => {\
+      :controller => 'print',
+      :action => 'work',
+    },
   }]
 
 -if @work.owner == current_user
   -tabs += [{\
     :name => 'Settings',
-    :controller => 'work',
-    :action => 'edit',
+    :options => {\
+      :controller => 'work',
+      :action => 'edit',
+    },
   },{\
     :name => 'Access',
-    :controller => 'work',
-    :action => 'scribes_tab',
+    :options => {\
+      :controller => 'work',
+      :action => 'scribes_tab',
+    },
   },{\
     :name => 'Pages',
-    :controller => 'work',
-    :action => 'pages_tab',
+    :options => {\
+      :controller => 'work',
+      :action => 'pages_tab',
+    },
   }]
 
 -tabs += [{\
   :name => 'Help',
-  :controller => 'static',
-  :action => 'transcribe_help',
+  :options => {\
+    :controller => 'static',
+    :action => 'transcribe_help',
+  },
 }]
 
 
 .tabs
   -for tab in tabs
-    =link_to_unless_current tab[:name], { :controller => tab[:controller],
-                                          :action => tab[:action],
-                                          :work_id => work_id }
+    =link_to_unless_current tab[:name], tab[:options].merge(:work_id => work_id)
       a.active =tab[:name]

@@ -1,40 +1,52 @@
 -tabs = [{\
   :name => 'Overview',
-  :controller => 'collection',
-  :action => 'show',
+  :options => {\
+    :controller => 'collection',
+    :action => 'show',
+  },
 },{\
   :name => 'Subjects',
-  :controller => 'article',
-  :action => 'list',
+  :options => {\
+    :controller => 'article',
+    :action => 'list',
+  },
 },{\
   :name => 'Stats',
-  :controller => 'statistics',
-  :action => 'collection',
+  :options => {\
+    :controller => 'statistics',
+    :action => 'collection',
+  },
 }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
     :name => 'Settings',
-    :controller => 'collection',
-    :action => 'edit',
+    :options => {\
+      :controller => 'collection',
+      :action => 'edit',
+    },
   },{\
     :name => 'Categories',
-    :controller => 'category',
-    :action => 'manage',
+    :options => {\
+      :controller => 'category',
+      :action => 'manage',
+    },
   },{\
     :name => 'Owners',
-    :controller => 'collection',
-    :action => 'owners',
+    :options => {\
+      :controller => 'collection',
+      :action => 'owners',
+    },
   },{\
     :name => 'Export',
-    :controller => 'export',
-    :action => 'index',
+    :options => {\
+      :controller => 'export',
+      :action => 'index',
+    },
   }]
 
 
 .tabs
   -for tab in tabs
-    =link_to_unless_current tab[:name], { :controller => tab[:controller],
-                                          :action => tab[:action],
-                                          :collection_id => collection_id }
+    =link_to_unless_current tab[:name], tab[:options].merge(:collection_id => collection_id)
       a.active =tab[:name]
