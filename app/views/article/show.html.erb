@@ -1,5 +1,6 @@
 <%= render( :partial => '/shared/article_tabs',
             :locals => { :selected => 1,
+                         :title => @article.title,
                          :article_id => @article.id }) %>
 
 <div class="two-columns">

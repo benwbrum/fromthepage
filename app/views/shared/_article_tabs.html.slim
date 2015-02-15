@@ -1,24 +1,38 @@
--article_show_options = { :controller => 'article',
-                    :action => 'show',
-                    :article_id => article_id }
+// TODO: Does 'title' param required or it can be removed?
+-tabs = [{\
+  :name => 'Subject',
+  :options => {\
+    :controller => 'article',
+    :action => 'show',
+    :title => title,
+  },
+}]
 
--article_edit_options = { :controller => 'article',
-                      :action => 'edit',
-                      :article_id => article_id }
+-if user_signed_in?
+  -tabs += [{\
+    :name => 'Edit',
+    :options => {\
+      :controller => 'article',
+      :action => 'edit',
+    },
+  }]
 
--article_version_list_options = { :controller => 'article_version',
-                    :action => 'list',
-                    :article_id => article_id }
+-tabs += [{\
+  :name => 'Versions',
+  :options => {\
+    :controller => 'article_version',
+    :action => 'list',
+  },
+},{\
+  :name => 'Graph',
+  :options => {\
+    :controller => 'article',
+    :action => 'graph',
+  },
+}]
 
--article_graph_options = { :controller => 'article',
-                    :action => 'graph',
-                    :article_id => article_id }
 
 .tabs
-  =link_to 'Subject', article_show_options, :class => ('active' if selected == 1)
-
-  -if user_signed_in?
-    =link_to 'Edit', article_edit_options, :class => ('active' if selected == 4)
-
-  =link_to 'Versions', article_version_list_options, :class => ('active' if selected == 2)
-  =link_to 'Graph', article_graph_options, :class => ('active' if selected == 3)
+  -for tab in tabs
+    =link_to_unless_current tab[:name], tab[:options].merge(:article_id => article_id)
+      a.active =tab[:name]
