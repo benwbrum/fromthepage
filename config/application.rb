@@ -22,5 +22,15 @@ module Fromthepage
 
     config.neato = '/usr/bin/env neato'
     config.encoding = 'utf-8'
+
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+      class_attr_index = html_tag.index 'class="'
+
+      if class_attr_index
+        html_tag.insert class_attr_index+7, 'invalid '
+      else
+        html_tag.insert html_tag.index('>'), ' class="invalid"'
+      end
+    }
   end
 end
