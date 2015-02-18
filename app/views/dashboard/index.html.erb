@@ -1,218 +1,106 @@
 <div class="two-columns">
-	<div class="left-column">
-		<div class="inside-column">
-                  <%= html_block('left') %>
-
-      <div>
-        <p>
-          <h3>Collections</h3>
+  <div class="left-column">
+    <div class="inside-column">
+      <%= html_block('left') %>
+      <h3>Collections</h3>
+      <ul>
+        <% @collections.each do |collection| %>
+          <% if !collection.restricted || (user_signed_in? && current_user.like_owner?(collection)) %>
+            <li>
+              <%= link_to(collection.title, { :controller => 'collection', :action => 'show', :collection_id => collection.id }) %>
+              (<%= link_to('statistics', { :controller => 'statistics', :action => 'collection', :collection_id => collection.id }) %>)
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+      <% if user_signed_in? && current_user.owner %>
+        <h3>Owner Actions</h3>
+        <p><%= link_to("Create an empty work", { :controller => 'work', :action => 'new' }) %></p>
+        <p><%= link_to("Create an empty collection", { :controller => 'collection', :action => 'new' }) %></p>
+        <p><%= link_to("Import works from Omeka", { :controller => 'omeka_sites', :action => 'index' }) %></p>
+        <p><%= link_to("Import a book from the Internet Archive", { :controller => 'ia', :action => 'ia_book_form' }) %></p>
+        <p><%= link_to("Create an image set", { :controller => 'transform' }) %></p>
+        <p><%= link_to("Explore OAI repositories", { :controller => 'oai', :action => 'repository_list' }) %></p>
+        <% if @current_user.oai_sets %>
+          <h4>Import a work from an OAI collection:</h4>
           <ul>
-            <% @collections.each do |collection| %>
-			  <% if !collection.restricted || (user_signed_in? && current_user.like_owner?(collection)) %>
-	              <li>
-	                <%= link_to(collection.title,
-	                            { :controller => 'collection',
-	                              :action => 'show',
-	                              :collection_id => collection.id }) %>
-					(<%= link_to('statistics',
-								 { :controller => 'statistics',
-								   :action => 'collection',
-								   :collection_id => collection.id } )%>)
-	              </li>
-			  <% end %>
+            <% for set in @current_user.oai_sets%>
+              <li>
+                <%= link_to('List works to import from '+set.set_spec, { :action => 'record_list',
+                                                                         :controller => 'oai',
+                                                                         :repository_url => set.repository_url,
+                                                                         :set_spec => set.set_spec }) %>
+              </li>
             <% end %>
           </ul>
-        </p>
-      </div>
-      <% if user_signed_in? && current_user.owner %>
-        <div>
-          <p>
-            Owner Actions
-          </p>
-          <div>
-          <%= link_to("Create an empty work",
-                      { :controller => 'work',
-                        :action => 'new' })%>
-          </div>
-          <div>
-          <%= link_to("Create an empty collection",
-                      { :controller => 'collection',
-                        :action => 'new' })%>
-          </div>
-	  <div>
-	  <%= link_to("Import works from Omeka",
-	      	      { :controller => 'omeka_sites',
-			        :action => 'index' }) %>
-	  </div>
-	  <div>
-	  <%= link_to("Import a book from the Internet Archive",
-	      	      { :controller => 'ia',
-		        :action => 'ia_book_form' }) %>
-	  </div>
-          <div>
-            <%= link_to("Create an image set",
-                        { :controller => 'transform' })%>
-          </div>
-		  <div>
-		  	<%= link_to("Explore OAI repositories",
-						{ :controller => 'oai',
-						  :action => 'repository_list' }) %>
-		  </div>
-		  <div>
-		  	<% if @current_user.oai_sets %>
-				Import a work from an OAI collection.
-				<ul>
-					<% for set in @current_user.oai_sets%>
-						<li>
-							<%= link_to('List works to import from '+set.set_spec,
-								 { :action => 'record_list',
-								   :controller => 'oai',
-								   :repository_url => set.repository_url,
-								   :set_spec => set.set_spec }) %>
-						</li>
-					<% end %>
-
-				</ul>
-			<% end %>
-		  </div>
-          <% if @current_user.owner_works && @current_user.owner_works.size > 0 %>
-	          <div>
-	            <p>
-	              Works I own:
-	            </p>
-	            <ul>
-	              <% for work in @current_user.owner_works %>
-	                <li>
-	                  <%= link_to(work.title,
-	                              { :controller => 'work',
-	                                :action => 'edit',
-	                                :work_id => work.id }) %>
-	                </li>
-                <% end %>
-              </ul>
-	          </div>
-          <% end %>
-          <% if (@image_sets && @image_sets.size > 0) ||
-				(@current_user.ia_works && @current_user.ia_works.size > 0) %>
-				<h3>Staging Area</h3>
-		  <% end %>
-          <% if (@current_user.ia_works && @current_user.ia_works.size > 0) %>
-			<div>
-				<h4>Imported Archive.org Books</h4>
-				<ul>
-					<% for ia_work in @current_user.ia_works %>
-					<li>
-						<%= link_to(ia_work.title,
-									{ :controller => 'ia',
-									  :action => 'manage',
-									  :ia_work_id => ia_work.id}) %>
-					</li>
-					<% end %>
-				</ul>
-			</div>
-		  <% end %>
-
-          <% if @image_sets && @image_sets.size > 0 %>
-	          <div>
-	            <p>
-	              Image Sets I own:
-	              <ul>
-	                <% @image_sets.each do |set| %>
-	                  <li>
-	                    <%= "Set #{set.id} (#{set.summary})" %>
-	                    <%= link_to("Title",
-	                                { :controller => 'title',
-	                                  :action => 'list',
-	                                  :image_set_id => set.id }) %>
-	                    <%= link_to("Delete",
-	                                { :controller => 'image_set',
-	                                  :action => 'delete',
-	                                  :image_set_id => set.id }) %>
-	                    <%= link_to("Append",
-	                                { :controller => 'image_set',
-	                                  :action => 'select_target',
-	                                  :image_set_id => set.id }) %>
-	                    <%= link_to("Merge",
-	                                { :controller => 'collation',
-	                                  :action => 'select_target',
-	                                  :image_set_id => set.id }) %>
-	                    <%= link_to("Publish",
-	                                { :controller => 'image_set',
-	                                  :action => 'convert_to_work',
-	                                  :image_set_id => set.id }) %>
-	                  </li>
-				          <% end %>
-	              </ul>
-	            </p>
-	          </div>
-           <% end %>
-        </div>
+        <% end %>
+        <% if @current_user.owner_works && @current_user.owner_works.size > 0 %>
+          <h4>Works I own:</h4>
+          <ul>
+            <% for work in @current_user.owner_works %>
+              <li>
+                <%= link_to(work.title, { :controller => 'work', :action => 'edit', :work_id => work.id }) %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+        <% if (@image_sets && @image_sets.size > 0) || (@current_user.ia_works && @current_user.ia_works.size > 0) %>
+          <h3>Staging Area</h3>
+        <% end %>
+        <% if (@current_user.ia_works && @current_user.ia_works.size > 0) %>
+          <h4>Imported Archive.org Books</h4>
+          <ul>
+            <% for ia_work in @current_user.ia_works %>
+              <li>
+                <%= link_to(ia_work.title, { :controller => 'ia', :action => 'manage', :ia_work_id => ia_work.id}) %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+        <% if @image_sets && @image_sets.size > 0 %>
+          <h4>Image Sets I own:</h4>
+          <ul>
+            <% @image_sets.each do |set| %>
+              <li>
+                <%= "Set #{set.id} (#{set.summary})" %>
+                <%= link_to("Title", { :controller => 'title', :action => 'list', :image_set_id => set.id }) %>
+                <%= link_to("Delete", { :controller => 'image_set', :action => 'delete', :image_set_id => set.id }) %>
+                <%= link_to("Append", { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id }) %>
+                <%= link_to("Merge", { :controller => 'collation', :action => 'select_target', :image_set_id => set.id }) %>
+                <%= link_to("Publish", { :controller => 'image_set', :action => 'convert_to_work', :image_set_id => set.id }) %>
+              </li>
+            <% end %>
+          </ul>
+         <% end %>
       <% end %>
       <% if user_signed_in? && current_user.admin %>
-        <div>
-          <h3>
-            Admin Dashboard
-          </h3>
-		  <p>
-		  	<%= link_to("Edit Page Blocks",
-						{ :controller => 'page_block',
-						  :action => 'list' }) %>
-  	  	  </p>
+        <h3>Admin Dashboard</h3>
+        <p><%= link_to("Edit Page Blocks", { :controller => 'page_block', :action => 'list' }) %></p>
+        <p><%= link_to("View Logfile", { :controller => 'admin', :action => 'tail_logfile', :lines => 500 }) %></p>
+        <p><%= link_to("Recent Errors", { :controller => 'admin', :action => 'error_list', :limit => 50 }) %></p>
 
-				  <p>
-				      <%= link_to("View Logfile",
-				                  { :controller => 'admin',
-				                    :action => 'tail_logfile',
-				                    :lines => 500 }) %>
-				  </p>
-
-				  <p>
-				      <%= link_to("Recent Errors",
-				                  { :controller => 'admin',
-				                    :action => 'error_list',
-				                    :limit => 50 }) %>
-				  </p>
-          <p>
-            Users
-            <ul>
-	            <% @users.each do |user| %>
-	              <li>
-	                <%= link_to(user.display_name,
-	                           { :controller => 'user',
-	                               :action => 'profile',
-	                               :user_id => user.id }) %>
-	                <%= link_to("Edit",
-	                            { :controller => 'admin',
-	                              :action => 'edit_user',
-	                              :user_id => user.id }) %>
-                  <%= link_to("Sessions",
-                              { :controller => 'admin',
-                                :action => 'session_list',
-                                :user_id => user.id }) %>
-	              </li>
-	            <% end %>
-	            <li>
-                <%= link_to("Anonymous Sessions",
-                            { :controller => 'admin',
-                              :action => 'session_list' }) %>
-	            </li>
-            </ul>
-          </p>
-        </div>
+        <h4>Users</h4>
+        <ul>
+          <% @users.each do |user| %>
+            <li>
+              <%= link_to(user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }) %>
+              <%= link_to("Edit", { :controller => 'admin', :action => 'edit_user', :user_id => user.id }) %>
+              <%= link_to("Sessions", { :controller => 'admin', :action => 'session_list', :user_id => user.id }) %>
+            </li>
+          <% end %>
+          <li>
+            <%= link_to("Anonymous Sessions", { :controller => 'admin', :action => 'session_list' }) %>
+          </li>
+        </ul>
       <% end %>
-		</div>
-	</div>
-	<div class="right-column">
-
-    <div class="inside-column">
-                  <%= html_block('right') %>
-	<h3>Recent Activity</h3>
-
-      <%= deeds_for() %>
-
-	    <p>
-	      <%= pluralize(@user_count, 'registered user') %> online.
-	    </p>
     </div>
-	</div>
+  </div>
+  <div class="right-column">
+    <div class="inside-column">
+      <%= html_block('right') %>
+      <h3>Recent Activity</h3>
+      <%= deeds_for() %>
+      <p><%= pluralize(@user_count, 'registered user') %> online.</p>
+    </div>
+  </div>
 </div>
