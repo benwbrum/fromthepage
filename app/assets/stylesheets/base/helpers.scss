@@ -1,0 +1,83 @@
+// Alignment
+.aleft {
+  text-align: left !important;
+}
+.aright {
+  text-align: right !important;
+}
+.acenter {
+  text-align: center !important;
+}
+.vtop {
+  vertical-align: top !important;
+}
+.vbottom {
+  vertical-align: bottom !important;
+}
+.vmiddle {
+  vertical-align: middle !important;
+}
+
+
+// Text
+.bold {
+  font-weight: bold !important;
+}
+.italic {
+  font-style: italic !important;
+}
+
+
+// Width and height
+.h100 {
+  height: 100% !important;
+}
+.wauto {
+  width: auto !important;
+}
+$step: 5;
+@for $i from 1 through (100 / $step) {
+  $width: $i * $step;
+  .w#{$width} {
+    width: $width * 1%;
+  }
+}
+
+
+// Floating blocks
+.fclear {
+  &:before, &:after {
+    content: '';
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+.fleft {
+  float: left !important;
+}
+.fright {
+  float: right !important;
+}
+.ohidden {
+  overflow: hidden;
+}
+
+
+// Miscellaneous
+.nobg {
+  background: none !important;
+}
+.noborder {
+  border: none !important;
+}
+.nomargin {
+  margin: 0 !important;
+}
+.nopadding {
+  padding: 0 !important;
+}
+.nowrap {
+  white-space: nowrap !important;
+}
