@@ -1,0 +1,137 @@
+// Text and background colors
+@mixin button-colors($color, $background, $state: normal) {
+  @if $state == normal {
+    color: $color;
+    border-color: rgba(#000, 0.15);
+    background-color: $background;
+  }
+  @if $state == hover {
+    color: $color;
+    border-color: rgba(#000, 0.2);
+    background-color: mix(#000, $background, 6);
+  }
+  @if $state == active {
+    color: $color;
+    border-color: rgba(#000, 0.4);
+    background-color: mix(#000, $background, 20);
+  }
+  @if $state == disabled {
+    color: $color !important;
+    background-color: $background !important;
+  }
+}
+
+// Button states
+@mixin button-state($state: normal) {
+  @if $state == normal {
+    text-align: center;
+    user-select: none;
+    white-space: nowrap;
+    padding: 0 $btnPadding;
+    line-height: $btnHeight;
+    outline: none !important;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+    border-radius: $btnBorderRadius;
+    transition-duration: $btnTransitionTime;
+    transition-property: color, background-color, border-color;
+    background-image: linear-gradient(rgba(#FFF, 0.3), rgba(#FFF, 0));
+    box-shadow: inset 0 1px 0 rgba(#FFF, 0.8), 0 1px 1px rgba(#000, 0.1);
+    @include button-colors($btnColor, $btnBackground, $state);
+  }
+  @if $state == hover {
+    @include button-colors($btnColor, $btnBackground, $state);
+  }
+  @if $state == active {
+    box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+    @include button-colors($btnColor, $btnBackground, $state);
+  }
+  @if $state == disabled {
+    box-shadow: none;
+    cursor: default !important;
+    @include button-colors($btnDisabledColor, $btnDisabledBackground, $state);
+  }
+}
+
+// Button colors
+@mixin button-colorize($color, $background) {
+  @include button-colors($color, $background);
+  &:hover, &:focus { @include button-colors($color, $background, hover); }
+  &:active, &.pressed { @include button-colors($color, $background, active); }
+}
+
+// Button sizes
+@mixin button-sizes() {
+  &.big { font-size: $btnFontSizeBig; }
+  &.strong { font-size: $btnFontSizeStrong; }
+}
+
+
+button, .button, input[type="submit"], input[type="reset"], input[type="button"] {
+  font: $btnFontWeight $btnFontSize $btnFontFamily;
+  font-size: inherit;
+  @include button-state(normal);
+
+  // Hovered, focused and pressed
+  &:hover, &:focus { @include button-state(hover); }
+  &:active, &.pressed { @include button-state(active); }
+
+  // Red button
+  &.bgred { @include button-colorize($btnRedColor, $btnRedBackground); }
+
+  // Green button
+  &.bggreen { @include button-colorize($btnGreenColor, $btnGreenBackground); }
+
+  // Orange button
+  &.bgorange { @include button-colorize($btnOrangeColor, $btnOrangeBackground); }
+
+  // Disabled button
+  &[disabled] { @include button-state(disabled); }
+
+  // Round corners
+  &.round { border-radius: $btnHeight; }
+
+  // Different sizes
+  @include button-sizes();
+}
+
+// Button without content
+button:empty, .button:empty {
+  padding: 0;
+  width: $btnHeight;
+  height: $btnHeight;
+}
+
+// Required overrides for the link button
+.button {
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  text-decoration: none !important;
+}
+
+// Stacked buttons
+.stack-buttons {
+  display: inline-block;
+  vertical-align: middle;
+  button, .button {
+    float: left;
+    border-radius: 0;
+    margin-left: -1px;
+    &:first-child {
+      margin-left: 0;
+      border-radius: $btnBorderRadius 0 0 $btnBorderRadius;
+    }
+    &:last-child {
+      border-radius: 0 $btnBorderRadius $btnBorderRadius 0;
+    }
+    &:active, &.pressed {
+      z-index: 1;
+      position: relative;
+    }
+    &:focus {
+      z-index: 2;
+      position: relative;
+    }
+  }
+}
