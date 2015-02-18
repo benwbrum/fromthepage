@@ -1,13 +1,9 @@
-// ---------------------------
-// INLINE BLOCKS
-// ---------------------------
-
-// Inline blocks, wrapped into a container
-.wrapbox {
+// Wrapping blocks
+.wrapping {
   margin: 0;
   font-size: 0;
   list-style: none;
-  &_item {
+  &_box {
     margin: 0;
     text-align: left;
     white-space: normal;
@@ -16,15 +12,15 @@
     display: inline-block;
     box-sizing: border-box;
   }
-  &.vmiddle &_item { vertical-align: middle; }
+  &.vmiddle &_box { vertical-align: middle; }
   &.nowrap {
     overflow: hidden;
     white-space: nowrap;
   }
 }
 
-// Inline blocks, justified to the available width
-.justify {
+// Justified blocks
+.justified {
   margin: 0;
   font-size: 0;
   list-style: none;
@@ -39,7 +35,7 @@
     visibility: hidden;
     display: inline-block;
   }
-  &_item {
+  &_box {
     margin: 0;
     text-align: left;
     font-size: $fontSize;
@@ -49,4 +45,57 @@
     box-sizing: border-box;
   }
   &.vtop &_item { vertical-align: top; }
+}
+
+// Centered content block
+.centered {
+  margin: 0;
+  height: 100%;
+  font-size: 0;
+  line-height: 0;
+  list-style: none;
+  word-spacing: -1px;
+  text-align: center;
+  white-space: nowrap;
+  &:before, &:after {
+    width: 0;
+    content: '';
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &_content {
+    text-align: left;
+    line-height: normal;
+    white-space: normal;
+    word-spacing: normal;
+    font-size: $fontSize;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+
+[data-prefix]:before {
+  white-space: pre;
+  content: attr(data-prefix);
+}
+[data-suffix]:after {
+  white-space: pre;
+  content: attr(data-suffix);
+}
+.toolbar {
+  width: 100%;
+  display: table;
+  border-spacing: 0;
+  border-collapse: collapse;
+  &_group {
+    display: table-cell;
+    white-space: nowrap;
+    padding-left: $gapSize;
+    vertical-align: middle;
+    &:first-child { padding-left: 0; }
+  }
+  &.vtop &_group { vertical-align: top; }
+  table.form + & { margin: 1em 0 0 0; }
 }

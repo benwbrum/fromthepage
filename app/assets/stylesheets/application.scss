@@ -3,25 +3,25 @@
 // ---------------------------
 
 $remSize:										10px;
+$iconSize:									16px;
 $lineHeight:								1.375;
-$fontSize:									16px;
-$fontSizeSmall:							14px;
-$fontSizeBig:								18px;
-$fontSizeStrong:						20px;
-$fontSizeH5:								$fontSizeStrong;
-$fontSizeH4:								20px;
-$fontSizeH3:								24px;
-$fontSizeH2:								28px;
-$fontSizeH1:								32px;
+
 $fontFamily:								'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
 $fontFamilyHead:						'Crete Round', Georgia, 'Times New Roman', Times, serif;
+
+$fontSizeSmall:							14px;
+$fontSize:									16px;
+$fontSizeBig:								18px;
+$fontSizeStrong:						20px;
+$fontSizeH5:								20px;
+$fontSizeH4:								24px;
+$fontSizeH3:								28px;
+$fontSizeH2:								32px;
+$fontSizeH1:								40px;
 
 // ---------------------------
 // COLORS
 // ---------------------------
-
-$fgBody:										#000;
-$bgBody:										mix(#EDB, #FFF, 30);
 
 $fgBlack:										#000;
 $fgWhite:										#FFF;
@@ -45,13 +45,47 @@ $bgPink:										#FFF0F0;
 
 $fgSelected:								#FFF;
 $bgSelected:								#09E;
-$fgHover:										#07F;
+$fgHover:										#D50;
 $bgHover:										lighten($bgSelected, 47);
 
-$fgHeader:									#433;
-$bgHeader:									#EDB;
-$fgFooter:									#A99;
-$bgFooter:									#433;
+// ---------------------------
+// BUTTONS & INPUTS
+// ---------------------------
+
+$btnHeight:									2em;
+$btnPadding:								0.75em;
+$btnIconPadding:						0.6em;
+$btnBorderRadius:						0.25em;
+$btnTransitionTime:					0.1s;
+$btnFontWeight:							normal;
+$btnFontSize:								$fontSize;
+$btnFontSizeBig:						$fontSizeBig;
+$btnFontSizeStrong:					$fontSizeStrong;
+$btnFontFamily:							$fontFamily;
+$btnColor:									#532;
+$btnBackground:							#EFE9E6;
+$btnFocusBorder:						#09F;
+$btnDisabledColor:					#AAA;
+$btnDisabledBackground:			#EEE;
+$btnRedColor:								#FFF;
+$btnRedBackground:					#E33;
+$btnGreenColor:							#FFF;
+$btnGreenBackground:				#8C3;
+$btnBlueColor:							#FFF;
+$btnBlueBackground:					#3AE;
+$btnOrangeColor:						#FFF;
+$btnOrangeBackground:				#F83;
+
+$inputHeight:								2em;
+$inputFontSize:							$fontSize;
+$inputFontFamily:						$fontFamily;
+$inputColor:								#000;
+$inputBackground:						#FFF;
+$inputBorderColor:					rgba(#000, 0.15);
+$inputFocusBorder:					#C96;
+$inputDisabledColor:				#888;
+$inputDisabledBackground:		#F9F9F9;
+$inputInvalidColor:					#C00;
 
 // ---------------------------
 // LAYOUT
@@ -61,30 +95,44 @@ $widthMax:									1280px;
 $widthL:										1024px;
 $widthM:										900px;
 $widthMin:									768px;
+
 $gapSize:										20px;
+
+$bodyFg:										#300;
+$bodyBg:										mix(#EDB, #FFF, 30);
+$borderColor:								rgba(#000, 0.15);
+
 $headerHeight:							80px;
+$headerFg:									#433;
+$headerBg:									#EDB;
+
 $footerHeight:							80px;
+$footerFg:									#A99;
+$footerBg:									#433;
 
 
 @import "base/normalize";
+@import "base/helpers";
 @import "base/common";
+@import "base/forms";
+@import "base/buttons";
 
 
 // ---------------------------
-// COMMON ELEMENTS
+// GENERAL
 // ---------------------------
 
 html {
 	height: 100%;
 	font-size: $remSize;
-	background: $bgBody;
+	background: $bodyBg;
 }
 body {
-	color: $fgBody;
+	color: $bodyFg;
 	min-height: 100%;
 	position: relative;
 	text-align: center;
-	background: $bgBody;
+	background: $bodyBg;
 	min-width: $widthMin;
 	box-sizing: border-box;
 	padding-bottom: $footerHeight;
@@ -94,31 +142,38 @@ body {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-focus-ring-color: transparent;
 }
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
 	font-weight: normal;
-	font-family: $fontFamilyHead;
 	margin: 1em 0 0.5em 0;
+	font-family: $fontFamilyHead;
 }
 h1 {
 	color: #655;
-	font-size: 300%;
+	font-size: 250%; // 40px
 	margin: 0 0 0.5em 0;
 }
 h2 {
 	color: #544;
-	font-size: 240%;
+	font-size: 200%; // 32px
 }
 h3 {
 	color: #433;
-	font-size: 180%;
+	font-size: 175%; // 28px
 }
 h4 {
 	color: #322;
-	font-size: 140%;
+	font-size: 150%; // 24px
 }
 h5 {
 	color: #211;
-	font-size: 120%;
+	font-size: 125%; // 20px
+}
+big, .big {
+	font-size: $fontSizeBig;
+}
+strong, .strong {
+	font-weight: inherit;
+	font-size: $fontSizeStrong;
 }
 p {
 	margin: 1em 0;
@@ -130,6 +185,22 @@ a {
 	&:hover { color: #D50; }
 	&:focus { outline: none; }
 }
+hr {
+	height: 0;
+	padding: 0;
+	clear: both;
+	margin: 1.5em 0;
+	border-style: solid;
+	border-width: 1px 0 0 0;
+	border-color: $borderColor;
+	&.dotted { border-style: dotted; }
+	&.dashed { border-style: dashed; }
+}
+
+
+// ---------------------------
+// SHARED
+// ---------------------------
 
 .legend {
 	margin: 1em 0;
@@ -144,7 +215,7 @@ a {
 		position: relative;
 		display: inline-block;
 		vertical-align: middle;
-		background: rgba(#000, 0.15);
+		background: $borderColor;
 	}
 	&:before {
 		left: -0.5em;
@@ -180,8 +251,11 @@ a {
 	}
 }
 .icon {
+	width: 1em;
+	height: 1em;
+	margin-right: 5px;
+	font-size: $iconSize;
 	vertical-align: -10%;
-	margin-right: 0.5rem;
 	display: inline-block;
 	text-decoration: none;
 }
@@ -212,45 +286,35 @@ a {
 			cursor: default;
 			color: $textColor;
 			border-color: $borderColor;
-			background: linear-gradient(to bottom, mix(#FFF, $bgBody, 50), $bgBody);
+			background: linear-gradient(to bottom, mix(#FFF, $bodyBg, 50), $bodyBg);
 		}
 	}
 }
 
 
 // ---------------------------
-// GENERAL LAYOUT
+// LAYOUT
 // ---------------------------
 
 .header {
-	width: 100%;
-	display: table;
 	text-align: left;
-	height: $headerHeight;
-	background: $bgHeader;
-	box-sizing: border-box;
-	border-spacing: $gapSize 0;
+	padding: 0 $gapSize;
+	background: $headerBg;
 	font-family: $fontFamilyHead;
 	box-shadow: 0 1px 0 rgba(#000, 0.2);
-	> * {
-		display: table-cell;
-		white-space: nowrap;
-		vertical-align: middle;
-		padding-left: $gapSize;
-		&:first-child {
-			width: 100%;
-			padding-left: 0;
-		}
+	.toolbar {
+		height: $headerHeight;
+		&_group:last-child { text-align: right; }
 	}
 	&_link {
-		font-size: 125%;
-		color: $fgHeader;
+		color: $headerFg;
 		margin-left: 1em;
 		line-height: 28px;
 		display: inline-block;
 		text-decoration: none;
+		font-size: $fontSizeStrong;
 		&:first-child { margin-left: 0; }
-		&:hover { color: lighten($fgHeader, 20); }
+		&:hover { color: lighten($headerFg, 20); }
 		svg {
 			width: 28px;
 			height: 28px;
@@ -265,13 +329,13 @@ a {
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	color: $fgFooter;
+	color: $footerFg;
 	text-align: left;
 	padding: $gapSize;
 	position: absolute;
 	vertical-align: top;
 	display: inline-block;
-	background: $bgFooter;
+	background: $footerBg;
 	height: $footerHeight;
 	box-sizing: border-box;
 	&_copyright {
@@ -283,7 +347,7 @@ a {
 			margin-left: 1em;
 			padding-left: 1em;
 			display: inline-block;
-			border-left: 1px solid rgba($fgFooter, 0.5);
+			border-left: 1px solid rgba($footerFg, 0.5);
 			&:first-child {
 				border: 0;
 				margin: 0;
@@ -293,7 +357,7 @@ a {
 	}
 	a {
 		color: inherit;
-		&:hover { color: lighten($fgFooter, 20); }
+		&:hover { color: lighten($footerFg, 20); }
 	}
 }
 .wrapper {
@@ -322,7 +386,7 @@ a {
 .intro {
 	margin-bottom: $gapSize;
 	box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.1);
-	background: $bgFooter image-url('intro3.jpg') no-repeat center bottom;
+	background: $footerBg image-url('intro3.jpg') no-repeat center bottom;
 	background-size: cover;
 	.wrapper {
 		height: 500px;
@@ -348,7 +412,7 @@ a {
 			font-size: 300%;
 		}
 		p {
-			font-size: 130%;
+			font-size: 125%;
 			max-width: 600px;
 			margin: 0.5em 0 0 0;
 		}
@@ -370,10 +434,10 @@ a {
 }
 .getstarted {
 	margin-bottom: $gapSize * 2;
-	.justify_item {
+	.justified_box {
 		width: 22%;
 		padding: $gapSize 0;
-		color: mix($bgBody, #000, 35);
+		color: mix($bodyBg, #000, 35);
 	}
 	svg {
 		width: 80px;
@@ -384,12 +448,12 @@ a {
 	p { margin: 0; }
 
 	@media screen and (max-width: $widthM) {
-		.justify_item { width: 47%; }
+		.justified_box { width: 47%; }
 	}
 }
 .whouses {
 	margin-bottom: $gapSize * 3;
-	.justify_item {
+	.justified_box {
 		width: 32%;
 		padding-bottom: $gapSize / 2;
 	}
@@ -397,7 +461,7 @@ a {
 		width: 100%;
 		background: #FFF;
 		border-spacing: $gapSize * 0.75;
-		border: 1px solid mix(#000, $bgBody, 10);
+		border: 1px solid mix(#000, $bodyBg, 10);
 		&_image {
 			width: 100px;
 			height: 100px;
@@ -405,15 +469,15 @@ a {
 	}
 
 	@media screen and (max-width: $widthM) {
-		.justify_item { width: 100%; }
+		.justified_box { width: 100%; }
 	}
 }
 .spotlight {
 	margin-bottom: $gapSize;
-	.justify_item {
+	.justified_box {
 		width: 48%;
 		padding-bottom: $gapSize * 2;
-		color: mix($bgBody, #000, 35);
+		color: mix($bodyBg, #000, 35);
 	}
 	.cover {
 		&_image {
@@ -426,13 +490,13 @@ a {
 	}
 
 	@media screen and (max-width: $widthM) {
-		.justify_item { width: 100%; }
+		.justified_box { width: 100%; }
 	}
 }
 .features {
 	counter-reset: index;
 	margin-bottom: $gapSize;
-	.justify_item {
+	.justified_box {
 		width: 48%;
 		position: relative;
 		box-sizing: border-box;
@@ -453,8 +517,61 @@ a {
 	p {
 		margin: 0.5em 0;
 		font-size: $fontSizeBig;
-		color: mix($bgBody, #000, 50);
+		color: mix($bodyBg, #000, 50);
 	}
+}
+
+
+.authentication {
+	max-width: 500px;
+	margin: $gapSize auto;
+	&_field {
+		margin: 0.8em 0;
+		font-size: $fontSizeBig;
+	}
+	&_fieldset {
+		border-radius: 4px;
+		margin: $gapSize 0;
+		padding: 0.3em 0.6em;
+		background: $inputBackground;
+		background-clip: padding-box;
+		border: 1px solid $inputBorderColor;
+	}
+	&_label {
+		display: block;
+		padding: 0.3em 0;
+		position: relative;
+		font-weight: normal;
+		border-top: 1px solid $inputBorderColor;
+		&:first-child { border: 0; }
+		&_icon {
+			top: 50%;
+			left: 5px;
+			position: absolute;
+			margin: -0.5em 0 0 0;
+			transition: color 0.2s;
+			color: rgba($fgGray, 0.5);
+			font-size: $iconSize * 1.5;
+		}
+		input, input:focus {
+			border: 0;
+			width: 100%;
+			height: auto;
+			background: none;
+			box-shadow: none;
+			transition: none;
+			line-height: normal;
+			font-size: $fontSizeStrong;
+			padding: 0.5em 0.3em 0.5em 36px;
+			&:-webkit-autofill {
+				color: $inputColor;
+				-webkit-text-fill-color: $inputColor;
+				-webkit-box-shadow: inset 0 0 0 100px $inputBackground;
+			}
+		}
+		input:focus + &_icon { color: $fgHover; }
+	}
+	button { font-size: $fontSizeStrong; }
 }
 
 
