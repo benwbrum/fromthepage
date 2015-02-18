@@ -57,3 +57,4 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
+      not_signed: "Unable to sign in due to the following error:"
