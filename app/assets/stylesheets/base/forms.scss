@@ -1,0 +1,153 @@
+// Table for creating a form layout
+// Separate borders for IE9, otherwise it will not show focused glow for controls
+table.form {
+  width: 100%;
+  margin: 0.5em 0;
+  border-collapse: separate;
+  th {
+    font-weight: normal;
+    white-space: nowrap;
+    padding: 4px 0 4px 16px;
+  }
+  td { padding: 4px 0 4px 8px; }
+  th, td { &:first-child { padding-left: 0; } }
+}
+
+// Form label, invalid with curved red underline
+label {
+  position: relative;
+  display: inline-block;
+  line-height: $lineHeight;
+  &.above { margin: 2px 0 4px 0; }
+  &.invalid {
+    color: $inputInvalidColor;
+    //background-repeat: repeat-x;
+    //background-position: left bottom 1px;
+    //background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAHUlEQVQIW2P4z8DwH4jTgJgBRIMIMAMmAZT+j4IB/BEXgzA1vdgAAAAASUVORK5CYII=');
+    //background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNCAzIj48cGF0aCBmaWxsPSIjRjAwIiBkPSJNMCwxLjFDMC4xLDEsMC4zLDEsMC41LDFjMSwwLDEsMSwyLDFjMC44LDAsMS0wLjYsMS41LTAuOXYtMUMzLjUsMC40LDMuMywxLDIuNSwxYy0xLDAtMS0xLTItMUMwLjMsMCwwLjEsMCwwLDAuMVYxLjF6Ii8+PC9zdmc+'), none;
+  }
+}
+
+// Avoid setting line-height for inputs, FF will override it with 'line-height: normal'
+// so the best practice would be to leave 'line-height: normal' and use height instead
+select,
+textarea,
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"] {
+  width: 100%;
+  border-radius: 0;
+  color: $inputColor;
+  padding: 3px 0.3em;
+  line-height: normal;
+  height: $inputHeight;
+  min-width: $inputHeight * 2;
+  background-clip: padding-box;
+  background-color: $inputBackground;
+  border: 1px solid $inputBorderColor;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.03);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  // Focused state
+  &:focus {
+    outline: none;
+    border-color: $inputFocusBorder;
+    box-shadow: 0 0 1px $inputFocusBorder;
+  }
+
+  // Disabled state
+  &[disabled] {
+    opacity: 0.8;
+    color: $inputDisabledColor;
+    background-color: $inputDisabledBackground;
+  }
+
+  // Invalid state
+  &.invalid {
+    color: $inputInvalidColor;
+    border-color: rgba($inputInvalidColor, 0.5);
+  }
+
+  // Round corners
+  &.round { border-radius: $inputHeight; }
+}
+
+// Hide placeholder text on focus
+input {
+  &::placeholder { transition: color 0.15s; }
+  &:focus { &::placeholder { color: transparent !important; } }
+}
+
+// Select height in different browsers driving me nuts!
+// Windows: Chrome, FF and IE add 1px extra padding, Safari & Opera don't
+// OS X: FF add 1px extra padding, Chrome, Safari & Opera don't
+select {
+  padding: 2px 0.3em;
+  white-space: nowrap;
+}
+
+// Reset height for textareas and multiple selects
+textarea, select[size], select[multiple] { height: auto; }
+
+// Down arrow glyph
+@mixin down-arrow-glyph() {
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAFCAYAAACeuGYRAAAAQElEQVQY02NgYGBYB8T/seB1////Z8CGQUAIiJ+jaQDxhfBpAgFXNE0gPgMhTSAwAaphAkyAGE1sQLwaSuPVBABzumtKUJpCDwAAAABJRU5ErkJggg==');
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxM3B4IiBoZWlnaHQ9IjVweCIgdmlld0JveD0iMCAwIDEzIDUiPjxwb2x5Z29uIGZpbGw9IiMwMDAiIHBvaW50cz0iMCwwIDcsMCAzLjUsNSIvPjwvc3ZnPg=='), none;
+}
+
+// NOT WORKING IN FF30!!!
+// Down arrow glyph for FireFox
+// Enable 'appearance: none' with text-overflow and text-indent
+@-moz-document url-prefix() {
+  select {
+    padding-top: 4px;
+    text-overflow: '';
+    text-indent: 0.01px;
+    @include down-arrow-glyph();
+  }
+}
+
+// Down arrow glyph for Chrome and Safari
+@media (-webkit-min-device-pixel-ratio: 0) {
+  select {
+    padding-right: 1.5em;
+    @include down-arrow-glyph();
+    &[size], &[multiple] {
+      padding: 2px 0.3em;
+      background-image: none;
+    }
+  }
+}
+
+// Devise form validation summary
+.devise-error {
+  margin: 1em 0;
+  padding-left: 1em;
+  color: $inputInvalidColor;
+  border-left: 3px solid currentColor;
+  &_title {
+    color: inherit;
+    margin: 0 0 0.3em 0;
+    font-size: $fontSizeBig;
+  }
+  &_summary {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li { margin: 0; }
+  }
+}
