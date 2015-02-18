@@ -20,6 +20,8 @@ Fromthepage::Application.routes.draw do
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
   patch 'article/update', :to => 'article#update'
   put 'article/article_category', :to => 'article#article_category'
+  
+  patch 'page_block/update', :to => 'page_block#update'
 
   
   match '/:controller(/:action(/:id))', via: [:get, :post]
