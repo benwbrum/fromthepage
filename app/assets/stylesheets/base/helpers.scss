@@ -18,7 +18,6 @@
   vertical-align: middle !important;
 }
 
-
 // Text
 .bold {
   font-weight: bold !important;
@@ -26,7 +25,9 @@
 .italic {
   font-style: italic !important;
 }
-
+.underline {
+  text-decoration: underline !important;
+}
 
 // Width and height
 .h100 {
@@ -42,7 +43,6 @@ $step: 5;
     width: $width * 1%;
   }
 }
-
 
 // Floating blocks
 .fclear {
@@ -63,7 +63,6 @@ $step: 5;
 .ohidden {
   overflow: hidden;
 }
-
 
 // Miscellaneous
 .nobg {
