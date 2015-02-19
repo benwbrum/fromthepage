@@ -97,5 +97,21 @@
     &:first-child { padding-left: 0; }
   }
   &.vtop &_group { vertical-align: top; }
-  table.form + & { margin: 1em 0 0 0; }
+  table.form + & { margin: $gapSize 0 0 0; }
+}
+.inline {
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  &_block {
+    margin-left: 0.8em;
+    padding-left: 0.8em;
+    display: inline-block;
+    border-left: 1px solid rgba(#000, 0.12);
+    &:first-child {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
 }
