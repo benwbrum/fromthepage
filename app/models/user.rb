@@ -40,4 +40,8 @@ class User < ActiveRecord::Base
     end
     return false
   end
+  
+  def display_name
+    self[:display_name] || self[:login]
+  end
 end
