@@ -43,7 +43,7 @@
     @include button-colors($btnColor, $btnBackground, $state);
   }
   @if $state == active {
-    box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 3px rgba(#000, 0.3);
     @include button-colors($btnColor, $btnBackground, $state);
   }
   @if $state == disabled {
