@@ -1,0 +1,11 @@
+section.auth
+  h1 Password Recovery
+  p Please enter the email address associated with your FromThePage account. If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
+  =form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+    =devise_error_messages!
+    .auth_field
+      =f.label :email, 'Email address'
+      =f.email_field :email, autofocus: true
+    =f.button 'Recover Password', class: 'big'
+  hr
+  =render 'devise/shared/links'
