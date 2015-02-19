@@ -1,0 +1,21 @@
+section.auth
+  h1 Sign In
+  =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    =devise_error_messages!
+    fieldset.auth_fieldset
+      =f.label :login, class: 'auth_label'
+        =f.text_field :login, autofocus: true, placeholder: 'Login'
+        =svg_symbol '#icon-user', class: 'icon auth_label_icon'
+      =f.label :password, class: 'auth_label'
+        =f.password_field :password, autocomplete: 'off', placeholder: 'Password'
+        =svg_symbol '#icon-key', class: 'icon auth_label_icon'
+    .toolbar
+      .toolbar_group
+        =f.button 'Sign In', class: 'strong'
+      -if devise_mapping.rememberable?
+        .toolbar_group.aright
+          =f.label :remember_me
+            =f.check_box :remember_me
+            |&nbsp;Remember me
+  hr
+  =render 'devise/shared/links'
