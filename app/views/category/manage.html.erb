@@ -37,9 +37,10 @@
 	                      :collection_id => @collection.id },
 	                    { :confirm => "Are you sure you want to delete #{category.title} and all its subcategories?"}) +
 	            " " +
-              link_to_function('add child',
-                               "add_child_prompt('#{category.id}', '#{category.title}')",
-                               { :title => "Add a subcategory underneath #{category.title}"} )
+              link_to('add child',
+              		  "#",
+                      { :onclick => "add_child_prompt('#{category.id}', '#{category.title}')",
+                        :title => "Add a subcategory underneath #{category.title}"} )
             end) %>
       </p>
 	  <% if @page %>

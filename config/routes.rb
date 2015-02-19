@@ -22,6 +22,7 @@ Fromthepage::Application.routes.draw do
   put 'article/article_category', :to => 'article#article_category'
   
   patch 'page_block/update', :to => 'page_block#update'
+  patch 'admin/update_user', :to => 'admin#update_user'
 
   
   match '/:controller(/:action(/:id))', via: [:get, :post]

@@ -188,11 +188,11 @@ class ImageSet < ActiveRecord::Base
     self.status_message = "resizing files"
     self.save!
     for image in self.titled_images
-      debug("process_size: image #{image.id} 1.upto(#{self.original_to_base_halvings-1})")
-      1.upto(self.original_to_base_halvings) do |i|
-        debug("process_size shrinking image #{image.id} to #{i}")
-        shrink(image, i)
-      end
+      # TODO replace with compression step
+      
+      debug("process_size shrinking image #{image.id} to #{self.original_to_base_halvings}")
+      shrink(image, self.original_to_base_halvings)
+
       image.shrink_completed = true
       image.save!
     end #for
