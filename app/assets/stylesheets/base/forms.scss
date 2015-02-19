@@ -46,17 +46,18 @@ input[type="time"],
 input[type="url"],
 input[type="week"] {
   width: 100%;
-  border-radius: 0;
   color: $inputColor;
-  padding: 3px 0.3em;
   line-height: normal;
   height: $inputHeight;
+  padding: $inputPadding;
   min-width: $inputHeight * 2;
+  border-radius: $inputBorderRadius;
   background-clip: padding-box;
   background-color: $inputBackground;
   border: 1px solid $inputBorderColor;
-  box-shadow: inset 0 1px 0 rgba(0,0,0,0.03);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition-duration: $inputTransitionTime;
+  transition-property: border-color, box-shadow;
+  box-shadow: inset 0 1px 0 rgba(#000, 0.03);
   -webkit-appearance: none;
   -moz-appearance: none;
 
@@ -90,12 +91,12 @@ input {
   &:focus { &::placeholder { color: transparent !important; } }
 }
 
-// Select height in different browsers driving me nuts!
+// Select height in different browsers is quite inconsistent!
 // Windows: Chrome, FF and IE add 1px extra padding, Safari & Opera don't
 // OS X: FF add 1px extra padding, Chrome, Safari & Opera don't
 select {
-  padding: 2px 0.3em;
   white-space: nowrap;
+  padding: 2px $inputPadding;
 }
 
 // Reset height for textareas and multiple selects
@@ -127,27 +128,8 @@ textarea, select[size], select[multiple] { height: auto; }
     padding-right: 1.5em;
     @include down-arrow-glyph();
     &[size], &[multiple] {
-      padding: 2px 0.3em;
       background-image: none;
+      padding: 2px $inputPadding;
     }
-  }
-}
-
-// Devise form validation summary
-.devise-error {
-  margin: 1em 0;
-  padding-left: 1em;
-  color: $inputInvalidColor;
-  border-left: 3px solid currentColor;
-  &_title {
-    color: inherit;
-    margin: 0 0 0.3em 0;
-    font-size: $fontSizeBig;
-  }
-  &_summary {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    li { margin: 0; }
   }
 }
