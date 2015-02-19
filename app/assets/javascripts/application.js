@@ -13,3 +13,13 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+
+$(function() {
+  $('.flash').each(function() {
+    var container = $(this);
+    container.find('.flash_close').on('click', function(){
+      container.fadeOut('fast');
+    });
+  });
+});

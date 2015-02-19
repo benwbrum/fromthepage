@@ -30,6 +30,14 @@ html
     =javascript_include_tag 'application'
 
 body
+  -flash.each do |type, message|
+    -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
+    .flash(class='flash-#{type}')
+      span.flash_message
+        =svg_symbol flash_icon[type], class: 'icon'
+        =message
+      a.flash_close &times;
+
   header.header
     .toolbar
       .toolbar_group
@@ -58,13 +66,6 @@ body
           | &mdash;
         -if @work && @work.title
           =link_to @work.title, { :controller => 'display', :action => 'read_work', :work_id => @work.id }
-
-  -if flash[:notice]
-    p style="color: green" =flash[:notice]
-  -if flash[:alert]
-    p style="color: orange" =flash[:alert]
-  -if flash[:error]
-    p style="color: red" =flash[:error]
 
   =(yield :content_above).force_encoding 'UTF-8'
 

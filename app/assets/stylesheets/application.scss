@@ -324,6 +324,44 @@ svg {
     li { margin: 0; }
   }
 }
+.flash {
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 999;
+	position: fixed;
+	text-align: center;
+	height: $headerHeight;
+	line-height: $headerHeight;
+	&-notice {
+		color: $fgGreen;
+		background: rgba($bgGreen, 0.9);
+	}
+	&-alert {
+		color: $fgOrange;
+		background: rgba($bgOrange, 0.9);
+	}
+	&-error {
+		color: $fgRed;
+		background: rgba($bgRed, 0.9);
+	}
+	&_message {
+		display: inline-block;
+		line-height: $lineHeight;
+	}
+	&_close {
+		top: 50%;
+		right: 20px;
+		line-height: 1;
+		font-size: 200%;
+		cursor: pointer;
+		margin-top: -0.5em;
+		position: absolute;
+		text-decoration: none;
+		color: rgba(#000, 0.4);
+		&:hover { color: rgba(#000, 0.8); }
+	}
+}
 
 
 // ---------------------------
