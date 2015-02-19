@@ -109,17 +109,20 @@ $widthMin:									768px;
 
 $gapSize:										20px;
 
+$themeLight:								#EDB;
+$themeDark:									#433;
+
 $bodyFg:										#300;
-$bodyBg:										mix(#EDB, #FFF, 30);
+$bodyBg:										mix(#FFF, $themeLight, 70);
 $borderColor:								rgba(#000, 0.15);
 
 $headerHeight:							80px;
-$headerFg:									#433;
-$headerBg:									#EDB;
+$headerFg:									$themeDark;
+$headerBg:									$themeLight;
 
 $footerHeight:							80px;
-$footerFg:									#A99;
-$footerBg:									#433;
+$footerFg:									mix(#FFF, $themeDark, 50);
+$footerBg:									$themeDark;
 
 
 @import "base/normalize";
@@ -178,6 +181,10 @@ h4 {
 h5 {
 	color: $fgH5;
 	font-size: $fontSizeH5;
+}
+small, .small {
+	font-weight: inherit;
+	font-size: $fontSizeSmall;
 }
 big, .big {
 	font-weight: inherit;
@@ -443,11 +450,17 @@ svg {
 	width: 100%;
 	display: table;
 	> * {
-		width: 50%;
 		padding: $gapSize;
 		display: table-cell;
 		&:first-child { padding-left: 0; }
 		&:last-child { padding-right: 0; }
+	}
+	.maincol {
+		width: 70%;
+	}
+	.sidecol {
+		width: 30%;
+		min-width: 300px;
 	}
 }
 
@@ -458,7 +471,7 @@ svg {
 .intro {
 	margin-bottom: $gapSize;
 	box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.1);
-	background: $footerBg image-url('intro3.jpg') no-repeat center bottom;
+	background: $footerBg image-url('intro.jpg') no-repeat center bottom;
 	background-size: cover;
 	.wrapper {
 		height: 500px;
@@ -478,12 +491,12 @@ svg {
 		vertical-align: middle;
 		background: rgba(#100, 0.35);
 		padding: $gapSize $gapSize * 1.2;
-		h1 {
+		&_title {
 			margin: 0;
 			color: inherit;
 			font-size: 300%;
 		}
-		p {
+		&_text {
 			font-size: 125%;
 			max-width: 600px;
 			margin: 0.5em 0 0 0;
@@ -509,15 +522,15 @@ svg {
 	.justified_box {
 		width: 22%;
 		padding: $gapSize 0;
-		color: mix($bodyBg, #000, 35);
+		color: mix($bodyFg, $bodyBg, 65);
 	}
-	svg {
+	&_icon {
 		width: 80px;
 		height: 80px;
-		color: mix(#433, #FFF, 80);
+		color: mix($themeDark, $bodyBg, 80);
 	}
-	h4 { margin: 0.5em 0; }
-	p { margin: 0; }
+	&_title { margin: 0.5em 0; }
+	&_text { margin: 0; }
 
 	@media screen and (max-width: $widthM) {
 		.justified_box { width: 47%; }
@@ -549,7 +562,7 @@ svg {
 	.justified_box {
 		width: 48%;
 		padding-bottom: $gapSize * 2;
-		color: mix($bodyBg, #000, 35);
+		color: mix($bodyFg, $bodyBg, 65);
 	}
 	.cover {
 		&_image {
@@ -580,16 +593,16 @@ svg {
 			font-size: 500%;
 			font-weight: bold;
 			position: absolute;
-			color: rgba(#433, 0.15);
 			content: counter(index);
 			counter-increment: index;
+			color: mix($themeDark, $bodyBg, 15);
 		}
 	}
-	h4 { margin: 0; }
-	p {
+	&_title { margin: 0; }
+	&_text {
 		margin: 0.5em 0;
 		font-size: $fontSizeBig;
-		color: mix($bodyBg, #000, 50);
+		color: mix($bodyFg, $bodyBg, 50);
 	}
 }
 
@@ -655,6 +668,44 @@ svg {
 	}
 }
 
+
+// ---------------------------
+// DASHBOARD
+// ---------------------------
+
+.dashboard {
+	&_collections {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	&_collection {
+		margin: 1em 0 0 0;
+		padding: 1em 0 0 0;
+		border-top: 1px dotted $borderColor;
+		&:first-child {
+			border: 0;
+			margin: 0;
+			padding: 0;
+		}
+		&_title { margin: 0; }
+		&_snippet {
+			margin: 0.8em 0 0 0;
+			font-size: $fontSizeSmall;
+		}
+		&_statistics {
+			width: 100%;
+			margin-top: 0.8em;
+			vertical-align: top;
+			display: inline-block;
+			color: mix($bodyFg, $bodyBg, 60);
+			a {
+				color: inherit;
+				&:hover { color: $bodyFg; }
+			}
+		}
+	}
+}
 
 
 div.two-columns {

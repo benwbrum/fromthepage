@@ -69,7 +69,7 @@ body
 
   =(yield :content_above).force_encoding 'UTF-8'
 
-  article.wrapper
+  main.wrapper
     //=@content_for_layout
     =yield.force_encoding 'UTF-8'
 

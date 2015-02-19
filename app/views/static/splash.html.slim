@@ -1,28 +1,28 @@
 -content_for :content_above
   section.intro
     .wrapper: .intro_box
-      h1 What is FromThePage?
-      p FromThePage is free software that allows volunteers to transcribe handwritten documents online. It’s easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.
+      h1.intro_box_title What is FromThePage?
+      p.intro_box_text FromThePage is free software that allows volunteers to transcribe handwritten documents online. It’s easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.
 
 
 section.start
   ul.justified.vtop
     li.justified_box
-      =svg_symbol '#start-reading'
-      h4 Start Reading
-      p You’re free to choose from the many interesting projects hosted on FromThePage. Start reading the <a href="#{dashboard_path}">historical writings</a> that have been already transcribed by other members.
+      =svg_symbol '#start-reading', class: 'start_icon'
+      h4.start_title Start Reading
+      p.start_text You’re free to choose from the many interesting projects hosted on FromThePage. Start reading the <a href="#{dashboard_path}">historical writings</a> that have been already transcribed by other members.
     li.justified_box
-      =svg_symbol '#start-transcribing'
-      h4 Start Transcribing
-      p Help one of the great historical projects come into the digital age. Julia Brumfield’s 1922 diary is only <a href="/JuliaBrumfield">partly transcribed</a>, so it would be a great place to test drive the software.
+      =svg_symbol '#start-transcribing', class: 'start_icon'
+      h4.start_title Start Transcribing
+      p.start_text Help one of the great historical projects come into the digital age. Julia Brumfield’s 1922 diary is only <a href="/JuliaBrumfield">partly transcribed</a>, so it would be a great place to test drive the software.
     li.justified_box
-      =svg_symbol '#start-project'
-      h4 Start Your Project
-      p If you want to run a transcription project, we would be interested in hosting your effort. <a href="images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
+      =svg_symbol '#start-project', class: 'start_icon'
+      h4.start_title Start Your Project
+      p.start_text If you want to run a transcription project, we would be interested in hosting your effort. <a href="images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
     li.justified_box
-      =svg_symbol '#start-server'
-      h4 Run Your Server
-      p The software is released under the GNU AGPL v3.0, a Free/Open Source license. If you want to install FromThePage on your server, see the <a href="https://github.com/benwbrum/fromthepage/wiki">installation instructions</a> on GitHub.
+      =svg_symbol '#start-server', class: 'start_icon'
+      h4.start_title Run Your Server
+      p.start_text The software is released under the GNU AGPL v3.0, a Free/Open Source license. If you want to install FromThePage on your server, see the <a href="https://github.com/benwbrum/fromthepage/wiki">installation instructions</a> on GitHub.
 
 section.whouses
   h3.legend Who Uses FromThePage?
@@ -61,20 +61,20 @@ section.features
   h3.legend Features
   ol.justified.vtop
     li.justified_box
-      h4 Wiki-style Editing
-      p Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
+      h4.features_title Wiki-style Editing
+      p.features_text Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
     li.justified_box
-      h4 Version Control
-      p Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
+      h4.features_title Version Control
+      p.features_text Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
     li.justified_box
-      h4 Wikilinks
-      p Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
+      h4.features_title Wikilinks
+      p.features_text Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
     li.justified_box
-      h4 Presentation
-      p Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject
+      h4.features_title Presentation
+      p.features_text Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject
     li.justified_box
-      h4 Automatic Markup
-      p FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
+      h4.features_title Automatic Markup
+      p.features_text FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
     li.justified_box
-      h4 Internet Archive integration
-      p FromThePage can be pointed at manuscripts hosted on Archive.org. It will import the page structure and any printed page titles into its native format for transcription, while serving page images from the Internet Archive.
+      h4.features_title Internet Archive integration
+      p.features_text FromThePage can be pointed at manuscripts hosted on Archive.org. It will import the page structure and any printed page titles into its native format for transcription, while serving page images from the Internet Archive.
