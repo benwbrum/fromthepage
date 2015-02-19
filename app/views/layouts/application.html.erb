@@ -81,7 +81,7 @@
 <%= yield %>
 </div><!-- layout content -->
 <% if @collection && @collection.footer_block %>
-	<div class="outside-column"><%=@collection.footer_block%></div>
+	<div class="outside-column"><%= raw(@collection.footer_block) %></div>
 <% end %>
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
