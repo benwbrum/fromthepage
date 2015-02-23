@@ -59,10 +59,10 @@
 						  :action => 'repository_list' }) %>
 		  </div>
 		  <div>
-		  	<% if @current_user.oai_sets %>
+		  	<% if current_user.oai_sets %>
 				Import a work from an OAI collection.
 				<ul>
-					<% for set in @current_user.oai_sets%>
+					<% for set in current_user.oai_sets%>
 						<li>
 							<%= link_to('List works to import from '+set.set_spec,
 								 { :action => 'record_list',
@@ -75,13 +75,14 @@
 				</ul>
 			<% end %>
 		  </div>
-          <% if @current_user.owner_works && @current_user.owner_works.size > 0 %>
+		  <% binding.pry %>
+          <% if current_user.owner_works && current_user.owner_works.size > 0 %>
 	          <div>
 	            <p>
 	              Works I own:
 	            </p>
 	            <ul>
-	              <% for work in @current_user.owner_works %>
+	              <% for work in current_user.owner_works %>
 	                <li>
 	                  <%= link_to(work.title,
 	                              { :controller => 'work',
@@ -93,14 +94,14 @@
 	          </div>
           <% end %>
           <% if (@image_sets && @image_sets.size > 0) ||
-				(@current_user.ia_works && @current_user.ia_works.size > 0) %>
+				(current_user.ia_works && current_user.ia_works.size > 0) %>
 				<h3>Staging Area</h3>
 		  <% end %>
-          <% if (@current_user.ia_works && @current_user.ia_works.size > 0) %>
+          <% if (current_user.ia_works && current_user.ia_works.size > 0) %>
 			<div>
 				<h4>Imported Archive.org Books</h4>
 				<ul>
-					<% for ia_work in @current_user.ia_works %>
+					<% for ia_work in current_user.ia_works %>
 					<li>
 						<%= link_to(ia_work.title,
 									{ :controller => 'ia',
