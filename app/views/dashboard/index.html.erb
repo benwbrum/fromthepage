@@ -76,7 +76,7 @@
 			<% end %>
 		  </div>
 
-          <% if current_user.owner_works && current_user.owner_works.size > 0 %>
+          <% unless current_user.owner_works.empty? %>
 	          <div>
 	            <p>
 	              Works I own:
@@ -93,11 +93,10 @@
               </ul>
 	          </div>
           <% end %>
-          <% if (@image_sets && @image_sets.size > 0) ||
-				(current_user.ia_works && current_user.ia_works.size > 0) %>
+          <% if !@image_sets.empty? || !current_user.ia_works.empty? %>
 				<h3>Staging Area</h3>
 		  <% end %>
-          <% if (current_user.ia_works && current_user.ia_works.size > 0) %>
+          <% unless current_user.ia_works.empty? %>
 			<div>
 				<h4>Imported Archive.org Books</h4>
 				<ul>
@@ -113,7 +112,7 @@
 			</div>
 		  <% end %>
 
-          <% if @image_sets && @image_sets.size > 0 %>
+          <% unless @image_sets.empty? %>
 	          <div>
 	            <p>
 	              Image Sets I own:
