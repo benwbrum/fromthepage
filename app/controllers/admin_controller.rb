@@ -26,16 +26,17 @@ class AdminController < ApplicationController
   def session_list
     sql_limit = params[:limit] || 50
     @offset = params[:offset] || 0
-
     if(@user)
       @user_name = @user.login
+      user_id = @user.id
       which_where = 1
     else
       @user_name = 'Anonymous'
+      user_id = nil
       which_where = 2
     end
 
-    @sessions = Interaction.list_sessions(sql_limit, @offset, which_where)
+    @sessions = Interaction.list_sessions(sql_limit, @offset, which_where, user_id)
   end
 
   # display last interactions, including who did what to which
