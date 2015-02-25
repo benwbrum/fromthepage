@@ -9,7 +9,9 @@ module AbstractXmlHelper
   def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
+    xml_text.gsub!('ISO-8859-15', 'UTF-8')
     doc = REXML::Document.new(xml_text)
+
     doc.elements.each("//link") do |e|
       title = e.attributes['target_title']
       id = e.attributes['target_id']
@@ -57,7 +59,8 @@ module AbstractXmlHelper
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
-    return my_display_html.gsub!("<?xml version='1.0' encoding='ISO-8859-15'?>","").gsub('<p/>','')
+
+    return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','')
   end
 
 
