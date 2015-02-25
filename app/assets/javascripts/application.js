@@ -15,11 +15,38 @@
 //= require_tree .
 
 
-$(function() {
-  $('.flash').each(function() {
+;(function($, window, document, undefined) {
+
+// Global flash messages auto close
+// $('element').flash();
+$.fn.flashclose = function(s) {
+  s = $.extend({
+    delay:      8000         // Auto close delay, 0 = don't close
+  }, s || {});
+
+  return this.each(function() {
     var container = $(this);
-    container.find('.flash_close').on('click', function(){
-      container.fadeOut('fast');
+    var btnclose = $('.flash_close', container);
+
+    // Close on click
+    btnclose.one('click', function() {
+      container.fadeOut('fast', function() {
+        container.remove();
+      });
     });
+
+    // Auto close
+    if(s.delay) {
+      setTimeout(function() {
+        btnclose.trigger('click');
+      }, s.delay);
+    }
   });
+};
+
+})(jQuery, window, document);
+
+
+$(function() {
+  $('.flash').flashclose();
 });
