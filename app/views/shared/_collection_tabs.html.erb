@@ -1,15 +1,16 @@
 <div id="navcontainer">
   <ul id="navlist">
-    <% if selected == 1 %>
+  	<% show_collection_options = 
+  					{ :controller => 'collection',
+                      :action => 'show',
+                      :collection_id => collection_id }%>
+    <% if current_page? show_collection_options %>
       <li id="current">
         <span>home</span>
       </li>
     <% else %>
       <li>
-        <%= link_to('home',
-                    { :controller => 'collection',
-                      :action => 'show',
-                      :collection_id => collection_id }) %>
+        <%= link_to('home', show_collection_options) %>
       </li>
     <% end %>
 
