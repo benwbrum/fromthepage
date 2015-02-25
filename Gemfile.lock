@@ -49,6 +49,9 @@ GEM
     acts_as_tree (2.1.0)
       activerecord (>= 3.0.0)
     arel (5.0.1.20140414130214)
+    autoprefixer-rails (5.1.7)
+      execjs
+      json
     bcrypt (3.1.10)
     builder (3.2.2)
     byebug (3.5.1)
@@ -173,12 +176,22 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.4)
+    sass (3.4.12)
+    sass-rails (5.0.0)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (~> 1.1)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
       shoulda-matchers (>= 1.4.1, < 3.0)
     shoulda-context (1.2.1)
     shoulda-matchers (2.8.0)
       activesupport (>= 3.0.0)
+    slim (3.0.2)
+      temple (~> 0.7.3)
+      tilt (>= 1.3.3, < 2.1)
     slop (3.6.0)
     sprockets (2.12.3)
       hike (~> 1.2)
@@ -193,6 +206,7 @@ GEM
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    temple (0.7.5)
     therubyracer (0.12.1)
       libv8 (~> 3.16.14.0)
       ref
@@ -219,6 +233,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   acts_as_tree
+  autoprefixer-rails
   capistrano (~> 3.2.0)
   capybara
   database_cleaner
@@ -237,7 +252,9 @@ DEPENDENCIES
   recaptcha (= 0.3.6)
   rmagick (= 2.13.2)
   rspec-rails (~> 3.0.0.beta)
+  sass-rails (~> 5.0.0)
   shoulda
+  slim (~> 3.0.0)
   therubyracer
   uglifier
   will_paginate
