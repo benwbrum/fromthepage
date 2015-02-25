@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.1'
+gem 'rails', '4.1.2'
 
 gem 'pry'
 gem 'pry-byebug'
 
-gem 'will_paginate' , '3.0.5'
-gem 'rmagick', '2.13.2', require: 'RMagick'
+gem 'will_paginate'
+gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.2.0'
@@ -25,6 +25,12 @@ gem 'devise'
 gem 'devise-encryptable'
 
 gem 'protected_attributes'
+
+
+group :assets do
+  gem 'therubyracer'
+  gem 'uglifier'
+end
 
 group :test do
   gem 'database_cleaner'
