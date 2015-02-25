@@ -12,7 +12,7 @@
     display: inline-block;
     box-sizing: border-box;
   }
-  &.vmiddle &_box { vertical-align: middle; }
+  &.vmiddle > &_box { vertical-align: middle; }
   &.nowrap {
     overflow: hidden;
     white-space: nowrap;
@@ -44,7 +44,7 @@
     vertical-align: middle;
     box-sizing: border-box;
   }
-  &.vtop &_box { vertical-align: top; }
+  &.vtop > &_box { vertical-align: top; }
 }
 
 // Centered content block
