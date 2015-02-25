@@ -96,7 +96,7 @@
     vertical-align: middle;
     &:first-child { padding-left: 0; }
   }
-  &.vtop &_group { vertical-align: top; }
+  &.vtop > &_group { vertical-align: top; }
   table.form + & { margin: $gapSize 0 0 0; }
 }
 .inline {

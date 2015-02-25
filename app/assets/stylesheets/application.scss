@@ -450,8 +450,9 @@ svg {
 	width: 100%;
 	display: table;
 	> * {
-		padding: $gapSize;
+		padding: 0 $gapSize;
 		display: table-cell;
+		vertical-align: top;
 		&:first-child { padding-left: 0; }
 		&:last-child { padding-right: 0; }
 	}
