@@ -25,6 +25,12 @@ gem 'devise-encryptable'
 
 gem 'protected_attributes'
 
+
+group :assets do
+  gem 'therubyracer'
+  gem 'uglifier'
+end
+
 group :test do
   gem "database_cleaner"
   gem "capybara"

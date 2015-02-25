@@ -81,6 +81,7 @@ GEM
       devise (>= 2.1.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
+    execjs (2.3.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.5.0)
@@ -96,6 +97,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.2)
+    libv8 (3.16.14.7)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -145,6 +147,7 @@ GEM
     rake (10.4.2)
     recaptcha (0.3.6)
     recursive-open-struct (0.4.5)
+    ref (1.0.5)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
     rest (2.6.5)
@@ -190,6 +193,9 @@ GEM
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    therubyracer (0.12.1)
+      libv8 (~> 3.16.14.0)
+      ref
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
@@ -198,6 +204,9 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uglifier (2.7.0)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
@@ -229,4 +238,6 @@ DEPENDENCIES
   rmagick (= 2.13.2)
   rspec-rails (~> 3.0.0.beta)
   shoulda
+  therubyracer
+  uglifier
   will_paginate
