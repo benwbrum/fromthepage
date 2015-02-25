@@ -17,8 +17,7 @@ class DashboardController < ApplicationController
       'where created_on > date_sub(now(), interval 20 minute) ' +
       "and user_id is not null "
 
-    @user_count =
-      Interaction.connection.select_value(sql)
+    @user_count = Interaction.connection.select_value(sql)
   end
 
 end
