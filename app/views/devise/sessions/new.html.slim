@@ -1,14 +1,14 @@
-section.auth
+section.signon
   h1 Sign In
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
-    fieldset.auth_fieldset
-      =f.label :login, class: 'auth_label'
+    fieldset.signon_fieldset
+      =f.label :login, class: 'signon_label'
         =f.text_field :login, autofocus: true, placeholder: 'Login'
-        =svg_symbol '#icon-user', class: 'icon auth_label_icon'
-      =f.label :password, class: 'auth_label'
+        =svg_symbol '#icon-user', class: 'icon signon_label_icon'
+      =f.label :password, class: 'signon_label'
         =f.password_field :password, autocomplete: 'off', placeholder: 'Password'
-        =svg_symbol '#icon-key', class: 'icon auth_label_icon'
+        =svg_symbol '#icon-key', class: 'icon signon_label_icon'
     .toolbar
       .toolbar_group
         =f.button 'Sign In', class: 'strong'

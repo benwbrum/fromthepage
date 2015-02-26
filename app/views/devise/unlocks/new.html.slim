@@ -1,9 +1,9 @@
-section.auth
+section.signon
   h1 Resend Unlock Instructions
   p Please enter the email address associated with your FromThePage account and we will resend the unlock instructions at your email address in a few minutes.
   =form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
     =devise_error_messages!
-    .auth_field
+    .signon_field
       =f.label :email, 'Email address'
       =f.email_field :email, autofocus: true
     =f.button 'Resend Instructions', class: 'big'
