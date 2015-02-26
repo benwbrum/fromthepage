@@ -20,9 +20,9 @@ module DeviseHelper
                                  :resource => resource.class.model_name.human.downcase)
 
     html = <<-HTML
-    <div class="devise-error">
-      <h5 class="devise-error_title">#{sentence}</h5>
-      <ul class="devise-error_summary">#{messages}</ul>
+    <div class="validation">
+      <h5 class="validation_title">#{sentence}</h5>
+      <ul class="validation_summary">#{messages}</ul>
     </div>
     HTML
 
