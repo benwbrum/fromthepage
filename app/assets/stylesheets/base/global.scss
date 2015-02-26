@@ -1,0 +1,113 @@
+// ---------------------------
+// MIXINS
+// ---------------------------
+
+@mixin background-svg($width, $height, $svg, $aspect: xMidYMid) {
+  background-image: url('data:image/svg+xml;base64,' + base64encode('<svg xmlns="http://www.w3.org/2000/svg" width="#{$width}px" height="#{$height}px" viewBox="0 0 #{$width} #{$height}" preserveAspectRatio="#{$aspect}">#{$svg}</svg>'));
+}
+
+
+// ---------------------------
+// GLOBAL STYLES
+// ---------------------------
+
+html {
+  height: 100%;
+  font-size: $remSize;
+  background: $bodyBg;
+}
+
+body {
+  color: $bodyFg;
+  min-height: 100%;
+  position: relative;
+  text-align: center;
+  background: $bodyBg;
+  min-width: $widthMin;
+  box-sizing: border-box;
+  padding-bottom: $footerHeight;
+  text-rendering: optimizeLegibility;
+  //text-rendering: geometricPrecision;
+  font: normal #{$fontSize}/#{$lineHeight} $fontFamily;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: normal;
+  margin: 1em 0 0.5em 0;
+  font-family: $fontFamilyHead;
+  &:first-child { margin-top: 0; }
+}
+
+h1 {
+  color: $fgH1;
+  margin-top: 0;
+  font-size: $fontSizeH1;
+}
+
+h2 {
+  color: $fgH2;
+  font-size: $fontSizeH2;
+}
+
+h3 {
+  color: $fgH3;
+  font-size: $fontSizeH3;
+}
+
+h4 {
+  color: $fgH4;
+  font-size: $fontSizeH4;
+}
+
+h5 {
+  color: $fgH5;
+  font-size: $fontSizeH5;
+}
+
+small, .small {
+  font-weight: inherit;
+  font-size: $fontSizeSmall;
+}
+
+big, .big {
+  font-weight: inherit;
+  font-size: $fontSizeBig;
+}
+
+strong, .strong {
+  font-weight: inherit;
+  font-size: $fontSizeStrong;
+}
+
+p {
+  margin: 1em 0;
+  line-height: $lineHeight;
+}
+
+a {
+  color: $fgLink;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s, background-color 0.2s;
+  &:hover { color: $fgHover; }
+  &:focus { outline: none; }
+}
+
+hr {
+  height: 0;
+  padding: 0;
+  clear: both;
+  margin: 1.5em 0;
+  border-style: solid;
+  border-width: 1px 0 0 0;
+  border-color: $borderColor;
+  &.dotted { border-style: dotted; }
+  &.dashed { border-style: dashed; }
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}

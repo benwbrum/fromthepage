@@ -1,0 +1,109 @@
+// ---------------------------
+// APPLICATION LAYOUT
+// ---------------------------
+
+.header {
+  text-align: left;
+  padding: 0 $gapSize;
+  background: $headerBg;
+  font-family: $fontFamilyHead;
+  box-shadow: 0 1px 0 rgba(#000, 0.2);
+  .toolbar {
+    height: $headerHeight;
+    &_group:last-child { text-align: right; }
+  }
+  &_link {
+    color: $headerFg;
+    margin-left: $gapSize;
+    display: inline-block;
+    text-decoration: none;
+    vertical-align: middle;
+    font-size: $fontSizeStrong;
+    &:hover { color: $fgHover; }
+  }
+  &_user {
+    margin-left: $gapSize * 2;
+    span {
+      text-align: right;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    big, small {
+      display: block;
+      line-height: 1.1;
+    }
+    small {
+      font-family: $fontFamily;
+      font-size: $fontSizeSmall;
+    }
+    .icon {
+      opacity: 0.9;
+      font-size: 28px;
+      margin: 0 0 0 8px;
+      vertical-align: middle;
+    }
+  }
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: $footerFg;
+  text-align: left;
+  padding: $gapSize;
+  position: absolute;
+  vertical-align: top;
+  display: inline-block;
+  background: $footerBg;
+  height: $footerHeight;
+  box-sizing: border-box;
+  &_copyright {
+    float: left;
+  }
+  &_nav {
+    float: right;
+    a {
+      margin-left: 1em;
+      padding-left: 1em;
+      display: inline-block;
+      border-left: 1px solid rgba($footerFg, 0.5);
+      &:first-child {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+  a {
+    color: inherit;
+    &:hover { color: lighten($footerFg, 20); }
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  text-align: left;
+  padding: $gapSize;
+  max-width: $widthMax;
+  box-sizing: border-box;
+}
+
+.columns {
+  width: 100%;
+  display: table;
+  > * {
+    padding: 0 $gapSize;
+    display: table-cell;
+    vertical-align: top;
+    &:first-child { padding-left: 0; }
+    &:last-child { padding-right: 0; }
+  }
+  .maincol {
+    width: 70%;
+  }
+  .sidecol {
+    width: 30%;
+    min-width: 300px;
+  }
+}

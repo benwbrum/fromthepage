@@ -1,0 +1,145 @@
+// ---------------------------
+// HOME PAGE
+// ---------------------------
+
+.intro {
+  margin-bottom: $gapSize;
+  box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.1);
+  background: $footerBg image-url('intro.jpg') no-repeat center bottom;
+  background-size: cover;
+  .wrapper {
+    height: 500px;
+    &:after {
+      width: 0;
+      content: '';
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  &_box {
+    color: #FFF;
+    text-align: left;
+    line-height: normal;
+    display: inline-block;
+    vertical-align: middle;
+    background: rgba(#100, 0.35);
+    padding: $gapSize $gapSize * 1.2;
+    &_title {
+      margin: 0;
+      color: inherit;
+      font-size: 300%;
+    }
+    &_text {
+      font-size: 125%;
+      max-width: 600px;
+      margin: 0.5em 0 0 0;
+    }
+  }
+
+  @media screen and (max-width: $widthL) {
+    .wrapper { height: 450px; }
+  }
+  @media screen and (max-width: $widthM) {
+    margin-bottom: 0;
+    .wrapper { height: 400px; }
+  }
+  @media screen and (max-width: $widthMin) {
+    .wrapper {
+      height: 350px;
+      text-align: center;
+    }
+  }
+}
+
+.start {
+  margin-bottom: $gapSize * 2;
+  .justified_box {
+    width: 22%;
+    padding: $gapSize 0;
+    color: mix($bodyFg, $bodyBg, 65);
+  }
+  &_icon {
+    width: 80px;
+    height: 80px;
+    color: mix($themeDark, $bodyBg, 80);
+  }
+  &_title { margin: 0.5em 0; }
+  &_text { margin: 0; }
+
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 47%; }
+  }
+}
+
+.whouses {
+  margin-bottom: $gapSize * 3;
+  .justified_box {
+    width: 32%;
+    padding-bottom: $gapSize / 2;
+  }
+  .cover {
+    width: 100%;
+    background: #FFF;
+    border-spacing: $gapSize * 0.75;
+    border: 1px solid mix(#000, $bodyBg, 10);
+    &_image {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 100%; }
+  }
+}
+
+.spotlight {
+  margin-bottom: $gapSize;
+  .justified_box {
+    width: 48%;
+    padding-bottom: $gapSize * 2;
+    color: mix($bodyFg, $bodyBg, 65);
+  }
+  .cover {
+    &_image {
+      width: 150px;
+      height: 150px;
+    }
+    &_caption {
+      padding-left: $gapSize;
+    }
+  }
+
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 100%; }
+  }
+}
+
+.features {
+  counter-reset: index;
+  margin-bottom: $gapSize;
+  .justified_box {
+    width: 48%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 0 $gapSize 60px;
+    &:before {
+      top: 0;
+      left: 0;
+      line-height: 1;
+      font-size: 500%;
+      font-weight: bold;
+      position: absolute;
+      content: counter(index);
+      counter-increment: index;
+      color: mix($themeDark, $bodyBg, 15);
+    }
+  }
+  &_title { margin: 0; }
+  &_text {
+    margin: 0.5em 0;
+    font-size: $fontSizeBig;
+    color: mix($bodyFg, $bodyBg, 50);
+  }
+}

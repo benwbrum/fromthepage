@@ -1,3 +1,7 @@
+// ---------------------------
+// BUTTONS
+// ---------------------------
+
 // Text and background colors
 @mixin button-colors($color, $background, $state: normal) {
   @if $state == normal {

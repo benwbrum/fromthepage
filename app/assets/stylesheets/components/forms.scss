@@ -1,3 +1,7 @@
+// ---------------------------
+// FORM ELEMENTS
+// ---------------------------
+
 // Table for creating a form layout
 // Separate borders for IE9, otherwise it will not show focused glow for controls
 table.form {
@@ -24,7 +28,7 @@ label {
     //background-repeat: repeat-x;
     //background-position: left bottom 1px;
     //background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAADCAYAAAC09K7GAAAAHUlEQVQIW2P4z8DwH4jTgJgBRIMIMAMmAZT+j4IB/BEXgzA1vdgAAAAASUVORK5CYII=');
-    //background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0cHgiIGhlaWdodD0iM3B4IiB2aWV3Qm94PSIwIDAgNCAzIj48cGF0aCBmaWxsPSIjRjAwIiBkPSJNMCwxLjFDMC4xLDEsMC4zLDEsMC41LDFjMSwwLDEsMSwyLDFjMC44LDAsMS0wLjYsMS41LTAuOXYtMUMzLjUsMC40LDMuMywxLDIuNSwxYy0xLDAtMS0xLTItMUMwLjMsMCwwLjEsMCwwLDAuMVYxLjF6Ii8+PC9zdmc+'), none;
+    //@include background-svg(4, 3, '<path fill="#FF0000" d="M0,1.1C0.1,1,0.3,1,0.5,1c1,0,1,1,2,1c0.8,0,1-0.6,1.5-0.9v-1C3.5,0.4,3.3,1,2.5,1c-1,0-1-1-2-1C0.3,0,0.1,0,0,0.1V1.1z"/>');
   }
 }
 
@@ -107,7 +111,7 @@ textarea, select[size], select[multiple] { height: auto; }
   background-repeat: no-repeat;
   background-position: right center;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAFCAYAAACeuGYRAAAAQElEQVQY02NgYGBYB8T/seB1////Z8CGQUAIiJ+jaQDxhfBpAgFXNE0gPgMhTSAwAaphAkyAGE1sQLwaSuPVBABzumtKUJpCDwAAAABJRU5ErkJggg==');
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxM3B4IiBoZWlnaHQ9IjVweCIgdmlld0JveD0iMCAwIDEzIDUiPjxwb2x5Z29uIGZpbGw9IiMwMDAiIHBvaW50cz0iMCwwIDcsMCAzLjUsNSIvPjwvc3ZnPg=='), none;
+  @include background-svg(13, 5, '<polygon fill="#000" points="0,0 7,0 3.5,5"/>');
 }
 
 // NOT WORKING IN FF30!!!

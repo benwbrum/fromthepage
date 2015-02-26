@@ -1,4 +1,7 @@
-// Custom dropdown
+// ---------------------------
+// DROP DOWN CONTROL
+// ---------------------------
+
 .dropdown {
   user-select: none;
   position: relative;
@@ -75,7 +78,7 @@
       background-repeat: no-repeat;
       background-position: right center;
       background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAFCAYAAACeuGYRAAAAQElEQVQY02NgYGBYB8T/seB1////Z8CGQUAIiJ+jaQDxhfBpAgFXNE0gPgMhTSAwAaphAkyAGE1sQLwaSuPVBABzumtKUJpCDwAAAABJRU5ErkJggg==');
-      //.background-svg(13, 5, '<polygon fill="#000" points="0,0 7,0 3.5,5"/>');
+      @include background-svg(13, 5, '<polygon fill="#000" points="0,0 7,0 3.5,5"/>');
     }
     & + dd {
       margin-top: 0;

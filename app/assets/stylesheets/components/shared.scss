@@ -1,0 +1,265 @@
+// ---------------------------
+// GENERAL SHARED STYLES
+// ---------------------------
+
+.wrapping {
+  margin: 0;
+  font-size: 0;
+  list-style: none;
+  &_box {
+    margin: 0;
+    text-align: left;
+    white-space: normal;
+    vertical-align: top;
+    font-size: $fontSize;
+    display: inline-block;
+    box-sizing: border-box;
+  }
+  &.vmiddle > &_box { vertical-align: middle; }
+  &.nowrap {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.justified {
+  margin: 0;
+  font-size: 0;
+  list-style: none;
+  text-align: justify;
+  text-justify: newspaper;
+  text-align-last: justify;
+  &:after {
+    height: 0;
+    width: 100%;
+    content: '';
+    overflow: hidden;
+    visibility: hidden;
+    display: inline-block;
+  }
+  &_box {
+    margin: 0;
+    text-align: left;
+    font-size: $fontSize;
+    display: inline-block;
+    text-align-last: auto;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+  &.vtop > &_box { vertical-align: top; }
+}
+
+.centered {
+  margin: 0;
+  height: 100%;
+  font-size: 0;
+  line-height: 0;
+  list-style: none;
+  word-spacing: -1px;
+  text-align: center;
+  white-space: nowrap;
+  &:before, &:after {
+    width: 0;
+    content: '';
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &_content {
+    text-align: left;
+    line-height: normal;
+    white-space: normal;
+    word-spacing: normal;
+    font-size: $fontSize;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+
+// ---------------------------
+// APPLICATION SHARED STYLES
+// ---------------------------
+
+.toolbar {
+  width: 100%;
+  display: table;
+  border-spacing: 0;
+  border-collapse: collapse;
+  &_group {
+    display: table-cell;
+    white-space: nowrap;
+    padding-left: $gapSize;
+    vertical-align: middle;
+    &:first-child { padding-left: 0; }
+  }
+  &.vtop > &_group { vertical-align: top; }
+  table.form + & { margin: $gapSize 0 0 0; }
+}
+
+.inline {
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  &_block {
+    margin-left: 0.8em;
+    padding-left: 0.8em;
+    display: inline-block;
+    border-left: 1px solid rgba(#000, 0.12);
+    &:first-child {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.legend {
+  margin: 1em 0;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  white-space: nowrap;
+  &:before, &:after {
+    width: 50%;
+    height: 1px;
+    content: '';
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    background: $borderColor;
+  }
+  &:before {
+    left: -0.5em;
+    margin: 0 0 0 -50%;
+  }
+  &:after {
+    left: 0.5em;
+    margin: 0 -50% 0 0;
+  }
+}
+
+.cover {
+  display: table;
+  &_image {
+    display: table-cell;
+    vertical-align: top;
+  }
+  &_caption {
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+.logo {
+  width: 134px;
+  height: 50px;
+  vertical-align: top;
+  display: inline-block;
+  text-decoration: none;
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 5px;
+  font-size: $iconSize;
+  vertical-align: -10%;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.tabs {
+  $textColor: #322;
+  $borderColor: rgba(#000, 0.15);
+
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  vertical-align: top;
+  display: inline-block;
+  font-family: $fontFamilyHead;
+  border-bottom: 1px solid $borderColor;
+  a {
+    float: left;
+    padding: 0 0.8em;
+    line-height: 2.4em;
+    margin-bottom: -1px;
+    text-decoration: none;
+    font-size: $fontSizeBig;
+    border-radius: 3px 3px 0 0;
+    color: rgba($textColor, 0.5);
+    border: 1px solid transparent;
+    border-width: 1px 1px 0 1px;
+    &:hover { color: $textColor; }
+    &.active {
+      cursor: default;
+      color: $textColor;
+      border-color: $borderColor;
+      background: linear-gradient(to bottom, mix(#FFF, $bodyBg, 50), $bodyBg);
+    }
+  }
+}
+
+.flash {
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  position: fixed;
+  text-align: center;
+  height: $headerHeight;
+  line-height: $headerHeight;
+  &-notice {
+    color: $fgGreen;
+    background: rgba($bgGreen, 0.9);
+  }
+  &-alert {
+    color: $fgOrange;
+    background: rgba($bgOrange, 0.9);
+  }
+  &-error {
+    color: $fgRed;
+    background: rgba($bgRed, 0.9);
+  }
+  &_message {
+    display: inline-block;
+    line-height: $lineHeight;
+  }
+  &_close {
+    top: 50%;
+    right: 20px;
+    line-height: 1;
+    font-size: 200%;
+    cursor: pointer;
+    margin-top: -0.5em;
+    position: absolute;
+    text-decoration: none;
+    color: rgba(#000, 0.4);
+    &:hover { color: rgba(#000, 0.8); }
+  }
+}
+
+.devise-error {
+  margin: 1em 0;
+  padding-left: 1em;
+  color: $inputInvalidColor;
+  border-left: 3px solid currentColor;
+  &_title {
+    color: inherit;
+    margin: 0 0 0.3em 0;
+    font-size: $fontSizeBig;
+  }
+  &_summary {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li { margin: 0; }
+  }
+}

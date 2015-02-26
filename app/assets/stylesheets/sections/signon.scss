@@ -1,0 +1,60 @@
+// ---------------------------
+// SIGN IN, SIGN UP PAGES
+// ---------------------------
+
+.auth {
+  max-width: 500px;
+  margin: $gapSize auto;
+  &_field {
+    margin: 0.8em 0;
+    font-size: $fontSizeBig;
+  }
+  &_fieldset {
+    border-radius: 4px;
+    margin: $gapSize 0;
+    padding: 0.3em 0.6em;
+    background: $inputBackground;
+    background-clip: padding-box;
+    border: 1px solid $inputBorderColor;
+  }
+  &_label {
+    display: block;
+    padding: 0.3em 0;
+    position: relative;
+    font-weight: normal;
+    border-top: 1px solid $inputBorderColor;
+    &:first-child { border: 0; }
+    &_icon {
+      top: 50%;
+      left: 5px;
+      position: absolute;
+      margin: -0.5em 0 0 0;
+      transition: color 0.2s;
+      color: rgba($fgGray, 0.5);
+      font-size: $iconSize * 1.5;
+    }
+    input, input:focus {
+      border: 0;
+      width: 100%;
+      height: auto;
+      background: none;
+      box-shadow: none;
+      transition: none;
+      line-height: normal;
+      font-size: $fontSizeStrong;
+      padding: 0.5em 0.3em 0.5em 36px;
+      &:-webkit-autofill {
+        color: $inputColor;
+        -webkit-text-fill-color: $inputColor;
+        -webkit-box-shadow: inset 0 0 0 100px $inputBackground;
+      }
+    }
+    input:focus + &_icon { color: $fgHover; }
+  }
+  &_links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li { margin: 0.1em 0; }
+  }
+}

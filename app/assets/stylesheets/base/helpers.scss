@@ -1,3 +1,7 @@
+// ---------------------------
+// HELPER CLASSES
+// ---------------------------
+
 // Alignment
 .aleft {
   text-align: left !important;
@@ -79,4 +83,14 @@ $step: 5;
 }
 .nowrap {
   white-space: nowrap !important;
+}
+
+// Prefix & suffix using pseudo-elements
+[data-prefix]:before {
+  white-space: pre;
+  content: attr(data-prefix);
+}
+[data-suffix]:after {
+  white-space: pre;
+  content: attr(data-suffix);
 }
