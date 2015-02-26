@@ -14,6 +14,7 @@
   }
   &_link {
     color: $headerFg;
+    white-space: nowrap;
     margin-left: $gapSize;
     display: inline-block;
     text-decoration: none;
@@ -30,7 +31,10 @@
     }
     big, small {
       display: block;
-      line-height: 1.1;
+      overflow: hidden;
+      max-width: 160px;
+      line-height: 1.12;
+      text-overflow: ellipsis;
     }
     small {
       font-family: $fontFamily;

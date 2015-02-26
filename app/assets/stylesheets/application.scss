@@ -146,8 +146,6 @@ $footerBg:									$themeDark;
 @import "sections/signon";
 
 
-
-
 // ---------------------------
 // DASHBOARD
 // ---------------------------
@@ -167,16 +165,16 @@ $footerBg:									$themeDark;
 			margin: 0;
 			padding: 0;
 		}
-		&_title { margin: 0; }
+		&_title {
+			margin: 0;
+			a { text-decoration: none; }
+		}
 		&_snippet {
-			margin: 0.8em 0 0 0;
+			margin: 0.5em 0;
 			font-size: $fontSizeSmall;
 		}
-		&_statistics {
-			width: 100%;
-			margin-top: 0.8em;
-			vertical-align: top;
-			display: inline-block;
+		&_summary {
+			margin-top: 0.4em;
 			color: mix($bodyFg, $bodyBg, 60);
 			a {
 				color: inherit;
