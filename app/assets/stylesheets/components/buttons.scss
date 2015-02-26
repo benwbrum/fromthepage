@@ -24,8 +24,9 @@
 // Button states
 @mixin button-state($state: normal) {
   @if $state == normal {
-    text-align: center;
+    cursor: pointer;
     user-select: none;
+    text-align: center;
     white-space: nowrap;
     padding: 0 $btnPadding;
     line-height: $btnHeight;
@@ -44,6 +45,7 @@
   }
   @if $state == active {
     box-shadow: inset 0 0 3px rgba(#000, 0.3);
+    background-image: linear-gradient(rgba(#FFF, 0.2), rgba(#FFF, 0));
     @include button-colors($btnColor, $btnBackground, $state);
   }
   @if $state == disabled {

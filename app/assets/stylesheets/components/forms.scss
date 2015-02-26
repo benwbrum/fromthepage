@@ -65,7 +65,7 @@ input[type="week"] {
   &:focus {
     outline: none;
     border-color: $inputFocusBorder;
-    box-shadow: 0 0 1px $inputFocusBorder;
+    //box-shadow: 0 0 1px $inputFocusBorder;
   }
 
   // Disabled state

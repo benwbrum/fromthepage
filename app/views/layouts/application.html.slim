@@ -26,7 +26,7 @@ html
 
     link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round")
     =stylesheet_link_tag 'application'
-    = "\n"
+    ="\n"
     =javascript_include_tag 'application'
 
 body
@@ -47,15 +47,22 @@ body
         =link_to 'Home', root_path, class: 'header_link'
         =link_to 'Dashboard', dashboard_path, class: 'header_link'
         =link_to 'FAQ', { :controller => 'static', :action => 'faq' }, class: 'header_link'
+
         -if user_signed_in?
-          =link_to destroy_user_session_path, method: :delete, class: 'header_link'
-            =svg_symbol '#profile'
-            span Sign Out
+          dl.dropdown.right
+            dt.header_link.header_user
+              span
+                big Signed as
+                small =current_user.display_name
+              =svg_symbol '#profile', class: 'icon'
+            dd
+              =link_to 'Edit Profile', edit_user_registration_path
+              hr
+              =link_to 'Sign Out', destroy_user_session_path, method: :delete
         -else
-          =link_to new_user_session_path, class: 'header_link'
-            =svg_symbol '#profile'
+          =link_to new_user_session_path, class: 'header_link header_user'
             span Sign In
-          //=link_to 'Sign Up', new_user_registration_path
+            =svg_symbol '#profile', class: 'icon'
 
   -if (@work && @work.title) || (@collection && @collection.title)
     #work-logo.outside-column

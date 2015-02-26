@@ -44,7 +44,7 @@ $bgYellow:									#FFFCD6;
 $bgPink:										#FFF0F0;
 
 $fgSelected:								#FFF;
-$bgSelected:								#09E;
+$bgSelected:								#655;
 $fgLink:										#900;
 $fgHover:										#D50;
 $bgHover:										lighten($bgSelected, 47);
@@ -55,6 +55,12 @@ $fgH3:											darken($fgH1, 12%);
 $fgH4:											darken($fgH1, 18%);
 $fgH5:											darken($fgH1, 24%);
 
+// ---------------------------
+// EASING FUNCTIONS
+// ---------------------------
+
+$easeOutCubic:							cubic-bezier(0.215, 0.61, 0.355, 1);
+$easeOutElastic:						cubic-bezier(0.1, 1.3, 0.7, 1.1);
 
 // ---------------------------
 // BUTTONS & INPUTS
@@ -93,7 +99,7 @@ $inputFontFamily:						$fontFamily;
 $inputColor:								#000;
 $inputBackground:						#FFF;
 $inputBorderColor:					rgba(#000, 0.15);
-$inputFocusBorder:					#C96;
+$inputFocusBorder:					rgba(#433, 0.45);
 $inputDisabledColor:				#888;
 $inputDisabledBackground:		#F9F9F9;
 $inputInvalidColor:					#C00;
@@ -127,9 +133,12 @@ $footerBg:									$themeDark;
 
 @import "base/normalize";
 @import "base/helpers";
-@import "base/forms";
-@import "base/buttons";
 @import "base/common";
+
+@import "components/forms";
+@import "components/buttons";
+
+@import "components/dropdown";
 
 
 // ---------------------------
@@ -160,6 +169,7 @@ h1, h2, h3, h4, h5 {
 	font-weight: normal;
 	margin: 1em 0 0.5em 0;
 	font-family: $fontFamilyHead;
+	&:first-child { margin-top: 0; }
 }
 h1 {
 	color: $fgH1;
@@ -200,6 +210,7 @@ p {
 }
 a {
 	color: $fgLink;
+	cursor: pointer;
 	text-decoration: underline;
 	transition: color 0.2s, background-color 0.2s;
 	&:hover { color: $fgHover; }
@@ -314,23 +325,6 @@ svg {
 		}
 	}
 }
-.devise-error {
-  margin: 1em 0;
-  padding-left: 1em;
-  color: $inputInvalidColor;
-  border-left: 3px solid currentColor;
-  &_title {
-    color: inherit;
-    margin: 0 0 0.3em 0;
-    font-size: $fontSizeBig;
-  }
-  &_summary {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    li { margin: 0; }
-  }
-}
 .flash {
 	top: 0;
 	left: 0;
@@ -369,6 +363,23 @@ svg {
 		&:hover { color: rgba(#000, 0.8); }
 	}
 }
+.devise-error {
+  margin: 1em 0;
+  padding-left: 1em;
+  color: $inputInvalidColor;
+  border-left: 3px solid currentColor;
+  &_title {
+    color: inherit;
+    margin: 0 0 0.3em 0;
+    font-size: $fontSizeBig;
+  }
+  &_summary {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li { margin: 0; }
+  }
+}
 
 
 // ---------------------------
@@ -387,20 +398,33 @@ svg {
 	}
 	&_link {
 		color: $headerFg;
-		margin-left: 1em;
-		line-height: 28px;
+		margin-left: $gapSize;
 		display: inline-block;
 		text-decoration: none;
+		vertical-align: middle;
 		font-size: $fontSizeStrong;
-		&:first-child { margin-left: 0; }
-		&:hover { color: lighten($headerFg, 20); }
-		svg {
-			width: 28px;
-			height: 28px;
-			opacity: 0.9;
-			vertical-align: top;
-			margin-right: 0.3em;
+		&:hover { color: $fgHover; }
+	}
+	&_user {
+		margin-left: $gapSize * 2;
+		span {
+			text-align: right;
 			display: inline-block;
+			vertical-align: middle;
+		}
+		big, small {
+			display: block;
+			line-height: 1.1;
+		}
+		small {
+			font-family: $fontFamily;
+			font-size: $fontSizeSmall;
+		}
+		.icon {
+			opacity: 0.9;
+			font-size: 28px;
+			margin: 0 0 0 8px;
+			vertical-align: middle;
 		}
 	}
 }

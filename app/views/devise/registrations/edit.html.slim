@@ -29,6 +29,6 @@ section.auth
       .toolbar_group
         =f.button 'Save Changes', class: 'big'
       .toolbar_group.aright
-        =link_to registration_path(resource_name), data: { confirm: 'Are you sure you want to delete your account? After deleting account you won\'t be able to recover it!' }, method: :delete
+        =link_to registration_path(resource_name), data: { confirm: 'Are you sure you want to delete your account? After deleting the account you won\'t be able to recover it!' }, method: :delete
           =svg_symbol '#icon-remove-sign', class: 'icon'
           |Cancel Account
