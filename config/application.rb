@@ -32,5 +32,9 @@ module Fromthepage
         html_tag.insert html_tag.index('>'), ' class="invalid"'
       end
     }
+
+    if config.respond_to?(:sass)
+      require File.expand_path('../../lib/sass_functions.rb', __FILE__)
+    end
   end
 end
