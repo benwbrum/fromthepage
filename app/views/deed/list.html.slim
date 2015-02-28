@@ -5,7 +5,7 @@ section.deed-long
       =time_tag(deed.created_at, class: 'deed-long_record_time')
         =time_ago(deed.created_at)
       .deed-long_record_text
-        =render(:partial => deed.long_partial, :locals => { :deed => deed })
+        =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true })
 
 p.aright
   =link_to({ :offset => (@offset.to_i + 50), :collection_id => @collection ? @collection.id : nil })
