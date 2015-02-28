@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   # Set the current user in User
   def set_current_user_in_model
     User.current_user = current_user
-  end 
+  end
 
 
   # See ActionController::RequestForgeryProtection for details
@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
             logger.error(ex.backtrace.join("\n"))
             flash[:error] = "The Internet Archive is experiencing difficulties.  Please try again later."
             redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
-            return            
+            return
           end
         end
       end
@@ -174,6 +174,17 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation) }
+  end
+
+  # Redirect to admin or owner dashboard after sign in
+  def after_sign_in_path_for(resource)
+    if current_user.admin
+      admin_path
+    elsif current_user.owner
+      dashboard_owner_path
+    else
+      dashboard_path
+    end
   end
 end
 
