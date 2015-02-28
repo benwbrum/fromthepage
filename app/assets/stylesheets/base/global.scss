@@ -83,7 +83,7 @@ strong, .strong {
 
 p {
   margin: 1em 0;
-  line-height: $lineHeight;
+  line-height: inherit;
 }
 
 a {

@@ -116,6 +116,7 @@
 
 .legend {
   margin: 1em 0;
+  display: block;
   overflow: hidden;
   position: relative;
   text-align: center;
@@ -136,6 +137,31 @@
   &:after {
     left: 0.5em;
     margin: 0 -50% 0 0;
+  }
+  &-left {
+    text-align: left;
+    &:before { display: none; }
+    &:after { width: 100%; }
+  }
+}
+
+.headline {
+  width: 100%;
+  display: table;
+  white-space: nowrap;
+  margin-bottom: $gapSize;
+  > * {
+    padding: 0 $gapSize;
+    display: table-cell;
+    vertical-align: middle;
+    &:first-child { padding-left: 0; }
+    &:last-child { padding-right: 0; }
+  }
+  &_title {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    white-space: normal;
   }
 }
 
