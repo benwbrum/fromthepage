@@ -1,0 +1,13 @@
+h1 Activity Log
+section.deed-long
+  -for deed in @deeds
+    .deed-long_record
+      =time_tag(deed.created_at, class: 'deed-long_record_time')
+        =time_ago(deed.created_at)
+      .deed-long_record_text
+        =render(:partial => deed.long_partial, :locals => { :deed => deed })
+
+p.aright
+  =link_to({ :offset => (@offset.to_i + 50), :collection_id => @collection ? @collection.id : nil })
+    |Older Activity
+  |&nbsp;&rarr;

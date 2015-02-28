@@ -1,0 +1,11 @@
+ul.activity
+  -for deed in deeds
+    li.activity_record
+      small.activity_record_time.legend.legend-left =time_ago(deed.created_at)
+      small.activity_record_text
+        =render(:partial => deed.short_partial, :locals => { :deed => deed })
+hr
+p
+  =link_to({ :controller => 'deed', :action => 'list', :collection_id => @collection ? @collection.id : nil })
+    |Full Activity Log
+  |&nbsp;&rarr;
