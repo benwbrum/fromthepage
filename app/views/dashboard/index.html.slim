@@ -1,0 +1,21 @@
+h1 Collections
+.dashboard.columns
+  article.maincol
+    ul.dashboard_collections
+      -@collections.each do |c|
+        -if !c.restricted || (user_signed_in? && current_user.like_owner?(c))
+          -snippet = truncate(strip_tags(c.intro_block), length: 250, separator: ' ') || ''
+          -count_works = pluralize(c.works.size, 'work')
+          -count_subjects = pluralize(c.categories.size, 'subject group')
+          -owner_link = link_to(c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id })
+          li.dashboard_collection
+            h5.dashboard_collection_title
+              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
+            -if !snippet.empty?
+              p.dashboard_collection_snippet =snippet
+            .dashboard_collection_summary Contains #{count_works} and #{count_subjects}, owned by #{owner_link}
+
+
+  aside.sidecol
+    h2 Recent Activity
+    =deeds_for()

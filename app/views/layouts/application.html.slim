@@ -45,7 +45,7 @@ body
           =svg_symbol '#logo'
       .toolbar_group
         =link_to 'Home', root_path, class: 'header_link'
-        =link_to 'Dashboard', dashboard_path, class: 'header_link'
+        =link_to 'Collections', dashboard_path, class: 'header_link'
         =link_to 'FAQ', { :controller => 'static', :action => 'faq' }, class: 'header_link'
 
         -if user_signed_in?
@@ -56,6 +56,8 @@ body
                 small =current_user.display_name
               =svg_symbol '#profile', class: 'icon'
             dd
+              =link_to 'Admin Dashboard', admin_path if current_user.admin
+              =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
               =link_to 'Edit Profile', edit_user_registration_path
               hr
               =link_to 'Sign Out', destroy_user_session_path, method: :delete
@@ -77,7 +79,6 @@ body
   =(yield :content_above).force_encoding 'UTF-8'
 
   main.wrapper
-    //=@content_for_layout
     =yield.force_encoding 'UTF-8'
 
   =(yield :content_below).force_encoding 'UTF-8'
@@ -86,12 +87,7 @@ body
     .outside-column ==@collection.footer_block
 
   footer.footer
-    .footer_copyright
-      |&copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
-      //-if Rails.env == 'development'
-      //  br
-      //  small This is the development version. The beta version is located at <a href="http://beta.fromthepage.com/">beta.fromthepage.com</a>
-
+    .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
     .footer_nav
       =link_to 'Terms & Conditions', { :controller => 'static', :action => 'terms' }
       =link_to 'Privacy Policy', { :controller => 'static', :action => 'privacy' }

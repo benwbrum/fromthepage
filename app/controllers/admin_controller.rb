@@ -7,6 +7,18 @@ class AdminController < ApplicationController
     end
   end
 
+  def index
+    @users = User.all
+
+    sql =
+      'SELECT count(DISTINCT user_id) count '+
+      'FROM interactions '+
+      'WHERE created_on > date_sub("'+ Time.now.utc.to_s() +'", INTERVAL 20 MINUTE) '+
+      'AND user_id IS NOT NULL'
+
+    @user_count = Interaction.connection.select_value(sql)
+  end
+
   def edit_user
   end
 
@@ -45,7 +57,8 @@ class AdminController < ApplicationController
     # interactions for a session
     if(params[:session_id])
       conditions = "session_id = '#{params['session_id']}'"
-    else if(@user)
+    else
+      if(@user)
         # interactions for user
         conditions = "user_id = #{@user.id}"
       else

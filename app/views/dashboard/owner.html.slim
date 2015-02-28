@@ -1,0 +1,43 @@
+h1 Owner Dashboard
+
+p =link_to('Create an empty work', { :controller => 'work', :action => 'new' })
+p =link_to('Create an empty collection', { :controller => 'collection', :action => 'new' })
+p =link_to('Import works from Omeka', { :controller => 'omeka_sites', :action => 'index' })
+p =link_to('Import a book from the Internet Archive', { :controller => 'ia', :action => 'ia_book_form' })
+p =link_to('Create an image set', { :controller => 'transform' })
+p =link_to('Explore OAI repositories', { :controller => 'oai', :action => 'repository_list' })
+
+-unless current_user.oai_sets.empty?
+  h4 Import from an OAI collection
+  ul
+    -for set in current_user.oai_sets
+      -oai_title = 'List works to import from ' + set.set_spec
+      li =link_to(oai_title, { :action => 'record_list', :controller => 'oai', :repository_url => set.repository_url, :set_spec => set.set_spec })
+
+-unless current_user.owner_works.empty?
+  h4 Works I own
+  ul
+    -for work in current_user.owner_works
+      li =link_to(work.title, { :controller => 'work', :action => 'edit', :work_id => work.id })
+
+-if !@image_sets.empty? || !current_user.ia_works.empty?
+  h3 Staging Area
+
+-unless current_user.ia_works.empty?
+  h4 Imported Archive.org Books
+  ul
+    -for ia_work in current_user.ia_works
+      li =link_to(ia_work.title, { :controller => 'ia', :action => 'manage', :ia_work_id => ia_work.id })
+
+-unless @image_sets.empty?
+  h4 Image Sets I own
+  ul
+    -@image_sets.each do |set|
+      li
+        span Set #{set.id} (#{set.summary})
+        span.inline
+          =link_to('Title', { :controller => 'title', :action => 'list', :image_set_id => set.id })
+          =link_to('Delete', { :controller => 'image_set', :action => 'delete', :image_set_id => set.id })
+          =link_to('Append', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id })
+          =link_to('Merge', { :controller => 'collation', :action => 'select_target', :image_set_id => set.id })
+          =link_to('Publish', { :controller => 'image_set', :action => 'convert_to_work', :image_set_id => set.id })

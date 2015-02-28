@@ -150,40 +150,77 @@ $footerBg:									$themeDark;
 // DASHBOARD
 // ---------------------------
 
-.dashboard {
-	&_collections {
+.dashboard_collections {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.dashboard_collection {
+	margin: 1em 0 0 0;
+	padding: 1em 0 0 0;
+	border-top: 1px dotted $borderColor;
+	&:first-child {
+		border: 0;
 		margin: 0;
 		padding: 0;
-		list-style: none;
 	}
-	&_collection {
-		margin: 1em 0 0 0;
-		padding: 1em 0 0 0;
-		border-top: 1px dotted $borderColor;
-		&:first-child {
-			border: 0;
-			margin: 0;
-			padding: 0;
-		}
-		&_title {
-			margin: 0;
-			a { text-decoration: none; }
-		}
-		&_snippet {
-			margin: 0.5em 0;
-			font-size: $fontSizeSmall;
-		}
-		&_summary {
-			margin-top: 0.4em;
-			color: mix($bodyFg, $bodyBg, 60);
-			a {
-				color: inherit;
-				&:hover { color: $bodyFg; }
-			}
+	&_title {
+		margin: 0;
+		a { text-decoration: none; }
+	}
+	&_snippet {
+		margin: 0.5em 0;
+		font-size: $fontSizeSmall;
+	}
+	&_summary {
+		margin-top: 0.4em;
+		color: mix($bodyFg, $bodyBg, 60);
+		a {
+			color: inherit;
+			&:hover { color: $bodyFg; }
 		}
 	}
 }
-
+.activity {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	&_record {
+		line-height: 1.3;
+		margin: 0 0 1em 0;
+		&_time {
+			margin: 0 0 0.3em 0;
+			color: mix($bodyFg, $bodyBg, 60);
+		}
+		&_text {
+			display: block;
+			margin: 0.3em 0;
+		}
+	}
+}
+.deed-long {
+	width: 100%;
+	display: table;
+	border-spacing: 0 5px;
+	&_record {
+		display: table-row;
+		> * {
+			padding: 5px 10px;
+			display: table-cell;
+			vertical-align: top;
+		}
+		&_time {
+			line-height: 1.6;
+			text-align: right;
+			white-space: nowrap;
+			font-size: $fontSizeSmall;
+			color: mix($bodyFg, $bodyBg, 60);
+			border-right: 1px solid $borderColor;
+		}
+		&_text { width: 100%; }
+		&:nth-child(even) &_text { background: rgba(#000, 0.03); }
+	}
+}
 
 div.two-columns {
 	width: 100%;

@@ -1,0 +1,18 @@
+h1 Administration
+
+p =link_to('Edit Page Blocks', { :controller => 'page_block', :action => 'list' })
+p =link_to('View Logfile', { :controller => 'admin', :action => 'tail_logfile', :lines => 500 })
+p =link_to('Recent Errors', { :controller => 'admin', :action => 'error_list', :limit => 50 })
+
+.headline
+  h2.headline_title List of Users
+  h4.headline_aside #{@user_count > 0 ? pluralize(@user_count, 'registered user') : 'No users'} online
+
+ul
+  -@users.each do |user|
+    li
+      =link_to(user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id })
+      =link_to('Edit', { :controller => 'admin', :action => 'edit_user', :user_id => user.id })
+      =link_to('Sessions', { :controller => 'admin', :action => 'session_list', :user_id => user.id })
+    li
+      =link_to('Anonymous Sessions', { :controller => 'admin', :action => 'session_list' })
