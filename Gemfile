@@ -41,6 +41,10 @@ end
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0.beta'
   gem 'factory_girl_rails', require: false
+
+  # Supporting gem for RailsPanel
+  # https://github.com/dejan/rails_panel
+  gem 'meta_request'
 end
 
 # Use SASS for stylesheets

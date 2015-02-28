@@ -58,6 +58,7 @@ GEM
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
       slop (~> 3.6)
+    callsite (0.0.11)
     capistrano (3.2.1)
       i18n
       rake (>= 10.0.0)
@@ -104,6 +105,10 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    meta_request (0.3.4)
+      callsite (~> 0.0, >= 0.0.11)
+      rack-contrib (~> 1.1)
+      railties (>= 3.0.0, < 5.0.0)
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.2)
@@ -130,6 +135,8 @@ GEM
       byebug (~> 3.4)
       pry (~> 0.10)
     rack (1.5.2)
+    rack-contrib (1.2.0)
+      rack (>= 0.9.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.1.2)
@@ -241,6 +248,7 @@ DEPENDENCIES
   devise-encryptable
   factory_girl_rails
   jquery-rails
+  meta_request
   mysql2 (= 0.3.16)
   nokogiri
   oai!
