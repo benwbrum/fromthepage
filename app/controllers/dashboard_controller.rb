@@ -12,10 +12,10 @@ class DashboardController < ApplicationController
     @recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
 
     sql =
-      'select count(distinct session_id) count ' +
-      'from interactions '+
-      'where created_on > date_sub(now(), interval 20 minute) ' +
-      "and user_id is not null "
+      'SELECT count(DISTINCT user_id) count '+
+      'FROM interactions '+
+      'WHERE created_on > date_sub("'+ Time.now.utc.to_s() +'", INTERVAL 20 MINUTE) '+
+      'AND user_id IS NOT NULL'
 
     @user_count = Interaction.connection.select_value(sql)
   end
