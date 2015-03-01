@@ -13,7 +13,7 @@ class AdminController < ApplicationController
     sql =
       'SELECT count(DISTINCT user_id) count '+
       'FROM interactions '+
-      'WHERE created_on > date_sub("'+ Time.now.utc.to_s() +'", INTERVAL 20 MINUTE) '+
+      'WHERE created_on > date_sub(UTC_TIMESTAMP(), INTERVAL 20 MINUTE) '+
       'AND user_id IS NOT NULL'
 
     @user_count = Interaction.connection.select_value(sql)
