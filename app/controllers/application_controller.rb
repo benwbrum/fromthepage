@@ -77,6 +77,8 @@ class ApplicationController < ActionController::Base
   def update_ia_work_server
     if @work && @work.ia_work
       ia_servers = session[:ia_servers] ||= {}
+      ia_servers = JSON.parse(ia_servers.to_json).with_indifferent_access
+
       unless ia_servers[@work.ia_work.book_id]
         # fetch it and update it
         begin
@@ -96,9 +98,10 @@ class ApplicationController < ActionController::Base
           end
         end
       end
+
       logger.debug("DEBUG: ia_server = #{ia_servers[@work.ia_work.book_id].inspect}")
-      @work.ia_work.server=ia_servers[@work.ia_work.book_id][:server]
-      @work.ia_work.ia_path=ia_servers[@work.ia_work.book_id][:ia_path]
+      @work.ia_work.server = ia_servers[@work.ia_work.book_id][:server]
+      @work.ia_work.ia_path = ia_servers[@work.ia_work.book_id][:ia_path]
     end
   end
 
