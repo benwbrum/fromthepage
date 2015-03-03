@@ -1,4 +1,4 @@
-/* much of this is taken from Ruthsarian Layouts at 
+/* much of this is taken from Ruthsarian Layouts at
    http://webhost.bridgew.edu/etribou/layouts/rMenu/index.html */
 			body { background-color: #eee; color: #000; }
 			p { margin: 1em 0; padding: 0; }
@@ -7,7 +7,7 @@
 			{
 				width: 100%;
 				display: inline-block;	/* for IE/Mac to contain its child elements */
-				/* \*/ display: block;	/* override above rule for every other 
+				/* \*/ display: block;	/* override above rule for every other
 							   browser using IE/Mac backslash hack */
 				font-family: arial, helvetica, sans-serif;
 				font-size: 100%; /* Changed from 80% BWB */
@@ -22,13 +22,13 @@
 			}
 			div.two-columns:after
 			{
-			    content: "."; 
-			    display: block; 
-			    height: 0; 
-			    clear: both; 
+			    content: ".";
+			    display: block;
+			    height: 0;
+			    clear: both;
 			    visibility: hidden;
 			}
-			div.two-columns, 
+			div.two-columns,
 			div.two-columns div.left-column,
 			div.two-columns div.right-column
 			{
@@ -52,7 +52,7 @@
 			{
 				border-width: 0 0 0 1px;
 				margin-right: -3px;
-				margin-left: 0;	
+				margin-left: 0;
 			}
 			div.two-columns div.inside-column
 			{
@@ -83,17 +83,17 @@
     }
 
     div.footer-links
-    { 
+    {
       border-top: 1px solid #ddd;
       font-size: 80%;
       clear: both;
     }
-    
+
     div.thumbnail-container
     {
         float: right;
-				margin-left: 1em;	
-				margin-bottom: 1em;	
+				margin-left: 1em;
+				margin-bottom: 1em;
     }
 
 #containerdiv
@@ -102,9 +102,7 @@
 	height: 100%;
 }
 
-	
-	poetslap
-@charset "iso-8859-1";
+
 
 /*******************************************************************************
 *  visual_consistencies.css : 2005.09.07 : Ruthsarian Layouts
@@ -112,7 +110,7 @@
 *  Font sizes on heading elements and the margin/padding applied to these
 *  same elements will vary from browser to browser. This is an attempt to pull
 *  the font sizes and spacing together for a consistent look across all
-*  browsers. 
+*  browsers.
 *
 *  There are other rules included in this stylesheet (with comments on each)
 *  to handle other visual consistency issues. You do not need to use this
@@ -123,8 +121,8 @@
 
 ul, ol, dl, p, h1, h2, h3, h4, h5, h6
 {
-	/* pixels are used here, rather than ems, because I want a consistent 
-	 * margin on the different headings. if I use ems, 1em for an h1 element 
+	/* pixels are used here, rather than ems, because I want a consistent
+	 * margin on the different headings. if I use ems, 1em for an h1 element
 	 * is much larger than 1em on an h6 element. I don't want this.
 	 */
 	margin-top: 10px;
@@ -188,7 +186,7 @@ code, pre
 }
 label
 {
-	/* It's all about the visual feedback. In this case, label 
+	/* It's all about the visual feedback. In this case, label
 	 * elements are usually clickable which then set focus on
 	 * their target. I want to show that to the user in a manner
 	 * they are used to and understand.
@@ -197,7 +195,7 @@ label
 }
 table
 {
-	/* Some browsers won't carry the font size down into the 
+	/* Some browsers won't carry the font size down into the
 	 * browser like they're suppose to.
 	 */
 	font-size: 100%;
@@ -205,7 +203,7 @@ table
 td, th
 {
 	/* I never like or use the default vertical centering "feature"
-	 * provided by tables. 
+	 * provided by tables.
 	 */
 	vertical-align: top;
 }
@@ -250,7 +248,7 @@ padding: 1px;
 }
 
 #header {
-height: 150px:
+height: 150px;
 background: #749EA9;
 width: 100%;
 
@@ -368,7 +366,7 @@ color: #888888;
 }
 
 /* pull quote */
-.pullquote 
+.pullquote
 {width: 145px;
 background: #dee7ec;
 color:black;
@@ -392,7 +390,7 @@ font-family: Times, serif, Georgia;
 }
 
 /* important box */
-#important 
+#important
 {
 width: 96%;
 background: rgb(255,235,205);
@@ -441,15 +439,15 @@ text-align: right;
     border: 1px solid #eee;
     #color: #ddd;
   }
-  
+
 table.revisions
-{ 
+{
     width: 100%;
 #width: 580px;
 #background-color: #fafafa;
 #border: 1px #000000 solid;
 border-collapse: collapse;
-border-spacing: 0px; 
+border-spacing: 0px;
 }
 
 th.revision_title
@@ -514,7 +512,7 @@ background-color: #DEE7EC
 }
 
 p.right
-{  
+{
 text-align: right;
 }
 
