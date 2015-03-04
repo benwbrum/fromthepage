@@ -1,10 +1,10 @@
 h1 Activity Log
-section.deed-long
+section.activity-log
   -for deed in @deeds
-    .deed-long_record
-      =time_tag(deed.created_at, class: 'deed-long_record_time')
+    .activity-log_record
+      =time_tag(deed.created_at, class: 'activity-log_record_time')
         =time_ago(deed.created_at)
-      .deed-long_record_text
+      .activity-log_record_text
         =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true })
 
 p.aright
