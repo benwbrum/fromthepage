@@ -5,10 +5,10 @@ section.signon
     fieldset.signon_fieldset
       =f.label :login, class: 'signon_label'
         =f.text_field :login, autofocus: true, placeholder: 'Login'
-        =svg_symbol '#icon-user', class: 'icon signon_label_icon'
+        =svg_symbol '#icon-user', class: 'signon_label_icon'
       =f.label :password, class: 'signon_label'
         =f.password_field :password, autocomplete: 'off', placeholder: 'Password'
-        =svg_symbol '#icon-key', class: 'icon signon_label_icon'
+        =svg_symbol '#icon-key', class: 'signon_label_icon'
     .toolbar
       .toolbar_group
         =f.button 'Sign In', class: 'strong'

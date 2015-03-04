@@ -156,14 +156,10 @@ $footerBg:									$themeDark;
 	list-style: none;
 }
 .dashboard_collection {
-	margin: 1em 0 0 0;
-	padding: 1em 0 0 0;
+	margin: 0;
+	padding: 1em 0;
 	border-top: 1px dotted $borderColor;
-	&:first-child {
-		border: 0;
-		margin: 0;
-		padding: 0;
-	}
+	&:first-child { border: 0; }
 	&_title {
 		margin: 0;
 		a { text-decoration: none; }

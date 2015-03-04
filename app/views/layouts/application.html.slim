@@ -35,7 +35,7 @@ body
     .flash(class='flash-#{type}')
       span.flash_message
         =svg_symbol flash_icon[type], class: 'icon'
-        =message
+        span =message
       a.flash_close &times;
 
   header.header
@@ -54,7 +54,7 @@ body
               span
                 big Signed as
                 small =current_user.display_name
-              =svg_symbol '#profile', class: 'icon'
+              =svg_symbol '#header-user', class: 'icon'
             dd
               =link_to 'Admin Dashboard', admin_path if current_user.admin
               =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
@@ -64,7 +64,7 @@ body
         -else
           =link_to new_user_session_path, class: 'header_link header_user'
             span Sign In
-            =svg_symbol '#profile', class: 'icon'
+            =svg_symbol '#header-user', class: 'icon'
 
   -if (@work && @work.title) || (@collection && @collection.title)
     #work-logo.outside-column

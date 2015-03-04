@@ -194,11 +194,17 @@
 .icon {
   width: 1em;
   height: 1em;
-  margin-right: 5px;
   font-size: $iconSize;
   vertical-align: -10%;
   display: inline-block;
   text-decoration: none;
+  &:first-child { margin-right: 0.3em; }
+  &:last-child { margin-left: 0.3em; }
+  &:only-child { margin: 0; }
+  &-big {
+    vertical-align: -16%;
+    font-size: $iconSize * 1.5;
+  }
 }
 
 .tabs {
