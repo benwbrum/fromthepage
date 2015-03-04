@@ -2,10 +2,9 @@
   h1.headline_title Administration
   .headline_aside
     dl.dropdown.right
-      dt
-        h5.nomargin
-          span Actions
-          =svg_symbol '#big-menu', class: 'icon icon-big'
+      dt.h5
+        span Actions
+        =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
         =link_to 'Edit Page Blocks', { :controller => 'page_block', :action => 'list' }
         =link_to 'View Logfile', { :controller => 'admin', :action => 'tail_logfile', :lines => 500 }

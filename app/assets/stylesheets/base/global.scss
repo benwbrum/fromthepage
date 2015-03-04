@@ -40,28 +40,33 @@ h1, h2, h3, h4, h5 {
   &:first-child { margin-top: 0; }
 }
 
-h1 {
+.h1, .h2, .h3, .h4, .h5 {
+  margin: 0;
+  font-family: $fontFamilyHead;
+}
+
+h1, .h1 {
   color: $fgH1;
   margin-top: 0;
   font-size: $fontSizeH1;
 }
 
-h2 {
+h2, .h2 {
   color: $fgH2;
   font-size: $fontSizeH2;
 }
 
-h3 {
+h3, .h3 {
   color: $fgH3;
   font-size: $fontSizeH3;
 }
 
-h4 {
+h4, .h4 {
   color: $fgH4;
   font-size: $fontSizeH4;
 }
 
-h5 {
+h5, .h5 {
   color: $fgH5;
   font-size: $fontSizeH5;
 }

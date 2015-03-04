@@ -1,11 +1,17 @@
-h1 Owner Dashboard
-
-p =link_to('Create an empty work', { :controller => 'work', :action => 'new' })
-p =link_to('Create an empty collection', { :controller => 'collection', :action => 'new' })
-p =link_to('Import works from Omeka', { :controller => 'omeka_sites', :action => 'index' })
-p =link_to('Import a book from the Internet Archive', { :controller => 'ia', :action => 'ia_book_form' })
-p =link_to('Create an image set', { :controller => 'transform' })
-p =link_to('Explore OAI repositories', { :controller => 'oai', :action => 'repository_list' })
+.headline
+  h1.headline_title Owner Dashboard
+  .headline_aside
+    dl.dropdown.right
+      dt.h5
+        span Actions
+        =svg_symbol '#big-menu', class: 'icon icon-big'
+      dd
+        =link_to 'Create an Empty Work', { :controller => 'work', :action => 'new' }
+        =link_to 'Create an Empty Collection', { :controller => 'collection', :action => 'new' }
+        =link_to 'Import Works From Omeka', { :controller => 'omeka_sites', :action => 'index' }
+        =link_to 'Import From Internet Archive', { :controller => 'ia', :action => 'ia_book_form' }
+        =link_to 'Create an Image Set', { :controller => 'transform' }
+        =link_to 'Explore OAI Repositories', { :controller => 'oai', :action => 'repository_list' }
 
 -unless current_user.oai_sets.empty?
   h4 Import from an OAI collection
