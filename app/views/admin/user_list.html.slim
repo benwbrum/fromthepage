@@ -1,0 +1,10 @@
+=render({ :partial => 'tabs', :locals => { :selected => 2 } })
+
+ul
+  -@users.each do |user|
+    li
+      =link_to(user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id })
+      =link_to('Edit', { :controller => 'admin', :action => 'edit_user', :user_id => user.id })
+      =link_to('Sessions', { :controller => 'admin', :action => 'session_list', :user_id => user.id })
+    li
+      =link_to('Anonymous User', { :controller => 'admin', :action => 'session_list' })
