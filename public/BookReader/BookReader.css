@@ -33,10 +33,10 @@
 	height: 100%;
 	overflow: scroll;
 	position: absolute;
-	background-color: #9A9B9D;
+	background-color: rgba(0,0,0,0.2);
 }
 #BRpageview {
-	background-color: #9A9B9D;
+	/*background-color: #9A9B9D;*/
 }
 .BRpagediv1up {
 	cursor: move;
