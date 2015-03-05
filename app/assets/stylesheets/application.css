@@ -118,18 +118,6 @@
 *  anywhere you want to make things look the way you want to. Nothing here
 *  _should_ break a layout if modified.
 *******************************************************************************/
-
-ul, ol, dl, p, h1, h2, h3, h4, h5, h6
-{
-	/* pixels are used here, rather than ems, because I want a consistent
-	 * margin on the different headings. if I use ems, 1em for an h1 element
-	 * is much larger than 1em on an h6 element. I don't want this.
-	 */
-	margin-top: 10px;
-	margin-bottom: 10px;
-	padding-top: 0;
-	padding-bottom: 0;
-}
 h1 {
 /*color: #8d1703;*/
 border-bottom: 3px dotted #dee7ec;
@@ -248,10 +236,7 @@ padding: 1px;
 }
 
 #header {
-height: 150px;
-background: #749EA9;
 width: 100%;
-
 }
 
 .site-logo a
