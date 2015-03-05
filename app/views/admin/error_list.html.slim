@@ -1,0 +1,34 @@
+=render({ :partial => 'tabs', :locals => { :selected => 4 } })
+
+table.datagrid
+  thead
+    tr
+      th Time
+      th Context
+      th Origin
+      th User
+      th Collection
+      th Work
+      th Page
+      th Action
+      th Parameters
+  tbody
+    -@interactions.each do |i|
+      tr
+        td =i.created_on.strftime("%Y-%m-%d %H:%M:%S")
+        td =link_to 'session', { :action => 'interaction_list', :session_id => i.session_id }
+        td =i.origin_link
+        td
+          -if i.user
+            =link_to i.user.login, { :controller => 'user', :action => 'versions', :user_id => i.user_id }
+        td
+          -if i.collection
+            =link_to i.collection.title, { :controller => 'collection', :action => 'show', :collection_id => i.collection_id }
+        td
+          -if i.work
+            =link_to i.work.title, { :controller => 'display', :action => 'read_work', :work_id => i.work_id }
+        td
+          -if i.page
+            =link_to i.page.title, { :controller => 'display', :action => 'display_page', :page_id => i.page_id }
+        td =i.action
+        td =i.params
