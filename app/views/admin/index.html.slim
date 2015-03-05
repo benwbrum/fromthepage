@@ -1,24 +1,30 @@
-.headline
-  h1.headline_title Administration
-  .headline_aside
-    dl.dropdown.right
-      dt.h5
-        span Actions
-        =svg_symbol '#big-menu', class: 'icon icon-big'
-      dd
-        =link_to 'Edit Page Blocks', { :controller => 'page_block', :action => 'list' }
-        =link_to 'View Logfile', { :controller => 'admin', :action => 'tail_logfile', :lines => 500 }
-        =link_to 'Recent Errors', { :controller => 'admin', :action => 'error_list', :limit => 50 }
+=render({ :partial => 'tabs', :locals => { :selected => 1 } })
 
-.headline
-  h2.headline_title List of Users
-  h4.headline_aside #{@user_count > 0 ? pluralize(@user_count, 'registered user') : 'No users'} online
-
-ul
-  -@users.each do |user|
-    li
-      =link_to(user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id })
-      =link_to('Edit', { :controller => 'admin', :action => 'edit_user', :user_id => user.id })
-      =link_to('Sessions', { :controller => 'admin', :action => 'session_list', :user_id => user.id })
-    li
-      =link_to('Anonymous Sessions', { :controller => 'admin', :action => 'session_list' })
+section.admin-summary
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @collections.length
+    span.admin-summary_caption #{'Collection'.pluralize(@collections.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @works.length
+    span.admin-summary_caption #{'Work'.pluralize(@works.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @ia_works.length
+    span.admin-summary_caption #{'IA Work'.pluralize(@ia_works.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @articles.length
+    span.admin-summary_caption #{'Article'.pluralize(@articles.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @pages.length
+    span.admin-summary_caption #{'Page'.pluralize(@pages.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @image_sets.length
+    span.admin-summary_caption #{'Image set'.pluralize(@image_sets.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @owners.length
+    span.admin-summary_caption #{'Owner'.pluralize(@owners.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @users.length
+    span.admin-summary_caption #{'Registered user'.pluralize(@users.length)}
+  .admin-summary_block
+    span.admin-summary_count =number_with_delimiter @users_count
+    span.admin-summary_caption #{'User'.pluralize(@users_count)} online

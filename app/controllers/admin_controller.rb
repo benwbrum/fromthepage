@@ -8,15 +8,27 @@ class AdminController < ApplicationController
   end
 
   def index
-    @users = User.all
+    @collections = Collection.all
+    @articles = Article.all
+    @works = Work.all
+    @ia_works = IaWork.all
+    @pages = Page.all
+    @image_sets = ImageSet.all
 
-    sql =
+    @users = User.all
+    @owners = @users.select {|i| i.owner == true}
+
+    sql_online =
       'SELECT count(DISTINCT user_id) count '+
       'FROM interactions '+
       'WHERE created_on > date_sub(UTC_TIMESTAMP(), INTERVAL 20 MINUTE) '+
       'AND user_id IS NOT NULL'
 
-    @user_count = Interaction.connection.select_value(sql)
+    @users_count = Interaction.connection.select_value(sql_online)
+  end
+
+  def user_list
+    @users = User.all
   end
 
   def edit_user
