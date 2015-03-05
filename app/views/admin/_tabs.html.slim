@@ -1,0 +1,36 @@
+-tabs = [{\
+  :name => 'Summary',
+  :selected => 1,
+  :options => {\
+    :controller => 'admin',
+  },
+},{\
+  :name => 'User List',
+  :selected => 2,
+  :options => {\
+    :controller => 'admin',
+    :action => 'user_list',
+  },
+},{\
+  :name => 'Logfile',
+  :selected => 3,
+  :options => {\
+    :controller => 'admin',
+    :action => 'tail_logfile',
+    :lines => 500,
+  },
+},{\
+  :name => 'Recent Errors',
+  :selected => 4,
+  :options => {\
+    :controller => 'admin',
+    :action => 'error_list',
+    :limit => 50,
+  },
+}]
+
+h1 Administration
+.tabs
+  -for tab in tabs
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
+      a.active =tab[:name]
