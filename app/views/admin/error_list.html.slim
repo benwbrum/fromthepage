@@ -1,28 +1,28 @@
-=render({ :partial => 'tabs', :locals => { :selected => 4 } })
+=render({ :partial => 'tabs', :locals => { :selected => 3 } })
 
-table.admin-errors.datagrid.striped
+table.admin-grid.datagrid.striped
   thead
     tr
-      th.w5.nowrap Date &amp; Time
-      th.w20.nowrap User &amp; Context
-      th.w40.nowrap Collection, Work &amp; Page
-      th.w35.nowrap Action &amp; Parameters
+      th.w5 Date &amp; Time
+      th.w20 User &amp; Context
+      th.w40 Collection, Work &amp; Page
+      th.w35 Action &amp; Parameters
   tbody
     -@interactions.each do |i|
       tr
-        td
-          small.admin-errors_datetime =i.created_on.strftime("%Y-%m-%d %H:%M:%S")
-        td
-          -if i.user
-            =link_to i.user.login, { :controller => 'user', :action => 'versions', :user_id => i.user_id }, class: 'admin-errors_user'
-          -else
-            span.admin-errors_user Anonymous
-          =link_to 'session', { :action => 'interaction_list', :session_id => i.session_id }, class: 'admin-errors_session'
+        td.small =i.created_on.to_s(:db)
+        td.nowrap
+          .instack
+            -if i.user
+              =link_to i.user.login, { :controller => 'user', :action => 'versions', :user_id => i.user_id }
+            -else
+              span Anonymous
+            =link_to 'session', { :action => 'interaction_list', :session_id => i.session_id }
           -if i.origin_link
             small(data-prefix="Origin: ") =i.origin_link
         td
           -if i.collection
-            =link_to i.collection.title, { :controller => 'collection', :action => 'show', :collection_id => i.collection_id }, class: 'admin-errors_collection'
+            p =link_to i.collection.title, { :controller => 'collection', :action => 'show', :collection_id => i.collection_id }
           -if i.work
             small(data-prefix="Work: ")
               =link_to i.work.title, { :controller => 'display', :action => 'read_work', :work_id => i.work_id }
@@ -30,5 +30,5 @@ table.admin-errors.datagrid.striped
             small(data-prefix="Page: ")
               =link_to i.page.title, { :controller => 'display', :action => 'display_page', :page_id => i.page_id }
         td
-          small.admin-errors_action =i.action
-          small.admin-errors_params =i.params
+          small.bold =i.action
+          small =i.params

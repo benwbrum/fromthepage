@@ -246,40 +246,36 @@ $footerBg:									$themeDark;
 		display: block;
 		line-height: 1;
 		font-size: 400%;
+		font-weight: bold;
 		white-space: nowrap;
-		letter-spacing: -0.05em;
+		letter-spacing: -0.03em;
 	}
 	&_caption {
 		display: block;
-		font-size: $fontSizeStrong;
+		font-size: $fontSizeH4;
 		font-family: $fontFamilyHead;
 	}
 }
 .admin-logfile {
+	color: #333;
 	font-size: 12px;
+	padding: $gapSize;
+	background: rgba(#FFF, 0.5);
+	background-clip: padding-box;
+	border: 1px solid rgba(#000, 0.05);
 }
-.admin-errors {
-	line-height: 1.2;
-	small {
-		display: block;
-		&:not(:first-child) { margin-top: 0.5em; }
+.admin-grid {
+	small { display: block; }
+	p {
+		margin: 0.4em 0;
+		&:first-child { margin-top: 0; }
 	}
 	[data-prefix] {
 		margin-right: 0.8em;
 		display: inline-block;
 	}
-	&_session {
-		margin-left: 0.5em;
-		padding-left: 0.5em;
-		display: inline-block;
-		border-left: 1px solid rgba(#000, 0.2);
-	}
-	&_collection {
-		display: block;
-		line-height: 1.1;
-	}
-	&_action { font-weight: bold; }
 }
+
 
 
 

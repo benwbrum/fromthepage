@@ -1,10 +1,29 @@
 =render({ :partial => 'tabs', :locals => { :selected => 2 } })
 
-ul
-  -@users.each do |user|
-    li
-      =link_to(user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id })
-      =link_to('Edit', { :controller => 'admin', :action => 'edit_user', :user_id => user.id })
-      =link_to('Sessions', { :controller => 'admin', :action => 'session_list', :user_id => user.id })
-    li
-      =link_to('Anonymous User', { :controller => 'admin', :action => 'session_list' })
+//p =link_to 'Anonymous Sessions', { :controller => 'admin', :action => 'session_list' }
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th Login
+      th Owner
+      th.w100 Name &amp; Location
+      th Last Sign In
+      th Registered
+      th Actions
+  tbody
+    -@users.each do |u|
+      tr
+        td.nowrap
+          div =link_to u.login, { :controller => 'user', :action => 'profile', :user_id => u.id }
+          small =u.email
+        td.acenter =svg_symbol '#icon-check-sign', class: 'icon translucent' if u.owner
+        td
+          div =u.display_name
+          -if u.location
+            small(data-prefix="From ") =u.location
+        td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
+        td.nowrap =u.created_at.strftime('%b %d, %Y') if u.created_at
+        td.nowrap
+          .instack
+            =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }
+            =link_to 'Sessions', { :controller => 'admin', :action => 'session_list', :user_id => u.id }
