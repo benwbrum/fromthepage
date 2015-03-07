@@ -1,0 +1,22 @@
+=render({ :partial => 'tabs', :locals => { :selected => 2 } })
+
+.headline
+  h4.headline_title Session List for #{@user_name}
+  .headline_aside #{link_to 'Next 50', { :offset => (@offset.to_i + 50).to_s }}&nbsp;&rarr;
+
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th Started
+      th Session ID
+      th Interactions
+      th IP Address
+      th Browser
+  tbody
+    -for sess in @sessions
+      tr
+        td.small =sess['started'].to_s(:db)
+        td =sess['session_id']
+        td.acenter =link_to sess['total'], { :action => 'interaction_list', :session_id => sess['session_id'] }
+        td =sess['ip_address']
+        td.small =sess['browser']
