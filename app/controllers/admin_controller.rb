@@ -97,5 +97,4 @@ class AdminController < ApplicationController
     @prod_tail = `tail -#{@lines} #{production_logfile}`
   end
 
-
 end

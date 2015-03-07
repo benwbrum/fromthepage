@@ -255,10 +255,31 @@ $footerBg:									$themeDark;
 		font-family: $fontFamilyHead;
 	}
 }
-.logfile {
+.admin-logfile {
 	font-size: 12px;
 }
-
+.admin-errors {
+	line-height: 1.2;
+	small {
+		display: block;
+		&:not(:first-child) { margin-top: 0.5em; }
+	}
+	[data-prefix] {
+		margin-right: 0.8em;
+		display: inline-block;
+	}
+	&_session {
+		margin-left: 0.5em;
+		padding-left: 0.5em;
+		display: inline-block;
+		border-left: 1px solid rgba(#000, 0.2);
+	}
+	&_collection {
+		display: block;
+		line-height: 1.1;
+	}
+	&_action { font-weight: bold; }
+}
 
 
 

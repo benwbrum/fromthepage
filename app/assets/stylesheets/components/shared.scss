@@ -211,11 +211,11 @@
   $textColor: #322;
   $borderColor: rgba(#000, 0.15);
 
-  margin: 0;
   padding: 0;
   width: 100%;
   vertical-align: top;
   display: inline-block;
+  margin: 0 0 $gapSize 0;
   font-family: $fontFamilyHead;
   border-bottom: 1px solid $borderColor;
   a {
@@ -293,5 +293,37 @@
     padding: 0;
     list-style: none;
     li { margin: 0; }
+  }
+}
+
+.datagrid {
+  border: 0;
+  width: 100%;
+  border-collapse: separate;
+  th {
+    padding: 10px;
+    font-weight: bold;
+    background: rgba(#000, 0.1);
+  }
+  td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(#000, 0.1);
+  }
+  th, td {
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &.nowrap {
+      max-width: 100%;
+      overflow: visible;
+      text-overflow: none;
+    }
+    &.word-break {
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+  }
+  &.striped tr:nth-child(even) {
+    background: rgba(#000, 0.03);
   }
 }

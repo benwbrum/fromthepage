@@ -1,7 +1,8 @@
 =render({ :partial => 'tabs', :locals => { :selected => 3 } })
 
-h3 Last #{@lines} lines of development logfile
-pre.logfile =@dev_tail
+section
+  h3 Last #{@lines} lines of development logfile
+  pre.admin-logfile =@dev_tail
 
-h3 Last #{@lines} lines of production logfile
-pre.logfile =@prod_tail
+  h3 Last #{@lines} lines of production logfile
+  pre.admin-logfile =@prod_tail
