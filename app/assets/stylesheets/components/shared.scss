@@ -97,15 +97,15 @@
   table.form + & { margin: $gapSize 0 0 0; }
 }
 
-.inline {
+.instack {
   margin: 0;
   list-style: none;
   display: inline-block;
-  &_block {
-    margin-left: 0.8em;
-    padding-left: 0.8em;
+  > * {
+    margin-left: 0.6em;
+    padding-left: 0.6em;
     display: inline-block;
-    border-left: 1px solid rgba(#000, 0.12);
+    border-left: 1px solid rgba(#000, 0.15);
     &:first-child {
       border: 0;
       margin: 0;
@@ -299,28 +299,28 @@
 .datagrid {
   border: 0;
   width: 100%;
+  line-height: 1.2;
   border-collapse: separate;
   th {
     padding: 10px;
     font-weight: bold;
+    white-space: nowrap;
     background: rgba(#000, 0.1);
   }
   td {
     padding: 8px 10px;
+    word-wrap: break-word;
+    word-break: break-word;
     border-bottom: 1px solid rgba(#000, 0.1);
-  }
-  th, td {
-    max-width: 50px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    //max-width: 50px;
+    //overflow: hidden;
+    //text-overflow: ellipsis;
     &.nowrap {
-      max-width: 100%;
-      overflow: visible;
-      text-overflow: none;
-    }
-    &.word-break {
-      word-wrap: break-word;
-      word-break: break-word;
+      //max-width: none;
+      //overflow: visible;
+      word-wrap: normal;
+      word-break: normal;
+      //text-overflow: none;
     }
   }
   &.striped tr:nth-child(even) {

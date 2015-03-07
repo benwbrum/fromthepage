@@ -84,6 +84,9 @@ $step: 5;
 .nowrap {
   white-space: nowrap !important;
 }
+.translucent {
+  opacity: 0.5;
+}
 
 // Prefix & suffix using pseudo-elements
 [data-prefix]:before {

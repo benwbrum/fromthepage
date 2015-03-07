@@ -41,7 +41,7 @@
     -@image_sets.each do |set|
       li
         span Set #{set.id} (#{set.summary})
-        span.inline
+        span.instack
           =link_to('Title', { :controller => 'title', :action => 'list', :image_set_id => set.id })
           =link_to('Delete', { :controller => 'image_set', :action => 'delete', :image_set_id => set.id })
           =link_to('Append', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id })
