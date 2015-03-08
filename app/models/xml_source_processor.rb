@@ -66,6 +66,7 @@ module XmlSourceProcessor
   #
   ##############################################
   def process_source
+    binding.pry
     if @text_dirty
       self.xml_text = wiki_to_xml(self.source_text)
     end
@@ -81,6 +82,7 @@ module XmlSourceProcessor
     xml_string = process_square_braces(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
+    xml_string = update_links_and_xml(xml_string)
 
     xml_string    
   end
@@ -163,10 +165,12 @@ EOF
 
   def update_links_and_xml(xml_string, preview_mode=false)
     # first clear out the existing links
+    binding.pry
     clear_links
     processed = ""
     # process it
     doc = REXML::Document.new xml_string
+    binding.pry
     doc.elements.each("//link") do |element|
       # default the title to the text if it's not specified
       if !(title=element.attributes['target_title'])
@@ -180,6 +184,7 @@ EOF
       end
       debug("link display_text = #{display_text}")
       # create new blank articles if they don't exist already
+      binding.pry
       if !article = collection.articles.where(:title => title).first
         article = Article.new
         article.title = title
