@@ -155,7 +155,7 @@ module XmlSourceProcessor
     safe.gsub! /\&amp;amp;/, '&amp;'
 
     string = <<EOF
-    <?xml version="1.0" encoding="ISO-8859-15"?>
+    <?xml version="1.0" encoding="UTF-8"?>
       <page>
         #{safe}
       </page>
