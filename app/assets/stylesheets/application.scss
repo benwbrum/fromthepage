@@ -138,6 +138,7 @@ $footerBg:									$themeDark;
 @import "components/forms";
 @import "components/buttons";
 @import "components/dropdown";
+@import "components/pagination";
 
 @import "components/shared";
 @import "components/layout";
@@ -506,38 +507,6 @@ ul#leftbar {
 	text-align: right;
 }
 
-/* comment style */
-/* styles for pagination */
-.pagination {
-	padding: 3px;
-	margin: 20px;
-	text-align: center;
-}
-.pagination a {
-	padding: 2px 5px 2px 5px;
-	margin: 2px;
-	border: 1px solid #aaaadd;
-	text-decoration: none;
-	//color: #000099;
-}
-.pagination a:hover, .pagination a:active {
-	border: 1px solid #000099;
-	color: #000;
-}
-.pagination span.current {
-	padding: 2px 5px 2px 5px;
-	margin: 2px;
-	border: 1px solid #000099;
-	font-weight: bold;
-	background-color: #dee7ec;
-	//color: #FFF;
-}
-.pagination span.disabled {
-	padding: 2px 5px 2px 5px;
-	margin: 2px;
-	border: 1px solid #eee;
-	//color: #ddd;
-}
 table.revisions {
 	width: 100%;
 	//width: 580px;
