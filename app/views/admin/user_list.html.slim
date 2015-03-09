@@ -27,3 +27,5 @@ table.admin-grid.datagrid.striped
           .instack
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }
             =link_to 'Sessions', { :controller => 'admin', :action => 'session_list', :user_id => u.id }
+
+=will_paginate @users

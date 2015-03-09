@@ -1,6 +1,8 @@
 class AdminController < ApplicationController
   before_filter :authorized?
 
+  PAGES_PER_SCREEN = 20
+
   def authorized?
     unless user_signed_in? && current_user.admin
       redirect_to dashboard_path
@@ -28,7 +30,7 @@ class AdminController < ApplicationController
   end
 
   def user_list
-    @users = User.all
+    @users = User.paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
   def edit_user
