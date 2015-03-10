@@ -25,3 +25,14 @@ en:
     previous_label: "&#8592;"
     next_label: "&#8594;"
     page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No records"
+        one:   "1 record"
+        other: "All %{count} records"
+      single_page_html:
+        zero:  "No records"
+        one:   "<b>1</b> record"
+        other: "All <b>%{count}</b> records"
+      multi_page: "Records %{from} - %{to} of %{count}"
+      multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
