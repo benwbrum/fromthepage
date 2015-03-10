@@ -327,3 +327,43 @@
     background: rgba(#000, 0.03);
   }
 }
+
+
+// ---------------------------
+// PAGINATION
+// ---------------------------
+
+.pagination {
+  font-size: 0;
+  white-space: nowrap;
+  margin: $gapSize / 2 0;
+  color: mix($bodyFg, $bodyBg, 50%);
+  > * {
+    line-height: 2;
+    padding: 0 0.5em;
+    transition: none;
+    margin: 0 1px 0 0;
+    font-style: normal;
+    text-align: center;
+    border-radius: 3px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: $fontSizeBig;
+  }
+  a:hover {
+    background: rgba(#200, 0.1);
+  }
+  .current {
+    color: $fgSelected;
+    background: $bgSelected;
+  }
+  .disabled {
+    display: none;
+  }
+  &_info {
+    line-height: 2;
+    text-align: right;
+    margin: $gapSize / 2 0;
+    color: mix($bodyFg, $bodyBg, 60%);
+  }
+}

@@ -138,7 +138,6 @@ $footerBg:									$themeDark;
 @import "components/forms";
 @import "components/buttons";
 @import "components/dropdown";
-@import "components/pagination";
 
 @import "components/shared";
 @import "components/layout";
@@ -275,6 +274,7 @@ $footerBg:									$themeDark;
 		margin-right: 0.8em;
 		display: inline-block;
 	}
+	.icon:only-child { vertical-align: middle; }
 }
 
 
