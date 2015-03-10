@@ -1,0 +1,38 @@
+=render({ :partial => 'tabs', :locals => { :selected => 2 } })
+
+.headline
+  h4.headline_title Interaction List
+
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th.w5 Date &amp; Time
+      th.w5 Status
+      th.w15 User
+      th.w40 Collection, Work &amp; Page
+      th.w35 Action &amp; Parameters
+  tbody
+    -@interactions.each do |i|
+      tr
+        td.small =i.created_on.to_s(:db)
+        td.nowrap =i.status
+        td.nowrap
+          div
+            -if i.user
+              =link_to i.user.login, { :controller => 'user', :action => 'versions', :user_id => i.user_id }
+            -else
+              span Anonymous
+          -if i.origin_link
+            small(data-prefix='Origin: ') =i.origin_link
+        td
+          -if i.collection
+            p =link_to i.collection.title, { :controller => 'collection', :action => 'show', :collection_id => i.collection_id }
+          -if i.work
+            small(data-prefix='Work: ')
+              =link_to i.work.title, { :controller => 'display', :action => 'read_work', :work_id => i.work_id }
+          -if i.page
+            small(data-prefix='Page: ')
+              =link_to i.page.title, { :controller => 'display', :action => 'display_page', :page_id => i.page_id }
+        td
+          small.bold =i.action
+          small =i.params
