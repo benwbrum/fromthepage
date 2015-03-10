@@ -20,7 +20,7 @@ table.admin-grid.datagrid.striped
         td
           div =u.display_name
           -if u.location
-            small(data-prefix="From ") =u.location
+            small(data-prefix='From ') =u.location
         td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap =u.created_at.strftime('%b %d, %Y') if u.created_at
         td.nowrap
@@ -28,4 +28,4 @@ table.admin-grid.datagrid.striped
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }
             =link_to 'Sessions', { :controller => 'admin', :action => 'session_list', :user_id => u.id }
 
-=will_paginate @users
+=render({ :partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true } })

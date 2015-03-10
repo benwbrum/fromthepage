@@ -13,10 +13,10 @@ table.admin-grid.datagrid.striped
       th IP Address
       th Browser
   tbody
-    -for sess in @sessions
+    -@sessions.each do |s|
       tr
-        td.small =sess['started'].to_s(:db)
-        td =sess['session_id']
-        td.acenter =link_to sess['total'], { :action => 'interaction_list', :session_id => sess['session_id'] }
-        td =sess['ip_address']
-        td.small =sess['browser']
+        td.small =s.started.to_s(:db)
+        td =s.session_id
+        td.acenter =link_to s.total, { :action => 'interaction_list', :session_id => s.session_id }
+        td =s.ip_address
+        td.small =s.browser

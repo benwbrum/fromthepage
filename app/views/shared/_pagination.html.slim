@@ -1,0 +1,7 @@
+-entries_info = false if local_assigns[:entries_info].nil?
+
+.toolbar
+  .toolbar_group =will_paginate model
+  -if entries_info
+    .toolbar_group
+      .pagination_info =page_entries_info model

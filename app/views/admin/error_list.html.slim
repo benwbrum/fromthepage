@@ -19,15 +19,15 @@ table.admin-grid.datagrid.striped
               span Anonymous
             =link_to 'session', { :action => 'interaction_list', :session_id => i.session_id }
           -if i.origin_link
-            small(data-prefix="Origin: ") =i.origin_link
+            small(data-prefix='Origin: ') =i.origin_link
         td
           -if i.collection
             p =link_to i.collection.title, { :controller => 'collection', :action => 'show', :collection_id => i.collection_id }
           -if i.work
-            small(data-prefix="Work: ")
+            small(data-prefix='Work: ')
               =link_to i.work.title, { :controller => 'display', :action => 'read_work', :work_id => i.work_id }
           -if i.page
-            small(data-prefix="Page: ")
+            small(data-prefix='Page: ')
               =link_to i.page.title, { :controller => 'display', :action => 'display_page', :page_id => i.page_id }
         td
           small.bold =i.action
