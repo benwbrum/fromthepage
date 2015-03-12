@@ -16,7 +16,7 @@ table.admin-grid.datagrid.striped
         td.nowrap
           div =link_to u.login, { :controller => 'user', :action => 'profile', :user_id => u.id }
           small =u.email
-        td.acenter =svg_symbol '#icon-check-sign', class: 'icon translucent' if u.owner
+        td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if u.owner
         td
           div =u.display_name
           -if u.location
