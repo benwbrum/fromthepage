@@ -1,6 +1,8 @@
 -long_view = false if local_assigns[:long_view].nil?
 
--user = link_to(deed.user.display_name, { :controller => 'user', :action => 'profile', :user_id => deed.user.id })
+-user_name = user_signed_in? && deed.user.id == current_user.id ? 'You' : deed.user.display_name
+
+-user = link_to user_name, { :controller => 'user', :action => 'profile', :user_id => deed.user.id }
 -page = deed.page.nil? ? '' : link_to(deed.page.title, { :controller => 'display', :action => 'display_page', :page_id => deed.page.id })
 -article = deed.article.nil? ? '' : link_to(deed.article.title, { :controller => 'article', :action => 'show', :article_id => deed.article.id })
 
