@@ -57,6 +57,10 @@ module ApplicationHelper
       conditions = "deed_type IN (#{types.join(',')})"
     end
 
+    if options[:user_id]
+      user = " user_id=#{options[:user_id]} "
+      conditions = conditions ? conditions + " AND " + user : user
+    end
 
     if options[:collection]
       deeds = @collection.deeds.where(conditions).order('created_at DESC').limit(limit)
@@ -67,6 +71,7 @@ module ApplicationHelper
       logger.debug "limit: #{limit}"
       deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit).references(:collection)
     end
+
     render({ :partial => 'deed/deeds',
              :locals =>
               { :limit => limit,
