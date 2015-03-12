@@ -118,8 +118,10 @@ $gapSize:										20px;
 $themeLight:								#EDB;
 $themeDark:									#433;
 
-$bodyFg:										#300;
+$bodyFg:										#200;
 $bodyBg:										mix(#FFF, $themeLight, 70);
+$bodyFgFaded:								mix($bodyFg, $bodyBg, 60);
+$bodyFgLight:								mix($bodyFg, $bodyBg, 50);
 $borderColor:								rgba(#000, 0.15);
 
 $headerHeight:							80px;
@@ -150,31 +152,36 @@ $footerBg:									$themeDark;
 // COLLECTIONS
 // ---------------------------
 
-.dashboard_collections {
+.collections {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
-.dashboard_collection {
+
+.collection {
 	margin: 0;
 	padding: 1em 0;
 	border-top: 1px dotted $borderColor;
-	&:first-child { border: 0; }
-	&_title {
-		margin: 0;
-		a { text-decoration: none; }
+	&:first-child {
+		border: 0;
+		padding-top: 0;
 	}
+	&_title a { text-decoration: none; }
 	&_snippet {
 		margin: 0.5em 0;
 		font-size: $fontSizeSmall;
 	}
 	&_summary {
 		margin-top: 0.4em;
-		color: mix($bodyFg, $bodyBg, 60);
+		color: $bodyFgFaded;
 		a {
 			color: inherit;
 			&:hover { color: $bodyFg; }
 		}
+	}
+	&_works {
+		color: $bodyFgLight;
+		li { margin: 0.3em 0; }
 	}
 }
 
@@ -192,7 +199,7 @@ $footerBg:									$themeDark;
 		margin: 0 0 1em 0;
 		&_time {
 			margin: 0 0 0.3em 0;
-			color: mix($bodyFg, $bodyBg, 60);
+			color: $bodyFgLight;
 		}
 		&_text {
 			display: block;
@@ -200,6 +207,7 @@ $footerBg:									$themeDark;
 		}
 	}
 }
+
 .activity-log {
 	width: 100%;
 	display: table;
@@ -215,8 +223,8 @@ $footerBg:									$themeDark;
 			line-height: 1.6;
 			text-align: right;
 			white-space: nowrap;
+			color: $bodyFgLight;
 			font-size: $fontSizeSmall;
-			color: mix($bodyFg, $bodyBg, 60);
 			border-right: 1px solid $borderColor;
 		}
 		&_text { width: 100%; }
@@ -256,6 +264,7 @@ $footerBg:									$themeDark;
 		font-family: $fontFamilyHead;
 	}
 }
+
 .admin-logfile {
 	color: #333;
 	font-size: 12px;
@@ -264,6 +273,7 @@ $footerBg:									$themeDark;
 	background-clip: padding-box;
 	border: 1px solid rgba(#000, 0.05);
 }
+
 .admin-grid {
 	small { display: block; }
 	p {

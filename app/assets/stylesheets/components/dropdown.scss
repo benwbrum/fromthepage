@@ -1,5 +1,5 @@
 // ---------------------------
-// DROP DOWN CONTROL
+// DROP DOWN MENU
 // ---------------------------
 
 .dropdown {
@@ -9,6 +9,14 @@
   line-height: inherit;
   display: inline-block;
   vertical-align: middle;
+  dt {
+    cursor: pointer;
+    text-align: left;
+    &:not(.button) {
+      transition: color 0.2s;
+      &:hover { color: $fgHover; }
+    }
+  }
   dd {
     left: 0;
     top: 100%;
@@ -57,14 +65,8 @@
     }
   }
   hr { margin: 0.3em 1px; }
-  dt {
-    cursor: pointer;
-    text-align: left;
-    &:not(.button) {
-      transition: color 0.2s;
-      &:hover { color: $fgHover; }
-    }
-  }
+
+  // Select-like dropdown
   dt.button {
     position: relative;
     padding-right: 1.8em;
@@ -87,6 +89,8 @@
       &:before, &:after { display: none; }
     }
   }
+
+  // Open state
   &.open {
     z-index: 999;
     dt { color: $fgHover; }
@@ -98,6 +102,8 @@
       transition-timing-function: $easeOutElastic;
     }
   }
+
+  // Right aligned
   &.right dd {
     right: 0;
     left: auto;

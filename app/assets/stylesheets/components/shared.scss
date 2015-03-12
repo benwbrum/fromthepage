@@ -336,8 +336,8 @@
 .pagination {
   font-size: 0;
   white-space: nowrap;
+  color: $bodyFgLight;
   margin: $gapSize / 2 0;
-  color: mix($bodyFg, $bodyBg, 50%);
   > * {
     line-height: 2;
     padding: 0 0.5em;
@@ -363,7 +363,7 @@
   &_info {
     line-height: 2;
     text-align: right;
+    color: $bodyFgFaded;
     margin: $gapSize / 2 0;
-    color: mix($bodyFg, $bodyBg, 60%);
   }
 }

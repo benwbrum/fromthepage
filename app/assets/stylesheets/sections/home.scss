@@ -56,15 +56,13 @@
   margin-bottom: $gapSize * 2;
   .justified_box {
     width: 22%;
+    color: $bodyFgFaded;
     padding: $gapSize 0;
-    color: mix($bodyFg, $bodyBg, 65);
   }
   &_icon {
     width: 80px;
     height: 80px;
-    color: mix($themeDark, $bodyBg, 80);
   }
-  &_title { margin: 0.5em 0; }
   &_text { margin: 0; }
 
   @media screen and (max-width: $widthM) {
@@ -81,8 +79,9 @@
   .cover {
     width: 100%;
     background: #FFF;
+    background-clip: padding-box;
     border-spacing: $gapSize * 0.75;
-    border: 1px solid mix(#000, $bodyBg, 10);
+    border: 1px solid rgba(#000, 0.1);
     &_image {
       width: 100px;
       height: 100px;
@@ -98,8 +97,8 @@
   margin-bottom: $gapSize;
   .justified_box {
     width: 48%;
+    color: $bodyFgFaded;
     padding-bottom: $gapSize * 2;
-    color: mix($bodyFg, $bodyBg, 65);
   }
   .cover {
     &_image {
@@ -127,19 +126,19 @@
     &:before {
       top: 0;
       left: 0;
+      opacity: 0.1;
       line-height: 1;
       font-size: 500%;
       font-weight: bold;
       position: absolute;
       content: counter(index);
       counter-increment: index;
-      color: mix($themeDark, $bodyBg, 15);
     }
   }
   &_title { margin: 0; }
   &_text {
     margin: 0.5em 0;
+    color: $bodyFgLight;
     font-size: $fontSizeBig;
-    color: mix($bodyFg, $bodyBg, 50);
   }
 }
