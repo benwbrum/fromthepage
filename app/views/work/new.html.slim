@@ -1,0 +1,14 @@
+h1 Create a New Work
+
+=form_for(@work, { :url => { :action => 'create' }}) do |f|
+  =validation_summary @work
+
+  table.form
+    tr
+      th =f.label :title
+      td.w100 =f.text_field :title
+    tr
+      th =f.label :description
+      td =f.text_area :description
+
+  =f.button 'Create Work'
