@@ -1,20 +1,22 @@
 class DashboardController < ApplicationController
 
+  before_filter :authorized?, :only => [:owner]
+
+  def authorized?
+    unless user_signed_in? && current_user.owner
+      redirect_to dashboard_path
+    end
+  end
+
   def index
-    logger.debug("DEBUG: #{current_user.inspect}")
-
     @collections = Collection.all
-
     @offset = params[:offset] || 0
     @recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
   end
 
   def owner
-    unless user_signed_in? && current_user.owner
-      redirect_to dashboard_path
-    else
-      @image_sets = current_user.image_sets
-    end
+    logger.debug("DEBUG: #{current_user.inspect}")
+    @image_sets = current_user.image_sets
   end
 
 end
