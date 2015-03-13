@@ -6,44 +6,76 @@
         span Actions
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        =link_to 'Create an Empty Work', { :controller => 'work', :action => 'new' }
-        =link_to 'Create an Empty Collection', { :controller => 'collection', :action => 'new' }
-        =link_to 'Import Works From Omeka', { :controller => 'omeka_sites', :action => 'index' }
-        =link_to 'Import From Internet Archive', { :controller => 'ia', :action => 'ia_book_form' }
+        =link_to 'Create a Work', { :controller => 'work', :action => 'new' }
+        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }
         =link_to 'Create an Image Set', { :controller => 'transform' }
+        hr
+        =link_to 'Import From Omeka.org', { :controller => 'omeka_sites', :action => 'index' }
+        =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }
+        hr
         =link_to 'Explore OAI Repositories', { :controller => 'oai', :action => 'repository_list' }
 
--unless current_user.oai_sets.empty?
-  h4 Import from an OAI collection
-  ul
-    -for set in current_user.oai_sets
-      -oai_title = 'List works to import from ' + set.set_spec
-      li =link_to(oai_title, { :action => 'record_list', :controller => 'oai', :repository_url => set.repository_url, :set_spec => set.set_spec })
+.columns
+  article.maincol
+    h3 List of Your Works
+    -unless current_user.owner_works.empty?
+      .collections
+        -(current_user.owner_works.group_by { |w| w.collection }).each do |collection, works|
+          .collection
+            h5.collection_title =(collection.nil? ? "Not in a collection" : collection.title)
+            ol.collection_works
+              -(works.sort_by { |w| w.title }).each do |work|
+                li =link_to work.title, { :controller => 'work', :action => 'edit', :work_id => work.id }
+    -else
+      -new_work = link_to 'create a new work', { :controller => 'work', :action => 'new' }
+      -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
+      .nodata
+        h5.nodata_title You don't own any works yet
+        p.nodata_text You can #{new_work} or #{new_collection}
 
--unless current_user.owner_works.empty?
-  h4 Works I own
-  ul
-    -for work in current_user.owner_works
-      li =link_to(work.title, { :controller => 'work', :action => 'edit', :work_id => work.id })
+    -unless current_user.oai_sets.empty?
+      h3 Import from an OAI collection
+      ul
+        -for set in current_user.oai_sets
+          -oai_title = 'Works to import from ' + set.set_spec
+          li =link_to oai_title, { :action => 'record_list', :controller => 'oai', :repository_url => set.repository_url, :set_spec => set.set_spec }
 
--if !@image_sets.empty? || !current_user.ia_works.empty?
-  h3 Staging Area
+    br
+    h2 Staging Area
 
--unless current_user.ia_works.empty?
-  h4 Imported Archive.org Books
-  ul
-    -for ia_work in current_user.ia_works
-      li =link_to(ia_work.title, { :controller => 'ia', :action => 'manage', :ia_work_id => ia_work.id })
+    h3 Imported Archive.org Books
+    -unless current_user.ia_works.empty?
+      ol.collection_works
+        -for ia_work in current_user.ia_works
+          li =link_to ia_work.title, { :controller => 'ia', :action => 'manage', :ia_work_id => ia_work.id }
+    -else
+      -import_ia = link_to 'import a book from Archive.org', { :controller => 'ia', :action => 'ia_book_form' }
+      .nodata
+        h5.nodata_title You don't have imported books
+        p.nodata_text You can #{import_ia}
 
--unless @image_sets.empty?
-  h4 Image Sets I own
-  ul
-    -@image_sets.each do |set|
-      li
-        span Set #{set.id} (#{set.summary})
-        span.instack
-          =link_to('Title', { :controller => 'title', :action => 'list', :image_set_id => set.id })
-          =link_to('Delete', { :controller => 'image_set', :action => 'delete', :image_set_id => set.id })
-          =link_to('Append', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id })
-          =link_to('Merge', { :controller => 'collation', :action => 'select_target', :image_set_id => set.id })
-          =link_to('Publish', { :controller => 'image_set', :action => 'convert_to_work', :image_set_id => set.id })
+    h3 List Of Your Image Sets
+    -unless @image_sets.empty?
+      ul.imagesets
+        -@image_sets.each do |set|
+          li.imageset
+            .imageset_title
+              dl.dropdown
+                dt.bold Image set ##{set.id}
+                dd
+                  =link_to 'Edit titles', { :controller => 'title', :action => 'list', :image_set_id => set.id }
+                  =link_to 'Append', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id }
+                  =link_to 'Merge', { :controller => 'collation', :action => 'select_target', :image_set_id => set.id }
+                  =link_to 'Publish', { :controller => 'image_set', :action => 'convert_to_work', :image_set_id => set.id }
+                  hr
+                  =link_to 'Delete', { :controller => 'image_set', :action => 'delete', :image_set_id => set.id }, data: { confirm: 'Are you sure you want to delete this image set? After deleting you won\'t be able to recover it!' }, class: 'red'
+            .imageset_summary =set.summary
+    -else
+      -new_imageset = link_to 'create a new image set', { :controller => 'transform' }
+      .nodata
+        h5.nodata_title You don't have image sets
+        p.nodata_text You can #{new_imageset}
+
+  aside.sidecol
+    h2 Your Activity
+    =deeds_for({ :user_id => current_user.id, :limit => 10 })

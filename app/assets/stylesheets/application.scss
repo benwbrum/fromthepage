@@ -181,10 +181,46 @@ $footerBg:									$themeDark;
 	}
 	&_works {
 		color: $bodyFgLight;
-		li { margin: 0.3em 0; }
+		li { line-height: 1.2; }
 	}
 }
 
+
+// ---------------------------
+// IMAGE SETS
+// ---------------------------
+
+.imagesets {
+	width: 100%;
+	display: table;
+	margin: 0.5em 0;
+}
+
+.imageset {
+	display: table-row;
+	&:before {
+		width: 32px;
+		content: '•';
+		text-align: center;
+		color: $bodyFgLight;
+		display: table-cell;
+		vertical-align: top;
+		font: normal 20px/28px monospace;
+	}
+	> * {
+		padding: 3px 5px;
+		display: table-cell;
+		vertical-align: top;
+	}
+	&_title {
+		padding-left: 0;
+		.dropdown { vertical-align: top; }
+	}
+	&_summary {
+		display: table-cell;
+		color: $bodyFgFaded;
+	}
+}
 
 // ---------------------------
 // ACTIVITY
