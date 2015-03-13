@@ -44,9 +44,6 @@ module ApplicationHelper
     ret << "</li>\n"
   end
 
-
-
-
   def deeds_for(options={})
     limit = options[:limit] || 20
 
@@ -106,5 +103,10 @@ module ApplicationHelper
     end
   end
 
+  def validation_summary(model)
+    if model.errors.any?
+      render({ :partial => 'shared/validation_summary', :locals => { :errors => model.errors } })
+    end
+  end
 
 end
