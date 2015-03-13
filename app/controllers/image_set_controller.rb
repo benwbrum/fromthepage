@@ -18,7 +18,7 @@ class ImageSetController < ApplicationController
         redirect_to dashboard_path unless @set_to_append.owner == current_user
       end
       unless @image_set.owner == current_user
-	redirect_to dashboard_path
+        redirect_to dashboard_path
       end
     end
   end
@@ -51,12 +51,15 @@ class ImageSetController < ApplicationController
 
   # TODO don't delete images if they're in a different set
   def delete
-    @image_set.titled_images.each { |image| image.destroy }
-    if @image_set.path
+    if Dir.exists?(@image_set.path)
       rm_r(@image_set.path)
+      @image_set.titled_images.each { |image| image.destroy }
+      @image_set.destroy
+    else
+      flash[:error] = 'Images location path does not exist'
     end
-    @image_set.destroy
-    redirect_to dashboard_path
+
+    redirect_to :back
   end
 
   def select_target
