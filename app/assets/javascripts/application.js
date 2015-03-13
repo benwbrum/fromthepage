@@ -21,12 +21,22 @@
 // $('element').flash();
 $.fn.flashclose = function(s) {
   s = $.extend({
-    delay:      3000         // Auto close delay, 0 = don't close
+    delay_notice: 3000,      // Notice auto close delay, 0 = don't close
+    delay_alert: 6000,       // Alert auto close delay
+    delay_error: 0           // Error auto close delay
   }, s || {});
 
   return this.each(function() {
     var container = $(this);
     var btnclose = $('.flash_close', container);
+    var delay = s.delay_notice;
+
+    if(container.hasClass('flash-alert')) {
+      delay = s.delay_alert;
+    }
+    if(container.hasClass('flash-error')) {
+      delay = s.delay_error;
+    }
 
     // Close on click
     btnclose.one('click', function() {
@@ -36,10 +46,10 @@ $.fn.flashclose = function(s) {
     });
 
     // Auto close
-    if(s.delay) {
+    if(delay) {
       setTimeout(function() {
         btnclose.trigger('click');
-      }, s.delay);
+      }, delay);
     }
   });
 };
