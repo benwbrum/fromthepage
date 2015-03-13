@@ -30,14 +30,19 @@ class ImageSet < ActiveRecord::Base
 
   def summary
     if page_count == 0
-      return 'empty'
+      return 'Empty image set'
     end
+
     desc = ''
+    titles = []
+    titled_images.each { |image| titles.push(image.title.to_s.empty? ? 'Untitled' : image.title) }
+
     if page_count <= 4
-      titled_images.each { |image| desc = "#{desc}, #{image.title}" }
-      return desc
+      desc = titles.join(', ')
+    else
+      desc = "#{titles.first(2).join(', ')} ... #{titles.last(2).join(', ')}"
     end
-    desc += "#{titled_images[0].title}, #{titled_images[1].title} ... #{titled_images[page_count-1].title}, #{titled_images[page_count-2].title}"
+
     return desc
   end
 
@@ -189,7 +194,7 @@ class ImageSet < ActiveRecord::Base
     self.save!
     for image in self.titled_images
       # TODO replace with compression step
-      
+
       debug("process_size shrinking image #{image.id} to #{self.original_to_base_halvings}")
       shrink(image, self.original_to_base_halvings)
 
