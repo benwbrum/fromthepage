@@ -14,12 +14,11 @@ class WorkController < ApplicationController
   before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
   def authorized?
-    unless user_signed_in? &&
-      current_user.owner
+    unless user_signed_in? && current_user.owner
       redirect_to dashboard_path
     else
       if @work && @work.owner != current_user
-	redirect_to dashboard_path
+        redirect_to dashboard_path
       end
     end
   end
@@ -101,13 +100,13 @@ class WorkController < ApplicationController
     work.description = params[:work][:description]
     work.owner = current_user
     work.save!
-    redirect_to dashboard_path
+    redirect_to :action => 'edit', :work_id => work.id
   end
 
   def update
     work = Work.find(params[:id])
     work.update_attributes(params[:work])
-    flash[:notice] = "Work updated successfully."
+    flash[:notice] = 'Work updated successfully'
     redirect_to :back
   end
 
