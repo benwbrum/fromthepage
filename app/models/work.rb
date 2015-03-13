@@ -11,19 +11,21 @@ class Work < ActiveRecord::Base
 
   after_save :update_statistic
 
-  attr_accessible :title, 
-                  :description, 
-                  :physical_description, 
-                  :document_history, 
-                  :permission_description, 
-                  :location_of_composition, 
-                  :author, 
-                  :transcription_conventions, 
-                  :supports_translation, 
+  attr_accessible :title,
+                  :description,
+                  :physical_description,
+                  :document_history,
+                  :permission_description,
+                  :location_of_composition,
+                  :author,
+                  :transcription_conventions,
+                  :supports_translation,
                   :translation_instructions,
                   :scribes_can_edit_titles,
                   :restrict_scribes,
                   :pages_are_meaningful
+
+  validates :title, presence: true, length: { minimum: 3 }
 
   def articles
     my_articles = []

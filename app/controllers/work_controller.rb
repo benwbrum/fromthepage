@@ -95,12 +95,16 @@ class WorkController < ApplicationController
 
   # tested
   def create
-    work = Work.new
-    work.title = params[:work][:title]
-    work.description = params[:work][:description]
-    work.owner = current_user
-    work.save!
-    redirect_to :action => 'edit', :work_id => work.id
+    @work = Work.new
+    @work.title = params[:work][:title]
+    @work.description = params[:work][:description]
+    @work.owner = current_user
+    if @work.save
+      flash[:notice] = 'Work created successfully'
+      redirect_to :action => 'edit', :work_id => @work.id
+    else
+      render :new
+    end
   end
 
   def update
