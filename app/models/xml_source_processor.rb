@@ -81,6 +81,7 @@ module XmlSourceProcessor
     xml_string = process_square_braces(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
+    xml_string = update_links_and_xml(xml_string)
 
     xml_string    
   end
@@ -154,7 +155,7 @@ module XmlSourceProcessor
     safe.gsub! /\&amp;amp;/, '&amp;'
 
     string = <<EOF
-    <?xml version="1.0" encoding="ISO-8859-15"?>
+    <?xml version="1.0" encoding="UTF-8"?>
       <page>
         #{safe}
       </page>
@@ -167,6 +168,7 @@ EOF
     processed = ""
     # process it
     doc = REXML::Document.new xml_string
+
     doc.elements.each("//link") do |element|
       # default the title to the text if it's not specified
       if !(title=element.attributes['target_title'])
@@ -180,6 +182,7 @@ EOF
       end
       debug("link display_text = #{display_text}")
       # create new blank articles if they don't exist already
+
       if !article = collection.articles.where(:title => title).first
         article = Article.new
         article.title = title

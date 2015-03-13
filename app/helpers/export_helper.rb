@@ -4,6 +4,7 @@ module ExportHelper
 
     return "" if xml_text.blank?
 #    xml_text.gsub!(/\n/, "")
+    xml_text.gsub!('ISO-8859-15', 'UTF-8')
     doc = REXML::Document.new(xml_text)
     #paras_string = ""
 
@@ -13,7 +14,7 @@ module ExportHelper
       my_display_html << e.to_s
     end
 
-    return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n")
+    return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
   def transform_links(p_element, type)

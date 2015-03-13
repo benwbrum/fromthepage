@@ -16,7 +16,7 @@ module AbstractXmlController
           "where a.collection_id = #{@collection.id}"
     logger.debug(sql)
     matches =
-      Page.connection.select_all(sql)
+      Page.connection.select_all(sql).to_a
 
     # Bug 18 -- longest possible match is best
     matches.sort! { |x,y| x['display_text'].length <=> y['display_text'].length }
