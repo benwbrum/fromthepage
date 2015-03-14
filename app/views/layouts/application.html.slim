@@ -66,7 +66,7 @@ body
             span Sign In
             =svg_symbol '#header-user', class: 'icon'
 
-  -if (@work && @work.title) || (@collection && @collection.title)
+  -if (@work && @work.title.present?) || (@collection && @collection.title.present?)
     #work-logo.outside-column
       h1.work-logo
         -if @collection
