@@ -55,7 +55,7 @@ module ApplicationHelper
     end
 
     if options[:user_id]
-      user = " user_id=#{options[:user_id]} "
+      user = " user_id = #{options[:user_id]} "
       conditions = conditions ? conditions + " AND " + user : user
     end
 
