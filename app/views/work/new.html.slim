@@ -1,14 +1,15 @@
-h1 Create a New Work
+section.signon
+  h1 Create New Work
+  p To create a new work please start from entering a title for the work. Although description is not required, it would be nice to describe the work here.
 
-=form_for(@work, { :url => { :action => 'create' }}) do |f|
-  =validation_summary @work
-
-  table.form
-    tr
-      th =f.label :title
-      td.w100 =f.text_field :title
-    tr
-      th =f.label :description
-      td =f.text_area :description
-
-  =f.button 'Create Work'
+  =form_for(@work, { :url => { :action => 'create' }}) do |f|
+    =validation_summary @work
+    table.form
+      tr.big
+        th =f.label :title
+        td.w100 =f.text_field :title
+      tr
+        th =f.label :description
+        td =f.text_area :description
+    p.aright
+      =f.button 'Create Work'
