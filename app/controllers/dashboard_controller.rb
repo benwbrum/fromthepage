@@ -10,12 +10,17 @@ class DashboardController < ApplicationController
 
   def index
     @collections = Collection.all
-    @offset = params[:offset] || 0
-    @recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
+
+    # NOT USED
+    #@offset = params[:offset] || 0
+    #@recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
   end
 
   def owner
     logger.debug("DEBUG: #{current_user.inspect}")
+  end
+
+  def staging
     @image_sets = current_user.image_sets
   end
 

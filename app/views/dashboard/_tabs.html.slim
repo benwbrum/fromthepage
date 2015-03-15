@@ -1,0 +1,37 @@
+-tabs = [{\
+  :name => 'Your Works',
+  :selected => 1,
+  :options => {\
+    :controller => 'dashboard',
+    :action => 'owner',
+  },
+},{\
+  :name => 'Staging Area',
+  :selected => 2,
+  :options => {\
+    :controller => 'dashboard',
+    :action => 'staging',
+  },
+}]
+
+.headline
+  h1.headline_title Owner Dashboard
+  .headline_aside
+    dl.dropdown.right
+      dt.h5
+        span Actions
+        =svg_symbol '#big-menu', class: 'icon icon-big'
+      dd
+        =link_to 'Create a Work', { :controller => 'work', :action => 'new' }
+        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }
+        =link_to 'Create an Image Set', { :controller => 'transform' }
+        hr
+        =link_to 'Import From Omeka.org', { :controller => 'omeka_sites', :action => 'index' }
+        =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }
+        hr
+        =link_to 'Explore OAI Repositories', { :controller => 'oai', :action => 'repository_list' }
+
+.tabs
+  -for tab in tabs
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
+      a.active =tab[:name]
