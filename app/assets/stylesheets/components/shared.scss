@@ -347,6 +347,11 @@
   }
 }
 
+.litebox-embed {
+  margin: $gapSize auto;
+  .litebox & { margin: 0; }
+}
+
 
 // ---------------------------
 // PAGINATION

@@ -21,6 +21,7 @@
   }
   @if $state == disabled {
     color: $color !important;
+    border-color: rgba(#000, 0.15) !important;
     background-color: $background !important;
   }
 }
@@ -53,8 +54,8 @@
     @include button-colors($btnColor, $btnBackground, $state);
   }
   @if $state == disabled {
-    box-shadow: none;
     cursor: default !important;
+    box-shadow: inset 0 1px 0 rgba(#FFF, 0.8);
     @include button-colors($btnDisabledColor, $btnDisabledBackground, $state);
   }
 }

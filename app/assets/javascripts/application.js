@@ -99,4 +99,5 @@ $.fn.dropdown = function(s) {
 $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
+  $('[data-litebox]').litebox();
 });
