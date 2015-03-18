@@ -215,7 +215,6 @@
       if(!this.litebox) {
         var $elm = $(this);
         var options = $.extend({ url: $elm.attr('href') }, $elm.data('litebox'));
-        console.log(options);
         this.litebox = new LiteBox(options);
       }
       this.litebox.open();

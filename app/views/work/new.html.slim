@@ -1,4 +1,4 @@
-section.signon
+.litebox-embed(style="width:550px")
   h1 Create New Work
   p To create a new work please start from entering a title for the work. Although description is not required, it would be nice to describe the work here.
 
@@ -9,7 +9,8 @@ section.signon
         th =f.label :title
         td.w100 =f.text_field :title
       tr
-        th =f.label :description
-        td =f.text_area :description
-    p.aright
-      =f.button 'Create Work'
+        td(colspan="2")
+          =f.label :description, 'Work Description', class: 'above'
+          =f.text_area :description, rows: 4
+    .toolbar
+      .toolbar_group.aright =f.button 'Create Work'

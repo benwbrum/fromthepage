@@ -1,6 +1,6 @@
 # handles administrative tasks for the work object
 class WorkController < ApplicationController
-  #  require 'ftools'
+  # require 'ftools'
 
   protect_from_forgery :except => [:set_work_title,
                                    :set_work_description,
@@ -13,13 +13,22 @@ class WorkController < ApplicationController
   # tested
   before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+
   def authorized?
-    unless user_signed_in? && current_user.owner
-      redirect_to dashboard_path
+    if !user_signed_in? || !current_user.owner
+      ajax_redirect_to dashboard_path
+    elsif @work && @work.owner != current_user
+      ajax_redirect_to dashboard_path
+    end
+  end
+
+  def ajax_redirect_to(options={})
+    if request.xhr?
+      head :created, location: url_for(options)
     else
-      if @work && @work.owner != current_user
-        redirect_to dashboard_path
-      end
+      redirect_to options
     end
   end
 
@@ -31,14 +40,13 @@ class WorkController < ApplicationController
   def create_pdf
     # render to string
     string = render_to_string :file => "#{Rails.root}/app/views/work/work.docbook"
-#    # spew string to docbook tempfile
+    # spew string to docbook tempfile
 
     File.open(doc_tmp_path, "w") { |f| f.write(string) }
     if $?
       render(:text => "file write failed")
       return
     end
-
 
     dp_cmd = "#{DOCBOOK_2_PDF} #{doc_tmp_path} -o #{tmp_path}  -V bop-footnotes=t -V tex-backend > #{tmp_path}/d2p.out 2> #{tmp_path}/d2p.err"
     logger.debug("DEBUG #{dp_cmd}")
@@ -48,6 +56,7 @@ class WorkController < ApplicationController
       render_docbook_error
       return
     end
+
     if !File.exists?(pdf_tmp_path)
       render(:text => "#{dp_cmd} did not generate #{pdf_tmp_path}")
       return
@@ -62,7 +71,7 @@ class WorkController < ApplicationController
 
   def delete
     @work.destroy
-    redirect_to dashboard_path
+    redirect_to dashboard_owner_path
   end
 
   def new
@@ -101,7 +110,7 @@ class WorkController < ApplicationController
     @work.owner = current_user
     if @work.save
       flash[:notice] = 'Work created successfully'
-      redirect_to :action => 'edit', :work_id => @work.id
+      ajax_redirect_to({ :action => 'edit', :work_id => @work.id })
     else
       render :new
     end
@@ -155,4 +164,5 @@ class WorkController < ApplicationController
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
     render(:text => msg )
   end
+
 end

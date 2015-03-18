@@ -23,8 +23,8 @@
       ul
         -for set in current_user.oai_sets
           -oai_title = 'Works to import from ' + set.set_spec
-          li =link_to oai_title, { :action => 'record_list', :controller => 'oai', :repository_url => set.repository_url, :set_spec => set.set_spec }
+          li =link_to oai_title, { :controller => 'oai', :action => 'record_list', :repository_url => set.repository_url, :set_spec => set.set_spec }
 
   aside.sidecol
-    h2 Your Activity
+    h3 Your Activity
     =deeds_for({ :user_id => current_user.id, :limit => 10 })
