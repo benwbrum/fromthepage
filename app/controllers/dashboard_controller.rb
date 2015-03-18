@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
 
-  before_filter :authorized?, :only => [:owner]
+  before_filter :authorized?, :only => [:owner, :staging]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -11,7 +11,7 @@ class DashboardController < ApplicationController
   def index
     @collections = Collection.all
 
-    # NOT USED
+    # not used
     #@offset = params[:offset] || 0
     #@recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
   end
