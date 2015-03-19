@@ -9,6 +9,7 @@ class Collection < ActiveRecord::Base
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   attr_accessible :title, :intro_block, :footer_block
 
+  validates :title, presence: true, length: { minimum: 3 }
 
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|

@@ -1,20 +1,22 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+
   public :render_to_string
+
   protect_from_forgery :except => [:set_collection_title,
-                                    :set_collection_intro_block,
-                                    :set_collection_footer_block]
+                                   :set_collection_intro_block,
+                                   :set_collection_footer_block]
+
   before_filter :authorized?, :only => [:edit, :delete, :new, :create]
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+
   def authorized?
-    if user_signed_in? && current_user.owner
-      if @collection
-	unless current_user.like_owner? @collection
-	  redirect_to dashboard_path
-	end
-      end
-    else
-      redirect_to dashboard_path
+    if !user_signed_in? || !current_user.owner
+      ajax_redirect_to dashboard_path
+    elsif @collection && @collection.owner != current_user
+      ajax_redirect_to dashboard_path
     end
   end
 
@@ -46,10 +48,9 @@ class CollectionController < ApplicationController
     redirect_to :action => 'owners', :collection_id => @collection.id
   end
 
-
   def delete
     @collection.destroy
-    redirect_to dashboard_path
+    redirect_to dashboard_owner_path
   end
 
   def new
@@ -72,9 +73,14 @@ class CollectionController < ApplicationController
   def create
     @collection = Collection.new
     @collection.title = params[:collection][:title]
+    @collection.intro_block = params[:collection][:intro_block]
     @collection.owner = current_user
-    @collection.save!
-    redirect_to :action => 'show', :collection_id => @collection.id
+    if @collection.save
+      flash[:notice] = 'Collection created successfully'
+      ajax_redirect_to({ :action => 'edit', :collection_id => @collection.id })
+    else
+      render :new
+    end
   end
 
   def add_work_to_collection
@@ -89,8 +95,7 @@ class CollectionController < ApplicationController
     redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
-private
-
+  private
   def set_collection_for_work(collection, work)
     # first update the id on the work
     work.collection = collection
@@ -102,4 +107,5 @@ private
       article.save!
     end
   end
+
 end

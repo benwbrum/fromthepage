@@ -23,7 +23,7 @@
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
         =link_to 'Create a Work', { :controller => 'work', :action => 'new' }, :data => { litebox: { hash: 'create-work' } }
-        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }
+        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
         =link_to 'Create an Image Set', { :controller => 'transform' }
         hr
         =link_to 'Import From Omeka.org', { :controller => 'omeka_sites', :action => 'index' }
