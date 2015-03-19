@@ -17,8 +17,11 @@
     this.options = $.extend({}, this.defaults, options);
 
     if(this.options.hash) {
-      this.checkHash();
+      if(this.options.hash.toString().charAt(0) !== '#') {
+        this.options.hash = '#' + this.options.hash;
+      }
       this.$win.on('hashchange.LiteBox', $.proxy(this.checkHash, this));
+      this.checkHash();
     }
   };
 
@@ -37,7 +40,7 @@
     $content: null,
 
     checkHash: function() {
-      this[this.options.hash == window.location.hash.toLowerCase() ? 'open' : 'close']();
+      this[this.options.hash.toLowerCase() === window.location.hash.toLowerCase() ? 'open' : 'close']();
     },
 
     pageScroll: function(enabled) {
@@ -146,7 +149,7 @@
         }).done(function(data, textStatus, jqXHR) {
           var code = jqXHR.status;
           var location = jqXHR.getResponseHeader('location');
-          if(code == 201 && location) {
+          if(code === 201 && location) {
             document.location.href = location;
           } else {
             this.$content.html(data);
@@ -210,14 +213,24 @@
   $.fn.litebox = function(eventName) {
     eventName = eventName || 'click';
 
-    return this.on(eventName, function(e) {
-      e.preventDefault();
+    return this.each(function() {
       if(!this.litebox) {
         var $elm = $(this);
         var options = $.extend({ url: $elm.attr('href') }, $elm.data('litebox'));
+        if(options.hash === true) {
+          options.hash = options.url;
+        }
         this.litebox = new LiteBox(options);
       }
-      this.litebox.open();
+
+      $(this).on(eventName, function(e) {
+        e.preventDefault();
+        if(this.litebox.options.hash) {
+          document.location.hash = this.litebox.options.hash;
+        } else {
+          this.litebox.open();
+        }
+      });
     });
   };
 

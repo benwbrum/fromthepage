@@ -22,7 +22,7 @@
         span Actions
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
-        =link_to 'Create a Work', { :controller => 'work', :action => 'new' }, 'data-litebox': true
+        =link_to 'Create a Work', { :controller => 'work', :action => 'new' }, :data => { litebox: { hash: 'create-work' } }
         =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }
         =link_to 'Create an Image Set', { :controller => 'transform' }
         hr
