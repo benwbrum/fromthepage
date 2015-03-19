@@ -24,14 +24,6 @@ class WorkController < ApplicationController
     end
   end
 
-  def ajax_redirect_to(options={})
-    if request.xhr?
-      head :created, location: url_for(options)
-    else
-      redirect_to options
-    end
-  end
-
   def make_pdf
     # don't think there should be much to do here.
   end

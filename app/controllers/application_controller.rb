@@ -189,6 +189,16 @@ class ApplicationController < ActionController::Base
       dashboard_path
     end
   end
+
+  # Wrapper around redirect_to for modal ajax forms
+  def ajax_redirect_to(options={})
+    if request.xhr?
+      head :created, location: url_for(options)
+    else
+      redirect_to options
+    end
+  end
+
 end
 
 # class ApplicationController < ActionController::Base
