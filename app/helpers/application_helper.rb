@@ -103,9 +103,9 @@ module ApplicationHelper
     end
   end
 
-  def validation_summary(model)
-    if model.errors.any?
-      render({ :partial => 'shared/validation_summary', :locals => { :errors => model.errors } })
+  def validation_summary(errors)
+    if errors.is_a?(Enumerable) && errors.any?
+      render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })
     end
   end
 

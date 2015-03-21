@@ -3,7 +3,7 @@
   p To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
 
   =form_for(@collection, { :url => { :action => 'create' }}) do |f|
-    =validation_summary @collection
+    =validation_summary @collection.errors
     table.form
       tr.big
         th =f.label :title

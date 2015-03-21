@@ -3,7 +3,7 @@
   p To create a new work please start from entering a title for the work. Although description is not required, it would be nice to describe the work here.
 
   =form_for(@work, { :url => { :action => 'create' }}) do |f|
-    =validation_summary @work
+    =validation_summary @work.errors
     table.form
       tr.big
         th =f.label :title
