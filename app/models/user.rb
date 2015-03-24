@@ -3,18 +3,18 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-	 :encryptable, :encryptor => :restful_authentication_sha1
+         :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :display_name, :owner
+
   # allows me to get at the user from other models
   cattr_accessor :current_user
-  
-
 
   has_many(:owner_works,
            { :foreign_key => "owner_user_id",
              :class_name => 'Work' })
+  has_many :collections, :foreign_key => "owner_user_id"
   has_many :image_sets, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
@@ -40,8 +40,9 @@ class User < ActiveRecord::Base
     end
     return false
   end
-  
+
   def display_name
     self[:display_name] || self[:login]
   end
+
 end

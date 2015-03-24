@@ -31,6 +31,13 @@
         hr
         =link_to 'Explore OAI Repositories', { :controller => 'oai', :action => 'repository_list' }
 
+section.owner-counters
+  .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
+  .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
+  .counter(data-prefix="#{number_with_delimiter @ia_works.length}") #{'IA work'.pluralize(@ia_works.length)}
+  .counter(data-prefix="#{number_with_delimiter @image_sets.length}") #{'Image set'.pluralize(@image_sets.length)}
+  .counter(data-prefix="#{number_with_delimiter @notes.length}") #{'Note'.pluralize(@notes.length)}
+
 .tabs
   -for tab in tabs
     =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
