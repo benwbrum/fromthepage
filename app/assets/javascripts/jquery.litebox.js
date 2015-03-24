@@ -129,6 +129,12 @@
       this.$container.addClass('visible');
       this.$content.find(':input:not(:hidden):first').focus();
 
+      /*
+      this.$content.on('ajax:success', 'form', function(e, data, status, xhr) {
+        $(this).html(data);
+      });
+      */
+
       this.$content.on('submit.Litebox', 'form', $.proxy(function(e) {
         e.preventDefault();
 
@@ -136,7 +142,8 @@
         var form_data = $form.serialize();
         var form_method = $form.attr('method');
         var form_action = $form.attr('action');
-        var disabled = $form.find(':input:not(:disabled)').prop('disabled', true);
+        var disabled = $form.find(':submit').prop('disabled', true);
+        //var disabled = $form.find(':input:not(:disabled)').prop('disabled', true);
 
         this.$content.addClass('ajax-busy');
 
