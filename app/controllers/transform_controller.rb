@@ -3,6 +3,7 @@ class TransformController < ApplicationController
   include FileUtils::Verbose
   include Magick
   include ImageHelper
+  include ActiveModel::Validations
   # TODO add before filters
 
   NEXT_STEP =
@@ -65,22 +66,21 @@ class TransformController < ApplicationController
 
     # check that input appeared
     if(source_dir == nil || "" == source_dir)
-      flash.now['error'] = "You must enter a directory"
+      errors.add(:base, "You must enter a full directory path")
       render :action => 'directory_form'
-    elsif(!File.directory?(source_dir))      # check for a valid directory
-      flash.now['error'] = "The directory (#{source_dir}) entered is not a valid directory"
+
+    # check for a valid directory
+    elsif(!File.directory?(source_dir))
+      errors.add(:base, "The directory #{source_dir} is not valid")
       render :action => 'directory_form'
     elsif(!File.executable?(source_dir))
-      flash.now['error'] =
-        "The application does not have execute permission on the directory #{source_dir}"
+      errors.add(:base, "No execute permission on the directory #{source_dir}")
       render :action => 'directory_form'
     elsif(!File.readable?(source_dir))
-      flash.now['error'] =
-        "The application does not have read permission on the directory #{source_dir}"
+      errors.add(:base, "No read permission on the directory #{source_dir}")
       render :action => 'directory_form'
     elsif(Dir.entries(source_dir).length < 3)
-      flash.now['error'] =
-        "There are no files in the directory #{source_dir}"
+      errors.add(:base, "The directory #{source_dir} is empty")
       render :action => 'directory_form'
     else
       config[:source_directory] = source_dir
@@ -130,7 +130,6 @@ class TransformController < ApplicationController
 
   def size_form
   end
-
 
   def size_process
     action = params['size']
@@ -261,7 +260,6 @@ class TransformController < ApplicationController
   end
 
   def date_format_start_form
-
   end
 
   def date_format_start_process
