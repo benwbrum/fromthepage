@@ -129,21 +129,15 @@
       this.$container.addClass('visible');
       this.$content.find(':input:not(:hidden):first').focus();
 
-      /*
-      this.$content.on('ajax:success', 'form', function(e, data, status, xhr) {
-        $(this).html(data);
-      });
-      */
-
-      this.$content.on('submit.Litebox', 'form', $.proxy(function(e) {
+      // Submit an inner form via ajax
+      this.$content.on('submit.LiteBox', 'form', $.proxy(function(e) {
         e.preventDefault();
 
         var $form = $(e.currentTarget);
         var form_data = $form.serialize();
         var form_method = $form.attr('method');
         var form_action = $form.attr('action');
-        var disabled = $form.find(':submit').prop('disabled', true);
-        //var disabled = $form.find(':input:not(:disabled)').prop('disabled', true);
+        var $submit = $form.find(':submit').prop('disabled', true);
 
         this.$content.addClass('ajax-busy');
 
@@ -164,7 +158,7 @@
         }).fail(function() {
           this.$content.addClass('ajax-error');
         }).always(function() {
-          disabled.prop('disabled', false);
+          $submit.prop('disabled', false);
           this.$content.removeClass('ajax-busy');
         });
       }, this));
