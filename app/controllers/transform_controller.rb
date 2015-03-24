@@ -6,6 +6,9 @@ class TransformController < ApplicationController
   include ActiveModel::Validations
   # TODO add before filters
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:index, :reprise, :directory_process]
+
   NEXT_STEP =
     {
       ImageSet::STEP_DIRECTORY_PROCESS => 'orientation_form',
@@ -38,7 +41,7 @@ class TransformController < ApplicationController
     if @image_set.status = ImageSet::STATUS_COMPLETE
       debug('L 4')
       debug("REDIRECTING TO #{next_step}")
-      redirect_to :action => next_step, :image_set_id => @image_set.id
+      ajax_redirect_to :action => next_step, :image_set_id => @image_set.id
       debug('L 5')
 
       return
@@ -85,7 +88,7 @@ class TransformController < ApplicationController
     else
       config[:source_directory] = source_dir
       process_source_directory(source_dir)
-      redirect_to :action => 'reprise', :image_set_id => @image_set.id
+      ajax_redirect_to :action => 'reprise', :image_set_id => @image_set.id
     end
   end
 

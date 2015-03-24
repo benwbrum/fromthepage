@@ -24,7 +24,7 @@
       dd
         =link_to 'Create a Work', { :controller => 'work', :action => 'new' }, :data => { litebox: { hash: 'create-work' } }
         =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
-        =link_to 'Create an Image Set', { :controller => 'transform' }
+        =link_to 'Create an Image Set', { :controller => 'transform' }, :data => { litebox: { hash: 'create-imageset' } }
         hr
         =link_to 'Import From Omeka.org', { :controller => 'omeka_sites', :action => 'index' }
         =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }
