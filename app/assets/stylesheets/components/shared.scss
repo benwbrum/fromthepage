@@ -352,6 +352,25 @@
   .litebox & { margin: 0; }
 }
 
+.counter {
+  padding: 0.5em;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: $fontSizeH5;
+  font-family: $fontFamilyHead;
+  &:before {
+    color: $fgH1;
+    display: block;
+    line-height: 1;
+    font-size: 250%;
+    font-weight: bold;
+    white-space: nowrap;
+    letter-spacing: -0.03em;
+    font-family: $fontFamily;
+  }
+}
+
 
 // ---------------------------
 // PAGINATION

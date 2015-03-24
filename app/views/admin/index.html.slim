@@ -1,30 +1,12 @@
 =render({ :partial => 'tabs', :locals => { :selected => 1 } })
 
-section.admin-summary
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @collections.length
-    span.admin-summary_caption #{'Collection'.pluralize(@collections.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @works.length
-    span.admin-summary_caption #{'Work'.pluralize(@works.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @ia_works.length
-    span.admin-summary_caption #{'IA Work'.pluralize(@ia_works.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @articles.length
-    span.admin-summary_caption #{'Article'.pluralize(@articles.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @pages.length
-    span.admin-summary_caption #{'Page'.pluralize(@pages.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @image_sets.length
-    span.admin-summary_caption #{'Image set'.pluralize(@image_sets.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @owners.length
-    span.admin-summary_caption #{'Owner'.pluralize(@owners.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @users.length
-    span.admin-summary_caption #{'Registered user'.pluralize(@users.length)}
-  .admin-summary_block
-    span.admin-summary_count =number_with_delimiter @users_count
-    span.admin-summary_caption #{'User'.pluralize(@users_count)} online
+section.admin-counters
+  .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
+  .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
+  .counter(data-prefix="#{number_with_delimiter @ia_works.length}") #{'IA work'.pluralize(@ia_works.length)}
+  .counter(data-prefix="#{number_with_delimiter @articles.length}") #{'Article'.pluralize(@articles.length)}
+  .counter(data-prefix="#{number_with_delimiter @pages.length}") #{'Page'.pluralize(@pages.length)}
+  .counter(data-prefix="#{number_with_delimiter @image_sets.length}") #{'Image set'.pluralize(@image_sets.length)}
+  .counter(data-prefix="#{number_with_delimiter @owners.length}") #{'Owner'.pluralize(@owners.length)}
+  .counter(data-prefix="#{number_with_delimiter @users.length}") #{'Registered user'.pluralize(@users.length)}
+  .counter(data-prefix="#{number_with_delimiter @users_count}") #{'User'.pluralize(@users_count)} online

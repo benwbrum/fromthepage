@@ -223,6 +223,7 @@ $footerBg:									$themeDark;
 	}
 }
 
+
 // ---------------------------
 // ACTIVITY
 // ---------------------------
@@ -271,34 +272,16 @@ $footerBg:									$themeDark;
 
 
 // ---------------------------
-// ADMIN PAGES
+// ADMIN SECTION
 // ---------------------------
 
-.admin-summary {
-	width: 100%;
-	padding: $gapSize 0;
-	display: inline-block;
-	&_block {
-		float: left;
+.admin-counters {
+	font-size: 0;
+	.counter {
 		width: 33.33%;
-		text-align: center;
-		padding: 0 $gapSize;
-		box-sizing: border-box;
 		margin: $gapSize * 2 0;
-	}
-	&_count {
-		color: $fgH1;
-		display: block;
-		line-height: 1;
-		font-size: 400%;
-		font-weight: bold;
-		white-space: nowrap;
-		letter-spacing: -0.03em;
-	}
-	&_caption {
-		display: block;
 		font-size: $fontSizeH4;
-		font-family: $fontFamilyHead;
+		&:first-child { border: 0; }
 	}
 }
 
@@ -324,6 +307,20 @@ $footerBg:									$themeDark;
 	.icon:only-child { vertical-align: middle; }
 }
 
+
+// ---------------------------
+// OWNER SECTION
+// ---------------------------
+
+.owner-counters {
+	font-size: 0;
+	margin: $gapSize 0;
+	.counter {
+		width: 20%;
+		border-left: 1px solid rgba(#000, 0.1);
+		&:first-child { border: 0; }
+	}
+}
 
 
 
