@@ -36,7 +36,7 @@
 	    <% end %>
 	  </div>
 
-	  <% if false && @work.supports_translation %>
+	  <% if @work.supports_translation %>
 		  <div class="inside-column">
 		    <h2>Translation</h2>
 		  </div>
@@ -74,5 +74,21 @@
 	      <i>No Transcription Provided</i>
 	    <% end %>
 	  </div>
+	  
+	  	  <% if @work.supports_translation %>
+		  <div class="inside-column">
+		    <h2>Translation</h2>
+		  </div>
+	
+		  <div id="translation_display_area" class="inside-column">
+		    <% if @page_version.page.xml_translation != nil &&
+		          !@page_version.page.xml_translation.empty? %>
+		      <%= raw(xml_to_html(@page_version.page.xml_translation)) %>
+		    <% else %>
+		      <i>No Translation Provided</i>
+		    <% end %>
+		  </div>
+	  <% end %>
+
   </div>
  </div>

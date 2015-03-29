@@ -120,6 +120,8 @@ class Page < ActiveRecord::Base
     version.title = self.title
     version.transcription = self.source_text
     version.xml_transcription = self.xml_text
+    version.source_translation = self.source_translation
+    version.xml_translation = self.xml_translation
     version.user = User.current_user
 
     # now do the complicated version update thing

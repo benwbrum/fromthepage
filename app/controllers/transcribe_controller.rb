@@ -97,7 +97,7 @@ class TranscribeController  < ApplicationController
       begin
         if @page.save
           log_translation_success
-#TODO          record_deed
+          record_translation_deed
 
           @work.work_statistic.recalculate if @work.work_statistic
           
@@ -211,7 +211,6 @@ protected
     else
       deed.deed_type = Deed::PAGE_TRANSCRIPTION
     end
-    deed.user = current_user
     deed.save!
   end
 
@@ -221,13 +220,24 @@ protected
     deed.page = @page
     deed.work = @work
     deed.collection = @collection
+    deed.user = current_user
+
     deed
   end
 
   def record_index_deed
     deed = stub_deed
     deed.deed_type = Deed::PAGE_INDEXED
-    deed.user = current_user
+    deed.save!
+  end
+  
+  def record_translation_deed
+    deed = stub_deed
+    if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank? 
+      deed.deed_type = Deed::PAGE_TRANSLATED
+    else
+      deed.deed_type = Deed::PAGE_TRANSLATION_EDIT
+    end
     deed.save!
   end
 end
