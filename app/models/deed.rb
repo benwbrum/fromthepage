@@ -28,9 +28,6 @@ class Deed < ActiveRecord::Base
   belongs_to :user
   belongs_to :work
 
-<<<<<<< HEAD
-  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED ]
-=======
   validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT ]
 
   # tested
@@ -42,5 +39,4 @@ class Deed < ActiveRecord::Base
   def long_partial
     LONG_PARTIALS[self.deed_type] || SHORT_PARTIALS[self.deed_type]
   end
->>>>>>> master
 end
