@@ -1,5 +1,5 @@
 /* 
- * Zoomer v3.0.8 - 2014-03-15 
+ * Zoomer v3.0.12 - 2014-11-25 
  * A jQuery plugin for smooth image exploration. Part of the formstone library. 
  * http://formstone.it/components/zoomer/ 
  * 
@@ -159,7 +159,7 @@
 		 */
 		defaults: function(opts) {
 			options = $.extend(options, opts || {});
-			return $(this);
+			return (typeof this === 'object') ? $(this) : true;
 		},
 
 		/**
@@ -234,7 +234,7 @@
 					top /= 100;
 
 					data.targetPositionerLeft = Math.round(data.centerLeft - data.targetImageLeft - (data.targetImageWidth * left));
-					data.targetPositionerTop  = Math.round(data.centerTop - data.targetImageTop - (data.targetImageHeight * top));
+					data.targetPositionerTop	= Math.round(data.centerTop - data.targetImageTop - (data.targetImageHeight * top));
 				}
 			});
 		},
@@ -250,12 +250,19 @@
 				var data = $(target).data("zoomer");
 
 				if (data) {
-					data.frameWidth  = data.$target.outerWidth();
+					data.frameWidth	= data.$target.outerWidth();
 					data.frameHeight = data.$target.outerHeight();
-					data.centerLeft  = Math.round(data.frameWidth * 0.5);
-					data.centerTop   = Math.round(data.frameHeight * 0.5);
+					data.centerLeft	= Math.round(data.frameWidth * 0.5);
+					data.centerTop	 = Math.round(data.frameHeight * 0.5);
 
-					data = _setMinimums(data);
+										// Set minHeight and minWidth to naturals sizes
+										data.minHeight = data.naturalHeight;
+										data.minWidth	= data.naturalWidth;
+
+										// Recalculate minimum sizes only when the natural size of the image is bigger than the frame size - marginalReal
+										if (data.naturalHeight > (data.frameHeight - data.marginReal) || data.naturalWidth > (data.frameWidth - data.marginReal)) {
+												data = _setMinimums(data);
+										}
 				}
 			});
 		},
@@ -287,7 +294,7 @@
 		// Settings
 		opts = $.extend({}, options, properties, opts);
 
-		transformSupported = _getTransformSupport();
+		transformSupported = _getTransform3DSupport();
 
 		// Apply to each element
 		var $items = $(this);
@@ -369,7 +376,7 @@
 			data.controls.$zoomIn.on("touchstart.zoomer mousedown.zoomer", data, _zoomIn)
 								 .on("touchend.zoomer mouseup.zoomer", data, _clearZoom);
 			data.controls.$zoomOut.on("touchstart.zoomer mousedown.zoomer", data, _zoomOut)
-								  .on("touchend.zoomer mouseup.zoomer", data, _clearZoom);
+									.on("touchend.zoomer mouseup.zoomer", data, _clearZoom);
 			data.controls.$next.on("click.zoomer", data, _nextImage);
 			data.controls.$previous.on("click.zoomer", data, _previousImage);
 			data.$zoomer.on("mousedown.zoomer", data, _dragStart)
@@ -450,7 +457,7 @@
 			// Cache current image
 			data.$image = $('<img class="zoomer-image" />');
 			data.$image.one("load.zoomer", data, _onImageLoad)
-					   .attr("src", source);
+						 .attr("src", source);
 
 			// If image has already loaded into cache, trigger load event
 			if (data.$image[0].complete) {
@@ -504,14 +511,12 @@
 
 		data.$holder.css({
 			height: data.naturalHeight,
-			width:  data.naturalWidth
+			width:	data.naturalWidth
 		});
 
-		data.targetImageHeight = data.naturalHeight;
-		data.targetImageWidth  = data.naturalWidth;
-
-		data.maxHeight = data.naturalHeight;
-		data.maxWidth  = data.naturalWidth;
+		// Set target, min, max to naturals sizes
+		data.targetImageHeight = data.minHeight = data.maxHeight = data.naturalHeight;
+		data.targetImageWidth  = data.minWidth  = data.maxWidth  = data.naturalWidth;
 
 		data.imageRatioWide = data.naturalWidth / data.naturalHeight;
 		data.imageRatioTall = data.naturalHeight / data.naturalWidth;
@@ -520,17 +525,17 @@
 		if (data.naturalHeight > (data.frameHeight - data.marginReal) || data.naturalWidth > (data.frameWidth - data.marginReal)) {
 			data = _setMinimums(data);
 			data.targetImageHeight = data.minHeight;
-			data.targetImageWidth  = data.minWidth;
+			data.targetImageWidth	= data.minWidth;
 		}
 
 		// SET INITIAL POSITIONS
 		data.positionerLeft = data.targetPositionerLeft = data.centerLeft;
-		data.positionerTop  = data.targetPositionerTop  = data.centerTop;
+		data.positionerTop	= data.targetPositionerTop	= data.centerTop;
 
-		data.imageLeft   = data.targetImageLeft = Math.round(-data.targetImageWidth / 2);
-		data.imageTop    = data.targetImageTop  = Math.round(-data.targetImageHeight / 2);
+		data.imageLeft	 = data.targetImageLeft = Math.round(-data.targetImageWidth / 2);
+		data.imageTop		= data.targetImageTop	= Math.round(-data.targetImageHeight / 2);
 		data.imageHeight = data.targetImageHeight;
-		data.imageWidth  = data.targetImageWidth;
+		data.imageWidth	= data.targetImageWidth;
 
 		if (transformSupported) {
 			var scaleX = data.imageWidth / data.naturalWidth,
@@ -541,13 +546,13 @@
 		} else {
 			data.$positioner.css({
 				left: data.positionerLeft,
-				top:  data.positionerTop
+				top:	data.positionerTop
 			});
 			data.$holder.css({
-				left:   data.imageLeft,
-				top:    data.imageTop,
+				left:	 data.imageLeft,
+				top:		data.imageTop,
 				height: data.imageHeight,
-				width:  data.imageWidth
+				width:	data.imageWidth
 			});
 		}
 
@@ -560,11 +565,11 @@
 			});
 
 			data.tileHeightPercentage = 100 / data.tiledRows;
-			data.tileWidthPercentage  = 100 / data.tiledColumns;
+			data.tileWidthPercentage	= 100 / data.tiledColumns;
 
 			data.$tiles.css({
 				height: data.tileHeightPercentage + "%",
-				width:  data.tileWidthPercentage + "%"
+				width:	data.tileWidthPercentage + "%"
 			});
 
 			data.$tiles.each(function(i, tile) {
@@ -573,7 +578,7 @@
 
 				$tile.css({
 					left: (data.tileWidthPercentage * parseInt(position[1], 10)) + "%",
-					top:  (data.tileHeightPercentage * parseInt(position[0], 10)) + "%"
+					top:	(data.tileHeightPercentage * parseInt(position[0], 10)) + "%"
 				});
 			});
 		}
@@ -614,22 +619,22 @@
 			data.aspect = "tall";
 
 			data.minHeight = Math.round(data.frameHeight - data.marginReal);
-			data.minWidth  = Math.round(data.minHeight / data.imageRatioTall);
+			data.minWidth	= Math.round(data.minHeight / data.imageRatioTall);
 
 			if (data.minWidth > (data.frameWidth - data.marginReal)) {
-				data.minWidth  = Math.round(data.frameWidth - data.marginReal);
+				data.minWidth	= Math.round(data.frameWidth - data.marginReal);
 				data.minHeight = Math.round(data.minWidth / data.imageRatioWide);
 			}
 		} else {
 			// Wide
 			data.aspect = "wide";
 
-			data.minWidth  = Math.round(data.frameWidth - data.marginReal);
+			data.minWidth	= Math.round(data.frameWidth - data.marginReal);
 			data.minHeight = Math.round(data.minWidth / data.imageRatioWide);
 
 			if (data.minHeight > (data.frameHeight - data.marginReal)) {
 				data.minHeight = Math.round(data.frameHeight - data.marginReal);
-				data.minWidth  = Math.round(data.minHeight / data.imageRatioTall);
+				data.minWidth	= Math.round(data.minHeight / data.imageRatioTall);
 			}
 		}
 
@@ -655,8 +660,8 @@
 					var scaleX = data.imageWidth / data.naturalWidth,
 						scaleY = data.imageHeight / data.naturalHeight;
 
-					data.$positioner.css( _prefix("transform", "translate3d("+data.positionerLeft+"px, "+data.positionerTop+"px, 0)") );
-					data.$holder.css( _prefix("transform", "translate3d(-50%, -50%, 0) scale("+scaleX+","+scaleY+")") );
+					data.$positioner.css(_prefix("transform", "translate3d(" + data.positionerLeft + "px, " + data.positionerTop + "px, 0)"));
+					data.$holder.css(_prefix("transform", "translate3d(-50%, -50%, 0) scale(" + scaleX + "," + scaleY + ")"));
 				} else {
 					data.$positioner.css({
 						left: data.positionerLeft,
@@ -706,42 +711,42 @@
 		if (data.aspect === "tall") {
 			if (data.targetImageHeight < data.minHeight) {
 				data.targetImageHeight = data.minHeight;
-				data.targetImageWidth  = Math.round(data.targetImageHeight / data.imageRatioTall);
+				data.targetImageWidth	= Math.round(data.targetImageHeight / data.imageRatioTall);
 			} else if (data.targetImageHeight > data.maxHeight) {
 				data.targetImageHeight = data.maxHeight;
-				data.targetImageWidth  = Math.round(data.targetImageHeight / data.imageRatioTall);
+				data.targetImageWidth	= Math.round(data.targetImageHeight / data.imageRatioTall);
 			}
 		} else {
 			if (data.targetImageWidth < data.minWidth) {
-				data.targetImageWidth  = data.minWidth;
+				data.targetImageWidth	= data.minWidth;
 				data.targetImageHeight = Math.round(data.targetImageWidth / data.imageRatioWide);
-			} else if (data.targetImageWidth > data.maxWidth)  {
-				data.targetImageWidth  = data.maxWidth;
+			} else if (data.targetImageWidth > data.maxWidth)	{
+				data.targetImageWidth	= data.maxWidth;
 				data.targetImageHeight = Math.round(data.targetImageWidth / data.imageRatioWide);
 			}
 		}
 
 		// Calculate new dimensions
 		data.targetImageLeft = Math.round(-data.targetImageWidth * 0.5);
-		data.targetImageTop  = Math.round(-data.targetImageHeight * 0.5);
+		data.targetImageTop	= Math.round(-data.targetImageHeight * 0.5);
 
 		if (data.action === "drag" || data.action === "pinch") {
-			data.imageWidth  = data.targetImageWidth;
+			data.imageWidth	= data.targetImageWidth;
 			data.imageHeight = data.targetImageHeight;
-			data.imageLeft   = data.targetImageLeft;
-			data.imageTop    = data.targetImageTop;
+			data.imageLeft	 = data.targetImageLeft;
+			data.imageTop		= data.targetImageTop;
 		} else {
-			data.imageWidth  += Math.round((data.targetImageWidth - data.imageWidth) * data.enertia);
+			data.imageWidth	+= Math.round((data.targetImageWidth - data.imageWidth) * data.enertia);
 			data.imageHeight += Math.round((data.targetImageHeight - data.imageHeight) * data.enertia);
-			data.imageLeft   += Math.round((data.targetImageLeft - data.imageLeft) * data.enertia);
-			data.imageTop    += Math.round((data.targetImageTop - data.imageTop) * data.enertia);
+			data.imageLeft	 += Math.round((data.targetImageLeft - data.imageLeft) * data.enertia);
+			data.imageTop		+= Math.round((data.targetImageTop - data.imageTop) * data.enertia);
 		}
 
 		// Check bounds of current position and if big enough to drag
 		// Set bounds
-		data.boundsLeft   = Math.round(data.frameWidth - (data.targetImageWidth * 0.5) - data.marginMax);
-		data.boundsRight  = Math.round((data.targetImageWidth * 0.5) + data.marginMax);
-		data.boundsTop    = Math.round(data.frameHeight - (data.targetImageHeight * 0.5) - data.marginMax);
+		data.boundsLeft	 = Math.round(data.frameWidth - (data.targetImageWidth * 0.5) - data.marginMax);
+		data.boundsRight	= Math.round((data.targetImageWidth * 0.5) + data.marginMax);
+		data.boundsTop		= Math.round(data.frameHeight - (data.targetImageHeight * 0.5) - data.marginMax);
 		data.boundsBottom = Math.round((data.targetImageHeight * 0.5) + data.marginMax);
 
 		// Check dragging bounds
@@ -761,7 +766,7 @@
 		// Zoom to visible area of image
 		if (data.zoomPositionTop > 0 && data.zoomPositionLeft > 0) {
 			data.targetPositionerLeft = data.centerLeft - data.targetImageLeft - (data.targetImageWidth * data.zoomPositionLeft);
-			data.targetPositionerTop  = data.centerTop - data.targetImageTop - (data.targetImageHeight * data.zoomPositionTop);
+			data.targetPositionerTop	= data.centerTop - data.targetImageTop - (data.targetImageHeight * data.zoomPositionTop);
 		}
 
 		if (data.action !== "pinch") {
@@ -780,7 +785,7 @@
 			data.positionerTop = data.targetPositionerTop;
 		} else {
 			data.positionerLeft += Math.round((data.targetPositionerLeft - data.positionerLeft) * data.enertia);
-			data.positionerTop  += Math.round((data.targetPositionerTop - data.positionerTop) * data.enertia);
+			data.positionerTop	+= Math.round((data.targetPositionerTop - data.positionerTop) * data.enertia);
 		}
 
 		data.oldImageWidth = data.imageWidth;
@@ -880,10 +885,10 @@
 	 */
 	function _setZoomPosition(data, left, top) {
 		left = left || (data.imageWidth * 0.5);
-		top  = top || (data.imageHeight * 0.5);
+		top	= top || (data.imageHeight * 0.5);
 
 		data.zoomPositionLeft = ((left - (data.positionerLeft - data.centerLeft)) / data.imageWidth);
-		data.zoomPositionTop  = ((top - (data.positionerTop - data.centerTop)) / data.imageHeight);
+		data.zoomPositionTop	= ((top - (data.positionerTop - data.centerTop)) / data.imageHeight);
 
 		return data;
 	}
@@ -923,7 +928,7 @@
 		data.targetPositionerTop = data.positionerTop;
 
 		$window.on("mousemove.zoomer", data, _onDrag)
-			   .on("mouseup.zoomer", data, _dragStop);
+				 .on("mouseup.zoomer", data, _dragStop);
 	}
 
 	/**
@@ -942,7 +947,7 @@
 
 		if (e.pageX && e.pageY) {
 			data.targetPositionerLeft -= Math.round(data.mouseX - e.pageX);
-			data.targetPositionerTop  -= Math.round(data.mouseY - e.pageY);
+			data.targetPositionerTop	-= Math.round(data.mouseY - e.pageY);
 
 			data.mouseX = e.pageX;
 			data.mouseY = e.pageY;
@@ -1034,7 +1039,7 @@
 		if (!data.touchEventsBound) {
 			data.touchEventsBound = true;
 			$window.on("touchmove.zoomer MSPointerMove.zoomer", data, _onTouch)
-				   .on("touchend.zoomer MSPointerUp.zoomer", data, _onTouch);
+					 .on("touchend.zoomer MSPointerUp.zoomer", data, _onTouch);
 		}
 
 		data.zoomPercentage = 1;
@@ -1074,7 +1079,7 @@
 			data.action = "drag";
 
 			data.targetPositionerLeft -= (data.mouseX - data.touches[0].pageX);
-			data.targetPositionerTop  -= (data.mouseY - data.touches[0].pageY);
+			data.targetPositionerTop	-= (data.mouseY - data.touches[0].pageY);
 		} else if (data.touches.length >= 2) {
 			data.action = "pinch";
 
@@ -1091,7 +1096,7 @@
 				data.pinchDeltaEnd = Math.sqrt(Math.pow((data.pinchEndX1 - data.pinchEndX0), 2) + Math.pow((data.pinchEndY1 - data.pinchEndY0), 2));
 				data.zoomPercentage = (data.pinchDeltaEnd / data.pinchDeltaStart);
 
-				data.targetImageWidth  = Math.round(data.imageWidthStart * data.zoomPercentage);
+				data.targetImageWidth	= Math.round(data.imageWidthStart * data.zoomPercentage);
 				data.targetImageHeight = Math.round(data.imageHeightStart * data.zoomPercentage);
 
 				data.pinchEndX = ((data.pinchEndX0 + data.pinchEndX1) / 2.0);
@@ -1106,9 +1111,9 @@
 
 		data.mouseX = data.touches[0].pageX;
 		data.mouseY = data.touches[0].pageY;
-    }
+		}
 
-   /**
+	 /**
 	 * @method private
 	 * @name _onTouchEnd
 	 * @description Handles touch end
@@ -1220,41 +1225,53 @@
 		var r = {};
 
 		r["-webkit-" + property] = value;
-		r[   "-moz-" + property] = value;
-		r[    "-ms-" + property] = value;
-		r[     "-o-" + property] = value;
-		r[             property] = value;
+		r[	 "-moz-" + property] = value;
+		r[		"-ms-" + property] = value;
+		r[		 "-o-" + property] = value;
+		r[						 property] = value;
 
 		return r;
 	}
 
 	/**
 	 * @method private
-	 * @name _getTransformSupport
+	 * @name _getTransform3DSupport
 	 * @description Determines if transforms are support
 	 * @return [boolean] "True if transforms supported"
 	 */
-	function _getTransformSupport() {
-		var transforms = {
-				"webkitTransform": "-webkit-transform",
-				"MozTransform":    "-moz-transform",
-				"msTransform":     "-ms-transform",
-				"OTransform":      "-o-transform",
-				"transform":       "transform"
-			},
-			test = document.createElement("div"),
-			has3d;
+	function _getTransform3DSupport() {
+		/* http://stackoverflow.com/questions/11628390/how-to-detect-css-translate3d-without-the-webkit-context */
+		/*
+		var prop = "transform",
+			val = "translate3d(0px, 0px, 0px)",
+			test = /translate3d\(0px, 0px, 0px\)/g,
+			$div = $("<div>");
 
-		document.body.insertBefore(test, null);
+		$div.css(_prefix(prop, val));
+		var check = $div[0].style.cssText.match(test);
 
-		for (var type in transforms) {
-			if (test.style[type] !== undefined) {
-				test.style[type] = "translate3d(1px, 1px, 1px)";
-				has3d = window.getComputedStyle(test).getPropertyValue(transforms[type]);
+		return (check !== null && check.length > 0);
+		*/
+
+		/* http://stackoverflow.com/questions/5661671/detecting-transform-translate3d-support/12621264#12621264 */
+		var el = document.createElement('p'),
+			has3d,
+			transforms = {
+				'webkitTransform':'-webkit-transform',
+				'OTransform':'-o-transform',
+				'msTransform':'-ms-transform',
+				'MozTransform':'-moz-transform',
+				'transform':'transform'
+			};
+
+		document.body.insertBefore(el, null);
+		for (var t in transforms) {
+			if (el.style[t] !== undefined) {
+				el.style[t] = "translate3d(1px,1px,1px)";
+				has3d = window.getComputedStyle(el).getPropertyValue(transforms[t]);
 			}
 		}
-
-		document.body.removeChild(test);
+		document.body.removeChild(el);
 
 		return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
 	}
