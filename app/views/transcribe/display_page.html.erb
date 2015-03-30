@@ -38,7 +38,7 @@
 
 
     <% if @work.transcription_conventions  %>
-        <%= @work.transcription_conventions %>
+        <%= raw(@work.transcription_conventions) %>
     <% end %>
 			<%= render({ :partial => 'shared/markup_help'}) %>
 		  </div><!-- in col 2 -->
