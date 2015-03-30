@@ -1,4 +1,5 @@
 class Deed < ActiveRecord::Base
+
   # constants
   PAGE_TRANSCRIPTION = 'page_trans'
   PAGE_EDIT = 'page_edit'
@@ -7,18 +8,6 @@ class Deed < ActiveRecord::Base
   NOTE_ADDED = 'note_add'
   PAGE_TRANSLATED = 'pg_xlat'
   PAGE_TRANSLATION_EDIT = 'pg_xlat_ed'
-
-  SHORT_PARTIALS =
-    { PAGE_TRANSCRIPTION => 'deed/page_transcription_short.html.erb',
-      PAGE_EDIT => 'deed/page_edit_short.html.erb',
-      PAGE_TRANSLATED => 'deed/page_translated_short.html.erb',
-      PAGE_TRANSLATION_EDIT => 'deed/page_translation_edit_short.html.erb',
-      PAGE_INDEXED => 'deed/page_indexed_short.html.erb',
-      ARTICLE_EDIT => 'deed/article_edit_short.html.erb',
-      NOTE_ADDED => 'deed/note_added_short.html.erb' }
-
-  LONG_PARTIALS =
-    { NOTE_ADDED => 'deed/note_added_long.html.erb' }
 
   # associations
   belongs_to :article
@@ -30,13 +19,4 @@ class Deed < ActiveRecord::Base
 
   validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT ]
 
-  # tested
-  def short_partial
-    SHORT_PARTIALS[self.deed_type]
-  end
-
-  # tested
-  def long_partial
-    LONG_PARTIALS[self.deed_type] || SHORT_PARTIALS[self.deed_type]
-  end
 end
