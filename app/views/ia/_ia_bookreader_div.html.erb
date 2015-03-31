@@ -15,7 +15,7 @@ br = new BookReader();
 br.ui = "embed";
 
 // Override embed navbar markup
-BookReader.prototype.initEmbedNavbar = function() {
+br.initEmbedNavbar = function() {
   $('#BookReader').append(
     '<div id="BRnav">'+
       '<span id="BRtoolbarbuttons">'+
@@ -30,7 +30,7 @@ BookReader.prototype.initEmbedNavbar = function() {
 };
 
 // Prepare one page view
-BookReader.prototype.prepareOnePageView = function() {
+br.prepareOnePageView = function() {
   var startLeaf = this.currentIndex();
 
   $('#BRcontainer')
