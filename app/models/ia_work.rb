@@ -89,7 +89,7 @@ class IaWork < ActiveRecord::Base
   end
 
   def ingest_work(id)
-    
+
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
     server = location['server']
@@ -127,14 +127,11 @@ class IaWork < ActiveRecord::Base
     @pages = sd_doc.search('page')
     @pages.each do |page|
       leaf = IaLeaf.new
-      leaf.leaf_number = page['leafNum']
-      if nil == leaf.leaf_number
-        leaf.leaf_number = page['leafnum'] #bpoc installation downcases this for some reason
-      end
-      leaf.page_number = page.search('pagenumber').text
-      leaf.page_type = page.search('pagetype').text
-      leaf.page_w = page.search('w').text
-      leaf.page_h = page.search('h').text
+      leaf.leaf_number = page.xpath('@leafNum|@leafnum').text
+      leaf.page_number = page.xpath('pageNumber|pagenumber').text
+      leaf.page_type = page.xpath('pageType|pagetype').text
+      leaf.page_w = page.xpath('(cropBox|cropbox)/w').text
+      leaf.page_h = page.xpath('(cropBox|cropbox)/h').text
       self.ia_leaves << leaf
 
       if leaf.page_type == 'Title'
@@ -148,14 +145,14 @@ class IaWork < ActiveRecord::Base
 
     self
   end
-  
+
   def text_from_ocr
     djvu_doc = ocr_doc
     leaf_objects = djvu_doc.search('OBJECT')
     leaf_objects.each do |e|
       leaf_number = leaf_number_from_object(e)
       ia_leaf = self.ia_leaves.find_by_leaf_number(leaf_number)
-      
+
       ia_leaf.ocr_text = ""
 
       e.search('PARAGRAPH').each do |para|
@@ -168,10 +165,10 @@ class IaWork < ActiveRecord::Base
       ia_leaf.save!
     end
   end
- 
+
   def title_from_ocr(location)
     djvu_doc = ocr_doc
-    
+
     leaf_objects = djvu_doc.search('OBJECT')
     leaf_objects.each do |e|
 
@@ -188,7 +185,7 @@ class IaWork < ActiveRecord::Base
       else
         line = e.search('LINE').last
       end
-              
+
       if(line)
         ia_leaf = self.ia_leaves.find_by_leaf_number(leaf_number)
         ia_leaf.page_number = ocr_line_to_text(line).titleize
@@ -197,15 +194,15 @@ class IaWork < ActiveRecord::Base
     end
 
   end
-  
-  
+
+
 private
   def open_doc(url)
     doc = Nokogiri::XML(open(url).read.force_encoding('utf-8'), nil, 'utf-8')
-    
-    doc    
+
+    doc
   end
-  
+
   def leaf_number_from_object(object_element)
 
       page_id = object_element.search('PARAM[@name="PAGE"]').first['value']
@@ -215,9 +212,9 @@ private
       # there may well be an off-by-one error in the source.  I'm seeing page_id 7
       # correspond with leaf_id 6
       page_id.to_i
-    
+
   end
-  
+
   def ocr_line_to_text(line)
     words = []
 
@@ -227,7 +224,7 @@ private
     title.gsub!("<", "&lt;")
     title.gsub!(">", "&gt;")
 
-    title    
+    title
   end
 
   def ocr_doc
@@ -239,7 +236,7 @@ private
     djvu_doc = open_doc(djvu_url)
 
     djvu_doc
-  end 
+  end
 
 
   ARCHIVE_FORMATS = ['zip', 'tar']
