@@ -1,0 +1,12 @@
+.litebox-embed(style="width:550px")
+  h1 Import From Archive.org
+  p To import a book please open this book at www.archive.org then copy the book URL from the browser's address bar and paste it below.
+
+  =form_tag( {:action => 'confirm_import'} ) do
+    =validation_summary @errors
+    table.form
+      tr.big
+        th =label_tag 'detail_url', 'Book URL'
+        td.w100 =text_field_tag 'detail_url', params[:detail_url], :maxlength => 256
+    .toolbar
+      .toolbar_group.aright =button_tag 'Import Work'
