@@ -24,6 +24,12 @@
 -when 'note_add'
   -output += "added a note to #{page} page"
 
+-when 'pg_xlat'
+  -output += "translated #{page} page"
+
+-when 'pg_xlat_ed'
+  -output += "edited the translation of #{page} page"
+
 -if(@collection.nil? && !deed.collection.nil?)
   -collection = link_to(deed.collection.title, { :controller => 'collection', :action => 'show', :collection_id => deed.collection.id })
   -output += " in #{collection} collection"
