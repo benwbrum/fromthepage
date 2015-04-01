@@ -24,7 +24,6 @@ class IaController < ApplicationController
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
   end
 
-
   def title_from_ocr_top
     @ia_work.title_from_ocr(:top)
 
@@ -57,12 +56,6 @@ class IaController < ApplicationController
   end
 
   def import_work
-    # bail if the user bailed
-    if params[:commit] == 'Cancel'
-      redirect_to dashboard_path
-      return
-    end
-
     detail_url = params[:detail_url]
     id = detail_url.split('/').last
 
@@ -70,11 +63,10 @@ class IaController < ApplicationController
     @ia_work = IaWork.new
     @ia_work.user = current_user
     @ia_work.detail_url = detail_url
-
     @ia_work.ingest_work(id)
 
     flash[:notice] = "#{@ia_work.title} has been imported into your staging area"
-    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    ajax_redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 
 end
