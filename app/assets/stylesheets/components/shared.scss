@@ -373,6 +373,65 @@
 
 
 // ---------------------------
+// GLOBAL BUSY INDICATOR
+// ---------------------------
+
+$svg-page-busy: '
+<g fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round">
+<line opacity="1.00" x1="24"   y1="4"    x2="24"   y2="12"/>
+<line opacity="0.20" x1="34"   y1="6.7"  x2="30"   y2="13.6"/>
+<line opacity="0.20" x1="41.4" y1="14"   x2="34.4" y2="18"/>
+<line opacity="0.28" x1="44"   y1="24"   x2="36"   y2="24"/>
+<line opacity="0.36" x1="34.4" y1="30"   x2="41.4" y2="34"/>
+<line opacity="0.44" x1="30"   y1="34.4" x2="34"   y2="41.4"/>
+<line opacity="0.52" x1="24"   y1="36"   x2="24"   y2="44"/>
+<line opacity="0.60" x1="18"   y1="34.4" x2="14"   y2="41.4"/>
+<line opacity="0.68" x1="13.6" y1="30"   x2="6.7"  y2="34"/>
+<line opacity="0.76" x1="12"   y1="24"   x2="4"    y2="24"/>
+<line opacity="0.84" x1="6.7"  y1="14"   x2="13.6" y2="18"/>
+<line opacity="0.92" x1="14"   y1="6.7"  x2="18"   y2="13.6"/>
+</g>';
+
+@keyframes page-busy {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+.page-busy-overlay {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: 9999;
+  position: fixed;
+  visibility: hidden;
+  background: rgba(#111, 0.8);
+  transform: translate3d(0,0,0);
+  transition: opacity 0.3s, visibility 0.3s;
+  .page-busy & {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 1s;
+    &:before { display: block; }
+  }
+  &:before {
+    top: 50%;
+    left: 50%;
+    content: '';
+    width: 48px;
+    height: 48px;
+    display: none;
+    position: absolute;
+    margin: -24px 0 0 -24px;
+    transform-origin: 24px 24px;
+    animation: litebox-busy 1s infinite steps(12);
+    @include background-svg(48, 48, $svg-page-busy);
+  }
+}
+
+
+// ---------------------------
 // PAGINATION
 // ---------------------------
 
