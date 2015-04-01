@@ -3,7 +3,7 @@
 // ---------------------------
 
 
-$svg-litebox-loader: '
+$svg-litebox-busy: '
 <g fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round">
 <line opacity="1.00" x1="24"   y1="4"    x2="24"   y2="12"/>
 <line opacity="0.20" x1="34"   y1="6.7"  x2="30"   y2="13.6"/>
@@ -20,7 +20,7 @@ $svg-litebox-loader: '
 </g>';
 $svg-litebox-error: '<path fill="#FC3" d="M46.61,32.66L31.03,4.78C29.33,1.74,26.76,0,24,0c-2.77,0-5.33,1.74-7.03,4.78L1.38,32.66c-1.69,3.01-1.83,6.12-0.42,8.54C2.39,43.62,5.18,45,8.65,45h30.71c3.46,0,6.27-1.38,7.69-3.8C48.46,38.78,48.3,35.67,46.61,32.66z"/><path fill="#000" d="M27,39h-6v-6h6V39z M27,30h-6l-1-18h8L27,30z"/>';
 
-@keyframes loader {
+@keyframes litebox-busy {
 	0%		{ transform: rotate(0deg); }
 	100%	{ transform: rotate(360deg); }
 }
@@ -31,7 +31,7 @@ $svg-litebox-error: '<path fill="#FC3" d="M46.61,32.66L31.03,4.78C29.33,1.74,26.
 	right: 0;
 	bottom: 0;
 	opacity: 0;
-	z-index: 9999;
+	z-index: 9995;
 	overflow: auto; // STRANGE: Repaint bugs in Chrome OSX
 	position: fixed;
 	visibility: hidden;
@@ -64,8 +64,8 @@ $svg-litebox-error: '<path fill="#FC3" d="M46.61,32.66L31.03,4.78C29.33,1.74,26.
 	&-busy:before {
 		opacity: 1;
 		transform-origin: 24px 24px;
-		animation: loader 1s infinite steps(12);
-		@include background-svg(48, 48, $svg-litebox-loader);
+		animation: litebox-busy 1s infinite steps(12);
+		@include background-svg(48, 48, $svg-litebox-busy);
 	}
 	&-error:before {
 		opacity: 1;

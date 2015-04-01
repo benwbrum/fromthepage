@@ -18,12 +18,12 @@
 		</p>
 		<h3>Publish to Editors</h3>
 		<p>
-			<%= form_tag :action => :convert do  %>
+			<%= form_tag({ :action => :convert }, :'data-page-busy' => true) do  %>
 				<%= label_tag :use_ocr, 'Use OCR for page contents?' %>
 				<%= check_box_tag :use_ocr %>
 				<%= hidden_field_tag :ia_work_id, @ia_work.id %>
 				<br/>
-				<%= submit_tag "Publish" %>			
+				<%= submit_tag "Publish" %>
 			<% end %>
 		</p>
 		<h3>

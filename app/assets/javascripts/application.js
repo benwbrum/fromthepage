@@ -100,4 +100,7 @@ $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
   $('[data-litebox]').litebox();
+  $(document)
+    .ajaxComplete(function() { $('html').removeClass('page-busy'); })
+    .on('submit', '[data-page-busy]', function() { $('html').addClass('page-busy'); });
 });
