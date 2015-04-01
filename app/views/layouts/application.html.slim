@@ -67,25 +67,22 @@ body
             span Sign In
             =svg_symbol '#header-user', class: 'icon'
 
-  -if (@work && @work.title.present?) || (@collection && @collection.title.present?)
-    #work-logo.outside-column
-      h1.work-logo
-        -if @collection
-          =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
-        -if @collection && @work
-          | &mdash;
-        -if @work && @work.title
-          =link_to @work.title, { :controller => 'display', :action => 'read_work', :work_id => @work.id }
-
   =(yield :content_above).force_encoding 'UTF-8'
 
   main.wrapper
+    -if @work && @work.title.present?
+      -if @collection && @collection.title.present?
+        h4.nomargin =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id }
+      h1 =@work.title
+    -elsif @collection && @collection.title.present?
+      h1 =@collection.title
+
     =yield.force_encoding 'UTF-8'
 
-  =(yield :content_below).force_encoding 'UTF-8'
+    -if @collection && @collection.footer_block
+      .outside-column ==@collection.footer_block
 
-  -if @collection && @collection.footer_block
-    .outside-column ==@collection.footer_block
+  =(yield :content_below).force_encoding 'UTF-8'
 
   footer.footer
     .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
