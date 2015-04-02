@@ -15,8 +15,11 @@ class DashboardController < ApplicationController
     @notes = current_user.notes
     @works = current_user.owner_works
     @ia_works = current_user.ia_works
+
+    logger.debug("DEBUG: #{current_user.inspect}")
   end
 
+  # Public Dashboard
   def index
     @collections = Collection.all
 
@@ -25,12 +28,16 @@ class DashboardController < ApplicationController
     #@recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
   end
 
+  # Owner Dashboard - list of works
   def owner
-    logger.debug("DEBUG: #{current_user.inspect}")
   end
 
+  # Owner Dashboard - staging area
   def staging
-    logger.debug("DEBUG: #{current_user.inspect}")
+  end
+
+  # Editor Dashboard
+  def editor
   end
 
 end

@@ -59,7 +59,9 @@ body
             dd
               =link_to 'Admin Dashboard', admin_path if current_user.admin
               =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
-              =link_to 'Edit Profile', edit_user_registration_path
+              =link_to 'Editor Dashboard', dashboard_editor_path
+              hr
+              =link_to 'Edit Your Profile', edit_user_registration_path
               hr
               =link_to 'Sign Out', destroy_user_session_path, method: :delete
         -else
