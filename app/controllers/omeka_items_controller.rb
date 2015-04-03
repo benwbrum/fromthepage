@@ -62,7 +62,7 @@ class OmekaItemsController < ApplicationController
     @omeka_item = OmekaItem.find(params[:id])
     @omeka_item.import
     respond_to do |format|
-      format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully imported.' }
+      format.html { redirect_to :controller => 'work', :action => 'edit', :work_id => @omeka_item.work.id, notice: 'Omeka item was successfully imported.' }
     end
   end
 

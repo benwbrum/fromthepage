@@ -17,23 +17,47 @@
 						(<%= omeka_collection.data.items.count %> items)
 						<%= button_to("Import Entire Collection", { :action => :import_omeka_collection, :omeka_collection_id => omeka_collection.data.id } ) %>
 						<% if omeka_collection.data.items.count > 0  %>
-							<ul>
-								<% omeka_collection.items.each do |item| %>
-									<li>
-										<%= item.dublin_core.title %>
-										<br />
-										<%= item.dublin_core.description %>
-										<br />
-										<%= item.data.id %>
-										<br />
-										<%= item.data.files.url %>
-										<br />
-										<% if item.data.item_type && item.data.item_type.name == 'Text'%>
-											<%= button_to("Import Item", new_omeka_item_path(:omeka_site_id => @omeka_site.id, :client_item_id => item.data.id) ) %>
-										<% end %>
-									</li>
-								<% end %>
-							</ul>
+							<table>
+								<thead>
+									<th>
+										Title
+									</th>
+									<th>
+										Description
+									</th>
+									<th>
+										ID
+									</th>
+									<th>
+										Item Type
+									</th>
+									<th>
+										Action
+									</th>
+								</thead>
+								<tdata>
+									<% omeka_collection.items.each do |item| %>
+										<tr>
+											<td>
+												<%= item.dublin_core.title %>
+											</td>
+											<tr>
+												<%= item.dublin_core.description %>											
+											</tr>
+											<td>
+												<%= item.data.id %>											
+											</td>
+											<td>
+												<%= item.data.item_type.blank? ? "blank" : item.data.item_type.name %>											
+											</td>
+											<td>
+												<%= button_to("Import Item", new_omeka_item_path(:omeka_site_id => @omeka_site.id, :client_item_id => item.data.id) ) %>											
+											</td>
+										</tr>
+									<% end %>
+									
+								</tdata>
+							</table>
 						<% end %>
 					</li>
 				<% end %>

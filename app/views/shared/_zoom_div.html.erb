@@ -1,5 +1,9 @@
 <div class="viewer" style="height: 811px;">
-  <%= image_tag file_to_url(@page.base_image) %>
+	<% if defined? fullsize_url %>
+		<%= image_tag(fullsize_url) %>
+	<% else %>
+		<%= image_tag file_to_url(@page.base_image) %>
+	<% end %>
 </div>
 
 <script>
