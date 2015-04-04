@@ -98,7 +98,7 @@
        <%= link_to(version.article.title,
                   { :controller => 'article_version',
                     :action => 'list',
-                    :page_id => version.article.id }) %>
+                    :article_id => version.article.id }) %>
      </td>
      <td class="revision" width="10%"><%= version.version %></td>
      <td class="revision" width="25%"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p") %></td>
