@@ -47,35 +47,35 @@ module ApplicationHelper
   def deeds_for(options={})
     limit = options[:limit] || 20
 
-    conditions = nil;
+    condition = [String.new]
+
     if options[:types]
       types = options[:types]
       types = types.map { |t| "'#{t}'"}
-      conditions = "deed_type IN (#{types.join(',')})"
+      condition[0] = "deed_type IN (#{types.join(',')})"
     end
 
     if options[:user_id]
-      user = " user_id = #{options[:user_id]} "
-      conditions = conditions ? conditions + " AND " + user : user
+      condition[0] << " AND " unless condition[0].length == 0
+      condition[0] << "user_id = ?"
+      condition << options[:user_id]
+    end
+
+    if options[:not_user_id]
+      condition[0] << " AND " unless condition[0].length == 0
+      condition[0] << "user_id != ?"
+      condition << options[:not_user_id]
     end
 
     if options[:collection]
-      deeds = @collection.deeds.where(conditions).order('created_at DESC').limit(limit)
+      deeds = @collection.deeds.where(condition).order('created_at DESC').limit(limit)
     else
-      restrict = " collections.restricted = 0 "
-      conditions = conditions ? conditions + " AND " + restrict : restrict
-      logger.debug "in application helper"
-      logger.debug "limit: #{limit}"
-      deeds = Deed.includes(:collection).where(conditions).order('created_at DESC').limit(limit).references(:collection)
+      condition[0] << " AND " unless condition[0].length == 0
+      condition[0] << "collections.restricted = 0"
+      deeds = Deed.includes(:collection).where(condition).order('created_at DESC').limit(limit).references(:collection)
     end
 
-    render({ :partial => 'deed/deeds',
-             :locals =>
-              { :limit => limit,
-                :deeds => deeds,
-                :options => options
-              }
-          })
+    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
   end
 
   def time_ago(time)

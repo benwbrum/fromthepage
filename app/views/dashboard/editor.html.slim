@@ -27,4 +27,5 @@ h1 Editor Dashboard
             =="#{revision_link} of &ldquo;#{article_link}&rdquo; article in the &ldquo;#{collection_link}&rdquo; collection."
 
   aside.sidecol
-    h3 Owner Activity
+    h3 Activity Stream
+    =deeds_for({ :not_user_id => current_user.id, :limit => 10 })
