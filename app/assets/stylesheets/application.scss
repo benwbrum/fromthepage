@@ -258,6 +258,7 @@ $footerBg:									$themeDark;
 			vertical-align: top;
 		}
 		&_time {
+			padding-left: 0;
 			line-height: 1.6;
 			text-align: right;
 			white-space: nowrap;
@@ -320,6 +321,15 @@ $footerBg:									$themeDark;
 		border-left: 1px solid rgba(#000, 0.1);
 		&:first-child { border: 0; }
 	}
+}
+
+
+// ---------------------------
+// EDITOR SECTION
+// ---------------------------
+
+.editor-activity {
+	.activity-log_record_time { min-width: 90px; }
 }
 
 

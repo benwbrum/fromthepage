@@ -38,6 +38,7 @@ class DashboardController < ApplicationController
 
   # Editor Dashboard
   def editor
+    @user = current_user
   end
 
 end
