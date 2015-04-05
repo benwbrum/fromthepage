@@ -83,23 +83,23 @@ module ApplicationHelper
     delta_minutes = (delta_seconds / 60).floor
     delta_hours = (delta_minutes / 60).floor
     delta_days = (delta_hours / 24).floor
+    delta_months = (delta_days / 30).floor
+    delta_years = (delta_days / 365).floor
 
-    if delta_days > 1
-      "#{delta_days} days ago"
-    elsif delta_days == 1
-      "1 day ago"
-    elsif delta_hours > 1
-      "#{delta_hours} hours ago"
-    elsif delta_hours == 1
-      "1 hour ago"
-    elsif delta_minutes > 1
-      "#{delta_minutes} minutes ago"
-    elsif delta_minutes == 1
-      "1 minute ago"
-    elsif delta_seconds > 1
-      "#{delta_seconds} seconds ago"
+    if delta_years >= 1
+      "#{pluralize(delta_years, 'year')} ago"
+    elsif delta_months >= 1
+      "#{pluralize(delta_months, 'month')} ago"
+    elsif delta_days >= 1
+      "#{pluralize(delta_days, 'day')} ago"
+    elsif delta_hours >= 1
+      "#{pluralize(delta_hours, 'hour')} ago"
+    elsif delta_minutes >= 1
+      "#{pluralize(delta_minutes, 'minute')} ago"
+    elsif delta_seconds >= 1
+      "#{pluralize(delta_seconds, 'second')} ago"
     else
-      "1 second ago"
+      "Right now"
     end
   end
 
