@@ -78,31 +78,6 @@ module ApplicationHelper
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
   end
 
-  def time_ago(time)
-    delta_seconds = (Time.new - time).floor
-    delta_minutes = (delta_seconds / 60).floor
-    delta_hours = (delta_minutes / 60).floor
-    delta_days = (delta_hours / 24).floor
-    delta_months = (delta_days / 30).floor
-    delta_years = (delta_days / 365).floor
-
-    if delta_years >= 1
-      "#{pluralize(delta_years, 'year')} ago"
-    elsif delta_months >= 1
-      "#{pluralize(delta_months, 'month')} ago"
-    elsif delta_days >= 1
-      "#{pluralize(delta_days, 'day')} ago"
-    elsif delta_hours >= 1
-      "#{pluralize(delta_hours, 'hour')} ago"
-    elsif delta_minutes >= 1
-      "#{pluralize(delta_minutes, 'minute')} ago"
-    elsif delta_seconds >= 1
-      "#{pluralize(delta_seconds, 'second')} ago"
-    else
-      "Right now"
-    end
-  end
-
   def validation_summary(errors)
     if errors.is_a?(Enumerable) && errors.any?
       render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })

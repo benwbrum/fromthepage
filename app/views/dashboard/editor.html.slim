@@ -10,7 +10,7 @@ h1 Editor Dashboard
         -work_link = link_to p.page.work.title, { :controller => 'work', :action => 'versions', :work_id => p.page.work.id }
         .activity-log_record
           =time_tag(p.created_on, class: 'activity-log_record_time')
-            =time_ago(p.created_on)
+            =time_ago_in_words(p.created_on)
           .activity-log_record_text
             =="#{revision_link} of &ldquo;#{page_link}&rdquo; page in the &ldquo;#{work_link}&rdquo; work."
 
@@ -22,7 +22,7 @@ h1 Editor Dashboard
         -collection_link = link_to a.article.collection.title, { :controller => 'article', :action => 'list', :collection_id => a.article.collection.id }
         .activity-log_record
           =time_tag(a.created_on, class: 'activity-log_record_time')
-            =time_ago(a.created_on)
+            =time_ago_in_words(a.created_on)
           .activity-log_record_text
             =="#{revision_link} of &ldquo;#{article_link}&rdquo; article in the &ldquo;#{collection_link}&rdquo; collection."
 
