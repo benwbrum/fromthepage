@@ -143,6 +143,17 @@
     &:before { display: none; }
     &:after { width: 100%; }
   }
+  a {
+    line-height: 1;
+    margin: 0 -0.5em;
+    padding: 0.5em 1em;
+    border-radius: 1em;
+    color: $bodyFgLight;
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid $borderColor;
+    &:hover { color: $bodyFg; }
+  }
 }
 
 .headline {
