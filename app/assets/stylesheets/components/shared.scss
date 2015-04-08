@@ -81,6 +81,9 @@
 // APPLICATION SHARED STYLES
 // ---------------------------
 
+.fgfaded { color: $bodyFgFaded; }
+.fglight { color: $bodyFgLight; }
+
 .toolbar {
   width: 100%;
   display: table;
@@ -112,6 +115,21 @@
       padding: 0;
     }
   }
+}
+
+.label {
+  color: #FFF;
+  padding: 0 0.5em;
+  line-height: 1.75;
+  border-radius: 3px;
+  white-space: nowrap;
+  display: inline-block;
+  text-decoration: none;
+  background: rgba(#210, 0.3);
+}
+a.label:hover {
+  color: #FFF;
+  background: rgba(#210, 0.5);
 }
 
 .legend {
@@ -316,9 +334,10 @@
   width: 100%;
   line-height: 1.2;
   border-collapse: separate;
+  border-bottom: 1px solid rgba(#000, 0.08);
   th {
-    padding: 10px;
     font-weight: bold;
+    padding: 15px 10px;
     white-space: nowrap;
     background: rgba(#000, 0.1);
   }
@@ -326,7 +345,7 @@
     padding: 8px 10px;
     word-wrap: break-word;
     word-break: break-word;
-    border-bottom: 1px solid rgba(#000, 0.1);
+    border-top: 1px solid rgba(#000, 0.08);
     //max-width: 50px;
     //overflow: hidden;
     //text-overflow: ellipsis;
@@ -338,8 +357,10 @@
       //text-overflow: none;
     }
   }
+  thead + tbody tr:first-child td { border: 0; }
   &.striped tr:nth-child(even) {
-    background: rgba(#000, 0.03);
+    background-clip: padding-box;
+    background-color: rgba(#000, 0.03);
   }
 }
 

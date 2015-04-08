@@ -328,9 +328,34 @@ $footerBg:									$themeDark;
 // EDITOR SECTION
 // ---------------------------
 
-.editor-activity {
-	.activity-log_record_time { min-width: 90px; }
+.editor-activity .time-ago {
+	min-width: 120px;
+	color: $bodyFgLight;
+	white-space: nowrap;
+	font-size: $fontSizeSmall;
 }
+
+.datalist {
+	padding: 0;
+	width: 100%;
+	display: table;
+	list-style: none;
+	margin: 0 0 $gapSize 0;
+	border-collapse: separate;
+	border-top: 1px solid rgba(#000, 0.08);
+	&_row {
+		display: table-row;
+		background-clip: padding-box;
+		&:nth-child(even) { background-color: rgba(#000, 0.03); }
+	}
+	&_box {
+		padding: 10px 12px;
+		display: table-cell;
+		vertical-align: middle;
+		border-bottom: 1px solid rgba(#000, 0.08);
+	}
+}
+
 
 
 

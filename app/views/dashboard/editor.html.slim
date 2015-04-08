@@ -3,29 +3,38 @@ h1 Editor Dashboard
 .columns
   article.maincol.editor-activity
     h3 Your Recent Page Edits
-    .activity-log
+    ul.datalist
       -@user.page_versions.limit(10).each do |p|
         -revision_link = link_to "Revision #{p.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => p.id }
         -page_link = link_to p.page.title, { :controller => 'page_version', :action => 'list', :page_id => p.page.id }
         -work_link = link_to p.page.work.title, { :controller => 'work', :action => 'versions', :work_id => p.page.work.id }
-        .activity-log_record
-          =time_tag(p.created_on, class: 'activity-log_record_time')
-            =time_ago_in_words(p.created_on)
-          .activity-log_record_text
-            =="#{revision_link} of &ldquo;#{page_link}&rdquo; page in the &ldquo;#{work_link}&rdquo; work."
+        li.datalist_row
+          span.datalist_box.w100
+            =="You've edited page &ldquo;#{page_link}&rdquo; in the &ldquo;#{work_link}&rdquo; work"
+          span.datalist_box
+            =link_to "Revision #{p.page_version}",
+              { :controller => 'page_version', :action => 'show', :page_version_id => p.id },
+              class: 'label'
+          span.datalist_box.time-ago
+            =time_tag p.created_on
+              ="#{time_ago_in_words p.created_on} ago"
 
     h3 Your Recent Article Edits
-    .activity-log
+    ul.datalist
       -@user.article_versions.limit(10).joins(:article).each do |a|
-        -revision_link = link_to "Revision #{a.version}", { :controller => 'article_version', :action => 'show', :article_version_id => a.id }
         -article_link = link_to a.article.title, { :controller => 'article_version', :action => 'list', :article_id => a.article.id }
         -collection_link = link_to a.article.collection.title, { :controller => 'article', :action => 'list', :collection_id => a.article.collection.id }
-        .activity-log_record
-          =time_tag(a.created_on, class: 'activity-log_record_time')
-            =time_ago_in_words(a.created_on)
-          .activity-log_record_text
-            =="#{revision_link} of &ldquo;#{article_link}&rdquo; article in the &ldquo;#{collection_link}&rdquo; collection."
+        li.datalist_row
+          span.datalist_box.w100
+            =="You've edited &ldquo;#{article_link}&rdquo; article in the &ldquo;#{collection_link}&rdquo; collection"
+          span.datalist_box
+            =link_to "Revision #{a.version}",
+              { :controller => 'article_version', :action => 'show', :article_version_id => a.id },
+              class: 'label'
+          span.datalist_box.time-ago
+            =time_tag a.created_on
+              ="#{time_ago_in_words a.created_on} ago"
 
   aside.sidecol
     h3 Activity Stream
-    =deeds_for({ :not_user_id => current_user.id, :limit => 10 })
+    =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
