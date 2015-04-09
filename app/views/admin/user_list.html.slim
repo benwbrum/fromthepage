@@ -1,4 +1,4 @@
-=render({ :partial => 'tabs', :locals => { :selected => 2 } })
+=render(:partial => 'header', :locals => { :selected => 2 })
 
 //p =link_to 'Anonymous Sessions', { :controller => 'admin', :action => 'session_list' }
 table.admin-grid.datagrid.striped
@@ -28,4 +28,4 @@ table.admin-grid.datagrid.striped
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }
             =link_to 'Sessions', { :controller => 'admin', :action => 'session_list', :user_id => u.id }
 
-=render({ :partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true } })
+=render(:partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true })

@@ -1,4 +1,4 @@
-=render({ :partial => 'tabs', :locals => { :selected => 1 } })
+=render(:partial => 'header', :locals => { :selected => 1 })
 
 section.admin-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
