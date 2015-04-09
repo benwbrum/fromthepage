@@ -90,6 +90,7 @@
   padding: $gapSize;
   max-width: $widthMax;
   box-sizing: border-box;
+  padding-bottom: $gapSize * 2;
 }
 
 .columns {
