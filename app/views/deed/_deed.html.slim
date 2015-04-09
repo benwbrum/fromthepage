@@ -32,7 +32,7 @@
 
 -if(@collection.nil? && !deed.collection.nil?)
   -collection = link_to(deed.collection.title, { :controller => 'collection', :action => 'show', :collection_id => deed.collection.id })
-  -output += " in #{collection} collection"
+  -output += " in the #{collection} collection"
 
 -if(long_view && deed.deed_type == 'note_add')
   -output += ", saying &ldquo;#{deed.note.title}&rdquo;"

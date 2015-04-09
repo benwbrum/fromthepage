@@ -1,0 +1,24 @@
+=render({ :partial => 'editor_header', :locals => { :selected => 1 } })
+
+.columns
+  article.maincol
+    ul.collections
+      -@collections.each do |c|
+        -if !c.restricted || (user_signed_in? && current_user.like_owner?(c))
+          -snippet = truncate(strip_tags(c.intro_block), length: 250, separator: ' ') || ''
+          -count_works = pluralize c.works.size, 'work'
+          -count_subjects = pluralize c.categories.size, 'subject group'
+          -owner_link = link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id }
+          li.collection
+            h5.collection_title
+              =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
+            ul
+              -c.deeds.limit(5).each do |d|
+                -d.collection = nil
+                li
+                  .small ="#{time_ago_in_words d.created_at} ago"
+                  =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true,  })
+
+  aside.sidecol
+    h3 Activity Stream
+    =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
