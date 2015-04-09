@@ -34,6 +34,20 @@
             =time_tag a.created_on
               ="#{time_ago_in_words a.created_on} ago"
 
+    h3 Your Recent Notes
+    table.datagrid.striped
+      -@user.notes.limit(10).each do |n|
+        tr
+          td.w100
+            =truncate strip_tags(n.title), :length => 150, separator: ' '
+          td
+            =link_to "View Page",
+              { :controller => 'display', :action => 'display_page', :page_id => n.page_id, :anchor => "comment_#{n.id}" },
+              class: 'label'
+          td.time-ago
+            =time_tag n.created_at
+              ="#{time_ago_in_words n.created_at} ago"
+
   aside.sidecol
     h3 Activity Stream
-    =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
+    =deeds_for({ :not_user_id => current_user.id, :limit => 20 })
