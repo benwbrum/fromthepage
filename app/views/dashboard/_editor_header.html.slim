@@ -1,0 +1,20 @@
+-tabs = [{\
+  :name => 'Watchlist',
+  :selected => 1,
+  :options => {\
+    :action => 'watchlist',
+  },
+},{\
+  :name => 'Activity',
+  :selected => 2,
+  :options => {\
+    :action => 'editor',
+  },
+}]
+
+h1 Editor Dashboard
+
+.tabs
+  -for tab in tabs
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
+      a.active =tab[:name]

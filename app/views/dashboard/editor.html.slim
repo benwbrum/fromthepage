@@ -1,37 +1,36 @@
-h1 Editor Dashboard
+=render({ :partial => 'editor_header', :locals => { :selected => 2 } })
 
 .columns
   article.maincol.editor-activity
     h3 Your Recent Page Edits
-    ul.datalist
+    table.datagrid.striped
       -@user.page_versions.limit(10).each do |p|
-        -revision_link = link_to "Revision #{p.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => p.id }
         -page_link = link_to p.page.title, { :controller => 'page_version', :action => 'list', :page_id => p.page.id }
         -work_link = link_to p.page.work.title, { :controller => 'work', :action => 'versions', :work_id => p.page.work.id }
-        li.datalist_row
-          span.datalist_box.w100
-            =="You've edited page &ldquo;#{page_link}&rdquo; in the &ldquo;#{work_link}&rdquo; work"
-          span.datalist_box
+        tr
+          td.w100
+            =="#{page_link} page in the #{work_link} work"
+          td
             =link_to "Revision #{p.page_version}",
               { :controller => 'page_version', :action => 'show', :page_version_id => p.id },
               class: 'label'
-          span.datalist_box.time-ago
+          td.time-ago
             =time_tag p.created_on
               ="#{time_ago_in_words p.created_on} ago"
 
     h3 Your Recent Article Edits
-    ul.datalist
+    table.datagrid.striped
       -@user.article_versions.limit(10).joins(:article).each do |a|
         -article_link = link_to a.article.title, { :controller => 'article_version', :action => 'list', :article_id => a.article.id }
         -collection_link = link_to a.article.collection.title, { :controller => 'article', :action => 'list', :collection_id => a.article.collection.id }
-        li.datalist_row
-          span.datalist_box.w100
-            =="You've edited &ldquo;#{article_link}&rdquo; article in the &ldquo;#{collection_link}&rdquo; collection"
-          span.datalist_box
+        tr
+          td.w100
+            =="#{article_link} article in the #{collection_link} collection"
+          td
             =link_to "Revision #{a.version}",
               { :controller => 'article_version', :action => 'show', :article_version_id => a.id },
               class: 'label'
-          span.datalist_box.time-ago
+          td.time-ago
             =time_tag a.created_on
               ="#{time_ago_in_words a.created_on} ago"
 
