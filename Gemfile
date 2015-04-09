@@ -55,3 +55,6 @@ gem 'autoprefixer-rails'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'
+
+# Gravatar Image Tag
+gem 'gravatar_image_tag'
