@@ -39,8 +39,7 @@ class DashboardController < ApplicationController
   # Editor Dashboard - watchlist
   def watchlist
     @user = current_user
-    @collections = Collection.limit(5).select { |c| c.deeds.limit(5) }
-    #@deeds = @collection.deeds.where('user_id != ?', current_user).order('created_at DESC').limit(5)
+    @collections = Collection.limit(5)
   end
 
   # Editor Dashboard - activity

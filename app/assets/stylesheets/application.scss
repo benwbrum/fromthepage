@@ -271,6 +271,46 @@ $footerBg:									$themeDark;
 	}
 }
 
+.deed-bubble {
+	padding: 0 0 0 55px;
+	width: 100%;
+	box-sizing: border-box;
+	display: inline-block;
+	margin: $gapSize / 2 0;
+	.userpic {
+		float: left;
+		font-size: 40px;
+		margin-left: -55px;
+	}
+	&_content {
+		border-radius: 4px;
+		position: relative;
+		padding: $gapSize * 0.75;
+		box-shadow: 0 0 1px rgba(#000, 0.25);
+		background-color: mix(#FFF, $bodyBg, 35%);
+		&:before, &:after {
+			top: 12px;
+			left: -8px;
+			content: '';
+			font-size: 8px;
+			position: absolute;
+			border: 8px solid transparent;
+			border-left-width: 0;
+			border-right-color: mix(#FFF, $bodyBg, 35%);
+		}
+		&:before {
+			left: -9px;
+			border-right-color: rgba(#000, 0.12);
+		}
+		time {
+			display: block;
+			color: $bodyFgLight;
+			margin-bottom: 0.2em;
+			font-size: $fontSizeSmall;
+		}
+	}
+}
+
 
 // ---------------------------
 // ADMIN SECTION
@@ -333,27 +373,6 @@ $footerBg:									$themeDark;
 	color: $bodyFgLight;
 	white-space: nowrap;
 	font-size: $fontSizeSmall;
-}
-
-.datalist {
-	padding: 0;
-	width: 100%;
-	display: table;
-	list-style: none;
-	margin: 0 0 $gapSize 0;
-	border-collapse: separate;
-	border-top: 1px solid rgba(#000, 0.08);
-	&_row {
-		display: table-row;
-		background-clip: padding-box;
-		&:nth-child(even) { background-color: rgba(#000, 0.03); }
-	}
-	&_box {
-		padding: 10px 12px;
-		display: table-cell;
-		vertical-align: middle;
-		border-bottom: 1px solid rgba(#000, 0.08);
-	}
 }
 
 
