@@ -15,7 +15,7 @@ Fromthepage::Application.routes.draw do
   get "/dashboard" => "dashboard#index"
   get "/dashboard/owner" => "dashboard#owner"
   get "/dashboard/staging" => "dashboard#staging"
-  get "/dashboard/editor" => "dashboard#editor"
+  get "/dashboard/watchlist" => "dashboard#watchlist"
 
   get 'ZenasMatthews' => 'collection#show', :collection_id => 7
   get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
