@@ -1,16 +1,15 @@
 h1 Collections
 .columns
   article.maincol
-    ul.collections
+    .collections
       -@collections.each do |c|
         -if !c.restricted || (user_signed_in? && current_user.like_owner?(c))
-          -snippet = truncate(strip_tags(c.intro_block), length: 250, separator: ' ') || ''
+          -snippet = truncate(strip_tags(c.intro_block), length: 400, separator: ' ') || ''
           -count_works = pluralize c.works.size, 'work'
           -count_subjects = pluralize c.categories.size, 'subject group'
           -owner_link = link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id }
-          li.collection
-            h5.collection_title
-              =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
+          .collection
+            h4.collection_title =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
             -unless snippet.empty?
               p.collection_snippet =snippet
             .collection_summary
