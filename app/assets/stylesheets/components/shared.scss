@@ -356,6 +356,8 @@ a.label:hover {
       word-break: normal;
       //text-overflow: none;
     }
+    &.toleft { padding-left: 0; }
+    &.toright { padding-right: 0; }
   }
   thead + tbody tr:first-child td { border: 0; }
   &.striped tr:nth-child(even) {
@@ -410,6 +412,7 @@ a.label:hover {
   overflow: hidden;
   border-radius: 50%;
   display: inline-block;
+  vertical-align: middle;
   background-size: 0.9em 0.9em;
   background-repeat: no-repeat;
   background-color: rgba(#200, 0.2);
@@ -420,6 +423,7 @@ a.label:hover {
     height: 100%;
     display: block;
   }
+  &.userpic-small { font-size: 30px; }
 }
 
 

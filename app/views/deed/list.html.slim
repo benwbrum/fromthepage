@@ -1,10 +1,14 @@
 h1 Activity Stream
-section.activity-log
+table.datagrid.striped
   -@deeds.each do |d|
-    .activity-log_record
-      =time_tag(d.created_at, class: 'activity-log_record_time')
-        ="#{time_ago_in_words d.created_at} ago"
-      .activity-log_record_text
+    tr
+      td
+        =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic userpic-small')
+          =gravatar_image_tag d.user.email, :alt => d.user.display_name
+      td.w100.toleft
         =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+      td.nowrap
+        =time_tag(d.created_at, class: 'small fglight')
+          ="#{time_ago_in_words d.created_at} ago"
 
 =render(:partial => 'shared/pagination', :locals => { :model => @deeds, :entries_info => true })
