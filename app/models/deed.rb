@@ -19,4 +19,23 @@ class Deed < ActiveRecord::Base
 
   validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT ]
 
+  def deed_type_name
+    return case self.deed_type
+    when PAGE_TRANSCRIPTION
+      'Page Transcribed'
+    when PAGE_EDIT
+      'Page Edited'
+    when PAGE_INDEXED
+      'Page Indexed'
+    when ARTICLE_EDIT
+      'Article Edited'
+    when NOTE_ADDED
+      'Note Added'
+    when PAGE_TRANSLATED
+      'Page Translated'
+    when PAGE_TRANSLATION_EDIT
+      'Translation Edited'
+    end
+  end
+
 end
