@@ -9,12 +9,13 @@
 		<h3>Page Titles</h3>
 		<p>
 			<%= button_to('Retitle from top of page OCR',
-						  { :action => 'title_from_ocr_top',
-							:ia_work_id => @ia_work.id })%>
+				{ :action => 'title_from_ocr_top',
+					:ia_work_id => @ia_work.id },
+					:form => { 'data-page-busy' => true }) %>
 			<%= button_to('Retitle from bottom of page OCR',
-						  { :action => 'title_from_ocr_bottom',
-							:ia_work_id => @ia_work.id })%>
-
+				{ :action => 'title_from_ocr_bottom',
+					:ia_work_id => @ia_work.id },
+					:form => { 'data-page-busy' => true }) %>
 		</p>
 		<h3>Publish to Editors</h3>
 		<p>
