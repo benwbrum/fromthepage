@@ -87,10 +87,9 @@
 .wrapper {
   margin: 0 auto;
   text-align: left;
-  padding: $gapSize;
   max-width: $widthMax;
   box-sizing: border-box;
-  padding-bottom: $gapSize * 2;
+  padding: $gapSize * 1.5 $gapSize;
 }
 
 .columns {
