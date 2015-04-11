@@ -7,8 +7,8 @@ table.admin-grid.datagrid.striped
       th Login
       th Owner
       th.w100 Name &amp; Location
-      th Last Sign In
       th Registered
+      th Last Sign In
       th Actions
   tbody
     -@users.each do |u|
@@ -21,8 +21,8 @@ table.admin-grid.datagrid.striped
           div =u.display_name
           -if u.location
             small(data-prefix='From ') =u.location
-        td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap =u.created_at.strftime('%b %d, %Y') if u.created_at
+        td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap
           .instack
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }
