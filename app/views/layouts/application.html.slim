@@ -45,7 +45,7 @@ body
         =link_to root_path, class: 'logo'
           =svg_symbol '#logo'
       .toolbar_group
-        =link_to 'Home', root_path, class: 'header_link'
+        =link_to 'Home', (user_signed_in? ? dashboard_watchlist_path : root_path), class: 'header_link'
         =link_to 'Collections', dashboard_path, class: 'header_link'
         =link_to 'FAQ', { :controller => 'static', :action => 'faq' }, class: 'header_link'
 

@@ -39,7 +39,13 @@ class DashboardController < ApplicationController
   # Editor Dashboard - watchlist
   def watchlist
     @user = current_user
-    @collections = Collection.limit(5)
+    collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
+    @collections = Collection.where(:id => collection_ids)
+
+    # If user has no activity yet, show first 5 collections
+    if @collections.empty?
+      @collections = Collection.limit(5)
+    end
   end
 
   # Editor Dashboard - activity
