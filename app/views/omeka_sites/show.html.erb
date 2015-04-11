@@ -15,49 +15,21 @@
 					<li>
 						<%= omeka_collection.dublin_core.title %>
 						(<%= omeka_collection.data.items.count %> items)
-						<%= button_to("Import Entire Collection", { :action => :import_omeka_collection, :omeka_collection_id => omeka_collection.data.id } ) %>
+						<%= button_to("Import Entire Collection", { :action => :import_omeka_collection, :omeka_collection_id => omeka_collection.data.id } ) if false %>
 						<% if omeka_collection.data.items.count > 0  %>
-							<table>
-								<thead>
-									<th>
-										Title
-									</th>
-									<th>
-										Description
-									</th>
-									<th>
-										ID
-									</th>
-									<th>
-										Item Type
-									</th>
-									<th>
-										Action
-									</th>
-								</thead>
-								<tdata>
-									<% omeka_collection.items.each do |item| %>
-										<tr>
-											<td>
-												<%= item.dublin_core.title %>
-											</td>
-											<tr>
-												<%= item.dublin_core.description %>											
-											</tr>
-											<td>
-												<%= item.data.id %>											
-											</td>
-											<td>
-												<%= item.data.item_type.blank? ? "blank" : item.data.item_type.name %>											
-											</td>
-											<td>
-												<%= button_to("Import Item", new_omeka_item_path(:omeka_site_id => @omeka_site.id, :client_item_id => item.data.id) ) %>											
-											</td>
-										</tr>
-									<% end %>
-									
-								</tdata>
-							</table>
+							<ul>
+								<% omeka_collection.items.each do |item| %>
+									<li>
+										<%= item.dublin_core.title %>
+										<i>
+											<%= item.dublin_core.description %>																						
+										</i>										
+										<%= item.data.item_type.blank? ? "" : item.data.item_type.name %>											
+										<%= button_to("Import Item", new_omeka_item_path(:omeka_site_id => @omeka_site.id, :client_item_id => item.data.id) ) %>											
+									</li>
+								
+								<% end %>
+							</ul>
 						<% end %>
 					</li>
 				<% end %>

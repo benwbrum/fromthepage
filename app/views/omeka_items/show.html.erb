@@ -7,58 +7,38 @@
 			<p>
 			  <b>Title:</b>
 			  <%= @omeka_item.title %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Subject:</b>
 			  <%= @omeka_item.subject %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Description:</b>
 			  <%= @omeka_item.description %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Rights:</b>
 			  <%= @omeka_item.rights %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Creator:</b>
 			  <%= @omeka_item.creator %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Format:</b>
 			  <%= @omeka_item.format %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Coverage:</b>
 			  <%= @omeka_item.coverage %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Omeka Connection:</b>
 			  <%= @omeka_item.omeka_site.title %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Omeka Item ID:</b>
 			  <%= @omeka_item.omeka_id %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Omeka Item API URL:</b>
 			  <%= @omeka_item.omeka_url %>
-			</p>
-
-			<p>
+			<br/>
 			  <b>Omeka Collection ID:</b>
 			  <%= @omeka_item.omeka_collection_id %>
 			</p>
-			<%= button_to "Import", :action => :import, :id => @omeka_item.id %>
+			<%= button_to "Publish to Editors", :action => :import, :id => @omeka_item.id %>
 
 			<%= link_to 'Edit', edit_omeka_item_path(@omeka_item) %> |
 			<%= link_to 'Back', omeka_items_path %>
@@ -69,23 +49,16 @@
 
 	    <div class="inside-column">
 			<%= html_block('right') %>
-			<ul>
 				<% @omeka_item.client_files.each do |file| %>
-					<li>
-						<%= file.data.id %>
+						<b>File Id:</b> <%= file.data.id %>
 						<br />
-						<%= file.data.mime_type %>
+						<b>File MIME Type:</b> <%= file.data.mime_type %>
 						<br />
-						<%= file.data.original_filename %>
+						<b>File Original Filename:</b> <%= file.data.original_filename %>
 						<br />
 						<%= link_to(image_tag(file.data.file_urls.thumbnail), file.data.file_urls.fullsize) %>
 						<br />
-
-					</li>
-
 				<% end%>
-
-			</ul>
 	    </div>
 	</div>
 </div>

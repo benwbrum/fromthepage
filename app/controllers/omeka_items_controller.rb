@@ -49,7 +49,7 @@ class OmekaItemsController < ApplicationController
     @omeka_item.user = current_user
     respond_to do |format|
       if @omeka_item.save
-        format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully created.' }
+        format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully imported.' }
         format.json { render json: @omeka_item, status: :created, location: @omeka_item }
       else
         format.html { render action: "new" }
