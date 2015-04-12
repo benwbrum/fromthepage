@@ -1,4 +1,4 @@
-=render({ :partial => 'tabs', :locals => { :selected => 2 } })
+=render(:partial => 'header', :locals => { :selected => 2 })
 
 //p =link_to 'Anonymous Sessions', { :controller => 'admin', :action => 'session_list' }
 table.admin-grid.datagrid.striped
@@ -7,8 +7,8 @@ table.admin-grid.datagrid.striped
       th Login
       th Owner
       th.w100 Name &amp; Location
-      th Last Sign In
       th Registered
+      th Last Sign In
       th Actions
   tbody
     -@users.each do |u|
@@ -21,11 +21,11 @@ table.admin-grid.datagrid.striped
           div =u.display_name
           -if u.location
             small(data-prefix='From ') =u.location
-        td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap =u.created_at.strftime('%b %d, %Y') if u.created_at
+        td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap
           .instack
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }
             =link_to 'Sessions', { :controller => 'admin', :action => 'session_list', :user_id => u.id }
 
-=render({ :partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true } })
+=render(:partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true })

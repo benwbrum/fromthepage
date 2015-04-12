@@ -45,7 +45,7 @@ body
         =link_to root_path, class: 'logo'
           =svg_symbol '#logo'
       .toolbar_group
-        =link_to 'Home', root_path, class: 'header_link'
+        =link_to 'Home', (user_signed_in? ? dashboard_watchlist_path : root_path), class: 'header_link'
         =link_to 'Collections', dashboard_path, class: 'header_link'
         =link_to 'FAQ', { :controller => 'static', :action => 'faq' }, class: 'header_link'
 
@@ -59,7 +59,7 @@ body
             dd
               =link_to 'Admin Dashboard', admin_path if current_user.admin
               =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
-              =link_to 'Editor Dashboard', dashboard_editor_path
+              =link_to 'Editor Dashboard', dashboard_watchlist_path
               hr
               =link_to 'Edit Your Profile', edit_user_registration_path
               hr
@@ -91,7 +91,7 @@ body
     .footer_nav
       =link_to 'Terms & Conditions', { :controller => 'static', :action => 'terms' }
       =link_to 'Privacy Policy', { :controller => 'static', :action => 'privacy' }
-      =link_to 'Contact Us', 'mailto:benwbrum@gmail.com'
+      =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
   .page-busy-overlay
 

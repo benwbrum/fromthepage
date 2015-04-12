@@ -1,14 +1,13 @@
-ul.activity
-  -for deed in deeds
-    li.activity_record
-      small.activity_record_time.legend.legend-left
-        ="#{time_ago_in_words deed.created_at} ago"
-      small.activity_record_text
-        =render(:partial => 'deed/deed.html', :locals => { :deed => deed })
+-deeds.each do |d|
+  .deed-short.small
+    =time_tag(d.created_at, class: 'legend legend-left')
+      ="#{time_ago_in_words d.created_at} ago"
+    span.deed-short_content
+      =render(:partial => 'deed/deed.html', :locals => { :deed => d })
 
 small.legend
   =link_to 'Show More',
-          { :controller => 'deed',
-            :action => 'list',
-            :collection_id => @collection ? @collection.id : nil,
-            :user_id => options[:user_id]}
+    { :controller => 'deed',
+      :action => 'list',
+      :collection_id => @collection ? @collection.id : nil,
+      :user_id => options[:user_id]}

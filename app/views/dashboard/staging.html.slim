@@ -5,7 +5,7 @@
     h3 Imported Archive.org Books
     -unless current_user.ia_works.empty?
       ol.collection_works
-        -for ia_work in current_user.ia_works
+        -current_user.ia_works.each do |ia_work|
           li =link_to ia_work.title, { :controller => 'ia', :action => 'manage', :ia_work_id => ia_work.id }
     -else
       -import_ia = link_to 'import a book from Archive.org', { :controller => 'ia', :action => 'ia_book_form' }

@@ -1,8 +1,10 @@
-=render({ :partial => 'tabs', :locals => { :selected => 2 } })
+=render(:partial => 'header', :locals => { :selected => 2 })
 
 .headline
-  h4.headline_title Session List for #{@user_name}
-  .headline_aside #{link_to 'Next 50', { :offset => (@offset.to_i + 50).to_s }}&nbsp;&rarr;
+  h5.headline_title
+    =="#{@user ? @user.display_name : 'Anonymous'} Sessions"
+  .headline_aside
+    =="&larr;&nbsp;#{link_to 'Back to User List', :action => 'user_list'}"
 
 table.admin-grid.datagrid.striped
   thead
@@ -20,3 +22,5 @@ table.admin-grid.datagrid.striped
         td.acenter =link_to s.total, { :action => 'interaction_list', :session_id => s.session_id }
         td =s.ip_address
         td.small =s.browser
+
+=render(:partial => 'shared/pagination', :locals => { :model => @sessions, :entries_info => true })

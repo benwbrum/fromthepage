@@ -1,15 +1,16 @@
-h1 Activity Log
-section.activity-log
-  -for deed in @deeds
-    .activity-log_record
-      =time_tag(deed.created_at, class: 'activity-log_record_time')
-        =time_ago_in_words(deed.created_at)
-      .activity-log_record_text
-        =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true })
+h1 Activity Stream
+table.datagrid.striped
+  -@deeds.each do |d|
+    tr
+      td
+        =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic userpic-small')
+          =gravatar_image_tag d.user.email, :alt => d.user.display_name
+      td.w100.toleft
+        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+      td
+        small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
+      td.nowrap
+        =time_tag(d.created_at, class: 'small fglight')
+          ="#{time_ago_in_words d.created_at} ago"
 
-p.aright
-  =link_to 'Older Activity',
-    { :offset => (@offset.to_i + 50),
-      :collection_id => @collection ? @collection.id : nil,
-      :user_id => @user ? @user.id : nil }
-  |&nbsp;&rarr;
+=render(:partial => 'shared/pagination', :locals => { :model => @deeds, :entries_info => true })

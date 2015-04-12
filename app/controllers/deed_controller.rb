@@ -1,17 +1,17 @@
 class DeedController < ApplicationController
 
+  PAGES_PER_SCREEN = 50
+
   def list
-    limit = params[:limit] || 50
-    @offset = params[:offset] || 0
+    condition = []
+
     if @collection
-      @deeds = Deed.where(['collection_id = ?', @collection.id]).limit(limit).offset(@offset).order('created_at DESC').all
+      condition = ['collection_id = ?', @collection.id]
     elsif @user
-      @deeds = Deed.where(['user_id = ?', @user.id]).limit(limit).offset(@offset).order('created_at DESC').all
-    else
-      @deeds = Deed.limit(limit).offset(@offset).order('created_at DESC').all
+      condition = ['user_id = ?', @user.id]
     end
+
+    @deeds = Deed.where(condition).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
-  def short_list
-  end
 end

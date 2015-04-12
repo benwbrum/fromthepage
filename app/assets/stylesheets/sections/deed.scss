@@ -1,0 +1,67 @@
+// ---------------------------
+// DEEDS / ACTIVITY
+// ---------------------------
+
+.deed-short {
+  line-height: 1.3;
+  margin: 0 0 1em 0;
+  time {
+    margin: 0 0 0.3em 0;
+    color: $bodyFgLight;
+  }
+  &_content {
+    display: block;
+    margin: 0.3em 0;
+  }
+}
+
+.deed-bubble {
+  padding: 0 0 0 55px;
+  width: 100%;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: $gapSize / 2 0;
+  .userpic {
+    float: left;
+    font-size: 40px;
+    margin-left: -55px;
+  }
+  &_content {
+    margin: 0;
+    border-radius: 4px;
+    position: relative;
+    padding: $gapSize * 0.75;
+    box-shadow: 0 0 1px rgba(#000, 0.25);
+    background-color: mix(#FFF, $bodyBg, 35%);
+    &:before, &:after {
+      top: 12px;
+      left: -8px;
+      content: '';
+      font-size: 8px;
+      position: absolute;
+      border: 8px solid transparent;
+      border-left-width: 0;
+      border-right-color: mix(#FFF, $bodyBg, 35%);
+    }
+    &:before {
+      left: -9px;
+      border-right-color: rgba(#000, 0.12);
+    }
+    time {
+      display: block;
+      color: $bodyFgLight;
+      margin-bottom: 0.2em;
+      font-size: $fontSizeSmall;
+    }
+  }
+}
+
+.deed-type {
+  $color: #B30;
+  $opacity: 0.4;
+  $rotate: 0deg;
+  @each $type in page_edit, page_trans, page_index, art_edit, note_add, pg_xlat, pg_xlat_ed {
+    &-#{$type} { background: rgba(adjust-hue($color, $rotate), $opacity); }
+    $rotate: $rotate - 30deg;
+  }
+}
