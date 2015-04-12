@@ -91,7 +91,7 @@ body
     .footer_nav
       =link_to 'Terms & Conditions', { :controller => 'static', :action => 'terms' }
       =link_to 'Privacy Policy', { :controller => 'static', :action => 'privacy' }
-      =link_to 'Contact Us', 'mailto:benwbrum@gmail.com'
+      =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
   .page-busy-overlay
 

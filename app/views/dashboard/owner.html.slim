@@ -2,7 +2,6 @@
 
 .columns
   article.maincol
-    h3 List of Your Works
     -unless current_user.owner_works.empty?
       .collections
         -(current_user.owner_works.group_by { |work| work.collection }).each do |c, works|
