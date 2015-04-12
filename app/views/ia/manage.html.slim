@@ -1,0 +1,35 @@
+h1 Manage Archive.org Import
+.columns
+  article.maincol
+    p Use this flow to manage page titles and convert this import into a FromThePage work.
+    table(border="1")
+      tr
+        th Thumbnail
+        th OCR Text
+      -for leaf in @ia_work.ia_leaves
+        tr
+          td.vtop =image_tag(leaf.thumb_url)
+          td.w100
+            b =leaf.page_number
+            =simple_format(leaf.ocr_text)
+
+  aside.sidecol
+    h3 Page Titles
+    p
+      =button_to('Retitle from top of page OCR',
+        { :action => 'title_from_ocr_top',
+          :ia_work_id => @ia_work.id },
+          :form => { 'data-page-busy' => true })
+      =button_to('Retitle from bottom of page OCR',
+        { :action => 'title_from_ocr_bottom',
+          :ia_work_id => @ia_work.id },
+          :form => { 'data-page-busy' => true })
+    h3 Publish to Editors
+    =form_tag({ :action => :convert }, :'data-page-busy' => true) do
+      =label_tag :use_ocr, 'Use OCR for page contents?'
+      =check_box_tag :use_ocr
+      =hidden_field_tag :ia_work_id, @ia_work.id
+      br
+      =submit_tag "Publish"
+    hr
+    =html_block('right')
