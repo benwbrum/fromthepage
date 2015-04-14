@@ -4,7 +4,7 @@
 table.admin-grid.datagrid.striped
   thead
     tr
-      th Login
+      th(colspan="2") User Login
       th Owner
       th.w100 Name &amp; Location
       th Registered
@@ -13,7 +13,10 @@ table.admin-grid.datagrid.striped
   tbody
     -@users.each do |u|
       tr
-        td.nowrap
+        td
+          =link_to({ :controller => 'user', :action => 'profile', :user_id => u.id }, class: 'userpic userpic-small')
+            =gravatar_image_tag u.email, :alt => u.display_name
+        td.nowrap.toleft
           div =link_to u.login, { :controller => 'user', :action => 'profile', :user_id => u.id }
           small =u.email
         td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if u.owner
