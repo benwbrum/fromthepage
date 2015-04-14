@@ -11,6 +11,8 @@ class Collection < ActiveRecord::Base
 
   validates :title, presence: true, length: { minimum: 3 }
 
+  scope :order_by_recent_activity, -> { includes(:deeds).order('deeds.created_at DESC') }
+
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       csv << %w{ Work_Title Page_Title Page_Position Page_URL Subject Text Category Category Category }

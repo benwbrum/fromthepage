@@ -21,7 +21,7 @@ class DashboardController < ApplicationController
 
   # Public Dashboard
   def index
-    @collections = Collection.all
+    @collections = Collection.order_by_recent_activity
 
     # not used
     #@offset = params[:offset] || 0
@@ -40,7 +40,7 @@ class DashboardController < ApplicationController
   def watchlist
     @user = current_user
     collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
-    @collections = Collection.where(:id => collection_ids)
+    @collections = Collection.where(:id => collection_ids).order_by_recent_activity
 
     # If user has no activity yet, show first 5 collections
     if @collections.empty?
