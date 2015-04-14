@@ -3,18 +3,15 @@ h1 Collections
   article.maincol
     .collections
       -@collections.each do |c|
-        -if !c.restricted || (user_signed_in? && current_user.like_owner?(c))
-          -snippet = truncate(strip_tags(c.intro_block), length: 400, separator: ' ') || ''
-          -count_works = pluralize c.works.size, 'work'
-          -count_subjects = pluralize c.categories.size, 'subject group'
+        -if (!c.restricted && c.works.size > 0) || (user_signed_in? && current_user.like_owner?(c))
+          -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+          -count_works = c.works.size > 0 ? pluralize(c.works.size, 'work') : 'No works'
           -owner_link = link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id }
           .collection
             h4.collection_title =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
+            .collection_summary =="#{count_works}, owned by #{owner_link}"
             -unless snippet.empty?
               p.collection_snippet =snippet
-            .collection_summary
-              =(c.works.size > 0 ? "Contains #{count_works}" : "Empty collection")
-              |, owned by #{owner_link}
 
   aside.sidecol
     h2 Recent Activity
