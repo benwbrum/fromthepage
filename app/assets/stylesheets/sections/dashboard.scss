@@ -3,33 +3,91 @@
 // ---------------------------
 
 .collection {
-  margin: 0;
-  padding: 1em 0;
-  border-top: 1px dotted $borderColor;
-  &:first-child {
+  margin: 0 0 1em 0;
+  padding: 0 0 1em 0;
+  transition: border-color 0.3s;
+  border-bottom: 1px dotted $borderColor;
+  &:last-child {
     border: 0;
-    padding-top: 0;
+    margin: 0;
   }
-  &_title a {
-    text-decoration: none;
-    color: darken($fgLink, 10%);
-    &:hover { color: $fgLink; }
+  &.stats-visible { border-color: transparent; }
+  &.stats-visible &_stats-bubble { opacity: 1; }
+  &_title {
+    margin: 0;
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
   }
   &_snippet {
-    margin: 0.5em 0;
+    margin: 0.4em 0 0 0;
     font-size: $fontSizeSmall;
   }
   &_summary {
-    margin-top: 0.4em;
+    margin: 0.4em 0 0 0;
     color: $bodyFgFaded;
     a {
       color: inherit;
       &:hover { color: $bodyFg; }
     }
+    .pill-stroke { margin-right: 1em; }
   }
   &_works {
     color: $bodyFgLight;
     li { line-height: 1.2; }
+  }
+}
+
+.collection_stats {
+  &-bubble {
+    opacity: 0;
+    padding: 0 8px;
+    margin-top: 10px;
+    position: relative;
+    border-radius: 3px;
+    transition: opacity 0.3s;
+    font-size: $fontSizeSmall;
+    background: mix(#000, $bodyBg, 4%);
+    border: 1px solid rgba(#000, 0.05);
+    &:before, &:after {
+      left: 13px;
+      content: '';
+      bottom: 100%;
+      position: absolute;
+      border: 6px solid transparent;
+      border-top-width: 0;
+      border-bottom-color: mix(#000, $bodyBg, 4%);
+    }
+    &:before {
+      margin-bottom: 1px;
+      border-bottom-color: rgba(#000, 0.15);
+    }
+    table {
+      width: 100%;
+      margin: 8px 0;
+      border-spacing: 8px;
+      border-collapse: separate;
+    }
+    th, td {
+      line-height: 1.2;
+      white-space: nowrap;
+      font-size: $fontSizeSmall;
+    }
+    th {
+      color: $bodyFgFaded;
+      padding-bottom: 5px;
+      border-bottom: 1px solid $borderColor;
+    }
+    td:first-child {
+      max-width: 50px;
+      overflow: hidden;
+      white-space: nowrap;
+      color: $bodyFgFaded;
+      text-overflow: ellipsis;
+    }
+    .progress { width: 200px; }
   }
 }
 

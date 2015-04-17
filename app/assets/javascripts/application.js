@@ -100,7 +100,18 @@ $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
   $('[data-litebox]').litebox();
+
+  // Global busy indicator for 'slow' forms
   $(document)
     .ajaxComplete(function() { $('html').removeClass('page-busy'); })
     .on('submit', '[data-page-busy]', function() { $('html').addClass('page-busy'); });
+
+  // Show and hide collection statistics
+  $('.collection').on('click', '[data-toggle-stats]', function(e) {
+    var container = $(e.delegateTarget);
+    var stats = $('.collection_stats', container);
+    var ishidden = stats.is(':hidden');
+    stats[ishidden ? 'slideDown' : 'slideUp']('fast');
+    container.toggleClass('stats-visible', ishidden);
+  });
 });
