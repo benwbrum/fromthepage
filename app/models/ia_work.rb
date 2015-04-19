@@ -5,6 +5,13 @@ class IaWork < ActiveRecord::Base
   belongs_to :work
   has_many :ia_leaves
 
+  def display_page
+    # blank status of raw ocr before displaying -- if the user hits save, status will become default
+    if @page.status == Page::STATUS_RAW_OCR
+      @page.status = nil;
+    end
+  end
+
   def self.refresh_server(book_id)
       # first get the call the location API and parse that document
     api_url = 'http://www.archive.org/services/find_file.php?file='+book_id
@@ -77,6 +84,7 @@ class IaWork < ActiveRecord::Base
       work.pages << page #necessary to make acts_as_list work here
       work.save!
       page.source_text = leaf.ocr_text if self.use_ocr
+      page.status = Page::STATUS_UNCORRECTED_OCR if self.use_ocr
       page.save!
       leaf.page_id = page.id
       leaf.save!

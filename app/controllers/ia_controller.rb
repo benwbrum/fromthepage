@@ -15,6 +15,12 @@ class IaController < ApplicationController
     end
 
     work = @ia_work.convert_to_work
+    
+    if params[:collection_id]
+      work.collection = @collection
+      work.save!
+    end
+    
     flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work."
 
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id

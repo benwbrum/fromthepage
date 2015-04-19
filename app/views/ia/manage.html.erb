@@ -20,8 +20,10 @@
 		<p>
 			<%= form_tag :action => :convert do  %>
 				<%= label_tag :use_ocr, 'Use OCR for page contents?' %>
-				<%= check_box_tag :use_ocr %>
+				<%= check_box_tag :use_ocr %><br />
 				<%= hidden_field_tag :ia_work_id, @ia_work.id %>
+				<%= label_tag :collection_id, 'Collection:' %>
+				<%= select_tag(:collection_id, options_from_collection_for_select(current_user.collections, "id", "title")) %>
 				<br/>
 				<%= submit_tag "Publish" %>			
 			<% end %>
