@@ -15,7 +15,7 @@
         -output += "but has not been converted into a FromThePage work."
       li ==output
 
-  =form_tag({ :action => 'import_work' }, :'data-page-busy' => true) do
+  =form_tag({ :action => 'import_work' }) do
     =hidden_field_tag :detail_url, @detail_url
     .toolbar
       .toolbar_group

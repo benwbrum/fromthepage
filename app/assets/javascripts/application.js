@@ -101,10 +101,12 @@ $(function() {
   $('.dropdown').dropdown();
   $('[data-litebox]').litebox();
 
-  // Global busy indicator for 'slow' forms
-  $(document)
-    .ajaxComplete(function() { $('html').removeClass('page-busy'); })
-    .on('submit', '[data-page-busy]', function() { $('html').addClass('page-busy'); });
+  // Global page loading spinner
+  $('html').removeClass('page-busy');
+  $(window)
+    .on('beforeunload', function() { $('html').addClass('page-busy'); })
+    .ajaxStart(function() { $('html').addClass('page-busy'); })
+    .ajaxComplete(function() { $('html').removeClass('page-busy'); });
 
   // Show and hide collection statistics
   $('.collection').on('click', '[data-toggle-stats]', function(e) {

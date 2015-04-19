@@ -117,7 +117,7 @@ $svg-page-busy: '
   .page-busy & {
     opacity: 1;
     visibility: visible;
-    transition-delay: 1s;
+    transition-delay: 2s;
     &:before { display: block; }
   }
   &:before {

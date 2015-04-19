@@ -16,16 +16,10 @@ h1 Manage Archive.org Import
   aside.sidecol
     h3 Page Titles
     p
-      =button_to('Retitle from top of page OCR',
-        { :action => 'title_from_ocr_top',
-          :ia_work_id => @ia_work.id },
-          :form => { 'data-page-busy' => true })
-      =button_to('Retitle from bottom of page OCR',
-        { :action => 'title_from_ocr_bottom',
-          :ia_work_id => @ia_work.id },
-          :form => { 'data-page-busy' => true })
+      =button_to('Retitle from top of page OCR', { :action => 'title_from_ocr_top', :ia_work_id => @ia_work.id })
+      =button_to('Retitle from bottom of page OCR', { :action => 'title_from_ocr_bottom', :ia_work_id => @ia_work.id })
     h3 Publish to Editors
-    =form_tag({ :action => :convert }, :'data-page-busy' => true) do
+    =form_tag({ :action => :convert }) do
       =label_tag :use_ocr, 'Use OCR for page contents?'
       =check_box_tag :use_ocr
       =hidden_field_tag :ia_work_id, @ia_work.id
