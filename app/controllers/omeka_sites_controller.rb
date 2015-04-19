@@ -1,4 +1,8 @@
 class OmekaSitesController < ApplicationController
+
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit]
+
   # GET /omeka_sites
   # GET /omeka_sites.json
   def index
@@ -9,7 +13,6 @@ class OmekaSitesController < ApplicationController
         format.html { redirect_to new_omeka_site_path }
       else
         format.html # index.html.erb
-
       end
       format.json { render json: @omeka_sites }
     end
@@ -53,7 +56,10 @@ class OmekaSitesController < ApplicationController
 
     respond_to do |format|
       if @omeka_site.save
-        format.html { redirect_to @omeka_site, notice: 'Omeka site was successfully created.' }
+        format.html {
+          flash[:notice] = "Omeka site was successfully created"
+          ajax_redirect_to @omeka_site
+        }
         format.json { render json: @omeka_site, status: :created, location: @omeka_site }
       else
         format.html { render action: "new" }
@@ -70,7 +76,10 @@ class OmekaSitesController < ApplicationController
 
     respond_to do |format|
       if @omeka_site.update_attributes(params[:omeka_site])
-        format.html { redirect_to @omeka_site, notice: 'Omeka site was successfully updated.' }
+        format.html {
+          flash[:notice] = "Omeka site was successfully updated"
+          redirect_to @omeka_site
+        }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -86,7 +95,10 @@ class OmekaSitesController < ApplicationController
     @omeka_site.destroy
 
     respond_to do |format|
-      format.html { redirect_to omeka_sites_url }
+      format.html {
+        flash[:notice] = "Omeka site was successfully deleted"
+        redirect_to omeka_sites_url
+      }
       format.json { head :no_content }
     end
   end

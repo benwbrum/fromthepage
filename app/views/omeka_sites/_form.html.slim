@@ -1,0 +1,14 @@
+-if @omeka_site.title.present?
+  h4 =@omeka_site.title
+
+=form_for @omeka_site, :html => { 'data-page-busy' => true } do |f|
+  =validation_summary @omeka_site.errors
+  table.form.big
+    tr
+      th =f.label :api_url, "API URL"
+      td.w100 =f.text_field :api_url
+    tr
+      th =f.label :api_key, "API Key"
+      td.w100 =f.text_field :api_key
+  .toolbar
+    .toolbar_group.aright =f.button
