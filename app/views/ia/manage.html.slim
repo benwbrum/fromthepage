@@ -24,6 +24,9 @@ h1 Manage Archive.org Import
       =check_box_tag :use_ocr
       =hidden_field_tag :ia_work_id, @ia_work.id
       br
+      =label_tag :collection_id, 'Collection:'
+      =select_tag(:collection_id, options_from_collection_for_select(current_user.collections, "id", "title"))
+      br
       =submit_tag "Publish"
     hr
     =html_block('right')

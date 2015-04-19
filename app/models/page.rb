@@ -29,9 +29,20 @@ class Page < ActiveRecord::Base
 
   STATUS_BLANK = 'blank'
   STATUS_INCOMPLETE = 'incomplete'
+  STATUS_UNCORRECTED_OCR = 'raw_ocr'
+  STATUS_INCOMPLETE_OCR = 'part_ocr'
+  STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
 
-  STATUSES = { "Blank/Nothing to Transcribe" => STATUS_BLANK, "Incomplete Transcription" => STATUS_INCOMPLETE }
-  STATUS_HELP = "Mark a page as blank if there is nothing to be transcribed on this page.  Mark a page as incomplete to list it for review by others."
+  STATUSES = 
+  { "Blank/Nothing to Transcribe" => STATUS_BLANK, 
+    "Incomplete Transcription" => STATUS_INCOMPLETE, 
+    "Incomplete Correction" => STATUS_INCOMPLETE_OCR, 
+    "Uncorrected OCR" => STATUS_UNCORRECTED_OCR,
+    "Incomplete Translation" => STATUS_INCOMPLETE_TRANSLATION }
+  STATUS_HELP = {
+    STATUS_BLANK => "Mark the page as blank if there is no meaningful text on this page.",
+    STATUS_INCOMPLETE => "Mark the page as incomplete to list it for review by others.",
+  }
 
   # tested
   def collection

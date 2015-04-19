@@ -16,8 +16,8 @@
 	    		<%= f.label :source_translation, "Translation:" %><br />
 					<%= f.text_area :source_translation, { :cols => 60, :style => "width: 100%; height: #{@page.source_translation ? @page.source_translation.lines.count*1.5 : 30}em; min-height: 30em" } %>
 				<br />
-				<%= f.label :status, "Page Status:" %>
-				<%= f.select :status, Page::STATUSES, {:include_blank => true}, { :title => Page::STATUS_HELP } %>
+		    	<%= f.label :status, "Translation Status:" %>
+				<%= f.select :status, relevant_translation_statuses(@work), {:include_blank => true}, { :title => "Mark a translation as incomplete to queue it for review by other translators." } %><br />
 				<br />
 				<%= submit_tag "Save", :name => 'save' %>
 				<% end%>

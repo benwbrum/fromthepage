@@ -44,5 +44,7 @@ class User < ActiveRecord::Base
   def display_name
     self[:display_name] || self[:login]
   end
-
+  def collections
+    self.owned_collections + Collection.where(:owner_user_id => self.id).all
+  end
 end
