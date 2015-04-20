@@ -1,0 +1,12 @@
+h5.tooltip_header =@article.title
+
+-if @article.xml_text != nil && !@article.xml_text.empty?
+  .tooltip_content ==xml_to_html(@article.xml_text)
+
+-unless @article.categories.empty?
+  .tooltop_content.small
+    ="#{'Category'.pluralize(@article.categories.size)}: "
+    =@article.categories.map{ |c| c.title }.join(', ')
+
+.tooltip_footer.small
+  =link_to 'Explore this subject', { :controller => 'article', :action => 'show', :article_id => @article.id }

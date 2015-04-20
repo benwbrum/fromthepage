@@ -2,7 +2,7 @@ module AbstractXmlHelper
   require 'rexml/document'
 
   def source_to_html(source)
-    html = source.gsub(/\n/, "<br />")
+    html = source.gsub(/\n/, "<br/>")
     return html
   end
 
@@ -17,24 +17,19 @@ module AbstractXmlHelper
       id = e.attributes['target_id']
       # first find the articles
       anchor = REXML::Element.new("a")
-#      anchor.text = display_text
+      #anchor.text = display_text
       if id
         if flatten_links
           anchor.add_attribute("href", "#article-#{id}")
         else
-          anchor.add_attribute("href",
-                               url_for(:controller => 'article',
-                                       :action => 'show',
-                                       :article_id => id,
-                                       :title=> title))
-
+          anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id))
+          anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id, :title=> title))
         end
       else
         # preview mode for this link
         anchor.add_attribute("href", "#")
       end
-      anchor.add_attribute("title",
-                           title)
+      anchor.add_attribute("title", title)
       e.children.each { |c| anchor.add(c) }
       e.replace_with(anchor)
     end
@@ -60,7 +55,7 @@ module AbstractXmlHelper
     my_display_html = ""
     doc.write(my_display_html)
 
-    return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','')
+    return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
   end
 
 

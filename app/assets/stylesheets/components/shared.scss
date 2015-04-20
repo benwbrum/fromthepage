@@ -81,7 +81,7 @@
 // GLOBAL BUSY INDICATOR
 // ---------------------------
 
-$svg-page-busy: '
+$svg-spinner: '
 <g fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round">
 <line opacity="1.00" x1="24"   y1="4"    x2="24"   y2="12"/>
 <line opacity="0.20" x1="34"   y1="6.7"  x2="30"   y2="13.6"/>
@@ -97,7 +97,7 @@ $svg-page-busy: '
 <line opacity="0.92" x1="14"   y1="6.7"  x2="18"   y2="13.6"/>
 </g>';
 
-@keyframes page-busy {
+@keyframes spinner {
   0%    { transform: rotate(0deg); }
   100%  { transform: rotate(360deg); }
 }
@@ -130,9 +130,53 @@ $svg-page-busy: '
     position: absolute;
     margin: -24px 0 0 -24px;
     transform-origin: 24px 24px;
-    animation: litebox-busy 1s infinite steps(12);
-    @include background-svg(48, 48, $svg-page-busy);
+    animation: spinner 1s infinite steps(12);
+    @include background-svg(48, 48, $svg-spinner);
   }
+}
+
+
+// ---------------------------
+// TOOLTIP
+// ---------------------------
+
+.tooltip {
+  color: #FFF;
+  padding: 15px;
+  text-align: left;
+  max-width: 400px;
+  line-height: 1.2;
+  position: absolute;
+  border-radius: 5px;
+  margin: 6px 0 0 -5px;
+  background: rgba(#000, 0.85);
+  box-shadow: 0 5px 15px rgba(#000, 0.12);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  &:before {
+    left: 10px;
+    content: '';
+    bottom: 100%;
+    position: absolute;
+    border: 6px solid transparent;
+    border-top-width: 0;
+    border-bottom-color: rgba(#000, 0.8);
+  }
+  a {
+    color: #AAA;
+    &:hover { color: #FFF; }
+  }
+  &_header {
+    color: inherit;
+    margin: 0 0 0.5em 0;
+  }
+  &_content {
+    margin: 0.5em 0;
+    line-height: 1.2;
+    p { margin: 0.5em 0; }
+    a { color: #FE8; }
+  }
+  &_footer { margin: 0.8em 0 0 0; }
 }
 
 

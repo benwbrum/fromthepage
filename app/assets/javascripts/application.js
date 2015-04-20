@@ -77,7 +77,7 @@ $.fn.dropdown = function(s) {
     });
 
     // Close when clicked on an item
-    $(s.items, this).on('click.DropDown', function() {
+    $(cfg.items, this).on('click.DropDown', function() {
       $element.removeClass(cfg.openclass);
       if(cfg.selectable) {
         $trigger.text($(this).text());
@@ -93,6 +93,47 @@ $.fn.dropdown = function(s) {
   });
 };
 
+
+// Tooltip with remote content
+// <element data-tooltip='/some/url.html'>
+// $('[data-tooltip]').tooltip();
+$.fn.tooltip = function(s) {
+  return this.each(function() {
+    var $element = $(this);
+    var offset = $element.offset();
+    var url = $element.data('tooltip');
+    var $tooltip = $('<div>').addClass('tooltip');
+    var pos_top = offset.top + $element.height();
+    var pos_left = offset.left;
+
+    $element.on('click.Tooltip', function(e) {
+      e.preventDefault();
+      $tooltip.css({ 'top': pos_top, 'left': pos_left }).appendTo('body');
+
+      // Load remote content
+      if(url) {
+        $.ajax({
+          url: url,
+          cache: false,
+          context: this,
+          global: false
+        }).done(function(data) {
+          $tooltip.html(data);
+        }).fail(function() {
+          $tooltip.html('<small>error :(</small>');
+        });
+      }
+    });
+
+    // Close if clicked outside
+    $(document).on('click.Tooltip', function(e) {
+      if($(e.target).closest($element).length === 0) {
+        $tooltip.remove();
+      }
+    });
+  });
+};
+
 })(jQuery, window, document);
 
 
@@ -100,6 +141,7 @@ $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
   $('[data-litebox]').litebox();
+  $('[data-tooltip]').tooltip();
 
   // Global page loading spinner
   $('html').removeClass('page-busy');

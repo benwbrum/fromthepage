@@ -11,6 +11,10 @@ class ArticleController < ApplicationController
     end
   end
 
+  def tooltip
+    render layout: false
+  end
+
   def list
     # Differences from previous implementation:
     # 1. List of articles needs to be collection-specific
