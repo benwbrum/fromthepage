@@ -1,5 +1,5 @@
 // ---------------------------
-// PUBLIC / COLLECTIONS
+// PUBLIC DASHBOARD
 // ---------------------------
 
 .collection {
@@ -64,31 +64,31 @@
       margin-bottom: 1px;
       border-bottom-color: rgba(#000, 0.15);
     }
-    table {
-      width: 100%;
-      margin: 8px 0;
-      border-spacing: 8px;
-      border-collapse: separate;
-    }
-    th, td {
-      line-height: 1.2;
-      white-space: nowrap;
-      font-size: $fontSizeSmall;
-    }
-    th {
-      color: $bodyFgFaded;
-      padding-bottom: 5px;
-      border-bottom: 1px solid $borderColor;
-    }
-    td:first-child {
-      max-width: 50px;
-      overflow: hidden;
-      white-space: nowrap;
-      color: $bodyFgFaded;
-      text-overflow: ellipsis;
-    }
-    .progress { width: 200px; }
   }
+  table {
+    width: 100%;
+    margin: 8px 0;
+    border-spacing: 8px;
+    border-collapse: separate;
+  }
+  th, td {
+    line-height: 1.2;
+    white-space: nowrap;
+    font-size: $fontSizeSmall;
+  }
+  th {
+    color: $bodyFgFaded;
+    padding-bottom: 5px;
+    border-bottom: 1px solid $borderColor;
+  }
+  td:first-child {
+    max-width: 50px;
+    overflow: hidden;
+    white-space: nowrap;
+    color: $bodyFgFaded;
+    text-overflow: ellipsis;
+  }
+  .progress { width: 200px; }
 }
 
 

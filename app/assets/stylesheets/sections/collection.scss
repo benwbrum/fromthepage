@@ -1,0 +1,50 @@
+// ---------------------------
+// COLLECTION PAGES
+// ---------------------------
+
+
+// Overview
+
+.work {
+  margin: 0 0 1em 0;
+  padding: 0 0 1em 0;
+  transition: border-color 0.3s;
+  border-bottom: 1px dotted $borderColor;
+  &:last-child {
+    border: 0;
+    margin: 0;
+  }
+  &_title {
+    margin: 0;
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
+  &_snippet {
+    margin: 0.5em 0 0 0;
+    font-size: $fontSizeSmall;
+  }
+}
+
+.work_stats {
+  width: 100%;
+  display: table;
+  color: $bodyFgFaded;
+  margin: 0.5em 0 0 0;
+  > span {
+    padding-right: 10px;
+    display: table-cell;
+    white-space: nowrap;
+    &:last-child {
+      padding: 0;
+      width: 100%;
+      text-align: right;
+    }
+  }
+  .progress {
+    width: 100%;
+    max-width: 300px;
+  }
+}
