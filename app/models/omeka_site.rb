@@ -18,7 +18,7 @@ class OmekaSite < ActiveRecord::Base
       c=OmekaClient::Client.new(self.api_url, self.api_key)
       begin
         c.get_site
-      rescue Rest::Wrappers::RestClientExceptionWrapper => e
+      rescue => e #Rest::Wrappers::RestClientExceptionWrapper => e
         errors.add(:api_key, "is wrong. Server returned \"#{e.message}\"")
       end
     end
