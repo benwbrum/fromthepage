@@ -100,14 +100,14 @@ $.fn.dropdown = function(s) {
 $.fn.tooltip = function(s) {
   return this.each(function() {
     var $element = $(this);
-    var offset = $element.offset();
     var url = $element.data('tooltip');
     var $tooltip = $('<div>').addClass('tooltip');
-    var pos_top = offset.top + $element.height();
-    var pos_left = offset.left;
 
     $element.on('click.Tooltip', function(e) {
       e.preventDefault();
+      var offset = $element.offset();
+      var pos_top = offset.top + $element.height();
+      var pos_left = offset.left;
       $tooltip.css({ 'top': pos_top, 'left': pos_left }).appendTo('body');
 
       // Load remote content
