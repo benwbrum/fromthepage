@@ -1,0 +1,14 @@
+h4 =page.title
+-transcription = page.class.name == 'PageVersion' ? page.xml_transcription : page.xml_text
+-if transcription.present?
+  ==xml_to_html(transcription)
+-else
+  .a50 No Transcription Provided
+
+-if @work.supports_translation
+  hr
+  h4 Translation
+  -if page.xml_translation.present?
+    ==xml_to_html(page.xml_translation)
+  -else
+    .a50 No Translation Provided

@@ -152,7 +152,52 @@ $footerBg:									$themeDark;
 @import "sections/collection";
 
 
-
+.page-versions {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: separate;
+	margin-bottom: $gapSize * 2;
+	th {
+		line-height: 1.2;
+		color: $bodyFgFaded;
+		padding: $gapSize / 2;
+		vertical-align: bottom;
+		font-size: $fontSizeSmall;
+		border-bottom: 1px solid rgba(#000, 0.1);
+		&:first-child { width: 25%; }
+	}
+	td { vertical-align: top; }
+	.page-version {
+		width: 50%;
+		padding: $gapSize;
+		vertical-align: top;
+		background: mix($bodyBg, #000, 95%);
+		&:last-child { background: mix($bodyBg, #FFF, 50%); }
+	}
+}
+.version-list {
+	a {
+		display: block;
+		overflow: hidden;
+		line-height: 2.4;
+		color: $bodyFgLight;
+		white-space: nowrap;
+		text-decoration: none;
+		text-overflow: ellipsis;
+		padding: 0 $gapSize / 2;
+		background-clip: padding-box;
+		border-bottom: 1px solid rgba(#000, 0.05);
+		&:hover { color: $bodyFg; }
+		&.selected {
+			color: $bodyFg;
+			background-color: mix($bodyBg, #000, 95%);
+		}
+		time {
+			width: 7em;
+			display: inline-block;
+		}
+	}
+}
 
 
 

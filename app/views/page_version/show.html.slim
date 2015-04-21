@@ -1,0 +1,24 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected =>2, :page_id => @page.id } })
+
+-version_compare_date = @version_compare.created_on.strftime("%b %d, %Y %I:%M %p")
+-version_compare_user = link_to(@version_compare.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @version_compare.user.id })
+
+table.page-versions
+  tr
+    th =pluralize(@page.page_versions.size, 'revision')
+    th =="#{version_compare_date} revision by #{version_compare_user}"
+    th Current Version
+  tr
+    td
+      .version-list
+        -@page.page_versions.each do |version|
+          =link_to({ :action => 'show', :page_version_id => version.id }, class: ('selected' if version == @version_compare))
+            =time_tag(version.created_on)
+              =version.created_on.strftime("%b %d, %Y")
+            span =version.user.display_name
+
+    td.page-version
+      =render({ :partial => 'version', :locals => { :page => @version_compare } })
+
+    td.page-version
+      =render({ :partial => 'version', :locals => { :page => @version_current } })
