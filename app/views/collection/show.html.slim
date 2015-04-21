@@ -9,7 +9,7 @@
     .works
       -@collection.works.each do |work|
         .work
-          h5.work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+          h4.work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
           p.work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
           .work_stats
             -progress_annotated = work.work_statistic.pct_annotated.round
