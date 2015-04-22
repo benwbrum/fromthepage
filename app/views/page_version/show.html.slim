@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected =>2, :page_id => @page.id } })
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 2, :page_id => @page.id } })
 
 -version_compare_date = @version_compare.created_on.strftime("%b %d, %Y %I:%M %p")
 -version_compare_user = link_to(@version_compare.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @version_compare.user.id })
@@ -7,7 +7,11 @@ table.page-versions
   tr
     th =pluralize(@page.page_versions.size, 'revision')
     th =="#{version_compare_date} revision by #{version_compare_user}"
-    th Current Version
+    th
+      span Current Version
+      label.show-changes
+        input(type="checkbox")
+        |&nbsp;Show Changes
   tr
     td
       .version-list
@@ -18,7 +22,53 @@ table.page-versions
             span =version.user.display_name
 
     td.page-version
-      =render({ :partial => 'version', :locals => { :page => @version_compare } })
+      h4 =@version_compare.title
+      -if @version_compare.xml_transcription.present?
+        .original-transcription ==xml_to_html(@version_compare.xml_transcription)
+      -else
+        .a50 No Transcription Provided
+      -if @work.supports_translation
+        hr
+        h4 Translation
+        -if @version_compare.xml_translation.present?
+          .original-translation ==xml_to_html(@version_compare.xml_translation)
+        -else
+          .a50 No Translation Provided
 
     td.page-version
-      =render({ :partial => 'version', :locals => { :page => @version_current } })
+      h4 =@version_current.title
+      -if @version_current.xml_text.present?
+        .changed-transcription ==xml_to_html(@version_current.xml_text)
+        .diff-transcription(style="display:none")
+      -else
+        .a50 No Transcription Provided
+      -if @work.supports_translation
+        hr
+        h4 Translation
+        -if @version_current.xml_translation.present?
+          .changed-translation ==xml_to_html(@version_current.xml_translation)
+          .diff-translation(style="display:none")
+        -else
+          .a50 No Translation Provided
+
+javascript:
+  $(function() {
+    $('.show-changes input').on('change', function() {
+      var show_changes = $(this).is(':checked');
+      $('.changed-transcription, .changed-translation').toggle(!show_changes);
+      $('.diff-transcription, .diff-translation').toggle(show_changes);
+      if(show_changes) {
+        $('.page-versions')
+          .prettyTextDiff({
+            diffContainer: '.diff-transcription',
+            changedContainer: '.changed-transcription',
+            originalContainer: '.original-transcription'
+          })
+          .prettyTextDiff({
+            diffContainer: '.diff-translation',
+            changedContainer: '.changed-translation',
+            originalContainer: '.original-translation'
+          });
+      }
+    });
+  });

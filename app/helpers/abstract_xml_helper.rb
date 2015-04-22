@@ -8,7 +8,8 @@ module AbstractXmlHelper
 
   def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
     return "" if xml_text.blank?
-    xml_text.gsub!(/\n/, "")
+    #xml_text.gsub!(/\n/, "")
+    xml_text.gsub!("</p>", "</p>\n")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     doc = REXML::Document.new(xml_text)
 

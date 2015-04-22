@@ -167,12 +167,24 @@ $footerBg:									$themeDark;
 		&:first-child { width: 25%; }
 	}
 	td { vertical-align: top; }
+	.show-changes {
+		float: right;
+	}
 	.page-version {
 		width: 50%;
 		padding: $gapSize;
 		vertical-align: top;
 		background: mix($bodyBg, #000, 95%);
 		&:last-child { background: mix($bodyBg, #FFF, 50%); }
+		p {
+			margin: $lineHeight+em 0 0 0;
+			&:first-child { margin-top: 0; }
+		}
+		ins {
+			background: #CEC;
+			text-decoration: none;
+		}
+		del { background: #FCC; }
 	}
 }
 .version-list {
