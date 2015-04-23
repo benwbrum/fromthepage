@@ -58,9 +58,13 @@ class ArticleController < ApplicationController
 
   def combine_duplicate
     # @article contains "to" article
-    from_article = Article.find(params[:from_article_id])
-    combine_articles(from_article, @article)
-    flash[:notice] = "All links now point to #{@article.title}."
+
+    params[:from_article_ids].each do |from_article_id|
+      from_article = Article.find(from_article_id)
+      combine_articles(from_article, @article)
+    end
+
+    flash[:notice] = "Selected subjects combined with #{@article.title}"
     redirect_to :action => 'show', :article_id => @article.id
   end
 

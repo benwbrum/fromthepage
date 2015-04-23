@@ -27,20 +27,26 @@
 	<% if user_signed_in? %>
 		<div class="inside-column">
 			<h3>Possible Duplicates</h3>
-			<p>
+      <%= form_tag({ :action => 'combine_duplicate' }) do %>
+      <%= hidden_field_tag :article_id, @article.id %>
+      <%= button_tag 'Combine Selected' %>
+			<ol>
 				<% @article.possible_duplicates.each do |dup| %>
-					<%= link_to(dup.title, :article_id => dup.id) %>
-					<i><%= button_to("Combine",
+          <li>
+          <%= check_box_tag 'from_article_ids[]', dup.id %>
+					<%= link_to dup.title, { :article_id => dup.id }, 'data-tooltip': url_for(:controller => 'article', :action => 'tooltip', :article_id => dup.id) %>
+<!--
+					<%= button_to("Combine",
 									{ :action => 'combine_duplicate',
 									  :from_article_id => dup.id,
 									  :article_id => @article.id},
 									{ :title => "Combines #{dup.title} into #{@article.title}",
 										:confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>
-									</i>
-
-				  <br />
+                  -->
+				  </li>
 				<% end %>
-			</p>
+			</ol>
+      <% end %>
 		</div>
 	<% end %>
   </div>
