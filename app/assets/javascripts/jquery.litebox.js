@@ -127,7 +127,7 @@
     insert: function(content) {
       this.$content.html(content);
       this.$container.addClass('visible');
-      this.$content.find(':input:not(:hidden):first').focus();
+      this.$content.find(':text:not(:hidden):first').focus();
 
       // Submit an inner form via ajax
       this.$content.on('submit.LiteBox', 'form', $.proxy(function(e) {
