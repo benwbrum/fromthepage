@@ -152,6 +152,42 @@ $footerBg:									$themeDark;
 @import "sections/collection";
 
 
+.article-duplicates {
+	margin: 1em 0;
+	overflow: auto;
+	list-style: none;
+	max-height: 394px;
+	padding: 0.5em 1em;
+	background: rgba(#000, 0.02);
+	border: 1px solid $borderColor;
+	box-shadow: inset 0 0 1px rgba(#000, 0.2);
+}
+.article-duplicate {
+	margin: 0;
+	width: 100%;
+	display: table;
+	border-top: 1px solid rgba(#000, 0.08);
+	&:first-child { border: 0; }
+	&_title {
+		width: 100%;
+		max-width: 100px;
+		padding: 0.3em 0;
+		overflow: hidden;
+		display: table-cell;
+		white-space: nowrap;
+		vertical-align: middle;
+		text-overflow: ellipsis;
+	}
+	&_pages {
+		padding-left: 0.5em;
+		display: table-cell;
+		white-space: nowrap;
+		vertical-align: middle;
+	}
+	input:checked + span { color: $fgHover; }
+}
+
+
 .page-versions {
 	width: 100%;
 	table-layout: fixed;

@@ -5,6 +5,9 @@ class ArticleController < ApplicationController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:duplicates, :combine_duplicate]
+
   def authorized?
     unless user_signed_in?
       redirect_to dashboard_path
@@ -65,7 +68,7 @@ class ArticleController < ApplicationController
     end
 
     flash[:notice] = "Selected subjects combined with #{@article.title}"
-    redirect_to :action => 'show', :article_id => @article.id
+    ajax_redirect_to :action => 'show', :article_id => @article.id
   end
 
 

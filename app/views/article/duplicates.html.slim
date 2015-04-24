@@ -1,0 +1,16 @@
+.litebox-embed(style="width:500px")
+  h1 Possible Duplicates
+  p =="Please review the list below and select the subjects to combine. Duplicates will be remapped so all existing links will point to the &ldquo;#{@article.title}&rdquo; subject."
+  =form_tag({ :action => 'combine_duplicate' }) do
+    =hidden_field_tag :article_id, @article.id
+    ul.article-duplicates
+      -@article.possible_duplicates.each do |dup|
+        li.article-duplicate
+          label.article-duplicate_title
+            =check_box_tag 'from_article_ids[]', dup.id
+            |&nbsp;
+            span =dup.title
+          span.article-duplicate_pages
+            small.label =pluralize(dup.link_list.size, 'page')
+    .toolbar
+      .toolbar_group.aright =button_tag 'Combine Selected'

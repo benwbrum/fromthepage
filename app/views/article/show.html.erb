@@ -6,18 +6,11 @@
 <div class="two-columns">
   <div class="left-column">
     <div class="inside-column">
-      <span class="left-link">
-	      <%= link_to("subjects",
-	                  {:controller => 'article',
-	                   :action => 'list',
-                                :collection_id => @article.collection_id }) %>
-       </span>
-    </div>
-    <div class="inside-column">
-      <h2><%= @article.title %></h2>
+      <%= link_to("subjects", { :controller => 'article', :action => 'list', :collection_id => @article.collection_id }) %>
     </div>
 
     <div id="article_display_area" class="inside-column">
+      <h2><%= @article.title %></h2>
 		  <% if @article.xml_text != nil && !@article.xml_text.empty? %>
 		    <%= raw(xml_to_html(@article.xml_text)) %>
 		  <% else %>
@@ -26,27 +19,28 @@
 	</div>
 	<% if user_signed_in? %>
 		<div class="inside-column">
+      <%= link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { :action => 'duplicates', :article_id => @article.id }, :data => { litebox: { hash: 'duplicates' } } %>
+      <!--
 			<h3>Possible Duplicates</h3>
       <%= form_tag({ :action => 'combine_duplicate' }) do %>
-      <%= hidden_field_tag :article_id, @article.id %>
-      <%= button_tag 'Combine Selected' %>
-			<ol>
-				<% @article.possible_duplicates.each do |dup| %>
-          <li>
-          <%= check_box_tag 'from_article_ids[]', dup.id %>
-					<%= link_to dup.title, { :article_id => dup.id }, 'data-tooltip': url_for(:controller => 'article', :action => 'tooltip', :article_id => dup.id) %>
-<!--
-					<%= button_to("Combine",
-									{ :action => 'combine_duplicate',
-									  :from_article_id => dup.id,
-									  :article_id => @article.id},
-									{ :title => "Combines #{dup.title} into #{@article.title}",
-										:confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>
-                  -->
-				  </li>
-				<% end %>
-			</ol>
+        <%= hidden_field_tag :article_id, @article.id %>
+        <%= button_tag 'Combine Selected' %>
+  			<ol>
+  				<% @article.possible_duplicates.each do |dup| %>
+            <li>
+            <%= check_box_tag 'from_article_ids[]', dup.id %>
+  					<%= link_to dup.title, { :article_id => dup.id } %>
+  					<%= button_to("Combine",
+  									{ :action => 'combine_duplicate',
+  									  :from_article_id => dup.id,
+  									  :article_id => @article.id},
+  									{ :title => "Combines #{dup.title} into #{@article.title}",
+  										:confirm => "Are you sure you want to delete #{dup.title} and change all links to point to #{@article.title}?"})%>
+  				  </li>
+  				<% end %>
+  			</ol>
       <% end %>
+      -->
 		</div>
 	<% end %>
   </div>
