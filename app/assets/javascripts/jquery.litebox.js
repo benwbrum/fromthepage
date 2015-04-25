@@ -129,6 +129,16 @@
       this.$container.addClass('visible');
       this.$content.find(':text:not(:hidden):first').focus();
 
+      // Include submit button value into serialization
+      this.$content.on('click', 'form :submit', function() {
+        var button = $(this);
+        button.after($('<input>').attr({
+          type: 'hidden',
+          name: button.attr('name'),
+          value: button.val()
+        }));
+      });
+
       // Submit an inner form via ajax
       this.$content.on('submit.LiteBox', 'form', $.proxy(function(e) {
         e.preventDefault();
