@@ -1,0 +1,24 @@
+.litebox-embed(style="width:650px")
+  h1 Edit Subject
+
+  =form_for(@article, :url => { :action => 'update' }) do |f|
+    =hidden_field_tag(:article_id, @article.id)
+    =validation_summary @article.errors
+    table.form
+      tr.big
+        th =f.label :title
+        td.w100 =f.text_field :title
+      tr
+        td(colspan="2")
+          -if @preview_xml
+            ==xml_to_html(@preview_xml)
+            hr
+          =f.label :source_text, 'Description', class: "above"
+          =f.text_area :source_text, rows: 10
+
+    p.fgfaded You can use double braces to link subjects. <code>[[Jane Doe]]</code> will link to the subject Jane Doe, while <code>[[Jane Doe|Jane]]</code> will link the text &quot;Jane&quot; to the subject Jane Doe. We recommend that linking be left to an editor after the initial transcription is made.
+
+    .toolbar
+      //.toolbar_group =f.button 'Preview', :name => 'preview'
+      .toolbar_group.w100 =f.button 'Autolink', :name => 'autolink'
+      .toolbar_group.aright =f.button 'Save Changes', :name => 'save'

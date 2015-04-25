@@ -20,6 +20,8 @@
 	<% if user_signed_in? %>
 		<div class="inside-column">
       <%= link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { :action => 'duplicates', :article_id => @article.id }, :data => { litebox: { hash: 'duplicates' } } %>
+      &nbsp;|&nbsp;
+      <%= link_to 'Edit Subject', { :action => 'edit', :article_id => @article.id }, :data => { litebox: { hash: 'edit' } } %>
       <!--
 			<h3>Possible Duplicates</h3>
       <%= form_tag({ :action => 'combine_duplicate' }) do %>

@@ -117,3 +117,14 @@ svg {
   width: 100%;
   height: 100%;
 }
+
+code {
+  color: #555;
+  font-size: 75%;
+  padding: 0 0.3em;
+  line-height: 22px;
+  border-radius: 3px;
+  display: inline-block;
+  background: rgba(#000, 0.03);
+  border: 1px solid rgba(#000, 0.08);
+}

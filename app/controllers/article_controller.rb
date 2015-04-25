@@ -6,7 +6,7 @@ class ArticleController < ApplicationController
   DEFAULT_ARTICLES_PER_GRAPH = 40
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:duplicates, :combine_duplicate]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:duplicates, :combine_duplicate, :edit, :update]
 
   def authorized?
     unless user_signed_in?
@@ -38,7 +38,7 @@ class ArticleController < ApplicationController
           rename_article(old_title, @article.title)
         end
         record_deed
-        redirect_to :action => 'show', :article_id => @article.id
+        ajax_redirect_to :action => 'show', :article_id => @article.id
         return
       end
     elsif params['preview']
