@@ -100,6 +100,18 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
 
   // Different sizes
   @include button-sizes();
+
+  // Outline button
+  &.outline {
+    box-shadow: none;
+    background: rgba(#FFF, 0.5);
+    &:hover, &:focus { background: #FFF; }
+    &:active, &.pressed {
+      color: #FFF;
+      border-color: rgba(#000, 0.2);
+      background: mix($bodyBg, #322, 50%);
+    }
+  }
 }
 
 // Button without content
@@ -118,7 +130,7 @@ button:empty, .button:empty {
 }
 
 // Stacked buttons
-.stack-buttons {
+.button-stack {
   display: inline-block;
   vertical-align: middle;
   button, .button {

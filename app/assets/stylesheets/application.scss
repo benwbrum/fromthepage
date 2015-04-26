@@ -196,16 +196,18 @@ $footerBg:									$themeDark;
 	border-collapse: separate;
 	margin-bottom: $gapSize * 2;
 	th {
-		line-height: 1.2;
+		line-height: 30px;
 		color: $bodyFgFaded;
-		padding: $gapSize / 2;
+		padding: 0 0 5px 10px;
 		vertical-align: bottom;
-		font-size: $fontSizeSmall;
 		border-bottom: 1px solid rgba(#000, 0.1);
 		&:first-child { width: 25%; }
 	}
 	td { vertical-align: top; }
-	.show-changes { float: right; }
+	.show-changes {
+		float: right;
+		font-size: $fontSizeSmall;
+	}
 	.page-version {
 		width: 50%;
 		padding: $gapSize;
