@@ -151,6 +151,8 @@ $footerBg:									$themeDark;
 @import "sections/dashboard";
 @import "sections/collection";
 
+@import "plugins/select2/core";
+
 
 .article-duplicates {
 	margin: 1em 0;
@@ -203,9 +205,7 @@ $footerBg:									$themeDark;
 		&:first-child { width: 25%; }
 	}
 	td { vertical-align: top; }
-	.show-changes {
-		float: right;
-	}
+	.show-changes { float: right; }
 	.page-version {
 		width: 50%;
 		padding: $gapSize;

@@ -1,0 +1,32 @@
+.select2-selection--multiple {
+  display: block;
+  cursor: pointer;
+  min-height: 2em;
+  user-select: none;
+  box-sizing: border-box;
+
+  .select2-selection__rendered {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+    list-style: none;
+    white-space: nowrap;
+    vertical-align: top;
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+}
+
+.select2-search--inline {
+  margin: 0;
+  float: left;
+
+  .select2-search__field {
+    border: none;
+    box-shadow: none;
+    &::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+    }
+  }
+}
