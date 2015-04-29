@@ -200,51 +200,63 @@ $footerBg:									$themeDark;
 		color: $bodyFgFaded;
 		padding: 0 0 5px 10px;
 		vertical-align: bottom;
-		border-bottom: 1px solid rgba(#000, 0.1);
 		&:first-child { width: 25%; }
 	}
-	td { vertical-align: top; }
-	.show-changes {
-		float: right;
-		font-size: $fontSizeSmall;
+	td {
+		vertical-align: top;
+		border: 1px solid rgba(#000, 0.06);
+		border-width: 0 1px 0 0;
+	}
+	.page-version-list {
+		a {
+			display: block;
+			overflow: hidden;
+			line-height: 2.4;
+			color: $bodyFgLight;
+			white-space: nowrap;
+			text-decoration: none;
+			text-overflow: ellipsis;
+			padding: 0 $gapSize / 2;
+			&:hover { color: $bodyFg; }
+			&.selected {
+				color: $bodyFg;
+				margin-right: -1px;
+				background-clip: padding-box;
+				background-color: mix($bodyBg, #FFF, 30%);
+				border: 1px solid rgba(#000, 0.06);
+				border-right-width: 0;
+			}
+			time {
+				width: 7em;
+				display: inline-block;
+			}
+		}
 	}
 	.page-version {
 		width: 50%;
 		padding: $gapSize;
 		vertical-align: top;
-		background: mix($bodyBg, #000, 95%);
-		&:last-child { background: mix($bodyBg, #FFF, 50%); }
+		border-width: 1px 0;
+		background-clip: padding-box;
+		background-color: mix($bodyBg, #FFF, 30%);
+		&:last-child {
+			border-right-width: 1px;
+			background-color: mix($bodyBg, #000, 96%);
+		}
 		p {
 			margin: $lineHeight+em 0 0 0;
 			&:first-child { margin-top: 0; }
 		}
+		.original { display: none; }
 		ins {
 			background: #CEC;
 			text-decoration: none;
 		}
 		del { background: #FCC; }
-	}
-}
-.version-list {
-	a {
-		display: block;
-		overflow: hidden;
-		line-height: 2.4;
-		color: $bodyFgLight;
-		white-space: nowrap;
-		text-decoration: none;
-		text-overflow: ellipsis;
-		padding: 0 $gapSize / 2;
-		background-clip: padding-box;
-		border-bottom: 1px solid rgba(#000, 0.05);
-		&:hover { color: $bodyFg; }
-		&.selected {
-			color: $bodyFg;
-			background-color: mix($bodyBg, #000, 95%);
-		}
-		time {
-			width: 7em;
-			display: inline-block;
+		span { background: #FFF; }
+		[data-empty]:empty:before {
+			opacity: 0.5;
+			content: attr(data-empty);
 		}
 	}
 }

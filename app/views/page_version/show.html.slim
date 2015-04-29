@@ -1,81 +1,66 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 2, :page_id => @page.id } })
 
--version_compare_date = @version_compare.created_on.strftime("%b %d, %Y %I:%M %p")
--version_compare_user = link_to(@version_compare.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @version_compare.user.id })
+-selected_version_date = @selected_version.created_on.strftime("%b %d, %Y %I:%M %p")
+-selected_version_user = link_to(@selected_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @selected_version.user.id })
 
 table.page-versions
   tr
     th =pluralize(@page.page_versions.size, 'revision')
-    th =="#{version_compare_user} at #{version_compare_date}"
-    th
-      span Current Version
-      .show-changes.button-stack
-        button.outline(data-toggle-diff="false") Original
-        button.outline.pressed(data-toggle-diff="true") Changes
+    th =="#{selected_version_user} at #{selected_version_date}"
+    th Revision changes
   tr
-    td
-      .version-list
-        -@page.page_versions.each do |version|
-          =link_to({ :action => 'show', :page_version_id => version.id }, class: ('selected' if version == @version_compare))
-            =time_tag(version.created_on)
-              =version.created_on.strftime("%b %d, %Y")
-            span =version.user.display_name
+    td.page-version-list
+      -@page.page_versions.each do |version|
+        =link_to({ :action => 'show', :page_version_id => version.id }, class: ('selected' if version == @selected_version))
+          =time_tag(version.created_on)
+            =version.created_on.strftime("%b %d, %Y")
+          span =version.user.display_name
 
     td.page-version
-      h4 =@version_compare.title
-      -if @version_compare.xml_transcription.present?
-        .transcription.original ==xml_to_html(@version_compare.xml_transcription)
-      -else
-        .a50 No Transcription Provided
+      h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
+      div(data-diff-transcription="changed" data-empty="No transcription provided")
+        ==xml_to_html(@selected_version.xml_transcription)
       -if @work.supports_translation
         hr
         h4 Translation
-        -if @version_compare.xml_translation.present?
-          .translation.original ==xml_to_html(@version_compare.xml_translation)
-        -else
-          .a50 No Translation Provided
+        div(data-diff-translation="changed" data-empty="No translation provided")
+          ==xml_to_html(@selected_version.xml_translation)
 
     td.page-version
-      h4 =@version_current.title
-      -if @version_current.xml_text.present?
-        .transcription.changed ==xml_to_html(@version_current.xml_text)
-        .transcription.diff(style="display:none")
-      -else
-        .a50 No Transcription Provided
+      h4(data-diff-title="original" data-empty="Untitled") =(@previous_version.title rescue "")
+      div(data-diff-transcription="original" data-empty="No transcription provided")
+        ==xml_to_html((@previous_version.xml_transcription rescue ""))
       -if @work.supports_translation
         hr
         h4 Translation
-        -if @version_current.xml_translation.present?
-          .translation.changed ==xml_to_html(@version_current.xml_translation)
-          .translation.diff(style="display:none")
-        -else
-          .a50 No Translation Provided
+        div(data-diff-translation="original" data-empty="No translation provided")
+          ==xml_to_html((@previous_version.xml_translation rescue ""))
 
 javascript:
   $(function() {
-    function toggleDiff(show) {
-      $('.page-version .changed').toggle(!show);
-      $('.page-version .diff').toggle(show);
-    };
-
-    toggleDiff($('[data-toggle-diff].pressed').data('toggle-diff'));
-
-    $('[data-toggle-diff]').on('click', function() {
-      var button = $(this).addClass('pressed');
-      button.siblings().removeClass('pressed');
-      toggleDiff(button.data('toggle-diff'));
-    });
-
     $('.page-versions')
       .prettyTextDiff({
-        diffContainer: '.transcription.diff',
-        changedContainer: '.transcription.changed',
-        originalContainer: '.transcription.original'
+        changedContainer:  '[data-diff-title=changed]',
+        originalContainer: '[data-diff-title=original]',
+        diffContainer:     '[data-diff-title=original]'
       })
       .prettyTextDiff({
-        diffContainer: '.translation.diff',
-        changedContainer: '.translation.changed',
-        originalContainer: '.translation.original'
+        changedContainer:  '[data-diff-transcription=changed]',
+        originalContainer: '[data-diff-transcription=original]',
+        diffContainer:     '[data-diff-transcription=original]'
+      })
+      .prettyTextDiff({
+        changedContainer:  '[data-diff-translation=changed]',
+        originalContainer: '[data-diff-translation=original]',
+        diffContainer:     '[data-diff-translation=original]'
       });
 
+    // Awful workaround to make sure containers
+    // does not contain empty text nodes
+    $('[data-empty]').each(function() {
+      $element = $(this);
+      if(!$.trim($element.html())) {
+        $element.empty();
+      }
+    });
   });

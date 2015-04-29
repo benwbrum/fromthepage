@@ -3,8 +3,8 @@ class PageVersionController < ApplicationController
   before_filter :set_versions
 
   def set_versions
-    @version_current = @page
-    @version_compare = @page_version.present? ? @page_version : @page.page_versions.first
+    @selected_version = @page_version.present? ? @page_version : @page.page_versions.first
+    @previous_version = @selected_version.prev
   end
 
   def list
