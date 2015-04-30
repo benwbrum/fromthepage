@@ -16,11 +16,11 @@
 }
 
 .deed-bubble {
-  padding: 0 0 0 55px;
   width: 100%;
-  box-sizing: border-box;
+  padding: 0 0 0 55px;
   display: inline-block;
-  margin: $gapSize / 2 0;
+  box-sizing: border-box;
+  margin-bottom: $gapSize / 2;
   .userpic {
     float: left;
     font-size: 40px;
@@ -31,7 +31,8 @@
     border-radius: 4px;
     position: relative;
     padding: $gapSize * 0.75;
-    box-shadow: 0 0 1px rgba(#000, 0.25);
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.06);
     background-color: mix(#FFF, $bodyBg, 35%);
     &:before, &:after {
       top: 12px;

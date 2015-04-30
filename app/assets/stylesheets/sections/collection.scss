@@ -54,14 +54,12 @@
 // Overview
 
 .work {
-  margin: 0 0 1em 0;
-  padding: 0 0 1em 0;
-  transition: border-color 0.3s;
-  border-bottom: 1px dotted $borderColor;
-  &:last-child {
-    border: 0;
-    margin: 0;
-  }
+  padding: $gapSize;
+  border-radius: 4px;
+  margin-bottom: $gapSize / 2;
+  background-clip: padding-box;
+  border: 1px solid rgba(#000, 0.06);
+  background-color: mix(#FFF, $bodyBg, 35%);
   &_title {
     margin: 0;
     a {
