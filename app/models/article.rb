@@ -12,7 +12,7 @@ class Article < ActiveRecord::Base
 
   validates_presence_of :title
 
-  has_and_belongs_to_many :categories, :uniq => true
+  has_and_belongs_to_many :categories, -> { uniq }
   belongs_to :collection
   has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink'})
   scope :target_article_links, -> { include 'source_article' }
@@ -22,7 +22,7 @@ class Article < ActiveRecord::Base
   has_many(:page_article_links)
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
-  
+
   scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").include(:page)}
 
   has_many :pages, :through => :page_article_links
