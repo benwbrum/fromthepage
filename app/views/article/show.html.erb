@@ -58,7 +58,7 @@
       <ul>
       	<% for cat in @article.categories %>
 	      	<li>
-	      		<%= cat.title %>
+	      		<%= raw((cat.ancestors.reverse.push(cat).map { |c| c.title }).join(" &rarr; ")) %>
 	      	</li>
 		<% end %>
       </ul>
