@@ -19,7 +19,11 @@
 	</div>
 	<% if user_signed_in? %>
 		<div class="inside-column">
-      <%= link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { :action => 'duplicates', :article_id => @article.id }, :data => { litebox: { hash: 'duplicates' } } %>
+      <% if @article.possible_duplicates.empty? %>
+        <span>No duplicates found</span>
+      <% else %>
+        <%= link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { :action => 'duplicates', :article_id => @article.id }, :data => { litebox: { hash: 'duplicates' } } %>
+      <% end %>
       &nbsp;|&nbsp;
       <%= link_to 'Edit Subject', { :action => 'edit', :article_id => @article.id }, :data => { litebox: { hash: 'edit' } } %>
       <!--
