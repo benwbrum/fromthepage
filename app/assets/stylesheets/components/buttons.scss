@@ -139,10 +139,12 @@ button:empty, .button:empty {
     margin-left: -1px;
     &:first-child {
       margin-left: 0;
-      border-radius: $btnBorderRadius 0 0 $btnBorderRadius;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
     &:last-child {
-      border-radius: 0 $btnBorderRadius $btnBorderRadius 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
     &:active, &.pressed {
       z-index: 1;

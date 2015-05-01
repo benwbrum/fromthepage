@@ -12,5 +12,7 @@ table.datagrid.striped
       td.nowrap
         =time_tag(d.created_at, class: 'small fglight')
           ="#{time_ago_in_words d.created_at} ago"
-
-=render(:partial => 'shared/pagination', :locals => { :model => @deeds, :entries_info => true })
+br
+small.legend
+  =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => 'Newer Activity', :next_label => 'Older Activity' }
+br

@@ -547,7 +547,7 @@ a.label:hover {
     height: 100%;
     background: $color;
     display: inline-block;
-    &:nth-child(2) { background: adjust-hue($color, -30deg); }
+    &:nth-child(2) { background: adjust-hue(lighten($color, 10%), -25deg); }
   }
 }
 
@@ -559,7 +559,6 @@ a.label:hover {
   display: inline-block;
   text-decoration: none;
   vertical-align: middle;
-  font-size: $fontSizeSmall;
   border: 1px solid $borderColor;
   .icon {
     opacity: 0.6;

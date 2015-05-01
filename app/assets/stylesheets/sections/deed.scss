@@ -66,3 +66,35 @@
     $rotate: $rotate - 30deg;
   }
 }
+
+.deed-pager {
+  margin: 0 -0.5em;
+  color: $bodyFgLight;
+  display: inline-block;
+  vertical-align: middle;
+  .previous_page, .next_page {
+    float: left;
+    color: inherit;
+    padding: 0 1em;
+    line-height: 2;
+    border-radius: 1.2em;
+    text-decoration: none;
+    border: 1px solid $borderColor;
+    &.disabled { color: rgba($bodyFgLight, 0.6); }
+  }
+  .previous_page {
+    border-right: 0;
+    padding-right: 0.8em;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .next_page {
+    padding-left: 0.8em;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  a:hover {
+    color: $bodyFg;
+    background: rgba(#FFF, 0.5);
+  }
+}
