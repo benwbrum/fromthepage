@@ -31,17 +31,13 @@ module ApplicationHelper
     ret = "<ul>\n"
       for category in categories
         if category.parent_id == parent_id
-          ret << display_category(category, &block)
+          ret << "<li>"
+          ret << yield(category)
+          ret << display_categories(category.children, category.id, &block) if category.children.any?
+          ret << "</li>"
         end
       end
     ret << "</ul>\n"
-  end
-
-  def display_category(category, &block)
-    ret = "<li>\n"
-    ret << yield(category)
-    ret << display_categories(category.children, category.id, &block) if category.children.any?
-    ret << "</li>\n"
   end
 
   def deeds_for(options={})

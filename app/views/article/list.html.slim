@@ -1,0 +1,40 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection.id }})
+
+.collection-categories
+  .category-tree
+    ==display_categories(@collection.categories, nil) do |category|
+      -ret = "<div data-tree-item=\"cat_#{category.id}\">"
+      -if category.children.any?
+        -ret << "<div data-tree-bullet></div>"
+      -ret << "<span>#{category.title}</span>"
+      -ret << "</div>"
+    ul
+      li: div(data-tree-item="cat_none") Uncategorized
+
+  .category-articles
+    -@collection.categories.each do |category|
+      dl(id="cat_#{category.id}")
+        dt: h3 ==(category.ancestors.reverse.push(category).map { |c| c.title }).join(" &rarr; ")
+        dd
+          -category.articles.each do |article|
+            =link_to article.title, { :action => 'show', :article_id => article.id }
+
+    dl#cat_none
+      dt: h3 Uncategorized Articles
+      dd
+        -@uncategorized_articles.each do |article|
+          =link_to article.title, { :action => 'show', :article_id => article.id }
+
+javascript:
+  $(function() {
+    $('[data-tree-bullet]').on('click', function(e) {
+      e.stopPropagation();
+      $(this).closest('li').toggleClass('expanded');
+    });
+    $('[data-tree-item]').on('click', function() {
+      $('[data-tree-item].selected').removeClass('selected');
+      $(this).addClass('selected');
+      $('#'+$(this).data('tree-item')).show().siblings().hide();
+    });
+    $('[data-tree-item]:first').trigger('click');
+  });
