@@ -46,6 +46,8 @@
           ="#{time_ago_in_words note.created_at} ago"
         span.deed-short_content
           =="#{user} wrote #{text}"
+    small.legend
+      =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'pill-stroke'
 
     h3 Recent Edits
-    =deeds_for({:collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT]})
+    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT] })
