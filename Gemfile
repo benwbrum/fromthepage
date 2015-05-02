@@ -58,3 +58,7 @@ gem 'slim', '~> 3.0.0'
 
 # Gravatar Image Tag
 gem 'gravatar_image_tag'
+
+# New Relic
+gem 'newrelic_rpm'
+
