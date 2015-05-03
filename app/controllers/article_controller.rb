@@ -1,5 +1,5 @@
 class ArticleController < ApplicationController
-  before_filter :authorized?, :except => [:graph, :list, :show]
+  before_filter :authorized?, :except => [:graph, :list, :show, :tooltip]
 
   include AbstractXmlController
 
