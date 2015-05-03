@@ -24,7 +24,7 @@ module AbstractXmlHelper
           anchor.add_attribute("href", "#article-#{id}")
         else
           anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id))
-          anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id, :title=> title))
+          anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
         end
       else
         # preview mode for this link
