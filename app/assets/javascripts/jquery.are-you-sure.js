@@ -7,8 +7,8 @@
  * http://jquery.org/license
  *
  * Author:  chris.dance@papercut.com
- * Version: 1.6.0
- * Date:    7th Feb 2014
+ * Version: 1.9.0
+ * Date:    13th August 2014
  */
 (function($) {
   
@@ -21,7 +21,8 @@
         'change' : null,
         'silent' : false,
         'addRemoveFieldsMarksDirty' : false,
-        'fieldSelector': "select,textarea,input[type='text'],input[type='password'],input[type='checkbox'],input[type='radio'],input[type='hidden'],input[type='color'],input[type='date'],input[type='datetime'],input[type='datetime-local'],input[type='email'],input[type='month'],input[type='number'],input[type='range'],input[type='search'],input[type='tel'],input[type='time'],input[type='url'],input[type='week']"
+        'fieldEvents' : 'change keyup propertychange input',
+        'fieldSelector': ":input:not(input[type=submit]):not(input[type=button])"
       }, options);
 
     var getValue = function($field) {
@@ -114,8 +115,8 @@
     var initForm = function($form) {
       var fields = $form.find(settings.fieldSelector);
       $(fields).each(function() { storeOrigValue($(this)); });
-      $(fields).unbind('change keyup', checkForm);
-      $(fields).bind('change keyup', checkForm);
+      $(fields).unbind(settings.fieldEvents, checkForm);
+      $(fields).bind(settings.fieldEvents, checkForm);
       $form.data("ays-orig-field-count", $(fields).length);
       setDirtyStatus($form, false);
     };
@@ -141,7 +142,7 @@
         var $field = $(this);
         if (!$field.data('ays-orig')) {
           storeOrigValue($field);
-          $field.bind('change keyup', checkForm);
+          $field.bind(settings.fieldEvents, checkForm);
         }
       });
       // Check for changes while we're here
@@ -152,13 +153,22 @@
       initForm($(this));
     }
 
-    if (!settings.silent) {
+    if (!settings.silent && !window.aysUnloadSet) {
+      window.aysUnloadSet = true;
       $(window).bind('beforeunload', function() {
         $dirtyForms = $("form").filter('.' + settings.dirtyClass);
-        if ($dirtyForms.length > 0) {
-          // $dirtyForms.removeClass(settings.dirtyClass); // Prevent multiple calls?
-          return settings.message;
+        if ($dirtyForms.length == 0) {
+          return;
         }
+        // Prevent multiple prompts - seen on Chrome and IE
+        if (navigator.userAgent.toLowerCase().match(/msie|chrome/)) {
+          if (window.aysHasPrompted) {
+            return;
+          }
+          window.aysHasPrompted = true;
+          window.setTimeout(function() {window.aysHasPrompted = false;}, 900);
+        }
+        return settings.message;
       });
     }
 
