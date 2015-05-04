@@ -20,7 +20,7 @@
               span.progress
                 span(style="width:#{progress_annotated}%")
                 span(style="width:#{progress_transcribed - progress_annotated}%")
-
+  //-
     h2 Subjects
     ==display_categories(@collection.categories, nil) do |c|
       -controller.render_to_string(:partial => '/category/category_link', :locals => { :category => c, :article_partial => '/category/article_link' })
