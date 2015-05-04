@@ -1,0 +1,37 @@
+-if @page.notes.empty?
+  p.fglight Nobody wrote a note for this page yet
+
+-@page.notes.each do |note|
+  .user-bubble.editable(id="note_#{note.id}")
+    =link_to({ :controller => 'user', :action => 'profile', :user_id => note.user.id }, class: 'userpic')
+      =gravatar_image_tag note.user.email, :alt => note.user.display_name
+    .user-bubble_content
+      -if note.user == current_user
+        .user-bubble_actions
+          a(data-toggle-class='{ "#note_#{note.id}": "edit" }')
+            =svg_symbol '#icon-edit', class: 'icon'
+          =link_to note, :method => :delete, :'data-confirm' => 'Are you sure to delete this note?'
+            =svg_symbol '#icon-delete', class: 'icon'
+      =time_tag note.created_at
+        =link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
+        =" #{time_ago_in_words note.created_at} ago"
+      p =note.body
+
+    -if note.user == current_user
+      =form_for note, :html => { class: 'user-bubble_form' } do |f|
+        .user-bubble_form_editor
+          =f.text_area :body, :rows => 4
+        .user-bubble_form_footer
+          a(data-toggle-class='{ "#note_#{note.id}": "edit" }') Cancel
+          =f.button 'Update'
+
+
+-if user_signed_in?
+  .user-bubble
+    .userpic =gravatar_image_tag current_user.email, :alt => current_user.display_name
+    =form_for :note, url: notes_path, :html => { class: 'user-bubble_form' } do |f|
+      =hidden_field_tag(:page_id, @page.id)
+      .user-bubble_form_editor
+        =f.text_area :body, :rows => 4, :placeholder => 'Write a new note...'
+      .user-bubble_form_footer
+        =f.button 'Submit'

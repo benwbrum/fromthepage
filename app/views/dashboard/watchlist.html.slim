@@ -7,13 +7,13 @@
       -c.deeds.limit(5).each do |d|
         //- Hide collection link
         -d.collection = nil
-        .deed-bubble
+        .user-bubble
           =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic')
             =gravatar_image_tag d.user.email, :alt => d.user.display_name
-          p.deed-bubble_content
+          .user-bubble_content
             =time_tag d.created_at
               ="#{time_ago_in_words d.created_at} ago"
-            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+            p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
 
   aside.sidecol
     h3 Activity Stream

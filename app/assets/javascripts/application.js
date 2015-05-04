@@ -142,6 +142,12 @@ $(function() {
   $('.dropdown').dropdown();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
+  $('[data-toggle-class]').on('click', function() {
+    var data = $(this).data('toggle-class');
+    for(var selector in data) {
+      $(selector).toggleClass(data[selector]);
+    }
+  });
 
   // Global page loading spinner
   $('html').removeClass('page-busy');

@@ -1,0 +1,145 @@
+// ---------------------------
+// PAGE PAGES
+// ---------------------------
+
+
+// Page navigation
+
+.page-nav {
+  font-size: 0;
+  color: $bodyFgFaded;
+  display: inline-block;
+  vertical-align: middle;
+  &_prev, &_next, &_info {
+    padding: 0 0.6em;
+    line-height: 2.2;
+    display: table-cell;
+    border-radius: 1.2em;
+    text-decoration: none;
+    font-size: $fontSizeSmall;
+    background: rgba(#FFF, 0.3);
+    border: 1px solid $borderColor;
+  }
+  &_prev, &_next { color: rgba($bodyFgFaded, 0.5); }
+  &_info { border-radius: 0;}
+  &_prev {
+    border-right: 0;
+    padding-left: 0.8em;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &_next {
+    border-left: 0;
+    padding-right: 0.8em;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  a {
+    color: inherit;
+    &:hover {
+      color: $bodyFg;
+      background: #FFF;
+    }
+  }
+}
+
+
+// Page transcription
+
+.page-transcription {
+  font-size: $fontSizeBig;
+  margin-bottom: $gapSize * 1.5;
+}
+
+
+// Page versions
+
+.page-versions {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  th {
+    line-height: 30px;
+    color: $bodyFgFaded;
+    padding: 0 0 5px 10px;
+    vertical-align: bottom;
+    &:first-child { width: 25%; }
+  }
+  td {
+    vertical-align: top;
+    border-style: solid;
+    border-color: rgba(#000, 0.06);
+  }
+}
+
+.page-version-list {
+  border-width: 0 1px 0 0;
+  a {
+    display: block;
+    overflow: hidden;
+    line-height: 2.4;
+    color: $bodyFgLight;
+    white-space: nowrap;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    padding: 0 $gapSize / 2;
+    &:hover { color: $bodyFg; }
+    &.selected {
+      color: $bodyFg;
+      margin-right: -1px;
+      background-clip: padding-box;
+      background-color: mix($bodyBg, #FFF, 30%);
+      border: 1px solid rgba(#000, 0.06);
+      border-right-width: 0;
+    }
+    time {
+      width: 7em;
+      display: inline-block;
+    }
+  }
+}
+
+.page-version {
+  width: 50%;
+  padding: $gapSize;
+  border-width: 1px 0;
+  background-clip: padding-box;
+  background-color: mix($bodyBg, #FFF, 30%);
+  &:last-child {
+    border-right-width: 1px;
+    background-color: mix($bodyBg, #000, 96%);
+  }
+  p {
+    margin: $lineHeight+em 0 0 0;
+    &:first-child { margin-top: 0; }
+  }
+  .original { display: none; }
+  ins {
+    background: #CEC;
+    text-decoration: none;
+  }
+  del { background: #FCC; }
+  span { background: #FFF; }
+  [data-empty]:empty:before {
+    opacity: 0.5;
+    content: attr(data-empty);
+  }
+}
+
+
+// Page columns
+
+.page-columns {
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+}
+
+.page-column {
+  width: 50%;
+  display: table-cell;
+  vertical-align: top;
+  padding: 0 $gapSize;
+  &:first-child { padding-left: 0; }
+  &:last-child { padding-right: 0; }
+}

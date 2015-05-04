@@ -1,5 +1,5 @@
 -tabs = [{\
-  :name => 'Page',
+  :name => 'Overview',
   :selected => 1,
   :options => {\
     :controller => 'display',
@@ -50,6 +50,26 @@
     },
   }]
 
+
+.headline
+  h1.headline_title =@page.title
+  .headline_aside
+    nav.page-nav
+      -if !@page.first?
+        -higher_item = @page.higher_item
+        =link_to({ :controller => 'display', :action => 'display_page', :page_id => higher_item.id }, class: 'page-nav_prev')
+          =svg_symbol '#icon-arrow-left', class: 'icon'
+      -else
+        span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
+
+      span.page-nav_info ="Page #{@page.position} of #{@work.pages.size}"
+
+      -if !@page.last?
+        -lower_item = @page.lower_item
+        =link_to({ :controller => 'display', :action => 'display_page', :page_id => lower_item.id }, class: 'page-nav_next')
+          =svg_symbol '#icon-arrow-right', class: 'icon'
+      -else
+        span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
 
 .tabs
   -for tab in tabs

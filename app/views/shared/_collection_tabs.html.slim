@@ -52,6 +52,8 @@
     },
   }]
 
+
+h1 =@collection.title
 .tabs
   -for tab in tabs
     =link_to_unless_current tab[:name], tab[:options].merge(:collection_id => collection_id)

@@ -1,0 +1,12 @@
+-path = []
+
+-if @collection && @collection.title.present? && (@work || @article)
+  -path.push(link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id })
+
+-if @work && @work.title.present? && (@page || @article)
+  -path.push(link_to @work.title, { :controller => 'display', :action => 'read_work', :work_id => @work.id })
+
+-if path.present?
+  ul.breadcrumbs
+    -path.each do |item|
+      li ==item

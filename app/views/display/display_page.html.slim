@@ -1,65 +1,48 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected =>1, :page_id => @page.id }})
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 1, :page_id => @page.id }})
 
-.two-columns
-  .left-column
-    =render :partial => '/shared/page_navigation'
-    h2 =@page.title
-
-    #transcription_display_area.inside-column
-      -if @page.xml_text != nil && !@page.xml_text.empty?
-        ==xml_to_html(@page.xml_text)
-      -else
-        p
-          i =link_to('Help transcribe this page!', { :controller => 'transcribe', :action => 'display_page', :page_id => @page.id })
-        -unless @page.status == Page::STATUS_BLANK
-          =button_to('mark this page blank', { :controller => 'transcribe', :action => 'mark_page_blank', :page_id => @page.id })
-
-    -if false
-      .inside-column
-        hr
-        -@page.articles_with_text.each do |article|
-          dl
-            -if article.xml_text != nil && !article.xml_text.empty?
-              dt: b =article.title
-              dd =xml_to_html(article.xml_text)
-
-    .inside-column
-      #note_container(style="display: none")
-        =render :partial => "notes/form_new"
-      =link_to "add comment", "#", id: "toggle"
-      =render :partial => "notes/notes"
-
-
-  .right-column(style="position: relative; top: 0px;")
-    -if @work.supports_translation && !translation_mode?
-      #translation_button_div.inside-column
-        =link_to(button_tag('Show Translation'), { :translation => true, :page_id => @page.id })
-
-    -if translation_mode?
-      .thumbnail-container
-        figure
-          figcaption
-            =link_to(button_tag('Show Facsimile'), { :translation => false, :page_id => @page.id })
-
-          -if @page.ia_leaf
-            =link_to(image_tag(@page.ia_leaf.thumb_url), { :action => 'display_page', :page_id => @page.id })
-          -elsif @page.omeka_file
-            =link_to(image_tag(@page.omeka_file.thumbnail_url), { :action => 'display_page', :page_id => @page.id })
-          -else
-            =link_to(image_tag(file_to_url(@page.thumbnail_image)), { :action => 'display_page', :page_id => @page.id })
-
-      #translation_button_div.inside-column
-        ==xml_to_html(@page.xml_translation)
+.page-columns
+  .page-column
+    -transcription = xml_to_html(@page.xml_text)
+    -if transcription.present?
+      .headline
+        h3.headline_title Transcription
+      .page-transcription ==transcription
     -else
-      -if @page.ia_leaf
-        =render :partial => '/ia/ia_bookreader_div'
-      -elsif @page.omeka_file
-        =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
-      -else
-        =render :partial => '/shared/zoom_div'
+      -help_transcribe = link_to('help transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => @page.id })
+      -mark_blank = link_to('mark the page blank', { :controller => 'transcribe', :action => 'mark_page_blank', :page_id => @page.id })
+      .nodata
+        h5.nodata_title This page is not transcribed
+        p.nodata_text
+          =="Please #{help_transcribe} this page"
+          ==" or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
+
+    hr
+    h2 Notes
+    =render :partial => "notes/notes"
+
+
+  .page-column
+    -if translation_mode?
+      .headline
+        h3.headline_title Translation
+        small.headline_aside =link_to 'Show Facsimile', { :translation => false, :page_id => @page.id }, class: 'button outline'
+      .page-transcription
+        ==xml_to_html(@page.xml_translation)
+
+    -else
+      .headline
+        h3.headline_title Facsimile
+        -if @work.supports_translation
+          small.headline_aside =link_to 'Show Translation', { :translation => true, :page_id => @page.id }, class: 'button outline'
+      .page-imagescan
+        -if @page.ia_leaf
+          =render :partial => '/ia/ia_bookreader_div'
+        -elsif @page.omeka_file
+          =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
+        -else
+          =render :partial => '/shared/zoom_div'
 
 javascript:
-  $(document).ready(function() {
-    $('#toggle').click(function() { $("#note_container").toggle(); });
+  $(function() {
     $('form').areYouSure();
   });

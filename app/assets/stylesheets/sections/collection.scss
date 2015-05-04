@@ -181,3 +181,14 @@
     box-sizing: border-box;
   }
 }
+
+
+// Collection footer
+
+.collection-footer {
+  text-align: center;
+  color: $bodyFgLight;
+  margin-top: $gapSize * 3;
+  padding-top: $gapSize * 1.5;
+  border-top: 1px dotted $borderColor;
+}

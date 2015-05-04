@@ -7,21 +7,20 @@ class NotesController < ApplicationController
     @note.page = @page
     @note.work = @work
     @note.collection = @collection
-
     @note.user = current_user
 
     respond_to do |format|
       if not user_signed_in?
-	flash[:notice] = 'You must log in to create notes'
-	format.html { render :text => "redirect_to comment_url(@comment)" }
-	format.xml  { head :err }
-	format.js	{ render :update do |page| page.alert "You must log in to create notes" end }
+        flash[:error] = "You must be logged in to create notes"
+        format.html { render :text => "redirect_to comment_url(@comment)" }
+        format.xml  { head :err }
+        format.js   { render :update do |page| page.alert "You must be logged in to create notes" end }
       elsif @note.save
-	record_deed
-	format.js
-	format.html { redirect_to :back }
+        record_deed
+        format.js
+        format.html { redirect_to :back }
       else
-	format.js
+        format.js
       end
     end
   end
@@ -30,7 +29,7 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
     @note.deed.delete
     @note.delete
-    flash[:notice] = "Deleted!"
+    flash[:notice] = "Note has been deleted"
     redirect_to :back
   end
 
@@ -40,10 +39,9 @@ class NotesController < ApplicationController
 
   def update
     @note = Note.find(params[:id])
-
     if @note.update_attributes(params[:note])
-      flash[:success] = "Note successfully updated."
-      redirect_to @note
+      flash[:notice] = "Note has been updated"
+      redirect_to :back
     end
   end
 
@@ -61,4 +59,5 @@ class NotesController < ApplicationController
     deed.user = current_user
     deed.save!
   end
+
 end

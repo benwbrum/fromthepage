@@ -122,7 +122,7 @@ $bodyFg:										#200;
 $bodyBg:										mix(#FFF, $themeLight, 70);
 $bodyFgFaded:								mix($bodyFg, $bodyBg, 60);
 $bodyFgLight:								mix($bodyFg, $bodyBg, 50);
-$borderColor:								rgba(#000, 0.15);
+$borderColor:								mix(#000, $bodyBg, 15);
 
 $headerHeight:							80px;
 $headerFg:									$themeDark;
@@ -150,9 +150,10 @@ $footerBg:									$themeDark;
 @import "sections/deed";
 @import "sections/dashboard";
 @import "sections/collection";
+@import "sections/page";
 
 @import "plugins/select2/core";
-
+@import "plugins/zoomer";
 
 .article-duplicates {
 	margin: 1em 0;
@@ -190,76 +191,6 @@ $footerBg:									$themeDark;
 }
 
 
-.page-versions {
-	width: 100%;
-	table-layout: fixed;
-	border-collapse: separate;
-	margin-bottom: $gapSize * 2;
-	th {
-		line-height: 30px;
-		color: $bodyFgFaded;
-		padding: 0 0 5px 10px;
-		vertical-align: bottom;
-		&:first-child { width: 25%; }
-	}
-	td {
-		vertical-align: top;
-		border: 1px solid rgba(#000, 0.06);
-		border-width: 0 1px 0 0;
-	}
-	.page-version-list {
-		a {
-			display: block;
-			overflow: hidden;
-			line-height: 2.4;
-			color: $bodyFgLight;
-			white-space: nowrap;
-			text-decoration: none;
-			text-overflow: ellipsis;
-			padding: 0 $gapSize / 2;
-			&:hover { color: $bodyFg; }
-			&.selected {
-				color: $bodyFg;
-				margin-right: -1px;
-				background-clip: padding-box;
-				background-color: mix($bodyBg, #FFF, 30%);
-				border: 1px solid rgba(#000, 0.06);
-				border-right-width: 0;
-			}
-			time {
-				width: 7em;
-				display: inline-block;
-			}
-		}
-	}
-	.page-version {
-		width: 50%;
-		padding: $gapSize;
-		vertical-align: top;
-		border-width: 1px 0;
-		background-clip: padding-box;
-		background-color: mix($bodyBg, #FFF, 30%);
-		&:last-child {
-			border-right-width: 1px;
-			background-color: mix($bodyBg, #000, 96%);
-		}
-		p {
-			margin: $lineHeight+em 0 0 0;
-			&:first-child { margin-top: 0; }
-		}
-		.original { display: none; }
-		ins {
-			background: #CEC;
-			text-decoration: none;
-		}
-		del { background: #FCC; }
-		span { background: #FFF; }
-		[data-empty]:empty:before {
-			opacity: 0.5;
-			content: attr(data-empty);
-		}
-	}
-}
 
 
 
@@ -571,6 +502,3 @@ p.right {
 	float: right;
 }
 //>>>>>>> rails3_nohpricot
-
-@import "jquery.fs.zoomer.css";
-

@@ -1,4 +1,10 @@
 h1 Activity Stream
+
+-if @collection
+  h3 ="Collection: #{@collection.title}"
+-if @user
+  h3 ="User: #{@user.display_name}"
+
 table.datagrid.striped
   -@deeds.each do |d|
     tr

@@ -15,48 +15,6 @@
   }
 }
 
-.deed-bubble {
-  width: 100%;
-  padding: 0 0 0 55px;
-  display: inline-block;
-  box-sizing: border-box;
-  margin-bottom: $gapSize / 2;
-  .userpic {
-    float: left;
-    font-size: 40px;
-    margin-left: -55px;
-  }
-  &_content {
-    margin: 0;
-    border-radius: 4px;
-    position: relative;
-    padding: $gapSize * 0.75;
-    background-clip: padding-box;
-    border: 1px solid rgba(#000, 0.06);
-    background-color: mix(#FFF, $bodyBg, 35%);
-    &:before, &:after {
-      top: 12px;
-      left: -8px;
-      content: '';
-      font-size: 8px;
-      position: absolute;
-      border: 8px solid transparent;
-      border-left-width: 0;
-      border-right-color: mix(#FFF, $bodyBg, 35%);
-    }
-    &:before {
-      left: -9px;
-      border-right-color: rgba(#000, 0.12);
-    }
-    time {
-      display: block;
-      color: $bodyFgLight;
-      margin-bottom: 0.2em;
-      font-size: $fontSizeSmall;
-    }
-  }
-}
-
 .deed-type {
   $color: #B30;
   $opacity: 0.4;
