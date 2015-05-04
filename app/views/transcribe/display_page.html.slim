@@ -1,0 +1,31 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
+
+.page-columns
+  .page-column
+    -if @preview_xml
+      ==xml_to_html(@preview_xml)
+
+    =form_for(@page, :url => { :action => 'save_transcription' }) do |f|
+      =hidden_field_tag(:page_id, @page.id)
+      -if @work.scribes_can_edit_titles
+        =f.label :title, 'Page Title'
+        =f.text_field :title
+      =f.text_area :source_text, { :cols => 60, :style => "height: #{@page.source_text ? @page.source_text.lines.count*1.5 : 30}em; min-height: 30em" }
+      =f.label :status, 'Page Status'
+      =f.select :status, relevant_transcription_statuses(@work), {:include_blank => true}, { :title => relevant_status_help(@work) }
+      =submit_tag "Preview", :name => 'preview'
+      =submit_tag "Autolink", :name => 'autolink'
+      =submit_tag "Save", :name => 'save'
+
+    -if @work.transcription_conventions
+      =@work.transcription_conventions
+    =render :partial => 'shared/markup_help'
+
+  .page-column
+    .page-imagescan
+      -if @page.ia_leaf
+        =render :partial => '/ia/ia_bookreader_div'
+      -elsif @page.omeka_file
+        =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
+      -else
+        =render :partial => '/shared/zoom_div'
