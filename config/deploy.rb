@@ -12,7 +12,7 @@ set :deploy_to, '/home/fromthepage/deployment'
 
 # Default value for :scm is :git
 # set :scm, :git
-
+set :branch, 'ui-design'
 # Default value for :format is :pretty
 # set :format, :pretty
 
@@ -23,7 +23,7 @@ set :deploy_to, '/home/fromthepage/deployment'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config/database.yml config/environments/production.rb}
+set :linked_files, %w{config/database.yml config/newrelic.yml} # config/environments/production.rb}
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
@@ -33,7 +33,7 @@ set :linked_dirs, ["log", "public/images/working", "tmp"]
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
 # Default value for keep_releases is 5
-# set :keep_releases, 5
+set :keep_releases, 5
 
 namespace :deploy do
 
