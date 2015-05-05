@@ -74,20 +74,21 @@
   }
   &_title {
     width: 100%;
-    display: table;
+    padding: 0.3em;
     margin-bottom: 0.5em;
+    display: inline-block;
+    box-sizing: border-box;
     font-size: $fontSizeBig;
     border-bottom: 1px solid rgba(#000, 0.1);
-    span {
-      display: table-cell;
-      white-space: nowrap;
-      vertical-align: middle;
-      padding: 0 0.2em 0.2em 0;
-      &:last-child { width: 100%; }
-    }
     label {
-      margin-left: 0.3em;
+      float: left;
+      line-height: 2;
       color: rgba($inputColor, 0.4);
+    }
+    input {
+      width: auto;
+      display: block;
+      overflow: hidden;
     }
   }
 }

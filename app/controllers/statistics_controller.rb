@@ -21,7 +21,6 @@ class StatisticsController < ApplicationController
     @t_all_users_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
     @e_all_users_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
     @i_all_users_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
-
   end
 
 private
@@ -40,15 +39,9 @@ private
     @users = User.all
 
     @t_users = @users.reject { |u| !@t_deeds_by_user.keys.include? u.id }
-    @t_top_ten_users_and_deeds =
-      build_top_ten_array(@t_deeds_by_user)
-
-    @e_top_ten_users_and_deeds =
-      build_top_ten_array(@e_deeds_by_user)
-
-    @i_top_ten_users_and_deeds =
-      build_top_ten_array(@i_deeds_by_user)
-
+    @t_top_ten_users_and_deeds = build_top_ten_array(@t_deeds_by_user)
+    @e_top_ten_users_and_deeds = build_top_ten_array(@e_deeds_by_user)
+    @i_top_ten_users_and_deeds = build_top_ten_array(@i_deeds_by_user)
   end
 
   def build_top_ten_array(deeds_by_user)
@@ -66,6 +59,5 @@ private
 
     return top_ten_user_and_deeds.sort!{ |a,b| b[1] <=> a[1] }
   end
-
 
 end

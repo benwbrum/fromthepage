@@ -23,8 +23,8 @@
       .page-editor(style=("display:none" if @preview_xml))
         -if @work.scribes_can_edit_titles
           .page-editor_title
-            span =f.label :title, 'Page Title:'
-            span =f.text_field :title
+            =f.label :title, 'Page Title:'
+            =f.text_field :title
         =f.text_area :source_text, { :style => "height: #{@page.source_text ? @page.source_text.lines.count*1.5 : 30}em; min-height: 30em" }
 
     .page-column
@@ -37,7 +37,7 @@
           =render :partial => '/shared/zoom_div'
 
 -if @work.transcription_conventions.present?
-  =@work.transcription_conventions
+  p.fgfaded =@work.transcription_conventions
 
 .fgfaded
   =render :partial => 'shared/markup_help'
