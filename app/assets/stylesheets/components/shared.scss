@@ -223,6 +223,10 @@ a[data-tooltip] {
     padding-left: $gapSize;
     vertical-align: middle;
     &:first-child { padding-left: 0; }
+    &.wrap-text {
+      line-height: 1.1;
+      white-space: normal;
+    }
   }
   &.vtop > &_group { vertical-align: top; }
   table.form + & { margin: $gapSize 0 0 0; }

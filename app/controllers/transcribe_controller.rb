@@ -7,10 +7,15 @@ class TranscribeController  < ApplicationController
   before_filter :authorized?, :except => :zoom
   protect_from_forgery :except => [:zoom, :unzoom]
 
-
   def authorized?
     unless user_signed_in? && current_user.can_transcribe?(@work)
       redirect_to new_user_session_path
+    end
+  end
+
+  def display_page
+    if params[:preview] == 'true'
+      @preview_xml = @page.generate_preview
     end
   end
 
@@ -23,7 +28,7 @@ class TranscribeController  < ApplicationController
 
   def save_transcription
     old_link_count = @page.page_article_links.count
-    @page.attributes=params[:page]
+    @page.attributes = params[:page]
     if params['save']
       log_transcript_attempt
       begin
@@ -32,7 +37,7 @@ class TranscribeController  < ApplicationController
           record_deed
           # use the new links to blank the graphs
           @page.clear_article_graphs
-  
+
           new_link_count = @page.page_article_links.count
           logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
           if old_link_count == 0 && new_link_count > 0
@@ -47,9 +52,9 @@ class TranscribeController  < ApplicationController
         end
       rescue REXML::ParseException => ex
         log_transcript_exception(ex)
-        flash[:error] = 
-          "There was an error parsing the mark-up in your transcript.  
-           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  
+        flash[:error] =
+          "There was an error parsing the mark-up in your transcript.
+           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.
            Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
@@ -63,22 +68,18 @@ class TranscribeController  < ApplicationController
         flash[:error] = nil
         # raise ex
       end
-    elsif params['preview']
-      @preview_xml = @page.generate_preview
-      render :action => 'display_page'
     elsif params['autolink']
       @page.source_text = autolink(@page.source_text)
       render :action => 'display_page'
     end
   end
 
-
   def assign_categories
     # look for uncategorized articles
     for article in @page.articles
-	  if article.categories.length == 0
-	    render :action => 'assign_categories'
-	    return
+      if article.categories.length == 0
+        render :action => 'assign_categories'
+        return
       end
     end
     # no uncategorized articles found, skip to display
@@ -86,9 +87,8 @@ class TranscribeController  < ApplicationController
   end
 
   def translate
-   
   end
-  
+
   def save_translation
     old_link_count = @page.page_article_links.count
     @page.attributes=params[:page]
@@ -100,8 +100,8 @@ class TranscribeController  < ApplicationController
           record_translation_deed
 
           @work.work_statistic.recalculate if @work.work_statistic
-          
-          redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true          
+
+          redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true
         else
           log_translation_error
           flash[:error] = @page.errors[:base].join('<br />')
@@ -109,9 +109,9 @@ class TranscribeController  < ApplicationController
         end
       rescue REXML::ParseException => ex
         log_translation_exception(ex)
-        flash[:error] = 
-          "There was an error parsing the mark-up in your translation.  
-           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.  
+        flash[:error] =
+          "There was an error parsing the mark-up in your translation.
+           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.
            Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
@@ -135,7 +135,7 @@ protected
 
   TRANSLATION="TRANSLATION"
   TRANSCRIPTION="TRANSCRIPTION"
- 
+
   def log_attempt(attempt_type, source_text)
     # we have access to @page, @user, and params
     @transcript_date = Time.now
@@ -161,7 +161,7 @@ protected
 
   def log_success(attempt_type)
     log_message = "#{attempt_type}\t#{@transcript_date}\tSUCCESS\t"
-    logger.info(log_message)    
+    logger.info(log_message)
   end
 
 
@@ -200,9 +200,6 @@ protected
   end
 
 
-
-
-
   def record_deed
     deed = stub_deed
     current_version = @page.page_versions[0]
@@ -230,10 +227,10 @@ protected
     deed.deed_type = Deed::PAGE_INDEXED
     deed.save!
   end
-  
+
   def record_translation_deed
     deed = stub_deed
-    if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank? 
+    if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank?
       deed.deed_type = Deed::PAGE_TRANSLATED
     else
       deed.deed_type = Deed::PAGE_TRANSLATION_EDIT

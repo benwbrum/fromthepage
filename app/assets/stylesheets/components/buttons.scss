@@ -105,15 +105,17 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
   &.outline {
     box-shadow: none;
     color: $bodyFgFaded;
-    background: rgba(#FFF, 0.3);
+    background-image: none;
+    background-color: rgba(#FFF, 0.35);
     &:hover, &:focus, &:active {
       color: $bodyFg;
-      background: #FFF;
+      background-color: #FFF;
+      border-color: rgba(#000, 0.25);
     }
     &.pressed {
       color: #FFF;
-      border-color: rgba(#000, 0.2);
-      background: mix($bodyBg, #322, 50%);
+      border-color: rgba(#000, 0.5);
+      background-color: mix($bodyBg, #322, 50%);
     }
   }
 }
@@ -143,19 +145,13 @@ button:empty, .button:empty {
     margin-left: -1px;
     &:first-child {
       margin-left: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-radius: $btnBorderRadius 0 0 $btnBorderRadius;
     }
     &:last-child {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      border-radius: 0 $btnBorderRadius $btnBorderRadius 0;
     }
-    &:active, &.pressed {
+    &:active, &:focus, &.pressed {
       z-index: 1;
-      position: relative;
-    }
-    &:focus {
-      z-index: 2;
       position: relative;
     }
   }
