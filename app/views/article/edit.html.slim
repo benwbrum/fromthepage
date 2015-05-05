@@ -22,7 +22,8 @@
         -selected = true if @article.categories.include?(c)
         option(data-level=level value=c.id selected=selected) =c.title
 
-    p.fgfaded You can use double braces to link subjects. <code>[[Jane Doe]]</code> will link to the subject Jane Doe, while <code>[[Jane Doe|Jane]]</code> will link the text &quot;Jane&quot; to the subject Jane Doe. We recommend that linking be left to an editor after the initial transcription is made.
+    .small.fgfaded
+      =render :partial => 'shared/markup_help'
 
     .toolbar
       //.toolbar_group =f.button 'Preview', :name => 'preview'
