@@ -87,10 +87,7 @@
         text-align: right;
       }
     }
-    .progress {
-      width: 100%;
-      max-width: 300px;
-    }
+    .progress { max-width: 300px; }
   }
 }
 
@@ -222,6 +219,40 @@
     line-height: 1.2;
     padding-right: 1em;
     box-sizing: border-box;
+  }
+}
+
+
+// Collection stats
+
+.collection-stats {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: table;
+  list-style: none;
+  li {
+    margin: 0;
+    display: table-row;
+    > span {
+      color: $bodyFgLight;
+      display: table-cell;
+      white-space: nowrap;
+      border-bottom: 1px solid rgba(#000, 0.08);
+      padding: $gapSize / 2;
+      &:first-child, &:last-child { width: 50%; }
+      &:first-child {
+        max-width: 200px;
+        overflow: hidden;
+        font-size: $fontSizeBig;
+        text-overflow: ellipsis;
+      }
+      b {
+        color: $bodyFg;
+        font-weight: normal;
+      }
+    }
+    &:first-child > span { padding-top: 0; }
   }
 }
 

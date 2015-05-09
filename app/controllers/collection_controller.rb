@@ -22,15 +22,9 @@ class CollectionController < ApplicationController
 
   def show
     @users = User.all
-
-    cond_string = "collection_id = ? AND deed_type = ?"
-    t_deeds_by_user = Deed.group('user_id').where([cond_string, @collection.id, Deed::PAGE_TRANSCRIPTION]).limit(10).order('count_id desc').count('id')
-    e_deeds_by_user = Deed.group('user_id').where([cond_string, @collection.id, Deed::PAGE_EDIT]).limit(10).order('count_id desc').count('id')
-    i_deeds_by_user = Deed.group('user_id').where([cond_string, @collection.id, Deed::PAGE_INDEXED]).limit(10).order('count_id desc').count('id')
-
-    @top_ten_transcribers = build_top_ten_array(t_deeds_by_user)
-    @top_ten_editors      = build_top_ten_array(e_deeds_by_user)
-    @top_ten_indexers     = build_top_ten_array(i_deeds_by_user)
+    @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
+    @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
+    @top_ten_indexers     = build_user_array(Deed::PAGE_INDEXED)
   end
 
   def owners
@@ -121,10 +115,12 @@ class CollectionController < ApplicationController
     end
   end
 
-  def build_top_ten_array(deeds_by_user)
-    top_ten = []
-    deeds_by_user.each { |user_id, count| top_ten << [ @users.find { |u| u.id == user_id }, count ] }
-    return top_ten
+  def build_user_array(deed_type)
+    user_array = []
+    condition = "collection_id = ? AND deed_type = ?"
+    deeds_by_user = Deed.group('user_id').where([condition, @collection.id, deed_type]).limit(10).order('count_id desc').count('id')
+    deeds_by_user.each { |user_id, count| user_array << [ @users.find { |u| u.id == user_id }, count ] }
+    return user_array
   end
 
 end

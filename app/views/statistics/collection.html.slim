@@ -1,0 +1,53 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 7, :collection_id => @collection.id }})
+
+-unless @works.empty?
+  ul.collection-stats
+    -@works.each do |w|
+      -progress_annotated = w.work_statistic.pct_annotated.round
+      -progress_transcribed = w.work_statistic.pct_transcribed.round
+      li
+        span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
+        span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
+        span =="<b>#{progress_annotated}%</b> indexed"
+        span =="<b>#{progress_transcribed}%</b> transcribed"
+        span
+          span.progress
+            span(style="width:#{progress_annotated}%")
+            span(style="width:#{progress_transcribed - progress_annotated}%")
+
+  .top-users.justified
+    .justified_box>
+      -unless @all_transcribers.empty?
+        h3 =pluralize(@all_transcribers.size, 'Transcriber')
+        -@all_transcribers.each do |user, count|
+          .top-user(data-prefix="#{count}")
+            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
+              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span.vmiddle =user.display_name
+      -else
+        h3 Transcribers
+        p.a50 No transcribers
+
+    .justified_box>
+      -unless @all_editors.empty?
+        h3 =pluralize(@all_editors.size, 'Editor')
+        -@all_editors.each do |user, count|
+          .top-user(data-prefix="#{count}")
+            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
+              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span.vmiddle =user.display_name
+      -else
+        h3 Editors
+        p.a50 No editors
+
+    .justified_box>
+      -unless @all_indexers.empty?
+        h3 =pluralize(@all_indexers.size, 'Indexer')
+        -@all_indexers.each do |user, count|
+          .top-user(data-prefix="#{count}")
+            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
+              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span.vmiddle =user.display_name
+      -else
+        h3 Indexers
+        p.a50 No indexers
