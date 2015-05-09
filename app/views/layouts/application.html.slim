@@ -85,6 +85,7 @@ body
   footer.footer
     .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
     .footer_nav
+      =link_to 'About', { :controller => 'static', :action => 'about' }
       =link_to 'Terms & Conditions', { :controller => 'static', :action => 'terms' }
       =link_to 'Privacy Policy', { :controller => 'static', :action => 'privacy' }
       =mail_to 'benwbrum@gmail.com', 'Contact Us'

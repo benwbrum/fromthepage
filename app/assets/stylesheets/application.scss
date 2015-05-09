@@ -2,135 +2,135 @@
 // TYPOGRAPHY
 // ---------------------------
 
-$remSize:										10px;
-$iconSize:									16px;
-$lineHeight:								1.375;
+$remSize:                   10px;
+$iconSize:                  16px;
+$lineHeight:                1.375;
 
-$fontFamily:								'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
-$fontFamilyHead:						'Crete Round', Georgia, 'Times New Roman', Times, serif;
+$fontFamily:                'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
+$fontFamilyHead:            'Crete Round', Georgia, 'Times New Roman', Times, serif;
 
-$fontSizeSmall:							14px;
-$fontSize:									16px;
-$fontSizeBig:								18px;
-$fontSizeStrong:						20px;
-$fontSizeH5:								20px; //125%
-$fontSizeH4:								24px; //150%
-$fontSizeH3:								28px; //175%
-$fontSizeH2:								32px; //200%
-$fontSizeH1:								40px; //250%
+$fontSizeSmall:             14px;
+$fontSize:                  16px;
+$fontSizeBig:               18px;
+$fontSizeStrong:            20px;
+$fontSizeH5:                20px; //125%
+$fontSizeH4:                24px; //150%
+$fontSizeH3:                28px; //175%
+$fontSizeH2:                32px; //200%
+$fontSizeH1:                40px; //250%
 
 // ---------------------------
 // COLORS
 // ---------------------------
 
-$fgBlack:										#000;
-$fgWhite:										#FFF;
-$fgGray:										#888;
-$fgRed:											#D00;
-$fgGreen:										#490;
-$fgBlue:										#08D;
-$fgOrange:									#E60;
-$fgYellow:									#FC3;
-$fgPurple:									#939;
-$fgCyan:										#099;
+$fgBlack:                   #000;
+$fgWhite:                   #FFF;
+$fgGray:                    #888;
+$fgRed:                     #D00;
+$fgGreen:                   #490;
+$fgBlue:                    #08D;
+$fgOrange:                  #E60;
+$fgYellow:                  #FC3;
+$fgPurple:                  #939;
+$fgCyan:                    #099;
 
-$bgWhite:										#FFF;
-$bgGray:										#F9F9F9;
-$bgRed:											#FFF0F0;
-$bgGreen:										#F0F9D9;
-$bgBlue:										#D9F0FF;
-$bgOrange:									#FFF6CC;
-$bgYellow:									#FFFCD6;
-$bgPink:										#FFF0F0;
+$bgWhite:                   #FFF;
+$bgGray:                    #F9F9F9;
+$bgRed:                     #FFF0F0;
+$bgGreen:                   #F0F9D9;
+$bgBlue:                    #D9F0FF;
+$bgOrange:                  #FFF6CC;
+$bgYellow:                  #FFFCD6;
+$bgPink:                    #FFF0F0;
 
-$fgSelected:								#FFF;
-$bgSelected:								#655;
-$fgLink:										#900;
-$fgHover:										#D50;
-$bgHover:										lighten($bgSelected, 47);
+$fgSelected:                #FFF;
+$bgSelected:                #655;
+$fgLink:                    #900;
+$fgHover:                   #D50;
+$bgHover:                   lighten($bgSelected, 47);
 
-$fgH1:											#655;
-$fgH2:											darken($fgH1, 6%);
-$fgH3:											darken($fgH1, 12%);
-$fgH4:											darken($fgH1, 18%);
-$fgH5:											darken($fgH1, 24%);
+$fgH1:                      #655;
+$fgH2:                      darken($fgH1, 6%);
+$fgH3:                      darken($fgH1, 12%);
+$fgH4:                      darken($fgH1, 18%);
+$fgH5:                      darken($fgH1, 24%);
 
 // ---------------------------
 // EASING FUNCTIONS
 // ---------------------------
 
-$easeOutCubic:							cubic-bezier(0.215, 0.61, 0.355, 1);
-$easeOutElastic:						cubic-bezier(0.1, 1.3, 0.7, 1.1);
+$easeOutCubic:              cubic-bezier(0.215, 0.61, 0.355, 1);
+$easeOutElastic:            cubic-bezier(0.1, 1.3, 0.7, 1.1);
 
 // ---------------------------
 // BUTTONS & INPUTS
 // ---------------------------
 
-$btnHeight:									2em;
-$btnPadding:								0.75em;
-$btnIconPadding:						0.6em;
-$btnBorderRadius:						0.25em;
-$btnTransitionTime:					0.1s;
-$btnFontWeight:							normal;
-$btnFontSize:								$fontSize;
-$btnFontSizeBig:						$fontSizeBig;
-$btnFontSizeStrong:					$fontSizeStrong;
-$btnFontFamily:							$fontFamily;
-$btnColor:									#532;
-$btnBackground:							#EFE9E6;
-$btnFocusBorder:						#09F;
-$btnDisabledColor:					#AAA;
-$btnDisabledBackground:			#EEE;
-$btnRedColor:								#FFF;
-$btnRedBackground:					#E33;
-$btnGreenColor:							#FFF;
-$btnGreenBackground:				#8C3;
-$btnBlueColor:							#FFF;
-$btnBlueBackground:					#3AE;
-$btnOrangeColor:						#FFF;
-$btnOrangeBackground:				#F83;
+$btnHeight:                 2em;
+$btnPadding:                0.75em;
+$btnIconPadding:            0.6em;
+$btnBorderRadius:           0.25em;
+$btnTransitionTime:         0.1s;
+$btnFontWeight:             normal;
+$btnFontSize:               $fontSize;
+$btnFontSizeBig:            $fontSizeBig;
+$btnFontSizeStrong:         $fontSizeStrong;
+$btnFontFamily:             $fontFamily;
+$btnColor:                  #532;
+$btnBackground:             #EFE9E6;
+$btnFocusBorder:            #09F;
+$btnDisabledColor:          #AAA;
+$btnDisabledBackground:     #EEE;
+$btnRedColor:               #FFF;
+$btnRedBackground:          #E33;
+$btnGreenColor:             #FFF;
+$btnGreenBackground:        #8C3;
+$btnBlueColor:              #FFF;
+$btnBlueBackground:         #3AE;
+$btnOrangeColor:            #FFF;
+$btnOrangeBackground:       #F83;
 
-$inputHeight:								2em;
-$inputPadding:							0.3em;
-$inputBorderRadius:					0;
-$inputTransitionTime:				0.2s;
-$inputFontSize:							$fontSize;
-$inputFontFamily:						$fontFamily;
-$inputColor:								#000;
-$inputBackground:						#FFF;
-$inputBorderColor:					rgba(#000, 0.15);
-$inputFocusBorder:					rgba(#433, 0.45);
-$inputDisabledColor:				#888;
-$inputDisabledBackground:		#F9F9F9;
-$inputInvalidColor:					#C00;
+$inputHeight:               2em;
+$inputPadding:              0.3em;
+$inputBorderRadius:         0;
+$inputTransitionTime:       0.2s;
+$inputFontSize:             $fontSize;
+$inputFontFamily:           $fontFamily;
+$inputColor:                #000;
+$inputBackground:           #FFF;
+$inputBorderColor:          rgba(#000, 0.15);
+$inputFocusBorder:          rgba(#433, 0.45);
+$inputDisabledColor:        #888;
+$inputDisabledBackground:   #F9F9F9;
+$inputInvalidColor:         #C00;
 
 // ---------------------------
 // LAYOUT
 // ---------------------------
 
-$widthMax:									1280px;
-$widthL:										1024px;
-$widthM:										900px;
-$widthMin:									768px;
+$widthMax:                  1280px;
+$widthL:                    1024px;
+$widthM:                    900px;
+$widthMin:                  768px;
 
-$gapSize:										20px;
+$gapSize:                   20px;
 
-$themeLight:								#EDB;
-$themeDark:									#433;
+$themeLight:                #EDB;
+$themeDark:                 #433;
 
-$bodyFg:										#200;
-$bodyBg:										mix(#FFF, $themeLight, 70);
-$bodyFgFaded:								mix($bodyFg, $bodyBg, 60);
-$bodyFgLight:								mix($bodyFg, $bodyBg, 50);
-$borderColor:								mix(#000, $bodyBg, 15);
+$bodyFg:                    #200;
+$bodyBg:                    mix(#FFF, $themeLight, 70);
+$bodyFgFaded:               mix($bodyFg, $bodyBg, 60);
+$bodyFgLight:               mix($bodyFg, $bodyBg, 50);
+$borderColor:               mix(#000, $bodyBg, 15);
 
-$headerHeight:							80px;
-$headerFg:									$themeDark;
-$headerBg:									$themeLight;
+$headerHeight:              80px;
+$headerFg:                  $themeDark;
+$headerBg:                  $themeLight;
 
-$footerHeight:							80px;
-$footerFg:									mix(#FFF, $themeDark, 50);
-$footerBg:									$themeDark;
+$footerHeight:              80px;
+$footerFg:                  mix(#FFF, $themeDark, 50);
+$footerBg:                  $themeDark;
 
 
 @import "base/normalize";
@@ -155,39 +155,60 @@ $footerBg:									$themeDark;
 @import "plugins/select2/core";
 @import "plugins/zoomer";
 
+
+#welcome-message {
+  width: 480px;
+
+  .button {
+    border: 0;
+    color: #FFF;
+    display: block;
+    line-height: 2.5;
+    box-shadow: none;
+    background-image: none;
+    margin: 1.5em 0 0.5em 0;
+    font-size: $fontSizeStrong;
+    background-color: mix($bodyBg, #322, 50%);
+    &:hover, &:focus, &:active {
+      background-color: mix($bodyBg, #322, 30%);
+    }
+  }
+}
+
+
 .article-duplicates {
-	margin: 1em 0;
-	overflow: auto;
-	list-style: none;
-	max-height: 394px;
-	padding: 0.5em 1em;
-	background: rgba(#000, 0.02);
-	border: 1px solid $borderColor;
-	box-shadow: inset 0 0 1px rgba(#000, 0.2);
+  margin: 1em 0;
+  overflow: auto;
+  list-style: none;
+  max-height: 394px;
+  padding: 0.5em 1em;
+  background: rgba(#000, 0.02);
+  border: 1px solid $borderColor;
+  box-shadow: inset 0 0 1px rgba(#000, 0.2);
 }
 .article-duplicate {
-	margin: 0;
-	width: 100%;
-	display: table;
-	border-top: 1px solid rgba(#000, 0.08);
-	&:first-child { border: 0; }
-	&_title {
-		width: 100%;
-		max-width: 100px;
-		padding: 0.3em 0;
-		overflow: hidden;
-		display: table-cell;
-		white-space: nowrap;
-		vertical-align: middle;
-		text-overflow: ellipsis;
-	}
-	&_pages {
-		padding-left: 0.5em;
-		display: table-cell;
-		white-space: nowrap;
-		vertical-align: middle;
-	}
-	input:checked + span { color: $fgHover; }
+  margin: 0;
+  width: 100%;
+  display: table;
+  border-top: 1px solid rgba(#000, 0.08);
+  &:first-child { border: 0; }
+  &_title {
+    width: 100%;
+    max-width: 100px;
+    padding: 0.3em 0;
+    overflow: hidden;
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+  }
+  &_pages {
+    padding-left: 0.5em;
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  input:checked + span { color: $fgHover; }
 }
 
 
@@ -195,310 +216,310 @@ $footerBg:									$themeDark;
 
 
 div.two-columns {
-	width: 100%;
-	text-align: left;
-	display: inline-block; /* for IE/Mac to contain its child elements */
-	/* \ */ display: block;
-	/* override above rule for every other
-	browser using IE/Mac backslash hack */
-	//font-family: arial, helvetica, sans-serif;
-	//font-size: 100%; /* Changed from 80% BWB */
-	//background-color: #fcfcfc;
-	color: #000; /* START - Fix horizontal scrollbar */
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box; /* END - Fix horizontal scrollbar */
+  width: 100%;
+  text-align: left;
+  display: inline-block; /* for IE/Mac to contain its child elements */
+  /* \ */ display: block;
+  /* override above rule for every other
+  browser using IE/Mac backslash hack */
+  //font-family: arial, helvetica, sans-serif;
+  //font-size: 100%; /* Changed from 80% BWB */
+  //background-color: #fcfcfc;
+  color: #000; /* START - Fix horizontal scrollbar */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; /* END - Fix horizontal scrollbar */
 }
 div.two-columns:after {
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
 div.two-columns, div.two-columns div.left-column, div.two-columns div.right-column {
-	//border: solid 1px #ddd;
-	border-width: 1px;
+  //border: solid 1px #ddd;
+  border-width: 1px;
 }
 div.two-columns div.left-column, div.two-columns div.right-column {
-	float: left;
-	width: 50%;
-	border-width: 0 1px 0 0;
-	margin: 0 -1px;
+  float: left;
+  width: 50%;
+  border-width: 0 1px 0 0;
+  margin: 0 -1px;
 }
 * html div.two-columns div.left-column, * html div.two-columns div.right-column {
-	position: relative; /* IE/Win 6 and earlier need this */
+  position: relative; /* IE/Win 6 and earlier need this */
 }
 div.two-columns div.right-column {
-	border-width: 0 0 0 1px;
-	margin-right: -3px;
-	margin-left: 0;
+  border-width: 0 0 0 1px;
+  margin-right: -3px;
+  margin-left: 0;
 }
 div.two-columns div.inside-column {
-	padding: 1px 10px;
-	/* 1px is there to get past a margin rendering
-	bug in Netscape 7 and older FireFox */
-	margin-top: 1em;
-	margin-bottom: 1em;
+  padding: 1px 10px;
+  /* 1px is there to get past a margin rendering
+  bug in Netscape 7 and older FireFox */
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 div.outside-column {
-	text-align: left;
-	padding: 0px 10px;
-	/* 1px is there to get past a margin rendering
-	bug in Netscape 7 and older FireFox */
+  text-align: left;
+  padding: 0px 10px;
+  /* 1px is there to get past a margin rendering
+  bug in Netscape 7 and older FireFox */
 
-	/* START - Fix horizontal scrollbar */
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box; /* END - Fix horizontal scrollbar */
+  /* START - Fix horizontal scrollbar */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; /* END - Fix horizontal scrollbar */
 }
 span.left-link {
-	float: left;
+  float: left;
 }
 span.right-link {
-	float: right;
+  float: right;
 }
 div.footer-links {
-	border-top: 1px solid #ddd;
-	font-size: 80%;
-	clear: both;
+  border-top: 1px solid #ddd;
+  font-size: 80%;
+  clear: both;
 }
 div.thumbnail-container {
-	float: right;
-	margin-left: 1em;
-	margin-bottom: 1em;
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 1em;
 }
 #containerdiv {
-	position: relative;
-	height: 100%;
+  position: relative;
+  height: 100%;
 }
 
 /******************************************************************************/
 /* container */
 #undernav {
-	border-bottom: 1px solid #749EA9;
-	background: #dee7ec;
-	text-align: right;
-	padding: 1px;
+  border-bottom: 1px solid #749EA9;
+  background: #dee7ec;
+  text-align: right;
+  padding: 1px;
 }
 #subundernav {
-	border-bottom: 1px solid #749EA9;
-	background: #fff;
-	text-align: left;
-	padding: 1px;
+  border-bottom: 1px solid #749EA9;
+  background: #fff;
+  text-align: left;
+  padding: 1px;
 }
 #header {
-	//height: 150px://background:#749EA9;
-	width: 100%;
+  //height: 150px://background:#749EA9;
+  width: 100%;
 }
 .site-logo a {
-	text-decoration: none;
+  text-decoration: none;
 }
 .work-logo a {
-	text-decoration: none;
+  text-decoration: none;
 }
 #leftbar {
-	border: 1px solid #dee7ec;
-	float: left;
-	text-align: left;
-	width: 100%;
+  border: 1px solid #dee7ec;
+  float: left;
+  text-align: left;
+  width: 100%;
 }
 #rightcontent {
-	float: right;
-	width: 80%;
+  float: right;
+  width: 80%;
 }
 #footer {
-	position: relative;
-	bottom: 0;
-	border-bottom: 1px solid #749EA9;
-	border-top: 1px solid #749EA9;
-	background: #dee7ec;
-	text-align: left;
-	padding: 1px;
-	width: 100%;
+  position: relative;
+  bottom: 0;
+  border-bottom: 1px solid #749EA9;
+  border-top: 1px solid #749EA9;
+  background: #dee7ec;
+  text-align: left;
+  padding: 1px;
+  width: 100%;
 }
 
 /* Top Navigation */
 ul#navlist {
-	font: bold 11px verdana, arial, sans-serif;
-	list-style-type: none;
-	padding-bottom: 24px;
-	border-bottom: 1px solid #749EA9;
-	margin: 0;
+  font: bold 11px verdana, arial, sans-serif;
+  list-style-type: none;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #749EA9;
+  margin: 0;
 }
 ul#navlist li {
-	float: left;
-	height: 21px;
-	background-color: white;
-	margin: 2px 2px 0 2px;
-	border: 1px solid #749EA9;
+  float: left;
+  height: 21px;
+  background-color: white;
+  margin: 2px 2px 0 2px;
+  border: 1px solid #749EA9;
 }
 li#active a {
-	border-bottom: 1px solid #dee7ec;
-	background-color: #dee7ec;
+  border-bottom: 1px solid #dee7ec;
+  background-color: #dee7ec;
 }
 li#active a {
-	color: #000;
+  color: #000;
 }
 #navlist a {
-	float: left;
-	display: block;
-	color: #666;
-	text-decoration: none;
-	padding: 4px;
+  float: left;
+  display: block;
+  color: #666;
+  text-decoration: none;
+  padding: 4px;
 }
 #navlist a:hover {
-	background: #dee7ec;
+  background: #dee7ec;
 }
 #navlist span {
-	float: left;
-	background-color: white;
-	padding: 4px;
+  float: left;
+  background-color: white;
+  padding: 4px;
 }
 
 /* side navigationn */
 ul#leftbar {
-	margin: 0 0 0 30px;
-	padding: 0;
-	width: 12.5%;
+  margin: 0 0 0 30px;
+  padding: 0;
+  width: 12.5%;
 }
 #leftbar li {
-	list-style-type: none;
-	background-color: white;
-	color: #dee7ec;
-	border: 1px solid #blue;
-	font-weight: 600;
-	text-align: left;
-	padding: .3em;
-	margin-bottom: .1em;
+  list-style-type: none;
+  background-color: white;
+  color: #dee7ec;
+  border: 1px solid #blue;
+  font-weight: 600;
+  text-align: left;
+  padding: .3em;
+  margin-bottom: .1em;
 }
 #leftbar li a {
-	color: #888888;
-	text-decoration: none;
-	display: block;
+  color: #888888;
+  text-decoration: none;
+  display: block;
 }
 #leftbar li a:hover {
-	background-color: #dee7ec;
-	color: #888888;
+  background-color: #dee7ec;
+  color: #888888;
 }
 
 /* pull quote */
 .pullquote {
-	width: 145px;
-	background: #dee7ec;
-	color: black;
-	float: right;
-	border: 1px solid #749EA9;
-	font-weight: bold;
-	line-height: 140%;
-	padding: 5px;
-	margin-top: 10px;
-	margin-left: 10px;
+  width: 145px;
+  background: #dee7ec;
+  color: black;
+  float: right;
+  border: 1px solid #749EA9;
+  font-weight: bold;
+  line-height: 140%;
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 /* drop cap */
 .dropcap {
-	float: left;
-	color: #D4D4C7;
-	font-size: 100px;
-	line-height: 70px;
-	padding-top: 2px;
-	font-family: Times, serif, Georgia;
+  float: left;
+  color: #D4D4C7;
+  font-size: 100px;
+  line-height: 70px;
+  padding-top: 2px;
+  font-family: Times, serif, Georgia;
 }
 
 /* important box */
 #important {
-	width: 96%;
-	background: rgb(255, 235, 205);
-	color: black;
-	border-top: 1px solid rgb(255, 160, 122);
-	border-bottom: 1px solid rgb(255, 160, 122);
-	font-weight: bold;
-	line-height: 140%;
-	padding: 5px;
-	margin-top: 10px;
-	margin-left: 10px;
-	text-align: right;
+  width: 96%;
+  background: rgb(255, 235, 205);
+  color: black;
+  border-top: 1px solid rgb(255, 160, 122);
+  border-bottom: 1px solid rgb(255, 160, 122);
+  font-weight: bold;
+  line-height: 140%;
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+  text-align: right;
 }
 
 table.revisions {
-	width: 100%;
-	//width: 580px;
-	//background-color: #fafafa;
-	//border: 1px #000000 solid;
-	border-collapse: collapse;
-	border-spacing: 0px;
+  width: 100%;
+  //width: 580px;
+  //background-color: #fafafa;
+  //border: 1px #000000 solid;
+  border-collapse: collapse;
+  border-spacing: 0px;
 }
 th.revision_title {
-	border-bottom: 1px #6699CC dotted;
-	text-align: left;
-	font-family: Verdana, sans-serif, Arial;
-	font-weight: bold;
-	font-size: .7em;
-	color: #404040;
-	background-color: #fafafa;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	padding-left: 8px;
-	padding-right: 0px;
+  border-bottom: 1px #6699CC dotted;
+  text-align: left;
+  font-family: Verdana, sans-serif, Arial;
+  font-weight: bold;
+  font-size: .7em;
+  color: #404040;
+  background-color: #fafafa;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 0px;
 }
 td.revision {
-	border-bottom: 1px #6699CC dotted;
-	text-align: left;
-	font-family: Verdana, sans-serif, Arial;
-	font-weight: normal;
-	font-size: .7em;
-	color: #404040;
-	background-color: #fafafa;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	padding-left: 8px;
-	padding-right: 0px;
+  border-bottom: 1px #6699CC dotted;
+  text-align: left;
+  font-family: Verdana, sans-serif, Arial;
+  font-weight: normal;
+  font-size: .7em;
+  color: #404040;
+  background-color: #fafafa;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 0px;
 }
 ul.revision {
-	border-bottom: 1px #6699CC dotted;
-	text-align: left;
-	font-family: Verdana, sans-serif, Arial;
-	font-weight: normal;
-	font-size: .7em;
-	color: #404040;
-	background-color: #fafafa;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	padding-left: 8px;
-	padding-right: 0px;
+  border-bottom: 1px #6699CC dotted;
+  text-align: left;
+  font-family: Verdana, sans-serif, Arial;
+  font-weight: normal;
+  font-size: .7em;
+  color: #404040;
+  background-color: #fafafa;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 0px;
 }
 div.revision_meta {
-	background-color: #DEE7EC
+  background-color: #DEE7EC
 }
 #zoom_out {
-	visibility: hidden;
+  visibility: hidden;
 }
 #zoom_in {
-	visibility: visible;
+  visibility: visible;
 }
 #page-title {
-	font-size: 180%;
-	font-weight: bold;
+  font-size: 180%;
+  font-weight: bold;
 }
 p.right {
-	text-align: right;
+  text-align: right;
 }
 .help-text {
-	font-size: .8em;
+  font-size: .8em;
 }
 //<<<<<<< HEAD
 #image_div {
-	width: 100%;
+  width: 100%;
 }
 #page_image_tag {
-	width: 100%;
+  width: 100%;
 }
 #page_source_text {
-	width: 100%;
+  width: 100%;
 }
 //=======
 #image_sidebar {
-	float: right;
+  float: right;
 }
 //>>>>>>> rails3_nohpricot

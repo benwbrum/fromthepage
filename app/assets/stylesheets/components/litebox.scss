@@ -21,95 +21,95 @@ $svg-litebox-busy: '
 $svg-litebox-error: '<path fill="#FC3" d="M46.61,32.66L31.03,4.78C29.33,1.74,26.76,0,24,0c-2.77,0-5.33,1.74-7.03,4.78L1.38,32.66c-1.69,3.01-1.83,6.12-0.42,8.54C2.39,43.62,5.18,45,8.65,45h30.71c3.46,0,6.27-1.38,7.69-3.8C48.46,38.78,48.3,35.67,46.61,32.66z"/><path fill="#000" d="M27,39h-6v-6h6V39z M27,30h-6l-1-18h8L27,30z"/>';
 
 @keyframes litebox-busy {
-	0%		{ transform: rotate(0deg); }
-	100%	{ transform: rotate(360deg); }
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
 }
 
 .litebox {
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	opacity: 0;
-	z-index: 9995;
-	overflow: auto; // STRANGE: Repaint bugs in Chrome OSX
-	position: fixed;
-	visibility: hidden;
-	text-align: center;
-	background: rgba(#000, 0.5);
-	transform: translate3d(0,0,0);
-	transition: opacity 0.3s, visibility 0.3s;
-	-webkit-overflow-scrolling: touch;
-	&.visible {
-		opacity: 1;
-		visibility: visible;
-		.litebox_container.visible {
-			opacity: 1;
-			visibility: visible;
-			transform: scale3d(1,1,1);
-			transition: transform 0.4s cubic-bezier(0.1,1.3,0.7,1.1);
-		}
-	}
-	&:before {
-		top: 50%;
-		left: 50%;
-		opacity: 0;
-		content: '';
-		width: 48px;
-		height: 48px;
-		position: absolute;
-		margin: -24px 0 0 -24px;
-		transition: opacity 0.3s 1s;
-	}
-	&-busy:before {
-		opacity: 1;
-		transform-origin: 24px 24px;
-		animation: litebox-busy 1s infinite steps(12);
-		@include background-svg(48, 48, $svg-litebox-busy);
-	}
-	&-error:before {
-		opacity: 1;
-		animation: none;
-		@include background-svg(48, 48, $svg-litebox-error);
-	}
-	&:after {
-		width: 0;
-		content: '';
-		height: 100%;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	&_container {
-		opacity: 0;
-		max-width: 90%;
-		text-align: left;
-		visibility: hidden;
-		display: inline-block;
-		vertical-align: middle;
-		box-sizing: border-box;
-		transform: scale3d(0.8,0.8,1);
-		transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
-		padding: 25px;
-		background: #FCFAFA;
-		position: relative;
-		border-radius: 5px;
-		background-clip: padding-box;
-		border: 1px solid rgba(#000, 0.1);
-		box-shadow: 0 10px 35px rgba(#000, 0.15);
-	}
-	&_close {
-		top: 5px;
-		right: 3px;
-		width: 1em;
-		height: 1em;
-		color: #999;
-		cursor: pointer;
-		position: absolute;
-		text-align: center;
-		text-decoration: none;
-		font: normal 32px/1 Arial, Helvetica, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		&:hover { color: #E44; }
-	}
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  z-index: 9995;
+  overflow: auto; // STRANGE: Repaint bugs in Chrome OSX
+  position: fixed;
+  visibility: hidden;
+  text-align: center;
+  background: rgba(#000, 0.5);
+  transform: translate3d(0,0,0);
+  transition: opacity 0.3s, visibility 0.3s;
+  -webkit-overflow-scrolling: touch;
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+    .litebox_container.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: scale3d(1,1,1);
+      transition: transform 0.4s cubic-bezier(0.1,1.3,0.7,1.1);
+    }
+  }
+  &:before {
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    content: '';
+    width: 48px;
+    height: 48px;
+    position: absolute;
+    margin: -24px 0 0 -24px;
+    transition: opacity 0.3s 1s;
+  }
+  &-busy:before {
+    opacity: 1;
+    transform-origin: 24px 24px;
+    animation: litebox-busy 1s infinite steps(12);
+    @include background-svg(48, 48, $svg-litebox-busy);
+  }
+  &-error:before {
+    opacity: 1;
+    animation: none;
+    @include background-svg(48, 48, $svg-litebox-error);
+  }
+  &:after {
+    width: 0;
+    content: '';
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &_container {
+    opacity: 0;
+    max-width: 90%;
+    text-align: left;
+    visibility: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    transform: scale3d(0.8,0.8,1);
+    transition: transform 0.3s, opacity 0.3s, visibility 0.3s;
+    padding: 25px;
+    background: #FCFAFA;
+    position: relative;
+    border-radius: 5px;
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.1);
+    box-shadow: 0 10px 35px rgba(#000, 0.15);
+  }
+  &_close {
+    top: 5px;
+    right: 3px;
+    width: 1em;
+    height: 1em;
+    color: #999;
+    cursor: pointer;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    font: normal 32px/1 Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    &:hover { color: #E44; }
+  }
 }
