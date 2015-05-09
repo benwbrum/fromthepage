@@ -27,27 +27,36 @@
     .top-users.justified
       .justified_box>
         h5 Top Transcribers
-        -@top_ten_transcribers.each do |user, count|
-          .top-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
+        -unless @top_ten_transcribers.empty?
+          -@top_ten_transcribers.each do |user, count|
+            .top-user(data-prefix="#{count}")
+              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
+                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+                span.vmiddle =user.display_name
+        -else
+          p.a50 No transcribers
 
       .justified_box>
         h5 Top Editors
-        -@top_ten_editors.each do |user, count|
-          .top-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
+        -unless @top_ten_editors.empty?
+          -@top_ten_editors.each do |user, count|
+            .top-user(data-prefix="#{count}")
+              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
+                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+                span.vmiddle =user.display_name
+        -else
+          p.a50 No editors
 
       .justified_box>
         h5 Top Indexers
-        -@top_ten_indexers.each do |user, count|
-          .top-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
+        -unless @top_ten_indexers.empty?
+          -@top_ten_indexers.each do |user, count|
+            .top-user(data-prefix="#{count}")
+              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
+                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+                span.vmiddle =user.display_name
+        -else
+          p.a50 No indexers
 
   aside.sidecol
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
