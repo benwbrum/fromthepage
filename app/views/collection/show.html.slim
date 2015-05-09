@@ -7,19 +7,22 @@
       p ==@collection.intro_block
 
     h2 Works
-    .works
-      -@collection.works.each do |work|
-        .work
-          h4.work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
-          p.work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
-          .work_stats
-            -progress_annotated = work.work_statistic.pct_annotated.round
-            -progress_transcribed = work.work_statistic.pct_transcribed.round
-            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_transcribed}% transcribed"
-            span
-              span.progress
-                span(style="width:#{progress_annotated}%")
-                span(style="width:#{progress_transcribed - progress_annotated}%")
+    -@collection.works.each do |work|
+      .collection-work
+        h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+        p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+        .collection-work_stats
+          -progress_annotated = work.work_statistic.pct_annotated.round
+          -progress_transcribed = work.work_statistic.pct_transcribed.round
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_transcribed}% transcribed"
+          span
+            span.progress
+              span(style="width:#{progress_annotated}%")
+              span(style="width:#{progress_transcribed - progress_annotated}%")
+
+    -unless @collection.categories.empty?
+      h3 Subject Categories
+      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "cat_#{c.id}" } }.join(', ')
 
     .top-users.justified
       .justified_box>
@@ -45,13 +48,6 @@
             =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
               span.userpic =gravatar_image_tag user.email, :alt => user.display_name
               span.vmiddle =user.display_name
-
-  //-
-    h2 Subjects
-    ==display_categories(@collection.categories, nil) do |c|
-      -controller.render_to_string(:partial => '/category/category_link', :locals => { :category => c, :article_partial => '/category/article_link' })
-
-
 
   aside.sidecol
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do

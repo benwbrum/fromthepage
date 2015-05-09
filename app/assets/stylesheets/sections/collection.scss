@@ -53,7 +53,7 @@
 
 // Overview
 
-.work {
+.collection-work {
   padding: $gapSize;
   border-radius: 4px;
   margin-bottom: $gapSize / 2;
@@ -72,26 +72,25 @@
     margin: 0.5em 0 0 0;
     font-size: $fontSizeSmall;
   }
-}
-
-.work_stats {
-  width: 100%;
-  display: table;
-  color: $bodyFgFaded;
-  margin: 0.5em 0 0 0;
-  > span {
-    padding-right: 10px;
-    display: table-cell;
-    white-space: nowrap;
-    &:last-child {
-      padding: 0;
-      width: 100%;
-      text-align: right;
-    }
-  }
-  .progress {
+  &_stats {
     width: 100%;
-    max-width: 300px;
+    display: table;
+    color: $bodyFgFaded;
+    margin: 0.5em 0 0 0;
+    > span {
+      padding-right: 10px;
+      display: table-cell;
+      white-space: nowrap;
+      &:last-child {
+        padding: 0;
+        width: 100%;
+        text-align: right;
+      }
+    }
+    .progress {
+      width: 100%;
+      max-width: 300px;
+    }
   }
 }
 
@@ -161,18 +160,18 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    [data-tree-item] {
+    .tree-item {
       display: block;
       cursor: pointer;
       overflow: hidden;
       position: relative;
       color: $bodyFgLight;
       white-space: nowrap;
+      text-decoration: none;
       transition: color 0.2s;
       text-overflow: ellipsis;
       padding: 5px 20px 5px 28px;
       &:hover, &.selected { color: $bodyFg; }
-      span { position: relative; }
     }
     li {
       margin: 0;
@@ -183,12 +182,13 @@
       padding-left: 20px;
     }
   }
-  [data-tree-bullet] {
+  .tree-bullet {
     left: 0;
     top: 50%;
     width: 29px;
     height: 32px;
     opacity: 0.5;
+    display: block;
     cursor: pointer;
     margin-top: -16px;
     position: absolute;
@@ -199,7 +199,7 @@
     &:hover { opacity: 1; }
   }
   .expanded {
-    > [data-tree-item] [data-tree-bullet] { @include background-svg(9, 9, $bullet-expanded); }
+    > .tree-item .tree-bullet { @include background-svg(9, 9, $bullet-expanded); }
     > ul { display: block; }
   }
 }
