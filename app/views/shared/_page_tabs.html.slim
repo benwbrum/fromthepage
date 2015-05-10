@@ -57,7 +57,7 @@
     nav.page-nav
       -if !@page.first?
         -higher_item = @page.higher_item
-        =link_to({ :controller => 'display', :action => 'display_page', :page_id => higher_item.id }, class: 'page-nav_prev')
+        =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev')
           =svg_symbol '#icon-arrow-left', class: 'icon'
       -else
         span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
@@ -66,7 +66,7 @@
 
       -if !@page.last?
         -lower_item = @page.lower_item
-        =link_to({ :controller => 'display', :action => 'display_page', :page_id => lower_item.id }, class: 'page-nav_next')
+        =link_to({ :page_id => lower_item.id }, class: 'page-nav_next')
           =svg_symbol '#icon-arrow-right', class: 'icon'
       -else
         span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'

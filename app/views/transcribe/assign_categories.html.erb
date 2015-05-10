@@ -11,9 +11,6 @@
 
 <div class="two-columns">
 	<div class="left-column">
-    <%= render :partial => '/shared/page_navigation' %>
-
-
     <div class="inside-column">
         <%= html_block('left') %>
 	    <% if user_signed_in? && current_user.like_owner?(@collection) %>
@@ -22,10 +19,8 @@
 						{ :controller => 'category',
 						  :action => 'manage',
 						  :page_id => @page.id }) %>
-
 			</p>
 		<% end %>
-
 
 	    <% for article in @page.articles %>
 	      <% if article.categories.length == 0 %>
