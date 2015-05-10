@@ -65,7 +65,10 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    logger.debug("DEBUG collection0=#{@collection}")
+    @main_owner = @collection.owner
+    @owners = @collection.owners + [@main_owner]
+    @nonowners = User.all - @owners
+
     @works_not_in_collection = current_user.owner_works - @collection.works
   end
 

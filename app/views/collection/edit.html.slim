@@ -1,0 +1,84 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection.id }})
+
+.columns
+  article.maincol
+    =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }
+    =form_for :collection, url: {action: :update, id: @collection.id} do |f|
+      table.form
+        tr
+          th =f.label :title
+          td.w100 =f.text_field :title, value: @collection.title
+        tr
+          td(colspan="2")
+            =f.label :intro_block, class: "above"
+            =f.text_area :intro_block, value: @collection.intro_block
+        tr
+          td(colspan="2")
+            =f.label :footer_block, class: "above"
+            =f.text_area :footer_block, value: @collection.footer_block
+      =f.submit
+    =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, { :confirm => 'Are you sure?' })
+      span Delete Collection
+
+    h3 Works
+    table.w100
+      tr
+        th Title
+        th Actions
+      -@collection.works.each do |work|
+        tr
+          td =work.title
+          td =link_to 'remove', { :action => 'remove_work_from_collection', :work_id => work.id, :collection_id => @collection.id }
+    h3 Works not in Collection
+    table.w100
+      tr
+        th Title
+        th Action
+      -@works_not_in_collection.each do |work|
+        tr
+          td =work.title
+          td =link_to 'add', { :action => 'add_work_to_collection', :work_id => work.id, :collection_id => @collection.id }
+
+  aside.sidecol
+    h3 Collection Privacy
+    -if @collection.restricted
+      p The collection can only be viewed by the owners listed below. You may make the collection publicly readable.
+      =button_to "Make Collection Public", { :action => 'publish_collection', :collection_id => @collection.id }
+    -else
+      p The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to collection owners.
+      =button_to "Make Collection Private", { :action => 'restrict_collection', :collection_id => @collection.id }
+
+    h3 Collection Owners
+    p Owners of a collection may add new works to the collection and upload page images as well as transcribing and reading works in the collection.
+    table.w100
+      tr
+        th User
+        th Contributions
+        th Action
+      -@owners.each do |user|
+        tr
+          td =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+          td =user.deeds.count :conditions => "collection_id = #{@collection.id}"
+          td.nowrap
+            -if @main_owner == user
+              small.fgfaded main owner
+            -else
+              =link_to({ :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id, :ol => 'w_st_sl_remove' })
+                =svg_symbol '#icon-remove-sign', class: 'icon'
+                small Remove
+
+    h3 Other Users
+    table.w100
+      tr
+        th User
+        th Contributions
+        th Action
+      -@nonowners.each do |user|
+        tr
+          td =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+          td =user.deeds.count :conditions => "collection_id = #{@collection.id}"
+          td.nowrap
+            =link_to({ :action => 'add_owner', :user_id => user.id, :collection_id => @collection.id, :ol => 'w_st_sl_remove' })
+              =svg_symbol '#icon-plus-sign', class: 'icon'
+              small Make Owner
+

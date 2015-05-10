@@ -350,7 +350,7 @@ a.label:hover {
   width: 1em;
   height: 1em;
   font-size: $iconSize;
-  vertical-align: -10%;
+  vertical-align: -12%;
   display: inline-block;
   text-decoration: none;
   &:first-child { margin-right: 0.3em; }
@@ -586,6 +586,7 @@ a.label:hover {
   color: inherit;
   padding: 0 1em;
   line-height: 2;
+  white-space: nowrap;
   border-radius: 1.2em;
   display: inline-block;
   text-decoration: none;
