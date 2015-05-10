@@ -11,7 +11,7 @@
           a(data-toggle-class='{ "#note_#{note.id}": "edit" }')
             =svg_symbol '#icon-edit', class: 'icon'
           =link_to note, :method => :delete, :'data-confirm' => 'Are you sure to delete this note?'
-            =svg_symbol '#icon-delete', class: 'icon'
+            =svg_symbol '#icon-remove-sign', class: 'icon'
       =time_tag note.created_at
         =link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
         =" #{time_ago_in_words note.created_at} ago"

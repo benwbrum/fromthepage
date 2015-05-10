@@ -16,11 +16,6 @@
           =="Please #{help_transcribe} this page"
           ==" or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
 
-    hr
-    h2 Notes
-    =render :partial => "notes/notes"
-
-
   .page-column
     -if translation_mode?
       .headline
@@ -41,6 +36,10 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
+
+h2.legend Page Notes
+.page-notes
+  =render :partial => "notes/notes"
 
 javascript:
   $(function() {
