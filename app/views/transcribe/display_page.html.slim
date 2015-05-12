@@ -37,7 +37,7 @@
           =render :partial => '/shared/zoom_div'
 
 -if @work.transcription_conventions.present?
-  p.fgfaded =@work.transcription_conventions
+  .fgfaded ==@work.transcription_conventions
 
 .fgfaded
   =render :partial => 'shared/markup_help'
