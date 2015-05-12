@@ -1,0 +1,45 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection.id }})
+
+h2.nomargin Export Subject Index
+p.big
+  span.fright(style="margin-left: 30px")
+    =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button')
+      =svg_symbol '#icon-export', class: 'icon'
+      span Export Subjects as CSV
+  span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+
+h2 Export Individual Works
+p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.
+table.datagrid
+  tr
+    th.w100 Work Title
+    th Pages
+    th Indexed
+    th Transcribed
+    th(colspan="2") Export As
+  -for work in @collection.works
+    -progress_annotated = work.work_statistic.pct_annotated.round
+    -progress_transcribed = work.work_statistic.pct_transcribed.round
+    tr
+      td.big =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+      td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
+      td.nowrap.fgfaded ="#{progress_annotated}%"
+      td.nowrap.fgfaded ="#{progress_transcribed}%"
+      td.nowrap
+        =link_to({ :controller => 'export', :action => 'show', :work_id => work.id })
+          =svg_symbol '#icon-export', class: 'icon'
+          span XHTML
+      td.nowrap
+        =link_to({ :controller => 'export', :action => 'tei', :work_id => work.id })
+          =svg_symbol '#icon-export', class: 'icon'
+          span TEI
+
+javascript:
+  // Remove 'page_busy' spinner once download finished
+  var downloadCheckTimer = window.setInterval(function() {
+    var cookie = Cookies.get('download_finished');
+    if(cookie === 'true') {
+      $('html').removeClass('page-busy');
+      window.clearInterval(downloadCheckTimer);
+    }
+  }, 1000);
