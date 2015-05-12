@@ -1,6 +1,7 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 7, :collection_id => @collection.id }})
 
 -unless @works.empty?
+  h2.nomargin Work Progress
   ul.collection-stats
     -@works.each do |w|
       -progress_annotated = w.work_statistic.pct_annotated.round
@@ -15,39 +16,39 @@
             span(style="width:#{progress_annotated}%")
             span(style="width:#{progress_transcribed - progress_annotated}%")
 
-  .top-users.justified
-    .justified_box>
-      -unless @all_transcribers.empty?
-        h3 =pluralize(@all_transcribers.size, 'Transcriber')
-        -@all_transcribers.each do |user, count|
-          .top-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
-      -else
-        h3 Transcribers
-        p.a50 No transcribers
+.collection-users.justified
+  .justified_box>
+    -unless @all_transcribers.empty?
+      h3 =pluralize(@all_transcribers.size, 'Transcriber')
+      -@all_transcribers.each do |user, count|
+        .collection-user(data-prefix="#{count}")
+          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span.vmiddle =user.display_name
+    -else
+      h3 Transcribers
+      p.a50 No transcribers
 
-    .justified_box>
-      -unless @all_editors.empty?
-        h3 =pluralize(@all_editors.size, 'Editor')
-        -@all_editors.each do |user, count|
-          .top-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
-      -else
-        h3 Editors
-        p.a50 No editors
+  .justified_box>
+    -unless @all_editors.empty?
+      h3 =pluralize(@all_editors.size, 'Editor')
+      -@all_editors.each do |user, count|
+        .collection-user(data-prefix="#{count}")
+          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span.vmiddle =user.display_name
+    -else
+      h3 Editors
+      p.a50 No editors
 
-    .justified_box>
-      -unless @all_indexers.empty?
-        h3 =pluralize(@all_indexers.size, 'Indexer')
-        -@all_indexers.each do |user, count|
-          .top-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'top-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
-      -else
-        h3 Indexers
-        p.a50 No indexers
+  .justified_box>
+    -unless @all_indexers.empty?
+      h3 =pluralize(@all_indexers.size, 'Indexer')
+      -@all_indexers.each do |user, count|
+        .collection-user(data-prefix="#{count}")
+          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span.vmiddle =user.display_name
+    -else
+      h3 Indexers
+      p.a50 No indexers

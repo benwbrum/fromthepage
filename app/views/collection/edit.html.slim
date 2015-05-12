@@ -2,83 +2,83 @@
 
 .columns
   article.maincol
-    =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }
     =form_for :collection, url: {action: :update, id: @collection.id} do |f|
       table.form
-        tr
+        tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
         tr
           td(colspan="2")
-            =f.label :intro_block, class: "above"
-            =f.text_area :intro_block, value: @collection.intro_block
+            =f.label :intro_block, 'Description', class: "above"
+            =f.text_area :intro_block, rows: 12, value: @collection.intro_block
         tr
           td(colspan="2")
-            =f.label :footer_block, class: "above"
-            =f.text_area :footer_block, value: @collection.footer_block
-      =f.submit
-    =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, { :confirm => 'Are you sure?' })
-      span Delete Collection
+            =f.label :footer_block, 'Foot Notes', class: "above"
+            =f.text_area :footer_block, rows: 5, value: @collection.footer_block
+      .toolbar
+        .toolbar_group.w100
+          =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' })
+            =svg_symbol '#icon-remove-sign', class: 'icon'
+            span Delete Collection
+        .toolbar_group
+          =f.button 'Save Changes', class: 'big'
 
-    h3 Works
-    table.w100
-      tr
-        th Title
-        th Actions
+    h2 Manage Works
+    h5 Already in the collection
+    ul.collection-works-manage
       -@collection.works.each do |work|
-        tr
-          td =work.title
-          td =link_to 'remove', { :action => 'remove_work_from_collection', :work_id => work.id, :collection_id => @collection.id }
-    h3 Works not in Collection
-    table.w100
-      tr
-        th Title
-        th Action
+        li
+          =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+          =link_to({ :action => 'remove_work_from_collection', :work_id => work.id, :collection_id => @collection.id }, class: 'action')
+            =svg_symbol '#icon-remove-sign', class: 'icon'
+            small Remove
+    h5 Works in other collections
+    ul.collection-works-manage
       -@works_not_in_collection.each do |work|
-        tr
-          td =work.title
-          td =link_to 'add', { :action => 'add_work_to_collection', :work_id => work.id, :collection_id => @collection.id }
+        li
+          =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+          =link_to({ :action => 'add_work_to_collection', :work_id => work.id, :collection_id => @collection.id }, class: 'action')
+            =svg_symbol '#icon-plus-sign', class: 'icon'
+            small Include
 
   aside.sidecol
     h3 Collection Privacy
     -if @collection.restricted
       p The collection can only be viewed by the owners listed below. You may make the collection publicly readable.
-      =button_to "Make Collection Public", { :action => 'publish_collection', :collection_id => @collection.id }
+      =link_to({ :action => 'publish_collection', :collection_id => @collection.id }, class: 'button')
+        =svg_symbol '#icon-unlock', class: 'icon'
+        span Make Collection Public
     -else
-      p The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to collection owners.
-      =button_to "Make Collection Private", { :action => 'restrict_collection', :collection_id => @collection.id }
+      p The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to the owners.
+      =link_to({ :action => 'restrict_collection', :collection_id => @collection.id }, class: 'button')
+        =svg_symbol '#icon-lock', class: 'icon'
+        span Make Collection Private
 
     h3 Collection Owners
-    p Owners of a collection may add new works to the collection and upload page images as well as transcribing and reading works in the collection.
-    table.w100
-      tr
-        th User
-        th Contributions
-        th Action
-      -@owners.each do |user|
-        tr
-          td =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
-          td =user.deeds.count :conditions => "collection_id = #{@collection.id}"
-          td.nowrap
-            -if @main_owner == user
-              small.fgfaded main owner
-            -else
-              =link_to({ :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id, :ol => 'w_st_sl_remove' })
-                =svg_symbol '#icon-remove-sign', class: 'icon'
-                small Remove
+    p Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
+    -@owners.each do |user|
+      -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
+      .collection-owner
+        .userpic
+          =gravatar_image_tag user.email, :alt => user.display_name
+        .username
+          =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+          small =pluralize(contributions, 'contribution')
+        -if user != @main_owner
+          =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
 
-    h3 Other Users
-    table.w100
-      tr
-        th User
-        th Contributions
-        th Action
-      -@nonowners.each do |user|
-        tr
-          td =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
-          td =user.deeds.count :conditions => "collection_id = #{@collection.id}"
-          td.nowrap
-            =link_to({ :action => 'add_owner', :user_id => user.id, :collection_id => @collection.id, :ol => 'w_st_sl_remove' })
-              =svg_symbol '#icon-plus-sign', class: 'icon'
-              small Make Owner
+    br
+    =form_tag({ :action => 'add_owner' }, class: 'collection-owner-form') do
+      =hidden_field_tag :collection_id, @collection.id
+      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true
+      =button_tag 'Add', disabled: 'true'
 
+
+javascript:
+  $('.collection-owner-form select').select2({
+    placeholder: 'Add new owner...',
+  }).on('select2:select', function() {
+    $(this).siblings(':submit').prop('disabled', false);
+  }).on('select2:unselect', function() {
+    $(this).siblings(':submit').prop('disabled', true);
+  });

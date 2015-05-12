@@ -35,24 +35,24 @@ class CollectionController < ApplicationController
 
   def add_owner
     @collection.owners << @user
-    redirect_to :action => 'owners', :collection_id => @collection.id
+    redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
   def remove_owner
     @collection.owners.delete(@user)
-    redirect_to :action => 'owners', :collection_id => @collection.id
+    redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
   def publish_collection
     @collection.restricted = false
     @collection.save!
-    redirect_to :action => 'owners', :collection_id => @collection.id
+    redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
   def restrict_collection
     @collection.restricted = true
     @collection.save!
-    redirect_to :action => 'owners', :collection_id => @collection.id
+    redirect_to :action => 'edit', :collection_id => @collection.id
   end
 
   def delete
@@ -66,8 +66,11 @@ class CollectionController < ApplicationController
 
   def edit
     @main_owner = @collection.owner
-    @owners = @collection.owners + [@main_owner]
-    @nonowners = User.all - @owners
+    @owners = [@main_owner] + @collection.owners
+    @nonowners = User.order(:display_name) - @owners
+    @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+
+    #@owners = @collection.owners.select('users.*, count(deeds.id) as contributions').joins(:deeds).group('users.id')
 
     @works_not_in_collection = current_user.owner_works - @collection.works
   end
