@@ -47,8 +47,8 @@
 // Page toolbar
 
 .page-toolbar {
-  margin-bottom: $gapSize;
   padding-bottom: $gapSize;
+  margin: -$gapSize / 2 0 $gapSize 0;
   border-bottom: 1px solid $borderColor;
 }
 

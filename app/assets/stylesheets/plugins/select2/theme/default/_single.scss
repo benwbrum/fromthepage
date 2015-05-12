@@ -1,16 +1,13 @@
 .select2-selection--single {
-  background-color: #fff;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-
-  .select2-selection__rendered {
-    color: #444;
-    line-height: 28px;
-  }
+  background-color: #FFF;
+  background-clip: padding-box;
+  transition: border-color 0.2s;
+  border: 1px solid rgba(#000, 0.15);
+  box-shadow: inset 0 1px 0 rgba(#000, 0.03);
 
   .select2-selection__clear {
-    cursor: pointer;
     float: right;
+    cursor: pointer;
     font-weight: bold;
   }
 
@@ -19,30 +16,23 @@
   }
 
   .select2-selection__arrow {
-    height: 26px;
-
+    top: 0;
+    right: 0;
+    width: 22px;
+    height: 100%;
     position: absolute;
 
-    top: 1px;
-    right: 1px;
-
-    width: 20px;
-
     b {
-      border-color: #888 transparent transparent transparent;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      margin-top: -2px;
+      margin-left: -4px;
+      position: absolute;
       border-style: solid;
       border-width: 5px 4px 0 4px;
-
-      height: 0;
-      left: 50%;
-
-      margin-left: -4px;
-      margin-top: -2px;
-
-      position: absolute;
-
-      top: 50%;
-      width: 0;
+      border-color: #000 transparent transparent transparent;
     }
   }
 }
@@ -75,8 +65,8 @@
   .select2-selection--single {
     .select2-selection__arrow {
       b {
-        border-color: transparent transparent #888 transparent;
         border-width: 0 4px 5px 4px;
+        border-color: transparent transparent #000 transparent;
       }
     }
   }

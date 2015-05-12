@@ -6,7 +6,7 @@
 // Separate borders for IE9, otherwise it will not show focused glow for controls
 table.form {
   width: 100%;
-  margin: 0.5em 0;
+  //margin: 0.5em 0;
   border-collapse: separate;
   th {
     font-weight: normal;
@@ -53,6 +53,7 @@ input[type="week"] {
   color: $inputColor;
   line-height: normal;
   height: $inputHeight;
+  height: calc(#{$inputHeight} + 2px);
   padding: $inputPadding;
   min-width: $inputHeight * 2;
   border-radius: $inputBorderRadius;
