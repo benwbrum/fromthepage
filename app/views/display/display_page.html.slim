@@ -18,11 +18,17 @@
 
   .page-column
     -if translation_mode?
+      -translation = xml_to_html(@page.xml_translation)
       .headline
         h3.headline_title Translation
         small.headline_aside =link_to 'Show Facsimile', { :translation => false, :page_id => @page.id }, class: 'button outline'
-      .page-transcription
-        ==xml_to_html(@page.xml_translation)
+      -if translation.present?
+        .page-transcription ==translation
+      -else
+        -help_translate = link_to('help translate', { :controller => 'transcribe', :action => 'translate', :page_id => @page.id })
+        .nodata
+          h5.nodata_title This page is not translated
+          p.nodata_text =="Please #{help_translate} this page"
 
     -else
       .headline
