@@ -16,8 +16,9 @@
           =f.label :source_text, 'Description', class: "above"
           =f.text_area :source_text, rows: 10
 
+    -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
     label.above Categories
-    select.categories-select(multiple)
+    select(data-assign-categories="#{update_article_url}" size="1" multiple)
       -@collection.categories.walk_tree do |c, level|
         -selected = true if @article.categories.include?(c)
         option(data-level=level value=c.id selected=selected) =c.title
@@ -31,25 +32,4 @@
       .toolbar_group.aright =f.button 'Save Changes', :name => 'save'
 
   javascript:
-    var update_url = "#{url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })}";
-    $('.categories-select').select2({
-      placeholder: 'Select categories...',
-      templateResult: function(category) {
-        if(!category.id) { return category.text; }
-        var level = $(category.element).data('level');
-        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
-        return $category;
-      }
-    }).on('select2:select', function(e) {
-      $.ajax({
-        type: 'POST',
-        url: update_url,
-        data: { 'status': true, 'category_id': e.params.data.id }
-      });
-    }).on('select2:unselect', function(e) {
-      $.ajax({
-        type: 'POST',
-        url: update_url,
-        data: { 'status': false, 'category_id': e.params.data.id }
-      });
-    });
+    $('[data-assign-categories]').categoriesSelect();

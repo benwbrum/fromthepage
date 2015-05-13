@@ -1,0 +1,22 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected =>3, :page_id => @page.id }})
+
+.headline
+  h2.headline_title Uncategorized Subjects
+  -if user_signed_in? && current_user.like_owner?(@collection)
+    .headline_aside
+      =link_to 'Manage Categories', { :controller => 'category', :action => 'manage', :page_id => @page.id }, class: 'button'
+
+p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
+
+-@page.articles.each do |article|
+  -if article.categories.length == 0
+    -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
+    .page-uncategorized
+      h4.page-uncategorized_subject(data-prefix="Subject: ") =="&ldquo;#{article.title}&rdquo;"
+      select(data-assign-categories="#{update_article_url}" size="1" multiple)
+        -@collection.categories.walk_tree do |c, level|
+          -selected = true if article.categories.include?(c)
+          option(data-level=level value=c.id selected=selected) =c.title
+
+span.legend
+  =link_to 'Proceed to Page Overview', { :action => 'display_page', :controller => 'display', :page_id => @page.id }, class: 'pill-stroke'

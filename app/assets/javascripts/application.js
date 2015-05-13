@@ -134,6 +134,39 @@ $.fn.tooltip = function(s) {
   });
 };
 
+
+// Manage subject categories with Select2 plugin
+// <select multiple data-assign-categories='/update_subject_category_url'>
+// $('[data-assign-categories]').categoriesSelect();
+$.fn.categoriesSelect = function() {
+  return this.each(function() {
+    var $element = $(this);
+    var update_url = $element.data('assign-categories');
+
+    $element.select2({
+      placeholder: 'Assign categories...',
+      templateResult: function(category) {
+        if(!category.id) { return category.text; }
+        var level = $(category.element).data('level');
+        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
+        return $category;
+      }
+    }).on('select2:select', function(e) {
+      $.ajax({
+        type: 'POST',
+        url: update_url,
+        data: { 'status': true, 'category_id': e.params.data.id }
+      });
+    }).on('select2:unselect', function(e) {
+      $.ajax({
+        type: 'POST',
+        url: update_url,
+        data: { 'status': false, 'category_id': e.params.data.id }
+      });
+    });
+  });
+};
+
 })(jQuery, window, document);
 
 
@@ -164,4 +197,7 @@ $(function() {
     stats[ishidden ? 'slideDown' : 'slideUp']('fast');
     container.toggleClass('stats-visible', ishidden);
   });
+
+  // Manage subject categories
+  $('[data-assign-categories]').categoriesSelect();
 });

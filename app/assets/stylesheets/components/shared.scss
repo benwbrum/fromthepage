@@ -355,10 +355,7 @@ a.label:hover {
   text-decoration: none;
   &:first-child { margin-right: 0.3em; }
   &:last-child { margin-left: 0.3em; }
-  &:only-child {
-    margin: 0;
-    vertical-align: top;
-  }
+  &:only-child { margin: 0; }
   &-big {
     vertical-align: -16%;
     font-size: $iconSize * 1.5;

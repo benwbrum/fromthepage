@@ -193,3 +193,16 @@
   margin: 0 auto;
   max-width: 800px;
 }
+
+
+// Assign categories
+
+.page-uncategorized {
+  padding: $gapSize;
+  border-radius: 4px;
+  margin: $gapSize 0;
+  background-clip: padding-box;
+  border: 1px solid rgba(#000, 0.06);
+  background-color: mix(#FFF, $bodyBg, 50%);
+  &_subject:before { color: $bodyFgLight; }
+}
