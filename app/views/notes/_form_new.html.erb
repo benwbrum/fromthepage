@@ -1,5 +1,6 @@
 <%= form_for :note, url: notes_path do |f| %>
 <%= f.text_area :body %>
+<br />
 <%= hidden_field_tag(:page_id, @page.id) %>
 <%= f.submit %>
 <%end%>
