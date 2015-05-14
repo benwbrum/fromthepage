@@ -3,10 +3,13 @@
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
+<!--  <div><%= f.label :email %><br />
   <%= f.email_field :email, autofocus: true %></div>
 
   <div><%= f.submit "Send me reset password instructions" %></div>
 <% end %>
-
+-->
+<p>
+	Due to temporary difficulties, the password reset capability has been disabled.  Please email benwbrum@gmail.com to reset your password.
+</p>
 <%= render "devise/shared/links" %>
