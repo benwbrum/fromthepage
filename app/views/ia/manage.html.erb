@@ -1,11 +1,11 @@
 <div class="two-columns">
-  <div class="left-column">
     <div class="inside-column">
 	    <h3>Manage Archive.org Import</h3>
 		<p>
 			Use this flow to manage page titles and convert
 			this import into a FromThePage work.
 		</p>
+	      <%= html_block('right') %>
 		<h3>Page Titles</h3>
 		<p>
 			<%= button_to('Retitle from top of page OCR',
@@ -43,6 +43,9 @@
 						<th>
 							OCR Text
 						</th>
+						<th>
+							Actions
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -59,15 +62,19 @@
 							<td>
 								<%= display_ocr(leaf) %>
 							</td>
+							<td>
+								<%= button_to('Beginning of Text',
+											  { :action => 'mark_beginning',
+												:ia_work_id => @ia_work.id,
+												:ia_leaf_id => leaf.id })%>
+								<%= button_to('End of Text',
+											  { :action => 'mark_end',
+												:ia_work_id => @ia_work.id,
+												:ia_leaf_id => leaf.id })%>
+							</td>
 						</tr>
 					<% end %>
 				</tbody>
 			</table>
    </div>
-  </div>
-  <div class="right-column">
-    <div class="inside-column">
-      <%= html_block('right') %>
-    </div>
-  </div>
 </div>
