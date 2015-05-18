@@ -133,7 +133,7 @@
       this.$content.on('click', 'form :reset', $.proxy(this.close, this));
 
       // Include submit button value into serialization
-      this.$content.on('click', 'formm :submit', function() {
+      this.$content.on('click', 'form :submit', function() {
         var button = $(this);
         button.after($('<input>').attr({
           type: 'hidden',
