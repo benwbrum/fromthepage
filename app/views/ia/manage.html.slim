@@ -6,12 +6,16 @@ h1 Manage Archive.org Import
       tr
         th Thumbnail
         th OCR Text
+        th Actions
       -for leaf in @ia_work.ia_leaves
         tr
           td.vtop =image_tag(leaf.thumb_url)
           td.w100
             b =leaf.page_number
             =simple_format(leaf.ocr_text)
+          td
+            =button_to('Beginning of Text', { :action => 'mark_beginning', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id })
+            =button_to('End of Text', { :action => 'mark_end', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id })
 
   aside.sidecol
     h3 Page Titles

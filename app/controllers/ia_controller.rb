@@ -29,6 +29,49 @@ class IaController < ApplicationController
     
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
   end
+  
+  def mark_beginning
+    beginning_leaf = IaLeaf.find(params[:ia_leaf_id])
+    
+    # delete all leaves preceding this leaf
+    target_leaves = []
+    accumulation_mode=true
+    @ia_work.ia_leaves.each do |leaf|
+      if leaf == beginning_leaf
+        accumulation_mode = false
+      end
+      if accumulation_mode
+        target_leaves << leaf
+      end
+    end
+    
+    target_leaves.each { |leaf| leaf.destroy }    
+    
+    flash[:notice] = "Pages preceding the beginning of the text have been concealed."
+    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+  end
+  
+  def mark_end
+    end_leaf = IaLeaf.find(params[:ia_leaf_id])
+    
+    # delete all leaves preceding this leaf
+    target_leaves = []
+    accumulation_mode=false
+    @ia_work.ia_leaves.each do |leaf|
+      if accumulation_mode
+        target_leaves << leaf
+      end
+      if leaf == end_leaf
+        accumulation_mode = true
+      end
+    end
+    
+    target_leaves.each { |leaf| leaf.destroy }    
+    
+    flash[:notice] = "Pages following the end of the text have been concealed."
+    redirect_to :action => 'manage', :ia_work_id => @ia_work.id
+    
+  end
 
   def title_from_ocr_top
     @ia_work.title_from_ocr(:top)
