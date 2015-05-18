@@ -110,20 +110,23 @@
 
 .page-editarea {
   height: 100%;
+  overflow: hidden;
   background: #FFF;
-  padding: $gapSize / 4;
   box-sizing: border-box;
   input, textarea {
     border: 0;
     background: none;
     box-shadow: none;
   }
-  textarea { height: 100%; }
+  textarea {
+    height: 100%;
+    resize: none;
+    padding: $gapSize / 2;
+  }
   &_title {
-    width: 100%;
     height: 50px;
     display: table;
-    margin-bottom: 10px;
+    margin: 5px 5px 0 5px;
     box-sizing: border-box;
     font-size: $fontSizeBig;
     border-bottom: 1px solid rgba(#000, 0.1);
@@ -134,7 +137,7 @@
       vertical-align: middle;
       &:last-child { width: 100%; }
     }
-    + textarea { height: calc(100% - 60px); }
+    + textarea { height: calc(100% - 55px); }
   }
 }
 
