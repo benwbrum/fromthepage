@@ -1,15 +1,13 @@
-<div class="viewer" style="height: 850px;">
-	<% if defined? fullsize_url %>
-		<%= image_tag(fullsize_url) %>
-	<% else %>
-		<%= image_tag file_to_url(@page.base_image) %>
-	<% end %>
-</div>
+.zoomer-container
+  -if defined? fullsize_url
+    =image_tag fullsize_url
+  -else
+    =image_tag file_to_url(@page.base_image)
 
-<script>
+javascript:
   $(function() {
     // Zoomer initialization
-    var zoomer = $('.viewer').zoomer();
+    var zoomer = $('.zoomer-container').zoomer();
 
     // Check localStorage support
     if(typeof Storage !== void(0)) {
@@ -48,5 +46,4 @@
         localStorage['zoomer:' + datakey] = JSON.stringify(storage);
       });
     }
-  })
-</script>
+  });

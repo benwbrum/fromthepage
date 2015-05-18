@@ -4,30 +4,31 @@
   =hidden_field_tag(:page_id, @page.id)
   .page-toolbar
     .toolbar
+      .toolbar_group.w100
+        =f.label :status, title: 'Mark a translation as incomplete to queue it for review by other translators.'
+        |&nbsp;
+        =f.select :status, relevant_translation_statuses(@work), { :include_blank => '- Translation status not set -' }, class: 'wauto'
       .toolbar_group
         =button_tag 'Save Changes', :name => 'save'
-      .toolbar_group
-        =f.select :status, relevant_translation_statuses(@work), { :include_blank => '- Translation status not set -' }, class: 'wauto'
-      .toolbar_group.w100.wrap-text
-        small.fglight Mark a translation as incomplete to queue it for review by other translators.
 
-  .page-columns
-    .page-column
-      .page-editor
-        =f.text_area :source_translation, { :style => "height: #{@page.source_translation ? @page.source_translation.lines.count*1.5 : 30}em; min-height: 30em" }
-
+  .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
       -transcription = xml_to_html(@page.xml_text)
-      -if transcription.present?
-        .page-transcription ==transcription
-      -else
-        -help_transcribe = link_to('help transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => @page.id })
-        -mark_blank = link_to('mark the page blank', { :controller => 'transcribe', :action => 'mark_page_blank', :page_id => @page.id })
-        .nodata
-          h5.nodata_title This page is not transcribed
-          p.nodata_text
-            =="Please #{help_transcribe} this page"
-            ==" or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
+      .page-preview
+        -if transcription.present?
+          ==transcription
+        -else
+          -help_transcribe = link_to('help transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => @page.id })
+          -mark_blank = link_to('mark the page blank', { :controller => 'transcribe', :action => 'mark_page_blank', :page_id => @page.id })
+          .centered
+            .centered_content
+              h5.nodata_title This page is not transcribed
+              p.nodata_text
+                =="Please #{help_transcribe} this page"
+                =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
+
+    .page-column
+      .page-editarea =f.text_area :source_translation
 
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions

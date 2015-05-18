@@ -175,6 +175,7 @@ $(function() {
   $('.dropdown').dropdown();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
+  $('[data-fullheight]').fullheight();
   $('[data-toggle-class]').on('click', function() {
     var data = $(this).data('toggle-class');
     for(var selector in data) {
