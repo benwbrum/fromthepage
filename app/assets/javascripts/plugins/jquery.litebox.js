@@ -148,8 +148,6 @@
 
         var $form = $(e.currentTarget);
         var form_data = $form.serialize();
-        console.log(form_data);
-        return;
         var form_method = $form.attr('method');
         var form_action = $form.attr('action');
         var $submit = $form.find(':submit').prop('disabled', true);
