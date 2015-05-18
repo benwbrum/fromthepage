@@ -1,0 +1,13 @@
+.litebox-embed(style="width:450px")
+  h1 Rename Category
+
+  =form_for(@category, :url => { :action => 'update' }) do |f|
+    =hidden_field_tag(:category_id, @category.id)
+    =validation_summary @category.errors
+    table.form
+      tr.big
+        th =f.label :title
+        td.w100 =f.text_field :title
+
+    .toolbar
+      .toolbar_group.aright =f.button 'Save Changes'

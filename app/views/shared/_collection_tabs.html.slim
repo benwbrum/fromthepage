@@ -13,7 +13,7 @@
     :action => 'list',
   },
 },{\
-  :name => 'Stats',
+  :name => 'Statistics',
   :selected => 7,
   :options => {\
     :controller => 'statistics',
@@ -30,13 +30,6 @@
       :action => 'edit',
     },
   },{\
-    :name => 'Categories',
-    :selected => 3,
-    :options => {\
-      :controller => 'category',
-      :action => 'manage',
-    },
-  },{\
     :name => 'Export',
     :selected => 5,
     :options => {\
@@ -49,5 +42,5 @@
 h1 =@collection.title
 .tabs
   -for tab in tabs
-    =link_to_unless_current tab[:name], tab[:options].merge(:collection_id => collection_id)
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => collection_id)
       a.active =tab[:name]

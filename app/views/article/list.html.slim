@@ -1,29 +1,57 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection.id }})
 
-.collection-categories
-  .category-tree
-    ==display_categories(@collection.categories, nil) do |category|
-      -ret = "<a href=\"#cat_#{category.id}\" class=\"tree-item\">"
-      -if category.children.any?
-        -ret << "<span class=\"tree-bullet\"></span>"
-      -ret << "<span>#{category.title}</span>"
-      -ret << "</a>"
-    ul
-      li: a.tree-item(href="#cat_none") Uncategorized
+-if @collection.categories.present?
+  -if @page
+    -page_link = link_to('click here', { :controller => 'transcribe', :action => 'assign_categories', :page_id => @page.id })
+    .category-back-message =="Once you finish editing categories, #{page_link} to return back to &ldquo;#{@page.title}&rdquo; page."
 
-  .category-articles
-    -@collection.categories.each do |category|
-      dl(id="cat_#{category.id}")
-        dt: h3 ==(category.ancestors.reverse.push(category).map { |c| c.title }).join(" &rarr; ")
-        dd
-          -category.articles.each do |article|
-            =link_to article.title, { :action => 'show', :article_id => article.id }
+  .collection-categories
+    .category-tree
+      ==display_categories(@collection.categories, nil) do |category|
+        -ret = "<a href=\"#category-#{category.id}\" class=\"tree-item\">"
+        -if category.children.any?
+          -ret << "<span class=\"tree-bullet\"></span>"
+        -ret << "<span>#{category.title}</span>"
+        -ret << "</a>"
+      -if @uncategorized_articles.present?
+        ul
+          li: a.tree-item(href="#category-none") Uncategorized
 
-    dl#cat_none
-      dt: h3 Uncategorized Articles
-      dd
-        -@uncategorized_articles.each do |article|
-          =link_to article.title, { :action => 'show', :article_id => article.id }
+    .category-articles
+      -@collection.categories.each do |category|
+        dl.category-article(id="category-#{category.id}")
+          dt
+            .headline
+              //h3.headline_title ==(category.ancestors.reverse.push(category).map { |c| c.title }).join(" &rarr; ")
+              h3.headline_title(data-category-title="#{category.id}") =category.title
+              -if user_signed_in? && current_user.like_owner?(@collection)
+                .headline_aside
+                  dl.dropdown.right
+                    dt.h5
+                      span Actions
+                      =svg_symbol '#big-menu', class: 'icon icon-big'
+                    dd
+                      =link_to 'Rename Category', { :controller => 'category', :action => 'edit', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox': ''
+                      =link_to 'Add Child Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox': ''
+                      =link_to 'Add Root Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox': ''
+                      hr
+                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
+          dd
+            -category.articles.each do |article|
+              =link_to article.title, { :action => 'show', :article_id => article.id }
+      -if @uncategorized_articles.present?
+        dl.category-article#category-none
+          dt: h3 Uncategorized Articles
+          dd
+            -@uncategorized_articles.each do |article|
+              =link_to article.title, { :action => 'show', :article_id => article.id }
+-else
+  -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox': ''
+  .nodata
+    h4.nodata_title No Categories
+    p.nodata_text
+      =="There are no subject categories in the collection.<br>"
+      =="#{add_category} you'll use to group subjects." if user_signed_in? && current_user.like_owner?(@collection)
 
 javascript:
   $(function() {

@@ -1,10 +1,10 @@
-=render({ :partial => '/shared/page_tabs', :locals => { :selected =>3, :page_id => @page.id }})
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 .headline
   h2.headline_title Uncategorized Subjects
   -if user_signed_in? && current_user.like_owner?(@collection)
     .headline_aside
-      =link_to 'Manage Categories', { :controller => 'category', :action => 'manage', :page_id => @page.id }, class: 'button'
+      =link_to 'Manage Categories', { :controller => 'article', :action => 'list', :page_id => @page.id }, class: 'button'
 
 p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
 
@@ -19,4 +19,4 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
           option(data-level=level value=c.id selected=selected) =c.title
 
 span.legend
-  =link_to 'Proceed to Page Overview', { :action => 'display_page', :controller => 'display', :page_id => @page.id }, class: 'pill-stroke'
+  =link_to 'Continue', { :action => 'display_page', :controller => 'display', :page_id => @page.id }, class: 'pill-stroke'
