@@ -129,8 +129,11 @@
       this.$container.addClass('visible');
       this.$content.find(':text:not(:hidden):first').focus();
 
+      // Close litebox if button[type=reset] pressed
+      this.$content.on('click', 'form :reset', $.proxy(this.close, this));
+
       // Include submit button value into serialization
-      this.$content.on('click', 'form :submit', function() {
+      this.$content.on('click', 'formm :submit', function() {
         var button = $(this);
         button.after($('<input>').attr({
           type: 'hidden',
@@ -145,6 +148,8 @@
 
         var $form = $(e.currentTarget);
         var form_data = $form.serialize();
+        console.log(form_data);
+        return;
         var form_method = $form.attr('method');
         var form_action = $form.attr('action');
         var $submit = $form.find(':submit').prop('disabled', true);
@@ -158,10 +163,18 @@
           cache: false,
           context: this
         }).done(function(data, textStatus, jqXHR) {
-          var code = jqXHR.status;
+          var status = jqXHR.status;
           var location = jqXHR.getResponseHeader('location');
-          if(code === 201 && location) {
-            document.location.href = location;
+          if(status === 201) {
+            if(location) {
+              window.location.href = location;
+              // Force page reload if location contains #hash
+              if(location.indexOf('#') !== -1) {
+                window.location.reload();
+              }
+            } else {
+              this.close();
+            }
           } else {
             this.$content.html(data);
           }
