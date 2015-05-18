@@ -189,7 +189,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Wrapper around redirect_to for modal ajax forms
-  def ajax_redirect_to(options={}, response_status = {})
+  def ajax_redirect_to(options={}, response_status={})
     if request.xhr?
       head :created, location: url_for(options)
     else

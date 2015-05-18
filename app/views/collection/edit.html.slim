@@ -2,7 +2,7 @@
 
 .columns
   article.maincol
-    =form_for :collection, url: {action: :update, id: @collection.id} do |f|
+    =form_for :collection, url: { action: :update, id: @collection.id } do |f|
       table.form
         tr.big
           th =f.label :title
