@@ -18,18 +18,20 @@
     text-decoration: none;
     font-size: $fontSizeSmall;
     background: rgba(#FFF, 0.35);
+    background-clip: padding-box;
     border: 1px solid $borderColor;
   }
   &_prev, &_next { color: rgba($bodyFgFaded, 0.5); }
-  &_info { border-radius: 0;}
+  &_info {
+    border-radius: 0;
+    border-width: 1px 0;
+  }
   &_prev {
-    border-right: 0;
     padding-left: 0.8em;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
   &_next {
-    border-left: 0;
     padding-right: 0.8em;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
@@ -38,8 +40,9 @@
     color: inherit;
     &:hover {
       color: $bodyFg;
-      background: #FFF;
+      background-color: #FFF;
     }
+    &:active { @include button-state(active); }
   }
 }
 
@@ -66,6 +69,11 @@
   margin-top: -$gapSize / 2;
 }
 
+.page-columns-layout dt {
+  span { display: none; }
+  .icon { margin: 0; }
+}
+
 
 // Page columns
 
@@ -82,18 +90,54 @@
 .page-columns {
   width: 100%;
   min-height: 700px;
-  display: inline-block;
+  position: relative;
   box-sizing: border-box;
   border: 1px solid rgba($borderColor, 0.6);
+  &[data-layout-mode='rtl'] .page-column {
+    left: 0;
+    border-width: 0;
+    &:first-child {
+      left: 50%;
+      border-width: 0 0 0 1px;
+    }
+  }
+  &[data-layout-mode='ttb'] .page-column {
+    left: 0;
+    width: 100%;
+    height: 50%;
+    border-width: 0;
+    &:last-child {
+      top: 50%;
+      border-width: 1px 0 0 0;
+    }
+  }
+  &[data-layout-mode='btt'] .page-column {
+    left: 0;
+    width: 100%;
+    height: 50%;
+    border-width: 0;
+    &:first-child {
+      top: 50%;
+      border-width: 1px 0 0 0;
+    }
+  }
 }
 
 .page-column {
+  top: 0;
   width: 50%;
-  float: left;
   height: 100%;
+  position: absolute;
   box-sizing: border-box;
-  border-left: 1px solid rgba($borderColor, 0.6);
-  &:first-child { border-left: 0; }
+  border: 1px solid rgba($borderColor, 0.6);
+  &:first-child {
+    left: 0;
+    border-width: 0;
+  }
+  &:last-child {
+    left: 50%;
+    border-width: 0 0 0 1px;
+  }
 }
 
 .page-preview {

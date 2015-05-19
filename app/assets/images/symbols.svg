@@ -90,4 +90,20 @@
     <polygon fill="currentColor" points="7,14 7,5.41 2.71,9.71 1.29,8.29 8,1.59 14.71,8.29 13.29,9.71 9,5.41 9,14"/>
   </symbol>
 
+  <symbol id="icon-layout-ltr" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1,1v14h14V1H1z M14,14H8V2h6V14z"/>
+  </symbol>
+
+  <symbol id="icon-layout-rtl" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1,1v14h14V1H1z M8,14H2V2h6V14z"/>
+  </symbol>
+
+  <symbol id="icon-layout-ttb" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1,1v14h14V1H1z M14,14H2V8h12V14z"/>
+  </symbol>
+
+  <symbol id="icon-layout-btt" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1,1v14h14V1H1z M2,8V2h12v6H2z"/>
+  </symbol>
+
 </svg>

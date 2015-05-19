@@ -8,15 +8,26 @@
         =f.label :status, title: relevant_status_help(@work)
         |&nbsp;
         =f.select :status, relevant_transcription_statuses(@work), { :include_blank => '- Transcription status not set -' }, class: 'wauto'
-      .toolbar_group.w100
+      .toolbar_group
         =>button_tag 'Autolink', :name => 'autolink', class: 'outline'
         =>link_to_unless @preview_xml, 'Preview', { :page_id => @page.id, :preview => true }, class: 'button outline'
           =link_to 'Preview', { :page_id => @page.id }, class: 'button outline pressed'
         a.button.outline(data-fullscreen-toggle) Fullscreen
+      .toolbar_group.w100
+        -layout_modes = { 'ltr' => 'Image at the left', 'rtl' => 'Image at the right', 'ttb' => 'Image at the top', 'btt' => 'Image at the bottom' }
+        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+          dt.button.outline
+            =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
+            span =layout_modes[@layout_mode]
+          dd
+            -layout_modes.each do |mode, text|
+              a(data-layout-set="#{mode}")
+                =svg_symbol "#icon-layout-#{mode}", class: 'icon'
+                span =text
       .toolbar_group
         =button_tag 'Save Changes', :name => 'save'
 
-  .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
+  .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
       .page-imagescan
         -if @page.ia_leaf
@@ -48,6 +59,12 @@ javascript:
       $(this).toggleClass('pressed');
       $('.page-editor').toggleClass('fullscreen');
       $(window).trigger('resize.FullHeight');
+      $('.zoomer-container').zoomer('resize');
+    });
+    $('[data-layout-set]').on('click', function() {
+      var mode = $(this).data('layout-set');
+      Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
+      $('[data-layout-mode]').attr('data-layout-mode', mode);
       $('.zoomer-container').zoomer('resize');
     });
   });

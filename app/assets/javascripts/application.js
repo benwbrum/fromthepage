@@ -63,7 +63,7 @@ $.fn.dropdown = function(s) {
     trigger:    'dt',        // A child element which trigger open/close
     items:      'dd > a',    // Clickable elements inside the drop-down
     openclass:  'open',      // CSS class name for the open state
-    selectable: false        // TRUE to change trigger text on select
+    selectable: false        // TRUE to change trigger content on select
   }, s || {});
 
   return this.each(function() {
@@ -80,7 +80,7 @@ $.fn.dropdown = function(s) {
     $(cfg.items, this).on('click.DropDown', function() {
       $element.removeClass(cfg.openclass);
       if(cfg.selectable) {
-        $trigger.text($(this).text());
+        $trigger.html($(this).html());
       }
     });
 

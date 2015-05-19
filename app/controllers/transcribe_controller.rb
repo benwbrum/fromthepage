@@ -14,6 +14,7 @@ class TranscribeController  < ApplicationController
   end
 
   def display_page
+    @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
     if params[:preview] == 'true'
       @preview_xml = @page.generate_preview
     end
