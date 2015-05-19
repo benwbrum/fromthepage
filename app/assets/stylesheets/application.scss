@@ -4,6 +4,7 @@
 
 $remSize:                   10px;
 $iconSize:                  16px;
+$iconMargin:                0.375em;
 $lineHeight:                1.375;
 
 $fontFamily:                'Source Serif Pro', Georgia, 'Times New Roman', Times, serif;
@@ -91,7 +92,7 @@ $btnOrangeColor:            #FFF;
 $btnOrangeBackground:       #F83;
 
 $inputHeight:               2em;
-$inputPadding:              0.3em;
+$inputPadding:              0.375em;
 $inputBorderRadius:         0;
 $inputTransitionTime:       0.2s;
 $inputFontSize:             $fontSize;

@@ -27,7 +27,7 @@
 
 .deed-pager {
   margin: 0 -0.5em;
-  color: $bodyFgLight;
+  color: $bodyFgFaded;
   display: inline-block;
   vertical-align: middle;
   .previous_page, .next_page {
@@ -37,22 +37,30 @@
     line-height: 2;
     border-radius: 1.2em;
     text-decoration: none;
+    background-clip: padding-box;
     border: 1px solid $borderColor;
     &.disabled { color: rgba($bodyFgLight, 0.6); }
   }
   .previous_page {
-    border-right: 0;
     padding-right: 0.8em;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
   .next_page {
+    margin-left: -1px;
     padding-left: 0.8em;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-  a:hover {
-    color: $bodyFg;
-    background: rgba(#FFF, 0.5);
+  a {
+    color: inherit;
+    &:hover {
+      color: $bodyFg;
+      background-color: rgba(#FFF, 0.5);
+    }
+    &:active {
+      position: relative;
+      @include button-state(active);
+    }
   }
 }

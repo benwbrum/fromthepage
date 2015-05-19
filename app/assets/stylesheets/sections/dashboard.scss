@@ -28,11 +28,15 @@
   &_summary {
     margin: 0.4em 0 0 0;
     color: $bodyFgFaded;
+    > * {
+      margin-right: 1em;
+      display: inline-block;
+      vertical-align: middle;
+    }
     a {
       color: inherit;
       &:hover { color: $bodyFg; }
     }
-    .pill-stroke { margin-right: 1em; }
   }
   &_works {
     color: $bodyFgLight;

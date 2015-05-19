@@ -14,11 +14,11 @@ h1 Collections
               p.collection_snippet =snippet
             .collection_summary
               -if(works_count > 0)
-                a.pill-stroke(data-toggle-stats)
+                a.button.outline.round(data-toggle-stats)
                   =svg_symbol '#icon-book', class: 'icon'
                   span =pluralize(works_count, 'work')
               -else
-                span.pill-stroke No works
+                span No works
               span =="Owned by #{owner_link}"
 
             -unless c.works.empty?

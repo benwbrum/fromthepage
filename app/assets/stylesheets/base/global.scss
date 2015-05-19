@@ -96,7 +96,7 @@ a {
   color: $fgLink;
   cursor: pointer;
   text-decoration: underline;
-  transition: color 0.2s, background-color 0.2s;
+  transition: color 0.15s, background-color 0.15s;
   &:hover { color: $fgHover; }
   &:focus { outline: none; }
 }
