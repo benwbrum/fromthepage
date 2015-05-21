@@ -287,3 +287,28 @@
     content: attr(data-empty);
   }
 }
+
+
+// Page Settings
+
+.page-settings {
+  .sidecol {
+    min-width: 200px;
+    big {
+      display: block;
+      margin: 0.5em 0 0.3em 0;
+    }
+    time {
+      display: block;
+      color: $bodyFgFaded;
+    }
+  }
+}
+
+.page-image-preview {
+  text-align: center;
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+}

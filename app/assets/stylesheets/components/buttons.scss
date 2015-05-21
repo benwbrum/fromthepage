@@ -133,18 +133,25 @@ button:empty, .button:empty {
 
 // Stacked buttons
 .button-stack {
+  font-size: 0;
+  white-space: nowrap;
   display: inline-block;
   vertical-align: middle;
   button, .button {
-    float: left;
+    //float: left;
     border-radius: 0;
     margin-left: -1px;
+    display: inline-block;
+    font-size: $btnFontSize;
     &:first-child {
       margin-left: 0;
       border-radius: $btnBorderRadius 0 0 $btnBorderRadius;
     }
     &:last-child {
       border-radius: 0 $btnBorderRadius $btnBorderRadius 0;
+    }
+    &:only-child {
+      border-radius: $btnBorderRadius;
     }
     &:active, &:focus, &.pressed {
       z-index: 1;

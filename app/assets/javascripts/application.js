@@ -167,12 +167,32 @@ $.fn.categoriesSelect = function() {
   });
 };
 
+
+// Custom input file
+$.fn.customInputFile = function() {
+  return this.each(function() {
+    var $container = $(this);
+    var $button = $('button', $container);
+    var $file = $('input[type=file]', $container);
+    var $text = $('input[type=text]', $container);
+
+    $button.add($text).on('click', function() {
+      $file.click();
+    });
+
+    $file.on('change', function() {
+      $text.val($file.val());
+    });
+  });
+};
+
 })(jQuery, window, document);
 
 
 $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
+  $('.input-file').customInputFile();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();

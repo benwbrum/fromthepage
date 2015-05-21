@@ -1,0 +1,50 @@
+=render({ :partial => '/shared/page_tabs', :locals => { :selected => 4, :page_id => @page.id }})
+
+.page-settings.columns
+  .maincol
+    =form_for :page, url: { :action => 'update', :id => @page.id }, :html => { :multipart => true } do |f|
+      table.form
+        tr.big
+          th =f.label :title, 'Page Title'
+          td.w100 =f.text_field :title, value: @page.title
+        tr
+          th =f.label :base_image, 'Page Image'
+          td
+            .input-file
+              =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
+              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+              button(type="button") Browse
+      .toolbar
+        .toolbar_group.w100
+          =link_to({ :action => 'delete', :page_id => @page.id }, data: { :confirm => 'Are you sure you want to delete this page? After deleting you won\'t be able to recover it!' })
+            =svg_symbol '#icon-remove-sign', class: 'icon'
+            span Delete Page
+        .toolbar_group =f.button 'Save Changes', class: 'big'
+
+  .sidecol
+    big ="Page Position: #{@page.position}"
+    =time_tag @page.created_on
+      ="Created #{@page.created_on.strftime("%b %d, %Y %I:%M %p")}"
+    p.small.fglight Here you can edit the page title and upload a new image. If you want to edit page transcription or translation text please switch to the appropriate tab above.
+
+-if @page.base_image.present?
+  hr
+  .headline
+    h2.headline_title Page Image
+    .headline_aside
+      span.fgfaded =="Dimensions: #{@page.base_width}&times;#{@page.base_height}, Shrink Factor: #{@page.shrink_factor}"
+    .headline_aside
+      .button-stack
+        =link_to({ :action => 'reduce', :page_id => @page.id }, class: 'button outline', title: 'Reduce Image')
+          =svg_symbol "#icon-reduce", class: 'icon'
+        -if @page.shrink_factor > 0
+          =link_to({ :action => 'enlarge', :page_id => @page.id }, class: 'button outline', title: 'Enlarge Image')
+            =svg_symbol "#icon-enlarge", class: 'icon'
+
+      .button-stack
+        =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 90 }, class: 'button outline', title: 'Rotate Clockwise')
+          =svg_symbol "#icon-rotate-cw", class: 'icon'
+        =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 270 }, class: 'button outline', title: 'Rotate Counterclockwise')
+          =svg_symbol "#icon-rotate-ccw", class: 'icon'
+
+  .page-image-preview =image_tag file_to_url(@page.scaled_image(@page.shrink_factor))

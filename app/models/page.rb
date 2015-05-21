@@ -2,7 +2,7 @@ require 'search_translator'
 class Page < ActiveRecord::Base
 
   include XmlSourceProcessor
-  
+
   before_update :process_source
   before_update :populate_search
 
@@ -33,10 +33,10 @@ class Page < ActiveRecord::Base
   STATUS_INCOMPLETE_OCR = 'part_ocr'
   STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
 
-  STATUSES = 
-  { "Blank/Nothing to Transcribe" => STATUS_BLANK, 
-    "Incomplete Transcription" => STATUS_INCOMPLETE, 
-    "Incomplete Correction" => STATUS_INCOMPLETE_OCR, 
+  STATUSES =
+  { "Blank/Nothing to Transcribe" => STATUS_BLANK,
+    "Incomplete Transcription" => STATUS_INCOMPLETE,
+    "Incomplete Correction" => STATUS_INCOMPLETE_OCR,
     "Uncorrected OCR" => STATUS_UNCORRECTED_OCR,
     "Incomplete Translation" => STATUS_INCOMPLETE_TRANSLATION }
   STATUS_HELP = {
@@ -54,8 +54,8 @@ class Page < ActiveRecord::Base
   end
 
   def defaults
-    if self[:title].blank? 
-      self[:title] = "untitled page #{self[:position]}"
+    if self[:title].blank?
+      self[:title] = "Untitled Page #{self[:position]}"
     end
   end
 

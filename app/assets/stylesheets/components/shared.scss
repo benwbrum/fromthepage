@@ -585,6 +585,36 @@ button, .button, .dropdown dd a {
   }
 }
 
+.input-file {
+  position: relative;
+  padding-right: 80px;
+  input[type=text] {
+    z-index: 1;
+    height: 34px;
+    position: relative;
+    border-right-width: 0;
+  }
+  button {
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 80px;
+    position: absolute;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  input[type=file] {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    opacity: 0;
+    outline: none;
+    position: absolute;
+  }
+}
+
 
 // ---------------------------
 // PAGINATION
