@@ -1,6 +1,16 @@
 module ExportHelper
 
-  def xml_to_export_tei(xml_text, type=nil)
+  def page_id_to_xml_id(id, translation=false)
+    return "" if id.blank?
+    
+    if translation
+      "TTP#{id}"
+    else
+      "OTP#{id}"
+    end
+  end
+
+  def xml_to_export_tei(xml_text, context, page_id = "")
 
     return "" if xml_text.blank?
 #    xml_text.gsub!(/\n/, "")
@@ -9,21 +19,23 @@ module ExportHelper
     #paras_string = ""
 
     my_display_html = ""
-    doc.elements.each("//p") do |e|
-      transform_links(e, type)
+    doc.elements.each_with_index("//p") do |e,i|
+      transform_links(e)
+      e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
+      e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
       my_display_html << e.to_s
     end
 
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
-  def transform_links(p_element, type)
+
+  def transform_links(p_element)
     p_element.elements.each('//link') do |link|
       rs = REXML::Element.new("rs")
 
       id = link.attributes['target_id']
       rs.add_attribute("ref", "#S#{id}")
-      rs.add_attribute("type", type) if type
 
       link.children.each { |c| rs.add(c) }
       link.replace_with(rs)

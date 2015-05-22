@@ -7,6 +7,8 @@ class ExportController < ApplicationController
   def tei
     params[:format] = 'xml'# if params[:format].blank?
 
+    @context = ExportContext.new
+
     @user_contributions =
       User.find_by_sql("SELECT  user_id user_id,
                                 users.print_name print_name,
