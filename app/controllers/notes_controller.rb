@@ -1,6 +1,6 @@
 class NotesController < ApplicationController
   def create
-    @note = Note.new( params[:note] )
+    @note = Note.new(params[:note])
     # truncate the body for the title
     @note.title = @note.body
     # add param-loaded associations
@@ -11,16 +11,27 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       if not user_signed_in?
-        flash[:error] = "You must be logged in to create notes"
-        format.html { render :text => "redirect_to comment_url(@comment)" }
-        format.xml  { head :err }
-        format.js   { render :update do |page| page.alert "You must be logged in to create notes" end }
+        format.html { redirect_to :back, flash: { error: "You must be logged in to create notes" } }
       elsif @note.save
         record_deed
-        format.js
-        format.html { redirect_to :back }
+        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }) }, status: :created }
+        format.html { redirect_to :back, notice: "Note has been created" }
       else
-        format.js
+        format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
+        format.html { redirect_to :back, flash: { error: "Error creating note" } }
+      end
+    end
+  end
+
+  def update
+    @note = Note.find(params[:id])
+    respond_to do |format|
+      if @note.update_attributes(params[:note])
+        format.json { head :no_content }
+        format.html { redirect_to :back, notice: "Note has been updated" }
+      else
+        format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
+        format.html { redirect_to :back, flash: { error: "Error updating note" } }
       end
     end
   end
@@ -29,20 +40,14 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
     @note.deed.delete
     @note.delete
-    flash[:notice] = "Note has been deleted"
-    redirect_to :back
+    respond_to do |format|
+      format.json { head :no_content }
+      format.html { redirect_to :back, notice: "Note has been deleted" }
+    end
   end
 
   def edit
     @note = Note.find(params[:id])
-  end
-
-  def update
-    @note = Note.find(params[:id])
-    if @note.update_attributes(params[:note])
-      flash[:notice] = "Note has been updated"
-      redirect_to :back
-    end
   end
 
   def show

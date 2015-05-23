@@ -723,6 +723,7 @@ button, .button, .dropdown dd a {
       border-bottom: 1px solid rgba(#000, 0.06);
     }
     &_footer {
+      line-height: 30px;
       text-align: right;
       padding: $gapSize / 2;
       font-size: $fontSizeSmall;
@@ -733,6 +734,10 @@ button, .button, .dropdown dd a {
         margin-right: $gapSize / 2;
         &:hover { color: $bodyFg; }
       }
+    }
+    &_error {
+      float: left;
+      color: $fgRed;
     }
     textarea {
       border: 0;

@@ -14,4 +14,6 @@ class Note < ActiveRecord::Base
   belongs_to :collection
   has_one :deed
 
+  validates :body, presence: true
+
 end

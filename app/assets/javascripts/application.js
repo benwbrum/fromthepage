@@ -196,7 +196,9 @@ $(function() {
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
-  $('[data-toggle-class]').on('click', function() {
+
+  // Classname trigger
+  $(document).on('click', '[data-toggle-class]', function() {
     var data = $(this).data('toggle-class');
     for(var selector in data) {
       $(selector).toggleClass(data[selector]);

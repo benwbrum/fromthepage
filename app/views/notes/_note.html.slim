@@ -1,0 +1,23 @@
+.user-bubble.editable
+  =link_to({ :controller => 'user', :action => 'profile', :user_id => note.user.id }, class: 'userpic')
+    =gravatar_image_tag note.user.email, :alt => note.user.display_name
+  .user-bubble_content
+    -if note.user == current_user
+      .user-bubble_actions
+        a(data-note-edit)
+          =svg_symbol '#icon-edit', class: 'icon'
+        =link_to note, method: :delete, remote: true, data: { 'note-delete': note.id, confirm: 'Are you sure to delete this note?' }
+          =svg_symbol '#icon-remove-sign', class: 'icon'
+    =time_tag note.created_at
+      =link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
+      =" #{time_ago_in_words note.created_at} ago"
+    p =note.body
+
+  -if note.user == current_user
+    =form_for note, remote: true, :html => { class: 'user-bubble_form' } do |f|
+      .user-bubble_form_editor
+        =f.text_area :body, :rows => 4
+      .user-bubble_form_footer
+        span.user-bubble_form_error
+        a(data-note-edit) Cancel
+        =f.button 'Update'
