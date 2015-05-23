@@ -30,11 +30,15 @@
 -when 'pg_xlat_ed'
   -output += "edited the translation of #{page} page"
 
+-if(long_view && !deed.work.nil?)
+  -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id })
+  -output += " of #{work} work"
+
 -if(@collection.nil? && !deed.collection.nil?)
   -collection = link_to(deed.collection.title, { :controller => 'collection', :action => 'show', :collection_id => deed.collection.id })
-  -output += " in the #{collection} collection"
+  -output += " in #{collection} collection"
 
--if(long_view && deed.deed_type == 'note_add')
+-if(long_view && deed.deed_type == 'note_add' && !deed.note.nil?)
   -output += ", saying &ldquo;#{deed.note.title}&rdquo;"
 
 ==output
