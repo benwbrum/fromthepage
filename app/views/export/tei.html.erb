@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.tei-c.org/ns/1.0 /home/sgmr29/code/digital-austin-papers/tei-2.0.2/xml/tei/custom/schema/xsd/tei_all.xsd "
+xsi:schemaLocation="http://www.tei-c.org/ns/1.0 http://www.tei-c.org/release/xml/tei/custom/schema/xsd/tei_all.xsd"
 xml:lang="EN"
-xml:id="APB4051">
+xml:id="export">
 <teiHeader>
     <fileDesc>
         <titleStmt>
@@ -93,7 +93,7 @@ xml:id="APB4051">
                         <% unless person.source_text.blank? %>
 	                        <note>
 			                    <% unless person.source_text.blank? %>
-		                    		<%= raw(xml_to_export_tei(person.xml_text, 'person')) %>
+		                    		<%= raw(xml_to_export_tei(person.xml_text, @context, "S#{person.id}")) %>
 			                    <% end %>
 		                    </note>
 	                    <% end %>
@@ -110,7 +110,7 @@ xml:id="APB4051">
                         <% unless place.source_text.blank? %>
 		                    <note>
 			                    <% unless place.source_text.blank? %>
-		                    		<%= raw(xml_to_export_tei(place.xml_text, 'place')) %>
+		                    		<%= raw(xml_to_export_tei(place.xml_text, @context, "S#{place.id}")) %>
 			                    <% end %>
 		                    </note>
 	                    <% end %>
@@ -140,23 +140,71 @@ xml:id="APB4051">
 
 <text>
     <body>
-	  <% @work.pages.each do |page| %>
-	  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
-		<div xml:id="P<%=page.id%>">
-			<fw type="pageNum">
-				<%= page.title %>
-			</fw>
-			<%= raw(xml_to_export_tei(page.xml_text))%>
-			<% notes = page.notes %>
-			<% if notes && notes.length > 0 %>
-				<% notes.each do |note| %>
-					<note resp="#U<%= note.user_id %>">
-						<%= note.body %>
-					</note>
+        <% @context.translation_mode = false %>
+		<% if @work.supports_translation? %>
+			<div xml:id="original">
+			  <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
+			  	<pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
+			  	<% if @work.pages_are_meaningful? %>
+					<div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
+				<% end%>
+					<fw type="pageNum">
+						<%= page.title %>
+					</fw>
+					<%= raw(xml_to_export_tei(page.xml_text, @context, page.id))%>
+					<% notes = page.notes %>
+					<% if notes && notes.length > 0 %>
+						<% notes.each do |note| %>
+							<note resp="#U<%= note.user_id %>">
+								<%= note.body %>
+							</note>
+						<% end %>
+					<% end %>
+			  	<% if @work.pages_are_meaningful? %>
+					</div>
+				<% end%>
+			  <% end %>
+				
+			</div>
+			<div xml:id="translation">
+		      <% @context.translation_mode = true %>
+			  <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
+			  	<pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
+			  	<% if @work.pages_are_meaningful? %>
+					<div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
+				<% end%>
+					<fw type="pageNum">
+						<%= page.title %>
+					</fw>
+					<%= raw(xml_to_export_tei(page.xml_translation, @context, page.id))%>
+			  	<% if @work.pages_are_meaningful? %>
+					</div>
+				<% end%>
+			  <% end %>
+				
+			</div>
+		<% else %>    	
+		  <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
+		  	<pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
+		  	<% if @work.pages_are_meaningful? %>
+				<div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
+			<% end%>
+				<fw type="pageNum">
+					<%= page.title %>
+				</fw>
+				<%= raw(xml_to_export_tei(page.xml_text, @context, page.id))%>
+				<% notes = page.notes %>
+				<% if notes && notes.length > 0 %>
+					<% notes.each do |note| %>
+						<note resp="#U<%= note.user_id %>">
+							<%= note.body %>
+						</note>
+					<% end %>
 				<% end %>
-			<% end %>
-		</div>
-
+		  	<% if @work.pages_are_meaningful? %>
+				</div>
+			<% end%>
+		  <% end %>
 	  <% end %>
     </body>
 </text>

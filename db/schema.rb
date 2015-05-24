@@ -131,6 +131,14 @@ ActiveRecord::Schema.define(version: 20150328015758) do
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
 
+  create_table "exports", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "work_id"
+    t.string   "export_format"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "ia_leaves", force: true do |t|
     t.integer  "ia_work_id"
     t.integer  "page_id"
@@ -243,8 +251,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "title"
     t.string   "description"
     t.integer  "omeka_site_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "omeka_files", force: true do |t|
@@ -255,8 +263,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "thumbnail_url"
     t.string   "original_filename"
     t.integer  "omeka_order"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.integer  "page_id"
   end
 
@@ -273,8 +281,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "omeka_url"
     t.integer  "omeka_collection_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.integer  "work_id"
   end
 
@@ -283,8 +291,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "api_url"
     t.string   "api_key"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "page_article_links", force: true do |t|
@@ -350,6 +358,10 @@ ActiveRecord::Schema.define(version: 20150328015758) do
 
   create_table "plugin_schema_info", id: false, force: true do |t|
     t.string  "plugin_name"
+    t.integer "version"
+  end
+
+  create_table "schema_info", id: false, force: true do |t|
     t.integer "version"
   end
 
@@ -425,7 +437,7 @@ ActiveRecord::Schema.define(version: 20150328015758) do
   end
 
   create_table "works", force: true do |t|
-    t.string   "title",                                      default: ""
+    t.string   "title"
     t.text     "description",               limit: 16777215
     t.datetime "created_on"
     t.integer  "owner_user_id"

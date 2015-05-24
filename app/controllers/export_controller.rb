@@ -10,6 +10,8 @@ class ExportController < ApplicationController
   def tei
     params[:format] = 'xml'# if params[:format].blank?
 
+    @context = ExportContext.new
+
     @user_contributions =
       User.find_by_sql("SELECT  user_id user_id,
                                 users.print_name print_name,
@@ -47,7 +49,7 @@ class ExportController < ApplicationController
       @other_articles << article if other
     end
 
-    @work = Work.includes(:pages => [:notes, :ia_leaf => :ia_work]).find(@work.id)
+    #@work = Work.includes(:pages => [:notes, :ia_leaf => :ia_work]).find(@work.id)
 
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
