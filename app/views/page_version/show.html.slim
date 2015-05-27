@@ -37,6 +37,7 @@ table.page-versions( data-fullheight='{ "bottom": 30, "cssrule": "min-height" }'
         div(data-diff-translation="original" data-empty="No translation provided")
           ==xml_to_html((@previous_version.xml_translation rescue ""))
 
+=javascript_include_tag 'textdiff'
 javascript:
   $(function() {
     $('.page-versions')
