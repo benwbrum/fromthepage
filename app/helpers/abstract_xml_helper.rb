@@ -8,8 +8,7 @@ module AbstractXmlHelper
 
   def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
     return "" if xml_text.blank?
-    #xml_text.gsub!(/\n/, "")
-    xml_text.gsub!("</p>", "</p>\n")
+    xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     doc = REXML::Document.new(xml_text)
 
@@ -55,9 +54,10 @@ module AbstractXmlHelper
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
+    my_display_html.gsub!("</p>", "</p>\n")
+    my_display_html.gsub!("<br/>","\n<br/>")
 
     return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
   end
-
 
 end

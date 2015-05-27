@@ -3,18 +3,19 @@
 -selected_version_date = @selected_version.created_on.strftime("%b %d, %Y %I:%M %p")
 -selected_version_user = link_to(@selected_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @selected_version.user.id })
 
-table.page-versions
+table.page-versions( data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
     th =pluralize(@page.page_versions.size, 'revision')
     th =="#{selected_version_user} at #{selected_version_date}"
     th Revision changes
   tr
     td.page-version-list
-      -@page.page_versions.each do |version|
-        =link_to({ :action => 'show', :page_version_id => version.id }, class: ('selected' if version == @selected_version))
-          =time_tag(version.created_on)
-            =version.created_on.strftime("%b %d, %Y")
-          span =version.user.display_name
+      .scroll-container
+        -@page.page_versions.each do |version|
+          =link_to({ :action => 'show', :page_version_id => version.id }, class: ('selected' if version == @selected_version))
+            =time_tag(version.created_on)
+              =version.created_on.strftime("%b %d, %Y")
+            span =version.user.display_name
 
     td.page-version
       h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
@@ -56,7 +57,7 @@ javascript:
       });
 
     // Awful workaround to make sure containers
-    // does not contain empty text nodes
+    // do not contain empty text nodes
     $('[data-empty]').each(function() {
       $element = $(this);
       if(!$.trim($element.html())) {

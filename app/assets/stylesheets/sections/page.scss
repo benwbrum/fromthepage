@@ -238,7 +238,13 @@
 }
 
 .page-version-list {
+  height: 100%;
   border-width: 0 1px 0 0;
+  .scroll-container {
+    max-height: 100%;
+    overflow-y: auto;
+    padding-right: $gapSize / 2;
+  }
   a {
     display: block;
     overflow: hidden;
@@ -251,11 +257,7 @@
     &:hover { color: $bodyFg; }
     &.selected {
       color: $bodyFg;
-      margin-right: -1px;
-      background-clip: padding-box;
-      background-color: mix($bodyBg, #FFF, 30%);
-      border: 1px solid rgba(#000, 0.06);
-      border-right-width: 0;
+      background-color: rgba(#000, 0.06);
     }
     time {
       width: 7em;
