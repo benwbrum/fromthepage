@@ -1,5 +1,5 @@
 -if @page.notes.empty?
-  p.fglight Nobody wrote a note for this page yet
+  p.acenter.fglight Nobody wrote a note for this page yet
 
 -@page.notes.each do |note|
   =render({ partial: 'notes/note', locals: { note: note }})
