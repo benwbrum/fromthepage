@@ -1,5 +1,5 @@
 -if @page.notes.empty?
-  p.acenter.fglight Nobody wrote a note for this page yet
+  p.acenter.fglight(data-note-empty) Nobody wrote a note for this page yet
 
 -@page.notes.each do |note|
   =render({ partial: 'notes/note', locals: { note: note }})
@@ -31,14 +31,18 @@
         var $container = $(this).parent();
         var $error = $('.user-bubble_form_error', $container).empty();
         if(xhr.status === 201) {
+          // Note created
           var content = xhr.responseJSON.html;
           $(content).hide().insertBefore($container).fadeIn();
+          $('[data-note-empty]').hide();
           this.reset();
         } else if(xhr.status === 204) {
+          // Note updated
           var content = $('textarea', this).val();
           $container.removeClass('edit');
           $('.user-bubble_content > p', $container).text(content);
         } else {
+          // Error occurred
           var message = xhr.responseJSON.join('. ');
           $error.text('Error: ' + message);
         }
