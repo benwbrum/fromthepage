@@ -47,18 +47,21 @@
 }
 
 
-// Full screen mode
+// Page editor full screen mode
 
-.page-editor.fullscreen {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  position: fixed;
-  background: $bodyBg;
-  box-sizing: border-box;
-  padding: $gapSize * 1.5 $gapSize * 1.5 0 $gapSize * 1.5;
+.page-editor {
+  margin: 0 0 $gapSize 0;
+  &.fullscreen {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    position: fixed;
+    background: $bodyBg;
+    box-sizing: border-box;
+    padding: $gapSize * 1.5 $gapSize * 1.5 0 $gapSize * 1.5;
+  }
 }
 
 
