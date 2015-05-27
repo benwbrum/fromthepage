@@ -15,7 +15,7 @@ class ArticleController < ApplicationController
   end
 
   def tooltip
-    render layout: false
+    render partial: 'tooltip'
   end
 
   def list
