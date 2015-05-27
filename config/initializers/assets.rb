@@ -1,1 +1,1 @@
-Rails.application.config.assets.precompile += %w( iaoverride.css )
+Rails.application.config.assets.precompile += %w( bookreader.js )
