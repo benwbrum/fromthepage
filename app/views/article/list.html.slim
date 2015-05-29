@@ -7,6 +7,7 @@
 
   .collection-categories
     .category-tree
+      h3 Categories
       ==display_categories(@collection.categories, nil) do |category|
         -ret = "<a href=\"#category-#{category.id}\" class=\"tree-item\">"
         -if category.children.any?
@@ -41,7 +42,7 @@
               =link_to article.title, { :action => 'show', :article_id => article.id }
       -if @uncategorized_articles.present?
         dl.category-article#category-none
-          dt: h3 Uncategorized Articles
+          dt: h3 Uncategorized subjects
           dd
             -@uncategorized_articles.each do |article|
               =link_to article.title, { :action => 'show', :article_id => article.id }
