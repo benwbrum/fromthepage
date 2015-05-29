@@ -1,0 +1,73 @@
+=render({ :partial => '/shared/article_tabs', :locals => { :selected => 1, :article_id => @article.id }})
+
+.article-columns.columns
+  article.maincol
+    h3 Description
+    -description = xml_to_html(@article.xml_text)
+    -if description.present?
+      .big ==description
+    -else
+      .nodata
+        p.nodata_text No description provided
+
+    -if user_signed_in?
+      p
+        -if @article.possible_duplicates.empty?
+          span No duplicates found
+        -else
+          =link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { :action => 'duplicates', :article_id => @article.id }, :data => { litebox: { hash: 'duplicates' }}
+        |&nbsp;|&nbsp;
+        =link_to 'Edit Subject', { :action => 'edit', :article_id => @article.id }, :data => { litebox: { hash: 'edit' }}
+
+    h3 Related Subjects
+    .article-graph
+      =image_tag(file_to_url(@article.graph_image), :usemap => '#G')
+      ==@map
+    p.fglight =="The graph displays the other subjects mentioned on the same pages as the subject &ldquo;#{@article.title}&rdquo;. If the same subject occurs on a page with &ldquo;#{@article.title}&rdquo; more than once, it appears closer to &ldquo;#{@article.title}&rdquo; on the graph, and is colored in a darker shade. The closer a subject is to the center, the more &quot;related&quot; the subjects are."
+
+    =form_for(@article, method: 'post', url: { action: 'show', article_id: @article.id }) do |f|
+      =hidden_field_tag(:force, true)
+      table.form
+        tr
+          td(colspan="3")
+            label.above Limit the graph to subjects in these categories (leave blank to show all):
+            select(name="category_ids[]" size="10" multiple data-graph-category)
+              -@collection.categories.walk_tree do |c, level|
+                -selected = true if @categories.include?(c)
+                option(data-level=level value=c.id selected=selected) =c.title
+        tr
+          td =text_field_tag('min_rank', @min_rank, type: 'number', min: 1, style: 'width:50px')
+          td.w100.fglight.small =="Show related subjects that appear on at least this number of pages in common with #{@article.title}."
+          th =button_tag
+            =svg_symbol '#icon-refresh', class: 'icon'
+            span Update Graph
+
+  aside.sidecol
+    h3 Categories
+    -if @article.categories.empty?
+      p.fglight
+        |This subject does not belong to any category
+        br
+        =link_to 'All uncategorized subjects in the collection', { action: 'list', collection_id: @article.collection_id, anchor: "category-none" }
+    -else
+      ul.article-category-list.big
+        -@article.categories.each do |cat|
+          li ==(cat.ancestors.reverse.push(cat).map { |c| link_to c.title, { action: 'list', collection_id: @article.collection_id, anchor: "category-#{c.id}"} }).join(" &rarr; ")
+
+    h3 References
+    ul.article-category-list
+      li =link_to "All references to #{@article.title}", { :controller => 'display', :action => 'search', :article_id => @article.id }
+      li =link_to "All references to #{@article.title} in pages that do not link to this subject", :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true
+    br
+    =render :partial => 'article_links'
+
+javascript:
+  $('[data-graph-category]').select2({
+    placeholder: 'Select categories...',
+    templateResult: function(category) {
+      if(!category.id) { return category.text; }
+      var level = $(category.element).data('level');
+      var $category = $('<div>').css('margin-left', level * 15).text(category.text);
+      return $category;
+    }
+  });

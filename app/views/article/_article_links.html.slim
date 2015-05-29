@@ -1,0 +1,18 @@
+-unless @article.link_list.empty?
+  h5 ="#{pluralize(@article.link_list.size, 'page')} refer to #{@article.title}"
+  p =link_to "Show pages that mention #{@article.title} in all works", controller: 'display', action: 'read_all_works', article_id: @article.id
+  ul.article-links
+    -@article.link_list.each do |link|
+      li
+        =svg_symbol '#icon-page', class: 'icon'
+        =link_to link.page.title, { controller: 'display', action: 'display_page', page_id: link.page.id }
+        =="&nbsp;&mdash;&nbsp;#{link.display_text}"
+
+-unless @article.target_article_links.empty?
+  h5 ="#{pluralize(@article.target_article_links.size, 'subject')} refer to #{@article.title}"
+  ul.article-links
+    -@article.target_article_links.each do |link|
+      li
+        =svg_symbol '#icon-page', class: 'icon'
+        =link_to link.source_article.title, { controller: 'article', action: 'show', article_id: link.source_article.id }
+        =="&nbsp;&mdash;&nbsp;#{link.display_text}"

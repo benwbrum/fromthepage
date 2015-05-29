@@ -1,5 +1,5 @@
 class ArticleController < ApplicationController
-  before_filter :authorized?, :except => [:graph, :list, :show, :tooltip]
+  before_filter :authorized?, :except => [:list, :show, :tooltip]
 
   include AbstractXmlController
 
@@ -25,7 +25,6 @@ class ArticleController < ApplicationController
     # 3. Uncategorized articles should be listed below
 
     @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id]).all
-
   end
 
   def update
@@ -71,17 +70,16 @@ class ArticleController < ApplicationController
     ajax_redirect_to :action => 'show', :article_id => @article.id
   end
 
-
-  def graph
+  def show
     @categories = []
     if params[:category_ids]
       @categories = Category.find(params[:category_ids])
       @article.graph_image = nil
     end
 
-#    if @article.graph_image && !params[:force]
-#      return
-#    end
+    #if @article.graph_image && !params[:force]
+    #   return
+    #end
     sql =
       'SELECT count(*) as link_count, '+
       'a.title as title, '+
@@ -165,8 +163,7 @@ class ArticleController < ApplicationController
     @article.save!
   end
 
-protected
-
+  protected
   def rename_article(old_name, new_name)
     # walk through all pages referring to this
     for link in @article.page_article_links
