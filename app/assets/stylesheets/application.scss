@@ -243,11 +243,10 @@ $footerBg:                  $themeDark;
   margin: 1em 0;
   overflow: auto;
   list-style: none;
-  max-height: 394px;
+  max-height: 444px;
   padding: 0.5em 1em;
   background: rgba(#000, 0.02);
-  border: 1px solid $borderColor;
-  box-shadow: inset 0 0 1px rgba(#000, 0.2);
+  border: 1px solid rgba(#000, 0.08);
 }
 .article-duplicate {
   margin: 0;

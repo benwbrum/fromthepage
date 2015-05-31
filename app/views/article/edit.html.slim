@@ -1,35 +1,55 @@
-.litebox-embed(style="width:650px")
-  h1 Edit Subject
+=render({ :partial => '/shared/article_tabs', :locals => { :selected => 4, :article_id => @article.id }})
 
-  =form_for(@article, :url => { :action => 'update' }) do |f|
-    =hidden_field_tag(:article_id, @article.id)
-    =validation_summary @article.errors
-    table.form
-      tr.big
-        th =f.label :title
-        td.w100 =f.text_field :title
-      tr
-        td(colspan="2")
-          -if @preview_xml
-            ==xml_to_html(@preview_xml)
-            hr
-          =f.label :source_text, 'Description', class: "above"
-          =f.text_area :source_text, rows: 10
+.article-columns.columns
+  article.maincol
+    =form_for(@article, :url => { :action => 'update' }) do |f|
+      =hidden_field_tag(:article_id, @article.id)
+      =validation_summary @article.errors
+      table.form
+        tr.big
+          th =f.label :title
+          td.w100 =f.text_field :title
+        tr
+          td(colspan="2")
+            -if @preview_xml
+              ==xml_to_html(@preview_xml)
+              hr
+            =f.label :source_text, 'Description', class: 'above'
+            =f.text_area :source_text, rows: 15
 
-    -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
-    label.above Categories
-    select(data-assign-categories="#{update_article_url}" size="1" multiple)
-      -@collection.categories.walk_tree do |c, level|
-        -selected = true if @article.categories.include?(c)
-        option(data-level=level value=c.id selected=selected) =c.title
+      -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
+      label.above Categories
+      select(data-assign-categories="#{update_article_url}" size="1" multiple)
+        -@collection.categories.walk_tree do |c, level|
+          -selected = true if @article.categories.include?(c)
+          option(data-level=level value=c.id selected=selected) =c.title
 
-    .small.fgfaded
-      =render :partial => 'shared/markup_help'
+      .fglight
+        =render :partial => 'shared/markup_help'
 
-    .toolbar
-      //.toolbar_group =f.button 'Preview', :name => 'preview'
-      .toolbar_group.w100 =f.button 'Autolink', :name => 'autolink'
-      .toolbar_group.aright =f.button 'Save Changes', :name => 'save'
+      .toolbar
+        .toolbar_group.w100
+          //=f.button 'Preview', :name => 'preview'
+          =f.button 'Autolink', :name => 'autolink'
+        .toolbar_group.aright =f.button 'Save Changes', :name => 'save', class: 'big'
 
-  javascript:
-    $('[data-assign-categories]').categoriesSelect();
+  aside.sidecol
+    -if @article.possible_duplicates.empty?
+      h3 No Duplicates Found
+      p.fglight =="The subject is unique within the collection, there are no possible duplicates to the &ldquo;#{@article.title}&rdquo; subject have been found."
+    -else
+      h3 =pluralize(@article.possible_duplicates.size, 'Possible Duplicate')
+      p.fglight =="Please review the list below and select the subjects to combine. Duplicates will be remapped so all existing links will point to the &ldquo;#{@article.title}&rdquo; subject."
+      =form_tag({ :action => 'combine_duplicate' }) do
+        =hidden_field_tag :article_id, @article.id
+        ul.article-duplicates
+          -@article.possible_duplicates.each do |dup|
+            li.article-duplicate
+              label.article-duplicate_title
+                =check_box_tag 'from_article_ids[]', dup.id
+                |&nbsp;
+                span =dup.title
+              span.article-duplicate_pages
+                small.label =pluralize(dup.link_list.size, 'page')
+        .toolbar
+          .toolbar_group.aright =button_tag 'Combine Selected'

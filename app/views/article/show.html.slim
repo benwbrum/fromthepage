@@ -2,22 +2,17 @@
 
 .article-columns.columns
   article.maincol
-    h3 Description
+    .headline
+      h3.headline_title Description
+      -if user_signed_in? && @article.possible_duplicates.present?
+        .headline_aside
+          =link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { action: 'edit', article_id: @article.id }, class: 'fgfaded'
     -description = xml_to_html(@article.xml_text)
     -if description.present?
       .big ==description
     -else
       .nodata
         p.nodata_text No description provided
-
-    -if user_signed_in?
-      p
-        -if @article.possible_duplicates.empty?
-          span No duplicates found
-        -else
-          =link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { :action => 'duplicates', :article_id => @article.id }, :data => { litebox: { hash: 'duplicates' }}
-        |&nbsp;|&nbsp;
-        =link_to 'Edit Subject', { :action => 'edit', :article_id => @article.id }, :data => { litebox: { hash: 'edit' }}
 
     h3 Related Subjects
     .article-graph

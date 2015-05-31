@@ -5,9 +5,6 @@ class ArticleController < ApplicationController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
 
-  # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:duplicates, :combine_duplicate, :edit, :update]
-
   def authorized?
     unless user_signed_in?
       redirect_to dashboard_path
@@ -29,7 +26,7 @@ class ArticleController < ApplicationController
 
   def update
     old_title = @article.title
-    @article.attributes=params[:article]
+    @article.attributes = params[:article]
     if params['save']
       #process_source_for_article
       if @article.save
@@ -37,13 +34,17 @@ class ArticleController < ApplicationController
           rename_article(old_title, @article.title)
         end
         record_deed
-        ajax_redirect_to :action => 'show', :article_id => @article.id
+        flash[:notice] = "Subject has been successfully updated"
+        redirect_to :action => 'edit', :article_id => @article.id
         return
       end
     elsif params['preview']
       @preview_xml = @article.generate_preview
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
+      flash[:notice] = "Subjects auto linking process completed"
+      redirect_to :action => 'edit', :article_id => @article.id
+      return
     end
     render :action => 'edit'
   end
@@ -59,15 +60,14 @@ class ArticleController < ApplicationController
   end
 
   def combine_duplicate
-    # @article contains "to" article
-
+    #@article contains "to" article
     params[:from_article_ids].each do |from_article_id|
       from_article = Article.find(from_article_id)
       combine_articles(from_article, @article)
     end
 
     flash[:notice] = "Selected subjects combined with #{@article.title}"
-    ajax_redirect_to :action => 'show', :article_id => @article.id
+    redirect_to :action => 'edit', :article_id => @article.id
   end
 
   def show
