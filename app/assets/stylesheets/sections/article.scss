@@ -1,0 +1,97 @@
+// ---------------------------
+// SUBJECT PAGES
+// ---------------------------
+
+
+.article-columns {
+  .maincol { width: 60%; }
+  .sidecol { width: 40%; }
+}
+
+.article-graph {
+  background: #FFF;
+  padding: $gapSize;
+  text-align: center;
+  margin-bottom: $gapSize / 2;
+  background-clip: padding-box;
+  border: 1px solid rgba(#000, 0.06);
+}
+
+.article-category-list {
+  padding: 0;
+  margin: 0.8em 0;
+  list-style: none;
+  line-height: 1.25;
+  color: $bodyFgLight;
+}
+
+.article-links {
+  z-index: 1;
+  margin: 0.5em 0;
+  overflow-y: auto;
+  list-style: none;
+  line-height: 1.25;
+  max-height: 500px;
+  position: relative;
+  color: $bodyFgLight;
+  background-size: 180% 1px;
+  background-repeat: no-repeat;
+  background-position: 50% 0, 50% 100%;
+  background-image:
+    radial-gradient(farthest-side at 50% 0, rgba(#000, 0.3), rgba(#000, 0)),
+    radial-gradient(farthest-side at 50% 100%, rgba(#000, 0.3), rgba(#000, 0));
+  &:before, &:after {
+    z-index: -1;
+    content: '';
+    height: 10px;
+    display: block;
+    position: relative;
+  }
+  &:before { background: linear-gradient(to bottom, $bodyBg 25%, rgba($bodyBg, 0)); }
+  &:after { background: linear-gradient(to bottom, rgba($bodyBg, 0), $bodyBg 75%); }
+  li {
+    padding-left: 20px;
+    position: relative;
+  }
+  .icon {
+    left: 0;
+    top: 50%;
+    opacity: 0.8;
+    position: absolute;
+    margin-top: -$iconSize / 2;
+  }
+}
+
+.article-duplicates {
+  margin: 1em 0;
+  overflow: auto;
+  list-style: none;
+  max-height: 444px;
+  padding: 0.5em 1em;
+  background: rgba(#000, 0.02);
+  border: 1px solid rgba(#000, 0.08);
+}
+.article-duplicate {
+  margin: 0;
+  width: 100%;
+  display: table;
+  border-top: 1px solid rgba(#000, 0.08);
+  &:first-child { border: 0; }
+  &_title {
+    width: 100%;
+    max-width: 100px;
+    padding: 0.3em 0;
+    overflow: hidden;
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-overflow: ellipsis;
+  }
+  &_pages {
+    padding-left: 0.5em;
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  input:checked + span { color: $fgHover; }
+}
