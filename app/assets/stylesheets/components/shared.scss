@@ -763,6 +763,26 @@ button, .button, .dropdown dd a {
 // VERSION COMPARE
 // ---------------------------
 
+.diff-help {
+  color: $bodyFgLight;
+  padding-bottom: $gapSize;
+  margin: -$gapSize / 2 0 $gapSize / 2 0;
+  border-bottom: 1px solid rgba(#000, 0.1);
+  ins {
+    color: $bodyFg;
+    background: #CEC;
+    text-decoration: none;
+  }
+  del {
+    color: $bodyFg;
+    background: #FCC;
+  }
+  span {
+    color: $bodyFg;
+    background: #FFF;
+  }
+}
+
 .diff-versions {
   width: 100%;
   table-layout: fixed;
