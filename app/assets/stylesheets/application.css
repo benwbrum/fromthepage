@@ -73,6 +73,31 @@
 				/* END - Fix horizontal scrollbar */
 			}
 
+    span.depth2
+    {
+        font-size: 200%;
+        font-weight: bold;
+    }
+    span.depth3
+    {
+        font-weight: bold;
+        font-size: 175%;
+    }
+    span.depth4
+    {
+        font-size: 150%;
+        font-weight: bold;
+    }
+    span.depth5
+    {
+        font-size: 125%;
+        font-weight: bold;
+    }
+    span.depth6
+    {
+        font-size: 100%;
+        font-weight: bold;
+    }
     span.left-link
     {
         float: left;

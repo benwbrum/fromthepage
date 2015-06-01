@@ -46,11 +46,25 @@ module AbstractXmlHelper
         e.replace_with(REXML::Element.new('br'))
       else
         lb = REXML::Element.new('span')
-        lb.add_text(' ')
+        unless e.attributes['break']=="no"
+          lb.add_text(' ')
+        end
         lb.add_attribute('class', 'line-break')
         e.replace_with(lb)
       end
     end
+
+    doc.elements.each("//entryHeading") do |e|
+      depth = e.attributes["depth"]
+      title = e.attributes["title"]
+      
+      span = REXML::Element.new('span')
+      span.add_attribute('class', "depth#{depth}")
+      span.add_text(title)
+      
+      e.replace_with(span)
+    end
+
     unless user_signed_in?
       doc.elements.each("//sensitive") do |e|
         e.replace_with(REXML::Comment.new("sensitive information suppressed"))
