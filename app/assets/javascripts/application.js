@@ -196,6 +196,7 @@ $(function() {
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
+  $('[data-scrollfix]').scrollfix();
 
   // Classname trigger
   $(document).on('click', '[data-toggle-class]', function() {
