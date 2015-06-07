@@ -461,7 +461,7 @@ button, .button, .dropdown dd a {
 .datagrid {
   border: 0;
   width: 100%;
-  line-height: 1.2;
+  line-height: 1.25;
   border-collapse: separate;
   border-bottom: 1px solid rgba(#000, 0.08);
   th {
@@ -612,6 +612,26 @@ button, .button, .dropdown dd a {
     opacity: 0;
     outline: none;
     position: absolute;
+  }
+}
+
+.sidemenu {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: $fontSizeH5;
+  padding: $gapSize / 2 0;
+  color: rgba($bodyFgLight, 0.5);
+  li {
+    margin: 0.5em 0;
+  }
+  a {
+    display: block;
+    color: $bodyFgLight;
+    text-decoration: none;
+    font-family: $fontFamilyHead;
+    &:hover {
+      color: $bodyFg;
+    }
   }
 }
 

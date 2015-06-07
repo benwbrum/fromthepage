@@ -1,0 +1,30 @@
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 8, :work_id => @work.id }})
+
+.work-pages.columns
+  .work-pages_text Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
+  .work-pages_button
+    =link_to 'Add New Page', { controller: 'page', action: 'new', work_id: @work.id }, class: 'button'
+
+table.datagrid
+  tr
+    th Page Title
+    th Page Status
+    th Actions
+    th Position
+  -@work.pages.each do |page|
+    tr
+      td.w100 =link_to page.title, { controller: 'display', action: 'display_page', page_id: page.id }
+      td.nowrap.fgfaded
+        -if page.base_image.empty?
+          =svg_symbol '#icon-warning-sign', class: 'icon'
+          =="#{link_to 'Upload', { controller: 'page', action: 'edit', page_id: page.id }} page image"
+        -else
+          =svg_symbol '#icon-check-sign', class: 'icon a50'
+          =="Ready to #{link_to 'transcribe', { controller: 'transcribe', action: 'display_page', page_id: page.id }}"
+      td.nowrap =link_to 'Settings', { controller: 'page', action: 'edit', page_id: page.id }
+      td.nowrap
+        .work-page-position
+          =link_to({ controller: 'page', action: 'reorder_page', direction: 'up', page_id: page.id }, title: 'Move up')
+            =svg_symbol '#icon-arrow-top', class: 'icon'
+          =link_to({ controller: 'page', action: 'reorder_page', direction: 'down', page_id: page.id }, title: 'Move down')
+            =svg_symbol '#icon-arrow-bottom', class: 'icon'
