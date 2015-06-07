@@ -3,7 +3,7 @@
 .work-pages.columns
   .work-pages_text Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
   .work-pages_button
-    =link_to 'Add New Page', { controller: 'page', action: 'new', work_id: @work.id }, class: 'button'
+    =link_to 'Add New Page', { controller: 'page', action: 'new', work_id: @work.id }, :data => { litebox: { hash: 'create-page' }}, class: 'button'
 
 table.datagrid
   tr
@@ -21,7 +21,10 @@ table.datagrid
         -else
           =svg_symbol '#icon-check-sign', class: 'icon a50'
           =="Ready to #{link_to 'transcribe', { controller: 'transcribe', action: 'display_page', page_id: page.id }}"
-      td.nowrap =link_to 'Settings', { controller: 'page', action: 'edit', page_id: page.id }
+      td.nowrap.fglight
+        =link_to 'Settings', { controller: 'page', action: 'edit', page_id: page.id }
+        |&nbsp;|&nbsp;
+        =link_to 'Delete', { controller: 'page', action: 'delete', page_id: page.id }, data: { :confirm => 'Are you sure you want to delete this page? After deleting you won\'t be able to recover it!' }
       td.nowrap
         .work-page-position
           =link_to({ controller: 'page', action: 'reorder_page', direction: 'up', page_id: page.id }, title: 'Move up')

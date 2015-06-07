@@ -6,6 +6,9 @@ class PageController < ApplicationController
   protect_from_forgery :except => [:set_page_title]
   before_filter :authorized?
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+
   def authorized?
     if user_signed_in? && current_user.owner
       if @work
@@ -18,7 +21,8 @@ class PageController < ApplicationController
 
   def delete
     @page.destroy
-    redirect_to :controller => 'work', :action => 'edit', :work_id => @work.id
+    flash[:notice] = 'Page has been deleted'
+    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id
   end
 
   # image functions
@@ -62,14 +66,19 @@ class PageController < ApplicationController
 
   def create
     page = Page.new(params[:page])
-    page.save!
-    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id
+    page.work = @work
+    if page.save
+      flash[:notice] = 'Page created successfully'
+      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id })
+    else
+      render :new
+    end
   end
 
   def update
     page = Page.find(params[:id])
     page.update_attributes(params[:page])
-    flash[:notice] = "Page has been successfully updated"
+    flash[:notice] = 'Page has been successfully updated'
 
     if params[:page][:base_image]
       filename = page.base_image
