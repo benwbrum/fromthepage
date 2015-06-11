@@ -112,65 +112,6 @@
   }
 }
 
-.collection-owner {
-  width: 100%;
-  color: $fgH1;
-  margin: 0.3em 0;
-  line-height: 40px;
-  position: relative;
-  display: inline-block;
-  .userpic { float: left; }
-  .username {
-    line-height: 1;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    font-size: $fontSizeBig;
-    padding-left: $gapSize / 2;
-    small {
-      display: block;
-      line-height: 1.2;
-      color: $bodyFgLight;
-    }
-  }
-  .remove {
-    top: 50%;
-    right: 0;
-    width: 1em;
-    height: 1em;
-    display: none;
-    font-size: 20px;
-    position: absolute;
-    margin-top: -0.5em;
-    border-radius: 50%;
-    background-color: $fgLink;
-    background-position: center;
-    background-repeat: no-repeat;
-    @include background-svg(10, 10, '<path fill="none" stroke="#FFF" stroke-width="1.6" d="M0,0 L10,10 M10,0 L0,10"/>');
-    &:hover { background-color: $fgHover; }
-  }
-  &:hover .remove { display: block; }
-}
-
-.collection-owner-form {
-  margin-top: 2em;
-  position: relative;
-  padding-right: 59px;
-  select, .select2-container--default .select2-selection--single {
-    border-right-width: 0;
-    border-radius: $btnBorderRadius 0 0 $btnBorderRadius;
-  }
-  button {
-    top: 0;
-    right: 0;
-    width: 60px;
-    z-index: 9996;
-    position: absolute;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-}
-
 
 // Categories
 

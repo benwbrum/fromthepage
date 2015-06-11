@@ -64,7 +64,7 @@
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
       =button_tag 'Search'
 
-    .collection-owner
+    .user-label
       =link_to({ :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }, class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
