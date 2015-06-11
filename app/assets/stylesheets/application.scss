@@ -153,6 +153,7 @@ $footerBg:                  $themeDark;
 @import "sections/collection";
 @import "sections/article";
 @import "sections/page";
+@import "sections/work";
 
 @import "plugins/select2/core";
 @import "plugins/zoomer";
@@ -174,54 +175,6 @@ $footerBg:                  $themeDark;
     background-color: mix($bodyBg, #322, 50%);
     &:hover, &:focus, &:active {
       background-color: mix($bodyBg, #322, 30%);
-    }
-  }
-}
-
-
-// Work styles
-
-.work-pages {
-  margin-bottom: $gapSize;
-  &_text {
-    width: 100%;
-    color: $bodyFgFaded;
-  }
-  &_button {
-    vertical-align: middle;
-  }
-}
-
-.work-page-position {
-  font-size: 0;
-  text-align: center;
-  white-space: nowrap;
-  a {
-    padding: 5px;
-    color: $bodyFgLight;
-    display: inline-block;
-    &:hover {
-      color: $bodyFg;
-    }
-  }
-}
-
-.sidemenu {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: $fontSizeH5;
-  padding: $gapSize / 2 0;
-  color: rgba($bodyFgLight, 0.5);
-  li {
-    margin: 0.5em 0;
-  }
-  a {
-    display: block;
-    color: $bodyFgLight;
-    text-decoration: none;
-    font-family: $fontFamilyHead;
-    &:hover {
-      color: $bodyFg;
     }
   }
 }

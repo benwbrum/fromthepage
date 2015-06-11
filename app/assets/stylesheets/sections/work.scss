@@ -1,0 +1,29 @@
+// ---------------------------
+// WORK PAGES
+// ---------------------------
+
+
+.work-pages {
+  margin-bottom: $gapSize;
+  &_text {
+    width: 100%;
+    color: $bodyFgFaded;
+  }
+  &_button {
+    vertical-align: middle;
+  }
+}
+
+.work-page-position {
+  font-size: 0;
+  text-align: center;
+  white-space: nowrap;
+  a {
+    padding: 5px;
+    color: $bodyFgLight;
+    display: inline-block;
+    &:hover {
+      color: $bodyFg;
+    }
+  }
+}

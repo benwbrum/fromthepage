@@ -11,7 +11,7 @@ class WorkController < ApplicationController
                                    :set_work_author,
                                    :set_work_transcription_conventions]
   # tested
-  before_filter :authorized?, :only => [:edit, :scribes_tab, :pages_tab, :delete, :new, :create]
+  before_filter :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -74,24 +74,24 @@ class WorkController < ApplicationController
     @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version desc").all
   end
 
-  def scribes_tab
+  def edit
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes
   end
 
   def add_scribe
     @work.scribes << @user
-    redirect_to :action => 'scribes_tab', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work.id
   end
 
   def remove_scribe
     @work.scribes.delete(@user)
-    redirect_to :action => 'scribes_tab', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work.id
   end
 
   def update_work
     @work.update_attributes(params[:work])
-    redirect_to :action => 'scribes_tab', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work.id
   end
 
   # tested
