@@ -22,7 +22,7 @@
 
     -unless @collection.categories.empty?
       h3 Subject Categories
-      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "cat_#{c.id}" } }.join(', ')
+      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
 
     .collection-users.justified
       .justified_box>

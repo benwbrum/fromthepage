@@ -38,8 +38,11 @@
                       hr
                       =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
           dd
-            -category.articles.each do |article|
-              =link_to article.title, { :action => 'show', :article_id => article.id }
+            -if category.articles.empty?
+              p.acenter.fglight There are no subjects for the category selected
+            -else
+              -category.articles.each do |article|
+                =link_to article.title, { :action => 'show', :article_id => article.id }
       -if @uncategorized_articles.present?
         dl.category-article#category-none
           dt: h3 Uncategorized subjects
