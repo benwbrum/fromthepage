@@ -30,5 +30,9 @@
     .page-column
       .page-editarea =f.text_area :source_translation
 
+h2.legend Page Notes
+.page-notes
+  =render :partial => "notes/notes"
+
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions
