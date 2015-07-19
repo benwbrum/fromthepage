@@ -1,0 +1,21 @@
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 2, :work_id => @work.id }})
+
+table.datagrid.work-contents
+  tr
+    th.w40 Page Title
+    th Versions
+    th Current Version
+    th Actions
+  -@work.pages.each do |page|
+    -page_versions = page.page_versions
+    -current_version = page_versions[0]
+    -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
+    tr
+      td =link_to page.title, { :controller => 'display', :action => 'display_page', :page_id => page.id }
+      td =link_to pluralize(page_versions.size, 'revision'), { :controller => 'page_version', :action => 'list', :page_id => page.id }
+      td =="#{current_version.created_on.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
+      td
+        -if page.source_text.blank?
+          =link_to 'Transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
+        -elsif page.page_article_links.size == 0
+          =link_to 'Annotate', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
