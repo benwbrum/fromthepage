@@ -3,13 +3,20 @@
 // ---------------------------
 
 
-.work-pages {
+.work-contents {
+  td {
+    height: 30px;
+    padding: 5px 10px;
+  }
+}
+
+.work-columns {
   margin-bottom: $gapSize;
-  &_text {
+  &_left {
     width: 100%;
     color: $bodyFgFaded;
   }
-  &_button {
+  &_right {
     vertical-align: middle;
   }
 }

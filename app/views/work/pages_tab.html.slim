@@ -1,8 +1,8 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 8, :work_id => @work.id }})
 
-.work-pages.columns
-  .work-pages_text Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
-  .work-pages_button
+.work-columns.columns
+  .work-columns_left Here you see the list of all pages in the work. If you want to change the position of a page use up and down arrows at the right. To create a new page for this work click the Add New Page button. Once a new blank page created find it in the list below and proceed to the settings where you can upload page image.
+  .work-columns_right
     =link_to 'Add New Page', { controller: 'page', action: 'new', work_id: @work.id }, :data => { litebox: { hash: 'create-page' }}, class: 'button'
 
 table.datagrid
