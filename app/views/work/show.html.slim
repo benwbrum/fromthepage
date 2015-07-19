@@ -1,0 +1,61 @@
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 3, :work_id => @work.id }})
+
+.columns
+  article.mailcol
+    h3 =@work.title
+    h5 Description
+    -if @work.description.present?
+      .big =@work.description
+    -else
+      .fglight No description provided
+
+    h5 Physical Description
+    -if @work.physical_description.present?
+      .big =@work.physical_description
+    -else
+      .fglight No physical description provided
+
+    h5 Document History
+    -if @work.document_history.present?
+      .big =@work.document_history
+    -else
+      .fglight No document history provided
+
+    h5 Permission Description
+    -if @work.permission_description.present?
+      .big =@work.permission_description
+    -else
+      .fglight No permission description provided
+
+    h5 Location of Composition
+    -if @work.location_of_composition.present?
+      .big =@work.location_of_composition
+    -else
+      .fglight No location provided
+
+    h5 Author Name
+    -if @work.author.present?
+      .big =@work.author
+    -else
+      .fglight No author name provided
+
+    h5 Transcription Conventions
+    -if @work.transcription_conventions.present?
+      div ==@work.transcription_conventions
+    -else
+      .fglight No transcription conventions provided
+
+  aside.sidecol
+    .user-label
+      =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
+        =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
+      .username
+        small Owned by
+        =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
+    hr
+    h5
+      span.fgfaded Transcription Version:&nbsp;
+      span =@work.transcription_version
+    h5(style="margin-top:0")
+      span.fgfaded Number of Pages:&nbsp;
+      span =@work.pages.size
