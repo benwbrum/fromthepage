@@ -70,6 +70,7 @@
 // Button sizes
 @mixin button-sizes() {
   &.big { font-size: $btnFontSizeBig; }
+  &.small { font-size: $btnFontSizeSmall; }
   &.strong { font-size: $btnFontSizeStrong; }
 }
 

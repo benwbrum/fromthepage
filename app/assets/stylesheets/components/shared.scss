@@ -638,11 +638,12 @@ button, .button, .dropdown dd a {
 .user-label {
   width: 100%;
   color: $fgH1;
+  font-size: 0;
   margin: 0.3em 0;
   line-height: 40px;
   position: relative;
+  white-space: nowrap;
   display: inline-block;
-  .userpic { float: left; }
   .username {
     line-height: 1;
     overflow: hidden;
