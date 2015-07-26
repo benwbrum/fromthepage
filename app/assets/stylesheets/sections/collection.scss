@@ -134,6 +134,7 @@
   }
   .category-tree {
     width: 30%;
+    padding-right: $gapSize;
     border-right: 1px solid rgba(#000, 0.1);
   }
   .category-articles {
@@ -148,32 +149,32 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    .tree-item {
-      display: block;
-      cursor: pointer;
-      overflow: hidden;
-      position: relative;
-      color: $bodyFgLight;
-      white-space: nowrap;
-      text-decoration: none;
-      transition: color 0.2s;
-      text-overflow: ellipsis;
-      padding: 5px 20px 5px 28px;
-      &:hover, &.selected { color: $bodyFg; }
-    }
     li {
       margin: 0;
       padding: 0;
     }
     ul {
       display: none;
-      padding-left: 20px;
+      padding-left: 18px;
     }
+  }
+  .tree-item {
+    display: block;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    color: $bodyFgLight;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: color 0.2s;
+    text-overflow: ellipsis;
+    padding: 5px 0 5px 18px;
+    &:hover, &.selected { color: $bodyFg; }
   }
   .tree-bullet {
     left: 0;
     top: 50%;
-    width: 29px;
+    width: 18px;
     height: 32px;
     opacity: 0.5;
     display: block;
@@ -181,14 +182,18 @@
     margin-top: -16px;
     position: absolute;
     transition: opacity 0.2s;
-    background-position: center;
     background-repeat: no-repeat;
+    background-position: 2px center;
     @include background-svg(9, 9, $bullet-collapsed);
     &:hover { opacity: 1; }
   }
   .expanded {
     > .tree-item .tree-bullet { @include background-svg(9, 9, $bullet-expanded); }
     > ul { display: block; }
+  }
+  &.expanded {
+    .tree-item { padding-left: 0; }
+    ul { display: block; }
   }
 }
 
