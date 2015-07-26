@@ -1,92 +1,93 @@
-.two-columns
-  .left-column
-    -if @search_string
-      .inside-column
-        h2 =="Search results for <i>#{@search_string}</i>"
-    -if @pages.size == 0
-      .inside-column
-        h2 No pages found.
+.columns
+  article.maincol
+    h2 ==(@search_string ? "Search for #{@search_string}" : "List of Pages")
 
-    -work_title = nil
-    -for page in @pages
-      -old_work_title = work_title
-      -work_title = page.work.title
-      -if !@work && work_title != old_work_title
-        .inside-column
-          h1 =work_title
-      .inside-column
-        .thumbnail-container
-          figure
+    -if @pages.size == 0
+      .nodata
+        h4.nodata_title No pages found
+        p.nodata_text We were unable to find any pages matching your request
+    -else
+      -work_title = nil
+      -for page in @pages
+        -old_work_title = work_title
+        -work_title = page.work.title
+        -if !@work && work_title != old_work_title
+          h3 =work_title
+
+        .work-page
+          .work-page_thumbnail
             -if page.ia_leaf
               =link_to(image_tag(page.ia_leaf.thumb_url), { :action => 'display_page', :page_id => page.id })
             -elsif page.omeka_file
               =link_to(image_tag(page.omeka_file.thumbnail_url), { :action => 'display_page', :page_id => page.id })
             -else
               =link_to(image_tag(file_to_url(page.thumbnail_image)), { :action => 'display_page', :page_id => page.id })
-            figcaption
-              =link_to(page.title, { :action => 'display_page', :page_id => page.id })
 
-        div
-          -if page.work.pages_are_meaningful
-            h2 =page.title
-          div
-            -if page.xml_text
-              =raw(xml_to_html(page.xml_text, false)).force_encoding('utf-8')
-            -else
-              p =link_to('Help transcribe this page!', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id })
-
-          .footer-links
-            -if false
-              -if page.current_version
-                span Edited by
-                =link_to(page.current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => page.current_version.user.id })
-                =distance_of_time_in_words(page.current_version.created_on, Time.now, include_seconds = true)
-                span ago.
-              -else
-                //span No version info
-
+          .work-page_content
             -if page.work.pages_are_meaningful
-              =link_to('View this page', { :action => 'display_page', :page_id => page.id })
+              h4.work-page_title =page.title
 
-    =will_paginate @pages
+            .work-page_text
+              -transcription = xml_to_html(page.xml_text, false)
+              -if transcription.present?
+                ==transcription.force_encoding('utf-8')
+              -else
+                -help_transcribe = link_to('help transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id })
+                p.nodata_text =="This page is not transcribed, please #{help_transcribe} this page"
 
+            -if page.work.supports_translation
+              button.outline.work-page_toggle-view Translation
+              .work-page_text(style="display:none")
+                -translation = xml_to_html(page.xml_translation, false)
+                -if translation.present?
+                  ==translation.force_encoding('utf-8')
+                -else
+                  -help_translate = link_to('help translate', { :controller => 'transcribe', :action => 'translate', :page_id => page.id })
+                  p.nodata_text =="This page is not translated, please #{help_translate} this page"
 
-  .right-column
-    -if @search_string
-      .inside-column
-        h2 Search
-        =form_tag({:controller => 'display', :action => 'search'}, :method => :get) do
-          =text_field_tag 'search_string', @search_string
+            -current_version = page.page_versions[0]
+            -if current_version
+              small.work-page_edited
+                -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
+                -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
+                =="Last edit #{edit_time} ago by #{user_link}"
+
+      =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+
+  -if @collection || @article
+    aside.sidecol
+      -if @collection
+        =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
           =hidden_field_tag('collection_id', @collection.id)
-          =submit_tag("Search")
+          =search_field_tag 'search_string', @search_string, :placeholder => 'Search in collection...'
+          =button_tag 'Search'
 
-    -if @article
-      .inside-column
-        h2 =@article.title
+      -if @article
+        h4 =@article.title
         -if @article.xml_text != nil && !@article.xml_text.empty?
           =raw(xml_to_html(@article.xml_text))
+        =render :partial => 'article/article_links'
 
-      =render :partial => 'article/article_links'
+      -if @collection && @collection.categories.present?
+        h3 Categories
+        .category-tree.expanded
+          ==display_categories(@collection.categories, nil) do |category|
+            -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
+            -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
+            -ret << "<span>#{category.title}</span>"
+            -ret << "</a>"
 
-    -work_title = nil
-    -for page in @pages
-      -if page.work.supports_translation
-        -old_work_title = work_title
-        -work_title = page.work.title
-        -if !@work && work_title != old_work_title
-          .inside-column
-            h1 =work_title
-        .inside-column
-          -if page.work.pages_are_meaningful
-            h2 =page.title
-          div
-            -if page.xml_translation
-              =raw(xml_to_html(page.xml_translation, false)).force_encoding('utf-8')
-            -else
-              p =link_to('Help translate this page!', { :controller => 'transcribe', :action => 'translate', :page_id => page.id })
 
-    -if @collection && @collection.categories
-      .inside-column
-        h2 Subjects
-        ==display_categories(@collection.categories, nil) do |category|
-          -controller.render_to_string(:partial => '/category/category_link_for_work', :locals => { :category => category })
+javascript:
+  $(function() {
+    $('.work-page_toggle-view').on('click', function() {
+      var button = $(this);
+      button.toggleClass('pressed');
+      $('.work-page_text', button.parent()).toggle();
+    });
+    $('.tree-bullet').on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $(this).closest('li').toggleClass('expanded');
+    });
+  });

@@ -34,3 +34,40 @@
     }
   }
 }
+
+.work-page {
+  width: 100%;
+  padding: $gapSize 0;
+  display: inline-block;
+  border-bottom: 1px dotted $borderColor;
+  &_thumbnail {
+    float: left;
+    margin-right: $gapSize;
+    img {
+      padding: 3px;
+      background: #FFF;
+      border: 1px solid rgba(#000, 0.1);
+    }
+  }
+  &_content {
+    overflow: hidden;
+    position: relative;
+  }
+  &_text p {
+    margin: 0.3em 0;
+  }
+  &_edited {
+    display: block;
+    margin-top: 1em;
+    color: $bodyFgLight;
+  }
+  &_toggle-view {
+    top: 0;
+    right: 0;
+    position: absolute;
+    font-size: $fontSizeSmall;
+  }
+  .nodata_text {
+    margin: 1em 0;
+  }
+}
