@@ -1,6 +1,7 @@
 .columns
   article.maincol
-    h2 ==(@search_string ? "Search for #{@search_string}" : "List of Pages")
+    -if @search_string.present?
+      h2 =="Search for #{@search_string}"
 
     -if @pages.size == 0
       .nodata
