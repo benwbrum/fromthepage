@@ -1,5 +1,8 @@
 -if @page.notes.empty?
-  p.acenter.fglight(data-note-empty) Nobody wrote a note for this page yet
+  p.acenter.fglight(data-note-empty)
+    ="Nobody wrote a note for this page yet"
+    -unless user_signed_in?
+      =="<br>Please #{link_to('sign in', new_user_session_path)} to write a note for this page"
 
 -@page.notes.each do |note|
   =render({ partial: 'notes/note', locals: { note: note }})
@@ -56,3 +59,5 @@
         }
       });
     });
+-else
+  p.acenter.fglight =="Please #{link_to('sign in', new_user_session_path)} to write a note for this page"
