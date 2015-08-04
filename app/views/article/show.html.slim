@@ -2,17 +2,10 @@
 
 .article-columns.columns
   article.maincol
-    .headline
-      h3.headline_title Description
-      -if user_signed_in? && @article.possible_duplicates.present?
-        .headline_aside
-          =link_to pluralize(@article.possible_duplicates.size, 'Possible Duplicate'), { action: 'edit', article_id: @article.id }, class: 'fgfaded'
     -description = xml_to_html(@article.xml_text)
     -if description.present?
+      h3 Description
       .big ==description
-    -else
-      .nodata
-        p.nodata_text No description provided
 
     h3 Related Subjects
     .article-graph
@@ -38,6 +31,11 @@
             span Update Graph
 
   aside.sidecol
+    -if user_signed_in? && @article.possible_duplicates.present?
+      h5
+        =link_to({ action: 'edit', article_id: @article.id }, class: 'fgred')
+          =svg_symbol '#icon-warning-sign', class: 'icon icon-big vmiddle'
+          span =pluralize(@article.possible_duplicates.size, 'Possible Duplicate')
     h3 Categories
     -if @article.categories.empty?
       p.fglight
