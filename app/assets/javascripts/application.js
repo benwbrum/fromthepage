@@ -209,9 +209,16 @@ $(function() {
   // Global page loading spinner
   $('html').removeClass('page-busy');
   $(window)
-    .on('beforeunload', function() { $('html').addClass('page-busy'); })
+    .on('beforeunload', function() {
+      if($('form[data-areyousure].dirty').length === 0) {
+        $('html').addClass('page-busy');
+      }
+    })
     .ajaxStart(function() { $('html').addClass('page-busy'); })
     .ajaxComplete(function() { $('html').removeClass('page-busy'); });
+
+  // Warn about unsaved data
+  $('form[data-areyousure]').areYouSure();
 
   // Show and hide collection statistics
   $('.collection').on('click', '[data-toggle-stats]', function(e) {
