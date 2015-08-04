@@ -95,9 +95,9 @@ section.spotlight
 -if @show_welcome_lightbox
   #welcome-message(style="display:none")
     h1 Welcome!
-    p.strong Welcome to FromThePage v.2, this site offers a sneak preview of the new verision of FromThePage.
+    p.strong Welcome to FromThePage 2. This site offers a sneak preview of the new verision of FromThePage.
     p.big Check out the new features and learn how FromThePage can help to transcribe handwritten documents online.
-    =link_to 'Learn more about FromThePage 2', { :controller => 'static', :action => 'about' }, class: 'button'
+    =link_to 'Learn more about FromThePage 2', { :controller => 'static', :action => 'about', :anchor => 'fromthepage2' }, class: 'button'
 
   javascript:
     $(function() {
