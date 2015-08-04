@@ -3,47 +3,33 @@
 .columns
   article.mailcol
     h3 =@work.title
-    h5 Description
     -if @work.description.present?
+      h5 Description
       .big =@work.description
-    -else
-      .fglight No description provided
 
-    h5 Physical Description
     -if @work.physical_description.present?
+      h5 Physical Description
       .big =@work.physical_description
-    -else
-      .fglight No physical description provided
 
-    h5 Document History
     -if @work.document_history.present?
+      h5 Document History
       .big =@work.document_history
-    -else
-      .fglight No document history provided
 
-    h5 Permission Description
     -if @work.permission_description.present?
+      h5 Permission Description
       .big =@work.permission_description
-    -else
-      .fglight No permission description provided
 
-    h5 Location of Composition
     -if @work.location_of_composition.present?
+      h5 Location of Composition
       .big =@work.location_of_composition
-    -else
-      .fglight No location provided
 
-    h5 Author Name
     -if @work.author.present?
+      h5 Author Name
       .big =@work.author
-    -else
-      .fglight No author name provided
 
-    h5 Transcription Conventions
     -if @work.transcription_conventions.present?
+      h5 Transcription Conventions
       div ==@work.transcription_conventions
-    -else
-      .fglight No transcription conventions provided
 
   aside.sidecol
     .user-label
