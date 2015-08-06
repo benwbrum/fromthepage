@@ -3,6 +3,38 @@ require 'RMagick'
 include Magick
 
 module ImageHelper
+  
+  #############################
+  # Code for new zoom feature
+  #############################
+  MAX_FILE_SIZE = 1000000
+
+  def self.compress(filename)
+    if needs_compression?(filename)
+      working_file = File.join(File.dirname(filename),"resizing.jpg")
+      9.downto(1).each do |decile|
+        percent = decile * 10
+        compressed = Magick::ImageList.new(filename)
+        compressed.write(working_file) { self.quality = percent}
+        p "Compressed file is now #{File.size(working_file)} at quality #{percent}"
+
+        unless needs_compression? working_file
+          p "good enough!"
+          compressed.write(filename)  { self.quality = percent}
+          break #we're done here
+        end
+      end
+      File.unlink(working_file)
+    end  
+  end
+
+  def self.needs_compression?(filename)
+    File.size(filename) > MAX_FILE_SIZE
+  end
+
+  #############################
+  # Code for old zoom feature
+  #############################
 
   protected
 
