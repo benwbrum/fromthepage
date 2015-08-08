@@ -1,4 +1,5 @@
 #require_dependency "user"
+require 'fileutils'
 require 'RMagick'
 include Magick
 
@@ -7,11 +8,44 @@ module ImageHelper
   #############################
   # Code for new zoom feature
   #############################
+  
+  def self.extract_pdf(filename)
+    destination = filename.gsub(File.extname(filename), '')
+    FileUtils.mkdir(destination) unless File.exists?(destination)
+    image_list = Magick::ImageList.new(filename) do
+      self.density = 200
+      self.quality = 90
+    end
+    image_list.each_with_index do |image, i|
+      image.write(File.join(destination, "#{i.to_s.rjust(4, '0')}.jpg"))
+    end
+    
+    destination
+  end
+
+  def self.compress_file(filename)
+    p "processing #{filename}"
+    if File.extname(filename).match /[Pp][Dd][Ff]/
+      dirname = extract_pdf(filename)
+      compress_files_in_dir(dirname)
+    else
+      # maybe it's an image file
+      compress_image(filename)
+    end
+  end
+      
+  
   MAX_FILE_SIZE = 1000000
 
-  def self.compress(filename)
+  def self.compress_files_in_dir(dirname)
+    files = Dir.glob(File.join(dirname, "*.*"))
+    files.each { |filename| compress_file(filename) }
+  end
+
+  def self.compress_image(filename)
     if needs_compression?(filename)
-      working_file = File.join(File.dirname(filename),"resizing.jpg")
+      extension = File.extname(filename)
+      working_file = File.join(File.dirname(filename),"resizing.#{extension}")
       9.downto(1).each do |decile|
         percent = decile * 10
         compressed = Magick::ImageList.new(filename)
@@ -19,11 +53,12 @@ module ImageHelper
         p "Compressed file is now #{File.size(working_file)} at quality #{percent}"
 
         unless needs_compression? working_file
-          p "good enough!"
-          compressed.write(filename)  { self.quality = percent}
+          print "compressed.write('#{filename}')  { self.quality = #{percent} }"
           break #we're done here
         end
       end
+      File.unlink(filename)
+      FileUtils.cp(working_file, filename)
       File.unlink(working_file)
     end  
   end
