@@ -1,0 +1,32 @@
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 4, :work_id => @work.id }})
+
+table.datagrid
+  tr
+    th.w50 Page Title
+    th Versions
+    th Current Version
+  -@pages.each do |page|
+    -page_versions = page.page_versions
+    -current_version = page_versions[0]
+    -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
+    tr
+      td =link_to page.title, { :controller => 'display', :action => 'display_page', :page_id => page.id }
+      td
+        -versions_count = page_versions.size
+        dl.dropdown
+          dt
+            =svg_symbol '#icon-list', class: 'icon'
+            span =pluralize(versions_count, 'revision')
+          dd.work-versions
+            .work-versions_wrapper
+              .work-versions_table
+                -page_versions.each_with_index do |version, i|
+                  =link_to({ :controller => 'page_version', :action => 'show', :page_version_id => version.id }, class: 'work-version')
+                    span.work-version_name ="Revision #{versions_count - i}"
+                    span.work-version_date ="#{version.created_on.strftime("%b %d, %Y")}"
+                    span.work-version_user ="by #{version.user.display_name}"
+
+
+
+      td.fgfaded =="#{current_version.created_on.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
+=render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
