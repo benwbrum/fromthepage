@@ -49,22 +49,22 @@
       margin-bottom: 1px;
       border-bottom-color: rgba(#000, 0.12);
     }
-  }
-  a {
-    color: inherit;
-    display: block;
-    transition: none;
-    line-height: 2em;
-    padding: 0 2em 0 0.8em;
-    text-decoration: none !important;
-    &:hover {
-      color: $fgSelected !important;
-      background: $bgSelected;
-      &:before { color: inherit; }
-      .icon { color: inherit; }
+    > a {
+      color: inherit;
+      display: block;
+      transition: none;
+      line-height: 2em;
+      padding: 0 2em 0 0.8em;
+      text-decoration: none !important;
+      &:hover {
+        color: $fgSelected !important;
+        background: $bgSelected;
+        &:before { color: inherit; }
+        .icon { color: inherit; }
+      }
     }
+    > hr { margin: 0.3em 1px; }
   }
-  hr { margin: 0.3em 1px; }
 
   // Select-like dropdown
   dt.button {
