@@ -2,18 +2,20 @@
 
 table.datagrid.work-contents
   tr
-    th.w40 Page Title
-    th Versions
-    th Current Version
+    th.w100 Page Title
+    th User Notes
     th Actions
   -@work.pages.each do |page|
-    -page_versions = page.page_versions
-    -current_version = page_versions[0]
-    -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
     tr
-      td =link_to page.title, { :controller => 'display', :action => 'display_page', :page_id => page.id }
-      td =link_to pluralize(page_versions.size, 'revision'), { :controller => 'page_version', :action => 'list', :page_id => page.id }
-      td =="#{current_version.created_on.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
+      td
+        =link_to({ :controller => 'display', :action => 'display_page', :page_id => page.id })
+          =svg_symbol '#icon-page', class: 'icon'
+          span =page.title
+      td.nowrap
+        -note_link_class = page.notes.empty? ? 'no-notes' : nil
+        =link_to({ :controller => 'transcribe', :action => 'display_page', :page_id => page.id, :anchor => 'notes' }, class: note_link_class)
+          =svg_symbol '#icon-comment', class: 'icon'
+          span =(page.notes.empty? ? 'No notes' : pluralize(page.notes.size, 'note'))
       td
         -if page.source_text.blank?
           =link_to 'Transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'

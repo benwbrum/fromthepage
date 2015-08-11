@@ -8,6 +8,12 @@
     height: 30px;
     padding: 5px 10px;
   }
+  a.no-notes {
+    color: $bodyFgLight;
+    &:hover {
+      color: $bodyFgFaded;
+    }
+  }
 }
 
 .work-columns {
