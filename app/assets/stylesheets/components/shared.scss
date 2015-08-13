@@ -485,6 +485,12 @@ button, .button, .dropdown dd a {
       word-break: normal;
       //text-overflow: none;
     }
+    &.overflow {
+      max-width: 50px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
     &.toleft { padding-left: 0; }
     &.toright { padding-right: 0; }
   }
