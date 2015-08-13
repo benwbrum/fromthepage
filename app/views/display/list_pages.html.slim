@@ -13,7 +13,7 @@ table.datagrid.work-contents
           span =page.title
       td.nowrap
         -note_link_class = page.notes.empty? ? 'no-notes' : nil
-        =link_to({ :controller => 'transcribe', :action => 'display_page', :page_id => page.id, :anchor => 'notes' }, class: note_link_class)
+        =link_to({ :controller => 'display', :action => 'display_page', :page_id => page.id, :anchor => 'notes' }, class: note_link_class)
           =svg_symbol '#icon-comment', class: 'icon'
           span =(page.notes.empty? ? 'No notes' : pluralize(page.notes.size, 'note'))
       td
