@@ -11,6 +11,9 @@ class UserController < ApplicationController
   end
 
   def profile
+    @notes = @user.notes.limit(10)
+    @page_versions = @user.page_versions.joins(:page).limit(10)
+    @article_versions = @user.article_versions.limit(10).joins(:article)
   end
 
   def record_deed

@@ -1,0 +1,88 @@
+// ---------------------------
+// USER PAGES
+// ---------------------------
+
+
+.user-profile {
+  width: 100%;
+  display: table;
+  margin: $gapSize 0;
+  &_image {
+    text-align: center;
+    display: table-cell;
+    vertical-align: top;
+    padding-right: $gapSize * 2;
+    .userpic { font-size: 128px; }
+  }
+  &_badge {
+    top: -15px;
+    color: #FFF;
+    line-height: 24px;
+    position: relative;
+    display: inline-block;
+    span {
+      z-index: 2;
+      color: #FFF;
+      padding: 0 12px;
+      font-size: 12px;
+      background: #C00;
+      position: relative;
+      vertical-align: top;
+      display: inline-block;
+      text-transform: uppercase;
+      font-family: $fontFamilyHead;
+    }
+    &:before, &:after {
+      top: 5px;
+      height: 0;
+      z-index: 1;
+      left: -26px;
+      width: 20px;
+      content: '';
+      position: absolute;
+      border-color: #C44;
+      border-style: solid;
+      border-width: 12px 6px;
+      border-right-color: #900;
+      border-left-color: transparent;
+    }
+    &:after {
+      left: auto;
+      right: -26px;
+      border-left-color: #900;
+      border-right-color: transparent;
+    }
+  }
+  &_details {
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    .headline {
+      margin: 0;
+    }
+  }
+  &_stats {
+    margin: 0.2em 0;
+    font-size: $fontSizeStrong;
+    span {
+      margin-right: 1em;
+      color: $bodyFgFaded;
+      display: inline-block;
+    }
+  }
+  [data-prefix] {
+    margin: 0.5em 0;
+    padding-left: 5em;
+    position: relative;
+    &:before {
+      top: 0;
+      left: 0;
+      width: 4.5em;
+      position: absolute;
+      color: $bodyFgLight;
+    }
+  }
+  &_stats + [data-prefix] {
+    margin-top: 1em;
+  }
+}

@@ -1,0 +1,77 @@
+section.user-profile
+  -user_name = @user.display_name.presence || @user.login
+  .user-profile_image
+    .userpic =gravatar_image_tag @user.email, :alt => @user.display_name, :gravatar => { :size => 256 }
+    -if @user.owner?
+      .user-profile_badge: span owner
+  .user-profile_details
+    .headline
+      h1.headline_title
+        =user_name
+      -if @user == current_user
+        .headline_aside
+          =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline')
+            =svg_symbol '#icon-edit', class: 'icon'
+            span Edit Profile
+          |&nbsp;&nbsp;
+          =link_to(edit_user_registration_path, class: 'button outline')
+            =svg_symbol '#icon-user', class: 'icon'
+            span Login &amp; Password
+    .user-profile_stats
+      span ="#{number_with_delimiter(@user.deeds.count)} #{'contribution'.pluralize(@user.deeds.count)}"
+      span ="User since #{@user.created_at.strftime("%b %d, %Y")}"
+      -if @user.last_sign_in_at.present?
+        span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
+    -if @user.location.present?
+      p.big(data-prefix='Location:') =@user.location
+    -if @user.website.present?
+      p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank'
+    -if @user.about.present?
+      p.big(data-prefix='About:') =@user.about
+
+-if @notes.present?
+  h3 Recent Notes
+  table.datagrid
+    tr
+      th Date
+      th.w25 Page
+      th.w75 Note
+    -@notes.each do |note|
+      -note_text = truncate(strip_tags(note.body), :length => 200)
+      tr
+        td.nowrap =note.created_at.strftime("%b %d, %Y, %l:%M %p")
+        td.overflow =link_to note.page.title, { :controller => 'display', :action => 'display_page', :page_id => note.page_id }
+        td =link_to note_text, { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "note-#{note.id}" }
+  br
+
+-if @page_versions.present?
+  h3 Recent Page Edits
+  table.datagrid
+    tr
+      th Date
+      th.w25 Work
+      th.w60 Page
+      th.w15 Version
+    -@page_versions.each do |version|
+      tr
+        td.nowrap =version.created_on.strftime("%b %d, %Y, %l:%M %p")
+        td.overflow =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
+        td =link_to version.page.title, { :controller => 'display', :action => 'display_page', :page_id => version.page.id }
+        td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
+  br
+
+-if @article_versions.present?
+  h3 Recent Article Edits
+  table.datagrid
+    tr
+      th Date
+      th.w25 Article
+      th.w60 Categories
+      th.w15 Version
+    -@article_versions.each do |version|
+      -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
+      tr
+        td.nowrap =version.created_on.strftime("%b %d, %Y, %l:%M %p")
+        td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
+        td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
+        td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
