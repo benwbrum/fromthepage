@@ -78,7 +78,7 @@ class CollectionController < ApplicationController
   def update
     collection = Collection.find(params[:id])
     collection.update_attributes(params[:collection])
-    flash[:notice] = "Collection updated successfully."
+    flash[:notice] = "Collection has been updated"
     redirect_to :back
   end
 
@@ -89,7 +89,7 @@ class CollectionController < ApplicationController
     @collection.intro_block = params[:collection][:intro_block]
     @collection.owner = current_user
     if @collection.save
-      flash[:notice] = 'Collection created successfully'
+      flash[:notice] = 'Collection has been created'
       ajax_redirect_to({ :action => 'edit', :collection_id => @collection.id })
     else
       render :new
