@@ -1,6 +1,6 @@
 section.signon
   h1 Edit Account
-  p Here you can change your account information. If you don't want to change your password, leave the appropriate fields blank. You're required to enter your current password to confirm changes.
+  p Here you can change your account information. If you don't want to change your password, leave the password fields blank. You're required to enter your current password to confirm changes.
 
   -if devise_mapping.confirmable? && resource.pending_reconfirmation?
     p Currently waiting confirmation for #{resource.unconfirmed_email}
@@ -28,4 +28,4 @@ section.signon
       .toolbar_group.aright
         =link_to registration_path(resource_name), data: { confirm: 'Are you sure you want to delete your account? After deleting the account you won\'t be able to recover it!' }, method: :delete
           =svg_symbol '#icon-remove-sign', class: 'icon'
-          span Cancel Account
+          span Delete Account
