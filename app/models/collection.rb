@@ -1,5 +1,7 @@
 require 'csv'
 class Collection < ActiveRecord::Base
+  include CollectionStatistic
+  
   has_many :works, -> { order 'title' } #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }
   has_many :articles
@@ -33,4 +35,7 @@ class Collection < ActiveRecord::Base
     end
     csv_string
   end
+  
+  
+  
 end

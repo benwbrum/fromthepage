@@ -16,6 +16,14 @@
             span(style="width:#{progress_annotated}%")
             span(style="width:#{progress_transcribed - progress_annotated}%")
 
+.p Raw collection statistics
+.p Work count #{@collection.work_count}
+.p Total mentions #{@collection.mention_count}
+.p Total subjects #{@collection.subject_count}
+.p Total pages #{@collection.page_count}
+.p Total comments #{@collection.comment_count}
+.p Total contributors #{@collection.contributor_count}
+
 .collection-users.justified
   .justified_box>
     -unless @all_transcribers.empty?
