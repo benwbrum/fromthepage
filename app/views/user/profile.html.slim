@@ -10,7 +10,7 @@ section.user-profile
         =user_name
       -if @user == current_user
         .headline_aside
-          =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline')
+          =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
             =svg_symbol '#icon-edit', class: 'icon'
             span Edit Profile
           |&nbsp;&nbsp;
@@ -25,7 +25,7 @@ section.user-profile
     -if @user.location.present?
       p.big(data-prefix='Location:') =@user.location
     -if @user.website.present?
-      p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank'
+      p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
     -if @user.about.present?
       p.big(data-prefix='About:') =@user.about
 

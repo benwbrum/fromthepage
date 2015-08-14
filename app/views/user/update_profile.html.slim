@@ -1,0 +1,23 @@
+.litebox-embed(style="width:550px")
+  h1 Update User Profile
+  p Your name is the only required field here, but we would appreciate if you tell the FromThePage community a little bit more about yourself.
+
+  =form_for(@user, { :url => { :action => 'update' }}) do |f|
+    =hidden_field_tag 'user_id', @user.id
+    =validation_summary @user.errors
+    table.form
+      tr.big
+        th =f.label :display_name, 'Name'
+        td.w100 =f.text_field :display_name
+      tr
+        th =f.label :location
+        td =f.text_field :location, :placeholder => 'Where are you from?'
+      tr
+        th =f.label :website
+        td =f.text_field :website, :placeholder => 'Your blog or homepage'
+      tr
+        td(colspan="2")
+          =f.label :about, 'About you', class: 'above'
+          =f.text_area :about, rows: 4
+    .toolbar
+      .toolbar_group.aright =f.button 'Update Profile'

@@ -26,6 +26,7 @@ Fromthepage::Application.routes.draw do
   patch 'article/update', :to => 'article#update'
   put   'article/article_category', :to => 'article#article_category'
   patch 'category/update', :to => 'category#update'
+  patch 'user/update', :to => 'user#update'
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'

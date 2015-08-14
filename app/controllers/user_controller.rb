@@ -1,13 +1,24 @@
 class UserController < ApplicationController
+
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile]
+
   def demo
     session[:demo_mode] = true;
     redirect_to dashboard_path
   end
 
+  def update_profile
+  end
+
   def update
-    @user.update_attributes(params[:user])
-    #record_deed
-    redirect_to :action => 'profile', :user_id => @user.id
+    if @user.update_attributes(params[:user])
+      #record_deed
+      flash[:notice] = "User profile has been updated"
+      ajax_redirect_to({ :action => 'profile', :user_id => @user.id })
+    else
+      render :action => 'update_profile'
+    end
   end
 
   def profile

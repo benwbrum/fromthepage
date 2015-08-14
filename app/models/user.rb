@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :display_name, :owner
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -30,6 +30,9 @@ class User < ActiveRecord::Base
   has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
+  validates :display_name, presence: true
+  validates :website, allow_blank: true, format: { with: URI.regexp }
+
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
   end
@@ -44,7 +47,9 @@ class User < ActiveRecord::Base
   def display_name
     self[:display_name] || self[:login]
   end
+
   def collections
     self.owned_collections + Collection.where(:owner_user_id => self.id).all
   end
+
 end
