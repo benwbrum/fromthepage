@@ -23,6 +23,17 @@
 .p Total pages #{@collection.page_count}
 .p Total comments #{@collection.comment_count}
 .p Total contributors #{@collection.contributor_count}
+.p Total pages transcribed #{@collection.transcription_count}
+.p Total page edits #{@collection.edit_count}
+.p Total pages translated #{@collection.translation_count}
+
+.p Recent collection statistics
+.p Recent mentions #{@collection.mention_count(7)}
+.p Recent comments #{@collection.comment_count(7)}
+.p Recent contributors #{@collection.contributor_count(7)}
+.p Recent pages transcribed #{@collection.transcription_count(7)}
+.p Recent page edits #{@collection.edit_count(7)}
+.p Recent pages translated #{@collection.translation_count(7)}
 
 .collection-users.justified
   .justified_box>
