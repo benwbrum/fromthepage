@@ -219,6 +219,44 @@
 // Collection stats
 
 .collection-stats {
+  &_counters {
+    font-size: 0;
+    margin-bottom: $gapSize;
+    padding-bottom: $gapSize;
+    border-bottom: 1px solid rgba(#000, 0.1);
+    &:last-child {
+      border: 0;
+      padding: 0;
+    }
+    .counter {
+      width: 20%;
+      line-height: 1.2;
+      font-size: 2.344vw;
+      vertical-align: top;
+      border-left: 1px solid rgba(#000, 0.1);
+      &:first-child { border: 0; }
+    }
+
+    @media screen and (max-width: $widthMin) {
+      .counter { font-size: 18px; }
+    }
+    @media screen and (min-width: 850px) {
+      .counter { font-size: 20px; }
+    }
+  }
+  &_recent {
+    font-size: 0;
+    margin-bottom: $gapSize * 2;
+    .counter {
+      width: 16.66%;
+      font-size: 15px;
+      line-height: 1.2;
+      vertical-align: top;
+    }
+  }
+}
+
+.collection-work-stats {
   padding: 0;
   width: 100%;
   display: table;
