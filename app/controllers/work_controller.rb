@@ -71,12 +71,7 @@ class WorkController < ApplicationController
   end
 
   def versions
-    #@page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version desc")
-    @pages = Page.joins(:page_versions)
-                 .where(['pages.work_id = ?', @work.id])
-                 .group('pages.id')
-                 .order('max(page_versions.created_on) DESC')
-                 .paginate(page: params[:page], per_page: 20)
+    @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('page_versions.created_on DESC').paginate(page: params[:page], per_page: 20)
   end
 
   def edit
