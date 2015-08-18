@@ -71,17 +71,17 @@ module XmlSourceProcessor
     end
 
     if @translation_dirty
-      self.xml_translation = wiki_to_xml(self.source_translation)      
+      self.xml_translation = wiki_to_xml(self.source_translation, PAGE::TEXT_TYPE::TRANSLATION)      
     end
   end
 
-  def wiki_to_xml(wiki)
+  def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
     xml_string = wiki || ""
 
     xml_string = process_square_braces(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
-    xml_string = update_links_and_xml(xml_string)
+    xml_string = update_links_and_xml(xml_string, false, text_type)
 
     xml_string    
   end
@@ -93,49 +93,46 @@ module XmlSourceProcessor
     return xml_string
   end
 
+
+  
+  BRACE_REGEX = /\[\[.*?\]\]/m
   def process_square_braces(text)
-    processed = ""
-    # find every string beginning with [[
-    # Ruby 1.8 uses "each", 1.9 uses "each_line"
-    if text.respond_to? :each
-      each_method_name = :each
-    else
-      each_method_name = :each_line
-    end
-
-    text.send(each_method_name, '[[') do |raw|
-      # remove the open brace
-      raw.gsub!('[[', '')
-
-      # look for the closing brace ]]
-      if raw.include?(']]')
-        a = raw.split(']]')
-        tag = a[0]
-        if tag.include?('|')
-          parts = tag.split('|')
-          title = parts[0]
-          display = parts[1]
-        else
-          title = tag.gsub(/\n/,' ')
-          display = tag
-        end
-        title = canonicalize_title(title)
-        processed << "<link target_title=\"#{title}\">#{display}</link>"
-        if a[1]
-          processed << a[1]
-        end
+    # find all the links
+    wikilinks = text.scan(BRACE_REGEX)
+    
+    wikilinks.each do |wikilink_contents|
+      # strip braces
+      munged = wikilink_contents.sub('[[','')
+      munged = munged.sub(']]','')
+            
+      # extract the title and display
+      if munged.include? '|'
+        parts = munged.split '|'
+        title = parts[0]
+        verbatim = parts[1]
       else
-        processed << raw
+        title = munged
+        verbatim = munged
       end
+      title = canonicalize_title(title)
+      
+      replacement = "<link target_title=\"#{title}\">#{verbatim}</link>"
+      
+      text.sub!(wikilink_contents, replacement)      
     end
-    return processed
+    
+    text
   end
 
+
   def canonicalize_title(title)
+    # kill all tags
+    title = title.gsub(/<.*?>/, '')
     # linebreaks -> spaces
     title = title.gsub(/\n/, ' ')
     # multiple spaces -> single spaces
     title = title.gsub(/\s+/, ' ')
+
     title
   end
 
@@ -162,9 +159,9 @@ module XmlSourceProcessor
 EOF
   end
 
-  def update_links_and_xml(xml_string, preview_mode=false)
+  def update_links_and_xml(xml_string, preview_mode=false, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
     # first clear out the existing links
-    clear_links
+    clear_links(text_type)
     processed = ""
     # process it
     doc = REXML::Document.new xml_string
@@ -189,7 +186,7 @@ EOF
         article.collection = collection
         article.save! unless preview_mode
       end
-      link_id = create_link(article, display_text) unless preview_mode
+      link_id = create_link(article, display_text, text_type) unless preview_mode
       # now update the attribute
       link_element = REXML::Element.new("link")
       element.children.each { |c| link_element.add(c) }

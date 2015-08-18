@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150328015758) do
+ActiveRecord::Schema.define(version: 20150817141209) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -251,8 +251,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "title"
     t.string   "description"
     t.integer  "omeka_site_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "omeka_files", force: true do |t|
@@ -263,8 +263,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "thumbnail_url"
     t.string   "original_filename"
     t.integer  "omeka_order"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "page_id"
   end
 
@@ -281,8 +281,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "omeka_url"
     t.integer  "omeka_collection_id"
     t.integer  "user_id"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "work_id"
   end
 
@@ -291,8 +291,8 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.string   "api_url"
     t.string   "api_key"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "page_article_links", force: true do |t|
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 20150328015758) do
     t.integer  "article_id"
     t.string   "display_text"
     t.datetime "created_on"
+    t.string   "text_type",    default: "transcription"
   end
 
   add_index "page_article_links", ["article_id"], name: "index_page_article_links_on_article_id", using: :btree

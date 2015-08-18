@@ -26,6 +26,11 @@ class Page < ActiveRecord::Base
   attr_accessible :source_text
   attr_accessible :source_translation
   attr_accessible :status
+  
+  module TEXT_TYPE
+    TRANSCRIPTION = 'transcription'
+    TRANSLATION = 'translation'
+  end
 
   STATUS_BLANK = 'blank'
   STATUS_INCOMPLETE = 'incomplete'
@@ -175,18 +180,19 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   # XML Source support
   #######################
 
-  def clear_links
+  def clear_links(text_type)
     # first use the existing links to blank the graphs
     self.clear_article_graphs
     # clear out the existing links to this page
-    PageArticleLink.delete_all("page_id = #{self.id}")
+    PageArticleLink.delete_all("page_id = #{self.id} and text_type = '#{text_type}'")
   end
 
   # tested
-  def create_link(article, display_text)
+  def create_link(article, display_text, text_type)
     link = PageArticleLink.new(:page => self,
                                :article => article,
-                               :display_text => display_text)
+                               :display_text => display_text,
+                               :text_type => text_type)
     link.save!
 
     return link.id
