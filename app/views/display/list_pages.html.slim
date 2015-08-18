@@ -1,23 +1,28 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 2, :work_id => @work.id }})
 
-table.datagrid.work-contents
-  tr
-    th.w100 Page Title
-    th User Notes
-    th Actions
-  -@work.pages.each do |page|
+-if @work.pages.empty?
+  .nodata
+    h4.nodata_title No pages found
+    p.nodata_text =="This work does not contain any pages yet, go to #{link_to('Pages tab', { controller: 'work', action: 'pages_tab', work_id: @work.id })} to create a new page"
+-else
+  table.datagrid.work-contents
     tr
-      td
-        =link_to({ :controller => 'display', :action => 'display_page', :page_id => page.id })
-          =svg_symbol '#icon-page', class: 'icon'
-          span =page.title
-      td.nowrap
-        -note_link_class = page.notes.empty? ? 'no-notes' : nil
-        =link_to({ :controller => 'display', :action => 'display_page', :page_id => page.id, :anchor => 'notes' }, class: note_link_class)
-          =svg_symbol '#icon-comment', class: 'icon'
-          span =(page.notes.empty? ? 'No notes' : pluralize(page.notes.size, 'note'))
-      td
-        -if page.source_text.blank?
-          =link_to 'Transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
-        -elsif page.page_article_links.size == 0
-          =link_to 'Annotate', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
+      th.w100 Page Title
+      th User Notes
+      th Actions
+    -@work.pages.each do |page|
+      tr
+        td
+          =link_to({ :controller => 'display', :action => 'display_page', :page_id => page.id })
+            =svg_symbol '#icon-page', class: 'icon'
+            span =page.title
+        td.nowrap
+          -note_link_class = page.notes.empty? ? 'no-notes' : nil
+          =link_to({ :controller => 'display', :action => 'display_page', :page_id => page.id, :anchor => 'notes' }, class: note_link_class)
+            =svg_symbol '#icon-comment', class: 'icon'
+            span =(page.notes.empty? ? 'No notes' : pluralize(page.notes.size, 'note'))
+        td
+          -if page.source_text.blank?
+            =link_to 'Transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
+          -elsif page.page_article_links.size == 0
+            =link_to 'Annotate', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'

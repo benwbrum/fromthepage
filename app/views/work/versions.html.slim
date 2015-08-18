@@ -1,30 +1,20 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 4, :work_id => @work.id }})
 
-table.datagrid
-  tr
-    th.w50 Page Title
-    th Versions
-    th Current Version
-  -@pages.each do |page|
-    -page_versions = page.page_versions
-    -current_version = page_versions[0]
-    -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
+-if @page_versions.empty?
+  .nodata
+    h4.nodata_title No pages found
+    p.nodata_text =="This work does not contain any pages yet, go to #{link_to('Pages tab', { controller: 'work', action: 'pages_tab', work_id: @work.id })} to create a new page"
+-else
+  table.datagrid
     tr
-      td =link_to page.title, { :controller => 'display', :action => 'display_page', :page_id => page.id }
-      td
-        -versions_count = page_versions.size
-        dl.dropdown
-          dt
-            =svg_symbol '#icon-list', class: 'icon'
-            span =pluralize(versions_count, 'revision')
-          dd.work-versions
-            .work-versions_wrapper
-              .work-versions_table
-                -page_versions.each_with_index do |version, i|
-                  =link_to({ :controller => 'page_version', :action => 'show', :page_version_id => version.id }, class: 'work-version')
-                    span.work-version_name ="Revision #{versions_count - i}"
-                    span.work-version_date ="#{version.created_on.strftime("%b %d, %Y")}"
-                    span.work-version_user ="by #{version.user.display_name}"
-      td.fgfaded =="#{current_version.created_on.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
+      th.w50 Page Title
+      th Revision
+      th Date
+    -@page_versions.each do |version|
+      -user_link = link_to(version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => version.user.id })
+      tr
+        td =link_to version.title, { :controller => 'page_version', :action => 'list', :page_id => version.page.id }
+        td =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
+        td.fgfaded =="#{version.created_on.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
 
-=render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+  =render(:partial => 'shared/pagination', :locals => { :model => @page_versions, :entries_info => true })
