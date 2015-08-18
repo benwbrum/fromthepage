@@ -8,6 +8,9 @@
           th =f.label :title, 'Work title'
           td.w100 =f.text_field :title, value: @work.title
         tr
+          th =f.label :collection_id
+          td =f.collection_select(:collection_id, @collections, :id, :title, { :include_blank => '- Do not include in a collection -' })
+        tr
           th =f.label :author
           td =f.text_field :author, value: @work.author
         tr

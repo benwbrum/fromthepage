@@ -68,6 +68,7 @@ class WorkController < ApplicationController
 
   def new
     @work = Work.new
+    @collections = Collection.where(owner_user_id: current_user.id)
   end
 
   def versions
@@ -77,6 +78,7 @@ class WorkController < ApplicationController
   def edit
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes
+    @collections = Collection.where(owner_user_id: current_user.id)
   end
 
   def add_scribe
@@ -98,6 +100,7 @@ class WorkController < ApplicationController
   def create
     @work = Work.new
     @work.title = params[:work][:title]
+    @work.collection_id = params[:work][:collection_id]
     @work.description = params[:work][:description]
     @work.owner = current_user
     if @work.save
