@@ -58,6 +58,11 @@ class Article < ActiveRecord::Base
   end
 
 
+  def self.delete_orphan_articles
+    # don't delete orphan articles with contents
+    Article.delete_all("source_text IS NULL AND id NOT IN (select article_id from page_article_links)")
+  end
+
   #######################
   # Related Articles
   #######################

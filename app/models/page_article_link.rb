@@ -11,5 +11,7 @@ class PageArticleLink < ActiveRecord::Base
 
   # there were mass assignment errors in test
   attr_accessible :display_text, :page, :article
+  attr_accessible :text_type
+  attr_accessor :text_type
 
 end
