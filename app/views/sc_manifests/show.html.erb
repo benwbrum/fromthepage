@@ -35,5 +35,19 @@
   <%= @sc_manifest.first_sequence_label %>
 </p>
 
-<%= link_to 'Edit', edit_sc_manifest_path(@sc_manifest) %> |
-<%= link_to 'Back', sc_manifests_path %>
+<p>
+	<%= button_to("Convert", { :action => :convert, :sc_manifest_id => @sc_manifest.id })%>
+</p>
+
+<h4>Canvases</h4>
+<% @sc_manifest.sc_canvases.each do |canvas| %>
+	<%= canvas.sc_canvas_label %>
+	<br/>
+	<!-- img src=<%=canvas.thumbnail_url%> / -->
+	<%= image_tag(canvas.thumbnail_url) %>
+	<br/>
+<% end %>
+
+
+
+<%= link_to 'Back', sc_collection_path(@sc_manifest.sc_collection) %>

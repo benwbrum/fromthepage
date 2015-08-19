@@ -18,6 +18,7 @@ class Page < ActiveRecord::Base
   has_many :notes, -> { order 'created_at' }
   has_one :ia_leaf
   has_one :omeka_file
+  has_one :sc_canvas
 
   after_save :create_version
   after_initialize :defaults
@@ -91,8 +92,11 @@ class Page < ActiveRecord::Base
   end
 
   def canonical_facsimile_url
+    binding.pry
     if self.ia_leaf
       self.ia_leaf.facsimile_url
+    elsif self.sc_canvas
+      self.sc_canvas.facsimile_url      
     else
       base_image
     end
