@@ -11,6 +11,9 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
 
   inflect.plural /(lea)f$/i, '\1ves'
   inflect.singular /(lea)ves$/i, '\1f'
+  
+  inflect.plural /(canvas)$/, '\1es'
+  inflect.singular /(canvas)es/, '\1'
 end
 
 # These inflection rules are supported but not enabled by default:

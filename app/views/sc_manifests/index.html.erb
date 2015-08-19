@@ -1,0 +1,37 @@
+<h1>Listing sc_manifests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Work</th>
+      <th>Sc collection</th>
+      <th>Sc</th>
+      <th>Label</th>
+      <th>Metadata</th>
+      <th>First sequence</th>
+      <th>First sequence label</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sc_manifests.each do |sc_manifest| %>
+      <tr>
+        <td><%= sc_manifest.work %></td>
+        <td><%= sc_manifest.sc_collection %></td>
+        <td><%= sc_manifest.sc_id %></td>
+        <td><%= sc_manifest.label %></td>
+        <td><%= sc_manifest.metadata %></td>
+        <td><%= sc_manifest.first_sequence_id %></td>
+        <td><%= sc_manifest.first_sequence_label %></td>
+        <td><%= link_to 'Show', sc_manifest %></td>
+        <td><%= link_to 'Edit', edit_sc_manifest_path(sc_manifest) %></td>
+        <td><%= link_to 'Destroy', sc_manifest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sc manifest', new_sc_manifest_path %>

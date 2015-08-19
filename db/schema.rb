@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150817141209) do
+ActiveRecord::Schema.define(version: 20150819150921) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -361,6 +361,53 @@ ActiveRecord::Schema.define(version: 20150817141209) do
     t.string  "plugin_name"
     t.integer "version"
   end
+
+  create_table "sc_canvases", force: true do |t|
+    t.string   "sc_id"
+    t.integer  "sc_manifest_id"
+    t.integer  "page_id"
+    t.string   "sc_canvas_id"
+    t.string   "sc_canvas_label"
+    t.integer  "sc_canvas_width"
+    t.integer  "sc_canvas_height"
+    t.string   "sc_image_motivation"
+    t.string   "sc_image_on"
+    t.string   "sc_resource_id"
+    t.string   "sc_resource_format"
+    t.string   "sc_resource_type"
+    t.string   "sc_service_context"
+    t.string   "sc_service_id"
+    t.string   "sc_service_profile"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sc_canvases", ["page_id"], name: "index_sc_canvases_on_page_id", using: :btree
+  add_index "sc_canvases", ["sc_manifest_id"], name: "index_sc_canvases_on_sc_manifest_id", using: :btree
+
+  create_table "sc_collections", force: true do |t|
+    t.integer  "collection_id"
+    t.string   "context"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sc_collections", ["collection_id"], name: "index_sc_collections_on_collection_id", using: :btree
+
+  create_table "sc_manifests", force: true do |t|
+    t.integer  "work_id"
+    t.integer  "sc_collection_id"
+    t.string   "sc_id"
+    t.string   "label"
+    t.text     "metadata"
+    t.string   "first_sequence_id"
+    t.string   "first_sequence_label"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sc_manifests", ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id", using: :btree
+  add_index "sc_manifests", ["work_id"], name: "index_sc_manifests_on_work_id", using: :btree
 
   create_table "schema_info", id: false, force: true do |t|
     t.integer "version"

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @sc_collection.collection %>
+</p>
+
+<p>
+  <strong>Context:</strong>
+  <%= @sc_collection.context %>
+</p>
+
+<%= link_to 'Edit', edit_sc_collection_path(@sc_collection) %> |
+<%= link_to 'Back', sc_collections_path %>

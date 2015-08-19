@@ -1,0 +1,27 @@
+<h1>Listing sc_collections</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Collection</th>
+      <th>Context</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sc_collections.each do |sc_collection| %>
+      <tr>
+        <td><%= sc_collection.collection %></td>
+        <td><%= sc_collection.context %></td>
+        <td><%= link_to 'Show', sc_collection %></td>
+        <td><%= link_to 'Edit', edit_sc_collection_path(sc_collection) %></td>
+        <td><%= link_to 'Destroy', sc_collection, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sc collection', new_sc_collection_path %>

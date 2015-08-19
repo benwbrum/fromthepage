@@ -1,0 +1,45 @@
+<%= form_for(@sc_manifest) do |f| %>
+  <% if @sc_manifest.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sc_manifest.errors.count, "error") %> prohibited this sc_manifest from being saved:</h2>
+
+      <ul>
+      <% @sc_manifest.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :work_id %><br>
+    <%= f.text_field :work_id %>
+  </div>
+  <div class="field">
+    <%= f.label :sc_collection_id %><br>
+    <%= f.text_field :sc_collection_id %>
+  </div>
+  <div class="field">
+    <%= f.label :sc_id %><br>
+    <%= f.text_field :sc_id %>
+  </div>
+  <div class="field">
+    <%= f.label :label %><br>
+    <%= f.text_field :label %>
+  </div>
+  <div class="field">
+    <%= f.label :metadata %><br>
+    <%= f.text_area :metadata %>
+  </div>
+  <div class="field">
+    <%= f.label :first_sequence_id %><br>
+    <%= f.text_field :first_sequence_id %>
+  </div>
+  <div class="field">
+    <%= f.label :first_sequence_label %><br>
+    <%= f.text_field :first_sequence_label %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

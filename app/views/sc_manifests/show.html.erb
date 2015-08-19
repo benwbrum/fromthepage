@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Work:</strong>
+  <%= @sc_manifest.work %>
+</p>
+
+<p>
+  <strong>Sc collection:</strong>
+  <%= @sc_manifest.sc_collection %>
+</p>
+
+<p>
+  <strong>Sc:</strong>
+  <%= @sc_manifest.sc_id %>
+</p>
+
+<p>
+  <strong>Label:</strong>
+  <%= @sc_manifest.label %>
+</p>
+
+<p>
+  <strong>Metadata:</strong>
+  <%= @sc_manifest.metadata %>
+</p>
+
+<p>
+  <strong>First sequence:</strong>
+  <%= @sc_manifest.first_sequence_id %>
+</p>
+
+<p>
+  <strong>First sequence label:</strong>
+  <%= @sc_manifest.first_sequence_label %>
+</p>
+
+<%= link_to 'Edit', edit_sc_manifest_path(@sc_manifest) %> |
+<%= link_to 'Back', sc_manifests_path %>

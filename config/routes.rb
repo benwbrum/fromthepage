@@ -1,5 +1,11 @@
 Fromthepage::Application.routes.draw do
 
+  resources :sc_canvas
+
+  resources :sc_manifests
+
+  resources :sc_collections
+
   devise_for :users
 
   resources :omeka_items
