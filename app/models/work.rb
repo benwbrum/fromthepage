@@ -12,12 +12,13 @@ class Work < ActiveRecord::Base
   after_save :update_statistic
 
   attr_accessible :title,
+                  :author,
                   :description,
+                  :collection_id,
                   :physical_description,
                   :document_history,
                   :permission_description,
                   :location_of_composition,
-                  :author,
                   :transcription_conventions,
                   :supports_translation,
                   :translation_instructions,
@@ -64,8 +65,9 @@ class Work < ActiveRecord::Base
 
   def update_statistic
     unless self.work_statistic
-        self.work_statistic = WorkStatistic.new
+      self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate
   end
+
 end
