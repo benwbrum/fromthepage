@@ -74,7 +74,6 @@ class IaController < ApplicationController
 
     flash[:notice] = "Pages following the end of the text have been concealed"
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
-
   end
 
   def title_from_ocr_top

@@ -20,7 +20,9 @@
           li.imageset
             .imageset_title
               dl.dropdown
-                dt.bold Image set ##{set.id}
+                dt
+                  =svg_symbol '#icon-list', class: 'icon'
+                  b Image set ##{set.id}
                 dd
                   =link_to 'Edit titles', { :controller => 'title', :action => 'list', :image_set_id => set.id }
                   =link_to 'Append', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id }

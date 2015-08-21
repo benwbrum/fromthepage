@@ -155,15 +155,6 @@
 
 .imageset {
   display: table-row;
-  &:before {
-    width: 32px;
-    content: '•';
-    text-align: center;
-    color: $bodyFgLight;
-    display: table-cell;
-    vertical-align: top;
-    font: normal 20px/28px monospace;
-  }
   > * {
     padding: 3px 5px;
     display: table-cell;
