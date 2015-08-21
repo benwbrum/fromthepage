@@ -156,6 +156,7 @@ $footerBg:                  $themeDark;
 @import "sections/page";
 @import "sections/work";
 @import "sections/user";
+@import "sections/ia-import";
 
 @import "plugins/select2/core";
 @import "plugins/zoomer";
@@ -164,7 +165,6 @@ $footerBg:                  $themeDark;
 
 #welcome-message {
   width: 480px;
-
   .button {
     border: 0;
     color: #FFF;
@@ -180,6 +180,7 @@ $footerBg:                  $themeDark;
     }
   }
 }
+
 
 
 

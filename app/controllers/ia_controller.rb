@@ -13,6 +13,10 @@ class IaController < ApplicationController
     end
   end
 
+  def manage
+    @ia_leaves = @ia_work.ia_leaves.paginate(page: params[:page], per_page: 5)
+  end
+
   def convert
     if params[:use_ocr]
       @ia_work.use_ocr = true
@@ -20,19 +24,19 @@ class IaController < ApplicationController
     end
 
     work = @ia_work.convert_to_work
-    flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work."
-    
+    flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work"
+
     if params[:collection_id]
       work.collection = @collection
       work.save!
     end
-    
+
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
   end
-  
+
   def mark_beginning
     beginning_leaf = IaLeaf.find(params[:ia_leaf_id])
-    
+
     # delete all leaves preceding this leaf
     target_leaves = []
     accumulation_mode=true
@@ -44,16 +48,16 @@ class IaController < ApplicationController
         target_leaves << leaf
       end
     end
-    
-    target_leaves.each { |leaf| leaf.destroy }    
-    
-    flash[:notice] = "Pages preceding the beginning of the text have been concealed."
+
+    target_leaves.each { |leaf| leaf.destroy }
+
+    flash[:notice] = "Pages preceding the beginning of the text have been concealed"
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
-  
+
   def mark_end
     end_leaf = IaLeaf.find(params[:ia_leaf_id])
-    
+
     # delete all leaves preceding this leaf
     target_leaves = []
     accumulation_mode=false
@@ -65,12 +69,12 @@ class IaController < ApplicationController
         accumulation_mode = true
       end
     end
-    
-    target_leaves.each { |leaf| leaf.destroy }    
-    
-    flash[:notice] = "Pages following the end of the text have been concealed."
+
+    target_leaves.each { |leaf| leaf.destroy }
+
+    flash[:notice] = "Pages following the end of the text have been concealed"
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
-    
+
   end
 
   def title_from_ocr_top
