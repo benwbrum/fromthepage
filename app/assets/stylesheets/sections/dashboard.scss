@@ -150,7 +150,7 @@
 .imagesets {
   width: 100%;
   display: table;
-  margin: 0.5em 0;
+  margin: 0 0 $gapSize * 4 0;
 }
 
 .imageset {
