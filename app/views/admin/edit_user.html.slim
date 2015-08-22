@@ -1,0 +1,27 @@
+.litebox-embed(style="width:450px")
+  h1 ="Edit User"
+  =form_for(@user, :url => { :action => 'update_user' }) do |f|
+    =hidden_field_tag :user_id, @user.id
+    =validation_summary @user.errors
+    table.form
+      tr.big
+        th =f.label :display_name
+        td.w100 =f.text_field :display_name, :readonly => true
+      tr
+        th =f.label :print_name
+        td =f.text_field :print_name, :readonly => true
+      tr
+        th =f.label :login, 'User login'
+        td =f.text_field :login, :readonly => true
+      tr
+        th =f.label :email, 'Email address'
+        td =f.text_field :email, :readonly => true
+      tr
+        th
+        td
+          =f.label :owner
+            =f.check_box(:owner)
+            |&nbsp;
+            span This user is an Owner
+    .toolbar
+      .toolbar_group.aright =f.button 'Save Changes', class: 'big'

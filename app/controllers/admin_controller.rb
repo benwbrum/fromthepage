@@ -3,6 +3,9 @@ class AdminController < ApplicationController
 
   PAGES_PER_SCREEN = 20
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user]
+
   def authorized?
     unless user_signed_in? && current_user.admin
       redirect_to dashboard_path
@@ -37,14 +40,18 @@ class AdminController < ApplicationController
   end
 
   def update_user
-    @user.update_attributes(params[:user])
-    @user.save!
-    redirect_to :action => 'edit_user', :user_id => @user.id
+    if @user.update_attributes(params[:user])
+      flash[:notice] = "User profile has been updated"
+      ajax_redirect_to({ :action => 'user_list' })
+    else
+      render :action => 'edit_user'
+    end
   end
 
   def delete_user
     @user.destroy
-    redirect_to dashboard_path
+    flash[:notice] = "User profile has been deleted"
+    redirect_to :action => 'user_list'
   end
 
   # display sessions for a user
