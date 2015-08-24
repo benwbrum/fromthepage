@@ -62,8 +62,7 @@ class ImageSetController < ApplicationController
   end
 
   def select_target
-    @left_sets = current_user.image_sets
-    @left_sets.delete(@image_set)
+    @left_sets = current_user.image_sets - [@image_set]
   end
 
   def append
@@ -86,8 +85,7 @@ class ImageSetController < ApplicationController
     0.upto(append_size-1) do |i|
       @image_set.titled_images << @set_to_append.titled_images[i]
     end
-    # no idea why the owner is getting blanked out
-    @image_set.owner = current_user
+
     @image_set.save!
     # this has no effect on acts as list unless I do it manually
     #1.upto(@image_set.titled_images.size) do |i|
