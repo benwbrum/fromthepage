@@ -31,7 +31,8 @@
       hash: null,             // Hash to show litebox
       content: null,          // Selector for local content element
       cssclass: null,         // Custom CSS class for the litebox
-      noscroll: true          // Disable page scroll when open
+      noscroll: true,         // Disable page scroll when open
+      disposable: false       // Remove from DOM after close
     },
 
     isopen: false,
@@ -80,9 +81,9 @@
         this.$wrapper.add(this.$container).addClass('visible');
       } else {
         // Create elements
-        this.$wrapper = $('<section>').addClass('litebox');
+        this.$wrapper = $('<section>').addClass('litebox').addClass(this.options.cssclass);
         this.$closebutton = $('<a>').addClass('litebox_close').text('×');
-        this.$container = $('<div>').addClass('litebox_container').addClass(this.options.cssclass);
+        this.$container = $('<div>').addClass('litebox_container');
         this.$content = $('<div>').addClass('litebox_content');
 
         // Bind close handlers
@@ -199,7 +200,7 @@
       }
 
       // Remove litebox from DOM after all CSS transitions
-      if(this.options.url) {
+      if(this.options.disposable || this.options.url) {
         var events = 'transitionend otransitionend oTransitionEnd webkitTransitionEnd msTransitionEnd';
         this.$wrapper.one(events, $.proxy(this.destroy, this));
       }
