@@ -25,7 +25,7 @@
                   b Image set ##{set.id}
                 dd
                   =link_to 'Edit Titles', { :controller => 'title', :action => 'list', :image_set_id => set.id }
-                  =link_to 'Append to...', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id }
+                  =link_to 'Append to...', { :controller => 'image_set', :action => 'select_target', :image_set_id => set.id }, :data => { litebox: { hash: "append-imageset-#{set.id}" } }
                   =link_to 'Merge into...', { :controller => 'collation', :action => 'select_target', :image_set_id => set.id }
                   =link_to 'Publish as Work', { :controller => 'image_set', :action => 'convert_to_work', :image_set_id => set.id }
                   hr
