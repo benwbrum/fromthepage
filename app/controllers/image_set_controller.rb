@@ -23,7 +23,6 @@ class ImageSetController < ApplicationController
     end
   end
 
-
   def convert_to_work
     work = Work.new
     work.owner = current_user
@@ -67,7 +66,6 @@ class ImageSetController < ApplicationController
     @left_sets.delete(@image_set)
   end
 
-
   def append
     # expect @image_set and param[set_to_append_id]
         # load up the sets
@@ -94,7 +92,6 @@ class ImageSetController < ApplicationController
     # this has no effect on acts as list unless I do it manually
     #1.upto(@image_set.titled_images.size) do |i|
     redirect_to :controller => 'title', :action => 'list', :image_set_id => @image_set.id
-
   end
 
 end

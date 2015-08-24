@@ -1,0 +1,50 @@
+// ---------------------------
+// IMAGE SETS
+// ---------------------------
+
+
+.imageset-title {
+  width: 100%;
+  display: table;
+  border-top: 1px solid $borderColor;
+  &:first-child { border: 0; }
+  &_image {
+    width: 60%;
+    display: table-cell;
+    vertical-align: middle;
+    padding: $gapSize / 2 0;
+    a {
+      max-height: 80px;
+      display: block;
+      overflow: hidden;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  &_title {
+    width: 40%;
+    display: table-cell;
+    vertical-align: middle;
+    padding: $gapSize / 2 0;
+    padding-left: $gapSize;
+  }
+}
+
+.litebox-image {
+  .litebox_close {
+    display: none;
+  }
+  .litebox_container {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    img {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}

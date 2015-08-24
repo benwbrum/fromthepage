@@ -186,6 +186,25 @@ $.fn.customInputFile = function() {
   });
 };
 
+
+// Show big image
+$.fn.imageView = function() {
+  return this.each(function() {
+    var $element = $(this);
+    var content = $('<img>').attr('src', $element.attr('href'));
+    var litebox = new LiteBox({
+      content: content,
+      disposable: true,
+      cssclass: 'litebox-image'
+    });
+
+    $element.on('click', function(e) {
+      e.preventDefault();
+      litebox.open();
+    });
+  });
+};
+
 })(jQuery, window, document);
 
 
@@ -197,6 +216,7 @@ $(function() {
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
   $('[data-scrollfix]').scrollfix();
+  $('[data-imageview]').imageView();
 
   // Classname trigger
   $(document).on('click', '[data-toggle-class]', function() {
