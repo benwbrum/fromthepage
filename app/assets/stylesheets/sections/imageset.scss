@@ -118,3 +118,17 @@
     }
   }
 }
+
+.imageset-size {
+  table-layout: fixed;
+  .maincol, .sidecol {
+    width: 50%;
+    min-width: auto;
+  }
+  &_preview {
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    text-align: center;
+  }
+}
