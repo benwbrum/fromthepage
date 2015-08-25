@@ -3,6 +3,9 @@ class CollationController < ApplicationController
 
   before_filter :authorized?
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:select_target]
+
   def authorized?
     if user_signed_in? && current_user.owner
       logger.debug("testing params")
@@ -19,14 +22,11 @@ class CollationController < ApplicationController
 
   def select_target
     @right_set = @image_set
-    @left_sets = current_user.image_sets
-    @left_sets.delete(@right_set)
+    @left_sets = current_user.image_sets - [@right_set]
   end
 
   def select_target_process
-    redirect_to(:action=>'list',
-                :right_set_id => params[:right_set_id],
-                :left_set_id => params[:left_set_id])
+    ajax_redirect_to :action => 'list', :right_set_id => params[:right_set_id], :left_set_id => params[:left_set_id]
   end
 
   def list
@@ -35,9 +35,7 @@ class CollationController < ApplicationController
   end
 
   def swap
-    redirect_to(:action => 'list',
-                :left_set_id => params[:right_set_id],
-                :right_set_id => params[:left_set_id])
+    redirect_to :action => 'list', :left_set_id => params[:right_set_id], :right_set_id => params[:left_set_id]
   end
 
   def insert
@@ -52,25 +50,20 @@ class CollationController < ApplicationController
     end
     # this silently saves the new image
     insert_set.titled_images << image
-#    insert_set.save!
-#    logger.debug("After    save #{image.position}")
-#    logger.debug("Before insert #{image.position}")
+    # insert_set.save!
+    # logger.debug("After save #{image.position}")
+    # logger.debug("Before insert #{image.position}")
     # this updates all records in the DB but does not
     # reload them in memory -- at this point objects
     # in memory are stale
     image.insert_at(index)
-#    logger.debug("After  insert #{image.position}")
-#    image.save!
-#    insert_set.save!
-#    logger.debug("After    save #{image.position}")
+    # logger.debug("After insert #{image.position}")
+    # image.save!
+    # insert_set.save!
+    # logger.debug("After save #{image.position}")
     # now redirect
-    redirect_to(:action => 'list',
-                :left_set_id => params[:left_set_id],
-                :right_set_id => params[:right_set_id])
-
+    redirect_to :action => 'list', :left_set_id => params[:left_set_id], :right_set_id => params[:right_set_id]
   end
-
-
 
   def merge
     # load up the sets
@@ -115,6 +108,5 @@ class CollationController < ApplicationController
     new_set.save!
     redirect_to :controller => 'title', :action => 'list', :image_set_id => new_set.id
   end
-
 
 end
