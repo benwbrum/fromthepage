@@ -100,20 +100,21 @@ class TransformController < ApplicationController
     debug("begin orient #{Time.now}")
     # shrink the sample image even more
     orig = Magick::ImageList.new(filename)
-    quarter = 1.to_f / 2.to_f
-    base = orig.resize(quarter)
+    #quarter = 1.to_f / 2.to_f
+    #base = orig.resize(quarter)
     @img_files = Hash.new
 
     debug(@image_set.inspect)
     dirname = @image_set.path
     # loop through each orientation and produce samples
     [0, 90, 180, 270].each do |angle|
-      image = base.rotate(angle)
+      #image = base.rotate(angle)
+      image = orig.rotate(angle)
       filename = File.join(dirname, "#{angle}.jpg")
       image.write(filename)
       @img_files["#{angle}"] = filename
     end
-    debug("end   orient #{Time.now}")
+    debug("end orient #{Time.now}")
   end
 
   def orientation_process
@@ -201,6 +202,7 @@ class TransformController < ApplicationController
   #
   # Gathers numeric-specific information for the config object
   #############################################################################
+
   def number_format_form
     # TODO: fix title controller
     @image = config[:sample_image]
@@ -217,7 +219,6 @@ class TransformController < ApplicationController
   end
 
   def numeric_format_start_form
-
   end
 
   def numeric_format_start_process
@@ -225,11 +226,13 @@ class TransformController < ApplicationController
     redirect_to :action => 'partial_list_form', :image_set_id => @image_set.id
   end
 
+
   #############################################################################
   # Date Format Branch
   #
   # Gathers date-specific information for the config object
   #############################################################################
+
   def date_format_form
     @image = config[:sample_image]
   end
@@ -245,6 +248,7 @@ class TransformController < ApplicationController
       # re-render with an error message if it's not
       flash.now['error'] = "Your date format was invalid"
       render :action => 'date_format_form'
+      return
     end
     @image_set.title_format = date_format
     @image_set.save!

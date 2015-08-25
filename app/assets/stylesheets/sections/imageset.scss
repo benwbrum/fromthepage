@@ -91,3 +91,30 @@
     }
   }
 }
+
+.imageset-orientation {
+  margin: 0 auto;
+  display: table;
+  border-spacing: 2px;
+  &_row {
+    display: table-row;
+  }
+  a {
+    width: 50%;
+    text-align: center;
+    display: table-cell;
+    padding: $gapSize * 2;
+    vertical-align: middle;
+    background: rgba(#FFF, 0.2);
+    border: 1px solid rgba(#000, 0.1);
+    &:hover {
+      background: rgba(#FFF, 0.5);
+      border-color: rgba(#000, 0.15);
+      img { opacity: 0.75; }
+    }
+    img {
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+  }
+}
