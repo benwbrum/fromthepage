@@ -271,6 +271,14 @@ class TransformController < ApplicationController
   end
 
   def date_format_start_process
+    begin
+      Date.parse(params[:date_start])
+    rescue ArgumentError
+      errors.add(:base, "Invalid Date has been provided")
+      render :action => 'date_format_start_form'
+      return
+    end
+
     config[:date_start] = params[:date_start]
     # date all the titled images
     auto_title
