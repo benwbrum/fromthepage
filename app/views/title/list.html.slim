@@ -1,4 +1,8 @@
-h1 Page Titles
+.headline
+  h1.headline_title Page Titles
+  -if current_user.owner
+    .headline_aside
+      =link_to 'Back to Dashboard', { :controller => 'dashboard', :action => 'staging' }, class: 'button outline'
 
 .imageset-titles
   -@titled_images.each do |image|
