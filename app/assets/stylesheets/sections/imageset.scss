@@ -159,3 +159,13 @@
     font-size: $fontSizeSmall;
   }
 }
+
+.imageset-processing {
+  .headline {
+    margin-bottom: $gapSize / 2;
+  }
+  .progress {
+    font-size: 15px;
+    margin-bottom: $gapSize * 1.5;
+  }
+}

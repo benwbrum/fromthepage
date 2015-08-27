@@ -295,9 +295,15 @@ class TransformController < ApplicationController
 
   def process_meter
     @total_images = @image_set.titled_images.count
+
     @shrunk_images = @image_set.titled_images.count(:conditions => ['shrink_completed = ?', true])
     @rotated_images = @image_set.titled_images.count(:conditions => ['rotate_completed = ?', true])
     @cropped_images = @image_set.titled_images.count(:conditions => ['crop_completed = ?', true])
+
+    @shrunk_images_percent = @total_images == 0 ? 0 : (@shrunk_images.fdiv(@total_images) * 100).round
+    @rotated_images_percent = @total_images == 0 ? 0 : (@rotated_images.fdiv(@total_images) * 100).round
+    @cropped_images_percent = @total_images == 0 ? 0 : (@cropped_images.fdiv(@total_images) * 100).round
+
     @shrink_process_count = `ps -p #{@image_set.shrink_pid} h| wc -l`.chomp.to_i
     @rotate_process_count = `ps -p #{@image_set.rotate_pid} h| wc -l`.chomp.to_i
     @crop_process_count = `ps -p #{@image_set.crop_pid} h| wc -l`.chomp.to_i
