@@ -565,12 +565,12 @@ button, .button, .dropdown dd a {
 .progress {
   $color: #6C2;
   width: 100%;
-  height: 10px;
-  font-size: 0;
+  height: 1em;
+  font-size: 10px;
   text-align: left;
   overflow: hidden;
-  border-radius: 5px;
   position: relative;
+  border-radius: 0.5em;
   display: inline-block;
   background: rgba(#FFF, 0.8);
   &:after {
@@ -587,6 +587,7 @@ button, .button, .dropdown dd a {
   span {
     height: 100%;
     background: $color;
+    vertical-align: top;
     display: inline-block;
     &:nth-child(2) { background: adjust-hue(lighten($color, 10%), -25deg); }
   }
