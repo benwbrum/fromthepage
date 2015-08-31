@@ -1,55 +1,61 @@
 =render({ :partial => '/shared/article_tabs', :locals => { :selected => 2, :article_id => @article.id }})
 
--selected_version_date = @selected_version.created_on.strftime("%b %d, %Y %I:%M %p")
--selected_version_user = link_to(@selected_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @selected_version.user.id })
+-if @selected_version.blank?
+  .nodata
+    h4.nodata_title There are no versions to compare
+    p.nodata_text This subject hasn't been described, that's why we have no article versions to compare.
 
-p.diff-help Here you can see all subject revisions and compare the changes have been made in each revision. Left column shows the subject title and description in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
+-else
+  -selected_version_date = @selected_version.created_on.strftime("%b %d, %Y %I:%M %p")
+  -selected_version_user = link_to(@selected_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @selected_version.user.id })
 
-table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
-  tr
-    th: h5 =pluralize(@article.article_versions.size, 'revision')
-    th =="#{selected_version_user} at #{selected_version_date}"
-    th Revision changes
-  tr
-    td.diff-list
-      .scroll-container
-        -@article.article_versions.each do |version|
-          =link_to({ :action => 'show', :article_version_id => version.id }, class: ('selected' if version == @selected_version))
-            =time_tag(version.created_on)
-              =version.created_on.strftime("%b %d, %Y")
-            span =version.user.display_name
+  p.diff-help Here you can see all subject revisions and compare the changes have been made in each revision. Left column shows the subject title and description in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
 
-    td.diff-version
-      h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
-      div(data-diff-description="changed" data-empty="No description provided")
-        =@selected_version.source_text
+  table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
+    tr
+      th: h5 =pluralize(@article.article_versions.size, 'revision')
+      th =="#{selected_version_user} at #{selected_version_date}"
+      th Revision changes
+    tr
+      td.diff-list
+        .scroll-container
+          -@article.article_versions.each do |version|
+            =link_to({ :action => 'show', :article_version_id => version.id }, class: ('selected' if version == @selected_version))
+              =time_tag(version.created_on)
+                =version.created_on.strftime("%b %d, %Y")
+              span =version.user.display_name
 
-    td.diff-version
-      h4(data-diff-title="original" data-empty="Untitled") =(@previous_version.title rescue "")
-      div(data-diff-description="original" data-empty="No description provided")
-        =(@previous_version.source_text rescue "")
+      td.diff-version
+        h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
+        div(data-diff-description="changed" data-empty="No description provided")
+          =@selected_version.source_text
 
-=javascript_include_tag 'textdiff'
-javascript:
-  $(function() {
-    $('.diff-versions')
-      .prettyTextDiff({
-        changedContainer:  '[data-diff-title=changed]',
-        originalContainer: '[data-diff-title=original]',
-        diffContainer:     '[data-diff-title=original]'
-      })
-      .prettyTextDiff({
-        changedContainer:  '[data-diff-description=changed]',
-        originalContainer: '[data-diff-description=original]',
-        diffContainer:     '[data-diff-description=original]'
+      td.diff-version
+        h4(data-diff-title="original" data-empty="Untitled") =(@previous_version.title rescue "")
+        div(data-diff-description="original" data-empty="No description provided")
+          =(@previous_version.source_text rescue "")
+
+  =javascript_include_tag 'textdiff'
+  javascript:
+    $(function() {
+      $('.diff-versions')
+        .prettyTextDiff({
+          changedContainer:  '[data-diff-title=changed]',
+          originalContainer: '[data-diff-title=original]',
+          diffContainer:     '[data-diff-title=original]'
+        })
+        .prettyTextDiff({
+          changedContainer:  '[data-diff-description=changed]',
+          originalContainer: '[data-diff-description=original]',
+          diffContainer:     '[data-diff-description=original]'
+        });
+
+      // Awful workaround to make sure containers
+      // do not contain empty text nodes
+      $('[data-empty]').each(function() {
+        $element = $(this);
+        if(!$.trim($element.html())) {
+          $element.empty();
+        }
       });
-
-    // Awful workaround to make sure containers
-    // do not contain empty text nodes
-    $('[data-empty]').each(function() {
-      $element = $(this);
-      if(!$.trim($element.html())) {
-        $element.empty();
-      }
     });
-  });

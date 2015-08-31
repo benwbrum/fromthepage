@@ -4,15 +4,11 @@ class ArticleVersionController < ApplicationController
 
   def set_versions
     @selected_version = @article_version.present? ? @article_version : @article.article_versions.first
-    @previous_version = @selected_version.prev if @selected_version
+    @previous_version = @selected_version.prev if @selected_version.present?
   end
 
   def list
-    if @selected_version
-      render 'show'
-    else
-      render 'no_versions'
-    end
+    render 'show'
   end
 
 end
