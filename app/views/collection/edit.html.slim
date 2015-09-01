@@ -42,6 +42,15 @@
             small Include
 
   aside.sidecol
+    h3 Collection Image
+    p.fglight A picture to be used to illustrate the collection description.
+    -unless @collection.picture.blank?
+      =link_to(image_tag(@collection.picture_url(:thumb)), @collection.picture_url)
+    =form_for :collection, url: { action: :update, id: @collection.id }, html: { multipart: true} do |f|
+      =f.file_field :picture, value: @collection.picture
+      =f.button 'Upload', class: 'big'
+
+
     h3 Collection Privacy
     -if @collection.restricted
       p The collection can only be viewed by the owners listed below. You may make the collection publicly readable.
@@ -70,6 +79,7 @@
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
+
 
 
 javascript:

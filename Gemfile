@@ -25,7 +25,7 @@ gem 'devise'
 gem 'devise-encryptable'
 
 gem 'protected_attributes'
-
+gem 'carrierwave'
 
 group :assets do
   gem 'therubyracer'
