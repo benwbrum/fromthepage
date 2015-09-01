@@ -128,7 +128,7 @@
     insert: function(content) {
       this.$content.html(content);
       this.$container.addClass('visible');
-      this.$content.find(':text:not(:hidden):first').focus();
+      this.$content.find(':text:not(:hidden,[readonly],[disabled]):first').focus();
 
       // Close litebox if button[type=reset] pressed
       this.$content.on('click', 'form :reset', $.proxy(this.close, this));
