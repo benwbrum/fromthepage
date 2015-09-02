@@ -170,6 +170,32 @@
   }
 }
 
+.omeka-sites {
+  padding: 0;
+  list-style: none;
+  margin: $gapSize 0;
+}
+
+.omeka-site {
+  padding: 0;
+  position: relative;
+  margin: $gapSize / 2 0;
+  &_title {
+    margin: 0;
+    font-size: 18px;
+  }
+  &_url {
+    color: $bodyFgLight;
+  }
+  .dropdown {
+    top: 50%;
+    right: 0;
+    margin-top: -11px;
+    position: absolute;
+    padding-right: 6px;
+  }
+}
+
 
 // ---------------------------
 // EDITOR SECTION
