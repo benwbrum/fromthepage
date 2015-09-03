@@ -1,5 +1,8 @@
 class OmekaItemsController < ApplicationController
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :update]
+
   # GET /omeka_items
   # GET /omeka_items.json
   def index
@@ -49,10 +52,13 @@ class OmekaItemsController < ApplicationController
 
     respond_to do |format|
       if @omeka_item.save
-        format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully imported' }
+        format.html {
+          flash[:notice] = "Omeka item was successfully imported"
+          redirect_to @omeka_item
+        }
         format.json { render json: @omeka_item, status: :created, location: @omeka_item }
       else
-        format.html { render action: "new" }
+        format.html { render action: 'new' }
         format.json { render json: @omeka_item.errors, status: :unprocessable_entity }
       end
     end
@@ -63,7 +69,10 @@ class OmekaItemsController < ApplicationController
     @omeka_item.import
 
     respond_to do |format|
-      format.html { redirect_to :controller => 'work', :action => 'edit', :work_id => @omeka_item.work.id, notice: 'Omeka item was successfully imported' }
+      format.html {
+        flash[:notice] = "Omeka item was successfully published"
+        redirect_to :controller => 'work', :action => 'edit', :work_id => @omeka_item.work.id
+      }
     end
   end
 
@@ -74,10 +83,13 @@ class OmekaItemsController < ApplicationController
 
     respond_to do |format|
       if @omeka_item.update_attributes(params[:omeka_item])
-        format.html { redirect_to @omeka_item, notice: 'Omeka item was successfully updated' }
+        format.html {
+          flash[:notice] = "Omeka item was successfully updated"
+          ajax_redirect_to request.env['HTTP_REFERER'] #:back won't work here
+        }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        format.html { render action: 'edit' }
         format.json { render json: @omeka_item.errors, status: :unprocessable_entity }
       end
     end
@@ -90,7 +102,10 @@ class OmekaItemsController < ApplicationController
     @omeka_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to omeka_items_url }
+      format.html {
+        flash[:notice] = "Omeka item was successfully deleted"
+        redirect_to :back
+      }
       format.json { head :no_content }
     end
   end
