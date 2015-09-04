@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901160635) do
+ActiveRecord::Schema.define(version: 20150902002940) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -131,6 +131,17 @@ ActiveRecord::Schema.define(version: 20150901160635) do
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
+
+  create_table "document_uploads", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "collection_id"
+    t.string   "file"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
+  add_index "document_uploads", ["user_id"], name: "index_document_uploads_on_user_id", using: :btree
 
   create_table "exports", force: true do |t|
     t.integer  "user_id"

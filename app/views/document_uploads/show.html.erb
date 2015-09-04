@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @document_upload.user %>
+</p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @document_upload.collection %>
+</p>
+
+<p>
+  <strong>File:</strong>
+  <%= @document_upload.file %>
+</p>
+
+<%= link_to 'Edit', edit_document_upload_path(@document_upload) %> |
+<%= link_to 'Back', document_uploads_path %>
