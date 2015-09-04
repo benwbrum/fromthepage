@@ -25,6 +25,7 @@ class DocumentUploadsController < ApplicationController
     @document_upload.user = current_user
 
     @document_upload.save
+    SystemMailer.new_upload(@document_upload).deliver!
     respond_with(@document_upload)
   end
 
