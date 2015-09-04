@@ -14,13 +14,27 @@ class OmekaSitesController < ApplicationController
     end
   end
 
+  # GET /omeka_sites/items
+  def items
+    @omeka_site = OmekaSite.find(params[:omeka_site_id])
+
+    if params[:collection_id].present?
+      @omeka_items = @omeka_site.client.get_collection(params[:collection_id]).items
+    else
+      @omeka_items = @omeka_site.client.get_all_items().reject { |i| i.data.collection != nil }
+    end
+
+    @imported_items = OmekaItem.where(omeka_collection_id: params[:collection_id]).map { |item| item.omeka_id }
+
+    render partial: 'items.html', locals: { omeka_items: @omeka_items, imported_items: @imported_items }
+  end
+
   # GET /omeka_sites/1
   # GET /omeka_sites/1.json
   def show
     @omeka_site = OmekaSite.find(params[:id])
     @omeka_collections = @omeka_site.client.get_all_collections()
-    omeka_items = @omeka_site.client.get_all_items()
-    @omeka_collectionless_items = omeka_items.reject { |i| i.data.collection != nil }
+    @omeka_collectionless_items = @omeka_site.client.get_all_items().reject { |i| i.data.collection != nil }
 
     respond_to do |format|
       format.html # show.html.erb

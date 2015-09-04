@@ -45,3 +45,20 @@
     }
   }
 }
+
+.omeka-collection {
+  padding: $gapSize * 1.5 0;
+  border-top: 1px solid $borderColor;
+  &:first-child {
+    border: 0;
+    padding-top: 0;
+  }
+}
+
+.omeka-collection-items {
+  margin-bottom: -($gapSize * 1.5 + 1px);
+}
+
+.omeka-collection-item {
+  &:hover td { background: rgba(#000, 0.03); }
+}
