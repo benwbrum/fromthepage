@@ -54,8 +54,8 @@
       // Delete note
       $(document).on('ajax:complete', '[data-note-delete]', function(e, xhr) {
         if(xhr.status === 200 || xhr.status === 204) {
-          var $container = $(this).closest('.user-bubble')
-          $container.fadeOut(function() { $(this).remove(); })
+          var $container = $(this).closest('.user-bubble');
+          $container.fadeOut(function() { $(this).remove(); });
         }
       });
     });

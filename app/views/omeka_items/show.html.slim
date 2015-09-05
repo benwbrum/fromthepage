@@ -1,0 +1,41 @@
+h1 ="Omeka Item: #{@omeka_item.title}"
+.columns.omeka-item
+  article.maincol
+    .headline
+      h4.headline_title =pluralize(@omeka_item.client_files.size, 'Item File')
+      .headline_aside =link_to 'Publish to Editors', { :action => :import, :id => @omeka_item.id }, class: 'button outline'
+    .omeka-item-files
+      -@omeka_item.client_files.each do |file|
+        .omeka-item-file
+          .omeka-item-file_image
+            =link_to image_tag(file.data.file_urls.thumbnail), file.data.file_urls.fullsize, 'data-imageview': ''
+          .omeka-item-file_description
+            ul.omeka-item-info
+              li(data-prefix="File ID:") =file.data.id
+              li(data-prefix="MIME Type:") =file.data.mime_type
+              li(data-prefix="Filename:") =file.data.original_filename
+              li(data-prefix="File Size:") =number_to_human_size(file.data.size)
+
+  aside.sidecol
+    .headline
+      h4.headline_title Item Details
+      .headline_aside =link_to 'Edit Details', edit_omeka_item_path(@omeka_item), :data => { litebox: { hash: 'edit-omeka-item' } }, class: 'button outline'
+    ul.omeka-item-info
+      -if @omeka_item.title.present?
+        li(data-prefix="Title:") =@omeka_item.title
+      -if @omeka_item.subject.present?
+        li(data-prefix="Subject:") =@omeka_item.subject
+      -if @omeka_item.description.present?
+        li(data-prefix="Description:") =@omeka_item.description
+      -if @omeka_item.rights.present?
+        li(data-prefix="Rights:") =@omeka_item.rights
+      -if @omeka_item.creator.present?
+        li(data-prefix="Creator:") =@omeka_item.creator
+      -if @omeka_item.format.present?
+        li(data-prefix="Format:") =@omeka_item.format
+      -if @omeka_item.coverage.present?
+        li(data-prefix="Coverage:") =@omeka_item.coverage
+      li(data-prefix="Source:") =link_to(@omeka_item.omeka_site.title, @omeka_item.omeka_site)
+      li(data-prefix="API URL:") =@omeka_item.omeka_url
+      li(data-prefix="Collection ID:") =@omeka_item.omeka_collection_id
+      li(data-prefix="Item ID:") =@omeka_item.omeka_id

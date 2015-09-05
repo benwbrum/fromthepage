@@ -114,6 +114,7 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
       border-color: rgba(#000, 0.25);
     }
     &:active, &.pressed { @include button-state(active); }
+    &[disabled] { box-shadow: none; }
   }
 }
 

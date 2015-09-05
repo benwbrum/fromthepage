@@ -1,0 +1,25 @@
+table.datagrid.omeka-collection-items
+  tr
+    th.w100 Item Title
+    th Item Type
+    th Item Added
+    th Files
+    th Action
+  -@omeka_items.each do |item|
+    tr.omeka-collection-item
+      td
+        big.omeka-collection-item_title =item.dublin_core.title
+        -if item.dublin_core.description.present?
+          small.omeka-collection-item_description =item.dublin_core.description
+      td.nowrap =item.data.item_type.name if item.data.item_type.present?
+      td.nowrap.fglight =item.data.added.to_date.strftime('%b %d, %Y')
+      td.nowrap =pluralize(item.data.files.count, 'file')
+      td.nowrap
+        -if @imported_items.include?(item.data.id)
+          .fglight
+            =svg_symbol '#icon-check-sign', class: 'icon'
+            span Saved
+        -else
+          =link_to(new_omeka_item_path(omeka_site_id: @omeka_site.id, client_item_id: item.data.id))
+            =svg_symbol '#icon-plus-sign', class: 'icon'
+            span Import

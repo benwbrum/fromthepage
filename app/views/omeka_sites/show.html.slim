@@ -1,0 +1,40 @@
+h1 ="Browse #{@omeka_site.title}"
+.omeka-collections
+  -@omeka_collections.each do |collection|
+    -if collection.data.items.count > 0
+      .omeka-collection
+        .headline
+          h3.headline_title =collection.dublin_core.title
+          h5.headline_aside =pluralize(collection.data.items.count, 'item')
+        -if collection.dublin_core.description.present?
+          p.fglight =collection.dublin_core.description
+
+        =link_to 'Click to load items', { action: 'items', omeka_site_id: @omeka_site.id, collection_id: collection.data.id }, remote: true, data: { 'omeka-items': '', 'disable-with': 'Loading items...' }, class: 'button outline'
+
+  -if @omeka_collectionless_items.present?
+    .omeka-collection
+      .headline
+        h3.headline_title Uncategorized Items
+        h5.headline_aside =pluralize(@omeka_collectionless_items.size, 'item')
+
+      =link_to 'Click to load items', { action: 'items', omeka_site_id: @omeka_site.id }, remote: true, data: { 'omeka-items': '', 'disable-with': 'Loading items...' }, class: 'button outline'
+
+
+javascript:
+  $(function() {
+    $(document).on('ajax:before', '[data-omeka-items]', function(e, xhr) {
+      $(this).attr('disabled', true);
+    });
+
+    $(document).on('ajax:complete', '[data-omeka-items]', function(e, xhr) {
+      var $element = $(this).removeAttr('disabled');
+
+      if(xhr.status === 200 || xhr.status === 204) {
+        var content = xhr.responseText;
+        $element.after(content).hide();
+      } else {
+        var message = xhr.responseText.join('. ');
+        console.log('Error: ' + message);
+      }
+    });
+  })
