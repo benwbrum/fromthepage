@@ -1,5 +1,7 @@
 Fromthepage::Application.routes.draw do
 
+  resources :document_uploads
+
   devise_for :users
 
   resources :omeka_items
