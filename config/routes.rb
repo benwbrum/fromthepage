@@ -1,16 +1,16 @@
 Fromthepage::Application.routes.draw do
 
-  resources :document_uploads
+  root :to => 'static#splash'
 
   devise_for :users
 
-  resources :omeka_items
+  get   '/omeka_sites/items' => 'omeka_sites#items'
+  resources :document_uploads
 
   resources :omeka_sites
+  resources :omeka_items
 
   resources :notes
-
-  root :to => 'static#splash'
 
   get   '/admin' => 'admin#index'
 

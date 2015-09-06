@@ -1,0 +1,26 @@
+=form_for(@omeka_item) do |f|
+  =validation_summary @omeka_item.errors
+  table.form
+    tr.big
+      th =f.label :title
+      td.w100 =f.text_field :title
+    tr
+      th =f.label :subject
+      td =f.text_field :subject
+    tr
+      th =f.label :description
+      td =f.text_field :description
+    tr
+      th =f.label :rights
+      td =f.text_field :rights
+    tr
+      th =f.label :creator
+      td =f.text_field :creator
+    tr
+      th =f.label :format
+      td =f.text_field :format
+    tr
+      th =f.label :coverage
+      td =f.text_field :coverage
+  .toolbar
+    .toolbar_group.aright =f.button
