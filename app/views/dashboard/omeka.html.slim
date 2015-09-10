@@ -4,8 +4,6 @@
   article.maincol
     .headline
       h3.headline_title Imported Omeka Items
-      .headline_aside =link_to 'Quick Import', new_omeka_item_path, class: 'button outline'
-
     -if @omeka_items.blank?
       .nodata
         h4.nodata_title No Omeka Items
