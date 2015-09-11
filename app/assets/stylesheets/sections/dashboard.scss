@@ -3,8 +3,11 @@
 // ---------------------------
 
 .collection {
+  width: 100%;
   margin: 0 0 1em 0;
   padding: 0 0 1em 0;
+  display: inline-block;
+  box-sizing: border-box;
   transition: border-color 0.3s;
   border-bottom: 1px dotted $borderColor;
   &:last-child {
@@ -13,6 +16,17 @@
   }
   &.stats-visible { border-color: transparent; }
   &.stats-visible &_stats-bubble { opacity: 1; }
+  &_image {
+    float: left;
+    padding: 5px;
+    background: #FFF;
+    margin-right: $gapSize;
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.06);
+  }
+  &_details {
+    overflow: hidden;
+  }
   &_title {
     margin: 0;
     a {
