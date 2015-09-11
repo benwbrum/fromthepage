@@ -169,7 +169,7 @@ $.fn.categoriesSelect = function() {
 
 
 // Custom input file
-$.fn.customInputFile = function() {
+$.fn.inputFile = function() {
   return this.each(function() {
     var $container = $(this);
     var $button = $('button', $container);
@@ -211,7 +211,7 @@ $.fn.imageView = function() {
 $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
-  $('.input-file').customInputFile();
+  $('.input-file').inputFile();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
