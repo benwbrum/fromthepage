@@ -4,13 +4,8 @@ class DocumentUpload < ActiveRecord::Base
 
   attr_accessible :file, :collection_id
 
-  mount_uploader :file, DocumentUploader
-  validate :check_file
+  validates :collection, :file, :presence => true
 
-  def check_file
-    if file.blank?
-      errors.add(:file, " is not defined, you should select a file to upload")
-    end
-  end
+  mount_uploader :file, DocumentUploader
 
 end
