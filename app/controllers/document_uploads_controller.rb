@@ -18,20 +18,20 @@ class DocumentUploadsController < ApplicationController
     respond_with(@document_upload)
   end
 
-  def edit
-  end
-
   def create
     @document_upload = DocumentUpload.new(document_upload_params)
     @document_upload.user = current_user
 
     if @document_upload.save
-      flash[:notice] = "Your document has been uploaded"
+      flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
       SystemMailer.new_upload(@document_upload).deliver!
-      respond_with(@document_upload)
+      redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
     else
       render action: 'new'
     end
+  end
+
+  def edit
   end
 
   def update
