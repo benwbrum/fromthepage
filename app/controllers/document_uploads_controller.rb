@@ -1,4 +1,5 @@
 class DocumentUploadsController < ApplicationController
+
   before_action :set_document_upload, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -24,9 +25,13 @@ class DocumentUploadsController < ApplicationController
     @document_upload = DocumentUpload.new(document_upload_params)
     @document_upload.user = current_user
 
-    @document_upload.save
-    SystemMailer.new_upload(@document_upload).deliver!
-    respond_with(@document_upload)
+    if @document_upload.save
+      flash[:notice] = "Your document has been uploaded"
+      SystemMailer.new_upload(@document_upload).deliver!
+      respond_with(@document_upload)
+    else
+      render action: 'new'
+    end
   end
 
   def update
@@ -39,12 +44,13 @@ class DocumentUploadsController < ApplicationController
     respond_with(@document_upload)
   end
 
-  private
-    def set_document_upload
-      @document_upload = DocumentUpload.find(params[:id])
-    end
+private
+  def set_document_upload
+    @document_upload = DocumentUpload.find(params[:id])
+  end
 
-    def document_upload_params
-      params.require(:document_upload).permit(:user_id, :collection_id, :file)
-    end
+  def document_upload_params
+    params.require(:document_upload).permit(:user_id, :collection_id, :file)
+  end
+
 end
