@@ -1,12 +1,18 @@
 New Upload on FromThePage
+A user has just uploaded a new document. You should probably check on it to make sure it worked.
 
-A user has just uploaded a new document.  You should probably check on it to make sure it worked.
-
+Document
 ID: <%= @document_upload.id %>
 File: <%= @document_upload.file %>
 
-User: <%= @document_upload.user.login %>
-User Email: <%= @document_upload.user.email %>
+User
+Login: <%= @document_upload.user.login %>
+Email: <%= @document_upload.user.email %>
 
-Target Collection Title: <%= @document_upload.collection.title %>
-Target Collection ID: <%= @document_upload.collection.id %>
+Target Collection
+<% if @document_upload.collection.present? %>
+ID: <%= @document_upload.collection.id %>
+Title: <%= @document_upload.collection.title %>
+<% else %>
+User hasn't defined a collection.
+<% end %>

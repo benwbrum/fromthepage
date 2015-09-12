@@ -1,0 +1,32 @@
+h1 New Upload on FromThePage
+p A user has just uploaded a new document. You should probably check on it to make sure it worked.
+
+h3(style="margin-bottom:0") Document
+table(border="0")
+  tr
+    td ID:
+    td =@document_upload.id
+  tr
+    td File:
+    td =@document_upload.file
+
+h3(style="margin-bottom:0") User
+table(border="0")
+  tr
+    td Login:
+    td =@document_upload.user.login
+  tr
+    td Email:
+    td =@document_upload.user.email
+
+h3(style="margin-bottom:0") Target Collection
+-if @document_upload.collection.present?
+  table(border="0")
+    tr
+      td ID:
+      td =@document_upload.collection.id
+    tr
+      td Title:
+      td =@document_upload.collection.title
+-else
+  p User hasn't defined a collection.
