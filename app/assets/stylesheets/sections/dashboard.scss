@@ -144,6 +144,11 @@
     display: inline-block;
   }
   .icon:only-child { vertical-align: middle; }
+  .prefix {
+    color: $bodyFgFaded;
+    margin-right: 0.3em;
+    display: inline-block;
+  }
 }
 
 

@@ -103,4 +103,15 @@ class AdminController < ApplicationController
     @prod_tail = `tail -#{@lines} #{production_logfile}`
   end
 
+  def uploads
+    @document_uploads = DocumentUpload.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def delete_upload
+    @document_upload = DocumentUpload.find(params[:id])
+    @document_upload.destroy
+    flash[:notice] = "Uploaded document has been deleted"
+    redirect_to :action => 'uploads'
+  end
+
 end
