@@ -4,7 +4,7 @@ class DocumentUpload < ActiveRecord::Base
 
   attr_accessible :file, :collection_id
 
-  validates :collection, :file, :presence => true
+  validates :collection_id, :file, :presence => true
 
   mount_uploader :file, DocumentUploader
 
