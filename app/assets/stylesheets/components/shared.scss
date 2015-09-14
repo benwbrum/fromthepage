@@ -702,6 +702,10 @@ button, .button, .dropdown dd a {
     opacity: 0;
     outline: none;
     position: absolute;
+    &.invalid + input[type=text] {
+      color: $inputInvalidColor;
+      border-color: rgba($inputInvalidColor, 0.5);
+    }
   }
 }
 
