@@ -54,8 +54,9 @@ module AbstractXmlHelper
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
-    my_display_html.gsub!("</p>", "</p>\n")
-    my_display_html.gsub!("<br/>","\n<br/>")
+    my_display_html.gsub!("<br/></p>", "</p>")
+    my_display_html.gsub!("</p>", "</p>\n\n")
+    my_display_html.gsub!("<br/>","<br/>\n")
 
     return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
   end
