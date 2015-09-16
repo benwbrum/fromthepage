@@ -57,6 +57,8 @@
       =="There are no subject categories in the collection.<br>"
       =="#{add_category} you'll use to group subjects." if user_signed_in? && current_user.like_owner?(@collection)
 
+=render({ :partial => '/shared/collection_footer' })
+
 javascript:
   $(function() {
     $(window).on('hashchange', function() {

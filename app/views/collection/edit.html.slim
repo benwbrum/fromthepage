@@ -82,6 +82,8 @@
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
 
+=render({ :partial => '/shared/collection_footer' })
+
 javascript:
   $(function() {
     $('.user-select-form select').select2({

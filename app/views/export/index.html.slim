@@ -34,6 +34,8 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
 
+=render({ :partial => '/shared/collection_footer' })
+
 javascript:
   // Remove 'page_busy' spinner once download finished
   var downloadCheckTimer = window.setInterval(function() {
