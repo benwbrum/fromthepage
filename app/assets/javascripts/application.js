@@ -215,7 +215,6 @@ $(function() {
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
-  $('[data-scrollfix]').scrollfix();
   $('[data-imageview]').imageView();
 
   // Classname trigger
