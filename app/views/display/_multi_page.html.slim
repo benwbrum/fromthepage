@@ -18,15 +18,15 @@
         .work-page
           .work-page_thumbnail
             -if page.ia_leaf
-              =link_to(image_tag(page.ia_leaf.thumb_url), { :action => 'display_page', :page_id => page.id })
+              =link_to image_tag(page.ia_leaf.thumb_url), { :action => 'display_page', :page_id => page.id }
             -elsif page.omeka_file
-              =link_to(image_tag(page.omeka_file.thumbnail_url), { :action => 'display_page', :page_id => page.id })
+              =link_to image_tag(page.omeka_file.thumbnail_url), { :action => 'display_page', :page_id => page.id }
             -else
-              =link_to(image_tag(file_to_url(page.thumbnail_image)), { :action => 'display_page', :page_id => page.id })
+              =link_to image_tag(file_to_url(page.thumbnail_image)), { :action => 'display_page', :page_id => page.id }
 
           .work-page_content
             -if page.work.pages_are_meaningful
-              h4.work-page_title =page.title
+              h4.work-page_title =link_to page.title, { :action => 'display_page', :page_id => page.id }
 
             .work-page_text
               -transcription = xml_to_html(page.xml_text, false)
