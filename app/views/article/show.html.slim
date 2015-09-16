@@ -55,12 +55,14 @@
     =render :partial => 'article_links'
 
 javascript:
-  $('[data-graph-category]').select2({
-    placeholder: 'Select categories...',
-    templateResult: function(category) {
-      if(!category.id) { return category.text; }
-      var level = $(category.element).data('level');
-      var $category = $('<div>').css('margin-left', level * 15).text(category.text);
-      return $category;
-    }
+  $(function() {
+    $('[data-graph-category]').select2({
+      placeholder: 'Select categories...',
+      templateResult: function(category) {
+        if(!category.id) { return category.text; }
+        var level = $(category.element).data('level');
+        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
+        return $category;
+      }
+    });
   });
