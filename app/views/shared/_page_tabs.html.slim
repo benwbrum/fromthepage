@@ -43,6 +43,12 @@
     },
   }]
 
+-description = xml_to_html(@page.xml_text)
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-tab_title = ([3,6].include? selected) ? "#{selected_tab.downcase} page" : "page #{selected_tab.downcase}"
+-page_title = @collection.present? ? "#{@page.title} (#{@collection.title}, #{@work.title})" : "#{@page.title} (#{@work.title})"
+-content_for :page_title, selected == 1 ? "#{page_title}" : "#{selected_tab} - #{page_title}"
+-content_for :meta_description, "#{page_title} - #{tab_title}. #{strip_tags(description).truncate(150, separator: ' ')}"
 
 .headline
   h1.headline_title =@page.title

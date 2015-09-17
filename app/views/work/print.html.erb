@@ -1,6 +1,6 @@
 <%= render({ :partial => '/shared/work_tabs', :locals => { :selected => 5, :work_id => @work.id }}) %>
 
-<%= form_tag({ :controller => 'work', :action => 'make_pdf.pdf'}) do %>
+<%= form_tag({ :controller => 'print', :action => 'make_pdf.pdf'}) do %>
   <%= hidden_field_tag('work_id', @work.id ) %>
 
   <%= field_set_tag 'Footnotes' do %>

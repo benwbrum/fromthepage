@@ -1,5 +1,11 @@
-h1 Activity Stream
+-content_for :page_title
+  ="Activity Stream"
+  -if @collection
+    =" - #{@collection.title}"
+  -if @user
+    =" - #{@user.display_name}"
 
+h1 Activity Stream
 -if @collection
   h3 ="Collection: #{@collection.title}"
 -if @user

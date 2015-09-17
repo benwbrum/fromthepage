@@ -80,4 +80,14 @@ module ApplicationHelper
     end
   end
 
+  def page_title(title=nil)
+    base_title = 'FromThePage'
+
+    if title.blank?
+      base_title
+    else
+      current_page?('/') ? title : "#{title.squish} | #{base_title}"
+    end
+  end
+
 end

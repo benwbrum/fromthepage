@@ -1,3 +1,5 @@
+-content_for :page_title, "Browse #{@omeka_site.title}"
+
 h1 ="Browse #{@omeka_site.title}"
 .omeka-collections
   -@omeka_collections.each do |collection|

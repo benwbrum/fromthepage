@@ -28,7 +28,7 @@
   },
 }]
 
--if session[:demo_mode]
+-if false
   -tabs += [{\
     :name => 'Print',
     :selected => 5,
@@ -64,6 +64,11 @@
   },
 }]
 
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-tab_title = ([1,3,5].include? selected) ? "#{selected_tab.downcase} work" : "work #{selected_tab.downcase}"
+-work_title = @collection.present? ? "#{@work.title} (#{@collection.title})" : @work.title
+-content_for :page_title, selected == 1 ? "#{work_title}" : "#{selected_tab} - #{work_title}"
+-content_for :meta_description, "#{work_title} - #{tab_title}. #{strip_tags(@work.description)}"
 
 h1 =@work.title
 .tabs

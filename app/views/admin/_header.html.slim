@@ -36,6 +36,9 @@
   },
 }]
 
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, "#{selected_tab} - Administration"
+
 h1 Administration
 .tabs
   -for tab in tabs
