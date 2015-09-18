@@ -15,11 +15,12 @@ html
     meta(name="copyright" content="(c) #{Time.now.year} FromThePage.com")
     meta(name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=")
     =csrf_meta_tags
-
-    link(href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round" rel="stylesheet")
-    =="#{stylesheet_link_tag 'application'}\n"
-    =="#{favicon_link_tag 'favicon.ico'}\n"
-    =javascript_include_tag 'application'
+    ="\n"
+    =favicon_link_tag 'favicon.ico'
+    ="\n"
+    =stylesheet_link_tag "//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
+    ="\n"
+    =stylesheet_link_tag 'application'
 
 body
   -flash.each do |type, message|
@@ -77,6 +78,9 @@ body
       =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
   .page-busy-overlay
+
+  =javascript_include_tag 'application'
+  =yield :javascript
 
   javascript:
     var _gaq = _gaq || [];

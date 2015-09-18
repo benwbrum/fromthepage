@@ -54,15 +54,16 @@
     br
     =render :partial => 'article_links'
 
-javascript:
-  $(function() {
-    $('[data-graph-category]').select2({
-      placeholder: 'Select categories...',
-      templateResult: function(category) {
-        if(!category.id) { return category.text; }
-        var level = $(category.element).data('level');
-        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
-        return $category;
-      }
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('[data-graph-category]').select2({
+        placeholder: 'Select categories...',
+        templateResult: function(category) {
+          if(!category.id) { return category.text; }
+          var level = $(category.element).data('level');
+          var $category = $('<div>').css('margin-left', level * 15).text(category.text);
+          return $category;
+        }
+      });
     });
-  });

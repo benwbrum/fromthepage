@@ -84,17 +84,18 @@
 
 =render({ :partial => '/shared/collection_footer' })
 
-javascript:
-  $(function() {
-    $('.user-select-form select').select2({
-      placeholder: 'Add new owner...',
-    }).on('select2:select', function() {
-      $(this).siblings(':submit').prop('disabled', false);
-    }).on('select2:unselect', function() {
-      $(this).siblings(':submit').prop('disabled', true);
-    });
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('.user-select-form select').select2({
+        placeholder: 'Add new owner...',
+      }).on('select2:select', function() {
+        $(this).siblings(':submit').prop('disabled', false);
+      }).on('select2:unselect', function() {
+        $(this).siblings(':submit').prop('disabled', true);
+      });
 
-    $('.image-form :file').on('change', function() {
-      $(this).closest('form').submit();
+      $('.image-form :file').on('change', function() {
+        $(this).closest('form').submit();
+      });
     });
-  });

@@ -103,7 +103,8 @@ section.spotlight
     p.big Check out the new features and learn how FromThePage can help to transcribe handwritten documents online.
     =link_to 'Learn more about FromThePage 2', { :controller => 'static', :action => 'about', :anchor => 'fromthepage2' }, class: 'button'
 
-  javascript:
-    $(function() {
-      new LiteBox({ content: '#welcome-message' }).open();
-    });
+  -content_for :javascript
+    javascript:
+      $(function() {
+        new LiteBox({ content: '#welcome-message' }).open();
+      });

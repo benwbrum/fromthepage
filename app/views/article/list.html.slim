@@ -59,23 +59,18 @@
 
 =render({ :partial => '/shared/collection_footer' })
 
-javascript:
-  $(function() {
-    $(window).on('hashchange', function() {
-      var selected = window.location.hash || $('.tree-item:first').attr('href');
-      var $tree_item = $('.tree-item[href="'+selected+'"]');
+-content_for :javascript
+  javascript:
+    $(function() {
+      $(window).on('hashchange', function() {
+        var selected = window.location.hash || $('.tree-item:first').attr('href');
+        var $tree_item = $('.tree-item[href="'+selected+'"]');
 
-      if($tree_item.length !== 0) {
-        $tree_item.parentsUntil('.category-tree', 'li').addClass('expanded');
-        $('.tree-item.selected').removeClass('selected');
-        $tree_item.addClass('selected');
-        $(selected).show().siblings().hide();
-      }
-    }).trigger('hashchange');
-
-    $('.tree-bullet').on('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      $(this).closest('li').toggleClass('expanded');
+        if($tree_item.length !== 0) {
+          $tree_item.parentsUntil('.category-tree', 'li').addClass('expanded');
+          $('.tree-item.selected').removeClass('selected');
+          $tree_item.addClass('selected');
+          $(selected).show().siblings().hide();
+        }
+      }).trigger('hashchange');
     });
-  });

@@ -250,4 +250,11 @@ $(function() {
 
   // Manage subject categories
   $('[data-assign-categories]').categoriesSelect();
+
+  // Category tree expand/collapse
+  $('.tree-bullet').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $(this).closest('li').toggleClass('expanded');
+  });
 });

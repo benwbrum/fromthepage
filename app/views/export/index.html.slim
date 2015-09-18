@@ -3,7 +3,7 @@
 h2.nomargin Export Subject Index
 p.big
   span.fright(style="margin-left: 30px")
-    =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button')
+    =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
       =svg_symbol '#icon-export', class: 'icon'
       span Export Subjects as CSV
   span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
@@ -36,12 +36,20 @@ table.datagrid
 
 =render({ :partial => '/shared/collection_footer' })
 
-javascript:
-  // Remove 'page_busy' spinner once download finished
-  var downloadCheckTimer = window.setInterval(function() {
-    var cookie = Cookies.get('download_finished');
-    if(cookie === 'true') {
-      $('html').removeClass('page-busy');
-      window.clearInterval(downloadCheckTimer);
-    }
-  }, 1000);
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Remove 'page_busy' spinner once CSV download finished
+      // Cookie should be set to 'true' in the controller method
+      $('#btnCsvExport').on('click', function() {
+        Cookies.remove('download_finished');
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          console.log(cookie);
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });
