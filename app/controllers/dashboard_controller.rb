@@ -54,11 +54,13 @@ class DashboardController < ApplicationController
     if @document_upload.save
       flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
       SystemMailer.new_upload(@document_upload).deliver!
+      @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
     else
       render action: 'upload'
     end
   end
+  
 
   # Editor Dashboard - watchlist
   def watchlist

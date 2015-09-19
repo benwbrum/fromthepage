@@ -6,9 +6,10 @@ class UserMailer < ActionMailer::Base
   #
   #   en.user_mailer.upload_finished.subject
   #
-  def upload_finished
-    @greeting = "Hi"
+  def upload_finished(document_upload)
+    @document_upload = document_upload
+    binding.pry
 
-    mail to: "to@example.org"
+    mail to: @document_upload.user.email
   end
 end

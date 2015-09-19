@@ -1,3 +1,6 @@
-UserMailer#upload_finished
+It's ready!
 
-<%= @greeting %>, find me in app/views/user_mailer/upload_finished.text.erb
+Your upload has been processed and is ready at this link:
+  <%= url_for({ :action => 'show', 
+  			  	:controller => 'collection', 
+  			  	:collection_id => @document_upload.collection.id}) %>

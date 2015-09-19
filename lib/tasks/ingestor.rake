@@ -25,7 +25,17 @@ namespace :fromthepage do
     
     print "found document_upload for \n\tuser=#{document_upload.user.login}, \n\ttarget collection=#{document_upload.collection.title}, \n\tfile=#{document_upload.file}\n"
     
+    document_upload.status = DocumentUpload::Status::PROCESSING
+    document_upload.save
+    
     process_batch(document_upload, File.dirname(document_upload.file.path), document_upload.id.to_s)
+
+    document_upload.status = DocumentUpload::Status::FINISHED
+    document_upload.save
+    
+    SystemMailer.upload_succeeded(document_upload).deliver!
+    UserMailer.upload_finished(document_upload).deliver!
+
   end
 
 

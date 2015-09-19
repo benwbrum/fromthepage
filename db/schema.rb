@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150902002940) do
+ActiveRecord::Schema.define(version: 20150916224511) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20150902002940) do
     t.string   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",        default: "new"
   end
 
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree

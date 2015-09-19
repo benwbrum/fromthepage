@@ -1,5 +1,8 @@
-<h1>UserMailer#upload_finished</h1>
+<h1>It's ready!</h1>
 
 <p>
-  <%= @greeting %>, find me in app/views/user_mailer/upload_finished.html.erb
+  Your upload has been processed and is ready at   <%= link_to(@document_upload.collection.title, 
+  			  { :action => 'show', 
+  			  	:controller => 'collection', 
+  			  	:collection_id => @document_upload.collection.id}) %>
 </p>

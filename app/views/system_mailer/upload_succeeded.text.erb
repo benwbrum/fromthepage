@@ -1,3 +1,6 @@
-SystemMailer#upload_succeeded
+Upload #<%= @document_upload.id %> by <%= @document_upload.user.login %> 
+has been processed and is ready at this URL:
 
-<%= @greeting %>, find me in app/views/system_mailer/upload_succeeded.text.erb
+  <%= url_for({ :action => 'show', 
+  			  	:controller => 'collection', 
+  			  	:collection_id => @document_upload.collection.id}) %>  

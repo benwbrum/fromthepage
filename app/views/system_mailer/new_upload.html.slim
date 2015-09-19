@@ -30,3 +30,8 @@ h3(style="margin-bottom:0") Target Collection
       td =@document_upload.collection.title
 -else
   p User hasn't defined a collection.
+  
+p
+  View all uploads at the 
+  =link_to('upload dashboard', :controller => 'admin', :action => 'uploads', :only_path => false )
+  

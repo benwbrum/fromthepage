@@ -8,7 +8,7 @@ class SystemMailer < ActionMailer::Base
   #
   def new_upload(document_upload)
     @document_upload = document_upload
-    mail to: "benwbrum@gmail.com"
+    mail to: "benwbrum@gmail.com", subject: "New Document Upload #{document_upload.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -16,8 +16,8 @@ class SystemMailer < ActionMailer::Base
   #
   #   en.system_mailer.upload_succeeded.subject
   #
-  def upload_succeeded
-    @greeting = "Hi"
+  def upload_succeeded(document_upload)
+    @document_upload = document_upload
 
     mail to: "benwbrum@gmail.com"
   end
