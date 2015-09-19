@@ -59,6 +59,11 @@
     overflow: hidden;
     position: relative;
   }
+  &_title a {
+    text-decoration: none;
+    color: darken($fgLink, 10%);
+    &:hover { color: $fgLink; }
+  }
   &_text p {
     margin: 0.3em 0;
   }

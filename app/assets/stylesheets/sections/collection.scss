@@ -213,7 +213,7 @@
     > .tree-item .tree-bullet { @include background-svg(9, 9, $bullet-expanded); }
     > ul { display: block; }
   }
-  &.expanded {
+  &.static {
     .tree-item { padding-left: 0; }
     ul { display: block; }
   }

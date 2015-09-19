@@ -38,6 +38,9 @@
     },
   }]
 
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, selected == 1 ? @collection.title : "#{selected_tab} - #{@collection.title}"
+-content_for :meta_description, "#{@collection.title} - collection #{selected_tab.downcase}. #{strip_tags(@collection.intro_block)}"
 
 h1 =@collection.title
 .tabs

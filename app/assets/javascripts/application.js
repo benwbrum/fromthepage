@@ -215,7 +215,6 @@ $(function() {
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
-  $('[data-scrollfix]').scrollfix();
   $('[data-imageview]').imageView();
 
   // Classname trigger
@@ -251,4 +250,11 @@ $(function() {
 
   // Manage subject categories
   $('[data-assign-categories]').categoriesSelect();
+
+  // Category tree expand/collapse
+  $('.tree-bullet').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $(this).closest('li').toggleClass('expanded');
+  });
 });

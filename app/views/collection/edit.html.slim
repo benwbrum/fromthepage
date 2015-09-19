@@ -82,17 +82,20 @@
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
 
-javascript:
-  $(function() {
-    $('.user-select-form select').select2({
-      placeholder: 'Add new owner...',
-    }).on('select2:select', function() {
-      $(this).siblings(':submit').prop('disabled', false);
-    }).on('select2:unselect', function() {
-      $(this).siblings(':submit').prop('disabled', true);
-    });
+=render({ :partial => '/shared/collection_footer' })
 
-    $('.image-form :file').on('change', function() {
-      $(this).closest('form').submit();
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('.user-select-form select').select2({
+        placeholder: 'Add new owner...',
+      }).on('select2:select', function() {
+        $(this).siblings(':submit').prop('disabled', false);
+      }).on('select2:unselect', function() {
+        $(this).siblings(':submit').prop('disabled', true);
+      });
+
+      $('.image-form :file').on('change', function() {
+        $(this).closest('form').submit();
+      });
     });
-  });

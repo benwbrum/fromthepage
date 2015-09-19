@@ -27,13 +27,13 @@ module ApplicationHelper
 
   # ripped off from
   # http://wiki.rubyonrails.org/rails/pages/CategoryTreeUsingActsAsTree
-  def display_categories(categories, parent_id, &block)
+  def display_categories(categories, parent_id, expanded=false, &block)
     ret = "<ul>\n"
       for category in categories
         if category.parent_id == parent_id
-          ret << "<li>"
+          ret << "<li#{' class="expanded"' if expanded}>"
           ret << yield(category)
-          ret << display_categories(category.children, category.id, &block) if category.children.any?
+          ret << display_categories(category.children, category.id, expanded, &block) if category.children.any?
           ret << "</li>"
         end
       end
@@ -77,6 +77,16 @@ module ApplicationHelper
   def validation_summary(errors)
     if errors.is_a?(Enumerable) && errors.any?
       render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })
+    end
+  end
+
+  def page_title(title=nil)
+    base_title = 'FromThePage'
+
+    if title.blank?
+      base_title
+    else
+      current_page?('/') ? title : "#{title.squish} | #{base_title}"
     end
   end
 
