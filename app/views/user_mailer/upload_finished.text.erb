@@ -1,6 +1,8 @@
-It's ready!
+Your upload is ready!
 
-Your upload has been processed and is ready at this link:
-  <%= url_for({ :action => 'show', 
-  			  	:controller => 'collection', 
-  			  	:collection_id => @document_upload.collection.id}) %>
+Your upload has been processed and is ready at this URL:
+<%= url_for({
+    controller: 'collection',
+    action: 'show',
+    collection_id: @document_upload.collection.id,
+    only_path: false }) %>

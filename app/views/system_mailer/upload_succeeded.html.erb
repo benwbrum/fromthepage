@@ -1,10 +1,11 @@
-<h1>Upload Suceeded</h1>
+<h2>Upload Suceeded</h2>
 
 <p>
-  Upload #<%= @document_upload.id %> by <%= @document_upload.user.login %> 
-  has been processed and is ready at 
-  <%= link_to(@document_upload.collection.title, 
-  			  { :action => 'show', 
-  			  	:controller => 'collection', 
-  			  	:collection_id => @document_upload.collection.id}) %>
+  Upload #<%= @document_upload.id %> by <%= @document_upload.user.login %>
+  has been processed and is ready at
+  <%= link_to @document_upload.collection.title, {
+      controller: 'collection',
+      action: 'show',
+      collection_id: @document_upload.collection.id,
+      only_path: false } %>.
 </p>

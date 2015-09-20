@@ -17,4 +17,5 @@ Title: <%= @document_upload.collection.title %>
 User hasn't defined a collection.
 <% end %>
 
-View all uploads at the <%= link_to('upload dashboard', :controller => 'admin', :action => 'uploads' )%>
+View all uploads at the:
+<%= url_for( controller: 'admin', action: 'uploads', only_path: false )%>
