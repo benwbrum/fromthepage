@@ -25,18 +25,6 @@ class OmekaItemsController < ApplicationController
     end
   end
 
-  # GET /omeka_items/new
-  # GET /omeka_items/new.json
-  def new
-    respond_to do |format|
-      format.html do
-        #redirect_to(:method => :post, :action => :create, :omeka_site_id => params[:omeka_site_id], :client_item_id => params[:client_item_id])
-        create
-      end
-      format.json { render json: @omeka_item }
-    end
-  end
-
   # GET /omeka_items/1/edit
   def edit
     @omeka_item = OmekaItem.find(params[:id])
@@ -46,8 +34,7 @@ class OmekaItemsController < ApplicationController
   # POST /omeka_items.json
   def create
     @omeka_site = OmekaSite.find(params[:omeka_site_id])
-    client_item_id = params[:client_item_id]
-    @omeka_item = OmekaItem.new_from_site_item_id(@omeka_site, client_item_id)
+    @omeka_item = OmekaItem.new_from_site_item_id(@omeka_site, params[:client_item_id])
     @omeka_item.user = current_user
 
     respond_to do |format|
@@ -56,7 +43,7 @@ class OmekaItemsController < ApplicationController
           flash[:notice] = "Omeka item was successfully imported"
           redirect_to @omeka_item
         }
-        format.json { render json: @omeka_item, status: :created, location: @omeka_item }
+        format.json { render nothing: true, status: :created, location: @omeka_item }
       else
         format.html { render action: 'new' }
         format.json { render json: @omeka_item.errors, status: :unprocessable_entity }
