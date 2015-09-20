@@ -134,21 +134,21 @@
 }
 
 .admin-grid {
-  small { display: block; }
   p {
     margin: 0.4em 0;
     &:first-child { margin-top: 0; }
   }
   [data-prefix] {
     margin-right: 0.8em;
-    display: inline-block;
   }
   .icon:only-child { vertical-align: middle; }
-  .prefix {
-    color: $bodyFgFaded;
-    margin-right: 0.3em;
-    display: inline-block;
-  }
+}
+
+.upload-status {
+  &-new { background-color: #F66; }
+  &-queued { background-color: #E6C; }
+  &-processing { background-color: #6AF; }
+  &-finished { background-color: #7B3; }
 }
 
 

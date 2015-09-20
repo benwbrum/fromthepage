@@ -113,14 +113,16 @@ class AdminController < ApplicationController
     flash[:notice] = "Uploaded document has been deleted"
     redirect_to :action => 'uploads'
   end
+
   def process_upload
-    @document_upload = DocumentUpload.find(params[:id])    
+    @document_upload = DocumentUpload.find(params[:id])
     @document_upload.submit_process
     flash[:notice] = "Uploaded document has been queued for processing"
     redirect_to :action => 'uploads'
   end
+
   def view_processing_log
-    @document_upload = DocumentUpload.find(params[:id])    
+    @document_upload = DocumentUpload.find(params[:id])
     render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
   end
 

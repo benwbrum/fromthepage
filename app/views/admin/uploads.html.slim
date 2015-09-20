@@ -5,7 +5,7 @@ table.admin-grid.datagrid.striped
     tr
       th(colspan="2") User
       th.w100 Upload Details
-      th Actions
+      th(colspan="2") Status
   tbody
     -@document_uploads.each do |document|
       tr
@@ -17,22 +17,24 @@ table.admin-grid.datagrid.striped
           small =document.user.email
         td
           -if document.collection.present?
-            p
-              span.prefix Collection:
+            p.fgfaded(data-prefix="Collection: ")
               =link_to(document.collection.title, { controller: 'collection', action: 'show', collection_id: document.collection.id })
-          small
-            span.prefix File Name:
+          .small.fgfaded(data-prefix="File Name: ")
             =link_to(document.file, document.file.to_s, target: '_blank')
-          -if document.status == DocumentUpload::Status::PROCESSING ||  document.status == DocumentUpload::Status::FINISHED
-            small
-              span.prefix Processing log:
-              =link_to('Download', {:action => 'view_processing_log', :id => document.id}, target: '_blank')
         td.nowrap
-          =link_to({ :action => 'delete_upload', :id => document.id }, data: { confirm: 'Are you sure you want to delete this document? After deleting you won\'t be able to recover it!' })
-            =svg_symbol '#icon-remove-sign', class: 'icon'
-            span Delete
-          br
-          -if document.status == DocumentUpload::Status::NEW
-            =link_to('Process', { :action => 'process_upload', :id => document.id })
+          small.label(class="upload-status-#{document.status}") =document.status.titleize
+        td.nowrap
+          dl.dropdown.right
+            dt
+              span Actions
+              =svg_symbol '#icon-list', class: 'icon'
+            dd
+              -if document.status == DocumentUpload::Status::NEW
+                =link_to('Process Upload', { :action => 'process_upload', :id => document.id })
+                hr
+              -if document.status == DocumentUpload::Status::PROCESSING ||  document.status == DocumentUpload::Status::FINISHED
+                =link_to('Show Processing Log', { :action => 'view_processing_log', :id => document.id }, target: '_blank')
+                hr
+              =link_to('Delete Upload', { :action => 'delete_upload', :id => document.id }, class: 'fgred', data: { confirm: 'Are you sure you want to delete this document? After deleting you won\'t be able to recover it!' })
 
 =render(:partial => 'shared/pagination', :locals => { :model => @document_uploads, :entries_info => true })
