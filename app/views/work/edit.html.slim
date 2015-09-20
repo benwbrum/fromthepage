@@ -94,7 +94,10 @@
               =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
               small =user.email
               =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
-
+    h3 Delete Work
+    p Delete this work and all data associated with it.  (Note -- this work has been edited #{@work.transcription_version} 
+      times, of which #{@work.pages.count * 2} may be initial page loads.)
+    =button_to 'Delete', { :action => 'delete', :work_id => @work.id }, { :confirm => "Are you absolutely sure you want to delete #{@work.title}?" }
 javascript:
   $(function() {
     $('.user-select-form select').select2({
