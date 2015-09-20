@@ -28,6 +28,50 @@ class Work < ActiveRecord::Base
 
   validates :title, presence: true, length: { minimum: 3 }
 
+
+  module TitleStyle
+    REPLACE = 'REPLACE'
+    
+    PAGE_ARABIC = "Page #{REPLACE}"
+    PAGE_ROMAN = "Page #{REPLACE}"
+    ENVELOPE = "Envelope (#{REPLACE})"
+    COVER = 'Cover (#{REPLACE})'
+    ENCLOSURE = 'Enclosure REPLACE'
+    DEFAULT = PAGE_ARABIC
+    
+    def self.render(style, number)
+      style.sub(REPLACE, number.to_s)
+    end
+    
+    def self.style_from_prior_title(title)
+      PAGE_ARABIC
+    end
+    def self.number_from_prior_title(style, title)
+      regex_string = style.sub('REPLACE', "(\\d+)")
+      md = title.match(/#{regex_string}/)
+      
+      if md
+        md.captures.first
+      else
+        nil
+      end
+    end
+  end
+  
+  def suggest_next_page_title
+    if self.pages.count == 0
+      TitleStyle::render(TitleStyle::DEFAULT, 1)    
+    else
+      prior_title = self.pages.last.title
+      style = TitleStyle::style_from_prior_title(prior_title)
+      number = TitleStyle::number_from_prior_title(style, prior_title)      
+      
+      next_number = number ? number.to_i + 1 : self.pages.count + 1
+      
+      TitleStyle::render(style, next_number)
+    end
+  end
+
   def articles
     my_articles = []
     for page in self.pages

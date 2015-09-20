@@ -33,6 +33,14 @@ class User < ActiveRecord::Base
   validates :display_name, presence: true
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
+  def all_owner_collections
+    (self.owned_collections + self.collections).uniq.sort {|a, b| a.title <=> b.title }
+  end
+
+  def most_recently_managed_collection
+    self.owner_works.order(:created_on).last.collection
+  end
+
   def can_transcribe?(work)
     !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
   end

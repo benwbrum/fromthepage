@@ -1,6 +1,6 @@
 .litebox-embed(style="width:550px")
-  h1 Create New Page
-  p To create a new page please start from entering the title. Once created proceed to the page settings where you can upload page image.
+  h1 Add Page
+  p Choose a title for the page and upload the image
 
   =form_for(@page, { :url => { :action => 'create' }}) do |f|
     =hidden_field_tag(:work_id, @page.work.id)
@@ -9,5 +9,14 @@
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title
+	  tr
+	    th =f.label :base_image, 'Page Image'
+	    td
+	      =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
+          input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+          button(type="button") Browse
     .toolbar
-      .toolbar_group.aright =f.button 'Create Page'
+      .toolbar_group.aright 
+        =f.button 'Save & Add Next Page', :name => 'subaction', :value => 'save_and_next'
+        =f.button 'Save & New Work', :name => 'subaction', :value => 'save_and_new'
+        =f.button 'Cancel', :name => 'subaction', :value => 'cancel'
