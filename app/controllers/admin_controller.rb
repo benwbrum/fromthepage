@@ -103,4 +103,27 @@ class AdminController < ApplicationController
     @prod_tail = `tail -#{@lines} #{production_logfile}`
   end
 
+  def uploads
+    @document_uploads = DocumentUpload.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def delete_upload
+    @document_upload = DocumentUpload.find(params[:id])
+    @document_upload.destroy
+    flash[:notice] = "Uploaded document has been deleted"
+    redirect_to :action => 'uploads'
+  end
+
+  def process_upload
+    @document_upload = DocumentUpload.find(params[:id])
+    @document_upload.submit_process
+    flash[:notice] = "Uploaded document has been queued for processing"
+    redirect_to :action => 'uploads'
+  end
+
+  def view_processing_log
+    @document_upload = DocumentUpload.find(params[:id])
+    render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
+  end
+
 end

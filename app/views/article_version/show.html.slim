@@ -35,27 +35,28 @@
         div(data-diff-description="original" data-empty="No description provided")
           =(@previous_version.source_text rescue "")
 
-  =javascript_include_tag 'textdiff'
-  javascript:
-    $(function() {
-      $('.diff-versions')
-        .prettyTextDiff({
-          changedContainer:  '[data-diff-title=changed]',
-          originalContainer: '[data-diff-title=original]',
-          diffContainer:     '[data-diff-title=original]'
-        })
-        .prettyTextDiff({
-          changedContainer:  '[data-diff-description=changed]',
-          originalContainer: '[data-diff-description=original]',
-          diffContainer:     '[data-diff-description=original]'
-        });
+  -content_for :javascript
+    =javascript_include_tag 'textdiff'
+    javascript:
+      $(function() {
+        $('.diff-versions')
+          .prettyTextDiff({
+            changedContainer:  '[data-diff-title=changed]',
+            originalContainer: '[data-diff-title=original]',
+            diffContainer:     '[data-diff-title=original]'
+          })
+          .prettyTextDiff({
+            changedContainer:  '[data-diff-description=changed]',
+            originalContainer: '[data-diff-description=original]',
+            diffContainer:     '[data-diff-description=original]'
+          });
 
-      // Awful workaround to make sure containers
-      // do not contain empty text nodes
-      $('[data-empty]').each(function() {
-        $element = $(this);
-        if(!$.trim($element.html())) {
-          $element.empty();
-        }
+        // Awful workaround to make sure containers
+        // do not contain empty text nodes
+        $('[data-empty]').each(function() {
+          $element = $(this);
+          if(!$.trim($element.html())) {
+            $element.empty();
+          }
+        });
       });
-    });

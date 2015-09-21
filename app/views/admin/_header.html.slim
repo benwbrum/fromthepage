@@ -12,6 +12,13 @@
     :action => 'user_list',
   },
 },{\
+  :name => 'Uploads',
+  :selected => 5,
+  :options => {\
+    :controller => 'admin',
+    :action => 'uploads',
+  },
+},{\
   :name => 'Errors',
   :selected => 3,
   :options => {\
@@ -28,6 +35,9 @@
     :lines => 500,
   },
 }]
+
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, "#{selected_tab} - Administration"
 
 h1 Administration
 .tabs

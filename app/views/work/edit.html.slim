@@ -99,13 +99,14 @@
               small =user.email
               =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
 
-javascript:
-  $(function() {
-    $('.user-select-form select').select2({
-      placeholder: 'Add new scribe...',
-    }).on('select2:select', function() {
-      $(this).siblings(':submit').prop('disabled', false);
-    }).on('select2:unselect', function() {
-      $(this).siblings(':submit').prop('disabled', true);
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('.user-select-form select').select2({
+        placeholder: 'Add new scribe...',
+      }).on('select2:select', function() {
+        $(this).siblings(':submit').prop('disabled', false);
+      }).on('select2:unselect', function() {
+        $(this).siblings(':submit').prop('disabled', true);
+      });
     });
-  });

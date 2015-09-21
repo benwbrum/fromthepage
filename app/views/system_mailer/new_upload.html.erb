@@ -1,0 +1,47 @@
+<h2>New Upload on FromThePage</h2>
+<p>A user has just uploaded a new document. You should probably check on it to make sure it worked.</p>
+
+<h3 style="margin-bottom:0">Document</h3>
+<table border="0">
+  <tr>
+    <td>ID:</td>
+    <td><%= @document_upload.id %></td>
+  </tr>
+  <tr>
+    <td>File:</td>
+    <td><%= @document_upload.file %></td>
+  </tr>
+</table>
+
+<h3 style="margin-bottom:0">User</h3>
+<table border="0">
+  <tr>
+    <td>Login:</td>
+    <td><%= @document_upload.user.login %></td>
+  </tr>
+  <tr>
+    <td>Email:</td>
+    <td><%= @document_upload.user.email %></td>
+  </tr>
+</table>
+
+<h3 style="margin-bottom:0">Target Collection</h3>
+<% if @document_upload.collection.present? %>
+  <table border="0">
+    <tr>
+      <td>ID:</td>
+      <td><%= @document_upload.collection.id %></td>
+    </tr>
+    <tr>
+      <td>Title:</td>
+      <td><%= @document_upload.collection.title %></td>
+    </tr>
+  </table>
+<% else %>
+  <p>User hasn't defined a collection.</p>
+<% end %>
+
+<p>
+  View all uploads at the
+  <%= link_to 'upload dashboard', { controller: 'admin', action: 'uploads', only_path: false } %>.
+</p>

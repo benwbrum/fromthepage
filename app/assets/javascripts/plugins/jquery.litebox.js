@@ -1,7 +1,7 @@
 /*!
  * jQuery plugin
  * Litebox - modal dialog window
- * Copyright (c) 2015 Nick Seryakov
+ * Copyright (c) 2015 Nick Seryakov https://github.com/kolking
  *
  * Usage example:
  * new LiteBox({ content: '#MyLiteBox' }).open();
