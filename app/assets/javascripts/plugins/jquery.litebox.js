@@ -87,7 +87,7 @@
         this.$content = $('<div>').addClass('litebox_content');
 
         // Bind close handlers
-        this.$wrapper.add(this.$closebutton).on('click', $.proxy(this.clickClose, this));
+        this.$wrapper.add(this.$closebutton).on('click', $.proxy(this.eventClose, this));
         this.$container.click(function(e) { e.stopPropagation(); });
 
         // Insert into DOM and show
@@ -119,7 +119,7 @@
       }
 
       // Close with Escape key
-      this.$doc.on('keyup.LiteBox', $.proxy(this.keyClose, this));
+      this.$doc.on('keyup.LiteBox', $.proxy(this.eventClose, this));
       this.isopen = true;
 
       return this;
@@ -131,7 +131,7 @@
       this.$content.find(':text:not(:hidden,[readonly],[disabled]):first').focus();
 
       // Close litebox if button[type=reset] pressed
-      this.$content.on('click', 'form :reset', $.proxy(this.close, this));
+      this.$content.on('click', 'form :reset', $.proxy(this.eventClose, this));
 
       // Include submit button value into serialization
       this.$content.on('click', 'form :submit', function() {
@@ -148,9 +148,10 @@
         e.preventDefault();
 
         var $form = $(e.currentTarget);
-        var form_data = $form.serialize();
         var form_method = $form.attr('method');
         var form_action = $form.attr('action');
+        var multipart = $form.attr('enctype') === 'multipart/form-data';
+        var form_data = multipart ? new FormData($form[0]) : $form.serialize();
         var $submit = $form.find(':submit').prop('disabled', true);
 
         this.$content.addClass('ajax-busy');
@@ -160,15 +161,20 @@
           method: form_method,
           data: form_data,
           cache: false,
-          context: this
+          context: this,
+          contentType: (multipart ? false : 'application/x-www-form-urlencoded; charset=UTF-8'),
+          processData: (multipart ? false : true)
         }).done(function(data, textStatus, jqXHR) {
           var status = jqXHR.status;
           var location = jqXHR.getResponseHeader('location');
           if(status === 201) {
             if(location) {
+              var oldPath = window.location.href.split('#')[0];
+              var newPath = location.split('#')[0];
               window.location.href = location;
-              // Force page reload if location contains #hash
-              if(location.indexOf('#') !== -1) {
+
+              // Force page reload if location path not changed
+              if(newPath === oldPath) {
                 window.location.reload();
               }
             } else {
@@ -204,23 +210,20 @@
         var events = 'transitionend otransitionend oTransitionEnd webkitTransitionEnd msTransitionEnd';
         this.$wrapper.one(events, $.proxy(this.destroy, this));
       }
+
+      // Make sure to reset location hash
+      if(this.options.hash) {
+        window.location.replace('#');
+      }
     },
 
-    clickClose: function(e) {
+    eventClose: function(e) {
+      if(e.type === 'keyup' && e.keyCode !== 27) return;
+
       e.preventDefault();
       e.stopPropagation();
-      if(this.options.hash) {
-        //document.location.hash = '/';
-        location.replace('#');
-      } else {
-        this.close();
-      }
-    },
 
-    keyClose: function(e) {
-      if(e.keyCode === 27) {
-        this.clickClose(e);
-      }
+      this.close();
     },
 
     destroy: function(e) {
