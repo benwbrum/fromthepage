@@ -109,7 +109,7 @@ class WorkController < ApplicationController
 
     if @work.save
       flash[:notice] = 'Work created successfully'
-      ajax_redirect_to({ :controller => 'page', :action => 'new', :work_id => @work.id })
+      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
       render :new
     end
