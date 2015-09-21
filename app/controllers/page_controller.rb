@@ -66,24 +66,21 @@ class PageController < ApplicationController
   end
 
   def create
-    page = Page.new(params[:page])
+    @page = Page.new(params[:page])
+    @page.work = @work
     subaction = params[:subaction]
-    if subaction == 'cancel'
-      redirect_to :controller => 'display', :action => 'read_work', :work_id => @work.id
-      return
-    end
-    page.work = @work
-    if params[:page][:base_image]
-      process_uploaded_file(page,  page.base_image)
-    end
 
-
-    if page.save
+    if @page.save
       flash[:notice] = 'Page created successfully'
+
+      if params[:page][:base_image]
+        process_uploaded_file(@page, @page.base_image)
+      end
+
       if subaction == 'save_and_new'
-        ajax_redirect_to({ :controller => 'work', :action => 'new', :collection_id => @work.collection })
+        ajax_redirect_to({ :controller => 'dashboard', :action => 'owner', :anchor => 'create-work' })
       else
-        ajax_redirect_to({ :controller => 'page', :action => 'new', :work_id => @work.id })        
+        ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
       end
     else
       render :new
@@ -103,9 +100,7 @@ class PageController < ApplicationController
   end
 
 
-
-
-  private
+private
   def process_uploaded_file(page, filename)
     if filename.blank?
       # create a new filename
@@ -121,8 +116,7 @@ class PageController < ApplicationController
     page.base_image = filename
     page.shrink_factor = 0
     set_dimensions(page)
-#    reduce_by_one(page)
-    
+    #reduce_by_one(page)
   end
 
   def reduce_by_one(page)
