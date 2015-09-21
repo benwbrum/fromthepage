@@ -39,7 +39,8 @@ $.fn.flashclose = function(s) {
     }
 
     // Close on click
-    btnclose.one('click', function() {
+    btnclose.one('click', function(e) {
+      e.stopPropagation();
       container.fadeOut('fast', function() {
         container.remove();
       });
@@ -171,6 +172,8 @@ $.fn.categoriesSelect = function() {
 // Custom input file
 $.fn.inputFile = function() {
   return this.each(function() {
+    if(this.inputfile) return;
+
     var $container = $(this);
     var $button = $('button', $container);
     var $file = $('input[type=file]', $container);
@@ -183,6 +186,8 @@ $.fn.inputFile = function() {
     $file.on('change', function() {
       $text.val($file.val());
     });
+
+    this.inputfile = true;
   });
 };
 
