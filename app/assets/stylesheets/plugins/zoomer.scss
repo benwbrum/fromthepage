@@ -1,100 +1,175 @@
-/*
- * Zoomer v3.0.8 - 2014-03-15
- * A jQuery plugin for smooth image exploration. Part of the formstone library.
- * http://formstone.it/components/zoomer/
- *
- * Copyright 2014 Ben Plum; MIT Licensed
- */
-
 .zoomer {
   width: 100%;
   height: 100%;
   overflow: hidden;
   user-select: none;
   position: relative;
-  background: url(jquery.fs.zoomer-loading.gif) no-repeat center;
-
+  background: url('zoomer-loading.gif') no-repeat center;
   &-element { height: 100%; }
-
   &-holder { -ms-touch-action: none; }
 }
 
-.zoomer .zoomer-positioner { margin: 0; height: 1px; position: absolute; width: 1px; }
-.zoomer .zoomer-holder { box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); opacity: 0; position: relative;
-  -webkit-transition: none;
-     -moz-transition: none;
-      -ms-transition: none;
-       -o-transition: none;
-        transition: none;
+.zoomer .zoomer-positioner {
+  margin: 0;
+  width: 1px;
+  height: 1px;
+  position: absolute;
 }
-.zoomer .zoomer-image { cursor: move; float: left; height: 100%; width: 100%;
-  -webkit-transition: opacity 0.25 linear;
-     -moz-transition: opacity 0.25 linear;
-      -ms-transition: opacity 0.25 linear;
-       -o-transition: opacity 0.25 linear;
-        transition: opacity 0.25 linear;
-}
-.zoomer .zoomer-tiles { height: 100%; position: relative; width: 100%; }
-.zoomer .zoomer-tile { height: auto; position: absolute; width: auto; }
 
-/* CONTROLS */
-.zoomer .zoomer-controls { background: rgba(0, 0, 0, 0.8); box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); border-radius: 3px; padding: 5px; position: absolute;
-  -webkit-transition: opacity 0.25 linear;
-     -moz-transition: opacity 0.25 linear;
-      -ms-transition: opacity 0.25 linear;
-       -o-transition: opacity 0.25 linear;
-        transition: opacity 0.25 linear;
+.zoomer .zoomer-holder {
+  opacity: 0;
+  transition: none;
+  position: relative;
+  box-shadow: 0 0 3px rgba(#000, 0.5);
 }
-.zoomer .zoomer-controls span { border-radius: 3px; color: #fff; cursor: pointer; display: block; font-size: 20px; font-weight: bold; height: 30px; line-height: 30px; margin: 0; text-align: center; width: 30px; }
+
+.zoomer .zoomer-image {
+  float: left;
+  width: 100%;
+  height: 100%;
+  cursor: move;
+  transition: opacity 0.25 linear;
+}
+
+.zoomer .zoomer-tiles {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.zoomer .zoomer-tile {
+  width: auto;
+  height: auto;
+  position: absolute;
+}
+
+// CONTROLS
+.zoomer .zoomer-controls {
+  padding: 5px;
+  border-radius: 3px;
+  position: absolute;
+  background: rgba(#000, 0.8);
+  box-shadow: 0 0 5px rgba(#000, 0.5);
+  transition: opacity 0.25 linear;
+}
+
+.zoomer .zoomer-controls span {
+  margin: 0;
+  color: #FFF;
+  width: 30px;
+  height: 30px;
+  display: block;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 3px;
+}
+
 .zoomer .zoomer-controls .zoomer-next,
-.zoomer .zoomer-controls .zoomer-previous { display: none; }
+.zoomer .zoomer-controls .zoomer-previous {
+  display: none;
+}
 
 .zoomer.zoomer-gallery .zoomer-controls .zoomer-next,
-.zoomer.zoomer-gallery .zoomer-controls .zoomer-previous { display: block; }
+.zoomer.zoomer-gallery .zoomer-controls .zoomer-previous {
+  display: block;
+}
 
-/* CONTROLS - TOP, BOTTOM */
+// CONTROLS - TOP, BOTTOM
 .zoomer .zoomer-controls-top,
-.zoomer .zoomer-controls-bottom { left: 50%; margin: 0 0 0 -35px; }
-.zoomer .zoomer-controls-top { bottom: auto; top: 10px; }
-.zoomer .zoomer-controls-bottom { bottom: 10px; top: auto; }
+.zoomer .zoomer-controls-bottom {
+  left: 50%;
+  margin: 0 0 0 -35px;
+}
+
+.zoomer .zoomer-controls-top {
+  top: 10px;
+  bottom: auto;
+}
+
+.zoomer .zoomer-controls-bottom {
+  top: auto;
+  bottom: 10px;
+}
 
 .zoomer.zoomer-gallery .zoomer-controls-top,
-.zoomer.zoomer-gallery .zoomer-controls-bottom { margin: 0 0 0 -65px; }
+.zoomer.zoomer-gallery .zoomer-controls-bottom {
+  margin: 0 0 0 -65px;
+}
 
 .zoomer .zoomer-controls-top span,
-.zoomer .zoomer-controls-bottom span { float: left; }
-.zoomer .zoomer-controls-top span:first-child,
-.zoomer .zoomer-controls-bottom span:first-child { margin: 0 1px 0 0; }
+.zoomer .zoomer-controls-bottom span {
+  float: left;
+}
 
-/* CONTROLS - LEFT, RIGHT, TOP LEFT, TOP RIGHT, BOTTOM LEFT, BOTTOM RIGHT */
+.zoomer .zoomer-controls-top span:first-child,
+.zoomer .zoomer-controls-bottom span:first-child {
+  margin: 0 1px 0 0;
+}
+
+// CONTROLS - LEFT, RIGHT, TOP LEFT, TOP RIGHT, BOTTOM LEFT, BOTTOM RIGHT
 .zoomer .zoomer-controls-left,
 .zoomer .zoomer-controls-top-left,
-.zoomer .zoomer-controls-bottom-left
+.zoomer .zoomer-controls-bottom-left,
 .zoomer .zoomer-controls-right,
 .zoomer .zoomer-controls-top-right,
-.zoomer .zoomer-controls-bottom-right { height: 71px; width: 40px; }
+.zoomer .zoomer-controls-bottom-right {
+  width: 40px;
+  height: 71px;
+}
 
 .zoomer.zoomer-gallery .zoomer-controls-left,
 .zoomer.zoomer-gallery .zoomer-controls-top-left,
-.zoomer.zoomer-gallery .zoomer-controls-bottom-left
+.zoomer.zoomer-gallery .zoomer-controls-bottom-left,
 .zoomer.zoomer-gallery .zoomer-controls-right,
 .zoomer.zoomer-gallery .zoomer-controls-top-right,
-.zoomer.zoomer-gallery .zoomer-controls-bottom-right { height: 131px; }
+.zoomer.zoomer-gallery .zoomer-controls-bottom-right {
+  height: 131px;
+}
 
 .zoomer .zoomer-controls-left,
-.zoomer .zoomer-controls-right { margin: -35px 0 0 0; top: 50%; }
+.zoomer .zoomer-controls-right {
+  top: 50%;
+  margin: -35px 0 0 0;
+}
 
 .zoomer.zoomer-gallery .zoomer-controls-left,
-.zoomer.zoomer-gallery .zoomer-controls-right { margin: -65px 0 0 0; }
+.zoomer.zoomer-gallery .zoomer-controls-right {
+  margin: -65px 0 0 0;
+}
 
-.zoomer .zoomer-controls-left { left: 10px; }
-.zoomer .zoomer-controls-top-left { left: 10px; top: 10px; }
-.zoomer .zoomer-controls-bottom-left { bottom: 10px; left: 10px; }
+.zoomer .zoomer-controls-left {
+  left: 10px;
+}
 
-.zoomer .zoomer-controls-right { right: 10px; }
-.zoomer .zoomer-controls-top-right { right: 10px; top: 10px; }
-.zoomer .zoomer-controls-bottom-right { bottom: 10px; right: 10px; }
+.zoomer .zoomer-controls-top-left {
+  top: 10px;
+  left: 10px;
+}
 
-@media screen and (min-width: 980px) {
-  .zoomer .zoomer-controls span:hover { background: #000; }
+.zoomer .zoomer-controls-bottom-left {
+  left: 10px;
+  bottom: 10px;
+}
+
+.zoomer .zoomer-controls-right {
+  right: 10px;
+}
+
+.zoomer .zoomer-controls-top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.zoomer .zoomer-controls-bottom-right {
+  right: 10px;
+  bottom: 10px;
+}
+
+@media screen and (min-width:980px) {
+  .zoomer .zoomer-controls span:hover {
+    background: #000;
+  }
 }

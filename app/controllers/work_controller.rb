@@ -103,9 +103,12 @@ class WorkController < ApplicationController
     @work.collection_id = params[:work][:collection_id]
     @work.description = params[:work][:description]
     @work.owner = current_user
+    @collections = current_user.all_owner_collections
+    @collection_selected = current_user.most_recently_managed_collection.id
+
     if @work.save
       flash[:notice] = 'Work created successfully'
-      ajax_redirect_to({ :controller => 'page', :action => 'new', :work_id => @work.id })
+      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
       render :new
     end

@@ -10,9 +10,12 @@ class Collection < ActiveRecord::Base
   has_many :deeds, -> { order 'created_at DESC' }
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
-  attr_accessible :title, :intro_block, :footer_block
+  attr_accessible :title, :intro_block, :footer_block, :picture
+#  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3 }
+  
+  mount_uploader :picture, PictureUploader
 
   scope :order_by_recent_activity, -> { includes(:deeds).order('deeds.created_at DESC') }
 

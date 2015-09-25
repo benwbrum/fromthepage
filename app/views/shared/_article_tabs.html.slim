@@ -9,7 +9,7 @@
 
 -if user_signed_in?
   -tabs += [{\
-    :name => 'Edit Subject',
+    :name => 'Settings',
     :selected => 4,
     :options => {\
       :controller => 'article',
@@ -26,6 +26,10 @@
   },
 }]
 
+-description = xml_to_html(@article.xml_text)
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, selected == 1 ? @article.title : "#{selected_tab} - #{@article.title}"
+-content_for :meta_description, "#{@article.title} - subject #{selected_tab.downcase}. #{strip_tags(description).truncate(150, separator: ' ')}"
 
 h1 =@article.title
 .tabs

@@ -4,7 +4,12 @@
   article.maincol
     -if @collection.intro_block
       h2 About
-      p ==@collection.intro_block
+      .collection-intro
+        -unless @collection.picture.blank?
+          .collection-intro_image
+            =image_tag(@collection.picture_url(:thumb))
+        .collection-intro_about
+          ==@collection.intro_block
 
     h2 Works
     -@collection.works.each do |work|
@@ -85,3 +90,5 @@
 
     h3 Recent Edits
     =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT] })
+
+=render({ :partial => '/shared/collection_footer' })

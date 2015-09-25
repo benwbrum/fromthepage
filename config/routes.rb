@@ -5,6 +5,7 @@ Fromthepage::Application.routes.draw do
   devise_for :users
 
   get   '/omeka_sites/items' => 'omeka_sites#items'
+
   resources :omeka_sites
   resources :omeka_items
 

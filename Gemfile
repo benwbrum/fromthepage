@@ -25,7 +25,8 @@ gem 'devise'
 gem 'devise-encryptable'
 
 gem 'protected_attributes'
-
+gem 'carrierwave'
+gem 'zip'
 
 group :assets do
   gem 'therubyracer'
@@ -61,4 +62,3 @@ gem 'gravatar_image_tag'
 
 # New Relic
 gem 'newrelic_rpm'
-

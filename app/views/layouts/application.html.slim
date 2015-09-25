@@ -1,35 +1,26 @@
 -# encoding: utf-8
 
--if @page && @work && @collection
-  -title = "#{@collection.title} — #{@work.title} — #{@page.title} | FromThePage"
--elsif @work && @collection
-  -title = "#{@collection.title} — #{@work.title} | FromThePage"
--elsif @article && @collection
-  -title = "#{@collection.title} — #{@article.title} | FromThePage"
--elsif @collection && @collection.title
-  -title = "#{@collection.title} | FromThePage"
--else
-  -title = "FromThePage"
-
 doctype html
 html
   head
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
-    title =title
-    meta(name="viewport" content="width=768, minimum-scale=0.2, maximum-scale=1, user-scalable=yes")
-    meta(name="keywords" content="transcribe handwritten documents free open-source wiki historical crowdsourcing transcription")
-    meta(name="description" content="FromThePage is free software that allows volunteers to transcribe handwritten documents online. Easy to index and annotate subjects within a text using a wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search.")
+    title =page_title(yield(:page_title))
+    meta(name="viewport" content="width=device-width")
+    -if content_for?(:meta_description)
+      meta(name="description" content="#{yield(:meta_description).squish}")
+    -if content_for?(:meta_keywords)
+      meta(name="keywords" content="#{yield(:meta_keywords)}")
     meta(name="author" content="FromThePage.com")
     meta(name="copyright" content="(c) #{Time.now.year} FromThePage.com")
     meta(name="verify-v1" content="2pFw887E35Fhfkyj/nFGzyui8dJ4rLbluudrp1mDcj0=")
     =csrf_meta_tags
-
-    link(rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round")
-    =stylesheet_link_tag 'application'
     ="\n"
-    =javascript_include_tag 'application'
     =favicon_link_tag 'favicon.ico'
+    ="\n"
+    =stylesheet_link_tag "//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
+    ="\n"
+    =stylesheet_link_tag 'application'
 
 body
   -flash.each do |type, message|
@@ -74,11 +65,7 @@ body
 
   main.wrapper
     =render :partial => '/shared/breadcrumbs'
-
     =yield.force_encoding 'UTF-8'
-
-    -if @collection && @collection.footer_block
-      .collection-footer ==@collection.footer_block
 
   =(yield :content_below).force_encoding 'UTF-8'
 
@@ -91,6 +78,9 @@ body
       =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
   .page-busy-overlay
+
+  =javascript_include_tag 'application'
+  =yield :javascript
 
   javascript:
     var _gaq = _gaq || [];

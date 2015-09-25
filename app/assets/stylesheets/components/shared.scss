@@ -81,21 +81,23 @@
 // GLOBAL BUSY INDICATOR
 // ---------------------------
 
-$svg-spinner: '
-<g fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round">
-<line opacity="1.00" x1="24"   y1="4"    x2="24"   y2="12"/>
-<line opacity="0.20" x1="34"   y1="6.7"  x2="30"   y2="13.6"/>
-<line opacity="0.20" x1="41.4" y1="14"   x2="34.4" y2="18"/>
-<line opacity="0.28" x1="44"   y1="24"   x2="36"   y2="24"/>
-<line opacity="0.36" x1="34.4" y1="30"   x2="41.4" y2="34"/>
-<line opacity="0.44" x1="30"   y1="34.4" x2="34"   y2="41.4"/>
-<line opacity="0.52" x1="24"   y1="36"   x2="24"   y2="44"/>
-<line opacity="0.60" x1="18"   y1="34.4" x2="14"   y2="41.4"/>
-<line opacity="0.68" x1="13.6" y1="30"   x2="6.7"  y2="34"/>
-<line opacity="0.76" x1="12"   y1="24"   x2="4"    y2="24"/>
-<line opacity="0.84" x1="6.7"  y1="14"   x2="13.6" y2="18"/>
-<line opacity="0.92" x1="14"   y1="6.7"  x2="18"   y2="13.6"/>
-</g>';
+@function svg-spinner($color: #FFF) {
+  @return '
+  <g fill="none" stroke="#{$color}" stroke-width="4" stroke-linecap="round">
+    <line opacity="1.00" x1="24"   y1="4"    x2="24"   y2="12"/>
+    <line opacity="0.20" x1="34"   y1="6.7"  x2="30"   y2="13.6"/>
+    <line opacity="0.20" x1="41.4" y1="14"   x2="34.4" y2="18"/>
+    <line opacity="0.28" x1="44"   y1="24"   x2="36"   y2="24"/>
+    <line opacity="0.36" x1="34.4" y1="30"   x2="41.4" y2="34"/>
+    <line opacity="0.44" x1="30"   y1="34.4" x2="34"   y2="41.4"/>
+    <line opacity="0.52" x1="24"   y1="36"   x2="24"   y2="44"/>
+    <line opacity="0.60" x1="18"   y1="34.4" x2="14"   y2="41.4"/>
+    <line opacity="0.68" x1="13.6" y1="30"   x2="6.7"  y2="34"/>
+    <line opacity="0.76" x1="12"   y1="24"   x2="4"    y2="24"/>
+    <line opacity="0.84" x1="6.7"  y1="14"   x2="13.6" y2="18"/>
+    <line opacity="0.92" x1="14"   y1="6.7"  x2="18"   y2="13.6"/>
+  </g>';
+}
 
 @keyframes spinner {
   0%    { transform: rotate(0deg); }
@@ -131,7 +133,87 @@ $svg-spinner: '
     margin: -24px 0 0 -24px;
     transform-origin: 24px 24px;
     animation: spinner 1s infinite steps(12);
-    @include background-svg(48, 48, $svg-spinner);
+    @include background-svg(48, 48, svg-spinner());
+  }
+}
+
+
+// ---------------------------
+// IMAGE UPLOAD FORM
+// ---------------------------
+
+.image-form {
+  label {
+    z-index: 1;
+    padding: 5px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    background: #FFF;
+    position: relative;
+    vertical-align: top;
+    display: inline-block;
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.06);
+    &:before {
+      top: 50%;
+      left: 50%;
+      z-index: 1;
+      color: #BBB;
+      display: block;
+      line-height: 2;
+      padding: 0 0.8em;
+      border-radius: 1em;
+      position: absolute;
+      white-space: nowrap;
+      transition: color 0.2s;
+      content: attr(data-empty);
+      background: rgba(#FFF, 0);
+      font-family: $fontFamilyHead;
+      transform: translate(-50%, -50%);
+    }
+    &:hover {
+      &:before {
+        z-index: 3;
+        color: #533;
+        content: attr(data-hover);
+        background: rgba(#FFF, 0.8);
+      }
+      img { opacity: 0.5; }
+    }
+  }
+  img {
+    z-index: 2;
+    position: relative;
+    transition: opacity 0.2s;
+  }
+  input[type=file] {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    opacity: 0;
+    outline: none;
+    position: absolute;
+    clip: rect(0,0,0,0);
+  }
+  &.busy {
+    label { cursor: default; }
+    label:before, label:hover:before {
+      padding: 0;
+      z-index: 3;
+      content: '';
+      width: 48px;
+      height: 48px;
+      transform: none;
+      background: none;
+      margin: -24px 0 0 -24px;
+      transform-origin: 24px 24px;
+      animation: spinner 1s infinite steps(12);
+      @include background-svg(48, 48, svg-spinner(#000));
+    }
+    img, label:hover img { opacity: 0.3; }
   }
 }
 
@@ -620,6 +702,10 @@ button, .button, .dropdown dd a {
     opacity: 0;
     outline: none;
     position: absolute;
+    &.invalid + input[type=text] {
+      color: $inputInvalidColor;
+      border-color: rgba($inputInvalidColor, 0.5);
+    }
   }
 }
 

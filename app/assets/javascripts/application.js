@@ -39,7 +39,8 @@ $.fn.flashclose = function(s) {
     }
 
     // Close on click
-    btnclose.one('click', function() {
+    btnclose.one('click', function(e) {
+      e.stopPropagation();
       container.fadeOut('fast', function() {
         container.remove();
       });
@@ -169,8 +170,10 @@ $.fn.categoriesSelect = function() {
 
 
 // Custom input file
-$.fn.customInputFile = function() {
+$.fn.inputFile = function() {
   return this.each(function() {
+    if(this.inputfile) return;
+
     var $container = $(this);
     var $button = $('button', $container);
     var $file = $('input[type=file]', $container);
@@ -183,6 +186,8 @@ $.fn.customInputFile = function() {
     $file.on('change', function() {
       $text.val($file.val());
     });
+
+    this.inputfile = true;
   });
 };
 
@@ -211,11 +216,10 @@ $.fn.imageView = function() {
 $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
-  $('.input-file').customInputFile();
+  $('.input-file').inputFile();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
-  $('[data-scrollfix]').scrollfix();
   $('[data-imageview]').imageView();
 
   // Classname trigger
@@ -251,4 +255,11 @@ $(function() {
 
   // Manage subject categories
   $('[data-assign-categories]').categoriesSelect();
+
+  // Category tree expand/collapse
+  $('.tree-bullet').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $(this).closest('li').toggleClass('expanded');
+  });
 });

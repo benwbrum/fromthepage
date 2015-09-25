@@ -1,161 +1,162 @@
 #BookReader
 
-=javascript_include_tag 'bookreader'
-javascript:
-  br = new BookReader();
+-content_for :javascript
+  =javascript_include_tag 'bookreader'
+  javascript:
+    br = new BookReader();
 
-  // Embed mode allow to drop off colorbox and jquery-ui dependency
-  br.ui = "embed";
+    // Embed mode allow to drop off colorbox and jquery-ui dependency
+    br.ui = "embed";
 
-  // Override embed navbar markup
-  br.initEmbedNavbar = function() {
-    $('#BookReader').append(
-      '<div id="BRnav">'+
-        '<span id="BRtoolbarbuttons">'+
-          '<button class="BRicon zoom_in"></button>'+
-          '<span id="BRzoom"></span>'+
-          '<button class="BRicon zoom_out"></button>'+
-        '</span>'+
-        //'<a class="BRlogo" href="'+this.logoURL+'" target="_blank"></a>'+
-        //'<span id="BRembedreturn"><a href="'+this.bookUrl+'" target="_blank">'+this.bookTitle+'</a></span>'+
-      '</div>'
-    );
-  };
+    // Override embed navbar markup
+    br.initEmbedNavbar = function() {
+      $('#BookReader').append(
+        '<div id="BRnav">'+
+          '<span id="BRtoolbarbuttons">'+
+            '<button class="BRicon zoom_in"></button>'+
+            '<span id="BRzoom"></span>'+
+            '<button class="BRicon zoom_out"></button>'+
+          '</span>'+
+          //'<a class="BRlogo" href="'+this.logoURL+'" target="_blank"></a>'+
+          //'<span id="BRembedreturn"><a href="'+this.bookUrl+'" target="_blank">'+this.bookTitle+'</a></span>'+
+        '</div>'
+      );
+    };
 
-  // Prepare one page view
-  br.prepareOnePageView = function() {
-    var startLeaf = this.currentIndex();
+    // Prepare one page view
+    br.prepareOnePageView = function() {
+      var startLeaf = this.currentIndex();
 
-    $('#BRcontainer')
-      .empty()
-      .append("<div id='BRpageview'></div>")
-      .dragscrollable();
+      $('#BRcontainer')
+        .empty()
+        .append("<div id='BRpageview'></div>")
+        .dragscrollable();
 
-    this.bindGestures($('#BRcontainer'));
-    this.resizePageView();
-    this.jumpToIndex(startLeaf);
-    this.displayedIndices = [];
-    this.drawLeafsOnePage();
-  }
-
-  // Return the width of a given page
-  br.getPageWidth = function(index) {
-    return this.pageW[index];
-  }
-
-  // Return the height of a given page
-  br.getPageHeight = function(index) {
-    return this.pageH[index];
-  }
-
-  // Returns true if page image is available rotated
-  br.canRotatePage = function(index) {
-    return 'jp2' == this.imageFormat; // Assume single format for now
-  }
-
-  // Returns page url
-  br.getPageURI = function(index, reduce, rotate) {
-    var _reduce, _rotate;
-    var file = this._getPageFile(index);
-
-    // reduce defaults to 1 (no reduction)
-    _reduce = 'undefined' == typeof(reduce) ? 1 : reduce;
-    // rotate defaults to 0 (no rotation)
-    _rotate = 'undefined' == typeof(rotate) ? 0 : rotate;
-
-    var query = $.param({ zip: this.zip, file: file, scale: _reduce, rotate: _rotate })
-    return 'http://'+this.server+'/BookReader/BookReaderImages.php?'+query;
-  }
-
-  // Returns page filename
-  br._getPageFile = function(index) {
-    var leafStr = '0000';
-    var imgStr = this.leafMap[index].toString();
-    var re = new RegExp("0{"+imgStr.length+"}$");
-
-    var insideZipPrefix = this.subPrefix.match('[^/]+$');
-    var file = insideZipPrefix+'_'+this.imageFormat+'/'+insideZipPrefix+'_'+leafStr.replace(re, imgStr)+'.'+ this.imageFormat;
-
-    return file;
-  }
-
-  // Return which side, left or right, that a given page should be displayed on
-  br.getPageSide = function(index) {
-    if ('rl' == this.pageProgression) {
-      return 0 === (index & 0x1) ? 'L' : 'R'; // Right to left
-    } else {
-      return 0 === (index & 0x1) ? 'R' : 'L'; // Left to right
-    }
-  };
-
-  // Returns page number
-  br.getPageNum = function(index) {
-    var pageNum = this.pageNums[index];
-
-    return pageNum ? pageNum : 'n'+index;
-  }
-
-  // This function returns the left and right indices for the user-visible
-  // spread that contains the given index.  The return values may be
-  // null if there is no facing page or the index is invalid.
-  br.getSpreadIndices = function(pindex) {
-    var spreadIndices = [null, null];
-
-    if ('rl' == this.pageProgression) {
-      // Right to left
-      if (this.getPageSide(pindex) == 'R') {
-        spreadIndices[1] = pindex;
-        spreadIndices[0] = pindex + 1;
-      } else {
-        // Given index was LHS
-        spreadIndices[0] = pindex;
-        spreadIndices[1] = pindex - 1;
-      }
-    } else {
-      // Left to right
-      if (this.getPageSide(pindex) == 'L') {
-        spreadIndices[0] = pindex;
-        spreadIndices[1] = pindex + 1;
-      } else {
-        // Given index was RHS
-        spreadIndices[1] = pindex;
-        spreadIndices[0] = pindex - 1;
-      }
+      this.bindGestures($('#BRcontainer'));
+      this.resizePageView();
+      this.jumpToIndex(startLeaf);
+      this.displayedIndices = [];
+      this.drawLeafsOnePage();
     }
 
-    return spreadIndices;
-  };
+    // Return the width of a given page
+    br.getPageWidth = function(index) {
+      return this.pageW[index];
+    }
 
-  // Disable embedding
-  br.getEmbedCode = function(frameWidth, frameHeight, viewParams) {
-    return "Embed code not supported";
-  };
+    // Return the height of a given page
+    br.getPageHeight = function(index) {
+      return this.pageH[index];
+    }
 
-  // Example values
-  // br.bookId        = 'Jeremiah_White_Graves_Diary_Volume_2_Book_01';
-  // br.zip           = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01_jp2.zip';
-  // br.subPrefix     = 'JWGravesVol2Book01';
-  // br.server        = 'ia600607.us.archive.org';
-  // br.bookTitle     = 'Diary of Jeremiah White Graves, Volume 2, Book 1';
-  // br.bookPath      = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01';
-  // br.bookUrl       = 'http://www.archive.org/details/Jeremiah_White_Graves_Diary_Volume_2_Book_01';
-  // br.imageFormat   = 'jp2';
-  // br.archiveFormat = 'zip';
+    // Returns true if page image is available rotated
+    br.canRotatePage = function(index) {
+      return 'jp2' == this.imageFormat; // Assume single format for now
+    }
 
-  br.bookId        = "#{@work.ia_work.book_id}";
-  br.zip           = "#{@work.ia_work.ia_path}/#{@work.ia_work.zip_file}";
-  br.subPrefix     = "#{@work.ia_work.sub_prefix}";
-  br.server        = "#{@work.ia_work.server}";
-  br.bookTitle     = "#{@work.ia_work.title}";
-  br.bookPath      = "#{@work.ia_work.book_path}";
-  br.bookUrl       = "http://www.archive.org/details/#{@work.ia_work.book_id}";
-  br.imageFormat   = "#{@work.ia_work.image_format}";
-  br.archiveFormat = "#{@work.ia_work.archive_format}";
+    // Returns page url
+    br.getPageURI = function(index, reduce, rotate) {
+      var _reduce, _rotate;
+      var file = this._getPageFile(index);
 
-  br.pageW         = [#{@page.ia_leaf.page_w}];
-  br.pageH         = [#{@page.ia_leaf.page_h}];
-  br.leafMap       = [#{@page.ia_leaf.leaf_number}];
-  br.pageNums      = [#{@page.ia_leaf.page_number}];
-  br.numLeafs      = br.pageW.length;
+      // reduce defaults to 1 (no reduction)
+      _reduce = 'undefined' == typeof(reduce) ? 1 : reduce;
+      // rotate defaults to 0 (no rotation)
+      _rotate = 'undefined' == typeof(rotate) ? 0 : rotate;
 
-  br.init();
+      var query = $.param({ zip: this.zip, file: file, scale: _reduce, rotate: _rotate })
+      return 'http://'+this.server+'/BookReader/BookReaderImages.php?'+query;
+    }
+
+    // Returns page filename
+    br._getPageFile = function(index) {
+      var leafStr = '0000';
+      var imgStr = this.leafMap[index].toString();
+      var re = new RegExp("0{"+imgStr.length+"}$");
+
+      var insideZipPrefix = this.subPrefix.match('[^/]+$');
+      var file = insideZipPrefix+'_'+this.imageFormat+'/'+insideZipPrefix+'_'+leafStr.replace(re, imgStr)+'.'+ this.imageFormat;
+
+      return file;
+    }
+
+    // Return which side, left or right, that a given page should be displayed on
+    br.getPageSide = function(index) {
+      if ('rl' == this.pageProgression) {
+        return 0 === (index & 0x1) ? 'L' : 'R'; // Right to left
+      } else {
+        return 0 === (index & 0x1) ? 'R' : 'L'; // Left to right
+      }
+    };
+
+    // Returns page number
+    br.getPageNum = function(index) {
+      var pageNum = this.pageNums[index];
+
+      return pageNum ? pageNum : 'n'+index;
+    }
+
+    // This function returns the left and right indices for the user-visible
+    // spread that contains the given index.  The return values may be
+    // null if there is no facing page or the index is invalid.
+    br.getSpreadIndices = function(pindex) {
+      var spreadIndices = [null, null];
+
+      if ('rl' == this.pageProgression) {
+        // Right to left
+        if (this.getPageSide(pindex) == 'R') {
+          spreadIndices[1] = pindex;
+          spreadIndices[0] = pindex + 1;
+        } else {
+          // Given index was LHS
+          spreadIndices[0] = pindex;
+          spreadIndices[1] = pindex - 1;
+        }
+      } else {
+        // Left to right
+        if (this.getPageSide(pindex) == 'L') {
+          spreadIndices[0] = pindex;
+          spreadIndices[1] = pindex + 1;
+        } else {
+          // Given index was RHS
+          spreadIndices[1] = pindex;
+          spreadIndices[0] = pindex - 1;
+        }
+      }
+
+      return spreadIndices;
+    };
+
+    // Disable embedding
+    br.getEmbedCode = function(frameWidth, frameHeight, viewParams) {
+      return "Embed code not supported";
+    };
+
+    // Example values
+    // br.bookId        = 'Jeremiah_White_Graves_Diary_Volume_2_Book_01';
+    // br.zip           = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01_jp2.zip';
+    // br.subPrefix     = 'JWGravesVol2Book01';
+    // br.server        = 'ia600607.us.archive.org';
+    // br.bookTitle     = 'Diary of Jeremiah White Graves, Volume 2, Book 1';
+    // br.bookPath      = '/33/items/Jeremiah_White_Graves_Diary_Volume_2_Book_01/JWGravesVol2Book01';
+    // br.bookUrl       = 'http://www.archive.org/details/Jeremiah_White_Graves_Diary_Volume_2_Book_01';
+    // br.imageFormat   = 'jp2';
+    // br.archiveFormat = 'zip';
+
+    br.bookId        = "#{@work.ia_work.book_id}";
+    br.zip           = "#{@work.ia_work.ia_path}/#{@work.ia_work.zip_file}";
+    br.subPrefix     = "#{@work.ia_work.sub_prefix}";
+    br.server        = "#{@work.ia_work.server}";
+    br.bookTitle     = "#{@work.ia_work.title}";
+    br.bookPath      = "#{@work.ia_work.book_path}";
+    br.bookUrl       = "http://www.archive.org/details/#{@work.ia_work.book_id}";
+    br.imageFormat   = "#{@work.ia_work.image_format}";
+    br.archiveFormat = "#{@work.ia_work.archive_format}";
+
+    br.pageW         = [#{@page.ia_leaf.page_w}];
+    br.pageH         = [#{@page.ia_leaf.page_h}];
+    br.leafMap       = [#{@page.ia_leaf.leaf_number}];
+    br.pageNums      = [#{@page.ia_leaf.page_number}];
+    br.numLeafs      = br.pageW.length;
+
+    br.init();

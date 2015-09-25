@@ -1,6 +1,7 @@
 #require_dependency "user"
 require 'fileutils'
 require 'RMagick'
+require 'zip'
 include Magick
 
 module ImageHelper
@@ -8,17 +9,33 @@ module ImageHelper
   #############################
   # Code for new zoom feature
   #############################
+
+  def self.unzip_file (file, destination)
+    print "upzip_file(#{file})\n"
+    
+    Zip::File.open(file) do |zip_file|
+      zip_file.each do |f|
+#        f_path=File.join(destination, File.basename(f.name))
+        # FileUtils.mkdir_p(File.dirname(destination)) unless Dir.exist? destination
+        outfile = File.join(destination, f.name)
+        FileUtils.mkdir_p(File.dirname(outfile))
+ 
+        print "\textracting #{outfile}\n"
+        zip_file.extract(f, outfile)
+      end
+    end
+    
+  end
+  
+
   
   def self.extract_pdf(filename)
     destination = filename.gsub(File.extname(filename), '')
     FileUtils.mkdir(destination) unless File.exists?(destination)
-    image_list = Magick::ImageList.new(filename) do
-      self.density = 200
-      self.quality = 90
-    end
-    image_list.each_with_index do |image, i|
-      image.write(File.join(destination, "#{i.to_s.rjust(4, '0')}.jpg"))
-    end
+    pattern = File.join(destination, "page_%04d.jpg")
+    convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
+    print("#{convert}\n")
+    system(convert)
     
     destination
   end

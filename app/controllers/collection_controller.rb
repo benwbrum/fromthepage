@@ -7,7 +7,8 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_filter :authorized?, :only => [:edit, :delete, :new, :create]
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :delete]
+  before_filter :load_settings, :only => [:edit, :update]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -18,6 +19,14 @@ class CollectionController < ApplicationController
     elsif @collection && @collection.owner != current_user
       ajax_redirect_to dashboard_path
     end
+  end
+
+  def load_settings
+    @main_owner = @collection.owner
+    @owners = [@main_owner] + @collection.owners
+    @nonowners = User.order(:display_name) - @owners
+    @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+    @works_not_in_collection = current_user.owner_works - @collection.works
   end
 
   def show
@@ -35,24 +44,24 @@ class CollectionController < ApplicationController
 
   def add_owner
     @collection.owners << @user
-    redirect_to :action => 'edit', :collection_id => @collection.id
+    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def remove_owner
     @collection.owners.delete(@user)
-    redirect_to :action => 'edit', :collection_id => @collection.id
+    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def publish_collection
     @collection.restricted = false
     @collection.save!
-    redirect_to :action => 'edit', :collection_id => @collection.id
+    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def restrict_collection
     @collection.restricted = true
     @collection.save!
-    redirect_to :action => 'edit', :collection_id => @collection.id
+    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def delete
@@ -65,21 +74,15 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    @main_owner = @collection.owner
-    @owners = [@main_owner] + @collection.owners
-    @nonowners = User.order(:display_name) - @owners
-    @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
-
-    #@owners = @collection.owners.select('users.*, count(deeds.id) as contributions').joins(:deeds).group('users.id')
-
-    @works_not_in_collection = current_user.owner_works - @collection.works
   end
 
   def update
-    collection = Collection.find(params[:id])
-    collection.update_attributes(params[:collection])
-    flash[:notice] = "Collection has been updated"
-    redirect_to :back
+    if @collection.update_attributes(params[:collection])
+      flash[:notice] = 'Collection has been updated'
+      redirect_to action: 'edit', collection_id: @collection.id
+    else
+      render action: 'edit'
+    end
   end
 
   # tested
@@ -90,9 +93,9 @@ class CollectionController < ApplicationController
     @collection.owner = current_user
     if @collection.save
       flash[:notice] = 'Collection has been created'
-      ajax_redirect_to({ :action => 'edit', :collection_id => @collection.id })
+      ajax_redirect_to({ action: 'edit', collection_id: @collection.id })
     else
-      render :new
+      render action: 'new'
     end
   end
 
@@ -100,15 +103,15 @@ class CollectionController < ApplicationController
     logger.debug("DEBUG collection1=#{@collection}")
     set_collection_for_work(@collection, @work)
     logger.debug("DEBUG collection2=#{@collection}")
-    redirect_to :action => 'edit', :collection_id => @collection.id
+    redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
-    redirect_to :action => 'edit', :collection_id => @collection.id
+    redirect_to action: 'edit', collection_id: @collection.id
   end
 
-  private
+private
   def set_collection_for_work(collection, work)
     # first update the id on the work
     work.collection = collection
