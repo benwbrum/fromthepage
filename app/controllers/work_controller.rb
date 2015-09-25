@@ -69,6 +69,7 @@ class WorkController < ApplicationController
   def new
     @work = Work.new
     @collections = current_user.all_owner_collections
+    
   end
 
   def versions
