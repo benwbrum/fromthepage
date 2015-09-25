@@ -37,8 +37,10 @@ class User < ActiveRecord::Base
     (self.owned_collections + self.collections).uniq.sort {|a, b| a.title <=> b.title }
   end
 
-  def most_recently_managed_collection
-    self.owner_works.order(:created_on).last.collection
+  def most_recently_managed_collection_id
+    last_work = self.owner_works.order(:created_on).last
+    
+    last_work ? last_work.collection.id.to_i : 0
   end
 
   def can_transcribe?(work)

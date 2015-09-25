@@ -10,7 +10,7 @@
         td.w100 =f.text_field :title
       tr
         th =f.label :collection_id
-        td =f.collection_select(:collection_id, @collections, :id, :title, { :selected => current_user.most_recently_managed_collection.id.to_i })
+        td =f.collection_select(:collection_id, @collections, :id, :title, { :selected => current_user.most_recently_managed_collection_id })
       tr
         td(colspan="2")
           =f.label :description, 'Description', class: 'above'
