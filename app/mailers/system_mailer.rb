@@ -1,5 +1,9 @@
 class SystemMailer < ActionMailer::Base
-  default from: "from@example.com"
+
+  default from: "FromThePage <from@example.com>"
+  layout "mailer"
+
+  before_filter :add_inline_attachments!
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -8,7 +12,7 @@ class SystemMailer < ActionMailer::Base
   #
   def new_upload(document_upload)
     @document_upload = document_upload
-    mail to: "benwbrum@gmail.com", subject: "New Document Upload #{document_upload.name}"
+    mail to: "benwbrum@gmail.com", subject: "New document upload - #{document_upload.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -18,8 +22,7 @@ class SystemMailer < ActionMailer::Base
   #
   def upload_succeeded(document_upload)
     @document_upload = document_upload
-
-    mail to: "benwbrum@gmail.com"
+    mail to: "benwbrum@gmail.com", subject: "Upload succeeded - #{document_upload.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -29,7 +32,12 @@ class SystemMailer < ActionMailer::Base
   #
   def new_user
     @greeting = "Hi"
-
-    mail(to: "benwbrum@gmail.com", subject: "New Document Upload")
+    mail to: "benwbrum@gmail.com"
   end
+
+  private
+  def add_inline_attachments!
+    attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
+  end
+
 end

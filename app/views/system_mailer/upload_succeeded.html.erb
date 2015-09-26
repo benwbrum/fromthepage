@@ -1,8 +1,6 @@
-<h2>Upload Suceeded</h2>
-
+<h2 style="color:#453939; margin:0; font-weight:normal;">Upload Suceeded</h2>
 <p>
-  Upload #<%= @document_upload.id %> by <%= @document_upload.user.login %>
-  has been processed and is ready at
+  Upload #<%= @document_upload.id %> by <%= @document_upload.user.login %> has been processed and is ready at
   <%= link_to @document_upload.collection.title, {
       controller: 'collection',
       action: 'show',
