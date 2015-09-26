@@ -69,7 +69,6 @@ class WorkController < ApplicationController
   def new
     @work = Work.new
     @collections = current_user.all_owner_collections
-    
   end
 
   def versions
@@ -105,7 +104,6 @@ class WorkController < ApplicationController
     @work.description = params[:work][:description]
     @work.owner = current_user
     @collections = current_user.all_owner_collections
-    @collection_selected = current_user.most_recently_managed_collection_id
 
     if @work.save
       flash[:notice] = 'Work created successfully'
