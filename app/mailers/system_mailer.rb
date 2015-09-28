@@ -5,6 +5,11 @@ class SystemMailer < ActionMailer::Base
 
   before_filter :add_inline_attachments!
 
+  def config_test(target_email)
+    mail to: target_email, subject: "Mail config test for FromThePage"
+  end
+
+
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
