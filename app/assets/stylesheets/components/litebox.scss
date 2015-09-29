@@ -34,6 +34,7 @@ $svg-litebox-error: '<path fill="#FC3" d="M46.61,32.66L31.03,4.78C29.33,1.74,26.
   z-index: 9995;
   overflow: auto; // STRANGE: Repaint bugs in Chrome OSX
   position: fixed;
+  padding: 20px 0;
   visibility: hidden;
   text-align: center;
   background: rgba(#000, 0.5);

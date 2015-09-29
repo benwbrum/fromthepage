@@ -12,8 +12,10 @@
   },
 }]
 
-h1 Editor Dashboard
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, "#{selected_tab} - Editor Dashboard"
 
+h1 Editor Dashboard
 .tabs
   -for tab in tabs
     =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]

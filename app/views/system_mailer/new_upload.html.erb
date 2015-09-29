@@ -1,0 +1,57 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">New Upload on FromThePage</h2>
+<p>A user has just uploaded a new document. You should probably check on it to make sure it worked.</p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td colspan="2">
+        <h3 style="color:#453939; margin:0 0 5px 0; font-weight:normal;">Document</h3>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:3px 5px 3px 0; color:#8D7A75;">ID:</td>
+      <td style="padding:3px 0 3px 5px;"><%= @document_upload.id %></td>
+    </tr>
+    <tr>
+      <td style="padding:3px 5px 3px 0; color:#8D7A75;">File:</td>
+      <td style="padding:3px 0 3px 5px;"><%= @document_upload.file %></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <h3 style="color:#453939; margin:20px 0 5px 0; font-weight:normal;">User</h3>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:3px 5px 3px 0; color:#8D7A75;">Login:</td>
+      <td style="padding:3px 0 3px 5px;"><%= @document_upload.user.login %></td>
+    </tr>
+    <tr>
+      <td style="padding:3px 5px 3px 0; color:#8D7A75;">Email:</td>
+      <td style="padding:3px 0 3px 5px;"><%= @document_upload.user.email %></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <h3 style="color:#453939; margin:20px 0 5px 0; font-weight:normal;">Target Collection</h3>
+      </td>
+    </tr>
+    <% if @document_upload.collection.present? %>
+    <tr>
+      <td style="padding:3px 5px 3px 0; color:#8D7A75;">ID:</td>
+      <td style="padding:3px 0 3px 5px;"><%= @document_upload.collection.id %></td>
+    </tr>
+    <tr>
+      <td style="padding:3px 5px 3px 0; color:#8D7A75;">Title:</td>
+      <td style="padding:3px 0 3px 5px;"><%= @document_upload.collection.title %></td>
+    </tr>
+    <% else %>
+    <tr>
+      <td colspan="2" style="padding:3px 0; color:#8D7A75;">User hasn't defined a collection.</td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div style="margin-top:20px; padding-top:20px; border-top:1px solid #D3CFC6">
+  View all uploads at the
+  <%= link_to 'upload dashboard', { controller: 'admin', action: 'uploads', only_path: false } %>.
+</div>

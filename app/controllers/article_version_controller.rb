@@ -4,7 +4,7 @@ class ArticleVersionController < ApplicationController
 
   def set_versions
     @selected_version = @article_version.present? ? @article_version : @article.article_versions.first
-    @previous_version = @selected_version.prev
+    @previous_version = @selected_version.prev if @selected_version.present?
   end
 
   def list

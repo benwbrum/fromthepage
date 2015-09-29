@@ -1,7 +1,11 @@
+-user_name = @user.display_name.presence || @user.login
+
+-content_for :page_title, user_name
+-content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
+
 section.user-profile
-  -user_name = @user.display_name.presence || @user.login
   .user-profile_image
-    .userpic =gravatar_image_tag @user.email, :alt => @user.display_name, :gravatar => { :size => 256 }
+    .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
     -if @user.owner?
       .user-profile_badge: span owner
   .user-profile_details

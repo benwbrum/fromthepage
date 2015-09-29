@@ -1,3 +1,7 @@
+-content_for :page_title, "FromThePage - transcribe handwritten documents"
+-content_for :meta_description, "FromThePage is free software that allows volunteers to transcribe handwritten documents online. Easy to index and annotate subjects within a text using a wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search."
+-content_for :meta_keywords, "transcribe handwritten documents online free open-source wiki historical crowdsourcing transcription"
+
 -content_for :content_above
   section.intro
     .wrapper: .intro_box
@@ -17,7 +21,7 @@ section.start
     li.justified_box>
       .start_icon =svg_symbol '#start-project'
       h4.start_title Start Your Project
-      p.start_text If you want to run a transcription project, we would be interested in hosting your effort. <a href="images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
+      p.start_text If you want to run a transcription project, we would be interested in hosting your effort. <a href="mailto:images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
     li.justified_box>
       .start_icon =svg_symbol '#start-server'
       h4.start_title Run Your Server
@@ -99,7 +103,8 @@ section.spotlight
     p.big Check out the new features and learn how FromThePage can help to transcribe handwritten documents online.
     =link_to 'Learn more about FromThePage 2', { :controller => 'static', :action => 'about', :anchor => 'fromthepage2' }, class: 'button'
 
-  javascript:
-    $(function() {
-      new LiteBox({ content: '#welcome-message' }).open();
-    });
+  -content_for :javascript
+    javascript:
+      $(function() {
+        new LiteBox({ content: '#welcome-message' }).open();
+      });

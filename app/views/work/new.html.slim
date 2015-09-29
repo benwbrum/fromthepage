@@ -1,7 +1,6 @@
 .litebox-embed(style="width:550px")
   h1 Create New Work
-  p Please start from entering work title and selecting a collection. Although description is not required, it would be nice to describe the work here.
-
+  p A work is a single document like be a letter, a diary, a field book, post card, or notebook. Once you create the work you can add page images.
   =form_for(@work, { :url => { :action => 'create' }}) do |f|
     =validation_summary @work.errors
     table.form
@@ -10,10 +9,10 @@
         td.w100 =f.text_field :title
       tr
         th =f.label :collection_id
-        td =f.collection_select(:collection_id, @collections, :id, :title, { :include_blank => '- Do not include in a collection -' })
+        td =f.collection_select(:collection_id, @collections, :id, :title, { selected: current_user.most_recently_managed_collection_id })
       tr
         td(colspan="2")
-          =f.label :description, 'Work Description', class: 'above'
+          =f.label :description, 'Description', class: 'above'
           =f.text_area :description, rows: 4
     .toolbar
       .toolbar_group.aright =f.button 'Create Work'

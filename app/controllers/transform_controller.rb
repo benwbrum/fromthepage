@@ -31,6 +31,7 @@ class TransformController < ApplicationController
       redirect_to :action => 'directory_form'
       return
     end
+
     debug('L 3')
     debug("RAW IMAGE_SET STEP= #{@image_set.step}")
 
@@ -43,14 +44,13 @@ class TransformController < ApplicationController
       debug("REDIRECTING TO #{next_step}")
       ajax_redirect_to :action => next_step, :image_set_id => @image_set.id
       debug('L 5')
-
       return
     end
+
     debug('L 6')
     # if it's not, show an apologetic explanation
     render :text => @image_set.status + ' ' + @image_set.status_message
     debug('L 7')
-
   end
 
   #############################################################################
@@ -71,7 +71,6 @@ class TransformController < ApplicationController
     if(source_dir == nil || "" == source_dir)
       errors.add(:base, "You must enter a full directory path")
       render :action => 'directory_form'
-
     # check for a valid directory
     elsif(!File.directory?(source_dir))
       errors.add(:base, "The directory #{source_dir} is not valid")
@@ -100,20 +99,21 @@ class TransformController < ApplicationController
     debug("begin orient #{Time.now}")
     # shrink the sample image even more
     orig = Magick::ImageList.new(filename)
-    quarter = 1.to_f / 2.to_f
-    base = orig.resize(quarter)
+    #quarter = 1.to_f / 2.to_f
+    #base = orig.resize(quarter)
     @img_files = Hash.new
 
     debug(@image_set.inspect)
     dirname = @image_set.path
     # loop through each orientation and produce samples
     [0, 90, 180, 270].each do |angle|
-      image = base.rotate(angle)
+      #image = base.rotate(angle)
+      image = orig.rotate(angle)
       filename = File.join(dirname, "#{angle}.jpg")
       image.write(filename)
       @img_files["#{angle}"] = filename
     end
-    debug("end   orient #{Time.now}")
+    debug("end orient #{Time.now}")
   end
 
   def orientation_process
@@ -190,7 +190,7 @@ class TransformController < ApplicationController
     # apply the crop to the rest of the pages
     debug("Cropping other files...")
     call_rake :process_crop
-		#MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
+    #MiddleMan.get_worker(session[:job_key]).begin_crop_sextodecimo(start_of_band, band_height)
 
     redirect_to :action => 'number_format_form', :image_set_id => @image_set.id
   end
@@ -201,6 +201,7 @@ class TransformController < ApplicationController
   #
   # Gathers numeric-specific information for the config object
   #############################################################################
+
   def number_format_form
     # TODO: fix title controller
     @image = config[:sample_image]
@@ -217,7 +218,6 @@ class TransformController < ApplicationController
   end
 
   def numeric_format_start_form
-
   end
 
   def numeric_format_start_process
@@ -225,27 +225,32 @@ class TransformController < ApplicationController
     redirect_to :action => 'partial_list_form', :image_set_id => @image_set.id
   end
 
+
   #############################################################################
   # Date Format Branch
   #
   # Gathers date-specific information for the config object
   #############################################################################
+
   def date_format_form
     @image = config[:sample_image]
   end
 
   def date_format_process
     # take the date input
-    date_format  = params[:date_format_string]
+    date_format = params[:date_format_string]
     config[:date_format_string] = date_format
 
     # find out if it's valid
     test_date = Time.now
     if(test_date.strftime(date_format) == date_format)
       # re-render with an error message if it's not
-      flash.now['error'] = "Your date format was invalid"
+      #flash.now['error'] = "Your date format was invalid"
+      errors.add(:base, "Invalid Date Format has been provided")
       render :action => 'date_format_form'
+      return
     end
+
     @image_set.title_format = date_format
     @image_set.save!
     redirect_to :action => 'date_format_start_form', :image_set_id => @image_set.id
@@ -266,25 +271,39 @@ class TransformController < ApplicationController
   end
 
   def date_format_start_process
+    begin
+      Date.parse(params[:date_start])
+    rescue ArgumentError
+      errors.add(:base, "Invalid Date has been provided")
+      render :action => 'date_format_start_form'
+      return
+    end
+
     config[:date_start] = params[:date_start]
     # date all the titled images
     auto_title
     # redirect
-    redirect_to(:controller => 'title',
-                :action => 'list',
-                :image_set_id => @image_set.id)
+    redirect_to(:controller => 'title', :action => 'list', :image_set_id => @image_set.id)
   end
+
 
   #############################################################################
   # Process meter
   #
   # Displays status of different processing steps.
   #############################################################################
+
   def process_meter
     @total_images = @image_set.titled_images.count
+
     @shrunk_images = @image_set.titled_images.count(:conditions => ['shrink_completed = ?', true])
     @rotated_images = @image_set.titled_images.count(:conditions => ['rotate_completed = ?', true])
     @cropped_images = @image_set.titled_images.count(:conditions => ['crop_completed = ?', true])
+
+    @shrunk_images_percent = @total_images == 0 ? 0 : (@shrunk_images.fdiv(@total_images) * 100).round
+    @rotated_images_percent = @total_images == 0 ? 0 : (@rotated_images.fdiv(@total_images) * 100).round
+    @cropped_images_percent = @total_images == 0 ? 0 : (@cropped_images.fdiv(@total_images) * 100).round
+
     @shrink_process_count = `ps -p #{@image_set.shrink_pid} h| wc -l`.chomp.to_i
     @rotate_process_count = `ps -p #{@image_set.rotate_pid} h| wc -l`.chomp.to_i
     @crop_process_count = `ps -p #{@image_set.crop_pid} h| wc -l`.chomp.to_i
@@ -304,6 +323,7 @@ class TransformController < ApplicationController
   #
   # Manipulates partial lists
   #############################################################################
+
   def partial_list_form
     @current = config
     @number_images = []
@@ -312,9 +332,8 @@ class TransformController < ApplicationController
     end
   end
 
+
 private
-
-
   def call_rake(task, options = {})
     options[:rails_env] ||= Rails.env
     options[:image_set_id] = @image_set.id
@@ -323,7 +342,6 @@ private
     debug("DEBUG: #{rake_call}")
     system rake_call
   end
-
 
   def process_source_directory(source_directory_name)
     # create a working directory
@@ -340,7 +358,6 @@ private
 
     # looks lame
     config[:image_set_id] = @image_set.id
-
   end
 
   def auto_title
@@ -352,9 +369,7 @@ private
     # walk through each image
     for image in @image_set.titled_images
       image = TitledImage.find(image.id)
-      safe_update(image,
-                  { :title_seed => current_date.to_s,
-                    :title => current_date.strftime(date_format)})
+      safe_update(image, { :title_seed => current_date.to_s, :title => current_date.strftime(date_format)})
       if(config[:interval_sequential])
         current_date += 1
       else
@@ -371,7 +386,7 @@ private
   end
 
   def debug(message)
-    logger.debug("  DEBUG: #{message}")
+    logger.debug("DEBUG: #{message}")
   end
 
 end

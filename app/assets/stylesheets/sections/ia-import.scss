@@ -1,0 +1,93 @@
+// ---------------------------
+// IA IMPORT PAGE
+// ---------------------------
+
+
+.ia-import {
+  margin-top: $gapSize * 2;
+  &_headline {
+    width: 100%;
+    display: inline-block;
+    .dropdown {
+      float: right;
+      margin: 2px 0 0 $gapSize;
+    }
+    .legend {
+      margin: 0;
+    }
+    [data-prefix]:before {
+      color: $bodyFgLight;
+      display: inline-block;
+    }
+    [data-prefix]:not(:empty):before {
+      margin-right: 10px;
+      content: attr(data-prefix)':';
+    }
+  }
+  &_page {
+    width: 100%;
+    display: table;
+    min-height: 200px;
+
+    margin-bottom: $gapSize * 1.5;
+  }
+  &_image {
+    width: 25%;
+    display: table-cell;
+    vertical-align: top;
+    padding: $gapSize / 2;
+    padding-left: 0;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  &_text {
+    width: 75%;
+    height: 100%;
+    display: table-cell;
+    vertical-align: top;
+    &:before, &:after {
+      z-index: 1;
+      width: 100%;
+      content: '';
+      height: 15px;
+      display: block;
+      position: relative;
+    }
+    &:before {
+      margin-bottom: -15px;
+      background: linear-gradient(to bottom, $bodyBg, rgba($bodyBg, 0));
+    }
+    &:after {
+      margin-top: -15px;
+      background: linear-gradient(to top, $bodyBg, rgba($bodyBg, 0));
+    }
+  }
+  .scroller {
+    overflow: auto;
+    max-height: 100%;
+    padding: $gapSize / 2;
+    p {
+      margin: 0.3em 0;
+      line-height: 1.2;
+      font-size: $fontSizeSmall;
+    }
+  }
+}
+
+.ia-form {
+  &_field {
+    margin-bottom: $gapSize;
+  }
+  &_help {
+    margin-top: 0.5em;
+    color: $bodyFgLight;
+    font-size: $fontSizeSmall;
+  }
+  &_submit {
+    width: 100%;
+    font-size: $fontSizeStrong;
+    margin-bottom: $gapSize / 2;
+  }
+}

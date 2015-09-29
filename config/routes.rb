@@ -1,20 +1,18 @@
 Fromthepage::Application.routes.draw do
 
-  resources :sc_canvas
-
-  resources :sc_manifests
-
-  resources :sc_collections
+  root :to => 'static#splash'
 
   devise_for :users
 
-  resources :omeka_items
+  get   '/omeka_sites/items' => 'omeka_sites#items'
 
   resources :omeka_sites
+  resources :omeka_items
+  resources :sc_canvas
+  resources :sc_manifests
+  resources :sc_collections
 
   resources :notes
-
-  root :to => 'static#splash'
 
   get   '/admin' => 'admin#index'
 

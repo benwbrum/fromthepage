@@ -3,6 +3,9 @@ class AdminController < ApplicationController
 
   PAGES_PER_SCREEN = 20
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user]
+
   def authorized?
     unless user_signed_in? && current_user.admin
       redirect_to dashboard_path
@@ -37,14 +40,18 @@ class AdminController < ApplicationController
   end
 
   def update_user
-    @user.update_attributes(params[:user])
-    @user.save!
-    redirect_to :action => 'edit_user', :user_id => @user.id
+    if @user.update_attributes(params[:user])
+      flash[:notice] = "User profile has been updated"
+      ajax_redirect_to({ :action => 'user_list' })
+    else
+      render :action => 'edit_user'
+    end
   end
 
   def delete_user
     @user.destroy
-    redirect_to dashboard_path
+    flash[:notice] = "User profile has been deleted"
+    redirect_to :action => 'user_list'
   end
 
   # display sessions for a user
@@ -94,6 +101,29 @@ class AdminController < ApplicationController
     production_logfile = "#{Rails.root}/log/production.log"
     @dev_tail = `tail -#{@lines} #{development_logfile}`
     @prod_tail = `tail -#{@lines} #{production_logfile}`
+  end
+
+  def uploads
+    @document_uploads = DocumentUpload.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def delete_upload
+    @document_upload = DocumentUpload.find(params[:id])
+    @document_upload.destroy
+    flash[:notice] = "Uploaded document has been deleted"
+    redirect_to :action => 'uploads'
+  end
+
+  def process_upload
+    @document_upload = DocumentUpload.find(params[:id])
+    @document_upload.submit_process
+    flash[:notice] = "Uploaded document has been queued for processing"
+    redirect_to :action => 'uploads'
+  end
+
+  def view_processing_log
+    @document_upload = DocumentUpload.find(params[:id])
+    render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
   end
 
 end

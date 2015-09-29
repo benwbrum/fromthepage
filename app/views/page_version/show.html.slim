@@ -39,32 +39,33 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         div(data-diff-translation="original" data-empty="No translation provided")
           ==xml_to_html((@previous_version.xml_translation rescue ""))
 
-=javascript_include_tag 'textdiff'
-javascript:
-  $(function() {
-    $('.diff-versions')
-      .prettyTextDiff({
-        changedContainer:  '[data-diff-title=changed]',
-        originalContainer: '[data-diff-title=original]',
-        diffContainer:     '[data-diff-title=original]'
-      })
-      .prettyTextDiff({
-        changedContainer:  '[data-diff-transcription=changed]',
-        originalContainer: '[data-diff-transcription=original]',
-        diffContainer:     '[data-diff-transcription=original]'
-      })
-      .prettyTextDiff({
-        changedContainer:  '[data-diff-translation=changed]',
-        originalContainer: '[data-diff-translation=original]',
-        diffContainer:     '[data-diff-translation=original]'
-      });
+-content_for :javascript
+  =javascript_include_tag 'textdiff'
+  javascript:
+    $(function() {
+      $('.diff-versions')
+        .prettyTextDiff({
+          changedContainer:  '[data-diff-title=changed]',
+          originalContainer: '[data-diff-title=original]',
+          diffContainer:     '[data-diff-title=original]'
+        })
+        .prettyTextDiff({
+          changedContainer:  '[data-diff-transcription=changed]',
+          originalContainer: '[data-diff-transcription=original]',
+          diffContainer:     '[data-diff-transcription=original]'
+        })
+        .prettyTextDiff({
+          changedContainer:  '[data-diff-translation=changed]',
+          originalContainer: '[data-diff-translation=original]',
+          diffContainer:     '[data-diff-translation=original]'
+        });
 
-    // Awful workaround to make sure containers
-    // do not contain empty text nodes
-    $('[data-empty]').each(function() {
-      $element = $(this);
-      if(!$.trim($element.html())) {
-        $element.empty();
-      }
+      // Awful workaround to make sure containers
+      // do not contain empty text nodes
+      $('[data-empty]').each(function() {
+        $element = $(this);
+        if(!$.trim($element.html())) {
+          $element.empty();
+        }
+      });
     });
-  });

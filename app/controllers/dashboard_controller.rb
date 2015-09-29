@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
 
-  before_filter :authorized?, :only => [:owner, :staging]
-  before_filter :get_data, :only => [:owner, :staging]
+  before_filter :authorized?, :only => [:owner, :staging, :omeka]
+  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -35,6 +35,32 @@ class DashboardController < ApplicationController
   # Owner Dashboard - staging area
   def staging
   end
+
+  # Owner Dashboard - omeka import
+  def omeka
+    @omeka_items = OmekaItem.all
+    @omeka_sites = current_user.omeka_sites
+  end
+
+  # Owner Dashboard - upload document
+  def upload
+    @document_upload = DocumentUpload.new
+  end
+
+  def new_upload
+    @document_upload = DocumentUpload.new(params[:document_upload])
+    @document_upload.user = current_user
+
+    if @document_upload.save
+      flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
+      SystemMailer.new_upload(@document_upload).deliver!
+      @document_upload.submit_process
+      ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
+    else
+      render action: 'upload'
+    end
+  end
+  
 
   # Editor Dashboard - watchlist
   def watchlist

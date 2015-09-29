@@ -39,7 +39,8 @@ $.fn.flashclose = function(s) {
     }
 
     // Close on click
-    btnclose.one('click', function() {
+    btnclose.one('click', function(e) {
+      e.stopPropagation();
       container.fadeOut('fast', function() {
         container.remove();
       });
@@ -169,8 +170,10 @@ $.fn.categoriesSelect = function() {
 
 
 // Custom input file
-$.fn.customInputFile = function() {
+$.fn.inputFile = function() {
   return this.each(function() {
+    if(this.inputfile) return;
+
     var $container = $(this);
     var $button = $('button', $container);
     var $file = $('input[type=file]', $container);
@@ -183,6 +186,27 @@ $.fn.customInputFile = function() {
     $file.on('change', function() {
       $text.val($file.val());
     });
+
+    this.inputfile = true;
+  });
+};
+
+
+// Show big image
+$.fn.imageView = function() {
+  return this.each(function() {
+    var $element = $(this);
+    var content = $('<img>').attr('src', $element.attr('href'));
+    var litebox = new LiteBox({
+      content: content,
+      disposable: true,
+      cssclass: 'litebox-image'
+    });
+
+    $element.on('click', function(e) {
+      e.preventDefault();
+      litebox.open();
+    });
   });
 };
 
@@ -192,11 +216,11 @@ $.fn.customInputFile = function() {
 $(function() {
   $('.flash').flashclose();
   $('.dropdown').dropdown();
-  $('.input-file').customInputFile();
+  $('.input-file').inputFile();
   $('[data-litebox]').litebox();
   $('[data-tooltip]').tooltip();
   $('[data-fullheight]').fullheight();
-  $('[data-scrollfix]').scrollfix();
+  $('[data-imageview]').imageView();
 
   // Classname trigger
   $(document).on('click', '[data-toggle-class]', function() {
@@ -231,4 +255,11 @@ $(function() {
 
   // Manage subject categories
   $('[data-assign-categories]').categoriesSelect();
+
+  // Category tree expand/collapse
+  $('.tree-bullet').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $(this).closest('li').toggleClass('expanded');
+  });
 });

@@ -1,4 +1,5 @@
 class NotesController < ApplicationController
+
   def create
     @note = Note.new(params[:note])
     # truncate the body for the title

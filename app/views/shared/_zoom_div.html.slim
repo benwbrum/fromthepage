@@ -4,46 +4,47 @@
   -else
     =image_tag file_to_url(@page.canonical_facsimile_url)
 
-javascript:
-  $(function() {
-    // Zoomer initialization
-    var zoomer = $('.zoomer-container').zoomer();
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Zoomer initialization
+      var zoomer = $('.zoomer-container').zoomer();
 
-    // Check localStorage support
-    if(typeof Storage !== void(0)) {
-      var data = zoomer.data('zoomer');
-      var datakey = data.images[0];
-      var storage = localStorage['zoomer:' + datakey];
-      var properties = ['targetImageWidth','targetImageHeight','targetPositionerTop','targetPositionerLeft'];
+      // Check localStorage support
+      if(typeof Storage !== void(0)) {
+        var data = zoomer.data('zoomer');
+        var datakey = data.images[0];
+        var storage = localStorage['zoomer:' + datakey];
+        var properties = ['targetImageWidth','targetImageHeight','targetPositionerTop','targetPositionerLeft'];
 
-      if(storage) {
-        try {
-          storage = JSON.parse(storage);
-        } catch (err) {
-          storage = null;
-          console.log('JSON parse error: ' + err.message);
-        }
-
-        // Restore zoom level and pan position if exists
         if(storage) {
-          data.$image.one("load.zoomer", function(){
-            for(var i = 0, l = properties.length; i < l; i++) {
-              var property = properties[i];
-              data[property] = parseInt(storage[property], 10) || 0;
-            }
-            console.log('Zoomer state restored');
-          });
-        }
-      }
+          try {
+            storage = JSON.parse(storage);
+          } catch (err) {
+            storage = null;
+            console.log('JSON parse error: ' + err.message);
+          }
 
-      // Store zoom level and pan position
-      $(window).on('beforeunload', function() {
-        storage = {};
-        for(var i = 0, l = properties.length; i < l; i++) {
-          var property = properties[i];
-          storage[property] = data[property];
+          // Restore zoom level and pan position if exists
+          if(storage) {
+            data.$image.one("load.zoomer", function(){
+              for(var i = 0, l = properties.length; i < l; i++) {
+                var property = properties[i];
+                data[property] = parseInt(storage[property], 10) || 0;
+              }
+              console.log('Zoomer state restored');
+            });
+          }
         }
-        localStorage['zoomer:' + datakey] = JSON.stringify(storage);
-      });
-    }
-  });
+
+        // Store zoom level and pan position
+        $(window).on('beforeunload', function() {
+          storage = {};
+          for(var i = 0, l = properties.length; i < l; i++) {
+            var property = properties[i];
+            storage[property] = data[property];
+          }
+          localStorage['zoomer:' + datakey] = JSON.stringify(storage);
+        });
+      }
+    });

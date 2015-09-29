@@ -1,21 +1,9 @@
 class CategoryController < ApplicationController
   public :render_to_string
-  protect_from_forgery :except => [:expand_category_for_work, :expand_category, :expand_article]
+  protect_from_forgery
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit, :add_new, :update, :create]
-
-  def expand_category
-    render :layout => false
-  end
-
-  def expand_category_for_work
-    render :layout => false
-  end
-
-  def expand_article
-    render :layout => false
-  end
 
   def edit
   end

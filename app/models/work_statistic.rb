@@ -15,10 +15,10 @@ class WorkStatistic < ActiveRecord::Base
 
   def recalculate
     self[:total_pages] = work.pages.count
-    self[:transcribed_pages] = work.pages.count :conditions => 'xml_text is not null'
-    self[:annotated_pages] = work.pages.count :conditions=> "pages.id in (select page_id from page_article_links)"
-    self[:blank_pages] = work.pages.count :conditions=> "status = '#{Page::STATUS_BLANK}'"
-    self[:incomplete_pages] = work.pages.count :conditions=> "status = '#{Page::STATUS_INCOMPLETE}'"
+    self[:transcribed_pages] = work.pages.where('source_text is not null').count 
+    self[:annotated_pages] = work.pages.where('"pages.id in (select page_id from page_article_links)"').count
+    self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
+    self[:incomplete_pages] = work.pages.where("status = '#{Page::STATUS_INCOMPLETE}'").count
     save!
   end
 

@@ -1,0 +1,54 @@
+=render({ :partial => 'owner_header', :locals => { :selected => 3 } })
+
+.columns
+  article.maincol
+    .headline
+      h3.headline_title Imported Omeka Items
+    -if @omeka_items.blank?
+      .nodata
+        h4.nodata_title No Omeka Items
+        p.nodata_text You have not imported any items from Omeka collections.
+    -else
+      table.datagrid
+        tr
+          th Item Title
+          th Item Source
+          th
+        -@omeka_items.each do |omeka_item|
+          tr
+            td
+              div =link_to omeka_item.title, omeka_item
+              small.fglight ="Collection ##{omeka_item.omeka_collection_id}, Item ##{omeka_item.omeka_id}"
+            td
+              div =link_to omeka_item.omeka_site.title, omeka_item.omeka_site
+              small.fglight =omeka_item.omeka_url
+            td.aright
+              dl.dropdown.right
+                dt
+                  span Actions
+                  =svg_symbol '#icon-list', class: 'icon'
+                dd
+                  =link_to 'Edit Item Details', edit_omeka_item_path(omeka_item), :data => { litebox: { hash: "edit-omeka-item-#{omeka_item.id}" } }
+                  =link_to 'Publish to Editors', :controller => 'omeka_items', :action => 'import', :id => omeka_item.id
+                  hr
+                  =link_to 'Delete Item', omeka_item, method: :delete, data: { confirm: 'Are you sure you want to delete this item?' }, class: 'fgred'
+
+  aside.sidecol
+    .headline
+      h3.headline_title Sources
+      .headline_aside =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button outline'
+    -if @omeka_sites.blank?
+      p.fgfaded You didn't connect any Omeka sites. Use the button above to create a new Omeka connection.
+    -else
+      p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
+      ul.omeka-sites
+        -@omeka_sites.each do |omeka_site|
+          li.omeka-site
+            h5.omeka-site_title =link_to omeka_site.title, omeka_site
+            small.omeka-site_url =omeka_site.api_url
+            dl.dropdown.right
+              dt =svg_symbol '#icon-list', class: 'icon'
+              dd
+                =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
+                hr
+                =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'

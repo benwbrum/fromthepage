@@ -36,7 +36,7 @@
                       =link_to 'Add Child Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox': ''
                       =link_to 'Add Root Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox': ''
                       hr
-                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
+                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
           dd
             -if category.articles.empty?
               p.acenter.fglight There are no subjects for the category selected
@@ -57,23 +57,20 @@
       =="There are no subject categories in the collection.<br>"
       =="#{add_category} you'll use to group subjects." if user_signed_in? && current_user.like_owner?(@collection)
 
-javascript:
-  $(function() {
-    $(window).on('hashchange', function() {
-      var selected = window.location.hash || $('.tree-item:first').attr('href');
-      var $tree_item = $('.tree-item[href="'+selected+'"]');
+=render({ :partial => '/shared/collection_footer' })
 
-      if($tree_item.length !== 0) {
-        $tree_item.parentsUntil('.category-tree', 'li').addClass('expanded');
-        $('.tree-item.selected').removeClass('selected');
-        $tree_item.addClass('selected');
-        $(selected).show().siblings().hide();
-      }
-    }).trigger('hashchange');
+-content_for :javascript
+  javascript:
+    $(function() {
+      $(window).on('hashchange', function() {
+        var selected = window.location.hash || $('.tree-item:first').attr('href');
+        var $tree_item = $('.tree-item[href="'+selected+'"]');
 
-    $('.tree-bullet').on('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      $(this).closest('li').toggleClass('expanded');
+        if($tree_item.length !== 0) {
+          $tree_item.parentsUntil('.category-tree', 'li').addClass('expanded');
+          $('.tree-item.selected').removeClass('selected');
+          $tree_item.addClass('selected');
+          $(selected).show().siblings().hide();
+        }
+      }).trigger('hashchange');
     });
-  });

@@ -68,7 +68,7 @@ class WorkController < ApplicationController
 
   def new
     @work = Work.new
-    @collections = Collection.where(owner_user_id: current_user.id)
+    @collections = current_user.all_owner_collections
   end
 
   def versions
@@ -103,9 +103,11 @@ class WorkController < ApplicationController
     @work.collection_id = params[:work][:collection_id]
     @work.description = params[:work][:description]
     @work.owner = current_user
+    @collections = current_user.all_owner_collections
+
     if @work.save
       flash[:notice] = 'Work created successfully'
-      ajax_redirect_to({ :action => 'edit', :work_id => @work.id })
+      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
       render :new
     end

@@ -1,0 +1,84 @@
+// ---------------------------
+// OMEKA PAGES
+// ---------------------------
+
+
+.omeka-item {
+  .maincol { width: 60%; }
+  .sidecol { width: 40%; }
+}
+
+.omeka-item-files {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+}
+
+.omeka-item-file {
+  display: table-row;
+  border-top: 1px solid $borderColor;
+  &:first-child { border: 0; }
+  &_image {
+    display: table-cell;
+    vertical-align: top;
+    padding: $gapSize 0;
+    img { border: 1px solid rgba(#000, 0.1); }
+  }
+  &_description {
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    padding: $gapSize 0 $gapSize $gapSize;
+  }
+}
+
+.omeka-item-info {
+  padding: 0;
+  list-style: none;
+  margin: $gapSize 0;
+  li {
+    margin: 0.5em 0;
+    &:before { color: $bodyFgLight; }
+  }
+}
+
+.omeka-collection {
+  padding: $gapSize * 1.5 0;
+  border-top: 1px solid $borderColor;
+  &:first-child {
+    border: 0;
+    padding-top: 0;
+  }
+  &_count {
+    color: $bodyFgFaded;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: $fontSizeH5;
+    font-family: $fontFamilyHead;
+    & + .button { margin-left: $gapSize / 2; }
+  }
+  &_description {
+    color: $bodyFgLight;
+    margin: $gapSize 0 0 0;
+  }
+}
+
+.omeka-collection-items {
+  margin-top: $gapSize;
+  margin-bottom: -($gapSize * 1.5 + 1px);
+}
+
+.omeka-collection-item {
+  &:hover td { background: rgba(#000, 0.03); }
+  &_saved {
+    display: none;
+    color: $fgGreen;
+  }
+  &_import[disabled] {
+    cursor: default;
+    text-decoration: none;
+    color: $bodyFgLight !important;
+  }
+  &.item-saved &_saved { display: block; }
+  &.item-saved &_import { display: none; }
+}

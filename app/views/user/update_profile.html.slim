@@ -3,7 +3,7 @@
   p Your name is the only required field here, but we would appreciate if you tell the FromThePage community a little bit more about yourself.
 
   =form_for(@user, { :url => { :action => 'update' }}) do |f|
-    =hidden_field_tag 'user_id', @user.id
+    =hidden_field_tag :user_id, @user.id
     =validation_summary @user.errors
     table.form
       tr.big

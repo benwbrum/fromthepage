@@ -1,0 +1,9 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">Your upload is ready!</h2>
+<p>
+  Your upload has been processed and is ready at
+  <%= link_to @document_upload.collection.title, {
+      controller: 'collection',
+      action: 'show',
+      collection_id: @document_upload.collection.id,
+      only_path: false } %>.
+</p>

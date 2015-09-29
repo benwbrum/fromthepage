@@ -1,0 +1,24 @@
+-# encoding: utf-8
+
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title FromThePage Email Notification
+
+  body(bgcolor="#F6EEE6" style="margin:0; padding:0; background-color:#F6EEE6")
+    table(width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#F6EEE6" style="background-color:#F6EEE6; font-family: Georgia, 'Times New Roman', serif;")
+      tbody
+        tr
+          td(align="center" style="padding:30px;")
+            =image_tag attachments["logo.png"].url, alt: "FromThePage logo"
+        tr
+          td(align="center")
+            table(width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" style="background-color:#FFFFFF; color:#200;")
+              tbody
+                tr
+                  td(style="padding:30px; font-size:16px;")
+                    =yield
+        tr
+          td(align="center" style="padding:30px; color:#8D7A75;")
+            span =="&copy; #{Time.now.year} #{link_to 'FromThePage', root_url, style: 'color: #8D7A75;'}. All rights reserved."

@@ -5,6 +5,9 @@ class ImageSetController < ApplicationController
 
   before_filter :authorized?
 
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:select_target]
+
   def load_objects_from_params
     super
     if(params[:set_to_append_id])
@@ -22,7 +25,6 @@ class ImageSetController < ApplicationController
       end
     end
   end
-
 
   def convert_to_work
     work = Work.new
@@ -63,38 +65,19 @@ class ImageSetController < ApplicationController
   end
 
   def select_target
-    @left_sets = current_user.image_sets
-    @left_sets.delete(@image_set)
+    @left_sets = current_user.image_sets - [@image_set]
   end
-
 
   def append
     # expect @image_set and param[set_to_append_id]
-        # load up the sets
+    # load up the sets
     # now start copying images over
-    # the associations will not be saved until the
-    # parent is saved.  who knows what will happen to
-    # the position attributes?
-    append_size = @set_to_append.titled_images.size
-    original_size = @image_set.titled_images.size
+    # the associations will not be saved until the parent is saved.
 
-    logger.debug("DEBUG: setting positions")
-    @set_to_append.titled_images.each_with_index do |image, i|
-      image.position=i+original_size
-      image.save!
-      logger.debug("DEBUG: set #{image.id}.position=#{i}")
-    end
-
-    0.upto(append_size-1) do |i|
-      @image_set.titled_images << @set_to_append.titled_images[i]
-    end
-    # no idea why the owner is getting blanked out
-    @image_set.owner = current_user
+    @image_set.titled_images << @set_to_append.titled_images
     @image_set.save!
-    # this has no effect on acts as list unless I do it manually
-    #1.upto(@image_set.titled_images.size) do |i|
-    redirect_to :controller => 'title', :action => 'list', :image_set_id => @image_set.id
 
+    ajax_redirect_to :controller => 'title', :action => 'list', :image_set_id => @image_set.id
   end
 
 end

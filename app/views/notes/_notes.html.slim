@@ -18,46 +18,48 @@
         span.user-bubble_form_error
         =f.button 'Submit'
 
-  javascript:
-    $(function() {
-      // Toggle note edit
-      $(document).on('click', '[data-note-edit]', function() {
-        var $container = $(this).closest('.user-bubble').toggleClass('edit');
-        if($container.hasClass('edit')) {
-          $('form', $container)[0].reset();
-          $('.user-bubble_form_error', $container).empty();
-        }
+  -content_for :javascript
+    javascript:
+      $(function() {
+        // Toggle note edit
+        $(document).on('click', '[data-note-edit]', function() {
+          var $container = $(this).closest('.user-bubble').toggleClass('edit');
+          if($container.hasClass('edit')) {
+            $('form', $container)[0].reset();
+            $('.user-bubble_form_error', $container).empty();
+          }
+        });
+
+        // Create and update note
+        $(document).on('ajax:complete', 'form.user-bubble_form', function(e, xhr) {
+          var $container = $(this).parent();
+          var $error = $('.user-bubble_form_error', $container).empty();
+          if(xhr.status === 201) {
+            // Note created
+            var content = xhr.responseJSON.html;
+            $(content).hide().insertBefore($container).fadeIn();
+            $('[data-note-empty]').hide();
+            this.reset();
+          } else if(xhr.status === 204) {
+            // Note updated
+            var content = $('textarea', this).val();
+            $container.removeClass('edit');
+            $('.user-bubble_content > p', $container).text(content);
+          } else {
+            // Error occurred
+            var message = xhr.responseJSON.join('. ');
+            $error.text('Error: ' + message);
+          }
+        });
+
+        // Delete note
+        $(document).on('ajax:complete', '[data-note-delete]', function(e, xhr) {
+          if(xhr.status === 200 || xhr.status === 204) {
+            var $container = $(this).closest('.user-bubble');
+            $container.fadeOut(function() { $(this).remove(); });
+          }
+        });
       });
 
-      // Create and update note
-      $(document).on('ajax:complete', 'form.user-bubble_form', function(e, xhr) {
-        var $container = $(this).parent();
-        var $error = $('.user-bubble_form_error', $container).empty();
-        if(xhr.status === 201) {
-          // Note created
-          var content = xhr.responseJSON.html;
-          $(content).hide().insertBefore($container).fadeIn();
-          $('[data-note-empty]').hide();
-          this.reset();
-        } else if(xhr.status === 204) {
-          // Note updated
-          var content = $('textarea', this).val();
-          $container.removeClass('edit');
-          $('.user-bubble_content > p', $container).text(content);
-        } else {
-          // Error occurred
-          var message = xhr.responseJSON.join('. ');
-          $error.text('Error: ' + message);
-        }
-      });
-
-      // Delete note
-      $(document).on('ajax:complete', '[data-note-delete]', function(e, xhr) {
-        if(xhr.status === 200 || xhr.status === 204) {
-          var $container = $(this).closest('.user-bubble')
-          $container.fadeOut(function() { $(this).remove(); })
-        }
-      });
-    });
 -else
   p.acenter.fglight =="Please #{link_to('sign in', new_user_session_path)} to write a note for this page"

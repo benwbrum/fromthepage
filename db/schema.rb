@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819150921) do
+ActiveRecord::Schema.define(version: 20150929113251) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20150819150921) do
     t.text     "intro_block",   limit: 16777215
     t.text     "footer_block",  limit: 16777215
     t.boolean  "restricted",                     default: false
+    t.string   "picture"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -130,6 +131,18 @@ ActiveRecord::Schema.define(version: 20150819150921) do
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
+
+  create_table "document_uploads", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "collection_id"
+    t.string   "file"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",        default: "new"
+  end
+
+  add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
+  add_index "document_uploads", ["user_id"], name: "index_document_uploads_on_user_id", using: :btree
 
   create_table "exports", force: true do |t|
     t.integer  "user_id"

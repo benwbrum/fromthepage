@@ -85,13 +85,13 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
   &:active, &.pressed { @include button-state(active); }
 
   // Red button
-  &.bgred { @include button-colorize($btnRedColor, $btnRedBackground); }
+  //&.bgred { @include button-colorize($btnRedColor, $btnRedBackground); }
 
   // Green button
-  &.bggreen { @include button-colorize($btnGreenColor, $btnGreenBackground); }
+  //&.bggreen { @include button-colorize($btnGreenColor, $btnGreenBackground); }
 
   // Orange button
-  &.bgorange { @include button-colorize($btnOrangeColor, $btnOrangeBackground); }
+  //&.bgorange { @include button-colorize($btnOrangeColor, $btnOrangeBackground); }
 
   // Disabled button
   &[disabled] { @include button-state(disabled); }
@@ -114,6 +114,7 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
       border-color: rgba(#000, 0.25);
     }
     &:active, &.pressed { @include button-state(active); }
+    &[disabled] { box-shadow: none; }
   }
 }
 

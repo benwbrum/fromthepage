@@ -1,0 +1,76 @@
+-content_for :page_title, "Browse #{@omeka_site.title}"
+
+h1 ="Browse #{@omeka_site.title}"
+.omeka-collections
+  -@omeka_collections.each do |collection|
+    -if collection.data.items.count > 0
+      .omeka-collection
+        .headline.nomargin
+          h3.headline_title =collection.dublin_core.title
+          .headline_aside
+            span.omeka-collection_count =pluralize(collection.data.items.count, 'item')
+            =link_to 'Click to load', { action: 'items', omeka_site_id: @omeka_site.id, collection_id: collection.data.id }, remote: true, data: { 'omeka-items': '' }, class: 'button outline'
+        -if collection.dublin_core.description.present?
+          p.omeka-collection_description =collection.dublin_core.description
+
+  -if @omeka_collectionless_items.present?
+    .omeka-collection
+      .headline
+        h3.headline_title Uncategorized Items
+        .headline_aside
+          span.omeka-collection_count =pluralize(@omeka_collectionless_items.size, 'item')
+          =link_to 'Click to load', { action: 'items', omeka_site_id: @omeka_site.id }, remote: true, data: { 'omeka-items': '' }, class: 'button outline'
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Load omeka items
+      $(document).on('ajax:before', '[data-omeka-items]', function(e, xhr) {
+        var $element = $(this);
+        if($element.is('[disabled]')) return false;
+        $element.data('old-text', $element.text().trim());
+        $element.attr('disabled', true).text('Loading...');
+      });
+      $(document).on('ajax:complete', '[data-omeka-items]', function(e, xhr) {
+        var $element = $(this);
+        if(xhr.status === 200) {
+          var $collection = $element.closest('.omeka-collection').append(xhr.responseText);
+          $element.replaceWith($('<a>').addClass('button outline').attr('data-omeka-import-all', '').text('Import all'));
+          checkImportAll($collection);
+        } else {
+          $element.removeAttr('disabled').text($element.data('old-text'));
+          console.log('Error loading omeka items: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
+
+      // Import single omeka item
+      $(document).on('ajax:before', '[data-omeka-import]', function(e, xhr) {
+        var $element = $(this);
+        if($element.is('[disabled]')) return false;
+        $element.data('old-text', $element.text().trim());
+        $element.attr('disabled', true).find('span').text('Wait...');
+      });
+      $(document).on('ajax:complete', '[data-omeka-import]', function(e, xhr) {
+        var $element = $(this);
+        if(xhr.status === 200 || xhr.status === 201) {
+          var $collection = $element.closest('.omeka-collection');
+          $element.closest('tr').addClass('item-saved');
+          $element.remove();
+          checkImportAll($collection);
+        } else {
+          $element.removeAttr('disabled').find('span').text($element.data('old-text'));
+          console.log('Error importing omeka item: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      });
+
+      // Import all items in a collection
+      $(document).on('click', '[data-omeka-import-all]', function() {
+        $(this).closest('.omeka-collection').find('a[data-omeka-import]').trigger('click');
+      });
+
+      function checkImportAll($collection) {
+        if($collection.has('a[data-omeka-import]').length === 0) {
+          $collection.find('a[data-omeka-import-all]').attr('disabled', true);
+        }
+      }
+    })

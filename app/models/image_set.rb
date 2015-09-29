@@ -140,13 +140,12 @@ class ImageSet < ActiveRecord::Base
 
   end
 
-
-
   def resize_sample_image
     unless File.exists? self.sample_image.shrunk_file
       shrink(sample_image, self.original_to_base_halvings)
     end
   end
+
 
   ##############################################################
   # This will be slow, so it should be run in the background
@@ -224,6 +223,7 @@ class ImageSet < ActiveRecord::Base
   end
 
   def debug(message)
-    logger.debug("  DEBUG: #{message}")
+    logger.debug("DEBUG: #{message}")
   end
+
 end
