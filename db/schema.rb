@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150916224511) do
+ActiveRecord::Schema.define(version: 20150929113251) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
