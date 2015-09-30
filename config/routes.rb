@@ -21,6 +21,8 @@ Fromthepage::Application.routes.draw do
   get   '/dashboard/owner' => 'dashboard#owner'
   get   '/dashboard/staging' => 'dashboard#staging'
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
+  
+  get   '/iiif/:id/manifest', :to => 'iiif#manifest'
 
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1

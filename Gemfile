@@ -29,7 +29,7 @@ gem 'carrierwave'
 gem 'zip'
 
 gem 'riiif'
-gem 'osullivan'
+gem 'iiif-presentation', path: '../osullivan'
 
 group :assets do
   gem 'therubyracer'
