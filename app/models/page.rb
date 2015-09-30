@@ -202,11 +202,11 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     return link.id
   end
 
-private
   def thumbnail_filename
     self.base_image.sub(/.jpg/, "_thumb.jpg")
   end
 
+private
   def generate_thumbnail
     image = Magick::ImageList.new(self[:base_image])
     factor = 100.to_f / self[:base_height].to_f

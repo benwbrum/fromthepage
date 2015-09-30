@@ -28,6 +28,9 @@ gem 'protected_attributes'
 gem 'carrierwave'
 gem 'zip'
 
+gem 'riiif'
+gem 'osullivan'
+
 group :assets do
   gem 'therubyracer'
   gem 'uglifier'
