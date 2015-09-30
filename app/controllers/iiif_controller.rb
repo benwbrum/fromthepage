@@ -12,6 +12,7 @@ class IiifController < ApplicationController
     seed = { '@id' => 'http://localhost:3000/display/read_work?work_id=#{work.id}', 'label' => work.title}
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
+    manifest.description = work.description unless work.description.blank?
 
     sequence = IIIF::Presentation::Sequence.new
     sequence.label = 'Pages'
@@ -27,12 +28,16 @@ class IiifController < ApplicationController
          })
       annotation = IIIF::Presentation::Annotation.new
       annotation.resource << image_resource
+      
 
       canvas = IIIF::Presentation::Canvas.new
       canvas.label = page.title
       canvas.width = page.base_width
       canvas.height = page.base_height
-      canvas['@id'] = "http://localhost:3000/image-service/#{page.id}"
+      canvas['@id'] = url_for({ :controller => 'display', :page_id => page.id, :only_path => false })
+      
+      annotation['on'] = canvas['@id']
+      annotation['@id'] = "http://localhost:3000/image-service/#{page.id}"
       canvas.images << annotation
 
       sequence.canvases << canvas      
