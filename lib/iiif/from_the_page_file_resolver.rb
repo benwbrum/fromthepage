@@ -21,7 +21,7 @@ module Riiif
     def path(filename)
       # sometimes FromThePage stores absolute paths for file uploads, which is consistent within the same server but don't copy easily
       relative_path = filename.sub(/.*public/, "")
-      File::Stat::File.join(Rails.root, 'public', relative_path)  # specify module for file to avoid conflict with Riiif::File
+      "#{Rails.root}/public/#{relative_path}"
     end
     
   end
