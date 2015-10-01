@@ -144,14 +144,6 @@ ActiveRecord::Schema.define(version: 20150929113251) do
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
   add_index "document_uploads", ["user_id"], name: "index_document_uploads_on_user_id", using: :btree
 
-  create_table "exports", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "work_id"
-    t.string   "export_format"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
   create_table "ia_leaves", force: true do |t|
     t.integer  "ia_work_id"
     t.integer  "page_id"
@@ -218,7 +210,7 @@ ActiveRecord::Schema.define(version: 20150929113251) do
     t.integer  "collection_id"
     t.integer  "work_id"
     t.integer  "page_id"
-    t.string   "action",        limit: 100
+    t.string   "action",        limit: 20
     t.string   "params"
     t.string   "browser",       limit: 128
     t.string   "session_id",    limit: 40
@@ -421,10 +413,6 @@ ActiveRecord::Schema.define(version: 20150929113251) do
 
   add_index "sc_manifests", ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id", using: :btree
   add_index "sc_manifests", ["work_id"], name: "index_sc_manifests_on_work_id", using: :btree
-
-  create_table "schema_info", id: false, force: true do |t|
-    t.integer "version"
-  end
 
   create_table "sessions", force: true do |t|
     t.string   "session_id",                  default: "", null: false

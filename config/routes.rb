@@ -23,6 +23,8 @@ Fromthepage::Application.routes.draw do
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
+  get   '/iiif/:work_id/manifest/:page_id/list', :to => 'iiif#list'
+  get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
 
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
