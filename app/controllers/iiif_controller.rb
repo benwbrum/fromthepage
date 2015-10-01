@@ -66,12 +66,12 @@ class IiifController < ApplicationController
     annotation = IIIF::Presentation::Annotation.new
     annotation['on'] = region_from_page(@page)
     annotation.resource = IIIF::Presentation::Resource.new({'@id' => "plaintext_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
-    annotation["format"] =  "text/plain"
+    annotation.resource["format"] =  "text/plain"
     
     doc = Nokogiri::XML(@page.xml_text.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
     no_tags = doc.text
 
-    annotation["chars"] = no_tags
+    annotation.resource["chars"] = no_tags
 
     annotation_list.resources << annotation
     render :text => annotation_list.to_json(pretty: true), :content_type => "application/json"
