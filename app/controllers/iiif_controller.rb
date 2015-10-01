@@ -2,7 +2,7 @@ require 'iiif/presentation'
 class IiifController < ApplicationController
   def collections
     site_collection = IIIF::Presentation::Collection.new
-    site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collection', :only_path => false})
+    site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collections', :only_path => false})
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}"
     
     Collection.where(:restricted => false).each do |collection|
