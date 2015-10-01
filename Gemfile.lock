@@ -15,14 +15,6 @@ GIT
       faraday
       faraday_middleware
 
-PATH
-  remote: ../osullivan
-  specs:
-    iiif-presentation (0.0.5.pre.dev)
-      activesupport (>= 3.2.18)
-      faraday (~> 0.9.0)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -111,6 +103,10 @@ GEM
     gravatar_image_tag (1.2.0)
     hike (1.2.3)
     i18n (0.7.0)
+    iiif-presentation (0.0.4)
+      activesupport (>= 3.2.18)
+      faraday (~> 0.9.0)
+      json
     jquery-rails (3.1.2)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -267,7 +263,7 @@ DEPENDENCIES
   devise-encryptable
   factory_girl_rails
   gravatar_image_tag
-  iiif-presentation!
+  iiif-presentation
   jquery-rails
   meta_request
   mysql2 (= 0.3.16)
