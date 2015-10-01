@@ -12,7 +12,6 @@ class UserMailer < ActionMailer::Base
   #
   def upload_finished(document_upload)
     @document_upload = document_upload
-    binding.pry
 
     mail to: @document_upload.user.email, subject: "Your upload is ready"
   end

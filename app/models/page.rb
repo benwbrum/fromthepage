@@ -92,7 +92,7 @@ class Page < ActiveRecord::Base
   end
 
   def canonical_facsimile_url
-    binding.pry
+
     if self.ia_leaf
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
