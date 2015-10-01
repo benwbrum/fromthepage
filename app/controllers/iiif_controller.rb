@@ -94,8 +94,11 @@ private
         :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2'
+        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
+                
        })
+       
+    image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
     annotation = IIIF::Presentation::Annotation.new
     annotation.resource = image_resource
 
