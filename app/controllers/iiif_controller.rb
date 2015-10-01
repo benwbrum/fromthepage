@@ -1,33 +1,26 @@
 require 'iiif/presentation'
 class IiifController < ApplicationController
-  def collection
+  def collections
     site_collection = IIIF::Presentation::Collection.new
     site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collection', :only_path => false})
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}"
     
     Collection.where(:restricted => false).each do |collection|
-      iiif_collection = IIIF::Presentation::Collection.new
-      iiif_collection.label = collection.title
-      iiif_collection['@id'] = url_for({:controller => 'collection', :action => 'show', :collection_id => collection.id, :only_path => false})
-      
-      collection.works.each do |work|
-        unless work.ia_work
-          seed = { 
-                    '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}), 
-                    'label' => work.title
-                  }
-          manifest = IIIF::Presentation::Manifest.new(seed)
-          manifest.label = work.title
-          
-          iiif_collection.manifests << manifest            
-        end
-      end
+      iiif_collection = iiif_collection_from_collection(collection)      
       
       site_collection.collections << iiif_collection
     end
     
     render :text => site_collection.to_json(pretty: true), :content_type => "application/json"
   end
+    
+  def collection
+    iiif_collection = iiif_collection_from_collection(@collection)      
+    
+    render :text => iiif_collection.to_json(pretty: true), :content_type => "application/json"
+  end
+
+
     
   def manifest
     work_id =  params[:id]
@@ -79,6 +72,30 @@ class IiifController < ApplicationController
   
     
 private
+  def iiif_collection_id_from_collection(collection)
+    url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+  end
+  def iiif_collection_from_collection(collection)
+    iiif_collection = IIIF::Presentation::Collection.new
+    iiif_collection.label = collection.title
+    iiif_collection['@id'] = iiif_collection_id_from_collection(collection)
+    
+    collection.works.each do |work|
+      unless work.ia_work
+        seed = { 
+                  '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}), 
+                  'label' => work.title
+                }
+        manifest = IIIF::Presentation::Manifest.new(seed)
+        manifest.label = work.title
+        
+        iiif_collection.manifests << manifest            
+      end
+    end
+
+    iiif_collection  
+  end
+
   def canvas_id_from_page(page)
     url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
   end
