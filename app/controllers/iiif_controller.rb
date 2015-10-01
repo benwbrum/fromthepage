@@ -90,8 +90,8 @@ private
   def canvas_from_page(page)
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
-        :service_id => "http://localhost:3000/image-service/#{page.id}", 
-        :resource_id => "http://localhost:3000/image-service/#{page.id}/full/full/0/native.jpg",
+        :service_id => "#{url_for(:root)}image-service/#{page.id}", 
+        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg",
         :height => page.base_height,
         :width => page.base_width,
         :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2'
@@ -107,7 +107,7 @@ private
     canvas['@id'] = canvas_id_from_page(page)
     
     annotation['on'] = canvas['@id']
-    annotation['@id'] = "http://localhost:3000/image-service/#{page.id}"
+    annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
     canvas.images << annotation
     
     unless page.source_text.blank?
