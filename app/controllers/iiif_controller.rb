@@ -97,7 +97,7 @@ private
         :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2'
        })
     annotation = IIIF::Presentation::Annotation.new
-    annotation.resource << image_resource
+    annotation.resource = image_resource
 
     
     canvas = IIIF::Presentation::Canvas.new
