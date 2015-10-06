@@ -79,6 +79,7 @@ module XmlSourceProcessor
     xml_string = wiki || ""
 
     xml_string = process_square_braces(xml_string)
+    xml_string = process_titles(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
@@ -92,7 +93,6 @@ module XmlSourceProcessor
     xml_string = update_links_and_xml(xml_string, true)
     return xml_string
   end
-
 
   
   BRACE_REGEX = /\[\[.*?\]\]/m
@@ -140,11 +140,25 @@ module XmlSourceProcessor
   def process_line_breaks(text)
     text="<p>#{text}</p>"
     text = text.gsub(/\n\s*\n/, "</p><p>")
+    text = text.gsub(/-\r\n/, '<lb break="no" />')
     text = text.gsub(/\r\n/, "<lb/>")
+    text = text.gsub(/-\n/, '<lb break="no" />')
     text = text.gsub(/\n/, "<lb/>")
+    text = text.gsub(/-\r/, '<lb break="no" />')
     text = text.gsub(/\r/, "<lb/>")
     return text
   end
+
+  def process_titles(text)
+    6.downto(2) do |depth|
+      text.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |wiki_title|
+        text = text.sub(wiki_title.first, "<entryHeading title=\"#{wiki_title.last}\" depth=\"#{depth}\" />")
+      end
+    end
+
+    text
+  end
+
 
   def valid_xml_from_source(source)
     source = source || ""

@@ -15,6 +15,7 @@ module ExportHelper
     return "" if xml_text.blank?
 #    xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
+    # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
     #paras_string = ""
 
@@ -29,6 +30,10 @@ module ExportHelper
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
+  # def titles_to_divs(xml_text, context)
+    # logger.debug("FOO #{context.div_stack.count}\n")
+    # xml_text.scan(/entryHeading title=\".s*\" depth=\"(\d)\"")
+  # end
 
   def transform_links(p_element)
     p_element.elements.each('//link') do |link|
@@ -46,6 +51,13 @@ module ExportHelper
 
       gap.add_attribute("reason", "redacted")
       sensitive.replace_with(gap)
+    end
+    p_element.elements.each('//entryHeading') do |entryHeading|
+      gap = REXML::Element.new("head")
+
+      gap.add_attribute("depth", entryHeading.attributes["depth"])
+      gap.add_text(entryHeading.attributes["title"])
+      entryHeading.replace_with(gap)
     end
     p_element.elements.each('//a') do |a|
       rs = REXML::Element.new("rs")
