@@ -1,5 +1,5 @@
 // ---------------------------
-// START PROJECT PAGES
+// START PROJECT / RUN SERVER
 // ---------------------------
 
 
@@ -88,4 +88,22 @@
   max-width: 600px;
   text-align: center;
   margin: $gapSize * 2 auto;
+}
+
+.service {
+  margin: $gapSize * 2 0;
+  .justified_box {
+    width: 22%;
+    color: $bodyFgFaded;
+    padding: $gapSize * 1.5 0;
+  }
+  &_icon {
+    width: 150px;
+    height: 150px;
+  }
+  &_text { margin: 0; }
+
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 47%; }
+  }
 }
