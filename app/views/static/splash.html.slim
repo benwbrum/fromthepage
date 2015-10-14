@@ -13,19 +13,19 @@ section.start
     li.justified_box>
       .start_icon =svg_symbol '#start-reading'
       h4.start_title Start Reading
-      p.start_text You’re free to choose from the many interesting projects hosted on FromThePage. Start reading the <a href="#{dashboard_path}">historical writings</a> that have been already transcribed by other members.
+      p.start_text You’re free to choose from the many interesting projects hosted on FromThePage. Start reading the #{link_to 'historical writings', dashboard_path} that have been already transcribed by other members.
     li.justified_box>
       .start_icon =svg_symbol '#start-transcribing'
       h4.start_title Start Transcribing
-      p.start_text Help one of the great historical projects come into the digital age. Jeremiah White Graves's farm journal is only <a href="/collection/show?collection_id=5">partly transcribed</a>, so it would be a great place to test drive the software.
+      p.start_text Help one of the great historical projects come into the digital age. Jeremiah White Graves's farm journal is only #{link_to 'partly transcribed', { controller: 'collection', action: 'show', collection_id: 5 }}, so it would be a great place to test drive the software.
     li.justified_box>
       .start_icon =svg_symbol '#start-project'
       h4.start_title Start Your Project
-      p.start_text If you want to run a transcription project, we would be interested in hosting your effort. <a href="mailto:images@fromthepage.com">Send us your images</a> and we will notify you once they are available for transcription.
+      p.start_text If you want to run a transcription project, we would be interested in hosting your effort. Please compare the available #{link_to 'pricing plans', { controller: 'static', action: 'start_project' }} to choose the one that will fit your needs.
     li.justified_box>
       .start_icon =svg_symbol '#start-server'
       h4.start_title Run Your Server
-      p.start_text The software is released under the GNU AGPL v3.0, a Free/Open Source license. If you want to install FromThePage on your server, see the <a href="https://github.com/benwbrum/fromthepage/wiki">installation instructions</a> on GitHub.
+      p.start_text The software is released under the GNU AGPL v3.0, a Free/Open Source license. If you want to install FromThePage on your server, see the #{link_to 'installation instructions', 'https://github.com/benwbrum/fromthepage/wiki'} on GitHub.
 
 section.features
   h3.legend Features
