@@ -1,0 +1,109 @@
+// ---------------------------
+// START PROJECT / RUN SERVER
+// ---------------------------
+
+
+.pricing {
+  margin: 0 -10px;
+
+  &_grid {
+    width: 100%;
+    display: table;
+    border-spacing: 10px 0;
+    &_row {
+      display: table-row;
+    }
+    &_row:first-child &_cell {
+      border-top-width: 1px;
+      padding-top: $gapSize * 1.5;
+    }
+    &_row:last-child &_cell {
+      border-bottom-width: 1px;
+      padding-bottom: $gapSize * 1.5;
+    }
+    &_cell {
+      margin: 0;
+      width: 33.33%;
+      display: table-cell;
+      padding: 0 $gapSize * 1.5;
+      border: 0 solid $borderColor;
+      border-width: 0 1px;
+      background: mix(#FFF, $bodyBg, 50);
+    }
+  }
+
+  &_title {
+    padding-bottom: $gapSize;
+    border-bottom: 1px solid $borderColor;
+  }
+
+  &_features {
+    margin: 2em 1.5em;
+  }
+
+  &_feature {
+    margin: 0.8em 0;
+    font-size: $fontSizeBig;
+  }
+
+  &_price {
+    padding-top: $gapSize;
+    line-height: $fontSizeH1;
+    border-top: 1px solid $borderColor;
+    &_value {
+      line-height: 1;
+      font-size: $fontSizeH1;
+      font-family: $fontFamilyHead;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &_billing {
+      line-height: 1.2;
+      padding-top: 5px;
+      color: $bodyFgFaded;
+      margin-left: $gapSize / 2;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    &_request {
+      font-size: $fontSizeH4;
+      font-family: $fontFamilyHead;
+    }
+  }
+
+  &_payment {
+    margin: 1em 0;
+    color: $bodyFgLight;
+  }
+
+  .button {
+    width: 100%;
+    font-size: $fontSizeH4;
+    font-family: $fontFamilyHead;
+  }
+}
+
+.free-trial {
+  color: $bodyFgFaded;
+  max-width: 600px;
+  text-align: center;
+  margin: $gapSize * 2 auto;
+}
+
+.service {
+  margin: $gapSize * 2 0;
+  .justified_box {
+    width: 22%;
+    color: $bodyFgFaded;
+    padding: $gapSize * 1.5 0;
+  }
+  &_icon {
+    width: 150px;
+    height: 150px;
+  }
+  &_text { margin: 0; }
+
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 47%; }
+  }
+}
