@@ -9,9 +9,9 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_sites
   resources :omeka_items
-  resources :sc_canvas
-  resources :sc_manifests
-  resources :sc_collections
+  # resources :sc_canvas
+  # resources :sc_manifests
+  # resources :sc_collections
 
   resources :notes
 
@@ -26,6 +26,10 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
   get   '/iiif/:work_id/manifest/:page_id/list', :to => 'iiif#list'
   get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
+ 
+  get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
+  get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
+  get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
