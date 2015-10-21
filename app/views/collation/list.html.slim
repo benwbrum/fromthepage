@@ -13,7 +13,7 @@
   .imageset-merge_set
     h3.imageset-merge_title ="Image set ##{@left_set.id}"
     -@left_set.titled_images.each_with_index do |image, i|
-      =link_to(file_to_url(image.shrunk_file), class: 'imageset-merge_image', 'data-imageview': '')
+      =link_to(file_to_url(image.shrunk_file), class: 'imageset-merge_image', 'data-imageview' => '')
         span =image.title
         =image_tag(file_to_url(image.thumb_file))
       =link_to('Insert Blank', { :action => 'insert',
@@ -33,6 +33,6 @@
                 :index => i,
                 :where => 'before' },
                 class: 'imageset-merge_blank')
-      =link_to(file_to_url(image.shrunk_file), class: 'imageset-merge_image', 'data-imageview': '')
+      =link_to(file_to_url(image.shrunk_file), class: 'imageset-merge_image', 'data-imageview => '')
         =image_tag(file_to_url(image.thumb_file))
         span =image.title

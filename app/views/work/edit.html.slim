@@ -2,7 +2,7 @@
 
 .columns
   article.maincol
-    =form_for :work, url: { action: :update, id: @work.id }, html: { 'data-areyousure': '' } do |f|
+    =form_for :work, url: { action: :update, id: @work.id }, html: { 'data-areyousure' => '' } do |f|
       table.form
         tr.big
           th =f.label :title, 'Work title'
