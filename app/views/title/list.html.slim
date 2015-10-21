@@ -9,10 +9,10 @@
 .imageset-titles
   -@titled_images.each do |image|
     .imageset-title
-      =link_to(file_to_url(image.shrunk_file), class: 'imageset-title_image', 'data-imageview': '')
+      =link_to(file_to_url(image.shrunk_file), class: 'imageset-title_image', 'data-imageview' => '')
         =image_tag(file_to_url(image.crop_file))
 
-      =form_for :image, url: { action: :update, id: image.id }, html: { class: 'imageset-title_title', 'data-areyousure': '' } do |f|
+      =form_for :image, url: { action: :update, id: image.id }, html: { class: 'imageset-title_title', 'data-areyousure' => '' } do |f|
         table.form
           tr
             td.w100 =f.text_field :title, value: image.title

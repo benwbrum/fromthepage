@@ -10,7 +10,7 @@ h1 ="Omeka Item: #{@omeka_item.title}"
       -@omeka_item.client_files.each do |file|
         .omeka-item-file
           .omeka-item-file_image
-            =link_to image_tag(file.data.file_urls.thumbnail), file.data.file_urls.fullsize, 'data-imageview': ''
+            =link_to image_tag(file.data.file_urls.thumbnail), file.data.file_urls.fullsize, 'data-imageview' => ''
           .omeka-item-file_description
             ul.omeka-item-info
               li(data-prefix="File ID:") =file.data.id
