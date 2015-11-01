@@ -39,7 +39,6 @@ body
       .toolbar_group
         =link_to 'Home', (user_signed_in? ? dashboard_watchlist_path : root_path), class: 'header_link'
         =link_to 'Collections', dashboard_path, class: 'header_link'
-        =link_to 'Start Project', { controller: 'static', action: 'start_project' }, class: 'header_link'
         =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
 
         -if user_signed_in?
