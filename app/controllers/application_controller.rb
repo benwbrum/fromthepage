@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
+  rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
 
   def load_objects_from_params
 
@@ -71,6 +72,15 @@ class ApplicationController < ActionController::Base
       @article = @article_version.article
       @collection = @article.collection
     end
+  end
+
+  def bad_record_id
+    if @collection 
+      redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
+    else
+      redirect_to :controller => 'dashboard', :action => 'index'
+    end
+    return
   end
 
   # perform appropriate API call for updating the IA server
