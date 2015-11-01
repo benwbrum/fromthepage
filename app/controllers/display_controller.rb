@@ -15,12 +15,14 @@ class DisplayController < ApplicationController
     if @article
       #logger.debug("in display controller, work.id is #{@work.id}, if @article is true")
       # restrict to pages that include that subject
-      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],
-                                        :order => 'position',
-                                        :per_page => PAGES_PER_SCREEN,
-                                        :joins => 'INNER JOIN page_article_links pal ON pages.id = pal.page_id',
-                                        :conditions => [ 'pal.article_id = ?', @article.id ]
-      @pages.uniq!
+      # this appears to be dead code in the new UI.  Redirect to the collection-wide display
+      redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
+#      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],
+#                                        :order => 'position',
+#                                        :per_page => PAGES_PER_SCREEN,
+#                                        :joins => 'INNER JOIN page_article_links pal ON pages.id = pal.page_id',
+#                                        :conditions => [ 'pal.article_id = ?', @article.id ]
+#      @pages.uniq!
     else
       #@pages = Page.paginate @work.id, :page => params[:page]
       @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
