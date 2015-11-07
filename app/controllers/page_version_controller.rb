@@ -11,5 +11,4 @@ class PageVersionController < ApplicationController
     render 'show'
   end
 
-
 end
