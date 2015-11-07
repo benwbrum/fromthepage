@@ -9,7 +9,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
     th: h5 =pluralize(@page.page_versions.size, 'revision')
     th =="#{selected_version_user} at #{selected_version_date}"
-    th Revision changes
+    th Differences with <b>Form Goes Here</b>
   tr
     td.diff-list
       .scroll-container
@@ -39,6 +39,11 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         div(data-diff-translation="original" data-empty="No translation provided")
           ==xml_to_html((@previous_version.xml_translation rescue ""))
 
+=form_tag({ :action => 'show' }) do 
+  =hidden_field_tag :page_version_id, @selected_version.id
+  =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, @previous_version.id.to_s)
+  =button_tag "Go"
+  
 -content_for :javascript
   =javascript_include_tag 'textdiff'
   javascript:
