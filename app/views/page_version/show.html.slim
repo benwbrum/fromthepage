@@ -7,9 +7,13 @@ p.diff-help Here you can see all page revisions and compare the changes have bee
 
 table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
-    th: h5 =pluralize(@page.page_versions.size, 'revision')
+    th: h5.nomargin =pluralize(@page.page_versions.size, 'revision')
     th =="#{selected_version_user} at #{selected_version_date}"
-    th Revision changes
+    th
+      =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
+        =hidden_field_tag :page_version_id, @selected_version.id
+        =label_tag :compare_version_id, 'Compared with'
+        =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, @previous_version.id.to_s)
   tr
     td.diff-list
       .scroll-container
@@ -17,7 +21,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
           =link_to({ :action => 'show', :page_version_id => version.id }, class: ('selected' if version == @selected_version))
             =time_tag(version.created_on)
               =version.created_on.strftime("%b %d, %Y")
-            span =version.user.display_name
+            small =version.user.display_name
 
     td.diff-version
       h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
@@ -67,5 +71,10 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         if(!$.trim($element.html())) {
           $element.empty();
         }
+      });
+
+      // Auto submit form when select value changed
+      $('select#compare_version_id').on('change', function() {
+        $(this).closest('form').submit();
       });
     });
