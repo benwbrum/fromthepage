@@ -52,9 +52,9 @@ h1 Start a Project
 
     .pricing_grid_row
       .pricing_grid_cell
-        =link_to 'Sign Up', '#', class: 'button big'
+        =link_to 'Sign Up', "http://#{BILLING_HOST}/charges/new?plan_id=30month&amount=30&user_id=#{current_user.id}", class: 'button big'
       .pricing_grid_cell
-        =link_to 'Sign Up', '#', class: 'button big'
+        =link_to 'Sign Up', "http://#{BILLING_HOST}/charges/new?plan_id=100month&amount=300&user_id=#{current_user.id}", class: 'button big'
       .pricing_grid_cell
         =link_to 'Contact Us', '#', class: 'button big'
 
