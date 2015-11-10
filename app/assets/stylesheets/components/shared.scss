@@ -962,11 +962,24 @@ button, .button, .dropdown dd a {
   table-layout: fixed;
   border-collapse: separate;
   th {
+    padding: 10px 0;
     line-height: 30px;
     color: $bodyFgFaded;
-    padding: 0 0 5px 10px;
-    vertical-align: bottom;
-    &:first-child { width: 25%; }
+    &:first-child {
+      width: 25%;
+      padding-left: 10px;
+    }
+    form {
+      position: relative;
+      padding-left: 115px;
+      label {
+        left: 0;
+        top: 50%;
+        line-height: 1;
+        margin-top: -0.5em;
+        position: absolute;
+      }
+    }
   }
   td {
     vertical-align: top;
