@@ -33,9 +33,12 @@ module ImageHelper
     destination = filename.gsub(File.extname(filename), '')
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
-    convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
-    print("#{convert}\n")
-    system(convert)
+    gs = "gs -r300x300 -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
+    print gs
+    system(gs)
+    # convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
+    # print("#{convert}\n")
+    # system(convert)
     
     destination
   end
