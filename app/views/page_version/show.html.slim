@@ -13,7 +13,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
       =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
         =hidden_field_tag :page_version_id, @selected_version.id
         =label_tag :compare_version_id, 'Compared with'
-        =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, @previous_version.id.to_s)
+        =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
   tr
     td.diff-list
       .scroll-container
