@@ -131,6 +131,8 @@ namespace :fromthepage do
   end
   
   def convert_to_work(document_upload, path)
+    User.current_user=document_upload.user
+    
     work = Work.new
     work.owner = document_upload.user
     work.collection = document_upload.collection
@@ -152,7 +154,7 @@ namespace :fromthepage do
     ls = Dir.glob(File.join(new_dir_name, "*"))
     ls.each_with_index do |image_fn,i|
       page = Page.new
-      page.title = "#{i}"
+      page.title = "#{i+1}"
       page.base_image = image_fn
       image = Magick::ImageList.new(image_fn)
       page.base_height = image.rows

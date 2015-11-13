@@ -143,7 +143,7 @@ class Page < ActiveRecord::Base
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
     version.user = User.current_user
-
+    
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
     self.work.increment!(:transcription_version)
