@@ -51,12 +51,20 @@ h1 Start a Project
         .pricing_payment Please contact us for a quote
 
     .pricing_grid_row
-      .pricing_grid_cell
-        =link_to 'Sign Up', "http://#{BILLING_HOST}/charges/new?plan_id=30month&amount=30&user_id=#{current_user.id}", class: 'button big'
-      .pricing_grid_cell
-        =link_to 'Sign Up', "http://#{BILLING_HOST}/charges/new?plan_id=100month&amount=300&user_id=#{current_user.id}", class: 'button big'
-      .pricing_grid_cell
-        =link_to 'Contact Us', '#', class: 'button big'
+      -if billing_host
+        .pricing_grid_cell
+          =link_to 'Sign Up', "http://#{billing_host}/charges/new?plan_id=30month&amount=30&user_id=#{current_user.id}", class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Sign Up', "http://#{billing_host}/charges/new?plan_id=100month&amount=300&user_id=#{current_user.id}", class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
+      -else
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
 
 p.free-trial If you want to test drive FromThePage before you sign up for a paid plan, you are welcome to #{link_to 'start a free trial', '#'} — one collection, up to 400 pages.
 
