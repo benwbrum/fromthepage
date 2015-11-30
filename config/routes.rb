@@ -31,6 +31,12 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
+  get   'document_set/new', :to => 'document_sets#new'
+  get   'document_set/edit', :to => 'document_sets#edit'
+  post   'document_set/assign_works', :to => 'document_sets#assign_works'
+  get   'document_set/:document_set_id', :to => 'document_sets#show'
+#  resources :document_sets
+
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
 
@@ -44,6 +50,7 @@ Fromthepage::Application.routes.draw do
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
+
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151007005350) do
+ActiveRecord::Schema.define(version: 20151123151149) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -91,13 +91,27 @@ ActiveRecord::Schema.define(version: 20151007005350) do
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
-    t.text     "intro_block",   limit: 16777215
-    t.string   "footer_block",  limit: 2000
-    t.boolean  "restricted",                     default: false
+    t.text     "intro_block",            limit: 16777215
+    t.text     "footer_block",           limit: 16777215
+    t.boolean  "restricted",                              default: false
     t.string   "picture"
+    t.boolean  "supports_document_sets",                  default: false
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
+
+  create_table "comments", force: true do |t|
+    t.integer  "parent_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                                               null: false
+    t.integer  "commentable_id",                    default: 0,            null: false
+    t.string   "commentable_type",                  default: "",           null: false
+    t.integer  "depth"
+    t.string   "title"
+    t.text     "body",             limit: 16777215
+    t.string   "comment_type",     limit: 10,       default: "annotation"
+    t.string   "comment_status",   limit: 10
+  end
 
   create_table "deeds", force: true do |t|
     t.string   "deed_type",     limit: 10
@@ -118,6 +132,27 @@ ActiveRecord::Schema.define(version: 20151007005350) do
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
+
+  create_table "document_sets", force: true do |t|
+    t.boolean  "is_public"
+    t.integer  "owner_user_id"
+    t.integer  "collection_id"
+    t.string   "title"
+    t.text     "description"
+    t.string   "picture"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
+  add_index "document_sets", ["owner_user_id"], name: "index_document_sets_on_owner_user_id", using: :btree
+
+  create_table "document_sets_works", id: false, force: true do |t|
+    t.integer "document_set_id", null: false
+    t.integer "work_id",         null: false
+  end
+
+  add_index "document_sets_works", ["work_id", "document_set_id"], name: "index_document_sets_works_on_work_id_and_document_set_id", unique: true, using: :btree
 
   create_table "document_uploads", force: true do |t|
     t.integer  "user_id"
@@ -207,6 +242,7 @@ ActiveRecord::Schema.define(version: 20151007005350) do
     t.string   "origin_link",   limit: 20
   end
 
+  add_index "interactions", ["created_on", "user_id"], name: "user_query_idx", using: :btree
   add_index "interactions", ["session_id"], name: "index_interactions_on_session_id", using: :btree
 
   create_table "notes", force: true do |t|
@@ -348,6 +384,11 @@ ActiveRecord::Schema.define(version: 20151007005350) do
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
   add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
 
+  create_table "plugin_schema_info", id: false, force: true do |t|
+    t.string  "plugin_name"
+    t.integer "version"
+  end
+
   create_table "sc_canvases", force: true do |t|
     t.string   "sc_id"
     t.integer  "sc_manifest_id"
@@ -400,7 +441,7 @@ ActiveRecord::Schema.define(version: 20151007005350) do
   add_index "sc_manifests", ["work_id"], name: "index_sc_manifests_on_work_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.string   "session_id",                  null: false
+    t.string   "session_id",                  default: "", null: false
     t.text     "data",       limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -410,7 +451,7 @@ ActiveRecord::Schema.define(version: 20151007005350) do
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "titled_images", force: true do |t|
-    t.string   "original_file",                               null: false
+    t.string   "original_file",               default: "",    null: false
     t.string   "title_seed",       limit: 20
     t.string   "title_override"
     t.string   "title"
@@ -472,7 +513,7 @@ ActiveRecord::Schema.define(version: 20151007005350) do
 
   create_table "works", force: true do |t|
     t.string   "title"
-    t.string   "description",               limit: 4000
+    t.text     "description",               limit: 16777215
     t.datetime "created_on"
     t.integer  "owner_user_id"
     t.boolean  "restrict_scribes",                           default: false

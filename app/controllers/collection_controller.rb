@@ -21,6 +21,12 @@ class CollectionController < ApplicationController
     end
   end
 
+  def enable_document_sets
+    @collection.supports_document_sets = true
+    @collection.save!
+    redirect_to document_sets_path(:collection_id => @collection.id)
+  end
+
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners

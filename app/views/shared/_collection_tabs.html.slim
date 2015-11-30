@@ -29,7 +29,17 @@
       :controller => 'collection',
       :action => 'edit',
     },
-  },{\
+  }] 
+  -if @collection.supports_document_sets
+    -tabs += [{\
+      :name => 'Sets',
+      :selected => 8,
+      :options => {\
+        :controller => 'document_sets',
+        :action => 'index',
+      },
+    }]
+  -tabs += [{\
     :name => 'Export',
     :selected => 5,
     :options => {\

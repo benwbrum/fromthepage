@@ -1,0 +1,41 @@
+<%= form_for(@document_set) do |f| %>
+  <% if @document_set.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@document_set.errors.count, "error") %> prohibited this document_set from being saved:</h2>
+
+      <ul>
+      <% @document_set.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :is_public %><br>
+    <%= f.check_box :is_public %>
+  </div>
+  <div class="field">
+    <%= f.label :owner_user_id %><br>
+    <%= f.text_field :owner_user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :collection_id %><br>
+    <%= f.text_field :collection_id %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :picture %><br>
+    <%= f.text_field :picture %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,47 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 8, :collection_id => @collection.id }})
+
+
+p Document sets are sub-sets of the documents in a collection.  They have several uses, including:<br/>
+  Focusing transcriber effort on a particular group of works.<br/>
+  Publishing works from a private collection. (Any works in a private collection which are added to a public document set will be visible to the public.)<br/>
+  Aggregating works into thematic exhibits
+
+-if @collection.document_sets.present?
+  h3 
+    | Document Sets for 
+    =@collection.title
+  p
+    -@collection.document_sets.each do |document_set|
+      =document_set.title  
+      =link_to 'edit', { :controller => 'document_set', :action => 'edit', :collection_id => @collection.id, :document_set_id => document_set.id  }, 'data-litebox' => ''
+      <br />
+=link_to 'Create a Document Set', { :controller => 'document_set', :action => 'new', :collection_id => @collection.id  }, class: 'button', 'data-litebox' => ''
+
+-if @collection.document_sets.present?
+  h3 Assign Works to Document Sets
+  =form_tag({ :controller => 'document_set', :action => 'assign_works', :collection_id => @collection.id })
+    table
+      thead
+        th Work
+        -@collection.document_sets.each do |document_set|
+          th
+            =document_set.title
+            /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
+      tbody
+        -@collection.works.each do |work|
+          tr
+            td
+              =work.title
+              -if work.supports_translation
+                span 
+                  translate
+              -if work.ia_work && work.ia_work.use_ocr
+                span
+                   ocr
+            -@collection.document_sets.each do |document_set|
+              td
+                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", work.document_sets.exists?(document_set))
+    =submit_tag "Save"
+
+-else
+  p this collection has no document sets
