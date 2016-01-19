@@ -76,7 +76,7 @@ module XmlSourceProcessor
   end
 
   def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
-    xml_string = wiki || ""
+    xml_string = String.new(wiki) || ""
 
     xml_string = process_square_braces(xml_string)
     xml_string = process_titles(xml_string)
