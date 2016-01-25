@@ -78,6 +78,7 @@ module XmlSourceProcessor
   def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
     xml_string = String.new(wiki || "")
 
+    xml_string = clean_bad_braces(xml_string)
     xml_string = process_square_braces(xml_string)
     xml_string = process_titles(xml_string)
     xml_string = process_line_breaks(xml_string)
@@ -94,6 +95,10 @@ module XmlSourceProcessor
     return xml_string
   end
 
+  BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/
+  def clean_bad_braces(text)
+    text.gsub BAD_SHIFT_REGEX, "[[\\1]]"  
+  end
   
   BRACE_REGEX = /\[\[.*?\]\]/m
   def process_square_braces(text)
