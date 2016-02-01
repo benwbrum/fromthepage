@@ -158,7 +158,7 @@ namespace :fromthepage do
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
     work.description = work.title
-    ls = Dir.glob(File.join(new_dir_name, "*"))
+    ls = Dir.glob(File.join(new_dir_name, "*")).sort
     ls.each_with_index do |image_fn,i|
       page = Page.new
       page.title = "#{i+1}"
