@@ -16,7 +16,7 @@ table.datagrid
     th Pages
     th Indexed
     th Transcribed
-    th(colspan="2") Export As
+    th(colspan="3") Export As
   -for work in @collection.works
     -progress_annotated = work.work_statistic.pct_annotated.round
     -progress_transcribed = work.work_statistic.pct_transcribed.round
@@ -33,6 +33,10 @@ table.datagrid
         =link_to({ :controller => 'export', :action => 'tei', :work_id => work.id })
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
+      td.nowrap
+        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id })
+          =svg_symbol '#icon-export', class: 'icon'
+          span Table CSV
 
 =render({ :partial => '/shared/collection_footer' })
 
