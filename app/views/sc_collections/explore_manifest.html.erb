@@ -44,7 +44,7 @@
 <ul>
 	<% @sc_manifest.service.sequences.first.canvases.each do |json_canvas| %>
 	  <li>
-	    <%= link_to json_canvas.label, { :action => 'explore', :at_id => json_canvas['@id']} %>
+	    <%= json_canvas.label %>
 	    <!-- <%= image_tag json_canvas.images.first.resource.service['@id'] + 'full/120,/0/native.jpg'%> -->
 	  </li>
 	<% end %>

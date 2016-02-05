@@ -160,30 +160,32 @@ class Page < ActiveRecord::Base
   end
 
   def update_sections_and_tables
-    
-    self.sections.each { |s| s.delete }
-    self.table_cells.each { |c| c.delete }
-#    binding.pry
-    
-    @sections.each do |section|
-      section.pages << self
-      section.work = self.work
-      section.save!
-    end
-    
-    self.table_cells.each { |c| c.delete }
-    @tables.each do |table|
-      table[:rows].each_with_index do |row, rownum|
-        row.each_with_index do |cell, cell_index|
-          tc = TableCell.new(:row => rownum,
-            :content => cell,
-            :header => table[:header][cell_index] )
-          tc.work = self.work
-          tc.page = self
-          tc.section = table[:section]
-          tc.save!
+    if @sections
+      self.sections.each { |s| s.delete }
+      self.table_cells.each { |c| c.delete }
+  #    binding.pry
+      
+      @sections.each do |section|
+        section.pages << self
+        section.work = self.work
+        section.save!
+      end
+      
+      self.table_cells.each { |c| c.delete }
+      @tables.each do |table|
+        table[:rows].each_with_index do |row, rownum|
+          row.each_with_index do |cell, cell_index|
+            tc = TableCell.new(:row => rownum,
+              :content => cell,
+              :header => table[:header][cell_index] )
+            tc.work = self.work
+            tc.page = self
+            tc.section = table[:section]
+            tc.save!
+          end
         end
       end
+      
     end
   end
 

@@ -32,6 +32,7 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
     if params['save']
+      binding.pry
       log_transcript_attempt
       begin
         if @page.save

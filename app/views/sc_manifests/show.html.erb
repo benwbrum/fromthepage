@@ -43,8 +43,7 @@
 <% @sc_manifest.sc_canvases.each do |canvas| %>
 	<%= canvas.sc_canvas_label %>
 	<br/>
-	<!-- img src=<%=canvas.thumbnail_url%> / -->
-	<%= image_tag(canvas.thumbnail_url) %>
+	<img src="<%=canvas.thumbnail_url%>">
 	<br/>
 <% end %>
 
