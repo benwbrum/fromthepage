@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119030738) do
+ActiveRecord::Schema.define(version: 20160203212347) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -362,6 +362,14 @@ ActiveRecord::Schema.define(version: 20160119030738) do
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
   add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
 
+  create_table "pages_sections", id: false, force: true do |t|
+    t.integer "page_id",    null: false
+    t.integer "section_id", null: false
+  end
+
+  add_index "pages_sections", ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id", using: :btree
+  add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
+
   create_table "plugin_schema_info", id: false, force: true do |t|
     t.string  "plugin_name"
     t.integer "version"
@@ -418,6 +426,17 @@ ActiveRecord::Schema.define(version: 20160119030738) do
   add_index "sc_manifests", ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id", using: :btree
   add_index "sc_manifests", ["work_id"], name: "index_sc_manifests_on_work_id", using: :btree
 
+  create_table "sections", force: true do |t|
+    t.string   "title"
+    t.integer  "depth"
+    t.integer  "position"
+    t.integer  "work_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sections", ["work_id"], name: "index_sections_on_work_id", using: :btree
+
   create_table "sessions", force: true do |t|
     t.string   "session_id",                  default: "", null: false
     t.text     "data",       limit: 16777215
@@ -427,6 +446,21 @@ ActiveRecord::Schema.define(version: 20160119030738) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
+
+  create_table "table_cells", force: true do |t|
+    t.integer  "work_id"
+    t.integer  "page_id"
+    t.integer  "section_id"
+    t.string   "header"
+    t.string   "content"
+    t.integer  "row"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "table_cells", ["page_id"], name: "index_table_cells_on_page_id", using: :btree
+  add_index "table_cells", ["section_id"], name: "index_table_cells_on_section_id", using: :btree
+  add_index "table_cells", ["work_id"], name: "index_table_cells_on_work_id", using: :btree
 
   create_table "titled_images", force: true do |t|
     t.string   "original_file",               default: "",    null: false

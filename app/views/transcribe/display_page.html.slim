@@ -1,6 +1,8 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
-=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: 'page-editor' }) do |f|
+-editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
+
+=form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   .page-toolbar
     .toolbar
@@ -13,7 +15,7 @@
         =>link_to_unless @preview_xml, 'Preview', { :page_id => @page.id, :preview => true }, class: 'button outline'
           =link_to 'Preview', { :page_id => @page.id }, class: 'button outline pressed'
         a.button.outline(data-fullscreen-toggle) Fullscreen
-      .toolbar_group.w100
+      .toolbar_group
         -layout_modes = { 'ltr' => 'Image at the left', 'rtl' => 'Image at the right', 'ttb' => 'Image at the top', 'btt' => 'Image at the bottom' }
         dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
           dt.button.outline
@@ -24,6 +26,11 @@
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
+      .toolbar_group.w100
+        label.auto-fullscreen
+          =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
+          |&nbsp;
+          span Always show in fullscreen
       .toolbar_group
         =button_tag 'Save Changes', :name => 'save'
 
@@ -71,5 +78,9 @@ h2.legend Page Notes
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
         $('.zoomer-container').zoomer('resize');
+      });
+      $('#auto-fullscreen').on('change', function() {
+        var checked = this.checked ? 'yes' : 'no';
+        Cookies.set('auto_fullscreen', checked, { expires: 365 });
       });
     });

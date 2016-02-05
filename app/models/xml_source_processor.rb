@@ -78,8 +78,11 @@ module XmlSourceProcessor
   def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
     xml_string = String.new(wiki || "")
 
+    xml_string = clean_bad_braces(xml_string)
     xml_string = process_square_braces(xml_string)
-    xml_string = process_titles(xml_string)
+    xml_string = process_linewise_markup(xml_string)
+    # xml_string = process_tables(xml_string)
+    # xml_string = process_titles(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
@@ -94,6 +97,10 @@ module XmlSourceProcessor
     return xml_string
   end
 
+  BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/
+  def clean_bad_braces(text)
+    text.gsub BAD_SHIFT_REGEX, "[[\\1]]"  
+  end
   
   BRACE_REGEX = /\[\[.*?\]\]/m
   def process_square_braces(text)
@@ -124,6 +131,136 @@ module XmlSourceProcessor
     text
   end
 
+
+  HEADER = /\s\|\s/
+  SEPARATOR = /---.*\|/
+  ROW = HEADER
+
+  def process_linewise_markup(text)
+    @tables = []
+    @sections = []
+    new_lines = []
+    current_table = nil
+    text.lines.each do |line|
+      # first deal with any sections
+      line = process_any_sections(line)
+      
+      # look for a header
+      if !current_table
+        if line.match(HEADER)
+          line.chomp
+          current_table = { :header => [], :rows => [], :section => @sections.last }
+          # fill the header
+          cells = line.split(/\s*\|\s*/)
+          cells.shift if line.match(/^\|/) # remove leading pipe 
+          current_table[:header] = cells
+          heading = cells.map{|cell| "<th>#{cell}</th>"}.join(" ")
+          new_lines << "<table class=\"tabular\">\n<thead>\n#{heading}</thead>"
+        else
+          # no current table, no table contents -- NO-OP
+          new_lines << line
+        end
+      else
+        #this is either an end or a separator
+        if line.match(SEPARATOR)
+          # NO-OP
+        elsif line.match(ROW)
+          line.chomp
+          # fill the row
+          cells = line.split(/\s*\|\s*/)
+          cells.shift if line.match(/^\|/) # remove leading pipe 
+          current_table[:rows] << cells
+          rowline = cells.map{|cell| "<td>#{cell}</td>"}.join(" ")
+
+          if current_table[:rows].size == 1
+            new_lines << "<tbody>"
+          end
+          new_lines << "<tr>#{rowline}</tr>"
+        else
+          # finished the last row
+          @tables << current_table
+          new_lines << "</tbody></table>"
+          current_table = nil
+        end
+      end
+    end
+    
+    
+    if current_table
+      # unclosed table
+      @tables << current_table
+      new_lines << "</tbody></table>"
+    end
+    # do something with the table data
+    new_lines.join(" ")
+  end
+
+  def process_any_sections(line)
+    6.downto(2) do |depth|
+      line.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |wiki_title|
+        line = line.sub(wiki_title.first, "<entryHeading title=\"#{wiki_title.last}\" depth=\"#{depth}\" />")
+        @sections << Section.new(:title => wiki_title.last, :depth => depth)
+      end
+    end
+
+    line
+  end
+
+  def process_tables(text)
+    @tables = []
+    new_lines = []
+    current_table = nil
+    text.lines.each do |line|
+      #binding.pry
+      # look for a header
+      if !current_table
+        if line.match(HEADER)
+          line.chomp
+          current_table = { :header => [], :rows => [] }
+          # fill the header
+          cells = line.split(/\s*\|\s*/)
+          cells.shift if line.match(/^\|/) # remove leading pipe 
+          current_table[:header] = cells
+          heading = cells.map{|cell| "<th>#{cell}</th>"}.join(" ")
+          new_lines << "<table class=\"tabular\">\n<thead>\n#{heading}</thead>"
+        else
+          # no current table, no table contents -- NO-OP
+          new_lines << line
+        end
+      else
+        #this is either an end or a separator
+        if line.match(SEPARATOR)
+          # NO-OP
+        elsif line.match(ROW)
+          line.chomp
+          # fill the row
+          cells = line.split(/\s*\|\s*/)
+          cells.shift if line.match(/^\|/) # remove leading pipe 
+          current_table[:rows] << cells
+          rowline = cells.map{|cell| "<td>#{cell}</td>"}.join(" ")
+
+          if current_table[:rows].size == 1
+            new_lines << "<tbody>"
+          end
+          new_lines << "<tr>#{rowline}</tr>"
+        else
+          # finished the last row
+          @tables << current_table
+          new_lines << "</tbody></table>"
+          current_table = nil
+        end
+      end
+    end
+    
+    
+    if current_table
+      # unclosed table
+      @tables << current_table
+      new_lines << "</tbody></table>"
+    end
+    # do something with the table data
+    new_lines.join(" ")
+  end
 
   def canonicalize_title(title)
     # kill all tags
@@ -172,6 +309,7 @@ module XmlSourceProcessor
       </page>
 EOF
   end
+
 
   def update_links_and_xml(xml_string, preview_mode=false, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
     # first clear out the existing links
