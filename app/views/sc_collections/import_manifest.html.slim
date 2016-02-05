@@ -7,7 +7,8 @@
       table.form
         tr
           td
-          	=label_tag "Use collection" 
+          	=label_tag :use_parent_collection
+          	  span Use collection 
           		b =@sc_collection.label 
           	=check_box_tag :use_parent_collection 
           	=hidden_field_tag :sc_collection_id, @sc_collection.id

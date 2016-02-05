@@ -32,6 +32,7 @@ class ScCollectionsController < ApplicationController
       set_sc_collection
       work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
     else
+      @collection = Collection.find params[:sc_manifest][:collection_id]
       work = @sc_manifest.convert_with_collection(current_user, @collection)              
     end
     
