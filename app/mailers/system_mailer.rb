@@ -17,7 +17,7 @@ class SystemMailer < ActionMailer::Base
   #
   def new_upload(document_upload)
     @document_upload = document_upload
-    mail to: "benwbrum@gmail.com", subject: "New document upload - #{document_upload.name}"
+    mail to: admin_emails, subject: "New document upload - #{document_upload.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -27,7 +27,7 @@ class SystemMailer < ActionMailer::Base
   #
   def upload_succeeded(document_upload)
     @document_upload = document_upload
-    mail to: "benwbrum@gmail.com", subject: "Upload succeeded - #{document_upload.name}"
+    mail to: admin_emails, subject: "Upload succeeded - #{document_upload.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -37,10 +37,14 @@ class SystemMailer < ActionMailer::Base
   #
   def new_user
     @greeting = "Hi"
-    mail to: "benwbrum@gmail.com"
+    mail to: admin_emails, subject: "New FromThePage user "
   end
 
   private
+  def admin_emails
+    User.where(:admin => true).to_a.map { |u| u.email }
+  end
+  
   def add_inline_attachments!
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
   end

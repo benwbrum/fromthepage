@@ -1,0 +1,38 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @sc_collection.label %>
+</p>
+
+<p>
+  <strong>Id:</strong>
+  <%= @sc_collection.at_id %>
+</p>
+
+<h4>Collections:</h4>
+
+<ul>
+	<% @sc_collection.service.collections.each do |json_collection| %>
+	  <li>
+	    <%= link_to json_collection.label, { :action => 'explore', :at_id => json_collection['@id']} %>
+	  </li>
+	<% end %>
+	
+</ul>
+
+<h4>Manifests:</h4>
+
+<ul>
+    <% @sc_collection.service.manifests.each do |json_manifest| %>
+      <li>
+        <%= link_to(json_manifest['label'], 
+        			{ :action => :explore_manifest,
+    				  :at_id => json_manifest['@id'], 
+    				  :sc_collection_id => @sc_collection.id}) %>      	
+      </li>
+    <% end %>
+	
+</ul>
+
+

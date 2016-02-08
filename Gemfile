@@ -26,7 +26,7 @@ gem 'devise-encryptable'
 
 gem 'protected_attributes'
 gem 'carrierwave'
-gem 'zip'
+gem 'rubyzip'
 
 gem 'riiif'
 gem 'iiif-presentation'

@@ -18,24 +18,24 @@
         .work-page
           .work-page_thumbnail
             -if page.ia_leaf
-              =link_to(image_tag(page.ia_leaf.thumb_url), { :action => 'display_page', :page_id => page.id })
+              =link_to(image_tag(page.ia_leaf.thumb_url), page_params(page) )
             -elsif page.sc_canvas
-              =link_to(image_tag(page.sc_canvas.thumbnail_url), { :action => 'display_page', :page_id => page.id })
+              =link_to(image_tag(page.sc_canvas.thumbnail_url), page_params(page))
             -elsif page.omeka_file
-              =link_to image_tag(page.omeka_file.thumbnail_url), { :action => 'display_page', :page_id => page.id }
+              =link_to image_tag(page.omeka_file.thumbnail_url), page_params(page)
             -else
-              =link_to image_tag(file_to_url(page.thumbnail_image)), { :action => 'display_page', :page_id => page.id }
+              =link_to image_tag(file_to_url(page.thumbnail_image)), page_params(page)
 
           .work-page_content
             -if page.work.pages_are_meaningful
-              h4.work-page_title =link_to page.title, { :action => 'display_page', :page_id => page.id }
+              h4.work-page_title =link_to page.title, page_params(page)
 
             .work-page_text
               -transcription = xml_to_html(page.xml_text, false)
               -if transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
-                -help_transcribe = link_to('help transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id })
+                -help_transcribe = link_to('help transcribe', page_params(page).merge({ :controller => 'transcribe'}))
                 p.nodata_text =="This page is not transcribed, please #{help_transcribe} this page"
 
             -if page.work.supports_translation
@@ -45,11 +45,11 @@
                 -if translation.present?
                   ==translation.force_encoding('utf-8')
                 -else
-                  -help_translate = link_to('help translate', { :controller => 'transcribe', :action => 'translate', :page_id => page.id })
+                  -help_translate = link_to('help translate', page_params(page).merge({ :controller => 'transcribe', :action => 'translate'}))
                   p.nodata_text =="This page is not translated, please #{help_translate} this page"
 
             -current_version = page.page_versions[0]
-            -if current_version
+            -if current_version && current_version.page_version > 0
               small.work-page_edited
                 -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)

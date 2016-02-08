@@ -7,7 +7,7 @@ h1 Collections
     .collections
       -@collections.each do |c|
         -works_count = c.works.size
-        -if(!c.restricted && works_count > 0) || (user_signed_in? && current_user.like_owner?(c))
+        -if c.show_to?(current_user)
           -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
           -owner_link = link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id }
           .collection
@@ -15,7 +15,10 @@ h1 Collections
               .collection_image
                 =image_tag(c.picture_url(:thumb), size: '100', alt: c.title)
             .collection_details
-              h4.collection_title =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
+              -if c.is_a? Collection
+                h4.collection_title =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
+              -else
+                h4.collection_title =link_to c.title, { :controller => 'document_set', :action => 'show', :document_set_id => c.id }
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary

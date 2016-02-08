@@ -21,11 +21,9 @@ class DashboardController < ApplicationController
 
   # Public Dashboard
   def index
-    @collections = Collection.order_by_recent_activity
-
-    # not used
-    #@offset = params[:offset] || 0
-    #@recent_versions = PageVersion.where('page_versions.created_on desc').limit(20).offset(@offset).includes([:user, :page]).all
+    collections = Collection.all
+    @document_sets = DocumentSet.all
+    @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
   end
 
   # Owner Dashboard - list of works

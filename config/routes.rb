@@ -9,9 +9,9 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_sites
   resources :omeka_items
-  resources :sc_canvas
-  resources :sc_manifests
-  resources :sc_collections
+  # resources :sc_canvas
+  # resources :sc_manifests
+  # resources :sc_collections
 
   resources :notes
 
@@ -26,6 +26,18 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
   get   '/iiif/:work_id/manifest/:page_id/list', :to => 'iiif#list'
   get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
+ 
+  get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
+  get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
+  get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+
+  get   'document_set/new', :to => 'document_sets#new'
+  get   'document_set/edit/:id', :to => 'document_sets#edit'
+  patch   'document_set/update/:id', :to => 'document_sets#update'
+  post   'document_set/assign_works', :to => 'document_sets#assign_works'
+  get   'document_set/:id', :to => 'document_sets#show'
+#  get   'document_set/:document_set_id', :to => 'document_sets#show'
+#  resources :document_sets
 
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
@@ -40,6 +52,7 @@ Fromthepage::Application.routes.draw do
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
+
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 

@@ -53,6 +53,13 @@ namespace :fromthepage do
     compress_tree(temp_dir)
     # ingest
     ingest_tree(document_upload, temp_dir)
+    # clean
+    clean_tmp_dir(temp_dir)
+  end
+  
+  def clean_tmp_dir(temp_dir)
+    print "Removing #{temp_dir}\n"
+    FileUtils::rm_r(temp_dir)
   end
   
   def unzip_tree(temp_dir)
@@ -131,6 +138,8 @@ namespace :fromthepage do
   end
   
   def convert_to_work(document_upload, path)
+    User.current_user=document_upload.user
+    
     work = Work.new
     work.owner = document_upload.user
     work.collection = document_upload.collection
@@ -149,10 +158,10 @@ namespace :fromthepage do
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
     work.description = work.title
-    ls = Dir.glob(File.join(new_dir_name, "*"))
+    ls = Dir.glob(File.join(new_dir_name, "*")).sort
     ls.each_with_index do |image_fn,i|
       page = Page.new
-      page.title = "#{i}"
+      page.title = "#{i+1}"
       page.base_image = image_fn
       image = Magick::ImageList.new(image_fn)
       page.base_height = image.rows

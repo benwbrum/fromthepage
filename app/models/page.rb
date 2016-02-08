@@ -15,12 +15,16 @@ class Page < ActiveRecord::Base
 
   belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id'
 
+  has_and_belongs_to_many :sections
+
   has_many :notes, -> { order 'created_at' }
   has_one :ia_leaf
   has_one :omeka_file
   has_one :sc_canvas
+  has_many :table_cells, -> { order 'section_id, row, header' }
 
   after_save :create_version
+  after_save :update_sections_and_tables
   after_initialize :defaults
 
   attr_accessible :title
@@ -143,7 +147,7 @@ class Page < ActiveRecord::Base
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
     version.user = User.current_user
-
+    
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
     self.work.increment!(:transcription_version)
@@ -154,6 +158,35 @@ class Page < ActiveRecord::Base
     end
     version.save!
   end
+
+  def update_sections_and_tables
+    
+    self.sections.each { |s| s.delete }
+    self.table_cells.each { |c| c.delete }
+#    binding.pry
+    
+    @sections.each do |section|
+      section.pages << self
+      section.work = self.work
+      section.save!
+    end
+    
+    self.table_cells.each { |c| c.delete }
+    @tables.each do |table|
+      table[:rows].each_with_index do |row, rownum|
+        row.each_with_index do |cell, cell_index|
+          tc = TableCell.new(:row => rownum,
+            :content => cell,
+            :header => table[:header][cell_index] )
+          tc.work = self.work
+          tc.page = self
+          tc.section = table[:section]
+          tc.save!
+        end
+      end
+    end
+  end
+
 
   # This deletes all graphs within associated articles
   # It should be called twice whenever a page is changed

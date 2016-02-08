@@ -148,6 +148,7 @@ $footerBg:                  $themeDark;
 @import "components/layout";
 
 @import "sections/home";
+@import "sections/project";
 @import "sections/signon";
 @import "sections/deed";
 @import "sections/dashboard";
@@ -181,8 +182,4 @@ $footerBg:                  $themeDark;
       background-color: mix($bodyBg, #322, 30%);
     }
   }
-}
-
-#page_image_tag {
-  width: 100%;
 }

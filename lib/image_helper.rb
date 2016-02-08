@@ -33,9 +33,12 @@ module ImageHelper
     destination = filename.gsub(File.extname(filename), '')
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
-    convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
-    print("#{convert}\n")
-    system(convert)
+    gs = "gs -r300x300 -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
+    print gs
+    system(gs)
+    # convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
+    # print("#{convert}\n")
+    # system(convert)
     
     destination
   end
@@ -64,6 +67,7 @@ module ImageHelper
       extension = File.extname(filename)
       working_file = File.join(File.dirname(filename),"resizing.#{extension}")
       9.downto(1).each do |decile|
+        GC.start
         percent = decile * 10
         compressed = Magick::ImageList.new(filename)
         compressed.write(working_file) { self.quality = percent}

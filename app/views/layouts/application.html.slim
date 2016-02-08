@@ -39,7 +39,7 @@ body
       .toolbar_group
         =link_to 'Home', (user_signed_in? ? dashboard_watchlist_path : root_path), class: 'header_link'
         =link_to 'Collections', dashboard_path, class: 'header_link'
-        =link_to 'FAQ', { :controller => '/static', :action => 'faq' }, class: 'header_link'
+        =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
 
         -if user_signed_in?
           dl.dropdown.right
@@ -53,7 +53,7 @@ body
               =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
               =link_to 'Editor Dashboard', dashboard_watchlist_path
               hr
-              =link_to 'Your Profile', { :controller => '/user', :action => 'profile', :user_id => current_user.id }
+              =link_to 'Your Profile', { controller: 'user', action: 'profile', user_id: current_user.id }
               hr
               =link_to 'Sign Out', destroy_user_session_path, method: :delete
         -else
@@ -72,9 +72,9 @@ body
   footer.footer
     .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
     .footer_nav
-      =link_to 'About', { :controller => '/static', :action => 'about' }
-      =link_to 'Terms & Conditions', { :controller => '/static', :action => 'terms' }
-      =link_to 'Privacy Policy', { :controller => '/static', :action => 'privacy' }
+      =link_to 'About', { controller: 'static', action: 'about' }
+      =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
+      =link_to 'Privacy Policy', { controller: 'static', action: 'privacy' }
       =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
   .page-busy-overlay

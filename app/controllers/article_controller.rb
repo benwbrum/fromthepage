@@ -1,5 +1,5 @@
 class ArticleController < ApplicationController
-  before_filter :authorized?, :except => [:list, :show, :tooltip]
+  before_filter :authorized?, :except => [:list, :show, :tooltip, :graph]
 
   include AbstractXmlController
 
@@ -68,6 +68,10 @@ class ArticleController < ApplicationController
 
     flash[:notice] = "Selected subjects combined with #{@article.title}"
     redirect_to :action => 'edit', :article_id => @article.id
+  end
+
+  def graph
+    redirect_to :action => :show, :article_id => @article.id
   end
 
   def show

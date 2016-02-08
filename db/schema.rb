@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150929113251) do
+ActiveRecord::Schema.define(version: 20160203212347) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -91,10 +91,11 @@ ActiveRecord::Schema.define(version: 20150929113251) do
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
-    t.text     "intro_block",   limit: 16777215
-    t.text     "footer_block",  limit: 16777215
-    t.boolean  "restricted",                     default: false
+    t.text     "intro_block",            limit: 16777215
+    t.text     "footer_block",           limit: 16777215
+    t.boolean  "restricted",                              default: false
     t.string   "picture"
+    t.boolean  "supports_document_sets",                  default: false
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -131,6 +132,27 @@ ActiveRecord::Schema.define(version: 20150929113251) do
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
+
+  create_table "document_sets", force: true do |t|
+    t.boolean  "is_public"
+    t.integer  "owner_user_id"
+    t.integer  "collection_id"
+    t.string   "title"
+    t.text     "description"
+    t.string   "picture"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
+  add_index "document_sets", ["owner_user_id"], name: "index_document_sets_on_owner_user_id", using: :btree
+
+  create_table "document_sets_works", id: false, force: true do |t|
+    t.integer "document_set_id", null: false
+    t.integer "work_id",         null: false
+  end
+
+  add_index "document_sets_works", ["work_id", "document_set_id"], name: "index_document_sets_works_on_work_id_and_document_set_id", unique: true, using: :btree
 
   create_table "document_uploads", force: true do |t|
     t.integer  "user_id"
@@ -210,7 +232,7 @@ ActiveRecord::Schema.define(version: 20150929113251) do
     t.integer  "collection_id"
     t.integer  "work_id"
     t.integer  "page_id"
-    t.string   "action",        limit: 20
+    t.string   "action",        limit: 100
     t.string   "params"
     t.string   "browser",       limit: 128
     t.string   "session_id",    limit: 40
@@ -362,6 +384,14 @@ ActiveRecord::Schema.define(version: 20150929113251) do
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
   add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
 
+  create_table "pages_sections", id: false, force: true do |t|
+    t.integer "page_id",    null: false
+    t.integer "section_id", null: false
+  end
+
+  add_index "pages_sections", ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id", using: :btree
+  add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
+
   create_table "plugin_schema_info", id: false, force: true do |t|
     t.string  "plugin_name"
     t.integer "version"
@@ -392,9 +422,11 @@ ActiveRecord::Schema.define(version: 20150929113251) do
 
   create_table "sc_collections", force: true do |t|
     t.integer  "collection_id"
-    t.string   "context"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "at_id"
+    t.integer  "parent_id"
+    t.string   "label"
   end
 
   add_index "sc_collections", ["collection_id"], name: "index_sc_collections_on_collection_id", using: :btree
@@ -409,10 +441,23 @@ ActiveRecord::Schema.define(version: 20150929113251) do
     t.string   "first_sequence_label"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "at_id"
+    t.integer  "collection_id"
   end
 
   add_index "sc_manifests", ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id", using: :btree
   add_index "sc_manifests", ["work_id"], name: "index_sc_manifests_on_work_id", using: :btree
+
+  create_table "sections", force: true do |t|
+    t.string   "title"
+    t.integer  "depth"
+    t.integer  "position"
+    t.integer  "work_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sections", ["work_id"], name: "index_sections_on_work_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "session_id",                  default: "", null: false
@@ -423,6 +468,21 @@ ActiveRecord::Schema.define(version: 20150929113251) do
 
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
+
+  create_table "table_cells", force: true do |t|
+    t.integer  "work_id"
+    t.integer  "page_id"
+    t.integer  "section_id"
+    t.string   "header"
+    t.string   "content"
+    t.integer  "row"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "table_cells", ["page_id"], name: "index_table_cells_on_page_id", using: :btree
+  add_index "table_cells", ["section_id"], name: "index_table_cells_on_section_id", using: :btree
+  add_index "table_cells", ["work_id"], name: "index_table_cells_on_work_id", using: :btree
 
   create_table "titled_images", force: true do |t|
     t.string   "original_file",               default: "",    null: false

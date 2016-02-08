@@ -44,3 +44,7 @@ server '96.126.116.203', user: 'fromthepage', roles: %{app}
 #     auth_methods: %w(publickey password)
 #     # password: 'please use keys'
 #   }
+
+
+set :branch, 'fromthepage.com'
+

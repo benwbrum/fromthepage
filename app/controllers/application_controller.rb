@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
+  rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
 
   def load_objects_from_params
 
@@ -38,6 +39,11 @@ class ApplicationController < ActionController::Base
       @work = Work.find(params[:work_id])
       @collection = @work.collection
     end
+    if params[:document_set_id]
+      @document_set = DocumentSet.find(params[:document_set_id])
+      @collection = @document_set.collection
+    end
+
     if params[:collection_id]
       @collection = Collection.find(params[:collection_id])
     end
@@ -71,6 +77,16 @@ class ApplicationController < ActionController::Base
       @article = @article_version.article
       @collection = @article.collection
     end
+  end
+
+  def bad_record_id
+    logger.error("Bad record ID exception for params=#{params.inspect}")
+    if @collection 
+      redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
+    else
+      redirect_to :controller => 'dashboard', :action => 'index'
+    end
+    return
   end
 
   # perform appropriate API call for updating the IA server
@@ -170,7 +186,7 @@ class ApplicationController < ActionController::Base
     return unless @collection
     return unless @collection.restricted
 
-    unless user_signed_in? && current_user.like_owner?(@collection)
+    unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)
       redirect_to dashboard_path
     end
   end
@@ -198,6 +214,14 @@ class ApplicationController < ActionController::Base
   end
 
 end
+
+  def page_params(page)
+    if @document_set
+      { :action => 'display_page', :page_id => page.id, :document_set_id => @document_set.id }
+    else
+      { :action => 'display_page', :page_id => page.id}
+    end
+  end
 
 # class ApplicationController < ActionController::Base
 #   protect_from_forgery
