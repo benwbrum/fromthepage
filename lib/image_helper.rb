@@ -67,6 +67,7 @@ module ImageHelper
       extension = File.extname(filename)
       working_file = File.join(File.dirname(filename),"resizing.#{extension}")
       9.downto(1).each do |decile|
+        GC.start
         percent = decile * 10
         compressed = Magick::ImageList.new(filename)
         compressed.write(working_file) { self.quality = percent}

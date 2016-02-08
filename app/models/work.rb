@@ -7,6 +7,8 @@ class Work < ActiveRecord::Base
   has_one :omeka_item
   has_one :sc_manifest
   has_one :work_statistic
+  has_many :sections, -> { order 'position' }
+  has_many :table_cells, -> { order 'page_id, row, header' }
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
   has_and_belongs_to_many :document_sets
@@ -116,4 +118,40 @@ class Work < ActiveRecord::Base
     self.work_statistic.recalculate
   end
 
+
+  def export_tables_as_csv
+    headings = self.table_cells.pluck('DISTINCT header')
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
+      csv << (%w{ Page_Title Page_Position Page_URL Section } + table_cells.pluck('DISTINCT header'))
+      binding.pry
+      self.pages.each do |page|
+        unless page.table_cells.empty?
+          page_url="http://localhost:3000/display/display_page?page_id=#{page.id}"
+          page_cells = [page.title, page.position, page_url]
+          data_cells = Array.new(headings.count + 1, "")
+          section_title = nil
+          section = nil
+          row = nil
+          page.table_cells.each do |cell|
+            if section != cell.section
+              section_title = cell.section.title
+            end 
+            if row != cell.row
+              if row
+                # write the record to the CSV and start a new record
+                csv << (page_cells + data_cells)
+              end
+              data_cells = Array.new(headings.count + 1, "")            
+              data_cells[0] = section_title
+              row = cell.row
+            end
+            
+            target = headings.index(cell.header) + 1
+            data_cells[target] = cell.content
+          end
+        end
+      end
+    end
+    csv_string
+  end
 end

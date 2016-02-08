@@ -41,4 +41,9 @@ class Collection < ActiveRecord::Base
     csv_string
   end
 
+  def show_to?(user)
+    (!self.restricted && self.works.present?) || (user && user.like_owner?(self))
+  end
+
+
 end

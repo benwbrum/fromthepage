@@ -53,6 +53,13 @@ namespace :fromthepage do
     compress_tree(temp_dir)
     # ingest
     ingest_tree(document_upload, temp_dir)
+    # clean
+    clean_tmp_dir(temp_dir)
+  end
+  
+  def clean_tmp_dir(temp_dir)
+    print "Removing #{temp_dir}\n"
+    FileUtils::rm_r(temp_dir)
   end
   
   def unzip_tree(temp_dir)
@@ -151,7 +158,7 @@ namespace :fromthepage do
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
     work.description = work.title
-    ls = Dir.glob(File.join(new_dir_name, "*"))
+    ls = Dir.glob(File.join(new_dir_name, "*")).sort
     ls.each_with_index do |image_fn,i|
       page = Page.new
       page.title = "#{i+1}"

@@ -24,7 +24,7 @@ class CollectionController < ApplicationController
   def enable_document_sets
     @collection.supports_document_sets = true
     @collection.save!
-    redirect_to document_sets_path(:collection_id => @collection.id)
+    redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
   end
 
   def load_settings

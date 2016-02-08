@@ -4,7 +4,7 @@ class DocumentSetsController < ApplicationController
   respond_to :html
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def index
     @document_sets = DocumentSet.all
@@ -12,7 +12,7 @@ class DocumentSetsController < ApplicationController
   end
 
   def show
-    respond_with(@document_set)
+#    respond_with(@document_set)
   end
 
   def new
@@ -22,6 +22,7 @@ class DocumentSetsController < ApplicationController
   end
 
   def edit
+    respond_with(@document_set)
   end
 
   def create
@@ -29,7 +30,7 @@ class DocumentSetsController < ApplicationController
     @document_set.owner = current_user
     @document_set.save!
     flash[:notice] = 'Document set has been created'
-    ajax_redirect_to({ action: 'list', collection_id: @document_set.collection_id })
+    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
   end
 
   def assign_works
@@ -38,8 +39,10 @@ class DocumentSetsController < ApplicationController
       @collection.document_sets.each do |document_set|
         document_set.works.clear
         work_map = set_work_map[document_set.id.to_s]
-        document_set.work_ids = work_map.keys.map { |id| id.to_i }
-        document_set.save!
+        if work_map
+          document_set.work_ids = work_map.keys.map { |id| id.to_i }
+          document_set.save!          
+        end
       end
     end
 
@@ -47,7 +50,9 @@ class DocumentSetsController < ApplicationController
   end
   def update
     @document_set.update(document_set_params)
-    respond_with(@document_set)
+    @document_set.save!
+    flash[:notice] = 'Document set has been saved'
+    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
   end
 
   def destroy
@@ -57,10 +62,13 @@ class DocumentSetsController < ApplicationController
 
   private
     def set_document_set
-      @document_set = DocumentSet.find(params[:id])
+      unless defined? @document_set && @document_set
+        id = params[:document_set_id] || params[:id]
+        @document_set = DocumentSet.find(id)
+      end
     end
 
     def document_set_params
-      params.require(:document_set).permit(:is_public_boolean, :owner_user_id, :collection_id, :title, :description, :picture)
+      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture)
     end
 end

@@ -128,3 +128,16 @@ code {
   background: rgba(#000, 0.03);
   box-shadow: inset 0 0 0 1px rgba(#000, 0.08);
 }
+
+
+.tabular {
+  table {
+      border-collapse: collapse;
+  }
+  
+  table, th, td {
+     border: 1px solid black;
+     padding: 0 0.3em;
+    
+  }   
+}

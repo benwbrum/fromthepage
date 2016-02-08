@@ -52,8 +52,11 @@
 -content_for :page_title, selected == 1 ? @collection.title : "#{selected_tab} - #{@collection.title}"
 -content_for :meta_description, "#{@collection.title} - collection #{selected_tab.downcase}. #{strip_tags(@collection.intro_block)}"
 
-h1 =@collection.title
+-if @document_set
+  h1 =@document_set.title
+-else
+  h1 =@collection.title
 .tabs
   -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => collection_id)
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => @collection.id)
       a.active =tab[:name]
