@@ -91,10 +91,11 @@ ActiveRecord::Schema.define(version: 20160203212347) do
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
-    t.text     "intro_block",   limit: 16777215
-    t.text     "footer_block",  limit: 16777215
-    t.boolean  "restricted",                     default: false
+    t.text     "intro_block",            limit: 16777215
+    t.text     "footer_block",           limit: 16777215
+    t.boolean  "restricted",                              default: false
     t.string   "picture"
+    t.boolean  "supports_document_sets",                  default: false
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -131,6 +132,27 @@ ActiveRecord::Schema.define(version: 20160203212347) do
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
+
+  create_table "document_sets", force: true do |t|
+    t.boolean  "is_public"
+    t.integer  "owner_user_id"
+    t.integer  "collection_id"
+    t.string   "title"
+    t.text     "description"
+    t.string   "picture"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
+  add_index "document_sets", ["owner_user_id"], name: "index_document_sets_on_owner_user_id", using: :btree
+
+  create_table "document_sets_works", id: false, force: true do |t|
+    t.integer "document_set_id", null: false
+    t.integer "work_id",         null: false
+  end
+
+  add_index "document_sets_works", ["work_id", "document_set_id"], name: "index_document_sets_works_on_work_id_and_document_set_id", unique: true, using: :btree
 
   create_table "document_uploads", force: true do |t|
     t.integer  "user_id"

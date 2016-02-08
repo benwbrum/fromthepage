@@ -65,6 +65,14 @@
         =svg_symbol '#icon-lock', class: 'icon'
         span Make Collection Private
 
+
+    -if !@collection.supports_document_sets
+      h3 Document Sets
+      p This collection does not have any document sets.  Document sets are sub-sets of the works in this collection, 
+        which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
+      =link_to({ :action => 'enable_document_sets', :collection_id => @collection.id }, class: 'button')
+        span Create Document Sets
+
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
