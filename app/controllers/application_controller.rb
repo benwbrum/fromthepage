@@ -39,6 +39,11 @@ class ApplicationController < ActionController::Base
       @work = Work.find(params[:work_id])
       @collection = @work.collection
     end
+    if params[:document_set_id]
+      @document_set = DocumentSet.find(params[:document_set_id])
+      @collection = @document_set.collection
+    end
+
     if params[:collection_id]
       @collection = Collection.find(params[:collection_id])
     end
@@ -75,6 +80,7 @@ class ApplicationController < ActionController::Base
   end
 
   def bad_record_id
+    logger.error("Bad record ID exception for params=#{params.inspect}")
     if @collection 
       redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
     else
@@ -180,7 +186,7 @@ class ApplicationController < ActionController::Base
     return unless @collection
     return unless @collection.restricted
 
-    unless user_signed_in? && current_user.like_owner?(@collection)
+    unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)
       redirect_to dashboard_path
     end
   end
@@ -208,6 +214,14 @@ class ApplicationController < ActionController::Base
   end
 
 end
+
+  def page_params(page)
+    if @document_set
+      { :action => 'display_page', :page_id => page.id, :document_set_id => @document_set.id }
+    else
+      { :action => 'display_page', :page_id => page.id}
+    end
+  end
 
 # class ApplicationController < ActionController::Base
 #   protect_from_forgery

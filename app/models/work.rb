@@ -11,6 +11,7 @@ class Work < ActiveRecord::Base
   has_many :table_cells, -> { order 'page_id, row, header' }
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
+  has_and_belongs_to_many :document_sets
 
   after_save :update_statistic
 

@@ -111,4 +111,16 @@ module ApplicationHelper
     end
   end
 
+  def work_title 
+    if @document_set
+      "#{@work.title} (#{@document_set.title})"
+    elsif @collection
+      "#{@work.title} (#{@collection.title})"
+    else
+      @work.title
+    end
+  end
+
+
+
 end
