@@ -123,7 +123,7 @@ class Work < ActiveRecord::Base
     headings = self.table_cells.pluck('DISTINCT header')
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       csv << (%w{ Page_Title Page_Position Page_URL Section } + table_cells.pluck('DISTINCT header'))
-      binding.pry
+#      binding.pry
       self.pages.each do |page|
         unless page.table_cells.empty?
           page_url="http://localhost:3000/display/display_page?page_id=#{page.id}"
