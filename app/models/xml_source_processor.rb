@@ -2,6 +2,7 @@ module XmlSourceProcessor
 
   @text_dirty = false
   @translation_dirty = false
+  
 
   def source_text=(text)
     @text_dirty = true
@@ -78,11 +79,10 @@ module XmlSourceProcessor
   def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
     xml_string = String.new(wiki || "")
 
+    xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
     xml_string = process_square_braces(xml_string)
     xml_string = process_linewise_markup(xml_string)
-    # xml_string = process_tables(xml_string)
-    # xml_string = process_titles(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
@@ -131,6 +131,30 @@ module XmlSourceProcessor
     text
   end
 
+  LATEX_SNIPPET = /(\{\{tex:?(.*?):?tex\}\})/m
+  def process_latex_snippets(text)
+    return text unless self.respond_to? :tex_figures
+    replacements = {}
+    figures = self.tex_figures.to_a
+    
+    text.scan(LATEX_SNIPPET).each_with_index do |pair, i|
+      with_tags = pair[0]
+      contents = pair[1]
+      
+      replacements[with_tags] = "<texFigure position=\"i\"/>" 
+      
+      figure = figures[i] || TexFigure.new
+      figure.source = contents unless figure.source == contents        
+      figures[i] = figure
+    end          
+
+    self.tex_figures = figures
+    replacements.each_pair do |s,r|
+      text.sub!(s,r)
+    end
+    
+    text
+  end
 
   HEADER = /\s\|\s/
   SEPARATOR = /---.*\|/

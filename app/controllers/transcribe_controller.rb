@@ -154,6 +154,7 @@ protected
   def log_exception(attempt_type, ex)
     log_message = "#{attempt_type}\t#{@transcript_date}\tERROR\tEXCEPTION\t"
     logger.error(log_message + ex.message)
+    logger.error(ex.backtrace.join("\n"))
   end
 
   def log_error(attempt_type)

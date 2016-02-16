@@ -51,7 +51,7 @@ class TexFigure < ActiveRecord::Base
   end
 
   def review_artifact
-    if changed.keys.include? [:source]
+    if changed.include? [:source]
       clear_artifact
     end
   end

@@ -22,9 +22,11 @@ class Page < ActiveRecord::Base
   has_one :omeka_file
   has_one :sc_canvas
   has_many :table_cells, -> { order 'section_id, row, header' }
+  has_many :tex_figures
 
   after_save :create_version
   after_save :update_sections_and_tables
+  after_save :update_tex_figures
   after_initialize :defaults
 
   attr_accessible :title
@@ -187,6 +189,13 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def update_tex_figures
+    self.tex_figures.each do |tex_figure|
+      if tex_figure.changed?
+        tex_figure.save!
+      end
+    end
+  end
 
   # This deletes all graphs within associated articles
   # It should be called twice whenever a page is changed
