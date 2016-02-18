@@ -189,6 +189,10 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def submit_background_processes
+    TexFigure.submit_background_process(self.id)
+  end
+  
   def update_tex_figures
     self.tex_figures.each do |tex_figure|
       if tex_figure.changed?

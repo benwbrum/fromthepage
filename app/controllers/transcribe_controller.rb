@@ -46,6 +46,7 @@ class TranscribeController  < ApplicationController
             record_index_deed
           end
           @work.work_statistic.recalculate if @work.work_statistic
+          @page.submit_background_processes
           redirect_to :action => 'assign_categories', :page_id => @page.id
         else
           log_transcript_error
@@ -102,6 +103,7 @@ class TranscribeController  < ApplicationController
           record_translation_deed
 
           @work.work_statistic.recalculate if @work.work_statistic
+          @page.submit_background_processes
 
           redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true
         else

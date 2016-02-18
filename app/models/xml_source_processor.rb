@@ -141,7 +141,7 @@ module XmlSourceProcessor
       with_tags = pair[0]
       contents = pair[1]
       
-      replacements[with_tags] = "<texFigure position=\"i\"/>" 
+      replacements[with_tags] = "<texFigure position=\"#{i+1}\"/>" # position attribute in acts as list starts with 1 
       
       figure = figures[i] || TexFigure.new
       figure.source = contents unless figure.source == contents        
