@@ -51,25 +51,50 @@ class TexFigure < ActiveRecord::Base
     write_source_file
 
     # latex
-    run_latex
-    postprocess_latex
+    preprocess_latex
+
+    if run_latex
+      postprocess_latex
+    else
+      postprocess_errors
+    end
   end
   
 
+  def preprocess_latex
+    File.unlink(artifact_file_path) if File.exist?(artifact_file_path) 
+    File.unlink(raw_pdf_file_path) if File.exist?(raw_pdf_file_path) 
+    File.unlink(cropped_pdf_file_path) if File.exist?(cropped_pdf_file_path) 
+  end
+
   def run_latex
     latex_command = "pdflatex -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
-    p latex_command
+    logger.info(latex_command)    
     system(latex_command)
   end
   
   def postprocess_latex
-    # TODO: handle potential failures here
     crop_command = "pdfcrop --clip #{raw_pdf_file_path} #{cropped_pdf_file_path}"
-    p crop_command
+    logger.info(crop_command)
     system(crop_command)
+
     convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
-    p convert_command
+    logger.info(convert_command)
     system(convert_command)
+  end
+
+  LATEX_ERROR = /^!(.*?\n(\w*.(\S*)).*?\n.*?\n)/m
+  def postprocess_errors
+    # look for ! in logfile
+    error_lines = []
+    
+    File.open(tex_log_file_path).read.scan(LATEX_ERROR).each do |text, line_id, line_no|
+      new_number = line_no.to_i - 6
+      error_lines << text.sub(line_id, new_number.to_s)     
+    end
+    
+    File.open(text_file_path, 'w') { |file| file.write(error_lines.join("\n")) }
+    text_to_png(text_file_path, artifact_file_path)    
   end
 
   def write_source_file
@@ -94,7 +119,7 @@ class TexFigure < ActiveRecord::Base
   ARTIFACT_EXTENSION = "png"
   
   def text_to_png(infile,outfile)
-    command = "convert -size 1000x2000 xc:white -pointsize 12 -fill black -annotate +15+15 \"@#{infile}\" -trim -bordercolor \"#FFF\" -border 10 +repage #{outfile}"
+    command = "convert -size 1000x2000 xc:white -pointsize 12 -fill red -annotate +15+15 \"@#{infile}\" -trim -bordercolor \"#FFF\" -border 10 +repage #{outfile}"
     system(command)
   end
   
@@ -113,6 +138,10 @@ class TexFigure < ActiveRecord::Base
     if changed.include? "source"
       clear_artifact
     end
+  end
+
+  def tex_log_file_path
+    artifact_file_path.sub(ARTIFACT_EXTENSION, "log")    
   end
 
   def raw_pdf_file_path
