@@ -5,8 +5,6 @@ class TexFigure < ActiveRecord::Base
   attr_accessible :source
   before_save :review_artifact
   
-  # TODO: handle errors
-  # TODO: add code to make sure articles still save
   # TODO: add config test code to check for pdflatex
 
   # the records will be saved when the page saves, but the artifacts may only be processed by a rake script launched offline at that time
@@ -85,7 +83,6 @@ class TexFigure < ActiveRecord::Base
 
   LATEX_ERROR = /^!(.*?\n(\w*.(\S*)).*?\n.*?\n)/m
   def postprocess_errors
-    # look for ! in logfile
     error_lines = []
     
     File.open(tex_log_file_path).read.scan(LATEX_ERROR).each do |text, line_id, line_no|
