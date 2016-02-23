@@ -43,9 +43,13 @@ namespace :fromthepage do
     unless File.writable?(File.join(Rails.root, 'public', 'images', 'working'))
       raise "Directory #{File.join(Rails.root, 'public', 'images', 'working')} is not writable\n"
     end
-
-    
-    
+    unless system "pdflatex -version > /dev/null"
+      raise "pdflatex is not installed, so LaTeX mark-up will not render until pdflatex and pdfcrop are installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install texlive-latex-base"    
+    end
+    unless system "pdfcrop -version > /dev/null"
+      raise "pdfcrop is not installed, so LaTeX mark-up will not render until pdflatex and pdfcrop are installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install texlive-latex-base"
+    end
+    print "Configuration check completed successfully.  Consider running rake fromthepage:check_email_config next."
   end
 
 

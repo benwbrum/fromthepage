@@ -60,6 +60,18 @@ module AbstractXmlHelper
       e.replace_with(span)
     end
 
+    if @page
+      doc.elements.each("//texFigure") do |e|
+        position = e.attributes["position"]
+        
+        span = REXML::Element.new('img')
+        span.add_attribute('src', (file_to_url(TexFigure.artifact_file_path(@page.id, position)) + "?timestamp=" + Time.now.to_i.to_s))
+        
+        e.replace_with(span)
+      end
+      
+    end
+
     unless user_signed_in?
       doc.elements.each("//sensitive") do |e|
         e.replace_with(REXML::Comment.new("sensitive information suppressed"))

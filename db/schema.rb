@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203212347) do
+ActiveRecord::Schema.define(version: 20160210223506) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -483,6 +483,16 @@ ActiveRecord::Schema.define(version: 20160203212347) do
   add_index "table_cells", ["page_id"], name: "index_table_cells_on_page_id", using: :btree
   add_index "table_cells", ["section_id"], name: "index_table_cells_on_section_id", using: :btree
   add_index "table_cells", ["work_id"], name: "index_table_cells_on_work_id", using: :btree
+
+  create_table "tex_figures", force: true do |t|
+    t.integer  "page_id"
+    t.integer  "position"
+    t.text     "source"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tex_figures", ["page_id"], name: "index_tex_figures_on_page_id", using: :btree
 
   create_table "titled_images", force: true do |t|
     t.string   "original_file",               default: "",    null: false
