@@ -16,6 +16,7 @@
 /public/images/working
 /public/images/simple_captcha
 /public/uploads
+/public/images/uploaded
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
