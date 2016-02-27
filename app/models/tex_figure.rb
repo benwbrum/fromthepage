@@ -128,7 +128,7 @@ class TexFigure < ActiveRecord::Base
 
   def clear_artifact
     logger.debug("Removing #{artifact_file_path}")
-    File.unlink(artifact_file_path)
+    File.unlink(artifact_file_path) if File.exist?(artifact_file_path)
   end
 
   def review_artifact
