@@ -202,8 +202,11 @@ module XmlSourceProcessor
           new_lines << "<tr>#{rowline}</tr>"
         else
           # finished the last row
-          @tables << current_table
-          new_lines << "</tbody></table>"
+          if current_table[:rows].size > 0 # only process tables with bodies
+            @tables << current_table
+            new_lines << "</tbody>"
+          end
+          new_lines << "</table>"
           current_table = nil
         end
       end
