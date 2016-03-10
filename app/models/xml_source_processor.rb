@@ -72,7 +72,7 @@ module XmlSourceProcessor
     end
 
     if @translation_dirty
-      self.xml_translation = wiki_to_xml(self.source_translation, PAGE::TEXT_TYPE::TRANSLATION)      
+      self.xml_translation = wiki_to_xml(self.source_translation, Page::TEXT_TYPE::TRANSLATION)      
     end
   end
 
