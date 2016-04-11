@@ -23,7 +23,7 @@ Rails.application.configure do
     :authentication => 'login', 
     :domain => 'yourdomain.com', # your domain to identify your server when connecting
   }
-  config.action_mailer.default_url_options =  { host: 'hostname' } //change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_url_options =  { host: 'hostname' } #change this to match your server URL, i.e. www.fromthepage.com
   config.action_mailer.default_options
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
