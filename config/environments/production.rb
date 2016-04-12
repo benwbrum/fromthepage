@@ -19,6 +19,21 @@ Rails.application.configure do
   # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
+  # action mailer config -- required for password resets and the bulk uploader
+    config.action_mailer.smtp_settings = {
+    :address   => "smtp.yourdomain.com",
+    :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
+    :enable_starttls_auto => true, # detects and uses STARTTLS
+    :user_name => "XXXXX",
+    :password  => "XXXXX",
+    :authentication => 'login',
+    :domain => 'yourdomain.com', # your domain to identify your server when connecting
+  }
+  config.action_mailer.default_url_options =  { host: 'hostname' } #change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_options
+  # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = false
+  
   # Disable Rails's static asset server (Apache or nginx will already do this).
   config.serve_static_assets = false
 
@@ -60,10 +75,6 @@ Rails.application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   # config.assets.precompile += %w( search.js )
-
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
