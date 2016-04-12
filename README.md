@@ -43,6 +43,8 @@ Run
     rake db:migrate
 to load the schema definition into the database account.
 
+Modify the configuration parameters in config/initializers/01fromthepage.rb.
+
 Finally, start the application
 
     rails server
