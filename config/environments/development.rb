@@ -13,6 +13,18 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
+  # action mailer config -- required for password resets and the bulk uploader
+    config.action_mailer.smtp_settings = {
+    :address   => "smtp.yourdomain.com",
+    :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
+    :enable_starttls_auto => true, # detects and uses STARTTLS
+    :user_name => "XXXXX",
+    :password  => "XXXXX",
+    :authentication => 'login', 
+    :domain => 'yourdomain.com', # your domain to identify your server when connecting
+  }
+  config.action_mailer.default_url_options =  { host: 'hostname' } #change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_options
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
