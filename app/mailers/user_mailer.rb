@@ -1,6 +1,6 @@
 class UserMailer < ActionMailer::Base
 
-  default from: "FromThePage" + SENDING_EMAIL_ADDRESS
+  default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
 
   before_filter :add_inline_attachments!

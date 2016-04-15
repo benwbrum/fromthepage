@@ -33,9 +33,11 @@ namespace :fromthepage do
 
     document_upload.status = DocumentUpload::Status::FINISHED
     document_upload.save
-    
-    SystemMailer.upload_succeeded(document_upload).deliver!
-    UserMailer.upload_finished(document_upload).deliver!
+
+    if SMTP_ENABLED    
+        SystemMailer.upload_succeeded(document_upload).deliver!
+        UserMailer.upload_finished(document_upload).deliver!
+    end
 
   end
 
