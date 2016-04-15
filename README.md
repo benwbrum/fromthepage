@@ -45,6 +45,8 @@ to load the schema definition into the database account.
 
 Modify the configuration parameters in config/initializers/01fromthepage.rb.
 
+Modify the config/environments/production.rb (or development.rb) file to configure your mailer.  (Search for "action_mailer".)
+
 Finally, start the application
 
     rails server
