@@ -366,8 +366,8 @@ EOF
       end
       debug("link display_text = #{display_text}")
       # create new blank articles if they don't exist already
-
-      if !article = collection.articles.where(:title => title).first
+binding.pry if self.id==1052
+      if !(article = collection.articles.where(:title => title).first)
         article = Article.new
         article.title = title
         article.collection = collection
