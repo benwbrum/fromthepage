@@ -1,0 +1,15 @@
+Stats on FromThePage
+
+Hours: <%= @hours %>
+
+User Stats for FromThePage
+
+These are the new users from the last <%= @hours %> hours.
+
+There are <%= @recent_users.count %> new users in the last <%= @hours %> hours.
+
+<% @recent_users.each do |user| %>
+<%= user.login %>
+<%= user.email %><br>
+<% end %>
+

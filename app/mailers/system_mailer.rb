@@ -20,6 +20,12 @@ class SystemMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New document upload - #{document_upload.name}"
   end
 
+  def email_stats(hours)
+    @hours = hours
+    @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage new users in last #{hours} hours."
+  end
+
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
