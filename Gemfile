@@ -11,6 +11,7 @@ gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.2.1'
 gem 'capistrano-rails'
+gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
 gem 'mysql2','0.3.16'
