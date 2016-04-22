@@ -23,7 +23,7 @@ class SystemMailer < ActionMailer::Base
   def email_stats(hours)
     @hours = hours
     @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage new users in last #{hours} hours."
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage had #{@recent_users.count} new users in last #{hours} hours."
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
