@@ -10,6 +10,7 @@ gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.2.0'
+gem 'capistrano-rails'
 gem 'jquery-rails'
 
 gem 'mysql2','0.3.16'
