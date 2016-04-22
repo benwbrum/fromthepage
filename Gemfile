@@ -9,7 +9,9 @@ gem 'will_paginate'
 gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
-gem 'capistrano', '~> 3.2.0'
+gem 'capistrano', '~> 3.2.1'
+gem 'capistrano-rails'
+gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
 gem 'mysql2','0.3.16'
