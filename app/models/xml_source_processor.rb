@@ -168,7 +168,6 @@ module XmlSourceProcessor
     text.lines.each do |line|
       # first deal with any sections
       line = process_any_sections(line)
-      
       # look for a header
       if !current_table
         if line.match(HEADER)
@@ -194,7 +193,13 @@ module XmlSourceProcessor
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe 
           current_table[:rows] << cells
-          rowline = cells.map{|cell| "<td>#{cell}</td>"}.join(" ")
+          rowline = ""
+          cells.each_with_index do |cell, i|
+            head = current_table[:header][i]
+            role_string = " role=\"#{head}\""
+            rowline += "<td>#{cell}</td> "
+            
+          end
 
           if current_table[:rows].size == 1
             new_lines << "<tbody>"
@@ -212,11 +217,14 @@ module XmlSourceProcessor
       end
     end
     
-    
     if current_table
       # unclosed table
       @tables << current_table
-      new_lines << "</tbody></table>"
+      if current_table[:rows].size > 0 # only process tables with bodies
+        @tables << current_table
+        new_lines << "</tbody>"
+      end
+      new_lines << "</table>"
     end
     # do something with the table data
     new_lines.join(" ")

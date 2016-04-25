@@ -50,8 +50,12 @@ class DashboardController < ApplicationController
     @document_upload.user = current_user
 
     if @document_upload.save
-      flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
-      SystemMailer.new_upload(@document_upload).deliver!
+        if SMTP_ENABLED
+          flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
+          SystemMailer.new_upload(@document_upload).deliver!
+        else
+          flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+        end
       @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
     else

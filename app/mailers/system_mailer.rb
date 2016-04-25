@@ -1,12 +1,12 @@
 class SystemMailer < ActionMailer::Base
 
-  default from: "FromThePage <from@example.com>"
+  default from: "FromThePage <support@fromthepage.com>"
   layout "mailer"
 
   before_filter :add_inline_attachments!
 
   def config_test(target_email)
-    mail to: target_email, subject: "Mail config test for FromThePage"
+    mail from: SENDING_EMAIL_ADDRESS, to: target_email, subject: "Mail config test for FromThePage"
   end
 
 
@@ -17,7 +17,13 @@ class SystemMailer < ActionMailer::Base
   #
   def new_upload(document_upload)
     @document_upload = document_upload
-    mail to: admin_emails, subject: "New document upload - #{document_upload.name}"
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New document upload - #{document_upload.name}"
+  end
+
+  def email_stats(hours)
+    @hours = hours
+    @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage had #{@recent_users.count} new users in last #{hours} hours."
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -27,7 +33,7 @@ class SystemMailer < ActionMailer::Base
   #
   def upload_succeeded(document_upload)
     @document_upload = document_upload
-    mail to: admin_emails, subject: "Upload succeeded - #{document_upload.name}"
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Upload succeeded - #{document_upload.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -37,7 +43,7 @@ class SystemMailer < ActionMailer::Base
   #
   def new_user
     @greeting = "Hi"
-    mail to: admin_emails, subject: "New FromThePage user "
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New FromThePage user "
   end
 
   private

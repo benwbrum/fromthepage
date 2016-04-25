@@ -35,6 +35,8 @@ set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "pub
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
+set :assets_roles, [:web, :app]
+
 namespace :deploy do
 
   desc 'Restart application'
