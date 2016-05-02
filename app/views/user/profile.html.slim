@@ -59,7 +59,11 @@ section.user-profile
     -@page_versions.each do |version|
       tr
         td.nowrap =version.created_on.strftime("%b %d, %Y, %l:%M %p")
-        td.overflow =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
+        td.overflow
+          -if version.page.work.present?
+            =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
+          -else
+            span.a50 No work
         td =link_to version.page.title, { :controller => 'display', :action => 'display_page', :page_id => version.page.id }
         td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
   br
