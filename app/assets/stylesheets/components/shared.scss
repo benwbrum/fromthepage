@@ -528,6 +528,9 @@ button, .button, .dropdown dd a {
   padding-left: 1em;
   color: $inputInvalidColor;
   border-left: 3px solid currentColor;
+  &.success {
+    color: $fgGreen;
+  }
   &_title {
     color: inherit;
     margin: 0 0 0.3em 0;
