@@ -47,6 +47,10 @@ Modify the configuration parameters in config/initializers/01fromthepage.rb.
 
 Modify the config/environments/production.rb (or development.rb) file to configure your mailer.  (Search for "action_mailer".)
 
+If you wish to use latex formulas in your transcriptions, you'll need to install "pdflatex".
+You can usually install it by typing:
+sudo apt-get install texlive-latex-base
+
 Finally, start the application
 
     rails server
