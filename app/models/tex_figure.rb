@@ -6,6 +6,7 @@ class TexFigure < ActiveRecord::Base
   before_save :review_artifact
   
   # TODO: add config test code to check for pdflatex
+  # TODO: check readme for other packages needed and test for those
 
   # the records will be saved when the page saves, but the artifacts may only be processed by a rake script launched offline at that time
 
@@ -76,7 +77,8 @@ class TexFigure < ActiveRecord::Base
     logger.info(crop_command)
     system(crop_command)
 
-    convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
+    #convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
+    convert_command = "pdf2svg #{cropped_pdf_file_path} #{artifact_file_path}"
     logger.info(convert_command)
     system(convert_command)
   end
@@ -113,13 +115,12 @@ class TexFigure < ActiveRecord::Base
   ##############
   # Low-level
   ##############
-  ARTIFACT_EXTENSION = "png"
+  ARTIFACT_EXTENSION = "svg"
   
   def text_to_png(infile,outfile)
     command = "convert -size 1000x2000 xc:white -pointsize 12 -fill red -annotate +15+15 \"@#{infile}\" -trim -bordercolor \"#FFF\" -border 10 +repage #{outfile}"
     system(command)
   end
-  
   
   def needs_artifact?
     !File.exist? artifact_file_path    
