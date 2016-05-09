@@ -15,7 +15,7 @@ class UserController < ApplicationController
     if @user.update_attributes(params[:user])
       #record_deed
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to({ :action => 'profile', :user_id => @user.id })
+      ajax_redirect_to({ :action => 'profile', :user_id => @user.id, :anchor => '' })
     else
       render :action => 'update_profile'
     end
