@@ -67,7 +67,7 @@ class TexFigure < ActiveRecord::Base
   end
 
   def run_latex
-    latex_command = "pdflatex -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
+    latex_command = "pdflatex -interaction batchmode -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
     logger.info(latex_command)    
     system(latex_command)
   end
@@ -120,7 +120,7 @@ EOF
       \\usepackage{amsfonts}
       \\begin{document}
       \\thispagestyle{empty}
-      #{self.source}!
+      #{self.source}
       \\end{document}
     )
   end
