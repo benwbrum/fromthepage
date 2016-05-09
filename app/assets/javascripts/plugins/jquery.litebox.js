@@ -171,7 +171,7 @@
             if(location) {
               var oldPath = window.location.href.split('#')[0];
               var newPath = location.split('#')[0];
-              window.location.href = location;
+              window.location.assign(location);
 
               // Force page reload if location path not changed
               if(newPath === oldPath) {

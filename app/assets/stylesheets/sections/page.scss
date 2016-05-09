@@ -74,6 +74,14 @@
 .page-toolbar {
   padding-bottom: $gapSize;
   margin-top: -$gapSize / 2;
+  label { margin-right: 6px; }
+
+  @media screen and (max-width: $widthL) {
+    .hide-l { display: none; }
+  }
+  @media screen and (max-width: $widthM) {
+    .hide-m { display: none; }
+  }
 }
 
 
@@ -139,6 +147,22 @@
   &:last-child {
     left: 50%;
     border-width: 0 0 0 1px;
+  }
+  &_actions {
+    top: 14px;
+    right: 6px;
+    position: absolute;
+    button, .button {
+      border: 0;
+      box-shadow: none;
+      color: rgba(#FFF, 0.8);
+      font-size: $fontSizeSmall;
+      background: rgba(#433, 0.35);
+      &:hover, &:active {
+        color: #FFF;
+        background: rgba(#433, 0.5);
+      }
+    }
   }
 }
 
