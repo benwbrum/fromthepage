@@ -92,8 +92,21 @@ class TexFigure < ActiveRecord::Base
       error_lines << text.sub(line_id, new_number.to_s)     
     end
     
-    File.open(text_file_path, 'w') { |file| file.write(error_lines.join("\n")) }
-    text_to_png(text_file_path, artifact_file_path)    
+      error_line_string = ""
+      y = 45
+      error_lines.each do |error|
+        error_line_string << "<tspan x=\"10\" y=\"#{y}\"> #{error} </tspan>"
+        y=y+10
+      end
+      svg_string= <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="90" viewBox="0 0 293 10" version="1.1">
+      <text x="10" y="20" style="fill:red;">LaTex Processing Error:
+        #{error_line_string}
+      </text>
+      </svg>
+EOF
+    File.open(artifact_file_path, 'w') { |file| file.write(svg_string) }  
   end
 
   def write_source_file
