@@ -1,6 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 
+server 'fromthepage.com', user: 'deploy', roles: %w{web app db}
 set :application, 'fromthepage'
 set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
 
