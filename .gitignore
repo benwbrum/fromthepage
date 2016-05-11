@@ -31,6 +31,10 @@ mongo.log
 
 /public/assets/images/working
 
+config/database.yml
+config/environments/development.rb
+db/schema.rb
+
 # Ignore RVM-related files
 # .rvmrc
 notes*txt
