@@ -1,0 +1,30 @@
+<%=javascript_include_tag 'openseadragon.js' %>
+    <div id="example-inline-configuration-for-iiif" style="width:100%;height:100%;border:1px solid black;color:#333;background-color: black;">
+		<script type="text/javascript">
+		    OpenSeadragon({
+		        id:                 "example-inline-configuration-for-iiif",  //div id to put this image in 
+		        prefixUrl:          "../assets/iiif-images/",
+		        preserveViewport:   true,
+		        visibilityRatio:    1,
+		        minZoomLevel:       1,
+		        defaultZoomLevel:   1,
+		        sequenceMode:       false, //we want fromthepage to handle pages sequentially, rather than openseadragon
+		      	tileSources:   [{
+		      		"@context": "http://iiif.io/api/image/2/context.json", //pull from info.json @context
+		      		"@id": "<%= @page.sc_canvas.sc_service_id %>",  //sc_service_id
+				      "height": <%= @page.sc_canvas.sc_canvas_height %>,  //sc_canvas_height
+				      "width": <%= @page.sc_canvas.sc_canvas_width %> ,  //sc_canvas_width
+				      "profile":["http://iiif.io/api/image/2/level2.json"], //sc_service_profile, but better pulled from info.json's profile attribute at display
+				      "protocol": "http://iiif.io/api/image", //pull from info.json at display
+				      "tiles": [{
+				        "scaleFactors": [1,2,4,8,16,32,64],  //pull from info.json
+				        "width": 1024,  //optional?  pull from info.json
+		   				"height":512  // optional?  pull from info.json
+		      }]    }] });
+		</script>
+        <noscript>
+            <p>OpenSeadragon is not available unless JavaScript is enabled.</p>
+            <img src='/example-images/highsmith/01967v.jpg'
+                 height='600'/>
+        </noscript>
+    </div>
