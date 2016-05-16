@@ -112,10 +112,12 @@ class Work < ActiveRecord::Base
   end
 
   def update_statistic
+    p 'update_statistic start'
     unless self.work_statistic
       self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate
+    p 'update_statistic finish'
   end
 
   def cell_to_xml(cell)

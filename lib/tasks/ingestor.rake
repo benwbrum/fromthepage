@@ -68,7 +68,7 @@ namespace :fromthepage do
     print "unzip_tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*"))
     ls.each do |path|
-      print "unzip_tree handling #{path}\n"
+      print "\tunzip_tree considering #{path}\n"
       if Dir.exist? path
         print "Found directory #{path}\n"
         unzip_tree(path) #recurse
@@ -77,7 +77,7 @@ namespace :fromthepage do
           print "Found zipfile #{path}\n"
           #unzip and recur
           destination = File.join(File.dirname(path), File.basename(path).sub(File.extname(path),''))
-          print "Calling unzip_file(#{path}, #{destination})"
+          print "Calling unzip_file(#{path}, #{destination})\n"
           ImageHelper.unzip_file(path, destination)
           unzip_tree(destination)  # recurse
         end
@@ -89,7 +89,7 @@ namespace :fromthepage do
     print "unpdf_tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*"))
     ls.each do |path|
-      print "unpdf_tree handling #{path})\n"
+      print "\tunpdf_tree considering #{path})\n"
       if Dir.exist? path
         print "Found directory #{path}\n"
         unpdf_tree(path) #recurse
@@ -124,28 +124,35 @@ namespace :fromthepage do
     # first process all sub-directories
     ls = Dir.glob(File.join(temp_dir, "*"))
     ls.each do |path|
-      print "ingest_tree handling #{path})\n"
+      print "ingest_tree considering #{path})\n"
       if Dir.exist? path
         print "Found directory #{path}\n"
         ingest_tree(document_upload, path) #recurse
       end
     end    
     # now process this directory if it contains image files
-    image_files = Dir.glob(File.join(temp_dir, "*{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
+    image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
     if image_files.length > 0
-      print "Found image files in #{temp_dir} -- converting to a work\n"
+      print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
       convert_to_work(document_upload, temp_dir)
+      print "Finished converting files in #{temp_dir} to a work\n"
     end
+    print "Finished ingest_tree for #{temp_dir}\n"
     
   end
   
   def convert_to_work(document_upload, path)
+    print "convert_to_work creating database record for #{path}\n"
+    print "\tconvert_to_work owner = #{document_upload.user.login}\n"
+    print "\tconvert_to_work collection = #{document_upload.collection.title}\n"
+    print "\tconvert_to_work title = #{File.basename(path).ljust(3,'.')}\n"
+#    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
     
     work = Work.new
     work.owner = document_upload.user
     work.collection = document_upload.collection
-    work.title = File.basename(path)
+    work.title = File.basename(path).ljust(3,'.')
     work.save!
     
     new_dir_name = File.join(Rails.root,
@@ -153,9 +160,14 @@ namespace :fromthepage do
                              "images",
                              "uploaded",
                              work.id.to_s)
+    print "\tconvert_to_work creating #{new_dir_name}\n"
+                             
     FileUtils.mkdir_p(new_dir_name)
     IMAGE_FILE_EXTENSIONS.each do |ext|
+#      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
       FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
+      Dir.glob(File.join(path, "*.#{ext}")).each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+#      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
@@ -171,8 +183,10 @@ namespace :fromthepage do
       image = nil
       GC.start
       work.pages << page      
+       print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
     end
     work.save!
+    print "convert_to_work succeeded for #{work.title}\n"
   end
 
   
