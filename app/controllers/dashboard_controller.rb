@@ -1,7 +1,7 @@
 class DashboardController < ApplicationController
 
-  before_filter :authorized?, :only => [:owner, :staging, :omeka]
-  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload]
+  before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject]
+  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -24,6 +24,15 @@ class DashboardController < ApplicationController
     collections = Collection.all
     @document_sets = DocumentSet.all
     @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
+  end
+
+  # Owner Dashboard - start project
+  def startproject
+    @document_upload = DocumentUpload.new
+    @omeka_items = OmekaItem.all
+    @omeka_sites = current_user.omeka_sites
+    @universe_collections = ScCollection.universe
+    @sc_collections = ScCollection.all
   end
 
   # Owner Dashboard - list of works
