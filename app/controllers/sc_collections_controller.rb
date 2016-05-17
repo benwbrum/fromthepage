@@ -32,6 +32,9 @@ class ScCollectionsController < ApplicationController
       set_sc_collection
       work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
     else
+      unless params[:collection_id]
+        work = @sc_manifest.convert_with_no_collection(current_user) 
+      end          
       @collection = Collection.find params[:sc_manifest][:collection_id]
       work = @sc_manifest.convert_with_collection(current_user, @collection)              
     end
@@ -71,7 +74,8 @@ class ScCollectionsController < ApplicationController
   private
     def set_sc_collection
       id = params[:sc_collection_id] || params[:id]
-      @sc_collection = ScCollection.find(id)
+#      @sc_collection = ScCollection.find(id)
+      @sc_collection = ScCollection.find_by id: id
     end
 
     def sc_collection_params

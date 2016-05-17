@@ -34,6 +34,12 @@
         -@sc_collections.each do |sc_collection|
           li.omeka-site
             h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => sc_collection.at_id}
+    =form_tag({ controller: 'sc_collections', action: 'explore_manifest' }) do |f|
+      table.form
+          td
+            .input-file
+              =text_field_tag :at_id
+              =button_tag 'Import'
 
     h3 Import from the Internet Archive
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }

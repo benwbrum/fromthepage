@@ -40,6 +40,14 @@ class ScManifest < ActiveRecord::Base
     
     convert_with_collection(user, collection)
   end
+
+  def convert_with_no_collection(user)
+	collection = Collection.new
+    collection.owner = user
+    collection.title = self.label
+    collection.save!	  
+    convert_with_collection(user, collection)
+  end
   
   def convert_with_collection(user, collection)
     self.save!
