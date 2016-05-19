@@ -28,7 +28,7 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
  
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
-  get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
+ # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
   get   'document_set/new', :to => 'document_sets#new'

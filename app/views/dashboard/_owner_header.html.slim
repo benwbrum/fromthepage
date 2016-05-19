@@ -1,4 +1,10 @@
 -tabs = [{\
+  :name => 'Start A Project',
+  :selected => 5,
+  :options => {\
+    :action => 'startproject',
+  },
+},{\
   :name => 'Your Works',
   :selected => 1,
   :options => {\
@@ -9,18 +15,6 @@
   :selected => 2,
   :options => {\
     :action => 'staging',
-  },
-},{\
-  :name => 'Upload Document',
-  :selected => 4,
-  :options => {\
-    :action => 'upload',
-  },
-},{\
-  :name => 'Omeka Import',
-  :selected => 3,
-  :options => {\
-    :action => 'omeka',
   },
 }]
 
@@ -37,11 +31,6 @@
       dd
         =link_to 'Create a Work', { :controller => 'work', :action => 'new' }, :data => { litebox: { hash: 'create-work' } }
         =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
-        =link_to 'Create an Image Set', { :controller => 'transform' }, :data => { litebox: { hash: 'create-imageset' } }
-        hr
-        =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }
-        //hr
-        //=link_to 'Explore OAI Repositories', { :controller => 'oai', :action => 'repository_list' }
 
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
