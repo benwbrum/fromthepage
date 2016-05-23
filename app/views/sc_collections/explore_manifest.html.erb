@@ -1,8 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-	Back to <%= link_to @sc_collection.label, { :action => 'explore', :sc_collection_id => @sc_collection, :at_id => @sc_collection.at_id}%>
-</p>
+<% if @sc_collection %>
+	<p>
+		Back to <%= link_to @sc_collection.label, { :action => 'explore', :sc_collection_id => @sc_collection, :at_id => @sc_collection.at_id}%>
+	</p>
+<% end %>
 
 <p>
   <strong>Manifest:</strong>
@@ -37,7 +39,11 @@
   <%= link_to @sc_manifest.at_id, @sc_manifest.at_id %>
 </p>
 
+<% if @sc_collection %>
 <%= link_to "Import", {:controller => 'sc_collections', :action => 'import_manifest', :at_id => @sc_manifest.at_id, :sc_collection_id => @sc_collection.id }, { :class => 'button outline' } %>
+<% else %>
+<%= link_to "Import", {:controller => 'sc_collections', :action => 'import_manifest', :at_id => @sc_manifest.at_id }, { :class => 'button outline' } %>
+<% end %>
 
 <h4>Canvases:</h4>
 

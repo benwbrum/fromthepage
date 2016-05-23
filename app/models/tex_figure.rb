@@ -6,6 +6,7 @@ class TexFigure < ActiveRecord::Base
   before_save :review_artifact
   
   # TODO: add config test code to check for pdflatex
+  # TODO: check readme for other packages needed and test for those
 
   # the records will be saved when the page saves, but the artifacts may only be processed by a rake script launched offline at that time
 
@@ -66,7 +67,7 @@ class TexFigure < ActiveRecord::Base
   end
 
   def run_latex
-    latex_command = "pdflatex -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
+    latex_command = "pdflatex -interaction batchmode -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
     logger.info(latex_command)    
     system(latex_command)
   end
@@ -76,7 +77,8 @@ class TexFigure < ActiveRecord::Base
     logger.info(crop_command)
     system(crop_command)
 
-    convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
+    #convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
+    convert_command = "pdf2svg #{cropped_pdf_file_path} #{artifact_file_path}"
     logger.info(convert_command)
     system(convert_command)
   end
@@ -90,8 +92,21 @@ class TexFigure < ActiveRecord::Base
       error_lines << text.sub(line_id, new_number.to_s)     
     end
     
-    File.open(text_file_path, 'w') { |file| file.write(error_lines.join("\n")) }
-    text_to_png(text_file_path, artifact_file_path)    
+      error_line_string = ""
+      y = 45
+      error_lines.each do |error|
+        error_line_string << "<tspan x=\"10\" y=\"#{y}\"> #{error} </tspan>"
+        y=y+10
+      end
+      svg_string= <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="90" viewBox="0 0 293 10" version="1.1">
+      <text x="10" y="20" style="fill:red;">LaTex Processing Error:
+        #{error_line_string}
+      </text>
+      </svg>
+EOF
+    File.open(artifact_file_path, 'w') { |file| file.write(svg_string) }  
   end
 
   def write_source_file
@@ -105,7 +120,7 @@ class TexFigure < ActiveRecord::Base
       \\usepackage{amsfonts}
       \\begin{document}
       \\thispagestyle{empty}
-      #{self.source}!
+      #{self.source}
       \\end{document}
     )
   end
@@ -113,13 +128,12 @@ class TexFigure < ActiveRecord::Base
   ##############
   # Low-level
   ##############
-  ARTIFACT_EXTENSION = "png"
+  ARTIFACT_EXTENSION = "svg"
   
   def text_to_png(infile,outfile)
     command = "convert -size 1000x2000 xc:white -pointsize 12 -fill red -annotate +15+15 \"@#{infile}\" -trim -bordercolor \"#FFF\" -border 10 +repage #{outfile}"
     system(command)
   end
-  
   
   def needs_artifact?
     !File.exist? artifact_file_path    
