@@ -112,18 +112,46 @@ class Work < ActiveRecord::Base
   end
 
   def update_statistic
+    p 'update_statistic start'
     unless self.work_statistic
       self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate
+    p 'update_statistic finish'
   end
 
+  def cell_to_xml(cell)
+    REXML::Document.new('<?xml version="1.0" encoding="UTF-8"?><cell>' + cell.content.gsub('&','&amp;') + '</cell>')
+  end
+
+  def cell_to_plaintext(cell)
+#    binding.pry if cell.content =~ /Brimstone/
+    doc = cell_to_xml(cell)
+    doc.each_element('.//text()') { |e| p e.text }.join
+  end
+
+  def cell_to_subject(cell)
+    doc = cell_to_xml(cell)
+    subjects = ""
+    doc.elements.each("//link") do |e|
+      title = e.attributes['target_title']
+      subjects << title
+      subjects << "\n"
+    end
+    subjects
+  end
 
   def export_tables_as_csv
-    headings = self.table_cells.pluck('DISTINCT header')
+    raw_headings = self.table_cells.pluck('DISTINCT header')
+    headings = []
+    raw_headings.each do |raw_heading|
+      munged_heading = raw_heading  #.sub(/^\s*!?/,'').sub(/\s*$/,'')
+      headings << "#{munged_heading} (text)"
+      headings << "#{munged_heading} (subject)"
+    end
+    
     csv_string = CSV.generate(:force_quotes => true) do |csv|
-      csv << (%w{ Page_Title Page_Position Page_URL Section } + table_cells.pluck('DISTINCT header'))
-#      binding.pry
+      csv << (%w{ Page_Title Page_Position Page_URL Section } + headings)
       self.pages.each do |page|
         unless page.table_cells.empty?
           page_url="http://localhost:3000/display/display_page?page_id=#{page.id}"
@@ -146,8 +174,9 @@ class Work < ActiveRecord::Base
               row = cell.row
             end
             
-            target = headings.index(cell.header) + 1
-            data_cells[target] = cell.content
+            target = raw_headings.index(cell.header) + 1
+            data_cells[target*2-1] = cell_to_plaintext(cell)
+            data_cells[target*2] = cell_to_subject(cell)
           end
         end
       end
