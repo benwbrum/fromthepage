@@ -1,0 +1,22 @@
+<%=javascript_include_tag 'openseadragon.js' %>
+    <div id="example-inline-configuration-for-iiif" style="width:100%;height:100%;border:1px solid black;color:#333;background-color: black;">
+		<script type="text/javascript">
+		    OpenSeadragon({
+		        id:                 "example-inline-configuration-for-iiif",  //div id to put this image in 
+		        prefixUrl:          "../assets/iiif-images/",
+		        preserveViewport:   true,
+		        visibilityRatio:    1,
+		        minZoomLevel:       1,
+		        defaultZoomLevel:   1,
+		        sequenceMode:       false, //we want fromthepage to handle pages sequentially, rather than openseadragon
+		      	tileSources:   [
+		      	  "<%= @page.sc_canvas.sc_service_id %>/info.json"
+		      	]
+		      });
+		</script>
+        <noscript>
+            <p>OpenSeadragon is not available unless JavaScript is enabled.</p>
+            <img src='/example-images/highsmith/01967v.jpg'
+                 height='600'/>
+        </noscript>
+    </div>

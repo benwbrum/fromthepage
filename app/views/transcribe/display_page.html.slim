@@ -36,6 +36,8 @@
       .page-imagescan
         -if @page.ia_leaf
           =render :partial => '/ia/ia_bookreader_div'
+        -elsif @page.sc_canvas
+          =render :partial => '/shared/iiif_div'
         -elsif @page.omeka_file
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
