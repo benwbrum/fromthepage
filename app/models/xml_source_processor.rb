@@ -232,8 +232,9 @@ module XmlSourceProcessor
 
   def process_any_sections(line)
     6.downto(2) do |depth|
-      line.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |wiki_title|
-        line = line.sub(wiki_title.first, "<entryHeading title=\"#{wiki_title.last}\" depth=\"#{depth}\" />")
+      line.scan(/(={#{depth}}(.+)={#{depth}})/).each do |wiki_title|
+        verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title.last)
+        line = line.sub(wiki_title.first, "<entryHeading title=\"#{verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
         @sections << Section.new(:title => wiki_title.last, :depth => depth)
       end
     end
@@ -321,16 +322,17 @@ module XmlSourceProcessor
     return text
   end
 
-  def process_titles(text)
-    6.downto(2) do |depth|
-      text.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |wiki_title|
-        text = text.sub(wiki_title.first, "<entryHeading title=\"#{wiki_title.last}\" depth=\"#{depth}\" />")
-      end
-    end
-
-    text
-  end
-
+#   dead code
+  # def process_titles(text)
+    # 6.downto(2) do |depth|
+      # text.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |wiki_title|
+        # text = text.sub(wiki_title.first, "<entryHeading title=\"#{wiki_title.last}\" depth=\"#{depth}\" />")
+      # end
+    # end
+# 
+    # text
+  # end
+# 
 
   def valid_xml_from_source(source)
     source = source || ""
@@ -386,6 +388,29 @@ EOF
     doc.write(processed)
     return processed
   end
+
+
+  def self.cell_to_xml(cell)
+    REXML::Document.new('<?xml version="1.0" encoding="UTF-8"?><cell>' + cell.gsub('&','&amp;') + '</cell>')
+  end
+
+  def self.cell_to_plaintext(cell)
+#    binding.pry if cell.content =~ /Brimstone/
+    doc = cell_to_xml(cell)
+    doc.each_element('.//text()') { |e| p e.text }.join
+  end
+
+  def self.cell_to_subject(cell)
+    doc = cell_to_xml(cell)
+    subjects = ""
+    doc.elements.each("//link") do |e|
+      title = e.attributes['target_title']
+      subjects << title
+      subjects << "\n"
+    end
+    subjects
+  end
+
 
   ##############################################
   # Code to rename links within the text.

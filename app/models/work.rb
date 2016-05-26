@@ -120,26 +120,6 @@ class Work < ActiveRecord::Base
     p 'update_statistic finish'
   end
 
-  def cell_to_xml(cell)
-    REXML::Document.new('<?xml version="1.0" encoding="UTF-8"?><cell>' + cell.content.gsub('&','&amp;') + '</cell>')
-  end
-
-  def cell_to_plaintext(cell)
-#    binding.pry if cell.content =~ /Brimstone/
-    doc = cell_to_xml(cell)
-    doc.each_element('.//text()') { |e| p e.text }.join
-  end
-
-  def cell_to_subject(cell)
-    doc = cell_to_xml(cell)
-    subjects = ""
-    doc.elements.each("//link") do |e|
-      title = e.attributes['target_title']
-      subjects << title
-      subjects << "\n"
-    end
-    subjects
-  end
 
   def export_tables_as_csv
     raw_headings = self.table_cells.pluck('DISTINCT header')
@@ -175,8 +155,8 @@ class Work < ActiveRecord::Base
             end
             
             target = raw_headings.index(cell.header) + 1
-            data_cells[target*2-1] = cell_to_plaintext(cell)
-            data_cells[target*2] = cell_to_subject(cell)
+            data_cells[target*2-1] = XmlSourceProcessor.cell_to_plaintext(cell.content)
+            data_cells[target*2] = XmlSourceProcessor.cell_to_subject(cell.content)
           end
         end
       end
