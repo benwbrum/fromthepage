@@ -55,8 +55,15 @@ module AbstractXmlHelper
       
       span = REXML::Element.new('span')
       span.add_attribute('class', "depth#{depth}")
-      span.add_text(title)
-      
+ #     span.add_text(title)
+      e.each do |child|
+        if child.is_a? REXML::Text
+          span.add_text(child)
+        else
+          span.add_element(child)
+        end
+        binding.pry
+      end
       e.replace_with(span)
     end
 

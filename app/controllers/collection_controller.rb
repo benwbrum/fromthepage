@@ -14,9 +14,7 @@ class CollectionController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
 
   def authorized?
-    if !user_signed_in? || !current_user.owner
-      ajax_redirect_to dashboard_path
-    elsif @collection && @collection.owner != current_user
+    unless user_signed_in? && current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
   end
