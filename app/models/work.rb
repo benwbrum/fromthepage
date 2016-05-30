@@ -132,7 +132,7 @@ class Work < ActiveRecord::Base
     
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       csv << (%w{ Page_Title Page_Position Page_URL Section } + headings)
-      self.pages.each do |page|
+      self.pages.includes(:table_cells).each do |page|
         unless page.table_cells.empty?
           page_url="http://localhost:3000/display/display_page?page_id=#{page.id}"
           page_cells = [page.title, page.position, page_url]
@@ -140,9 +140,9 @@ class Work < ActiveRecord::Base
           section_title = nil
           section = nil
           row = nil
-          page.table_cells.each do |cell|
+          page.table_cells.includes(:section).each do |cell|
             if section != cell.section
-              section_title = cell.section.title
+              section_title = XmlSourceProcessor::cell_to_plaintext(cell.section.title)
             end 
             if row != cell.row
               if row
