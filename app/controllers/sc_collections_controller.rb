@@ -10,17 +10,17 @@ class ScCollectionsController < ApplicationController
   end
 
   def explore
-    at_id = params[:at_id]
+    at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
 
   def explore_manifest
-    at_id = params[:at_id]
+    at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
   end
 
   def import_manifest
-    at_id = params[:at_id]
+    at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
   end
 
