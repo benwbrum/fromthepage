@@ -15,7 +15,7 @@
 <ul>
 	<% @sc_collection.service.collections.each do |json_collection| %>
 	  <li>
-	    <%= link_to json_collection.label, { :action => 'explore', :at_id => json_collection['@id']} %>
+	    <%= link_to json_collection.label, { :action => 'explore', :at_id => CGI::escape(json_collection['@id'])} %>
 	  </li>
 	<% end %>
 	
@@ -28,7 +28,7 @@
       <li>
         <%= link_to(json_manifest['label'], 
         			{ :action => :explore_manifest,
-    				  :at_id => json_manifest['@id'], 
+    				  :at_id => CGI::escape(json_manifest['@id']), 
     				  :sc_collection_id => @sc_collection.id}) %>      	
       </li>
     <% end %>
