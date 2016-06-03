@@ -140,11 +140,48 @@ code {
      padding: 0 0.3em;
     
   }   
+
+  .bang {
+    th {
+      display: none;
+    }
+  }
+
+
 }
 
-.bang {
-  th {
-    display: none;
+.depth2 {
+  span {
+    font-weight: bolder;
+    font-size: 1200%;
+  }
+}
+
+.depth3 {
+  span {
+    font-weight: bolder;
+    font-size: 160%;
+  }
+}
+
+.depth4 {
+  span {
+    font-weight: bolder;
+    font-size: 200%;
+  }
+}
+
+.depth5 {
+  span {
+    font-weight: bolder;
+    font-size: 250%;
+  }
+}
+
+.depth6 {
+  span {
+    font-weight: bolder;
+    font-size: 300%;
   }
 }
 
