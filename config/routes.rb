@@ -24,9 +24,12 @@ Fromthepage::Application.routes.draw do
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
-  get   '/iiif/:work_id/manifest/:page_id/list', :to => 'iiif#list'
-  get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
- 
+  get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
+  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
+#  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
+  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
+  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence' 
+
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
  # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
