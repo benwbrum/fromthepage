@@ -25,6 +25,8 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
   get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
+  get   '/iiif/:page_id/notes', :to => 'iiif#notes'  
+  get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
   get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
