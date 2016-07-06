@@ -43,7 +43,6 @@ class IiifController < ApplicationController
 
   def canvas
     render :text => canvas_from_page(@page).to_json(pretty: true), :content_type => "application/json"
-    
   end
   
   def list
@@ -70,8 +69,40 @@ class IiifController < ApplicationController
     annotation['@id'] = url_for({:controller => 'iiif', :action => 'annotation', :page_id => @page.id, :annotation_type => type, :only_path => false})
     render :text => annotation.to_json(pretty: true), :content_type => "application/json" 
   end
-    
+
+  def notes
+    page = Page.find params[:page_id]
+    annotation_list = IIIF::Presentation::AnnotationList.new
+    annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => @page.id, :only_path => false})
+    #binding.pry
+    @page.notes.each_with_index do |note, i|
+      note = iiif_page_note(@page,i+1)
+      note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => i+1, :only_path => false})
+      annotation_list.resources << note
+    end
+    render :text => annotation_list.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  def note
+    noteid = params[:note_id].to_i
+    page = Page.find params[:page_id]
+    note = iiif_page_note(@page,noteid)
+    note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
+    render :text => note.to_json(pretty: true), :content_type => "application/json"   
+  end    
+
 private
+  def iiif_page_note(page, noteid)
+    #binding.pry
+    note = IIIF::Presentation::Annotation.new
+    #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
+    note['on'] = region_from_page(@page)
+    note.resource = IIIF::Presentation::Resource.new({'@id' => "note_#{noteid}_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
+    note.resource["format"] =  "text/plain"
+    note.resource["chars"] = @page.notes[noteid.to_i-1].body
+    note
+  end
+
   def iiif_annotation_by_type(page_id, type)
     case type
     when 'transcript'
@@ -86,7 +117,6 @@ private
 
       annotation.resource["chars"] = no_tags
     when 'translation'
-      #do something
       annotation = IIIF::Presentation::Annotation.new
       page = Page.find page_id
       annotation['on'] = region_from_page(@page)
@@ -189,7 +219,19 @@ private
     
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :work_id => page.work_id, :page_id => page.id, :only_path => false})
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcript", :only_path => false})
+      canvas.other_content << annotation_list
+    end
+
+    unless page.xml_translation.blank?
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcript", :only_path => false})
+      canvas.other_content << annotation_list
+    end
+
+    unless page.notes.blank?
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
       canvas.other_content << annotation_list
     end
     canvas    
