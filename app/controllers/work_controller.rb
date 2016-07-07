@@ -19,7 +19,7 @@ class WorkController < ApplicationController
   def authorized?
     if !user_signed_in? || !current_user.owner
       ajax_redirect_to dashboard_path
-    elsif @work && @work.owner != current_user
+    elsif @work && !current_user.like_owner?(@work)
       ajax_redirect_to dashboard_path
     end
   end
@@ -78,7 +78,7 @@ class WorkController < ApplicationController
   def edit
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes
-    @collections = Collection.where(owner_user_id: current_user.id)
+    @collections = current_user.collections
   end
 
   def add_scribe

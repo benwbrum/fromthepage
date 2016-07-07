@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -50,6 +50,9 @@ class User < ActiveRecord::Base
   def like_owner?(obj)
     if Collection == obj.class
       return self == obj.owner || obj.owners.include?(self)
+    end
+    if Work == obj.class
+      return self == obj.collection.owner || obj.collection.owners.include?(self)
     end
     return false
   end
