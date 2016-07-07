@@ -45,7 +45,7 @@
 
     .page-column
       .page-column_actions
-        =>link_to_unless @preview_xml, 'View', { :page_id => @page.id, :preview => true }, class: 'button'
+        =>link_to_unless @preview_xml, 'Preview', { :page_id => @page.id, :preview => true }, class: 'button'
           =link_to 'Edit', { :page_id => @page.id }, class: 'button'
         =>button_tag 'Autolink', :name => 'autolink'
       -if @preview_xml

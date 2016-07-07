@@ -7,14 +7,19 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_filter :authorized?, :only => [:new, :create, :edit, :update, :delete]
+  before_filter :authorized?, :only => [:new, :edit, :update, :delete]
   before_filter :load_settings, :only => [:edit, :update]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
 
   def authorized?
-    unless user_signed_in? && current_user.like_owner?(@collection)
+    
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+    end
+
+    if @collection &&  !current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
   end

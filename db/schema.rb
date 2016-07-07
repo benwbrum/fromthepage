@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160509182203) do
+ActiveRecord::Schema.define(version: 20160625153019) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -403,16 +403,7 @@ ActiveRecord::Schema.define(version: 20160509182203) do
     t.integer  "page_id"
     t.string   "sc_canvas_id"
     t.string   "sc_canvas_label"
-    t.integer  "sc_canvas_width"
-    t.integer  "sc_canvas_height"
-    t.string   "sc_image_motivation"
-    t.string   "sc_image_on"
-    t.string   "sc_resource_id"
-    t.string   "sc_resource_format"
-    t.string   "sc_resource_type"
-    t.string   "sc_service_context"
     t.string   "sc_service_id"
-    t.string   "sc_service_profile"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

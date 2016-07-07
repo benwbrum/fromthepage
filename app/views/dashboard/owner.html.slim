@@ -2,28 +2,22 @@
 
 .columns
   article.maincol
-    -unless current_user.owner_works.empty?
+    -unless current_user.owned_collections.empty?
       .collections
-        -(current_user.owner_works.group_by { |work| work.collection }).each do |c, works|
+        -current_user.owned_collections.each do |c|
           .collection
             h4.collection_title
-              =(c.nil? ? "Not in a Collection" : link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }))
+              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
             ol.collection_works
-              -(works.sort_by { |work| work.title }).each do |w|
+              -(c.works.sort_by { |work| work.title }).each do |w|
                 li =link_to w.title, { :controller => 'work', :action => 'edit', :work_id => w.id }
     -else
-      -new_work = link_to 'create a new work', { :controller => 'work', :action => 'new' }
       -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
+      -start_project = link_to 'start a project', { :controller => 'dashboard', :action => 'startproject' }
       .nodata
-        h5.nodata_title You don't own any works yet
-        p.nodata_text You can #{new_work} or #{new_collection}
+        h5.nodata_title You don't have any collections yet
+        p.nodata_text You can #{new_collection} and #{start_project}
 
-    -unless current_user.oai_sets.empty?
-      h3 Import from an OAI collection
-      ul
-        -current_user.oai_sets.each do |set|
-          -oai_title = 'Works to import from ' + set.set_spec
-          li =link_to oai_title, { :controller => 'oai', :action => 'record_list', :repository_url => set.repository_url, :set_spec => set.set_spec }
 
   aside.sidecol
     h3 Your Activity

@@ -86,6 +86,7 @@ module XmlSourceProcessor
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
+    postprocess_sections
 
     xml_string    
   end
@@ -248,6 +249,20 @@ module XmlSourceProcessor
     line
   end
 
+  def postprocess_sections
+    @sections.each do |section|
+      doc = XmlSourceProcessor.cell_to_xml(section.title)
+      doc.elements.each("//link") do |e|
+        title = e.attributes['target_title']
+        article = collection.articles.where(:title => title).first
+        if article
+          e.add_attribute('target_id', article.id.to_s)
+        end
+      end
+      section.title = XmlSourceProcessor.xml_to_cell(doc)
+    end
+  end      
+
 
   def canonicalize_title(title)
     # kill all tags
@@ -341,9 +356,17 @@ EOF
     return processed
   end
 
-
+  CELL_PREFIX = "<?xml version='1.0' encoding='UTF-8'?><cell>"
+  CELL_SUFFIX = '</cell>'
+  
   def self.cell_to_xml(cell)
-    REXML::Document.new('<?xml version="1.0" encoding="UTF-8"?><cell>' + cell.gsub('&','&amp;') + '</cell>')
+    REXML::Document.new(CELL_PREFIX + cell.gsub('&','&amp;') + CELL_SUFFIX)
+  end
+  
+  def self.xml_to_cell(doc)
+    text = ""
+    doc.write(text)
+    text.sub(CELL_PREFIX,'').sub(CELL_SUFFIX,'')
   end
 
   def self.cell_to_plaintext(cell)
@@ -363,6 +386,22 @@ EOF
     subjects
   end
 
+
+  def self.cell_to_category(cell)
+    doc = cell_to_xml(cell)
+    categories = ""
+    doc.elements.each("//link") do |e|
+      id = e.attributes['target_id']
+      if id
+        article = Article.find(id)
+        article.categories.each do |category|
+          categories << category.title
+          categories << "\n"
+        end
+      end
+    end
+    categories
+  end
 
   ##############################################
   # Code to rename links within the text.
