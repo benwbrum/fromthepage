@@ -34,7 +34,7 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
       td.nowrap
-        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'button', id: 'btnCsvExport')
+        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'button', id: 'btnCsvTblExport')
           =svg_symbol '#icon-export', class: 'icon'
           span Table CSV
 
@@ -46,6 +46,21 @@ table.datagrid
       // Remove 'page_busy' spinner once CSV download finished
       // Cookie should be set to 'true' in the controller method
       $('#btnCsvExport').on('click', function() {
+        Cookies.remove('download_finished');
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          console.log(cookie);
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });
+    $(function() {
+      // Remove 'page_busy' spinner once CSV download finished
+      // Cookie should be set to 'true' in the controller method
+      $('#btnCsvTblExport').on('click', function() {
         Cookies.remove('download_finished');
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');

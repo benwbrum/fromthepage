@@ -63,10 +63,62 @@ class ExportController < ApplicationController
   
   def table_csv
     cookies['download_finished'] = 'true'
-    send_data(@work.export_tables_as_csv,
+    send_data(export_tables_as_csv(@work),
               :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     
   end
+
+private
+
+  def export_tables_as_csv(work)
+    raw_headings = work.table_cells.pluck('DISTINCT header')
+    headings = []
+    raw_headings.each do |raw_heading|
+      munged_heading = raw_heading  #.sub(/^\s*!?/,'').sub(/\s*$/,'')
+      headings << "#{munged_heading} (text)"
+      headings << "#{munged_heading} (subject)"
+    end
+    
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
+      csv << (['Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + headings)
+      work.pages.includes(:table_cells).each do |page|
+        unless page.table_cells.empty?
+          page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+          page_cells = [page.title, page.position, page_url]
+          data_cells = Array.new(headings.count + 1, "")
+          section_title_text = nil
+          section_title_subjects = nil
+          section_title_categories = nil
+          section = nil
+          row = nil
+          page.table_cells.includes(:section).each do |cell|
+            if section != cell.section
+              section_title_text = XmlSourceProcessor::cell_to_plaintext(cell.section.title)
+              section_title_subjects = XmlSourceProcessor::cell_to_subject(cell.section.title)
+              section_title_categories = XmlSourceProcessor::cell_to_category(cell.section.title)
+            end 
+            if row != cell.row
+              if row
+                # write the record to the CSV and start a new record
+                csv << (page_cells + data_cells)
+              end
+              data_cells = Array.new(headings.count + 3, "")            
+              data_cells[0] = section_title_text
+              data_cells[1] = section_title_subjects
+              data_cells[2] = section_title_categories
+              row = cell.row
+            end
+            
+            target = raw_headings.index(cell.header) + 1
+            data_cells[target*2-1] = XmlSourceProcessor.cell_to_plaintext(cell.content)
+            data_cells[target*2] = XmlSourceProcessor.cell_to_subject(cell.content)
+          end
+        end
+      end
+    end
+    csv_string
+  end
+
 
 end

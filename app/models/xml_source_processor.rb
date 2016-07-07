@@ -86,6 +86,7 @@ module XmlSourceProcessor
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
+    postprocess_sections
 
     xml_string    
   end
@@ -176,9 +177,15 @@ module XmlSourceProcessor
           # fill the header
           cells = line.split(/\s*\|\s*/)
           cells.shift if line.match(/^\|/) # remove leading pipe 
-          current_table[:header] = cells
-          heading = cells.map{|cell| "<th>#{cell}</th>"}.join(" ")
-          new_lines << "<table class=\"tabular\">\n<thead>\n#{heading}</thead>"
+          current_table[:header] = cells.map{ |cell_title| cell_title.sub(/^!\s*/,'') }
+          heading = cells.map do |cell|
+            if cell.match(/^!/)
+              "<th class=\"bang\">#{cell.sub(/^!\s*/,'')}</th>"
+            else
+              "<th>#{cell}</th>"
+            end
+          end.join(" ")
+          new_lines << "<table class=\"tabular\">\n<thead>\n<tr>#{heading}</tr></thead>"
         else
           # no current table, no table contents -- NO-OP
           new_lines << line
@@ -242,61 +249,20 @@ module XmlSourceProcessor
     line
   end
 
-  def process_tables(text)
-    @tables = []
-    new_lines = []
-    current_table = nil
-    text.lines.each do |line|
-      #binding.pry
-      # look for a header
-      if !current_table
-        if line.match(HEADER)
-          line.chomp
-          current_table = { :header => [], :rows => [] }
-          # fill the header
-          cells = line.split(/\s*\|\s*/)
-          cells.shift if line.match(/^\|/) # remove leading pipe 
-          current_table[:header] = cells
-          heading = cells.map{|cell| "<th>#{cell}</th>"}.join(" ")
-          new_lines << "<table class=\"tabular\">\n<thead>\n#{heading}</thead>"
-        else
-          # no current table, no table contents -- NO-OP
-          new_lines << line
-        end
-      else
-        #this is either an end or a separator
-        if line.match(SEPARATOR)
-          # NO-OP
-        elsif line.match(ROW)
-          line.chomp
-          # fill the row
-          cells = line.split(/\s*\|\s*/)
-          cells.shift if line.match(/^\|/) # remove leading pipe 
-          current_table[:rows] << cells
-          rowline = cells.map{|cell| "<td>#{cell}</td>"}.join(" ")
-
-          if current_table[:rows].size == 1
-            new_lines << "<tbody>"
-          end
-          new_lines << "<tr>#{rowline}</tr>"
-        else
-          # finished the last row
-          @tables << current_table
-          new_lines << "</tbody></table>"
-          current_table = nil
+  def postprocess_sections
+    @sections.each do |section|
+      doc = XmlSourceProcessor.cell_to_xml(section.title)
+      doc.elements.each("//link") do |e|
+        title = e.attributes['target_title']
+        article = collection.articles.where(:title => title).first
+        if article
+          e.add_attribute('target_id', article.id.to_s)
         end
       end
+      section.title = XmlSourceProcessor.xml_to_cell(doc)
     end
-    
-    
-    if current_table
-      # unclosed table
-      @tables << current_table
-      new_lines << "</tbody></table>"
-    end
-    # do something with the table data
-    new_lines.join(" ")
-  end
+  end      
+
 
   def canonicalize_title(title)
     # kill all tags
@@ -389,9 +355,17 @@ EOF
     return processed
   end
 
-
+  CELL_PREFIX = "<?xml version='1.0' encoding='UTF-8'?><cell>"
+  CELL_SUFFIX = '</cell>'
+  
   def self.cell_to_xml(cell)
-    REXML::Document.new('<?xml version="1.0" encoding="UTF-8"?><cell>' + cell.gsub('&','&amp;') + '</cell>')
+    REXML::Document.new(CELL_PREFIX + cell.gsub('&','&amp;') + CELL_SUFFIX)
+  end
+  
+  def self.xml_to_cell(doc)
+    text = ""
+    doc.write(text)
+    text.sub(CELL_PREFIX,'').sub(CELL_SUFFIX,'')
   end
 
   def self.cell_to_plaintext(cell)
@@ -411,6 +385,22 @@ EOF
     subjects
   end
 
+
+  def self.cell_to_category(cell)
+    doc = cell_to_xml(cell)
+    categories = ""
+    doc.elements.each("//link") do |e|
+      id = e.attributes['target_id']
+      if id
+        article = Article.find(id)
+        article.categories.each do |category|
+          categories << category.title
+          categories << "\n"
+        end
+      end
+    end
+    categories
+  end
 
   ##############################################
   # Code to rename links within the text.

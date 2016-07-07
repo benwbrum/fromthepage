@@ -50,21 +50,13 @@ module AbstractXmlHelper
     end
 
     doc.elements.each("//entryHeading") do |e|
+      # convert to a span
       depth = e.attributes["depth"]
       title = e.attributes["title"]
       
-      span = REXML::Element.new('span')
+      span = e
+      e.name = 'span'
       span.add_attribute('class', "depth#{depth}")
- #     span.add_text(title)
-      e.each do |child|
-        if child.is_a? REXML::Text
-          span.add_text(child)
-        else
-          span.add_element(child)
-        end
-        binding.pry
-      end
-      e.replace_with(span)
     end
 
     if @page

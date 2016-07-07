@@ -28,12 +28,12 @@
     ul.omeka-sites
       -@universe_collections.each do |sc_collection|
         li.omeka-site
-          h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => sc_collection.at_id}    
+          h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => CGI::escape(sc_collection.at_id)}    
       p.fgfaded Previously Viewed Collections
       ul.omeka-sites
         -@sc_collections.each do |sc_collection|
           li.omeka-site
-            h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => sc_collection.at_id}
+            h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => CGI::escape(sc_collection.at_id)}
     =form_tag({ controller: 'sc_collections', action: 'explore_manifest' }) do |f|
       table.form
           td

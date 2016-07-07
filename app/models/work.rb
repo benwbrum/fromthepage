@@ -121,46 +121,5 @@ class Work < ActiveRecord::Base
   end
 
 
-  def export_tables_as_csv
-    raw_headings = self.table_cells.pluck('DISTINCT header')
-    headings = []
-    raw_headings.each do |raw_heading|
-      munged_heading = raw_heading  #.sub(/^\s*!?/,'').sub(/\s*$/,'')
-      headings << "#{munged_heading} (text)"
-      headings << "#{munged_heading} (subject)"
-    end
-    
-    csv_string = CSV.generate(:force_quotes => true) do |csv|
-      csv << (%w{ Page_Title Page_Position Page_URL Section } + headings)
-      self.pages.each do |page|
-        unless page.table_cells.empty?
-          page_url="http://localhost:3000/display/display_page?page_id=#{page.id}"
-          page_cells = [page.title, page.position, page_url]
-          data_cells = Array.new(headings.count + 1, "")
-          section_title = nil
-          section = nil
-          row = nil
-          page.table_cells.each do |cell|
-            if section != cell.section
-              section_title = cell.section.title
-            end 
-            if row != cell.row
-              if row
-                # write the record to the CSV and start a new record
-                csv << (page_cells + data_cells)
-              end
-              data_cells = Array.new(headings.count + 1, "")            
-              data_cells[0] = section_title
-              row = cell.row
-            end
-            
-            target = raw_headings.index(cell.header) + 1
-            data_cells[target*2-1] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-            data_cells[target*2] = XmlSourceProcessor.cell_to_subject(cell.content)
-          end
-        end
-      end
-    end
-    csv_string
-  end
+
 end
