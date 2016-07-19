@@ -2,7 +2,7 @@
 
 .columns
   article.maincol
-    -unless current_user.owned_collections.empty?
+    -unless current_user.all_owner_collections.empty?
       .collections
         -current_user.owned_collections.each do |c|
           .collection
