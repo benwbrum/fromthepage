@@ -4,13 +4,19 @@
   article.maincol
     -unless current_user.all_owner_collections.empty?
       .collections
-        -current_user.owned_collections.each do |c|
+        -current_user.all_owner_collections.each do |c|
           .collection
             h4.collection_title
               =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
             ol.collection_works
+            -unless c.works.empty?
               -(c.works.sort_by { |work| work.title }).each do |w|
                 li =link_to w.title, { :controller => 'work', :action => 'edit', :work_id => w.id }
+            -else
+              -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject' }
+              .nodata
+                h5.nodata_title There are no works in this collection yet
+                p.nodata_text You can upload documents under #{start_project}
     -else
       -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
       -start_project = link_to 'start a project', { :controller => 'dashboard', :action => 'startproject' }
