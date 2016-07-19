@@ -39,8 +39,11 @@ class User < ActiveRecord::Base
 
   def most_recently_managed_collection_id
     last_work = self.owner_works.order(:created_on).last
-    
-    last_work ? last_work.collection.id.to_i : 0
+    if last_work && last_work.collection
+      last_work.collection.id.to_i
+    else
+      nil
+    end
   end
 
   def can_transcribe?(work)
