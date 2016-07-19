@@ -52,7 +52,11 @@ class User < ActiveRecord::Base
       return self == obj.owner || obj.owners.include?(self)
     end
     if Work == obj.class
-      return self == obj.collection.owner || obj.collection.owners.include?(self)
+      if obj.collection
+        return self == obj.collection.owner || obj.collection.owners.include?(self)
+      else
+        self == obj.owner      
+      end
     end
     return false
   end
