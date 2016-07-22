@@ -119,6 +119,8 @@ EOF
       \\usepackage{amsmath}
       \\usepackage{amsfonts}
       \\usepackage{egpeirce}
+      \\usepackage{xymtex}
+      \\usepackage{chemfig}
       \\begin{document}
       \\thispagestyle{empty}
       #{self.source}
