@@ -12,8 +12,8 @@
             -unless c.works.empty?
               -(c.works.sort_by { |work| work.title }).each do |w|
                 li =link_to w.title, { :controller => 'work', :action => 'edit', :work_id => w.id }
-                -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => c.id }
-                p.nodata_text You can add another work under #{start_project}
+              -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => c.id }
+              p.nodata_text You can add another work under #{start_project}
             -else
               -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => c.id }
               .nodata
