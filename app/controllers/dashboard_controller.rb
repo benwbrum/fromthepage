@@ -94,7 +94,7 @@ class DashboardController < ApplicationController
 
     # If user has no activity yet, show first 5 collections
     if @collections.empty?
-      @collections = Collection.limit(5)
+      @collections = Collection.limit(5).order_by_recent_activity
     end
   end
 
