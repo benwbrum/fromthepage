@@ -1,0 +1,9 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection.id }})
+
+h2.nomargin Transcribers
+p 
+  - @transcribers.each do |t|
+    =t.display_name 
+    |  &lt;
+    =t.email 
+    | >, 

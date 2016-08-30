@@ -120,6 +120,17 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
+  def contributors
+    collection = Collection.find_by(id: params[:collection_id])
+
+    #find distinct user ids for all page transcription deeds in collection
+    deeds = collection.deeds.where(deed_type: "page_trans").distinct.pluck(:user_id)
+
+    #then find the list of users for those deeds
+    @transcribers = User.where(id: deeds)
+
+  end
+
 private
   def set_collection_for_work(collection, work)
     # first update the id on the work
