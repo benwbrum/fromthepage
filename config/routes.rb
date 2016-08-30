@@ -21,6 +21,7 @@ Fromthepage::Application.routes.draw do
   get   '/dashboard/owner' => 'dashboard#owner'
   get   '/dashboard/staging' => 'dashboard#staging'
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
+  get   'dashboard_role' => 'dashboard#dashboard_role'
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
