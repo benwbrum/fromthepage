@@ -9,6 +9,18 @@ class DashboardController < ApplicationController
     end
   end
 
+  def dashboard_role
+    if user_signed_in?
+      if current_user.owner
+        redirect_to dashboard_owner_path
+      else
+        redirect_to dashboard_watchlist_path
+      end
+    else
+      redirect_to root_path
+    end
+  end
+
   def get_data
     @collections = current_user.collections
     @image_sets = current_user.image_sets
@@ -82,7 +94,7 @@ class DashboardController < ApplicationController
 
     # If user has no activity yet, show first 5 collections
     if @collections.empty?
-      @collections = Collection.limit(5)
+      @collections = Collection.limit(5).order_by_recent_activity
     end
   end
 

@@ -53,7 +53,7 @@ body
         =link_to root_path, class: 'logo'
           =svg_symbol '#logo'
       .toolbar_group
-        =link_to 'Home', (user_signed_in? ? dashboard_watchlist_path : root_path), class: 'header_link'
+        =link_to 'Dashboard', dashboard_role_path, class: 'header_link'
         =link_to 'Collections', dashboard_path, class: 'header_link'
         =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
 
@@ -61,7 +61,7 @@ body
           dl.dropdown.right
             dt.header_link.header_user
               span
-                big Signed as
+                big Signed In As
                 small =current_user.display_name
               =svg_symbol '#header-user', class: 'icon'
             dd
