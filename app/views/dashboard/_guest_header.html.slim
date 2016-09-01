@@ -1,0 +1,16 @@
+-tabs = [{\
+  :name => 'Recent Activity',
+  :selected => 1,
+  :options => {\
+    :action => 'guest',
+  },
+}]
+
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, "#{selected_tab} - Guest Dashboard"
+
+h1 Guest Dashboard
+.tabs
+  -for tab in tabs
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
+      a.active =tab[:name]
