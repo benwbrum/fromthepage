@@ -128,7 +128,7 @@ class CollectionController < ApplicationController
     #find the deeds per type in the collection
     @transcription_deeds = @collection.deeds.where(deed_type: trans_deeds)
     @note_deeds = @collection.deeds.where("deed_type = ? AND created_at >= ?", note_type, 1.month.ago)
-    @recent_transcriptions = @transcription_deeds.where("created_at >= ?", 1.month.ago)
+    @recent_transcriptions = @transcription_deeds.where("created_at >= ?", 1.week.ago)
 
     #get distinct user ids per deed and create list of users
     user_deeds = @transcription_deeds.distinct.pluck(:user_id)
@@ -145,10 +145,6 @@ class CollectionController < ApplicationController
     @new_transcribers = older_users - recent_users
   
   end
-
-
-
-
 
 private
   def set_collection_for_work(collection, work)
