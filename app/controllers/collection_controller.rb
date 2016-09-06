@@ -123,11 +123,12 @@ class CollectionController < ApplicationController
   def contributors
     #set the type of deeds we're looking for
     trans_deeds = ["page_trans", "page_edit"]
-    note_deeds = "note_add"
+    note_type = "note_add"
 
     #find the deeds per type in the collection
     @transcription_deeds = @collection.deeds.where(deed_type: trans_deeds)
-    @note_deeds = @collection.deeds.where(deed_type: note_deeds)
+    @note_deeds = @collection.deeds.where("deed_type = ? AND created_at >= ?", note_type, 1.month.ago)
+    @recent_transcriptions = @transcription_deeds.where("created_at >= ?", 1.month.ago)
 
     #get distinct user ids per deed and create list of users
     user_deeds = @transcription_deeds.distinct.pluck(:user_id)
