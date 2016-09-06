@@ -1,17 +1,32 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection.id }})
 
-h2.nomargin Transcribers
-
-
-h2.nomargin Transcriber Emails
+h2.nomargin All Transcriber Emails
 p 
-  - @transcribers.each do |t|
+  - @all_transcribers.each do |t|
     =t.display_name 
     |  &lt;
     =t.email 
     | >, 
 
 h2.nomargin New Transcribers
+p 
+  -unless @new_transcribers.empty?
+    - @new_transcribers.each do |t|
+      =t.display_name
+      |  
+      =t.email 
+      | </br> 
+  -else
+    p.a50 No new transcribers
 
-
-h2.nomargin Recent Transcriptions
+.contributor-users.justified.nomargin
+  .justified_box>
+    h2 All Transcribers
+    -unless @all_transcribers.empty?
+      -@all_transcribers.each do |user|
+          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'contributor-user_link')
+            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span.vmiddle =user.display_name
+    -else
+      h3 Transcribers
+      p.a50 No transcribers

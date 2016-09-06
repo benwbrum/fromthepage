@@ -121,29 +121,33 @@ class CollectionController < ApplicationController
   end
 
   def contributors
-    collection = Collection.find_by(id: params[:collection_id])
-    
     #set the type of deeds we're looking for
     trans_deeds = ["page_trans", "page_edit"]
     note_deeds = "note_add"
 
     #find the deeds per type in the collection
-    @transcription_deeds = collection.deeds.where(deed_type: trans_deeds)
-    @note_deeds = collection.deeds.where(deed_type: note_deeds)
+    @transcription_deeds = @collection.deeds.where(deed_type: trans_deeds)
+    @note_deeds = @collection.deeds.where(deed_type: note_deeds)
 
     #get distinct user ids per deed and create list of users
     user_deeds = @transcription_deeds.distinct.pluck(:user_id)
     @all_transcribers = User.where(id: user_deeds)
 
-    #find recent transcription deeds
-    @recent_trans_deeds = @transcription_deeds.where("created_at <= ?", 2.days.ago).distinct.pluck(:user_id)
-    @older_trans_deeds = @transcription_deeds.where("created_at > ?", 2.days.ago).distinct.pluck(:user_id)
-    #new transcribers
+    #find recent transcription deeds by user, then older deeds by user
+    @recent_trans_deeds = @transcription_deeds.where("created_at <= ?", 1.month.ago).distinct.pluck(:user_id)
     recent_users = User.where(id: @recent_trans_deeds)
+    
+    @older_trans_deeds = @transcription_deeds.where("created_at > ?", 1.month.ago).distinct.pluck(:user_id)
     older_users = User.where(id: @older_trans_deeds)
+
+    #compare older to recent list to get new transcribers
     @new_transcribers = older_users - recent_users
   
   end
+
+
+
+
 
 private
   def set_collection_for_work(collection, work)
