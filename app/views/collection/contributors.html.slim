@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection.id }})
 
-h2.nomargin Contributions for the Last 7 Days
+h2.nomargin ="Contributions for the Last #{@num_days} Days"
 p
 
 h3.nomargin New Transcribers
@@ -27,7 +27,7 @@ p
 
 h3.nomargin Recent Notes
 p
-    -@note_deeds.each do |note|
+    -@recent_notes.each do |note|
       -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
       -text = link_to truncate(note.note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
       .deed-short
