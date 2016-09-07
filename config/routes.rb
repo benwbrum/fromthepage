@@ -24,6 +24,7 @@ Fromthepage::Application.routes.draw do
   get   'dashboard_role' => 'dashboard#dashboard_role'
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
+  get   '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
   get   '/iiif/:work_id/manifest/:page_id/list', :to => 'iiif#list'
   get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
