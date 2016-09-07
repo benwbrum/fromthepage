@@ -124,7 +124,11 @@ class CollectionController < ApplicationController
     #set the type of deeds we're looking for
     trans_deeds = ["page_trans", "page_edit"]
     note_type = "note_add"
-    date_condition = 1.week.ago
+
+    start_date = 7.days
+    end_date = Date.today
+
+    date_condition = end_date - start_date
 
     #find the deeds per type in the collection
     @transcription_deeds = @collection.deeds.where(deed_type: trans_deeds)
@@ -137,14 +141,14 @@ class CollectionController < ApplicationController
     @all_transcribers = User.where(id: user_deeds)
 
     #find recent transcription deeds by user, then older deeds by user
-    @recent_trans_deeds = @transcription_deeds.where("created_at <= ?", date_condition).distinct.pluck(:user_id)
+    @recent_trans_deeds = @transcription_deeds.where("created_at >= ?", date_condition).distinct.pluck(:user_id)
     recent_users = User.where(id: @recent_trans_deeds)
-    
-    @older_trans_deeds = @transcription_deeds.where("created_at > ?", date_condition).distinct.pluck(:user_id)
+        
+    @older_trans_deeds = @transcription_deeds.where("created_at < ?", date_condition).distinct.pluck(:user_id)
     older_users = User.where(id: @older_trans_deeds)
 
     #compare older to recent list to get new transcribers
-    @new_transcribers = older_users - recent_users
+    @new_transcribers = recent_users - older_users
   
   end
 
