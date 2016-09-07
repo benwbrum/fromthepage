@@ -1,14 +1,9 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection.id }})
 
-h2.nomargin All Transcriber Emails
-p 
-  - @all_transcribers.each do |t|
-    =t.display_name 
-    |  &lt;
-    =t.email 
-    | >, 
+h2.nomargin Contributions for the Last 7 Days
+p
 
-h2.nomargin New Transcribers
+h3.nomargin New Transcribers
 p 
   -unless @new_transcribers.empty?
     - @new_transcribers.each do |t|
@@ -20,7 +15,7 @@ p
     p.a50 No new transcribers
 
 
-h2.nomargin Recent Transcriptions
+h3.nomargin Recent Transcriptions
 p  
   -@recent_transcriptions.each do |d|
     .deed-short
@@ -30,8 +25,7 @@ p
         =render(:partial => 'deed/deed.html', :locals => { :deed => d })
 
 
-
-h2.nomargin Recent Notes
+h3.nomargin Recent Notes
 p
     -@note_deeds.each do |note|
       -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
@@ -41,7 +35,15 @@ p
           ="#{time_ago_in_words note.created_at} ago"
         span.deed-short_content
           =="#{user} wrote #{text}"
+
   
+h2.nomargin All Transcriber Emails
+p 
+  - @all_transcribers.each do |t|
+    =t.display_name 
+    |  &lt;
+    =t.email 
+    | >, 
 
 
 .contributor-users.justified.nomargin

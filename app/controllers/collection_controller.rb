@@ -124,7 +124,7 @@ class CollectionController < ApplicationController
     #set the type of deeds we're looking for
     trans_deeds = ["page_trans", "page_edit"]
     note_type = "note_add"
-    date_condition = 1.month.ago
+    date_condition = 1.week.ago
 
     #find the deeds per type in the collection
     @transcription_deeds = @collection.deeds.where(deed_type: trans_deeds)
