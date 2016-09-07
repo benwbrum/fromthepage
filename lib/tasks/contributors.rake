@@ -57,7 +57,7 @@ namespace :fromthepage do
     
     puts "Recent Transcriptions:"
     recent_transcriptions.each do |t|
-      puts "Work: #{t.work.title}, Page: #{t.page.title}, User: #{t.user.display_name}"
+      puts "Work: #{t.work.title}, Page: #{t.page.title}, User: #{t.user.display_name}, Action: #{t.deed_type}"
     end
 
     puts "Recent Notes:"
