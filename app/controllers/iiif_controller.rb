@@ -44,7 +44,6 @@ class IiifController < ApplicationController
     layer = IIIF::Presentation::Layer.new(seed)
     manifest["otherContent"] = [layer]
 
-    binding.pry
     if work.supports_translation?
       seed = { 
               '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}), 
@@ -160,7 +159,7 @@ private
     annotation = IIIF::Presentation::Annotation.new
     page = Page.find page_id
     case type
-    when 'transcript'
+    when 'transcription'
       annotation['on'] = region_from_page(@page)
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "plaintext_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
       annotation.resource["format"] =  "text/plain"
@@ -274,7 +273,7 @@ private
     
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcript", :only_path => false})
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcription", :only_path => false})
       canvas.other_content << annotation_list
     end
 
