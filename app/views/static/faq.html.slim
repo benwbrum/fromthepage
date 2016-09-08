@@ -1,3 +1,125 @@
 -content_for :page_title, "Frequently Asked Questions"
 
 h1 Frequently Asked Questions
+
+h5 Terminology
+
+p Collections
+p What is a collection? A collection is a set of works that have been collected together to form a unit.  Each work must belong to a collection, each page to a work.
+p Who can see a collection?  By default a collection is visible to anyone accessing FromThePage from the internet.  This can be changed by the owner of a collection.  
+
+p Works
+p What is a work? A work is an individual item (book, article, journal, letter, etc.) that is uploaded into a collection. A work belongs to a single collection.
+
+p Pages
+p What is a page? A page is the smallest unit within a work (such as pages in a book, article, journal, etc.)  It is a single image from a work, generally a single page within a book or a letter, although occasionally a scan can span multiple pages in one image.
+
+p Project
+p What is a project? A project is at least one uploaded or imported work within a collection.
+
+p Document Sets
+p What are document sets? Document sets are subsets of works in a collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.  
+p How do I create a document set?  You can create document sets when you are the owner of a collection, by going into the Settings tab and clicking on the "Create Document Sets" button on the right side of the page.
+
+/"****************************entities???"
+p Categories
+p What are categories? Categories are classes of entities that are related to one another.  Categories allow you to visualize relationships between entities (subjects) within a collection.  For example, you can visualize the frequency of an entity's occurence in a collection and compare that with the frequencies of other entities occurrences within the collection.
+p Where do categories apply?  Categories and subjects only search and link within one collection.
+p How do I create or delete a category? When you are in the Subjects tab of a collection, you can add a category by clicking on the Actions button on the right side of the screen.  Then select a Root/Child category.  You can also delete a category in this view.
+p Who can create categories? I DON'T HAVE AN ANSWER FOR THIS
+
+p Subjects
+p What are subjects? Subjects are classes of entities could be grouped under a category. Subjects work similarly to tags.  You can create subjects categories when you are transcribing pages or after you have transcribed them by going into a collection and selecting the subjects tab.
+p How do I create URL links for subjects?  While transcribing, you can use double square brackets to create URL links for subjects.  [[Jane Doe]] will link the text "Jane Doe" to the subject Jane Doe, while [[Jane Doe]Jane] will link the text Jane to the subject Jane Doe.
+/"********************************"
+
+
+h5 User Roles
+p Owners
+p What is an owner?  An owner owns a collection or work, with all the associated pages and sets.
+p What privileges does an owner have?  An owner has full control over a collection, works and pages associated with them. Owners also have control over the privileges assigned to a work or page.
+p Can a collection have multiple owners?  Yes, there can be multiple owners of a collection.
+p Can the owner who uploaded the collection be deleted?  No, the original owner (who uploaded the collection) cannot be deleted.
+
+p Editors
+p What is an editor? The editor and transcriber roles are currently the same.
+
+p Transcribers
+p What is a transcriber? Transcribers transcribe a page in a work/collection.
+p Can transcribers edit page titles?  Transcribers can edit page titles if the work owner has given them permission in the work settings tab.
+p Who can transcribe a work? Anyone with a FromThePage account can transcribe any work, unless editors have been restricted by the owner of the work.
+
+h5 Transcription Information
+p What are transcription conventions? Transcription conventions are the formatting and standards used when a page is transcribed.  Specific conventions for a collection/work can be set by the owner.  The specific conventions for a work are found toward the bottom of a page being transcribed.
+p Examples of transcription conventions include: 
+ul  
+  li Using one carriage return for a line break and two carriage returns for a paragraph break.
+  li Using HTML markup in FromThePage
+  li Double square brackets for subjects
+  li 
+    | Basic HTML markup tags include:
+    ul
+      li &lt;s&gt;text&lt;/s&gt; or &lt;strike&gt;text&lt;/strike&gt; for strikethrough
+      li &lt;u&gt;text&lt;/u&gt; for underline
+      li &lt;strong&gt;text&lt;/strong&gt; or &lt;b&gt;text&lt;/b&gt; for bold
+      li &lt;i&gt;text&lt;/i&gt; for italic
+      li &lt;a href="URL"&gt;link text&lt;/a&gt; for hyperlink
+  li 
+    | Conventions for transcription uncertainty or editorial intervention
+    ul
+      li Word that you think you know but aren't sure: follow with a question mark - so "Smith?"
+      li Word for which you can only understand a few letters or none: between square brackets, put as many dots as you think there are letters, inserting actual letters only where legible - so [B..w..n]
+      li Editorial comments such as "above the line", "in blue ink", or "illegible": place in curly brackets, with any text preserved in quotes, after a colon - so {in a second hand above the line: "recently"}; for carats, write {carat: "insertion"}
+
+/THIS COULD USE A DIFFERENT TITLE
+h5 New Projects
+p How do I start a project?
+
+p How are the files inside of zip folders treated when uploaded? Zip files may contain folders containing images, PDFs, or folders containing PDFs. Each folder will be treated as a different work, so do not mix files that belong to different works in the same folder. Each PDF will be treated as its own work, so do not split PDF files among more than one work. For example, a zip file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.
+
+p What are the acceptable file formats and file sizes for uploads?
+ul
+  li Acceptable file formats: PDF, PNG, GIF, JPG
+  li Acceptable file sizes: File sizes are limited by the upload timeout, so we recommend files that are less than 100 MB per file uploaded (either individually or in a zip file). FromThePage will resize each image file down to 1 MB.
+p What are the page image guidelines? 
+ul
+  li PNG, GIF and JPG files are all acceptable.
+  li Images should be oriented so that they are right side up.
+  li Images should be split down the spine, so that only one page is visible on an image. (See the autosplit tool if you need to split two-page images.)
+/AUTOSPLIT TOOL
+ 
+  li Images should be named so that an alphabetical sort will result in the correct page order. Note, this may require "zero-padding" for page numbers - page_09.jpg, page_10.jpg will sort correctly, but page_9.jpg, page_10.jpg will not.
+ 
+p How do I import an OAI (Open Archives Initiative) Collection from the Internet Archive? 
+/THIS SECTION NEEDS WORK
+p How do I Import from a IIIF Repository?
+/DON'T KNOW HOW TO DO THIS EITHER.
+p How do I import from Omeka?
+/OR THIS
+
+
+h5 Managing Collections/Works
+p Only an owner can add or delete a collection, work or page.
+
+p How do I add a collection or work? After signing in, go to the Owner Dashboard by clicking the Dashboard button.  Click the "Actions" button at the top right corner to create a work or a collection.
+
+p How do I delete a collection or work? Click on the collection or work you would like to delete, and go to the Settings tab.  Scroll down to see a "Delete Collection" or "Delete Work" button on the left side of the page.
+
+p How do I add a page to a work? From the Owner Dashboard, go to the specific work to which you'd like to add a page.  In the Pages tab, click the "Add New Page" button to the right to add a new page to the work.  You can use the arrows to the right of the page listings to arrange the pages in the correct order.
+
+p How do I delete a page from a work?  From the Owner Dashboard, go to the specific work where the page resides.  In the Pages tab, click the Delete button to the right of the page you would like to delete.
+
+h5 Access and Privileges
+
+p Can an owner restrict access to collections or works?  Yes, access can be restricted at the collection or work level, though not at the level of a specific page.
+
+p How do I manage access to my collections? After you sign in, go to the Owner Dashboard by clicking the Dashboard button.  Select the collection you want to restrict.  In the Settings tab, click the "Make Collection Private" button to restrict visibility to the owners of the collection.  Additional owners can be added in the dropdown box below.
+
+p How do I manage access to my works?  After you sign in, go to the Owner Dashboard by clicking the Dashboard button.  Click the link for the work you would like to restrict. In the Settings tab for the work, select the "Restrict Editors" checkbox and then hit apply.  Once the editors are restricted, a dropdown box appears where transcribers can be added.
+
+p Who can transcribe a work? Anyone with a FromThePage account can transcribe any work, unless "restrict editors" is checked by the owner in the Work Settings tab.  If transcribers are restricted, the owner will need to add each transcriber to the work in the Settings tab within the work.
+
+/DON'T KNOW WHERE THIS BELONGS EXACTLY...
+p What is "Pages are meaningful"? This setting will display page titles prominently, since pages are meaningful semantic divisions of the text (i.e. a journal with a date for each page).  If this setting is not checked, the work is more free-flowing text that does not need to be divided into sections based on pages, such as letters or a book.
+
+p What is supports translation? In addition to transcribing a page, you have the ability to translate a page.  If this box is checked, a new tab (the translation tab) will appear for every page in the work.
