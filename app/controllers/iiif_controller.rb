@@ -201,10 +201,15 @@ private
     sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
     sequence.label = 'Pages'
     work=Work.find work_id
-    work.pages.each do |page|
-      sequence.canvases << canvas_from_page(page)
-    end   
-
+    if work.sc_manifest
+      work.pages.each do |page|
+        sequence.canvases << canvas_from_iiif_page(page)
+      end
+    else
+      work.pages.each do |page|
+        sequence.canvases << canvas_from_page(page)
+      end   
+    end
     sequence
   end
 
@@ -257,6 +262,15 @@ private
     image_resource
   end
 
+  def canvas_from_iiif_page(page)
+    #seed = rest api query of the @id for the page
+    binding.pry
+    connection = open(page.sc_canvas.sc_canvas_id)
+    seed = connection.read
+    canvas = IIIF::Presentation::Canvas.new(seed)
+    add_annotations_to_canvas(canvas, page)
+  end
+
   def canvas_from_page(page)
     annotation = IIIF::Presentation::Annotation.new
     annotation.resource = iiif_create_image_resource(page)
@@ -270,7 +284,11 @@ private
     annotation['on'] = canvas['@id']
     annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
     canvas.images << annotation
-    
+
+    add_annotations_to_canvas(canvas, page)
+  end
+
+  def add_annotations_to_canvas(canvas,page)
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcription", :only_path => false})
@@ -288,7 +306,7 @@ private
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
       canvas.other_content << annotation_list
     end
-    canvas    
+    canvas
   end
 
  def annotationlist_from_page(page,type)
@@ -304,6 +322,7 @@ private
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
     end
+# TODO need comments annotationlist
   end
     annotation_list
   end
