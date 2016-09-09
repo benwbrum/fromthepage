@@ -25,7 +25,6 @@ class IiifController < ApplicationController
   def manifest
     work_id =  params[:id]
 
-
     work = Work.find work_id
     seed = { 
               '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}), 
@@ -33,7 +32,13 @@ class IiifController < ApplicationController
             }
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
-    manifest.description = work.description unless work.description.blank?
+    #manifest.description = work.description unless work.description.blank?
+    if work.sc_manifest
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
+      manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
+    else
+      manifest.description = work.description unless work.description.blank?
+    end
     manifest.within = iiif_collection_id_from_collection(work.collection)
     sequence = iiif_sequence_from_work_id(work_id)
     manifest.sequences << sequence
