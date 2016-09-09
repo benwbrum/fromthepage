@@ -142,8 +142,9 @@ class AdminController < ApplicationController
     @collections = Collection.all
   end
 
-  def owners_list
+  def owner_list
     @collections = Collection.all
+    @owners = User.where(owner: true)
   end
 
 

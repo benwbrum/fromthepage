@@ -3,12 +3,15 @@
 section.admin-counters
   =link_to ({ :controller => 'admin', :action => 'collection_list' }) do
     .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
-  =link_to ({ :controller => 'admin', :action => 'works_list'}) do
+  =link_to ({ :controller => 'admin', :action => 'work_list'}) do
     .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
-  .counter(data-prefix="#{number_with_delimiter @articles.length}") #{'Article'.pluralize(@articles.length)}
-  .counter(data-prefix="#{number_with_delimiter @pages.length}") #{'Page'.pluralize(@pages.length)}
-  .counter(data-prefix="#{number_with_delimiter @owners.length}") #{'Owner'.pluralize(@owners.length)}
-  = link_to ({ :controler => 'admin', :action => 'user_list'})
+  =link_to ({ :controller => 'admin', :action => 'article_list'}) do
+    .counter(data-prefix="#{number_with_delimiter @articles.length}") #{'Article'.pluralize(@articles.length)}
+  =link_to ({ :controller => 'admin', :action => 'page_list'}) do
+    .counter(data-prefix="#{number_with_delimiter @pages.length}") #{'Page'.pluralize(@pages.length)}
+  =link_to ({ :controller => 'admin', :action => 'owner_list'}) do
+    .counter(data-prefix="#{number_with_delimiter @owners.length}") #{'Owner'.pluralize(@owners.length)}
+  =link_to ({ :controller => 'admin', :action => 'user_list'}) do
     .counter(data-prefix="#{number_with_delimiter @users.length}") #{'Registered user'.pluralize(@users.length)}
   .counter(data-prefix="#{number_with_delimiter @users_count}") #{'User'.pluralize(@users_count)} online
 
