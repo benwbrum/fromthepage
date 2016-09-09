@@ -126,4 +126,25 @@ class AdminController < ApplicationController
     render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
   end
 
+  def collection_list
+    @collections = Collection.all
+  end
+
+  def work_list
+    @collections = Collection.all
+  end
+
+  def article_list
+    @collections = Collection.all
+  end
+
+  def page_list
+    @collections = Collection.all
+  end
+
+  def owners_list
+    @collections = Collection.all
+  end
+
+
 end

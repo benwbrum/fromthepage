@@ -1,12 +1,16 @@
 =render(:partial => 'header', :locals => { :selected => 1 })
 
 section.admin-counters
-  .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
-  .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
-  .counter(data-prefix="#{number_with_delimiter @ia_works.length}") #{'IA work'.pluralize(@ia_works.length)}
+  =link_to ({ :controller => 'admin', :action => 'collection_list' }) do
+    .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
+  =link_to ({ :controller => 'admin', :action => 'works_list'}) do
+    .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
   .counter(data-prefix="#{number_with_delimiter @articles.length}") #{'Article'.pluralize(@articles.length)}
   .counter(data-prefix="#{number_with_delimiter @pages.length}") #{'Page'.pluralize(@pages.length)}
-  .counter(data-prefix="#{number_with_delimiter @image_sets.length}") #{'Image set'.pluralize(@image_sets.length)}
   .counter(data-prefix="#{number_with_delimiter @owners.length}") #{'Owner'.pluralize(@owners.length)}
-  .counter(data-prefix="#{number_with_delimiter @users.length}") #{'Registered user'.pluralize(@users.length)}
+  = link_to ({ :controler => 'admin', :action => 'user_list'})
+    .counter(data-prefix="#{number_with_delimiter @users.length}") #{'Registered user'.pluralize(@users.length)}
   .counter(data-prefix="#{number_with_delimiter @users_count}") #{'User'.pluralize(@users_count)} online
+
+
+  

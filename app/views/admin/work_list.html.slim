@@ -1,0 +1,21 @@
+h2 Works by Collection
+
+.columns
+  article.maincol
+    -unless @collections.empty?
+      .collections
+        -@collections.each do |c|
+          .collection
+            h4.collection_title
+              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
+            ol.collection_works
+            -unless c.works.empty?
+              -(c.works.sort_by { |work| work.title }).each do |w|
+                li =link_to w.title, { :controller => 'work', :action => 'edit', :work_id => w.id }
+              
+    -else
+      -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
+      -start_project = link_to 'start a project', { :controller => 'dashboard', :action => 'startproject' }
+      .nodata
+        h5.nodata_title You don't have any collections yet
+        p.nodata_text You can #{new_collection}
