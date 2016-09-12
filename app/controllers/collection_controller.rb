@@ -126,7 +126,7 @@ class CollectionController < ApplicationController
     note_type = "note_add"
 
     start_date = 7.days.ago
-    end_date = Date.today
+    end_date = DateTime.current
 
     @num_days = (end_date.to_date - start_date.to_date).to_i
 
