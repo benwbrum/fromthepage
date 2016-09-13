@@ -120,33 +120,38 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
-  def contributors
+def contributors
     #set the type of deeds we're looking for
-    trans_deeds = ["page_trans", "page_edit"]
+    trans_type = ["page_trans", "page_edit"]
     note_type = "note_add"
+    article_type = "art_edit"
+    translate_type = ["pg_xlat", "pg_xlat_ed"]
 
-    start_date = 7.days.ago
+    start_date = 1.week.ago
     end_date = DateTime.current
 
     @num_days = (end_date.to_date - start_date.to_date).to_i
 
     #find the deeds per type in the collection
-    @transcription_deeds = @collection.deeds.where(deed_type: trans_deeds)
-    note_deeds = @collection.deeds.where("deed_type = ?", note_type)
+    transcription_deeds = @collection.deeds.where(deed_type: trans_type)
+    note_deeds = @collection.deeds.where(deed_type: note_type)
+    article_deeds = @collection.deeds.where(deed_type: article_type)
+    translate_deeds = @collection.deeds.where(deed_type: translate_type)
     
     @recent_notes = note_deeds.where("created_at >= ? AND created_at <= ?", start_date, end_date)
-    @recent_transcriptions = @transcription_deeds.where("created_at >= ? AND created_at <= ?", start_date, end_date)
-
+    @recent_transcriptions = transcription_deeds.where("created_at >= ? AND created_at <= ?", start_date, end_date)
+    @recent_articles = article_deeds.where("created_at >= ? AND created_at <= ?", start_date, end_date)
+    @recent_translations = translate_deeds.where("created_at >= ? AND created_at <= ?", start_date, end_date)
 
     #get distinct user ids per deed and create list of users
-    user_deeds = @transcription_deeds.distinct.pluck(:user_id)
+    user_deeds = transcription_deeds.distinct.pluck(:user_id)
     @all_transcribers = User.where(id: user_deeds)
 
     #find recent transcription deeds by user, then older deeds by user
     recent_trans_deeds = @recent_transcriptions.distinct.pluck(:user_id)
     recent_users = User.where(id: recent_trans_deeds)
         
-    older_trans_deeds = @transcription_deeds.where("created_at < ?", start_date).distinct.pluck(:user_id)
+    older_trans_deeds = transcription_deeds.where("created_at < ?", start_date).distinct.pluck(:user_id)
     older_users = User.where(id: older_trans_deeds)
 
     #compare older to recent list to get new transcribers

@@ -36,6 +36,26 @@ p
         span.deed-short_content
           =="#{user} wrote #{text}"
 
+
+h3.nomargin Recent Articles
+p  
+  -@recent_articles.each do |art|
+    .deed-short
+      =time_tag(art.created_at, class: 'legend legend-left')
+        ="#{time_ago_in_words art.created_at} ago"
+      span.deed-short_content
+        =render(:partial => 'deed/deed.html', :locals => { :deed => art })
+
+
+h3.nomargin Recent Translations
+p  
+  -@recent_translations.each do |d|
+    .deed-short
+      =time_tag(d.created_at, class: 'legend legend-left')
+        ="#{time_ago_in_words d.created_at} ago"
+      span.deed-short_content
+        =render(:partial => 'deed/deed.html', :locals => { :deed => d })
+
   
 h2.nomargin All Transcriber Emails
 p 
