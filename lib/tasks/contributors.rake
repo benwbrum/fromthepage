@@ -29,15 +29,15 @@ namespace :fromthepage do
     note_deeds = collection.deeds.where(deed_type: "note_add")
     
     # notes and transcriptions created during the time frame
-    recent_notes = note_deeds.where("created_at >= ?", 1.month.ago)
-    recent_transcriptions = transcription_deeds.where("created_at >= ?", 1.month.ago)
+    recent_notes = note_deeds.where("created_at >= ?", 1.day.ago)
+    recent_transcriptions = transcription_deeds.where("created_at >= ?", 1.day.ago)
     
     #find recent users
     recent_trans_deeds = recent_transcriptions.distinct.pluck(:user_id)
     recent_users = User.where(id: recent_trans_deeds)
     
     #find older users (from before time frame)
-    older_trans_deeds = transcription_deeds.where("created_at < ?", 1.month.ago).distinct.pluck(:user_id)
+    older_trans_deeds = transcription_deeds.where("created_at < ?", 1.day.ago).distinct.pluck(:user_id)
     older_users = User.where(id: older_trans_deeds)
 
     #find the difference between the recent and older lists
