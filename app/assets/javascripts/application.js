@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
+//= require_tree ./datepicker
 
 
 ;(function($, window, document, undefined) {

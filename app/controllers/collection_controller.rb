@@ -159,6 +159,15 @@ def contributors
   
   end
 
+  def datetime
+      @start_date = params[:start_date]
+      @end_date = params[:end_date]
+    if @start_date == nil
+      @start_date = 1.week.ago
+      @end_date = Date.today
+    end
+  end
+
 private
   def set_collection_for_work(collection, work)
     # first update the id on the work
