@@ -11,13 +11,13 @@ h4.collection_title
   a href="#Imports" Imports<br>
   a href="#Access" User Access and Privileges<br>
 
-h5.underline 
+h5.underline
   a name="Terminology" 
   | Terminology
 
 p
   b What is a collection?  
-  |  A collection is a set of works (or documents) that have been collected together to form a unit.  Each work must belong to a collection, each page to a work.  Collections and works can be translated as well as transcribed.  By default a collection is visible to anyone accessing FromThePage from the internet.  This can be changed by the owner of a collection.  
+  |  A collection is a set of documents (works) that have been collected together to form a unit.  Each work must belong to a collection, each page to a work.  Collections and works can be translated as well as transcribed.  By default a collection is visible to anyone accessing FromThePage from the internet.  This can be changed by the owner of a collection.  
 p 
   b What is a work? 
   |  A work is an individual item (book, article, journal, letter, etc.) that is uploaded into a collection. A work belongs to a single collection.
@@ -32,10 +32,10 @@ p
   |  Document sets are subsets of works in a collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.  These can be created by the owner of a collection.
 p 
   b What are categories? 
-  |  Categories are groups of related subjects/information.  Categories allow you to visualize relationships between entities (subjects) within a collection.  For example, you can visualize the frequency of a subjects's occurence in a collection and compare that with the frequencies of other subjects' occurrences within the collection.  Categories and subjects only search and link within a single collection, and are created by the owner of the collection.
+  |  Categories are groups of related subjects/information.  Categories allow you to visualize relationships between subjects (topics) within a collection.  For example, you can visualize the frequency of a subjects's occurence in a collection and compare that with the frequencies of other subjects' occurrences within the collection.  Categories and subjects only search and link within a single collection.  Categories are created by the owner of the collection.
 p 
   b What are subjects? 
-  |  Subjects are topics within a document which could be grouped within a category. Subjects work similarly to tags.  You can create subjects and categories when you are transcribing pages or after you have transcribed them by going into a collection and selecting the subjects tab.
+  |  Subjects are topics within a document which could be grouped within a category. Subjects work similarly to tags.  You can create subjects when you are transcribing pages or after you have transcribed them by going into a collection and selecting the subjects tab.
 
 
 h5.underline 
@@ -89,7 +89,7 @@ p
           li Word for which you can only understand a few letters or none: between square brackets, put as many dots as you think there are letters, inserting actual letters only where legible - so [B..w..n]
           li Editorial comments such as "above the line", "in blue ink", or "illegible": place in curly brackets, with any text preserved in quotes, after a colon - so {in a second hand above the line: "recently"}; for carats, write {carat: "insertion"}
   p 
-  b How do I create URL links for subjects?  
+  b How do I create subject URL links in a document?  
   |  While transcribing, you can use double square brackets to create URL links for subjects.  [[Jane Doe]] will link the text "Jane Doe" to the subject Jane Doe, while [[Jane Doe]Jane] will link the text Jane to the subject Jane Doe.
 
 h5.underline
@@ -115,7 +115,7 @@ p
   |  From the Owner Dashboard, go to the specific work where the page resides.  In the Pages tab, click the Delete button to the right of the page you would like to delete.
 p 
   b How do I create a document set?  
-  |  You can create document sets when you are the owner of a collection, by going into the Settings tab and clicking on the "Create Document Sets" button on the right side of the page.
+  |  Only the owner of a collection can create a document set.  Within the collection, go into the Settings tab and clicking on the "Create Document Sets" button on the right side of the page.
 p 
   b How do I turn on support for translating a work or collection?  
   |  Translation support is set at the work level.  From the Owner Dashboard, choose the work and go to the Settings tab.  In the Settings tab, check the "Supports translation" checkbox to turn on support for translation.  This will add an additional "Translate" tab to each page of the work.
@@ -160,30 +160,22 @@ p
 p 
   b How do I import from an IIIF Repository?
   | In the Owner Dashboard, choose the Start a Project tab.  If you already have a manifest URL, copy it into the text box at the bottom of the "Import from a IIIF Repository" section and click import.  Otherwise, click the link for the relevant institution.  This will take a few minutes.  Once the list of institutions appears, click on the manifest of interest.  A description will appear, and at the bottom, you can click the Import button.  The next screen will give you an option of the collection to import into, and then you can click import.
-p 
-  b How do I import from Omeka?
-
 
 h5.underline
   a name="Access" 
   | User Access and Privileges
-
 p 
   b Can an owner restrict access to collections or works?  
   |  Yes, access can be restricted at the collection or work level, though not at the level of a specific page.
-
 p 
   b How do I manage access to my collections? 
   |  After you sign in, go to the Owner Dashboard by clicking the Dashboard button.  Select the collection you want to restrict.  In the Settings tab, click the "Make Collection Private" button to restrict visibility to the owners of the collection.  Additional owners can be added in the dropdown box below.
-
 p 
   b How do I manage access to my works?  
   |  After you sign in, go to the Owner Dashboard by clicking the Dashboard button.  Click the link for the work you would like to restrict. In the Settings tab for the work, select the "Restrict Editors" checkbox and then hit apply.  Once the editors are restricted, a dropdown box appears where transcribers can be added.
-
 p 
   b Who can transcribe a work? 
   |  Anyone with a FromThePage account can transcribe any work, unless "restrict editors" is checked by the owner in the Work Settings tab.  If transcribers are restricted, the owner will need to add each transcriber to the work in the Settings tab within the work.
-
 
 p 
   b Further information can also be found in the <a href="https://github.com/benwbrum/fromthepage/wiki">FromThePage wiki</a>.
