@@ -8,9 +8,13 @@ h4.normargin Select a new date range
 =form_tag({controller: "collection", action: "contributors"}, method: "get") do
   =hidden_field_tag(:collection_id, @collection.id)
   =label_tag(:start_date, "Start date")
+  |  
   =text_field_tag(:start_date, @start_deed, style: "width:30%")
+  |  
   =label_tag(:end_date, "End date")
+  |  
   =text_field_tag(:end_date, @end_deed, style: "width:30%")
+  |  
   =submit_tag("Enter Dates")
 br/
 
