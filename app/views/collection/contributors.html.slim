@@ -1,7 +1,19 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection.id }})
 
-h2.nomargin ="Contributions for the Last #{@num_days} Days"
-p
+
+h2.nomargin ="Contributions Between #{@start_deed} and #{@end_deed}"
+
+h4.normargin Select a new date range
+
+=form_tag({controller: "collection", action: "contributors"}, method: "get") do
+  =hidden_field_tag(:collection_id, @collection.id)
+  =label_tag(:start_date, "Start date")
+  =text_field_tag(:start_date, @start_deed, style: "width:30%")
+  =label_tag(:end_date, "End date")
+  =text_field_tag(:end_date, @end_deed, style: "width:30%")
+  =submit_tag("Enter Dates")
+br/
+
 
 h3.nomargin New Transcribers
 p 
@@ -10,7 +22,7 @@ p
       =t.display_name
       |  
       =t.email 
-      | </br> 
+      br/
   -else
     p.a50 No new transcribers
 
@@ -77,3 +89,24 @@ p
     -else
       h3 Transcribers
       p.a50 No transcribers
+
+
+-content_for :javascript
+=javascript_include_tag 'datepicker/datepicker'
+javascript:
+  //Attach a date picker for start and end dates
+  datePickerController.createDatePicker({
+      formElements:{
+          "start_date":"%M %d, %Y"
+      },
+      rangeHigh: new Date(),
+      noFadeEffect: true
+  });
+
+  datePickerController.createDatePicker({
+      formElements:{
+          "end_date":"%M %d, %Y"
+      },
+      rangeHigh: new Date(),
+      noFadeEffect: true
+  });
