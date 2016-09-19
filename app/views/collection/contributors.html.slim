@@ -19,10 +19,10 @@ h3.nomargin Recent Transcriptions
 p  
   -@recent_transcriptions.each do |d|
     .deed-short
-      =time_tag(d.created_at, class: 'legend legend-left')
-        ="#{time_ago_in_words d.created_at} ago"
       span.deed-short_content
-        =render(:partial => 'deed/deed.html', :locals => { :deed => d })
+        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+        =" #{time_ago_in_words d.created_at} ago"
+      
 
 
 h3.nomargin Recent Notes
@@ -31,44 +31,33 @@ p
       -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
       -text = link_to truncate(note.note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
       .deed-short
-        =time_tag(note.created_at, class: 'legend legend-left')
-          ="#{time_ago_in_words note.created_at} ago"
+          
         span.deed-short_content
-          =="#{user} wrote #{text}"
+        =render(:partial => 'deed/deed.html', :locals => { :deed => note, :long_view => true })
+        =" #{time_ago_in_words note.created_at} ago"
 
 
 h3.nomargin Recent Articles
 p  
   -@recent_articles.each do |art|
     .deed-short
-      =time_tag(art.created_at, class: 'legend legend-left')
-        ="#{time_ago_in_words art.created_at} ago"
       span.deed-short_content
-        =render(:partial => 'deed/deed.html', :locals => { :deed => art })
+        =render(:partial => 'deed/deed.html', :locals => { :deed => art, :long_view => true })
+        =" #{time_ago_in_words art.created_at} ago"
 
 
 h3.nomargin Recent Translations
 p  
   -@recent_translations.each do |d|
     .deed-short
-      =time_tag(d.created_at, class: 'legend legend-left')
-        ="#{time_ago_in_words d.created_at} ago"
       span.deed-short_content
-        =render(:partial => 'deed/deed.html', :locals => { :deed => d })
-
-  
-h2.nomargin All Transcriber Emails
-p 
-  - @all_transcribers.each do |t|
-    =t.display_name 
-    |  &lt;
-    =t.email 
-    | >, 
+        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+        =" #{time_ago_in_words d.created_at} ago"
 
 
 .contributor-users.justified.nomargin
   .justified_box>
-    h2 All Transcribers
+    h3 All Transcribers
     -unless @all_transcribers.empty?
       -@all_transcribers.each do |user|
           =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'contributor-user_link')
@@ -77,3 +66,11 @@ p
     -else
       h3 Transcribers
       p.a50 No transcribers
+
+h3.nomargin All Transcriber Emails
+p 
+  - @all_transcribers.each do |t|
+    =t.display_name 
+    |  &lt;
+    =t.email 
+    | >, 
