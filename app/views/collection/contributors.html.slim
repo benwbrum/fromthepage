@@ -7,12 +7,17 @@ h3.nomargin New Transcribers
 p 
   -unless @new_transcribers.empty?
     - @new_transcribers.each do |t|
-      =t.display_name
-      |  
-      =t.email 
-      | </br> 
+      
+      =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id}
+      |     
+      =t.email
+      | <br>
+
   -else
     p No new transcribers
+
+         
+
 
 
 h3.nomargin Recent Transcriptions
@@ -21,11 +26,12 @@ p
     -@recent_transcriptions.each do |d|
       .deed-short
         span.deed-short_content
+          = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
           =render(:partial => 'contributor_deeds', :locals => { :deed => d, :long_view => true })
-          =" #{time_ago_in_words d.created_at} ago"
   -else
     p No recent transcriptions
-        
+
+       
 h3.nomargin Recent Notes
 p
   -unless @recent_notes.empty?
@@ -34,8 +40,8 @@ p
       -text = link_to truncate(note.note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
       .deed-short
         span.deed-short_content
+        = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
         =render(:partial => 'contributor_deeds', :locals => { :deed => note, :long_view => true })
-        =" #{time_ago_in_words note.created_at} ago"
   -else
     p No recent notes
 
@@ -46,8 +52,8 @@ p
     -@recent_articles.each do |art|
       .deed-short
         span.deed-short_content
+          = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
           =render(:partial => 'contributor_deeds', :locals => { :deed => art, :long_view => true })
-          =" #{time_ago_in_words art.created_at} ago"
   -else
     p No recent articles
 
@@ -58,8 +64,8 @@ p
     -@recent_translations.each do |d|
       .deed-short
         span.deed-short_content
+          = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
           =render(:partial => 'contributor_deeds', :locals => { :deed => d, :long_view => true })
-          =" #{time_ago_in_words d.created_at} ago"
   -else
     p No recent translations
 
