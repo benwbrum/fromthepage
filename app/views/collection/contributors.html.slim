@@ -16,9 +16,6 @@ p
   -else
     p No new transcribers
 
-         
-
-
 
 h3.nomargin Recent Transcriptions
 p 
@@ -27,7 +24,7 @@ p
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'contributor_deeds', :locals => { :deed => d, :long_view => true })
+          =render(:partial => 'contributor_deeds', :locals => { :deed => d })
   -else
     p No recent transcriptions
 
@@ -41,7 +38,7 @@ p
       .deed-short
         span.deed-short_content
         = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-        =render(:partial => 'contributor_deeds', :locals => { :deed => note, :long_view => true })
+        =render(:partial => 'contributor_deeds', :locals => { :deed => note })
   -else
     p No recent notes
 
@@ -53,7 +50,7 @@ p
       .deed-short
         span.deed-short_content
           = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'contributor_deeds', :locals => { :deed => art, :long_view => true })
+          =render(:partial => 'contributor_deeds', :locals => { :deed => art })
   -else
     p No recent articles
 
@@ -65,7 +62,7 @@ p
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'contributor_deeds', :locals => { :deed => d, :long_view => true })
+          =render(:partial => 'contributor_deeds', :locals => { :deed => d })
   -else
     p No recent translations
 

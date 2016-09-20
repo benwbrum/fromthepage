@@ -1,5 +1,3 @@
--long_view = false if local_assigns[:long_view].nil?
-
 -user = link_to deed.user.display_name, { :controller => 'user', :action => 'profile', :user_id => deed.user.id }
 -page = deed.page.nil? ? '' : link_to(deed.page.title, { :controller => 'display', :action => 'display_page', :page_id => deed.page.id })
 -article = deed.article.nil? ? '' : link_to(deed.article.title, { :controller => 'article', :action => 'show', :article_id => deed.article.id })
@@ -28,7 +26,7 @@
 -when 'pg_xlat_ed'
   -output += "edited the translation of page #{page}"
 
--if(long_view && !deed.work.nil?)
+-if !deed.work.nil?
   -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id })
   -output += " of work #{work}"
 
@@ -36,7 +34,7 @@
   -collection = link_to(deed.collection.title, { :controller => 'collection', :action => 'show', :collection_id => deed.collection.id })
   -output += " in collection #{collection}"
 
--if(long_view && deed.deed_type == 'note_add' && !deed.note.nil?)
+-if(deed.deed_type == 'note_add' && !deed.note.nil?)
   -output += " that read &ldquo;#{deed.note.title}&rdquo;"
 
 ==output
