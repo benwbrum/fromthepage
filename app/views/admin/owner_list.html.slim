@@ -23,3 +23,4 @@ table.admin-grid.datagrid.striped
         td.nowrap =o.created_at.strftime('%b %d, %Y') if o.created_at
         td.nowrap =o.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         
+=render(:partial => 'shared/pagination', :locals => { :model => @owners, :entries_info => true })

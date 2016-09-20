@@ -127,11 +127,12 @@ class AdminController < ApplicationController
   end
 
   def collection_list
-    @collections = Collection.all
+    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
   end
 
   def work_list
-    @collections = Collection.all
+    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => 10)
+    @works = Work.order(:title)
   end
 
   def article_list
@@ -139,12 +140,13 @@ class AdminController < ApplicationController
   end
 
   def page_list
-    @collections = Collection.all
+    @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+
   end
 
   def owner_list
     @collections = Collection.all
-    @owners = User.where(owner: true)
+    @owners = User.where(owner: true).order(:login).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
   end
 
 
