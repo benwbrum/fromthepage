@@ -1,4 +1,5 @@
 class SystemMailer < ActionMailer::Base
+  include ContributorHelper
 
   default from: "FromThePage <support@fromthepage.com>"
   layout "mailer"
@@ -44,6 +45,14 @@ class SystemMailer < ActionMailer::Base
   def new_user
     @greeting = "Hi"
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New FromThePage user "
+  end
+
+  def contributor_stats(collection_id, start_date, end_date)
+
+    new_contributors(collection_id, start_date, end_date)
+
+    mail from: SENDING_EMAIL_ADDRESS, to: 'trishablewis@gmail.com', subject: "New Transcription Info "
+    mail 
   end
 
   private
