@@ -4,7 +4,7 @@ namespace :fromthepage do
      collection_id = args.collection_id
      start_date = 1.day.ago
      end_date = DateTime.now.utc
-     SystemMailer.contributor_stats(collection_id, start_date, end_date).deliver!
+     AdminMailer.contributor_stats(collection_id, start_date, end_date).deliver!
   end
 
 end
