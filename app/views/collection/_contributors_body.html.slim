@@ -1,65 +1,58 @@
-h3.nomargin New Transcribers
-p 
+-unless @collection_deeds.empty?
+
   -unless @new_transcribers.empty?
-    - @new_transcribers.each do |t|
-      =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id, only_path: false}
-      |     
-      =t.email
-      | <br>
+    h3.nomargin New Transcribers
+    p 
+      - @new_transcribers.each do |t|
+        =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id, only_path: false}
+        |     
+        =t.email
+        | <br>
 
-  -else
-    p No new transcribers
 
-
-h3.nomargin Recent Transcriptions
-p 
   -unless @recent_transcriptions.empty? 
-    -@recent_transcriptions.each do |d|
-      .deed-short
-        span.deed-short_content
-          = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
-  -else
-    p No recent transcriptions
+    h3.nomargin Recent Transcriptions
+    p 
+      -@recent_transcriptions.each do |d|
+        .deed-short
+          span.deed-short_content
+            = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+  
 
-       
-h3.nomargin Recent Notes
-p
   -unless @recent_notes.empty?
-    -@recent_notes.each do |note|
-      -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
-      -text = link_to truncate(note.note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
-      .deed-short
-        span.deed-short_content
-        = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-        =render(:partial => 'collection/contributor_deeds', :locals => { :deed => note })
-  -else
-    p No recent notes
+    h3.nomargin Recent Notes
+    p
+      -@recent_notes.each do |note|
+        -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
+        -text = link_to truncate(note.note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
+        .deed-short
+          span.deed-short_content
+          = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => note })
+    
 
-
-h3.nomargin Recent Articles
-p  
   -unless @recent_articles.empty?
-    -@recent_articles.each do |art|
-      .deed-short
-        span.deed-short_content
-          = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
-  -else
-    p No recent articles
+    h3.nomargin Recent Subjects
+    p  
+      -@recent_articles.each do |art|
+        .deed-short
+          span.deed-short_content
+            = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
 
 
-h3.nomargin Recent Translations
-p  
   -unless @recent_translations.empty?  
-    -@recent_translations.each do |d|
-      .deed-short
-        span.deed-short_content
-          = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
-  -else
-    p No recent translations
-
+    h3.nomargin Recent Translations
+    p  
+      -@recent_translations.each do |d|
+        .deed-short
+          span.deed-short_content
+            = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+    
+-else
+  h3 No activity in this time frame
 
 .contributor-users.justified.nomargin
   .justified_box>

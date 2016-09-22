@@ -10,9 +10,12 @@ module ContributorHelper
       translate_type = ["pg_xlat", "pg_xlat_ed"]
       condition = "created_at >= ? AND created_at <= ?"
 
-      #Get the start and end date params from date picker, if none, set defaults
+      #get the start and end date params from date picker, if none, set defaults
       start_date = start_date
       end_date = end_date
+
+      #check to see if there are any deeds in the collection
+      @collection_deeds = @collection.deeds.where(condition, start_date, end_date)
 
       #find the deeds of each type in the collection
       transcription_deeds = @collection.deeds.where(deed_type: trans_type)
