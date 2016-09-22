@@ -10,7 +10,7 @@ class AdminMailer < ActionMailer::Base
 
     new_contributors(collection_id, start_date, end_date)
 
-    mail from: SENDING_EMAIL_ADDRESS, to: 'trishablewis@gmail.com', subject: "New Transcription Info "
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New Transcription Information "
     mail 
   end
 
