@@ -19,12 +19,15 @@
         tr
           th
           td
+            p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
             =f.label :pages_are_meaningful
+        
         tr
           th
           td
+            p <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
             =f.check_box :supports_translation, value: @work.supports_translation
             |&nbsp;
             =f.label :supports_translation
