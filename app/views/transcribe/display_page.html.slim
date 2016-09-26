@@ -45,11 +45,14 @@
 
     .page-column
       .page-column_actions
-        =>link_to_unless @preview_xml, 'Preview', { :page_id => @page.id, :preview => true }, class: 'button'
-          =link_to 'Edit', { :page_id => @page.id }, class: 'button'
+        -unless @preview_xml
+          =>button_tag 'Preview', :name => 'preview'
+        -else
+          =>button_tag 'Edit', :name => 'edit'
         =>button_tag 'Autolink', :name => 'autolink'
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
+
       .page-editarea(style=("display:none" if @preview_xml))
         -if @work.scribes_can_edit_titles
           .page-editarea_title
