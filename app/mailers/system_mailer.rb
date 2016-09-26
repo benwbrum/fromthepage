@@ -1,4 +1,5 @@
 class SystemMailer < ActionMailer::Base
+  include ContributorHelper
 
   default from: "FromThePage <support@fromthepage.com>"
   layout "mailer"

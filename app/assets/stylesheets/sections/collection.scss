@@ -134,6 +134,46 @@
   }
 }
 
+//Contributor users
+
+.contributor-users {
+  margin-top: $gapSize * 2;
+  .justified_box {
+    width: 30%;
+    vertical-align: top;
+  }
+}
+
+.contributor-user {
+  width: 100%;
+  margin: 0.3em 0;
+  white-space: nowrap;
+  vertical-align: top;
+  display: inline-block;
+  &:before {
+    float: right;
+    line-height: 20px;
+    color: $bodyFgLight;
+    margin: 5px 0 0 3px;
+    font-size: $fontSizeSmall;
+  }
+  &_link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:after {
+      height: 0;
+      content: '';
+      width: 100%;
+      margin-left: 5px;
+      display: inline-block;
+    }
+    .userpic {
+      font-size: 26px;
+      margin-right: 6px;
+    }
+  }
+}
 
 // Categories
 
