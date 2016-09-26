@@ -53,11 +53,7 @@ class CollectionController < ApplicationController
 
   def add_owner
     @collection.owners << @user
-    @collection.works.each do |w|
-      w.scribes << @user
-    end
     redirect_to action: 'edit', collection_id: @collection.id
-    binding.pry
   end
 
   def remove_owner
