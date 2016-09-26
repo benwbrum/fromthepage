@@ -6,11 +6,11 @@ class AdminMailer < ActionMailer::Base
   default from: "FromThePage <support@fromthepage.com>"
   layout "admin_mailer"
   
-  def contributor_stats(collection_id, start_date, end_date)
+  def contributor_stats(collection_id, start_date, end_date, email)
 
     new_contributors(collection_id, start_date, end_date)
 
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New Transcription Information "
+    mail from: SENDING_EMAIL_ADDRESS, to: email, subject: "New Transcription Information "
     mail 
   end
 
