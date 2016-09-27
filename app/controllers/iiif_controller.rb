@@ -211,17 +211,6 @@ private
     sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
     sequence.label = 'Pages'
     work=Work.find work_id
-<<<<<<< HEAD
-    if work.sc_manifest
-      work.pages.each do |page|
-        sequence.canvases << canvas_from_iiif_page(page)
-      end
-    else
-      work.pages.each do |page|
-        sequence.canvases << canvas_from_page(page)
-      end   
-    end
-=======
     work.pages.each do |page|
       if page.sc_canvas 
         sequence.canvases << canvas_from_iiif_page(page)
@@ -230,7 +219,6 @@ private
       end
     end   
 
->>>>>>> iiif
     sequence
   end
 
