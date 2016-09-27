@@ -1,0 +1,79 @@
+-unless @collection_deeds.empty?
+
+  -unless @new_transcribers.empty?
+    h3.nomargin New Transcribers
+    p 
+      - @new_transcribers.each do |t|
+        =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id, only_path: false}
+        |     
+        =t.email
+        | <br>
+
+
+  -unless @recent_transcriptions.empty? 
+    h3.nomargin Recent Transcriptions
+    p 
+      -@recent_transcriptions.each do |d|
+        .deed-short
+          span.deed-short_content
+            = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+  
+
+  -unless @recent_notes.empty?
+    h3.nomargin Recent Notes
+    p
+      -@recent_notes.each do |note|
+        -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
+        -text = link_to truncate(note.note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
+        .deed-short
+          span.deed-short_content
+          = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => note })
+    
+
+  -unless @recent_articles.empty?
+    h3.nomargin Recent Subjects
+    p  
+      -@recent_articles.each do |art|
+        .deed-short
+          span.deed-short_content
+            = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
+
+
+  -unless @recent_translations.empty?  
+    h3.nomargin Recent Translations
+    p  
+      -@recent_translations.each do |d|
+        .deed-short
+          span.deed-short_content
+            = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+    
+-else
+  h3 No activity in this time frame
+
+.contributor-users.justified.nomargin
+  .justified_box>
+    h3 All Transcribers
+    -unless @all_transcribers.empty?
+      -@all_transcribers.each do |user|
+        p
+        =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
+            
+            
+    -else
+      h3 Transcribers
+      p No transcribers
+
+h3 All Transcriber Emails
+p 
+  -unless @all_transcribers.empty?
+    - @all_transcribers.each do |t|
+      =t.display_name 
+      |  &lt;
+      =t.email 
+      | >, 
+  -else
+    p No transcribers

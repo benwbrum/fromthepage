@@ -40,6 +40,7 @@ class ScManifestsController < ApplicationController
   def convert
     @sc_manifest = ScManifest.find(params[:sc_manifest_id])
     
+    # suspect this is dead code. look at sc_manifest covert* 
     # with 25 minutes to demo, we'll do all the work here
     unless @sc_manifest.sc_collection.collection
       setup_collection(@sc_manifest.sc_collection)

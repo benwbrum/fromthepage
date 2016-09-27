@@ -251,7 +251,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
   def thumbnail_filename
-    self.base_image.sub(/.jpg/, "_thumb.jpg")
+    filename=self.base_image
+    ext=File.extname(filename)
+    filename.sub("#{ext}","_thumb#{ext}")
   end
 
 private

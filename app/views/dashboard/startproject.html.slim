@@ -23,7 +23,7 @@
       p.aright
         =f.button 'Upload File', class: 'big'
     
-    h3 Import from a IIIF Repository
+    h3 Import from an IIIF Repository
     p.fgfaded Shared Canvas Universe
     ul.omeka-sites
       -@universe_collections.each do |sc_collection|
@@ -40,7 +40,7 @@
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import'
-
+    
     h3 Import from the Internet Archive
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }
     h3 Import from Omeka

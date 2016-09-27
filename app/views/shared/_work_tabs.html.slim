@@ -38,7 +38,7 @@
     },
   }]
 
--if @work.owner == current_user
+-if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
     :name => 'Settings',
     :selected => 6,

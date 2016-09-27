@@ -67,7 +67,7 @@ class TexFigure < ActiveRecord::Base
   end
 
   def run_latex
-    latex_command = "pdflatex -interaction batchmode -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
+    latex_command = "xelatex -interaction batchmode -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
     logger.info(latex_command)    
     system(latex_command)
   end
@@ -118,6 +118,9 @@ EOF
       \\documentclass{article}
       \\usepackage{amsmath}
       \\usepackage{amsfonts}
+      \\usepackage{egpeirce}
+      \\usepackage{xymtex}
+      \\usepackage{chemfig}
       \\begin{document}
       \\thispagestyle{empty}
       #{self.source}
