@@ -24,10 +24,16 @@ Fromthepage::Application.routes.draw do
   get   'dashboard_role' => 'dashboard#dashboard_role'
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
+  get   '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
-  get   '/iiif/:work_id/manifest/:page_id/list', :to => 'iiif#list'
-  get   '/iiif/:work_id/manifest/:page_id/canvas', :to => 'iiif#canvas'
- 
+  get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
+  get   '/iiif/:page_id/notes', :to => 'iiif#notes'  
+  get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
+  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
+#  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
+  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
+  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence' 
+
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
  # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
@@ -39,9 +45,6 @@ Fromthepage::Application.routes.draw do
   get   'document_set/:id', :to => 'document_sets#show'
 #  get   'document_set/:document_set_id', :to => 'document_sets#show'
 #  resources :document_sets
-
-  get   'ZenasMatthews' => 'collection#show', :collection_id => 7
-  get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
 
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
