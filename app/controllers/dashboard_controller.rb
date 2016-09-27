@@ -92,10 +92,15 @@ class DashboardController < ApplicationController
     collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
     @collections = Collection.where(:id => collection_ids).order_by_recent_activity
 
-    # If user has no activity yet, show first 5 collections
-    if @collections.empty?
-      @collections = Collection.limit(5).order_by_recent_activity
+    recent_deeds = Deed.order('created_at desc').limit(5)
+    deeds = []
+    recent_deeds.each do |d|
+      recent = Collection.find_by(id: d.collection_id)
+      unless recent.restricted?
+        deeds << d            
+      end
     end
+    @recent = Collection.find_by(id: deeds.first.collection_id)
   end
 
   # Editor Dashboard - activity
