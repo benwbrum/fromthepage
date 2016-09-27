@@ -1,5 +1,6 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
+  include ContributorHelper
 
   public :render_to_string
 
@@ -119,6 +120,28 @@ class CollectionController < ApplicationController
     set_collection_for_work(nil, @work)
     redirect_to action: 'edit', collection_id: @collection.id
   end
+
+def contributors
+  @collection = Collection.find_by(id: params[:collection_id])
+
+  #Get the start and end date params from date picker, if none, set defaults
+  start_date = params[:start_date]
+  end_date = params[:end_date]
+  
+  if start_date == nil
+    start_date = 1.week.ago
+    end_date = DateTime.now.utc
+  end
+
+  start_date = start_date.to_datetime.beginning_of_day
+  end_date = end_date.to_datetime.end_of_day
+
+  @start_deed = start_date.strftime("%b %d, %Y")
+  @end_deed = end_date.strftime("%b %d, %Y")
+
+  new_contributors(@collection, start_date, end_date)
+  
+end
 
 private
   def set_collection_for_work(collection, work)
