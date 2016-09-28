@@ -6,7 +6,8 @@ gem 'pry'
 gem 'pry-byebug'
 
 gem 'will_paginate'
-gem 'rmagick', '2.13.2', require: "RMagick"
+#gem 'rmagick', '2.13.2', require: "RMagick"
+gem 'rmagick'
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.2.1'
