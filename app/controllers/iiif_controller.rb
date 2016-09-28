@@ -304,7 +304,7 @@ private
     
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcript", :only_path => false})
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcription", :only_path => false})
       canvas.other_content << annotation_list
     end
 
