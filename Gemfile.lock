@@ -266,7 +266,7 @@ DEPENDENCIES
   autoprefixer-rails
   capistrano (~> 3.2.1)
   capistrano-bundler (~> 1.1.2)
-  capistrano-rails
+  capistrano-rails (~> 1.1.3)
   capybara
   carrierwave
   database_cleaner

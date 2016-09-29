@@ -11,7 +11,7 @@ gem 'rmagick'
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.2.1'
-gem 'capistrano-rails'
+gem 'capistrano-rails', '~> 1.1.3'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
