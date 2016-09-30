@@ -373,6 +373,11 @@ private
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
     end
 # TODO need comments annotationlist
+  when 'notes'
+    unless page.notes.blank?   #no comments
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
+    end
   end
     annotation_list
   end
