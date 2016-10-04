@@ -380,7 +380,7 @@ private
 
     unless page.notes.count == 0
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "notes", :only_path => false})
       canvas.other_content << annotation_list
     end
     canvas
