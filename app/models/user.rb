@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
 
   def can_transcribe?(work)
-    !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
+    !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
   end
 
   def like_owner?(obj)

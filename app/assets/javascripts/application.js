@@ -21,7 +21,7 @@
 // $('element').flash();
 $.fn.flashclose = function(s) {
   s = $.extend({
-    delay_notice: 3000,      // Notice auto close delay, 0 = don't close
+    delay_notice: 1000,      // Notice auto close delay, 0 = don't close
     delay_alert: 6000,       // Alert auto close delay
     delay_error: 0           // Error auto close delay
   }, s || {});
