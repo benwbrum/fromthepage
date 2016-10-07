@@ -173,7 +173,7 @@
   box-sizing: border-box;
   font-size: $fontSizeBig;
   background: rgba(#FFF, 0.3);
-  p:first-child { margin-top: 0; }
+  p:first-child { margin-top: 25px; }
   p:last-child { margin-bottom: 0; }
   .centered_content { text-align: center; }
 }
@@ -190,6 +190,7 @@
   }
   textarea {
     height: 100%;
+    margin-top: 45px;
     resize: none;
     padding: $gapSize / 2;
   }
