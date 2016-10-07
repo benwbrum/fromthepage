@@ -5,7 +5,9 @@ table.admin-grid.datagrid.striped
     tr
       th(colspan="2") User
       th.w100 Upload Details
+      th(colspan="1") Date
       th(colspan="2") Status
+
   tbody
     -@document_uploads.each do |document|
       tr
@@ -21,6 +23,9 @@ table.admin-grid.datagrid.striped
               =link_to(document.collection.title, { controller: 'collection', action: 'show', collection_id: document.collection.id })
           .small.fgfaded(data-prefix="File Name: ")
             =link_to(document.file, document.file.to_s, target: '_blank')
+        td.nowrap
+          p
+            =document.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
         td.nowrap
           small.label(class="upload-status-#{document.status}") =document.status.titleize
         td.nowrap
