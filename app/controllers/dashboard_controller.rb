@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
         redirect_to dashboard_watchlist_path
       end
     else
-      redirect_to root_path
+      redirect_to guest_dashboard_path
     end
   end
 
@@ -106,6 +106,11 @@ class DashboardController < ApplicationController
   # Editor Dashboard - activity
   def editor
     @user = current_user
+  end
+
+#Guest Dashboard - activity
+  def guest
+    @collections = Collection.limit(5).order_by_recent_activity
   end
 
 end

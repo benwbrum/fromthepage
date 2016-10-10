@@ -65,6 +65,8 @@ class ScManifest < ActiveRecord::Base
       work.pages << page
       page.save!
       sc_canvas.page = page
+      sc_canvas.height = canvas.height
+      sc_canvas.width = canvas.width
       sc_canvas.save!
     end
     work.save!
@@ -87,6 +89,8 @@ class ScManifest < ActiveRecord::Base
     sc_canvas.sc_manifest =             self
     sc_canvas.sc_canvas_id =            canvas['@id']
     sc_canvas.sc_service_id =           canvas.images.first.resource.service['@id']
+    sc_canvas.sc_resource_id =          canvas.images.first.resource['@id']
+    sc_canvas.sc_service_context = canvas.images.first.resource.service['@context']
 
     sc_canvas.save!      
     sc_canvas  

@@ -1,6 +1,6 @@
 -if @page.notes.empty?
   p.acenter.fglight(data-note-empty)
-    ="Nobody wrote a note for this page yet"
+    ="Nobody has written a note for this page yet"
     -unless user_signed_in?
       =="<br>Please #{link_to('sign in', new_user_session_path)} to write a note for this page"
 
