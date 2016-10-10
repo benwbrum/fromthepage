@@ -18,12 +18,12 @@ h1 Editor Dashboard
               p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
     -else
       ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
-      =link_to @recent.title, {:controller => 'collection', :action => 'show', :collection_id => @recent.id}
+      =link_to @recent.title, {:controller => 'display', :action => 'display_page', :page_id => @page.id}
       ="."
 
     h3 Everyone's Activity
     =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
 
   aside.sidecol
-    h3 Activity Stream
+    h3 Your Activity
     =deeds_for({ :user_id => current_user.id, :limit => 10 })

@@ -91,16 +91,32 @@ class DashboardController < ApplicationController
     @user = current_user
     collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
     @collections = Collection.where(:id => collection_ids).order_by_recent_activity
+    @recent = recent_work
+    @page = next_untranscribed_page
+  end
 
+  #Editor Dashboard - user with no activity watchlist
+  def recent_work
     recent_deeds = Deed.order('created_at desc').limit(5)
-    deeds = []
+    works = []
+    #iterate through recent deeds to find unrestricted collections
     recent_deeds.each do |d|
       recent = Collection.find_by(id: d.collection_id)
       unless recent.restricted?
-        deeds << d            
+        #iterate through works of the collection, making sure they aren't restricted
+        recent.works.each do |w|
+          unless w.restrict_scribes?
+            works << w
+          end
+        end
       end
     end
-    @recent = Collection.find_by(id: deeds.first.collection_id)
+    recent_work = Work.find_by(id: works.first.id)
+  end
+
+  def next_untranscribed_page
+    work = recent_work
+    work.pages.where("xml_text is null").first
   end
 
   # Editor Dashboard - activity
