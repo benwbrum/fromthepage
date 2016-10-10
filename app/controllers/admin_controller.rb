@@ -126,4 +126,28 @@ class AdminController < ApplicationController
     render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
   end
 
+  def collection_list
+    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+  end
+
+  def work_list
+    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => 10)
+    @works = Work.order(:title)
+  end
+
+  def article_list
+    @collections = Collection.all
+  end
+
+  def page_list
+    @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+
+  end
+
+  def owner_list
+    @collections = Collection.all
+    @owners = User.where(owner: true).order(:login).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+  end
+
+
 end

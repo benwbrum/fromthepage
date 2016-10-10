@@ -18,9 +18,9 @@
   section.collection-stats_recent
     .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Contributor'.pluralize(@collection.contributor_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
-    .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page edits
-    .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New Subjects
+    .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Mention'.pluralize(@collection.mention_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Comment'.pluralize(@collection.comment_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.translation_count(7)}") #{'Page'.pluralize(@collection.translation_count(7))} translated
 

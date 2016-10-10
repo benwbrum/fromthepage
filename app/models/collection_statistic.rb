@@ -53,5 +53,4 @@ module CollectionStatistic
 
     clause
   end
-  binding.pry
 end
