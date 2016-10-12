@@ -59,6 +59,15 @@ class IiifController < ApplicationController
       manifest["otherContent"]  << layer
     end
 
+    if true #any notes
+      seed = { 
+              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'notes', :only_path => false}), 
+              'label' => "notes layer"
+            }
+      layer = IIIF::Presentation::Layer.new(seed)
+      manifest["otherContent"]  << layer
+    end
+
     render :text => manifest.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -115,6 +124,24 @@ class IiifController < ApplicationController
         end
       end
     end
+
+   if params[:type]=="notes"
+      seed = { 
+                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}), 
+                'label' => params[:type] + " layer"
+              }
+      layer = IIIF::Presentation::Layer.new(seed)
+      layer["otherContent"]=[]
+      work.pages.each do |page|
+        unless page.notes.empty?
+          annotation_list = annotationlist_from_page(page, params[:type])
+          if annotation_list
+            layer["otherContent"] << annotation_list
+          end
+        end
+      end
+    end
+
     render :text => layer.to_json(pretty: true), :content_type => "application/json"
   end
   
@@ -179,7 +206,7 @@ private
 
       annotation.resource["chars"] = no_tags
     when 'translation'
-      unless page.xml_translation.blank?
+      unless page.source_translation.blank?
         #annotation = IIIF::Presentation::Annotation.new
         #page = Page.find page_id
         annotation['on'] = region_from_page(@page)
@@ -308,13 +335,13 @@ private
       canvas.other_content << annotation_list
     end
 
-    unless page.xml_translation.blank?
+    unless page.source_translation.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
       canvas.other_content << annotation_list
     end
 
-    unless page.notes.blank?
+    unless page.notes.count == 0
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
       canvas.other_content << annotation_list
@@ -345,15 +372,15 @@ private
       canvas.other_content << annotation_list
     end
 
-    unless page.xml_translation.blank?
+    unless page.source_translation.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
       canvas.other_content << annotation_list
     end
 
-    unless page.notes.blank?
+    unless page.notes.count == 0
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "notes", :only_path => false})
       canvas.other_content << annotation_list
     end
     canvas
@@ -368,11 +395,15 @@ private
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
     end
   when 'translation' 
-    unless page.xml_translation.blank?
+    unless page.source_translation.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
     end
-# TODO need comments annotationlist
+  when 'notes'
+    unless page.notes.blank?   #no comments
+      annotation_list = IIIF::Presentation::AnnotationList.new
+      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
+    end
   end
     annotation_list
   end

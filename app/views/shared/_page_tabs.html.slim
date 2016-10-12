@@ -5,14 +5,17 @@
     :controller => 'display',
     :action => 'display_page',
   },
-},{\
-  :name => 'Transcribe',
-  :selected => 3,
-  :options => {\
-    :controller => 'transcribe',
-    :action => 'display_page',
-  },
 }]
+
+-if current_user.can_transcribe?(@work)
+  -tabs += [{\
+    :name => 'Transcribe',
+    :selected => 3,
+    :options => {\
+      :controller => 'transcribe',
+      :action => 'display_page',
+    },
+  }]
 
 -if @work.supports_translation
   -tabs += [{\
@@ -54,7 +57,7 @@
   h1.headline_title =@page.title
   .headline_aside
     nav.page-nav
-      -if !@page.first?
+      -if @page != @work.pages.first
         -higher_item = @page.higher_item
         =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev')
           =svg_symbol '#icon-arrow-left', class: 'icon'

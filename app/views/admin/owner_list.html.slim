@@ -1,0 +1,26 @@
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th(colspan="2") Owner Login
+      th.w100 Name &amp; Location
+      th Registered
+      th Last Sign In
+
+  tbody
+    -@owners.each do |o|
+      tr
+
+        td
+          =link_to({ :controller => 'user', :action => 'profile', :user_id => o.id }, class: 'userpic userpic-small')
+            =gravatar_image_tag o.email, :alt => o.display_name
+        td.nowrap.toleft
+          div =link_to o.login, { :controller => 'user', :action => 'profile', :user_id => o.id }
+          small =o.email
+        td
+          div =o.display_name
+          -if o.location
+            small(data-prefix='From ') =o.location
+        td.nowrap =o.created_at.strftime('%b %d, %Y') if o.created_at
+        td.nowrap =o.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
+        
+=render(:partial => 'shared/pagination', :locals => { :model => @owners, :entries_info => true })

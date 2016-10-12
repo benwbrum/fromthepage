@@ -1,20 +1,29 @@
-=render({ :partial => 'editor_header', :locals => { :selected => 1 } })
+h1 Editor Dashboard
 
 .columns
   article.maincol
-    -@collections.each do |c|
-      h4 =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, class: 'nodecor'
-      -c.deeds.limit(5).each do |d|
-        //- Hide collection link
-        -d.collection = nil
-        .user-bubble
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic')
-            =gravatar_image_tag d.user.email, :alt => d.user.display_name
-          .user-bubble_content
-            =time_tag d.created_at
-              ="#{time_ago_in_words d.created_at} ago"
-            p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+    p Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
+    -unless @collections.empty?
+      -@collections.each do |c|
+        h4 =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, class: 'nodecor'
+        -c.deeds.limit(5).each do |d|
+          //- Hide collection link
+          -d.collection = nil
+          .user-bubble
+            =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic')
+              =gravatar_image_tag d.user.email, :alt => d.user.display_name
+            .user-bubble_content
+              =time_tag d.created_at
+                ="#{time_ago_in_words d.created_at} ago"
+              p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+    -else
+      ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
+      =link_to @recent.title, {:controller => 'display', :action => 'display_page', :page_id => @page.id}
+      ="."
+
+    h3 Everyone's Activity
+    =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
 
   aside.sidecol
-    h3 Activity Stream
-    =deeds_for({ :not_user_id => current_user.id, :limit => 20 })
+    h3 Your Activity
+    =deeds_for({ :user_id => current_user.id, :limit => 10 })
