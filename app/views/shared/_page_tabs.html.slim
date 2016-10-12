@@ -7,7 +7,7 @@
   },
 }]
 
--if current_user.can_transcribe?(@work)
+-if user_signed_in? && current_user.can_transcribe?(@work)
   -tabs += [{\
     :name => 'Transcribe',
     :selected => 3,
