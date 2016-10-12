@@ -190,7 +190,7 @@ GEM
       netrc (~> 0.8)
     riiif (0.4.1)
       rails (> 3.2.0)
-    rmagick (2.16.0)
+    rmagick (2.13.2)
     rspec-core (3.0.4)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.4)
