@@ -97,18 +97,13 @@ class DashboardController < ApplicationController
 
   #Editor Dashboard - user with no activity watchlist
   def recent_work
-    recent_deeds = Deed.order('created_at desc').limit(5)
+    recent_deeds = Deed.where("work_id is not null AND collection_id not in (SELECT id FROM collections where restricted = 1) AND work_id not in (SELECT id FROM works where restrict_scribes = 1)").order('created_at desc').limit(10)
     works = []
-    #iterate through recent deeds to find unrestricted collections
+    #iterate through recent deeds to find works with blank pages
     recent_deeds.each do |d|
-      recent = Collection.find_by(id: d.collection_id)
-      unless recent.restricted?
-        #iterate through works of the collection, making sure they aren't restricted
-        recent.works.each do |w|
-          unless w.restrict_scribes?
-            works << w
-          end
-        end
+      recent = Work.find_by(id: d.work_id)
+      if recent.pages.where("xml_text is null").any?
+        works << recent
       end
     end
     recent_work = Work.find_by(id: works.first.id)
