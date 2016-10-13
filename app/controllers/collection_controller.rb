@@ -53,6 +53,8 @@ class CollectionController < ApplicationController
   end
 
   def add_owner
+    @user.owner = true
+    @user.save!
     @collection.owners << @user
     redirect_to action: 'edit', collection_id: @collection.id
   end
