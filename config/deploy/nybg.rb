@@ -18,7 +18,7 @@ role :app, %w{fromthepage@97.107.141.53}
 # used to set extended properties on the server.
 
 #server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
-server '96.126.116.203', user: 'fromthepage', roles: %{app}
+server '97.107.141.53', user: 'fromthepage', roles: %{app}
 
 
 # Custom SSH Options
