@@ -42,7 +42,7 @@
           p.a50 No transcribers
 
       .justified_box>
-        h5 Top Editors
+        h5 Top Collaborators
         -unless @top_ten_editors.empty?
           -@top_ten_editors.each do |user, count|
             .collection-user(data-prefix="#{count}")
@@ -50,7 +50,7 @@
                 span.userpic =gravatar_image_tag user.email, :alt => user.display_name
                 span.vmiddle =user.display_name
         -else
-          p.a50 No editors
+          p.a50 No Collaborators
 
       .justified_box>
         h5 Top Indexers
