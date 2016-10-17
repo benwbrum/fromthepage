@@ -9,14 +9,14 @@
       .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Reference'.pluralize(@collection.mention_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.comment_count}") #{'Note'.pluralize(@collection.comment_count)}
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Contributor'.pluralize(@collection.contributor_count)}
+      .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Collaborator'.pluralize(@collection.contributor_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.transcription_count}") #{'Page'.pluralize(@collection.transcription_count)} transcribed
       .counter(data-prefix="#{number_with_delimiter @collection.edit_count}") Page edits
       .counter(data-prefix="#{number_with_delimiter @collection.index_count}") #{'Page'.pluralize(@collection.index_count)} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.translation_count}") #{'Page'.pluralize(@collection.translation_count)} translated
   h4.legend.fglight Last 7 Days Statistics
   section.collection-stats_recent
-    .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Contributor'.pluralize(@collection.contributor_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Collaborator'.pluralize(@collection.contributor_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
     .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
