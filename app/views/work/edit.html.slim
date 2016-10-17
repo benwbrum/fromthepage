@@ -67,9 +67,9 @@
       =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
-        small Owned by
+        small Uploaded by
         =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
-    p.fglight The settings for this work are only accessible to the work owner.
+    p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
     hr
     =form_for(@work, :url => { :action => 'update_work' }) do |f|

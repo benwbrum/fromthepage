@@ -36,7 +36,7 @@
       =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
-        small Owned by
+        small Uploaded by
         =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
     hr
     h5
