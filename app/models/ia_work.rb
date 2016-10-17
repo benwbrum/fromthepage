@@ -87,7 +87,7 @@ class IaWork < ActiveRecord::Base
       page.status = Page::STATUS_UNCORRECTED_OCR if self.use_ocr
       work.pages << page #necessary to make acts_as_list work here
       work.save!
-      page.save! if self.use_ocr
+#      page.save! if self.use_ocr
 
       leaf.page_id = page.id
       leaf.save!
