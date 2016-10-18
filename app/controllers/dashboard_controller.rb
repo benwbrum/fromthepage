@@ -53,8 +53,8 @@ class DashboardController < ApplicationController
   end
 
   # Owner Dashboard - staging area
-  def staging
-  end
+#  def staging
+#  end
 
   # Owner Dashboard - omeka import
   def omeka

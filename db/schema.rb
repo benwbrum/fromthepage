@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909174318) do
+ActiveRecord::Schema.define(version: 20161018175439) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -193,27 +193,6 @@ ActiveRecord::Schema.define(version: 20160909174318) do
     t.boolean  "use_ocr",        default: false
   end
 
-  create_table "image_sets", force: true do |t|
-    t.string   "path"
-    t.string   "title_format"
-    t.datetime "created_on"
-    t.integer  "orientation"
-    t.integer  "original_width"
-    t.integer  "original_height"
-    t.integer  "original_to_base_halvings"
-    t.integer  "owner_user_id"
-    t.string   "step"
-    t.string   "status"
-    t.string   "status_message"
-    t.integer  "crop_band_start"
-    t.integer  "crop_band_height"
-    t.integer  "rotate_pid"
-    t.integer  "shrink_pid"
-    t.integer  "crop_pid"
-  end
-
-  add_index "image_sets", ["owner_user_id"], name: "index_image_sets_on_owner_user_id", using: :btree
-
   create_table "interactions", force: true do |t|
     t.integer  "user_id"
     t.integer  "collection_id"
@@ -368,7 +347,6 @@ ActiveRecord::Schema.define(version: 20160909174318) do
 
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
-  add_index "pages", ["xml_text"], name: "pages_xml_text_index", length: {"xml_text"=>333}, using: :btree
 
   create_table "pages_sections", id: false, force: true do |t|
     t.integer "page_id",    null: false
@@ -469,22 +447,6 @@ ActiveRecord::Schema.define(version: 20160909174318) do
   end
 
   add_index "tex_figures", ["page_id"], name: "index_tex_figures_on_page_id", using: :btree
-
-  create_table "titled_images", force: true do |t|
-    t.string   "original_file",                               null: false
-    t.string   "title_seed",       limit: 20
-    t.string   "title_override"
-    t.string   "title"
-    t.boolean  "shrink_completed",            default: false
-    t.boolean  "rotate_completed",            default: false
-    t.boolean  "crop_completed",              default: false
-    t.integer  "image_set_id"
-    t.integer  "position"
-    t.datetime "created_on"
-    t.integer  "lock_version",                default: 0
-  end
-
-  add_index "titled_images", ["image_set_id"], name: "index_titled_images_on_image_set_id", using: :btree
 
   create_table "transcribe_authorizations", id: false, force: true do |t|
     t.integer "user_id"
