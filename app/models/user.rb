@@ -15,7 +15,6 @@ class User < ActiveRecord::Base
            { :foreign_key => "owner_user_id",
              :class_name => 'Work' })
   has_many :collections, :foreign_key => "owner_user_id"
-  has_many :image_sets, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
   has_many :omeka_sites

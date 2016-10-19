@@ -13,7 +13,6 @@ describe User do
   it { should respond_to(:password_confirmation) }
 
   it { should have_many(:owner_works).class_name(:Work) }
-  it { should have_many(:image_sets) }
   it { should have_many(:oai_sets) }
   it { should have_many(:ia_works) }
   it { should have_and_belong_to_many(:scribe_works).class_name(:Work) }

@@ -23,7 +23,6 @@ class DashboardController < ApplicationController
 
   def get_data
     @collections = current_user.collections
-    @image_sets = current_user.image_sets
     @notes = current_user.notes
     @works = current_user.owner_works
     @ia_works = current_user.ia_works

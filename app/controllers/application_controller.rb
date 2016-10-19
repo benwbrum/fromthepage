@@ -48,14 +48,6 @@ class ApplicationController < ActionController::Base
       @collection = Collection.find(params[:collection_id])
     end
 
-    # image stuff is orthogonal to collections
-    if params[:titled_image_id]
-      @titled_image = TitledImage.find(params[:titled_image_id])
-      @image_set = @titled_image.image_set
-    end
-    if params[:image_set_id]
-      @image_set = ImageSet.find(params[:image_set_id])
-    end
     if params[:user_id]
       @user = User.find(params[:user_id])
     end
