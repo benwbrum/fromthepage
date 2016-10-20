@@ -273,12 +273,12 @@ STATICSPLASHLEFT
 <b>Start reading: </b>
 </p>
 <p>
-See <a href=”https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection”>Your First User and Collection</a> on our wiki.
+See <a href="https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection">Your First User and Collection</a> on our wiki.
 
-<a href=”https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription”>Preparing a Work For Transcription</a> also has good information on how to get works into FromThePage.
+<a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription">Preparing a Work For Transcription</a> also has good information on how to get works into FromThePage.
 </p>
 <p>
-Need help?  We offer the <a href=”http://fromthepage.com/static/run_server”>following services to help you configure and run your own server</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
+Need help?  We offer the <a href="http://fromthepage.com/static/run_server">following services to help you run your FromThePage project</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
   
 </p>
 </div>
