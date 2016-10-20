@@ -81,13 +81,10 @@ class IaWork < ActiveRecord::Base
       page.base_height = leaf.page_h
       page.base_width = leaf.page_w
       page.title = leaf.page_number
-#      work.pages << page #necessary to make acts_as_list work here
-#      work.save!
       page.source_text = leaf.ocr_text if self.use_ocr
       page.status = Page::STATUS_UNCORRECTED_OCR if self.use_ocr
       work.pages << page #necessary to make acts_as_list work here
       work.save!
-#      page.save! if self.use_ocr
 
       leaf.page_id = page.id
       leaf.save!
