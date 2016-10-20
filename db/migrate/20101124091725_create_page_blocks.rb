@@ -235,87 +235,56 @@ PAGEEDIT
 <h3>What is FromThePage?</h3>
 
 <p>
-        FromThePage is software that allows volunteers to
-transcribe handwritten documents online.  Currently it hosts
-the <%= link_to('Julia Brumfield Diaries',
-                { :controller => 'collection',
-                  :action => 'show',
-                  :collection_id => 1 })%>, an incomplete collection
-of diaries written between 1915 and 1938 chronicling life
-on a tobacco farm in Pittsylvania County, Virginia.
+FromThePage is free software that allows volunteers to collaborate to transcribe handwritten documents on-line. It's easy to index and annotate subjects within a text using a simple, wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. Because FromThePage runs in your browser, you can read and transcribe materials from anywhere -- including tablets and smart phones. The resulting text is hosted on the web, making documents easy to read and search.
 </p>
+
 <p>
-The FromThePage software is still under development, but we'd like
-to invite people to look around and send suggestions and
-bug reports to <b>benwbrum@gmail.com</b>.  If anything looks broken, hard
-to understand, or just odd, please let us know!  For a behind-the-scenes look
-at the development effort, check out the <a
-href="http://manuscripttranscription.blogspot.com">product development
-blog</a>.
-</p>
-<p>
-  If you're interested in using FromThePage to host a transcription
-  project, we're looking for you.  The software is free to use.  Please
-  email <b>benwbrum@gmail.com</b> and tell us about your project.
+<b>Features of FromThePage include:</b>
+  <ul>
+    <li><b>Wiki-style editing:</b> Users add or edit transcriptions using simple, wiki-style syntax on one side of the screen while viewing a scanned image of the manuscript page on the other side.
+    </li>
+    <li><b>Version Control:</b> Changes to each page transcription are recorded and may be viewed to follow the edit history of a page.
+    </li>
+    <li><b>Wikilinks:</b> Subjects mentioned within the document may are indexed via simple wikilinks within the transcription. Users can annotate subjects with full subject articles.
+    </li>
+    <li><b>Presentation:</b>  Readers can view transcriptions in a multi-page format or alongside page images. They can also read all the pages that mention a subject.
+    </li>
+    <li><b>Automatic Markup:</b> FromThePage can suggest wikilinks to editors by mining previously edited transcriptions. This helps insure editorial consistency and vastly reduces the amount of effort involved in markup.
+    </li>
+    <li><b>Integrations:</b> FromThePage integrates easily with systems where your documents are already loaded, including the Internet Archive and Omeka.
+    </li>
+    <li><b>Translation:</b> FromThePage supports foreign language material which can be transcribed in full UTF-8. A translator's workflow allows creation of parallel texts.
+    </li>
+    <li><b>OCR Correction:</b> Not just for handwritten materials, FromThePage can import OCR alongside the original image for users to correct and edit.
+    </li>
+  </ul>
 </p>
 </div>
 STATICSPLASHLEFT
 
+
+
+
+
   STATIC_SPLASH_RIGHT = <<STATICSPLASHRIGHT
 <div class="splash-block">
-<h3>Read Transcriptions</h3>
+<h3>How do I get started?</h3>
 <p>
-        The 1918 diary was originally transcribed and published by
-        Neil Brumfield in 1993.  It covers daily farm life, a neighbor's
-        draft to fight the First World War, and the death of Julia's son
-        Charles in the influenza epidemic.  Capitalization and
-        punctuation has been modernized throughout, while spelling
-        has been retained
+<b>Start reading: </b>
 </p>
 <p>
-        <b><%= link_to('Read the 1918 diary',
-                        { :controller => 'display',
-                          :action => 'read_work',
-                          :work_id => 2 }) %></b>
+See <a href=”https://github.com/benwbrum/fromthepage/wiki/Your-First-User-and-Collection”>Your First User and Collection</a> on our wiki.
+
+<a href=”https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription”>Preparing a Work For Transcription</a> also has good information on how to get works into FromThePage.
 </p>
 <p>
-        The 1919 and 1921 diaries were transcribed by volunteers using FromThePage.
-        The majority of the transcription was performed by Linda Tucker,
-        while editing and annotation was performed by Ben Brumfield.
-        The subject matter and transcription conventions are similar
-        to those of the 1918 diary.
-</p>
-<p>
-        <b><%= link_to('Read the 1919 diary',
-                        { :controller => 'display',
-                          :action => 'read_work',
-                          :work_id => 3 }) %></b><br />
-        <b><%= link_to('Read the 1921 diary',
-                        { :controller => 'display',
-                          :action => 'read_work',
-                          :work_id => 6 }) %></b>
-</p>
-<p>
+Need help?  We offer the <a href=”http://fromthepage.com/static/run_server”>following services to help you configure and run your own server</a>. You can also email Ben (benwbrum@gmail.com) to discuss your options.
+  
 </p>
 </div>
 
-<div class="splash-block">
-<h3>Transcribe Manuscripts</h3>
-<p>
-        The 1920 diary was discovered and scanned through the efforts of Linda Tucker.
-        It awaits volunteers to transcribe it.  To help, or just
-        to try out the FromThePage software, you'll need to
-        <%= link_to('create an account',
-                    { :controller => 'account',
-                      :action => 'signup' }) %>.
-        Then <b><%= link_to('visit the 1920 diary',
-                            { :controller => 'display',
-                              :action => 'read_work',
-                              :work_id => 9 }) %></b>
-        and click the <code>transcribe</code> tab on any page.
-</p>
-</div>
 STATICSPLASHRIGHT
+
 
   TRANSCRIBE_ASSIGN_CATEGORIES = <<ASSIGNCATEGORIES
       <p>
