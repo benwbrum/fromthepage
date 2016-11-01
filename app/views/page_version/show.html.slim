@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 2, :page_id => @page.id }})
 
--selected_version_date = @selected_version.created_on.strftime("%b %d, %Y %I:%M %p")
+-selected_version_date = @selected_version.created_on.localtime.strftime("%b %d, %Y %I:%M %p")
 -selected_version_user = link_to(@selected_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @selected_version.user.id })
 
 p.diff-help Here you can see all page revisions and compare the changes have been made in each revision. Left column shows the page title and transcription in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
