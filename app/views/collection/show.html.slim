@@ -25,7 +25,8 @@
               span(style="width:#{progress_annotated}%")
               span(style="width:#{progress_transcribed - progress_annotated}%")
 
-    p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
+    -if user_signed_in? && current_user.like_owner?(@collection)
+      p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
     
 
     -unless @collection.categories.empty?
