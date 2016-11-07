@@ -11,7 +11,6 @@ class DisplayController < ApplicationController
     elsif params.has_key?(:url)
       @work = Work.find_by_id(params[:url][:work_id])
     end
-
     if @article
       #logger.debug("in display controller, work.id is #{@work.id}, if @article is true")
       # restrict to pages that include that subject

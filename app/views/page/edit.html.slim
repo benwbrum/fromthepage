@@ -24,7 +24,7 @@
   .sidecol
     big ="Page Position: #{@page.position}"
     =time_tag @page.created_on
-      ="Created #{@page.created_on.strftime("%b %d, %Y %I:%M %p")}"
+      ="Created #{@page.created_on.localtime.strftime("%b %d, %Y %I:%M %p")}"
     p.small.fglight Here you can edit the page title and upload a new image. If you want to edit page transcription or translation text please switch to the appropriate tab above.
 
 -if @page.base_image.present?
