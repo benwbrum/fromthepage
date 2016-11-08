@@ -1,0 +1,24 @@
+document_upload_1:
+  id: 1
+  user_id: 4
+  collection_id: 2
+  file: AD_Introducing_the_Future_Scene_and_Brainstorming_Challenges.pdf
+  created_at: 2016-11-07 13:55:33.000000000 Z
+  updated_at: 2016-11-07 13:56:42.000000000 Z
+  status: finished
+document_upload_2:
+  id: 2
+  user_id: 4
+  collection_id: 2
+  file: AD_GPS_Steps_1-3.pdf
+  created_at: 2016-11-07 13:55:58.000000000 Z
+  updated_at: 2016-11-07 13:57:31.000000000 Z
+  status: finished
+document_upload_3:
+  id: 3
+  user_id: 4
+  collection_id: 1
+  file: HP_Book2_Chapter_Excerpt.pdf
+  created_at: 2016-11-07 13:59:34.000000000 Z
+  updated_at: 2016-11-07 14:00:12.000000000 Z
+  status: finished

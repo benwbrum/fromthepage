@@ -1,0 +1,76 @@
+work_1:
+  id: 1
+  title: ScoringGuide2011
+  description: ScoringGuide2011
+  created_on: 2016-11-07 13:56:07.000000000 Z
+  owner_user_id: 4
+  restrict_scribes: true
+  transcription_version: 18
+  physical_description: 
+  document_history: 
+  permission_description: 
+  location_of_composition: 
+  author: 
+  transcription_conventions: 
+  collection_id: 2
+  scribes_can_edit_titles: false
+  supports_translation: false
+  translation_instructions: 
+  pages_are_meaningful: true
+work_3:
+  id: 3
+  title: AD_Introducing_the_Future_Scene_and_Brainstorming_Challenges
+  description: AD_Introducing_the_Future_Scene_and_Brainstorming_Challenges
+  created_on: 2016-11-07 13:56:36.000000000 Z
+  owner_user_id: 4
+  restrict_scribes: false
+  transcription_version: 15
+  physical_description: 
+  document_history: 
+  permission_description: 
+  location_of_composition: 
+  author: 
+  transcription_conventions: 
+  collection_id: 2
+  scribes_can_edit_titles: false
+  supports_translation: true
+  translation_instructions: 
+  pages_are_meaningful: true
+work_4:
+  id: 4
+  title: AD_GPS_Steps_1-3
+  description: AD_GPS_Steps_1-3
+  created_on: 2016-11-07 13:57:15.000000000 Z
+  owner_user_id: 4
+  restrict_scribes: false
+  transcription_version: 27
+  physical_description: 
+  document_history: 
+  permission_description: 
+  location_of_composition: 
+  author: 
+  transcription_conventions: 
+  collection_id: 2
+  scribes_can_edit_titles: false
+  supports_translation: false
+  translation_instructions: 
+  pages_are_meaningful: true
+work_7:
+  id: 7
+  title: HP_Book2_Chapter_Excerpt
+  description: HP_Book2_Chapter_Excerpt
+  created_on: 2016-11-07 13:59:58.000000000 Z
+  owner_user_id: 4
+  restrict_scribes: false
+  transcription_version: 52
+  physical_description: 
+  document_history: 
+  permission_description: 
+  location_of_composition: 
+  author: 
+  transcription_conventions: 
+  collection_id: 1
+  scribes_can_edit_titles: false
+  supports_translation: false
+  translation_instructions: 
+  pages_are_meaningful: true

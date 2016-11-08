@@ -1,0 +1,1615 @@
+# # interaction_1:
+#   id: 1
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '1'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:42:37.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_2:
+#   id: 2
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '2'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:42:41.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_3:
+#   id: 3
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/registrations"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '3'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:42:44.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_4:
+#   id: 4
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"RCkcVNasF+38kvT83dQBYvbbhucMUORDdSK8e5SwGTE=",
+#     "user"=>{"login"=>"ron", "email"=>"ron@te...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '4'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:43:03.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_5:
+#   id: 5
+#   user_id: 1
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '5'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:43:03.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_6:
+#   id: 6
+#   user_id: 1
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '6'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:13.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_7:
+#   id: 7
+#   user_id: 1
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '7'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:22.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_8:
+#   id: 8
+#   user_id: 1
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"RCkcVNasF+38kvT83dQBYvbbhucMUORDdSK8e5SwGTE=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '8'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:25.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_9:
+#   id: 9
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '9'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:25.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_10:
+#   id: 10
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '10'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:34.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_11:
+#   id: 11
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/registrations"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '11'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:39.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_12:
+#   id: 12
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"q/0QpPSU1JbL+ujzZaHLiRZ2fxID94ImZjxfAi/VeMw=",
+#     "user"=>{"login"=>"Hermione", "email"=>"h...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '12'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:48:59.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_13:
+#   id: 13
+#   user_id: 2
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '13'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:00.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_14:
+#   id: 14
+#   user_id: 2
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"q/0QpPSU1JbL+ujzZaHLiRZ2fxID94ImZjxfAi/VeMw=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '14'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:05.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_15:
+#   id: 15
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '15'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:05.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_16:
+#   id: 16
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '16'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:08.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_17:
+#   id: 17
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/registrations"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '17'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:13.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_18:
+#   id: 18
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"LbOWz0C6XZw0thMt2KQq9WLlrl7VJE2Xc+4RNNrxtCs=",
+#     "user"=>{"login"=>"Harry", "email"=>"harr...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '18'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:26.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_19:
+#   id: 19
+#   user_id: 3
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '19'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:27.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_20:
+#   id: 20
+#   user_id: 3
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"LbOWz0C6XZw0thMt2KQq9WLlrl7VJE2Xc+4RNNrxtCs=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '20'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:31.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_21:
+#   id: 21
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '21'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:31.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_22:
+#   id: 22
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '22'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:33.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_23:
+#   id: 23
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/registrations"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '23'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:41.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_24:
+#   id: 24
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"zCYLYx7/SCHsjHZBfqTA/bL4VH+cx36B8ptWc7V2xeM=",
+#     "user"=>{"login"=>"minerva", "email"=>"mi...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '24'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:56.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_25:
+#   id: 25
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '25'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:49:56.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_26:
+#   id: 26
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"zCYLYx7/SCHsjHZBfqTA/bL4VH+cx36B8ptWc7V2xeM=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '26'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:00.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_27:
+#   id: 27
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '27'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:00.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_28:
+#   id: 28
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '28'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:02.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_29:
+#   id: 29
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/registrations"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '29'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:05.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_30:
+#   id: 30
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"z9N2gvR1RMbk9suJwT7H3fCbV0JpoQrm+w/7rH+Tt/Y=",
+#     "user"=>{"login"=>"albus", "email"=>"albu...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '30'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:17.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_31:
+#   id: 31
+#   user_id: 5
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '31'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:18.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_32:
+#   id: 32
+#   user_id: 5
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"z9N2gvR1RMbk9suJwT7H3fCbV0JpoQrm+w/7rH+Tt/Y=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '32'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:21.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_33:
+#   id: 33
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '33'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:50:21.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_34:
+#   id: 34
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '34'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:01.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_35:
+#   id: 35
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"Q4vX3o++1+DadG6Er/MXpEYFW8QGgcKXIW3BmTy6FeI=",
+#     "user"=>{"login"=>"minerva", "remember_me...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '35'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:08.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_36:
+#   id: 36
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '36'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:08.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_37:
+#   id: 37
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"controller"=>"collection", "action"=>"new"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '37'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:12.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_38:
+#   id: 38
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "collection"=>{"title"=>"Magical Creature...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '38'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:36.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_39:
+#   id: 39
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: edit
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '39'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:36.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_40:
+#   id: 40
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: update
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "collection_id"=>"1", "collection"=>{"tit...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '40'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:49.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_41:
+#   id: 41
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: edit
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '41'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:49.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_42:
+#   id: 42
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: startproject
+#   params: '{"collection_id"=>"1", "controller"=>"dashboard", "action"=>"startproject"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '42'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:53:56.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_43:
+#   id: 43
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: dashboard_role
+#   params: '{"action"=>"dashboard_role", "controller"=>"dashboard"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '43'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:54:54.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_44:
+#   id: 44
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '44'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:54:54.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_45:
+#   id: 45
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"_"=>"1478526895371", "controller"=>"collection", "action"=>"new"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '45'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:54:59.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_46:
+#   id: 46
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "collection"=>{"title"=>"FPS", "intro_blo...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '46'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:09.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_47:
+#   id: 47
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: edit
+#   params: '{"collection_id"=>"2", "controller"=>"collection", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '47'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:10.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_48:
+#   id: 48
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: startproject
+#   params: '{"collection_id"=>"2", "controller"=>"dashboard", "action"=>"startproject"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '48'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:13.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_49:
+#   id: 49
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new_upload
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "document_upload"=>{"collection_id"=>"2",...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '49'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:33.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_50:
+#   id: 50
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"2", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '50'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:33.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_51:
+#   id: 51
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: dashboard_role
+#   params: '{"action"=>"dashboard_role", "controller"=>"dashboard"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '51'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:41.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_52:
+#   id: 52
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '52'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:41.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_53:
+#   id: 53
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: startproject
+#   params: '{"collection_id"=>"2", "controller"=>"dashboard", "action"=>"startproject"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '53'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:45.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_54:
+#   id: 54
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new_upload
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "document_upload"=>{"collection_id"=>"2",...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '54'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:58.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_55:
+#   id: 55
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"2", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '55'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:55:59.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_56:
+#   id: 56
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: dashboard_role
+#   params: '{"action"=>"dashboard_role", "controller"=>"dashboard"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '56'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:58:04.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_57:
+#   id: 57
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '57'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:58:04.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_58:
+#   id: 58
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: startproject
+#   params: '{"collection_id"=>"1", "controller"=>"dashboard", "action"=>"startproject"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '58'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:58:19.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_59:
+#   id: 59
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new_upload
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "document_upload"=>{"collection_id"=>"1",...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '59'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:59:34.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_60:
+#   id: 60
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '60'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:59:34.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_61:
+#   id: 61
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: dashboard_role
+#   params: '{"action"=>"dashboard_role", "controller"=>"dashboard"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '61'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:59:51.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_62:
+#   id: 62
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '62'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:59:51.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_63:
+#   id: 63
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: edit
+#   params: '{"work_id"=>"6", "controller"=>"work", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '63'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:59:56.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_64:
+#   id: 64
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: read_work
+#   params: '{"work_id"=>"6", "controller"=>"display", "action"=>"read_work"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '64'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 13:59:59.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_65:
+#   id: 65
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 142
+#   action: display_page
+#   params: '{"page_id"=>"142", "controller"=>"display", "action"=>"display_page"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '65'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:00:10.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_66:
+#   id: 66
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: read_work
+#   params: '{"work_id"=>"6", "controller"=>"display", "action"=>"read_work"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '66'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:00:43.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_67:
+#   id: 67
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '67'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:00:45.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_68:
+#   id: 68
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: read_work
+#   params: '{"work_id"=>"6", "controller"=>"display", "action"=>"read_work"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '68'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:00:55.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_69:
+#   id: 69
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: versions
+#   params: '{"work_id"=>"6", "controller"=>"work", "action"=>"versions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '69'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:00:57.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_70:
+#   id: 70
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: edit
+#   params: '{"work_id"=>"6", "controller"=>"work", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '70'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:00:59.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_71:
+#   id: 71
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 6
+#   page_id: 
+#   action: delete
+#   params: '{"work_id"=>"6", "controller"=>"work", "action"=>"delete"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '71'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:05.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_72:
+#   id: 72
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '72'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:05.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_73:
+#   id: 73
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 5
+#   page_id: 
+#   action: edit
+#   params: '{"work_id"=>"5", "controller"=>"work", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '73'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:10.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_74:
+#   id: 74
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 5
+#   page_id: 
+#   action: delete
+#   params: '{"work_id"=>"5", "controller"=>"work", "action"=>"delete"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '74'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:16.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_75:
+#   id: 75
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '75'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:16.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_76:
+#   id: 76
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 
+#   action: edit
+#   params: '{"work_id"=>"1", "controller"=>"work", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '76'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:25.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_77:
+#   id: 77
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 
+#   action: update_work
+#   params: '{"utf8"=>"✓", "_method"=>"patch", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "work_id"=>"1", "work...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '77'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:31.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_78:
+#   id: 78
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 
+#   action: edit
+#   params: '{"work_id"=>"1", "controller"=>"work", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '78'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:31.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_79:
+#   id: 79
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 
+#   action: add_scribe
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "work_id"=>"1", "user_id"=>"2", "button"=...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '79'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:39.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_80:
+#   id: 80
+#   user_id: 4
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 
+#   action: edit
+#   params: '{"work_id"=>"1", "controller"=>"work", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '80'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:39.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_81:
+#   id: 81
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: dashboard_role
+#   params: '{"action"=>"dashboard_role", "controller"=>"dashboard"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '81'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:48.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_82:
+#   id: 82
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: owner
+#   params: '{"controller"=>"dashboard", "action"=>"owner"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '82'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:48.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_83:
+#   id: 83
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '83'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:51.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_84:
+#   id: 84
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: edit
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '84'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:01:54.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_85:
+#   id: 85
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: add_owner
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "collection_id"=>"1", "user_id"=>"5", "bu...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '85'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:11.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_86:
+#   id: 86
+#   user_id: 4
+#   collection_id: 1
+#   work_id: 
+#   page_id: 
+#   action: edit
+#   params: '{"collection_id"=>"1", "controller"=>"collection", "action"=>"edit"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '86'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:12.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_87:
+#   id: 87
+#   user_id: 4
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"uM4xF93lVJw24oEeaaJBcIat2+AhzhEfZwR+CqQXEHo=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '87'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:17.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_88:
+#   id: 88
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '88'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:17.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_89:
+#   id: 89
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: new
+#   params: '{"action"=>"new", "controller"=>"devise/sessions"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '89'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:20.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_90:
+#   id: 90
+#   user_id: 2
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: create
+#   params: '{"utf8"=>"✓", "authenticity_token"=>"w707AulVZEnk1qy5XLFP5FvlxrZOHeyG7XUR5WKetJw=",
+#     "user"=>{"login"=>"hermione", "remember_m...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '90'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:26.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_91:
+#   id: 91
+#   user_id: 2
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: watchlist
+#   params: '{"controller"=>"dashboard", "action"=>"watchlist"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '91'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:26.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_92:
+#   id: 92
+#   user_id: 2
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: index
+#   params: '{"controller"=>"dashboard", "action"=>"index"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '92'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:30.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_93:
+#   id: 93
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"2", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '93'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:34.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_94:
+#   id: 94
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 4
+#   page_id: 
+#   action: read_work
+#   params: '{"work_id"=>"4", "controller"=>"display", "action"=>"read_work"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '94'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:41.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_95:
+#   id: 95
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 4
+#   page_id: 76
+#   action: display_page
+#   params: '{"page_id"=>"76", "controller"=>"transcribe", "action"=>"display_page"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '95'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:44.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_96:
+#   id: 96
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 4
+#   page_id: 76
+#   action: save_transcription
+#   params: '{"utf8"=>"✓", "_method"=>"patch", "authenticity_token"=>"AA4YGluTuKtMYeZqOPNiX0nCfWp6/RgqnkE9L6X4L/E=",
+#     "page_id"=>"76", "pag...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '96'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:57.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_97:
+#   id: 97
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 4
+#   page_id: 76
+#   action: assign_categories
+#   params: '{"page_id"=>"76", "controller"=>"transcribe", "action"=>"assign_categories"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '97'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:57.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_98:
+#   id: 98
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 4
+#   page_id: 76
+#   action: display_page
+#   params: '{"page_id"=>"76", "controller"=>"display", "action"=>"display_page"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '98'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:02:58.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_99:
+#   id: 99
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 
+#   page_id: 
+#   action: show
+#   params: '{"collection_id"=>"2", "controller"=>"collection", "action"=>"show"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '99'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:07.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_100:
+#   id: 100
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 
+#   action: read_work
+#   params: '{"work_id"=>"1", "controller"=>"display", "action"=>"read_work"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '100'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:12.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_101:
+#   id: 101
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 1
+#   action: display_page
+#   params: '{"page_id"=>"1", "controller"=>"transcribe", "action"=>"display_page"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '101'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:15.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_102:
+#   id: 102
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 1
+#   action: save_transcription
+#   params: '{"utf8"=>"✓", "_method"=>"patch", "authenticity_token"=>"AA4YGluTuKtMYeZqOPNiX0nCfWp6/RgqnkE9L6X4L/E=",
+#     "page_id"=>"1", "page...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '102'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:32.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_103:
+#   id: 103
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 1
+#   action: assign_categories
+#   params: '{"page_id"=>"1", "controller"=>"transcribe", "action"=>"assign_categories"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '103'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:33.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_104:
+#   id: 104
+#   user_id: 2
+#   collection_id: 2
+#   work_id: 1
+#   page_id: 1
+#   action: display_page
+#   params: '{"page_id"=>"1", "controller"=>"display", "action"=>"display_page"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '104'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:33.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_105:
+#   id: 105
+#   user_id: 2
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: destroy
+#   params: '{"_method"=>"delete", "authenticity_token"=>"AA4YGluTuKtMYeZqOPNiX0nCfWp6/RgqnkE9L6X4L/E=",
+#     "action"=>"destroy", "controller"...'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '105'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:39.000000000 Z
+#   status: incomplete
+#   origin_link: 
+# interaction_106:
+#   id: 106
+#   user_id: 
+#   collection_id: 
+#   work_id: 
+#   page_id: 
+#   action: splash
+#   params: '{"controller"=>"static", "action"=>"splash"}'
+#   browser: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+#     Chrome/54.0.2840.87 Safari/537.36
+#   session_id: '106'
+#   ip_address: 192.168.1.67
+#   created_on: 2016-11-07 14:03:39.000000000 Z
+#   status: incomplete
+#   origin_link: 

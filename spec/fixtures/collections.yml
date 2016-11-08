@@ -1,0 +1,20 @@
+collection_1:
+  id: 1
+  title: Magical Creatures
+  owner_user_id: 4
+  created_on: 2016-11-07 13:53:36.000000000 Z
+  intro_block: This is all about magical creatures.
+  footer_block: ''
+  restricted: false
+  picture: 
+  supports_document_sets: false
+collection_2:
+  id: 2
+  title: FPS
+  owner_user_id: 4
+  created_on: 2016-11-07 13:55:09.000000000 Z
+  intro_block: Future Problem Solvers
+  footer_block: 
+  restricted: false
+  picture: 
+  supports_document_sets: false

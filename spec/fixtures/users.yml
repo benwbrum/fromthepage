@@ -1,0 +1,125 @@
+user_1:
+  id: 1
+  login: ron
+  display_name: Ron
+  print_name: 
+  email: ron@test.com
+  owner: false
+  admin: false
+  encrypted_password: b75188f477f4cb3716b1d8815816a5355b6258c5
+  password_salt: F3dvszYx3zbV6kpLVn4v
+  # created_at: 2016-11-07 13:43:03.000000000 Z
+  # updated_at: 2016-11-07 13:43:03.000000000 Z
+  # remember_token: 
+  # remember_token_expires_at: 
+  # location: 
+  # website: 
+  # about: 
+  # reset_password_token: 
+  # reset_password_sent_at: 
+  # remember_created_at: 
+  # sign_in_count: 1
+  # current_sign_in_at: 2016-11-07 13:43:03.000000000 Z
+  # last_sign_in_at: 2016-11-07 13:43:03.000000000 Z
+  # current_sign_in_ip: 192.168.1.67
+  # last_sign_in_ip: 192.168.1.67
+user_2:
+  id: 2
+  login: hermione
+  display_name: Hermione
+  print_name: 
+  email: hermione@test.com
+  owner: false
+  admin: false
+  encrypted_password: 79e444b632fdf551e6026ceda7a1667845308855
+  password_salt: 3HCLDFUv_RH99yah7EfY
+  # created_at: 2016-11-07 13:49:00.000000000 Z
+  # updated_at: 2016-11-07 14:02:26.000000000 Z
+  # remember_token: 
+  # remember_token_expires_at: 
+  # location: 
+  # website: 
+  # about: 
+  # reset_password_token: 
+  # reset_password_sent_at: 
+  # remember_created_at: 
+  # sign_in_count: 2
+  # current_sign_in_at: 2016-11-07 14:02:26.000000000 Z
+  # last_sign_in_at: 2016-11-07 13:49:00.000000000 Z
+  # current_sign_in_ip: 192.168.1.67
+  # last_sign_in_ip: 192.168.1.67
+user_3:
+  id: 3
+  login: harry
+  display_name: Harry
+  print_name: 
+  email: harry@test.com
+  owner: false
+  admin: false
+  encrypted_password: 727782efd36a0a763cd632b5e89e1d11e4c707a2
+  password_salt: mEjYXqkV4d-a6XDMG86f
+  # created_at: 2016-11-07 13:49:26.000000000 Z
+  # updated_at: 2016-11-07 13:49:26.000000000 Z
+  # remember_token: 
+  # remember_token_expires_at: 
+  # location: 
+  # website: 
+  # about: 
+  # reset_password_token: 
+  # reset_password_sent_at: 
+  # remember_created_at: 
+  # sign_in_count: 1
+  # current_sign_in_at: 2016-11-07 13:49:26.000000000 Z
+  # last_sign_in_at: 2016-11-07 13:49:26.000000000 Z
+  # current_sign_in_ip: 192.168.1.67
+  # last_sign_in_ip: 192.168.1.67
+user_4:
+  id: 4
+  login: minerva
+  display_name: Minerva
+  print_name: 
+  email: minerva@test.com
+  owner: true
+  admin: false
+  encrypted_password: 0a7931a8f3d3fb232afa20138f89fbb5dd12e3bc
+  password_salt: 4cq9MDvymCuUV86vcQPP
+  # created_at: 2016-11-07 13:49:56.000000000 Z
+  # updated_at: 2016-11-07 13:53:08.000000000 Z
+  # remember_token: 
+  # remember_token_expires_at: 
+  # location: 
+  # website: 
+  # about: 
+  # reset_password_token: 
+  # reset_password_sent_at: 
+  # remember_created_at: 
+  # sign_in_count: 2
+  # current_sign_in_at: 2016-11-07 13:53:08.000000000 Z
+  # last_sign_in_at: 2016-11-07 13:49:56.000000000 Z
+  # current_sign_in_ip: 192.168.1.67
+  # last_sign_in_ip: 192.168.1.67
+user_5:
+  id: 5
+  login: albus
+  display_name: Albus
+  print_name: 
+  email: albus@test.com
+  owner: true
+  admin: true
+  encrypted_password: 3ac603fbd1b501d2c6c349455b3124c1893be1a5
+  password_salt: ZT_UpPy6DE_JsGH2MJYY
+  # created_at: 2016-11-07 13:50:17.000000000 Z
+  # updated_at: 2016-11-07 13:50:17.000000000 Z
+  # remember_token: 
+  # remember_token_expires_at: 
+  # location: 
+  # website: 
+  # about: 
+  # reset_password_token: 
+  # reset_password_sent_at: 
+  # remember_created_at: 
+  # sign_in_count: 1
+  # current_sign_in_at: 2016-11-07 13:50:17.000000000 Z
+  # last_sign_in_at: 2016-11-07 13:50:17.000000000 Z
+  # current_sign_in_ip: 192.168.1.67
+  # last_sign_in_ip: 192.168.1.67

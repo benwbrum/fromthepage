@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 # This spec describes the features and experience a reader should
@@ -36,7 +37,6 @@ describe "dashboard page" do
 
 
   it "should have a list of collections if not logged in" do
-    binding.pry
 #   capybara code to make sure we're logged out
 #   visit dashboard_path
 #   expect(page).to have_content("Julia Brumfield Diaries")  #consider replacing with a fixture
@@ -134,3 +134,4 @@ describe "user profile page"
 describe "subject article history screen"
 
 describe "pages which mention this subject but do not link to it"
+=end

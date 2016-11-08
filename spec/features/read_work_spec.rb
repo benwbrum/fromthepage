@@ -1,3 +1,4 @@
+=begin
 require "spec_helper"
 
 
@@ -53,3 +54,4 @@ feature "Reading a work" do
 
 
 end
+=end
