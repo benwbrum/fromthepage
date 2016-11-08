@@ -33,14 +33,14 @@ class DashboardController < ApplicationController
     logger.debug("DEBUG: #{current_user.inspect}")
   end
 
-  # Public Dashboard
+  #Public Dashboard
   def index
     collections = Collection.all
     @document_sets = DocumentSet.all
     @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
   end
 
-  # Owner Dashboard - start project
+  #Owner Dashboard - start project
   #other methods in AddWorkHelper
   def startproject
     @document_upload = DocumentUpload.new
@@ -51,11 +51,11 @@ class DashboardController < ApplicationController
     @sc_collections = ScCollection.all
   end
 
-  # Owner Dashboard - list of works
+  #Owner Dashboard - list of works
   def owner
   end
 
-  # Editor Dashboard - watchlist
+  #Collaborator Dashboard - watchlist
   def watchlist
     @user = current_user
     collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
@@ -63,7 +63,7 @@ class DashboardController < ApplicationController
     @page = recent_work
   end
 
-  #Editor Dashboard - user with no activity watchlist
+  #Collaborator Dashboard - user with no activity watchlist
   def recent_work
     recent_deeds = Deed.where("work_id is not null AND collection_id not in (SELECT id FROM collections where restricted = 1) AND work_id not in (SELECT id FROM works where restrict_scribes = 1)").order('created_at desc').limit(10)
     @works = []
@@ -83,12 +83,13 @@ class DashboardController < ApplicationController
     end
   end
 
- # Editor Dashboard - activity
+
+  #Collaborator Dashboard - activity
   def editor
     @user = current_user
   end
 
-#Guest Dashboard - activity
+  #Guest Dashboard - activity
   def guest
     @collections = Collection.limit(5).order_by_recent_activity
   end

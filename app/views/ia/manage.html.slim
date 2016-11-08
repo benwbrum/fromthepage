@@ -38,7 +38,7 @@ h1 Manage Archive.org Import
     .ia-form_help <b>Last line of OCR</b> replaces the page titles with the bottom line of OCR text on each page. This is useful for printed works in which page numbers appear at the bottom.
     .ia-form_help This process will take several seconds to run, since it requires parsing the entire OCR text for the book and updating each page title. After the book has been converted to a FromThePage work, you will be able to correct page titles manually.
 
-    h3 Publish to Editors
+    h3 Publish to Collaborators
     =form_tag({ :action => :convert }, class: 'ia-form') do
       =hidden_field_tag :ia_work_id, @ia_work.id
       .ia-form_field

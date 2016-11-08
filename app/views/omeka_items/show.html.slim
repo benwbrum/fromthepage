@@ -5,7 +5,7 @@ h1 ="Omeka Item: #{@omeka_item.title}"
   article.maincol
     .headline
       h4.headline_title =pluralize(@omeka_item.client_files.size, 'Item File')
-      .headline_aside =link_to 'Publish to Editors', { :action => :import, :id => @omeka_item.id }, class: 'button outline'
+      .headline_aside =link_to 'Publish to Collaborators', { :action => :import, :id => @omeka_item.id }, class: 'button outline'
     .omeka-item-files
       -@omeka_item.client_files.each do |file|
         .omeka-item-file
