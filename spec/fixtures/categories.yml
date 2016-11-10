@@ -18,9 +18,3 @@ category_4:
   title: Places
   parent_id: 
   collection_id: 2
-category_5:
-  id: 5
-  title: Test Will Delete
-  parent_id: 
-  collection_id: 2
-

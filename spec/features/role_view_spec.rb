@@ -6,6 +6,7 @@ describe "different user role logins" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq guest_dashboard_path
+    #should probably click collections button and see what's there
   end
 
   it "signs in an editor with no activity" do
@@ -34,6 +35,10 @@ describe "different user role logins" do
     expect(page.current_path).to eq dashboard_watchlist_path
     expect(page).to have_content("Editor Dashboard")
     expect(page).to have_content(collections.first.title)
+    within ".sidecol" do
+      expect(page).to have_content("Your Activity")
+      #list of your deeds - how to test - list of deeds is fine, but they're translated?
+    end
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_watchlist_path

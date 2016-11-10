@@ -1,8 +1,10 @@
 require 'spec_helper'
 
-describe "owner actions" do
+describe "owner actions", :order => :defined do
+#    Capybara.javascript_driver = :webkit
 
   before :all do
+
     @user = User.find_by(login: 'minerva')
     @collections = @user.all_owner_collections
     @collection = @collections.first
@@ -19,59 +21,118 @@ describe "owner actions" do
       expect(page.current_path).to eq dashboard_owner_path
   end
 
-
   it "starts a new project from tab" do
-    @count = @collections.first.works.count
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collections.first.title, :from => 'document_upload_collection_id')
-    attach_file('document_upload_file', 'fps.pdf')
+    attach_file('document_upload_file', 'fps1.pdf')
     click_button('Upload File')
     title = find('h1').text
-#upload doesn't appear to actually be processing all the way through, js?
-    #expect the "success" flash, too
     expect(title).to eq @collections.first.title
-#    expect(@collections.first.works.count).to eq (@count + 1)
+    expect(page).to have_content("Document has been uploaded")
+    #Note - the check that the document is actually uploaded is in a 
+    #separate test due to the way the rake task runs
   end
 
   it "creates a new collection" do
-    @count = @collections.count
+    collection_count = @user.all_owner_collections.count
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     fill_in 'collection_title', with: 'New Test Collection'
     click_button('Create Collection')
-    expect(@count + 1).to eq @user.all_owner_collections.count
-    expect(page).to have_content("New Test Collection")
+    test_collection = Collection.find_by(title: 'New Test Collection')
+    expect(collection_count + 1).to eq @user.all_owner_collections.count
+    expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Manage Works")
   end
 
   it "deletes a collection" do
-#need to start with deletable collection
-  end
+    test_collection = Collection.find_by(title: 'New Test Collection')
+    collection_count = @user.all_owner_collections.count
+    login_as(@user, :scope => :user)
+    visit dashboard_owner_path
+    expect(page).to have_content("#{test_collection.title}")
+    click_link("#{test_collection.title}")
+    page.find('.tabs').click_link("Settings")
+    click_link('Delete Collection')
+    expect(page.current_path).to eq dashboard_owner_path
+    expect(page).not_to have_content("#{test_collection.title}")
+    expect(collection_count - 1).to eq @user.all_owner_collections.count
 
+  end
 
   it "imports a work from IA" do
-
+    ia_work_count = IaWork.all.count
+    works_count = @user.owner_works.count
+    ia_link = "https://archive.org/details/lettertosamuelma00estl"
+    login_as(@user, :scope => :user)
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    click_link("Import From Archive.org")
+    fill_in 'detail_url', with: ia_link
+    click_button('Import Work')
+    if page.has_button?('Import Anyway')
+      click_button('Import Anyway')
+    end
+    expect(page).to have_content("Manage Archive.org Import")
+    select 'FPS', from: 'collection_id'
+    click_button('Publish Work')
+    expect(page).to have_content("has been converted into a FromThePage work")
+    expect(ia_work_count + 1).to eq IaWork.all.count
+    expect(works_count + 1).to eq @user.owner_works.count
   end
 
-  it "adds an owner to a collection" do
+  it "imports a work from IA and uses OCR" do
+    ia_work_count = IaWork.all.count
+    ia_link = "https://archive.org/details/lettertodeargarr00mays"
+    login_as(@user, :scope => :user)
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    click_link("Import From Archive.org")
+    fill_in 'detail_url', with: ia_link
+    click_button('Import Work')
+    if page.has_button?('Import Anyway')
+      click_button('Import Anyway')
+    end
+    expect(ia_work_count + 1).to eq IaWork.all.count
+    expect(page).to have_content("Manage Archive.org Import")
+    page.check('use_ocr')
+    select 'FPS', from: 'collection_id'
+    click_button('Publish Work')
+    new_work = Work.where(collection_id: @collection.id).last
+    first_page = new_work.pages.first
+    expect(page).to have_content("has been converted into a FromThePage work")
+#    expect('h1').to have_content(new_work.title)
+    expect(page.find('h1')).to have_content(new_work.title)
+    expect(first_page.xml_text).not_to be_nil
+  end
+=begin
+  it "adds an owner to a collection", :js => true do
     collection = @collections.last
     login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{collection.id}"
     page.find('.tabs').click_link("Settings")
-    select 'Harry', from: 'user_id'
+    page.find('.user-select-form').click
+    select 'Harry', from: 'user_id', visible: false
+
+    #expect(page.find('.user-select-form')).to have_content('Add')
+    #element = page.find('.user-select-form')
+#javascript doesn't seem to be loading correctly, so this doesn't work.
+#    execute_script("$('.user-select-form select')")
+
+    #select 'Harry', from: 'user_id'
     #this requires the javascript setup which i haven't yet enabled.
-    #click_button 'Add'
+    #click_button 'Add', visible: false
 
   end
 
   it "checks rights of added owner" do
     #login as new owner, make sure can see tabs, add work
   end
-
-  it "adds a new subject" do
+=end
+  it "creates a subject" do
     login_as(@user, :scope => :user)
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "People")
@@ -89,15 +150,14 @@ describe "owner actions" do
   it "deletes a subject" do
    login_as(@user, :scope => :user)
     @count = @collection.categories.count
-    cat = @collection.categories.find_by(title: "Test Will Delete")
+    cat = @collection.categories.find_by(title: "New Test Category")
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("Test Will Delete")
+    expect(page).to have_content("New Test Category")
     @name = "#category-" + "#{cat.id}"
     page.find(@name).find('a', text: 'Delete Category').click
     expect(@count - 1).to eq (@collection.categories.count)
     visit "/article/list?collection_id=#{@collection.id}"
-    expect(page).not_to have_content("Test Will Delete")
+    expect(page).not_to have_content("New Test Category")
   end
-
 end

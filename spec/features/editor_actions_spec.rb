@@ -9,6 +9,22 @@ describe "editor actions" do
     @collection = @collections.first
     @work = @collection.works.first
     @page = @work.pages.first
+    @auth = TranscribeAuthorization.find_by(user_id: @user.id)
+  end
+
+  it "checks that an editor with permissions can see a restricted work" do
+    login_as(@user, :scope => :user)
+    visit "/display/read_work?work_id=#{@auth.work_id}"
+    click_link @work.pages.first.title
+    expect(page.find('.tabs')).to have_content("Transcribe")
+  end
+
+  it "checks that a restricted editor can't see a work" do
+    @user = User.find_by(login: 'ron')
+    login_as(@user, :scope => :user)
+    visit "/display/read_work?work_id=#{@auth.work_id}"
+    click_link @work.pages.first.title
+    expect(page.find('.tabs')).not_to have_content("Transcribe")
   end
 
   it "looks at a collection" do
@@ -25,6 +41,7 @@ describe "editor actions" do
       #Statistics
       page.find('.tabs').click_link("Statistics")
       expect(page).to have_content("Work Progress")
+      #make sure we don't have the owner tabs
   end
 
   it "looks at a work" do
@@ -62,8 +79,13 @@ describe "editor actions" do
 # Need to pass in a version somehow, maybe?
 #      page.find('.tabs').click_link("Versions")
 #      expect(page).to have_content("revisions")
-      
+
   end
+
+  it "reads a work with multiple pages" do
+    #haven't implemented this one yet
+  end
+
   it "transcribes a page" do
     login_as(@user, :scope => :user)
     visit "/display/display_page?page_id=#{@page.id}"
@@ -95,19 +117,18 @@ describe "editor actions" do
     expect(page).to have_content "Note has been created"
   end
 
-  it "annotates a subject" do
+  it "links a categorized subject" do
     login_as(@user, :scope => :user)
     @page = @work.pages.last
     visit "/display/display_page?page_id=#{@page.id}"
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content("Status")
-    page.fill_in 'page_source_text', with: "[[Characters|Hagrid]]"
+    page.fill_in 'page_source_text', with: "[[Places|Hogwarts]]"
     click_button('Save Changes')
-    #select works through javascript, need to change driver??
-    #now need to do selector drop down box - trouble with locating the dropdown
-    #select 'People', from: 'data-assign-categories': says can't find the select box
-    #click_link 'Continue'
+    expect(page).to have_content("Hogwarts")
   end
+
+  #it checks ot make sure the subject is on the page
 
   it "looks at subjects in a collection" do
     login_as(@user, :scope => :user)
@@ -123,10 +144,12 @@ describe "editor actions" do
         expect(page).to have_content(a.title)
       end
     end
-
   end
 
 
+#not yet implemented
+  it "clicks the links to look at the information for a subject" do
 
+  end
 
 end
