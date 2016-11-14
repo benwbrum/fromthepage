@@ -25,6 +25,10 @@
               span(style="width:#{progress_annotated}%")
               span(style="width:#{progress_transcribed - progress_annotated}%")
 
+    -if user_signed_in? && current_user.like_owner?(@collection)
+      p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
+    
+
     -unless @collection.categories.empty?
       h3 Subject Categories
       p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')

@@ -55,6 +55,13 @@
       :controller => 'collection',
       :action => 'contributors',
     },
+  },{\
+    :name => 'Add Work',
+    :selected => 4,
+    :options => {\
+      :controller => 'collection',
+      :action => 'new_work',
+    },
   }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
