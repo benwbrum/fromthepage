@@ -33,10 +33,10 @@ Rails.application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
-=begin
+
+  config.assets.digest = true
   config.action_controller.asset_host = "file://#{::Rails.root}/public"
   config.assets.prefix = "assets_test"
-=end
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   RAKE = '/usr/bin/env rake'

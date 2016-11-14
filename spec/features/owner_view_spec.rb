@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "owner actions", :order => :defined do
-#    Capybara.javascript_driver = :webkit
 
   before :all do
 
@@ -108,30 +107,8 @@ describe "owner actions", :order => :defined do
     expect(page.find('h1')).to have_content(new_work.title)
     expect(first_page.xml_text).not_to be_nil
   end
-=begin
-  it "adds an owner to a collection", :js => true do
-    collection = @collections.last
-    login_as(@user, :scope => :user)
-    visit "/collection/show?collection_id=#{collection.id}"
-    page.find('.tabs').click_link("Settings")
-    page.find('.user-select-form').click
-    select 'Harry', from: 'user_id', visible: false
 
-    #expect(page.find('.user-select-form')).to have_content('Add')
-    #element = page.find('.user-select-form')
-#javascript doesn't seem to be loading correctly, so this doesn't work.
-#    execute_script("$('.user-select-form select')")
 
-    #select 'Harry', from: 'user_id'
-    #this requires the javascript setup which i haven't yet enabled.
-    #click_button 'Add', visible: false
-
-  end
-
-  it "checks rights of added owner" do
-    #login as new owner, make sure can see tabs, add work
-  end
-=end
   it "creates a subject" do
     login_as(@user, :scope => :user)
     @count = @collection.categories.count
@@ -160,4 +137,5 @@ describe "owner actions", :order => :defined do
     visit "/article/list?collection_id=#{@collection.id}"
     expect(page).not_to have_content("New Test Category")
   end
+
 end
