@@ -25,7 +25,7 @@ describe "owner actions", :order => :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collections.first.title, :from => 'document_upload_collection_id')
-    attach_file('document_upload_file', 'fps1.pdf')
+    attach_file('document_upload_file', '/test_data/uploads/test.pdf')
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq @collections.first.title
