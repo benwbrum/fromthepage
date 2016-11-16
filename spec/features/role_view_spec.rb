@@ -15,7 +15,7 @@ describe "different user role logins" do
       fill_in 'Password', with: 'password'
       click_button('Sign In')
       expect(page.current_path).to eq dashboard_watchlist_path
-      expect(page).to have_content("Editor Dashboard")
+      expect(page).to have_content("Collaborator Dashboard")
       expect(page).to have_content("You haven't participated in any projects yet.")
       visit root_path
       click_link('Dashboard')
@@ -33,7 +33,7 @@ describe "different user role logins" do
     fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
-    expect(page).to have_content("Editor Dashboard")
+    expect(page).to have_content("Collaborator Dashboard")
     expect(page).to have_content(collections.first.title)
     within ".sidecol" do
       expect(page).to have_content("Your Activity")

@@ -25,7 +25,7 @@ describe "owner actions", :order => :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collections.first.title, :from => 'document_upload_collection_id')
-    attach_file('document_upload_file', '/test_data/uploads/test.pdf')
+    attach_file('document_upload_file', './test_data/uploads/test.pdf')
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq @collections.first.title
@@ -102,12 +102,11 @@ describe "owner actions", :order => :defined do
     click_button('Publish Work')
     new_work = Work.where(collection_id: @collection.id).last
     first_page = new_work.pages.first
+    expect(first_page.status).to eq 'raw_ocr'
     expect(page).to have_content("has been converted into a FromThePage work")
-#    expect('h1').to have_content(new_work.title)
     expect(page.find('h1')).to have_content(new_work.title)
-    expect(first_page.xml_text).not_to be_nil
+    expect(first_page.source_text).not_to be_nil
   end
-
 
   it "creates a subject" do
     login_as(@user, :scope => :user)
@@ -118,7 +117,7 @@ describe "owner actions", :order => :defined do
     @name = "#category-" + "#{cat.id}"
     page.find(@name).find('a', text: 'Add Root Category').click
     fill_in 'category_title', with: 'New Test Category'
-    click_button 'Create Category'
+    click_button('Create Category')
     expect(@count + 1).to eq (@collection.categories.count)
     visit "/article/list?collection_id=#{@collection.id}"
     expect(page).to have_content("New Test Category")
