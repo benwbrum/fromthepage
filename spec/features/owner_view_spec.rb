@@ -100,7 +100,7 @@ describe "owner actions", :order => :defined do
     page.check('use_ocr')
     select 'FPS', from: 'collection_id'
     click_button('Publish Work')
-    new_work = Work.where(collection_id: @collection.id).last
+    new_work = Work.find_by(title: "[Letter to] Dear Garrison [manuscript]")
     first_page = new_work.pages.first
     expect(first_page.status).to eq 'raw_ocr'
     expect(page).to have_content("has been converted into a FromThePage work")

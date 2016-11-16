@@ -7,7 +7,7 @@ describe "check uploads" do
     @user = User.find_by(login: 'minerva')
 #    @collections = @user.all_owner_collections
 #    @collection = @collections.first
-    @work = Work.find_by(title: 'fps1')
+    @work = Work.find_by(title: 'test')
   end
 
   it "checks that the file has been uploaded" do
