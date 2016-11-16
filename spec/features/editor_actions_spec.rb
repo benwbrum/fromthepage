@@ -67,23 +67,17 @@ describe "editor actions" do
       expect(page).to have_content("Linking Subjects")
   end
 
-  it "looks at a page" do
+  it "looks at pages" do
     login_as(@user, :scope => :user)
 
       visit "/display/read_work?work_id=#{@work.id}"
       click_link @page.title
       expect(page).to have_content("Facsimile")
       expect(page).to have_content(@page.title)
-      #Check tabs that aren't otherwise tested
       #Versions
-# Need to pass in a version somehow, maybe?
-#      page.find('.tabs').click_link("Versions")
-#      expect(page).to have_content("revisions")
+      page.find('.tabs').click_link("Versions")
+      expect(page).to have_content("revisions")
 
-  end
-
-  it "reads a work with multiple pages" do
-    #haven't implemented this one yet
   end
 
   it "transcribes a page" do
@@ -126,9 +120,12 @@ describe "editor actions" do
     page.fill_in 'page_source_text', with: "[[Places|Hogwarts]]"
     click_button('Save Changes')
     expect(page).to have_content("Hogwarts")
+    #this functionality is currently not working for my test machine
+    #page.find('a', text: 'Hogwarts').click
+    #expect(page).to have_content("Category")
   end
 
-  #it checks ot make sure the subject is on the page
+  #it checks to make sure the subject is on the page
 
   it "looks at subjects in a collection" do
     login_as(@user, :scope => :user)
@@ -145,7 +142,6 @@ describe "editor actions" do
       end
     end
   end
-
 
 #not yet implemented
   it "clicks the links to look at the information for a subject" do
