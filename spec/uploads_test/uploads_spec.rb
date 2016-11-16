@@ -5,8 +5,6 @@ describe "check uploads" do
   before :all do
 
     @user = User.find_by(login: 'minerva')
-#    @collections = @user.all_owner_collections
-#    @collection = @collections.first
     @work = Work.find_by(title: 'test')
   end
 
