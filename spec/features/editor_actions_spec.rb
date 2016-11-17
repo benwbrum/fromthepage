@@ -42,6 +42,10 @@ describe "editor actions" do
       page.find('.tabs').click_link("Statistics")
       expect(page).to have_content("Work Progress")
       #make sure we don't have the owner tabs
+      expect(page.find('.tabs')).not_to have_content("Settings")
+      expect(page.find('.tabs')).not_to have_content("Export")
+      expect(page.find('.tabs')).not_to have_content("Collaborators")
+
   end
 
   it "looks at a work" do
