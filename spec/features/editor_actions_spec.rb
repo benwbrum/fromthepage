@@ -73,26 +73,29 @@ describe "editor actions" do
 
   it "looks at pages" do
     login_as(@user, :scope => :user)
-
-      visit "/display/read_work?work_id=#{@work.id}"
-      click_link @page.title
-      expect(page).to have_content("Facsimile")
-      expect(page).to have_content(@page.title)
-      #Versions
-      page.find('.tabs').click_link("Versions")
-      expect(page).to have_content("revisions")
+    visit "/display/read_work?work_id=#{@work.id}"
+    expect(page).to have_content("please help transcribe this page")
+    click_link @page.title
+    expect(page).to have_content("Facsimile")
+    expect(page).to have_content(@page.title)
+    #Versions
+    page.find('.tabs').click_link("Versions")
+    expect(page).to have_content("revisions")
 
   end
 
   it "transcribes a page" do
     login_as(@user, :scope => :user)
     visit "/display/display_page?page_id=#{@page.id}"
+    save_and_open_page
+    expect(page).to have_content("This page is not transcribed")
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
+    expect('#page_status').to have_content("Transcription status not set")
     page.fill_in 'page_source_text', with: "Test Transcription"
     click_button('Save Changes')
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
+    expect(@page.status).to be "" 
   end
 
   it "translates a page" do
@@ -113,6 +116,7 @@ describe "editor actions" do
     fill_in 'note_body', with: "Test note"
     click_button('Submit')
     expect(page).to have_content "Note has been created"
+    #delete the note
   end
 
   it "links a categorized subject" do

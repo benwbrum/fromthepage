@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+describe "IA import actions", :order => :defined do
 
   before :all do
 
@@ -31,7 +31,7 @@ describe "owner actions", :order => :defined do
     expect(works_count + 1).to eq @user.owner_works.count
   end
 
-  it "imports a work from IA and uses OCR" do
+  it "uses OCR when importing a work from IA" do
     ia_work_count = IaWork.all.count
     ia_link = "https://archive.org/details/lettertodeargarr00mays"
     login_as(@user, :scope => :user)
@@ -55,5 +55,25 @@ describe "owner actions", :order => :defined do
     expect(page.find('h1')).to have_content(new_work.title)
     expect(first_page.source_text).not_to be_nil
   end
+
+  it "tests ocr correction" do
+    @work = Work.find_by(title: "[Letter to] Dear Garrison [manuscript]")
+    @page = @work.pages.first
+    login_as(@user, :scope => :user)
+    visit "/display/read_work?work_id=#{@work.id}"
+    expect(page).to have_content("This page is not corrected, please help correct this page")
+    click_link @page.title
+    expect(page).to have_content("This page is not corrected")
+    page.find('.tabs').click_link("Correct")
+    expect('#page_status').to have_content("Incomplete Correction")
+
+    page.fill_in 'page_source_text', with: "Test OCR Correction"
+    click_button('Save Changes')
+    expect(page).to have_content("Test OCR Correction")
+    expect(page).to have_content("Facsimile")
+    expect(page.find('.tabs')).to have_content("Correct")
+    expect(@page.status).to be "part_ocr" 
+  end
+
 
 end
