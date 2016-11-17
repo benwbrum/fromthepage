@@ -30,6 +30,9 @@
 -when 'pg_xlat_ed'
   -output += "edited the translation of #{page} page"
 
+-when 'ocr_corr'
+  -output += "corrected the OCR transcription of #{page} page"
+
 -if(long_view && !deed.work.nil?)
   -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id })
   -output += " of #{work} work"

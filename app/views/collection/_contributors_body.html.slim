@@ -41,6 +41,14 @@
             = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
             =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
 
+  -unless @recent_ocr.empty?
+    h3.nomargin Recent OCR correction
+    p  
+      -@recent_ocr.each do |d|
+        .deed-short
+          span.deed-short_content
+            = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
 
   -unless @recent_translations.empty?  
     h3.nomargin Recent Translations
