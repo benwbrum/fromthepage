@@ -87,15 +87,14 @@ describe "editor actions" do
   it "transcribes a page" do
     login_as(@user, :scope => :user)
     visit "/display/display_page?page_id=#{@page.id}"
-    save_and_open_page
     expect(page).to have_content("This page is not transcribed")
     page.find('.tabs').click_link("Transcribe")
-    expect('#page_status').to have_content("Transcription status not set")
+    expect(page.find('#page_status')).to have_content("- Transcription status not set -")
     page.fill_in 'page_source_text', with: "Test Transcription"
     click_button('Save Changes')
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
-    expect(@page.status).to be "" 
+    expect(@page.status).to eq "" 
   end
 
   it "translates a page" do
