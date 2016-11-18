@@ -15,7 +15,8 @@ class CreateTitledImages < ActiveRecord::Migration
       t.column :position, :integer
       t.column :created_on, :datetime
     end
-=end  end
+=end  
+  end
 
   def self.down
 #    drop_table :titled_images

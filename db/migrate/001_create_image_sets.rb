@@ -6,7 +6,8 @@ class CreateImageSets < ActiveRecord::Migration
       t.column :title_format, :string , :limit => 255
       t.column :created_on, :datetime
     end
-=end  end
+=end  
+  end
 
   def self.down
 #    drop_table :image_sets
