@@ -452,7 +452,7 @@ page_75:
 page_76:
   id: 76
   title: '1'
-  source_text: Global Issues Problem Solving
+  source_text: 
   base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0001.jpg"
   base_width: 3000
   base_height: 2250
@@ -460,9 +460,8 @@ page_76:
   work_id: 4
   created_on: 2016-11-07 13:57:15.000000000 Z
   position: 1
-  lock_version: 1
-  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Global
-    Issues Problem Solving</p>\n      </page>\n"
+  lock_version: 0
+  xml_text: 
   page_version_id: 
   status: ''
   source_translation: 
@@ -471,7 +470,7 @@ page_76:
 page_77:
   id: 77
   title: '2'
-  source_text: 
+  source_text: Global Issues Problem Solving
   base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0001_thumb.jpg"
   base_width: 142
   base_height: 100
@@ -479,8 +478,9 @@ page_77:
   work_id: 4
   created_on: 2016-11-07 13:57:15.000000000 Z
   position: 2
-  lock_version: 0
-  xml_text: 
+  lock_version: 1
+  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Global
+    Issues Problem Solving</p>\n      </page>\n"
   page_version_id: 
   status: 
   source_translation: 
