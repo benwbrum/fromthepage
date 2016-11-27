@@ -47,7 +47,7 @@ describe "editor actions" do
       expect(page.find('.tabs')).not_to have_content("Collaborators")
 
   end
-=begin
+
   it "looks at a work" do
     login_as(@user, :scope => :user)
       visit "/collection/show?collection_id=#{@collection.id}"
@@ -115,7 +115,8 @@ describe "editor actions" do
     fill_in 'note_body', with: "Test note"
     click_button('Submit')
     expect(page).to have_content "Note has been created"
-    #delete the note
+    #delete the note - requires javascript
+  #  page.find('#note_body', text: "Test note")
   end
 
   it "links a categorized subject" do
@@ -124,9 +125,9 @@ describe "editor actions" do
     visit "/display/display_page?page_id=#{@page.id}"
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content("Status")
-    page.fill_in 'page_source_text', with: "[[Places|Hogwarts]]"
+    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
-    expect(page).to have_content("Hogwarts")
+    expect(page).to have_content("Texas")
     #this functionality is currently not working for my test machine
     #page.find('a', text: 'Hogwarts').click
     #expect(page).to have_content("Category")
@@ -154,6 +155,5 @@ describe "editor actions" do
   it "clicks the links to look at the information for a subject" do
 
   end
-=end
 
 end
