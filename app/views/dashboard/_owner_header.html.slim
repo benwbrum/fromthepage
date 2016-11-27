@@ -24,7 +24,6 @@
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
         -unless current_user.all_owner_collections.empty?
-          =link_to 'Create a Work', { :controller => 'work', :action => 'new' }, :data => { litebox: { hash: 'create-work' } }
         =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
 
 section.owner-counters

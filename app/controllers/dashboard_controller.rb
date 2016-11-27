@@ -43,6 +43,7 @@ class DashboardController < ApplicationController
   #Owner Dashboard - start project
   #other methods in AddWorkHelper
   def startproject
+    @work = Work.new
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
     @omeka_items = OmekaItem.all
