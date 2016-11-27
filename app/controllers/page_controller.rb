@@ -77,10 +77,10 @@ class PageController < ApplicationController
         process_uploaded_file(@page, @page.base_image)
       end
 
-      if subaction == 'save_and_new'
-        ajax_redirect_to({ :controller => 'dashboard', :action => 'owner', :anchor => 'create-work' })
-      else
+      if subaction == 'save_and_next'
         ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+      else
+        ajax_redirect_to({ :controller => 'display', :action => 'read_work', :work_id => @work.id })
       end
     else
       render :new

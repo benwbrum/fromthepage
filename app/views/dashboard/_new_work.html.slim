@@ -27,14 +27,13 @@
       =validation_summary @work.errors
       table.form
         tr
-          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), prompt: '- Select a collection -'
+          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @work.collection_id), prompt: '- Select a collection -'
         tr
-          th =f.label :title
-          td.w100 =f.text_field :title
+          td
+            =f.text_field :title, placeholder: 'Title'
         tr
           td(colspan="2")
-            =f.label :description, 'Description', class: 'above'
-            =f.text_area :description, rows: 4
+            =f.text_area :description, rows: 4, placeholder: 'Description'
       .toolbar
         .toolbar_group.aright =f.button 'Create Work'
 
