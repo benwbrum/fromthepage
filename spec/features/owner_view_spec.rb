@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe "owner actions", :order => :defined do
+describe "owner views" do
 
   before :all do
 
-    @user = User.find_by(login: 'minerva')
+    @user = User.find_by(login: 'margaret')
     @collections = @user.all_owner_collections
     @collection = @collections.first
     @works = @user.owner_works

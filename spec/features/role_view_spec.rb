@@ -11,7 +11,7 @@ describe "different user role logins" do
 
   it "signs in an editor with no activity" do
       visit new_user_session_path
-      fill_in 'Login', with: 'ron'
+      fill_in 'Login', with: 'george'
       fill_in 'Password', with: 'password'
       click_button('Sign In')
       expect(page.current_path).to eq dashboard_watchlist_path
@@ -24,12 +24,12 @@ describe "different user role logins" do
 
   it "signs in an editor with activity" do
     #find user activity
-    user = User.find_by(login: 'hermione')
+    user = User.find_by(login: 'eleanor')
     collection_ids = Deed.where(:user_id => user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
     collections = Collection.where(:id => collection_ids).order_by_recent_activity
     #check sign in with editor permissions
     visit new_user_session_path
-    fill_in 'Login', with: 'hermione'
+    fill_in 'Login', with: 'eleanor'
     fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
@@ -46,11 +46,11 @@ describe "different user role logins" do
   end
 
   it "signs an owner in" do
-    user = User.find_by(login: "minerva")
+    user = User.find_by(login: "margaret")
     @collections = user.all_owner_collections
     
     visit new_user_session_path
-    fill_in 'Login', with: 'minerva'
+    fill_in 'Login', with: 'margaret'
     fill_in 'Password', with: 'password'
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_owner_path
@@ -70,7 +70,7 @@ describe "different user role logins" do
   it "signs an admin in" do
     #check sign in with admin permissions  
     visit new_user_session_path
-    fill_in 'Login', with: 'albus'
+    fill_in 'Login', with: 'julia'
     fill_in 'Password', with: 'password'
     click_button 'Sign In'
     expect(page.current_path).to eq admin_path

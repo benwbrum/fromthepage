@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "editor actions" do
 
   before :all do
-    @user = User.find_by(login: 'hermione')
+    @user = User.find_by(login: 'eleanor')
     collection_ids = Deed.where(:user_id => @user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
     @collections = Collection.where(:id => collection_ids).order_by_recent_activity
     @collection = @collections.first
@@ -20,8 +20,8 @@ describe "editor actions" do
   end
 
   it "checks that a restricted editor can't see a work" do
-    @user = User.find_by(login: 'ron')
-    login_as(@user, :scope => :user)
+    @rest_user = User.find_by(login: 'george')
+    login_as(@rest_user, :scope => :user)
     visit "/display/read_work?work_id=#{@auth.work_id}"
     click_link @work.pages.first.title
     expect(page.find('.tabs')).not_to have_content("Transcribe")
@@ -30,7 +30,7 @@ describe "editor actions" do
   it "looks at a collection" do
       login_as(@user, :scope => :user)
       visit dashboard_watchlist_path
-      page.find('h4').click_link(@collection.title)
+      page.find('h4', text: @collection.title).click_link(@collection.title)
       expect(page).to have_content("Works")    
       expect(page).to have_content(@work.title)
       #check the tabs in the collection
@@ -47,7 +47,7 @@ describe "editor actions" do
       expect(page.find('.tabs')).not_to have_content("Collaborators")
 
   end
-
+=begin
   it "looks at a work" do
     login_as(@user, :scope => :user)
       visit "/collection/show?collection_id=#{@collection.id}"
@@ -94,7 +94,7 @@ describe "editor actions" do
     click_button('Save Changes')
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
-    expect(@page.status).to eq "" 
+    expect(@page.status).to eq nil 
   end
 
   it "translates a page" do
@@ -154,5 +154,6 @@ describe "editor actions" do
   it "clicks the links to look at the information for a subject" do
 
   end
+=end
 
 end

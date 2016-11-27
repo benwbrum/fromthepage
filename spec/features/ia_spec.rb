@@ -4,7 +4,7 @@ describe "IA import actions", :order => :defined do
 
   before :all do
 
-    @user = User.find_by(login: 'minerva')
+    @user = User.find_by(login: 'margaret')
     @collections = @user.all_owner_collections
     @collection = @collections.first
     @works = @user.owner_works
@@ -24,7 +24,7 @@ describe "IA import actions", :order => :defined do
       click_button('Import Anyway')
     end
     expect(page).to have_content("Manage Archive.org Import")
-    select 'FPS', from: 'collection_id'
+    select @collection.title, from: 'collection_id'
     click_button('Publish Work')
     expect(page).to have_content("has been converted into a FromThePage work")
     expect(ia_work_count + 1).to eq IaWork.all.count
@@ -46,7 +46,7 @@ describe "IA import actions", :order => :defined do
     expect(ia_work_count + 1).to eq IaWork.all.count
     expect(page).to have_content("Manage Archive.org Import")
     page.check('use_ocr')
-    select 'FPS', from: 'collection_id'
+    select @collection.title, from: 'collection_id'
     click_button('Publish Work')
     new_work = Work.find_by(title: "[Letter to] Dear Garrison [manuscript]")
     first_page = new_work.pages.first

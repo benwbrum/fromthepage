@@ -3,18 +3,22 @@ category_1:
   title: People
   parent_id: 
   collection_id: 1
+  created_on: 2016-11-27 16:22:13.000000000 Z
 category_2:
   id: 2
   title: Places
   parent_id: 
   collection_id: 1
+  created_on: 2016-11-27 16:22:13.000000000 Z
 category_3:
   id: 3
   title: People
   parent_id: 
   collection_id: 2
+  created_on: 2016-11-27 16:32:32.000000000 Z
 category_4:
   id: 4
   title: Places
   parent_id: 
   collection_id: 2
+  created_on: 2016-11-27 16:32:32.000000000 Z

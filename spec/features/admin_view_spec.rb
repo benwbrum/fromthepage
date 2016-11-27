@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "admin actions" do
 
 before :all do
-  @user = User.find_by(login: 'albus')
+  @user = User.find_by(login: 'julia')
   @password = 'password'
 end
 
