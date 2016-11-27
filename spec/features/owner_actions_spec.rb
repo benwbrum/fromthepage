@@ -81,4 +81,37 @@ describe "owner actions", :order => :defined do
     expect(page).not_to have_content("New Test Category")
   end
 
+=begin
+These tests apply after bug-fix-460 branch has been merged
+  it "creates an empty work" do
+    login_as(@user, :scope => :user)
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    select(@collections.last.title, :from => 'work_collection_id')
+    fill_in 'work_title', with: @title
+    fill_in 'work_description', with: "This work contains no pages."
+    click_button('Create Work')
+    expect(page).to have_content("Here you see the list of all pages in the work.")
+    expect(Work.find_by(title: @title)).not_to be nil
+  end
+
+
+  it "adds pages to an empty work" do
+    login_as(@user, :scope => :user)
+    visit dashboard_owner_path
+    page.find('a', text: @title).click
+    page.find('.tabs').click_link("Pages")
+    page.find('a', text: "Add New Page").click
+    attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage1.jpg')
+    click_button('Save')
+    pages = Work.find_by(title: @title).pages
+    expect(pages).not_to be nil
+    expect(page).to have_content("Categories")
+    expect(page).to have_content(pages.first.title)
+    #to save and next page involves ajax
+    #expect(h1).to have_content(Add New Page)
+    #attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage2.jpg')
+    #click_button('Save')
+  end
+=end
 end
