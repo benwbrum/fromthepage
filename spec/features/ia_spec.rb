@@ -12,7 +12,7 @@ describe "IA import actions", :order => :defined do
 
   it "imports a work from IA" do
     ia_work_count = IaWork.all.count
-    works_count = @user.owner_works.count
+    works_count = @works.count
     ia_link = "https://archive.org/details/lettertosamuelma00estl"
     login_as(@user, :scope => :user)
     visit dashboard_owner_path

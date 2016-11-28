@@ -4,8 +4,8 @@ describe "editor actions" do
 
   before :all do
     @user = User.find_by(login: 'eleanor')
-    collection_ids = Deed.where(:user_id => @user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
-    @collections = Collection.where(:id => collection_ids).order_by_recent_activity
+    collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
+    @collections = Collection.where(id: collection_ids)
     @collection = @collections.first
     @work = @collection.works.first
     @page = @work.pages.first

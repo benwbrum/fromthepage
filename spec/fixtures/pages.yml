@@ -1,32 +1,31 @@
 page_1:
   id: 1
   title: '1'
-  source_text: "Blotter\r\nCommencing August 1808"
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0001.jpg"
-  base_width: 2053
-  base_height: 4948
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_001.jpg"
+  base_width: 1649
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:00.000000000 Z
+  created_on: 2016-11-28 16:35:23.000000000 Z
   position: 1
-  lock_version: 1
-  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Blotter<lb/>
-    Commencing August 1808</p>\n      </page>\n"
+  lock_version: 0
+  xml_text: 
   page_version_id: 
-  status: ''
+  status: 
   source_translation: 
   xml_translation: 
-  search_text: " Blotter Commencing August 1808 \n\n\n\n"
+  search_text: 
 page_2:
   id: 2
   title: '2'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0001_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_002.jpg"
+  base_width: 1653
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:01.000000000 Z
+  created_on: 2016-11-28 16:35:23.000000000 Z
   position: 2
   lock_version: 0
   xml_text: 
@@ -39,12 +38,12 @@ page_3:
   id: 3
   title: '3'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0001_thumb_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_003.jpg"
+  base_width: 1643
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:01.000000000 Z
+  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 3
   lock_version: 0
   xml_text: 
@@ -57,12 +56,12 @@ page_4:
   id: 4
   title: '4'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0002.jpg"
-  base_width: 1953
-  base_height: 4850
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_004.jpg"
+  base_width: 1652
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:01.000000000 Z
+  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 4
   lock_version: 0
   xml_text: 
@@ -75,12 +74,12 @@ page_5:
   id: 5
   title: '5'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0002_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_005.jpg"
+  base_width: 1645
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:01.000000000 Z
+  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 5
   lock_version: 0
   xml_text: 
@@ -93,12 +92,12 @@ page_6:
   id: 6
   title: '6'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0003.jpg"
-  base_width: 1953
-  base_height: 4830
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_006.jpg"
+  base_width: 1635
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:02.000000000 Z
+  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 6
   lock_version: 0
   xml_text: 
@@ -111,12 +110,12 @@ page_7:
   id: 7
   title: '7'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0003_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_007.jpg"
+  base_width: 1663
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:02.000000000 Z
+  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 7
   lock_version: 0
   xml_text: 
@@ -129,12 +128,12 @@ page_8:
   id: 8
   title: '8'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0004.jpg"
-  base_width: 1979
-  base_height: 4870
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_008.jpg"
+  base_width: 1643
+  base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:02.000000000 Z
+  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 8
   lock_version: 0
   xml_text: 
@@ -147,12 +146,12 @@ page_9:
   id: 9
   title: '9'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0004_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_009.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:03.000000000 Z
+  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 9
   lock_version: 0
   xml_text: 
@@ -165,12 +164,12 @@ page_10:
   id: 10
   title: '10'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/page_0005.jpg"
-  base_width: 1981
-  base_height: 4861
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_010.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-27 16:32:03.000000000 Z
+  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 10
   lock_version: 0
   xml_text: 
@@ -179,178 +178,16 @@ page_10:
   source_translation: 
   xml_translation: 
   search_text: 
-page_190:
-  id: 190
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0709.jpg"
-  base_width: 1536
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:09.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_191:
-  id: 191
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0710.jpg"
-  base_width: 1535
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:09.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_193:
-  id: 193
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0711.jpg"
-  base_width: 1541
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:09.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_195:
-  id: 195
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0712.jpg"
-  base_width: 1576
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:10.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_197:
-  id: 197
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0713.jpg"
-  base_width: 1576
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:10.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_198:
-  id: 198
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0714.jpg"
-  base_width: 1584
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:11.000000000 Z
-  position: 7
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_200:
-  id: 200
-  title: '8'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0715.jpg"
-  base_width: 1589
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:11.000000000 Z
-  position: 8
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_202:
-  id: 202
-  title: '9'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0716.jpg"
-  base_width: 1587
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:12.000000000 Z
-  position: 9
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_203:
-  id: 203
-  title: '10'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0717.jpg"
-  base_width: 1594
-  base_height: 2860
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:12.000000000 Z
-  position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_205:
-  id: 205
+page_11:
+  id: 11
   title: '11'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0718.jpg"
-  base_width: 1604
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_011.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:13.000000000 Z
+  work_id: 1
+  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 11
   lock_version: 0
   xml_text: 
@@ -359,16 +196,16 @@ page_205:
   source_translation: 
   xml_translation: 
   search_text: 
-page_207:
-  id: 207
+page_12:
+  id: 12
   title: '12'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0719.jpg"
-  base_width: 1602
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_012.jpg"
+  base_width: 1650
   base_height: 2860
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:13.000000000 Z
+  work_id: 1
+  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 12
   lock_version: 0
   xml_text: 
@@ -377,16 +214,16 @@ page_207:
   source_translation: 
   xml_translation: 
   search_text: 
-page_209:
-  id: 209
+page_13:
+  id: 13
   title: '13'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0720.jpg"
-  base_width: 1579
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_013.jpg"
+  base_width: 1635
   base_height: 2860
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:14.000000000 Z
+  work_id: 1
+  created_on: 2016-11-28 16:35:26.000000000 Z
   position: 13
   lock_version: 0
   xml_text: 
@@ -395,16 +232,16 @@ page_209:
   source_translation: 
   xml_translation: 
   search_text: 
-page_210:
-  id: 210
+page_14:
+  id: 14
   title: '14'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0721.jpg"
-  base_width: 1593
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_014.jpg"
+  base_width: 1640
   base_height: 2860
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:14.000000000 Z
+  work_id: 1
+  created_on: 2016-11-28 16:35:26.000000000 Z
   position: 14
   lock_version: 0
   xml_text: 
@@ -413,16 +250,16 @@ page_210:
   source_translation: 
   xml_translation: 
   search_text: 
-page_212:
-  id: 212
+page_15:
+  id: 15
   title: '15'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0722.jpg"
-  base_width: 1589
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_015.jpg"
+  base_width: 1647
   base_height: 2860
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:14.000000000 Z
+  work_id: 1
+  created_on: 2016-11-28 16:35:26.000000000 Z
   position: 15
   lock_version: 0
   xml_text: 
@@ -431,16 +268,16 @@ page_212:
   source_translation: 
   xml_translation: 
   search_text: 
-page_214:
-  id: 214
+page_16:
+  id: 16
   title: '16'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0723.jpg"
-  base_width: 1476
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_016.jpg"
+  base_width: 1645
   base_height: 2860
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:15.000000000 Z
+  work_id: 1
+  created_on: 2016-11-28 16:35:26.000000000 Z
   position: 16
   lock_version: 0
   xml_text: 
@@ -449,16 +286,433 @@ page_214:
   source_translation: 
   xml_translation: 
   search_text: 
-page_215:
-  id: 215
-  title: '17'
+page_17:
+  id: 17
+  title: '1'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0724.jpg"
-  base_width: 1499
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0001.jpg"
+  base_width: 2529
+  base_height: 3313
   shrink_factor: 
   work_id: 2
-  created_on: 2016-11-27 16:33:15.000000000 Z
+  created_on: 2016-11-28 16:36:43.000000000 Z
+  position: 1
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_18:
+  id: 18
+  title: '1'
+  source_text: Department of the Interior
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0001.jpg"
+  base_width: 2546
+  base_height: 3375
+  shrink_factor: 
+  work_id: 3
+  created_on: 2016-11-28 16:36:43.000000000 Z
+  position: 1
+  lock_version: 1
+  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Department
+    of the Interior</p>\n      </page>\n"
+  page_version_id: 
+  status: ''
+  source_translation: 
+  xml_translation: 
+  search_text: " Department of the Interior \n\n\n\n"
+page_19:
+  id: 19
+  title: '1'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0001.jpg"
+  base_width: 2529
+  base_height: 3313
+  shrink_factor: 
+  work_id: 4
+  created_on: 2016-11-28 16:36:44.000000000 Z
+  position: 1
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_20:
+  id: 20
+  title: '1'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0001.jpg"
+  base_width: 2783
+  base_height: 2642
+  shrink_factor: 
+  work_id: 5
+  created_on: 2016-11-28 16:36:44.000000000 Z
+  position: 1
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_21:
+  id: 21
+  title: '1'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0001.jpg"
+  base_width: 2496
+  base_height: 2688
+  shrink_factor: 
+  work_id: 6
+  created_on: 2016-11-28 16:36:44.000000000 Z
+  position: 1
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_22:
+  id: 22
+  title: '1'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0001.jpg"
+  base_width: 1138
+  base_height: 2704
+  shrink_factor: 
+  work_id: 7
+  created_on: 2016-11-28 16:36:44.000000000 Z
+  position: 1
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_23:
+  id: 23
+  title: '1'
+  source_text: should ascertain what
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/8/page_0001.jpg"
+  base_width: 2546
+  base_height: 3375
+  shrink_factor: 
+  work_id: 8
+  created_on: 2016-11-28 16:36:45.000000000 Z
+  position: 1
+  lock_version: 1
+  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>should
+    ascertain what</p>\n      </page>\n"
+  page_version_id: 
+  status: ''
+  source_translation: 
+  xml_translation: 
+  search_text: " should ascertain what \n\n\n\n"
+page_24:
+  id: 24
+  title: '1'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1724.jpg"
+  base_width: 1146
+  base_height: 2860
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:38.000000000 Z
+  position: 1
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_25:
+  id: 25
+  title: '2'
+  source_text: Significs and Logic
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1725.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:38.000000000 Z
+  position: 2
+  lock_version: 1
+  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Significs
+    and Logic</p>\n      </page>\n"
+  page_version_id: 
+  status: ''
+  source_translation: 
+  xml_translation: 
+  search_text: " Significs and Logic \n\n\n\n"
+page_26:
+  id: 26
+  title: '3'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1726.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:38.000000000 Z
+  position: 3
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_27:
+  id: 27
+  title: '4'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1727.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:39.000000000 Z
+  position: 4
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_28:
+  id: 28
+  title: '5'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1728.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:39.000000000 Z
+  position: 5
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_29:
+  id: 29
+  title: '6'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1729.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:39.000000000 Z
+  position: 6
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_30:
+  id: 30
+  title: '7'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1730.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:39.000000000 Z
+  position: 7
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_31:
+  id: 31
+  title: '8'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1731.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:39.000000000 Z
+  position: 8
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_32:
+  id: 32
+  title: '9'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1732.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:39.000000000 Z
+  position: 9
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_33:
+  id: 33
+  title: '10'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1733.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:40.000000000 Z
+  position: 10
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_34:
+  id: 34
+  title: '11'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1734.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:40.000000000 Z
+  position: 11
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_35:
+  id: 35
+  title: '12'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1735.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:40.000000000 Z
+  position: 12
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_36:
+  id: 36
+  title: '13'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1736.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:40.000000000 Z
+  position: 13
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_37:
+  id: 37
+  title: '14'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1737.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:40.000000000 Z
+  position: 14
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_38:
+  id: 38
+  title: '15'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1738.jpg"
+  base_width: 2860
+  base_height: 1155
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:41.000000000 Z
+  position: 15
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_39:
+  id: 39
+  title: '16'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1739.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:41.000000000 Z
+  position: 16
+  lock_version: 0
+  xml_text: 
+  page_version_id: 
+  status: 
+  source_translation: 
+  xml_translation: 
+  search_text: 
+page_40:
+  id: 40
+  title: '17'
+  source_text: 
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1740.jpg"
+  base_width: 2860
+  base_height: 1121
+  shrink_factor: 
+  work_id: 9
+  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 17
   lock_version: 0
   xml_text: 
@@ -467,16 +721,16 @@ page_215:
   source_translation: 
   xml_translation: 
   search_text: 
-page_216:
-  id: 216
+page_41:
+  id: 41
   title: '18'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0725.jpg"
-  base_width: 1506
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1741.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:15.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 18
   lock_version: 0
   xml_text: 
@@ -485,16 +739,16 @@ page_216:
   source_translation: 
   xml_translation: 
   search_text: 
-page_217:
-  id: 217
+page_42:
+  id: 42
   title: '19'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0726.jpg"
-  base_width: 1501
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1742.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:15.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 19
   lock_version: 0
   xml_text: 
@@ -503,16 +757,16 @@ page_217:
   source_translation: 
   xml_translation: 
   search_text: 
-page_218:
-  id: 218
+page_43:
+  id: 43
   title: '20'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0727.jpg"
-  base_width: 1466
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1743.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:16.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 20
   lock_version: 0
   xml_text: 
@@ -521,16 +775,16 @@ page_218:
   source_translation: 
   xml_translation: 
   search_text: 
-page_219:
-  id: 219
+page_44:
+  id: 44
   title: '21'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0728.jpg"
-  base_width: 1486
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1744.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:16.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:42.000000000 Z
   position: 21
   lock_version: 0
   xml_text: 
@@ -539,16 +793,16 @@ page_219:
   source_translation: 
   xml_translation: 
   search_text: 
-page_220:
-  id: 220
+page_45:
+  id: 45
   title: '22'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0729.jpg"
-  base_width: 1484
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1745.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:16.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:42.000000000 Z
   position: 22
   lock_version: 0
   xml_text: 
@@ -557,16 +811,16 @@ page_220:
   source_translation: 
   xml_translation: 
   search_text: 
-page_221:
-  id: 221
+page_46:
+  id: 46
   title: '23'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0730.jpg"
-  base_width: 1484
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1746.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:16.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:42.000000000 Z
   position: 23
   lock_version: 0
   xml_text: 
@@ -575,16 +829,16 @@ page_221:
   source_translation: 
   xml_translation: 
   search_text: 
-page_222:
-  id: 222
+page_47:
+  id: 47
   title: '24'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0731a.jpg"
-  base_width: 1358
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1747.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:16.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:42.000000000 Z
   position: 24
   lock_version: 0
   xml_text: 
@@ -593,16 +847,16 @@ page_222:
   source_translation: 
   xml_translation: 
   search_text: 
-page_223:
-  id: 223
+page_48:
+  id: 48
   title: '25'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0731b.jpg"
-  base_width: 1358
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1748.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:17.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:43.000000000 Z
   position: 25
   lock_version: 0
   xml_text: 
@@ -611,16 +865,16 @@ page_223:
   source_translation: 
   xml_translation: 
   search_text: 
-page_224:
-  id: 224
+page_49:
+  id: 49
   title: '26'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0732.jpg"
-  base_width: 1501
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1749.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:17.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:43.000000000 Z
   position: 26
   lock_version: 0
   xml_text: 
@@ -629,16 +883,16 @@ page_224:
   source_translation: 
   xml_translation: 
   search_text: 
-page_225:
-  id: 225
+page_50:
+  id: 50
   title: '27'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0733.jpg"
-  base_width: 1499
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1750.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:17.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:43.000000000 Z
   position: 27
   lock_version: 0
   xml_text: 
@@ -647,16 +901,16 @@ page_225:
   source_translation: 
   xml_translation: 
   search_text: 
-page_226:
-  id: 226
+page_51:
+  id: 51
   title: '28'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0734.jpg"
-  base_width: 1496
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1751.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:17.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:43.000000000 Z
   position: 28
   lock_version: 0
   xml_text: 
@@ -665,16 +919,16 @@ page_226:
   source_translation: 
   xml_translation: 
   search_text: 
-page_227:
-  id: 227
+page_52:
+  id: 52
   title: '29'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0735.jpg"
-  base_width: 1503
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1752.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:18.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:43.000000000 Z
   position: 29
   lock_version: 0
   xml_text: 
@@ -683,16 +937,16 @@ page_227:
   source_translation: 
   xml_translation: 
   search_text: 
-page_228:
-  id: 228
+page_53:
+  id: 53
   title: '30'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0736.jpg"
-  base_width: 1483
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1753.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:18.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:44.000000000 Z
   position: 30
   lock_version: 0
   xml_text: 
@@ -701,16 +955,16 @@ page_228:
   source_translation: 
   xml_translation: 
   search_text: 
-page_229:
-  id: 229
+page_54:
+  id: 54
   title: '31'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0737.jpg"
-  base_width: 1483
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1754.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:18.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:44.000000000 Z
   position: 31
   lock_version: 0
   xml_text: 
@@ -719,16 +973,16 @@ page_229:
   source_translation: 
   xml_translation: 
   search_text: 
-page_230:
-  id: 230
+page_55:
+  id: 55
   title: '32'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0738.jpg"
-  base_width: 1465
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1755.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:18.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:44.000000000 Z
   position: 32
   lock_version: 0
   xml_text: 
@@ -737,16 +991,16 @@ page_230:
   source_translation: 
   xml_translation: 
   search_text: 
-page_231:
-  id: 231
+page_56:
+  id: 56
   title: '33'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0739.jpg"
-  base_width: 1475
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1756.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:18.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:44.000000000 Z
   position: 33
   lock_version: 0
   xml_text: 
@@ -755,16 +1009,16 @@ page_231:
   source_translation: 
   xml_translation: 
   search_text: 
-page_232:
-  id: 232
+page_57:
+  id: 57
   title: '34'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0740.jpg"
-  base_width: 1483
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1757.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:19.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:44.000000000 Z
   position: 34
   lock_version: 0
   xml_text: 
@@ -773,16 +1027,16 @@ page_232:
   source_translation: 
   xml_translation: 
   search_text: 
-page_233:
-  id: 233
+page_58:
+  id: 58
   title: '35'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0741.jpg"
-  base_width: 1475
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1758.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:19.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:44.000000000 Z
   position: 35
   lock_version: 0
   xml_text: 
@@ -791,16 +1045,16 @@ page_233:
   source_translation: 
   xml_translation: 
   search_text: 
-page_234:
-  id: 234
+page_59:
+  id: 59
   title: '36'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0742.jpg"
-  base_width: 1492
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1759.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:20.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:45.000000000 Z
   position: 36
   lock_version: 0
   xml_text: 
@@ -809,16 +1063,16 @@ page_234:
   source_translation: 
   xml_translation: 
   search_text: 
-page_235:
-  id: 235
+page_60:
+  id: 60
   title: '37'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0743a.jpg"
-  base_width: 1352
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1760.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:20.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:45.000000000 Z
   position: 37
   lock_version: 0
   xml_text: 
@@ -827,16 +1081,16 @@ page_235:
   source_translation: 
   xml_translation: 
   search_text: 
-page_236:
-  id: 236
+page_61:
+  id: 61
   title: '38'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0743b.jpg"
-  base_width: 1352
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1761.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:20.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:45.000000000 Z
   position: 38
   lock_version: 0
   xml_text: 
@@ -845,16 +1099,16 @@ page_236:
   source_translation: 
   xml_translation: 
   search_text: 
-page_237:
-  id: 237
+page_62:
+  id: 62
   title: '39'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0744a.jpg"
-  base_width: 1353
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1762.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:20.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:45.000000000 Z
   position: 39
   lock_version: 0
   xml_text: 
@@ -863,16 +1117,16 @@ page_237:
   source_translation: 
   xml_translation: 
   search_text: 
-page_238:
-  id: 238
+page_63:
+  id: 63
   title: '40'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0744b.jpg"
-  base_width: 1353
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1763.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:21.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:45.000000000 Z
   position: 40
   lock_version: 0
   xml_text: 
@@ -881,16 +1135,16 @@ page_238:
   source_translation: 
   xml_translation: 
   search_text: 
-page_239:
-  id: 239
+page_64:
+  id: 64
   title: '41'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0745a.jpg"
-  base_width: 1354
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1764.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:21.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:45.000000000 Z
   position: 41
   lock_version: 0
   xml_text: 
@@ -899,16 +1153,16 @@ page_239:
   source_translation: 
   xml_translation: 
   search_text: 
-page_240:
-  id: 240
+page_65:
+  id: 65
   title: '42'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0745b.jpg"
-  base_width: 1354
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1765.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:21.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:46.000000000 Z
   position: 42
   lock_version: 0
   xml_text: 
@@ -917,16 +1171,16 @@ page_240:
   source_translation: 
   xml_translation: 
   search_text: 
-page_241:
-  id: 241
+page_66:
+  id: 66
   title: '43'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0746a.jpg"
-  base_width: 1355
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1766.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:21.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:46.000000000 Z
   position: 43
   lock_version: 0
   xml_text: 
@@ -935,16 +1189,16 @@ page_241:
   source_translation: 
   xml_translation: 
   search_text: 
-page_242:
-  id: 242
+page_67:
+  id: 67
   title: '44'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0746b.jpg"
-  base_width: 1355
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1767.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:21.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:46.000000000 Z
   position: 44
   lock_version: 0
   xml_text: 
@@ -953,16 +1207,16 @@ page_242:
   source_translation: 
   xml_translation: 
   search_text: 
-page_243:
-  id: 243
+page_68:
+  id: 68
   title: '45'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0747a.jpg"
-  base_width: 1353
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1768.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:22.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:46.000000000 Z
   position: 45
   lock_version: 0
   xml_text: 
@@ -971,16 +1225,16 @@ page_243:
   source_translation: 
   xml_translation: 
   search_text: 
-page_244:
-  id: 244
+page_69:
+  id: 69
   title: '46'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0747b.jpg"
-  base_width: 1353
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1769.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:22.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:46.000000000 Z
   position: 46
   lock_version: 0
   xml_text: 
@@ -989,16 +1243,16 @@ page_244:
   source_translation: 
   xml_translation: 
   search_text: 
-page_245:
-  id: 245
+page_70:
+  id: 70
   title: '47'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0748.jpg"
-  base_width: 1357
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1770.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:22.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:47.000000000 Z
   position: 47
   lock_version: 0
   xml_text: 
@@ -1007,16 +1261,16 @@ page_245:
   source_translation: 
   xml_translation: 
   search_text: 
-page_246:
-  id: 246
+page_71:
+  id: 71
   title: '48'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0749.jpg"
-  base_width: 1372
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1771.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:22.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:47.000000000 Z
   position: 48
   lock_version: 0
   xml_text: 
@@ -1025,16 +1279,16 @@ page_246:
   source_translation: 
   xml_translation: 
   search_text: 
-page_247:
-  id: 247
+page_72:
+  id: 72
   title: '49'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0750.jpg"
-  base_width: 1388
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1772.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:22.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:47.000000000 Z
   position: 49
   lock_version: 0
   xml_text: 
@@ -1043,16 +1297,16 @@ page_247:
   source_translation: 
   xml_translation: 
   search_text: 
-page_248:
-  id: 248
+page_73:
+  id: 73
   title: '50'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0751.jpg"
-  base_width: 1407
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1773.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:23.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:48.000000000 Z
   position: 50
   lock_version: 0
   xml_text: 
@@ -1061,16 +1315,16 @@ page_248:
   source_translation: 
   xml_translation: 
   search_text: 
-page_249:
-  id: 249
+page_74:
+  id: 74
   title: '51'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0752.jpg"
-  base_width: 1395
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1774.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:23.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:48.000000000 Z
   position: 51
   lock_version: 0
   xml_text: 
@@ -1079,16 +1333,16 @@ page_249:
   source_translation: 
   xml_translation: 
   search_text: 
-page_250:
-  id: 250
+page_75:
+  id: 75
   title: '52'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0753.jpg"
-  base_width: 1378
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1775.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:23.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:48.000000000 Z
   position: 52
   lock_version: 0
   xml_text: 
@@ -1097,16 +1351,16 @@ page_250:
   source_translation: 
   xml_translation: 
   search_text: 
-page_251:
-  id: 251
+page_76:
+  id: 76
   title: '53'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0754.jpg"
-  base_width: 1371
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1776.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:23.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:48.000000000 Z
   position: 53
   lock_version: 0
   xml_text: 
@@ -1115,16 +1369,16 @@ page_251:
   source_translation: 
   xml_translation: 
   search_text: 
-page_252:
-  id: 252
+page_77:
+  id: 77
   title: '54'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/0755.jpg"
-  base_width: 1415
-  base_height: 2860
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1777.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:24.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:49.000000000 Z
   position: 54
   lock_version: 0
   xml_text: 
@@ -1133,16 +1387,16 @@ page_252:
   source_translation: 
   xml_translation: 
   search_text: 
-page_253:
-  id: 253
+page_78:
+  id: 78
   title: '55'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0001.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1778.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:24.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:49.000000000 Z
   position: 55
   lock_version: 0
   xml_text: 
@@ -1151,16 +1405,16 @@ page_253:
   source_translation: 
   xml_translation: 
   search_text: 
-page_254:
-  id: 254
+page_79:
+  id: 79
   title: '56'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0001_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1779.jpg"
+  base_width: 1177
+  base_height: 2860
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:24.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:49.000000000 Z
   position: 56
   lock_version: 0
   xml_text: 
@@ -1169,16 +1423,16 @@ page_254:
   source_translation: 
   xml_translation: 
   search_text: 
-page_255:
-  id: 255
+page_80:
+  id: 80
   title: '57'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0001_thumb_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1780.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:24.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:49.000000000 Z
   position: 57
   lock_version: 0
   xml_text: 
@@ -1187,16 +1441,16 @@ page_255:
   source_translation: 
   xml_translation: 
   search_text: 
-page_256:
-  id: 256
+page_81:
+  id: 81
   title: '58'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0002.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1781.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:24.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:49.000000000 Z
   position: 58
   lock_version: 0
   xml_text: 
@@ -1205,16 +1459,16 @@ page_256:
   source_translation: 
   xml_translation: 
   search_text: 
-page_257:
-  id: 257
+page_82:
+  id: 82
   title: '59'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0002_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1782.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:25.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:50.000000000 Z
   position: 59
   lock_version: 0
   xml_text: 
@@ -1223,16 +1477,16 @@ page_257:
   source_translation: 
   xml_translation: 
   search_text: 
-page_258:
-  id: 258
+page_83:
+  id: 83
   title: '60'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0002_thumb_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1783.jpg"
+  base_width: 2860
+  base_height: 1139
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:25.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:50.000000000 Z
   position: 60
   lock_version: 0
   xml_text: 
@@ -1241,16 +1495,16 @@ page_258:
   source_translation: 
   xml_translation: 
   search_text: 
-page_259:
-  id: 259
+page_84:
+  id: 84
   title: '61'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0003.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1784.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:25.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:50.000000000 Z
   position: 61
   lock_version: 0
   xml_text: 
@@ -1259,16 +1513,16 @@ page_259:
   source_translation: 
   xml_translation: 
   search_text: 
-page_260:
-  id: 260
+page_85:
+  id: 85
   title: '62'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0003_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1785.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:25.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:50.000000000 Z
   position: 62
   lock_version: 0
   xml_text: 
@@ -1277,16 +1531,16 @@ page_260:
   source_translation: 
   xml_translation: 
   search_text: 
-page_261:
-  id: 261
+page_86:
+  id: 86
   title: '63'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0004.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1786.jpg"
+  base_width: 2860
+  base_height: 1123
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:25.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:50.000000000 Z
   position: 63
   lock_version: 0
   xml_text: 
@@ -1295,16 +1549,16 @@ page_261:
   source_translation: 
   xml_translation: 
   search_text: 
-page_262:
-  id: 262
+page_87:
+  id: 87
   title: '64'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0004_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1787.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:26.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:50.000000000 Z
   position: 64
   lock_version: 0
   xml_text: 
@@ -1313,16 +1567,16 @@ page_262:
   source_translation: 
   xml_translation: 
   search_text: 
-page_263:
-  id: 263
+page_88:
+  id: 88
   title: '65'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0005.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1788.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:26.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:51.000000000 Z
   position: 65
   lock_version: 0
   xml_text: 
@@ -1331,16 +1585,16 @@ page_263:
   source_translation: 
   xml_translation: 
   search_text: 
-page_264:
-  id: 264
+page_89:
+  id: 89
   title: '66'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0005_thumb.jpg"
-  base_width: 77
-  base_height: 100
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1789.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:26.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:51.000000000 Z
   position: 66
   lock_version: 0
   xml_text: 
@@ -1349,16 +1603,16 @@ page_264:
   source_translation: 
   xml_translation: 
   search_text: 
-page_265:
-  id: 265
+page_90:
+  id: 90
   title: '67'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0006.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1790.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:26.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:51.000000000 Z
   position: 67
   lock_version: 0
   xml_text: 
@@ -1367,16 +1621,16 @@ page_265:
   source_translation: 
   xml_translation: 
   search_text: 
-page_266:
-  id: 266
+page_91:
+  id: 91
   title: '68'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0007.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1791.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:27.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:51.000000000 Z
   position: 68
   lock_version: 0
   xml_text: 
@@ -1385,16 +1639,16 @@ page_266:
   source_translation: 
   xml_translation: 
   search_text: 
-page_267:
-  id: 267
+page_92:
+  id: 92
   title: '69'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0008.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1792.jpg"
+  base_width: 2860
+  base_height: 1153
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:27.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:51.000000000 Z
   position: 69
   lock_version: 0
   xml_text: 
@@ -1403,16 +1657,16 @@ page_267:
   source_translation: 
   xml_translation: 
   search_text: 
-page_268:
-  id: 268
+page_93:
+  id: 93
   title: '70'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0009.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1793.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:27.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:52.000000000 Z
   position: 70
   lock_version: 0
   xml_text: 
@@ -1421,16 +1675,16 @@ page_268:
   source_translation: 
   xml_translation: 
   search_text: 
-page_269:
-  id: 269
+page_94:
+  id: 94
   title: '71'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0010.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1794.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:28.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:52.000000000 Z
   position: 71
   lock_version: 0
   xml_text: 
@@ -1439,16 +1693,16 @@ page_269:
   source_translation: 
   xml_translation: 
   search_text: 
-page_270:
-  id: 270
+page_95:
+  id: 95
   title: '72'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0011.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1795.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:28.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:52.000000000 Z
   position: 72
   lock_version: 0
   xml_text: 
@@ -1457,16 +1711,16 @@ page_270:
   source_translation: 
   xml_translation: 
   search_text: 
-page_271:
-  id: 271
+page_96:
+  id: 96
   title: '73'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0012.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1796.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:28.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:52.000000000 Z
   position: 73
   lock_version: 0
   xml_text: 
@@ -1475,3672 +1729,17 @@ page_271:
   source_translation: 
   xml_translation: 
   search_text: 
-page_272:
-  id: 272
+page_97:
+  id: 97
   title: '74'
   source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0013.jpg"
-  base_width: 2550
-  base_height: 3300
+  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/1797.jpg"
+  base_width: 2860
+  base_height: 1121
   shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:28.000000000 Z
+  work_id: 9
+  created_on: 2016-11-28 16:38:52.000000000 Z
   position: 74
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_273:
-  id: 273
-  title: '75'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0014.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:29.000000000 Z
-  position: 75
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_274:
-  id: 274
-  title: '76'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0015.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:29.000000000 Z
-  position: 76
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_275:
-  id: 275
-  title: '77'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0016.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:29.000000000 Z
-  position: 77
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_276:
-  id: 276
-  title: '78'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0017.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:30.000000000 Z
-  position: 78
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_277:
-  id: 277
-  title: '79'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0018.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:30.000000000 Z
-  position: 79
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_278:
-  id: 278
-  title: '80'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0019.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:30.000000000 Z
-  position: 80
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_279:
-  id: 279
-  title: '81'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0020.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:30.000000000 Z
-  position: 81
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_280:
-  id: 280
-  title: '82'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0021.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:31.000000000 Z
-  position: 82
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_281:
-  id: 281
-  title: '83'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0022.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:31.000000000 Z
-  position: 83
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_282:
-  id: 282
-  title: '84'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0023.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:31.000000000 Z
-  position: 84
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_283:
-  id: 283
-  title: '85'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0024.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:31.000000000 Z
-  position: 85
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_284:
-  id: 284
-  title: '86'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0025.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:32.000000000 Z
-  position: 86
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_285:
-  id: 285
-  title: '87'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0026.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:32.000000000 Z
-  position: 87
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_286:
-  id: 286
-  title: '88'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0027.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:32.000000000 Z
-  position: 88
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_287:
-  id: 287
-  title: '89'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0028.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:33.000000000 Z
-  position: 89
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_288:
-  id: 288
-  title: '90'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0029.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:33.000000000 Z
-  position: 90
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_289:
-  id: 289
-  title: '91'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0030.jpg"
-  base_width: 3300
-  base_height: 2550
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:33.000000000 Z
-  position: 91
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_290:
-  id: 290
-  title: '92'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0031.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:34.000000000 Z
-  position: 92
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_291:
-  id: 291
-  title: '93'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0032.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:34.000000000 Z
-  position: 93
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_292:
-  id: 292
-  title: '94'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0033.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:34.000000000 Z
-  position: 94
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_293:
-  id: 293
-  title: '95'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0034.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:34.000000000 Z
-  position: 95
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_294:
-  id: 294
-  title: '96'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0035.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:35.000000000 Z
-  position: 96
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_295:
-  id: 295
-  title: '97'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0036.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:35.000000000 Z
-  position: 97
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_296:
-  id: 296
-  title: '98'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0037.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:35.000000000 Z
-  position: 98
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_297:
-  id: 297
-  title: '99'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/2/page_0038.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 2
-  created_on: 2016-11-27 16:33:36.000000000 Z
-  position: 99
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_298:
-  id: 298
-  title: '1'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0001.jpg"
-  base_width: 2529
-  base_height: 3313
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:23.000000000 Z
-  position: 1
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_299:
-  id: 299
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0001_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:23.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_300:
-  id: 300
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0001_thumb_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:24.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_301:
-  id: 301
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0002.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:24.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_302:
-  id: 302
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0002_thumb.jpg"
-  base_width: 133
-  base_height: 100
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:24.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_303:
-  id: 303
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0003.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:24.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_304:
-  id: 304
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0003_thumb.jpg"
-  base_width: 133
-  base_height: 100
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:24.000000000 Z
-  position: 7
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_305:
-  id: 305
-  title: '8'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0004.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:25.000000000 Z
-  position: 8
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_306:
-  id: 306
-  title: '9'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0004_thumb.jpg"
-  base_width: 133
-  base_height: 100
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:25.000000000 Z
-  position: 9
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_307:
-  id: 307
-  title: '10'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0005.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:25.000000000 Z
-  position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_308:
-  id: 308
-  title: '11'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0006.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:25.000000000 Z
-  position: 11
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_309:
-  id: 309
-  title: '12'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0007.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:25.000000000 Z
-  position: 12
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_310:
-  id: 310
-  title: '13'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0008.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:26.000000000 Z
-  position: 13
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_311:
-  id: 311
-  title: '14'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0009.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:26.000000000 Z
-  position: 14
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_312:
-  id: 312
-  title: '15'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0010.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:26.000000000 Z
-  position: 15
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_313:
-  id: 313
-  title: '16'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0011.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:26.000000000 Z
-  position: 16
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_314:
-  id: 314
-  title: '17'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0012.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:27.000000000 Z
-  position: 17
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_315:
-  id: 315
-  title: '18'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0013.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:27.000000000 Z
-  position: 18
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_316:
-  id: 316
-  title: '19'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/3/page_0014.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 3
-  created_on: 2016-11-27 16:34:27.000000000 Z
-  position: 19
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_317:
-  id: 317
-  title: '1'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0001.jpg"
-  base_width: 2546
-  base_height: 3375
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:28.000000000 Z
-  position: 1
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_318:
-  id: 318
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0001_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:28.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_319:
-  id: 319
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0001_thumb_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:28.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_320:
-  id: 320
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0002.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:28.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_321:
-  id: 321
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0002_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:28.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_322:
-  id: 322
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0002_thumb_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:29.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_323:
-  id: 323
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0003.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:29.000000000 Z
-  position: 7
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_324:
-  id: 324
-  title: '8'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0003_thumb.jpg"
-  base_width: 133
-  base_height: 100
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:29.000000000 Z
-  position: 8
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_325:
-  id: 325
-  title: '9'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0004.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:29.000000000 Z
-  position: 9
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_326:
-  id: 326
-  title: '10'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0005.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:29.000000000 Z
-  position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_327:
-  id: 327
-  title: '11'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0006.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:30.000000000 Z
-  position: 11
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_328:
-  id: 328
-  title: '12'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0007.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:30.000000000 Z
-  position: 12
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_329:
-  id: 329
-  title: '13'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0008.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:30.000000000 Z
-  position: 13
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_330:
-  id: 330
-  title: '14'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0009.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:30.000000000 Z
-  position: 14
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_331:
-  id: 331
-  title: '15'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0010.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:31.000000000 Z
-  position: 15
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_332:
-  id: 332
-  title: '16'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0011.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:31.000000000 Z
-  position: 16
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_333:
-  id: 333
-  title: '17'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0012.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:31.000000000 Z
-  position: 17
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_334:
-  id: 334
-  title: '18'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0013.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:31.000000000 Z
-  position: 18
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_335:
-  id: 335
-  title: '19'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0014.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:32.000000000 Z
-  position: 19
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_336:
-  id: 336
-  title: '20'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0015.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:32.000000000 Z
-  position: 20
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_337:
-  id: 337
-  title: '21'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0016.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:32.000000000 Z
-  position: 21
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_338:
-  id: 338
-  title: '22'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0017.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:32.000000000 Z
-  position: 22
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_339:
-  id: 339
-  title: '23'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0018.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:33.000000000 Z
-  position: 23
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_340:
-  id: 340
-  title: '24'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0019.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:33.000000000 Z
-  position: 24
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_341:
-  id: 341
-  title: '25'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0020.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:33.000000000 Z
-  position: 25
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_342:
-  id: 342
-  title: '26'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0021.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:33.000000000 Z
-  position: 26
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_343:
-  id: 343
-  title: '27'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0022.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:34.000000000 Z
-  position: 27
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_344:
-  id: 344
-  title: '28'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0023.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:34.000000000 Z
-  position: 28
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_345:
-  id: 345
-  title: '29'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0024.jpg"
-  base_width: 3000
-  base_height: 2250
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:34.000000000 Z
-  position: 29
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_346:
-  id: 346
-  title: '30'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/4/page_0024_thumb.jpg"
-  base_width: 133
-  base_height: 100
-  shrink_factor: 
-  work_id: 4
-  created_on: 2016-11-27 16:34:34.000000000 Z
-  position: 30
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_347:
-  id: 347
-  title: '1'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0001.jpg"
-  base_width: 2529
-  base_height: 3313
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:35.000000000 Z
-  position: 1
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_348:
-  id: 348
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0001_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:35.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_349:
-  id: 349
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0002.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:35.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_350:
-  id: 350
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0002_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:35.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_351:
-  id: 351
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0003.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:36.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_352:
-  id: 352
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0004.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:36.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_353:
-  id: 353
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0005.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:36.000000000 Z
-  position: 7
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_354:
-  id: 354
-  title: '8'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0006.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:37.000000000 Z
-  position: 8
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_355:
-  id: 355
-  title: '9'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0007.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:37.000000000 Z
-  position: 9
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_356:
-  id: 356
-  title: '10'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0008.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:38.000000000 Z
-  position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_357:
-  id: 357
-  title: '11'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0009.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:38.000000000 Z
-  position: 11
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_358:
-  id: 358
-  title: '12'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0010.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:38.000000000 Z
-  position: 12
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_359:
-  id: 359
-  title: '13'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0011.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:39.000000000 Z
-  position: 13
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_360:
-  id: 360
-  title: '14'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0012.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:39.000000000 Z
-  position: 14
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_361:
-  id: 361
-  title: '15'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0013.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:39.000000000 Z
-  position: 15
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_362:
-  id: 362
-  title: '16'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0014.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:40.000000000 Z
-  position: 16
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_363:
-  id: 363
-  title: '17'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0015.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:40.000000000 Z
-  position: 17
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_364:
-  id: 364
-  title: '18'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0016.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:40.000000000 Z
-  position: 18
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_365:
-  id: 365
-  title: '19'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0017.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:41.000000000 Z
-  position: 19
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_366:
-  id: 366
-  title: '20'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0018.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:41.000000000 Z
-  position: 20
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_367:
-  id: 367
-  title: '21'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0019.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:42.000000000 Z
-  position: 21
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_368:
-  id: 368
-  title: '22'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0020.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:42.000000000 Z
-  position: 22
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_369:
-  id: 369
-  title: '23'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0021.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:43.000000000 Z
-  position: 23
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_370:
-  id: 370
-  title: '24'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0022.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:43.000000000 Z
-  position: 24
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_371:
-  id: 371
-  title: '25'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0023.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:43.000000000 Z
-  position: 25
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_372:
-  id: 372
-  title: '26'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0024.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:44.000000000 Z
-  position: 26
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_373:
-  id: 373
-  title: '27'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0025.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:44.000000000 Z
-  position: 27
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_374:
-  id: 374
-  title: '28'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0026.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:44.000000000 Z
-  position: 28
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_375:
-  id: 375
-  title: '29'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0027.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:44.000000000 Z
-  position: 29
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_376:
-  id: 376
-  title: '30'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0028.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:45.000000000 Z
-  position: 30
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_377:
-  id: 377
-  title: '31'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0029.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:45.000000000 Z
-  position: 31
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_378:
-  id: 378
-  title: '32'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0030.jpg"
-  base_width: 3300
-  base_height: 2550
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:45.000000000 Z
-  position: 32
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_379:
-  id: 379
-  title: '33'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0031.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:46.000000000 Z
-  position: 33
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_380:
-  id: 380
-  title: '34'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0032.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:46.000000000 Z
-  position: 34
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_381:
-  id: 381
-  title: '35'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0033.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:46.000000000 Z
-  position: 35
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_382:
-  id: 382
-  title: '36'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0034.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:46.000000000 Z
-  position: 36
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_383:
-  id: 383
-  title: '37'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0035.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:47.000000000 Z
-  position: 37
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_384:
-  id: 384
-  title: '38'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0036.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:47.000000000 Z
-  position: 38
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_385:
-  id: 385
-  title: '39'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0037.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:47.000000000 Z
-  position: 39
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_386:
-  id: 386
-  title: '40'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/5/page_0038.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 5
-  created_on: 2016-11-27 16:34:47.000000000 Z
-  position: 40
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_387:
-  id: 387
-  title: '1'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0001.jpg"
-  base_width: 2783
-  base_height: 2642
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:48.000000000 Z
-  position: 1
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_388:
-  id: 388
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0001_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:48.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_389:
-  id: 389
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0001_thumb_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:48.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_390:
-  id: 390
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0002.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:48.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_391:
-  id: 391
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0002_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:49.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_392:
-  id: 392
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0002_thumb_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:49.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_393:
-  id: 393
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0003.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:49.000000000 Z
-  position: 7
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_394:
-  id: 394
-  title: '8'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0003_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:49.000000000 Z
-  position: 8
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_395:
-  id: 395
-  title: '9'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0004.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:49.000000000 Z
-  position: 9
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_396:
-  id: 396
-  title: '10'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0004_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:50.000000000 Z
-  position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_397:
-  id: 397
-  title: '11'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0005.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:50.000000000 Z
-  position: 11
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_398:
-  id: 398
-  title: '12'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0005_thumb.jpg"
-  base_width: 77
-  base_height: 100
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:50.000000000 Z
-  position: 12
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_399:
-  id: 399
-  title: '13'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0006.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:50.000000000 Z
-  position: 13
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_400:
-  id: 400
-  title: '14'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0007.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:51.000000000 Z
-  position: 14
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_401:
-  id: 401
-  title: '15'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0008.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:51.000000000 Z
-  position: 15
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_402:
-  id: 402
-  title: '16'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0009.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:51.000000000 Z
-  position: 16
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_403:
-  id: 403
-  title: '17'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0010.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:51.000000000 Z
-  position: 17
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_404:
-  id: 404
-  title: '18'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0011.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:52.000000000 Z
-  position: 18
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_405:
-  id: 405
-  title: '19'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0012.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:52.000000000 Z
-  position: 19
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_406:
-  id: 406
-  title: '20'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0013.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:52.000000000 Z
-  position: 20
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_407:
-  id: 407
-  title: '21'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0014.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:53.000000000 Z
-  position: 21
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_408:
-  id: 408
-  title: '22'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0015.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:53.000000000 Z
-  position: 22
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_409:
-  id: 409
-  title: '23'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0016.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:53.000000000 Z
-  position: 23
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_410:
-  id: 410
-  title: '24'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0017.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:54.000000000 Z
-  position: 24
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_411:
-  id: 411
-  title: '25'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0018.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:54.000000000 Z
-  position: 25
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_412:
-  id: 412
-  title: '26'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0019.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:54.000000000 Z
-  position: 26
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_413:
-  id: 413
-  title: '27'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0020.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:54.000000000 Z
-  position: 27
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_414:
-  id: 414
-  title: '28'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/6/page_0021.jpg"
-  base_width: 2550
-  base_height: 3300
-  shrink_factor: 
-  work_id: 6
-  created_on: 2016-11-27 16:34:55.000000000 Z
-  position: 28
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_415:
-  id: 415
-  title: '1'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0001.jpg"
-  base_width: 2496
-  base_height: 2688
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:55.000000000 Z
-  position: 1
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_416:
-  id: 416
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0002.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:55.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_417:
-  id: 417
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0003.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:56.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_418:
-  id: 418
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0004.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:56.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_419:
-  id: 419
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0005.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:56.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_420:
-  id: 420
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0006.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:56.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_421:
-  id: 421
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0007.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:57.000000000 Z
-  position: 7
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_422:
-  id: 422
-  title: '8'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0008.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:57.000000000 Z
-  position: 8
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_423:
-  id: 423
-  title: '9'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0009.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:57.000000000 Z
-  position: 9
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_424:
-  id: 424
-  title: '10'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0010.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:57.000000000 Z
-  position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_425:
-  id: 425
-  title: '11'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0011.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:58.000000000 Z
-  position: 11
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_426:
-  id: 426
-  title: '12'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0012.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:58.000000000 Z
-  position: 12
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_427:
-  id: 427
-  title: '13'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0013.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:58.000000000 Z
-  position: 13
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_428:
-  id: 428
-  title: '14'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0014.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:58.000000000 Z
-  position: 14
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_429:
-  id: 429
-  title: '15'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0015.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:59.000000000 Z
-  position: 15
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_430:
-  id: 430
-  title: '16'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0016.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:59.000000000 Z
-  position: 16
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_431:
-  id: 431
-  title: '17'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0017.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:59.000000000 Z
-  position: 17
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_432:
-  id: 432
-  title: '18'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0018.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:34:59.000000000 Z
-  position: 18
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_433:
-  id: 433
-  title: '19'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0019.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:00.000000000 Z
-  position: 19
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_434:
-  id: 434
-  title: '20'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0020.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:00.000000000 Z
-  position: 20
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_435:
-  id: 435
-  title: '21'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0021.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:00.000000000 Z
-  position: 21
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_436:
-  id: 436
-  title: '22'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0022.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:01.000000000 Z
-  position: 22
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_437:
-  id: 437
-  title: '23'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0023.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:01.000000000 Z
-  position: 23
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_438:
-  id: 438
-  title: '24'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0024.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:01.000000000 Z
-  position: 24
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_439:
-  id: 439
-  title: '25'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0025.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:01.000000000 Z
-  position: 25
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_440:
-  id: 440
-  title: '26'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0026.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:02.000000000 Z
-  position: 26
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_441:
-  id: 441
-  title: '27'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0027.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:02.000000000 Z
-  position: 27
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_442:
-  id: 442
-  title: '28'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0028.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:02.000000000 Z
-  position: 28
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_443:
-  id: 443
-  title: '29'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0029.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:02.000000000 Z
-  position: 29
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_444:
-  id: 444
-  title: '30'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0030.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:03.000000000 Z
-  position: 30
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_445:
-  id: 445
-  title: '31'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0031.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:03.000000000 Z
-  position: 31
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_446:
-  id: 446
-  title: '32'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0032.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:04.000000000 Z
-  position: 32
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_447:
-  id: 447
-  title: '33'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0033.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:04.000000000 Z
-  position: 33
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_448:
-  id: 448
-  title: '34'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0034.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:04.000000000 Z
-  position: 34
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_449:
-  id: 449
-  title: '35'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0035.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:04.000000000 Z
-  position: 35
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_450:
-  id: 450
-  title: '36'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0036.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:04.000000000 Z
-  position: 36
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_451:
-  id: 451
-  title: '37'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0037.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:05.000000000 Z
-  position: 37
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_452:
-  id: 452
-  title: '38'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0038.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:05.000000000 Z
-  position: 38
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_453:
-  id: 453
-  title: '39'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0039.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:05.000000000 Z
-  position: 39
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_454:
-  id: 454
-  title: '40'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0040.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:05.000000000 Z
-  position: 40
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_455:
-  id: 455
-  title: '41'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0041.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:06.000000000 Z
-  position: 41
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_456:
-  id: 456
-  title: '42'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0042.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:06.000000000 Z
-  position: 42
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_457:
-  id: 457
-  title: '43'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0043.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:06.000000000 Z
-  position: 43
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_458:
-  id: 458
-  title: '44'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0044.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:06.000000000 Z
-  position: 44
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_459:
-  id: 459
-  title: '45'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0045.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:07.000000000 Z
-  position: 45
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_460:
-  id: 460
-  title: '46'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0046.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:07.000000000 Z
-  position: 46
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_461:
-  id: 461
-  title: '47'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0047.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:07.000000000 Z
-  position: 47
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_462:
-  id: 462
-  title: '48'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0048.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:07.000000000 Z
-  position: 48
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_463:
-  id: 463
-  title: '49'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0049.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:08.000000000 Z
-  position: 49
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_464:
-  id: 464
-  title: '50'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0050.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:08.000000000 Z
-  position: 50
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_465:
-  id: 465
-  title: '51'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0051.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:08.000000000 Z
-  position: 51
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_466:
-  id: 466
-  title: '52'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/7/page_0052.jpg"
-  base_width: 2100
-  base_height: 3000
-  shrink_factor: 
-  work_id: 7
-  created_on: 2016-11-27 16:35:08.000000000 Z
-  position: 52
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_467:
-  id: 467
-  title: '1'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/8/page_0001.jpg"
-  base_width: 1138
-  base_height: 2704
-  shrink_factor: 
-  work_id: 8
-  created_on: 2016-11-27 16:35:09.000000000 Z
-  position: 1
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_468:
-  id: 468
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/8/page_0002.jpg"
-  base_width: 3508
-  base_height: 2479
-  shrink_factor: 
-  work_id: 8
-  created_on: 2016-11-27 16:35:09.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_469:
-  id: 469
-  title: '1'
-  source_text: should ascertain what are the most suitable
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0001.jpg"
-  base_width: 2546
-  base_height: 3375
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:09.000000000 Z
-  position: 1
-  lock_version: 1
-  xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>should
-    ascertain what are the most suitable</p>\n      </page>\n"
-  page_version_id: 
-  status: ''
-  source_translation: 
-  xml_translation: 
-  search_text: " should ascertain what are the most suitable \n\n\n\n"
-page_470:
-  id: 470
-  title: '2'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0001_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:10.000000000 Z
-  position: 2
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_471:
-  id: 471
-  title: '3'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0001_thumb_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:10.000000000 Z
-  position: 3
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_472:
-  id: 472
-  title: '4'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0001_thumb_thumb_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:10.000000000 Z
-  position: 4
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_473:
-  id: 473
-  title: '5'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0002.jpg"
-  base_width: 3508
-  base_height: 2479
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:10.000000000 Z
-  position: 5
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_474:
-  id: 474
-  title: '6'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0002_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:10.000000000 Z
-  position: 6
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_475:
-  id: 475
-  title: '7'
-  source_text: 
-  base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/9/page_0002_thumb_thumb.jpg"
-  base_width: 142
-  base_height: 100
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-27 16:35:11.000000000 Z
-  position: 7
   lock_version: 0
   xml_text: 
   page_version_id: 

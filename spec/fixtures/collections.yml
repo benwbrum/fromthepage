@@ -1,8 +1,8 @@
 collection_1:
   id: 1
-  title: Account Information
+  title: CS Pierce
   owner_user_id: 4
-  created_on: 2016-11-27 16:22:13.000000000 Z
+  created_on: 2016-11-28 16:34:58.000000000 Z
   intro_block: ''
   footer_block: 
   restricted: false
@@ -10,9 +10,9 @@ collection_1:
   supports_document_sets: false
 collection_2:
   id: 2
-  title: Manuscript
+  title: LA County Library
   owner_user_id: 4
-  created_on: 2016-11-27 16:32:32.000000000 Z
+  created_on: 2016-11-28 16:36:14.000000000 Z
   intro_block: ''
   footer_block: 
   restricted: false
