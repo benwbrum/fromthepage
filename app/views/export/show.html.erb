@@ -19,7 +19,7 @@
         <% for version in page.page_versions %>
           <li>
             <small class="page-version-username"><%= version.user.display_name %></small>
-            <small class="page-version-date"><%= version.created_on.strftime("%m/%d/%Y %I:%M %p") %></small>
+            <small class="page-version-date"><%= version.created_on.localtime.strftime("%m/%d/%Y %I:%M %p") %></small>
           </li>
         <% end %>
         </ul>
