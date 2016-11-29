@@ -6,7 +6,7 @@
     p.nodata_text This subject hasn't been described, that's why we have no article versions to compare.
 
 -else
-  -selected_version_date = @selected_version.created_on.strftime("%b %d, %Y %I:%M %p")
+  -selected_version_date = @selected_version.created_on.localtime.strftime("%b %d, %Y %I:%M %p")
   -selected_version_user = link_to(@selected_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => @selected_version.user.id })
 
   p.diff-help Here you can see all subject revisions and compare the changes have been made in each revision. Left column shows the subject title and description in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
