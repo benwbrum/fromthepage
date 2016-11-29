@@ -1,7 +1,7 @@
 -unless @collection_deeds.empty?
 
   -unless @new_transcribers.empty?
-    h3.nomargin New Transcribers
+    h3.nomargin New Collaborators
     p 
       - @new_transcribers.each do |t|
         =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id, only_path: false}
@@ -56,7 +56,7 @@
 
 .contributor-users.justified.nomargin
   .justified_box>
-    h3 All Transcribers
+    h3 All Collaborators
     -unless @all_transcribers.empty?
       -@all_transcribers.each do |user|
         p
@@ -64,10 +64,10 @@
             
             
     -else
-      h3 Transcribers
-      p No transcribers
+      h3 Collaborators
+      p No Collaborators
 
-h3 All Transcriber Emails
+h3 All Collaborator Emails
 p 
   -unless @all_transcribers.empty?
     - @all_transcribers.each do |t|
@@ -76,4 +76,4 @@ p
       =t.email 
       | >, 
   -else
-    p No transcribers
+    p No collaborators

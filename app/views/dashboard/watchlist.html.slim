@@ -1,4 +1,4 @@
-h1 Editor Dashboard
+h1 Collaborator Dashboard
 
 .columns
   article.maincol
@@ -17,9 +17,14 @@ h1 Editor Dashboard
                 ="#{time_ago_in_words d.created_at} ago"
               p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
     -else
-      ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
-      =link_to @recent.title, {:controller => 'display', :action => 'display_page', :page_id => @page.id}
-      ="."
+      -unless @page.nil?
+        ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
+        =link_to @page.work.title, {:controller => 'display', :action => 'display_page', :page_id => @page.id}
+        ="."
+      -else
+        ="You haven't participated in any projects yet.  Try transcribing a page from one of these "
+        =link_to "collections", dashboard_path
+        ="."
 
     h3 Everyone's Activity
     =deeds_for({ :not_user_id => current_user.id, :limit => 15 })

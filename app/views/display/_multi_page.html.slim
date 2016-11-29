@@ -35,8 +35,13 @@
               -if transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
-                -help_transcribe = link_to('help transcribe', page_params(page).merge({ :controller => 'transcribe'}))
-                p.nodata_text =="This page is not transcribed, please #{help_transcribe} this page"
+                -if page.status == 'raw_ocr'
+                  -status = 'corrected'
+                  -help = link_to('help correct', page_params(page).merge({ :controller => 'transcribe'}))
+                -else
+                  -status = 'transcribed'
+                  -help = link_to('help transcribe', page_params(page).merge({ :controller => 'transcribe'}))
+                p.nodata_text =="This page is not #{status}, please #{help} this page"
 
             -if page.work.supports_translation
               button.outline.work-page_toggle-view Translation

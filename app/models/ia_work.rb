@@ -71,8 +71,8 @@ class IaWork < ActiveRecord::Base
     work.description = self.description
     work.physical_description = self.notes
     work.author = self.creator
-    work.description += "<br/>Sponsored by: "+ self.sponsor
-    work.description += "<br/>Contributed by: "+ self.contributor
+    work.description += " Sponsored by: "+ self.sponsor
+    work.description += " Contributed by: "+ self.contributor
     work.save!
 
     self.ia_leaves.each do |leaf|
@@ -81,23 +81,23 @@ class IaWork < ActiveRecord::Base
       page.base_height = leaf.page_h
       page.base_width = leaf.page_w
       page.title = leaf.page_number
-      work.pages << page #necessary to make acts_as_list work here
-      work.save!
       page.source_text = leaf.ocr_text if self.use_ocr
       page.status = Page::STATUS_UNCORRECTED_OCR if self.use_ocr
-      page.save!
+      work.pages << page #necessary to make acts_as_list work here
+      work.save!
+
       leaf.page_id = page.id
       leaf.save!
     end
     work.save!
     self.work = work
     self.save!
-
     work
   end
 
   def ingest_work(id)
-
+    #find the length of the description column and subtract 200 for the sponsor/contributor info
+    limit = (IaWork.columns_hash['description'].limit - 200)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
     server = location['server']
@@ -105,12 +105,12 @@ class IaWork < ActiveRecord::Base
 
     self.server = server
     self.ia_path = dir
-
     self.book_id = loc_doc.search('identifier').text
     self[:title] = loc_doc.search('title').text             #work title
     self[:creator] = loc_doc.search('creator').text          #work author
     self[:collection] = loc_doc.search('collection').text   #?
-    self[:description] = loc_doc.search('description').text #description
+    #description is truncated so it isn't too long for the description column
+    self[:description] = loc_doc.search('description').text.truncate(limit) #description
     self[:subject] = loc_doc.search('subject').text         #description
     self[:notes] = loc_doc.search('notes').text             #physical description
     self[:contributor] = loc_doc.search('contributor').text #description

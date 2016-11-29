@@ -1,6 +1,7 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
   include ContributorHelper
+  include AddWorkHelper
 
   public :render_to_string
 
@@ -53,6 +54,8 @@ class CollectionController < ApplicationController
   end
 
   def add_owner
+    @user.owner = true
+    @user.save!
     @collection.owners << @user
     redirect_to action: 'edit', collection_id: @collection.id
   end
@@ -125,6 +128,15 @@ class CollectionController < ApplicationController
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
     redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def new_work
+    @document_upload = DocumentUpload.new
+    @document_upload.collection=@collection
+    @omeka_items = OmekaItem.all
+    @omeka_sites = current_user.omeka_sites
+    @universe_collections = ScCollection.universe
+    @sc_collections = ScCollection.all
   end
 
 def contributors

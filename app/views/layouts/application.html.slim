@@ -67,7 +67,7 @@ body
             dd
               =link_to 'Admin Dashboard', admin_path if current_user.admin
               =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
-              =link_to 'Editor Dashboard', dashboard_watchlist_path
+              =link_to 'Collaborator Dashboard', dashboard_watchlist_path
               hr
               =link_to 'Your Profile', { controller: 'user', action: 'profile', user_id: current_user.id }
               hr
