@@ -44,6 +44,7 @@ class DashboardController < ApplicationController
   #other methods in AddWorkHelper
   def startproject
     @work = Work.new
+    @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
     @omeka_items = OmekaItem.all
