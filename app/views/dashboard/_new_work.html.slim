@@ -20,7 +20,9 @@
         li For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.
       p.aright
         =f.button 'Upload File', class: 'big'
-    
+
+    a name = "create-work"
+
     h3 Create Empty Work
     p.big Use this option to create an empty work. You can then upload individual page images into the work.
     =form_for(:work, { :url => { :action => 'create_work' }}) do |f|
