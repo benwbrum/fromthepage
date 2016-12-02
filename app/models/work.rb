@@ -31,6 +31,7 @@ class Work < ActiveRecord::Base
                   :pages_are_meaningful
 
   validates :title, presence: true, length: { minimum: 3 }
+  validates :collection, presence: true
 
 
   module TitleStyle
