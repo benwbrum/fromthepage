@@ -18,12 +18,18 @@
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -progress_annotated = work.work_statistic.pct_annotated.round
-          -progress_transcribed = work.work_statistic.pct_transcribed.round
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_transcribed}% transcribed"
+          -if (work.pages.where(status: 'raw_ocr').count != 0) || (work.pages.where(status: 'part_ocr').count != 0)
+            -progress_completed = work.work_statistic.pct_corrected.round
+            -completed = "corrected"
+          -else
+            -progress_completed = work.work_statistic.pct_transcribed.round
+            -completed = "transcribed"
+            
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_completed}% #{completed}"
           span
             span.progress
               span(style="width:#{progress_annotated}%")
-              span(style="width:#{progress_transcribed - progress_annotated}%")
+              span(style="width:#{progress_completed - progress_annotated}%")
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }

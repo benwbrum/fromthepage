@@ -14,7 +14,7 @@
       .counter(data-prefix="#{number_with_delimiter @collection.edit_count}") Page edits
       .counter(data-prefix="#{number_with_delimiter @collection.index_count}") #{'Page'.pluralize(@collection.index_count)} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.translation_count}") #{'Page'.pluralize(@collection.translation_count)} translated
-      .counter(data-prefix="#{number_with_delimiter @collection.ocr_count}") #{'Page'.pluralize(@collection.ocr_count)} OCR corrected
+      .counter(data-prefix="#{number_with_delimiter @collection.ocr_count}") OCR #{'Correction'.pluralize(@collection.ocr_count)}
 
 
   h4.legend.fglight Last 7 Days Statistics
@@ -26,22 +26,28 @@
     .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.translation_count(7)}") #{'Page'.pluralize(@collection.translation_count(7))} translated
-    .counter(data-prefix="#{number_with_delimiter @collection.ocr_count(7)}") #{'Page'.pluralize(@collection.ocr_count(7))} OCR corrected
+    .counter(data-prefix="#{number_with_delimiter @collection.ocr_count(7)}") OCR #{'Correction'.pluralize(@collection.ocr_count(7))}
 
   h2 Work Progress
   ul.collection-work-stats
     -@works.each do |w|
       -progress_annotated = w.work_statistic.pct_annotated.round
-      -progress_transcribed = w.work_statistic.pct_transcribed.round
+      -if (w.pages.where(status: 'raw_ocr').count != 0) || (w.pages.where(status: 'part_ocr').count != 0)
+        -progress_completed = w.work_statistic.pct_corrected.round
+        -completed = "corrected"
+      -else
+        -progress_completed = w.work_statistic.pct_transcribed.round
+        -completed = "transcribed"
+
       li
         span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
         span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
         span =="<b>#{progress_annotated}%</b> indexed"
-        span =="<b>#{progress_transcribed}%</b> transcribed"
+        span =="<b>#{progress_completed}%</b> #{completed}"
         span
           span.progress
             span(style="width:#{progress_annotated}%")
-            span(style="width:#{progress_transcribed - progress_annotated}%")
+            span(style="width:#{progress_completed - progress_annotated}%")
 
 h2 Collaborators
 
