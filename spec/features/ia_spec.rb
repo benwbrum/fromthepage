@@ -8,6 +8,7 @@ describe "IA import actions", :order => :defined do
     @collections = @user.all_owner_collections
     @collection = @collections.first
     @works = @user.owner_works
+    @title = "[Letter to] Dear Garrison [manuscript]"
   end
 
   it "imports a work from IA" do
@@ -48,7 +49,7 @@ describe "IA import actions", :order => :defined do
     page.check('use_ocr')
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
-    new_work = Work.find_by(title: "[Letter to] Dear Garrison [manuscript]")
+    new_work = Work.find_by(title: @title)
     first_page = new_work.pages.first
     expect(first_page.status).to eq 'raw_ocr'
     expect(page).to have_content("has been converted into a FromThePage work")
@@ -59,7 +60,7 @@ describe "IA import actions", :order => :defined do
 =begin
 #this tests the new ocr-deeds code
   it "tests ocr correction" do
-    @work = Work.find_by(title: "[Letter to] Dear Garrison [manuscript]")
+    @work = Work.find_by(title: @title)
     @page = @work.pages.first
     login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
@@ -76,5 +77,21 @@ describe "IA import actions", :order => :defined do
     @page = @work.pages.first
     expect(@page.status).to eq "part_ocr" 
   end
-=end
+
+  it "checks ocr/transcribe statistics" do
+    login_as(@user, :scope => :user)
+    visit "/collection/show?collection_id=#{@collection.id}"
+    expect(page).to have_content("Works")
+    @collection.works.each do |w|
+      if (w.pages.where(status: 'raw_ocr').count != 0) || (w.pages.where(status: 'part_ocr').count != 0)
+        completed = "corrected"
+      else
+        completed = "transcribed"
+      end
+      within(page.find('.collection-work', text: w.title)) do
+        expect(page.find('.collection-work_stats', text: "#{w.pages.count}")). to have_content(completed)
+      end
+    end
+  end
+=end  
 end
