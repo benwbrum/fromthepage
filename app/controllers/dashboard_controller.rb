@@ -93,7 +93,7 @@ class DashboardController < ApplicationController
 
   #Guest Dashboard - activity
   def guest
-    @collections = Collection.limit(5).order_by_recent_activity
+    @collections = Collection.order_by_recent_activity.unrestricted.to_a.take(5)
   end
 
 end
