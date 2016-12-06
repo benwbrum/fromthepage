@@ -46,8 +46,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def owner_works
+    collections = self.all_owner_collections
+    works = []
+    collections.each do |c|
+      c.works.each do |w|
+        works << w
+      end
+    end
+    return works
+  end
+
   def can_transcribe?(work)
-    !work.restrict_scribes || self == work.owner || work.scribes.include?(self)
+    !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
   end
 
   def like_owner?(obj)
@@ -69,7 +80,7 @@ class User < ActiveRecord::Base
   end
 
   def collections
-    self.owned_collections + Collection.where(:owner_user_id => self.id).all
+    self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
   end
 
 end

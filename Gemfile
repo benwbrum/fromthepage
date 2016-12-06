@@ -6,11 +6,12 @@ gem 'pry'
 gem 'pry-byebug'
 
 gem 'will_paginate'
-gem 'rmagick', '2.13.2', require: "RMagick"
+#gem 'rmagick', '2.13.2', require: "RMagick"
+gem 'rmagick'
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
-gem 'capistrano', '~> 3.2.1'
-gem 'capistrano-rails'
+gem 'capistrano', '~> 3.4.0'
+gem 'capistrano-rails', '= 1.1.3'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
@@ -23,7 +24,7 @@ gem 'omeka_client', git: 'https://github.com/benwbrum/omeka_client'
 gem 'acts_as_list'
 gem 'acts_as_tree'
 
-gem 'devise'
+gem 'devise', '3.4.1'
 gem 'devise-encryptable'
 
 gem 'protected_attributes'

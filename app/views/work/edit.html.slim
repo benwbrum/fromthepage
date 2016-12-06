@@ -67,9 +67,9 @@
       =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
-        small Owned by
+        small Uploaded by
         =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
-    p.fglight The settings for this work are only accessible to the work owner.
+    p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
     hr
     =form_for(@work, :url => { :action => 'update_work' }) do |f|
@@ -77,21 +77,21 @@
       p
         =f.check_box :scribes_can_edit_titles
         |&nbsp;
-        =f.label :scribes_can_edit_titles, 'Allow editors to edit page titles'
+        =f.label :scribes_can_edit_titles, 'Allow collaborators to edit page titles'
       p
         =f.check_box :restrict_scribes
         |&nbsp;
-        =f.label :restrict_scribes, 'Restrict editors'
+        =f.label :restrict_scribes, 'Restrict collaborators'
       small.legend =button_tag 'Apply', class: 'outline'
 
     -if @work.restrict_scribes
-      h3 Allowed Editors
+      h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
         =hidden_field_tag :work_id, @work.id
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'display_name'), include_blank: true
         =button_tag 'Add', disabled: 'true'
       -if @scribes.empty?
-        p.fglight No allowed scribes selected
+        p.fglight No allowed collaborators selected
       -else
         -@scribes.each do |user|
           .user-label
@@ -106,7 +106,7 @@
   javascript:
     $(function() {
       $('.user-select-form select').select2({
-        placeholder: 'Add new scribe...',
+        placeholder: 'Add new collaborator...',
       }).on('select2:select', function() {
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {

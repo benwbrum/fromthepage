@@ -1,0 +1,18 @@
+h2 All Collections
+
+.columns
+  article.maincol
+    -unless @collections.empty?
+      .collections
+        -@collections.each do |c|
+          .collection
+            h4.collection_title
+              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
+              
+    -else
+      -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
+      .nodata
+        h5.nodata_title You don't have any collections yet
+        p.nodata_text You can #{new_collection}
+
+=render(:partial => 'shared/pagination', :locals => { :model => @collections, :entries_info => true })

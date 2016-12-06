@@ -16,9 +16,6 @@ class TranscribeController  < ApplicationController
   def display_page
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
-    if params[:preview] == 'true'
-      @preview_xml = @page.generate_preview
-    end
   end
 
   def mark_page_blank
@@ -71,6 +68,11 @@ class TranscribeController  < ApplicationController
         flash[:error] = nil
         # raise ex
       end
+    elsif params['preview']
+      @preview_xml = @page.generate_preview
+      render :action => 'display_page'
+    elsif params['edit']
+      render :action => 'display_page'
     elsif params['autolink']
       @page.source_text = autolink(@page.source_text)
       render :action => 'display_page'

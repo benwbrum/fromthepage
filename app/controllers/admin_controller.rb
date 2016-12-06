@@ -92,7 +92,7 @@ class AdminController < ApplicationController
   def error_list
     # interactions with errors
     limit = params[:limit] || 50
-    @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit).all
+    @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit)#.all
   end
 
   def tail_logfile
@@ -125,5 +125,29 @@ class AdminController < ApplicationController
     @document_upload = DocumentUpload.find(params[:id])
     render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
   end
+
+  def collection_list
+    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+  end
+
+  def work_list
+    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => 10)
+    @works = Work.order(:title)
+  end
+
+  def article_list
+    @collections = Collection.all
+  end
+
+  def page_list
+    @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+
+  end
+
+  def owner_list
+    @collections = Collection.all
+    @owners = User.where(owner: true).order(:login).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+  end
+
 
 end

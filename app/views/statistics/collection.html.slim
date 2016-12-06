@@ -6,21 +6,22 @@
       .counter(data-prefix="#{number_with_delimiter @collection.work_count}") #{'Work'.pluralize(@collection.work_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.page_count}") #{'Page'.pluralize(@collection.page_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.subject_count}") #{'Subject'.pluralize(@collection.subject_count)}
-      .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Mention'.pluralize(@collection.mention_count)}
-      .counter(data-prefix="#{number_with_delimiter @collection.comment_count}") #{'Comment'.pluralize(@collection.comment_count)}
+      .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Reference'.pluralize(@collection.mention_count)}
+      .counter(data-prefix="#{number_with_delimiter @collection.comment_count}") #{'Note'.pluralize(@collection.comment_count)}
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Contributor'.pluralize(@collection.contributor_count)}
+      .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Collaborator'.pluralize(@collection.contributor_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.transcription_count}") #{'Page'.pluralize(@collection.transcription_count)} transcribed
       .counter(data-prefix="#{number_with_delimiter @collection.edit_count}") Page edits
       .counter(data-prefix="#{number_with_delimiter @collection.index_count}") #{'Page'.pluralize(@collection.index_count)} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.translation_count}") #{'Page'.pluralize(@collection.translation_count)} translated
   h4.legend.fglight Last 7 Days Statistics
   section.collection-stats_recent
-    .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Contributor'.pluralize(@collection.mention_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Mention'.pluralize(@collection.comment_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Comment'.pluralize(@collection.contributor_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Collaborator'.pluralize(@collection.contributor_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
-    .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page edits
+    .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.translation_count(7)}") #{'Page'.pluralize(@collection.translation_count(7))} translated
 
   h2 Work Progress
@@ -38,41 +39,43 @@
             span(style="width:#{progress_annotated}%")
             span(style="width:#{progress_transcribed - progress_annotated}%")
 
+h2 Collaborators
+
 .collection-users.justified
   .justified_box>
     -unless @all_transcribers.empty?
-      h3 =pluralize(@all_transcribers.size, 'Transcriber')
+      h3 Transcribing
       -@all_transcribers.each do |user, count|
         .collection-user(data-prefix="#{count}")
           =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
             span.userpic =gravatar_image_tag user.email, :alt => user.display_name
             span.vmiddle =user.display_name
     -else
-      h3 Transcribers
+      h3 Transcribing
       p.a50 No transcribers
 
   .justified_box>
     -unless @all_editors.empty?
-      h3 =pluralize(@all_editors.size, 'Editor')
+      h3 Editing
       -@all_editors.each do |user, count|
         .collection-user(data-prefix="#{count}")
           =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
             span.userpic =gravatar_image_tag user.email, :alt => user.display_name
             span.vmiddle =user.display_name
     -else
-      h3 Editors
+      h3 Editing
       p.a50 No editors
 
   .justified_box>
     -unless @all_indexers.empty?
-      h3 =pluralize(@all_indexers.size, 'Indexer')
+      h3 Indexing
       -@all_indexers.each do |user, count|
         .collection-user(data-prefix="#{count}")
           =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
             span.userpic =gravatar_image_tag user.email, :alt => user.display_name
             span.vmiddle =user.display_name
     -else
-      h3 Indexers
+      h3 Indexing
       p.a50 No indexers
 
 =render({ :partial => '/shared/collection_footer' })
