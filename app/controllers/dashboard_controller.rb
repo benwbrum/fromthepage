@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
   include AddWorkHelper
 
   before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject]
-  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject]
+  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -43,6 +43,8 @@ class DashboardController < ApplicationController
   #Owner Dashboard - start project
   #other methods in AddWorkHelper
   def startproject
+    @work = Work.new
+    @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
     @omeka_items = OmekaItem.all
