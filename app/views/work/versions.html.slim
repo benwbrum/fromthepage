@@ -15,6 +15,6 @@
       tr
         td =link_to version.title, { :controller => 'page_version', :action => 'list', :page_id => version.page.id }
         td =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
-        td.fgfaded =="#{version.created_on.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
+        td.fgfaded =="#{version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
 
   =render(:partial => 'shared/pagination', :locals => { :model => @page_versions, :entries_info => true })

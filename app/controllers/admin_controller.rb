@@ -92,7 +92,7 @@ class AdminController < ApplicationController
   def error_list
     # interactions with errors
     limit = params[:limit] || 50
-    @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit).all
+    @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit)#.all
   end
 
   def tail_logfile

@@ -1,6 +1,7 @@
 # handles administrative tasks for the collection object
 class CollectionController < ApplicationController
   include ContributorHelper
+  include AddWorkHelper
 
   public :render_to_string
 
@@ -9,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
-  before_filter :load_settings, :only => [:edit, :update]
+  before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -127,6 +128,17 @@ class CollectionController < ApplicationController
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
     redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def new_work
+    @work = Work.new
+    @work.collection = @collection
+    @document_upload = DocumentUpload.new
+    @document_upload.collection=@collection
+    @omeka_items = OmekaItem.all
+    @omeka_sites = current_user.omeka_sites
+    @universe_collections = ScCollection.universe
+    @sc_collections = ScCollection.all
   end
 
 def contributors

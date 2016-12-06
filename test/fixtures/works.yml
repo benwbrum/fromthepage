@@ -1,6 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-work1:
-  id: 1
-  title: test work
-  owner_user_id: 10
-  collection_id: 1

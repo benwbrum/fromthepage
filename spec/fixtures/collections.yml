@@ -1,0 +1,20 @@
+collection_1:
+  id: 1
+  title: CS Pierce
+  owner_user_id: 4
+  created_on: 2016-11-28 16:34:58.000000000 Z
+  intro_block: ''
+  footer_block: 
+  restricted: false
+  picture: 
+  supports_document_sets: false
+collection_2:
+  id: 2
+  title: LA County Library
+  owner_user_id: 4
+  created_on: 2016-11-28 16:36:14.000000000 Z
+  intro_block: ''
+  footer_block: 
+  restricted: false
+  picture: 
+  supports_document_sets: false
