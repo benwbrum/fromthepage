@@ -168,7 +168,7 @@ describe "owner actions", :order => :defined do
 =end  
 
   it "checks that the file has been uploaded" do
-    sleep(10)
+    sleep(60)
     @work = Work.find_by(title: 'test')
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content(@work.title)
