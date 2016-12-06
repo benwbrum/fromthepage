@@ -62,40 +62,47 @@ describe "search text transformation" do
   search_text = SearchTranslator.search_text_from_xml(XML_TEXT, TRANSLATED_TEXT)
   
   it "should include text" do
-    search_text.should match(/I could not go./)
+    expect(search_text).to match(/I could not go./)
+    #old syntax: search_text.should match(/I could not go./)
   end
-  
+
   it "should not include line breaks" do
-    search_text.should match(/wish I could hear from the rest of them./)
+    expect(search_text).to match(/wish I could hear from the rest of them./)
   end
   
   it "should not include tags" do
     TAGS_TO_REMOVE.each do |tag|
-      search_text.should_not match(tag)
+      expect(search_text).not_to match(tag)
+      #search_text.should_not match(tag)
     end
   end
 
   it "should not include wikilinks" do
-    search_text.should_not include('[[')
+    expect(search_text).not_to include('[[')
+    #search_text.should_not include('[[')
   end
   
   it "should include verbatim transcripts" do
     VERBATIM_MATCHES.each do |search|
-      search_text.should match(search)
+      expect(search_text).to match(search)
+      #search_text.should match(search)
     end
   end
   
   it "should include subject expansions" do
     EXPANDED_MATCHES.each do |search|
-      search_text.should match(search)
+      expect(search_text).to match(search)
+      #search_text.should match(search)
     end  
   end
   
   it "should include translations" do
     TRANSLATED_MATCHES.each do |search|
-      search_text.should match(search)
+      expect(search_text).to match(search)
+      #search_text.should match(search)
     end  
   end
+
 end
 
-describe "page post-processing"
+#describe "page post-processing"
