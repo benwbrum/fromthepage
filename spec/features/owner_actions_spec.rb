@@ -21,8 +21,6 @@ describe "owner actions", :order => :defined do
     title = find('h1').text
     expect(title).to eq @collections.first.title
     expect(page).to have_content("Document has been uploaded")
-    #Note - the check that the document is actually uploaded is in a 
-    #separate test due to the way the rake task runs
   end
 
   it "fails to upload a document" do
@@ -168,4 +166,16 @@ describe "owner actions", :order => :defined do
     expect(page).not_to have_content(@title)
   end
 =end  
+
+  it "checks that the file has been uploaded" do
+    sleep(10)
+    @work = Work.find_by(title: 'test')
+    visit "/display/read_work?work_id=#{@work.id}"
+    expect(page).to have_content(@work.title)
+    expect(page).to have_content(@work.pages.first.title)
+    click_link(@work.pages.first.title)
+    expect(page).to have_content('This page is not transcribed')
+  end
+
+
 end
