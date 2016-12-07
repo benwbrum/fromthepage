@@ -50,6 +50,6 @@ class ScCollection < ActiveRecord::Base
 
   def self.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
     # http://pontiiif.brumfieldlabs.com/api/v0.0/search/Irish
-    pontiiif_server + 'api/v0.0/search/' + search_param
+    pontiiif_server + 'api/v0.0/search/' + CGI.escape(search_param)
   end
 end
