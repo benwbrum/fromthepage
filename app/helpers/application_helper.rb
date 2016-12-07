@@ -99,7 +99,7 @@ module ApplicationHelper
       @work.title
     end
   end
-
+  
 
 
 end

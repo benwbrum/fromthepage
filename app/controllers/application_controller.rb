@@ -89,6 +89,13 @@ class ApplicationController < ActionController::Base
     return
   end
 
+
+  def pontiiif_server
+    Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
+  end
+
+
+
   # perform appropriate API call for updating the IA server
   def update_ia_work_server
     if @work && @work.ia_work

@@ -38,6 +38,7 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
  # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+  get   '/iiif/admin/search_pontiiif', :to => 'sc_collections#search_pontiiif'
 
   get   'document_set/new', :to => 'document_sets#new'
   get   'document_set/edit/:id', :to => 'document_sets#edit'

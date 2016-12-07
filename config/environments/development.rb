@@ -43,6 +43,9 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
+  
+  # http://pontiiif.brumfieldlabs.com/api/v0.0/search/Irish
+  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
