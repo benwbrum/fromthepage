@@ -120,7 +120,9 @@ module ApplicationHelper
       @work.title
     end
   end
-
-
+  
+  def pontiiif_server
+    Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
+  end
 
 end

@@ -47,4 +47,9 @@ class ScCollection < ActiveRecord::Base
   
     sc_collection
   end
+
+  def self.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
+    # http://pontiiif.brumfieldlabs.com/api/v0.0/search/Irish
+    pontiiif_server + 'api/v0.0/search/' + search_param
+  end
 end
