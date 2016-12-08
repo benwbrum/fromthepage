@@ -78,7 +78,7 @@ class PageController < ApplicationController
       end
 
       if subaction == 'save_and_new'
-        ajax_redirect_to({ :controller => 'dashboard', :action => 'owner', :anchor => 'create-work' })
+        ajax_redirect_to({ :controller => 'dashboard', :action => 'startproject', :anchor => 'create-work' })
       else
         ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
       end

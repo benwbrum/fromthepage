@@ -25,7 +25,7 @@ table.admin-grid.datagrid.striped
           -if u.location
             small(data-prefix='From ') =u.location
         td.nowrap =u.created_at.strftime('%b %d, %Y') if u.created_at
-        td.nowrap =u.last_sign_in_at.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
+        td.nowrap =u.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if u.last_sign_in_at
         td.nowrap
           .instack
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }, :data => { litebox: { hash: "edit-user-#{u.id}" }}

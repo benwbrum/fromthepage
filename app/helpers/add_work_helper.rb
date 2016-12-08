@@ -43,4 +43,24 @@ module AddWorkHelper
     end
   end
   
+  def empty_work
+    @work = Work.new
+  end
+
+  def create_work
+    @work = Work.new
+    @work.title = params[:work][:title]
+    @work.collection_id = params[:work][:collection_id]
+    @work.description = params[:work][:description]
+    @work.owner = current_user
+    @collections = current_user.all_owner_collections
+
+    if @work.save
+      flash[:notice] = 'Work created successfully'
+      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+    else
+      render action: 'empty_work'
+    end
+  end
+
 end

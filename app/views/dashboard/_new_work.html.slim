@@ -1,37 +1,26 @@
 .columns
   article.maincol
-    h3 Upload PDF or ZIP File
-    p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
-    =form_for :document_upload, url: { action: 'new_upload' } do |f|
-      =validation_summary @document_upload.errors
-      table.form
-        tr
-          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), prompt: '- Select a collection -'
-        tr
-          td
-            .input-file
-              =f.file_field :file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed'
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
-              button(type="button") Browse
-      ul
-        li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
-        li Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
-        li Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
-        li For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.
-      p.aright
-        =f.button 'Upload File', class: 'big'
-    
+    =render 'dashboard/upload'
+
+    a name = "create-work"
+
+    =render 'dashboard/empty'
+
     h3 Import from an IIIF Repository
     p.fgfaded Shared Canvas Universe
     ul.omeka-sites
       -@universe_collections.each do |sc_collection|
         li.omeka-site
           h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => CGI::escape(sc_collection.at_id)}    
-      p.fgfaded Previously Viewed Collections
-      ul.omeka-sites
-        -@sc_collections.each do |sc_collection|
-          li.omeka-site
-            h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => CGI::escape(sc_collection.at_id)}
+      -if pontiiif_server
+        h5 Search for IIIF Content
+        =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
+          table.form
+              td
+                .input-file
+                  =text_field_tag :search_param
+                  =button_tag 'Search'
+    h5 Import an IIIF Manifest
     =form_tag({ controller: 'sc_collections', action: 'explore_manifest' }) do |f|
       table.form
           td

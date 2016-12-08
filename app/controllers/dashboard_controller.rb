@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
   include AddWorkHelper
 
   before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject]
-  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject]
+  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -25,7 +25,7 @@ class DashboardController < ApplicationController
 
   def get_data
     @collections = current_user.collections
-    @image_sets = current_user.image_sets
+#    @image_sets = current_user.image_sets
     @notes = current_user.notes
     @works = current_user.owner_works
     @ia_works = current_user.ia_works
@@ -43,6 +43,8 @@ class DashboardController < ApplicationController
   #Owner Dashboard - start project
   #other methods in AddWorkHelper
   def startproject
+    @work = Work.new
+    @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
     @omeka_items = OmekaItem.all
@@ -91,7 +93,7 @@ class DashboardController < ApplicationController
 
   #Guest Dashboard - activity
   def guest
-    @collections = Collection.limit(5).order_by_recent_activity
+    @collections = Collection.order_by_recent_activity.unrestricted.to_a.take(5)
   end
 
 end

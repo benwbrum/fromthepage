@@ -9,6 +9,12 @@ class ScCollectionsController < ApplicationController
     respond_with(@sc_collections)
   end
 
+  def search_pontiiif
+    search_param = params[:search_param]
+    at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
+    redirect_to :action => :explore, :at_id => at_id
+  end
+
   def explore
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
