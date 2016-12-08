@@ -1,6 +1,8 @@
 class ExportController < ApplicationController
+  require 'zip'
 
   def index
+    @collection = Collection.find_by(id: params[:collection_id])
   end
 
   def show
@@ -67,6 +69,29 @@ class ExportController < ApplicationController
               :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     
+  end
+
+  def export_all_works
+    cookies['download_finished'] = 'true'
+    @collection = Collection.find_by(id: params[:collection_id])
+    @works = Work.where(collection_id: @collection.id)
+
+    respond_to do |format|
+      format.html
+      format.zip do
+      compressed_filestream = Zip::OutputStream.write_buffer do |zos|
+        @works.each do |work|
+          @work = work
+          export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
+          zos.put_next_entry "#{work.title}.html"
+          zos.print export_view
+        end
+      end
+      compressed_filestream.rewind
+      send_data compressed_filestream.read, filename: "#{@collection.title}.zip"
+      end
+    end
+
   end
 
 private
