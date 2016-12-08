@@ -76,6 +76,7 @@ class ExportController < ApplicationController
     @collection = Collection.find_by(id: params[:collection_id])
     @works = Work.where(collection_id: @collection.id)
 
+#create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
       format.html
       format.zip do
