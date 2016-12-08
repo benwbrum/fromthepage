@@ -57,7 +57,7 @@ describe "IA import actions", :order => :defined do
     expect(first_page.source_text).not_to be_nil
   end
 
-=begin
+
 #this tests the new ocr-deeds code
   it "tests ocr correction" do
     @work = Work.find_by(title: @title)
@@ -68,6 +68,9 @@ describe "IA import actions", :order => :defined do
     click_link @page.title
     expect(page).to have_content("This page is not corrected")
     page.find('.tabs').click_link("Correct")
+    save_and_open_page
+    binding.pry
+#for some reason this is having problems when you run the full test suite, but works fine with only ia_spec.rb.
     expect(page.find('#page_status')).to have_content("Incomplete Correction")
     page.fill_in 'page_source_text', with: "Test OCR Correction"
     click_button('Save Changes')
@@ -93,5 +96,5 @@ describe "IA import actions", :order => :defined do
       end
     end
   end
-=end  
+
 end

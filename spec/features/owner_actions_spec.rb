@@ -45,8 +45,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Manage Works")
   end
-=begin
-  #this test applies once bug-fix-460 branch is merged
+
   it "creates an empty new work in a collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
@@ -62,7 +61,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Here you see the list of all pages in the work.")
     expect(Work.find_by(title: work_title)).not_to be nil
   end
-=end
+
   it "deletes a collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @user.all_owner_collections.count
@@ -106,9 +105,6 @@ describe "owner actions", :order => :defined do
     visit "/article/list?collection_id=#{@collection.id}"
     expect(page).not_to have_content("New Test Category")
   end
-
-=begin
-#These tests apply after bug-fix-460 branch has been merged
 
   it "fails to create an empty work" do
     login_as(@user, :scope => :user)
@@ -165,7 +161,6 @@ describe "owner actions", :order => :defined do
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content(@title)
   end
-=end  
 
   it "checks that the file has been uploaded" do
     sleep(60)
