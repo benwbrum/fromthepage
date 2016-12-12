@@ -20,7 +20,6 @@ module XmlSourceProcessor
     end
     validate_links(self.source_text)
   end
-# split on all begin-braces
     
   def validate_source_translation
     if self.source_translation.blank?
@@ -29,9 +28,10 @@ module XmlSourceProcessor
     validate_links(self.source_translation)
   end
 
-
+#check the text for problems or typos with the subject links
   def validate_links(text)
-    
+  
+    # split on all begin-braces
     tags = text.split('[[')
     # remove the initial string which occurs before the first tag
     debug("validate_source: tags to process are #{tags.inspect}")
