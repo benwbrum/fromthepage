@@ -14,23 +14,25 @@ module XmlSourceProcessor
     super    
   end
 
-  def validate
-#    valid = super
-#    debug("validate valid=#{valid}")
-    if @text_dirty && !validate_source
-#      valid = false
-    end
-#    debug("validate valid=#{valid}")
-    debug("validate errors=#{errors.count}")
-  end
-
   def validate_source
-    debug('validate_source')
     if self.source_text.blank?
       return
     end
-    # split on all begin-braces
-    tags = self.source_text.split('[[')
+    validate_links(self.source_text)
+  end
+# split on all begin-braces
+    
+  def validate_source_translation
+    if self.source_translation.blank?
+      return
+    end
+    validate_links(self.source_translation)
+  end
+
+
+  def validate_links(text)
+    
+    tags = text.split('[[')
     # remove the initial string which occurs before the first tag
     debug("validate_source: tags to process are #{tags.inspect}")
     tags = tags - [tags[0]]
@@ -38,22 +40,24 @@ module XmlSourceProcessor
     for tag in tags
       debug(tag)
       unless tag.include?(']]')
-        errors.add_to_base("Mismatched braces: no closing braces after \"[[#{tag}\"!")
+        tag = tag.strip
+        errors.add(:base, "Subject Linking Error: Wrong number of closing braces after \"[[#{tag}\"")
       end
+
       # just pull the pieces between the braces
       inner_tag = tag.split(']]')[0]
       if inner_tag =~ /^\s*$/
-        errors.add_to_base("Error: Blank tag in \"[[#{tag}\"!")
+        errors.add(:base, "Subject Linking Error: Blank tag in \"[[#{tag}\"")
       end
       # check for blank title or display name with pipes
       if inner_tag.include?("|")
         tag_parts = inner_tag.split('|')
         debug("validate_source: inner tag parts are #{tag_parts.inspect}")
         if tag_parts[0] =~ /^\s*$/
-          errors.add_to_base("Error: Blank target in \"[[#{inner_tag}]]\"!")
+          errors.add(:base, "Subject Linking Error: Blank subject in \"[[#{inner_tag}]]\"")
         end
         if tag_parts[1] =~ /^\s*$/
-          errors.add_to_base("Error: Blank display in \"[[#{inner_tag}]]\"!")
+          errors.add(:base, "Subject Linking Error: Blank text in \"[[#{inner_tag}]]\"")
         end
       end
     end

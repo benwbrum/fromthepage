@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
 
   before_update :process_source
   before_update :populate_search
+  validate :validate_source, :validate_source_translation
 
   belongs_to :work
   acts_as_list :scope => :work

@@ -47,7 +47,6 @@ class TranscribeController  < ApplicationController
           redirect_to :action => 'assign_categories', :page_id => @page.id
         else
           log_transcript_error
-          flash[:error] = @page.errors[:base].join('<br />')
           render :action => 'display_page'
         end
       rescue REXML::ParseException => ex
@@ -58,14 +57,14 @@ class TranscribeController  < ApplicationController
            Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       rescue  => ex
         log_transcript_exception(ex)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       end
     elsif params['preview']
@@ -110,7 +109,6 @@ class TranscribeController  < ApplicationController
           redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true
         else
           log_translation_error
-          flash[:error] = @page.errors[:base].join('<br />')
           render :action => 'translate'
         end
       rescue REXML::ParseException => ex
@@ -121,14 +119,14 @@ class TranscribeController  < ApplicationController
            Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       rescue  => ex
         log_translation_exception(ex)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       end
     elsif params['preview']

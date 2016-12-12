@@ -2,6 +2,8 @@
 
 =form_for(@page, :url => { :action => 'save_translation' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
+  =validation_summary @page.errors
+  
   .page-toolbar
     .toolbar
       .toolbar_group.w100
