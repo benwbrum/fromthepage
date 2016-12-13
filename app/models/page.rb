@@ -242,12 +242,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   # tested
   def create_link(article, display_text, text_type)
-    link = PageArticleLink.new(:page => self,
-                               :article => article,
-                               :display_text => display_text,
-                               :text_type => text_type)
+    link = PageArticleLink.new(page: self, article: article,
+                               display_text: display_text, text_type: text_type)
     link.save!
-
     return link.id
   end
 

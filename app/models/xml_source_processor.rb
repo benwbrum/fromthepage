@@ -72,7 +72,7 @@ module XmlSourceProcessor
   ##############################################
   def process_source
     if @text_dirty
-      self.xml_text = wiki_to_xml(self.source_text)
+      self.xml_text = wiki_to_xml(self.source_text, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
     if @translation_dirty
@@ -80,7 +80,7 @@ module XmlSourceProcessor
     end
   end
 
-  def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
+  def wiki_to_xml(wiki, text_type)
     xml_string = String.new(wiki || "")
 
     xml_string = process_latex_snippets(xml_string)
@@ -318,7 +318,7 @@ EOF
   end
 
 
-  def update_links_and_xml(xml_string, preview_mode=false, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
+  def update_links_and_xml(xml_string, preview_mode=false, text_type)
     # first clear out the existing links
     clear_links(text_type)
     processed = ""
