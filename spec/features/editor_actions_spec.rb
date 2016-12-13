@@ -119,41 +119,4 @@ describe "editor actions" do
   #  page.find('#note_body', text: "Test note")
   end
 
-  it "links a categorized subject" do
-    login_as(@user, :scope => :user)
-    @page = @work.pages.last
-    visit "/display/display_page?page_id=#{@page.id}"
-    page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
-    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
-    click_button('Save Changes')
-    expect(page).to have_content("Texas")
-    #this functionality is currently not working for my test machine
-    #page.find('a', text: 'Hogwarts').click
-    #expect(page).to have_content("Category")
-  end
-
-  #it checks to make sure the subject is on the page
-
-  it "looks at subjects in a collection" do
-    login_as(@user, :scope => :user)
-    visit "/collection/show?collection_id=#{@collection.id}"
-    page.find('.tabs').click_link("Subjects")
-    expect(page).to have_content("Categories")
-    categories = Category.where(collection_id: @collection.id)
-    categories.each do |c|
-      column = page.find('div.category-tree')
-      expect(column).to have_content(c.title)
-      column.click_link c.title
-      c.articles.each do |a|
-        expect(page).to have_content(a.title)
-      end
-    end
-  end
-
-#not yet implemented
-  it "clicks the links to look at the information for a subject" do
-
-  end
-
 end
