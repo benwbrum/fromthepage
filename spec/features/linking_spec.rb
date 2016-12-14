@@ -126,6 +126,8 @@ it "enters a bad link - no text in category then subject" do
     expect(links).to eq 1
   end
 
+  it "tests autolinking" do
 
+  end
 
 end

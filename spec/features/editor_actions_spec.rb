@@ -90,11 +90,17 @@ describe "editor actions" do
     expect(page).to have_content("This page is not transcribed")
     page.find('.tabs').click_link("Transcribe")
     expect(page.find('#page_status')).to have_content("- Transcription status not set -")
+    page.fill_in 'page_source_text', with: "Test Preview"
+    click_button('Preview')
+    expect(page).to have_content('Edit')
+    expect(page).to have_content("Test Preview")
+    click_button('Edit')
+    expect(page).to have_content('Preview')
     page.fill_in 'page_source_text', with: "Test Transcription"
     click_button('Save Changes')
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
-    expect(@page.status).to eq nil 
+    expect(@page.status).to eq "" 
   end
 
   it "translates a page" do
@@ -103,6 +109,12 @@ describe "editor actions" do
     visit "/display/display_page?page_id=#{@work.pages.first.id}"
     page.find('.tabs').click_link("Translate")
     expect(page).to have_content("Translation")
+    page.fill_in 'page_source_translation', with: "Test Translation Preview"
+    click_button('Preview')
+    expect(page).to have_content('Edit')
+    expect(page).to have_content("Test Translation Preview")
+    click_button('Edit')
+    expect(page).to have_content('Preview')
     page.fill_in 'page_source_translation', with: "Test Translation"
     click_button('Save Changes')
     expect(page).to have_content("Test Translation")
