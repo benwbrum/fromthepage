@@ -38,7 +38,7 @@ class ArticleController < ApplicationController
         return
       end
     elsif params['preview']
-      @preview_xml = @article.generate_preview
+      @preview_xml = @article.generate_preview("transcription")
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
       flash[:notice] = "Subjects auto linking process completed"

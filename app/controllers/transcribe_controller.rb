@@ -68,7 +68,9 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
-      @preview_xml = @page.generate_preview
+      @preview_xml = @page.wiki_to_xml(@page.source_text, "transcription")
+
+#      @preview_xml = @page.generate_preview("transcription")
       render :action => 'display_page'
     elsif params['edit']
       render :action => 'display_page'
@@ -130,8 +132,14 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
-      @preview_xml = @page.wiki_to_xml(@page.source_translation)
+      @preview_xml = @page.wiki_to_xml(@page.source_translation, "translation")
       render :action => 'translate'
+    elsif params['edit']
+      render :action => 'translate'
+    elsif params['autolink']
+      @page.source_translation = autolink(@page.source_translation)
+      render :action => 'translate'
+
     end
   end
 

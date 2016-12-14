@@ -96,9 +96,9 @@ module XmlSourceProcessor
   end
 
 
-  def generate_preview
-    xml_string = wiki_to_xml(self.source_text)
-    xml_string = update_links_and_xml(xml_string, true)
+  def generate_preview(text_type)
+    xml_string = wiki_to_xml(self.source_text, text_type)
+    xml_string = update_links_and_xml(xml_string, true, text_type)
     return xml_string
   end
 
