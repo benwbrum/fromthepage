@@ -31,7 +31,11 @@
         .toolbar_group.w100
           //=f.button 'Preview', :name => 'preview'
           =f.button 'Autolink', :name => 'autolink'
+          -if user_signed_in? && current_user.like_owner?(@collection)
+            =f.button 'Delete Subject'
+
         .toolbar_group.aright =f.button 'Save Changes', :name => 'save', class: 'big'
+
 
   aside.sidecol
     -if @article.possible_duplicates.empty?
