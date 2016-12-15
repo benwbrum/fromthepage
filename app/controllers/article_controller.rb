@@ -24,7 +24,7 @@ class ArticleController < ApplicationController
   end
 
   def delete
-    if @article.link_list.empty?
+    if @article.link_list.empty? && @article.target_article_links.empty?
       @article.destroy
       redirect_to :controller => 'article', :action => 'list', :collection_id => @collection.id
     else

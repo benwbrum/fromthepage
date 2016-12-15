@@ -18,7 +18,7 @@ class Article < ActiveRecord::Base
   scope :target_article_links, -> { include 'source_article' }
   scope :target_article_links, -> { order "articles.title ASC" }
 
-  has_many(:source_article_links, { :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink' }, dependent: :destroy)
+  has_many(:source_article_links, { :foreign_key => "source_article_id", :class_name => 'ArticleArticleLink' })
   has_many(:page_article_links)
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
