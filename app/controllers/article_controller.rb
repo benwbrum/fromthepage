@@ -24,8 +24,13 @@ class ArticleController < ApplicationController
   end
 
   def delete
-    @article.destroy
-    redirect_to :controller => 'article', :action => 'list', :collection_id => @collection.id
+    if @article.link_list.empty?
+      @article.destroy
+      redirect_to :controller => 'article', :action => 'list', :collection_id => @collection.id
+    else
+      flash.alert ="You must remove all referring links before you delete this subject."
+      redirect_to :action => :show, :article_id => @article.id
+    end
   end
 
   def update
