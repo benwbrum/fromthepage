@@ -23,6 +23,11 @@ class ArticleController < ApplicationController
     @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
   end
 
+  def delete
+    @article.destroy
+    redirect_to :controller => 'article', :action => 'list', :collection_id => @collection.id
+  end
+
   def update
     old_title = @article.title
     @article.attributes = params[:article]
@@ -35,17 +40,12 @@ class ArticleController < ApplicationController
         record_deed
         flash[:notice] = "Subject has been successfully updated"
         redirect_to :action => 'edit', :article_id => @article.id
-        return
       end
-    elsif params['preview']
-      @preview_xml = @article.generate_preview("transcription")
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
       flash[:notice] = "Subjects auto linking process completed"
-      redirect_to :action => 'edit', :article_id => @article.id
-      return
+      render :action => 'edit'
     end
-    render :action => 'edit'
   end
 
   def article_category

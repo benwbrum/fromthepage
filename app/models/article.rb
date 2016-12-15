@@ -123,7 +123,7 @@ class Article < ActiveRecord::Base
   end
 
   # tested
-  def create_link(article, display_text)
+  def create_link(article, display_text, text_type)
     link = ArticleArticleLink.new
     link.source_article = self
     link.target_article = article

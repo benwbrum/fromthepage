@@ -11,7 +11,7 @@
           td.w100 =f.text_field :title
         tr
           td(colspan="2")
-            -if @preview_xml
+            //-if @preview_xml
               ==xml_to_html(@preview_xml)
               hr
             =f.label :source_text, 'Description', class: 'above'
@@ -29,13 +29,12 @@
 
       .toolbar
         .toolbar_group.w100
-          //=f.button 'Preview', :name => 'preview'
           =f.button 'Autolink', :name => 'autolink'
-          -if user_signed_in? && current_user.like_owner?(@collection)
-            =f.button 'Delete Subject'
 
         .toolbar_group.aright =f.button 'Save Changes', :name => 'save', class: 'big'
 
+      -if user_signed_in? && current_user.like_owner?(@collection)
+        =link_to 'Delete Subject', { :controller => 'article', :action => 'delete', :article_id => @article.id}, data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"}
 
   aside.sidecol
     -if @article.possible_duplicates.empty?
