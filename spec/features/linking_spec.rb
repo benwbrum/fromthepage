@@ -27,6 +27,21 @@ describe "subject linking" do
     end
   end
 
+  it "edits a subject's description" do 
+    login_as(@user, :scope => :user)
+    article = Article.first
+    visit "/article/show?article_id=#{article.id}"
+    expect(page).to have_content("Description")
+    #this will fail if a description is already entered
+    click_link("Edit the description in the settings tab")
+    expect(page).to have_content("Description")
+    expect(page).not_to have_content("Related Subjects")
+    expect(page).not_to have_content("Delete Subject")
+    page.fill_in 'article_source_text', with: "This is the text about my article."
+    click_button('Save Changes')
+    expect(page).to have_content("This is the text about my article.")
+  end
+
   it "links a categorized subject" do
     login_as(@user, :scope => :user)
     test_page = @work.pages.last
@@ -50,7 +65,6 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
     expect(links).to eq 1
-    
   end
 
   it "enters a bad link - no closing braces" do
@@ -106,8 +120,8 @@ it "enters a bad link - no text in category then subject" do
 
   it "links subjects on a translation" do
     login_as(@user, :scope => :user)
-    @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
-    test_page = @work.pages.first
+    translate_work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+    test_page = translate_work.pages.first
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Translate")
     expect(page).to have_content("Translation")
@@ -126,8 +140,36 @@ it "enters a bad link - no text in category then subject" do
     expect(links).to eq 1
   end
 
-  it "tests autolinking" do
+  it "tests autolinking in transcription" do
+    login_as(@user, :scope => :user)
+    link_work = @collection.works.second
+    link_page = link_work.pages.first
+    visit "/display/display_page?page_id=#{link_page.id}"
+    page.find('.tabs').click_link("Transcribe")
+    #make sure it doesn't autolink something that has no subject
+    page.fill_in 'page_source_text', with: "Houston"
+    click_button('Autolink')
+    expect(page).not_to have_content("[[Places|Houston}}")
+    #check that it links if there is a subject
+    page.fill_in 'page_source_text', with: "Texas"
+    click_button('Autolink')
+    expect(page).to have_content("[[Places|Texas]]")
+  end
 
+  it "tests autolinking in translation" do
+    login_as(@user, :scope => :user)
+    translate_work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+    test_page = translate_work.pages.last
+    visit "/display/display_page?page_id=#{test_page.id}"
+    page.find('.tabs').click_link("Translate")
+    #make sure it doesn't autolink something that has no subject
+    page.fill_in 'page_source_translation', with: "Houston"
+    click_button('Autolink')
+    expect(page).not_to have_content("[[Places|Houston}}")
+    #check that it links if there is a subject
+    page.fill_in 'page_source_translation', with: "Texas"
+    click_button('Autolink')
+    expect(page).to have_content("[[Places|Texas]]")
   end
 
 end

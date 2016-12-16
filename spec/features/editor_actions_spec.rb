@@ -100,7 +100,7 @@ describe "editor actions" do
     click_button('Save Changes')
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
-    expect(@page.status).to eq "" 
+    
   end
 
   it "translates a page" do
