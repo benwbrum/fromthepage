@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "subject linking" do
 
   before :all do
+    @owner = User.find_by(login: 'margaret')
     @user = User.find_by(login: 'eleanor')
     collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
     @collections = Collection.where(id: collection_ids)
@@ -40,6 +41,32 @@ describe "subject linking" do
     page.fill_in 'article_source_text', with: "This is the text about my article."
     click_button('Save Changes')
     expect(page).to have_content("This is the text about my article.")
+  end
+
+  it "deletes a subject" do
+    login_as(@owner, :scope => :user)
+    collection = @collections.second
+
+    visit "/collection/show?collection_id=#{collection.id}"
+    page.find('.tabs').click_link("Subjects")
+    page.find('a', text: "Testing").click
+    page.find('.tabs').click_link("Settings")
+    click_link('Delete Subject')
+    expect(page.find('.flash_message')).to have_content("You must remove all referring links")
+    page.find('a', text: "Show pages that mention").click
+    page.find('.work-page_title').find('a').click
+    page.find('.tabs').click_link("Transcribe")
+    page.fill_in 'page_source_text', with: ""
+    click_button('Save Changes')
+    expect(page).to have_content("Facsimile")
+    click_link(collection.title)
+    page.find('.tabs').click_link("Subjects")
+    page.find('a', text: "Testing").click
+    expect(page).not_to have_content("Show pages that mention Testing in all works")
+    page.find('.tabs').click_link("Settings")
+    click_link('Delete Subject')
+    expect(page).to have_content("People")
+    expect(page).to have_content("There are no subjects for the category selected")
   end
 
   it "links a categorized subject" do
