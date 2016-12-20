@@ -110,32 +110,21 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
   end
 
-it "enters a bad link - no text" do
+  it "enters a bad link - no text" do
     login_as(@user, :scope => :user)
     test_page = @work.pages.fourth
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content("Status")
+    #no text in the link
     page.fill_in 'page_source_text', with: "[[ ]]"
     click_button('Save Changes')
     expect(page).to have_content("Subject Linking Error: Blank tag")
-    page.fill_in 'page_source_text', with: ""
-    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
-    click_button('Save Changes')
-    expect(page).to have_content("Transcription")
-    expect(page).to have_content("Texas")
-  end
-
-it "enters a bad link - no text in category then subject" do
-    login_as(@user, :scope => :user)
-    test_page = @work.pages.fifth
-    visit "/display/display_page?page_id=#{test_page.id}"
-    page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
+    #no text in the category
     page.fill_in 'page_source_text', with: "[[|Texas]]"
     click_button('Save Changes')
     expect(page).to have_content("Subject Linking Error: Blank subject")
-    page.fill_in 'page_source_text', with: ""
+    #no text in the subject
     page.fill_in 'page_source_text', with: "[[Places| ]]"
     click_button('Save Changes')
     expect(page).to have_content("Subject Linking Error: Blank text")
@@ -144,6 +133,40 @@ it "enters a bad link - no text in category then subject" do
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
   end
+
+  it "enters a bad link - single starting bracket" do
+    login_as(@user, :scope => :user)
+    test_page = @work.pages.third
+    visit "/display/display_page?page_id=#{test_page.id}"
+    page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("Status")
+    page.fill_in 'page_source_text', with: "[[Texas[?]]"
+    click_button('Save Changes')
+    expect(page).to have_content("Subject Linking Error: Unclosed bracket")
+    page.fill_in 'page_source_text', with: ""
+    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+    click_button('Save Changes')
+    expect(page).to have_content("Transcription")
+    expect(page).to have_content("Texas")
+  end
+
+it "enters a bad link - triple brackets" do
+    login_as(@user, :scope => :user)
+    test_page = @work.pages.third
+    visit "/display/display_page?page_id=#{test_page.id}"
+    page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("Status")
+    page.fill_in 'page_source_text', with: "[[[Texas]]]"
+    click_button('Save Changes')
+    expect(page).to have_content("Subject Linking Error: Tags should be created using 2 brackets, not 3")
+    page.fill_in 'page_source_text', with: ""
+    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+    click_button('Save Changes')
+    expect(page).to have_content("Transcription")
+    expect(page).to have_content("Texas")
+  end
+
+
 
   it "links subjects on a translation" do
     login_as(@user, :scope => :user)

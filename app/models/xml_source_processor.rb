@@ -39,6 +39,11 @@ module XmlSourceProcessor
     debug("validate_source: massaged tags to process are #{tags.inspect}")
     for tag in tags
       debug(tag)
+
+      if tag.include?(']]]')
+        errors.add(:base, "Subject Linking Error: Tags should be created using 2 brackets, not 3")
+        return
+      end
       unless tag.include?(']]')
         tag = tag.strip
         errors.add(:base, "Subject Linking Error: Wrong number of closing braces after \"[[#{tag}\"")
@@ -48,6 +53,13 @@ module XmlSourceProcessor
       inner_tag = tag.split(']]')[0]
       if inner_tag =~ /^\s*$/
         errors.add(:base, "Subject Linking Error: Blank tag in \"[[#{tag}\"")
+      end
+
+      #check for unclosed single bracket
+      if inner_tag.include?('[')
+        unless inner_tag.include?(']')
+          errors.add(:base, "Subject Linking Error: Unclosed bracket within \"#{inner_tag}\"")
+        end
       end
       # check for blank title or display name with pipes
       if inner_tag.include?("|")

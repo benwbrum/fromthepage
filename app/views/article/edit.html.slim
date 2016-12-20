@@ -34,6 +34,7 @@
         .toolbar_group.aright =f.button 'Save Changes', :name => 'save', class: 'big'
 
     -if user_signed_in? && current_user.like_owner?(@collection)
+      br
       =link_to 'Delete Subject', { :controller => 'article', :action => 'delete', :article_id => @article.id}, data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"}
 
   aside.sidecol
