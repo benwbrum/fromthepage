@@ -30,7 +30,6 @@ module XmlSourceProcessor
 
 #check the text for problems or typos with the subject links
   def validate_links(text)
-  
     # split on all begin-braces
     tags = text.split('[[')
     # remove the initial string which occurs before the first tag
@@ -103,7 +102,6 @@ module XmlSourceProcessor
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
     postprocess_sections
-
     xml_string    
   end
 
@@ -123,12 +121,11 @@ module XmlSourceProcessor
   def process_square_braces(text)
     # find all the links
     wikilinks = text.scan(BRACE_REGEX)
-    
     wikilinks.each do |wikilink_contents|
       # strip braces
       munged = wikilink_contents.sub('[[','')
       munged = munged.sub(']]','')
-            
+
       # extract the title and display
       if munged.include? '|'
         parts = munged.split '|'
@@ -138,11 +135,12 @@ module XmlSourceProcessor
         title = munged
         verbatim = munged
       end
+
       title = canonicalize_title(title)
       
       replacement = "<link target_title=\"#{title}\">#{verbatim}</link>"
-      
       text.sub!(wikilink_contents, replacement)      
+
     end
     
     text
@@ -287,7 +285,8 @@ module XmlSourceProcessor
     title = title.gsub(/\n/, ' ')
     # multiple spaces -> single spaces
     title = title.gsub(/\s+/, ' ')
-
+    # change double quotes to proper xml
+    title = title.gsub(/\"/, '&quot;')
     title
   end
 
@@ -336,19 +335,20 @@ EOF
     processed = ""
     # process it
     doc = REXML::Document.new xml_string
-
     doc.elements.each("//link") do |element|
       # default the title to the text if it's not specified
       if !(title=element.attributes['target_title'])
         title = element.text
       end
-
       #display_text = element.text
       display_text = ""
       element.children.each do |e|
         display_text += e.to_s
       end
       debug("link display_text = #{display_text}")
+      #change the xml version of quotes back to double quotes for article title
+      title = title.gsub('&quot;', '"')
+
       # create new blank articles if they don't exist already
       if !(article = collection.articles.where(:title => title).first)
         article = Article.new
