@@ -78,7 +78,9 @@ describe "subject linking" do
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
     expect(page).to have_content("Texas")
-  #check to see if the links are regenerating on save
+    links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
+    expect(links).to eq 1
+    #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
@@ -86,12 +88,13 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
     expect(links).to eq 1
-  #check the tooltip to explore a subject
+    #check the tooltip to explore a subject
     page.find('a', text: 'Texas').click
     expect(page).to have_content("Related Subjects")
     expect(page).to have_content("Texas")
-    links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
-    expect(links).to eq 1
+    #check that it's creating an initial version
+    page.find('.tabs').click_link("Versions")
+    expect(page).to have_content("1 revision")
   end
 
   it "enters a bad link - no closing braces" do
@@ -150,7 +153,7 @@ describe "subject linking" do
     expect(page).to have_content("Texas")
   end
 
-it "enters a bad link - triple brackets" do
+  it "enters a bad link - triple brackets" do
     login_as(@user, :scope => :user)
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
@@ -166,7 +169,16 @@ it "enters a bad link - triple brackets" do
     expect(page).to have_content("Texas")
   end
 
-
+  it "creates a link that includes quotes" do
+    login_as(@user, :scope => :user)
+    test_page = @work.pages.third
+    visit "/display/display_page?page_id=#{test_page.id}"
+    page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("Status")
+    page.fill_in 'page_source_text', with: "[[Places|\"Houston\"]]"
+    click_button('Save Changes')
+    expect(page).to have_content("Houston")
+  end
 
   it "links subjects on a translation" do
     login_as(@user, :scope => :user)

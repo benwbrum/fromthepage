@@ -8,6 +8,8 @@
 #    end
 class Article < ActiveRecord::Base
   include XmlSourceProcessor
+  #include ActiveModel::Dirty
+
   before_update :process_source
 
   validates_presence_of :title
@@ -30,12 +32,10 @@ class Article < ActiveRecord::Base
   has_many :article_versions, dependent: :destroy
   scope :article_versions, -> { order 'version' }
 
-
   after_save :create_version
 
   attr_accessible :title
   attr_accessible :source_text
-
 
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
@@ -43,14 +43,6 @@ class Article < ActiveRecord::Base
 
   def page_list
     self.pages.order("pages.work_id, pages.position")
-  end
-
-
-  @title_dirty = false
-
-  def title=(title)
-    @title_dirty = true
-    super
   end
 
   def source_text
@@ -137,9 +129,10 @@ class Article < ActiveRecord::Base
   #######################
   # tested
   def create_version
-    if !@text_dirty or !@title_dirty
-      return
-    end
+
+  unless self.title_changed? || self.source_text_changed?
+    return
+  end
 
     version = ArticleVersion.new
     # copy article data
