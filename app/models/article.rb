@@ -29,8 +29,7 @@ class Article < ActiveRecord::Base
 
   has_many :pages, :through => :page_article_links
 
-  has_many :article_versions, dependent: :destroy
-  scope :article_versions, -> { order 'version' }
+  has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
   after_save :create_version
 
