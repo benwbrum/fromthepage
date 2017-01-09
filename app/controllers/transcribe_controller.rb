@@ -89,7 +89,11 @@ class TranscribeController  < ApplicationController
       end
     end
     # no uncategorized articles found, skip to display
-    redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
+    if params[:translation]
+      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display', :translation => true
+    else
+      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
+    end
   end
 
   def translate
@@ -107,9 +111,7 @@ class TranscribeController  < ApplicationController
 
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
-          redirect_to :action => 'assign_categories', :page_id => @page.id
-
-#          redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true
+          redirect_to :action => 'assign_categories', :page_id => @page.id, :translation => true
         else
           log_translation_error
           render :action => 'translate'
