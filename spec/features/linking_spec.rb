@@ -77,6 +77,7 @@ describe "subject linking" do
     expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
     expect(links).to eq 1
@@ -189,6 +190,7 @@ describe "subject linking" do
     expect(page).to have_content("Translation")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    expect(page).to have_content("Translation")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "translation").count
     expect(links).to eq 1

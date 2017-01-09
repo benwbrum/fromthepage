@@ -81,6 +81,7 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
+    @translation = params[:translation]
     # look for uncategorized articles
     for article in @page.articles
       if article.categories.length == 0
@@ -89,7 +90,7 @@ class TranscribeController  < ApplicationController
       end
     end
     # no uncategorized articles found, skip to display
-    if params[:translation]
+    if @translation
       redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display', :translation => true
     else
       redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
