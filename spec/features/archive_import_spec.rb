@@ -57,28 +57,23 @@ describe "IA import actions", :order => :defined do
     expect(first_page.source_text).not_to be_nil
   end
 
-
-#this tests the new ocr-deeds code
   it "tests ocr correction" do
-    @work = Work.find_by(title: @title)
-    @page = @work.pages.first
+    @ocr_work = Work.find_by(title: @title)
+    @ocr_page = @ocr_work.pages.first
     login_as(@user, :scope => :user)
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit "/display/read_work?work_id=#{@ocr_work.id}"
     expect(page).to have_content("This page is not corrected, please help correct this page")
-    click_link @page.title
+    click_link @ocr_page.title
     expect(page).to have_content("This page is not corrected")
     page.find('.tabs').click_link("Correct")
-    save_and_open_page
-    binding.pry
-#for some reason this is having problems when you run the full test suite, but works fine with only ia_spec.rb.
     expect(page.find('#page_status')).to have_content("Incomplete Correction")
     page.fill_in 'page_source_text', with: "Test OCR Correction"
     click_button('Save Changes')
     expect(page).to have_content("Test OCR Correction")
     expect(page).to have_content("Facsimile")
     expect(page.find('.tabs')).to have_content("Correct")
-    @page = @work.pages.first
-    expect(@page.status).to eq "part_ocr" 
+    @ocr_page = @ocr_work.pages.first
+    expect(@ocr_page.status).to eq "part_ocr" 
   end
 
   it "checks ocr/transcribe statistics" do
