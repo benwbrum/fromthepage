@@ -1,6 +1,3 @@
-include Rails.application.routes.url_helpers
-Rails.application.routes.default_url_options[:host] = 'localhost:3000'
-
 
 namespace :fromthepage do
   desc "Display all transcriber names and emails"
@@ -46,7 +43,7 @@ namespace :fromthepage do
     unless new_transcribers.empty?
       puts "New Transcribers: <br> "
       new_transcribers.each do |t|
-        puts "<a href='#{url_for({controller: 'user', action: 'profile', user_id: t.id})}'>#{t.display_name}</a>  #{t.email} <br>"
+        puts "<a href='#{Rails.application.routes.url_helpers.url_for({controller: 'user', action: 'profile', user_id: t.id})}'>#{t.display_name}</a>  #{t.email} <br>"
       end
     else
       puts "No new transcribers"
@@ -57,9 +54,9 @@ namespace :fromthepage do
     unless recent_transcriptions.empty?
       puts "Recent Transcriptions: <br>"
       recent_transcriptions.each do |t|
-        user_url = url_for({ controller: 'user', action: 'profile', user_id: t.user.id})
-        page_url = url_for({ controller: 'display', action: 'display_page', page_id: t.page.id})
-        work_url = url_for({ controller: 'display', action: 'read_work', work_id: t.work.id})
+        user_url = Rails.application.routes.url_helpers.url_for({ controller: 'user', action: 'profile', user_id: t.user.id})
+        page_url = Rails.application.routes.url_helpers.url_for({ controller: 'display', action: 'display_page', page_id: t.page.id})
+        work_url = Rails.application.routes.url_helpers.url_for({ controller: 'display', action: 'read_work', work_id: t.work.id})
 
         puts "On #{t.created_at}, <a href='#{user_url}'>#{t.user.display_name}</a> (#{t.user.email}) transcribed page <a href='#{page_url}'>#{t.page.title}</a> in the work <a href='#{work_url}'>#{t.work.title}</a>.<br>"
       end
@@ -72,9 +69,9 @@ namespace :fromthepage do
     unless recent_notes.empty?
       puts "Recent Notes: <br>"
       recent_notes.each do |n|
-        user_url = url_for({ controller: 'user', action: 'profile', user_id: n.user.id})
-        page_url = url_for({ controller: 'display', action: 'display_page', page_id: n.page.id})
-        work_url = url_for({ controller: 'display', action: 'read_work', work_id: n.work.id}) 
+        user_url = Rails.application.routes.url_helpers.url_for({ controller: 'user', action: 'profile', user_id: n.user.id})
+        page_url = Rails.application.routes.url_helpers.url_for({ controller: 'display', action: 'display_page', page_id: n.page.id})
+        work_url = Rails.application.routes.url_helpers.url_for({ controller: 'display', action: 'read_work', work_id: n.work.id}) 
         
         puts "On #{n.created_at}, <a href='#{user_url}'>#{n.user.display_name}</a> added a note on page <a href='#{page_url}'>#{n.page.title}</a> in the work <a href='#{work_url}'>#{n.work.title}</a> that read '#{n.note.title}'"
         puts "<br> "

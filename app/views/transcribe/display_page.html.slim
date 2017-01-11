@@ -4,11 +4,15 @@
 
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
+  =validation_summary @page.errors
   .page-toolbar
     .toolbar
       .toolbar_group
         =f.label :status, title: relevant_status_help(@work), class: 'hide-l'
-        =f.select :status, relevant_transcription_statuses(@work), { :include_blank => '- Transcription status not set -' }, class: 'wauto'
+        -if @page.status == 'raw_ocr' || @page.status == 'part_ocr'
+          =f.select :status, relevant_transcription_statuses(@work), { :selected => Page::STATUS_INCOMPLETE_OCR }, class: 'wauto'        
+        -else
+          =f.select :status, relevant_transcription_statuses(@work), { :include_blank => '- Transcription status not set -' }, class: 'wauto'
       .toolbar_group
         a.button.outline(data-fullscreen-toggle) Fullscreen
       .toolbar_group
