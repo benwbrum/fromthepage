@@ -1,12 +1,13 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection.id }})
 
-h2.nomargin Export Subject Index
-p.big
-  span.fright(style="margin-left: 30px")
-    =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
-      =svg_symbol '#icon-export', class: 'icon'
-      span Export Subjects as CSV
-  span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+-unless @collection.subjects_disabled
+  h2.nomargin Export Subject Index
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export Subjects as CSV
+    span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
 
 h2 Export Individual Works
 p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.

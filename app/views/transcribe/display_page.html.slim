@@ -53,7 +53,8 @@
           =>button_tag 'Preview', :name => 'preview'
         -else
           =>button_tag 'Edit', :name => 'edit'
-        =>button_tag 'Autolink', :name => 'autolink'
+        -unless @collection.subjects_disabled
+          =>button_tag 'Autolink', :name => 'autolink'
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 

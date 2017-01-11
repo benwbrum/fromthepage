@@ -5,14 +5,18 @@
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.work_count}") #{'Work'.pluralize(@collection.work_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.page_count}") #{'Page'.pluralize(@collection.page_count)}
-      .counter(data-prefix="#{number_with_delimiter @collection.subject_count}") #{'Subject'.pluralize(@collection.subject_count)}
-      .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Reference'.pluralize(@collection.mention_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.comment_count}") #{'Note'.pluralize(@collection.comment_count)}
+      -unless @collection.subjects_disabled
+        .counter(data-prefix="#{number_with_delimiter @collection.subject_count}") #{'Subject'.pluralize(@collection.subject_count)}
+        .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Reference'.pluralize(@collection.mention_count)}
+    
+    .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Collaborator'.pluralize(@collection.contributor_count)}
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.transcription_count}") #{'Page'.pluralize(@collection.transcription_count)} transcribed
       .counter(data-prefix="#{number_with_delimiter @collection.edit_count}") Page edits
-      .counter(data-prefix="#{number_with_delimiter @collection.index_count}") #{'Page'.pluralize(@collection.index_count)} indexed
+      -unless @collection.subjects_disabled
+        .counter(data-prefix="#{number_with_delimiter @collection.index_count}") #{'Page'.pluralize(@collection.index_count)} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.translation_count}") #{'Page'.pluralize(@collection.translation_count)} translated
       .counter(data-prefix="#{number_with_delimiter @collection.ocr_count}") OCR #{'Correction'.pluralize(@collection.ocr_count)}
 
@@ -22,8 +26,9 @@
     .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Collaborator'.pluralize(@collection.contributor_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
     .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
+    -unless @collection.subjects_disabled
+      .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
+      .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.translation_count(7)}") #{'Page'.pluralize(@collection.translation_count(7))} translated
     .counter(data-prefix="#{number_with_delimiter @collection.ocr_count(7)}") OCR #{'Correction'.pluralize(@collection.ocr_count(7))}
@@ -42,11 +47,13 @@
       li
         span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
         span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
-        span =="<b>#{progress_annotated}%</b> indexed"
+        -unless @collection.subjects_disabled
+          span =="<b>#{progress_annotated}%</b> indexed"
         span =="<b>#{progress_completed}%</b> #{completed}"
         span
           span.progress
-            span(style="width:#{progress_annotated}%")
+            -unless @collection.subjects_disabled
+              span(style="width:#{progress_annotated}%")
             span(style="width:#{progress_completed - progress_annotated}%")
 
 h2 Collaborators
@@ -75,17 +82,18 @@ h2 Collaborators
     -else
       h3 Editing
       p.a50 No editors
-
-  .justified_box>
-    -unless @all_indexers.empty?
-      h3 Indexing
-      -@all_indexers.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-            span.vmiddle =user.display_name
-    -else
-      h3 Indexing
-      p.a50 No indexers
+      
+  -unless @collection.subjects_disabled
+    .justified_box>
+      -unless @all_indexers.empty?
+        h3 Indexing
+        -@all_indexers.each do |user, count|
+          .collection-user(data-prefix="#{count}")
+            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span.vmiddle =user.display_name
+      -else
+        h3 Indexing
+        p.a50 No indexers
 
 =render({ :partial => '/shared/collection_footer' })

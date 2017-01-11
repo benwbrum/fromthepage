@@ -35,16 +35,18 @@
           =>button_tag 'Preview', :name => 'preview'
         -else
           =>button_tag 'Edit', :name => 'edit'
-        =>button_tag 'Autolink', :name => 'autolink'
+        -unless @collection.subjects_disabled
+          =>button_tag 'Autolink', :name => 'autolink'
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
       .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area :source_translation
 
+-if @work.translation_instructions.present?
+  .fgfaded ==@work.translation_instructions
+
 h2.legend Page Notes
 .page-notes
   =render :partial => "notes/notes"
 
--if @work.translation_instructions.present?
-  .fgfaded ==@work.translation_instructions
