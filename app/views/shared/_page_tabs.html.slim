@@ -8,14 +8,24 @@
 }]
 
 -if user_signed_in? && current_user.can_transcribe?(@work)
-  -tabs += [{\
-    :name => 'Transcribe',
-    :selected => 3,
-    :options => {\
-      :controller => 'transcribe',
-      :action => 'display_page',
-    },
-  }]
+  -if correction_mode?
+    -tabs += [{\
+      :name => 'Correct',
+      :selected => 3,
+      :options => {\
+        :controller => 'transcribe',
+        :action => 'display_page',
+      },
+    }]
+  -else
+    -tabs += [{\
+      :name => 'Transcribe',
+      :selected => 3,
+      :options => {\
+        :controller => 'transcribe',
+        :action => 'display_page',
+      },
+    }]
 
 -if @work.supports_translation
   -tabs += [{\

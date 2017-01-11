@@ -3,10 +3,12 @@
 .article-columns.columns
   article.maincol
     -description = xml_to_html(@article.xml_text)
+    h3 Description
     -if description.present?
-      h3 Description
       .big ==description
-
+    -else
+      i =link_to 'Edit the description in the settings tab.', { :controller => 'article', :action => 'edit', :article_id => @article.id }
+      
     h3 Related Subjects
     .article-graph
       =image_tag(file_to_url(@article.graph_image), :usemap => '#G')

@@ -43,6 +43,10 @@ module CollectionStatistic
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_TRANSLATED}\" #{last_days_clause(last_days)}")
   end
 
+  def ocr_count(last_days=nil)
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
+  end
+
 
   def last_days_clause(last_days, column = "created_at")
     clause = ""

@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
 
   before_update :process_source
   before_update :populate_search
+  validate :validate_source, :validate_source_translation
 
   belongs_to :work
   acts_as_list :scope => :work
@@ -241,12 +242,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   # tested
   def create_link(article, display_text, text_type)
-    link = PageArticleLink.new(:page => self,
-                               :article => article,
-                               :display_text => display_text,
-                               :text_type => text_type)
+    link = PageArticleLink.new(page: self, article: article,
+                               display_text: display_text, text_type: text_type)
     link.save!
-
     return link.id
   end
 

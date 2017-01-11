@@ -36,6 +36,24 @@
             .centered_content
               h5.nodata_title This page is not translated
               p.nodata_text =="Please #{help_translate} this page"
+
+      -elsif correction_mode?
+        -correction = xml_to_html(@page.xml_text)
+        -if correction.present?
+          ==correction
+        -else
+          -help_correct = link_to('help correct', { :controller => 'transcribe', :action => 'display_page', :page_id => @page.id })
+          p.nodata_text
+            ==@page.source_text
+            br
+            br   
+          .centered
+            .centered_content
+
+              h5.nodata_title This page is not corrected
+              p.nodata_text
+                =="Please #{help_correct} this page"
+
       -else
         -transcription = xml_to_html(@page.xml_text)
         -if transcription.present?

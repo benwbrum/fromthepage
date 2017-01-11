@@ -14,6 +14,12 @@ module DisplayHelper
     end
   end
 
+  def correction_mode?
+    if (@page.status == 'raw_ocr') || (@page.status == 'part_ocr')
+      true
+    end
+  end
+
   def notes_for(commentable)
     render({ :partial => 'note/notes', :locals => { :commentable => commentable }})
   end
