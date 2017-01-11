@@ -1,5 +1,26 @@
 module ApplicationHelper
 
+  
+  def billing_host
+    if defined? BILLING_HOST
+      BILLING_HOST
+    else
+      if params[:debug_billing]
+        session[:debug_billing]=true
+      end
+      if session[:debug_billing]
+        if defined? BILLING_HOST_DEVELOPMENT
+          BILLING_HOST_DEVELOPMENT
+        else
+          nil
+        end
+      else
+        nil
+      end
+    end
+  end
+
+
   def html_block(tag)
     render({ :partial => 'page_block/html_block',
              :locals =>
