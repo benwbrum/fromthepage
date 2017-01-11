@@ -1,3 +1,7 @@
 first:
   article_id: 1
   category_id: 2
+
+second:
+  article_id: 2
+  category_id: 3

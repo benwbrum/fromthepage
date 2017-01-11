@@ -52,7 +52,6 @@ class TranscribeController  < ApplicationController
           redirect_to :action => 'assign_categories', :page_id => @page.id
         else
           log_transcript_error
-          flash[:error] = @page.errors[:base].join('<br />')
           render :action => 'display_page'
         end
       rescue REXML::ParseException => ex
@@ -63,18 +62,20 @@ class TranscribeController  < ApplicationController
            Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       rescue  => ex
         log_transcript_exception(ex)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       end
     elsif params['preview']
-      @preview_xml = @page.generate_preview
+      @preview_xml = @page.wiki_to_xml(@page.source_text, "transcription")
+
+#      @preview_xml = @page.generate_preview("transcription")
       render :action => 'display_page'
     elsif params['edit']
       render :action => 'display_page'
@@ -85,6 +86,7 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
+    @translation = params[:translation]
     # look for uncategorized articles
     for article in @page.articles
       if article.categories.length == 0
@@ -93,7 +95,11 @@ class TranscribeController  < ApplicationController
       end
     end
     # no uncategorized articles found, skip to display
-    redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
+    if @translation
+      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display', :translation => true
+    else
+      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
+    end
   end
 
   def translate
@@ -111,11 +117,9 @@ class TranscribeController  < ApplicationController
 
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
-
-          redirect_to :action => 'display_page', :controller => 'display', :page_id => @page.id, :translation => true
+          redirect_to :action => 'assign_categories', :page_id => @page.id, :translation => true
         else
           log_translation_error
-          flash[:error] = @page.errors[:base].join('<br />')
           render :action => 'translate'
         end
       rescue REXML::ParseException => ex
@@ -126,19 +130,25 @@ class TranscribeController  < ApplicationController
            Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       rescue  => ex
         log_translation_exception(ex)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
-        flash[:error] = nil
+        flash.clear
         # raise ex
       end
     elsif params['preview']
-      @preview_xml = @page.wiki_to_xml(@page.source_translation)
+      @preview_xml = @page.wiki_to_xml(@page.source_translation, "translation")
       render :action => 'translate'
+    elsif params['edit']
+      render :action => 'translate'
+    elsif params['autolink']
+      @page.source_translation = autolink(@page.source_translation)
+      render :action => 'translate'
+
     end
   end
 
