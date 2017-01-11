@@ -1,6 +1,7 @@
 class TranscribeController  < ApplicationController
 
   include AbstractXmlController
+  include DisplayHelper
 
   require 'rexml/document'
   include Magick
@@ -33,7 +34,11 @@ class TranscribeController  < ApplicationController
       begin
         if @page.save
           log_transcript_success
-          record_deed
+          if (@page.status == 'raw_ocr') || (@page.status == 'part_ocr')
+            record_correction_deed
+          else
+            record_deed
+          end
           # use the new links to blank the graphs
           @page.clear_article_graphs
 
@@ -227,6 +232,12 @@ protected
     deed.user = current_user
 
     deed
+  end
+
+  def record_correction_deed
+    deed = stub_deed
+    deed.deed_type = Deed::OCR_CORRECTED
+    deed.save!
   end
 
   def record_index_deed
