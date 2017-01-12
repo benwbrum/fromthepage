@@ -9,8 +9,6 @@
       -unless @collection.subjects_disabled
         .counter(data-prefix="#{number_with_delimiter @collection.subject_count}") #{'Subject'.pluralize(@collection.subject_count)}
         .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Reference'.pluralize(@collection.mention_count)}
-    
-    .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Collaborator'.pluralize(@collection.contributor_count)}
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.transcription_count}") #{'Page'.pluralize(@collection.transcription_count)} transcribed
