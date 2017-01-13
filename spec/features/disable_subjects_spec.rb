@@ -49,7 +49,7 @@ describe "disable subject linking", :order => :defined do
     expect(page).not_to have_content("Recent Subjects")
   end
 
-  it "checks work and page level subject items" do
+  it "checks work level subject items" do
     login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Help")
@@ -59,6 +59,15 @@ describe "disable subject linking", :order => :defined do
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
     expect(page).not_to have_content("Categories")
+    page.find('.tabs').click_link("Contents")
+    expect(page).to have_content("Actions")
+    expect(page).not_to have_content("Annotate")
+
+  end
+
+  it "checks page level subject items" do
+    login_as(@user, :scope => :user)
+    visit "/display/read_work?work_id=#{@work.id}"
     click_link @work.pages.first.title
     expect(page).to have_content("Transcription")
     page.find('.tabs').click_link("Transcribe")
