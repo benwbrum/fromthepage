@@ -34,7 +34,7 @@
             span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}"
             span
               span.progress
-                span(style="width:#{progress_completed - progress_annotated}%")
+                span(style="width:#{progress_completed}%")
           
 
     -if user_signed_in? && current_user.like_owner?(@collection)
@@ -71,6 +71,7 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
+
     =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT] })
 
 =render({ :partial => '/shared/collection_footer' })

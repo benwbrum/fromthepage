@@ -52,7 +52,9 @@
           span.progress
             -unless @collection.subjects_disabled
               span(style="width:#{progress_annotated}%")
-            span(style="width:#{progress_completed - progress_annotated}%")
+              span(style="width:#{progress_completed - progress_annotated}%")
+            -else
+              span(style="width:#{progress_completed}%")
 
 h2 Collaborators
 
