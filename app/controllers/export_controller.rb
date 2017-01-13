@@ -6,7 +6,7 @@ class ExportController < ApplicationController
   end
 
   def show
-    render :layout => false, :encoding => 'utf-8'
+    render :layout => false
   end
 
   def tei
@@ -84,7 +84,7 @@ class ExportController < ApplicationController
         @works.each do |work|
           @work = work
           export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-          zos.put_next_entry "#{work.title}.html"
+          zos.put_next_entry "#{work.title}.xhtml"
           zos.print export_view
         end
       end
