@@ -8,7 +8,7 @@ module AbstractXmlController
   ##############################################
 
   #constant - words to ignore when autolinking
-  STOPWORDS = ["Mrs", "Mr.", "Dr."]
+  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr"]
 
   def autolink(text)
     #find the list of articles
@@ -33,26 +33,34 @@ module AbstractXmlController
         #if the match is a stopword, ignore it and move to the next match
                 
       else
-        #find each match to the regex in the text and create an array of the indices
-        positions = text.enum_for(:scan, match_regex).map {Regexp.last_match.begin(0)}
-        
-        for position in positions
+        #match the regex, scanning each remaining portion of the text until you have no more matches
+        matched_word = text.match match_regex
+        remainder = text
+        while matched_word != nil
+          position = remainder.index match_regex
           #check to see if the regex is already within a link, from each index
-          if word_not_okay(text, position, display_text) || within_link(text, position)
+          if word_not_okay(remainder, position, display_text) || within_link(remainder, position)
             #if it's in a link, don't do anything  
           else
             # not within a link, so create a new one
             article = Article.find(match['article_id'].to_i)
             # Bug 19 -- simplify when possible
             if article.title == display_text
-              text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\]\b)/, "[[#{article.title}]]")
+            #  text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\]\b)/, "[[#{article.title}]]")
+              text.sub!(match_regex, "[[#{article.title}]]")
+
             else
-              text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\])\b/, "[[#{article.title}|#{display_text}]]")
+            #  text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\])\b/, "[[#{article.title}|#{display_text}]]")
+              text.sub!(match_regex, "[[#{article.title}|#{display_text}]]")
+
             end
           end
-          end
+          remainder = matched_word.post_match
+
+          matched_word = remainder.match match_regex
         end
       end
+    end
     return text
   end
 
@@ -72,7 +80,7 @@ module AbstractXmlController
       unless next_two.match /\w/
         # we're not in a word boundary
         # check for inflectional endings that might pass
-        unless (next_two.match(/.+s/) || next_two.match(/.+d/) || display_text != 'Mr')
+        unless (next_two.match(/.+s/) || next_two.match(/.+d/))
           return false
         end
       end
