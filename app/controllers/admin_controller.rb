@@ -149,5 +149,4 @@ class AdminController < ApplicationController
     @owners = User.where(owner: true).order(:login).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
   end
 
-
 end

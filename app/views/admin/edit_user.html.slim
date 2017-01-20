@@ -23,5 +23,13 @@
             =f.check_box(:owner)
             |&nbsp;
             span This user is an Owner
+      tr
+        th =f.label :account_type
+        td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution']))
+
+      tr
+        th =f.label :paid_date
+        td =f.text_field :paid_date
+
     .toolbar
       .toolbar_group.aright =f.button 'Save Changes', class: 'big'
