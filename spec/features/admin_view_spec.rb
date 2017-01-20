@@ -13,6 +13,8 @@ end
     visit admin_path
     click_link('Users')
     expect(page.current_path).to eq '/admin/user_list'
+    click_link('Owners')
+    expect(page.current_path).to eq '/admin/owner_list'
     click_link('Uploads')
     expect(page.current_path).to eq '/admin/uploads'
     expect(page).to have_content("Upload Details")

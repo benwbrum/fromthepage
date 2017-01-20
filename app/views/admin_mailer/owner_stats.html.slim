@@ -1,0 +1,23 @@
+h2.nomargin = "Owner statistics"
+
+table.datagrid
+  thead
+    tr
+      th Name
+      th Email
+      th Acct Type
+      th Acct Expiration
+     
+  tbody
+    -@owners.each do |o|
+      tr
+        td
+          div =o.display_name
+          -if o.location
+            small(data-prefix='From ') =o.location
+        td
+          =o.email
+        td =o.account_type
+        td =o.paid_date.strftime('%b %d, %Y') if o.paid_date
+        br
+    end
