@@ -33,34 +33,31 @@ module AbstractXmlController
         #if the match is a stopword, ignore it and move to the next match
                 
       else
-        #match the regex, scanning each remaining portion of the text until you have no more matches
-        matched_word = text.match match_regex
-        remainder = text
-        while matched_word != nil
-          position = remainder.index match_regex
+
+        text.gsub! match_regex do |m|
+          position = Regexp.last_match.offset(0)[0]
           #check to see if the regex is already within a link, from each index
-          if word_not_okay(remainder, position, display_text) || within_link(remainder, position)
-            #if it's in a link, don't do anything  
+          if word_not_okay(text, position, display_text) || within_link(text, position)
+            #if it's in a link, use the original text
+            display_text
           else
             # not within a link, so create a new one
             article = Article.find(match['article_id'].to_i)
             # Bug 19 -- simplify when possible
             if article.title == display_text
             #  text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\]\b)/, "[[#{article.title}]]")
-              text.sub!(match_regex, "[[#{article.title}]]")
+              "[[#{article.title}]]"
 
             else
             #  text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\])\b/, "[[#{article.title}|#{display_text}]]")
-              text.sub!(match_regex, "[[#{article.title}|#{display_text}]]")
+              "[[#{article.title}|#{display_text}]]"
 
             end
           end
-          remainder = matched_word.post_match
-
-          matched_word = remainder.match match_regex
         end
       end
     end
+
     return text
   end
 
