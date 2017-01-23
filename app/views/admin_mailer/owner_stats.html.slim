@@ -5,6 +5,7 @@ table.datagrid
     tr
       th Name
       th Email
+      th Last Sign In
       th Acct Type
       th Acct Expiration
      
@@ -17,6 +18,7 @@ table.datagrid
             small(data-prefix='From ') =o.location
         td
           =o.email
+        td =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td =o.account_type
         td =o.paid_date.strftime('%b %d, %Y') if o.paid_date
         br

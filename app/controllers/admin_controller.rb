@@ -146,7 +146,7 @@ class AdminController < ApplicationController
 
   def owner_list
     @collections = Collection.all
-    @owners = User.where(owner: true).order(:login).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
   end
 
 end
