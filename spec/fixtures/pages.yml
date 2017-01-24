@@ -1,7 +1,7 @@
 page_1:
   id: 1
   title: '1'
-  source_text: 
+  source_text: '[[John Samuel Smith|John]]'
   base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_001.jpg"
   base_width: 1649
   base_height: 2860
@@ -55,7 +55,7 @@ page_3:
 page_4:
   id: 4
   title: '4'
-  source_text: 
+  source_text: '[[Samuel Jones|Samuel]]'
   base_image: "/home/trisha/dev/fromthepage/public/images/uploaded/1/R0844_004.jpg"
   base_width: 1652
   base_height: 2860

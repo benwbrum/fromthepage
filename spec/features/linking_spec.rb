@@ -210,10 +210,14 @@ describe "subject linking" do
     link_page = link_work.pages.first
     visit "/display/display_page?page_id=#{link_page.id}"
     page.find('.tabs').click_link("Transcribe")
+    #make sure the autolink doesn't duplicate a link
+    expect(page).to have_content("[[John Samuel Smith|John]]")
+    click_button('Autolink')
+    expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith|John]]")
     #make sure it doesn't autolink something that has no subject
     page.fill_in 'page_source_text', with: "Houston"
     click_button('Autolink')
-    expect(page).not_to have_content("[[Places|Houston}}")
+    expect(page).not_to have_content("[[Places|Houston]]")
     #check that it links if there is a subject
     page.fill_in 'page_source_text', with: "Texas"
     click_button('Autolink')
@@ -229,7 +233,7 @@ describe "subject linking" do
     #make sure it doesn't autolink something that has no subject
     page.fill_in 'page_source_translation', with: "Houston"
     click_button('Autolink')
-    expect(page).not_to have_content("[[Places|Houston}}")
+    expect(page).not_to have_content("[[Places|Houston]]")
     #check that it links if there is a subject
     page.fill_in 'page_source_translation', with: "Texas"
     click_button('Autolink')

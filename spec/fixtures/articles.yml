@@ -9,3 +9,15 @@ article_2:
   title: Testing
   lock_version: 0
   collection_id: 2
+
+article_3:
+  id: 3
+  title: John Samuel Smith
+  lock_version: 0
+  collection_id: 2
+
+article_4:
+  id: 4
+  title: Samuel Jones
+  lock_version: 0
+  collection_id: 2
