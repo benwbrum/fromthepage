@@ -29,12 +29,14 @@ module AbstractXmlController
       match_regex = Regexp.new('\b'+match['display_text'].gsub('?', '\?').gsub('.', '\.')+'\b', Regexp::IGNORECASE)
       display_text = match['display_text']
       logger.debug("DEBUG looking for #{match_regex}")
-      if display_text.in?(STOPWORDS)
-        #if the match is a stopword, ignore it and move to the next match
-                
-      else
 
+      #if the match is a stopword, ignore it and move to the next match
+      if display_text.in?(STOPWORDS)
+
+      else
+        #find the matches and substitute in as long as the text isn't already in a link
         text.gsub! match_regex do |m|
+          #find the index of the match to check if it's with a larger link
           position = Regexp.last_match.offset(0)[0]
           #check to see if the regex is already within a link, from each index
           if word_not_okay(text, position, display_text) || within_link(text, position)
@@ -45,13 +47,9 @@ module AbstractXmlController
             article = Article.find(match['article_id'].to_i)
             # Bug 19 -- simplify when possible
             if article.title == display_text
-            #  text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\]\b)/, "[[#{article.title}]]")
               "[[#{article.title}]]"
-
             else
-            #  text.sub!(/\b(?<!\[\[)#{match_regex}(?!\]\])\b/, "[[#{article.title}|#{display_text}]]")
               "[[#{article.title}|#{display_text}]]"
-
             end
           end
         end
