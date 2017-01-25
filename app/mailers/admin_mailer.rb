@@ -10,12 +10,12 @@ class AdminMailer < ActionMailer::Base
 
     new_contributors(collection_id, start_date, end_date)
 
-    mail from: '2bluebeans@gmail.com', to: email, subject: "New Transcription Information "
+    mail from: SENDING_EMAIL_ADDRESS, to: email, subject: "New Transcription Information "
   end
 
-  def owner_stats(email)
+  def owner_stats
     owner_expirations
-    mail from: SENDING_EMAIL_ADDRESS, to: email, subject: "Owner Expiration Information "
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Owner Expiration Information "
   end
 
   private
