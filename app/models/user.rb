@@ -83,4 +83,8 @@ class User < ActiveRecord::Base
     self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
   end
 
+  def name
+    guest ? "Guest" : display_name
+  end
+
 end

@@ -5,7 +5,7 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_filter :authorized?, :except => :zoom
+  before_filter :authorized?, :except => [:zoom, :guest]
   protect_from_forgery :except => [:zoom, :unzoom]
 
   def authorized?
@@ -27,6 +27,15 @@ class TranscribeController  < ApplicationController
   end
 
   def save_transcription
+    #if the current user is a guest acct, see how many times they've saved
+    if current_user.guest?
+      deeds = Deed.where(user_id: current_user.id).count
+      if deeds >= 3
+        flash[:notice] = "You must sign up to continue transcribing."
+        #need to figure out route for user sign up.
+      end
+    end
+
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
     if params['save']

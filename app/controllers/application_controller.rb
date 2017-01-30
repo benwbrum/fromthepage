@@ -14,6 +14,27 @@ class ApplicationController < ActionController::Base
     User.current_user = current_user
   end
 
+  def current_user
+    super || guest_user
+  end
+
+  def guest_user
+    unless session[:guest_user_id].nil?
+      User.find(session[:guest_user_id])
+    end
+  end
+
+  def guest_transcription
+    User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
+    redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+  end
+
+  def create_guest_user
+    user = User.new { |user| user.guest = true}
+    user.email = "guest_#{Time.now.to_i}#{rand(99)}@example.com"
+    user.save(:validate => false)
+    user
+  end
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -221,6 +242,7 @@ class ApplicationController < ActionController::Base
       redirect_to options, response_status
     end
   end
+
 
 end
 

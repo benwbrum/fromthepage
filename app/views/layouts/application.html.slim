@@ -62,7 +62,7 @@ html
               dt.header_link.header_user
                 span
                   big Signed In As
-                  small =current_user.display_name
+                  small =current_user.name
                 =svg_symbol '#header-user', class: 'icon'
               dd
                 =link_to 'Admin Dashboard', admin_path if current_user.admin
