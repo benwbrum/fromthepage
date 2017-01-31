@@ -37,7 +37,7 @@
       },
     }]
 
--if !current_user
+-if !current_user && !@work.restrict_scribes
   -tabs += [{\
     :name => 'Transcribe',
     :selected => 3,

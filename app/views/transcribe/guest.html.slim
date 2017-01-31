@@ -1,3 +1,24 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
-=link_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+.page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
+  .page-column
+    .page-imagescan
+      -if @page.ia_leaf
+        =render :partial => '/ia/ia_bookreader_div'
+      -elsif @page.sc_canvas
+        =render :partial => '/shared/iiif_div'
+      -elsif @page.omeka_file
+        =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
+      -else
+        =render :partial => '/shared/zoom_div'
+  .page-column
+     .centered
+        .centered_content
+          =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+
+-if @work.transcription_conventions.present?
+  .fgfaded ==@work.transcription_conventions
+
+.fgfaded
+  =render :partial => 'shared/markup_help'
+
