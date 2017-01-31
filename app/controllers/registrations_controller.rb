@@ -13,6 +13,7 @@ class RegistrationsController < Devise::RegistrationsController
     else
       @user = build_resource(sign_up_params)
     end
+
     resource_saved = @user.save
     yield resource if block_given?
     if resource_saved

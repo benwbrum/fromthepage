@@ -76,15 +76,19 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self[:display_name] || self[:login]
+    if self.guest
+      "Guest"
+    else
+      self[:display_name] || self[:login]
+    end
   end
 
   def collections
     self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
   end
-
+=begin
   def name
     guest ? "Guest" : display_name
   end
-
+=end
 end
