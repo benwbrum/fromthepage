@@ -7,7 +7,8 @@
     -if description.present?
       .big ==description
     -else
-      i =link_to 'Edit the description in the settings tab.', { :controller => 'article', :action => 'edit', :article_id => @article.id }
+      -if user_signed_in?
+        i =link_to 'Edit the description in the settings tab.', { :controller => 'article', :action => 'edit', :article_id => @article.id }
       
     h3 Related Subjects
     .article-graph
