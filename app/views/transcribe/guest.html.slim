@@ -12,9 +12,11 @@
       -else
         =render :partial => '/shared/zoom_div'
   .page-column
-     .centered
-        .centered_content
-          =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+    .centered
+      .centered_content
+        p.big You may save up to three transcriptions as a guest.
+        =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+        
 
 -if @work.transcription_conventions.present?
   .fgfaded ==@work.transcription_conventions

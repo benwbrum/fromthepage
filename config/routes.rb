@@ -2,6 +2,7 @@ Fromthepage::Application.routes.draw do
 
   root :to => 'static#splash'
 
+#set registration controller to the custom version rather than default in gem
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   iiif_for 'riiif/image', at: '/image-service'

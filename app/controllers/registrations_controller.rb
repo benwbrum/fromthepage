@@ -5,6 +5,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
+    #merge the new user information into the guest user id to change into normal user
     if current_user && current_user.guest?
       @user = current_user
       @user.update_attributes(sign_up_params)
@@ -15,6 +16,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     resource_saved = @user.save
+    #this is the default Devise code
     yield resource if block_given?
     if resource_saved
       if resource.active_for_authentication?
@@ -26,7 +28,7 @@ class RegistrationsController < Devise::RegistrationsController
         expire_data_after_sign_in!
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
-
+      #set the guest_user_id of the session to nil so that users can log in and out
       if session[:guest_user_id]
         session[:guest_user_id] = nil
       end
