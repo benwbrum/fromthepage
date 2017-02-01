@@ -7,7 +7,7 @@ namespace :fromthepage do
     @guest_user = User.find_by(login: "guest_user")
  
     #find all guest users that are over a week old
-    guests = User.where("guest = ? AND created_at > ?", true, 1.week.ago)
+    guests = User.where("guest = ? AND created_at < ?", true, 5.days.ago)
     #for each user, find associated items and migrate to "Guest User"
     guests.each do |guest|
 
