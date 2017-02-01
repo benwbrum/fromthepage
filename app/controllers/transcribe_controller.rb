@@ -50,23 +50,21 @@ class TranscribeController  < ApplicationController
           end
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
-          redirect_to :action => 'assign_categories', :page_id => @page.id
-          #if a guest user, force them to sign up after three saves
+          
+          #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
             deeds = Deed.where(user_id: current_user.id).count
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
-              flash[:alert] = "You must sign up to continue transcribing."
-              #this needs to go to user sign up page. figure out routes!!
-
-              render :action => 'display_page'
+              redirect_to new_user_registration_path, :resource => current_user
+              flash[:notice] = "You must sign up to continue transcribing."
               flash.clear
               return
             end
           end
 
-
+          redirect_to :action => 'assign_categories', :page_id => @page.id
         else
           log_transcript_error
           render :action => 'display_page'
@@ -103,6 +101,7 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
+        
     @translation = params[:translation]
     # look for uncategorized articles
     for article in @page.articles
