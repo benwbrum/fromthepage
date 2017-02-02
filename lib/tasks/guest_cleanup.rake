@@ -7,7 +7,7 @@ namespace :fromthepage do
     @guest_user = User.find_by(login: "guest_user")
  
     #find all guest users that are over a week old
-    guests = User.where("guest = ? AND created_at < ?", true, 5.days.ago)
+    guests = User.where("guest = ? AND created_at < ?", true, 1.week.ago)
     #for each user, find associated items and migrate to "Guest User"
     guests.each do |guest|
 
@@ -22,7 +22,7 @@ namespace :fromthepage do
         p.user_id = @guest_user.id
         p.save!
       end
-      #figure out the deal with interactions 
+      #should interactions be included?
 =begin
       interactions = Interaction.where(user_id: guest.id)
       interactions.each do |i|
