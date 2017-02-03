@@ -58,8 +58,6 @@ class TranscribeController  < ApplicationController
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
               redirect_to new_user_registration_path, :resource => current_user
-              flash[:notice] = "You must sign up to continue transcribing."
-              flash.clear
               return
             end
           end
