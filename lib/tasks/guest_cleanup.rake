@@ -22,14 +22,6 @@ namespace :fromthepage do
         p.user_id = @guest_user.id
         p.save!
       end
-      #should interactions be included?
-=begin
-      interactions = Interaction.where(user_id: guest.id)
-      interactions.each do |i|
-        i.user_id = @guest_user.id
-        i.save!
-      end
-=end
       article_versions = ArticleVersion.where(user_id: guest.id)
       article_versions.each do |a|
         a.user_id = @guest_user.id
@@ -50,10 +42,6 @@ namespace :fromthepage do
         logger.debug("DEBUG Failed to delete user id #{guest.id}.")
       end
 
-
     end
-
-
   end
-
 end
