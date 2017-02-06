@@ -298,6 +298,3 @@ DEPENDENCIES
   therubyracer
   uglifier
   will_paginate
-
-BUNDLED WITH
-   1.12.5
