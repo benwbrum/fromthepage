@@ -31,7 +31,7 @@
   -output += "edited the translation of #{page} page"
 
 -when 'ocr_corr'
-  -output += "corrected the OCR transcription of #{page} page"
+  -output += "corrected #{page} page"
 
 -if(long_view && !deed.work.nil?)
   -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id })
