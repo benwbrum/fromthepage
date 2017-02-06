@@ -14,9 +14,9 @@
   .page-column
     .centered
       .centered_content
-        p.big You may save up to three transcriptions as a guest.
-        =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
-        
+        p.big You may save up to three transcriptions <br> as a guest or sign up now.
+        p =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+        p =button_to "Sign Up Now", new_user_registration_path, :method => 'get'
 
 -if @work.transcription_conventions.present?
   .fgfaded ==@work.transcription_conventions
