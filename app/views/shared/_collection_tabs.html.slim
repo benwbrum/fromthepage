@@ -6,18 +6,21 @@
     :action => 'show',
   },
 },{\
-  :name => 'Subjects',
-  :selected => 6,
-  :options => {\
-    :controller => 'article',
-    :action => 'list',
-  },
-},{\
   :name => 'Statistics',
   :selected => 7,
   :options => {\
     :controller => 'statistics',
     :action => 'collection',
+  },
+}]
+
+-unless @collection.subjects_disabled
+  -tabs +=[{\
+  :name => 'Subjects',
+  :selected => 6,
+  :options => {\
+    :controller => 'article',
+    :action => 'list',
   },
 }]
 

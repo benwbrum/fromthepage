@@ -13,4 +13,8 @@ class DocumentSet < ActiveRecord::Base
     self.description
   end
   
+  def subjects_disabled
+    self.collection.subjects_disabled
+  end
+
 end

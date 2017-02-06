@@ -24,20 +24,26 @@
           -else
             -progress_completed = work.work_statistic.pct_transcribed.round
             -completed = "transcribed"
-            
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_completed}% #{completed}"
-          span
-            span.progress
-              span(style="width:#{progress_annotated}%")
-              span(style="width:#{progress_completed - progress_annotated}%")
+          -unless @collection.subjects_disabled
+            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_completed}% #{completed}"
+            span
+              span.progress
+                span(style="width:#{progress_annotated}%")
+                span(style="width:#{progress_completed - progress_annotated}%")
+          -else
+            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}"
+            span
+              span.progress
+                span(style="width:#{progress_completed}%")
+          
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
     
-
-    -unless @collection.categories.empty?
-      h3 Subject Categories
-      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
+    -unless @collection.subjects_disabled
+      -unless @collection.categories.empty?
+        h3 Subject Categories
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
 
   aside.sidecol
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do

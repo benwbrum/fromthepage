@@ -11,27 +11,30 @@ module AbstractXmlHelper
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
     doc = REXML::Document.new(xml_text)
+    #unless subject linking is disabled, do this
+    unless @collection.subjects_disabled
+      doc.elements.each("//link") do |e|
 
-    doc.elements.each("//link") do |e|
-      title = e.attributes['target_title']
-      id = e.attributes['target_id']
-      # first find the articles
-      anchor = REXML::Element.new("a")
-      #anchor.text = display_text
-      if id
-        if flatten_links
-          anchor.add_attribute("href", "#article-#{id}")
+        title = e.attributes['target_title']
+        id = e.attributes['target_id']
+        # first find the articles
+        anchor = REXML::Element.new("a")
+        #anchor.text = display_text
+        if id
+          if flatten_links
+            anchor.add_attribute("href", "#article-#{id}")
+          else
+            anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id))
+            anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
+          end
         else
-          anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id))
-          anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
+          # preview mode for this link
+          anchor.add_attribute("href", "#")
         end
-      else
-        # preview mode for this link
-        anchor.add_attribute("href", "#")
+        anchor.add_attribute("title", title)
+        e.children.each { |c| anchor.add(c) }
+        e.replace_with(anchor)
       end
-      anchor.add_attribute("title", title)
-      e.children.each { |c| anchor.add(c) }
-      e.replace_with(anchor)
     end
     # get rid of line breaks within other html mark-up
     doc.elements.delete_all("//table//lb")
