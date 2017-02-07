@@ -37,11 +37,14 @@ describe "different user role logins" do
     expect(page).to have_content(collections.first.title)
     within ".sidecol" do
       expect(page).to have_content("Your Activity")
-      #list of your deeds - how to test - list of deeds is fine, but they're translated?
     end
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_watchlist_path
+    #make sure user doesn't have admin access
+    expect(page).to have_selector('a', text: 'Collaborator Dashboard')
+    expect(page).not_to have_selector('a', text: 'Owner Dashboard')
+    expect(page).not_to have_selector('a', text: 'Admin Dashboard')
 
   end
 
@@ -64,6 +67,9 @@ describe "different user role logins" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_owner_path
+    #check for owner but not admin dashboard
+    expect(page).to have_selector('a', text: 'Owner Dashboard')
+    expect(page).not_to have_selector('a', text: 'Admin Dashboard')
 
   end
 
@@ -78,7 +84,7 @@ describe "different user role logins" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_owner_path
+    expect(page).to have_selector('a', text: 'Admin Dashboard')
 
   end
-
 end
