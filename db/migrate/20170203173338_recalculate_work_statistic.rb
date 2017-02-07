@@ -5,7 +5,7 @@ class RecalculateWorkStatistic < ActiveRecord::Migration
     unless @collection.empty?
       @collection.each do |c|
         c.works.each do |w|
-          w.save!
+          w.work_statistic.recalculate
         end
       end
     end
