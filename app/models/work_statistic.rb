@@ -22,7 +22,7 @@ class WorkStatistic < ActiveRecord::Base
   def recalculate
     self[:total_pages] = work.pages.count
     self[:transcribed_pages] = work.pages.where('source_text is not null').count 
-    self[:annotated_pages] = work.pages.where('"pages.id in (select page_id from page_article_links)"').count
+    self[:annotated_pages] = work.pages.where("pages.id in (select page_id from page_article_links)").count
     self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
     self[:incomplete_pages] = work.pages.where("status = '#{Page::STATUS_INCOMPLETE}'").count
     self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_INCOMPLETE_OCR}'").count
