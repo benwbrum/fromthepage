@@ -77,6 +77,11 @@ html
               span Sign In
               =svg_symbol '#header-user', class: 'icon'
 
+    -if user_masquerade?
+      h2.strong 
+        =link_to "Undo Login As \"#{current_user.display_name}\"", back_masquerade_path(current_user)
+
+
     =(yield :content_above).force_encoding 'UTF-8'
 
     main.wrapper
