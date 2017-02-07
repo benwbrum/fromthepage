@@ -21,3 +21,9 @@ article_4:
   title: Samuel Jones
   lock_version: 0
   collection_id: 2
+
+article_5:
+  id: 5
+  title: Mrs.
+  lock_version: 0
+  collection_id: 2

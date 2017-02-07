@@ -13,3 +13,7 @@ third:
 fourth:
   article_id: 4
   category_id: 3
+
+fifth:
+  article_id: 5
+  category_id: 3

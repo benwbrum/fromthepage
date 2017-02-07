@@ -8,7 +8,7 @@ module AbstractXmlController
   ##############################################
 
   #constant - words to ignore when autolinking
-  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr"]
+  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it"]
 
   def autolink(text)
     #find the list of articles
