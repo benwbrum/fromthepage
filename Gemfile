@@ -46,8 +46,9 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0.beta'
-  gem 'factory_girl_rails', require: false
+  gem 'rspec-rails'
+  gem 'launchy'
+  gem 'capybara-webkit'
 
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
@@ -68,3 +69,6 @@ gem 'gravatar_image_tag'
 
 # New Relic
 gem 'newrelic_rpm'
+
+#Admin masquerade as a user
+gem 'devise_masquerade'
