@@ -68,8 +68,11 @@
                 =="Please #{help_transcribe} this page"
                 =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
 
+
 h2.legend#notes Page Notes
 .page-notes
   =render :partial => "notes/notes"
+
+=render({ :partial => '/shared/collection_footer' })
   
 javascript:  mixpanel.track("Display Page");  
