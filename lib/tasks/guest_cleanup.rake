@@ -1,13 +1,15 @@
 namespace :fromthepage do
 
   desc "Remove guest accounts more than a week old" 
-  task :guest_cleanup => :environment do
+  task :guest_cleanup, [:days] => :environment do |t,args|
+
+    num = args.days.to_i
 
     #permanent "Guest User" to migrate orphaned data
     @guest_user = User.find_by(login: "guest_user")
  
     #find all guest users that are over a week old
-    guests = User.where("guest = ? AND created_at < ?", true, 1.week.ago)
+    guests = User.where("guest = ? AND created_at < ?", true, num.days.ago)
     #for each user, find associated items and migrate to "Guest User"
     guests.each do |guest|
 
