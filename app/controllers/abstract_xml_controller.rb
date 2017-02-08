@@ -39,18 +39,40 @@ module AbstractXmlController
           #find the index of the match to check if it's with a larger link
           position = Regexp.last_match.offset(0)[0]
           #check to see if the regex is already within a link, from each index
+          if word_not_okay(text, position, m) || within_link(text, position)
+            m
+            
+=begin            
           if word_not_okay(text, position, display_text) || within_link(text, position)
-            #if it's in a link, use the original text
-            display_text
+
+            #if it's in a link, check to see if the regex match is the same as the display text (including case)
+            if m == display_text
+              #if yes, use display_text
+              display_text
+            else
+              #if no, use regex match
+              m
+            end
+=end
           else
             # not within a link, so create a new one
             article = Article.find(match['article_id'].to_i)
-            # Bug 19 -- simplify when possible
-            if article.title == display_text
-              "[[#{article.title}]]"
+
+            #check if regex match is exact (including case)
+            if m == display_text
+              # Bug 19 -- simplify when possible
+              #if yes, use display text
+              if article.title == display_text
+                "[[#{article.title}]]"
+              else
+                "[[#{article.title}|#{display_text}]]"
+              end
+              #if not, use regex match
             else
-              "[[#{article.title}|#{display_text}]]"
+              "[[#{article.title}|#{m}]]"
             end
+
+
           end
         end
       end
