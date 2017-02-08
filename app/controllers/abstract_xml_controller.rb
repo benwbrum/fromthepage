@@ -41,19 +41,7 @@ module AbstractXmlController
           #check to see if the regex is already within a link, from each index
           if word_not_okay(text, position, m) || within_link(text, position)
             m
-            
-=begin            
-          if word_not_okay(text, position, display_text) || within_link(text, position)
-
-            #if it's in a link, check to see if the regex match is the same as the display text (including case)
-            if m == display_text
-              #if yes, use display_text
-              display_text
-            else
-              #if no, use regex match
-              m
-            end
-=end
+  
           else
             # not within a link, so create a new one
             article = Article.find(match['article_id'].to_i)
