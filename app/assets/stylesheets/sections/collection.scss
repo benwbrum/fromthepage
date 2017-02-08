@@ -282,6 +282,7 @@
 
 .collection-stats {
   &_counters {
+    text-align: center;
     font-size: 0;
     margin-bottom: $gapSize;
     padding-bottom: $gapSize;
@@ -291,7 +292,7 @@
       padding: 0;
     }
     .counter {
-      width: 16.6%;
+      width: 16.3%;
       line-height: 1.2;
       font-size: 2.344vw;
       vertical-align: top;
@@ -307,6 +308,7 @@
     }
   }
   &_recent {
+    text-align: center;
     font-size: 0;
     margin-bottom: $gapSize * 2;
     .counter {

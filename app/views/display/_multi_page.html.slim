@@ -76,16 +76,18 @@
           =raw(xml_to_html(@article.xml_text))
         =render :partial => 'article/article_links'
 
+
       -if @collection && @collection.categories.present?
-        h3 Categories
-        .category-tree
-          ==display_categories(@collection.categories, nil, true) do |category|
-            -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
-            -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
-            -if category.children.any?
-              -ret << "<span class=\"tree-bullet\"></span>"
-            -ret << "<span>#{category.title}</span>"
-            -ret << "</a>"
+        -unless @collection.subjects_disabled
+          h3 Categories
+          .category-tree
+            ==display_categories(@collection.categories, nil, true) do |category|
+              -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
+              -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
+              -if category.children.any?
+                -ret << "<span class=\"tree-bullet\"></span>"
+              -ret << "<span>#{category.title}</span>"
+              -ret << "</a>"
 
 -content_for :javascript
   javascript:
