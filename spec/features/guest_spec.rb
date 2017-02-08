@@ -41,12 +41,12 @@ describe "guest user actions" do
     page.find('.tabs').click_link("Versions")
     expect(page).to have_content("revisions")
     expect(page).to have_link("Guest")
-    page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "Guest Transcription 2"
+    page.find('.tabs').click_link("Translate")
+    page.fill_in 'page_source_translation', with: "Guest Translation"
     click_button('Save Changes')
     expect(page).to have_content("You may save up to three transcriptions as a guest.")
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "Guest Transcription 3"
+    page.fill_in 'page_source_text', with: "Third Guest Deed"
     click_button('Save Changes')
     #after 3 transcriptions, the user should be forced to sign up
     expect(page.current_path).to eq new_user_registration_path
