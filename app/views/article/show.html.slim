@@ -7,7 +7,7 @@
     -if description.present?
       .big ==description
     -else
-      -if user_signed_in?
+      -if user_signed_in? && !current_user.guest
         i =link_to 'Edit the description in the settings tab.', { :controller => 'article', :action => 'edit', :article_id => @article.id }
       
     h3 Related Subjects
