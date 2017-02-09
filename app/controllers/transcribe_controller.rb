@@ -19,6 +19,9 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
   end
 
+  def guest
+  end
+
   def mark_page_blank
     @page.status = Page::STATUS_BLANK
     @page.save
