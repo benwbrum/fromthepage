@@ -35,7 +35,6 @@ class Work < ActiveRecord::Base
   scope :unrestricted, -> { where(restrict_scribes: false)}
 
 
-
   module TitleStyle
     REPLACE = 'REPLACE'
     
@@ -123,6 +122,13 @@ class Work < ActiveRecord::Base
     p 'update_statistic finish'
   end
 
+  def set_transcription_conventions
+    if self.transcription_conventions.present?
+      self.transcription_conventions
+    else
+      self.collection.transcription_conventions
+    end
+  end
 
 
 end
