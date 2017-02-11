@@ -5,3 +5,15 @@ first:
 second:
   article_id: 2
   category_id: 3
+
+third:
+  article_id: 3
+  category_id: 3
+
+fourth:
+  article_id: 4
+  category_id: 3
+
+fifth:
+  article_id: 5
+  category_id: 3
