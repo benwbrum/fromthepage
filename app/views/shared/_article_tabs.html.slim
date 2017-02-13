@@ -7,7 +7,7 @@
   },
 }]
 
--if user_signed_in?
+-if user_signed_in? && !current_user.guest
   -tabs += [{\
     :name => 'Settings',
     :selected => 4,

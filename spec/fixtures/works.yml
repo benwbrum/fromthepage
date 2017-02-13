@@ -33,7 +33,7 @@ work_2:
   transcription_conventions: 
   collection_id: 2
   scribes_can_edit_titles: false
-  supports_translation: false
+  supports_translation: true
   translation_instructions: 
   pages_are_meaningful: true
 work_3:

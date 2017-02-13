@@ -7,6 +7,7 @@ describe "disable subject linking", :order => :defined do
     @collections = @user.all_owner_collections
     @collection = @collections.first
     @work = @collection.works.second
+    @title = @work.pages.third.title
   end
 
   it "disables subject indexing in a collection" do
@@ -68,7 +69,7 @@ describe "disable subject linking", :order => :defined do
   it "checks page level subject items" do
     login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
-    click_link @work.pages.first.title
+    page.find('.work-page', text: @title).click_link(@title)
     expect(page).to have_content("Transcription")
     page.find('.tabs').click_link("Transcribe")
     expect(page).not_to have_content("Autolink")
@@ -100,7 +101,7 @@ describe "disable subject linking", :order => :defined do
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
-    click_link @work.pages.first.title
+    page.find('.work-page', text: @title).click_link(@title)
     expect(page).to have_content("Transcription")
     expect(page).to have_selector('a', text: 'Texas')
     
