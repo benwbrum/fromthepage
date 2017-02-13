@@ -62,8 +62,11 @@
                 -help_link = link_to(help_word, { :controller => 'transcribe', :action => 'guest', :page_id => @page.id })
                 =="Please #{help_link} this page"
 
+
 h2.legend#notes Page Notes
 .page-notes
   =render :partial => "notes/notes"
+
+=render({ :partial => '/shared/collection_footer' })
   
 javascript:  mixpanel.track("Display Page");  

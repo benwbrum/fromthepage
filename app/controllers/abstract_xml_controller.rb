@@ -7,7 +7,11 @@ module AbstractXmlController
   # belongs here.
   ##############################################
 
+  #constant - words to ignore when autolinking
+  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it"]
+
   def autolink(text)
+    #find the list of articles
     sql = 'select distinct article_id, '+
           'display_text '+
           'from page_article_links ' +
@@ -17,37 +21,54 @@ module AbstractXmlController
     logger.debug(sql)
     matches =
       Page.connection.select_all(sql).to_a
-
     # Bug 18 -- longest possible match is best
     matches.sort! { |x,y| x['display_text'].length <=> y['display_text'].length }
     matches.reverse!
-
+    #for each article, check text to see if it needs to be linked
     for match in matches
-      match_regex = Regexp.new('\b'+match['display_text'].gsub('?', '\?')+'\b')
+      match_regex = Regexp.new('\b'+match['display_text'].gsub('?', '\?').gsub('.', '\.')+'\b', Regexp::IGNORECASE)
       display_text = match['display_text']
       logger.debug("DEBUG looking for #{match_regex}")
-      if text.match match_regex
-        logger.debug("DEBUG found #{match_regex}")
-        # is this already within a link?
 
-        match_start = text.index match_regex
-        if word_not_okay(text, match_start, display_text)||within_link(text, match_start)
-          # within a link, but try again somehow
-        else
-          # not within a link, so create a new one
-          logger.debug("DEBUG #{match_regex} is not a link 2")
-          article = Article.find(match['article_id'].to_i)
-          # Bug 19 -- simplify when possible
-          if article.title == display_text
-            text.sub!(match_regex, "[[#{article.title}]]")
+      #if the match is a stopword, ignore it and move to the next match
+      if display_text.in?(STOPWORDS)
+
+      else
+        #find the matches and substitute in as long as the text isn't already in a link
+        text.gsub! match_regex do |m|
+          #find the index of the match to check if it's with a larger link
+          position = Regexp.last_match.offset(0)[0]
+          #check to see if the regex is already within a link, from each index
+          if word_not_okay(text, position, m) || within_link(text, position)
+            m
+  
           else
-            text.sub!(match_regex, "[[#{article.title}|#{display_text}]]")
+            # not within a link, so create a new one
+            article = Article.find(match['article_id'].to_i)
+
+            #check if regex match is exact (including case)
+            if m == display_text
+              # Bug 19 -- simplify when possible
+              #if yes, use display text
+              if article.title == display_text
+                "[[#{article.title}]]"
+              else
+                "[[#{article.title}|#{display_text}]]"
+              end
+              #if not, use regex match
+            else
+              "[[#{article.title}|#{m}]]"
+            end
+
+
           end
         end
       end
     end
+
     return text
   end
+
   # check for word boundaries on preceding and following sides
   def word_not_okay(text, index, display_text)
     # test for characters before the display text
@@ -64,7 +85,7 @@ module AbstractXmlController
       unless next_two.match /\w/
         # we're not in a word boundary
         # check for inflectional endings that might pass
-        unless (next_two.match(/.+s/) || next_two.match(/.+d/) || display_text != 'Mr')
+        unless (next_two.match(/.+s/) || next_two.match(/.+d/))
           return false
         end
       end
