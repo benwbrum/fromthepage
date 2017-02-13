@@ -37,7 +37,7 @@ h1 Start a Project
     .pricing_grid_row
       .pricing_grid_cell
         .pricing_price
-          span.pricing_price_value $30
+          span.pricing_price_value $80
           small.pricing_price_billing per month,<br> billed monthly
         .pricing_payment Pay via Credit Card
       .pricing_grid_cell
@@ -51,13 +51,23 @@ h1 Start a Project
         .pricing_payment Please contact us for a quote
 
     .pricing_grid_row
-      .pricing_grid_cell
-        =link_to 'Sign Up', '#', class: 'button big'
-      .pricing_grid_cell
-        =link_to 'Sign Up', '#', class: 'button big'
-      .pricing_grid_cell
-        =link_to 'Contact Us', '#', class: 'button big'
+      -if billing_host
+        .pricing_grid_cell
+          =link_to 'Sign Up', "http://#{billing_host}/charges/new?plan_id=30month&amount=30&user_id=#{current_user.id}", class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Sign Up', "http://#{billing_host}/charges/new?plan_id=100month&amount=300&user_id=#{current_user.id}", class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
+      -else
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
+        .pricing_grid_cell
+          =link_to 'Contact Us', 'mailto://benwbrum@gmail.com', class: 'button big'
 
-p.free-trial If you want to test drive FromThePage before you sign up for a paid plan, you are welcome to #{link_to 'start a free trial', '#'} — one collection, up to 400 pages.
+p.free-trial If you want to test drive FromThePage before you sign up for a paid plan, you are welcome to #{link_to 'start a free trial', '#'} — one collection, up to 3 months.
 
 p.free-trial The software is released under the GNU AGPL v3.0, a Free/Open Source license. #{link_to 'Click here', { controller: 'static', action: 'run_server' }} if you want to install it on your own server.
+
+javascript:  mixpanel.track("Pricing Plans");

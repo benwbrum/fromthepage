@@ -25,4 +25,5 @@
           -if page.source_text.blank?
             =link_to 'Transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
           -elsif page.page_article_links.size == 0
-            =link_to 'Annotate', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'
+            -unless @collection.subjects_disabled
+              =link_to 'Annotate', { :controller => 'transcribe', :action => 'display_page', :page_id => page.id }, class: 'button small outline'

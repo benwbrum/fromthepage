@@ -5,7 +5,7 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_filter :authorized?, :except => :zoom
+  before_filter :authorized?, :except => [:zoom, :guest]
   protect_from_forgery :except => [:zoom, :unzoom]
 
   def authorized?
@@ -19,6 +19,9 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
   end
 
+  def guest
+  end
+
   def mark_page_blank
     @page.status = Page::STATUS_BLANK
     @page.save
@@ -27,6 +30,7 @@ class TranscribeController  < ApplicationController
   end
 
   def save_transcription
+    #if the current user is a guest acct, see how many times they've saved
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
     if params['save']
@@ -49,6 +53,18 @@ class TranscribeController  < ApplicationController
           end
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
+      
+          #if this is a guest user, force them to sign up after three saves
+          if current_user.guest?
+            deeds = Deed.where(user_id: current_user.id).count
+            if deeds < 3
+              flash[:notice] = "You may save up to three transcriptions as a guest."
+            else
+              redirect_to new_user_registration_path, :resource => current_user
+              return
+            end
+          end
+
           redirect_to :action => 'assign_categories', :page_id => @page.id
         else
           log_transcript_error
@@ -86,6 +102,7 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
+        
     @translation = params[:translation]
     # look for uncategorized articles
     for article in @page.articles
@@ -117,6 +134,18 @@ class TranscribeController  < ApplicationController
 
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
+
+          #if this is a guest user, force them to sign up after three saves
+          if current_user.guest?
+            deeds = Deed.where(user_id: current_user.id).count
+            if deeds < 3
+              flash[:notice] = "You may save up to three transcriptions as a guest."
+            else
+              redirect_to new_user_registration_path, :resource => current_user
+              return
+            end
+          end
+          
           redirect_to :action => 'assign_categories', :page_id => @page.id, :translation => true
         else
           log_translation_error

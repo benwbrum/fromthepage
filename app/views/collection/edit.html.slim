@@ -15,8 +15,16 @@
             =f.text_area :intro_block, rows: 12, value: @collection.intro_block
         tr
           td(colspan="2")
-            =f.label :footer_block, 'Foot Notes', class: "above"
+            =f.label :footer_block, 'Footer', class: "above"
             =f.text_area :footer_block, rows: 5, value: @collection.footer_block
+        tr
+          td(colspan="2")
+            p
+            =f.check_box :subjects_disabled, value: @collection.subjects_disabled
+            |&nbsp;
+            =f.label "Disable Subject Indexing"
+
+
       .toolbar
         .toolbar_group.w100
           =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' })

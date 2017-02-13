@@ -39,7 +39,8 @@ h1 Collections
                       tr
                         th.w100 Work Title
                         th Pages
-                        th Indexed
+                        -unless c.subjects_disabled
+                          th Indexed
                         th Transcribed
                         th Progress
                       -works.each do |w|
@@ -48,13 +49,21 @@ h1 Collections
                         tr
                           td =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
                           td =w.work_statistic.total_pages
-                          td ="#{progress_annotated}%"
-                          td ="#{progress_transcribed}%"
-                          td
-                            span.progress
-                              span(style="width:#{progress_annotated}%")
-                              span(style="width:#{progress_transcribed - progress_annotated}%")
+                          -unless c.subjects_disabled
+                            td ="#{progress_annotated}%"
+                            td ="#{progress_transcribed}%"
+                            td
+                              span.progress
+                                span(style="width:#{progress_annotated}%")
+                                span(style="width:#{progress_transcribed - progress_annotated}%")
+                          -else
+                            td ="#{progress_transcribed}%"
+                            td
+                              span.progress
+                                span(style="width:#{progress_transcribed}%")
 
   aside.sidecol
     h2 Recent Activity
     =deeds_for()
+
+javascript:  mixpanel.track("Dashboard");

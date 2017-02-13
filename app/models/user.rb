@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -76,11 +76,23 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self[:display_name] || self[:login]
+    if self.guest
+      "Guest"
+    else
+      self[:display_name] || self[:login]
+    end
   end
 
   def collections
     self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
+  end
+
+  def owned_page_count
+    count = 0
+    self.all_owner_collections.each do |c|
+      count = count + c.page_count
+    end
+    return count
   end
 
 end
