@@ -50,7 +50,14 @@
         tr
           td(colspan="2")
             =f.label :transcription_conventions, class: 'above'
-            =f.text_area :transcription_conventions, rows: 5, value: @work.transcription_conventions
+            =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
+        tr
+          td(colspan="2")
+            p <b>Revert Transcription Conventions</b>: Change the work's transcription conventions back to the conventions set at the collection level
+            =f.check_box :revert, value: true
+            |&nbsp; 
+            =f.label "Revert"
+
         tr
           td(colspan="2")
             =f.label :translation_instructions, class: 'above'

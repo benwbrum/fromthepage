@@ -78,6 +78,9 @@ class Work < ActiveRecord::Base
     end
   end
 
+  def revert
+  end
+
   def articles
     my_articles = []
     for page in self.pages
