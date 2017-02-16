@@ -115,16 +115,13 @@ class WorkController < ApplicationController
 
   def update
     work = Work.find(params[:id])
-    #check for reverting to collection transcription conventions. if so, reset work convetions to nil
-    if params[:work][:revert] == "1"
-      params[:work][:transcription_conventions] = nil
-    end
+
     #check the work transcription convention against the collection version
     #if they're the same, don't update that attribute of the work
-    work_convention = params[:work][:transcription_conventions]
+    params_convention = params[:work][:transcription_conventions]
     collection_convention = work.collection.transcription_conventions
 
-    if work_convention == collection_convention
+    if params_convention == collection_convention
       work.update_attributes(params[:work].except(:transcription_conventions))
     else
       work.update_attributes(params[:work])
@@ -132,6 +129,12 @@ class WorkController < ApplicationController
 
     flash[:notice] = 'Work updated successfully'
     redirect_to :back
+  end
+
+  def revert
+    work = Work.find_by(id: params[:work_id])
+    work.update_attribute(:transcription_conventions, nil)
+    render :text => work.collection.transcription_conventions
   end
 
   private
