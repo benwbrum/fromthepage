@@ -53,12 +53,14 @@
             =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
         tr
           td(colspan="2")
-            -if @work.transcription_conventions.present?
-              .aright =button_tag 'Revert', :work_id => @work.id, disabled: false, id: 'revert'
-            -else
-              .aright =button_tag 'Revert', :work_id => @work.id, disabled: true, id: 'revert'
-
-       
+            
+            .aright
+              -if @work.transcription_conventions.present?
+                =button_tag 'Revert', :work_id => @work.id, disabled: false, id: 'revert'
+                |&nbsp; Revert transcription conventions to collection default  
+              -else
+                =button_tag 'Revert', :work_id => @work.id, disabled: true, id: 'revert'
+                |&nbsp; Revert transcription conventions to collection default  
         tr
           td(colspan="2")
             =f.label :translation_instructions, class: 'above'
