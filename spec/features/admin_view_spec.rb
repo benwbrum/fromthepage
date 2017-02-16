@@ -73,6 +73,9 @@ end
     #make the masqueraded user doesn't have access to the admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
+    visit admin_path
+    expect(page.current_path).to eq dashboard_path
+
     #un-masquerade and make sure the user is the admin again
     click_link('Undo Login As')
     expect(page).not_to have_selector('a', text: 'Undo Login As')
