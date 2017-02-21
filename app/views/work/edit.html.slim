@@ -49,16 +49,16 @@
             =f.text_area :permission_description, rows: 5, value: @work.permission_description
         tr
           td(colspan="2")
-            =f.label :transcription_conventions, class: 'above', id: 'convention'
+            =f.label :transcription_conventions, class: 'above'
             =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
         tr
           td(colspan="2")
             .aright
               | Revert transcription conventions to collection default &nbsp;
               -if @work.transcription_conventions.present?
-                =button_tag 'Revert', :work_id => @work.id, disabled: false, id: 'revert'
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: false, id: 'revert'
               -else
-                =button_tag 'Revert', :work_id => @work.id, disabled: true, id: 'revert'
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: true, id: 'revert'
         tr
           td(colspan="2")
             =f.label :translation_instructions, class: 'above'
