@@ -33,6 +33,17 @@ section.user-profile
     -if @user.about.present?
       p.big(data-prefix='About:') =@user.about
 
+-if @user.owner?
+  h2 Collections
+  .columns
+    article.maincol
+      =render '/dashboard/collection_index'
+    aside.sidecol
+      h2 Recent Activity
+      =deeds_for({ :limit => 10 })
+
+
+h2 Recent Activity by #{@user.display_name}
 -if @notes.present?
   h3 Recent Notes
   table.datagrid
