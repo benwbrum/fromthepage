@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "collection related tasks", :order => :defined do
-  Capybara.javascript_driver = :webkit
+  #Capybara.javascript_driver = :webkit
 
 
   before :all do
@@ -79,8 +79,8 @@ describe "collection related tasks", :order => :defined do
 
 
     #having trouble getting the javascript driver to work in this test
-  it "reverts to collection level transcription conventions", :js => true do
-
+  #it "reverts to collection level transcription conventions", :js => true do
+  it "reverts to collection level transcription conventions" do
     login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Settings")
