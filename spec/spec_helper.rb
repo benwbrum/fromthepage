@@ -61,6 +61,12 @@ RSpec.configure do |config|
 
   config.include Warden::Test::Helpers
 
-  
 
 end
+
+Capybara::Webkit.configure do |config|
+  config.allow_unknown_urls
+  #config.debug = true
+end
+
+Capybara.asset_host = "http://localhost:3000"

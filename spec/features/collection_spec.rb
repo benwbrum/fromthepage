@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "collection related tasks", :order => :defined do
-  #Capybara.javascript_driver = :webkit
+  Capybara.javascript_driver = :webkit
 
 
   before :all do
@@ -78,23 +78,17 @@ describe "collection related tasks", :order => :defined do
   end
 
 
-    #having trouble getting the javascript driver to work in this test
-  #it "reverts to collection level transcription conventions", :js => true do
-  it "reverts to collection level transcription conventions" do
+  it "reverts to collection level transcription conventions", :js => true do
     login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Settings")
+    convention_work = @collection.works.first
+    expect(convention_work.transcription_conventions).to eq @work_convention
     expect(page).not_to have_content @new_convention
     expect(page.find('#work_transcription_conventions')).to have_content @work_convention
-
     expect(page).to have_button('Revert')
-=begin    
-    #click_button 'Revert'
-
-
-      expect(page).to have_content @new_convention
-
-    expect(page).not_to have_content @work_convention
+    page.find_button('Revert').trigger(:click)
+    sleep(3)
     convention_work = @collection.works.first
     expect(convention_work.transcription_conventions).to eq nil
     visit "/display/read_work?work_id=#{@work.id}"
@@ -102,7 +96,8 @@ describe "collection related tasks", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content @new_convention
     expect(page).not_to have_content @work_convention
-=end
+
   end
 
 end
+
