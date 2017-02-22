@@ -10,7 +10,7 @@ describe "owner actions", :order => :defined do
     @works = @user.owner_works
     @title = "This is an empty work"
   end
-
+=begin
   it "starts a new project from tab" do
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
@@ -74,7 +74,6 @@ describe "owner actions", :order => :defined do
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content("#{test_collection.title}")
     expect(collection_count - 1).to eq @user.all_owner_collections.count
-
   end
 
   it "creates a subject" do
@@ -129,7 +128,6 @@ describe "owner actions", :order => :defined do
     expect(Work.find_by(title: @title)).not_to be nil
   end
 
-
   it "adds pages to an empty work" do
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
@@ -170,6 +168,20 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content(@work.pages.first.title)
     click_link(@work.pages.first.title)
     expect(page).to have_content('This page is not transcribed')
+  end
+=end
+  it "checks an owner user profile/homepage" do
+    login_as(@user, :scope => :user)
+    visit dashboard_path
+    page.find('a', text: 'Your Profile').click
+    expect(page).to have_content(@user.display_name)
+    expect(page).to have_selector('.columns')
+    expect(page.find('.maincol')).to have_content("Collections")
+    expect(page).to have_content("Recent Activity by")
+    @collections.each do |c|
+        expect(page).to have_content(c.title)
+    end
+
   end
 
 

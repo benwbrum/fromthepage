@@ -34,9 +34,9 @@ section.user-profile
       p.big(data-prefix='About:') =@user.about
 
 -if @user.owner?
-  h2 Collections
   .columns
     article.maincol
+      h2 Collections
       =render '/dashboard/collection_index'
     aside.sidecol
       h2 Recent Activity
