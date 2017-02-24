@@ -11,9 +11,8 @@ describe "document sets", :order => :defined do
   end
 
   before :each do
-  @document_sets = DocumentSet.where(owner_user_id: @owner.id)
+    @document_sets = DocumentSet.where(owner_user_id: @owner.id)
   end
-  #note: can create a document set with no title; need to fix that
 
   it "adds new document sets" do
     login_as(@owner, :scope => :user)
@@ -22,6 +21,7 @@ describe "document sets", :order => :defined do
     page.find('a', text: @collection.title).click
     page.find('.tabs').click_link("Settings")
     page.find('.button', text: 'Create Document Sets').click
+    expect(page).to have_content('Create a Document Set')
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: "Test Document Set 1"
     page.find_button('Create Document Set').click
@@ -52,11 +52,30 @@ describe "document sets", :order => :defined do
   end
 
   it "edits a document set" do
+    login_as(@owner, :scope => :user)
+    visit dashboard_owner_path
+    page.find('a', text: @collection.title).click
+    page.find('.tabs').click_link("Sets")
+    expect(page).to have_content("Document Sets for #{@collection.title}")
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @document_sets.first.title)) do
+          page.find('a', text: 'Edit').click
+      end
+    end
+    page.fill_in 'document_set_title', with: "Edited Test Document Set 1"
+    page.check 'Public'
+    page.find_button('Save Document Set').click
+    expect(page).to have_content("Document Sets for #{@collection.title}")
+    expect(page).to have_content(@document_sets.first.title)
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @document_sets.first.title)) do
+        expect(page).to have_content("Public")
+      end
+    end
   end
 
   it "views document sets" do
     #need to restrict collection and see what the user can see
-    #list of owner collections needs to be different - see what i did with conventions?
     login_as(@user, :scope => :user)
     visit dashboard_path
     @collections.each do |c|
@@ -73,6 +92,21 @@ describe "document sets", :order => :defined do
   end
 
   it "deletes a document set" do
+    login_as(@owner, :scope => :user)
+    count = @document_sets.count
+    visit dashboard_owner_path
+    page.find('a', text: @collection.title).click
+    page.find('.tabs').click_link("Sets")
+    expect(page).to have_content("Document Sets for #{@collection.title}")
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @document_sets.first.title)) do
+        page.find('a', text: 'Delete').click
+      end
+    end
+    sets = DocumentSet.all.count
+    expect(sets).to eq (count - 1)
+    expect(page).not_to have_content(@document_sets.first.title)
+    expect(page).to have_content(@document_sets.last.title)
   end
 
 
