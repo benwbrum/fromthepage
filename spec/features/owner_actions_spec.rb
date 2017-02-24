@@ -10,7 +10,7 @@ describe "owner actions", :order => :defined do
     @works = @user.owner_works
     @title = "This is an empty work"
   end
-=begin
+
   it "starts a new project from tab" do
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
@@ -169,7 +169,7 @@ describe "owner actions", :order => :defined do
     click_link(@work.pages.first.title)
     expect(page).to have_content('This page is not transcribed')
   end
-=end
+
   it "checks an owner user profile/homepage" do
     login_as(@user, :scope => :user)
     visit dashboard_path
@@ -183,6 +183,5 @@ describe "owner actions", :order => :defined do
     end
 
   end
-
 
 end

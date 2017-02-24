@@ -22,7 +22,7 @@ class UserController < ApplicationController
   end
 
   def profile
-    @collections = @user.owned_collections.unrestricted.order_by_recent_activity + Collection.where(owner_user_id: @user.id).unrestricted.order_by_recent_activity
+    @collections = @user.unrestricted_collections
     @collection_ids = @collections.map {|collection| collection.id}
     @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
     @notes = @user.notes.limit(10)
