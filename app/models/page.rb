@@ -10,7 +10,7 @@ class Page < ActiveRecord::Base
   belongs_to :work
   acts_as_list :scope => :work
 
-  has_many :page_article_links
+  has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
   has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
 
@@ -29,6 +29,8 @@ class Page < ActiveRecord::Base
   after_save :update_sections_and_tables
   after_save :update_tex_figures
   after_initialize :defaults
+  after_destroy :update_work_stats
+  after_destroy :delete_deeds
 
   attr_accessible :title
   attr_accessible :source_text
@@ -261,6 +263,14 @@ private
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil
+  end
+
+  def update_work_stats
+    self.work.work_statistic.recalculate
+  end
+
+  def delete_deeds
+    Deed.where(page_id: self.id).destroy_all
   end
 
 end

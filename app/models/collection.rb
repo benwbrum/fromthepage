@@ -4,8 +4,8 @@ class Collection < ActiveRecord::Base
   include CollectionStatistic
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
-  has_many :notes, -> { order 'created_at DESC' }
-  has_many :articles
+  has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
+  has_many :articles, :dependent => :destroy
   has_many :document_sets, -> { order 'title' }, :dependent => :destroy
   has_many :categories, -> { order 'title' }
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
