@@ -3,3 +3,15 @@ article_link_1:
   article_id: 2
   page_id: 22
   display_text: 'Tests'
+
+article_link_2:
+  id: 2
+  article_id: 3
+  page_id: 1
+  display_text: 'John'
+
+article_link_3:
+  id: 3
+  article_id: 4
+  page_id: 
+  display_text: 'Samuel'

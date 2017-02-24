@@ -76,7 +76,11 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self[:display_name] || self[:login]
+    if self.guest
+      "Guest"
+    else
+      self[:display_name] || self[:login]
+    end
   end
 
   def collections
@@ -90,4 +94,5 @@ class User < ActiveRecord::Base
     end
     return count
   end
+
 end

@@ -32,15 +32,19 @@
 
             .work-page_text
               -transcription = xml_to_html(page.xml_text, false)
+              -if current_user
+                -action = page_params(page).merge({ :controller => 'transcribe'})
+              -else
+                -action = page_params(page).merge({ :controller => 'transcribe', :action => 'guest'})
               -if transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
                 -if page.status == 'raw_ocr'
                   -status = 'corrected'
-                  -help = link_to('help correct', page_params(page).merge({ :controller => 'transcribe'}))
+                  -help = link_to('help correct', action)
                 -else
                   -status = 'transcribed'
-                  -help = link_to('help transcribe', page_params(page).merge({ :controller => 'transcribe'}))
+                  -help = link_to('help transcribe', action)
                 p.nodata_text =="This page is not #{status}, please #{help} this page"
 
             -if page.work.supports_translation
@@ -75,7 +79,6 @@
         -if @article.xml_text != nil && !@article.xml_text.empty?
           =raw(xml_to_html(@article.xml_text))
         =render :partial => 'article/article_links'
-
 
       -if @collection && @collection.categories.present?
         -unless @collection.subjects_disabled

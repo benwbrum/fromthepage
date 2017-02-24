@@ -1,12 +1,28 @@
 require 'spec_helper'
 
+
 describe "different user role logins" do
+
+  before :all do
+    @collections = Collection.all
+    @collection = @collections.last
+  end
+
 
   it "tests guest dashboard" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq guest_dashboard_path
-    #should probably click collections button and see what's there
+    expect(page).to have_content("Sign In")
+    expect(page).not_to have_content("Signed In As")
+    click_link('Collections')
+    @collections.each do |c|
+      expect(page).to have_content(c.title)
+    end
+    page.find('h4', text: @collection.title).click_link(@collection.title)
+    @collection.works.each do |w|
+      expect(page).to have_content(w.title)
+    end
   end
 
   it "signs in an editor with no activity" do

@@ -27,15 +27,26 @@
       },
     }]
 
--if @work.supports_translation
+  -if @work.supports_translation
+    -tabs += [{\
+      :name => 'Translate',
+      :selected => 6,
+      :options => {\
+        :controller => 'transcribe',
+        :action => 'translate',
+      },
+    }]
+
+-if !current_user && !@work.restrict_scribes
   -tabs += [{\
-    :name => 'Translate',
-    :selected => 6,
+    :name => 'Transcribe',
+    :selected => 3,
     :options => {\
       :controller => 'transcribe',
-      :action => 'translate',
+      :action => 'guest',
     },
   }]
+
 
 -tabs += [{\
   :name => 'Versions',
