@@ -137,6 +137,8 @@
           data: { work_id: $(this).attr('work_id')}
         }).success(function(data){
           $('#work_transcription_conventions').val(data);
+        $('#revert').prop('disabled', true);
+
         });
       });
     });
