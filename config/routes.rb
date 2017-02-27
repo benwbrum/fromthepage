@@ -2,7 +2,7 @@ Fromthepage::Application.routes.draw do
 
   root :to => 'static#splash'
 
-  devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations"}
   iiif_for 'riiif/image', at: '/image-service'
   
   get   '/omeka_sites/items' => 'omeka_sites#items'
