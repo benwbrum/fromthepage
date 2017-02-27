@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
+  before_filter :masquerade_user!
 
   # Set the current user in User
   def set_current_user_in_model
