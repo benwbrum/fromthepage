@@ -266,7 +266,9 @@ private
   end
 
   def update_work_stats
-    self.work.work_statistic.recalculate
+    if self.work
+      self.work.work_statistic.recalculate
+    end
   end
 
   def delete_deeds
