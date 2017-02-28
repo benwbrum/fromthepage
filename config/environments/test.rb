@@ -36,7 +36,7 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   config.assets.digest = true
-  config.action_controller.asset_host = "http://localhost:3000"
+  #config.action_controller.asset_host = "http://localhost:3000"
   #config.action_controller.asset_host = "file:://#{::Rails.root}/public"
 
   # Raises error for missing translations

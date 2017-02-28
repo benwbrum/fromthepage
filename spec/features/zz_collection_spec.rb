@@ -9,7 +9,9 @@ describe "collection related tasks", :order => :defined do
     @user = User.find_by(login: 'margaret')
     @collections = @user.all_owner_collections
     @collection = @collections.first
-    @work = @collection.works.first
+    @work = Work.find_by(title: 'test')
+
+    #@work = @collection.works.first
     @page = @work.pages.first
     @conventions = @collection.transcription_conventions
     @clean_conventions = ActionController::Base.helpers.strip_tags(@collection.transcription_conventions)
@@ -50,7 +52,7 @@ describe "collection related tasks", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     expect(page).not_to have_content @clean_conventions
     expect(page).to have_content @work_convention
-    convention_work = @collection.works.first
+    convention_work = Work.find_by(title: 'test')
     expect(convention_work.transcription_conventions).to eq @work_convention
   end
 
@@ -77,19 +79,19 @@ describe "collection related tasks", :order => :defined do
  
   end
 
-
   it "reverts to collection level transcription conventions", :js => true do
+    
     login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Settings")
-    convention_work = @collection.works.first
+    convention_work = Work.find_by(title: 'test')
     expect(convention_work.transcription_conventions).to eq @work_convention
     expect(page).not_to have_content @new_convention
     expect(page.find('#work_transcription_conventions')).to have_content @work_convention
     expect(page).to have_button('Revert')
     page.find_button('Revert').trigger(:click)
     sleep(3)
-    convention_work = @collection.works.first
+    convention_work = Work.find_by(title: 'test')
     expect(convention_work.transcription_conventions).to eq nil
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page', text: @page.title).click_link(@page.title)
