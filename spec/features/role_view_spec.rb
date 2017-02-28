@@ -1,12 +1,28 @@
 require 'spec_helper'
 
+
 describe "different user role logins" do
+
+  before :all do
+    @collections = Collection.all
+    @collection = @collections.last
+  end
+
 
   it "tests guest dashboard" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq guest_dashboard_path
-    #should probably click collections button and see what's there
+    expect(page).to have_content("Sign In")
+    expect(page).not_to have_content("Signed In As")
+    click_link('Collections')
+    @collections.each do |c|
+      expect(page).to have_content(c.title)
+    end
+    page.find('h4', text: @collection.title).click_link(@collection.title)
+    @collection.works.each do |w|
+      expect(page).to have_content(w.title)
+    end
   end
 
   it "signs in an editor with no activity" do
@@ -37,11 +53,14 @@ describe "different user role logins" do
     expect(page).to have_content(collections.first.title)
     within ".sidecol" do
       expect(page).to have_content("Your Activity")
-      #list of your deeds - how to test - list of deeds is fine, but they're translated?
     end
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_watchlist_path
+    #make sure user doesn't have admin access
+    expect(page).to have_selector('a', text: 'Collaborator Dashboard')
+    expect(page).not_to have_selector('a', text: 'Owner Dashboard')
+    expect(page).not_to have_selector('a', text: 'Admin Dashboard')
 
   end
 
@@ -64,6 +83,9 @@ describe "different user role logins" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_owner_path
+    #check for owner but not admin dashboard
+    expect(page).to have_selector('a', text: 'Owner Dashboard')
+    expect(page).not_to have_selector('a', text: 'Admin Dashboard')
 
   end
 
@@ -78,7 +100,7 @@ describe "different user role logins" do
     visit root_path
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_owner_path
+    expect(page).to have_selector('a', text: 'Admin Dashboard')
 
   end
-
 end

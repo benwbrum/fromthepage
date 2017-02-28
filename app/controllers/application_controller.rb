@@ -8,12 +8,36 @@ class ApplicationController < ActionController::Base
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
+  before_filter :masquerade_user!
 
   # Set the current user in User
   def set_current_user_in_model
     User.current_user = current_user
   end
 
+  def current_user
+    super || guest_user
+  end
+
+  #find the guest user account if a guest user session is currently active
+  def guest_user
+    unless session[:guest_user_id].nil?
+      User.find(session[:guest_user_id])
+    end
+  end
+
+  #when the user chooses to transcribe as guest, find guest user id or create new guest user
+  def guest_transcription
+    User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
+    redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+  end
+
+  def create_guest_user
+    user = User.new { |user| user.guest = true}
+    user.email = "guest_#{Time.now.to_i}#{rand(99)}@example.com"
+    user.save(:validate => false)
+    user
+  end
 
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -199,7 +223,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name) }
   end
 
   # Redirect to admin or owner dashboard after sign in
@@ -213,6 +237,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+#destroy guest user session if a user signs out, then redirect to root path
+  def after_sign_out_path_for(resource)
+    if session[:guest_user_id]
+      session[:guest_user_id] = nil
+    end
+    root_path
+  end
+
   # Wrapper around redirect_to for modal ajax forms
   def ajax_redirect_to(options={}, response_status={})
     if request.xhr?
@@ -221,6 +253,7 @@ class ApplicationController < ActionController::Base
       redirect_to options, response_status
     end
   end
+
 
 end
 

@@ -15,6 +15,8 @@ class DashboardController < ApplicationController
     if user_signed_in?
       if current_user.owner
         redirect_to dashboard_owner_path
+      elsif current_user.guest?
+        redirect_to guest_dashboard_path
       else
         redirect_to dashboard_watchlist_path
       end

@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :masqueradable, 
          :recoverable, :rememberable, :trackable, :validatable,
          :encryptable, :encryptor => :restful_authentication_sha1
 
@@ -76,7 +76,11 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self[:display_name] || self[:login]
+    if self.guest
+      "Guest"
+    else
+      self[:display_name] || self[:login]
+    end
   end
 
   def collections
@@ -90,4 +94,5 @@ class User < ActiveRecord::Base
     end
     return count
   end
+
 end
