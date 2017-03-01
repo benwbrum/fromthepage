@@ -18,5 +18,28 @@ class DeleteOrphanedData < ActiveRecord::Migration
     #delete work statistics for which there are no works
     WorkStatistic.all.each {|s| s.destroy unless s.work}
 
+    #delete ia works for which there are no works
+    IaWork.all.each {|i| i.destroy unless i.work}
+
+    #delete omeka items for which there are no works
+    OmekaItem.all.each {|i| i.destroy unless i.work}
+
+    #delete sc manifests for which there are no works
+    ScManifest.all.each {|s| s.destroy unless s.work}
+
+    #delete ia leaves for which there is no page
+    IaLeaf.all.each {|i| i.destroy unless i.page}
+
+    #delete omeka files for which there is no page
+    OmekaFile.all.each {|o| o.destroy unless o.page}
+
+    #delete sc canvases for which there is no page
+    ScCanvas.all.each {|s| s.destroy unless s.page}
+
+    #delete table cells for which there is no page
+    TableCell.all.each {|t| t.destroy unless t.page}
+
+    #delete tex figures for which there is no page
+    TexFigure.all.each {|t| t.destroy unless t.page}
   end
 end
