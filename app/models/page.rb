@@ -19,11 +19,11 @@ class Page < ActiveRecord::Base
   has_and_belongs_to_many :sections
 
   has_many :notes, -> { order 'created_at' }, :dependent => :destroy
-  has_one :ia_leaf
-  has_one :omeka_file
-  has_one :sc_canvas
-  has_many :table_cells, -> { order 'section_id, row, header' }
-  has_many :tex_figures
+  has_one :ia_leaf, :dependent => :destroy
+  has_one :omeka_file, :dependent => :destroy
+  has_one :sc_canvas, :dependent => :destroy
+  has_many :table_cells, -> { order 'section_id, row, header' }, :dependent => :destroy
+  has_many :tex_figures, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
