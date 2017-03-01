@@ -11,5 +11,12 @@ class DeleteOrphanedData < ActiveRecord::Migration
 
     #delete notes for which there is no collection
     Note.all.each {|n| n.destroy unless n.collection}
+
+    #delete articles for which there is no collection
+    Article.all.each {|a| a.destroy unless a.collection}
+
+    #delete work statistics for which there are no works
+    WorkStatistic.all.each {|s| s.destroy unless s.work}
+
   end
 end
