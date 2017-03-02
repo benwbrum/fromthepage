@@ -8,7 +8,7 @@ describe "collection related tasks", :order => :defined do
 
     @user = User.find_by(login: 'margaret')
     @collections = @user.all_owner_collections
-    @collection = @collections.first
+    @collection = @collections.second
     @work = Work.find_by(title: 'test')
 
     #@work = @collection.works.first
