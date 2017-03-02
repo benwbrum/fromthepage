@@ -5,8 +5,8 @@ describe "subject linking" do
   before :all do
     @owner = User.find_by(login: 'margaret')
     @user = User.find_by(login: 'eleanor')
-    collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
-    @collections = Collection.where(id: collection_ids)
+    @collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
+    @collections = Collection.where(id: @collection_ids)
     @collection = @collections.first
     @work = @collection.works.first
   end
@@ -45,7 +45,7 @@ describe "subject linking" do
 
   it "deletes a subject" do
     login_as(@owner, :scope => :user)
-    collection = @collections.second
+    collection = @collections.last
 
     visit "/collection/show?collection_id=#{collection.id}"
     page.find('.tabs').click_link("Subjects")

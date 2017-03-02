@@ -70,3 +70,7 @@ Capybara::Webkit.configure do |config|
   #config.debug = true
 end
 
+Capybara.configure do |config|
+  config.asset_host = "http://localhost:3000"
+end
+

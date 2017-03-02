@@ -6,7 +6,7 @@ describe "IA import actions", :order => :defined do
 
     @user = User.find_by(login: 'margaret')
     @collections = @user.all_owner_collections
-    @collection = @collections.first
+    @collection = @collections.second
     @works = @user.owner_works
     @title = "[Letter to] Dear Garrison [manuscript]"
   end
