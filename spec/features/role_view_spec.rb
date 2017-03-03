@@ -8,6 +8,28 @@ describe "different user role logins" do
     @password = "password"
   end
 
+  it "creates a new user account" do
+    user_count = User.all.count
+    visit root_path
+    expect(page).to have_content("Sign In")
+    page.find('a', text: 'Sign In').click
+    expect(page.current_path).to eq new_user_session_path
+    click_link('Sign up for a new account')
+    expect(page.current_path).to eq new_user_registration_path
+    click_button('Create Account')
+    expect(page).to have_content('4 errors prohibited this user from being saved')
+    page.fill_in 'Login', with: 'alexander'
+    page.fill_in 'Email address', with: 'alexander@test.com'
+    page.fill_in 'Password', with: @password
+    page.fill_in 'Password confirmation', with: @password
+    page.fill_in 'Display name', with: 'Alexander'
+    click_button('Create Account')
+    new_user_count = User.all.count
+    expect(page.current_path).to eq dashboard_watchlist_path
+    expect(page).to have_content("Collaborator Dashboard")
+    expect(new_user_count).to eq (user_count + 1)
+  end
+
   it "tests guest dashboard" do
     visit root_path
     click_link('Dashboard')
