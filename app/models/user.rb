@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   # allows me to get at the user from other models
   cattr_accessor :current_user
 
+  attr_accessor :login_id
+
   has_many(:owner_works,
            { :foreign_key => "owner_user_id",
              :class_name => 'Work' })
@@ -31,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :deeds
 
   validates :display_name, presence: true
+  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
   def all_owner_collections
@@ -94,5 +97,15 @@ class User < ActiveRecord::Base
     end
     return count
   end
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login_id)
+      where(conditions).where(["login = :value OR lower(email) = lower(:value)", { :value => login}]).first
+    else
+      where(conditions).first
+    end
+  end
+
 
 end
