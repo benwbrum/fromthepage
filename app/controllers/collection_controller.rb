@@ -112,7 +112,7 @@ class CollectionController < ApplicationController
       category2.save
 
       flash[:notice] = 'Collection has been created'
-      ajax_redirect_to({ action: 'edit', collection_id: @collection.id })
+      ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
     else
       render action: 'new'
     end
