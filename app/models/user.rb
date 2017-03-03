@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   has_many :deeds
 
   validates :display_name, presence: true
-  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters"}
+  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
   def all_owner_collections
