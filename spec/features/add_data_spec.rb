@@ -5,14 +5,14 @@ describe "uploads data for collections", :order => :defined do
 
   before :all do
 
-    @user = User.find_by(login: 'margaret')
-    @collections = @user.all_owner_collections
+    @owner = User.find_by(login: OWNER)
+    @collections = @owner.all_owner_collections
     @collection = @collections.second
     @title = "This is an empty work"
   end
 
   it "starts a new project from tab" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collection.title, :from => 'document_upload_collection_id')
@@ -25,7 +25,7 @@ describe "uploads data for collections", :order => :defined do
   #note: this test depends on the code from iiif-import
 =begin
   it "imports a IIIF manifest" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     works_count = Work.all.count
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
@@ -43,7 +43,7 @@ describe "uploads data for collections", :order => :defined do
   end
 =end
   it "creates an empty work" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collection.title, :from => 'work_collection_id')
@@ -55,7 +55,7 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "adds pages to an empty work" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: @title).click
     page.find('.tabs').click_link("Pages")

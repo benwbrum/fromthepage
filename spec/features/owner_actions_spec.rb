@@ -4,15 +4,15 @@ describe "owner actions", :order => :defined do
 
   before :all do
 
-    @user = User.find_by(login: 'margaret')
-    @collections = @user.all_owner_collections
+    @owner = User.find_by(login: OWNER)
+    @collections = @owner.all_owner_collections
     @collection = @collections.first
-    @works = @user.owner_works
+    @works = @owner.owner_works
     @title = "This is an empty work"
   end
 
   it "fails to upload a document" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collections.first.title, :from => 'document_upload_collection_id')
@@ -22,14 +22,14 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a new collection" do
-    collection_count = @user.all_owner_collections.count
-    login_as(@user, :scope => :user)
+    collection_count = @owner.all_owner_collections.count
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     fill_in 'collection_title', with: 'New Test Collection'
     click_button('Create Collection')
     test_collection = Collection.find_by(title: 'New Test Collection')
-    expect(collection_count + 1).to eq @user.all_owner_collections.count
+    expect(collection_count + 1).to eq @owner.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Manage Works")
   end
@@ -37,7 +37,7 @@ describe "owner actions", :order => :defined do
   it "creates an empty new work in a collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     click_link("#{test_collection.title}")
     click_link("Add a new work")
@@ -52,8 +52,8 @@ describe "owner actions", :order => :defined do
 
   it "deletes a collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
-    collection_count = @user.all_owner_collections.count
-    login_as(@user, :scope => :user)
+    collection_count = @owner.all_owner_collections.count
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     expect(page).to have_content("#{test_collection.title}")
     click_link("#{test_collection.title}")
@@ -61,12 +61,12 @@ describe "owner actions", :order => :defined do
     click_link('Delete Collection')
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content("#{test_collection.title}")
-    expect(collection_count - 1).to eq @user.all_owner_collections.count
+    expect(collection_count - 1).to eq @owner.all_owner_collections.count
 
   end
 
   it "creates a subject" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "People")
     visit "/collection/show?collection_id=#{@collection.id}"
@@ -81,7 +81,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a subject" do
-   login_as(@user, :scope => :user)
+   login_as(@owner, :scope => :user)
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "New Test Category")
     visit "/collection/show?collection_id=#{@collection.id}"
@@ -95,7 +95,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "fails to create an empty work" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collections.last.title, :from => 'work_collection_id')
@@ -106,7 +106,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a work" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: @title).click
     expect(page).to have_content(@title)

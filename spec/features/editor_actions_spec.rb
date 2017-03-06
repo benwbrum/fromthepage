@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "editor actions" do
 
   before :all do
-    @user = User.find_by(login: 'eleanor')
+    @user = User.find_by(login: USER)
     collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
     @collections = Collection.where(id: collection_ids)
     @collection = @collections.first
@@ -20,7 +20,7 @@ describe "editor actions" do
   end
 
   it "checks that a restricted editor can't see a work" do
-    @rest_user = User.find_by(login: 'george')
+    @rest_user = User.find_by(login: REST_USER)
     login_as(@rest_user, :scope => :user)
     visit "/display/read_work?work_id=#{@auth.work_id}"
     click_link @work.pages.first.title
