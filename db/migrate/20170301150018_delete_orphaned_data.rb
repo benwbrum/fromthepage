@@ -15,17 +15,20 @@ class DeleteOrphanedData < ActiveRecord::Migration
     #delete articles for which there is no collection
     Article.all.each {|a| a.destroy unless a.collection}
 
-    #delete work statistics for which there are no works
+    #delete work statistics for which there is no work
     WorkStatistic.all.each {|s| s.destroy unless s.work}
 
-    #delete ia works for which there are no works
+    #delete ia works for which there is no work
     IaWork.all.each {|i| i.destroy unless i.work}
 
-    #delete omeka items for which there are no works
+    #delete omeka items for which there is no work
     OmekaItem.all.each {|i| i.destroy unless i.work}
 
-    #delete sc manifests for which there are no works
+    #delete sc manifests for which there is no work
     ScManifest.all.each {|s| s.destroy unless s.work}
+
+    #delete sections for which there is no work
+    Section.all.each {|s| s.destroy unless s.work}
 
     #delete ia leaves for which there is no page
     IaLeaf.all.each {|i| i.destroy unless i.page}
