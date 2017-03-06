@@ -106,6 +106,9 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
-
-
+  
+  def unrestricted_collections
+    collections = self.owned_collections.unrestricted.order_by_recent_activity + Collection.where(owner_user_id: self.id).unrestricted.order_by_recent_activity
+  end
+  
 end
