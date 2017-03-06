@@ -43,7 +43,7 @@ describe "owner actions", :order => :defined do
     test_collection = Collection.find_by(title: 'New Test Collection')
     expect(collection_count + 1).to eq @user.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Manage Works")
+    expect(page).to have_content("Upload PDF or ZIP File")
   end
 
   it "creates an empty new work in a collection" do
