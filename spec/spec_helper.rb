@@ -36,6 +36,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
   end
+
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing
   # the seed, which is printed after each run.
@@ -61,6 +62,11 @@ RSpec.configure do |config|
 
   config.include Warden::Test::Helpers
 
-  
 
 end
+
+Capybara::Webkit.configure do |config|
+  config.allow_unknown_urls
+  #config.debug = true
+end
+
