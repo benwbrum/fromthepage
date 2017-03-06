@@ -9,7 +9,6 @@ describe "different user role logins" do
     @password = 'password'
   end
 
-
   it "tests guest dashboard" do
     visit root_path
     click_link('Dashboard')
@@ -87,7 +86,6 @@ describe "different user role logins" do
     #check for owner but not admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
-
   end
 
   it "signs an admin in" do
@@ -102,6 +100,6 @@ describe "different user role logins" do
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_selector('a', text: 'Admin Dashboard')
-
   end
+
 end

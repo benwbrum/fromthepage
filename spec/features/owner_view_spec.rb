@@ -10,18 +10,20 @@ describe "owner views" do
     @works = @owner.owner_works
   end
 
+  before :each do
+    login_as(@owner, :scope => :user)
+  end    
+
   it "looks at owner tabs" do
-      login_as(@owner, :scope => :user)
-      visit dashboard_owner_path
-      page.find('.tabs').click_link("Start A Project")
-      expect(page.current_path).to eq '/dashboard/startproject'
-      expect(page).to have_content("Upload PDF or ZIP File")
-      page.find('.tabs').click_link("Your Works")
-      expect(page.current_path).to eq dashboard_owner_path
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    expect(page.current_path).to eq '/dashboard/startproject'
+    expect(page).to have_content("Upload PDF or ZIP File")
+    page.find('.tabs').click_link("Your Works")
+    expect(page.current_path).to eq dashboard_owner_path
   end
 
   it "looks at subjects tab" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Categories")
@@ -30,7 +32,6 @@ describe "owner views" do
   end
 
   it "looks at statistics tab" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Statistics")
     expect(page).to have_content("Works")
@@ -42,7 +43,6 @@ describe "owner views" do
   end
 
   it "looks at settings tab" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content(@collection.title)
@@ -53,7 +53,6 @@ describe "owner views" do
   end
 
   it "looks at export tab" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Export")
     expect(page).to have_content(@collection.title)
@@ -65,7 +64,6 @@ describe "owner views" do
   end
 
   it "looks at collaborators tab" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Collaborators")
     expect(page).to have_content(@collection.title)

@@ -11,8 +11,11 @@ describe "uploads data for collections", :order => :defined do
     @title = "This is an empty work"
   end
 
-  it "starts a new project from tab" do
+  before :each do
     login_as(@owner, :scope => :user)
+  end
+
+  it "starts a new project from tab" do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collection.title, :from => 'document_upload_collection_id')
@@ -43,7 +46,6 @@ describe "uploads data for collections", :order => :defined do
   end
 =end
   it "creates an empty work" do
-    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     select(@collection.title, :from => 'work_collection_id')
@@ -55,7 +57,6 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "adds pages to an empty work" do
-    login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: @title).click
     page.find('.tabs').click_link("Pages")

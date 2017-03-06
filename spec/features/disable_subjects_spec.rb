@@ -10,8 +10,11 @@ describe "disable subject linking", :order => :defined do
     @title = @work.pages.third.title
   end
 
-  it "disables subject indexing in a collection" do
+  before :each do
     login_as(@owner, :scope => :user)
+  end
+
+  it "disables subject indexing in a collection" do
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content("Disable subject indexing")
@@ -23,7 +26,6 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks collection level subject items" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     #check for subject related items on Overview tab
     expect(page).to have_content(@collection.title)
@@ -51,7 +53,6 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks work level subject items" do
-    login_as(@owner, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Help")
     expect(page).to have_content("Transcribing")
@@ -67,7 +68,6 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks page level subject items" do
-    login_as(@owner, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page', text: @title).click_link(@title)
     expect(page).to have_content("Transcription")
@@ -85,7 +85,6 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "enables subject indexing" do
-    login_as(@owner, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content("Disable subject indexing")
@@ -97,7 +96,6 @@ describe "disable subject linking", :order => :defined do
   end
 
  it "checks links work when enabled" do
-    login_as(@owner, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)

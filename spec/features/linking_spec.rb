@@ -11,9 +11,12 @@ describe "subject linking" do
     @work = @collection.works.first
   end
 
+  before :each do
+    login_as(@user, :scope => :user)
+  end    
+
   #it checks to make sure the subject is on the page
   it "looks at subjects in a collection" do
-    login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Categories")
@@ -29,7 +32,6 @@ describe "subject linking" do
   end
 
   it "edits a subject's description" do 
-    login_as(@user, :scope => :user)
     article = Article.first
     visit "/article/show?article_id=#{article.id}"
     expect(page).to have_content("Description")
@@ -44,9 +46,9 @@ describe "subject linking" do
   end
 
   it "deletes a subject" do
+    logout(:user)
     login_as(@owner, :scope => :user)
     collection = @collections.last
-
     visit "/collection/show?collection_id=#{collection.id}"
     page.find('.tabs').click_link("Subjects")
     page.find('a', text: "Testing").click
@@ -70,7 +72,6 @@ describe "subject linking" do
   end
 
   it "links a categorized subject" do
-    login_as(@user, :scope => :user)
     test_page = @work.pages.last
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -99,7 +100,6 @@ describe "subject linking" do
   end
 
   it "enters a bad link - no closing braces" do
-    login_as(@user, :scope => :user)
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -115,7 +115,6 @@ describe "subject linking" do
   end
 
   it "enters a bad link - no text" do
-    login_as(@user, :scope => :user)
     test_page = @work.pages.fourth
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -139,7 +138,6 @@ describe "subject linking" do
   end
 
   it "enters a bad link - single starting bracket" do
-    login_as(@user, :scope => :user)
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -155,7 +153,6 @@ describe "subject linking" do
   end
 
   it "enters a bad link - triple brackets" do
-    login_as(@user, :scope => :user)
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -171,7 +168,6 @@ describe "subject linking" do
   end
 
   it "creates a link that includes quotes" do
-    login_as(@user, :scope => :user)
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
@@ -182,7 +178,6 @@ describe "subject linking" do
   end
 
   it "links subjects on a translation" do
-    login_as(@user, :scope => :user)
     translate_work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
     test_page = translate_work.pages.first
     visit "/display/display_page?page_id=#{test_page.id}"
@@ -205,7 +200,6 @@ describe "subject linking" do
   end
 
   it "tests autolinking in transcription" do
-    login_as(@user, :scope => :user)
     link_work = @collection.works.second
     link_page = link_work.pages.first
     visit "/display/display_page?page_id=#{link_page.id}"
@@ -228,7 +222,6 @@ describe "subject linking" do
   end
 
   it "tests autolinking in translation" do
-    login_as(@user, :scope => :user)
     translate_work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
     test_page = translate_work.pages.last
     visit "/display/display_page?page_id=#{test_page.id}"
