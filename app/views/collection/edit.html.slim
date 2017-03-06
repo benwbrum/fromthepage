@@ -19,6 +19,10 @@
             =f.text_area :footer_block, rows: 5, value: @collection.footer_block
         tr
           td(colspan="2")
+            =f.label :transcription_conventions, 'Transcription Conventions', class: "above"
+            =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
+        tr
+          td(colspan="2")
             p
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
             |&nbsp;

@@ -65,8 +65,7 @@
             span =f.text_field :title
         =f.text_area :source_text
 
--if @work.transcription_conventions.present?
-  .fgfaded ==@work.transcription_conventions
+.fgfaded ==@work.set_transcription_conventions
 
 .fgfaded
   =render :partial => 'shared/markup_help'

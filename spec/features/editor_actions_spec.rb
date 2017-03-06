@@ -130,7 +130,7 @@ describe "editor actions" do
     #delete the note - requires javascript
   #  page.find('#note_body', text: "Test note")
   end
-
+  
   it "checks a plain user profile" do
     login_as(@user, :scope => :user)
     visit dashboard_path
@@ -138,6 +138,16 @@ describe "editor actions" do
     expect(page).to have_content(@user.display_name)
     expect(page).to have_content("Recent Activity by")
     expect(page).not_to have_selector('.columns')
+  end
+
+  it "tries to log in as another user" do
+    owner = User.find_by(login: 'margaret')
+    login_as(@user, :scope => :user)
+    visit "/users/masquerade/#{owner.id}"
+    expect(page.current_path).to eq dashboard_path
+    expect(page.find('.dropdown')).not_to have_content owner.display_name
+    expect(page).to have_content @user.display_name
+    expect(page).not_to have_selector('a', text: 'Undo Login As')
   end
 
 end
