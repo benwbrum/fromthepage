@@ -7,8 +7,8 @@ class Work < ActiveRecord::Base
   has_one :omeka_item, :dependent => :destroy
   has_one :sc_manifest, :dependent => :destroy
   has_one :work_statistic, :dependent => :destroy
-  has_many :sections, -> { order 'position' }
-  has_many :table_cells, -> { order 'page_id, row, header' }
+  has_many :sections, -> { order 'position' }, :dependent => :destroy
+  has_many :table_cells, -> { order 'page_id, row, header' }, :dependent => :destroy
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
   has_and_belongs_to_many :document_sets
