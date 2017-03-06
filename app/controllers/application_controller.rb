@@ -101,6 +101,9 @@ class ApplicationController < ActionController::Base
       @article = @article_version.article
       @collection = @article.collection
     end
+    if params[:collection_ids]
+      @collection_ids = params[:collection_ids]
+    end
   end
 
   def bad_record_id
