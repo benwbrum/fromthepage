@@ -647,7 +647,7 @@ button, .button, .dropdown dd a {
 }
 
 .progress {
-  $color: #6C2;
+  $color: #5eb722;
   width: 100%;
   height: 1em;
   font-size: 10px;
@@ -673,7 +673,8 @@ button, .button, .dropdown dd a {
     background: $color;
     vertical-align: top;
     display: inline-block;
-    &:nth-child(2) { background: adjust-hue(lighten($color, 10%), -25deg); }
+    &:nth-child(2) { background: adjust-hue(lighten($color, 20%), -15deg); }
+    &:nth-child(3) { background: $fgYellow; }
   }
 }
 

@@ -18,6 +18,8 @@
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -progress_annotated = work.work_statistic.pct_annotated.round
+          -progress_review = work.work_statistic.pct_needs_review.round
+
           -if (work.pages.where(status: 'raw_ocr').count != 0) || (work.pages.where(status: 'part_ocr').count != 0)
             -progress_completed = work.work_statistic.pct_corrected.round
             -completed = "corrected"
@@ -25,16 +27,18 @@
             -progress_completed = work.work_statistic.pct_transcribed.round
             -completed = "transcribed"
           -unless @collection.subjects_disabled
-            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_completed}% #{completed}"
+            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_completed}% #{completed}, #{progress_review}% needs review"
             span
               span.progress
                 span(style="width:#{progress_annotated}%")
                 span(style="width:#{progress_completed - progress_annotated}%")
+                span(style="width:#{progress_review}%")
           -else
-            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}"
+            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}, #{progress_review}% needs review"
             span
               span.progress
                 span(style="width:#{progress_completed}%")
+                span(style="width:#{progress_review}%")
           
 
     -if user_signed_in? && current_user.like_owner?(@collection)

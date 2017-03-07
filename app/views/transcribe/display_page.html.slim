@@ -26,6 +26,7 @@
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
           span Always show in fullscreen
+
       .toolbar_group.w100.aright
         -unless @page.status == 'blank'
           span Mark page as blank
@@ -36,10 +37,9 @@
           |&nbsp;
           =check_box_tag 'mark_blank', 'no'
       .toolbar_group.w100.aright
-          span Needs Review
-          |&nbsp;
-          =check_box_tag 'needs_review', 'yes'
-
+        span Page Needs Review
+        |&nbsp;
+        =check_box_tag 'needs_review', 'yes'
 
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
