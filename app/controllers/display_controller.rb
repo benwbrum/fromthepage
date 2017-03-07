@@ -99,4 +99,10 @@ class DisplayController < ApplicationController
     end
     logger.debug "DEBUG #{@search_string}"
   end
+
+def needs_review
+  condition = "work_id = ? AND status = ?"
+  @pages = Page.order('position').where(condition, @work.id, 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+end
+
 end

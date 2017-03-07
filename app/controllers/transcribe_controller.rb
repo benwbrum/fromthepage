@@ -23,16 +23,39 @@ class TranscribeController  < ApplicationController
   end
 
   def mark_page_blank
-    @page.status = Page::STATUS_BLANK
-    @page.save
-    @work.work_statistic.recalculate if @work.work_statistic
-    redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+    if params[:source_text] == 'blank'
+      @page.source_text = ""
+    end
+    if params[:mark_blank] == 'yes'
+      @page.status = Page::STATUS_BLANK
+      @page.save
+      @work.work_statistic.recalculate if @work.work_statistic
+      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+    elsif params[:mark_blank] == 'no'
+      @page.status = Page::STATUS_INCOMPLETE
+      @page.save
+      @work.work_statistic.recalculate if @work.work_statistic
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    else
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    end
   end
 
   def save_transcription
-    #if the current user is a guest acct, see how many times they've saved
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
+    if params['needs_review']
+      @page.status = Page::STATUS_NEEDS_REVIEW
+    end
+    if params['mark_blank'].present?
+      mark_page_blank
+      return
+    end
+    #set the ocr pages to incomplete ocr status
+    if @page.status == 'raw_ocr'
+      @page.status = 'part_ocr'
+    end
+
     if params['save']
       log_transcript_attempt
       begin

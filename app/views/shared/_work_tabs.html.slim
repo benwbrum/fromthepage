@@ -40,6 +40,13 @@
 
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
+    :name => 'Needs Review',
+    :selected => 7,
+    :options => {\
+      :controller => 'display',
+      :action => 'needs_review',
+    },
+  },{\
     :name => 'Settings',
     :selected => 6,
     :options => {\

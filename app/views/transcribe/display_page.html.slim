@@ -7,12 +7,7 @@
   =validation_summary @page.errors
   .page-toolbar
     .toolbar
-      .toolbar_group
-        =f.label :status, title: relevant_status_help(@work), class: 'hide-l'
-        -if @page.status == 'raw_ocr' || @page.status == 'part_ocr'
-          =f.select :status, relevant_transcription_statuses(@work), { :selected => Page::STATUS_INCOMPLETE_OCR }, class: 'wauto'        
-        -else
-          =f.select :status, relevant_transcription_statuses(@work), { :include_blank => '- Transcription status not set -' }, class: 'wauto'
+
       .toolbar_group
         a.button.outline(data-fullscreen-toggle) Fullscreen
       .toolbar_group
@@ -32,6 +27,21 @@
           |&nbsp;
           span Always show in fullscreen
       .toolbar_group.w100.aright
+        -unless @page.status == 'blank'
+          span Mark page as blank
+          |&nbsp;
+          =check_box_tag 'mark_blank', 'yes'
+        -else
+          span Page is not blank
+          |&nbsp;
+          =check_box_tag 'mark_blank', 'no'
+      .toolbar_group.w100.aright
+          span Needs Review
+          |&nbsp;
+          =check_box_tag 'needs_review', 'yes'
+
+
+      .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 
 
@@ -46,7 +56,6 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
-
     .page-column
       .page-column_actions
         -unless @preview_xml
