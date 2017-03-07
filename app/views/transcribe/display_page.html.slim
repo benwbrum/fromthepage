@@ -57,22 +57,30 @@
         -else
           =render :partial => '/shared/zoom_div'
     .page-column
-      .page-column_actions
-        -unless @preview_xml
-          =>button_tag 'Preview', :name => 'preview'
-        -else
-          =>button_tag 'Edit', :name => 'edit'
-        -unless @collection.subjects_disabled
-          =>button_tag 'Autolink', :name => 'autolink'
-      -if @preview_xml
-        .page-preview ==xml_to_html(@preview_xml)
+      -if @page.status == 'blank'
+        .centered
+          .centered_content
+            p.nodata_text=="This page is marked blank"
+        .page-editarea(style=("display:none"))
+          =f.text_area :source_text
 
-      .page-editarea(style=("display:none" if @preview_xml))
-        -if @work.scribes_can_edit_titles
-          .page-editarea_title
-            span =f.label :title, 'Title:', class: 'a50'
-            span =f.text_field :title
-        =f.text_area :source_text
+      -else
+        .page-column_actions
+          -unless @preview_xml
+            =>button_tag 'Preview', :name => 'preview'
+          -else
+            =>button_tag 'Edit', :name => 'edit'
+          -unless @collection.subjects_disabled
+            =>button_tag 'Autolink', :name => 'autolink'
+        -if @preview_xml
+          .page-preview ==xml_to_html(@preview_xml)
+
+        .page-editarea(style=("display:none" if @preview_xml))
+          -if @work.scribes_can_edit_titles
+            .page-editarea_title
+              span =f.label :title, 'Title:', class: 'a50'
+              span =f.text_field :title
+          =f.text_area :source_text
 
 .fgfaded ==@work.set_transcription_conventions
 
