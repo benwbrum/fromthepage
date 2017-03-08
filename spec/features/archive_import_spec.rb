@@ -50,8 +50,7 @@ describe "IA import actions", :order => :defined do
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
     new_work = Work.find_by(title: @title)
-    first_page = new_work.pages.first
-    expect(first_page.status).to eq 'raw_ocr'
+    expect(new_work.ocr_correction).to be 
     expect(page).to have_content("has been converted into a FromThePage work")
     expect(page.find('h1')).to have_content(new_work.title)
     expect(first_page.source_text).not_to be_nil
@@ -73,7 +72,7 @@ describe "IA import actions", :order => :defined do
     expect(page).to have_content("Facsimile")
     expect(page.find('.tabs')).to have_content("Correct")
     @ocr_page = @ocr_work.pages.first
-    expect(@ocr_page.status).to eq "part_ocr" 
+    expect(@ocr_page.status).to eq "transcribed" 
   end
 
   it "checks ocr/transcribe statistics" do
@@ -81,7 +80,7 @@ describe "IA import actions", :order => :defined do
     visit "/collection/show?collection_id=#{@collection.id}"
     expect(page).to have_content("Works")
     @collection.works.each do |w|
-      if (w.pages.where(status: 'raw_ocr').count != 0) || (w.pages.where(status: 'part_ocr').count != 0)
+      if w.ocr_correction
         completed = "corrected"
       else
         completed = "transcribed"

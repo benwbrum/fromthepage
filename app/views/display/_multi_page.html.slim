@@ -70,11 +70,19 @@
 
   -if @collection || @article
     aside.sidecol
+
       -if @collection
         =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
           =hidden_field_tag('collection_id', @collection.id)
           =search_field_tag 'search_string', @search_string, :placeholder => 'Search in collection...'
           =button_tag 'Search'
+
+      -if @total != @count
+        =button_to "View All Pages", {action: "read_work", work_id: @work.id}
+      -else
+        =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review'}
+        
+
 
       -if @article
         h4 =@article.title
