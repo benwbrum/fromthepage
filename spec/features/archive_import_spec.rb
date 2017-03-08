@@ -50,6 +50,7 @@ describe "IA import actions", :order => :defined do
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
     new_work = Work.find_by(title: @title)
+    first_page = new_work.pages.first
     expect(new_work.ocr_correction).to be 
     expect(page).to have_content("has been converted into a FromThePage work")
     expect(page.find('h1')).to have_content(new_work.title)
@@ -65,7 +66,6 @@ describe "IA import actions", :order => :defined do
     click_link @ocr_page.title
     expect(page).to have_content("This page is not corrected")
     page.find('.tabs').click_link("Correct")
-    expect(page.find('#page_status')).to have_content("Incomplete Correction")
     page.fill_in 'page_source_text', with: "Test OCR Correction"
     click_button('Save Changes')
     expect(page).to have_content("Test OCR Correction")
