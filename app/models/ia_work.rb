@@ -73,6 +73,9 @@ class IaWork < ActiveRecord::Base
     work.author = self.creator
     work.description += " Sponsored by: "+ self.sponsor
     work.description += " Contributed by: "+ self.contributor
+    if self.use_ocr
+      work.ocr_correction = true
+    end
     work.save!
 
     self.ia_leaves.each do |leaf|

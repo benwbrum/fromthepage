@@ -15,7 +15,8 @@ module DisplayHelper
   end
 
   def correction_mode?
-    if (@page.status == 'raw_ocr') || (@page.status == 'part_ocr')
+    #if (@page.status == 'raw_ocr') || (@page.status == 'part_ocr')
+    if @page.work.ocr_correction
       true
     end
   end

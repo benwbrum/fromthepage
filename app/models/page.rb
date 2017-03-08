@@ -46,6 +46,7 @@ class Page < ActiveRecord::Base
   STATUS_INCOMPLETE_OCR = 'part_ocr'
   STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
   STATUS_NEEDS_REVIEW = 'review'
+  STATUS_TRANSCRIBED = 'transcribed'
 
   STATUSES =
   { "Blank/Nothing to Transcribe" => STATUS_BLANK,
@@ -53,7 +54,8 @@ class Page < ActiveRecord::Base
     "Incomplete Correction" => STATUS_INCOMPLETE_OCR,
     "Uncorrected OCR" => STATUS_UNCORRECTED_OCR,
     "Incomplete Translation" => STATUS_INCOMPLETE_TRANSLATION, 
-    "Needs Review" => STATUS_NEEDS_REVIEW }
+    "Needs Review" => STATUS_NEEDS_REVIEW,
+    "Transcribed" => STATUS_TRANSCRIBED }
   STATUS_HELP = {
     STATUS_BLANK => "Mark the page as blank if there is no meaningful text on this page.",
     STATUS_INCOMPLETE => "Mark the page as incomplete to list it for review by others.",
