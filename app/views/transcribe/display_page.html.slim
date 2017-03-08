@@ -39,8 +39,10 @@
       .toolbar_group.w100.aright
         span Page Needs Review
         |&nbsp;
-        =check_box_tag 'needs_review', 'yes'
-
+        -if @page.status == 'review'
+          =f.check_box('needs_review', {checked: true})
+        -else
+          =f.check_box('needs_review', {checked: false})
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 

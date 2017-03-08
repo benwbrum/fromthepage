@@ -41,22 +41,25 @@ class TranscribeController  < ApplicationController
     end
   end
 
+  def needs_review
+    if params[:page]['needs_review'] == '1'
+      @page.status = Page::STATUS_NEEDS_REVIEW
+    elsif params[:page]['needs_review'] == '0'
+      @page.status = Page::STATUS_TRANSCRIBED
+    end
+  end
+
   def save_transcription
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
-
+    #if page has been marked blank, run that code
     if params['mark_blank'].present?
       mark_page_blank
       return
     end
-
-    if params['needs_review']
-      @page.status = Page::STATUS_NEEDS_REVIEW
+    if params[:page]['needs_review'].present?
+      needs_review
     end
-    # #set the ocr pages to incomplete ocr status
-    # if @page.status == 'raw_ocr'
-    #   @page.status = 'part_ocr'
-    # end
 
     if params['save']
       log_transcript_attempt

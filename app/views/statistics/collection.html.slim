@@ -37,7 +37,7 @@
       -progress_annotated = w.work_statistic.pct_annotated.round
       -progress_review = w.work_statistic.pct_needs_review.round
 
-      -if (w.pages.where(status: 'raw_ocr').count != 0) || (w.pages.where(status: 'part_ocr').count != 0)
+      -if w.ocr_correction
         -progress_completed = w.work_statistic.pct_corrected.round
         -completed = "corrected"
       -else

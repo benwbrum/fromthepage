@@ -7,9 +7,9 @@ class IaWork < ActiveRecord::Base
 
   def display_page
     # blank status of raw ocr before displaying -- if the user hits save, status will become default
-    if @page.status == Page::STATUS_RAW_OCR
-      @page.status = nil;
-    end
+  #  if @page.status == Page::STATUS_RAW_OCR
+  #    @page.status = nil;
+  #  end
   end
 
   def self.refresh_server(book_id)
@@ -85,7 +85,6 @@ class IaWork < ActiveRecord::Base
       page.base_width = leaf.page_w
       page.title = leaf.page_number
       page.source_text = leaf.ocr_text if self.use_ocr
-      page.status = Page::STATUS_UNCORRECTED_OCR if self.use_ocr
       work.pages << page #necessary to make acts_as_list work here
       work.save!
 

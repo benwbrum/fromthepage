@@ -41,7 +41,7 @@
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
-                -if page.status == 'raw_ocr'
+                -if page.work.ocr_correction
                   -status = 'corrected'
                   -help = link_to('help correct', action)
                 -else
