@@ -128,6 +128,15 @@ describe "editor actions" do
     #delete the note - requires javascript
   #  page.find('#note_body', text: "Test note")
   end
+  
+  it "checks a plain user profile" do
+    login_as(@user, :scope => :user)
+    visit dashboard_path
+    page.find('a', text: 'Your Profile').click
+    expect(page).to have_content(@user.display_name)
+    expect(page).to have_content("Recent Activity by")
+    expect(page).not_to have_selector('.columns')
+  end
 
   it "tries to log in as another user" do
     owner = User.find_by(login: 'margaret')

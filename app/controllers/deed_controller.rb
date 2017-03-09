@@ -9,8 +9,10 @@ class DeedController < ApplicationController
       condition = ['collection_id = ?', @collection.id]
     elsif @user
       condition = ['user_id = ?', @user.id]
+    elsif @collection_ids
+      @deeds = Deed.where(collection_id: @collection_ids).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      return
     end
-
     @deeds = Deed.where(condition).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 

@@ -33,7 +33,7 @@ describe "owner actions", :order => :defined do
     test_collection = Collection.find_by(title: 'New Test Collection')
     expect(collection_count + 1).to eq @owner.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
-    expect(page).to have_content("Manage Works")
+    expect(page).to have_content("Upload PDF or ZIP File")
   end
 
   it "creates an empty new work in a collection" do
@@ -62,7 +62,6 @@ describe "owner actions", :order => :defined do
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content("#{test_collection.title}")
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
-
   end
 
   it "creates a subject" do
@@ -110,6 +109,19 @@ describe "owner actions", :order => :defined do
     click_link("Delete Work")
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content(@title)
+  end
+
+  it "checks an owner user profile/homepage" do
+    login_as(@user, :scope => :user)
+    visit dashboard_path
+    page.find('a', text: 'Your Profile').click
+    expect(page).to have_content(@user.display_name)
+    expect(page).to have_selector('.columns')
+    expect(page.find('.maincol')).to have_content("Collections")
+    expect(page).to have_content("Recent Activity by")
+    @collections.each do |c|
+        expect(page).to have_content(c.title)
+    end
   end
 
 end
