@@ -44,23 +44,23 @@ class TranscribeController  < ApplicationController
   def needs_review
     if params[:page]['needs_review'] == '1'
       @page.status = Page::STATUS_NEEDS_REVIEW
-    elsif params[:page]['needs_review'] == '0'
+      record_review_deed
+    else
       @page.status = nil
     end
-    record_review_deed
   end
 
   def save_transcription
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
-    #if page has been marked blank, run that code
+    #if page has been marked blank, call the mark_blank code
     if params['mark_blank'].present?
       mark_page_blank
       return
     end
-    if params[:page]['needs_review'].present?
-      needs_review
-    end
+
+    #check to see if the page needs to be marked as needing review
+    needs_review
 
     if params['save']
       log_transcript_attempt
@@ -163,10 +163,9 @@ class TranscribeController  < ApplicationController
       mark_page_blank
       return
     end
-    if params[:page]['needs_review'].present?
-      needs_review
-    end
 
+    #check to see if the page needs review
+    needs_review
 
     if params['save']
       log_translation_attempt

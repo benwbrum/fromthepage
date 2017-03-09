@@ -181,16 +181,13 @@ save_and_open_page
     test_page = translate_work.pages.first
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Translate")
-    expect(page).to have_content("Translation")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
-    expect(page).to have_content("Translation")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "translation").count
     expect(links).to eq 1
   #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Translate")
-    expect(page).to have_content("Translation")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
     expect(page).to have_content("Texas")
