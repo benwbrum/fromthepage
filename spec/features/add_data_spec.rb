@@ -25,8 +25,7 @@ describe "uploads data for collections", :order => :defined do
     expect(title).to eq @collection.title
     expect(page).to have_content("Document has been uploaded")
   end
-  #note: this test depends on the code from iiif-import
-=begin
+
   it "imports a IIIF manifest" do
     login_as(@owner, :scope => :user)
     works_count = Work.all.count
@@ -44,7 +43,7 @@ describe "uploads data for collections", :order => :defined do
     expect(new_works).to eq (works_count + 1)
 
   end
-=end
+
   it "creates an empty work" do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
