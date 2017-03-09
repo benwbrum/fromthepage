@@ -101,6 +101,9 @@ class ApplicationController < ActionController::Base
       @article = @article_version.article
       @collection = @article.collection
     end
+    if params[:collection_ids]
+      @collection_ids = params[:collection_ids]
+    end
   end
 
   def bad_record_id
@@ -224,6 +227,8 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name) }
+    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
+
   end
 
   # Redirect to admin or owner dashboard after sign in
