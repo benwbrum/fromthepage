@@ -25,6 +25,12 @@ class WorkStatistic < ActiveRecord::Base
     [[0, raw].max, 100].min
   end
 
+  def pct_translated
+    raw = self[:translated_pages].to_f / self[:total_pages] * 100
+    raw = 0 if raw.nan?
+    [[0, raw].max, 100].min
+  end
+
   def recalculate
     self[:total_pages] = work.pages.count
     self[:transcribed_pages] = work.pages.where('source_text is not null').count 
@@ -33,6 +39,7 @@ class WorkStatistic < ActiveRecord::Base
     self[:incomplete_pages] = work.pages.where("status = '#{Page::STATUS_INCOMPLETE}'").count
     self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
     self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+    self[:translated_pages] = work.pages.where("status = '#{Page::STATUS_TRANSLATED}'").count
     save!
   end
 

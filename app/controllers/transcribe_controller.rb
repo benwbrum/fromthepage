@@ -45,8 +45,9 @@ class TranscribeController  < ApplicationController
     if params[:page]['needs_review'] == '1'
       @page.status = Page::STATUS_NEEDS_REVIEW
     elsif params[:page]['needs_review'] == '0'
-      @page.status = Page::STATUS_TRANSCRIBED
+      @page.status = nil
     end
+    record_review_deed
   end
 
   def save_transcription
@@ -63,6 +64,7 @@ class TranscribeController  < ApplicationController
 
     if params['save']
       log_transcript_attempt
+      #leave the status alone if it's needs review, but otherwise set it to transcribed
       unless @page.status == Page::STATUS_NEEDS_REVIEW
         @page.status = Page::STATUS_TRANSCRIBED
       end
@@ -156,8 +158,23 @@ class TranscribeController  < ApplicationController
   def save_translation
     old_link_count = @page.page_article_links.count
     @page.attributes=params[:page]
+
+    if params['mark_blank'].present?
+      mark_page_blank
+      return
+    end
+    if params[:page]['needs_review'].present?
+      needs_review
+    end
+
+
     if params['save']
       log_translation_attempt
+      #leave the status alone if it's needs review, but otherwise set it to translated
+      unless @page.status == Page::STATUS_NEEDS_REVIEW
+        @page.status = Page::STATUS_TRANSLATED
+      end
+
       begin
         if @page.save
           log_translation_success
@@ -315,6 +332,13 @@ protected
     deed.deed_type = Deed::PAGE_INDEXED
     deed.save!
   end
+
+  def record_review_deed
+    deed = stub_deed
+    deed.deed_type = Deed::NEEDS_REVIEW
+    deed.save!
+  end
+
 
   def record_translation_deed
     deed = stub_deed

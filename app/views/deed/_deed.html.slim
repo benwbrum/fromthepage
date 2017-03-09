@@ -33,6 +33,9 @@
 -when 'ocr_corr'
   -output += "corrected #{page} page"
 
+-when 'review'
+  -output += "marked #{page} page as needing review"
+
 -if(long_view && !deed.work.nil?)
   -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id })
   -output += " of #{work} work"

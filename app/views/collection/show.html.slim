@@ -20,7 +20,10 @@
           -progress_annotated = work.work_statistic.pct_annotated.round
           -progress_review = work.work_statistic.pct_needs_review.round
 
-          -if work.ocr_correction
+          -if work.supports_translation
+            -progress_completed = work.work_statistic.pct_translated.round
+            -completed = "translated"
+          -elsif work.ocr_correction
             -progress_completed = work.work_statistic.pct_corrected.round
             -completed = "corrected"
           -else
@@ -75,6 +78,6 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
-    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED] })
+    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW] })
 
 =render({ :partial => '/shared/collection_footer' })

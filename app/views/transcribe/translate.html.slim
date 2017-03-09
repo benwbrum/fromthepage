@@ -6,11 +6,23 @@
   
   .page-toolbar
     .toolbar
-      .toolbar_group.w100
-        =f.label :status, title: 'Mark a translation as incomplete to queue it for review by other translators.'
+      .toolbar_group.w100.aright
+        -unless @page.status == 'blank'
+          span Mark page as blank
+          |&nbsp;
+          =check_box_tag 'mark_blank', 'yes'
+        -else
+          span Page is not blank
+          |&nbsp;
+          =check_box_tag 'mark_blank', 'no'
+      .toolbar_group.w100.aright
+        span Page Needs Review
         |&nbsp;
-        =f.select :status, relevant_translation_statuses(@work), { :include_blank => '- Translation status not set -' }, class: 'wauto'
-      .toolbar_group
+        -if @page.status == 'review'
+          =f.check_box('needs_review', {checked: true})
+        -else
+          =f.check_box('needs_review', {checked: false})
+      .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 
   .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')

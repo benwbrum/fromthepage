@@ -47,6 +47,7 @@ class Page < ActiveRecord::Base
   STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_TRANSCRIBED = 'transcribed'
+  STATUS_TRANSLATED = 'translated'
 
   STATUSES =
   { "Blank/Nothing to Transcribe" => STATUS_BLANK,
