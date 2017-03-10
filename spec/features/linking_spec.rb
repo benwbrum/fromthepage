@@ -47,8 +47,6 @@ describe "subject linking" do
     login_as(@owner, :scope => :user)
     collection = @collections.second
     visit "/collection/show?collection_id=#{collection.id}"
-save_and_open_page
-
     page.find('.tabs').click_link("Subjects")
     page.find('a', text: "Testing").click
     page.find('.tabs').click_link("Settings")
