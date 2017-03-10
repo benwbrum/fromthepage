@@ -174,9 +174,6 @@ class TranscribeController  < ApplicationController
     if params['save']
       log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
-      unless @page.status == Page::STATUS_NEEDS_REVIEW
-        @page.status = Page::STATUS_TRANSLATED
-      end
 
       begin
         if @page.save
