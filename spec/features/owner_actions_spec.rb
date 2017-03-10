@@ -112,10 +112,9 @@ describe "owner actions", :order => :defined do
   end
 
   it "checks an owner user profile/homepage" do
-    login_as(@user, :scope => :user)
     visit dashboard_path
     page.find('a', text: 'Your Profile').click
-    expect(page).to have_content(@user.display_name)
+    expect(page).to have_content(@owner.display_name)
     expect(page).to have_selector('.columns')
     expect(page.find('.maincol')).to have_content("Collections")
     expect(page).to have_content("Recent Activity by")
