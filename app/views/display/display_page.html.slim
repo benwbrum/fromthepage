@@ -47,7 +47,7 @@
 
       -mark_blank = link_to('mark the page blank', { :controller => 'transcribe', :action => 'mark_page_blank', :page_id => @page.id, :source_text => 'blank', :mark_blank => 'yes' })
 
-      -if @page.status == 'blank'
+      -if @page.status == Page::STATUS_BLANK || @page.source_text == ""
         .centered
           .centered_content
             p.nodata_text=="This page is blank"

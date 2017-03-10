@@ -29,7 +29,11 @@
     .page-column
       -transcription = xml_to_html(@page.xml_text)
       .page-preview
-        -if transcription.present?
+        -if @page.status == Page::STATUS_BLANK || @page.source_text == ""
+          .centered
+            .centered_content
+              p.nodata_text=="This page is blank"
+        -elsif transcription.present?
           ==transcription
         -else
           -help_transcribe = link_to('help transcribe', { :controller => 'transcribe', :action => 'display_page', :page_id => @page.id })

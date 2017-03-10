@@ -36,7 +36,7 @@
                 -action = page_params(page).merge({ :controller => 'transcribe'})
               -else
                 -action = page_params(page).merge({ :controller => 'transcribe', :action => 'guest'})
-              -if page.status == 'blank'
+              -if page.status == 'blank' || page.source_text == ""
                 p.nodata_text =="This page is blank"
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')

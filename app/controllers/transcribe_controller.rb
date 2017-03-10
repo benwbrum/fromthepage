@@ -23,9 +23,13 @@ class TranscribeController  < ApplicationController
   end
 
   def mark_page_blank
+    #if page is marked blank from overview page, set the source to blank 
+    #to allow the pages to be properly counted in statistics
     if params[:source_text] == 'blank'
       @page.source_text = ""
+      @page.source_translation = ""
     end
+    #if page is marked blank with checkbox, this applies
     if params[:mark_blank] == 'yes'
       @page.status = Page::STATUS_BLANK
       @page.save
