@@ -80,9 +80,7 @@ describe "IA import actions", :order => :defined do
     visit "/collection/show?collection_id=#{@collection.id}"
     expect(page).to have_content("Works")
     @collection.works.each do |w|
-      if w.supports_translation
-        completed = "translated"
-      elsif w.ocr_correction
+      if w.ocr_correction
         completed = "corrected"
       else
         completed = "transcribed"

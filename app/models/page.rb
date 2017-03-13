@@ -48,6 +48,7 @@ class Page < ActiveRecord::Base
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_TRANSCRIBED = 'transcribed'
   STATUS_TRANSLATED = 'translated'
+  STATUS_INDEXED = 'indexed'
 
   # tested
   def collection

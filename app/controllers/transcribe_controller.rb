@@ -36,7 +36,7 @@ class TranscribeController  < ApplicationController
       @work.work_statistic.recalculate if @work.work_statistic
       redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
     elsif params[:mark_blank] == 'no'
-      @page.status = Page::STATUS_INCOMPLETE
+      @page.status = nil
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
       redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
@@ -87,6 +87,9 @@ class TranscribeController  < ApplicationController
           logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
           if old_link_count == 0 && new_link_count > 0
             record_index_deed
+          end
+          if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
+            @page.update_columns(status: Page::STATUS_INDEXED)
           end
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
