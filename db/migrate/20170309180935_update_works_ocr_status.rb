@@ -11,8 +11,12 @@ class UpdateWorksOcrStatus < ActiveRecord::Migration
     #set pages that have a "part_ocr" status to "transcribed" status, without triggering callbacks
     pages = Page.where(status: 'part_ocr')
     pages.each do |p|
-      p.update_column(:status, "transcribed")
+      p.update_columns(status: "transcribed")
     end
-
+    #set pages with "raw_ocr" status to nil because we aren't using it anymore
+    raw_pages = Page.where(status: 'raw_ocr')
+    raw_pages.each do |p|
+      p.update_columns(status: nil)
+    end
   end
 end
