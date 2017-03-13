@@ -21,38 +21,26 @@
           -progress_review = work.work_statistic.pct_needs_review.round
           -progress_completed = work.work_statistic.pct_completed.round
 
+          -if @collection.subjects_disabled
+            -wording = ", #{progress_review}% needs review" unless progress_review == 0
+          -elsif progress_review == 0
+            -wording = ", #{progress_annotated}% indexed"
+          -else
+            -wording = ", #{progress_annotated}% indexed, #{progress_review}% needs review"
+
           -if work.ocr_correction
             -completed = "corrected"
           -else
             -completed = "transcribed"
 
-          -if @collection.subjects_disabled
-            -unless progress_review == 0
-              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}, #{progress_review}% needs review"
-              span
-                span.progress
-                  span(style="width:#{progress_completed}%")
-                  span(style="width:#{progress_review}%")
-            -else
-              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}"
-              span
-                span.progress
-                  span(style="width:#{progress_completed}%")
-
-          -else
-            -unless progress_review == 0
-              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}, #{progress_annotated}% indexed, #{progress_review}% needs review"
-              span
-                span.progress
-                  span(style="width:#{progress_completed - progress_annotated}%")
-                  span(style="width:#{progress_annotated}%")
-                  span(style="width:#{progress_review}%")
-            -else            
-              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}, #{progress_annotated}% indexed"
-              span
-                span.progress
-                  span(style="width:#{progress_completed - progress_annotated}%")
-                  span(style="width:#{progress_annotated}%")
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}#{wording}"
+          span
+            span.progress
+              span(style="width:#{progress_completed - progress_annotated}%")
+              -unless @collection.subjects_disabled
+                span(style="width:#{progress_annotated}%")
+              -unless progress_review == 0
+                span(style="width:#{progress_review}%")
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
