@@ -21,24 +21,26 @@
           -progress_review = work.work_statistic.pct_needs_review.round
           -progress_completed = work.work_statistic.pct_completed.round
 
-          -if @collection.subjects_disabled
-            -wording = ", #{progress_review}% needs review" unless progress_review == 0
-          -elsif progress_review == 0
-            -wording = ", #{progress_annotated}% indexed"
-          -else
-            -wording = ", #{progress_annotated}% indexed, #{progress_review}% needs review"
-
           -if work.ocr_correction
             -completed = "corrected"
           -else
             -completed = "transcribed"
 
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}#{wording}"
+          -if @collection.subjects_disabled
+            -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
+          -elsif @collection.subjects_disabled && progress_review == 0
+            -wording = "#{progress_completed}% #{completed}"
+          -elsif progress_review == 0
+            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}"
+          -else
+            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}, #{progress_review}% needs review"
+
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{wording}"
           span
             span.progress
-              span(style="width:#{progress_completed - progress_annotated}%")
               -unless @collection.subjects_disabled
                 span(style="width:#{progress_annotated}%")
+              span(style="width:#{progress_completed - progress_annotated}%")
               -unless progress_review == 0
                 span(style="width:#{progress_review}%")
 
