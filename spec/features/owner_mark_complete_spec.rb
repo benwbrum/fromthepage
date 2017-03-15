@@ -6,7 +6,7 @@ describe "needs review", :order => :defined do
     @user = User.find_by(login: 'eleanor')
     @collections = Collection.all
     @collection = @collections.first
-    @work = @collection.works.second
+    @work = @collection.works.third
     @page = @work.pages.first
     @page2 = @work.pages.second
     @page3 = @work.pages.third
@@ -31,6 +31,7 @@ describe "needs review", :order => :defined do
     expect(page).to have_content("Transcription")
     count2 = Page.where(status: 'review').count
     expect(count2).to eq (count + 1)
+    expect(Page.find_by(id: @page.id).status).to eq ('review')
     page.find('.page-nav_next').click
     expect(page).to have_content(@page2.title)
     page.find('.tabs').click_link("Transcribe")
@@ -41,6 +42,8 @@ describe "needs review", :order => :defined do
     expect(page).to have_content("Transcription")
     count3 = Page.where(status: 'review').count
     expect(count3).to eq (count2 + 1)
+    expect(Page.find_by(id: @page2.id).status).to eq ('review')
+
   end
 
   it "filters list of review pages" do
@@ -56,8 +59,7 @@ describe "needs review", :order => :defined do
     expect(page.find('.maincol')).to have_content(@page2.title)
     expect(page.find('.maincol')).not_to have_content(@page3.title)
     expect(page.find('.maincol')).not_to have_content(@page4.title)
-    save_and_open_page
-    expect(page.find('.maincol')).not_to have_content(@work.pages.fifth.title)
+    #expect(page.find('.maincol')).not_to have_content(@work.pages.fifth.title)
     expect(page).to have_button('View All Pages')
     
     #return to original list
@@ -70,14 +72,24 @@ describe "needs review", :order => :defined do
   end
 
   it "marks pages blank" do
+    count = Page.where(status: 'blank').count
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content(@work.title)
     page.find('.work-page_title', text: @page3.title).click_link(@page3.title)
-   # expect(page).to have_content("This page is not transcribed")
-
-
-
-    #page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("This page is not transcribed")
+    page.find('a', text: 'mark the page blank').click
+    expect(page).to have_content("This page is blank")
+    expect(Page.where(status: 'blank').count).to eq (count + 1)
+    expect(Page.find_by(id: @page3.id).status).to eq ('blank')
+    page.find('.page-nav_next').click
+    expect(page).to have_content(@page4.title)
+    expect(page).to have_content("This page is not transcribed")
+    page.find('.tabs').click_link("Transcribe")
+    page.check('mark_blank')
+    click_button('Save Changes')
+    expect(page).to have_content("This page is blank")
+    expect(Page.where(status: 'blank').count).to eq (count + 2)
+    expect(Page.find_by(id: @page4.id).status).to eq ('blank')
 
   
   end
