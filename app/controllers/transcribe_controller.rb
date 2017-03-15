@@ -23,22 +23,52 @@ class TranscribeController  < ApplicationController
   end
 
   def mark_page_blank
-    @page.status = Page::STATUS_BLANK
-    @page.save
-    @work.work_statistic.recalculate if @work.work_statistic
-    redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+    if params[:mark_blank] == 'yes'
+      @page.status = Page::STATUS_BLANK
+      @page.save
+      @work.work_statistic.recalculate if @work.work_statistic
+      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+    elsif params[:mark_blank] == 'no'
+      @page.status = nil
+      @page.save
+      @work.work_statistic.recalculate if @work.work_statistic
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    else
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    end
+  end
+
+  def needs_review
+    if params[:page]['needs_review'] == '1'
+      @page.status = Page::STATUS_NEEDS_REVIEW
+      record_review_deed
+    else
+      @page.status = nil
+    end
   end
 
   def save_transcription
-    #if the current user is a guest acct, see how many times they've saved
     old_link_count = @page.page_article_links.count
     @page.attributes = params[:page]
+    #if page has been marked blank, call the mark_blank code
+    if params['mark_blank'].present?
+      mark_page_blank
+      return
+    end
+
+    #check to see if the page needs to be marked as needing review
+    needs_review
+
     if params['save']
       log_transcript_attempt
+      #leave the status alone if it's needs review, but otherwise set it to transcribed
+      unless @page.status == Page::STATUS_NEEDS_REVIEW
+        @page.status = Page::STATUS_TRANSCRIBED
+      end
       begin
         if @page.save
           log_transcript_success
-          if (@page.status == 'raw_ocr') || (@page.status == 'part_ocr')
+          if @page.work.ocr_correction
             record_correction_deed
           else
             record_deed
@@ -50,6 +80,9 @@ class TranscribeController  < ApplicationController
           logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
           if old_link_count == 0 && new_link_count > 0
             record_index_deed
+          end
+          if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
+            @page.update_columns(status: Page::STATUS_INDEXED)
           end
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
@@ -125,8 +158,19 @@ class TranscribeController  < ApplicationController
   def save_translation
     old_link_count = @page.page_article_links.count
     @page.attributes=params[:page]
+
+    if params['mark_blank'].present?
+      mark_page_blank
+      return
+    end
+
+    #check to see if the page needs review
+    needs_review
+
     if params['save']
       log_translation_attempt
+      #leave the status alone if it's needs review, but otherwise set it to translated
+
       begin
         if @page.save
           log_translation_success
@@ -284,6 +328,13 @@ protected
     deed.deed_type = Deed::PAGE_INDEXED
     deed.save!
   end
+
+  def record_review_deed
+    deed = stub_deed
+    deed.deed_type = Deed::NEEDS_REVIEW
+    deed.save!
+  end
+
 
   def record_translation_deed
     deed = stub_deed

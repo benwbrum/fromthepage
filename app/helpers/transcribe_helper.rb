@@ -1,4 +1,5 @@
 module TranscribeHelper
+=begin
   include AbstractXmlHelper
   
   def relevant_transcription_statuses(work)
@@ -24,4 +25,5 @@ module TranscribeHelper
   def relevant_status_help(work)
     Page::STATUS_HELP.values.join(" ")
   end
+=end
 end

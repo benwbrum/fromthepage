@@ -35,11 +35,13 @@
   ul.collection-work-stats
     -@works.each do |w|
       -progress_annotated = w.work_statistic.pct_annotated.round
-      -if (w.pages.where(status: 'raw_ocr').count != 0) || (w.pages.where(status: 'part_ocr').count != 0)
-        -progress_completed = w.work_statistic.pct_corrected.round
+      -progress_review = w.work_statistic.pct_needs_review.round
+
+      -if w.ocr_correction
+        -progress_completed = w.work_statistic.pct_completed.round
         -completed = "corrected"
       -else
-        -progress_completed = w.work_statistic.pct_transcribed.round
+        -progress_completed = w.work_statistic.pct_completed.round
         -completed = "transcribed"
 
       li
@@ -48,13 +50,20 @@
         -unless @collection.subjects_disabled
           span =="<b>#{progress_annotated}%</b> indexed"
         span =="<b>#{progress_completed}%</b> #{completed}"
+        span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
         span
           span.progress
             -unless @collection.subjects_disabled
               span(style="width:#{progress_annotated}%")
               span(style="width:#{progress_completed - progress_annotated}%")
+              -unless progress_review == 0
+                span(style="width:#{progress_review}%")
+
             -else
               span(style="width:#{progress_completed}%")
+              -unless progress_review == 0
+                span(style="width:#{progress_review}%")
+
 
 h2 Collaborators
 

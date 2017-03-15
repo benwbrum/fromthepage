@@ -9,6 +9,7 @@ class Deed < ActiveRecord::Base
   PAGE_TRANSLATED = 'pg_xlat'
   PAGE_TRANSLATION_EDIT = 'pg_xlat_ed'
   OCR_CORRECTED = 'ocr_corr'
+  NEEDS_REVIEW = 'review'
 
   # associations
   belongs_to :article
@@ -18,7 +19,7 @@ class Deed < ActiveRecord::Base
   belongs_to :user
   belongs_to :work
 
-  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED ]
+  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW ]
 
   def deed_type_name
     return case self.deed_type
@@ -38,6 +39,9 @@ class Deed < ActiveRecord::Base
       'Translation Edited'
     when OCR_CORRECTED
       'Page OCR Corrected'
+    when NEEDS_REVIEW
+      'Page Needs Review'
+      
     end
   end
 

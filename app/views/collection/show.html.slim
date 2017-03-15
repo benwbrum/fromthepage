@@ -18,24 +18,31 @@
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -progress_annotated = work.work_statistic.pct_annotated.round
-          -if (work.pages.where(status: 'raw_ocr').count != 0) || (work.pages.where(status: 'part_ocr').count != 0)
-            -progress_completed = work.work_statistic.pct_corrected.round
+          -progress_review = work.work_statistic.pct_needs_review.round
+          -progress_completed = work.work_statistic.pct_completed.round
+
+          -if work.ocr_correction
             -completed = "corrected"
           -else
-            -progress_completed = work.work_statistic.pct_transcribed.round
             -completed = "transcribed"
-          -unless @collection.subjects_disabled
-            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_completed}% #{completed}"
-            span
-              span.progress
-                span(style="width:#{progress_annotated}%")
-                span(style="width:#{progress_completed - progress_annotated}%")
+
+          -if @collection.subjects_disabled
+            -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
+          -elsif @collection.subjects_disabled && progress_review == 0
+            -wording = "#{progress_completed}% #{completed}"
+          -elsif progress_review == 0
+            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}"
           -else
-            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_completed}% #{completed}"
-            span
-              span.progress
-                span(style="width:#{progress_completed}%")
-          
+            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}, #{progress_review}% needs review"
+
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{wording}"
+          span
+            span.progress
+              -unless @collection.subjects_disabled
+                span(style="width:#{progress_annotated}%")
+              span(style="width:#{progress_completed - progress_annotated}%")
+              -unless progress_review == 0
+                span(style="width:#{progress_review}%")
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
@@ -71,6 +78,6 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
-    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED] })
+    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW] })
 
 =render({ :partial => '/shared/collection_footer' })

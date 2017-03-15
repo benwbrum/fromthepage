@@ -673,7 +673,8 @@ button, .button, .dropdown dd a {
     background: $color;
     vertical-align: top;
     display: inline-block;
-    &:nth-child(2) { background: adjust-hue(lighten($color, 10%), -25deg); }
+    &:nth-child(2) { background: #A3E07A; }
+    &:nth-child(3) { background: #F0E68C; }
   }
 }
 
