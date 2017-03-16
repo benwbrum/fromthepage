@@ -1,7 +1,6 @@
 class RecalculateStatistics < ActiveRecord::Migration
-
-  #Recalculate statistics for all works
   def change
+  #Recalculate statistics for all works
     @collection = Collection.all
     unless @collection.empty?
       @collection.each do |c|
@@ -11,4 +10,5 @@ class RecalculateStatistics < ActiveRecord::Migration
       end
     end
   end
+
 end
