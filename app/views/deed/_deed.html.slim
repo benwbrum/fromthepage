@@ -10,37 +10,37 @@
 
 -case deed.deed_type
 -when 'page_trans'
-  -output += "transcribed #{page} page"
+  -output += "transcribed page #{page}"
 
 -when 'page_edit'
-  -output += "edited #{page} page"
+  -output += "edited page #{page}"
 
 -when 'page_index'
-  -output += "indexed #{page} page"
+  -output += "indexed page #{page}"
 
 -when 'art_edit'
   -output += "edited #{article} article"
 
 -when 'note_add'
-  -output += "added a note to #{page} page"
+  -output += "added a note to page #{page}"
 
 -when 'pg_xlat'
-  -output += "translated #{page} page"
+  -output += "translated page #{page}"
 
 -when 'pg_xlat_ed'
-  -output += "edited the translation of #{page} page"
+  -output += "edited the translation of page #{page}"
 
 -when 'ocr_corr'
-  -output += "corrected #{page} page"
+  -output += "corrected page #{page}"
 
 -when 'review'
-  -output += "marked #{page} page as needing review"
+  -output += "marked page #{page} as needing review"
 
 -when 'xlat_index'
-  -output += "indexed the translation of #{page} page"
+  -output += "indexed the translation of page #{page}"
 
 -when 'xlat_rev'
-  -output += "marked the #{page} translation page as needing review"
+  -output += "marked translation page #{page} as needing review"
 
 
 -if(long_view && !deed.work.nil?)

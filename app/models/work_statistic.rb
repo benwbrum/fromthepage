@@ -7,14 +7,26 @@ class WorkStatistic < ActiveRecord::Base
       [[0, raw].max, 100].min
   end
 
+  def pct_corrected
+    raw = self[:corrected_pages].to_f / self[:total_pages] * 100
+    raw = 0 if raw.nan?
+    [[0, raw].max, 100].min
+  end
+
+  def pct_translated
+      raw = self[:translated_pages].to_f / self[:total_pages] * 100
+      raw = 0 if raw.nan?
+      [[0, raw].max, 100].min
+  end
+
   def pct_annotated
     raw = self[:annotated_pages].to_f / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
-  def pct_corrected
-    raw = self[:corrected_pages].to_f / self[:total_pages] * 100
+  def pct_translation_annotated
+    raw = self[:translated_annotated].to_f / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
@@ -25,8 +37,20 @@ class WorkStatistic < ActiveRecord::Base
     [[0, raw].max, 100].min
   end
 
+  def pct_translation_needs_review
+    raw = self[:translation_review].to_f / self[:total_pages] * 100
+    raw = 0 if raw.nan?
+    [[0, raw].max, 100].min
+  end
+
   def pct_blank
     raw = self[:blank_pages].to_f / self[:total_pages] * 100
+    raw = 0 if raw.nan?
+    [[0, raw].max, 100].min
+  end
+
+  def pct_translation_blank
+    raw = self[:translation_blank].to_f / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
@@ -37,6 +61,10 @@ class WorkStatistic < ActiveRecord::Base
     else
       pct_transcribed + pct_blank + pct_annotated
     end
+  end
+
+  def pct_translation_completed
+    pct_translated + pct_translation_blank + pct_translation_annotated
   end
 
   def recalculate

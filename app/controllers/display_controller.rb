@@ -20,6 +20,10 @@ class DisplayController < ApplicationController
         condition = "work_id = ? AND status = ?"
         @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+      elsif params['translation_review']
+        condition = "work_id = ? AND translation_status = ?"
+        @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
       else
         @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count

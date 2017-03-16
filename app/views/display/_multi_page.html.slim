@@ -82,6 +82,9 @@
           =button_to "View All Pages", {action: "read_work", work_id: @work.id}
         -else
           =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review'}
+          br
+          -if @work.supports_translation
+            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, translation_review: 'review'}
           
 
 
