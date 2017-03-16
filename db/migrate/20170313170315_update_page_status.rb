@@ -4,7 +4,7 @@ class UpdatePageStatus < ActiveRecord::Migration
     #find pages with source text from non-ocr-corrected works
     pages = Page.where.not(work_id: ocr_ids).where.not(source_text: nil)
     blank = pages.where(status: 'blank')
-    linked = pages.where("pages.id in (select page_id from page_article_links)")
+    linked = pages.where("pages.id in (select page_id from page_article_links where text_type = 'transcription')")
 
     #set status to transcribed for pages that aren't marked blank or have page_article_links
     transcribed = pages - linked - blank
@@ -17,6 +17,6 @@ class UpdatePageStatus < ActiveRecord::Migration
     indexed.each do |i|
       i.update_columns(status: 'indexed')
     end
-
   end
+
 end
