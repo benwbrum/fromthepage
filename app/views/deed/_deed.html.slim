@@ -36,6 +36,13 @@
 -when 'review'
   -output += "marked #{page} page as needing review"
 
+-when 'xlat_index'
+  -output += "indexed the translation of #{page} page"
+
+-when 'xlat_rev'
+  -output += "marked the #{page} translation page as needing review"
+
+
 -if(long_view && !deed.work.nil?)
   -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id })
   -output += " of #{work} work"

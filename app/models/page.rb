@@ -40,15 +40,18 @@ class Page < ActiveRecord::Base
     TRANSLATION = 'translation'
   end
 
+  STATUS_TRANSCRIBED = 'transcribed'
   STATUS_BLANK = 'blank'
-  STATUS_INCOMPLETE = 'incomplete'
+  STATUS_NEEDS_REVIEW = 'review'
+  STATUS_INDEXED = 'indexed'
+  STATUS_TRANSLATED = 'translated'
+
+  #unused now
+  #STATUS_INCOMPLETE = 'incomplete'
   #STATUS_UNCORRECTED_OCR = 'raw_ocr'
   #STATUS_INCOMPLETE_OCR = 'part_ocr'
-  STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
-  STATUS_NEEDS_REVIEW = 'review'
-  STATUS_TRANSCRIBED = 'transcribed'
-  STATUS_TRANSLATED = 'translated'
-  STATUS_INDEXED = 'indexed'
+  #STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
+
 
   # tested
   def collection

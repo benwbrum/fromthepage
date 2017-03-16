@@ -25,11 +25,13 @@ class TranscribeController  < ApplicationController
   def mark_page_blank
     if params[:mark_blank] == 'yes'
       @page.status = Page::STATUS_BLANK
+      @page.translation_status = Page::STATUS_BLANK
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
       redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
     elsif params[:mark_blank] == 'no'
       @page.status = nil
+      @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
       redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
@@ -39,16 +41,25 @@ class TranscribeController  < ApplicationController
   end
 
   def needs_review
-    if params[:page]['needs_review'] == '1'
-      @page.status = Page::STATUS_NEEDS_REVIEW
-      record_review_deed
+    if params[:type] == 'translation'
+      if params[:page]['needs_review'] == '1'
+        @page.translation_status = Page::STATUS_NEEDS_REVIEW
+        record_translation_review_deed
+      else
+        @page.translation_status = nil
+      end
     else
-      @page.status = nil
+      if params[:page]['needs_review'] == '1'
+        @page.status = Page::STATUS_NEEDS_REVIEW
+        record_review_deed
+      else
+        @page.status = nil
+      end
     end
   end
 
   def save_transcription
-    old_link_count = @page.page_article_links.count
+    old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code
     if params['mark_blank'].present?
@@ -76,7 +87,7 @@ class TranscribeController  < ApplicationController
           # use the new links to blank the graphs
           @page.clear_article_graphs
 
-          new_link_count = @page.page_article_links.count
+          new_link_count = @page.page_article_links.where(text_type: 'transcription').count
           logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
           if old_link_count == 0 && new_link_count > 0
             record_index_deed
@@ -156,7 +167,7 @@ class TranscribeController  < ApplicationController
   end
 
   def save_translation
-    old_link_count = @page.page_article_links.count
+    old_link_count = @page.page_article_links.where(text_type: 'translation').count
     @page.attributes=params[:page]
 
     if params['mark_blank'].present?
@@ -170,11 +181,23 @@ class TranscribeController  < ApplicationController
     if params['save']
       log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
+      unless @page.translation_status == Page::STATUS_NEEDS_REVIEW
+        @page.translation_status = Page::STATUS_TRANSLATED
+      end
 
       begin
         if @page.save
           log_translation_success
           record_translation_deed
+
+          new_link_count = @page.page_article_links.where(text_type: 'translation').count
+          logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
+          if old_link_count == 0 && new_link_count > 0
+            record_translation_index_deed
+          end
+          if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
+            @page.update_columns(translation_status: Page::STATUS_INDEXED)
+          end
 
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
@@ -335,7 +358,6 @@ protected
     deed.save!
   end
 
-
   def record_translation_deed
     deed = stub_deed
     if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank?
@@ -345,4 +367,19 @@ protected
     end
     deed.save!
   end
+
+  def record_translation_review_deed
+    deed = stub_deed
+    deed.deed_type = Deed::TRANSLATION_REVIEW
+    deed.save!
+  end
+
+  def record_translation_index_deed
+    deed = stub_deed
+    deed.deed_type = Deed::TRANSLATION_INDEXED
+    deed.save!
+  end
+
+
+
 end

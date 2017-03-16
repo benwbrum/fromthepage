@@ -44,9 +44,13 @@ class WorkStatistic < ActiveRecord::Base
     self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
     self[:annotated_pages] = work.pages.where("status = '#{Page::STATUS_INDEXED}'").count
     self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
-    self[:incomplete_pages] = work.pages.where("status = '#{Page::STATUS_INCOMPLETE}'").count
     self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
     self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+    self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
+    self[:translated_blank] = work.pages.where("translation_status = '#{Page::STATUS_BLANK}'").count
+    self[:translated_review] = work.pages.where("translation_status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+    self[:translated_annotated] = work.pages.where("translation_status = '#{Page::STATUS_INDEXED}'").count
+
     save!
   end
 

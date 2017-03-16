@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 6, :page_id => @page.id }})
 
-=form_for(@page, :url => { :action => 'save_translation' }) do |f|
+=form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors
   
@@ -18,7 +18,7 @@
       .toolbar_group.w100.aright
         span Page Needs Review
         |&nbsp;
-        -if @page.status == 'review'
+        -if @page.translation_status == 'review'
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
