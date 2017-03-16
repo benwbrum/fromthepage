@@ -5,8 +5,8 @@ describe "needs review", :order => :defined do
   before :all do
     @user = User.find_by(login: 'eleanor')
     @collections = Collection.all
-    @collection = @collections.first
-    @work = @collection.works.third
+    @collection = @collections.second
+    @work = @collection.works.first
     @page = @work.pages.first
     @page2 = @work.pages.second
     @page3 = @work.pages.third
