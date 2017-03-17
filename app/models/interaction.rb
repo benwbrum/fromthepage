@@ -5,7 +5,9 @@ class Interaction < ActiveRecord::Base
   belongs_to :user
 
   before_save do
-    self.browser=self.browser[0,127]
+    unless self.browser.blank?
+      self.browser=self.browser[0,127]
+    end
   end
   # 'which_where' could mean "Which where clause to use?"
   # not tested
