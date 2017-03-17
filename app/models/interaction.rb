@@ -4,6 +4,9 @@ class Interaction < ActiveRecord::Base
   belongs_to :page
   belongs_to :user
 
+  before_save do
+    self.browser=self.browser[0,127]
+  end
   # 'which_where' could mean "Which where clause to use?"
   # not tested
   def self.list_sessions(which_where = 2, user_id)
