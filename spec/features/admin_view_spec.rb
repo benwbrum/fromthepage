@@ -3,14 +3,16 @@ require 'spec_helper'
 describe "admin actions" do
 
 before :all do
-  @admin = User.find_by(login: 'julia')
-  @owner = User.find_by(login: 'margaret')
-
+  @admin = User.find_by(login: ADMIN)
+  @owner = User.find_by(login: OWNER)
 end
 
-  it "looks at admin tabs" do
+before :each do
     login_as(@admin, :scope => :user)
-    user = User.find_by(login: 'eleanor')
+end  
+
+  it "looks at admin tabs" do
+    user = User.find_by(login: USER)
     #click on each tab in the admin dashboard
     visit admin_path
     page.find('.tabs').click_link("Users")
@@ -36,8 +38,7 @@ end
   end
 
   it "makes a user an owner" do
-    login_as(@admin, :scope => :user)
-    user2 = User.find_by(login: 'harry')
+    user2 = User.find_by(login: NEW_OWNER)
     visit admin_path
     page.find('.tabs').click_link("Users")
     expect(page).to have_content("User Login")
@@ -48,12 +49,11 @@ end
     page.find('.tabs').click_link("Owners")
     expect(page).to have_content("Owner Login")
     expect(page).to have_content(user2.login)
-    user2 = User.find_by(login: 'harry')
+    user2 = User.find_by(login: NEW_OWNER)
     expect(user2.owner).to be true
   end
 
   it "logs in as another user" do
-    login_as(@admin, :scope => :user)
     visit admin_path
     page.find('.tabs').click_link("Owners")
     expect(page).to have_content("Owner Login")

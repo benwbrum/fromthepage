@@ -5,6 +5,7 @@ describe "different user role logins" do
   before :all do
     @collections = Collection.all
     @collection = @collections.last
+
     @password = "password"
   end
 
@@ -48,7 +49,7 @@ describe "different user role logins" do
 
   it "signs in an editor with no activity" do
       visit new_user_session_path
-      fill_in 'Login', with: 'george'
+      fill_in 'Login', with: REST_USER
       fill_in 'Password', with: @password
       click_button('Sign In')
       expect(page.current_path).to eq dashboard_watchlist_path
@@ -62,12 +63,12 @@ describe "different user role logins" do
   it "signs in an editor with activity" do
     #note: signs in with login id
     #find user activity
-    user = User.find_by(login: 'eleanor')
+    user = User.find_by(login: USER)
     collection_ids = Deed.where(:user_id => user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
     collections = Collection.where(:id => collection_ids).order_by_recent_activity
     #check sign in with editor permissions
     visit new_user_session_path
-    fill_in 'Login', with: user.login
+    fill_in 'Login', with: USER
     fill_in 'Password', with: @password
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
@@ -96,11 +97,10 @@ describe "different user role logins" do
   end
 
   it "signs an owner in" do
-    user = User.find_by(login: "margaret")
+    user = User.find_by(login: OWNER)
     @collections = user.all_owner_collections
-    
     visit new_user_session_path
-    fill_in 'Login', with: user.login
+    fill_in 'Login', with: OWNER
     fill_in 'Password', with: @password
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_owner_path
@@ -117,13 +117,12 @@ describe "different user role logins" do
     #check for owner but not admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
-
   end
 
   it "signs an admin in" do
     #check sign in with admin permissions  
     visit new_user_session_path
-    fill_in 'Login', with: 'julia'
+    fill_in 'Login', with: ADMIN
     fill_in 'Password', with: @password
     click_button 'Sign In'
     expect(page.current_path).to eq admin_path

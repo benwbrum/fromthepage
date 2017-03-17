@@ -5,13 +5,10 @@ describe "collection related tasks", :order => :defined do
 
 
   before :all do
-
-    @user = User.find_by(login: 'margaret')
-    @collections = @user.all_owner_collections
-    @collection = @collections.first
+    @owner = User.find_by(login: OWNER)
+    @collections = @owner.all_owner_collections
+    @collection = @collections.second
     @work = Work.find_by(title: 'test')
-
-    #@work = @collection.works.first
     @page = @work.pages.first
     @conventions = @collection.transcription_conventions
     @clean_conventions = ActionController::Base.helpers.strip_tags(@collection.transcription_conventions)
@@ -20,8 +17,11 @@ describe "collection related tasks", :order => :defined do
     @work_convention = "Work level transcription conventions"
   end
 
+  before :each do
+    login_as(@owner, :scope => :user)
+  end    
+
   it "exports a collection" do
-    login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Export")
@@ -32,7 +32,6 @@ describe "collection related tasks", :order => :defined do
   end
 
   it "checks for collection level transcription conventions" do
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page', text: @page.title).click_link(@page.title)
     page.find('.tabs').click_link("Transcribe")
@@ -40,7 +39,6 @@ describe "collection related tasks", :order => :defined do
   end
 
   it "changes work level transcription conventions" do
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content @conventions
@@ -57,7 +55,6 @@ describe "collection related tasks", :order => :defined do
   end
 
   it "changes conventions at collection level but not work level" do
-    login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Settings")
@@ -76,12 +73,9 @@ describe "collection related tasks", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     expect(page).not_to have_content @new_convention
     expect(page).to have_content @work_convention
- 
   end
 
   it "reverts to collection level transcription conventions", :js => true do
-    
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Settings")
     convention_work = Work.find_by(title: 'test')
@@ -98,7 +92,6 @@ describe "collection related tasks", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content @new_convention
     expect(page).not_to have_content @work_convention
-
   end
 
 end

@@ -70,3 +70,12 @@ Capybara::Webkit.configure do |config|
   #config.debug = true
 end
 
+Capybara.configure do |config|
+  config.asset_host = "http://localhost:3000"
+end
+
+REST_USER = "george"
+USER = "eleanor"
+OWNER = "margaret"
+NEW_OWNER = "harry"
+ADMIN = "julia"

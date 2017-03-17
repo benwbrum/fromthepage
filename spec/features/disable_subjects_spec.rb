@@ -3,27 +3,29 @@ require 'spec_helper'
 describe "disable subject linking", :order => :defined do
 
   before :all do
-    @user = User.find_by(login: 'margaret')
-    @collections = @user.all_owner_collections
+    @owner = User.find_by(login: OWNER)
+    @collections = @owner.all_owner_collections
     @collection = @collections.first
     @work = @collection.works.second
     @title = @work.pages.third.title
   end
 
+  before :each do
+    login_as(@owner, :scope => :user)
+  end
+
   it "disables subject indexing in a collection" do
-    login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content("Disable subject indexing")
     check('collection_subjects_disabled')
     click_button('Save Changes')
     #have to find the collection again to make sure it's been updated
-    collection = Collection.where(owner_user_id: @user.id).first
+    collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be true
   end
 
   it "checks collection level subject items" do
-    login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     #check for subject related items on Overview tab
     expect(page).to have_content(@collection.title)
@@ -51,7 +53,6 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks work level subject items" do
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.tabs').click_link("Help")
     expect(page).to have_content("Transcribing")
@@ -67,7 +68,6 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks page level subject items" do
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page', text: @title).click_link(@title)
     expect(page).to have_content("Transcription")
@@ -85,19 +85,17 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "enables subject indexing" do
-    login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content("Disable subject indexing")
     uncheck('collection_subjects_disabled')
     click_button('Save Changes')
     #have to find the collection again to make sure it's been updated
-    collection = Collection.where(owner_user_id: @user.id).first
+    collection = Collection.where(owner_user_id: @owner.id).first
     expect(collection.subjects_disabled).to be false
   end
 
  it "checks links work when enabled" do
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
