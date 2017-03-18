@@ -20,11 +20,25 @@ class IiifController < ApplicationController
     render :text => iiif_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def for
+    at_id = params[:id]
+    
+    if sc_collection = ScCollection.where(:at_id => at_id).last
+      redirect_to :controller => 'iiif', :action => 'collection', :collection_id => sc_collection.collection_id
+    end    
 
+    if sc_manifest = ScManifest.where(:at_id => at_id).last
+      redirect_to({:controller => 'iiif', :action => 'manifest', :id => sc_manifest.work_id, :only_path => false})
+    end    
+
+    if sc_canvas = ScCanvas.where(:sc_canvas_id => at_id).last
+      redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
+    end    
+    
+  end
     
   def manifest
     work_id =  params[:id]
-
     work = Work.find work_id
     seed = { 
               '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}), 
@@ -237,7 +251,8 @@ private
     sequence = IIIF::Presentation::Sequence.new
     sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
     sequence.label = 'Pages'
-    work=Work.find work_id
+    work=Work.where(:id => work_id).includes(:pages => [:sc_canvas, :notes]).first
+
     work.pages.each do |page|
       if page.sc_canvas 
         sequence.canvases << canvas_from_iiif_page(page)
@@ -341,7 +356,7 @@ private
       canvas.other_content << annotation_list
     end
 
-    unless page.notes.count == 0
+    if page.notes.exists? == 0
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
       canvas.other_content << annotation_list
@@ -378,7 +393,7 @@ private
       canvas.other_content << annotation_list
     end
 
-    unless page.notes.count == 0
+    if page.notes.exists?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "notes", :only_path => false})
       canvas.other_content << annotation_list
