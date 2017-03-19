@@ -1,1 +1,5 @@
-<p>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views. <br> &quot;Autolink&quot; will suggest subjects certain words could be linked to or you can use double braces to link subjects. <code>[[Jane Doe]]</code> will link the text &quot;Jane Doe&quot; to the subject Jane Doe, while <code>[[Jane Doe|Jane]]</code> will link the text &quot;Jane&quot; to the subject Jane Doe. We recommend that linking be left to an editor after the initial transcription is made.</p>
+<p>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views. <br>
+
+<% unless @collection.subjects_disabled %>
+&quot;Autolink&quot; will suggest subjects certain words could be linked to or you can use double braces to link subjects. <code>[[Jane Doe]]</code> will link the text &quot;Jane Doe&quot; to the subject Jane Doe, while <code>[[Jane Doe|Jane]]</code> will link the text &quot;Jane&quot; to the subject Jane Doe. We recommend that linking be left to an editor after the initial transcription is made.</p>
+<% end %>

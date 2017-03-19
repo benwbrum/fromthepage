@@ -31,15 +31,15 @@
           = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
           =render(:partial => 'collection/contributor_deeds', :locals => { :deed => note })
     
-
-  -unless @recent_articles.empty?
-    h3.nomargin Recent Subjects
-    p  
-      -@recent_articles.each do |art|
-        .deed-short
-          span.deed-short_content
-            = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
+  -unless @collection.subjects_disabled
+    -unless @recent_articles.empty?
+      h3.nomargin Recent Subjects
+      p  
+        -@recent_articles.each do |art|
+          .deed-short
+            span.deed-short_content
+              = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+              =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
 
   -unless @recent_ocr.empty?
     h3.nomargin Recent OCR correction

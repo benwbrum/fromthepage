@@ -2,19 +2,30 @@ collection_1:
   id: 1
   title: CS Pierce
   owner_user_id: 4
-  created_on: 2016-11-28 16:34:58.000000000 Z
   intro_block: ''
   footer_block: 
   restricted: false
   picture: 
+  transcription_conventions: "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li></ul></p>"
   supports_document_sets: false
 collection_2:
   id: 2
-  title: LA County Library
+  title: Imported Collection
   owner_user_id: 4
-  created_on: 2016-11-28 16:36:14.000000000 Z
   intro_block: ''
   footer_block: 
   restricted: false
   picture: 
+  transcription_conventions: "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li></ul></p>"
   supports_document_sets: false
+collection_3:
+  id: 3
+  title: LA County Library
+  owner_user_id: 4
+  intro_block: ''
+  footer_block: 
+  restricted: false
+  picture: 
+  transcription_conventions: "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li></ul></p>"
+  supports_document_sets: false
+    

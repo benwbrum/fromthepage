@@ -3,9 +3,7 @@ work_statistic_1:
   work_id: 1
   transcribed_pages: 0
   annotated_pages: 0
-  total_pages: 16
-  created_at: 2016-11-28 16:35:23.000000000 Z
-  updated_at: 2016-11-28 16:35:26.000000000 Z
+  total_pages: 10
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_2:
@@ -14,8 +12,6 @@ work_statistic_2:
   transcribed_pages: 0
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:43.000000000 Z
-  updated_at: 2016-11-28 16:36:43.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_3:
@@ -24,8 +20,6 @@ work_statistic_3:
   transcribed_pages: 1
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:43.000000000 Z
-  updated_at: 2016-11-28 16:42:00.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_4:
@@ -34,8 +28,6 @@ work_statistic_4:
   transcribed_pages: 0
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:43.000000000 Z
-  updated_at: 2016-11-28 16:36:44.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_5:
@@ -44,8 +36,6 @@ work_statistic_5:
   transcribed_pages: 0
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:44.000000000 Z
-  updated_at: 2016-11-28 16:36:44.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_6:
@@ -54,8 +44,6 @@ work_statistic_6:
   transcribed_pages: 0
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:44.000000000 Z
-  updated_at: 2016-11-28 16:36:44.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_7:
@@ -64,8 +52,6 @@ work_statistic_7:
   transcribed_pages: 0
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:44.000000000 Z
-  updated_at: 2016-11-28 16:36:45.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_8:
@@ -74,8 +60,6 @@ work_statistic_8:
   transcribed_pages: 1
   annotated_pages: 0
   total_pages: 1
-  created_at: 2016-11-28 16:36:45.000000000 Z
-  updated_at: 2016-11-28 16:42:30.000000000 Z
   blank_pages: 0
   incomplete_pages: 0
 work_statistic_9:
@@ -83,8 +67,6 @@ work_statistic_9:
   work_id: 9
   transcribed_pages: 1
   annotated_pages: 0
-  total_pages: 74
-  created_at: 2016-11-28 16:38:38.000000000 Z
-  updated_at: 2016-11-28 16:42:56.000000000 Z
+  total_pages: 21
   blank_pages: 0
   incomplete_pages: 0

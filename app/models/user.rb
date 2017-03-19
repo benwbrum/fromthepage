@@ -1,15 +1,17 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :masqueradable, 
          :recoverable, :rememberable, :trackable, :validatable,
          :encryptable, :encryptor => :restful_authentication_sha1
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
+
+  attr_accessor :login_id
 
   has_many(:owner_works,
            { :foreign_key => "owner_user_id",
@@ -31,6 +33,7 @@ class User < ActiveRecord::Base
   has_many :deeds
 
   validates :display_name, presence: true
+  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
   def all_owner_collections
@@ -76,11 +79,36 @@ class User < ActiveRecord::Base
   end
 
   def display_name
-    self[:display_name] || self[:login]
+    if self.guest
+      "Guest"
+    else
+      self[:display_name] || self[:login]
+    end
   end
 
   def collections
     self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
   end
 
+  def owned_page_count
+    count = 0
+    self.all_owner_collections.each do |c|
+      count = count + c.page_count
+    end
+    return count
+  end
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login_id)
+      where(conditions).where(["login = :value OR lower(email) = lower(:value)", { :value => login}]).first
+    else
+      where(conditions).first
+    end
+  end
+  
+  def unrestricted_collections
+    collections = self.owned_collections.unrestricted.order_by_recent_activity + Collection.where(owner_user_id: self.id).unrestricted.order_by_recent_activity
+  end
+  
 end

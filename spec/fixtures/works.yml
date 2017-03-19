@@ -2,7 +2,6 @@ work_1:
   id: 1
   title: MS_844
   description: MS_844
-  created_on: 2016-11-28 16:35:23.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 16
@@ -21,7 +20,6 @@ work_2:
   id: 2
   title: MF1323.1197 Reel 32_0057-2
   description: MF1323.1197 Reel 32_0057-2
-  created_on: 2016-11-28 16:36:43.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 1
@@ -31,16 +29,15 @@ work_2:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
-  supports_translation: false
+  supports_translation: true
   translation_instructions: 
   pages_are_meaningful: true
 work_3:
   id: 3
   title: MF1323.1197 Reel 32_0046-2
   description: MF1323.1197 Reel 32_0046-2
-  created_on: 2016-11-28 16:36:43.000000000 Z
   owner_user_id: 4
   restrict_scribes: true
   transcription_version: 2
@@ -50,7 +47,7 @@ work_3:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
   supports_translation: false
   translation_instructions: 
@@ -59,7 +56,6 @@ work_4:
   id: 4
   title: MF1323.1197 Reel 32_0053-2
   description: MF1323.1197 Reel 32_0053-2
-  created_on: 2016-11-28 16:36:43.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 1
@@ -69,7 +65,7 @@ work_4:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
   supports_translation: false
   translation_instructions: 
@@ -78,7 +74,6 @@ work_5:
   id: 5
   title: MF1323.1197 Reel 32_0057-1
   description: MF1323.1197 Reel 32_0057-1
-  created_on: 2016-11-28 16:36:44.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 1
@@ -88,7 +83,7 @@ work_5:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
   supports_translation: true
   translation_instructions: 
@@ -97,7 +92,6 @@ work_6:
   id: 6
   title: MF1323.1197 Reel 32_0053-1
   description: MF1323.1197 Reel 32_0053-1
-  created_on: 2016-11-28 16:36:44.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 1
@@ -107,7 +101,7 @@ work_6:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
   supports_translation: false
   translation_instructions: 
@@ -116,7 +110,6 @@ work_7:
   id: 7
   title: MF1323.1197 Reel 32_0046-1
   description: MF1323.1197 Reel 32_0046-1
-  created_on: 2016-11-28 16:36:44.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 1
@@ -126,7 +119,7 @@ work_7:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
   supports_translation: false
   translation_instructions: 
@@ -135,7 +128,6 @@ work_8:
   id: 8
   title: MF1323.1197 Reel 32_0046-3
   description: MF1323.1197 Reel 32_0046-3
-  created_on: 2016-11-28 16:36:45.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 2
@@ -145,7 +137,7 @@ work_8:
   location_of_composition: 
   author: 
   transcription_conventions: 
-  collection_id: 2
+  collection_id: 3
   scribes_can_edit_titles: false
   supports_translation: false
   translation_instructions: 
@@ -154,7 +146,6 @@ work_9:
   id: 9
   title: MS_641-642
   description: MS_641-642
-  created_on: 2016-11-28 16:38:38.000000000 Z
   owner_user_id: 4
   restrict_scribes: false
   transcription_version: 75

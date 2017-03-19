@@ -4,18 +4,21 @@ describe "IA import actions", :order => :defined do
 
   before :all do
 
-    @user = User.find_by(login: 'margaret')
-    @collections = @user.all_owner_collections
-    @collection = @collections.first
-    @works = @user.owner_works
+    @owner = User.find_by(login: OWNER)
+    @collections = @owner.all_owner_collections
+    @collection = @collections.second
+    @works = @owner.owner_works
     @title = "[Letter to] Dear Garrison [manuscript]"
   end
+
+  before :each do
+    login_as(@owner, :scope => :user)
+  end    
 
   it "imports a work from IA" do
     ia_work_count = IaWork.all.count
     works_count = @works.count
     ia_link = "https://archive.org/details/lettertosamuelma00estl"
-    login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     click_link("Import From Archive.org")
@@ -29,13 +32,12 @@ describe "IA import actions", :order => :defined do
     click_button('Publish Work')
     expect(page).to have_content("has been converted into a FromThePage work")
     expect(ia_work_count + 1).to eq IaWork.all.count
-    expect(works_count + 1).to eq @user.owner_works.count
+    expect(works_count + 1).to eq @owner.owner_works.count
   end
 
   it "uses OCR when importing a work from IA" do
     ia_work_count = IaWork.all.count
     ia_link = "https://archive.org/details/lettertodeargarr00mays"
-    login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     click_link("Import From Archive.org")
@@ -60,7 +62,6 @@ describe "IA import actions", :order => :defined do
   it "tests ocr correction" do
     @ocr_work = Work.find_by(title: @title)
     @ocr_page = @ocr_work.pages.first
-    login_as(@user, :scope => :user)
     visit "/display/read_work?work_id=#{@ocr_work.id}"
     expect(page).to have_content("This page is not corrected, please help correct this page")
     click_link @ocr_page.title
@@ -77,7 +78,6 @@ describe "IA import actions", :order => :defined do
   end
 
   it "checks ocr/transcribe statistics" do
-    login_as(@user, :scope => :user)
     visit "/collection/show?collection_id=#{@collection.id}"
     expect(page).to have_content("Works")
     @collection.works.each do |w|
