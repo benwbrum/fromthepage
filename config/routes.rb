@@ -34,6 +34,7 @@ Fromthepage::Application.routes.draw do
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
   get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence' 
+  get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ }
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
  # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
