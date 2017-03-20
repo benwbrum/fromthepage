@@ -173,11 +173,16 @@ namespace :fromthepage do
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
     work.description = work.title
     ls = Dir.glob(File.join(new_dir_name, "*")).sort
+    GC.start
     ls.each_with_index do |image_fn,i|
       page = Page.new
+      print "\t\tconvert_to_work created new page\n"
       page.title = "#{i+1}"
       page.base_image = image_fn
+      print "\t\tconvert_to_work before Magick call \n"
       image = Magick::ImageList.new(image_fn)
+      GC.start
+      print "\t\tconvert_to_work calculating base and height \n"
       page.base_height = image.rows
       page.base_width = image.columns
       image = nil
