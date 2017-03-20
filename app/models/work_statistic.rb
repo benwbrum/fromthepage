@@ -38,7 +38,7 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def pct_translation_needs_review
-    raw = self[:translation_review].to_f / self[:total_pages] * 100
+    raw = self[:translated_review].to_f / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
@@ -50,7 +50,7 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def pct_translation_blank
-    raw = self[:translation_blank].to_f / self[:total_pages] * 100
+    raw = self[:translated_blank].to_f / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
