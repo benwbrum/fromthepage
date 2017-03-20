@@ -7,7 +7,6 @@ page_1:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:23.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -25,7 +24,6 @@ page_2:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:23.000000000 Z
   position: 2
   lock_version: 0
   xml_text: 
@@ -43,7 +41,6 @@ page_3:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 3
   lock_version: 0
   xml_text: 
@@ -61,7 +58,6 @@ page_4:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 4
   lock_version: 0
   xml_text: 
@@ -79,7 +75,6 @@ page_5:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 5
   lock_version: 0
   xml_text: 
@@ -97,7 +92,6 @@ page_6:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 6
   lock_version: 0
   xml_text: 
@@ -115,7 +109,6 @@ page_7:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:24.000000000 Z
   position: 7
   lock_version: 0
   xml_text: 
@@ -133,7 +126,6 @@ page_8:
   base_height: 2860
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 8
   lock_version: 0
   xml_text: 
@@ -151,7 +143,6 @@ page_9:
   base_height: 1121
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 9
   lock_version: 0
   xml_text: 
@@ -169,116 +160,7 @@ page_10:
   base_height: 1121
   shrink_factor: 
   work_id: 1
-  created_on: 2016-11-28 16:35:25.000000000 Z
   position: 10
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_11:
-  id: 11
-  title: '11'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_011.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 1
-  created_on: 2016-11-28 16:35:25.000000000 Z
-  position: 11
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_12:
-  id: 12
-  title: '12'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_012.jpg')%>
-  base_width: 1650
-  base_height: 2860
-  shrink_factor: 
-  work_id: 1
-  created_on: 2016-11-28 16:35:25.000000000 Z
-  position: 12
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_13:
-  id: 13
-  title: '13'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_013.jpg')%>
-  base_width: 1635
-  base_height: 2860
-  shrink_factor: 
-  work_id: 1
-  created_on: 2016-11-28 16:35:26.000000000 Z
-  position: 13
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_14:
-  id: 14
-  title: '14'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_014.jpg')%>
-  base_width: 1640
-  base_height: 2860
-  shrink_factor: 
-  work_id: 1
-  created_on: 2016-11-28 16:35:26.000000000 Z
-  position: 14
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_15:
-  id: 15
-  title: '15'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_015.jpg')%>
-  base_width: 1647
-  base_height: 2860
-  shrink_factor: 
-  work_id: 1
-  created_on: 2016-11-28 16:35:26.000000000 Z
-  position: 15
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_16:
-  id: 16
-  title: '16'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_016.jpg')%>
-  base_width: 1645
-  base_height: 2860
-  shrink_factor: 
-  work_id: 1
-  created_on: 2016-11-28 16:35:26.000000000 Z
-  position: 16
   lock_version: 0
   xml_text: 
   page_version_id: 
@@ -295,7 +177,6 @@ page_17:
   base_height: 3313
   shrink_factor: 
   work_id: 2
-  created_on: 2016-11-28 16:36:43.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -313,7 +194,6 @@ page_18:
   base_height: 3375
   shrink_factor: 
   work_id: 3
-  created_on: 2016-11-28 16:36:43.000000000 Z
   position: 1
   lock_version: 1
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Department
@@ -332,7 +212,6 @@ page_19:
   base_height: 3313
   shrink_factor: 
   work_id: 4
-  created_on: 2016-11-28 16:36:44.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -350,7 +229,6 @@ page_20:
   base_height: 2642
   shrink_factor: 
   work_id: 5
-  created_on: 2016-11-28 16:36:44.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -368,7 +246,6 @@ page_21:
   base_height: 2688
   shrink_factor: 
   work_id: 6
-  created_on: 2016-11-28 16:36:44.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -386,7 +263,6 @@ page_22:
   base_height: 2704
   shrink_factor: 
   work_id: 7
-  created_on: 2016-11-28 16:36:44.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -404,7 +280,6 @@ page_23:
   base_height: 3375
   shrink_factor: 
   work_id: 8
-  created_on: 2016-11-28 16:36:45.000000000 Z
   position: 1
   lock_version: 1
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>should
@@ -423,7 +298,6 @@ page_24:
   base_height: 2860
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:38.000000000 Z
   position: 1
   lock_version: 0
   xml_text: 
@@ -441,7 +315,6 @@ page_25:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:38.000000000 Z
   position: 2
   lock_version: 1
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Significs
@@ -460,7 +333,6 @@ page_26:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:38.000000000 Z
   position: 3
   lock_version: 0
   xml_text: 
@@ -478,7 +350,6 @@ page_27:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:39.000000000 Z
   position: 4
   lock_version: 0
   xml_text: 
@@ -496,7 +367,6 @@ page_28:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:39.000000000 Z
   position: 5
   lock_version: 0
   xml_text: 
@@ -514,7 +384,6 @@ page_29:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:39.000000000 Z
   position: 6
   lock_version: 0
   xml_text: 
@@ -532,7 +401,6 @@ page_30:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:39.000000000 Z
   position: 7
   lock_version: 0
   xml_text: 
@@ -550,7 +418,6 @@ page_31:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:39.000000000 Z
   position: 8
   lock_version: 0
   xml_text: 
@@ -568,7 +435,6 @@ page_32:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:39.000000000 Z
   position: 9
   lock_version: 0
   xml_text: 
@@ -586,7 +452,6 @@ page_33:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:40.000000000 Z
   position: 10
   lock_version: 0
   xml_text: 
@@ -604,7 +469,6 @@ page_34:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:40.000000000 Z
   position: 11
   lock_version: 0
   xml_text: 
@@ -622,7 +486,6 @@ page_35:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:40.000000000 Z
   position: 12
   lock_version: 0
   xml_text: 
@@ -640,7 +503,6 @@ page_36:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:40.000000000 Z
   position: 13
   lock_version: 0
   xml_text: 
@@ -658,7 +520,6 @@ page_37:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:40.000000000 Z
   position: 14
   lock_version: 0
   xml_text: 
@@ -676,7 +537,6 @@ page_38:
   base_height: 1155
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 15
   lock_version: 0
   xml_text: 
@@ -694,7 +554,6 @@ page_39:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 16
   lock_version: 0
   xml_text: 
@@ -712,7 +571,6 @@ page_40:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 17
   lock_version: 0
   xml_text: 
@@ -730,7 +588,6 @@ page_41:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 18
   lock_version: 0
   xml_text: 
@@ -748,7 +605,6 @@ page_42:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 19
   lock_version: 0
   xml_text: 
@@ -766,7 +622,6 @@ page_43:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:41.000000000 Z
   position: 20
   lock_version: 0
   xml_text: 
@@ -784,962 +639,7 @@ page_44:
   base_height: 1121
   shrink_factor: 
   work_id: 9
-  created_on: 2016-11-28 16:38:42.000000000 Z
   position: 21
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_45:
-  id: 45
-  title: '22'
-  source_text: '[[Tests]]'
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1745.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:42.000000000 Z
-  position: 22
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_46:
-  id: 46
-  title: '23'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1746.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:42.000000000 Z
-  position: 23
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_47:
-  id: 47
-  title: '24'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1747.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:42.000000000 Z
-  position: 24
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_48:
-  id: 48
-  title: '25'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1748.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:43.000000000 Z
-  position: 25
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_49:
-  id: 49
-  title: '26'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1749.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:43.000000000 Z
-  position: 26
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_50:
-  id: 50
-  title: '27'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1750.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:43.000000000 Z
-  position: 27
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_51:
-  id: 51
-  title: '28'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1751.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:43.000000000 Z
-  position: 28
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_52:
-  id: 52
-  title: '29'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1752.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:43.000000000 Z
-  position: 29
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_53:
-  id: 53
-  title: '30'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1753.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:44.000000000 Z
-  position: 30
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_54:
-  id: 54
-  title: '31'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1754.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:44.000000000 Z
-  position: 31
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_55:
-  id: 55
-  title: '32'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1755.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:44.000000000 Z
-  position: 32
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_56:
-  id: 56
-  title: '33'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1756.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:44.000000000 Z
-  position: 33
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_57:
-  id: 57
-  title: '34'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1757.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:44.000000000 Z
-  position: 34
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_58:
-  id: 58
-  title: '35'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1758.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:44.000000000 Z
-  position: 35
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_59:
-  id: 59
-  title: '36'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1759.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:45.000000000 Z
-  position: 36
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_60:
-  id: 60
-  title: '37'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1760.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:45.000000000 Z
-  position: 37
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_61:
-  id: 61
-  title: '38'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1761.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:45.000000000 Z
-  position: 38
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_62:
-  id: 62
-  title: '39'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1762.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:45.000000000 Z
-  position: 39
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_63:
-  id: 63
-  title: '40'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1763.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:45.000000000 Z
-  position: 40
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_64:
-  id: 64
-  title: '41'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1764.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:45.000000000 Z
-  position: 41
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_65:
-  id: 65
-  title: '42'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1765.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:46.000000000 Z
-  position: 42
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_66:
-  id: 66
-  title: '43'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1766.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:46.000000000 Z
-  position: 43
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_67:
-  id: 67
-  title: '44'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1767.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:46.000000000 Z
-  position: 44
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_68:
-  id: 68
-  title: '45'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1768.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:46.000000000 Z
-  position: 45
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_69:
-  id: 69
-  title: '46'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1769.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:46.000000000 Z
-  position: 46
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_70:
-  id: 70
-  title: '47'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1770.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:47.000000000 Z
-  position: 47
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_71:
-  id: 71
-  title: '48'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1771.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:47.000000000 Z
-  position: 48
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_72:
-  id: 72
-  title: '49'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1772.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:47.000000000 Z
-  position: 49
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_73:
-  id: 73
-  title: '50'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1773.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:48.000000000 Z
-  position: 50
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_74:
-  id: 74
-  title: '51'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1774.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:48.000000000 Z
-  position: 51
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_75:
-  id: 75
-  title: '52'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1775.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:48.000000000 Z
-  position: 52
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_76:
-  id: 76
-  title: '53'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1776.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:48.000000000 Z
-  position: 53
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_77:
-  id: 77
-  title: '54'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1777.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:49.000000000 Z
-  position: 54
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_78:
-  id: 78
-  title: '55'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1778.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:49.000000000 Z
-  position: 55
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_79:
-  id: 79
-  title: '56'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1779.jpg')%>
-  base_width: 1177
-  base_height: 2860
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:49.000000000 Z
-  position: 56
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_80:
-  id: 80
-  title: '57'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1780.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:49.000000000 Z
-  position: 57
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_81:
-  id: 81
-  title: '58'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1781.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:49.000000000 Z
-  position: 58
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_82:
-  id: 82
-  title: '59'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1782.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:50.000000000 Z
-  position: 59
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_83:
-  id: 83
-  title: '60'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1783.jpg')%>
-  base_width: 2860
-  base_height: 1139
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:50.000000000 Z
-  position: 60
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_84:
-  id: 84
-  title: '61'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1784.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:50.000000000 Z
-  position: 61
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_85:
-  id: 85
-  title: '62'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1785.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:50.000000000 Z
-  position: 62
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_86:
-  id: 86
-  title: '63'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1786.jpg')%>
-  base_width: 2860
-  base_height: 1123
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:50.000000000 Z
-  position: 63
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_87:
-  id: 87
-  title: '64'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1787.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:50.000000000 Z
-  position: 64
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_88:
-  id: 88
-  title: '65'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1788.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:51.000000000 Z
-  position: 65
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_89:
-  id: 89
-  title: '66'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1789.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:51.000000000 Z
-  position: 66
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_90:
-  id: 90
-  title: '67'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1790.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:51.000000000 Z
-  position: 67
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_91:
-  id: 91
-  title: '68'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1791.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:51.000000000 Z
-  position: 68
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_92:
-  id: 92
-  title: '69'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1792.jpg')%>
-  base_width: 2860
-  base_height: 1153
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:51.000000000 Z
-  position: 69
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_93:
-  id: 93
-  title: '70'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1793.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:52.000000000 Z
-  position: 70
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_94:
-  id: 94
-  title: '71'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1794.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:52.000000000 Z
-  position: 71
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_95:
-  id: 95
-  title: '72'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1795.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:52.000000000 Z
-  position: 72
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_96:
-  id: 96
-  title: '73'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1796.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:52.000000000 Z
-  position: 73
-  lock_version: 0
-  xml_text: 
-  page_version_id: 
-  status: 
-  source_translation: 
-  xml_translation: 
-  search_text: 
-page_97:
-  id: 97
-  title: '74'
-  source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/9/1797.jpg')%>
-  base_width: 2860
-  base_height: 1121
-  shrink_factor: 
-  work_id: 9
-  created_on: 2016-11-28 16:38:52.000000000 Z
-  position: 74
   lock_version: 0
   xml_text: 
   page_version_id: 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161014193619) do
+ActiveRecord::Schema.define(version: 20170318205337) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -92,10 +92,12 @@ ActiveRecord::Schema.define(version: 20161014193619) do
     t.integer  "owner_user_id"
     t.datetime "created_on"
     t.text     "intro_block"
-    t.string   "footer_block",           limit: 2000
-    t.boolean  "restricted",                          default: false
+    t.string   "footer_block",              limit: 2000
+    t.boolean  "restricted",                             default: false
     t.string   "picture"
-    t.boolean  "supports_document_sets",              default: false
+    t.boolean  "supports_document_sets",                 default: false
+    t.boolean  "subjects_disabled",                      default: false
+    t.text     "transcription_conventions"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -176,7 +178,7 @@ ActiveRecord::Schema.define(version: 20161014193619) do
     t.string   "title"
     t.string   "creator"
     t.string   "collection"
-    t.string   "description"
+    t.string   "description",    limit: 1024
     t.string   "subject"
     t.string   "notes"
     t.string   "contributor"
@@ -185,12 +187,12 @@ ActiveRecord::Schema.define(version: 20161014193619) do
     t.integer  "title_leaf"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_format",   default: "jp2"
-    t.string   "archive_format", default: "zip"
+    t.string   "image_format",                default: "jp2"
+    t.string   "archive_format",              default: "zip"
     t.string   "scandata_file"
     t.string   "djvu_file"
     t.string   "zip_file"
-    t.boolean  "use_ocr",        default: false
+    t.boolean  "use_ocr",                     default: false
   end
 
   create_table "image_sets", force: true do |t|
@@ -243,6 +245,8 @@ ActiveRecord::Schema.define(version: 20161014193619) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "notes", ["page_id"], name: "index_notes_on_page_id", using: :btree
 
   create_table "oai_repositories", force: true do |t|
     t.string   "url"
@@ -514,6 +518,9 @@ ActiveRecord::Schema.define(version: 20161014193619) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "account_type"
+    t.datetime "paid_date"
+    t.boolean  "guest"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", using: :btree
@@ -528,6 +535,7 @@ ActiveRecord::Schema.define(version: 20161014193619) do
     t.datetime "updated_at"
     t.integer  "blank_pages",       default: 0
     t.integer  "incomplete_pages",  default: 0
+    t.integer  "corrected_pages"
   end
 
   create_table "works", force: true do |t|

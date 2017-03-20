@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
+  before_filter :masquerade_user!
 
   # Set the current user in User
   def set_current_user_in_model
@@ -99,6 +100,9 @@ class ApplicationController < ActionController::Base
       @article_version = ArticleVersion.find(params[:article_version_id])
       @article = @article_version.article
       @collection = @article.collection
+    end
+    if params[:collection_ids]
+      @collection_ids = params[:collection_ids]
     end
   end
 
@@ -223,6 +227,8 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name) }
+    devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
+
   end
 
   # Redirect to admin or owner dashboard after sign in

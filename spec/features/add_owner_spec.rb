@@ -43,6 +43,9 @@ describe "owner actions", :order => :defined do
     #page.find('button', text: 'Add')
     #page.find('.user-select-form').submit
 
+    #useful code from another test
+    #page.execute_script(%Q('$("#revert").trigger("click")'))
+
 
   end
 

@@ -50,7 +50,15 @@
         tr
           td(colspan="2")
             =f.label :transcription_conventions, class: 'above'
-            =f.text_area :transcription_conventions, rows: 5, value: @work.transcription_conventions
+            =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
+        tr
+          td(colspan="2")
+            .aright
+              | Revert transcription conventions to collection default &nbsp;
+              -if @work.transcription_conventions.present?
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: false, id: 'revert'
+              -else
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: true, id: 'revert'
         tr
           td(colspan="2")
             =f.label :translation_instructions, class: 'above'
@@ -111,5 +119,26 @@
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {
         $(this).siblings(':submit').prop('disabled', true);
+      });
+    });
+
+    $(function(){
+      $('#work_transcription_conventions').keyup(function(){
+        $('#revert').prop('disabled', false);
+      });
+    });
+
+    $(function(){
+      $('#revert').click(function(e){
+        e.preventDefault();
+        $.ajax({
+          method: 'GET',
+          url: '/work/revert',
+          data: { work_id: $(this).attr('work_id')}
+        }).success(function(data){
+          $('#work_transcription_conventions').val(data);
+        $('#revert').prop('disabled', true);
+
+        });
       });
     });

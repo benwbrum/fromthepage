@@ -30,7 +30,8 @@ module ImageHelper
 
   
   def self.extract_pdf(filename)
-    destination = filename.gsub(File.extname(filename), '')
+    pattern = Regexp.new(File.extname(filename) + "$")
+    destination = filename.gsub(pattern, '')
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
     gs = "gs -r300x300 -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
