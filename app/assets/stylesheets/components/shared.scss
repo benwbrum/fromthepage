@@ -578,6 +578,7 @@ button, .button, .dropdown dd a {
     }
     &.toleft { padding-left: 0; }
     &.toright { padding-right: 0; }
+    &.tocenter { text-align: center; }
   }
   thead + tbody tr:first-child td { border: 0; }
   &.striped tr:nth-child(even) {

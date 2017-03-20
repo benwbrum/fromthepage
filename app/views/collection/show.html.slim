@@ -17,19 +17,27 @@
         h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
-          -progress_annotated = work.work_statistic.pct_annotated.round
-          -progress_review = work.work_statistic.pct_needs_review.round
-          -progress_completed = work.work_statistic.pct_completed.round
+          -unless work.supports_translation
+            -progress_annotated = work.work_statistic.pct_annotated.round
+            -progress_review = work.work_statistic.pct_needs_review.round
+            -progress_completed = work.work_statistic.pct_completed.round
 
-          -if work.ocr_correction
-            -completed = "corrected"
+            -if work.ocr_correction
+              -completed = "corrected"
+            -else
+              -completed = "transcribed"
           -else
-            -completed = "transcribed"
+            -progress_annotated = work.work_statistic.pct_translation_annotated.round
+            -progress_review = work.work_statistic.pct_translation_needs_review.round
+            -progress_completed = work.work_statistic.pct_translation_completed.round
+            -completed = "translated"
+
 
           -if @collection.subjects_disabled
-            -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
-          -elsif @collection.subjects_disabled && progress_review == 0
-            -wording = "#{progress_completed}% #{completed}"
+            -unless progress_review == 0
+              -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
+            -else
+              -wording = "#{progress_completed}% #{completed}"
           -elsif progress_review == 0
             -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}"
           -else
