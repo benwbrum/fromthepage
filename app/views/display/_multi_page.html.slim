@@ -53,7 +53,9 @@
               button.outline.work-page_toggle-view Translation
               .work-page_text(style="display:none")
                 -translation = xml_to_html(page.xml_translation, false)
-                -if translation.present?
+                -if page.translation_status == 'blank'
+                  p.nodata_text =="This page is blank"
+                -elsif translation.present?
                   ==translation.force_encoding('utf-8')
                 -else
                   -help_translate = link_to('help translate', page_params(page).merge({ :controller => 'transcribe', :action => 'translate'}))
