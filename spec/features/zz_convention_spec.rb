@@ -62,7 +62,7 @@ describe "collection related tasks", :order => :defined do
     page.fill_in 'collection_transcription_conventions', with: @new_convention
     click_button 'Save Changes'
     #check unchanged work for collection conventions
-    work2 = @collection.works.second
+    work2 = @collection.works.first
     page2 = work2.pages.first
     visit "/display/read_work?work_id=#{work2.id}"
     page.find('.work-page_title', text: page2.title).click_link(page2.title)

@@ -134,11 +134,64 @@ describe "needs review", :order => :defined do
   end
 
   it "checks collection overview stats" do
+    visit "/collection/show?collection_id=#{@collection.id}"
+    @collection.works.each do |w|
+      if w.supports_translation
+        wording = "translated"
+        completed = w.work_statistic.pct_translation_completed.round
+        review = w.work_statistic.pct_translation_needs_review.round
+        indexed = w.work_statistic.pct_translation_annotated.round
+      else
+        if w.ocr_correction
+          wording = "corrected"
+        else
+          wording = "transcribed"
+        end
+        completed = w.work_statistic.pct_completed.round
+        review = w.work_statistic.pct_needs_review.round
+        indexed = w.work_statistic.pct_annotated.round
+      end
 
+      stats = page.find('.collection-work', text: w.title).find('.collection-work_stats') 
+      expect(stats).to have_content("#{indexed}% indexed")
+      expect(stats).to have_content("#{completed}% #{wording}")
+      unless review == 0
+        expect(stats).to have_content("#{review}% needs review")
+      end
+      #check for the existence of the progress bar
+      stats.find('.progress')
+    end
   end
 
   it "checks collection statistics" do
-
+    visit "/collection/show?collection_id=#{@collection.id}"
+    page.find('.tabs').click_link("Statistics")
+    expect(page).to have_content(@collection.title)
+    expect(page).to have_content("Work Progress")
+    @collection.works.each do |w|
+      if w.supports_translation
+        wording = "translated"
+        completed = w.work_statistic.pct_translation_completed.round
+        review = w.work_statistic.pct_translation_needs_review.round
+      else
+        if w.ocr_correction
+          wording = "corrected"
+        else
+          wording = "transcribed"
+        end
+        completed = w.work_statistic.pct_completed.round
+        review = w.work_statistic.pct_needs_review.round
+      end
+      stats = w.work_statistic
+      list = page.find('.collection-work-stats').find('li', text: w.title)
+      expect(list).to have_content(w.title)
+      expect(list).to have_content(w.pages.count)
+      expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)
+      expect(list).to have_content("#{completed}% #{wording}")
+      unless review == 0
+        expect(list.find('span', text: 'needs review')).to have_content(review)
+      end
+    end
   end
 
   it "marks pages as no longer needing review" do
