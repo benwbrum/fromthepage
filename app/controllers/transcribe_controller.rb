@@ -61,10 +61,13 @@ class TranscribeController  < ApplicationController
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
-    #if page has been marked blank, call the mark_blank code
+    #if page has been marked blank, call the mark_blank code 
+    #unless the page is also marked as needing review
     if params['mark_blank'].present?
-      mark_page_blank
-      return
+      unless params[:page]['needs_review'] == '1'
+        mark_page_blank
+        return
+      end
     end
 
     #check to see if the page needs to be marked as needing review

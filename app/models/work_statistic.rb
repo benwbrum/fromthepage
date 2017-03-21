@@ -20,13 +20,13 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def pct_annotated
-    raw = self[:annotated_pages].to_f / self[:total_pages] * 100
+    raw = (self[:annotated_pages].to_f + self[:blank_pages].to_f) / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
 
   def pct_translation_annotated
-    raw = self[:translated_annotated].to_f / self[:total_pages] * 100
+    raw = (self[:translated_annotated].to_f + self[:translated_blank].to_f) / self[:total_pages] * 100
     raw = 0 if raw.nan?
     [[0, raw].max, 100].min
   end
@@ -57,9 +57,9 @@ class WorkStatistic < ActiveRecord::Base
 
   def pct_completed
     if self.work.ocr_correction
-      pct_corrected + pct_blank + pct_annotated
+      pct_corrected + pct_annotated
     else
-      pct_transcribed + pct_blank + pct_annotated
+      pct_transcribed + pct_annotated
     end
   end
 
