@@ -17,6 +17,7 @@ class Collection < ActiveRecord::Base
   validates :title, presence: true, length: { minimum: 3 }
   
   before_create :set_transcription_conventions
+  after_save :create_categories
 
   mount_uploader :picture, PictureUploader
 
@@ -46,6 +47,14 @@ class Collection < ActiveRecord::Base
 
   def show_to?(user)
     (!self.restricted && self.works.present?) || (user && user.like_owner?(self))
+  end
+
+  def create_categories
+    #create two default categories
+    category1 = Category.new(collection_id: self.id, title: "People")
+    category1.save
+    category2 = Category.new(collection_id: self.id, title: "Places")
+    category2.save
   end
 
   protected
