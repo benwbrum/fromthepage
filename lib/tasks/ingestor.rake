@@ -34,6 +34,12 @@ namespace :fromthepage do
     document_upload.status = DocumentUpload::Status::FINISHED
     document_upload.save
 
+    #remove the uploaded file to prevent filling up the disk
+    if document_upload.status = DocumentUpload::Status::FINISHED
+      document_upload.remove_file!
+      document_upload.save
+    end
+    
     if SMTP_ENABLED    
         SystemMailer.upload_succeeded(document_upload).deliver!
         UserMailer.upload_finished(document_upload).deliver!
