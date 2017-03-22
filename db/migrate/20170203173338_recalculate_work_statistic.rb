@@ -1,4 +1,7 @@
 class RecalculateWorkStatistic < ActiveRecord::Migration
+#This can be commented out because statistics are recalculated in a later migration
+
+=begin
   def change
     #Need to trigger the recalculate method of work statistics to fix bug #517
     @collection = Collection.all
@@ -10,4 +13,5 @@ class RecalculateWorkStatistic < ActiveRecord::Migration
       end
     end
   end
+=end
 end

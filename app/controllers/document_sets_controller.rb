@@ -57,7 +57,8 @@ class DocumentSetsController < ApplicationController
 
   def destroy
     @document_set.destroy
-    respond_with(@document_set)
+    redirect_to action: 'index', collection_id: @document_set.collection_id
+
   end
 
   private

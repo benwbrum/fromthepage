@@ -10,25 +10,27 @@ class Page < ActiveRecord::Base
   belongs_to :work
   acts_as_list :scope => :work
 
-  has_many :page_article_links
+  has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
-  has_many :page_versions, -> { order 'page_version DESC' }
+  has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
 
   belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id'
 
   has_and_belongs_to_many :sections
 
-  has_many :notes, -> { order 'created_at' }
-  has_one :ia_leaf
-  has_one :omeka_file
-  has_one :sc_canvas
-  has_many :table_cells, -> { order 'section_id, row, header' }
-  has_many :tex_figures
+  has_many :notes, -> { order 'created_at' }, :dependent => :destroy
+  has_one :ia_leaf, :dependent => :destroy
+  has_one :omeka_file, :dependent => :destroy
+  has_one :sc_canvas, :dependent => :destroy
+  has_many :table_cells, -> { order 'section_id, row, header' }, :dependent => :destroy
+  has_many :tex_figures, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
   after_save :update_tex_figures
   after_initialize :defaults
+  after_destroy :update_work_stats
+  after_destroy :delete_deeds
 
   attr_accessible :title
   attr_accessible :source_text
@@ -40,22 +42,18 @@ class Page < ActiveRecord::Base
     TRANSLATION = 'translation'
   end
 
+  STATUS_TRANSCRIBED = 'transcribed'
   STATUS_BLANK = 'blank'
-  STATUS_INCOMPLETE = 'incomplete'
-  STATUS_UNCORRECTED_OCR = 'raw_ocr'
-  STATUS_INCOMPLETE_OCR = 'part_ocr'
-  STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
+  STATUS_NEEDS_REVIEW = 'review'
+  STATUS_INDEXED = 'indexed'
+  STATUS_TRANSLATED = 'translated'
 
-  STATUSES =
-  { "Blank/Nothing to Transcribe" => STATUS_BLANK,
-    "Incomplete Transcription" => STATUS_INCOMPLETE,
-    "Incomplete Correction" => STATUS_INCOMPLETE_OCR,
-    "Uncorrected OCR" => STATUS_UNCORRECTED_OCR,
-    "Incomplete Translation" => STATUS_INCOMPLETE_TRANSLATION }
-  STATUS_HELP = {
-    STATUS_BLANK => "Mark the page as blank if there is no meaningful text on this page.",
-    STATUS_INCOMPLETE => "Mark the page as incomplete to list it for review by others.",
-  }
+  #unused now
+  #STATUS_INCOMPLETE = 'incomplete'
+  #STATUS_UNCORRECTED_OCR = 'raw_ocr'
+  #STATUS_INCOMPLETE_OCR = 'part_ocr'
+  #STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
+
 
   # tested
   def collection
@@ -71,8 +69,6 @@ class Page < ActiveRecord::Base
       self[:title] = "Untitled Page #{self[:position]}"
     end
   end
-
-
 
   # we need a short pagename for index entries
   # in this case this will refer to an entry without
@@ -261,6 +257,16 @@ private
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil
+  end
+
+  def update_work_stats
+    if self.work
+      self.work.work_statistic.recalculate
+    end
+  end
+
+  def delete_deeds
+    Deed.where(page_id: self.id).destroy_all
   end
 
 end
