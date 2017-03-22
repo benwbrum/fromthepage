@@ -23,22 +23,66 @@ class TranscribeController  < ApplicationController
   end
 
   def mark_page_blank
-    @page.status = Page::STATUS_BLANK
-    @page.save
-    @work.work_statistic.recalculate if @work.work_statistic
-    redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+    if params[:mark_blank] == 'yes'
+      @page.status = Page::STATUS_BLANK
+      @page.translation_status = Page::STATUS_BLANK
+      @page.save
+      @work.work_statistic.recalculate if @work.work_statistic
+      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
+    elsif params[:mark_blank] == 'no'
+      @page.status = nil
+      @page.translation_status = nil
+      @page.save
+      @work.work_statistic.recalculate if @work.work_statistic
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    else
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    end
+  end
+
+  def needs_review
+    if params[:type] == 'translation'
+      if params[:page]['needs_review'] == '1'
+        @page.translation_status = Page::STATUS_NEEDS_REVIEW
+        record_translation_review_deed
+      else
+        @page.translation_status = nil
+      end
+    else
+      if params[:page]['needs_review'] == '1'
+        @page.status = Page::STATUS_NEEDS_REVIEW
+        record_review_deed
+      else
+        @page.status = nil
+      end
+    end
   end
 
   def save_transcription
-    #if the current user is a guest acct, see how many times they've saved
-    old_link_count = @page.page_article_links.count
+    old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
+    #if page has been marked blank, call the mark_blank code 
+    #unless the page is also marked as needing review
+    if params['mark_blank'].present?
+      unless params[:page]['needs_review'] == '1'
+        mark_page_blank
+        return
+      end
+    end
+
+    #check to see if the page needs to be marked as needing review
+    needs_review
+
     if params['save']
       log_transcript_attempt
+      #leave the status alone if it's needs review, but otherwise set it to transcribed
+      unless @page.status == Page::STATUS_NEEDS_REVIEW
+        @page.status = Page::STATUS_TRANSCRIBED
+      end
       begin
         if @page.save
           log_transcript_success
-          if (@page.status == 'raw_ocr') || (@page.status == 'part_ocr')
+          if @page.work.ocr_correction
             record_correction_deed
           else
             record_deed
@@ -46,10 +90,13 @@ class TranscribeController  < ApplicationController
           # use the new links to blank the graphs
           @page.clear_article_graphs
 
-          new_link_count = @page.page_article_links.count
+          new_link_count = @page.page_article_links.where(text_type: 'transcription').count
           logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
           if old_link_count == 0 && new_link_count > 0
             record_index_deed
+          end
+          if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
+            @page.update_columns(status: Page::STATUS_INDEXED)
           end
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
@@ -123,14 +170,37 @@ class TranscribeController  < ApplicationController
   end
 
   def save_translation
-    old_link_count = @page.page_article_links.count
+    old_link_count = @page.page_article_links.where(text_type: 'translation').count
     @page.attributes=params[:page]
+
+    if params['mark_blank'].present?
+      mark_page_blank
+      return
+    end
+
+    #check to see if the page needs review
+    needs_review
+
     if params['save']
       log_translation_attempt
+      #leave the status alone if it's needs review, but otherwise set it to translated
+      unless @page.translation_status == Page::STATUS_NEEDS_REVIEW
+        @page.translation_status = Page::STATUS_TRANSLATED
+      end
+
       begin
         if @page.save
           log_translation_success
           record_translation_deed
+
+          new_link_count = @page.page_article_links.where(text_type: 'translation').count
+          logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
+          if old_link_count == 0 && new_link_count > 0
+            record_translation_index_deed
+          end
+          if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
+            @page.update_columns(translation_status: Page::STATUS_INDEXED)
+          end
 
           @work.work_statistic.recalculate if @work.work_statistic
           @page.submit_background_processes
@@ -285,6 +355,12 @@ protected
     deed.save!
   end
 
+  def record_review_deed
+    deed = stub_deed
+    deed.deed_type = Deed::NEEDS_REVIEW
+    deed.save!
+  end
+
   def record_translation_deed
     deed = stub_deed
     if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank?
@@ -294,4 +370,19 @@ protected
     end
     deed.save!
   end
+
+  def record_translation_review_deed
+    deed = stub_deed
+    deed.deed_type = Deed::TRANSLATION_REVIEW
+    deed.save!
+  end
+
+  def record_translation_index_deed
+    deed = stub_deed
+    deed.deed_type = Deed::TRANSLATION_INDEXED
+    deed.save!
+  end
+
+
+
 end

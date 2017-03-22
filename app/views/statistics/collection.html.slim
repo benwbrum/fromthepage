@@ -34,13 +34,20 @@
   h2 Work Progress
   ul.collection-work-stats
     -@works.each do |w|
-      -progress_annotated = w.work_statistic.pct_annotated.round
-      -if (w.pages.where(status: 'raw_ocr').count != 0) || (w.pages.where(status: 'part_ocr').count != 0)
-        -progress_completed = w.work_statistic.pct_corrected.round
-        -completed = "corrected"
+      -unless w.supports_translation
+        -progress_annotated = w.work_statistic.pct_annotated.round
+        -progress_review = w.work_statistic.pct_needs_review.round
+        -progress_completed = w.work_statistic.pct_completed.round
+
+        -if w.ocr_correction
+          -completed = "corrected"
+        -else
+          -completed = "transcribed"
       -else
-        -progress_completed = w.work_statistic.pct_transcribed.round
-        -completed = "transcribed"
+        -progress_annotated = w.work_statistic.pct_translation_annotated.round
+        -progress_review = w.work_statistic.pct_translation_needs_review.round
+        -progress_completed = w.work_statistic.pct_translation_completed.round
+        -completed = "translated"
 
       li
         span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
@@ -48,13 +55,20 @@
         -unless @collection.subjects_disabled
           span =="<b>#{progress_annotated}%</b> indexed"
         span =="<b>#{progress_completed}%</b> #{completed}"
+        span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
         span
           span.progress
             -unless @collection.subjects_disabled
               span(style="width:#{progress_annotated}%")
               span(style="width:#{progress_completed - progress_annotated}%")
+              -unless progress_review == 0
+                span(style="width:#{progress_review}%")
+
             -else
               span(style="width:#{progress_completed}%")
+              -unless progress_review == 0
+                span(style="width:#{progress_review}%")
+
 
 h2 Collaborators
 

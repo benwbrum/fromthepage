@@ -3,6 +3,14 @@ class ExportController < ApplicationController
 
   def index
     @collection = Collection.find_by(id: params[:collection_id])
+    #check if there are any translated works in the collection
+    if @collection.works.where(supports_translation: true).exists?
+      @header = "Translated"
+    else
+      @header = "Transcribed"
+    end
+
+
   end
 
   def show

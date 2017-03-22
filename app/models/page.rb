@@ -42,22 +42,18 @@ class Page < ActiveRecord::Base
     TRANSLATION = 'translation'
   end
 
+  STATUS_TRANSCRIBED = 'transcribed'
   STATUS_BLANK = 'blank'
-  STATUS_INCOMPLETE = 'incomplete'
-  STATUS_UNCORRECTED_OCR = 'raw_ocr'
-  STATUS_INCOMPLETE_OCR = 'part_ocr'
-  STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
+  STATUS_NEEDS_REVIEW = 'review'
+  STATUS_INDEXED = 'indexed'
+  STATUS_TRANSLATED = 'translated'
 
-  STATUSES =
-  { "Blank/Nothing to Transcribe" => STATUS_BLANK,
-    "Incomplete Transcription" => STATUS_INCOMPLETE,
-    "Incomplete Correction" => STATUS_INCOMPLETE_OCR,
-    "Uncorrected OCR" => STATUS_UNCORRECTED_OCR,
-    "Incomplete Translation" => STATUS_INCOMPLETE_TRANSLATION }
-  STATUS_HELP = {
-    STATUS_BLANK => "Mark the page as blank if there is no meaningful text on this page.",
-    STATUS_INCOMPLETE => "Mark the page as incomplete to list it for review by others.",
-  }
+  #unused now
+  #STATUS_INCOMPLETE = 'incomplete'
+  #STATUS_UNCORRECTED_OCR = 'raw_ocr'
+  #STATUS_INCOMPLETE_OCR = 'part_ocr'
+  #STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
+
 
   # tested
   def collection
@@ -73,8 +69,6 @@ class Page < ActiveRecord::Base
       self[:title] = "Untitled Page #{self[:position]}"
     end
   end
-
-
 
   # we need a short pagename for index entries
   # in this case this will refer to an entry without
