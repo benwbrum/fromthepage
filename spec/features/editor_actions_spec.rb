@@ -89,7 +89,6 @@ describe "editor actions" do
     visit "/display/display_page?page_id=#{@page.id}"
     expect(page).to have_content("This page is not transcribed")
     page.find('.tabs').click_link("Transcribe")
-    expect(page.find('#page_status')).to have_content("- Transcription status not set -")
     page.fill_in 'page_source_text', with: "Test Preview"
     click_button('Preview')
     expect(page).to have_content('Edit')
@@ -107,7 +106,6 @@ describe "editor actions" do
     @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
     visit "/display/display_page?page_id=#{@work.pages.first.id}"
     page.find('.tabs').click_link("Translate")
-    expect(page).to have_content("Translation")
     page.fill_in 'page_source_translation', with: "Test Translation Preview"
     click_button('Preview')
     expect(page).to have_content('Edit')

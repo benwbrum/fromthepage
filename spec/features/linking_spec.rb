@@ -75,7 +75,6 @@ describe "subject linking" do
     test_page = @work.pages.last
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
     expect(page).to have_content("Transcription")
@@ -84,7 +83,6 @@ describe "subject linking" do
     expect(links).to eq 1
     #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
     expect(page).to have_content("Texas")
@@ -103,7 +101,6 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Places|Texas"
     click_button('Save Changes')
     expect(page).to have_content("Subject Linking Error: Wrong number of closing braces")
@@ -118,7 +115,6 @@ describe "subject linking" do
     test_page = @work.pages.fourth
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     #no text in the link
     page.fill_in 'page_source_text', with: "[[ ]]"
     click_button('Save Changes')
@@ -141,7 +137,6 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Texas[?]]"
     click_button('Save Changes')
     expect(page).to have_content("Subject Linking Error: Unclosed bracket")
@@ -156,7 +151,6 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[[Texas]]]"
     click_button('Save Changes')
     expect(page).to have_content("Subject Linking Error: Tags should be created using 2 brackets, not 3")
@@ -171,7 +165,6 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Status")
     page.fill_in 'page_source_text', with: "[[Places|\"Houston\"]]"
     click_button('Save Changes')
     expect(page).to have_content("Houston")
@@ -182,16 +175,13 @@ describe "subject linking" do
     test_page = translate_work.pages.first
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Translate")
-    expect(page).to have_content("Translation")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
-    expect(page).to have_content("Translation")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "translation").count
     expect(links).to eq 1
   #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Translate")
-    expect(page).to have_content("Translation")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
     expect(page).to have_content("Texas")

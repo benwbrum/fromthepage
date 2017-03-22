@@ -7,12 +7,7 @@
   =validation_summary @page.errors
   .page-toolbar
     .toolbar
-      .toolbar_group
-        =f.label :status, title: relevant_status_help(@work), class: 'hide-l'
-        -if @page.status == 'raw_ocr' || @page.status == 'part_ocr'
-          =f.select :status, relevant_transcription_statuses(@work), { :selected => Page::STATUS_INCOMPLETE_OCR }, class: 'wauto'        
-        -else
-          =f.select :status, relevant_transcription_statuses(@work), { :include_blank => '- Transcription status not set -' }, class: 'wauto'
+
       .toolbar_group
         a.button.outline(data-fullscreen-toggle) Fullscreen
       .toolbar_group
@@ -31,6 +26,23 @@
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
           span Always show in fullscreen
+
+      .toolbar_group.w100.aright
+        -unless @page.status == 'blank'
+          span Mark page as blank
+          |&nbsp;
+          =check_box_tag 'mark_blank', 'yes'
+        -else
+          span Page is not blank
+          |&nbsp;
+          =check_box_tag 'mark_blank', 'no'
+      .toolbar_group.w100.aright
+        span Page Needs Review
+        |&nbsp;
+        -if @page.status == 'review'
+          =f.check_box('needs_review', {checked: true})
+        -else
+          =f.check_box('needs_review', {checked: false})
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 
@@ -46,24 +58,31 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
-
     .page-column
-      .page-column_actions
-        -unless @preview_xml
-          =>button_tag 'Preview', :name => 'preview'
-        -else
-          =>button_tag 'Edit', :name => 'edit'
-        -unless @collection.subjects_disabled
-          =>button_tag 'Autolink', :name => 'autolink'
-      -if @preview_xml
-        .page-preview ==xml_to_html(@preview_xml)
+      -if @page.status == 'blank'
+        .centered
+          .centered_content
+            p.nodata_text=="This page is marked blank"
+        .page-editarea(style=("display:none"))
+          =f.text_area :source_text
 
-      .page-editarea(style=("display:none" if @preview_xml))
-        -if @work.scribes_can_edit_titles
-          .page-editarea_title
-            span =f.label :title, 'Title:', class: 'a50'
-            span =f.text_field :title
-        =f.text_area :source_text
+      -else
+        .page-column_actions
+          -unless @preview_xml
+            =>button_tag 'Preview', :name => 'preview'
+          -else
+            =>button_tag 'Edit', :name => 'edit'
+          -unless @collection.subjects_disabled
+            =>button_tag 'Autolink', :name => 'autolink'
+        -if @preview_xml
+          .page-preview ==xml_to_html(@preview_xml)
+
+        .page-editarea(style=("display:none" if @preview_xml))
+          -if @work.scribes_can_edit_titles
+            .page-editarea_title
+              span =f.label :title, 'Title:', class: 'a50'
+              span =f.text_field :title
+          =f.text_area :source_text
 
 .fgfaded ==@work.set_transcription_conventions
 

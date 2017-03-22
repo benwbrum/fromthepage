@@ -578,6 +578,7 @@ button, .button, .dropdown dd a {
     }
     &.toleft { padding-left: 0; }
     &.toright { padding-right: 0; }
+    &.tocenter { text-align: center; }
   }
   thead + tbody tr:first-child td { border: 0; }
   &.striped tr:nth-child(even) {
@@ -673,7 +674,8 @@ button, .button, .dropdown dd a {
     background: $color;
     vertical-align: top;
     display: inline-block;
-    &:nth-child(2) { background: adjust-hue(lighten($color, 10%), -25deg); }
+    &:nth-child(2) { background: #A3E07A; }
+    &:nth-child(3) { background: #F0E68C; }
   }
 }
 
