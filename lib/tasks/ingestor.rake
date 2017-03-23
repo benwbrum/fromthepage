@@ -111,7 +111,7 @@ namespace :fromthepage do
   end
   def compress_tree(temp_dir)
     print "compress tree(#{temp_dir})\n"
-    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
       print "compress_tree handling #{path})\n"
       if Dir.exist? path
