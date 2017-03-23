@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "needs review", :order => :defined do
+  Capybara.javascript_driver = :webkit
 
   before :all do
     @user = User.find_by(login: USER)
@@ -238,6 +239,22 @@ describe "needs review", :order => :defined do
     expect(page).not_to have_content("This page is blank")
     expect(Page.find_by(id: @page1.id).status).to be_nil
     expect(Page.find_by(id: @page1.id).translation_status).to be_nil
+  end
+
+  it "checks needs review/blank checkboxes", :js => true do
+    @page1 = @work.pages.first
+    expect(@page1.status).to be_nil
+    visit "/display/read_work?work_id=#{@work.id}"
+    page.find('.work-page_content', text: @page1.title).click_link("help transcribe")
+    expect(page.find('#page_needs_review')).not_to be_checked
+    expect(page.find('#page_mark_blank')).not_to be_checked
+    page.check('page_needs_review')
+    page.check('page_mark_blank')
+    expect(page.find('#page_needs_review')).not_to be_checked
+    expect(page.find('#page_mark_blank')).to be_checked
+    page.check('page_needs_review')
+    expect(page.find('#page_needs_review')).to be_checked
+    expect(page.find('#page_mark_blank')).not_to be_checked
   end
 
 end
