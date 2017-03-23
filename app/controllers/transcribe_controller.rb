@@ -53,6 +53,9 @@ class TranscribeController  < ApplicationController
       if params[:page]['needs_review'] == '1'
         @page.status = Page::STATUS_NEEDS_REVIEW
         record_review_deed
+        if @page.translation_status == 'blank'
+          @page.translation_status = nil
+        end
       else
         @page.status = nil
         return
@@ -64,7 +67,9 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 
-    mark_page_blank or return
+    unless params[:page]['needs_review'] == '1'
+      mark_page_blank or return
+    end
     #check to see if the page needs to be marked as needing review
     needs_review
 
