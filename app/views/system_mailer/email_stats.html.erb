@@ -9,3 +9,10 @@ There are <%= @recent_users.count %> new users in the last <%= @hours %> hours.<
 <% end %> 
 </div>
 
+<div style="margin-top:20px; padding-top:20px; border-top:1px solid #D3CFC6">
+Other activity in the last <%= @hours %> hours.<br>
+
+<% @recent_deeds.each do |d| %>
+  <%= render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true }) %><br />
+<% end %>        
+</div>
