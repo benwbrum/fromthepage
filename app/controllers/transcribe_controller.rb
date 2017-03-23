@@ -28,15 +28,15 @@ class TranscribeController  < ApplicationController
       @page.translation_status = Page::STATUS_BLANK
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
-    elsif params[:page]['mark_blank'] == '0'
+      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id and return
+    elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id and return
     else
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+      return true
     end
   end
 
@@ -64,10 +64,7 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 
-    if params[:page]['mark_blank'] == '1'
-        mark_page_blank
-        return
-    end
+    mark_page_blank or return
     #check to see if the page needs to be marked as needing review
     needs_review
 
@@ -171,11 +168,9 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
     @page.attributes=params[:page]
 
-    if params['mark_blank'].present?
-      mark_page_blank
-      return
-    end
-
+    #check to see if the page is marked blank
+    mark_page_blank or return
+  
     #check to see if the page needs review
     needs_review
 
