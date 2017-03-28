@@ -22,19 +22,26 @@ class IiifController < ApplicationController
 
   def for
     at_id = params[:id]
-    
+    if at_id.match /https?:\/\w/
+      at_id.sub!(":/", "://")
+    end
+
     if sc_collection = ScCollection.where(:at_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'collection', :collection_id => sc_collection.collection_id
+      return
     end    
 
     if sc_manifest = ScManifest.where(:at_id => at_id).last
       redirect_to({:controller => 'iiif', :action => 'manifest', :id => sc_manifest.work_id, :only_path => false})
+      return
     end    
 
     if sc_canvas = ScCanvas.where(:sc_canvas_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
+      return
     end    
     
+    render :status => 404, :text => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
   end
     
   def manifest
@@ -272,6 +279,9 @@ private
     iiif_collection = IIIF::Presentation::Collection.new
     iiif_collection.label = collection.title
     iiif_collection['@id'] = iiif_collection_id_from_collection(collection)
+    if collection.sc_collection
+      iiif_collection.metadata = [{"label" => "dc:source", "value" => collection.sc_collection.at_id }]
+    end
   
     if depth == true   
       collection.works.each do |work|

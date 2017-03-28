@@ -24,19 +24,42 @@ h2 Export Individual Works
 p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.
 table.datagrid
   tr
-    th.w100 Work Title
+    th.w80 Work Title
     th Pages
-    th Indexed
-    th Transcribed
+    -unless @collection.subjects_disabled
+      th Indexed
+    th #{@header}
+    th Review
+    th.w100 Progress
     th(colspan="3") Export As
   -for work in @collection.works
-    -progress_annotated = work.work_statistic.pct_annotated.round
-    -progress_transcribed = work.work_statistic.pct_transcribed.round
+    -unless work.supports_translation
+      -progress_annotated = work.work_statistic.pct_annotated.round
+      -progress_completed = work.work_statistic.pct_completed.round
+      -progress_review = work.work_statistic.pct_needs_review.round
+    -else
+      -progress_annotated = work.work_statistic.pct_translation_annotated.round
+      -progress_completed = work.work_statistic.pct_translation_completed.round
+      -progress_review = work.work_statistic.pct_translation_needs_review.round
+
     tr
       td.big =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
       td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
-      td.nowrap.fgfaded ="#{progress_annotated}%"
-      td.nowrap.fgfaded ="#{progress_transcribed}%"
+      -unless @collection.subjects_disabled
+        td.nowrap.fgfaded.tocenter ="#{progress_annotated}%"
+      td.nowrap.fgfaded.tocenter ="#{progress_completed}%"
+      td.nowrap.fgfaded.tocenter ="#{progress_review}%"
+      td
+        .progress
+          -unless @collection.subjects_disabled
+            span(style="width:#{progress_annotated}%")
+            span(style="width:#{progress_completed - progress_annotated}%")
+            span(style="width:#{progress_review}%")
+
+          -else
+            span(style="width:#{progress_completed}%")
+            span(style="width:#{progress_review}%")
+
       td.nowrap
         =link_to({ :controller => 'export', :action => 'show', :work_id => work.id })
           =svg_symbol '#icon-export', class: 'icon'

@@ -105,12 +105,6 @@ class CollectionController < ApplicationController
     @collection.intro_block = params[:collection][:intro_block]
     @collection.owner = current_user
     if @collection.save
-      #create two default categories
-      category1 = Category.new(collection_id: @collection.id, title: "People")
-      category1.save
-      category2 = Category.new(collection_id: @collection.id, title: "Places")
-      category2.save
-
       flash[:notice] = 'Collection has been created'
       ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
     else

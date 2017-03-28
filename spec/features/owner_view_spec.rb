@@ -39,7 +39,8 @@ describe "owner views" do
     @collections.first.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    #need to test actual stats
+    #need to check actual stats
+    #wording is checked in needs review and archive import
   end
 
   it "looks at settings tab" do

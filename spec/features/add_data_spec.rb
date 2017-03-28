@@ -25,11 +25,10 @@ describe "uploads data for collections", :order => :defined do
     expect(title).to eq @collection.title
     expect(page).to have_content("Document has been uploaded")
   end
-=begin
-  it "imports a IIIF manifest" do
-    login_as(@owner, :scope => :user)
-    works_count = Work.all.count
+
+  it "imports IIIF manifests" do
     visit dashboard_owner_path
+    works_count = Work.all.count
     page.find('.tabs').click_link("Start A Project")
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/duchas:5141774"
     click_button('Import')
@@ -40,9 +39,20 @@ describe "uploads data for collections", :order => :defined do
     click_button('Import')
     expect(page).to have_content(@collection.title)
     new_works = Work.all.count
-    expect(new_works).to eq (works_count + 1)
+  #  expect(new_works).to eq (works_count + 1)
+  #import another manifest for test data
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
+    click_button('Import')
+    expect(page).to have_content("Metadata")
+    click_link('Import')
+    expect(page).to have_content("Import Manifest")
+    select(@collection.title, :from => 'sc_manifest_collection_id')
+    click_button('Import')
+    expect(page).to have_content(@collection.title)
   end
-=end
+
   it "creates an empty work" do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
