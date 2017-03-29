@@ -18,6 +18,4 @@ p These are the new users from the last #{@hours} hours.
 -unless @collections.empty?
   h3.nomargin Collection Information
   -@collections.each do |col|
-    h4 =link_to col.title, { :controller => 'collection', :action => 'show', :collection_id => col.id, only_path: false}
-
     =activity(col, @hours)

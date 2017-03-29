@@ -1,26 +1,32 @@
--unless @recent_iiif.empty?
-  p.bold New IIIF Works
-  -@recent_iiif.each do |w|
-    =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
-    | <br>
-  
--unless @recent_ia.empty?
-  p.bold New Internet Archive Works
-  -@recent_ia.each do |w|
-    =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
-    | <br>
+-unless @col_activity == false
 
--unless @recent_works.empty?
-  p.bold New Uploaded Works
-  -@recent_works.each do |w|
-    =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
-    | <br>
+  h4 =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id, only_path: false}
 
--unless @uploads.empty?
-  p.bold Upload Problems
-  -@uploads.each do |u|
-      =u.file
-      |  - 
-      =u.status
-      |  - 
+  -unless @recent_iiif.empty?
+    p.bold New IIIF Works
+    -@recent_iiif.each do |w|
+      =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
       | <br>
+    
+  -unless @recent_ia.empty?
+    p.bold New Internet Archive Works
+    -@recent_ia.each do |w|
+      =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
+      | <br>
+
+  -unless @recent_works.empty?
+    p.bold New Uploaded Works
+    -@recent_works.each do |w|
+      =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
+      | <br>
+
+  -unless @uploads.empty?
+    p.bold Upload Problems
+    -@uploads.each do |u|
+        =u.file
+        |  - 
+        =u.status
+        |  - 
+        | <br>
+
+  =render 'collection/contributor_activity'

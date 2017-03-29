@@ -15,7 +15,7 @@
   -output += "indexed page #{page}"
 
 -when 'art_edit'
-  -output += "edited subject #{article}"
+  -output += "edited #{article} article"
 
 -when 'note_add'
   -output += "added a note to page #{page}"
@@ -27,7 +27,16 @@
   -output += "edited the translation of page #{page}"
 
 -when 'ocr_corr'
-  -output += "corrected the OCR transcription of #{page} page"
+  -output += "corrected page #{page}"
+
+-when 'review'
+  -output += "marked page #{page} as needing review"
+
+-when 'xlat_index'
+  -output += "indexed the translation of page #{page}"
+
+-when 'xlat_rev'
+  -output += "marked translation page #{page} as needing review"
 
 -if !deed.work.nil?
   -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id, only_path: false })
