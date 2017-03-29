@@ -1,0 +1,23 @@
+h2 User Stats for FromThePage
+p These are the new users from the last #{@hours} hours.
+
+-unless @recent_users.empty?
+  h3.nomargin New Users
+  -@recent_users.each do |u|
+    =link_to u.display_name, { :controller => 'user', :action => 'profile', :user_id => u.id, only_path: false}
+    |     
+    =u.email
+    | <br>
+
+-unless @recent_collections.empty?
+  h3.nomargin New Collections
+  -@recent_collections.each do |c|
+    =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id, only_path: false}
+    | <br>
+
+-unless @collections.empty?
+  h3.nomargin Collection Information
+  -@collections.each do |col|
+    h4 =link_to col.title, { :controller => 'collection', :action => 'show', :collection_id => col.id, only_path: false}
+
+    =activity(col, @hours)

@@ -49,7 +49,22 @@ module ContributorHelper
   def owner_expirations
     @collections = Collection.all
     @owners = User.where(owner: true).order(paid_date: :desc)
+  end
 
+  def show_email_stats(hours)
+    @hours = hours
+    @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
+    @recent_collections = Collection.where("created_on > ?", Time.now - hours.to_i.hours)
+    @collections = Collection.all
+  end
+
+  def activity(collection, hours)
+    new_works = Work.includes(:collection).where(collection_id: collection.id).where("created_on > ?", Time.now - hours.to_i.hours)
+    @recent_iiif = new_works.joins(:sc_manifest)
+    @recent_ia = new_works.joins(:ia_work)
+    @recent_works = new_works - @recent_iiif - @recent_ia
+    @uploads = DocumentUpload.where(collection_id: collection.id).where.not(status: 'finished').where("created_at > ?", Time.now - hours.to_i.hours)
+    render 'admin/collection_activity'
   end
 
 end
