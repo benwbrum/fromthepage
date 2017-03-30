@@ -1,8 +1,8 @@
-h2 User Stats for FromThePage
+h1 User Stats for FromThePage
 p These are the new users from the last #{@hours} hours.
 
 -unless @recent_users.empty?
-  h3.nomargin New Users
+  h2.nomargin New Users
   -@recent_users.each do |u|
     =link_to u.display_name, { :controller => 'user', :action => 'profile', :user_id => u.id, only_path: false}
     |     
@@ -10,12 +10,12 @@ p These are the new users from the last #{@hours} hours.
     | <br>
 
 -unless @recent_collections.empty?
-  h3.nomargin New Collections
+  h2.nomargin New Collections
   -@recent_collections.each do |c|
     =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id, only_path: false}
     | <br>
 
 -unless @collections.empty?
-  h3.nomargin Collection Information
+  h2.nomargin Collection Activity
   -@collections.each do |col|
     =activity(col, @hours)

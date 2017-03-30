@@ -1,7 +1,7 @@
 -mailer = local_assigns.has_key?(:mailer) ? true : false
 
 -unless @recent_transcriptions.empty? 
-  h3.nomargin Recent Transcriptions
+  h4.nomargin Recent Transcriptions
   p 
     -@recent_transcriptions.each do |d|
       .deed-short
@@ -10,7 +10,7 @@
           =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_ocr.empty?
-  h3.nomargin Recent OCR correction
+  h4.nomargin Recent OCR correction
   p  
     -@recent_ocr.each do |d|
       .deed-short
@@ -19,7 +19,7 @@
           =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_review.empty?  
-  h3.nomargin Recent Pages Needing Review
+  h4.nomargin Recent Pages Needing Review
   p  
     -@recent_review.each do |d|
       .deed-short
@@ -28,7 +28,7 @@
           =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_translations.empty?  
-  h3.nomargin Recent Translations
+  h4.nomargin Recent Translations
   p  
     -@recent_translations.each do |d|
       .deed-short
@@ -37,7 +37,7 @@
           =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_xlat_review.empty?  
-  h3.nomargin Recent Translations Needing Review
+  h4.nomargin Recent Translations Needing Review
   p  
     -@recent_xlat_review.each do |d|
       .deed-short
@@ -46,7 +46,7 @@
           =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_notes.empty?
-  h3.nomargin Recent Notes
+  h4.nomargin Recent Notes
   p
     -@recent_notes.each do |note|
       -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
@@ -58,7 +58,7 @@
   
 -unless @collection.subjects_disabled
   -unless @recent_articles.empty?
-    h3.nomargin Recent Subjects
+    h4.nomargin Recent Subjects
     p  
       -@recent_articles.each do |art|
         .deed-short
@@ -67,7 +67,7 @@
             =render(:partial => 'deed/deed', :locals => { :deed => art, :mailer => mailer, :long_view => true })
 
   -unless @recent_index.empty?  
-    h3.nomargin Recent Subject Indexing
+    h4.nomargin Recent Subject Indexing
     p  
       -@recent_index.each do |d|
         .deed-short
@@ -76,7 +76,7 @@
             =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
   -unless @recent_xlat_index.empty?  
-    h3.nomargin Recent Translation Subject Indexing
+    h4.nomargin Recent Translation Subject Indexing
     p  
       -@recent_xlat_index.each do |d|
         .deed-short
