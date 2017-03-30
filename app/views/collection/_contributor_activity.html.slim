@@ -54,7 +54,7 @@
       .deed-short
         span.deed-short_content
         = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-        =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
+        =render(:partial => 'deed/deed', :locals => { :deed => note, :mailer => mailer, :long_view => true })
   
 -unless @collection.subjects_disabled
   -unless @recent_articles.empty?
@@ -64,7 +64,7 @@
         .deed-short
           span.deed-short_content
             = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
+            =render(:partial => 'deed/deed', :locals => { :deed => art, :mailer => mailer, :long_view => true })
 
   -unless @recent_index.empty?  
     h3.nomargin Recent Subject Indexing
