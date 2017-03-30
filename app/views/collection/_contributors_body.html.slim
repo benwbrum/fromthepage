@@ -1,3 +1,5 @@
+-mailer = local_assigns.has_key?(:mailer) ? true : nil
+
 -unless @collection_deeds.empty?
 
   -unless @new_transcribers.empty?
@@ -9,7 +11,7 @@
         =t.email
         | <br>
 
-  =render 'collection/contributor_activity'
+  =render(:partial => 'collection/contributor_activity', :locals => { :mailer => mailer })
 
 -else
   h3 No activity in this time frame
@@ -21,7 +23,6 @@
       -@all_transcribers.each do |user|
         p
         =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
-            
             
     -else
       h3 Collaborators

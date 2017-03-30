@@ -1,3 +1,5 @@
+-mailer = local_assigns.has_key?(:mailer) ? true : false
+
 -unless @recent_transcriptions.empty? 
   h3.nomargin Recent Transcriptions
   p 
@@ -5,7 +7,7 @@
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+          =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_ocr.empty?
   h3.nomargin Recent OCR correction
@@ -14,7 +16,7 @@
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+          =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_review.empty?  
   h3.nomargin Recent Pages Needing Review
@@ -23,7 +25,7 @@
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+          =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_translations.empty?  
   h3.nomargin Recent Translations
@@ -32,7 +34,7 @@
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+          =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_xlat_review.empty?  
   h3.nomargin Recent Translations Needing Review
@@ -41,7 +43,7 @@
       .deed-short
         span.deed-short_content
           = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-          =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+          =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 -unless @recent_notes.empty?
   h3.nomargin Recent Notes
@@ -52,7 +54,7 @@
       .deed-short
         span.deed-short_content
         = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-        =render(:partial => 'collection/contributor_deeds', :locals => { :deed => note })
+        =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
   
 -unless @collection.subjects_disabled
   -unless @recent_articles.empty?
@@ -62,7 +64,7 @@
         .deed-short
           span.deed-short_content
             = "On #{art.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => art })
+            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
   -unless @recent_index.empty?  
     h3.nomargin Recent Subject Indexing
@@ -71,7 +73,7 @@
         .deed-short
           span.deed-short_content
             = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
   -unless @recent_xlat_index.empty?  
     h3.nomargin Recent Translation Subject Indexing
@@ -80,7 +82,7 @@
         .deed-short
           span.deed-short_content
             = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-            =render(:partial => 'collection/contributor_deeds', :locals => { :deed => d })
+            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
 
 
