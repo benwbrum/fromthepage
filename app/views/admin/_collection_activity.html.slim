@@ -1,7 +1,6 @@
 -unless @col_activity == false
 
   h3.collection_title
-    <br>
     'Collection: 
     =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id, only_path: false}
 
@@ -29,5 +28,8 @@
         =u.status
         | :  
         =u.file
+        <br>
 
   =render(:partial => 'collection/contributor_activity', :locals => {:mailer => true})
+  <br>
+  
