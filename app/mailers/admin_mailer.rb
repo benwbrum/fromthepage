@@ -23,7 +23,7 @@ class AdminMailer < ActionMailer::Base
     
     #call method from contributors helper
     show_email_stats(hours)
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage had #{@recent_users.count} new users in last #{hours} hours."
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
   end
 
   private
