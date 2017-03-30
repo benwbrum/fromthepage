@@ -20,12 +20,12 @@ module ContributorHelper
     end_date = end_date
 
     #check to see if there are any deeds in the collection
-    @collection_deeds = @collection.deeds.where(condition, start_date, end_date)
+    @collection_deeds = @collection.deeds.where(condition, start_date, end_date).includes(:page, :work, :user)
 
     transcription_deeds = @collection.deeds.where(deed_type: trans_type)
 
     @recent_notes = @collection_deeds.where(deed_type: note_type)
-    @recent_transcriptions = @collection_deeds.includes(:page, :work, :user).where(deed_type: trans_type)
+    @recent_transcriptions = @collection_deeds.where(deed_type: trans_type)
     @recent_articles = @collection_deeds.where(deed_type: article_type)
     @recent_translations = @collection_deeds.where(deed_type: translate_type)
     @recent_ocr = @collection_deeds.where(deed_type: ocr_type)
@@ -33,10 +33,8 @@ module ContributorHelper
     @recent_review = @collection_deeds.where(deed_type: review_type)
     @recent_xlat_index = @collection_deeds.where(deed_type: translate_index)
     @recent_xlat_review = @collection_deeds.where(deed_type: translate_review)
-
-
     #get distinct user ids per deed and create list of users
-    user_deeds = @collection_deeds.distinct.pluck(:user_id)
+    user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
     @all_transcribers = User.where(id: user_deeds)
 
     #find recent transcription deeds by user, then older deeds by user
