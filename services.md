@@ -48,6 +48,11 @@ A link to the multi-page, "read work" screen will be listed under
 TODO: example
 ```
 
+A link to a P5-compliant TEI-XML export of the work
+```
+TODO: example
+```
+
 
 #### Manifest-level Renderings
 A link to an unstyled, single-page XHTML file containing full text of a work's transcript and translation, subects with any articles and index entries to pages they appear in, and page edit histories will be exposed as a `rendering` under the manifest's default sequence:
