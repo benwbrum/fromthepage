@@ -1,0 +1,35 @@
+-unless @col_activity == false
+
+  h3.collection_title
+    'Collection: 
+    =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id, only_path: false}
+
+  -unless @recent_iiif.empty?
+    h4 New IIIF Works
+    -@recent_iiif.each do |w|
+      =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
+      | <br>
+    
+  -unless @recent_ia.empty?
+    h4 New Internet Archive Works
+    -@recent_ia.each do |w|
+      =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
+      | <br>
+
+  -unless @recent_works.empty?
+    h4 New Uploaded Works
+    -@recent_works.each do |w|
+      =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false}
+      | <br>
+
+  -unless @uploads.empty?
+    h4 Upload Problems
+    -@uploads.each do |u|
+        =u.status
+        | :  
+        =u.file
+        <br>
+
+  =render(:partial => 'collection/contributor_activity', :locals => {:mailer => true})
+  <br>
+  

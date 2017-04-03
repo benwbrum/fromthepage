@@ -1,5 +1,6 @@
 class AdminMailer < ActionMailer::Base
   include ContributorHelper
+  helper ContributorHelper
 
   before_filter :add_inline_attachments!
 
@@ -16,6 +17,13 @@ class AdminMailer < ActionMailer::Base
   def owner_stats
     owner_expirations
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Owner Expiration Information "
+  end
+
+  def email_stats(hours)
+    
+    #call method from contributors helper
+    show_email_stats(hours)
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
   end
 
   private
