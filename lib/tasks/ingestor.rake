@@ -111,7 +111,7 @@ namespace :fromthepage do
   end
   def compress_tree(temp_dir)
     print "compress tree(#{temp_dir})\n"
-    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
       print "compress_tree handling #{path})\n"
       if Dir.exist? path
@@ -129,7 +129,7 @@ namespace :fromthepage do
   def ingest_tree(document_upload, temp_dir) 
     print "ingest_tree(#{temp_dir})\n"
     # first process all sub-directories
-    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls = Dir.glob(File.join(temp_dir, "*")).sort
     ls.each do |path|
       print "ingest_tree considering #{path})\n"
       if Dir.exist? path
@@ -173,7 +173,7 @@ namespace :fromthepage do
     IMAGE_FILE_EXTENSIONS.each do |ext|
 #      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
       FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
-      Dir.glob(File.join(path, "*.#{ext}")).each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
 #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 

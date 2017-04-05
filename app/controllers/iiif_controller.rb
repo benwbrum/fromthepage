@@ -22,19 +22,26 @@ class IiifController < ApplicationController
 
   def for
     at_id = params[:id]
-    
+    if at_id.match /https?:\/\w/
+      at_id.sub!(":/", "://")
+    end
+
     if sc_collection = ScCollection.where(:at_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'collection', :collection_id => sc_collection.collection_id
+      return
     end    
 
     if sc_manifest = ScManifest.where(:at_id => at_id).last
       redirect_to({:controller => 'iiif', :action => 'manifest', :id => sc_manifest.work_id, :only_path => false})
+      return
     end    
 
     if sc_canvas = ScCanvas.where(:sc_canvas_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
+      return
     end    
     
+    render :status => 404, :text => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
   end
     
   def manifest
@@ -251,16 +258,15 @@ private
     sequence = IIIF::Presentation::Sequence.new
     sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
     sequence.label = 'Pages'
-    work=Work.where(:id => work_id).includes(:pages => [:sc_canvas, :notes]).first
-
-    work.pages.each do |page|
+    work = Work.includes(:pages => [:sc_canvas, :notes]).where(id: work_id).first
+    pages = work.pages
+    pages.each do |page|
       if page.sc_canvas 
         sequence.canvases << canvas_from_iiif_page(page)
       else
         sequence.canvases << canvas_from_page(page)
       end
     end   
-
     sequence
   end
 
@@ -272,6 +278,9 @@ private
     iiif_collection = IIIF::Presentation::Collection.new
     iiif_collection.label = collection.title
     iiif_collection['@id'] = iiif_collection_id_from_collection(collection)
+    if collection.sc_collection
+      iiif_collection.metadata = [{"label" => "dc:source", "value" => collection.sc_collection.at_id }]
+    end
   
     if depth == true   
       collection.works.each do |work|
@@ -314,23 +323,24 @@ private
   end
 
   def iiif_create_iiif_image_resource(page)
-    #binding.pry
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
         :service_id => page.sc_canvas.sc_service_id,
         :resource_id => page.sc_canvas.sc_resource_id,
-        :height => page.base_height,
-        :width => page.base_width,
+        :height => (page.base_height || page.sc_canvas.height),
+        :width => (page.base_width || page.sc_canvas.width),
         :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',      
        })
     #image_resource.service_id = page.sc_canvas.sc_service_id
     #image_resource.resource_id = page.sc_canvas.sc_resource_id  
     #image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
+
     image_resource.service['@context'] = page.sc_canvas.sc_service_context
     image_resource
   end
 
   def canvas_from_iiif_page(page)
+
     canvas = IIIF::Presentation::Canvas.new
     canvas.label = page.title
     canvas.width = page.sc_canvas.width
@@ -343,7 +353,7 @@ private
     annotation['@id'] = page.sc_canvas.sc_service_id
     
     canvas.images << annotation
-    
+
     unless page.source_text.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcription", :only_path => false})
@@ -355,13 +365,14 @@ private
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
       canvas.other_content << annotation_list
     end
-
-    if page.notes.exists? == 0
+    if page.notes.exists?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
       canvas.other_content << annotation_list
     end
+
     canvas     
+  
   end
 
   def canvas_from_page(page)
