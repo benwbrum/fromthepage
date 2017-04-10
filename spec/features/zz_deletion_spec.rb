@@ -35,6 +35,9 @@ describe "testing deletions" do
     work_count = @collection.works.count
     page_count = work.pages.count
     expect(page_count).to be > 0
+    id = work.id
+    path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
+    expect(Dir.exist?(path)).to be true
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: work.title).click
@@ -48,6 +51,7 @@ describe "testing deletions" do
     expect(pages).to be_empty
     deeds = Deed.where(work_id: work.id)
     expect(deeds).to be_empty
+    expect(Dir.exist?(path)).to be false
   end
 
   it "deletes a collection" do
