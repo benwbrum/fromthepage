@@ -3,9 +3,8 @@
   h3.collection_title
     'Collection: 
     =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id, only_path: false}
-    |&nbsp;
-    |  Owner: #{@collection.owner.display_name}
-
+    |&nbsp; Owner:  
+    =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id, only_path: false}
 
   -unless @recent_iiif.empty?
     h4 New IIIF Works
