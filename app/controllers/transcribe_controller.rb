@@ -137,13 +137,15 @@ class TranscribeController  < ApplicationController
       end
     elsif params['preview']
       @preview_xml = @page.wiki_to_xml(@page.source_text, "transcription")
-
+      display_page
 #      @preview_xml = @page.generate_preview("transcription")
       render :action => 'display_page'
     elsif params['edit']
+      display_page
       render :action => 'display_page'
     elsif params['autolink']
       @page.source_text = autolink(@page.source_text)
+      display_page
       render :action => 'display_page'
     end
   end
