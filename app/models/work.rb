@@ -83,7 +83,7 @@ class Work < ActiveRecord::Base
 
   def articles
     my_articles = []
-    for page in self.pages
+    for page in self.pages.includes(articles: [:categories, :pages])
       for article in page.articles
         my_articles << article
       end

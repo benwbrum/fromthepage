@@ -14,6 +14,7 @@ class ExportController < ApplicationController
   end
 
   def show
+    @work = Work.includes(:pages, pages: [{page_versions: :user}]).find_by(id: params[:work_id])
     render :layout => false
   end
 
@@ -81,8 +82,7 @@ class ExportController < ApplicationController
 
   def export_all_works
     cookies['download_finished'] = 'true'
-    @collection = Collection.find_by(id: params[:collection_id])
-    @works = Work.where(collection_id: @collection.id)
+    @works = Work.includes(:pages, pages: [{page_versions: :user}]).where(collection_id: @collection.id)
 
 #create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|

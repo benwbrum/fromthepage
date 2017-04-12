@@ -30,7 +30,7 @@ class Collection < ActiveRecord::Base
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       csv << %w{ Work_Title Page_Title Page_Position Page_URL Subject Text Category Category Category }
       self.works.each do |work|
-        work.pages.each do |page|
+        work.pages.includes(:page_article_links, articles: [:categories]).each do |page|
           page_url="http://localhost:3000/display/display_page?page_id=#{page.id}"
           page.page_article_links.each do |link|
             display_text = link.display_text.gsub("<lb/>", ' ').gsub("\n", "")

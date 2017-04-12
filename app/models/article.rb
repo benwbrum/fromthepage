@@ -25,7 +25,7 @@ class Article < ActiveRecord::Base
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
 
-  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").include(:page)}
+  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages)}
 
   has_many :pages, :through => :page_article_links
 
