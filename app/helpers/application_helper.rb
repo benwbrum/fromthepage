@@ -85,11 +85,11 @@ module ApplicationHelper
     end
 
     if options[:collection]
-      deeds = @collection.deeds.where(condition).order('created_at DESC').limit(limit)
+      deeds = @collection.deeds.where(condition).order('created_at DESC').references(:deeds).limit(limit)
     else
       condition[0] << " AND " unless condition[0].length == 0
       condition[0] << "collections.restricted = 0"
-      deeds = Deed.includes(:collection).where(condition).order('created_at DESC').limit(limit).references(:collection)
+      deeds = Deed.includes(:page, :user, collection: [:works]).where(condition).order('deeds.created_at DESC').limit(limit).references(:collection)
     end
 
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })

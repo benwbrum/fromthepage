@@ -39,7 +39,7 @@ class DashboardController < ApplicationController
   def index
     collections = Collection.all
     @document_sets = DocumentSet.all
-    @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
+    @collections = (collections.includes(:owners, works: [:work_statistic]) + @document_sets.includes(works: :work_statistic)).sort{|a,b| a.title <=> b.title }
   end
 
   #Owner Dashboard - start project
@@ -61,9 +61,10 @@ class DashboardController < ApplicationController
 
   #Collaborator Dashboard - watchlist
   def watchlist
-    @user = current_user
-    collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
-    @collections = Collection.where(:id => collection_ids).order_by_recent_activity
+  #  @user = current_user
+  #  collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
+  #  @collections = Collection.where(:id => collection_ids).order_by_recent_activity
+    @collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.limit(5).order_by_recent_activity
     @page = recent_work
   end
 
@@ -95,7 +96,6 @@ class DashboardController < ApplicationController
 
   #Guest Dashboard - activity
   def guest
-    @collections = Collection.order_by_recent_activity.unrestricted.to_a.take(5)
+    @collections = Collection.order_by_recent_activity.unrestricted.limit(5)
   end
-
 end
