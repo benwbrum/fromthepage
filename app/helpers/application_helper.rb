@@ -85,7 +85,7 @@ module ApplicationHelper
     end
 
     if options[:collection]
-      deeds = @collection.deeds.where(condition).order('created_at DESC').references(:deeds).limit(limit)
+      deeds = @collection.deeds.where(condition).order_by_recent_activity.limit(limit)
     else
       condition[0] << " AND " unless condition[0].length == 0
       condition[0] << "collections.restricted = 0"

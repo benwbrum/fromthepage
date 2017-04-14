@@ -64,7 +64,7 @@ class DashboardController < ApplicationController
   #  @user = current_user
   #  collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
   #  @collections = Collection.where(:id => collection_ids).order_by_recent_activity
-    @collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.limit(5).order_by_recent_activity
+    @collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.order_by_recent_activity.limit(5)
     @page = recent_work
   end
 

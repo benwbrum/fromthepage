@@ -42,4 +42,12 @@ class RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+=begin
+  protected
+  def after_sign_up_path_for(resource)
+    binding.pry
+    session[:previous_url] || dashboard_watchlist_path
+    #session["user_return_to"] || dashboard_watchlist_path
+  end
+=end
 end
