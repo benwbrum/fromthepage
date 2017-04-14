@@ -39,7 +39,7 @@ class DashboardController < ApplicationController
   def index
     collections = Collection.all
     @document_sets = DocumentSet.all
-    @collections = (collections.includes(:owners, works: [:work_statistic]) + @document_sets.includes(works: :work_statistic)).sort{|a,b| a.title <=> b.title }
+    @collections = (collections) + @document_sets).sort{|a,b| a.title <=> b.title }
   end
 
   #Owner Dashboard - start project
