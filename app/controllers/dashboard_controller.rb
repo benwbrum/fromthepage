@@ -26,7 +26,7 @@ class DashboardController < ApplicationController
   end
 
   def get_data
-    @collections = current_user.collections
+    @collections = current_user.all_owner_collections
 #    @image_sets = current_user.image_sets
     @notes = current_user.notes
     @works = current_user.owner_works
@@ -35,7 +35,7 @@ class DashboardController < ApplicationController
     logger.debug("DEBUG: #{current_user.inspect}")
   end
 
-  #Public Dashboard
+  #Public Dashboard - list of all collections
   def index
     collections = Collection.all
     @document_sets = DocumentSet.all

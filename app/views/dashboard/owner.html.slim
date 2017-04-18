@@ -4,7 +4,7 @@
   article.maincol
     -unless current_user.all_owner_collections.empty?
       .collections
-        -current_user.all_owner_collections.each do |c|
+        -current_user.all_owner_collections.includes(:works).each do |c|
           .collection
             h4.collection_title
               =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
