@@ -61,15 +61,17 @@ class DashboardController < ApplicationController
 
   #Collaborator Dashboard - watchlist
   def watchlist
-  #  @user = current_user
-  #  collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
-  #  @collections = Collection.where(:id => collection_ids).order_by_recent_activity
     @collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.order_by_recent_activity.limit(5)
     @page = recent_work
   end
 
   #Collaborator Dashboard - user with no activity watchlist
   def recent_work
+    recent_deed_ids = Deed.joins(:collection, :work).merge(Collection.unrestricted).merge(Work.unrestricted)
+                  .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
+    @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: {status: nil})
+
+=begin
     recent_deeds = Deed.where("work_id is not null AND collection_id not in (SELECT id FROM collections where restricted = 1) AND work_id not in (SELECT id FROM works where restrict_scribes = 1)").order('created_at desc').limit(10)
     @works = []
     #iterate through recent deeds to find works with blank pages
@@ -79,9 +81,10 @@ class DashboardController < ApplicationController
         @works << recent
       end
     end
-    #find the first blank page in the most recently accessed work (as long as the works list isn't blank)
+=end    
+#find the first blank page in the most recently accessed work (as long as the works list isn't blank)
     unless @works.empty?
-      recent_work = (Work.find_by(id: @works.first.id)).pages.where("xml_text is null").first
+      recent_work = @works.first.pages.where(status: nil).first
     #if the works list is blank, return nil
     else
       recent_work = nil

@@ -23,7 +23,7 @@ class Collection < ActiveRecord::Base
 
   mount_uploader :picture, PictureUploader
 
-  scope :order_by_recent_activity, -> { includes(:deeds).order('deeds.created_at DESC') }
+  scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
   scope :unrestricted, -> { where(restricted: false)}
 
   def export_subjects_as_csv
