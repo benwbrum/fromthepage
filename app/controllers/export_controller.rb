@@ -2,7 +2,7 @@ class ExportController < ApplicationController
   require 'zip'
 
   def index
-    @collection = Collection.find_by(id: params[:collection_id])
+    @collection = Collection.includes(works: :work_statistic).find_by(id: params[:collection_id])
     #check if there are any translated works in the collection
     if @collection.works.where(supports_translation: true).exists?
       @header = "Translated"
@@ -82,7 +82,7 @@ class ExportController < ApplicationController
 
   def export_all_works
     cookies['download_finished'] = 'true'
-    @works = Work.includes(:pages, pages: [{page_versions: :user}]).where(collection_id: @collection.id)
+    @works = Work.includes(pages: [{page_versions: :user}]).where(collection_id: @collection.id)
 
 #create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
