@@ -71,17 +71,6 @@ class DashboardController < ApplicationController
                   .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
     @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: {status: nil})
 
-=begin
-    recent_deeds = Deed.where("work_id is not null AND collection_id not in (SELECT id FROM collections where restricted = 1) AND work_id not in (SELECT id FROM works where restrict_scribes = 1)").order('created_at desc').limit(10)
-    @works = []
-    #iterate through recent deeds to find works with blank pages
-    recent_deeds.each do |d|
-      recent = Work.find_by(id: d.work_id)
-      if (recent != nil) && recent.pages.where("xml_text is null").any?
-        @works << recent
-      end
-    end
-=end    
 #find the first blank page in the most recently accessed work (as long as the works list isn't blank)
     unless @works.empty?
       recent_work = @works.first.pages.where(status: nil).first
