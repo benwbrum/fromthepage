@@ -39,9 +39,15 @@ class ExportController < ApplicationController
                         GROUP BY user_id
                         ORDER BY count(*) DESC")
 
-    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").all
+    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
 
     @all_articles = @work.articles
+
+    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
+    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
+    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
+                      .where.not(categories: {title: 'Places'})
+=begin
     @person_articles = []
     @place_articles = []
     @other_articles = []
@@ -59,7 +65,7 @@ class ExportController < ApplicationController
       end
       @other_articles << article if other
     end
-
+=end
     #@work = Work.includes(:pages => [:notes, :ia_leaf => :ia_work]).find(@work.id)
 
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
