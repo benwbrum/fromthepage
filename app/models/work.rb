@@ -82,14 +82,6 @@ class Work < ActiveRecord::Base
   end
 
   def articles
-=begin    my_articles = []
-    for page in self.pages.includes(articles: [:categories, :pages])
-      for article in page.articles
-        my_articles << article
-      end
-    end
-    my_articles.uniq!
-=end
     Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
