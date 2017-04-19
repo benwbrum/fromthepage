@@ -6,6 +6,7 @@ class DisplayController < ApplicationController
   PAGES_PER_SCREEN = 5
 
   def read_work
+binding.pry
     if params.has_key?(:work_id)
       @work = Work.find_by(id: params[:work_id])
     elsif params.has_key?(:url)
@@ -17,12 +18,13 @@ class DisplayController < ApplicationController
       redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
     else
       if params['needs_review']
-        condition = "work_id = ? AND status = ?"
-        @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = Page.where(work_id: params[:work_id]).review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @review = true
         @count = @pages.count
       elsif params['translation_review']
         condition = "work_id = ? AND translation_status = ?"
-        @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page, :work_id], per_page: PAGES_PER_SCREEN)
+        @translation_review = true
         @count = @pages.count
       else
         @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
@@ -42,12 +44,7 @@ class DisplayController < ApplicationController
                                         :per_page => 5
     end
   end
-=begin
-def needs_review
-  redirect_to action: 'read_work', work_id: @work.id
-end
 
-=end
   def search
     if @article
       # get the unique search terms
