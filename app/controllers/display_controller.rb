@@ -23,7 +23,7 @@ class DisplayController < ApplicationController
         @pages = Page.where(work_id: params[:work_id]).review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
       elsif @review == 'translation'
-        @pages = Page.order('position').where(work_id: params[:work_id]).where(translation_status: 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @pages = Page.order('position').where(work_id: params[:work_id]).translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
       else
         @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
