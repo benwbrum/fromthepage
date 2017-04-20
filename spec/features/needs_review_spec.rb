@@ -116,7 +116,8 @@ describe "needs review", :order => :defined do
     expect(page.find('.maincol')).not_to have_selector('a', text: @page2.title)
     expect(page.find('.maincol')).not_to have_selector('a', text: @page3.title)
     expect(page).to have_button('View All Pages')
-    
+    expect(page.find('.pagination_info')).to have_content(@work.pages.review.count)
+
     #return to original list
     click_button('View All Pages')
     pages = @work.pages.limit(5)
@@ -124,6 +125,7 @@ describe "needs review", :order => :defined do
       expect(page.find('.maincol')).to have_selector('a', text: p.title)
     end
     expect(page).to have_button('Pages That Need Review')
+    expect(page.find('.pagination_info')).to have_content(@work.pages.count)
     #look at translated review list
     click_button('Translations That Need Review')
     expect(page.find('.maincol')).to have_selector('a', text: @page6.title)
@@ -131,6 +133,7 @@ describe "needs review", :order => :defined do
     expect(page.find('.maincol')).not_to have_selector('a', text: @page4.title)
     expect(page.find('.maincol')).not_to have_selector('a', text: @page5.title)
     expect(page).to have_button('View All Pages')
+    expect(page.find('.pagination_info')).to have_content(@work.pages.translation_review.count)
   end
 
   it "checks collection overview stats" do
