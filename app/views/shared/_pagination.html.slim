@@ -1,8 +1,9 @@
--binding.pry
 -entries_info = false if local_assigns[:entries_info].nil?
-
 .toolbar
-  .toolbar_group =will_paginate(model, :params => {:work_id => @work.id, :needs_review => local_assigns[:needs_review]})
+  -if local_assigns.has_key?(:needs_review)
+    .toolbar_group =will_paginate(model, :params => {:work_id => @work.id, :needs_review => local_assigns[:needs_review]})
+  -else
+    .toolbar_group =will_paginate model
   -if entries_info
     .toolbar_group
       .pagination_info =page_entries_info model

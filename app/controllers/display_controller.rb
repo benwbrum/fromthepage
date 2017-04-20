@@ -6,7 +6,6 @@ class DisplayController < ApplicationController
   PAGES_PER_SCREEN = 5
 
   def read_work
-binding.pry
     if params.has_key?(:work_id)
       @work = Work.find_by(id: params[:work_id])
     elsif params.has_key?(:url)
@@ -17,13 +16,13 @@ binding.pry
       # restrict to pages that include that subject
       redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
     else
-      if params['needs_review']
+      if params[:needs_review] == 'review'
         @pages = Page.where(work_id: params[:work_id]).review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @review = true
         @count = @pages.count
-      elsif params['translation_review']
+      elsif params[:needs_review] == 'translation'
         condition = "work_id = ? AND translation_status = ?"
-        @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page, :work_id], per_page: PAGES_PER_SCREEN)
+        @pages = Page.order('position').where(condition, params[:work_id], 'review').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @translation_review = true
         @count = @pages.count
       else
