@@ -42,4 +42,10 @@ class RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+
+  #redirect new sign up back to starting page
+  def after_sign_up_path_for(resource)
+    session[:user_return_to] || root_path
+  end
+
 end

@@ -7,6 +7,8 @@ class TranscribeController  < ApplicationController
   include Magick
   before_filter :authorized?, :except => [:zoom, :guest]
   protect_from_forgery :except => [:zoom, :unzoom]
+  #this prevents failed redirects after sign up
+  skip_before_action :store_current_location
 
   def authorized?
     unless user_signed_in? && current_user.can_transcribe?(@work)
