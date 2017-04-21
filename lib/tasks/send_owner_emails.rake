@@ -3,7 +3,7 @@ namespace :fromthepage do
   task :collection_stats_by_owner => :environment do
 
     #set variables
-    owners = User.find_by(owner: true)
+    owners = User.where(owner: true)
     start_date = 1.day.ago
     end_date = DateTime.now.utc
 
