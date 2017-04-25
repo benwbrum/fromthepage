@@ -82,15 +82,7 @@ class Work < ActiveRecord::Base
   end
 
   def articles
-    my_articles = []
-    for page in self.pages
-      for article in page.articles
-        my_articles << article
-      end
-    end
-    my_articles.uniq!
-    logger.debug("DEBUG: articles=#{my_articles}")
-    return my_articles
+    Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
   # TODO make not awful
