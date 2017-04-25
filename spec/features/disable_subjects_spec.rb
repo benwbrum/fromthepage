@@ -70,8 +70,6 @@ describe "disable subject linking", :order => :defined do
   it "checks page level subject items" do
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page', text: @title).click_link(@title)
-    expect(page).to have_content("Transcription")
-    page.find('.tabs').click_link("Transcribe")
     expect(page).not_to have_content("Autolink")
     expect(page).to have_content("A single newline")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"

@@ -33,6 +33,7 @@ describe "collection related tasks", :order => :defined do
   end
 
   it "checks for collection level transcription conventions" do
+#    login_as(@owner, :scope => :user)
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     page.find('.tabs').click_link(@tab)
@@ -66,7 +67,6 @@ describe "collection related tasks", :order => :defined do
     page2 = work2.pages.first
     visit "/display/read_work?work_id=#{work2.id}"
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
-    page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content @new_convention
     #check changed work for collection conventions
     visit "/display/read_work?work_id=#{@work.id}"

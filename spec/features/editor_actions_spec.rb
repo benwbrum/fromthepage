@@ -77,7 +77,8 @@ describe "editor actions" do
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content("please help transcribe this page")
     click_link @page.title
-    expect(page).to have_content("Facsimile")
+    page.find('#page_source_text')
+    expect(page).to have_button('Preview')
     expect(page).to have_content(@page.title)
     #Versions
     page.find('.tabs').click_link("Versions")
