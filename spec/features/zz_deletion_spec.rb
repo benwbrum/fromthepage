@@ -31,10 +31,13 @@ describe "testing deletions" do
   end
 
   it "deletes a work" do
-    work = @collection.works.first
-    work_count = @collection.works.count
+    work = Work.find_by(title: 'test')
+    work_count = Work.all.count
     page_count = work.pages.count
     expect(page_count).to be > 0
+    id = work.id
+    path = File.join(Rails.root, "public", "images", "uploaded", id.to_s)
+    expect(Dir.exist?(path)).to be true
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
     page.find('a', text: work.title).click
@@ -42,12 +45,13 @@ describe "testing deletions" do
     expect(page).to have_selector('a', text: 'Delete Work')
     page.find('a', text: 'Delete Work').click
     #check that each child association has deleted
-    del_work_count = @collection.works.count
+    del_work_count = Work.all.count
     expect(del_work_count).to eq (work_count - 1)
     pages = work.pages
     expect(pages).to be_empty
     deeds = Deed.where(work_id: work.id)
     expect(deeds).to be_empty
+    expect(Dir.exist?(path)).to be false
   end
 
   it "deletes a collection" do
@@ -60,7 +64,7 @@ describe "testing deletions" do
     expect(doc_sets).to be > 0
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
+    page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
