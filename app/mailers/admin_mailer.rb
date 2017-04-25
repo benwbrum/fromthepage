@@ -31,7 +31,7 @@ class AdminMailer < ActionMailer::Base
     @start_date = start_date
     @end_date = end_date
     
-    mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage activity in the last 24 hours"
+    mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity in the last 24 hours"
   end
 
 
