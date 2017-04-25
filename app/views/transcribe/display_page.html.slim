@@ -28,21 +28,21 @@
           span Always show in fullscreen
 
       .toolbar_group.w100.aright
-        -unless @page.status == 'blank'
-          span Mark page as blank
-          |&nbsp;
-          =check_box_tag 'mark_blank', 'yes'
+        span Mark as blank
+        |&nbsp;
+        -if @page.status == 'blank'
+          =f.check_box('mark_blank', {checked: true})
         -else
-          span Page is not blank
-          |&nbsp;
-          =check_box_tag 'mark_blank', 'no'
+          =f.check_box('mark_blank', {checked: false})
+
       .toolbar_group.w100.aright
-        span Page Needs Review
+        span Needs Review
         |&nbsp;
         -if @page.status == 'review'
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
+
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save'
 
@@ -114,4 +114,17 @@ h2.legend Page Notes
         Cookies.set('auto_fullscreen', checked, { expires: 365 });
       });
     });
+
+    $(function(){
+      $('#page_needs_review').click(function(){
+        $('#page_mark_blank').prop('checked', false);
+      });
+    });
+
+    $(function(){
+      $('#page_mark_blank').click(function(){
+        $('#page_needs_review').prop('checked', false);
+      });
+    });
+
 javascript:  mixpanel.track("Transcribe Page");

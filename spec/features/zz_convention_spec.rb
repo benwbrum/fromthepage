@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "collection related tasks", :order => :defined do
+describe "convention related tasks", :order => :defined do
   Capybara.javascript_driver = :webkit
 
 
@@ -21,16 +21,6 @@ describe "collection related tasks", :order => :defined do
   before :each do
     login_as(@owner, :scope => :user)
   end    
-
-  it "exports a collection" do
-    visit dashboard_owner_path
-    page.find('.collection_title', text: @collection.title).click_link(@collection.title)
-    page.find('.tabs').click_link("Export")
-    expect(page).to have_content("Export All Works")
-    expect(page).to have_content(@work.title)
-    page.find('#btnExportAll').click
-    expect(page.response_headers['Content-Type']).to eq 'application/zip'
-  end
 
   it "checks for collection level transcription conventions" do
     visit "/display/read_work?work_id=#{@work.id}"
