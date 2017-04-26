@@ -256,11 +256,24 @@ class ApplicationController < ActionController::Base
 end
 
   def page_params(page)
-    if @document_set
-      { :action => 'display_page', :page_id => page.id, :document_set_id => @document_set.id }
+    if page.status == nil
+      controller = 'transcribe'
+      if user_signed_in?
+        action = 'display_page'
+      else
+        action = 'guest'
+      end
     else
-      { :action => 'display_page', :page_id => page.id}
+      controller = 'display'
+      action = 'display_page'
     end
+
+    if @document_set
+      { :controller => controller, :action => action, :page_id => page.id, :document_set_id => @document_set.id }
+    else
+      { :controller => controller, :action => action, :page_id => page.id}
+    end
+
   end
 
 private

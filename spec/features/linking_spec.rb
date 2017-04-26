@@ -57,7 +57,6 @@ describe "subject linking" do
     expect(page.find('.flash_message')).to have_content("You must remove all referring links")
     page.find('a', text: "Show pages that mention").click
     page.find('.work-page_title').find('a').click
-    page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: ""
     click_button('Save Changes')
     expect(page).to have_content("Facsimile")
