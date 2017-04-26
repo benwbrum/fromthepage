@@ -12,10 +12,8 @@ describe "different user role logins" do
   it "creates a new user account" do
     user_count = User.all.count
     visit root_path
-    expect(page).to have_content("Sign In")
-    page.find('a', text: 'Sign In').click
-    expect(page.current_path).to eq new_user_session_path
-    click_link('Sign up for a new account')
+    expect(page).to have_content("Sign Up")
+    page.find('a', text: 'Sign Up').click
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
     expect(page).to have_content('4 errors prohibited this user from being saved')
@@ -26,8 +24,7 @@ describe "different user role logins" do
     page.fill_in 'Display name', with: 'Alexander'
     click_button('Create Account')
     new_user_count = User.all.count
-    expect(page.current_path).to eq dashboard_watchlist_path
-    expect(page).to have_content("Collaborator Dashboard")
+    expect(page.current_path).to eq root_path
     expect(new_user_count).to eq (user_count + 1)
   end
 
