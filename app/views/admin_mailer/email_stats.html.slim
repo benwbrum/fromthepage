@@ -4,10 +4,14 @@ p This is the activity from the last #{@hours} hours.
 -unless @recent_users.empty?
   h2.nomargin New Users
   -@recent_users.each do |u|
+    -owner = u.owner ? "Owner" : ""
+    =owner
+    |  
     =link_to u.display_name, { :controller => 'user', :action => 'profile', :user_id => u.id, only_path: false}
     |     
     =u.email
-    | <br>
+    <br>
+
 
 -unless @recent_collections.empty?
   h2.nomargin New Collections
