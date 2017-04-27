@@ -29,7 +29,10 @@
           $('#document_upload_collection_id').on('change', function(){
             var col = $(this).val();
               if (col == 'new'){
-                alert(col);
+                new LiteBox({
+                  url: '/collection/new',
+                  hash: 'create-collection'
+                }).open();
               };
           });
         })
