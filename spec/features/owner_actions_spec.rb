@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "owner actions", :order => :defined do
+  Capybara.javascript_driver = :webkit
 
   before :all do
 
@@ -71,6 +72,25 @@ describe "owner actions", :order => :defined do
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).not_to have_content("#{test_collection.title}")
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
+  end
+
+  it "creates a collection from work dropdown", :js => true do
+    col_title = "New Work Collection"
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    page.select 'Add New Collection', from: 'document_upload_collection_id' 
+
+    within(page.find('.litebox-embed')) do
+      expect(page).to have_content('Create New Collection')
+      fill_in 'collection_title', with: col_title
+      find_button('Create Collection').trigger(:click)
+    end
+    page.find('#document_upload_collection_id')
+    expect(page).to have_select('document_upload_collection_id', selected: col_title)
+    sleep(2)
+    expect(Collection.last.title).to eq col_title
+    #need to remove this collection to prevent conflicts in later tests
+    Collection.last.destroy
   end
 
   it "creates a subject" do
