@@ -3,6 +3,8 @@
   
   h2.nomargin ="#{@collection.title}"
 
-  h2.nomargin ="Contributions in the last 24 hours"
+  -time = distance_of_time_in_words(@start_date, @end_date)
+
+  h2.nomargin ="Contributions for the past #{time}"
 
   =render(:partial => 'collection/contributors_body', :locals => {:mailer => true})

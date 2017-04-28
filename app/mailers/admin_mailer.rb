@@ -30,8 +30,8 @@ class AdminMailer < ActionMailer::Base
     @collections = owner.all_owner_collections.joins(:deeds).where(deeds: {created_at: start_date..end_date})
     @start_date = start_date
     @end_date = end_date
-    
-    mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity in the last 24 hours"
+
+    mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity"
   end
 
 
