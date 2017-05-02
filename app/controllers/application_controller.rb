@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
   before_filter :log_interaction
-  # before_filter :store_location_for_login
+  before_action :store_current_location, :unless => :devise_controller?
   before_filter :load_html_blocks
   # after_filter :complete_interaction
   before_filter :authorize_collection
@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
 
   def load_objects_from_params
-
     # this needs to be ordered from the specific to the
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
@@ -209,12 +208,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def store_location_for_login
-    unless action_name == 'login' || action_name == 'signup'
-      store_location
-    end
-  end
-
   def authorize_collection
     # skip irrelevant cases
     return unless @collection
@@ -263,11 +256,29 @@ class ApplicationController < ActionController::Base
 end
 
   def page_params(page)
-    if @document_set
-      { :action => 'display_page', :page_id => page.id, :document_set_id => @document_set.id }
+    if page.status == nil
+      controller = 'transcribe'
+      if user_signed_in?
+        action = 'display_page'
+      else
+        action = 'guest'
+      end
     else
-      { :action => 'display_page', :page_id => page.id}
+      controller = 'display'
+      action = 'display_page'
     end
+
+    if @document_set
+      { :controller => controller, :action => action, :page_id => page.id, :document_set_id => @document_set.id }
+    else
+      { :controller => controller, :action => action, :page_id => page.id}
+    end
+
+  end
+
+private
+  def store_current_location
+    store_location_for(:user, request.url)
   end
 
 # class ApplicationController < ActionController::Base

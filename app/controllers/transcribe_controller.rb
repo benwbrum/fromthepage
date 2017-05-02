@@ -7,6 +7,8 @@ class TranscribeController  < ApplicationController
   include Magick
   before_filter :authorized?, :except => [:zoom, :guest]
   protect_from_forgery :except => [:zoom, :unzoom]
+  #this prevents failed redirects after sign up
+  skip_before_action :store_current_location
 
   def authorized?
     unless user_signed_in? && current_user.can_transcribe?(@work)
@@ -23,20 +25,20 @@ class TranscribeController  < ApplicationController
   end
 
   def mark_page_blank
-    if params[:mark_blank] == 'yes'
+    if params[:page]['mark_blank'] == '1'
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id
-    elsif params[:mark_blank] == 'no'
+      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id and return
+    elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id and return
     else
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+      return true
     end
   end
 
@@ -47,13 +49,18 @@ class TranscribeController  < ApplicationController
         record_translation_review_deed
       else
         @page.translation_status = nil
+        return
       end
     else
       if params[:page]['needs_review'] == '1'
         @page.status = Page::STATUS_NEEDS_REVIEW
         record_review_deed
+        if @page.translation_status == 'blank'
+          @page.translation_status = nil
+        end
       else
         @page.status = nil
+        return
       end
     end
   end
@@ -62,14 +69,9 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 
-    #unless the page is also marked as needing review
-    if params['mark_blank'].present?
-      unless params[:page]['needs_review'] == '1'
-        mark_page_blank
-        return
-      end
+    unless params[:page]['needs_review'] == '1'
+      mark_page_blank or return
     end
-
     #check to see if the page needs to be marked as needing review
     needs_review
 
@@ -137,13 +139,15 @@ class TranscribeController  < ApplicationController
       end
     elsif params['preview']
       @preview_xml = @page.wiki_to_xml(@page.source_text, "transcription")
-
+      display_page
 #      @preview_xml = @page.generate_preview("transcription")
       render :action => 'display_page'
     elsif params['edit']
+      display_page
       render :action => 'display_page'
     elsif params['autolink']
       @page.source_text = autolink(@page.source_text)
+      display_page
       render :action => 'display_page'
     end
   end
@@ -173,11 +177,9 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
     @page.attributes=params[:page]
 
-    if params['mark_blank'].present?
-      mark_page_blank
-      return
-    end
-
+    #check to see if the page is marked blank
+    mark_page_blank or return
+  
     #check to see if the page needs review
     needs_review
 

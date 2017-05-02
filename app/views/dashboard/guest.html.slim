@@ -8,7 +8,7 @@
       -unless snippet.empty?
         p.collection_snippet =snippet
         br 
-      -c.deeds.limit(5).each do |d|
+      -c.deeds.includes(:user, :page, :work).limit(5).each do |d|
         //- Hide collection link
         -d.collection = nil
         .user-bubble

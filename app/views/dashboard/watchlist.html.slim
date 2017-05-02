@@ -6,7 +6,7 @@ h1 Collaborator Dashboard
     -unless @collections.empty?
       -@collections.each do |c|
         h4 =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, class: 'nodecor'
-        -c.deeds.limit(5).each do |d|
+        -c.deeds.includes(:page, :user, :work).limit(5).each do |d|
           //- Hide collection link
           -d.collection = nil
           .user-bubble

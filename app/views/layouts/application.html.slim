@@ -56,7 +56,7 @@ html
           =link_to 'Dashboard', dashboard_role_path, class: 'header_link'
           =link_to 'Collections', dashboard_path, class: 'header_link'
           =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
-          -if user_signed_in? && current_user.guest
+          -if (user_signed_in? && current_user.guest) || !user_signed_in?
             =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?

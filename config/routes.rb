@@ -61,6 +61,8 @@ Fromthepage::Application.routes.draw do
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
 
+  get '/rails/mailers' => "rails/mailers#index"
+  get '/rails/mailers/*path' => "rails/mailers#preview"
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 

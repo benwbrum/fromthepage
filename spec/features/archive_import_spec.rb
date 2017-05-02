@@ -17,7 +17,6 @@ describe "IA import actions", :order => :defined do
 
   it "imports a work from IA" do
     ia_work_count = IaWork.all.count
-    works_count = @works.count
     ia_link = "https://archive.org/details/lettertosamuelma00estl"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
@@ -32,7 +31,6 @@ describe "IA import actions", :order => :defined do
     click_button('Publish Work')
     expect(page).to have_content("has been converted into a FromThePage work")
     expect(ia_work_count + 1).to eq IaWork.all.count
-    expect(works_count + 1).to eq @owner.owner_works.count
   end
 
   it "uses OCR when importing a work from IA" do
@@ -65,8 +63,6 @@ describe "IA import actions", :order => :defined do
     visit "/display/read_work?work_id=#{@ocr_work.id}"
     expect(page).to have_content("This page is not corrected, please help correct this page")
     click_link @ocr_page.title
-    expect(page).to have_content("This page is not corrected")
-    page.find('.tabs').click_link("Correct")
     page.fill_in 'page_source_text', with: "Test OCR Correction"
     click_button('Save Changes')
     expect(page).to have_content("Test OCR Correction")

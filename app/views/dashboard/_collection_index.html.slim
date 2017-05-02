@@ -8,7 +8,7 @@
           .collection
             -unless c.picture.blank?
               .collection_image
-                =image_tag(c.picture_url(:thumb), size: '100', alt: c.title)
+                =image_tag(c.picture_url(:thumb), alt: c.title)
             .collection_details
               -if c.is_a? Collection
                 h4.collection_title =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }

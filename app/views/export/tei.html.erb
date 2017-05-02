@@ -128,7 +128,7 @@ xml:id="export">
     <% @context.translation_mode = false %>
     <% if @work.supports_translation? %>
       <div xml:id="original">
-        <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
+        <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
         <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
@@ -161,7 +161,7 @@ xml:id="export">
         <% end %>
       </div>
     <% else %>
-      <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
+      <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
       <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">

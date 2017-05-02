@@ -67,8 +67,11 @@
                 -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
                 =="Last edit #{edit_time} ago by #{user_link}"
-
-      =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+      
+      -if @review.nil?
+        =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+      -else
+        =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true, :needs_review => @review })
 
   -if @collection || @article
     aside.sidecol
@@ -81,12 +84,12 @@
 
       -if @work
         -if @total != @count
-          =button_to "View All Pages", {action: "read_work", work_id: @work.id}
+          =button_to "View All Pages", {action: "read_work", work_id: @work.id, needs_review: 'none'}
         -else
-          =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review'}
+          =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }
           br
           -if @work.supports_translation
-            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, translation_review: 'review'}
+            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation'}
           
 
 

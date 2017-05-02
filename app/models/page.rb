@@ -36,6 +36,10 @@ class Page < ActiveRecord::Base
   attr_accessible :source_text
   attr_accessible :source_translation
   attr_accessible :status
+
+  scope :unrestricted, -> { where(restricted: false)}
+  scope :review, -> { where(status: 'review')}
+  scope :translation_review, -> { where(translation_status: 'review')}
   
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
@@ -47,13 +51,6 @@ class Page < ActiveRecord::Base
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_INDEXED = 'indexed'
   STATUS_TRANSLATED = 'translated'
-
-  #unused now
-  #STATUS_INCOMPLETE = 'incomplete'
-  #STATUS_UNCORRECTED_OCR = 'raw_ocr'
-  #STATUS_INCOMPLETE_OCR = 'part_ocr'
-  #STATUS_INCOMPLETE_TRANSLATION = 'part_xlatn'
-
 
   # tested
   def collection

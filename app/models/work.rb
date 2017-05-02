@@ -14,6 +14,7 @@ class Work < ActiveRecord::Base
   has_and_belongs_to_many :document_sets
 
   after_save :update_statistic
+  after_destroy :cleanup_images
 
   attr_accessible :title,
                   :author,
@@ -82,15 +83,7 @@ class Work < ActiveRecord::Base
   end
 
   def articles
-    my_articles = []
-    for page in self.pages
-      for article in page.articles
-        my_articles << article
-      end
-    end
-    my_articles.uniq!
-    logger.debug("DEBUG: articles=#{my_articles}")
-    return my_articles
+    Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
   # TODO make not awful
@@ -133,5 +126,13 @@ class Work < ActiveRecord::Base
     end
   end
 
+  def cleanup_images
+    new_dir_name = File.join(Rails.root, "public", "images", "uploaded", self.id.to_s)
+    if Dir.exist?(new_dir_name)
+      Dir.glob(File.join(new_dir_name, "*")){|f| File.delete(f)}
+      Dir.rmdir(new_dir_name)
+    end
+
+  end
 
 end

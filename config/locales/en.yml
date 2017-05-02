@@ -36,3 +36,9 @@ en:
         other: "All <b>%{count}</b> records"
       multi_page: "Records %{from} - %{to} of %{count}"
       multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
+
+  datetime:
+    distance_in_words:
+      x_days:
+        one: 24 hours
+        other: "%{count} days"

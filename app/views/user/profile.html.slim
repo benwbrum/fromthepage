@@ -40,7 +40,7 @@ section.user-profile
       =render '/dashboard/collection_index'
     aside.sidecol
       h2 Recent Activity
-      -@deeds.each do |d|
+      -@deeds.includes(:page, :user, :work, :collection).each do |d|
         .deed-short.small
           =time_tag(d.created_at, class: 'legend legend-left')
             ="#{time_ago_in_words d.created_at} ago"
@@ -62,7 +62,7 @@ h2 Recent Activity by #{@user.display_name}
       th Date
       th.w25 Page
       th.w75 Note
-    -@notes.each do |note|
+    -@notes.includes(:page).each do |note|
       -note_text = truncate(strip_tags(note.body), :length => 200)
       tr
         td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")

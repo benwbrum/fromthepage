@@ -36,6 +36,7 @@ describe "editor actions" do
     page.find('h4', text: @collection.title).click_link(@collection.title)
     expect(page).to have_content("Works")    
     expect(page).to have_content(@work.title)
+    expect(page).to have_content("Collection Footer")
     #check the tabs in the collection
     #Subjects
     page.find('.tabs').click_link("Subjects")
@@ -77,18 +78,20 @@ describe "editor actions" do
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_content("please help transcribe this page")
     click_link @page.title
-    expect(page).to have_content("Facsimile")
+    page.find('#page_source_text')
+    expect(page).to have_button('Preview')
     expect(page).to have_content(@page.title)
+    expect(page).to have_content("Collection Footer")
     #Versions
     page.find('.tabs').click_link("Versions")
     expect(page).to have_content("revisions")
-
   end
 
   it "transcribes a page" do
     visit "/display/display_page?page_id=#{@page.id}"
     expect(page).to have_content("This page is not transcribed")
     page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("Collection Footer")
     page.fill_in 'page_source_text', with: "Test Preview"
     click_button('Preview')
     expect(page).to have_content('Edit')
@@ -99,13 +102,13 @@ describe "editor actions" do
     click_button('Save Changes')
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
-    
   end
 
   it "translates a page" do
     @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
     visit "/display/display_page?page_id=#{@work.pages.first.id}"
     page.find('.tabs').click_link("Translate")
+    expect(page).to have_content("Collection Footer")
     page.fill_in 'page_source_translation', with: "Test Translation Preview"
     click_button('Preview')
     expect(page).to have_content('Edit')
