@@ -27,7 +27,7 @@ class UserController < ApplicationController
     @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
     @notes = @user.notes.limit(10)
     @page_versions = @user.page_versions.includes(page: :work).limit(10)
-    @article_versions = @user.article_versions.limit(10).joins(:article)
+    @article_versions = @user.article_versions.limit(10).joins(:article).includes(article: :categories)
   end
 
   def record_deed
