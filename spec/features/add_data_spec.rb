@@ -91,7 +91,8 @@ describe "uploads data for collections", :order => :defined do
     expect(page).to have_content(@work.title)
     expect(page).to have_content(@work.pages.first.title)
     click_link(@work.pages.first.title)
-    expect(page).to have_content('This page is not transcribed')
+    page.find('#page_source_text')
+    expect(page).to have_button('Preview')
   end
 
 end

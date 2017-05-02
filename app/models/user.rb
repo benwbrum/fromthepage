@@ -37,8 +37,10 @@ class User < ActiveRecord::Base
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
   def all_owner_collections
-    (self.owned_collections + self.collections).uniq.sort {|a, b| a.title <=> b.title }
+    query = Collection.where(owner_user_id: self.id, id: self.owned_collections.ids)
+    Collection.where(query.where_values.inject(:or)).uniq.order(:title)
   end
+
 
   def most_recently_managed_collection_id
     last_work = self.owner_works.order(:created_on).last
@@ -50,13 +52,7 @@ class User < ActiveRecord::Base
   end
 
   def owner_works
-    collections = self.all_owner_collections
-    works = []
-    collections.each do |c|
-      c.works.each do |w|
-        works << w
-      end
-    end
+    works = Work.where(id: self.all_owner_collections.ids)
     return works
   end
 
@@ -108,7 +104,7 @@ class User < ActiveRecord::Base
   end
   
   def unrestricted_collections
-    collections = self.owned_collections.unrestricted.order_by_recent_activity + Collection.where(owner_user_id: self.id).unrestricted.order_by_recent_activity
+    collections = self.all_owner_collections.unrestricted.order_by_recent_activity
   end
   
 end

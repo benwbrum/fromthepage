@@ -2,7 +2,7 @@ class ExportController < ApplicationController
   require 'zip'
 
   def index
-    @collection = Collection.find_by(id: params[:collection_id])
+    @collection = Collection.includes(works: :work_statistic).find_by(id: params[:collection_id])
     #check if there are any translated works in the collection
     if @collection.works.where(supports_translation: true).exists?
       @header = "Translated"
@@ -14,6 +14,7 @@ class ExportController < ApplicationController
   end
 
   def show
+    @work = Work.includes(:pages, pages: [{page_versions: :user}]).find_by(id: params[:work_id])
     render :layout => false
   end
 
@@ -38,28 +39,14 @@ class ExportController < ApplicationController
                         GROUP BY user_id
                         ORDER BY count(*) DESC")
 
-    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").all
+    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
 
     @all_articles = @work.articles
-    @person_articles = []
-    @place_articles = []
-    @other_articles = []
 
-    @all_articles.each do |article|
-      # TODO replace this with legitimate flow control once I get to a ruby lang doc
-      other = true
-      if article.categories.where(:title => 'Places').count > 0
-        @place_articles << article
-        other = false
-      end
-      if article.categories.where(:title => 'People').count > 0
-        @person_articles << article
-        other = false
-      end
-      @other_articles << article if other
-    end
-
-    #@work = Work.includes(:pages => [:notes, :ia_leaf => :ia_work]).find(@work.id)
+    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
+    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
+    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
+                      .where.not(categories: {title: 'Places'})
 
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
@@ -81,8 +68,7 @@ class ExportController < ApplicationController
 
   def export_all_works
     cookies['download_finished'] = 'true'
-    @collection = Collection.find_by(id: params[:collection_id])
-    @works = Work.where(collection_id: @collection.id)
+    @works = Work.includes(pages: [{page_versions: :user}]).where(collection_id: @collection.id)
 
 #create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|

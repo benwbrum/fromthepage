@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "needs review", :order => :defined do
+  Capybara.javascript_driver = :webkit
 
   before :all do
     @user = User.find_by(login: USER)
@@ -36,17 +37,16 @@ describe "needs review", :order => :defined do
     expect(@page2.status).to be_nil
     expect(page).to have_content(@work.title)
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
-    expect(page).to have_content("This page is not transcribed")
-    page.find('a', text: 'mark the page blank').click
+    page.check('page_mark_blank')
+    click_button('Save Changes')
     expect(page).to have_content("This page is blank")
     expect(Page.find_by(id: @page1.id).status).to eq ('blank')
     expect(Page.find_by(id: @page1.id).translation_status).to eq ('blank')
     page.find('.page-nav_next').click
     expect(page).to have_content(@page2.title)
     expect(page).to have_content("This page is not transcribed")
-    page.find('.tabs').click_link("Transcribe")
-    page.check('mark_blank')
-    click_button('Save Changes')
+    page.find('a', text: 'mark the page blank').click
+    expect(page).to have_content("This page is blank")
     expect(page).to have_content("This page is blank")
     expect(Page.find_by(id: @page2.id).status).to eq ('blank')
     expect(Page.find_by(id: @page2.id).translation_status).to eq ('blank')
@@ -58,7 +58,7 @@ describe "needs review", :order => :defined do
     expect(@page3.translation_status).to be_nil
     page.find('.work-page_title', text: @page3.title).click_link(@page3.title)
     page.find('.tabs').click_link("Translate")
-    page.check('mark_blank')
+    page.check('page_mark_blank')
     click_button('Save Changes')
     expect(page).to have_content("This page is blank")
     expect(Page.find_by(id: @page3.id).translation_status).to eq ('blank')
@@ -71,7 +71,6 @@ describe "needs review", :order => :defined do
     expect(page).to have_content(@collection.title)
     click_link @work.title
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
-    page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')
     click_button('Save Changes')
@@ -236,13 +235,27 @@ describe "needs review", :order => :defined do
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
     expect(page).to have_content("This page is blank")
     page.find('.tabs').click_link("Transcribe")
-    page.check('mark_blank')
+    page.uncheck('page_mark_blank')
     click_button('Save Changes')
     expect(page).not_to have_content("This page is blank")
     expect(Page.find_by(id: @page1.id).status).to be_nil
     expect(Page.find_by(id: @page1.id).translation_status).to be_nil
   end
 
-#might need to add test to archive_import_spec re correction wording
+  it "checks needs review/blank checkboxes", :js => true do
+    @page1 = @work.pages.first
+    expect(@page1.status).to be_nil
+    visit "/display/read_work?work_id=#{@work.id}"
+    page.find('.work-page_content', text: @page1.title).click_link("help transcribe")
+    expect(page.find('#page_needs_review')).not_to be_checked
+    expect(page.find('#page_mark_blank')).not_to be_checked
+    page.check('page_needs_review')
+    page.check('page_mark_blank')
+    expect(page.find('#page_needs_review')).not_to be_checked
+    expect(page.find('#page_mark_blank')).to be_checked
+    page.check('page_needs_review')
+    expect(page.find('#page_needs_review')).to be_checked
+    expect(page.find('#page_mark_blank')).not_to be_checked
+  end
 
 end
