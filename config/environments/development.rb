@@ -1,5 +1,6 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -23,7 +24,7 @@ Rails.application.configure do
     :authentication => 'login', 
     :domain => 'yourdomain.com', # your domain to identify your server when connecting
   }
-  config.action_mailer.default_url_options =  { host: 'hostname' } #change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_url_options =  { host: 'localhost:3000' } #change this to match your server URL, i.e. www.fromthepage.com
   config.action_mailer.default_options
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
