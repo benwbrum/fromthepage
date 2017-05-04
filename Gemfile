@@ -72,3 +72,6 @@ gem 'newrelic_rpm'
 
 #Admin masquerade as a user
 gem 'devise_masquerade'
+
+#friendly routes
+gem 'friendly_id'
