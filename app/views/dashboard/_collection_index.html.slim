@@ -11,9 +11,9 @@
                 =image_tag(c.picture_url(:thumb), alt: c.title)
             .collection_details
               -if c.is_a? Collection
-                h4.collection_title =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }
+                h4.collection_title =link_to c.title, collection_path(c)
               -else
-                h4.collection_title =link_to c.title, { :controller => 'document_set', :action => 'show', :document_set_id => c.id }
+                h4.collection_title =link_to c.title, { :controller => 'document_set', :action => 'show', :document_set_id => c.slug }
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary

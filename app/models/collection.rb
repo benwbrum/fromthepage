@@ -2,6 +2,8 @@ require 'csv'
 
 class Collection < ActiveRecord::Base
   include CollectionStatistic
+  extend FriendlyId
+  friendly_id :title, :use => [:slugged, :history]
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -13,7 +15,7 @@ class Collection < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions
+  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug
 #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3 }

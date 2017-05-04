@@ -3,7 +3,7 @@
 -if @document_set && @document_set.title.present? && (@work || @article)
   -path.push(link_to @document_set.title, { :controller => 'document_set', :action => 'show', :document_set_id => @document_set.id })
 -elsif @collection && @collection.title.present? && (@work || @article)
-  -path.push(link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id })
+  -path.push(link_to @collection.title, collection_path(@collection.slug))
 
 -if @work && @work.title.present? && (@page || @article)
   -path.push(link_to @work.title, { :controller => 'display', :action => 'read_work', :work_id => @work.id })

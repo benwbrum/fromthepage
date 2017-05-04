@@ -11,6 +11,7 @@ class CollectionController < ApplicationController
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
   before_filter :load_settings, :only => [:edit, :update, :upload]
+  before_action :set_collection, :only => [:show, :contributors]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -32,7 +33,17 @@ class CollectionController < ApplicationController
     redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
   end
 
+  def set_collection
+    unless @collection
+      @collection = Collection.friendly.find(params[:collection_slug])
+      if request.path != collection_path(@collection)
+        return redirect_to @collection, :status => :moved_permanently
+      end
+    end
+  end    
+
   def load_settings
+
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
     @nonowners = User.order(:display_name) - @owners
@@ -41,6 +52,14 @@ class CollectionController < ApplicationController
   end
 
   def show
+=begin
+    unless @collection
+      @collection = Collection.friendly.find(params[:collection_slug])
+      if request.path != collection_path(@collection)
+        return redirect_to @collection, :status => :moved_permanently
+      end
+    end
+=end
     @users = User.all
     @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
     @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
@@ -92,7 +111,7 @@ class CollectionController < ApplicationController
   def update
     if @collection.update_attributes(params[:collection])
       flash[:notice] = 'Collection has been updated'
-      redirect_to action: 'edit', collection_id: @collection.id
+      redirect_to action: 'edit', collection_slug: @collection.slug
     else
       render action: 'edit'
     end
@@ -116,12 +135,14 @@ class CollectionController < ApplicationController
     logger.debug("DEBUG collection1=#{@collection}")
     set_collection_for_work(@collection, @work)
     logger.debug("DEBUG collection2=#{@collection}")
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to action: 'edit', collection_slug: @collection.slug
+    #redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to action: 'edit', collection_slug: @collection.slug
+    #redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def new_work
@@ -136,7 +157,6 @@ class CollectionController < ApplicationController
   end
 
 def contributors
-  @collection = Collection.find_by(id: params[:collection_id])
 
   #Get the start and end date params from date picker, if none, set defaults
   start_date = params[:start_date]

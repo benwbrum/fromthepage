@@ -45,6 +45,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
 
   def load_objects_from_params
+
     # this needs to be ordered from the specific to the
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
@@ -66,11 +67,12 @@ class ApplicationController < ActionController::Base
       @document_set = DocumentSet.find(params[:document_set_id])
       @collection = @document_set.collection
     end
-
     if params[:collection_id]
       @collection = Collection.find(params[:collection_id])
     end
-
+    if params[:collection_slug]
+      @collection = Collection.friendly.find(params[:collection_slug])
+    end
     # image stuff is orthogonal to collections
     if params[:titled_image_id]
       @titled_image = TitledImage.find(params[:titled_image_id])

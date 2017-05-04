@@ -9,6 +9,9 @@
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
+        tr.big
+          th =f.label :slug, 'URL'
+          td =f.text_field :slug, value: @collection.slug
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"

@@ -7,7 +7,8 @@
         -current_user.all_owner_collections.includes(:works).each do |c|
           .collection
             h4.collection_title
-              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
+              //=link_to c.title, collection_path(c.slug)
+              =link_to c.title, collection_path(c)
             ol.collection_works
             -unless c.works.empty?
               -(c.works.sort_by { |work| work.title }).each do |w|

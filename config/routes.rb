@@ -66,4 +66,16 @@ Fromthepage::Application.routes.draw do
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
+  #resources '/:collection_slug', param: :collection_slug, controller: 'collection', path: '', as: :collection
+  #get '/:collection_slug', to: 'collection#show', as: :collection
+  resources :collection, path: '', param: :collection_slug, only: [:show, :edit] do
+    get 'new_work', on: :member
+    get 'contributors', on: :member
+  end
+
+  get '/statistics/collection', param: :collection_slug, path: '/:collection_slug/statistics', as: :statistics, to: 'statistics#collection'
+  get '/article/list', param: :collection_slug, path: '/:collection_slug/subjects', as: :article_list, to: 'article#list'
+  get '/export', param: :collection_slug, path: '/:collection_slug/export', as: :export, to: 'export#index'
+
+
 end
