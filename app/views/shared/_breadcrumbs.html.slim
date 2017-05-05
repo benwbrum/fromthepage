@@ -1,5 +1,4 @@
 -path = []
-
 -if @document_set && @document_set.title.present? && (@work || @article)
   -path.push(link_to @document_set.title, { :controller => 'document_set', :action => 'show', :document_set_id => @document_set.id })
 -elsif @collection && @collection.title.present? && (@work || @article)
