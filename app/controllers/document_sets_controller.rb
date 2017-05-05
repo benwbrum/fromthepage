@@ -12,7 +12,7 @@ class DocumentSetsController < ApplicationController
   end
 
   def show
-#    respond_with(@document_set)
+    @collection = @document_set.collection
   end
 
   def new

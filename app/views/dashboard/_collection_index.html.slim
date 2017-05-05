@@ -13,7 +13,7 @@
               -if c.is_a? Collection
                 h4.collection_title =link_to c.title, collection_path(c)
               -else
-                h4.collection_title =link_to c.title, { :controller => 'document_set', :action => 'show', :document_set_id => c.slug }
+                h4.collection_title =link_to c.title, document_set_path(c)
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary

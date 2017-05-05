@@ -1,4 +1,7 @@
 class Work < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :title, :use => [:slugged]
+
   has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection

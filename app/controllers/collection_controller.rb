@@ -33,14 +33,6 @@ class CollectionController < ApplicationController
     redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
   end
 
-  def set_collection
-    unless @collection
-      @collection = Collection.friendly.find(params[:collection_slug])
-      if request.path != collection_path(@collection)
-        return redirect_to @collection, :status => :moved_permanently
-      end
-    end
-  end    
 
   def load_settings
 
@@ -171,6 +163,15 @@ def contributors
 end
 
 private
+  def set_collection
+    unless @collection
+      @collection = Collection.friendly.find(params[:id])
+      if request.path != collection_path(@collection)
+        return redirect_to @collection, :status => :moved_permanently
+      end
+    end
+  end    
+
   def set_collection_for_work(collection, work)
     # first update the id on the work
     work.collection = collection

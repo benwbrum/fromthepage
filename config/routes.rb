@@ -71,8 +71,7 @@ Fromthepage::Application.routes.draw do
     resources :collection, path: '', only: [:show] do
 #    get 'new_work', on: :member
 #    get 'contributors', on: :member
-      get 'display/read_work', path: '/:work_slug', param: :work_slug, as: :read_work, to: 'display#read_work'
-
+      get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
     end
 
 

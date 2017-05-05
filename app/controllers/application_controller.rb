@@ -60,15 +60,19 @@ class ApplicationController < ActionController::Base
       @collection = @work.collection
     end
     if params[:work_id]
-      @work = Work.find(params[:work_id])
+      @work = Work.friendly.find(params[:work_id])
       @collection = @work.collection
     end
     if params[:document_set_id]
-      @document_set = DocumentSet.find(params[:document_set_id])
+      @document_set = DocumentSet.friendly.find(params[:document_set_id])
       @collection = @document_set.collection
     end
+    if params[:document_set_slug]
+      @document_set = DocumentSet.friendly.find(params[:document_set_slug])
+      @collection = @document_set.collection
+    end      
     if params[:collection_id]
-      @collection = Collection.find(params[:collection_id])
+      @collection = Collection.friendly.find(params[:collection_id])
     end
     if params[:collection_slug]
       @collection = Collection.friendly.find(params[:collection_slug])

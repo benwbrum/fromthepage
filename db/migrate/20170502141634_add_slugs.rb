@@ -9,6 +9,10 @@ class AddSlugs < ActiveRecord::Migration
     #add slugs to users
     add_column :users, :slug, :string
     add_index :users, :slug, unique: true
+    #ad slugs to works
+    add_column :works, :slug, :string
+    add_index :works, :slug, unique: true
+
 
   end
 end
