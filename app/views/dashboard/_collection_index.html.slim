@@ -11,7 +11,7 @@
                 =image_tag(c.picture_url(:thumb), alt: c.title)
             .collection_details
               -if c.is_a? Collection
-                h4.collection_title =link_to c.title, collection_path(c)
+                h4.collection_title =link_to c.title, collection_path(c.owner, c)
               -else
                 h4.collection_title =link_to c.title, document_set_path(c)
               -unless snippet.empty?

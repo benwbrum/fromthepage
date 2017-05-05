@@ -68,12 +68,13 @@ Fromthepage::Application.routes.draw do
 
   #resources '/:collection_slug', param: :collection_slug, controller: 'collection', path: '', as: :collection
   #get '/:collection_slug', to: 'collection#show', as: :collection
-    resources :collection, path: '', only: [:show] do
-#    get 'new_work', on: :member
-#    get 'contributors', on: :member
-      get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
+    scope ':user_slug' do
+      resources :collection, path: '', only: [:show] do
+  #    get 'new_work', on: :member
+  #    get 'contributors', on: :member
+        get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
+      end
     end
-
 
   resources :document_set, param: :document_set_slug, only: [:show]
 

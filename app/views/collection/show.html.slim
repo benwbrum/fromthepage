@@ -14,7 +14,7 @@
     h2 Works
     -@collection.works.includes(:work_statistic).each do |work|
       .collection-work
-        h4.collection-work_title =link_to work.title, collection_read_work_path(work.collection, work)
+        h4.collection-work_title =link_to work.title, collection_read_work_path(work.collection.owner, work.collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -unless work.supports_translation
