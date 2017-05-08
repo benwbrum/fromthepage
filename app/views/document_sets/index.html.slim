@@ -32,11 +32,11 @@ ul
               
 
 br
-=link_to 'Create a Document Set', { :controller => 'document_set', :action => 'new', :collection_id => @collection.id  }, class: 'button', 'data-litebox' => ''
+=link_to 'Create a Document Set', new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
 
 -if @collection.document_sets.present?
   h3 Assign Works to Document Sets
-  =form_tag({ :controller => 'document_set', :action => 'assign_works', :collection_id => @collection.id })
+  =form_tag(document_set_assign_works_path(collection_id: @collection.id))
     table.tabular
       thead
         tr
