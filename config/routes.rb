@@ -42,7 +42,8 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 #  get   '/iiif/admin/search_pontiiif', :to => 'sc_collections#search_pontiiif', :as => 'search_pontiiif'
 
-  resources :document_sets do
+  resources :document_sets, except: [:show]
+  resources :document_sets, path: '', only: [:show], as: :document_set_show do
   end
 
 #  get   'document_set/new', :to => 'document_sets#new'
@@ -79,8 +80,6 @@ Fromthepage::Application.routes.draw do
         get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
       end
     end
-
-  resources :document_set, param: :document_set_slug, only: [:show]
 
 #  get '/statistics/collection', param: :collection_slug, path: '/:collection_slug/statistics', as: :statistics, to: 'statistics#collection'
 #  get '/article/list', param: :collection_slug, path: '/:collection_slug/subjects', as: :article_list, to: 'article#list'

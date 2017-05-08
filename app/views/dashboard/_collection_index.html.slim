@@ -13,7 +13,7 @@
               -if c.is_a? Collection
                 h4.collection_title =link_to c.title, collection_path(c.owner, c)
               -else
-                h4.collection_title =link_to c.title, document_set_path(c)
+                h4.collection_title =link_to c.title, document_set_show_path(c)
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary
