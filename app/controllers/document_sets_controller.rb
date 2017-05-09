@@ -64,7 +64,7 @@ class DocumentSetsController < ApplicationController
   private
     def set_document_set
       unless (defined? @document_set) && @document_set
-        id = params[:document_set_id] || params[:id] || params[:document_set_slug]
+        id = params[:document_set_id] || params[:id]
         @document_set = DocumentSet.friendly.find(id)
       end
     end

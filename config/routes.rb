@@ -42,18 +42,6 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 #  get   '/iiif/admin/search_pontiiif', :to => 'sc_collections#search_pontiiif', :as => 'search_pontiiif'
 
-  resources :document_sets, except: [:show]
-  resources :document_sets, path: '', only: [:show], as: :document_set_show do
-  end
-
-#  get   'document_set/new', :to => 'document_sets#new'
-#  get   'document_set/edit/:id', :to => 'document_sets#edit'
-#  patch   'document_set/update/:id', :to => 'document_sets#update'
-  post   'document_set/assign_works', :to => 'document_sets#assign_works'
-#  get   'document_set/:id', :to => 'document_sets#show'
-
-#  get   'document_set/:document_set_id', :to => 'document_sets#show'
-#  resources :document_sets
 
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
@@ -71,9 +59,24 @@ Fromthepage::Application.routes.draw do
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
+  #resources :document_sets, except: [:show, :create]
+
+#  get   'document_set/new', :to => 'document_sets#new'
+#  get   'document_set/edit/:id', :to => 'document_sets#edit'
+#  patch   'document_set/update/:id', :to => 'document_sets#update'
+  #post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
+  post   'document_set/assign_works', :to => 'document_sets#assign_works'
+#  get   'document_set/:id', :to => 'document_sets#show'
+
+#  get   'document_set/:document_set_id', :to => 'document_sets#show'
+#  resources :document_sets
+
+
   #resources '/:collection_slug', param: :collection_slug, controller: 'collection', path: '', as: :collection
   #get '/:collection_slug', to: 'collection#show', as: :collection
     scope ':user_slug' do
+      resources :document_sets, only: [:show] do
+      end
       resources :collection, path: '', only: [:show] do
   #    get 'new_work', on: :member
   #    get 'contributors', on: :member

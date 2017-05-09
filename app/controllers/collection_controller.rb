@@ -165,9 +165,14 @@ end
 private
   def set_collection
     unless @collection
-      @collection = Collection.friendly.find(params[:id])
-      if request.path != collection_path(@collection.owner, @collection)
-        return redirect_to @collection, :status => :moved_permanently
+      if Collection.friendly.exists?(params[:id])
+        @collection = Collection.friendly.find(params[:id])
+        if request.path != collection_path(@collection.owner, @collection)
+          return redirect_to @collection, :status => :moved_permanently
+        end
+      elsif DocumentSet.friendly.exists?(params[:id])
+        @document_set = DocumentSet.friendly.find(params[:id])
+        redirect_to document_set_path
       end
     end
   end    
