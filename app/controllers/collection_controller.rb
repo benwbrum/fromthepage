@@ -11,7 +11,7 @@ class CollectionController < ApplicationController
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
   before_filter :load_settings, :only => [:edit, :update, :upload]
-  before_action :set_collection, :only => [:show]
+  before_action :set_collection_path, :only => [:show]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -163,7 +163,7 @@ def contributors
 end
 
 private
-  def set_collection
+  def set_collection_path
     unless @collection
       if Collection.friendly.exists?(params[:id])
         @collection = Collection.friendly.find(params[:id])

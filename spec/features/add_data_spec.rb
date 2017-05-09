@@ -9,11 +9,18 @@ describe "uploads data for collections", :order => :defined do
     @collections = @owner.all_owner_collections
     @collection = @collections.second
     @title = "This is an empty work"
+
   end
 
   before :each do
     login_as(@owner, :scope => :user)
   end
+
+  it "sets slugs" do
+    Collection.find_each(&:save)
+#    Work.find_each(&:save)
+    User.find_each(&:save)
+    end
 
   it "starts a new project from tab" do
     visit dashboard_owner_path

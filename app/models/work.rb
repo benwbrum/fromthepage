@@ -35,9 +35,9 @@ class Work < ActiveRecord::Base
                   :pages_are_meaningful
 
   validates :title, presence: true, length: { minimum: 3 }
+  validates :slug, uniqueness: true, length: { maximum: 140 }
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
-
 
   module TitleStyle
     REPLACE = 'REPLACE'
