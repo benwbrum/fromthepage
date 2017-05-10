@@ -81,7 +81,7 @@ class DisplayController < ApplicationController
       end
       @pages = Page.order('work_id, position').joins(:work).where(conditions).paginate(page: params[:page])
     else
-      @search_string = params[:search_string]
+      @search_string = CGI::escapeHTML(params[:search_string])
       # convert 'natural' search strings unless they're precise
       unless @search_string.match(/["+-]/)
         @search_string.gsub!(/(\S+)/, '+\1*')
