@@ -31,7 +31,7 @@ table.admin-grid.datagrid.striped
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
         td.nowrap
           .instack
-            =link_to 'Login As', masquerade_path(o)
+            =link_to 'Login As', user_masquerade_path(o)
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => o.id }, :data => { litebox: { hash: "edit-user-#{o.id}" }}
             =link_to 'Delete', { :action => 'delete_user', :user_id => o.id }, data: { confirm: 'Are you sure you want to delete user? After deleting you won\'t be able to recover it!' }
 

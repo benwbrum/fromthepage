@@ -62,14 +62,15 @@ Fromthepage::Application.routes.draw do
   #resources :document_sets, except: [:show, :create]
 
 #  get   'document_set/new', :to => 'document_sets#new'
-#  get   'document_set/edit/:id', :to => 'document_sets#edit'
+  get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
 #  patch   'document_set/update/:id', :to => 'document_sets#update'
-  #post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
+  post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
 #  get   'document_set/:id', :to => 'document_sets#show'
 
 #  get   'document_set/:document_set_id', :to => 'document_sets#show'
 #  resources :document_sets
+  resources :document_sets, except: [:show, :create, :edit]
 
 
   #resources '/:collection_slug', param: :collection_slug, controller: 'collection', path: '', as: :collection
@@ -83,6 +84,7 @@ Fromthepage::Application.routes.draw do
         get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
       end
     end
+
 
 #  get '/statistics/collection', param: :collection_slug, path: '/:collection_slug/statistics', as: :statistics, to: 'statistics#collection'
 #  get '/article/list', param: :collection_slug, path: '/:collection_slug/subjects', as: :article_list, to: 'article#list'

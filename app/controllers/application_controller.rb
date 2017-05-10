@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
       @image_set = ImageSet.find(params[:image_set_id])
     end
     if params[:user_id]
-      @user = User.find(params[:user_id])
+      @user = User.friendly.find(params[:user_id])
     end
 
     # category stuff may be orthogonal to collections and articles
