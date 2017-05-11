@@ -32,6 +32,7 @@ class DisplayController < ApplicationController
         @count = @pages.count
       end
     end
+    session[:col_id] = @collection.slug
   end
 
   def read_all_works

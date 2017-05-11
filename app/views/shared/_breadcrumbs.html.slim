@@ -5,7 +5,7 @@
   -path.push(link_to @collection.title, collection_path(@collection.owner, @collection))
 
 -if @work && @work.title.present? && (@page || @article)
-  -path.push(link_to @work.title, { :controller => 'display', :action => 'read_work', :work_id => @work.id })
+  -path.push(link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work))
 
 -if path.present?
   ul.breadcrumbs

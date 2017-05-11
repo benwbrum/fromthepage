@@ -56,7 +56,12 @@ class ApplicationController < ActionController::Base
     if params[:page_id]
       @page = Page.find(params[:page_id])
       @work = @page.work
-      @collection = @work.collection
+      if session[:col_id] != nil
+        @collection = set_friendly_collection(session[:col_id])
+        session[:col_id] = nil
+      else
+        @collection = @page.collection
+      end
     end
     if params[:work_id]
       @work = Work.friendly.find(params[:work_id])
@@ -67,11 +72,7 @@ class ApplicationController < ActionController::Base
       @collection = @document_set.collection
     end
     if params[:collection_id]
-      if Collection.friendly.exists?(params[:collection_id])
-        @collection = Collection.friendly.find(params[:collection_id])
-      elsif DocumentSet.friendly.exists?(params[:collection_id])
-        @collection = DocumentSet.friendly.find(params[:collection_id])
-      end
+      @collection = set_friendly_collection(params[:collection_id])
     end
     # image stuff is orthogonal to collections
     if params[:titled_image_id]
@@ -104,6 +105,14 @@ class ApplicationController < ActionController::Base
     end
     if params[:collection_ids]
       @collection_ids = params[:collection_ids]
+    end
+  end
+
+  def set_friendly_collection(id)
+    if Collection.friendly.exists?(id)
+      @collection = Collection.friendly.find(id)
+    elsif DocumentSet.friendly.exists?(id)
+      @collection = DocumentSet.friendly.find(id)
     end
   end
 

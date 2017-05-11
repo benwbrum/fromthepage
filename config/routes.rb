@@ -59,8 +59,6 @@ Fromthepage::Application.routes.draw do
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
-  #resources :document_sets, except: [:show, :create]
-
 #  get   'document_set/new', :to => 'document_sets#new'
   get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
 #  patch   'document_set/update/:id', :to => 'document_sets#update'
@@ -79,8 +77,10 @@ Fromthepage::Application.routes.draw do
 #    get 'new_work', on: :member
 #    get 'contributors', on: :member
       get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
+#      get 'transcribe/display_page', path: '/:work_id/:id', as: :transcribe, to: 'transcribe#display_page'
     end
   end
+
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
   #get 'collection/edit/:id', :to => 'collection#edit', as: :edit_collection
