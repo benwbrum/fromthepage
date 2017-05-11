@@ -10,8 +10,8 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
+  before_action :set_collection, :only => [:show, :edit, :update]
   before_filter :load_settings, :only => [:edit, :update, :upload]
-  before_action :set_collection_path, :only => [:show]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -95,7 +95,7 @@ class CollectionController < ApplicationController
   def update
     if @collection.update_attributes(params[:collection])
       flash[:notice] = 'Collection has been updated'
-      redirect_to action: 'edit', collection_slug: @collection.slug
+      redirect_to action: 'edit', collection_id: @collection.id
 #      redirect_to action: 'edit', collection_slug: @collection.slug
     else
       render action: 'edit'
@@ -163,16 +163,18 @@ def contributors
 end
 
 private
-  def set_collection_path
+  def set_collection
     unless @collection
       if Collection.friendly.exists?(params[:id])
         @collection = Collection.friendly.find(params[:id])
-        if request.path != collection_path(@collection.owner, @collection)
+        @type = 'collection'
+=begin        if request.path != collection_path(@collection.owner, @collection)
           return redirect_to @collection, :status => :moved_permanently
         end
+=end
       elsif DocumentSet.friendly.exists?(params[:id])
-        @document_set = DocumentSet.friendly.find(params[:id])
-        redirect_to document_set_path
+        @collection = DocumentSet.friendly.find(params[:id])
+        @type = 'document_set'
       end
     end
   end    

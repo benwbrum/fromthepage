@@ -2,8 +2,7 @@
 
 .columns
   article.maincol
-    =form_for :collection, url: { action: 'update' } do |f|
-      =hidden_field_tag(:collection_id, @collection.id)
+    =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
       table.form
         tr.big

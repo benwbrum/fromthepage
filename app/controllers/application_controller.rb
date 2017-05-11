@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
 
   def load_objects_from_params
-
     # this needs to be ordered from the specific to the
     # general, so that parent_id will load the appropriate
     # object without being overridden by child_id.parent
@@ -67,15 +66,12 @@ class ApplicationController < ActionController::Base
       @document_set = DocumentSet.friendly.find(params[:document_set_id])
       @collection = @document_set.collection
     end
-    if params[:document_set_slug]
-      @document_set = DocumentSet.friendly.find(params[:document_set_slug])
-      @collection = @document_set.collection
-    end      
     if params[:collection_id]
-      @collection = Collection.friendly.find(params[:collection_id])
-    end
-    if params[:collection_slug]
-      @collection = Collection.friendly.find(params[:collection_slug])
+      if Collection.friendly.exists?(params[:collection_id])
+        @collection = Collection.friendly.find(params[:collection_id])
+      elsif DocumentSet.friendly.exists?(params[:collection_id])
+        @collection = DocumentSet.friendly.find(params[:collection_id])
+      end
     end
     # image stuff is orthogonal to collections
     if params[:titled_image_id]
@@ -217,6 +213,7 @@ class ApplicationController < ActionController::Base
   def authorize_collection
     # skip irrelevant cases
     return unless @collection
+    return if @collection.is_a?(DocumentSet)
     return unless @collection.restricted
 
     unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)

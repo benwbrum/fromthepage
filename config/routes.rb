@@ -72,19 +72,18 @@ Fromthepage::Application.routes.draw do
 #  resources :document_sets
   resources :document_sets, except: [:show, :create, :edit]
 
-
-  #resources '/:collection_slug', param: :collection_slug, controller: 'collection', path: '', as: :collection
-  #get '/:collection_slug', to: 'collection#show', as: :collection
-    scope ':user_slug' do
-      resources :document_sets, only: [:show] do
-      end
-      resources :collection, path: '', only: [:show] do
-  #    get 'new_work', on: :member
-  #    get 'contributors', on: :member
-        get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
-      end
+  scope ':user_slug' do
+    resources :document_sets, only: [:show] do
     end
+    resources :collection, path: '', only: [:show] do
+#    get 'new_work', on: :member
+#    get 'contributors', on: :member
+      get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
+    end
+  end
 
+  get 'collection/update/:id', to: 'collection#update', as: :update_collection
+  #get 'collection/edit/:id', :to => 'collection#edit', as: :edit_collection
 
 #  get '/statistics/collection', param: :collection_slug, path: '/:collection_slug/statistics', as: :statistics, to: 'statistics#collection'
 #  get '/article/list', param: :collection_slug, path: '/:collection_slug/subjects', as: :article_list, to: 'article#list'
