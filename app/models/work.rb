@@ -139,7 +139,7 @@ class Work < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    super[0..140]
+    super.truncate(140, separator: '-', omission: '')
   end
 
 end
