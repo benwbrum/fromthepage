@@ -19,7 +19,8 @@ class ScManifest < ActiveRecord::Base
     service = IIIF::Service.parse(manifest_json)
 
     sc_manifest = ScManifest.new
-    sc_manifest.at_id = service['@id']
+    #sc_manifest.at_id = service['@id']
+    sc_manifest.at_id = at_id
     sc_manifest.label = service.label
     sc_manifest.service = service
   
