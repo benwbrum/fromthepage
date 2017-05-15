@@ -76,7 +76,10 @@ Fromthepage::Application.routes.draw do
     resources :collection, path: '', only: [:show] do
 #    get 'new_work', on: :member
 #    get 'contributors', on: :member
+      get '/statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
+
       get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
+
 #      get 'transcribe/display_page', path: '/:work_id/:id', as: :transcribe, to: 'transcribe#display_page'
     end
   end
@@ -85,7 +88,6 @@ Fromthepage::Application.routes.draw do
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
   #get 'collection/edit/:id', :to => 'collection#edit', as: :edit_collection
 
-#  get '/statistics/collection', param: :collection_slug, path: '/:collection_slug/statistics', as: :statistics, to: 'statistics#collection'
 #  get '/article/list', param: :collection_slug, path: '/:collection_slug/subjects', as: :article_list, to: 'article#list'
 #  get '/export', param: :collection_slug, path: '/:collection_slug/export', as: :export, to: 'export#index'
 

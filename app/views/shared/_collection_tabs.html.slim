@@ -77,5 +77,9 @@
   h1 =@collection.title
 .tabs
   -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => @collection.id)
-      a.active =tab[:name]
+    -if tab[:name] == 'Statistics'
+      =link_to_unless tab[:selected] == selected, tab[:name], collection_statistics_path(@collection.owner, @collection)
+        a.active =tab[:name]
+    -else
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => @collection.id)
+        a.active =tab[:name]

@@ -15,7 +15,7 @@
             =image_tag(@collection.picture_url(:thumb))
         .collection-intro_about
           ==@collection.intro_block
-    -elsif @collection.description
+    -elsif @collection.is_a?(DocumentSet) && @collection.description
       h2 About
       .collection-intro
         .collection-intro_about

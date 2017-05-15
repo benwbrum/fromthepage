@@ -1,4 +1,6 @@
 class DocumentSet < ActiveRecord::Base
+  include DocumentSetStatistic
+
   extend FriendlyId
   friendly_id :title, :use => [:slugged, :history]
   
