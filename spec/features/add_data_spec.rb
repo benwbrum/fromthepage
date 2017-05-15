@@ -18,7 +18,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "sets slugs" do
     Collection.find_each(&:save)
-#    Work.find_each(&:save)
+    Work.find_each(&:save)
     User.find_each(&:save)
     end
 

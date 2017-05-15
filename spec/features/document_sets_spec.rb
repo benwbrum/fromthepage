@@ -18,7 +18,7 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Settings")
     page.find('.button', text: 'Create Document Sets').click
     expect(page).to have_content('Create a Document Set')
@@ -42,7 +42,7 @@ describe "document sets", :order => :defined do
   it "adds works to document sets" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@collection.title}")
     page.check("work_assignment_#{@document_sets.first.id}_#{@collection.works.first.id}")
@@ -54,7 +54,7 @@ describe "document sets", :order => :defined do
   it "edits a document set" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@collection.title}")
     within(page.find('#sets')) do
@@ -84,10 +84,15 @@ describe "document sets", :order => :defined do
     @document_sets.each do |set|
       expect(page).to have_content(set.title)
     end
-    page.find('a', text: @document_sets.first.title).click
+    doc_set = @document_sets.last
+    page.find('.maincol').find('a', text: doc_set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.id)
     expect(page).to have_content(@collection.works.second.id)
+    expect(page).to have_content(doc_set.works.first.title)
+    page.find('.tabs').click_link('Statistics')
+    expect(page).to have_content(doc_set.title)
+    expect(page).to have_content("Last 7 Days Statistics")
 
   end
 
@@ -95,7 +100,7 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     count = @document_sets.count
     visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@collection.title}")
     within(page.find('#sets')) do
@@ -108,6 +113,5 @@ describe "document sets", :order => :defined do
     expect(page).not_to have_content(@document_sets.first.title)
     expect(page).to have_content(@document_sets.last.title)
   end
-
 
 end
