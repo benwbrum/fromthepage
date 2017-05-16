@@ -5,7 +5,7 @@ h1 Collaborator Dashboard
     p Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
     -unless @collections.empty?
       -@collections.each do |c|
-        h4 =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, class: 'nodecor'
+        h4 =link_to c.title, collection_path(c.owner, c), class: 'nodecor'
         -c.deeds.includes(:page, :user, :work).limit(5).each do |d|
           //- Hide collection link
           -d.collection = nil

@@ -1,19 +1,18 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 7, :collection_id => @collection.id }})
-
 -unless @works.empty?
   section.collection-stats
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.work_count}") #{'Work'.pluralize(@collection.work_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.page_count}") #{'Page'.pluralize(@collection.page_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.comment_count}") #{'Note'.pluralize(@collection.comment_count)}
-      -unless @collection.subjects_disabled
+      -unless @parent.subjects_disabled
         .counter(data-prefix="#{number_with_delimiter @collection.subject_count}") #{'Subject'.pluralize(@collection.subject_count)}
         .counter(data-prefix="#{number_with_delimiter @collection.mention_count}") #{'Reference'.pluralize(@collection.mention_count)}
       .counter(data-prefix="#{number_with_delimiter @collection.contributor_count}") #{'Collaborator'.pluralize(@collection.contributor_count)}
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @collection.transcription_count}") #{'Page'.pluralize(@collection.transcription_count)} transcribed
       .counter(data-prefix="#{number_with_delimiter @collection.edit_count}") Page edits
-      -unless @collection.subjects_disabled
+      -unless @parent.subjects_disabled
         .counter(data-prefix="#{number_with_delimiter @collection.index_count}") #{'Page'.pluralize(@collection.index_count)} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.translation_count}") #{'Page'.pluralize(@collection.translation_count)} translated
       .counter(data-prefix="#{number_with_delimiter @collection.ocr_count}") OCR #{'Correction'.pluralize(@collection.ocr_count)}
@@ -24,7 +23,7 @@
     .counter(data-prefix="#{number_with_delimiter @collection.contributor_count(7)}") #{'Collaborator'.pluralize(@collection.contributor_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
     .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
-    -unless @collection.subjects_disabled
+    -unless @parent.subjects_disabled
       .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
       .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
@@ -52,13 +51,13 @@
       li
         span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
         span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
-        -unless @collection.subjects_disabled
+        -unless @parent.subjects_disabled
           span =="<b>#{progress_annotated}%</b> indexed"
         span =="<b>#{progress_completed}%</b> #{completed}"
         span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
         span
           span.progress
-            -unless @collection.subjects_disabled
+            -unless @parent.subjects_disabled
               span(style="width:#{progress_annotated}%")
               span(style="width:#{progress_completed - progress_annotated}%")
               -unless progress_review == 0
@@ -97,7 +96,7 @@ h2 Collaborators
       h3 Editing
       p.a50 No editors
       
-  -unless @collection.subjects_disabled
+  -unless @parent.subjects_disabled
     .justified_box>
       -unless @all_indexers.empty?
         h3 Indexing

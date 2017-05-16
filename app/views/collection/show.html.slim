@@ -1,10 +1,4 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection.id } })
-
--if @collection.is_a?(Collection)
-  -@parent = @collection
--else
-  -@parent = @collection.collection
-
 .columns
   article.maincol
     -if @collection.intro_block

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "editor actions" do
 
   before :all do
+    @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
     @collections = Collection.where(id: collection_ids)
@@ -140,12 +141,28 @@ describe "editor actions" do
   end
 
   it "tries to log in as another user" do
-    owner = User.find_by(login: 'margaret')
-    visit "/users/masquerade/#{owner.id}"
+    visit "/users/masquerade/#{@owner.id}"
     expect(page.current_path).to eq dashboard_path
-    expect(page.find('.dropdown')).not_to have_content owner.display_name
+    expect(page.find('.dropdown')).not_to have_content @owner.display_name
     expect(page).to have_content @user.display_name
     expect(page).not_to have_selector('a', text: 'Undo Login As')
+  end
+
+  it "checks URLs" do
+    visit dashboard_watchlist_path
+    page.find('h4', text: @collection.title).click_link(@collection.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}"
+    click_link @work.title
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
+    #check breadcrumb
+    expect(page).to have_selector('a', text: @collection.title)
+    page.find('a', text: @page.title).click
+    expect(page).to have_selector('a', text: @collection.title)
+    expect(page).to have_selector('a', text: @work.title)
+    click_link(@work.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
+    click_link @collection.title
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}"
   end
 
 end

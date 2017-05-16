@@ -92,8 +92,28 @@ describe "document sets", :order => :defined do
     expect(page).to have_content(doc_set.works.first.title)
     page.find('.tabs').click_link('Statistics')
     expect(page).to have_content(doc_set.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/statistics"
     expect(page).to have_content("Last 7 Days Statistics")
+  end
 
+  it "checks document set breadcrumbs" do
+    login_as(@user, :scope => :user)
+    visit dashboard_path
+    doc_set = @document_sets.last
+    work = doc_set.works.first
+    @page = work.pages.first
+    page.find('.maincol').find('a', text: doc_set.title).click
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
+    click_link(work.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
+    expect(page).to have_selector('a', text: doc_set.title)
+    page.find('a', text: @page.title).click
+    expect(page).to have_selector('a', text: doc_set.title)
+    expect(page).to have_selector('a', text: work.title)
+    click_link(work.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
+    click_link doc_set.title
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
   end
 
   it "deletes a document set" do

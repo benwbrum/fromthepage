@@ -74,6 +74,13 @@ class User < ActiveRecord::Base
         self == obj.owner      
       end
     end
+    if DocumentSet == obj.class
+      if obj.collection
+        return self == obj.collection.owner || obj.collection.owners.include?(self)
+      else
+        self == obj.owner
+      end
+    end
     return false
   end
 

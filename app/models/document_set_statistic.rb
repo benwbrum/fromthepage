@@ -9,19 +9,18 @@ module DocumentSetStatistic
 
   def page_count
     Page.where(work_id: works.ids).count
-    #DocumentSet.count_by_sql("SELECT COUNT(*) FROM pages p INNER JOIN works w ON p.work_id = w.id WHERE w.document_set_id = #{self.id}")
   end
 
   def subject_count
-    #self.articles.count
+    self.collection.articles.count
   end
 
   def new_subject_count(last_days)
-    #Article.where("collection_id = ? AND created_on >= ?", "#{self.id}", "#{last_days.days.ago}").count
+    Article.where("collection_id = ? AND created_on >= ?", "#{self.collection.id}", "#{last_days.days.ago}").count
   end
 
   def mention_count(last_days=nil)
-    #DocumentSet.count_by_sql("SELECT COUNT(*) FROM page_article_links pal INNER JOIN articles a ON pal.article_id = a.id WHERE a.collection_id = #{self.id}  #{last_days_clause(last_days, 'pal.created_on')}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM page_article_links pal INNER JOIN articles a ON pal.article_id = a.id WHERE a.collection_id = #{self.collection.id}  #{last_days_clause(last_days, 'pal.created_on')}")
   end
 
   def contributor_count(last_days=nil)

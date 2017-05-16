@@ -167,14 +167,14 @@ private
     unless @collection
       if Collection.friendly.exists?(params[:id])
         @collection = Collection.friendly.find(params[:id])
-        @type = 'collection'
+        @parent = @collection
 =begin        if request.path != collection_path(@collection.owner, @collection)
           return redirect_to @collection, :status => :moved_permanently
         end
 =end
       elsif DocumentSet.friendly.exists?(params[:id])
         @collection = DocumentSet.friendly.find(params[:id])
-        @type = 'document_set'
+        @parent = @collection.collection
       end
     end
   end    

@@ -1,3 +1,7 @@
+-if @collection.is_a?(DocumentSet)
+  -@parent = @collection.collection
+-else
+  -@parent = @collection
 -tabs = [{\
   :name => 'Overview',
   :selected => 1,
@@ -14,7 +18,7 @@
   },
 }]
 
--unless @collection.subjects_disabled
+-unless @parent.subjects_disabled
   -tabs +=[{\
   :name => 'Subjects',
   :selected => 6,
@@ -33,7 +37,7 @@
       :action => 'edit',
     },
   }] 
-  -if @collection.supports_document_sets
+  -if @parent.supports_document_sets
     -tabs += [{\
       :name => 'Sets',
       :selected => 8,
@@ -84,5 +88,5 @@
       =link_to_unless tab[:selected] == selected, tab[:name], collection_statistics_path(@collection.owner, @collection)
         a.active =tab[:name]
     -else
-      =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => @collection.id)
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => @parent.id)
         a.active =tab[:name]
