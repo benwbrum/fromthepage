@@ -3,7 +3,7 @@
 .columns
   article.maincol
     -@collections.each do |c|
-      h4 =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, class: 'nodecor'
+      h4 =link_to c.title, collection_path(c.owner, c), class: 'nodecor'
       -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
       -unless snippet.empty?
         p.collection_snippet =snippet
