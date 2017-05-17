@@ -30,7 +30,7 @@ class DocumentSet < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    string.truncate(240, separator: '-', omission: '')
+    string.truncate(240, separator: ' ', omission: '')
     super
   end
 
