@@ -18,6 +18,14 @@
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
           th
+          td 
+            p <b>Current URL:</b> The current URL for this work is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+        tr
+          th =f.label :slug, 'Edit URL'
+          td =f.text_field :slug, value: @work.slug
+
+        tr
+          th
           td
             p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful

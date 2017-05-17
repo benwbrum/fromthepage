@@ -32,7 +32,8 @@ class Work < ActiveRecord::Base
                   :translation_instructions,
                   :scribes_can_edit_titles,
                   :restrict_scribes,
-                  :pages_are_meaningful
+                  :pages_are_meaningful,
+                  :slug
 
   validates :title, presence: true, length: { minimum: 3 }
   validates :slug, uniqueness: true

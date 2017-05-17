@@ -84,6 +84,7 @@ Fromthepage::Application.routes.draw do
     end
   end
 
+  get '/:user', path: '/:id', to: 'user#profile', as: :user_profile
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
   #get 'collection/edit/:id', :to => 'collection#edit', as: :edit_collection

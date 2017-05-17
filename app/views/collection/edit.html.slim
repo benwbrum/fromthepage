@@ -7,11 +7,14 @@
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
+        tr.big
+          th 
+          td
+            p
+              <b>Current URL:</b> The current URL for this collection is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
-          th =f.label :slug, 'URL'
-          td 
-            |www.fromthepage.com/#{@collection.owner.slug}/
-            =f.text_field :slug, value: @collection.slug
+          th =f.label :slug, 'Edit URL'
+          td =f.text_field :slug, value: @collection.slug
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
