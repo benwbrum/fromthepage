@@ -1,6 +1,6 @@
 class Work < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :title, :use => [:slugged]
+  friendly_id :slug_candidates, :use => [:slugged, :history]
 
   has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
@@ -140,7 +140,15 @@ class Work < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    super.truncate(140, separator: '-', omission: '')
+    string.truncate(240, separator: ' ', omission: '')
+    super
+  end
+
+  def slug_candidates
+    [
+      :title,
+      [:title, :id]
+    ]
   end
 
 end

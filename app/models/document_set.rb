@@ -2,7 +2,7 @@ class DocumentSet < ActiveRecord::Base
   include DocumentSetStatistic
 
   extend FriendlyId
-  friendly_id :title, :use => [:slugged, :history]
+  friendly_id :slug_candidates, :use => [:slugged, :history]
   
   attr_accessible :title, :description, :collection_id, :picture, :is_public
 
@@ -20,6 +20,18 @@ class DocumentSet < ActiveRecord::Base
   
   def subjects_disabled
     self.collection.subjects_disabled
+  end
+
+  def slug_candidates
+    [
+      :title,
+      [:title, :id]
+    ]
+  end
+
+  def normalize_friendly_id(string)
+    string.truncate(240, separator: '-', omission: '')
+    super
   end
 
 end

@@ -3,7 +3,7 @@ require 'csv'
 class Collection < ActiveRecord::Base
   include CollectionStatistic
   extend FriendlyId
-  friendly_id :title, :use => [:slugged, :history]
+  friendly_id :slug_candidates, :use => [:slugged, :history]
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -59,6 +59,18 @@ class Collection < ActiveRecord::Base
     category1.save
     category2 = Category.new(collection_id: self.id, title: "Places")
     category2.save
+  end
+
+  def slug_candidates
+    [
+      :title,
+      [:title, :id]
+    ]
+  end
+
+  def normalize_friendly_id(string)
+    string.truncate(240, separator: '-', omission: '')
+    super
   end
 
   protected
