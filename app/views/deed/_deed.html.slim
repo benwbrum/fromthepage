@@ -6,7 +6,7 @@
 -else
   -user_name = deed.user.display_name if deed.user.id
 
--user = link_to user_name, { :controller => 'user', :action => 'profile', :user_id => deed.user.id, only_path: false }
+-user = link_to user_name, user_profile_path(deed.user), only_path: false 
 -page = deed.page.nil? ? '' : link_to(deed.page.title, { :controller => 'display', :action => 'display_page', :page_id => deed.page.id, only_path: false })
 -article = deed.article.nil? ? '' : link_to(deed.article.title, { :controller => 'article', :action => 'show', :article_id => deed.article.id, only_path: false })
 

@@ -64,7 +64,7 @@
             -current_version = page.page_versions[0]
             -if current_version && current_version.page_version > 0
               small.work-page_edited
-                -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
+                -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
                 =="Last edit #{edit_time} ago by #{user_link}"
       

@@ -12,7 +12,7 @@
         //- Hide collection link
         -d.collection = nil
         .user-bubble
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic')
+          =link_to(user_profile_path(d.user), class: 'userpic')
             =gravatar_image_tag d.user.email, :alt => d.user.display_name
           .user-bubble_content
             =time_tag d.created_at

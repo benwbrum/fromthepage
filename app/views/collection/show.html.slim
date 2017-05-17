@@ -79,7 +79,7 @@
 
     h3 Recent Notes
     -@parent.notes.limit(10).each do |note|
-      -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
+      -user = link_to note.user.display_name, user_profile_path(note.user)
       -text = link_to truncate(note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
       .deed-short.small
         =time_tag(note.created_at, class: 'legend legend-left')

@@ -106,7 +106,7 @@
         .userpic
           =gravatar_image_tag user.email, :alt => user.display_name
         .username
-          =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+          =link_to user.display_name, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'

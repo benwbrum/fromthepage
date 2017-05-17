@@ -80,11 +80,11 @@
 
   aside.sidecol
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@work.owner), class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
         small Uploaded by
-        =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
+        =link_to @work.owner.display_name, user_profile_path(@work.owner)
     p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
     hr
@@ -114,7 +114,7 @@
             .userpic
               =gravatar_image_tag user.email, :alt => user.display_name
             .username
-              =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+              =link_to user.display_name, user_profile_path(user)
               small =user.email
               =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
 
