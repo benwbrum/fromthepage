@@ -4,7 +4,7 @@ class DocumentSet < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
   
-  attr_accessible :title, :description, :collection_id, :picture, :is_public
+  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
@@ -23,10 +23,18 @@ class DocumentSet < ActiveRecord::Base
   end
 
   def slug_candidates
+    if self.slug
+      [:slug]
+    else
     [
       :title,
       [:title, :id]
     ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
   end
 
   def normalize_friendly_id(string)

@@ -118,10 +118,18 @@ class User < ActiveRecord::Base
   end
 
   def slug_candidates
-    [
-      :login,
-      [:login, :id]
-    ]
+    if self.slug
+      [:slug]
+    else
+      [
+        :login,
+        [:login, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
   end
 
   def normalize_friendly_id(string)

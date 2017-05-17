@@ -145,10 +145,18 @@ class Work < ActiveRecord::Base
   end
 
   def slug_candidates
-    [
-      :title,
-      [:title, :id]
-    ]
+    if self.slug
+      [:slug]
+    else
+      [
+        :title,
+        [:title, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
   end
 
 end
