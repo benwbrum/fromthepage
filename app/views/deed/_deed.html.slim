@@ -47,11 +47,11 @@
   -output += "marked translation page #{page} as needing review"
 
 -if(long_view && !deed.work.nil?)
-  -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id, only_path: false })
+  -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: false )
   -output += " in the work #{work}"
 
 -if(@collection.nil? && !deed.collection.nil?)
-  -collection = link_to(deed.collection.title, { :controller => 'collection', :action => 'show', :collection_id => deed.collection.id, only_path: false })
+  -collection = link_to(deed.collection.title, collection_path(deed.collection.owner, deed.collection), only_path: false )
   -output += " in #{collection} collection"
 
 -if(long_view && deed.deed_type == 'note_add' && !deed.note.nil?)

@@ -19,7 +19,7 @@ h1 Collaborator Dashboard
     -else
       -unless @page.nil?
         ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
-        =link_to @page.work.title, {:controller => 'display', :action => 'display_page', :page_id => @page.id}
+        =link_to @page.work.title, {:controller => 'transcribe', :action => 'display_page', :page_id => @page.id}
         ="."
       -else
         ="You haven't participated in any projects yet.  Try transcribing a page from one of these "
