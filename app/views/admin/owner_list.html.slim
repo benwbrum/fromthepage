@@ -16,10 +16,10 @@ table.admin-grid.datagrid.striped
       tr
 
         td
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => o.id }, class: 'userpic userpic-small')
+          =link_to(user_profile_path(o), class: 'userpic userpic-small')
             =gravatar_image_tag o.email, :alt => o.display_name
         td.nowrap.toleft
-          div =link_to o.login, { :controller => 'user', :action => 'profile', :user_id => o.id }
+          div =link_to o.login, user_profile_path(o)
           small =o.email
         td
           div =o.display_name

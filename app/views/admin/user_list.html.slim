@@ -14,10 +14,10 @@ table.admin-grid.datagrid.striped
     -@users.each do |u|
       tr
         td
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => u.id }, class: 'userpic userpic-small')
+          =link_to(user_profile_path(u), class: 'userpic userpic-small')
             =gravatar_image_tag u.email, :alt => u.display_name
         td.nowrap.toleft
-          div =link_to u.login, { :controller => 'user', :action => 'profile', :user_id => u.id }
+          div =link_to u.login, user_profile_path(u)
           small =u.email
         td.acenter =svg_symbol '#icon-check-sign', class: 'icon a50' if u.owner
         td
