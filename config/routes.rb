@@ -59,26 +59,21 @@ Fromthepage::Application.routes.draw do
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
-#  get   'document_set/new', :to => 'document_sets#new'
   get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
-#  patch   'document_set/update/:id', :to => 'document_sets#update'
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
-#  get   'document_set/:id', :to => 'document_sets#show'
 
-#  get   'document_set/:document_set_id', :to => 'document_sets#show'
-#  resources :document_sets
   resources :document_sets, except: [:show, :create, :edit]
 
   scope ':user_slug' do
-    resources :document_sets, only: [:show] do
-    end
+#    resources :document_sets, only: [:show] do
+#    end
     resources :collection, path: '', only: [:show] do
 #    get 'new_work', on: :member
 #    get 'contributors', on: :member
       get '/statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
 
-      get 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work'
+      match 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work', via: [:get, :post]
 
 #      get 'transcribe/display_page', path: '/:work_id/:id', as: :transcribe, to: 'transcribe#display_page'
     end
@@ -87,9 +82,5 @@ Fromthepage::Application.routes.draw do
   get '/:user', path: '/:id', to: 'user#profile', as: :user_profile
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
-  #get 'collection/edit/:id', :to => 'collection#edit', as: :edit_collection
-
-#  get '/article/list', param: :collection_slug, path: '/:collection_slug/subjects', as: :article_list, to: 'article#list'
-#  get '/export', param: :collection_slug, path: '/:collection_slug/export', as: :export, to: 'export#index'
 
 end

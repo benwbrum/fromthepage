@@ -86,6 +86,8 @@ module ApplicationHelper
 
     if options[:collection]
       deeds = @collection.deeds.includes(:page, :user).where(condition).order_by_recent_activity.limit(limit)
+    elsif options[:parent]
+      deeds = @parent.deeds.includes(:page, :user).where(condition).where(work_id: @collection.works.ids).order_by_recent_activity.limit(limit)
     else
       condition[0] << " AND " unless condition[0].length == 0
       condition[0] << "collections.restricted = 0"
