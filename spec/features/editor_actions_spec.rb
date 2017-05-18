@@ -148,21 +148,4 @@ describe "editor actions" do
     expect(page).not_to have_selector('a', text: 'Undo Login As')
   end
 
-  it "checks URLs" do
-    visit dashboard_watchlist_path
-    page.find('h4', text: @collection.title).click_link(@collection.title)
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}"
-    click_link @work.title
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
-    #check breadcrumb
-    expect(page).to have_selector('a', text: @collection.title)
-    page.find('a', text: @page.title).click
-    expect(page).to have_selector('a', text: @collection.title)
-    expect(page).to have_selector('a', text: @work.title)
-    click_link(@work.title)
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
-    click_link @collection.title
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}"
-  end
-
 end

@@ -116,22 +116,4 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
   end
 
-  it "deletes a document set" do
-    login_as(@owner, :scope => :user)
-    count = @document_sets.count
-    visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Sets")
-    expect(page).to have_content("Document Sets for #{@collection.title}")
-    within(page.find('#sets')) do
-      within(page.find('tr', text: @document_sets.first.title)) do
-        page.find('a', text: 'Delete').click
-      end
-    end
-    sets = DocumentSet.all.count
-    expect(sets).to eq (count - 1)
-    expect(page).not_to have_content(@document_sets.first.title)
-    expect(page).to have_content(@document_sets.last.title)
-  end
-
 end
