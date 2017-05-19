@@ -73,7 +73,7 @@ describe "IA import actions", :order => :defined do
   end
 
   it "checks ocr/transcribe statistics" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("Works")
     @collection.works.each do |w|
       if w.ocr_correction

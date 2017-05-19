@@ -15,7 +15,7 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "disables subject indexing in a collection" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content("Disable subject indexing")
     check('collection_subjects_disabled')
@@ -26,7 +26,7 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks collection level subject items" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     #check for subject related items on Overview tab
     expect(page).to have_content(@collection.title)
     expect(page).to have_content("Works")
@@ -53,7 +53,7 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks work level subject items" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Help")
     expect(page).to have_content("Transcribing")
     expect(page).not_to have_content("Linking Subjects")
@@ -68,7 +68,7 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "checks page level subject items" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page', text: @title).click_link(@title)
     expect(page).not_to have_content("Autolink")
     expect(page).to have_content("A single newline")
@@ -83,7 +83,7 @@ describe "disable subject linking", :order => :defined do
   end
 
   it "enables subject indexing" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content("Disable subject indexing")
     uncheck('collection_subjects_disabled')
@@ -94,7 +94,7 @@ describe "disable subject linking", :order => :defined do
   end
 
  it "checks links work when enabled" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
     page.find('.work-page', text: @title).click_link(@title)
