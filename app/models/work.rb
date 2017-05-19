@@ -35,7 +35,7 @@ class Work < ActiveRecord::Base
                   :pages_are_meaningful,
                   :slug
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: true
 
   scope :unrestricted, -> { where(restrict_scribes: false)}

@@ -28,9 +28,13 @@ class DocumentSetsController < ApplicationController
   def create
     @document_set = DocumentSet.new(document_set_params)
     @document_set.owner = current_user
-    @document_set.save!
-    flash[:notice] = 'Document set has been created'
-    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    if @document_set.save
+      flash[:notice] = 'Document set has been created'
+      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    else
+      render action: 'new'
+    end
+
   end
 
   def assign_works

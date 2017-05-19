@@ -18,7 +18,7 @@ class Collection < ActiveRecord::Base
   attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug
 #  attr_accessor :picture
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   
   before_create :set_transcription_conventions
   after_save :create_categories

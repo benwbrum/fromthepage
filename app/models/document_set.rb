@@ -9,6 +9,8 @@ class DocumentSet < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
   has_and_belongs_to_many :works
+  
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
   def show_to?(user)
     self.is_public? || self.collection.show_to?(user)
