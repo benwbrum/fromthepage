@@ -133,8 +133,7 @@ class User < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    string.truncate(240, separator: ' ', omission: '')
-    super
+    super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
 end

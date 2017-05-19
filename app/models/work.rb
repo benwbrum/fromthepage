@@ -140,8 +140,8 @@ class Work < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    string.truncate(240, separator: ' ', omission: '')
-    super
+    string.truncate(230, separator: ' ', omission: '')
+    super.gsub('_', '-')
   end
 
   def slug_candidates
