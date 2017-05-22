@@ -35,7 +35,6 @@ class CollectionController < ApplicationController
 
 
   def load_settings
-
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
     @nonowners = User.order(:display_name) - @owners
@@ -96,7 +95,6 @@ class CollectionController < ApplicationController
     if @collection.update_attributes(params[:collection])
       flash[:notice] = 'Collection has been updated'
       redirect_to action: 'edit', collection_id: @collection.id
-#      redirect_to action: 'edit', collection_slug: @collection.slug
     else
       render action: 'edit'
     end
