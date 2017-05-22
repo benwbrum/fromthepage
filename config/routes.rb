@@ -10,9 +10,6 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_sites
   resources :omeka_items
-  # resources :sc_canvas
-  # resources :sc_manifests
-  # resources :sc_collections
 
   resources :notes
 
@@ -38,9 +35,7 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ }
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
- # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
-#  get   '/iiif/admin/search_pontiiif', :to => 'sc_collections#search_pontiiif', :as => 'search_pontiiif'
 
 
   patch 'work/update_work', :to => 'work#update_work'
@@ -66,16 +61,10 @@ Fromthepage::Application.routes.draw do
   resources :document_sets, except: [:show, :create, :edit]
 
   scope ':user_slug' do
-#    resources :document_sets, only: [:show] do
-#    end
     resources :collection, path: '', only: [:show] do
-#    get 'new_work', on: :member
-#    get 'contributors', on: :member
       get '/statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
-
+      #have to use match because it must be both get and post
       match 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work', via: [:get, :post]
-
-#      get 'transcribe/display_page', path: '/:work_id/:id', as: :transcribe, to: 'transcribe#display_page'
     end
   end
 
