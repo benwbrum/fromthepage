@@ -20,7 +20,11 @@ class ArticleController < ApplicationController
     # 1. List of articles needs to be collection-specific
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
-    @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
+    if @collection.is_a?(DocumentSet)
+      @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.collection.id])#.all
+    else
+      @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
+    end
   end
 
   def delete
