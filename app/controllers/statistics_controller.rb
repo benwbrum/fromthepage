@@ -1,13 +1,6 @@
 class StatisticsController < ApplicationController
 
   def collection
-    unless @parent
-      if @collection.is_a?(DocumentSet)
-        @parent = @collection.collection
-      else
-        @parent = @collection
-      end
-    end
     @works = @collection.works :include => 'work_statistics'
     @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
 

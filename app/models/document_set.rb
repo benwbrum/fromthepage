@@ -24,6 +24,30 @@ class DocumentSet < ActiveRecord::Base
     self.collection.subjects_disabled
   end
 
+  def categories
+    self.collection.categories
+  end
+
+  def supports_document_sets
+    false
+  end
+
+  def notes
+    Note.where(work_id: self.works.ids)
+  end
+
+  def deeds
+    self.collection.deeds.where(work_id: self.works.ids)
+  end
+
+  def restricted
+    !self.is_public
+  end
+
+  def footer_block
+    self.collection.footer_block
+  end
+
   def slug_candidates
     if self.slug
       [:slug]

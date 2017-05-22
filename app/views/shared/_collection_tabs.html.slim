@@ -18,7 +18,7 @@
   },
 }]
 
--unless @parent.subjects_disabled
+-unless @collection.subjects_disabled
   -tabs +=[{\
   :name => 'Subjects',
   :selected => 6,
@@ -37,7 +37,7 @@
       :action => 'edit',
     },
   }] 
-  -if @parent.supports_document_sets
+  -if @collection.supports_document_sets
     -tabs += [{\
       :name => 'Sets',
       :selected => 8,

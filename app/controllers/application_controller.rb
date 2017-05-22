@@ -222,7 +222,6 @@ class ApplicationController < ActionController::Base
   def authorize_collection
     # skip irrelevant cases
     return unless @collection
-    return if @collection.is_a?(DocumentSet)
     return unless @collection.restricted
 
     unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)

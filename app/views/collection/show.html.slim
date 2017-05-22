@@ -32,7 +32,7 @@
             -completed = "translated"
 
 
-          -if @parent.subjects_disabled
+          -if @collection.subjects_disabled
             -unless progress_review == 0
               -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
             -else
@@ -45,7 +45,7 @@
           span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{wording}"
           span
             span.progress
-              -unless @parent.subjects_disabled
+              -unless @collection.subjects_disabled
                 span(style="width:#{progress_annotated}%")
               span(style="width:#{progress_completed - progress_annotated}%")
               -unless progress_review == 0
@@ -54,10 +54,10 @@
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
     
-    -unless @parent.subjects_disabled
-      -unless @parent.categories.empty?
+    -unless @collection.subjects_disabled
+      -unless @collection.categories.empty?
         h3 Subject Categories
-        p.big ==@parent.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @parent.id, anchor: "category-#{c.id}" } }.join(', ')
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
 
   aside.sidecol
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
@@ -73,7 +73,7 @@
         =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }
 
     h3 Recent Notes
-    -@parent.notes.limit(10).each do |note|
+    -@collection.notes.limit(10).each do |note|
       -user = link_to note.user.display_name, user_profile_path(note.user)
       -text = link_to truncate(note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
       .deed-short.small
@@ -85,6 +85,6 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
-    =deeds_for({ :parent => @parent, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
+    =deeds_for({ :collection => @collection, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
 
 =render({ :partial => '/shared/collection_footer' })

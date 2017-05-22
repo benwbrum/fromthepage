@@ -1,6 +1,2 @@
--if @collection.is_a?(DocumentSet)
-  -collection = @collection.collection
--else
-  -collection = @collection
--if collection && collection.footer_block
-  .collection-footer ==collection.footer_block
+-if @collection && @collection.footer_block
+  .collection-footer ==@collection.footer_block

@@ -161,6 +161,8 @@ describe "URL tests" do
     @document_set.works.each do |w|
       expect(page).to have_content w.title
     end
+    #note - have to edit slug from within the collection right now, not the doc set
+    visit "/#{@owner.slug}/#{@document_set.collection.slug}"
     page.find('.tabs').click_link('Sets')
     within(page.find('#sets')) do
       within(page.find('tr', text: @document_set.title)) do
