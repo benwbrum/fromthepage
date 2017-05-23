@@ -6,7 +6,7 @@ describe "needs review", :order => :defined do
   before :all do
     @user = User.find_by(login: USER)
     @collection = Collection.second
-    @work = @collection.works.second
+    @work = @collection.works.third
     @page1 = @work.pages.first
     @page2 = @work.pages.second
     @page3 = @work.pages.third
