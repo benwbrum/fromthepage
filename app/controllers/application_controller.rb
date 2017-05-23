@@ -224,7 +224,7 @@ class ApplicationController < ActionController::Base
     return unless @collection
     return unless @collection.restricted
 
-    unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)
+    unless @collection.show_to?(current_user)
       redirect_to dashboard_path
     end
   end
