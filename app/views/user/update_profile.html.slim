@@ -10,10 +10,10 @@
         th =f.label :display_name, 'Name'
         td.w100 =f.text_field :display_name
       tr
-        th Current URL: 
+        th URL: 
         td www.fromthepage.com/#{@user.slug}
       tr
-        th =f.label :slug, "Edit URL"
+        th =f.label :slug, "URL"
         td =f.text_field :slug, value: @user.slug
       tr
         th =f.label :location

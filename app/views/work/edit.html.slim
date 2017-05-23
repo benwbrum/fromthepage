@@ -17,13 +17,13 @@
           th =f.label :location_of_composition, 'Location'
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
+          th =f.label :slug, 'URL'
+          td =f.text_field :slug, value: @work.slug
+        tr
           th
           td 
-            p <b>Current URL:</b> The current URL for this work is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
-        tr
-          th =f.label :slug, 'Edit URL'
-          td =f.text_field :slug, value: @work.slug
-
+            |The current URL for this work is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+ 
         tr
           th
           td
