@@ -43,10 +43,6 @@ class CollectionController < ApplicationController
   end
 
   def show
-    @users = User.all
-    @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
-    @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
-    @top_ten_indexers     = build_user_array(Deed::PAGE_INDEXED)
   end
 
   def owners
@@ -186,13 +182,4 @@ private
       article.save!
     end
   end
-
-  def build_user_array(deed_type)
-    user_array = []
-    condition = "collection_id = ? AND deed_type = ?"
-    deeds_by_user = Deed.group('user_id').where([condition, @collection.id, deed_type]).limit(10).order('count_id desc').count('id')
-    deeds_by_user.each { |user_id, count| user_array << [ @users.find { |u| u.id == user_id }, count ] }
-    return user_array
-  end
-
 end
