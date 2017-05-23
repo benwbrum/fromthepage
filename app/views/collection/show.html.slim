@@ -66,11 +66,11 @@
       =button_tag 'Search'
 
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
         small Owned by
-        =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }
+        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     h3 Recent Notes
     -@collection.notes.limit(10).each do |note|
