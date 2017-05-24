@@ -71,8 +71,6 @@ class IaWork < ActiveRecord::Base
     work.description = self.description
     work.physical_description = self.notes
     work.author = self.creator
-    work.description += " Sponsored by: "+ self.sponsor
-    work.description += " Contributed by: "+ self.contributor
     if self.use_ocr
       work.ocr_correction = true
     end
@@ -98,8 +96,8 @@ class IaWork < ActiveRecord::Base
   end
 
   def ingest_work(id)
-    #find the length of the description column and subtract 200 for the sponsor/contributor info
-    limit = (IaWork.columns_hash['description'].limit - 200)
+    #find the length of the description column
+    limit = (IaWork.columns_hash['description'].limit)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
     server = location['server']
@@ -108,15 +106,17 @@ class IaWork < ActiveRecord::Base
     self.server = server
     self.ia_path = dir
     self.book_id = loc_doc.search('identifier').text
-    self[:title] = loc_doc.search('title').text             #work title
-    self[:creator] = loc_doc.search('creator').text          #work author
+    self[:title] = loc_doc.search('title').text            #work title
+    self[:creator] = loc_doc.search('creator').map{|e| e.text}.join('; ')       #work author
     self[:collection] = loc_doc.search('collection').text   #?
     #description is truncated so it isn't too long for the description column
-    self[:description] = loc_doc.search('description').text.truncate(limit) #description
+    if loc_doc.search('abstract').blank?
+      self[:description] = loc_doc.search('description').text.truncate(limit) #description
+    else
+      self[:description] = loc_doc.search('abstract').text.truncate(limit) #description
+    end
     self[:subject] = loc_doc.search('subject').text         #description
     self[:notes] = loc_doc.search('notes').text             #physical description
-    self[:contributor] = loc_doc.search('contributor').text #description
-    self[:sponsor] = loc_doc.search('sponsor').text         #description
     self[:image_count] = loc_doc.search('imagecount').text
 
     image_format, archive_format = formats_from_loc(loc_doc)
