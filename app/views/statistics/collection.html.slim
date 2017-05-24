@@ -1,5 +1,4 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 7, :collection_id => @collection.id }})
-
 -unless @works.empty?
   section.collection-stats
     .collection-stats_counters
@@ -78,7 +77,7 @@ h2 Collaborators
       h3 Transcribing
       -@all_transcribers.each do |user, count|
         .collection-user(data-prefix="#{count}")
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+          =link_to(user_profile_path(user), class: 'collection-user_link')
             span.userpic =gravatar_image_tag user.email, :alt => user.display_name
             span.vmiddle =user.display_name
     -else
@@ -90,7 +89,7 @@ h2 Collaborators
       h3 Editing
       -@all_editors.each do |user, count|
         .collection-user(data-prefix="#{count}")
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+          =link_to(user_profile_path(user), class: 'collection-user_link')
             span.userpic =gravatar_image_tag user.email, :alt => user.display_name
             span.vmiddle =user.display_name
     -else
@@ -103,7 +102,7 @@ h2 Collaborators
         h3 Indexing
         -@all_indexers.each do |user, count|
           .collection-user(data-prefix="#{count}")
-            =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
+            =link_to(user_profile_path(user), class: 'collection-user_link')
               span.userpic =gravatar_image_tag user.email, :alt => user.display_name
               span.vmiddle =user.display_name
       -else

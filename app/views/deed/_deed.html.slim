@@ -6,7 +6,7 @@
 -else
   -user_name = deed.user.display_name if deed.user.id
 
--user = link_to user_name, { :controller => 'user', :action => 'profile', :user_id => deed.user.id, only_path: false }
+-user = link_to user_name, user_profile_path(deed.user), only_path: false 
 -page = deed.page.nil? ? '' : link_to(deed.page.title, { :controller => 'display', :action => 'display_page', :page_id => deed.page.id, only_path: false })
 -article = deed.article.nil? ? '' : link_to(deed.article.title, { :controller => 'article', :action => 'show', :article_id => deed.article.id, only_path: false })
 
@@ -47,11 +47,11 @@
   -output += "marked translation page #{page} as needing review"
 
 -if(long_view && !deed.work.nil?)
-  -work = link_to(deed.work.title, { :controller => 'display', :action => 'read_work', :work_id => deed.work.id, only_path: false })
+  -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: false )
   -output += " in the work #{work}"
 
 -if(@collection.nil? && !deed.collection.nil?)
-  -collection = link_to(deed.collection.title, { :controller => 'collection', :action => 'show', :collection_id => deed.collection.id, only_path: false })
+  -collection = link_to(deed.collection.title, collection_path(deed.collection.owner, deed.collection), only_path: false )
   -output += " in #{collection} collection"
 
 -if(long_view && deed.deed_type == 'note_add' && !deed.note.nil?)

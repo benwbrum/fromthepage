@@ -60,7 +60,7 @@ describe "IA import actions", :order => :defined do
   it "tests ocr correction" do
     @ocr_work = Work.find_by(title: @title)
     @ocr_page = @ocr_work.pages.first
-    visit "/display/read_work?work_id=#{@ocr_work.id}"
+    visit collection_read_work_path(@ocr_work.owner, @ocr_work.collection, @ocr_work)
     expect(page).to have_content("This page is not corrected, please help correct this page")
     click_link @ocr_page.title
     page.fill_in 'page_source_text', with: "Test OCR Correction"
@@ -73,7 +73,7 @@ describe "IA import actions", :order => :defined do
   end
 
   it "checks ocr/transcribe statistics" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("Works")
     @collection.works.each do |w|
       if w.ocr_correction
