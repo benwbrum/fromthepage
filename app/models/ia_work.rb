@@ -92,6 +92,8 @@ class IaWork < ActiveRecord::Base
       leaf.save!
     end
     work.save!
+    record_deed(work)
+
     self.work = work
     self.save!
     work
@@ -290,6 +292,16 @@ private
     zip = zips.first.parent['name']
 
     return [scandata, djvu, zip]
+  end
+
+  protected
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
 

@@ -59,7 +59,7 @@ class ScManifest < ActiveRecord::Base
     work.description = self.html_description
     work.collection = collection
     work.save!
-    
+
     self.service.sequences.first.canvases.each do |canvas|
       sc_canvas = manifest_canvas_to_sc_canvas(canvas)
       page = sc_canvas_to_page(sc_canvas)
@@ -71,7 +71,8 @@ class ScManifest < ActiveRecord::Base
       sc_canvas.save!
     end
     work.save!
-    
+    record_deed(work)
+
     self.work = work
     self.save!
     
@@ -115,4 +116,17 @@ class ScManifest < ActiveRecord::Base
     
     html
   end
+
+protected
+
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
+  end
+
+
 end

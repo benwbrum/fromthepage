@@ -198,7 +198,17 @@ namespace :fromthepage do
        print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
     end
     work.save!
+    record_deed(work)
     print "convert_to_work succeeded for #{work.title}\n"
+  end
+
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
   

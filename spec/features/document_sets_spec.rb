@@ -18,7 +18,7 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Settings")
     page.find('.button', text: 'Create Document Sets').click
     expect(page).to have_content('Create a Document Set')
@@ -42,7 +42,7 @@ describe "document sets", :order => :defined do
   it "adds works to document sets" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@collection.title}")
     page.check("work_assignment_#{@document_sets.first.id}_#{@collection.works.first.id}")
@@ -54,7 +54,7 @@ describe "document sets", :order => :defined do
   it "edits a document set" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
+    page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@collection.title}")
     within(page.find('#sets')) do
@@ -76,13 +76,15 @@ describe "document sets", :order => :defined do
 
   it "views document sets" do
     #need to restrict collection and see what the user can see
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_path
     @collections.each do |c|
       expect(page).to have_content(c.title)
     end
     @document_sets.each do |set|
-      expect(page).to have_content(set.title)
+      if set.is_public
+        expect(page).to have_content(set.title)
+      end
     end
     page.find('a', text: @document_sets.first.title).click
     expect(page).to have_content("Overview")

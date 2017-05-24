@@ -54,7 +54,7 @@ describe "owner actions", :order => :defined do
   it "checks for subject in a new collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
     visit dashboard_owner_path
-    click_link("#{test_collection.title}")
+    page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Places")
     expect(page).to have_content("People")
@@ -64,8 +64,8 @@ describe "owner actions", :order => :defined do
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
-    expect(page).to have_content("#{test_collection.title}")
-    click_link("#{test_collection.title}")
+    expect(page.find('.maincol')).to have_content("#{test_collection.title}")
+    page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Settings")
     click_link('Delete Collection')
     expect(page.current_path).to eq dashboard_owner_path
@@ -112,7 +112,7 @@ describe "owner actions", :order => :defined do
 
   it "deletes a work" do
     visit dashboard_owner_path
-    page.find('a', text: @title).click
+    page.find('.maincol').find('a', text: @title).click
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
     click_link("Delete Work")

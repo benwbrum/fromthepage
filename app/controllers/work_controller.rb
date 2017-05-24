@@ -106,6 +106,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
+      record_deed
       flash[:notice] = 'Work created successfully'
       ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
@@ -177,6 +178,16 @@ class WorkController < ApplicationController
     msg += "<br />stderr:<br />"
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
     render(:text => msg )
+  end
+
+  protected
+  def record_deed
+    deed = Deed.new
+    deed.work = @work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = @work.collection
+    deed.user = current_user
+    deed.save!
   end
 
 end
