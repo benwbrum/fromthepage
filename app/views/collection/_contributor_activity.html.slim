@@ -91,7 +91,7 @@
         .deed-short
           span.deed-short_content
             = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
-            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
+            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer })
 
   
 
