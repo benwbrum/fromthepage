@@ -110,6 +110,18 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Title can't be blank")
   end
 
+  it "moves a work to another collection" do
+    visit dashboard_owner_path
+    page.find('.maincol').find('a', text: @title).click
+    expect(page).to have_content(@title)
+    expect(page).to have_content("Work title")
+    expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
+    select(@collection.title, :from => 'work_collection_id')
+    click_button('Save Changes')
+    expect(page).to have_content("Work updated successfully")
+    expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+  end
+
   it "deletes a work" do
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @title).click
