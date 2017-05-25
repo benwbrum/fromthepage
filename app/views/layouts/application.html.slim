@@ -37,6 +37,7 @@ html
       a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
       f=e.getElementsByTagName("script")[0];
       f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);mixpanel.init("d5e53d2387f7184a07bf99f207df9603");
+    =render :partial => '/layouts/fb_pixel'
 
   body
     -flash.each do |type, message|

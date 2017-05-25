@@ -53,7 +53,10 @@ Fromthepage::Application.routes.draw do
   get   'document_set/:id', :to => 'document_sets#show'
 #  get   'document_set/:document_set_id', :to => 'document_sets#show'
 #  resources :document_sets
-
+  get   'ZenasMatthews' => 'collection#show', :collection_id => 7
+  get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  get   'YaquinaLights' => 'collection#show', :collection_id => 58
+  
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
@@ -65,6 +68,8 @@ Fromthepage::Application.routes.draw do
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
 
+  get '/rails/mailers' => "rails/mailers#index"
+  get '/rails/mailers/*path' => "rails/mailers#preview"
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
