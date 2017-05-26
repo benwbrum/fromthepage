@@ -62,9 +62,10 @@ Fromthepage::Application.routes.draw do
 
   scope ':user_slug' do
     resources :collection, path: '', only: [:show] do
-      get '/statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
-      get '/document_sets/settings', path: '/settings', as: :settings, to: 'document_sets#settings'
-      get '/article/list/:collection_id', path: '/subjects', as: :subjects, to: 'article#list'
+      get 'statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
+      get 'document_sets/settings', path: '/settings', as: :settings, to: 'document_sets#settings'
+      get 'article/list/:collection_id', path: '/subjects', as: :subjects, to: 'article#list'
+      get 'export/index', path: '/export', as: :export, to: 'export#index'
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member

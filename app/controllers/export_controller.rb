@@ -2,7 +2,7 @@ class ExportController < ApplicationController
   require 'zip'
 
   def index
-    @collection = Collection.includes(works: :work_statistic).find_by(id: params[:collection_id])
+    @collection = Collection.includes(works: :work_statistic).friendly.find(params[:collection_id])
     #check if there are any translated works in the collection
     if @collection.works.where(supports_translation: true).exists?
       @header = "Translated"

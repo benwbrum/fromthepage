@@ -33,10 +33,7 @@
     },{\
         :name => 'Export',
         :selected => 5,
-        :options => {\
-          :controller => 'export',
-          :action => 'index',
-        },
+        :path => "#{collection_export_path(@collection.owner, @collection)}",
     },{\
         :name => 'Add Work',
         :selected => 4,
@@ -67,9 +64,5 @@
   h1 =@collection.title
 .tabs
   -for tab in tabs
-    -if tab[:path]
-      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
-        a.active =tab[:name]
-    -else
-      =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:collection_id => @parent.id)
+    =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
         a.active =tab[:name]
