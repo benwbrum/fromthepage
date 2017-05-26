@@ -52,11 +52,17 @@ class DocumentSetsController < ApplicationController
 
     redirect_to :action => :index, :collection_id => @collection.id
   end
+
   def update
     @document_set.update(document_set_params)
     @document_set.save!
     flash[:notice] = 'Document set has been saved'
     ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+  end
+
+  def settings
+    #document set edit needs the @document set variable
+    @document_set = @collection
   end
 
   def destroy

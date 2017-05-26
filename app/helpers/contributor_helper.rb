@@ -1,8 +1,9 @@
 module ContributorHelper
 
   def new_contributors(collection_id, start_date, end_date)
-    @collection = Collection.find_by(id: collection_id)
-
+    unless @collection
+      @collection = Collection.find_by(id: collection_id)
+    end
     #set deed type variables
     trans_type = ["page_trans", "page_edit"]
     ocr_type = "ocr_corr"

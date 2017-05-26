@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
-  before_action :set_collection, :only => [:show, :edit, :update]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -136,7 +136,6 @@ class CollectionController < ApplicationController
   end
 
 def contributors
-  #@collection = Collection.find_by(id: params[:collection_id])
   #Get the start and end date params from date picker, if none, set defaults
   start_date = params[:start_date]
   end_date = params[:end_date]
@@ -153,7 +152,6 @@ def contributors
   @end_deed = end_date.strftime("%b %d, %Y")
 
   new_contributors(@collection, start_date, end_date)
-  
 end
 
 private
