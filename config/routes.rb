@@ -76,6 +76,9 @@ Fromthepage::Application.routes.draw do
         get 'versions', on: :member
         get 'print', on: :member
         get 'pages_tab', on: :member, as: :pages, path: '/pages'
+        patch 'update_work', on: :member, as: :update
+        post 'add_scribe', on: :member
+        get 'remove_scribe', on: :member
       end
       get 'work/show', path: ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get 'display/list_pages', path: ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'

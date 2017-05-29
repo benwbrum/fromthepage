@@ -83,17 +83,17 @@ class WorkController < ApplicationController
 
   def add_scribe
     @work.scribes << @user
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work
   end
 
   def remove_scribe
     @work.scribes.delete(@user)
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work
   end
 
   def update_work
     @work.update_attributes(params[:work])
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work
   end
 
   # tested

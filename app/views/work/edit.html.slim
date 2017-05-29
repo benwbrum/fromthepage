@@ -88,8 +88,8 @@
     p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
     hr
-    =form_for(@work, :url => { :action => 'update_work' }) do |f|
-      =hidden_field_tag(:work_id, @work.id)
+    =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work)) do |f|
+      =hidden_field_tag(:work_id, @work)
       p
         =f.check_box :scribes_can_edit_titles
         |&nbsp;
