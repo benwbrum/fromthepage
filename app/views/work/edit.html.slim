@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work.id }})
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work }})
 
 .columns
   article.maincol
@@ -103,7 +103,7 @@
     -if @work.restrict_scribes
       h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
-        =hidden_field_tag :work_id, @work.id
+        =hidden_field_tag :work_id, @work
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'display_name'), include_blank: true
         =button_tag 'Add', disabled: 'true'
       -if @scribes.empty?
@@ -116,7 +116,7 @@
             .username
               =link_to user.display_name, user_profile_path(user)
               small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
+              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work }, class: 'remove', title: 'Remove'
 
 -content_for :javascript
   javascript:

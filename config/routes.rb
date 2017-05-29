@@ -72,6 +72,15 @@ Fromthepage::Application.routes.draw do
  
       #have to use match because it must be both get and post
       match '/display/read_work', path: '/:id', as: :read_work, to: 'display#read_work', via: [:get, :post]
+      resources :work, path: '', param: :work_id, only: [:edit] do
+        get 'versions', on: :member
+        get 'print', on: :member
+        get 'pages_tab', on: :member, as: :pages, path: '/pages'
+      end
+      get 'work/show', path: ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
+      get 'display/list_pages', path: ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
+      get 'static/transcribe_help', path: ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+
     end
   end
 
