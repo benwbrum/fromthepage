@@ -7,7 +7,7 @@ class DisplayController < ApplicationController
 
   def read_work
     if params.has_key?(:work_id)
-      @work = Work.find_by(id: params[:work_id])
+      @work = Work.friendly.find(params[:work_id])
     elsif params.has_key?(:id)
       @work = Work.friendly.find(params[:id])
     elsif params.has_key?(:url)

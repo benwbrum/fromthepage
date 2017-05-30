@@ -268,6 +268,16 @@ end
 
   def page_params(page)
     if page.status == nil
+      if user_signed_in?
+        collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
+      else
+        collection_guest_page_path(@collection.owner, @collection, page.work, page)
+      end
+    else
+      collection_display_page_path(@collection.owner, @collection, page.work, page)
+    end
+=begin
+    if page.status == nil
       controller = 'transcribe'
       if user_signed_in?
         action = 'display_page'
@@ -284,7 +294,7 @@ end
     else
       { :controller => controller, :action => action, :page_id => page.id}
     end
-
+=end
   end
 
 private

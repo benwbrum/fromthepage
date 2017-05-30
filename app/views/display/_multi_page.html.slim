@@ -33,9 +33,9 @@
             .work-page_text
               -transcription = xml_to_html(page.xml_text, false)
               -if current_user
-                -action = page_params(page).merge({ :controller => 'transcribe'})
+                -action = page_params(page)
               -else
-                -action = page_params(page).merge({ :controller => 'transcribe', :action => 'guest'})
+                -action = page_params(page)
               -if page.status == 'blank'
                 p.nodata_text =="This page is blank"
               -elsif transcription.present?
@@ -58,7 +58,7 @@
                 -elsif translation.present?
                   ==translation.force_encoding('utf-8')
                 -else
-                  -help_translate = link_to('help translate', page_params(page).merge({ :controller => 'transcribe', :action => 'translate'}))
+                  -help_translate = link_to('help translate', collection_translate_page_path(@collection.owner, @collection, page.work, page))
                   p.nodata_text =="This page is not translated, please #{help_translate} this page"
 
             -current_version = page.page_versions[0]
