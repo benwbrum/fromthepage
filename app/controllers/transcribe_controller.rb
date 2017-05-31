@@ -165,9 +165,9 @@ class TranscribeController  < ApplicationController
     end
     # no uncategorized articles found, skip to display
     if @translation
-      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display', :translation => true
+      redirect_to  collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: true)
     else
-      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
+      redirect_to  collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
     end
   end
 

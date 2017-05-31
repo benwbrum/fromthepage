@@ -27,7 +27,7 @@ describe "guest user actions" do
  end
 
   it "tests guest account transcription" do
-    visit "/display/display_page?page_id=#{@page.id}"
+    visit collection_display_page_path(@collection.owner, @collection, @work, @page.id)
     page.find('.tabs').click_link("Transcribe")
     click_button("Transcribe as guest")
     expect(page).to have_content("Signed In As")
@@ -59,7 +59,7 @@ describe "guest user actions" do
     @user = User.last
     expect(@user.login).to eq('martha') 
     expect(@guest.id).to eq(@user.id)
-    expect(page.current_path). to eq ("/display/display_page")
+    expect(page.current_path). to eq collection_display_page_path(@collection.owner, @collection, @work, @page.id)
     page.find('.tabs').click_link("Versions")
     expect(page).to have_link("Martha")
     expect(page.find('.diff-list')).not_to have_content("Guest")
