@@ -110,16 +110,6 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Title can't be blank")
   end
 
-  it "deletes a work" do
-    visit dashboard_owner_path
-    page.find('a', text: @title).click
-    expect(page).to have_content(@title)
-    expect(page).to have_content("Work title")
-    click_link("Delete Work")
-    expect(page.current_path).to eq dashboard_owner_path
-    expect(page).not_to have_content(@title)
-  end
-
   it "checks an owner user profile/homepage" do
     visit dashboard_path
     page.find('a', text: 'Your Profile').click
@@ -130,6 +120,20 @@ describe "owner actions", :order => :defined do
     @collections.each do |c|
         expect(page).to have_content(c.title)
     end
+  end
+
+  it "blanks out the data in a collection" do
+    visit "/collection/show?collection_id=#{@collection.id}"
+    page.find('.tabs').click_link("Settings")
+    expect(page).to have_content("Blank Collection")
+    page.find('a', text: 'Blank Collection').click
+    expect(page.current_path).to eq("/collection/show")
+    pages = Page.where(work_id: @collection.works.ids)
+    pages.each do |p|
+      expect(p.status).to be_nil
+      expect(p.page_versions.first.page_version).to eq 0
+    end
+    expect(Deed.where(page_id: pages.ids)).to be_empty
   end
 
 end
