@@ -14,6 +14,22 @@ describe "testing deletions" do
     login_as(@owner, :scope => :user)
   end    
 
+  it "blanks out the data in a collection" do
+    #note, don't use last collection because it causes problems with later tests
+    col = @collections.first
+    visit collection_path(col.owner, col)
+    page.find('.tabs').click_link("Settings")
+    expect(page).to have_content("Blank Collection")
+    page.find('a', text: 'Blank Collection').click
+    expect(page.current_path).to eq("/collection/show")
+    pages = Page.where(work_id: col.works.ids)
+    pages.each do |p|
+      expect(p.status).to be_nil
+      expect(p.page_versions.first.page_version).to eq 0
+    end
+    expect(Deed.where(page_id: pages.ids)).to be_empty
+  end
+
   it "deletes a document set" do
     count = @document_sets.count
     visit dashboard_owner_path
