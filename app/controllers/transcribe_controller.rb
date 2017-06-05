@@ -20,6 +20,7 @@ class TranscribeController  < ApplicationController
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
+    session[:col_id] = @collection.slug
   end
 
   def guest
@@ -114,8 +115,7 @@ class TranscribeController  < ApplicationController
               return
             end
           end
-
-          redirect_to :action => 'assign_categories', :page_id => @page.id
+          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
         else
           log_transcript_error
           render :action => 'display_page'
@@ -154,7 +154,6 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
-        
     @translation = params[:translation]
     # look for uncategorized articles
     for article in @page.articles
@@ -172,6 +171,7 @@ class TranscribeController  < ApplicationController
   end
 
   def translate
+    session[:col_id] = @collection.slug
   end
 
   def save_translation
@@ -219,7 +219,7 @@ class TranscribeController  < ApplicationController
             end
           end
           
-          redirect_to :action => 'assign_categories', :page_id => @page.id, :translation => true
+          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :translation => true
         else
           log_translation_error
           render :action => 'translate'
@@ -340,7 +340,11 @@ protected
     deed.note = @note
     deed.page = @page
     deed.work = @work
-    deed.collection = @collection
+    if @collection.is_a?(Collection)
+      deed.collection = @collection
+    else
+      deed.collection = @collection.collection
+    end
     deed.user = current_user
 
     deed
