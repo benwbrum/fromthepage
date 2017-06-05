@@ -32,13 +32,13 @@ class TranscribeController  < ApplicationController
       @page.translation_status = Page::STATUS_BLANK
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id and return
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id and return
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     else
       return true
     end
@@ -164,9 +164,9 @@ class TranscribeController  < ApplicationController
     end
     # no uncategorized articles found, skip to display
     if @translation
-      redirect_to  collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: true)
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: true)
     else
-      redirect_to  collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
     end
   end
 
@@ -244,11 +244,14 @@ class TranscribeController  < ApplicationController
       end
     elsif params['preview']
       @preview_xml = @page.wiki_to_xml(@page.source_translation, "translation")
+      translate
       render :action => 'translate'
     elsif params['edit']
+      translate
       render :action => 'translate'
     elsif params['autolink']
       @page.source_translation = autolink(@page.source_translation)
+      translate
       render :action => 'translate'
 
     end

@@ -12,6 +12,7 @@ describe "document sets", :order => :defined do
 
   before :each do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
+    @set = DocumentSet.last
   end
 
   it "adds new document sets" do
@@ -36,7 +37,6 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Test Document Set 2")
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     expect(after_doc_set).to eq (doc_set + 1)
-
   end
 
   it "adds works to document sets" do
@@ -84,36 +84,93 @@ describe "document sets", :order => :defined do
     @document_sets.each do |set|
       expect(page).to have_content(set.title)
     end
-    doc_set = @document_sets.last
-    page.find('.maincol').find('a', text: doc_set.title).click
+    page.find('.maincol').find('a', text: @set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.id)
     expect(page).to have_content(@collection.works.second.id)
-    expect(page).to have_content(doc_set.works.first.title)
+    expect(page).to have_content(@set.works.first.title)
     page.find('.tabs').click_link('Statistics')
-    expect(page).to have_content(doc_set.title)
-    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/statistics"
+    expect(page).to have_content(@set.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
     expect(page).to have_content("Last 7 Days Statistics")
   end
 
-  it "checks document set breadcrumbs" do
+  it "looks at document sets settings" do
+
+  end
+
+  it "checks document set breadcrumbs - collection" do
     login_as(@user, :scope => :user)
     visit dashboard_path
-    doc_set = @document_sets.last
-    work = doc_set.works.first
+    page.find('.maincol').find('a', text: @set.title).click
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
+    page.find('.tabs').click_link("Statistics")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
+    expect(page.find('h1')).to have_content(@set.title)
+    @set.works.each do |w|
+      expect(page.find('.collection-work-stats')).to have_content(w.title)
+    end
+    page.find('.tabs').click_link("Subjects")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/subjects"
+    expect(page.find('h1')).to have_content(@set.title)
+  end
+
+  it "checks document set breadcrumbs - work" do
+    login_as(@user, :scope => :user)
+    work = @set.works.first
     @page = work.pages.first
-    page.find('.maincol').find('a', text: doc_set.title).click
-    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
+    visit dashboard_path
+    page.find('.maincol').find('a', text: @set.title).click
     click_link(work.title)
-    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
-    expect(page).to have_selector('a', text: doc_set.title)
-    page.find('a', text: @page.title).click
-    expect(page).to have_selector('a', text: doc_set.title)
-    expect(page).to have_selector('a', text: work.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("About")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/about"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Contents")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/contents"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Versions")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/versions"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Help")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/help"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    click_link @set.title
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
+  end
+
+  it "checks document set breadcrumbs - page level" do
+    login_as(@user, :scope => :user)
+    work = @set.works.first
+    @page = work.pages.first
+    #make sure it's right if you click on the page from the work
+    visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    click_link(@page.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    #so that it doesn't matter if the page has been transcribed, go directly to overview
+    visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    page.find('.tabs').click_link("Transcribe")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    page.fill_in 'page_source_text', with: "Document set breadcrumbs"
+    click_button('Save Changes')
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    page.find('.tabs').click_link("Versions")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/versions/#{@page.id}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     click_link(work.title)
-    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
-    click_link doc_set.title
-    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
+    click_link @set.title
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
   end
 
 end
