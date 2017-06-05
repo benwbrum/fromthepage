@@ -95,8 +95,30 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Last 7 Days Statistics")
   end
 
-  it "looks at document sets settings" do
-
+  it "looks at document sets owner tabs" do
+    login_as(@owner, :scope => :user)
+    work = @set.works.first
+    visit "/#{@owner.slug}/#{@set.slug}"
+    page.find('.tabs').click_link("Collaborators")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/collaborators"
+    expect(page).to have_content("Contributions Between")
+    page.find('.tabs').click_link("Settings")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/settings"
+    expect(page.find('h1')).to have_content(@set.title)
+    expect(page).to have_content("Title")
+    expect(page).not_to have_content("Collection Owners")
+    visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Pages")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/pages"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Settings")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.check('work_supports_translation')
+    click_button('Save Changes')
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/edit"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
   it "checks document set breadcrumbs - collection" do
@@ -123,6 +145,16 @@ describe "document sets", :order => :defined do
     page.find('.maincol').find('a', text: @set.title).click
     click_link(work.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    click_button('Pages That Need Review')
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_content("No pages found")
+    click_button("View All Pages")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    click_button('Translations That Need Review')
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_content("No pages found")
+    click_button("View All Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("About")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/about"
@@ -163,6 +195,17 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    expect(page).to have_content("Transcription")
+    page.find('.tabs').click_link("Translate")
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/translate/#{@page.id}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    page.fill_in 'page_source_translation', with: "Document set breadcrumbs - translation"
+    click_button('Save Changes')
+    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    expect(page).to have_content("Translation")
     page.find('.tabs').click_link("Versions")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/versions/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
@@ -172,5 +215,6 @@ describe "document sets", :order => :defined do
     click_link @set.title
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
   end
+
 
 end

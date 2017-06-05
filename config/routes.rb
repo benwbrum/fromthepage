@@ -68,7 +68,7 @@ Fromthepage::Application.routes.draw do
       get 'export/index', path: '/export', as: :export, to: 'export#index'
       get 'edit', on: :member
       get 'new_work', on: :member
-      get 'contributors', on: :member
+      get 'contributors', on: :member, path: '/collaborators'
  
       #work related routes
       #have to use match because it must be both get and post
