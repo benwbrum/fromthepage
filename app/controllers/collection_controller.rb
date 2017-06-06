@@ -30,9 +30,14 @@ class CollectionController < ApplicationController
   def enable_document_sets
     @collection.supports_document_sets = true
     @collection.save!
-    redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
+    redirect_to document_sets_path(collection_id: @collection)
   end
 
+  def disable_document_sets
+    @collection.supports_document_sets = false
+    @collection.save!
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
 
   def load_settings
     @main_owner = @collection.owner

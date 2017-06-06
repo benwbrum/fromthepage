@@ -21,7 +21,7 @@ describe "document sets", :order => :defined do
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.maincol').find('a', text: @collection.title).click
     page.find('.tabs').click_link("Settings")
-    page.find('.button', text: 'Create Document Sets').click
+    page.find('.button', text: 'Enable Document Sets').click
     expect(page).to have_content('Create a Document Set')
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: "Test Document Set 1"
@@ -216,5 +216,20 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
   end
 
+  it "disables document sets" do
+    login_as(@owner, :scope => :user)
+    visit edit_collection_path(@collection.owner, @collection)
+    page.find('.button', text: 'Disable Document Sets').click
+    expect(@collection.supports_document_sets).to be false
+  end
+
+  it "enables document sets" do
+    login_as(@owner, :scope => :user)
+    visit edit_collection_path(@collection.owner, @collection)
+    page.find('.button', text: 'Enable Document Sets').click
+    expect(page.current_path).to eq document_sets_path
+    @collection = @collections.last
+    expect(@collection.supports_document_sets).to be true
+  end
 
 end
