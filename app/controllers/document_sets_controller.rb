@@ -57,7 +57,11 @@ class DocumentSetsController < ApplicationController
     @document_set.update(document_set_params)
     @document_set.save!
     flash[:notice] = 'Document set has been saved'
-    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    unless request.referrer.include?("/settings")
+      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    else
+      redirect_to request.referrer
+    end
   end
 
   def settings

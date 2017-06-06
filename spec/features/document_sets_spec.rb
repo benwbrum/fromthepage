@@ -51,7 +51,7 @@ describe "document sets", :order => :defined do
     page.find_button('Save').click
   end
 
-  it "edits a document set" do
+  it "edits a document set (collection level)" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
@@ -214,6 +214,16 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     click_link @set.title
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
+  end
+
+  it "edits a document set (document set level)" do
+    login_as(@owner, :scope => :user)
+    visit "/#{@owner.slug}/#{@set.slug}"
+    page.find('.tabs').click_link("Settings")
+    expect(page).to have_content("Title")
+    page.fill_in 'document_set_slug', with: "#{@set.slug}-new"
+    click_button('Save Document Set')
+    expect(DocumentSet.last.slug).to eq "#{@set.slug}-new"
   end
 
   it "disables document sets" do
