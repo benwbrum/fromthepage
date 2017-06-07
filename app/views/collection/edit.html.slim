@@ -85,17 +85,6 @@
         =svg_symbol '#icon-lock', class: 'icon'
         span Make Collection Private
 
-    h3 Document Sets
-    p Document sets are sub-sets of the works in this collection, 
-      which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
-    -if !@collection.supports_document_sets
-      p This collection does not have any document sets.  
-      =link_to({ :action => 'enable_document_sets', :collection_id => @collection.id }, class: 'button')
-        span Enable Document Sets
-    -else
-      =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
-        span Disable Document Sets
-
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
@@ -112,6 +101,17 @@
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
+
+    h3 Document Sets
+    p Document sets are sub-sets of the works in this collection, 
+      which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
+    -if !@collection.supports_document_sets
+      p This collection does not have any document sets.  
+      =link_to({ :action => 'enable_document_sets', :collection_id => @collection.id }, class: 'button')
+        span Enable Document Sets
+    -else
+      =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
+        span Disable Document Sets
 
 =render({ :partial => '/shared/collection_footer' })
 
