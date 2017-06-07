@@ -107,7 +107,7 @@ describe "document sets", :order => :defined do
     click_link(work.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
     expect(page).to have_selector('a', text: doc_set.title)
-    page.find('a', text: @page.title).click
+    page.find('.work-page_title', text: @page.title).click_link(@page.title)
     expect(page).to have_selector('a', text: doc_set.title)
     expect(page).to have_selector('a', text: work.title)
     click_link(work.title)
