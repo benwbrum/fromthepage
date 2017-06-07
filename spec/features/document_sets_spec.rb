@@ -12,7 +12,7 @@ describe "document sets", :order => :defined do
 
   before :each do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
-    @set = DocumentSet.last
+    @set = DocumentSet.first
   end
 
   it "adds new document sets" do
@@ -223,7 +223,7 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Title")
     page.fill_in 'document_set_slug', with: "#{@set.slug}-new"
     click_button('Save Document Set')
-    expect(DocumentSet.last.slug).to eq "#{@set.slug}-new"
+    expect(DocumentSet.first.slug).to eq "#{@set.slug}-new"
   end
 
   it "disables document sets" do
