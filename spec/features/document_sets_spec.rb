@@ -84,7 +84,7 @@ describe "document sets", :order => :defined do
     @document_sets.each do |set|
       expect(page).to have_content(set.title)
     end
-    doc_set = @document_sets.last
+    doc_set = @document_sets.first
     page.find('.maincol').find('a', text: doc_set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.id)
@@ -99,7 +99,7 @@ describe "document sets", :order => :defined do
   it "checks document set breadcrumbs" do
     login_as(@user, :scope => :user)
     visit dashboard_path
-    doc_set = @document_sets.last
+    doc_set = @document_sets.first
     work = doc_set.works.first
     @page = work.pages.first
     page.find('.maincol').find('a', text: doc_set.title).click
