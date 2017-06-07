@@ -130,6 +130,9 @@ describe "owner actions", :order => :defined do
     @collections.each do |c|
         expect(page).to have_content(c.title)
     end
+    @owner.unrestricted_document_sets.each do |d|
+      expect(page).to have_content(d.title)
+    end
   end
 
 end

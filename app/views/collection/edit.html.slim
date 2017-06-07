@@ -102,12 +102,16 @@
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
 
+    h3 Document Sets
+    p Document sets are sub-sets of the works in this collection, 
+      which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
     -if !@collection.supports_document_sets
-      h3 Document Sets
-      p This collection does not have any document sets.  Document sets are sub-sets of the works in this collection, 
-        which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
+      p This collection does not have any document sets.  
       =link_to({ :action => 'enable_document_sets', :collection_id => @collection.id }, class: 'button')
-        span Create Document Sets
+        span Enable Document Sets
+    -else
+      =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
+        span Disable Document Sets
 
 =render({ :partial => '/shared/collection_footer' })
 

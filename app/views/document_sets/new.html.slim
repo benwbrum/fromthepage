@@ -11,7 +11,7 @@
         td.w100 =f.text_field :title
       tr
         th =f.label(:is_public, "Public")
-        td =f.check_box :is_public
+        td =f.check_box :is_public, {checked: true}
       tr
         td(colspan="2")
           =f.label :description, 'Description', class: 'above'
