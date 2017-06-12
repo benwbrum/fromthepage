@@ -41,7 +41,6 @@ Fromthepage::Application.routes.draw do
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
-  patch 'article/update', :to => 'article#update'
   put   'article/article_category', :to => 'article#article_category'
   patch 'category/update', :to => 'category#update'
   patch 'user/update', :to => 'user#update'
@@ -93,6 +92,13 @@ Fromthepage::Application.routes.draw do
       get 'transcribe/translate', path: ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get 'page/edit', path: ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
+
+      #article related routes
+      get 'article/show', path: '/article/:article_id', to: 'article#show'
+      get 'article/edit', path: 'article/:article_id/edit', to: 'article#edit'
+      get 'article_version/list', path: 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
+      patch 'article/update', path: 'article/update/:article_id', to: 'article#update'
+
     end
   end
 

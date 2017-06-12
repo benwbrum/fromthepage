@@ -41,13 +41,13 @@
               p.acenter.fglight There are no subjects for the category selected
             -else
               -category.articles_list(@collection).each do |article|
-                =link_to article.title, { :action => 'show', :article_id => article.id }
+                =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
       -if @uncategorized_articles.present?
         dl.category-article#category-none
           dt: h3 Uncategorized subjects
           dd
             -@uncategorized_articles.each do |article|
-              =link_to article.title, { :action => 'show', :article_id => article.id }
+              =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
 -else
   -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox' => ''
   .nodata

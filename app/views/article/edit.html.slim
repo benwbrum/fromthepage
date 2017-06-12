@@ -2,7 +2,7 @@
 
 .article-columns.columns
   article.maincol
-    =form_for(@article, :url => { :action => 'update' }) do |f|
+    =form_for(@article, url: collection_article_update_path(@collection.owner, @collection, @article)) do |f|
       =hidden_field_tag(:article_id, @article.id)
       =validation_summary @article.errors
       table.form
