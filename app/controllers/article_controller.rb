@@ -16,6 +16,7 @@ class ArticleController < ApplicationController
   end
 
   def list
+    @categories = @collection.categories
     # Differences from previous implementation:
     # 1. List of articles needs to be collection-specific
     # 2. List should be displayed within the category treeview

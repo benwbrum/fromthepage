@@ -24,8 +24,12 @@ class DocumentSet < ActiveRecord::Base
     self.collection.subjects_disabled
   end
 
+  def articles
+    Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
+  end
+
   def categories
-    self.collection.categories
+    Category.joins(:articles).where(articles: {id: self.articles.ids}).distinct
   end
 
   def supports_document_sets

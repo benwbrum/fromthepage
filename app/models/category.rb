@@ -8,6 +8,13 @@ class Category < ActiveRecord::Base
 
   validates :title, presence: true, uniqueness: { scope: [:collection_id, :parent_id] }
 
+  def articles_list(collection)
+    if collection.is_a?(DocumentSet)
+      Article.joins(:pages).where(pages: {work_id: collection.works.ids}).joins(:categories).where(categories: {id: self.id}).distinct
+    else
+      self.articles
+    end  
+  end
 
 #  def destroy_but_attach_children_to_parent
 #    self.children.each do |child|

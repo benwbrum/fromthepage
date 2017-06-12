@@ -1,5 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
--if @collection.categories.present?
+-if @categories.present?
   -if @page
     -page_link = link_to('click here', { :controller => 'transcribe', :action => 'assign_categories', :page_id => @page.id })
     .category-back-message =="Once you finish editing categories, #{page_link} to return back to &ldquo;#{@page.title}&rdquo; page."
@@ -7,7 +7,7 @@
   .collection-categories
     .category-tree
       h3 Categories
-      ==display_categories(@collection.categories, nil) do |category|
+      ==display_categories(@categories, nil) do |category|
         -ret = "<a href=\"#category-#{category.id}\" class=\"tree-item\">"
         -if category.children.any?
           -ret << "<span class=\"tree-bullet\"></span>"
@@ -18,7 +18,7 @@
           li: a.tree-item(href="#category-none") Uncategorized
 
     .category-articles
-      -@collection.categories.each do |category|
+      -@categories.each do |category|
         dl.category-article(id="category-#{category.id}")
           dt
             .headline
@@ -37,10 +37,10 @@
                       hr
                       =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
           dd
-            -if category.articles.empty?
+            -if category.articles_list(@collection).empty?
               p.acenter.fglight There are no subjects for the category selected
             -else
-              -category.articles.each do |article|
+              -category.articles_list(@collection).each do |article|
                 =link_to article.title, { :action => 'show', :article_id => article.id }
       -if @uncategorized_articles.present?
         dl.category-article#category-none
