@@ -1,6 +1,6 @@
 #Note - this test must fall at the very end of the features specs
 require 'spec_helper'
-=begin
+
 describe "testing deletions" do
 
   before :all do
@@ -102,4 +102,3 @@ describe "testing deletions" do
   end
 
 end
-=end
