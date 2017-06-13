@@ -97,6 +97,21 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Last 7 Days Statistics")
   end
 
+  it "checks document set articles" do
+    login_as(@owner, :scope => :user)
+    visit "/#{@owner.slug}/#{@set.slug}"
+    page.find('.tabs').click_link("Subjects")
+    #check for categories from document set
+    expect(page.find('.category-tree')).to have_content(@set.categories.first.title)
+    #check for categories in collection but not document set    
+    expect(page.find('.category-tree')).not_to have_content(@collection.categories.last.title)
+    #check for article in document set
+    expect(page.find('.category-article')).to have_content(@set.articles.first.title)
+    #check for article in collection that isn't in document set
+    expect(page.find('.category-article')).not_to have_content(@collection.articles.last.title)
+
+  end
+
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
     work = @set.works.first
@@ -137,6 +152,17 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Subjects")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/subjects"
     expect(page.find('h1')).to have_content(@set.title)
+    expect(page.find('.category-article')).to have_content("Testing")
+    page.find('a', text: "Testing").click
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Settings")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    click_button 'Autolink'
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    click_button 'Save Changes'
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('.tabs').click_link("Versions")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
   it "checks document set breadcrumbs - work" do

@@ -56,6 +56,7 @@ describe "subject linking" do
     expect(page.find('.flash_message')).to have_content("You must remove all referring links")
     page.find('a', text: "Show pages that mention").click
     page.find('.work-page_title').find('a').click
+    page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: ""
     click_button('Save Changes')
     expect(page).to have_content("Facsimile")
@@ -193,10 +194,10 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{link_page.id}"
     page.find('.tabs').click_link("Transcribe")
     #make sure the autolink doesn't duplicate a link
-    expect(page).to have_content("[[John Samuel Smith|John]]")
+    expect(page).to have_content("[[John Samuel Smith]]")
     expect(page).to have_content("Mrs. Davis")
     click_button('Autolink')
-    expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith|John]]")
+    expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith]]")
     expect(page).not_to have_content("[[Mrs.]]")
     expect(page).to have_content("Mrs. Davis")
     #make sure it doesn't autolink something that has no subject
