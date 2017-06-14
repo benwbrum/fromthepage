@@ -94,7 +94,7 @@ Fromthepage::Application.routes.draw do
       get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
 
       #article related routes
-      get 'article/show', path: '/article/:article_id', to: 'article#show'
+      match 'article/show', path: '/article/:article_id', to: 'article#show', via: [:get, :post]
       get 'article/edit', path: 'article/:article_id/edit', to: 'article#edit'
       get 'article_version/list', path: 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update', path: 'article/update/:article_id', to: 'article#update'

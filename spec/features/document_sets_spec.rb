@@ -103,12 +103,13 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Subjects")
     #check for categories from document set
     expect(page.find('.category-tree')).to have_content(@set.categories.first.title)
-    #check for categories in collection but not document set    
-    expect(page.find('.category-tree')).not_to have_content(@collection.categories.last.title)
+    #check for categories in collection but not document set - changed display
+    #might get rid of this
+    #expect(page.find('.category-tree')).not_to have_content(@collection.categories.last.title)
     #check for article in document set
-    expect(page.find('.category-article')).to have_content(@set.articles.first.title)
+    expect(page).to have_selector('.category-article', text: @set.articles.first.title)
     #check for article in collection that isn't in document set
-    expect(page.find('.category-article')).not_to have_content(@collection.articles.last.title)
+    expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
 
   end
 
@@ -152,7 +153,7 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Subjects")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/subjects"
     expect(page.find('h1')).to have_content(@set.title)
-    expect(page.find('.category-article')).to have_content("Testing")
+    expect(page).to have_selector('.category-article', text: 'Testing')
     page.find('a', text: "Testing").click
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("Settings")

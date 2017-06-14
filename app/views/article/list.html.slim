@@ -49,7 +49,7 @@
             -@uncategorized_articles.each do |article|
               =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
 -else
-  -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox' => ''
+  -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.slug }, 'data-litebox' => ''
   .nodata
     h4.nodata_title No Categories
     p.nodata_text

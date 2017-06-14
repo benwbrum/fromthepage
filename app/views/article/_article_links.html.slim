@@ -1,8 +1,8 @@
--unless @article.link_list.empty?
-  h5 ="#{pluralize(@article.link_list.size, 'page')} refer to #{@article.title}"
+-unless @article.show_links(@collection).empty?
+  h5 ="#{pluralize(@article.show_links(@collection).size, 'page')} refer to #{@article.title}"
   p =link_to "Show pages that mention #{@article.title} in all works", controller: 'display', action: 'read_all_works', article_id: @article.id
   ul.article-links
-    -@article.link_list.each do |link|
+    -@article.show_links(@collection).each do |link|
       li
         =svg_symbol '#icon-page', class: 'icon'
         =link_to link.page.title, { controller: 'display', action: 'display_page', page_id: link.page.id }

@@ -51,7 +51,12 @@ class ApplicationController < ActionController::Base
     # whenever both are specified on the parameters
     if params[:article_id]
       @article = Article.find(params[:article_id])
-      @collection = @article.collection
+      if session[:col_id] != nil
+        @collection = set_friendly_collection(session[:col_id])
+        session[:col_id] = nil
+      else
+        @collection = @article.collection
+      end
     end
     if params[:page_id]
       @page = Page.find(params[:page_id])

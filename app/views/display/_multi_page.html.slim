@@ -2,7 +2,7 @@
   article.maincol
     -if @search_string.present?
       h2 =="Search for #{@search_string}"
-
+    
     -if @pages.size == 0
       .nodata
         h4.nodata_title No pages found
@@ -99,7 +99,7 @@
           =raw(xml_to_html(@article.xml_text))
         =render :partial => 'article/article_links'
 
-      -if @collection && @collection.is_a?(Collection) && @collection.categories.present?
+      -if @collection.categories.present?
         -unless @collection.subjects_disabled
           h3 Categories
           .category-tree

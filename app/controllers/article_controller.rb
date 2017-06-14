@@ -174,6 +174,7 @@ class ArticleController < ApplicationController
     @article.graph_image = dot_out
     @min_rank = min_rank
     @article.save!
+    session[:col_id] = @collection.slug
   end
 
   protected

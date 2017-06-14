@@ -29,7 +29,7 @@ class DocumentSet < ActiveRecord::Base
   end
 
   def categories
-    Category.joins(:articles).where(articles: {id: self.articles.ids}).distinct
+    self.collection.categories
   end
 
   def supports_document_sets
