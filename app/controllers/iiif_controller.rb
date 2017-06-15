@@ -40,8 +40,40 @@ class IiifController < ApplicationController
       redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
       return
     end    
+
+    if at_id.match(/http/)   
+      render :status => 404, :text => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
+    else
+      collection_for_domain(at_id)
+    end
+  end
+  
+  def collection_for_domain(domain)
+    collections = Collection.joins(:sc_collection).where("at_id LIKE ?", "%#{domain}%")
+    works = Work.joins(:sc_manifest).where("at_id LIKE ?", "%#{domain}%")
+
+    domain_collection = IIIF::Presentation::Collection.new
+    domain_collection['@id'] = url_for({:controller => 'iiif', :action => 'for', :id => domain, :only_path => false})
+    domain_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
     
-    render :status => 404, :text => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
+    collections.each do |collection|
+      iiif_collection = iiif_collection_from_collection(collection,false)        
+      domain_collection.collections << iiif_collection
+    end
+    
+    works.each do |work|
+      seed = { 
+                '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}), 
+                'label' => work.title                
+            }
+      manifest = IIIF::Presentation::Manifest.new(seed)
+      manifest.label = work.title
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
+    
+      domain_collection.manifests << manifest            
+    end
+        
+    render :text => domain_collection.to_json(pretty: true), :content_type => "application/json"
   end
     
   def manifest
