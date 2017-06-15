@@ -332,7 +332,11 @@ private
   end
 
   def canvas_id_from_page(page)
-    url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
+    if page.sc_canvas
+      page.sc_canvas.sc_canvas_id
+    else
+      url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
+    end
   end
   
   def region_from_page(page)
