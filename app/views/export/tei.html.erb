@@ -72,6 +72,8 @@ xml:id="export">
         </history>
       </msDesc>
 
+      <%= raw(tei_taxonomy(@collection.categories, @other_articles)) %>
+      
       <listPerson>
         <% @person_articles.each do |person| %>
           <person xml:id="S<%=person.id%>">

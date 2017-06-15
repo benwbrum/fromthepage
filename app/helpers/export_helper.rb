@@ -10,6 +10,42 @@ module ExportHelper
     end
   end
 
+  def tei_taxonomy(categories, subjects)
+    tei = "<taxonomy>\n"
+    categories.each do |category|
+      tei << category_to_tei(category, subjects)
+    end
+    tei << "</taxonomy>\n"
+    
+    tei
+  end
+
+  def category_to_tei(category, subjects) 
+    tei = "<category xml:id=\"C#{category.id}\">\n"
+    tei << "<catDesc>#{category.title}</catDesc>\n"
+    category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
+      tei << subject_to_tei(subject)
+    end
+    category.children.each do |child|
+      tei << category_to_tei(child, subjects)
+    end
+    tei << "</category>\n"
+
+    tei
+  end
+  
+  def subject_to_tei(subject)
+    tei = "<category xml:id=\"S#{subject.id}\">\n"
+    tei << "<catDesc>\n"
+    tei << "<term>#{subject.title}</term>\n"
+    tei << "<gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    tei << "</catDesc>\n"
+    tei << "</category>\n"
+
+    tei
+  end
+
+
   def xml_to_export_tei(xml_text, context, page_id = "")
 
     return "" if xml_text.blank?
@@ -88,6 +124,14 @@ module ExportHelper
       u.children.each { |c| hi.add(c) }
 
       u.replace_with(hi)
+    end
+    p_element.elements.each('//i') do |i|
+      hi = REXML::Element.new("hi")
+
+      hi.add_attribute("rend", "italic")
+      i.children.each { |c| hi.add(c) }
+
+      i.replace_with(hi)
     end
   end
 
