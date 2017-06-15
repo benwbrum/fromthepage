@@ -93,6 +93,8 @@ class IiifController < ApplicationController
       manifest.description = work.description unless work.description.blank?
     end
     manifest.within = iiif_collection_id_from_collection(work.collection)
+    
+    manifest.service << { "@id" => url_for(:controller => :display, :action => :read_work, :work_id => work.id), "label" => "FromThePage transcription tool homepage for #{work.title}", "profile" => "canonical url for fromthepage"}
     sequence = iiif_sequence_from_work_id(work_id)
     manifest.sequences << sequence
 
@@ -120,7 +122,7 @@ class IiifController < ApplicationController
       layer = IIIF::Presentation::Layer.new(seed)
       manifest["otherContent"]  << layer
     end
-
+    
     render :text => manifest.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -295,6 +297,10 @@ private
     sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
     sequence.label = 'Pages'
     work = Work.includes(:pages => [:sc_canvas, :notes]).where(id: work_id).first
+    sequence['rendering'] = [
+      { "@id" => url_for(:controller => :export, :action => :tei, :work_id => work.id), "label" => "TEI Export", "profile" => "tei URL"},
+      { "@id" => url_for(:controller => :export, :action => :show, :work_id => work.id), "label" => "XHTML Export", "profile" => "XHTML URL"},     
+    ]
     pages = work.pages
     pages.each do |page|
       if page.sc_canvas 
@@ -394,10 +400,10 @@ private
     
     canvas.images << annotation
 
+    add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
 
     canvas     
-  
   end
 
   def canvas_from_page(page)
@@ -413,6 +419,10 @@ private
     annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
     canvas.images << annotation
 
+    add_services_to_canvas(canvas, page)
+    add_annotations_to_canvas(canvas, page)
+
+    canvas     
   end
 
   def add_annotations_to_canvas(canvas,page)
@@ -434,6 +444,11 @@ private
       canvas.other_content << annotation_list
     end
     canvas
+  end
+  
+  def add_services_to_canvas(canvas,page)
+    canvas.service << { "label" => "Transcribe this page", "profile" => "TODO for transcription", "@id" => url_for(:controller => :transcribe, :action => :display_page, :page_id => page.id)}
+    canvas.service << { "label" => "Translate this page", "profile" => "TODO for translation", "@id" => url_for(:controller => :transcribe, :action => :translate, :page_id => page.id)} if page.work.supports_translation?
   end
 
  def annotationlist_from_page(page,type)
