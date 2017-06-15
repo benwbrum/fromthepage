@@ -170,8 +170,8 @@ page_10:
   search_text: 
 page_17:
   id: 17
-  title: '1'
-  source_text: 
+  title: 'Page 1'
+  source_text: [[Testing]]
   base_image: <%=Rails.root.join('public/images/uploaded/2/page_0001.jpg')%>
   base_width: 2529
   base_height: 3313
@@ -181,7 +181,7 @@ page_17:
   lock_version: 0
   xml_text: 
   page_version_id: 
-  status: 
+  status: "indexed"
   source_translation: 
   xml_translation: 
   search_text: 
@@ -256,8 +256,8 @@ page_21:
   search_text: 
 page_22:
   id: 22
-  title: '1'
-  source_text: '[[Testing|Tests]]'
+  title: 'Test Page 1'
+  source_text: '[[Testing]]'
   base_image: <%=Rails.root.join('public/images/uploaded/7/page_0001.jpg')%>
   base_width: 1138
   base_height: 2704

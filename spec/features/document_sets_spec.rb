@@ -97,21 +97,6 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Last 7 Days Statistics")
   end
 
-  it "checks document set articles" do
-    login_as(@owner, :scope => :user)
-    visit "/#{@owner.slug}/#{@set.slug}"
-    page.find('.tabs').click_link("Subjects")
-    #check for categories from document set
-    expect(page.find('.category-tree')).to have_content(@set.categories.first.title)
-    #check for categories in collection but not document set - changed display
-    #might get rid of this
-    #expect(page.find('.category-tree')).not_to have_content(@collection.categories.last.title)
-    #check for article in document set
-    expect(page).to have_selector('.category-article', text: @set.articles.first.title)
-    #check for article in collection that isn't in document set
-    expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
-
-  end
 
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
@@ -150,11 +135,21 @@ describe "document sets", :order => :defined do
     @set.works.each do |w|
       expect(page.find('.collection-work-stats')).to have_content(w.title)
     end
+  end
+
+  it "checks document set breadcrumbs - subjects" do
+    login_as(@user, :scope => :user)
+    @article = @set.articles.first
+    visit dashboard_path
+    page.find('.maincol').find('a', text: @set.title).click
     page.find('.tabs').click_link("Subjects")
+    expect(page.find('.category-tree')).to have_content(@set.categories.first.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/subjects"
     expect(page.find('h1')).to have_content(@set.title)
-    expect(page).to have_selector('.category-article', text: 'Testing')
-    page.find('a', text: "Testing").click
+    #expect to have only article from document sets
+    expect(page).to have_selector('.category-article', text: @article.title)
+    expect(page).not_to have_selector('.category-article', text: @collection.articles.last.title)
+    page.find('a', text: @article.title).click
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("Settings")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
@@ -163,6 +158,50 @@ describe "document sets", :order => :defined do
     click_button 'Save Changes'
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("Versions")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+  end
+
+  it "checks document set subject tabs" do
+    login_as(@owner, :scope => :user)
+    @article = @set.articles.first
+    visit collection_article_show_path(@set.owner, @set, @article.id)
+    expect(page).to have_content("Description")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    page.find('a', text: 'Edit the description in the settings tab.').click
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_content("Title")
+    page.find('.tabs').click_link("Overview")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
+    click_link("All references to #{@article.title}")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_content("Search for")
+    #return to overview
+    visit collection_article_show_path(@set.owner, @set, @article.id)
+    click_link("All references to #{@article.title} in pages that do not link to this subject")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    expect(page).to have_content("Search for")
+    page.find('a', text: "Show pages that mention #{@article.title} in all works").click
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    set_pages = @article.pages.where(work_id: @set.works.ids)
+    col_pages = @article.pages.where.not(work_id: @set.works.ids)
+    set_pages.each do |p|
+      expect(page.find('.maincol')).to have_content(p.work.title)
+      expect(page.find('.maincol')).to have_content(p.title)
+    end
+    col_pages.each do |p|
+      expect(page.find('.maincol')).not_to have_content(p.work.title)
+      expect(page.find('.maincol')).not_to have_content(p.title)
+    end
+    visit collection_article_show_path(@set.owner, @set, @article.id)
+    page.find('.article-links').find('a', text: set_pages.first.title).click
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
+    if expect(page).to have_content("This page is not transcribed")
+      page.find('.tabs').click_link("Transcribe")
+      click_button('Save Changes')
+    end
+    page.find('a', text: @article.title).click
+    expect(page.current_path).to eq collection_article_show_path(@set.owner, @set, @article.id)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
   end
 
