@@ -134,6 +134,10 @@ class IiifController < ApplicationController
   
   def list
     type = params[:annotation_type]
+    if type == 'notes'  #notes need to be handled separately
+      notes
+      return
+    end
     annotation_list = IIIF::Presentation::AnnotationList.new
     annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => @page.id, :annotation_type => type, :only_path => false})
 
@@ -390,22 +394,7 @@ private
     
     canvas.images << annotation
 
-    unless page.source_text.blank?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "transcription", :only_path => false})
-      canvas.other_content << annotation_list
-    end
-
-    unless page.source_translation.blank?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => "translation", :only_path => false})
-      canvas.other_content << annotation_list
-    end
-    if page.notes.exists?
-      annotation_list = IIIF::Presentation::AnnotationList.new
-      annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => page.id, :only_path => false})
-      canvas.other_content << annotation_list
-    end
+    add_annotations_to_canvas(canvas, page)
 
     canvas     
   
@@ -424,7 +413,6 @@ private
     annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
     canvas.images << annotation
 
-    add_annotations_to_canvas(canvas, page)
   end
 
   def add_annotations_to_canvas(canvas,page)
