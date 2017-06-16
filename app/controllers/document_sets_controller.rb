@@ -7,8 +7,6 @@ class DocumentSetsController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def index
-    @document_sets = DocumentSet.all
-    respond_with(@document_sets)
   end
 
   def show
