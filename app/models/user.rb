@@ -52,7 +52,6 @@ class User < ActiveRecord::Base
   end
 
   def owner_works
-    binding.pry
     works = Work.where(id: self.all_owner_collections.ids)
     return works
   end
