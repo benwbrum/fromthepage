@@ -32,7 +32,7 @@ class ScManifest < ActiveRecord::Base
     unless collection
       collection = Collection.new
       collection.owner = user
-      collection.title = sc_collection.label
+      collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
       collection.save!
       
       sc_collection.collection = collection
@@ -45,7 +45,7 @@ class ScManifest < ActiveRecord::Base
   def convert_with_no_collection(user)
 	collection = Collection.new
     collection.owner = user
-    collection.title = self.label
+    collection.title = self.label.truncate(255, separator: ' ', omission: '')
     collection.save!	  
     convert_with_collection(user, collection)
   end
@@ -55,7 +55,7 @@ class ScManifest < ActiveRecord::Base
     
     work = Work.new    
     work.owner = user
-    work.title = self.label
+    work.title = self.label.truncate(255, separator: ' ', omission: '')
     work.description = self.html_description
     work.collection = collection
     work.save!
