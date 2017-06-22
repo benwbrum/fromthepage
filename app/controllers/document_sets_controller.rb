@@ -12,7 +12,7 @@ class DocumentSetsController < ApplicationController
   end
 
   def show
-#    respond_with(@document_set)
+    @collection = @document_set.collection
   end
 
   def new
@@ -28,9 +28,13 @@ class DocumentSetsController < ApplicationController
   def create
     @document_set = DocumentSet.new(document_set_params)
     @document_set.owner = current_user
-    @document_set.save!
-    flash[:notice] = 'Document set has been created'
-    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    if @document_set.save
+      flash[:notice] = 'Document set has been created'
+      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    else
+      render action: 'new'
+    end
+
   end
 
   def assign_works
@@ -65,11 +69,11 @@ class DocumentSetsController < ApplicationController
     def set_document_set
       unless (defined? @document_set) && @document_set
         id = params[:document_set_id] || params[:id]
-        @document_set = DocumentSet.find(id)
+        @document_set = DocumentSet.friendly.find(id)
       end
     end
 
     def document_set_params
-      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture)
+      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
     end
 end

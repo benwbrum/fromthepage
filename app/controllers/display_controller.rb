@@ -8,6 +8,8 @@ class DisplayController < ApplicationController
   def read_work
     if params.has_key?(:work_id)
       @work = Work.find_by(id: params[:work_id])
+    elsif params.has_key?(:id)
+      @work = Work.friendly.find(params[:id])
     elsif params.has_key?(:url)
       @work = Work.find_by_id(params[:url][:work_id])
     end
@@ -30,6 +32,7 @@ class DisplayController < ApplicationController
         @count = @pages.count
       end
     end
+    session[:col_id] = @collection.slug
   end
 
   def read_all_works

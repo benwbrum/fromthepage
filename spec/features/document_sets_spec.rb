@@ -86,30 +86,36 @@ describe "document sets", :order => :defined do
         expect(page).to have_content(set.title)
       end
     end
-    page.find('a', text: @document_sets.first.title).click
+    doc_set = @document_sets.first
+    page.find('.maincol').find('a', text: doc_set.title).click
     expect(page).to have_content("Overview")
     expect(page).to have_content(@collection.works.first.id)
     expect(page).to have_content(@collection.works.second.id)
-
+    expect(page).to have_content(doc_set.works.first.title)
+    page.find('.tabs').click_link('Statistics')
+    expect(page).to have_content(doc_set.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/statistics"
+    expect(page).to have_content("Last 7 Days Statistics")
   end
 
-  it "deletes a document set" do
-    login_as(@owner, :scope => :user)
-    count = @document_sets.count
-    visit dashboard_owner_path
-    page.find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Sets")
-    expect(page).to have_content("Document Sets for #{@collection.title}")
-    within(page.find('#sets')) do
-      within(page.find('tr', text: @document_sets.first.title)) do
-        page.find('a', text: 'Delete').click
-      end
-    end
-    sets = DocumentSet.all.count
-    expect(sets).to eq (count - 1)
-    expect(page).not_to have_content(@document_sets.first.title)
-    expect(page).to have_content(@document_sets.last.title)
+  it "checks document set breadcrumbs" do
+    login_as(@user, :scope => :user)
+    visit dashboard_path
+    doc_set = @document_sets.first
+    work = doc_set.works.first
+    @page = work.pages.first
+    page.find('.maincol').find('a', text: doc_set.title).click
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
+    click_link(work.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
+    expect(page).to have_selector('a', text: doc_set.title)
+    page.find('.work-page_title', text: @page.title).click_link(@page.title)
+    expect(page).to have_selector('a', text: doc_set.title)
+    expect(page).to have_selector('a', text: work.title)
+    click_link(work.title)
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}/#{work.slug}"
+    click_link doc_set.title
+    expect(page.current_path).to eq "/#{@owner.slug}/#{doc_set.slug}"
   end
-
 
 end

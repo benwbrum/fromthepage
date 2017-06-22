@@ -2,6 +2,8 @@ require 'csv'
 
 class Collection < ActiveRecord::Base
   include CollectionStatistic
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -13,10 +15,10 @@ class Collection < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions
+  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug
 #  attr_accessor :picture
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   
   before_create :set_transcription_conventions
   after_save :create_categories
@@ -57,6 +59,25 @@ class Collection < ActiveRecord::Base
     category1.save
     category2 = Category.new(collection_id: self.id, title: "Places")
     category2.save
+  end
+
+  def slug_candidates
+    if self.slug
+      [:slug]
+    else
+      [
+        :title,
+        [:title, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
+  end
+
+  def normalize_friendly_id(string)
+    super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
   protected

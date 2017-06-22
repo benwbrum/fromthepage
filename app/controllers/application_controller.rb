@@ -54,21 +54,24 @@ class ApplicationController < ActionController::Base
     if params[:page_id]
       @page = Page.find(params[:page_id])
       @work = @page.work
-      @collection = @work.collection
+      if session[:col_id] != nil
+        @collection = set_friendly_collection(session[:col_id])
+        session[:col_id] = nil
+      else
+        @collection = @page.collection
+      end
     end
     if params[:work_id]
-      @work = Work.find(params[:work_id])
+      @work = Work.friendly.find(params[:work_id])
       @collection = @work.collection
     end
     if params[:document_set_id]
-      @document_set = DocumentSet.find(params[:document_set_id])
+      @document_set = DocumentSet.friendly.find(params[:document_set_id])
       @collection = @document_set.collection
     end
-
     if params[:collection_id]
-      @collection = Collection.find(params[:collection_id])
+      @collection = set_friendly_collection(params[:collection_id])
     end
-
     # image stuff is orthogonal to collections
     if params[:titled_image_id]
       @titled_image = TitledImage.find(params[:titled_image_id])
@@ -78,7 +81,7 @@ class ApplicationController < ActionController::Base
       @image_set = ImageSet.find(params[:image_set_id])
     end
     if params[:user_id]
-      @user = User.find(params[:user_id])
+      @user = User.friendly.find(params[:user_id])
     end
 
     # category stuff may be orthogonal to collections and articles
@@ -100,6 +103,14 @@ class ApplicationController < ActionController::Base
     end
     if params[:collection_ids]
       @collection_ids = params[:collection_ids]
+    end
+  end
+
+  def set_friendly_collection(id)
+    if Collection.friendly.exists?(id)
+      @collection = Collection.friendly.find(id)
+    elsif DocumentSet.friendly.exists?(id)
+      @collection = DocumentSet.friendly.find(id)
     end
   end
 
@@ -171,7 +182,7 @@ class ApplicationController < ActionController::Base
     return unless @collection
     return unless @collection.restricted
 
-    unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)
+    unless @collection.show_to?(current_user)
       redirect_to dashboard_path
     end
   end

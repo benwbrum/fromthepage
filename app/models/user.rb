@@ -5,8 +5,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :encryptable, :encryptor => :restful_authentication_sha1
 
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
+
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -71,6 +74,13 @@ class User < ActiveRecord::Base
         self == obj.owner      
       end
     end
+    if DocumentSet == obj.class
+      if obj.collection
+        return self == obj.collection.owner || obj.collection.owners.include?(self)
+      else
+        self == obj.owner
+      end
+    end
     return false
   end
 
@@ -106,5 +116,24 @@ class User < ActiveRecord::Base
   def unrestricted_collections
     collections = self.all_owner_collections.unrestricted.order_by_recent_activity
   end
-  
+
+  def slug_candidates
+    if self.slug
+      [:slug]
+    else
+      [
+        :login,
+        [:login, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
+  end
+
+  def normalize_friendly_id(string)
+    super.truncate(240, separator: '-', omission: '').gsub('_', '-')
+  end
+
 end

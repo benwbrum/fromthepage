@@ -96,7 +96,7 @@ describe "owner actions", :order => :defined do
   it "creates a subject" do
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "People")
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     @name = "#category-" + "#{cat.id}"
     page.find(@name).find('a', text: 'Add Root Category').click
@@ -110,7 +110,7 @@ describe "owner actions", :order => :defined do
   it "deletes a subject" do
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "New Test Category")
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("New Test Category")
     @name = "#category-" + "#{cat.id}"
