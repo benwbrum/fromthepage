@@ -13,3 +13,21 @@
             =f.text_area :description, rows: 4, placeholder: 'Description'
       .toolbar
         .toolbar_group.aright =f.button 'Create Work'
+
+    -content_for :javascript
+      javascript:
+        $(function(){
+          $('#work_collection_id').append("<option value='new'>Add New Collection</option>");
+        });
+
+        $(function(){
+          $('#work_collection_id').on('change', function(){
+            var col = $(this).val();
+              if (col == 'new'){
+                new LiteBox({
+                  url: '/collection/new',
+                  hash: 'create-collection'
+                }).open();
+              };
+          });
+        })
