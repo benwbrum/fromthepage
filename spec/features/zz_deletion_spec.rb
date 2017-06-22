@@ -15,7 +15,7 @@ describe "testing deletions" do
     test_page = work.pages.first
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: work.title).click
+    page.find('.maincol').find('a', text: work.title).click
     expect(page).to have_content(work.title)
     page.find('.tabs').click_link("Read")
     expect(page).to have_content(test_page.title)
@@ -40,7 +40,7 @@ describe "testing deletions" do
     expect(Dir.exist?(path)).to be true
     login_as(@user, :scope => :user)
     visit dashboard_owner_path
-    page.find('a', text: work.title).click
+    page.find('.maincol').find('a', text: work.title).click
     expect(page).to have_content(work.title)
     expect(page).to have_selector('a', text: 'Delete Work')
     page.find('a', text: 'Delete Work').click
