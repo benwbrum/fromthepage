@@ -156,6 +156,12 @@ def contributors
   
 end
 
+  def blank_collection
+    collection = Collection.find_by(id: params[:collection_id])
+    collection.blank_out_collection
+    redirect_to action: 'show', collection_id: params[:collection_id]
+  end
+
 private
   def set_collection
     unless @collection
