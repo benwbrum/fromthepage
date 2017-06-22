@@ -21,6 +21,7 @@ h1 ="Browse #{@omeka_site.title}"
           span.omeka-collection_count =pluralize(@omeka_collectionless_items.size, 'item')
           =link_to 'Click to load', { action: 'items', omeka_site_id: @omeka_site.id }, remote: true, data: { 'omeka-items' =>'' }, class: 'button outline'
 
+
 -content_for :javascript
   javascript:
     $(function() {

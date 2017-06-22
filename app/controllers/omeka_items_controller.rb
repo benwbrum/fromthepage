@@ -17,7 +17,11 @@ class OmekaItemsController < ApplicationController
   # GET /omeka_items/1
   # GET /omeka_items/1.json
   def show
-    @omeka_item = OmekaItem.find(params[:id])
+    if params[:client_item_id]
+      @omeka_item = OmekaItem.where(:omeka_id => params[:client_item_id]).first
+    else
+      @omeka_item = OmekaItem.find(params[:id])      
+    end
 
     respond_to do |format|
       format.html # show.html.erb
