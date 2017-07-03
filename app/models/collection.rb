@@ -2,6 +2,8 @@ require 'csv'
 
 class Collection < ActiveRecord::Base
   include CollectionStatistic
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -13,10 +15,10 @@ class Collection < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions
+  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug
 #  attr_accessor :picture
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   
   before_create :set_transcription_conventions
   after_save :create_categories
@@ -57,6 +59,60 @@ class Collection < ActiveRecord::Base
     category1.save
     category2 = Category.new(collection_id: self.id, title: "Places")
     category2.save
+  end
+
+  def slug_candidates
+    if self.slug
+      [:slug]
+    else
+      [
+        :title,
+        [:title, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
+  end
+
+  def normalize_friendly_id(string)
+    super.truncate(240, separator: '-', omission: '').gsub('_', '-')
+  end
+
+  def blank_out_collection
+    puts "Reset all data in the #{self.title} collection to blank"
+    works = Work.where(collection_id: self.id)
+    pages = Page.where(work_id: works.ids)
+
+    #delete deeds for pages and articles (not work add deed)
+    Deed.where(page_id: pages.ids).destroy_all
+    Deed.where(article_id: self.articles.ids).destroy_all
+    #delete articles
+    Article.where(collection_id: self.id).destroy_all
+    #delete categories (aside from the default)
+    Category.where(collection_id: self.id).where.not(title: 'People').where.not(title: 'Places').destroy_all
+    #delete notes
+    Note.where(page_id: pages.ids).destroy_all
+    #delete page_article_links
+    PageArticleLink.where(page_id: pages.ids).destroy_all
+    #update work transcription version
+    works.each do |w|
+      w.update_columns(transcription_version: 0)
+    end
+    #for each page, delete page versions, update all attributes, save
+    pages.each do |p|
+      p.page_versions.destroy_all
+      p.update_columns(source_text: nil, base_image:nil, base_width: nil, base_height: nil, shrink_factor: nil, created_on: Time.now, lock_version: 0, xml_text: nil, status: nil, source_translation: nil, xml_translation: nil, translation_status: nil, search_text: "\n\n\n\n")
+      p.save!
+    end
+
+    #fix user_id for page version (doesn't get set in this type of update)
+    PageVersion.where(page_id: pages.ids).each do |v|
+      v.user_id = self.owner.id
+      v.save!
+    end
+    puts "#{self.title} collection has been reset"
   end
 
   protected

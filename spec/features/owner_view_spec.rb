@@ -24,7 +24,7 @@ describe "owner views" do
   end
 
   it "looks at subjects tab" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Categories")
     expect(page).to have_content("People")
@@ -32,7 +32,7 @@ describe "owner views" do
   end
 
   it "looks at statistics tab" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Statistics")
     expect(page).to have_content("Works")
     expect(page).to have_content("Work Progress")
@@ -54,7 +54,7 @@ describe "owner views" do
   end
 
   it "looks at export tab" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Export")
     expect(page).to have_content(@collection.title)
     expect(page).to have_content("Export Subject Index")
@@ -65,7 +65,7 @@ describe "owner views" do
   end
 
   it "looks at collaborators tab" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Collaborators")
     expect(page).to have_content(@collection.title)
     expect(page).to have_content("Contributions Between")
