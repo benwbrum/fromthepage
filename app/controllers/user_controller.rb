@@ -22,6 +22,9 @@ class UserController < ApplicationController
   end
 
   def profile
+    unless @user
+      @user = User.friendly.find(params[:id])
+    end
     @collections = @user.unrestricted_collections
     @collection_ids = @collections.map {|collection| collection.id}
     @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)

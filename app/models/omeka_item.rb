@@ -66,7 +66,6 @@ class OmekaItem < ActiveRecord::Base
     work.author = creator
     work.collection=omeka_collection.collection
     work.save!
-
     self.omeka_files.each do |omeka_file|
       page = Page.new
       page.title = omeka_file.omeka_order || File.basename(omeka_file.original_filename)
@@ -76,6 +75,8 @@ class OmekaItem < ActiveRecord::Base
       omeka_file.save!
     end
     work.save!
+    record_deed(work)
+
     self.work = work
     self.save!
 
@@ -108,6 +109,17 @@ class OmekaItem < ActiveRecord::Base
       :format => dc.format,
       :coverage => dc.coverage,
     }
+  end
+
+protected
+
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
 end

@@ -1,5 +1,4 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection.id } })
-
 .columns
   article.maincol
     -if @collection.intro_block
@@ -14,7 +13,7 @@
     h2 Works
     -@collection.works.includes(:work_statistic).each do |work|
       .collection-work
-        h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+        h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -unless work.supports_translation
@@ -58,7 +57,7 @@
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
         h3 Subject Categories
-        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection, anchor: "category-#{c.id}" } }.join(', ')
 
   aside.sidecol
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
@@ -67,15 +66,15 @@
       =button_tag 'Search'
 
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
         small Owned by
-        =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }
+        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     h3 Recent Notes
     -@collection.notes.limit(10).each do |note|
-      -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
+      -user = link_to note.user.display_name, user_profile_path(note.user)
       -text = link_to truncate(note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
       .deed-short.small
         =time_tag(note.created_at, class: 'legend legend-left')
@@ -86,6 +85,6 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
-    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
+    =deeds_for({ :collection => @collection, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
 
 =render({ :partial => '/shared/collection_footer' })

@@ -1,10 +1,8 @@
 class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
-  before_filter :log_interaction
   before_action :store_current_location, :unless => :devise_controller?
   before_filter :load_html_blocks
-  # after_filter :complete_interaction
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
@@ -56,21 +54,24 @@ class ApplicationController < ActionController::Base
     if params[:page_id]
       @page = Page.find(params[:page_id])
       @work = @page.work
-      @collection = @work.collection
+      if session[:col_id] != nil
+        @collection = set_friendly_collection(session[:col_id])
+        session[:col_id] = nil
+      else
+        @collection = @page.collection
+      end
     end
     if params[:work_id]
-      @work = Work.find(params[:work_id])
+      @work = Work.friendly.find(params[:work_id])
       @collection = @work.collection
     end
     if params[:document_set_id]
-      @document_set = DocumentSet.find(params[:document_set_id])
+      @document_set = DocumentSet.friendly.find(params[:document_set_id])
       @collection = @document_set.collection
     end
-
     if params[:collection_id]
-      @collection = Collection.find(params[:collection_id])
+      @collection = set_friendly_collection(params[:collection_id])
     end
-
     # image stuff is orthogonal to collections
     if params[:titled_image_id]
       @titled_image = TitledImage.find(params[:titled_image_id])
@@ -80,7 +81,7 @@ class ApplicationController < ActionController::Base
       @image_set = ImageSet.find(params[:image_set_id])
     end
     if params[:user_id]
-      @user = User.find(params[:user_id])
+      @user = User.friendly.find(params[:user_id])
     end
 
     # category stuff may be orthogonal to collections and articles
@@ -102,6 +103,14 @@ class ApplicationController < ActionController::Base
     end
     if params[:collection_ids]
       @collection_ids = params[:collection_ids]
+    end
+  end
+
+  def set_friendly_collection(id)
+    if Collection.friendly.exists?(id)
+      @collection = Collection.friendly.find(id)
+    elsif DocumentSet.friendly.exists?(id)
+      @collection = DocumentSet.friendly.find(id)
     end
   end
 
@@ -154,46 +163,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # log what was done
-  def log_interaction
-    @interaction = Interaction.new
-    if !session.respond_to?(:session_id)
-      @interaction.session_id = Interaction.count + 1
-    else
-      @interaction.session_id = session.session_id
-    end
-
-    @interaction.browser = request.env['HTTP_USER_AGENT']
-    @interaction.ip_address = request.env['REMOTE_ADDR']
-    if(user_signed_in?)
-      @interaction.user_id = current_user.id
-    end
-    clean_params = params.reject{|k,v| k=='password'}
-    if clean_params['user']
-      clean_params['user'] = clean_params['user'].reject{|k,v| k=~/password/}
-    end
-
-    @interaction.params = clean_params.inspect.truncate(128)
-
-    @interaction.status = 'incomplete'
-    # app specific stuff
-    @interaction.action = action_name
-    if @collection
-      @interaction.collection_id = @collection.id
-    end
-    if @work
-      @interaction.work_id = @work.id
-    end
-    if @page
-      @interaction.page_id = @page.id
-    end
-    @interaction.save
-  end
-
-  def complete_interaction
-    @interaction.update_attribute(:status, 'complete')
-  end
-
   def load_html_blocks
     @html_blocks = {}
     page_blocks =
@@ -213,7 +182,7 @@ class ApplicationController < ActionController::Base
     return unless @collection
     return unless @collection.restricted
 
-    unless @collection.show_to?(current_user) || (@document_set && @document_set.show_to?(current_user)) || (@work && @work.document_sets.where(:is_public => true).present?)
+    unless @collection.show_to?(current_user)
       redirect_to dashboard_path
     end
   end

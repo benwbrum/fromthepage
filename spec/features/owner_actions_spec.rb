@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "owner actions", :order => :defined do
+  Capybara.javascript_driver = :webkit
 
   before :all do
 
@@ -54,7 +55,7 @@ describe "owner actions", :order => :defined do
   it "checks for subject in a new collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
     visit dashboard_owner_path
-    click_link("#{test_collection.title}")
+    page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Places")
     expect(page).to have_content("People")
@@ -64,8 +65,8 @@ describe "owner actions", :order => :defined do
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
-    expect(page).to have_content("#{test_collection.title}")
-    click_link("#{test_collection.title}")
+    expect(page.find('.maincol')).to have_content("#{test_collection.title}")
+    page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Settings")
     click_link('Delete Collection')
     expect(page.current_path).to eq dashboard_owner_path
@@ -73,10 +74,29 @@ describe "owner actions", :order => :defined do
     expect(collection_count - 1).to eq @owner.all_owner_collections.count
   end
 
+  it "creates a collection from work dropdown", :js => true do
+    col_title = "New Work Collection"
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    page.select 'Add New Collection', from: 'document_upload_collection_id' 
+
+    within(page.find('.litebox-embed')) do
+      expect(page).to have_content('Create New Collection')
+      fill_in 'collection_title', with: col_title
+      find_button('Create Collection').trigger(:click)
+    end
+    page.find('#document_upload_collection_id')
+    expect(page).to have_select('document_upload_collection_id', selected: col_title)
+    sleep(2)
+    expect(Collection.last.title).to eq col_title
+    #need to remove this collection to prevent conflicts in later tests
+    Collection.last.destroy
+  end
+
   it "creates a subject" do
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "People")
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     @name = "#category-" + "#{cat.id}"
     page.find(@name).find('a', text: 'Add Root Category').click
@@ -90,7 +110,7 @@ describe "owner actions", :order => :defined do
   it "deletes a subject" do
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "New Test Category")
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("New Test Category")
     @name = "#category-" + "#{cat.id}"
@@ -110,9 +130,21 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Title can't be blank")
   end
 
+  it "moves a work to another collection" do
+    visit dashboard_owner_path
+    page.find('.maincol').find('a', text: @title).click
+    expect(page).to have_content(@title)
+    expect(page).to have_content("Work title")
+    expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
+    select(@collection.title, :from => 'work_collection_id')
+    click_button('Save Changes')
+    expect(page).to have_content("Work updated successfully")
+    expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+  end
+
   it "deletes a work" do
     visit dashboard_owner_path
-    page.find('a', text: @title).click
+    page.find('.maincol').find('a', text: @title).click
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
     click_link("Delete Work")

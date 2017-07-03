@@ -1,4 +1,7 @@
 class Work < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
+
   has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
@@ -29,12 +32,13 @@ class Work < ActiveRecord::Base
                   :translation_instructions,
                   :scribes_can_edit_titles,
                   :restrict_scribes,
-                  :pages_are_meaningful
+                  :pages_are_meaningful,
+                  :slug
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :slug, uniqueness: true
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
-
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -133,6 +137,26 @@ class Work < ActiveRecord::Base
       Dir.rmdir(new_dir_name)
     end
 
+  end
+
+  def normalize_friendly_id(string)
+    string.truncate(230, separator: ' ', omission: '')
+    super.gsub('_', '-')
+  end
+
+  def slug_candidates
+    if self.slug
+      [:slug]
+    else
+      [
+        :title,
+        [:title, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
   end
 
 end
