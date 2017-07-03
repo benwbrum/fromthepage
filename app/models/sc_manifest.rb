@@ -19,7 +19,8 @@ class ScManifest < ActiveRecord::Base
     service = IIIF::Service.parse(manifest_json)
 
     sc_manifest = ScManifest.new
-    sc_manifest.at_id = service['@id']
+    #sc_manifest.at_id = service['@id']
+    sc_manifest.at_id = at_id
     sc_manifest.label = service.label
     sc_manifest.service = service
   
@@ -31,7 +32,7 @@ class ScManifest < ActiveRecord::Base
     unless collection
       collection = Collection.new
       collection.owner = user
-      collection.title = sc_collection.label
+      collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
       collection.save!
       
       sc_collection.collection = collection
@@ -44,7 +45,7 @@ class ScManifest < ActiveRecord::Base
   def convert_with_no_collection(user)
 	collection = Collection.new
     collection.owner = user
-    collection.title = self.label
+    collection.title = self.label.truncate(255, separator: ' ', omission: '')
     collection.save!	  
     convert_with_collection(user, collection)
   end
@@ -54,11 +55,11 @@ class ScManifest < ActiveRecord::Base
     
     work = Work.new    
     work.owner = user
-    work.title = self.label
+    work.title = self.label.truncate(255, separator: ' ', omission: '')
     work.description = self.html_description
     work.collection = collection
     work.save!
-    
+
     self.service.sequences.first.canvases.each do |canvas|
       sc_canvas = manifest_canvas_to_sc_canvas(canvas)
       page = sc_canvas_to_page(sc_canvas)
@@ -70,7 +71,8 @@ class ScManifest < ActiveRecord::Base
       sc_canvas.save!
     end
     work.save!
-    
+    record_deed(work)
+
     self.work = work
     self.save!
     
@@ -114,4 +116,17 @@ class ScManifest < ActiveRecord::Base
     
     html
   end
+
+protected
+
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
+  end
+
+
 end

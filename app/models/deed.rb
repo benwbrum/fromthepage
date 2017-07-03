@@ -12,6 +12,7 @@ class Deed < ActiveRecord::Base
   NEEDS_REVIEW = 'review'
   TRANSLATION_REVIEW = 'xlat_rev'
   TRANSLATION_INDEXED = 'xlat_index'
+  WORK_ADDED = 'work_add'
 
   # associations
   belongs_to :article
@@ -21,7 +22,7 @@ class Deed < ActiveRecord::Base
   belongs_to :user
   belongs_to :work
 
-  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW, TRANSLATION_INDEXED ]
+  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW, TRANSLATION_INDEXED, WORK_ADDED ]
   scope :order_by_recent_activity, -> { order('created_at DESC') }
 
 
@@ -49,7 +50,8 @@ class Deed < ActiveRecord::Base
       'Translation Page Needs Review'
     when TRANSLATION_INDEXED
       'Translation Page Indexed'
-      
+    when WORK_ADDED
+      'Work Added'
     end
   end
 

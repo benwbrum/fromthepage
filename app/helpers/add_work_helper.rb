@@ -57,10 +57,21 @@ module AddWorkHelper
 
     if @work.save
       flash[:notice] = 'Work created successfully'
+      record_deed
       ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
       render action: 'empty_work'
     end
+  end
+
+  protected
+  def record_deed
+    deed = Deed.new
+    deed.work = @work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = @work.collection
+    deed.user = current_user
+    deed.save!
   end
 
 end

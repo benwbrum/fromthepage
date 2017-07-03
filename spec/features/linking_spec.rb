@@ -17,7 +17,7 @@ describe "subject linking" do
 
   #it checks to make sure the subject is on the page
   it "looks at subjects in a collection" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Categories")
     categories = Category.where(collection_id: @collection.id)
@@ -49,7 +49,7 @@ describe "subject linking" do
     logout(:user)
     login_as(@owner, :scope => :user)
     collection = @collections.last
-    visit "/collection/show?collection_id=#{collection.id}"
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Subjects")
     page.find('a', text: "Testing").click
     page.find('.tabs').click_link("Settings")

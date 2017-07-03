@@ -10,9 +10,6 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_sites
   resources :omeka_items
-  # resources :sc_canvas
-  # resources :sc_manifests
-  # resources :sc_collections
 
   resources :notes
 
@@ -38,17 +35,8 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ }
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
- # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
-#  get   '/iiif/admin/search_pontiiif', :to => 'sc_collections#search_pontiiif', :as => 'search_pontiiif'
 
-  get   'document_set/new', :to => 'document_sets#new'
-  get   'document_set/edit/:id', :to => 'document_sets#edit'
-  patch   'document_set/update/:id', :to => 'document_sets#update'
-  post   'document_set/assign_works', :to => 'document_sets#assign_works'
-  get   'document_set/:id', :to => 'document_sets#show'
-#  get   'document_set/:document_set_id', :to => 'document_sets#show'
-#  resources :document_sets
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get   'YaquinaLights' => 'collection#show', :collection_id => 58
@@ -68,5 +56,23 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
+
+  get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
+  post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
+  post   'document_set/assign_works', :to => 'document_sets#assign_works'
+
+  resources :document_sets, except: [:show, :create, :edit]
+
+  scope ':user_slug' do
+    resources :collection, path: '', only: [:show] do
+      get '/statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
+      #have to use match because it must be both get and post
+      match 'display/read_work', path: '/:id', as: :read_work, to: 'display#read_work', via: [:get, :post]
+    end
+  end
+
+  get '/:user', path: '/:user_id', to: 'user#profile', as: :user_profile
+
+  get 'collection/update/:id', to: 'collection#update', as: :update_collection
 
 end

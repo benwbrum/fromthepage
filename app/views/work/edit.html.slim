@@ -17,6 +17,14 @@
           th =f.label :location_of_composition, 'Location'
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
+          th =f.label :slug, 'URL'
+          td =f.text_field :slug, value: @work.slug
+        tr
+          th
+          td 
+            |The current URL for this work is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+ 
+        tr
           th
           td
             p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
@@ -72,11 +80,11 @@
 
   aside.sidecol
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@work.owner), class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
         small Uploaded by
-        =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
+        =link_to @work.owner.display_name, user_profile_path(@work.owner)
     p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
     hr
@@ -106,7 +114,7 @@
             .userpic
               =gravatar_image_tag user.email, :alt => user.display_name
             .username
-              =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+              =link_to user.display_name, user_profile_path(user)
               small =user.email
               =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
 
