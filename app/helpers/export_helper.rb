@@ -12,26 +12,37 @@ module ExportHelper
 
   def tei_taxonomy(categories, subjects)
     tei = "<taxonomy>\n"
+    seen_subjects = []
     categories.each do |category|
-      tei << category_to_tei(category, subjects)
+      tei << category_to_tei(category, subjects, seen_subjects)
     end
     tei << "</taxonomy>\n"
+    tei = REXML::Document.new(tei).to_s
     
     tei
   end
 
-  def category_to_tei(category, subjects) 
-    tei = "<category xml:id=\"C#{category.id}\">\n"
+  def category_to_tei(category, subjects, seen_subjects) 
+    has_content = false
+    tei = ""
+    tei << "<category xml:id=\"C#{category.id}\">\n"
     tei << "<catDesc>#{category.title}</catDesc>\n"
     category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
-      tei << subject_to_tei(subject)
+      has_content = true
+      if seen_subjects.include?(subject)
+        tei << seen_subject_to_tei(subject, category)
+      else
+        tei << subject_to_tei(subject)
+        seen_subjects << subject
+      end
     end
     category.children.each do |child|
-      tei << category_to_tei(child, subjects)
+      has_content = true
+      tei << category_to_tei(child, subjects, seen_subjects)
     end
     tei << "</category>\n"
 
-    tei
+    has_content ? tei : ""
   end
   
   def subject_to_tei(subject)
@@ -45,6 +56,17 @@ module ExportHelper
     tei
   end
 
+
+  def seen_subject_to_tei(subject, parent_category)
+    tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
+    tei << "<catDesc>\n"
+    tei << "<term><rs ref=\"S#{subject.id}\">#{subject.title}</rs></term>\n"
+    tei << "</catDesc>\n"
+    tei << "</category>\n"
+
+    tei
+    
+  end
 
   def xml_to_export_tei(xml_text, context, page_id = "")
 
@@ -132,6 +154,13 @@ module ExportHelper
       i.children.each { |c| hi.add(c) }
 
       i.replace_with(hi)
+    end
+    p_element.elements.each('//sup') do |sup|
+      add = REXML::Element.new("add")
+
+      add.add_attribute("place", "above")
+      sup.children.each { |c| add.add(c) }
+      sup.replace_with(add)
     end
   end
 
