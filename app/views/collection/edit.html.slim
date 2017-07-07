@@ -89,7 +89,7 @@
     p.fglight Collaborators may transcribe and edit private collections.
     =form_tag({ :action => 'add_collaborator' }, class: 'user-select-form') do
       =hidden_field_tag :collection_id, @collection.id
-      =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, id: 'collaborators'
+      =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
       =button_tag 'Add', disabled: 'true'
     -@collaborators.each do |user|
       -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
@@ -106,7 +106,7 @@
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
       =hidden_field_tag :collection_id, @collection.id
-      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true, id: 'owners'
+      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true, prompt: 'Add new owner...'
       =button_tag 'Add', disabled: 'true'
     -@owners.each do |user|
       -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
@@ -137,7 +137,6 @@
   javascript:
     $(function() {
       $('.user-select-form select').select2({
-        placeholder: 'Add new owner...',
       }).on('select2:select', function() {
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {
