@@ -56,8 +56,10 @@ class OmekaItemsController < ApplicationController
   end
 
   def import
+    binding.pry
     @omeka_item = OmekaItem.find(params[:id])
-    @omeka_item.import
+    collection = Collection.find(params[:collection_id])
+    @omeka_item.import(collection)
 
     respond_to do |format|
       format.html {
