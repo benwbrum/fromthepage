@@ -23,21 +23,20 @@ describe "convention related tasks", :order => :defined do
   end    
 
   it "checks for collection level transcription conventions" do
-#    login_as(@owner, :scope => :user)
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     page.find('.tabs').click_link(@tab)
     expect(page).to have_content @clean_conventions
   end
 
   it "changes work level transcription conventions" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content @conventions
     expect(page).to have_button('Revert', disabled: true)
     page.fill_in 'work_transcription_conventions', with: @work_convention
     click_button 'Save Changes'
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     page.find('.tabs').click_link(@tab)
     expect(page).not_to have_content @clean_conventions
@@ -55,11 +54,11 @@ describe "convention related tasks", :order => :defined do
     #check unchanged work for collection conventions
     work2 = @collection.works.first
     page2 = work2.pages.first
-    visit "/display/read_work?work_id=#{work2.id}"
+    visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
     expect(page).to have_content @new_convention
     #check changed work for collection conventions
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
     page.find('.tabs').click_link(@tab)
     expect(page).not_to have_content @new_convention
@@ -67,7 +66,7 @@ describe "convention related tasks", :order => :defined do
   end
 
   it "reverts to collection level transcription conventions", :js => true do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
     convention_work = Work.find_by(id: @work.id)
     expect(convention_work.transcription_conventions).to eq @work_convention

@@ -106,6 +106,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
+      record_deed(@work)
       flash[:notice] = 'Work created successfully'
       ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
@@ -115,7 +116,7 @@ class WorkController < ApplicationController
 
   def update
     work = Work.find(params[:id])
-
+    id = work.collection_id
     #check the work transcription convention against the collection version
     #if they're the same, don't update that attribute of the work
     params_convention = params[:work][:transcription_conventions]
@@ -125,6 +126,11 @@ class WorkController < ApplicationController
       work.update_attributes(params[:work].except(:transcription_conventions))
     else
       work.update_attributes(params[:work])
+    end
+
+    #record work add deed if the work is moved to another collection
+    if work.collection_id != id
+      record_deed(work)
     end
 
     flash[:notice] = 'Work updated successfully'
@@ -177,6 +183,16 @@ class WorkController < ApplicationController
     msg += "<br />stderr:<br />"
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
     render(:text => msg )
+  end
+
+  protected
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
 end

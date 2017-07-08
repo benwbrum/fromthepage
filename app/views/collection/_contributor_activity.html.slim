@@ -84,5 +84,16 @@
             = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
             =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer, :long_view => true })
 
+  -unless @recent_work_add.empty?  
+    h4.nomargin Recent Works Added
+    p  
+      -@recent_work_add.each do |d|
+        .deed-short
+          span.deed-short_content
+            = "On #{d.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "
+            =render(:partial => 'deed/deed', :locals => { :deed => d, :mailer => mailer })
+
+  
+
 
 
