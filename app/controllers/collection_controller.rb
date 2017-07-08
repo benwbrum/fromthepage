@@ -10,6 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
+  before_action :set_collection, :only => [:show, :edit, :update]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -32,6 +33,7 @@ class CollectionController < ApplicationController
     redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
   end
 
+
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
@@ -41,10 +43,6 @@ class CollectionController < ApplicationController
   end
 
   def show
-    @users = User.all
-    @top_ten_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
-    @top_ten_editors      = build_user_array(Deed::PAGE_EDIT)
-    @top_ten_indexers     = build_user_array(Deed::PAGE_INDEXED)
   end
 
   def owners
@@ -116,11 +114,13 @@ class CollectionController < ApplicationController
     logger.debug("DEBUG collection1=#{@collection}")
     set_collection_for_work(@collection, @work)
     logger.debug("DEBUG collection2=#{@collection}")
+    #redirect_to action: 'edit', collection_slug: @collection.slug
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def remove_work_from_collection
     set_collection_for_work(nil, @work)
+    #redirect_to action: 'edit', collection_slug: @collection.slug
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
@@ -136,8 +136,7 @@ class CollectionController < ApplicationController
   end
 
 def contributors
-  @collection = Collection.find_by(id: params[:collection_id])
-
+  #@collection = Collection.find_by(id: params[:collection_id])
   #Get the start and end date params from date picker, if none, set defaults
   start_date = params[:start_date]
   end_date = params[:end_date]
@@ -157,7 +156,27 @@ def contributors
   
 end
 
+  def blank_collection
+    collection = Collection.find_by(id: params[:collection_id])
+    collection.blank_out_collection
+    redirect_to action: 'show', collection_id: params[:collection_id]
+  end
+
 private
+  def set_collection
+    unless @collection
+      if Collection.friendly.exists?(params[:id])
+        @collection = Collection.friendly.find(params[:id])
+=begin        if request.path != collection_path(@collection.owner, @collection)
+          return redirect_to @collection, :status => :moved_permanently
+        end
+=end
+      elsif DocumentSet.friendly.exists?(params[:id])
+        @collection = DocumentSet.friendly.find(params[:id])
+      end
+    end
+  end    
+
   def set_collection_for_work(collection, work)
     # first update the id on the work
     work.collection = collection
@@ -169,13 +188,4 @@ private
       article.save!
     end
   end
-
-  def build_user_array(deed_type)
-    user_array = []
-    condition = "collection_id = ? AND deed_type = ?"
-    deeds_by_user = Deed.group('user_id').where([condition, @collection.id, deed_type]).limit(10).order('count_id desc').count('id')
-    deeds_by_user.each { |user_id, count| user_array << [ @users.find { |u| u.id == user_id }, count ] }
-    return user_array
-  end
-
 end

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "editor actions" do
 
   before :all do
+    @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
     @collections = Collection.where(id: collection_ids)
@@ -53,7 +54,7 @@ describe "editor actions" do
   end
 
   it "looks at a work" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     click_link @work.title
     expect(page).to have_content(@page.title)
     #Check the tabs in the work
@@ -75,7 +76,7 @@ describe "editor actions" do
   end
 
   it "looks at pages" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content("please help transcribe this page")
     click_link @page.title
     page.find('#page_source_text')
@@ -140,10 +141,9 @@ describe "editor actions" do
   end
 
   it "tries to log in as another user" do
-    owner = User.find_by(login: 'margaret')
-    visit "/users/masquerade/#{owner.id}"
+    visit "/users/masquerade/#{@owner.id}"
     expect(page.current_path).to eq dashboard_path
-    expect(page.find('.dropdown')).not_to have_content owner.display_name
+    expect(page.find('.dropdown')).not_to have_content @owner.display_name
     expect(page).to have_content @user.display_name
     expect(page).not_to have_selector('a', text: 'Undo Login As')
   end

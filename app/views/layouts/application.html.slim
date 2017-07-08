@@ -72,7 +72,7 @@ html
                 =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
                 =link_to 'Collaborator Dashboard', dashboard_watchlist_path
                 hr
-                =link_to 'Your Profile', { controller: 'user', action: 'profile', user_id: current_user.id }
+                =link_to 'Your Profile', user_profile_path(current_user)
                 hr
                 =link_to 'Sign Out', destroy_user_session_path, method: :delete
           -else

@@ -11,7 +11,6 @@ section.admin-counters
     .counter(data-prefix="#{number_with_delimiter @owners.length}") #{'Owner'.pluralize(@owners.length)}
   =link_to ({ :controller => 'admin', :action => 'user_list'}) do
     .counter(data-prefix="#{number_with_delimiter @users.length}") #{'Registered user'.pluralize(@users.length)}
-  .counter(data-prefix="#{number_with_delimiter @users_count}") #{'User'.pluralize(@users_count)} online
 
 
   

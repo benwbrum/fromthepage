@@ -17,6 +17,7 @@ class TranscribeController  < ApplicationController
   end
 
   def display_page
+    @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
   end

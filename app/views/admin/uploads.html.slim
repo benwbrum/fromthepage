@@ -12,10 +12,10 @@ table.admin-grid.datagrid.striped
     -@document_uploads.each do |document|
       tr
         td
-          =link_to({ controller: 'user', action: 'profile', user_id: document.user.id }, class: 'userpic userpic-small')
+          =link_to(user_profile_path(document.user), class: 'userpic userpic-small')
             =gravatar_image_tag document.user.email, alt: document.user.display_name
         td.nowrap.toleft
-          div =link_to document.user.login, { controller: 'user', action: 'profile', user_id: document.user.id }
+          div =link_to document.user.login, user_profile_path(document.user)
           small =document.user.email
         td
           -if document.collection.present?
