@@ -22,7 +22,7 @@ class AdminController < ApplicationController
 
     @users = User.all
     @owners = @users.select {|i| i.owner == true}
-
+=begin
     sql_online =
       'SELECT count(DISTINCT user_id) count '+
       'FROM interactions '+
@@ -30,6 +30,7 @@ class AdminController < ApplicationController
       'AND user_id IS NOT NULL'
 
     @users_count = Interaction.connection.select_value(sql_online)
+=end
   end
 
   def user_list
@@ -52,47 +53,6 @@ class AdminController < ApplicationController
     @user.destroy
     flash[:notice] = "User profile has been deleted"
     redirect_to :action => 'user_list'
-  end
-
-  # display sessions for a user
-  # not tested
-  def session_list
-    if(@user)
-      user_id = @user.id
-      which_where = 1
-    else
-      user_id = nil
-      which_where = 2
-    end
-
-    entries = Interaction.list_sessions(which_where, user_id)
-    @sessions = entries.paginate :page => params[:page], :per_page => PAGES_PER_SCREEN, :total_entries => entries.length
-  end
-
-  # display last interactions, including who did what to which
-  # actor, action, object, detail
-  def interaction_list
-    # interactions for a session
-    if(params[:session_id])
-      conditions = "session_id = '#{params['session_id']}'"
-    else
-      if(@user)
-        # interactions for user
-        conditions = "user_id = #{@user.id}"
-      else
-        # all interactions
-        conditions = nil
-      end
-    end
-    @interactions = Interaction.where(conditions).order('id ASC').all
-  end
-
-  # display last interactions, including who did what to which
-  # actor, action, object, detail
-  def error_list
-    # interactions with errors
-    limit = params[:limit] || 50
-    @interactions = Interaction.where("status='incomplete'").order('id DESC').limit(limit)#.all
   end
 
   def tail_logfile

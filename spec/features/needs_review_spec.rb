@@ -6,7 +6,7 @@ describe "needs review", :order => :defined do
   before :all do
     @user = User.find_by(login: USER)
     @collection = Collection.second
-    @work = @collection.works.second
+    @work = @collection.works.third
     @page1 = @work.pages.first
     @page2 = @work.pages.second
     @page3 = @work.pages.third
@@ -32,7 +32,7 @@ describe "needs review", :order => :defined do
   end
 
   it "marks pages blank" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(@page1.status).to be_nil
     expect(@page2.status).to be_nil
     expect(page).to have_content(@work.title)
@@ -53,7 +53,7 @@ describe "needs review", :order => :defined do
   end
 
   it "marks translated pages as blank" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@work.title)
     expect(@page3.translation_status).to be_nil
     page.find('.work-page_title', text: @page3.title).click_link(@page3.title)
@@ -65,7 +65,7 @@ describe "needs review", :order => :defined do
   end
 
   it "marks pages as needing review" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     expect(@page4.status).to be_nil
     expect(@page5.status).to be_nil
     expect(page).to have_content(@collection.title)
@@ -101,7 +101,7 @@ describe "needs review", :order => :defined do
   end
 
   it "filters list of review pages" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@work.title)
     pages = @work.pages.limit(5)
     pages.each do |p|
@@ -136,7 +136,7 @@ describe "needs review", :order => :defined do
   end
 
   it "checks collection overview stats" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"
@@ -166,8 +166,7 @@ describe "needs review", :order => :defined do
   end
 
   it "checks collection statistics" do
-    visit "/collection/show?collection_id=#{@collection.id}"
-    page.find('.tabs').click_link("Statistics")
+    visit collection_statistics_path(@collection.owner, @collection)
     expect(page).to have_content(@collection.title)
     expect(page).to have_content("Work Progress")
     @collection.works.each do |w|
@@ -198,7 +197,7 @@ describe "needs review", :order => :defined do
 
   it "marks pages as no longer needing review" do
     @page4 = @work.pages.fourth
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     expect(@page4.status).to eq ('review')
     expect(page).to have_content(@collection.title)
     click_link @work.title
@@ -227,7 +226,7 @@ describe "needs review", :order => :defined do
   end
 
   it "marks pages not blank" do
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content("This page is blank")
     @page1 = @work.pages.first
     expect(@page1.status).to eq ('blank')
@@ -245,7 +244,7 @@ describe "needs review", :order => :defined do
   it "checks needs review/blank checkboxes", :js => true do
     @page1 = @work.pages.first
     expect(@page1.status).to be_nil
-    visit "/display/read_work?work_id=#{@work.id}"
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_content', text: @page1.title).click_link("help transcribe")
     expect(page.find('#page_needs_review')).not_to be_checked
     expect(page.find('#page_mark_blank')).not_to be_checked
