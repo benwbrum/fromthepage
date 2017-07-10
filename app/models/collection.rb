@@ -80,6 +80,41 @@ class Collection < ActiveRecord::Base
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def blank_out_collection
+    puts "Reset all data in the #{self.title} collection to blank"
+    works = Work.where(collection_id: self.id)
+    pages = Page.where(work_id: works.ids)
+
+    #delete deeds for pages and articles (not work add deed)
+    Deed.where(page_id: pages.ids).destroy_all
+    Deed.where(article_id: self.articles.ids).destroy_all
+    #delete articles
+    Article.where(collection_id: self.id).destroy_all
+    #delete categories (aside from the default)
+    Category.where(collection_id: self.id).where.not(title: 'People').where.not(title: 'Places').destroy_all
+    #delete notes
+    Note.where(page_id: pages.ids).destroy_all
+    #delete page_article_links
+    PageArticleLink.where(page_id: pages.ids).destroy_all
+    #update work transcription version
+    works.each do |w|
+      w.update_columns(transcription_version: 0)
+    end
+    #for each page, delete page versions, update all attributes, save
+    pages.each do |p|
+      p.page_versions.destroy_all
+      p.update_columns(source_text: nil, base_image:nil, base_width: nil, base_height: nil, shrink_factor: nil, created_on: Time.now, lock_version: 0, xml_text: nil, status: nil, source_translation: nil, xml_translation: nil, translation_status: nil, search_text: "\n\n\n\n")
+      p.save!
+    end
+
+    #fix user_id for page version (doesn't get set in this type of update)
+    PageVersion.where(page_id: pages.ids).each do |v|
+      v.user_id = self.owner.id
+      v.save!
+    end
+    puts "#{self.title} collection has been reset"
+  end
+
   protected
     def set_transcription_conventions
       unless self.transcription_conventions.present?

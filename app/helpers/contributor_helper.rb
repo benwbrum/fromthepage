@@ -10,10 +10,11 @@ module ContributorHelper
     note_type = "note_add"
     article_type = "art_edit"
     index_type = 'page_index'
-    review_type = 'review'
-    translate_index = 'xlat_index'
-    translate_review = 'xlat_rev'
+    review_type = "review"
+    translate_index = "xlat_index"
+    translate_review = "xlat_rev"
     translate_type = ["pg_xlat", "pg_xlat_ed"]
+    work_add = "work_add"
     condition = "created_at >= ? AND created_at <= ?"
 
     #get the start and end date params from date picker, if none, set defaults
@@ -34,6 +35,7 @@ module ContributorHelper
     @recent_review = @collection_deeds.where(deed_type: review_type)
     @recent_xlat_index = @collection_deeds.where(deed_type: translate_index)
     @recent_xlat_review = @collection_deeds.where(deed_type: translate_review)
+    @recent_work_add = @collection_deeds.where(deed_type: work_add)
     #get distinct user ids per deed and create list of users
     user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
     @all_transcribers = User.where(id: user_deeds)

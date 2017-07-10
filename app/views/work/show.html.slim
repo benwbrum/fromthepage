@@ -5,7 +5,7 @@
     h3 =@work.title
     -if @work.description.present?
       h5 Description
-      .big =@work.description
+      .big =raw(@work.description)
 
     -if @work.physical_description.present?
       h5 Physical Description

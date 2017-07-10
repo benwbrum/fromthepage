@@ -27,9 +27,6 @@ end
     page.find('.tabs').click_link("Uploads")
     expect(page.current_path).to eq '/admin/uploads'
     expect(page).to have_content("Upload Details")
-    page.find('.tabs').click_link("Errors")
-    expect(page.current_path).to eq '/admin/error_list'
-    expect(page).to have_content("User & Context")
     page.find('.tabs').click_link("Logfile")
     expect(page.current_path).to eq '/admin/tail_logfile'
     page.find('.tabs').click_link("Summary")
