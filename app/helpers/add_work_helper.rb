@@ -31,8 +31,13 @@ module AddWorkHelper
 
     if @document_upload.save
         if SMTP_ENABLED
-          flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
-          SystemMailer.new_upload(@document_upload).deliver!
+          begin
+            SystemMailer.new_upload(@document_upload).deliver!
+            flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
+          rescue IOError, Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPUnknownError, TimeoutError, Net::SMTPFatalError, Net::SMTPSyntaxError => e
+            print e
+            flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+          end
         else
           flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
         end
