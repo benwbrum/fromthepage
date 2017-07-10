@@ -16,7 +16,7 @@ h1 ="Browse #{@omeka_site.title}"
   -if @omeka_collectionless_items.present?
     .omeka-collection
       .headline
-        h3.headline_title Items without collections
+        h3.headline_title Items outside collections
         .headline_aside
           span.omeka-collection_count =pluralize(@omeka_collectionless_items.size, 'item')
           =link_to 'Click to load', { action: 'items', omeka_site_id: @omeka_site.id }, remote: true, data: { 'omeka-items' =>'' }, class: 'button outline'
@@ -36,7 +36,7 @@ h1 ="Browse #{@omeka_site.title}"
         var $element = $(this);
         if(xhr.status === 200) {
           var $collection = $element.closest('.omeka-collection').append(xhr.responseText);
-          $element.replaceWith($('<a>').addClass('button outline').attr('data-omeka-import-all', '').text('Import all'));
+          $element.replaceWith($('<span>').text(''));
           checkImportAll($collection);
         } else {
           $element.removeAttr('disabled').text($element.data('old-text'));

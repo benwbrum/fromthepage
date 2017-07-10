@@ -44,7 +44,6 @@ class OmekaItemsController < ApplicationController
     respond_to do |format|
       if @omeka_item.save
         format.html {
-          flash[:notice] = "Omeka item was successfully imported"
           redirect_to @omeka_item
         }
         format.json { render nothing: true, status: :created, location: @omeka_item }
@@ -56,7 +55,6 @@ class OmekaItemsController < ApplicationController
   end
 
   def import
-    binding.pry
     @omeka_item = OmekaItem.find(params[:id])
     collection = Collection.find(params[:collection_id])
     @omeka_item.import(collection)
