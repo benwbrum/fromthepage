@@ -47,7 +47,6 @@ class ExportController < ApplicationController
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
 
