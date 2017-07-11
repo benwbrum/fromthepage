@@ -17,5 +17,5 @@ GravatarImageTag.configure do |config|
   config.size = 80
 
   # Set this to true if you require secure images on your pages
-  config.secure = false
+  config.secure = true
 end
