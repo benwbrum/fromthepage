@@ -1,7 +1,5 @@
 module AddWorkHelper
-
-  SMTP_ERRORS = [
-    IOError, Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPUnknownError, TimeoutError, Net::SMTPFatalError, Net::SMTPSyntaxError]
+  include ErrorHelper
 
   def new_work
     @document_upload = DocumentUpload.new
@@ -11,7 +9,6 @@ module AddWorkHelper
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
   end
-
 
   # Owner Dashboard - staging area
   def staging
@@ -33,18 +30,17 @@ module AddWorkHelper
     @document_upload.user = current_user
 
     if @document_upload.save
-        if SMTP_ENABLED
-          begin
-            SystemMailer.new_upload(@document_upload).deliver!
-            flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
-          rescue *SMTP_ERRORS => e
-            logger.error(e)
-            logger.error(e.backtrace.join("\n"))
-            flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
-          end
-        else
+      if SMTP_ENABLED
+        begin
+          SystemMailer.new_upload(@document_upload).deliver!
+          flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
+        rescue *SMTP_ERRORS => e
+          log_smtp_error(e, current_user)
           flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
         end
+      else
+        flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+      end
       @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
     else
