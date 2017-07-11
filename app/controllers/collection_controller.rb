@@ -88,7 +88,14 @@ class CollectionController < ApplicationController
   end
 
   def update
-    if @collection.update_attributes(params[:collection])
+    if params[:collection][:slug] == ""
+      @collection.update(params[:collection].except(:slug))
+      title = @collection.title.parameterize
+      @collection.update(slug: title)
+    else
+      @collection.update(params[:collection])
+    end
+    if @collection.save!
       flash[:notice] = 'Collection has been updated'
       redirect_to action: 'edit', collection_id: @collection.id
     else
