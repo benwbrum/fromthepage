@@ -1,5 +1,8 @@
 module AddWorkHelper
 
+  SMTP_ERRORS = [
+    IOError, Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPUnknownError, TimeoutError, Net::SMTPFatalError, Net::SMTPSyntaxError]
+
   def new_work
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
@@ -34,8 +37,9 @@ module AddWorkHelper
           begin
             SystemMailer.new_upload(@document_upload).deliver!
             flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
-          rescue IOError, Net::SMTPAuthenticationError, Net::SMTPServerBusy, Net::SMTPUnknownError, TimeoutError, Net::SMTPFatalError, Net::SMTPSyntaxError => e
-            print e
+          rescue *SMTP_ERRORS => e
+            logger.error(e)
+            logger.error(e.backtrace.join("\n"))
             flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
           end
         else
