@@ -113,6 +113,11 @@
       =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
         span Disable Document Sets
 
+    h3 Blank Collection
+    p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button')
+      span Blank Collection
+
 =render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
