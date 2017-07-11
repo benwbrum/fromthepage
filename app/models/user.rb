@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
   def all_owner_collections
-    query = Collection.where(owner_user_id: self.id, id: self.owned_collections.ids)
+    query = Collection.where("owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
     Collection.where(query.where_values.inject(:or)).uniq.order(:title)
   end
 

@@ -1,10 +1,8 @@
 class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
-  before_filter :log_interaction
   before_action :store_current_location, :unless => :devise_controller?
   before_filter :load_html_blocks
-  # after_filter :complete_interaction
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
@@ -168,46 +166,6 @@ class ApplicationController < ActionController::Base
       @work.ia_work.server = ia_servers[@work.ia_work.book_id][:server]
       @work.ia_work.ia_path = ia_servers[@work.ia_work.book_id][:ia_path]
     end
-  end
-
-  # log what was done
-  def log_interaction
-    @interaction = Interaction.new
-    if !session.respond_to?(:session_id)
-      @interaction.session_id = Interaction.count + 1
-    else
-      @interaction.session_id = session.session_id
-    end
-
-    @interaction.browser = request.env['HTTP_USER_AGENT']
-    @interaction.ip_address = request.env['REMOTE_ADDR']
-    if(user_signed_in?)
-      @interaction.user_id = current_user.id
-    end
-    clean_params = params.reject{|k,v| k=='password'}
-    if clean_params['user']
-      clean_params['user'] = clean_params['user'].reject{|k,v| k=~/password/}
-    end
-
-    @interaction.params = clean_params.inspect.truncate(128)
-
-    @interaction.status = 'incomplete'
-    # app specific stuff
-    @interaction.action = action_name
-    if @collection
-      @interaction.collection_id = @collection.id
-    end
-    if @work
-      @interaction.work_id = @work.id
-    end
-    if @page
-      @interaction.page_id = @page.id
-    end
-    @interaction.save
-  end
-
-  def complete_interaction
-    @interaction.update_attribute(:status, 'complete')
   end
 
   def load_html_blocks

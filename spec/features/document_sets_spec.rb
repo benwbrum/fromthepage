@@ -78,13 +78,15 @@ describe "document sets", :order => :defined do
 
   it "views document sets" do
     #need to restrict collection and see what the user can see
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_path
     @collections.each do |c|
       expect(page).to have_content(c.title)
     end
     @document_sets.each do |set|
-      expect(page).to have_content(set.title)
+      if set.is_public
+        expect(page).to have_content(set.title)
+      end
     end
     page.find('.maincol').find('a', text: @set.title).click
     expect(page).to have_content("Overview")

@@ -34,20 +34,7 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "imports IIIF manifests" do
-    visit dashboard_owner_path
-    works_count = Work.all.count
-    page.find('.tabs').click_link("Start A Project")
-    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/duchas:5141774"
-    click_button('Import')
-    expect(page).to have_content("Metadata")
-    click_link('Import')
-    expect(page).to have_content("Import Manifest")
-    select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import')
-    expect(page).to have_content(@collection.title)
-    new_works = Work.all.count
-  #  expect(new_works).to eq (works_count + 1)
-  #import another manifest for test data
+    #import a manifest for test data
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
@@ -58,6 +45,22 @@ describe "uploads data for collections", :order => :defined do
     select(@collection.title, :from => 'sc_manifest_collection_id')
     click_button('Import')
     expect(page).to have_content(@collection.title)
+    visit dashboard_owner_path
+    works_count = Work.all.count
+    page.find('.tabs').click_link("Start A Project")
+    #this manifest has a very long title
+    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
+    click_button('Import')
+    expect(page).to have_content("Metadata")
+    click_link('Import')
+    expect(page).to have_content("Import Manifest")
+    select(@collection.title, :from => 'sc_manifest_collection_id')
+    click_button('Import')
+    expect(page).to have_content(@collection.title)
+    expect((@collection.works.last.title).length).to be < 255
+    new_works = Work.all.count
+    expect(new_works).to eq (works_count + 1)
+  
   end
 
   it "creates an empty work" do
@@ -73,7 +76,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "adds pages to an empty work" do
     visit dashboard_owner_path
-    page.find('a', text: @title).click
+    page.find('.maincol').find('a', text: @title).click
     page.find('.tabs').click_link("Pages")
     page.find('a', text: "Add New Page").click
     attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage1.jpg')
