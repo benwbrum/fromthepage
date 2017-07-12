@@ -1,67 +1,43 @@
 -tabs = [{\
   :name => 'Read',
   :selected => 1,
-  :options => {\
-    :controller => 'display',
-    :action => 'read_work',
-  },
+  :path => "#{collection_read_work_path(@collection.owner, @collection, @work)}",
 },{\
   :name => 'About',
   :selected => 3,
-  :options => {\
-    :controller => 'work',
-    :action => 'show',
-  },
+  :path => "#{collection_work_about_path(@collection.owner, @collection, @work)}",
 },{\
   :name => 'Contents',
   :selected => 2,
-  :options => {\
-    :controller => 'display',
-    :action => 'list_pages',
-  },
+  :path => "#{collection_work_contents_path(@collection.owner, @collection, @work)}",
 },{\
   :name => 'Versions',
   :selected => 4,
-  :options => {\
-    :controller => 'work',
-    :action => 'versions',
-  },
+  :path => "#{versions_collection_work_path(@collection.owner, @collection, @work)}",
 }]
 
 -if false
   -tabs += [{\
     :name => 'Print',
     :selected => 5,
-    :options => {\
-      :controller => 'print',
-      :action => 'work',
-    },
+    :path => "#{print_collection_work_path(@collection.owner, @collection, @work)}",
   }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
     :name => 'Settings',
     :selected => 6,
-    :options => {\
-      :controller => 'work',
-      :action => 'edit',
-    },
+    :path => "#{edit_collection_work_path(@collection.owner, @collection, @work)}",
   },{\
     :name => 'Pages',
     :selected => 8,
-    :options => {\
-      :controller => 'work',
-      :action => 'pages_tab',
-    },
+    :path => "#{pages_collection_work_path(@collection.owner, @collection, @work)}",
   }]
 
 -tabs += [{\
   :name => 'Help',
   :selected => 9,
-  :options => {\
-    :controller => 'static',
-    :action => 'transcribe_help',
-  },
+  :path => "#{collection_work_help_path(@collection.owner, @collection, @work)}",
 }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
@@ -72,5 +48,5 @@
 h1 =@work.title
 .tabs
   -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:work_id => work_id)
-      a.active =tab[:name]
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
+        a.active =tab[:name]

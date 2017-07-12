@@ -76,3 +76,18 @@ h2.legend Page Notes
   =render :partial => "notes/notes"
 
 =render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+
+    $(function(){
+      $('#page_needs_review').click(function(){
+        $('#page_mark_blank').prop('checked', false);
+      });
+    });
+
+    $(function(){
+      $('#page_mark_blank').click(function(){
+        $('#page_needs_review').prop('checked', false);
+      });
+    });

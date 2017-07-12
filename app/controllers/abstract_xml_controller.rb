@@ -12,12 +12,17 @@ module AbstractXmlController
 
   def autolink(text)
     #find the list of articles
+    if @collection.is_a?(DocumentSet)
+      id = @collection.collection.id
+    else
+      id = @collection.id
+    end
     sql = 'select distinct article_id, '+
           'display_text '+
           'from page_article_links ' +
           'inner join articles a '+
           'on a.id = article_id ' +
-          "where a.collection_id = #{@collection.id}"
+          "where a.collection_id = #{id}"
     logger.debug(sql)
     matches =
       Page.connection.select_all(sql).to_a

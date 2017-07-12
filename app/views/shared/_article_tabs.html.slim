@@ -1,29 +1,20 @@
 -tabs = [{\
   :name => 'Overview',
   :selected => 1,
-  :options => {\
-    :controller => 'article',
-    :action => 'show',
-  },
+  :path => "#{collection_article_show_path(@collection.owner, @collection, @article)}",
 }]
 
 -if user_signed_in? && !current_user.guest
   -tabs += [{\
     :name => 'Settings',
     :selected => 4,
-    :options => {\
-      :controller => 'article',
-      :action => 'edit',
-    },
+    :path =>"#{collection_article_edit_path(@collection.owner, @collection, @article)}",
   }]
 
 -tabs += [{\
   :name => 'Versions',
   :selected => 2,
-  :options => {\
-    :controller => 'article_version',
-    :action => 'list',
-  },
+  :path => "#{collection_article_version_path(@collection.owner, @collection, @article)}",
 }]
 
 -description = xml_to_html(@article.xml_text)
@@ -34,5 +25,9 @@
 h1 =@article.title
 .tabs
   -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:article_id => article_id)
-      a.active =tab[:name]
+    -if tab[:path]
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
+        a.active =tab[:name]
+    -else
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:options].merge(:article_id => article_id)
+        a.active =tab[:name]
