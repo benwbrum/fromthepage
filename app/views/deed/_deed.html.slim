@@ -52,7 +52,10 @@
   -output += "added #{work}"
 
 -if(long_view && !deed.work.nil?)
-  -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: false )
+  -if deed.work.collection
+    -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: false )
+  -else
+    -work = deed.work.title      
   -output += " in the work #{work}"
 
 -if(@collection.nil? && !deed.collection.nil?)
