@@ -48,7 +48,7 @@ describe "testing deletions" do
   end
 
   it "deletes a page" do
-    work = @collection.works.last
+    work = @collection.works.first
     count = work.pages.count
     test_page = work.pages.first
     visit dashboard_owner_path

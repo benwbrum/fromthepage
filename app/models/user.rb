@@ -122,7 +122,19 @@ class User < ActiveRecord::Base
   end
   
   def unrestricted_collections
-    collections = self.all_owner_collections.unrestricted.order_by_recent_activity
+    collections = self.all_owner_collections.unrestricted
+  end
+
+  def unrestricted_document_sets
+    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+  end
+
+  def document_sets
+    DocumentSet.where(owner_user_id: self.id)
+  end
+
+  def owned_collection_and_document_sets
+    (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
   end
 
   def slug_candidates

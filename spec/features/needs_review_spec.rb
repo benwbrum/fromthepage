@@ -244,8 +244,7 @@ describe "needs review", :order => :defined do
   it "checks needs review/blank checkboxes", :js => true do
     @page1 = @work.pages.first
     expect(@page1.status).to be_nil
-    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
-    page.find('.work-page_content', text: @page1.title).click_link("help transcribe")
+    visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, @page1.id)
     expect(page.find('#page_needs_review')).not_to be_checked
     expect(page.find('#page_mark_blank')).not_to be_checked
     page.check('page_needs_review')

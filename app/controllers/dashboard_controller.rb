@@ -31,6 +31,7 @@ class DashboardController < ApplicationController
     @notes = current_user.notes
     @works = current_user.owner_works
     @ia_works = current_user.ia_works
+    @document_sets = current_user.document_sets
 
     logger.debug("DEBUG: #{current_user.inspect}")
   end

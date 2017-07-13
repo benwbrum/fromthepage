@@ -10,6 +10,64 @@ module ExportHelper
     end
   end
 
+  def tei_taxonomy(categories, subjects)
+    tei = "<taxonomy>\n"
+    seen_subjects = []
+    categories.each do |category|
+      tei << category_to_tei(category, subjects, seen_subjects)
+    end
+    tei << "</taxonomy>\n"
+    tei = REXML::Document.new(tei).to_s
+    
+    tei
+  end
+
+  def category_to_tei(category, subjects, seen_subjects) 
+    has_content = false
+    tei = ""
+    tei << "<category xml:id=\"C#{category.id}\">\n"
+    tei << "<catDesc>#{category.title}</catDesc>\n"
+    category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
+      has_content = true
+      if seen_subjects.include?(subject)
+        tei << seen_subject_to_tei(subject, category)
+      else
+        tei << subject_to_tei(subject)
+        seen_subjects << subject
+      end
+    end
+    category.children.each do |child|
+      has_content = true
+      tei << category_to_tei(child, subjects, seen_subjects)
+    end
+    tei << "</category>\n"
+
+    has_content ? tei : ""
+  end
+  
+  def subject_to_tei(subject)
+    tei = "<category xml:id=\"S#{subject.id}\">\n"
+    tei << "<catDesc>\n"
+    tei << "<term>#{subject.title}</term>\n"
+    tei << "<gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    tei << "</catDesc>\n"
+    tei << "</category>\n"
+
+    tei
+  end
+
+
+  def seen_subject_to_tei(subject, parent_category)
+    tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
+    tei << "<catDesc>\n"
+    tei << "<term><rs ref=\"S#{subject.id}\">#{subject.title}</rs></term>\n"
+    tei << "</catDesc>\n"
+    tei << "</category>\n"
+
+    tei
+    
+  end
+
   def xml_to_export_tei(xml_text, context, page_id = "")
 
     return "" if xml_text.blank?
@@ -88,6 +146,21 @@ module ExportHelper
       u.children.each { |c| hi.add(c) }
 
       u.replace_with(hi)
+    end
+    p_element.elements.each('//i') do |i|
+      hi = REXML::Element.new("hi")
+
+      hi.add_attribute("rend", "italic")
+      i.children.each { |c| hi.add(c) }
+
+      i.replace_with(hi)
+    end
+    p_element.elements.each('//sup') do |sup|
+      add = REXML::Element.new("add")
+
+      add.add_attribute("place", "above")
+      sup.children.each { |c| add.add(c) }
+      sup.replace_with(add)
     end
   end
 

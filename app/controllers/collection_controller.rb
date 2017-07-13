@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
-  before_action :set_collection, :only => [:show, :edit, :update]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -30,9 +30,14 @@ class CollectionController < ApplicationController
   def enable_document_sets
     @collection.supports_document_sets = true
     @collection.save!
-    redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
+    redirect_to document_sets_path(collection_id: @collection)
   end
 
+  def disable_document_sets
+    @collection.supports_document_sets = false
+    @collection.save!
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
 
   def load_settings
     @main_owner = @collection.owner
@@ -148,7 +153,6 @@ class CollectionController < ApplicationController
   end
 
 def contributors
-  #@collection = Collection.find_by(id: params[:collection_id])
   #Get the start and end date params from date picker, if none, set defaults
   start_date = params[:start_date]
   end_date = params[:end_date]
@@ -165,7 +169,6 @@ def contributors
   @end_deed = end_date.strftime("%b %d, %Y")
 
   new_contributors(@collection, start_date, end_date)
-  
 end
 
   def blank_collection

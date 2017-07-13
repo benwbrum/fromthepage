@@ -3,7 +3,7 @@
 		<script type="text/javascript">
 		    OpenSeadragon({
 		        id:                 "example-inline-configuration-for-iiif",  //div id to put this image in 
-		        prefixUrl:          "../assets/iiif-images/",
+		        prefixUrl:          "/assets/iiif-images/",
 		        preserveViewport:   true,
 		        visibilityRatio:    1,
 		        minZoomLevel:       1,
@@ -13,6 +13,7 @@
 		      	  "<%= @page.sc_canvas.sc_service_id %>/info.json"
 		      	]
 		      });
+
 		</script>
         <noscript>
             <p>OpenSeadragon is not available unless JavaScript is enabled.</p>
