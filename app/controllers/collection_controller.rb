@@ -46,7 +46,7 @@ class CollectionController < ApplicationController
     @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
-    @noncollaborators = User.order(:display_name) - @collaborators
+    @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
   end
 
   def show
