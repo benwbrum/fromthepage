@@ -47,7 +47,7 @@ namespace :fromthepage do
       begin
         SystemMailer.upload_succeeded(document_upload).deliver!
         UserMailer.upload_finished(document_upload).deliver!
-      rescue *SMTP_ERRORS => e
+      rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
     end
