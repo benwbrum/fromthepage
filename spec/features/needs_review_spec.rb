@@ -4,6 +4,7 @@ describe "needs review", :order => :defined do
   Capybara.javascript_driver = :webkit
 
   before :all do
+    @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collection = Collection.second
     @work = @collection.works.third
@@ -20,15 +21,14 @@ describe "needs review", :order => :defined do
   end
 
   it "sets the work to translation" do
-    owner = User.find_by(login: OWNER)
     logout(@user)
-    login_as(owner, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit "/work/edit?work_id=#{@work.id}"
     expect(page).to have_content(@work.title)
     page.check('work_supports_translation')
     click_button('Save Changes')
     expect(Work.find_by(id: @work.id).supports_translation).to be true
-    logout(owner)
+    logout(@owner)
   end
 
   it "marks pages blank" do
@@ -254,6 +254,20 @@ describe "needs review", :order => :defined do
     page.check('page_needs_review')
     expect(page.find('#page_needs_review')).to be_checked
     expect(page.find('#page_mark_blank')).not_to be_checked
+  end
+
+  it "sets a collection to needs review workflow" do
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.check('collection_review_workflow')
+    click_button('Save Changes')
+    review_page = @work.pages.last
+    visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
+    page.fill_in 'page_source_text', with: "Needs Review Workflow Text"
+    click_button('Save Changes')
+    expect(page).to have_content("Needs Review Workflow Text")
+    expect(Page.find_by(id: review_page.id).status).to eq ('review')
   end
 
 end

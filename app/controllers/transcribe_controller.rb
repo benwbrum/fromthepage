@@ -47,6 +47,7 @@ class TranscribeController  < ApplicationController
   def needs_review
     if (@page.work.collection.review_workflow == true) && @page.status == nil
       @page.status = Page::STATUS_NEEDS_REVIEW
+      record_review_deed
     elsif params[:type] == 'translation'
       if params[:page]['needs_review'] == '1'
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
