@@ -12,7 +12,6 @@ describe "uploads data for collections", :order => :defined do
   end
 
   before :each do
-    @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     login_as(@owner, :scope => :user)
   end
 
@@ -121,6 +120,7 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "adds works to document sets" do
+    @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Sets")
