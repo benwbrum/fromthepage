@@ -4,15 +4,15 @@ require 'spec_helper'
 describe "uploads data for collections", :order => :defined do
 
   before :all do
-
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.second
+    @set_collection = @collections.last
     @title = "This is an empty work"
-
   end
 
   before :each do
+    @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     login_as(@owner, :scope => :user)
   end
 
@@ -94,15 +94,41 @@ describe "uploads data for collections", :order => :defined do
     #testing the cancel button involves ajax
   end
 
-  it "checks that the file has been uploaded" do
-    sleep(60)
-    @work = Work.find_by(title: 'test')
-    visit "/display/read_work?work_id=#{@work.id}"
-    expect(page).to have_content(@work.title)
-    expect(page).to have_content(@work.pages.first.title)
-    click_link(@work.pages.first.title)
-    page.find('#page_source_text')
-    expect(page).to have_button('Preview')
+  it "adds new document sets" do
+    visit dashboard_owner_path
+    doc_set = DocumentSet.where(owner_user_id: @owner.id).count
+    page.find('.maincol').find('a', text: @set_collection.title).click
+    page.find('.tabs').click_link("Settings")
+    page.find('.button', text: 'Enable Document Sets').click
+    expect(page).to have_content('Create a Document Set')
+    page.find('.button', text: 'Create a Document Set').click
+    page.fill_in 'document_set_title', with: "Test Document Set 1"
+    page.find_button('Create Document Set').click
+    expect(DocumentSet.last.is_public).to be true
+    expect(page).to have_content("Assign Works to Document Sets")
+    expect(page).to have_content("Test Document Set 1")
+    after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
+    expect(after_doc_set).to eq (doc_set + 1)
+    doc_set = DocumentSet.where(owner_user_id: @owner.id).count
+    page.find('.button', text: 'Create a Document Set').click
+    page.fill_in 'document_set_title', with: "Test Document Set 2"
+    page.uncheck 'Public'
+    page.find_button('Create Document Set').click
+    expect(page).to have_content("Test Document Set 2")
+    expect(DocumentSet.last.is_public).to be false
+    after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
+    expect(after_doc_set).to eq (doc_set + 1)
+  end
+
+  it "adds works to document sets" do
+    visit dashboard_owner_path
+    page.find('.maincol').find('a', text: @set_collection.title).click
+    page.find('.tabs').click_link("Sets")
+    expect(page).to have_content("Document Sets for #{@set_collection.title}")
+    page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.first.id}")
+    page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.second.id}")
+    page.check("work_assignment_#{@document_sets.last.id}_#{@set_collection.works.last.id}")
+    page.find_button('Save').click
   end
 
 end
