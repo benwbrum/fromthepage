@@ -40,6 +40,11 @@ class Article < ActiveRecord::Base
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
   end
 
+  #needed for document sets to correctly display articles
+  def show_links(collection)
+    self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids}).order("pages.work_id, pages.title")
+  end
+
   def page_list
     self.pages.order("pages.work_id, pages.position")
   end

@@ -49,7 +49,12 @@ class ApplicationController < ActionController::Base
     # whenever both are specified on the parameters
     if params[:article_id]
       @article = Article.find(params[:article_id])
-      @collection = @article.collection
+      if session[:col_id] != nil
+        @collection = set_friendly_collection(session[:col_id])
+        session[:col_id] = nil
+      else
+        @collection = @article.collection
+      end
     end
     if params[:page_id]
       @page = Page.find(params[:page_id])
@@ -226,6 +231,16 @@ end
 
   def page_params(page)
     if page.status == nil
+      if user_signed_in?
+        collection_transcribe_page_path(@collection.owner, @collection, page.work, page)
+      else
+        collection_guest_page_path(@collection.owner, @collection, page.work, page)
+      end
+    else
+      collection_display_page_path(@collection.owner, @collection, page.work, page)
+    end
+=begin
+    if page.status == nil
       controller = 'transcribe'
       if user_signed_in?
         action = 'display_page'
@@ -242,7 +257,7 @@ end
     else
       { :controller => controller, :action => action, :page_id => page.id}
     end
-
+=end
   end
 
 private

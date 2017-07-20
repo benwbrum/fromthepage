@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 4, :work_id => @work.id }})
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 4, :work_id => @work }})
 
 -if @page_versions.empty?
   .nodata
@@ -11,7 +11,7 @@
       th Revision
       th Date
     -@page_versions.each do |version|
-      -user_link = link_to(version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => version.user.id })
+      -user_link = link_to(version.user.display_name, user_profile_path(version.user))
       tr
         td =link_to version.title, { :controller => 'page_version', :action => 'list', :page_id => version.page.id }
         td =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }

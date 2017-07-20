@@ -2,7 +2,7 @@ class ExportController < ApplicationController
   require 'zip'
 
   def index
-    @collection = Collection.includes(works: :work_statistic).find_by(id: params[:collection_id])
+    @collection = Collection.includes(works: :work_statistic).friendly.find(params[:collection_id])
     #check if there are any translated works in the collection
     if @collection.works.where(supports_translation: true).exists?
       @header = "Translated"
@@ -47,7 +47,6 @@ class ExportController < ApplicationController
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-
     render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
   end
 

@@ -7,7 +7,7 @@ class DisplayController < ApplicationController
 
   def read_work
     if params.has_key?(:work_id)
-      @work = Work.find_by(id: params[:work_id])
+      @work = Work.friendly.find(params[:work_id])
     elsif params.has_key?(:id)
       @work = Work.friendly.find(params[:id])
     elsif params.has_key?(:url)
@@ -38,17 +38,19 @@ class DisplayController < ApplicationController
   def read_all_works
     if @article
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
       @pages.uniq!
     else
       @pages = Page.paginate :all, :page => params[:page],
                                         :order => 'work_id, position',
                                         :per_page => 5
     end
+    session[:col_id] = @collection.slug
   end
 
   def search
     if @article
+      session[:col_id] = @collection.slug
       # get the unique search terms
       terms = []
       @search_string = ""
@@ -67,22 +69,18 @@ class DisplayController < ApplicationController
       end
       if params[:unlinked_only]
         conditions =
-          ["works.collection_id = ? "+
-          "AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)"+
+          ["MATCH(search_text) AGAINST(? IN BOOLEAN MODE)"+
           " AND pages.id not in "+
           "    (SELECT page_id FROM page_article_links WHERE article_id = ?)",
-          @collection.id,
           @search_string,
           @article.id]
 
       else
         conditions =
-          ["works.collection_id = ? "+
-          "AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)",
-          @collection.id,
+          ["MATCH(search_text) AGAINST(? IN BOOLEAN MODE)",
           @search_string]
       end
-      @pages = Page.order('work_id, position').joins(:work).where(conditions).paginate(page: params[:page])
+      @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
       @search_string = CGI::escapeHTML(params[:search_string])
       # convert 'natural' search strings unless they're precise
@@ -90,7 +88,7 @@ class DisplayController < ApplicationController
         @search_string.gsub!(/(\S+)/, '+\1*')
       end
       # restrict to pages that include that subject
-      @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]).paginate(page: params[:page])
+      @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @search_string).paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
   end

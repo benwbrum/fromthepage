@@ -24,6 +24,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.subjects_disabled
   end
 
+  def articles
+    Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
+  end
+
   def categories
     self.collection.categories
   end
