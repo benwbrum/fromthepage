@@ -74,6 +74,7 @@ Capybara.configure do |config|
   config.asset_host = "http://localhost:3000"
 end
 
+INACTIVE = "ron"
 REST_USER = "george"
 USER = "eleanor"
 OWNER = "margaret"

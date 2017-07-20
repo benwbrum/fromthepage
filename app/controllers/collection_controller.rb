@@ -45,6 +45,8 @@ class CollectionController < ApplicationController
     @nonowners = User.order(:display_name) - @owners
     @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
     @works_not_in_collection = current_user.owner_works - @collection.works
+    @collaborators = @collection.collaborators + @collection.owners
+    @noncollaborators = User.order(:display_name) - @collaborators
   end
 
   def show
@@ -65,6 +67,16 @@ class CollectionController < ApplicationController
 
   def remove_owner
     @collection.owners.delete(@user)
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def add_collaborator
+    @collection.collaborators << @user
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def remove_collaborator
+    @collection.collaborators.delete(@user)
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
