@@ -1,6 +1,8 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection.id }})
--link = link_to 'here', document_sets_path(:collection_id => @collection.collection)
-p This is a document set based on the <b>#{@collection.collection.title}</b> collection.  You can manage all works and document sets within that collection by clicking #{link}.
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection }})
+.columns
+  article.maincol
+    -link = link_to 'here', document_sets_path(:collection_id => @collection.collection)
+    p This is a document set based on the <b>#{@collection.collection.title}</b> collection.  You can manage all works and document sets within that collection by clicking #{link}.
 
     =render 'edit'
 
@@ -22,6 +24,7 @@ p This is a document set based on the <b>#{@collection.collection.title}</b> col
           =link_to({ :action => 'add_work_to_set', :work => work, :collection_id => @collection.slug }, class: 'action')
             =svg_symbol '#icon-plus-sign', class: 'icon'
             small Include
+ 
   aside.sidecol
 
     h3 Document Set Privacy

@@ -59,7 +59,6 @@ describe "document sets", :order => :defined do
     expect(page).to have_content("Last 7 Days Statistics")
   end
 
-
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
     work = @set.works.first
@@ -274,44 +273,42 @@ describe "document sets", :order => :defined do
 
   it "edits a document set slug" do
     login_as(@owner, :scope => :user)
-    slug = "new-#{@document_set.slug}"
-    visit "/#{@owner.slug}/#{@document_set.slug}"
-    expect(page).to have_selector('h1', text: @document_set.title)
-    @document_set.works.each do |w|
+    slug = "new-#{@set.slug}"
+    visit "/#{@owner.slug}/#{@set.slug}"
+    expect(page).to have_selector('h1', text: @set.title)
+    @set.works.each do |w|
       expect(page).to have_content w.title
     end
-    #note - have to edit slug from within the collection right now, not the doc set
     page.find('.tabs').click_link('Settings')
-    expect(page.find('h1')).to have_content @document_set.title
-    expect(page).to have_field('document_set[slug]', with: @document_set.slug)
-    page.fill_in 'document_set_slug', with: "new-#{@document_set.slug}"
+    expect(page.find('h1')).to have_content @set.title
+    expect(page).to have_field('document_set[slug]', with: @set.slug)
+    page.fill_in 'document_set_slug', with: "new-#{@set.slug}"
     page.find_button('Save Document Set').click
-    expect(page.find('h1')).to have_content @document_set.title
-    expect(DocumentSet.find_by(id: @document_set.id).slug).to eq "#{slug}"
+    expect(page.find('h1')).to have_content @set.title
+    expect(DocumentSet.find_by(id: @set.id).slug).to eq "#{slug}"
     #check new path
     visit "/#{@owner.slug}/#{slug}"
-    expect(page).to have_selector('h1', text: @document_set.title)
-    @document_set.works.each do |w|
+    expect(page).to have_selector('h1', text: @set.title)
+    @set.works.each do |w|
       expect(page).to have_content w.title
     end
     #check the old path 
     #(this variable is stored at the beginning of the test, so it's the original)
-    visit "/#{@owner.slug}/#{@document_set.slug}"
-    expect(page).to have_selector('h1', text: @document_set.title)
-    @document_set.works.each do |w|
+    visit "/#{@owner.slug}/#{@set.slug}"
+    expect(page).to have_selector('h1', text: @set.title)
+    @set.works.each do |w|
       expect(page).to have_content w.title
     end
     #blank out doc set slug
-    visit "/#{@owner.slug}/#{@document_set.collection.slug}"
-    page.find('.tabs').click_link('Sets')
-    within(page.find('#sets')) do
-      within(page.find('tr', text: @document_set.title)) do
-          page.find('a', text: 'Edit').click
-      end
-    end
+    visit "/#{@owner.slug}/#{@set.slug}"
+    expect(page).to have_selector('h1', text: @set.title)
+    page.find('.tabs').click_link('Settings')
+    expect(page.find('h1')).to have_content @set.title
+    new_slug = DocumentSet.first.slug
+    expect(page).to have_field('document_set[slug]', with: new_slug)
     page.fill_in 'document_set_slug', with: ""
     page.find_button('Save Document Set').click
-    docset = DocumentSet.find_by(id: @document_set.id)
+    docset = DocumentSet.find_by(id: @set.id)
     #note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize
   end
