@@ -95,6 +95,13 @@ describe "URL tests" do
     @collection.works.each do |w|
       expect(page).to have_content w.title
     end
+    #blank out the slug and make sure the original is there
+    visit "/#{@owner.slug}/#{@collection.slug}"
+    page.find('.tabs').click_link("Settings")
+    page.fill_in 'collection_slug', with: ""
+    click_button('Save Changes')
+    expect(page).to have_selector('h1', text: @collection.title)
+    expect(Collection.find_by(id: @collection.id).slug).to eq @collection.slug
   end
 
   it "edits a work slug" do
@@ -122,6 +129,13 @@ describe "URL tests" do
     visit "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
     expect(page).to have_selector('a', text: @collection.title)
     expect(page).to have_selector('h1', text: @work.title)
+    #blank out work slug
+    visit "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
+    expect(page).to have_selector('a', text: @collection.title)
+    page.find('.tabs').click_link("Settings")
+    page.fill_in 'work_slug', with: ""
+    click_button('Save Changes')
+    expect(Work.find_by(id: @work.id).slug).to eq @work.slug
   end
 
   it "edits a user slug" do
@@ -151,6 +165,14 @@ describe "URL tests" do
     visit "/#{@user.slug}"
     expect(page).to have_content(@user.display_name)
     expect(page).to have_content("User since #{@user.created_at.strftime("%b %d, %Y")}")
+    #blank out user slug
+    visit dashboard_watchlist_path
+    page.find('a', text: 'Your Profile').click
+    page.find('a', text: 'Edit Profile').click
+    expect(page).to have_content("Update User Profile")
+    page.fill_in 'user_slug', with: ""
+    click_button('Update Profile')
+    expect(User.find_by(id: @user.id).slug).to eq @user.slug
   end
 
   it "edits a document set slug" do
@@ -182,6 +204,19 @@ describe "URL tests" do
     @document_set.works.each do |w|
       expect(page).to have_content w.title
     end
+    #blank out doc set slug
+    visit "/#{@owner.slug}/#{@document_set.collection.slug}"
+    page.find('.tabs').click_link('Sets')
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @document_set.title)) do
+          page.find('a', text: 'Edit').click
+      end
+    end
+    page.fill_in 'document_set_slug', with: ""
+    page.find_button('Save Document Set').click
+    docset = DocumentSet.find_by(id: @document_set.id)
+    #note - the document set title was changed so the slug is slightly different
+    expect(docset.slug).to eq docset.title.parameterize
   end
 
 end

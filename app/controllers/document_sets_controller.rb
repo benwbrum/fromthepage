@@ -64,7 +64,14 @@ class DocumentSetsController < ApplicationController
   end
 
   def update
-    @document_set.update(document_set_params)
+    if params[:document_set][:slug] == ""
+      @document_set.update(params[:document_set].except(:slug))
+      title = @document_set.title.parameterize
+      @document_set.update(slug: title)
+    else
+      @document_set.update(document_set_params)
+    end
+
     @document_set.save!
     flash[:notice] = 'Document set has been saved'
     unless request.referrer.include?("/settings")

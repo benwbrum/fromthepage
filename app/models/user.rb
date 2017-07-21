@@ -30,10 +30,17 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many(:owned_collections,
                           { :join_table => 'collection_owners',
                             :class_name => 'Collection'})
+<<<<<<< HEAD
   has_and_belongs_to_many(:document_set_collaborations,
                           { :join_table => 'document_set_collaborators',
                             :class_name => 'DocumentSet'
                             })
+=======
+  has_and_belongs_to_many(:collection_collaborations,
+                          { :join_table => 'collection_collaborators',
+                            :class_name => 'Collection'})
+
+>>>>>>> ui-design
   has_many :page_versions, -> { order 'created_on DESC' }
   has_many :article_versions, -> { order 'created_on DESC' }
   has_many :notes, -> { order 'created_at DESC' }
