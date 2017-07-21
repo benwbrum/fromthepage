@@ -307,6 +307,19 @@ describe "document sets", :order => :defined do
     @set.works.each do |w|
       expect(page).to have_content w.title
     end
+    #blank out doc set slug
+    visit "/#{@owner.slug}/#{@set.collection.slug}"
+    page.find('.tabs').click_link('Sets')
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @set.title)) do
+          page.find('a', text: 'Edit').click
+      end
+    end
+    page.fill_in 'document_set_slug', with: ""
+    page.find_button('Save Document Set').click
+    docset = DocumentSet.find_by(id: @set.id)
+    #note - the document set title was changed so the slug is slightly different
+    expect(docset.slug).to eq docset.title.parameterize
   end
 
 end

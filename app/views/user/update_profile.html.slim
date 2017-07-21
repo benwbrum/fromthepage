@@ -11,7 +11,7 @@
         td.w100 =f.text_field :display_name
       tr
         th URL: 
-        td www.fromthepage.com/#{@user.slug}
+        td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}
       tr
         th =f.label :slug, "URL"
         td =f.text_field :slug, value: @user.slug
