@@ -51,6 +51,18 @@ class DocumentSetsController < ApplicationController
     redirect_to :action => :index, :collection_id => @collection.id
   end
 
+  def add_work_to_set
+    work = Work.friendly.find(params[:work])
+    @collection.works << work
+    redirect_to action: 'settings', collection_id: @collection.slug
+  end
+
+  def remove_work_from_set
+    work = Work.friendly.find(params[:work])
+    @collection.works.delete(work)
+    redirect_to action: 'settings', collection_id: @collection.slug
+  end
+
   def update
     @document_set.update(document_set_params)
     @document_set.save!
@@ -65,6 +77,31 @@ class DocumentSetsController < ApplicationController
   def settings
     #document set edit needs the @document set variable
     @document_set = @collection
+    @works_not_in_set = @collection.collection.works - @collection.works
+    @collaborators = @document_set.collaborators
+    @noncollaborators = User.order(:display_name) - @collaborators
+  end
+
+  def add_set_collaborator
+    @collection.collaborators << @user
+    redirect_to collection_settings_path(@collection.owner, @collection)
+  end
+
+  def remove_set_collaborator
+    @collection.collaborators.delete(@user)
+    redirect_to collection_settings_path(@collection.owner, @collection)
+  end
+
+  def publish_set
+    @collection.is_public = true
+    @collection.save!
+    redirect_to collection_settings_path(@collection.owner, @collection)
+  end
+
+  def restrict_set
+    @collection.is_public = false
+    @collection.save!
+    redirect_to collection_settings_path(@collection.owner, @collection)
   end
 
   def destroy

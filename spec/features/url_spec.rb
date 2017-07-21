@@ -162,18 +162,12 @@ describe "URL tests" do
       expect(page).to have_content w.title
     end
     #note - have to edit slug from within the collection right now, not the doc set
-    visit "/#{@owner.slug}/#{@document_set.collection.slug}"
-    page.find('.tabs').click_link('Sets')
-    within(page.find('#sets')) do
-      within(page.find('tr', text: @document_set.title)) do
-          page.find('a', text: 'Edit').click
-      end
-    end
+    page.find('.tabs').click_link('Settings')
+    expect(page.find('h1')).to have_content @document_set.title
     expect(page).to have_field('document_set[slug]', with: @document_set.slug)
     page.fill_in 'document_set_slug', with: "new-#{@document_set.slug}"
     page.find_button('Save Document Set').click
-    expect(page).to have_content("Document Sets for #{@document_set.collection.title}")
-    expect(page).to have_content(@document_set.title)
+    expect(page.find('h1')).to have_content @document_set.title
     expect(DocumentSet.find_by(id: @document_set.id).slug).to eq "#{slug}"
     #check new path
     visit "/#{@owner.slug}/#{slug}"

@@ -10,20 +10,20 @@ ul
   h3 
     | Document Sets for 
     =@collection.title
-  table.tabular#sets
+  table.datagrid
     thead
       tr
         th Title
         th Privacy
-        th 
+        th Actions
         th
-    tbody
+    tbody#sets
       -@collection.document_sets.each do |document_set|
         tr
           td
-            =document_set.title  
+            =link_to document_set.title, collection_path(document_set.owner, document_set)
           td
-            =document_set.is_public ? 'Public' : ''  
+            =document_set.is_public ? 'Public' : 'Private'  
           td
             =link_to 'Edit', edit_document_set_path(document_set), 'data-litebox' => ''
           td
@@ -36,7 +36,7 @@ br
 -if @collection.document_sets.present?
   h3 Assign Works to Document Sets
   =form_tag(document_set_assign_works_path(collection_id: @collection.id))
-    table.tabular
+    table.datagrid
       thead
         tr
           th Work
