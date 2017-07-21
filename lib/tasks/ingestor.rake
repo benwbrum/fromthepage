@@ -1,6 +1,5 @@
 require 'image_helper'
 require 'open-uri' # TODO: Move elsewhere
-
 namespace :fromthepage do
 
   desc "Resize image file or directories of image files"
@@ -20,6 +19,9 @@ namespace :fromthepage do
 
   desc "Process a document upload"
   task :process_document_upload, [:document_upload_id] => :environment do |t,args|
+    require "#{Rails.root}/app/helpers/error_helper"
+    include ErrorHelper
+
     document_upload_id = args.document_upload_id
     print "fetching upload with ID=#{document_upload_id}\n"
     document_upload = DocumentUpload.find document_upload_id
@@ -41,9 +43,13 @@ namespace :fromthepage do
       document_upload.save
     end
 
-    if SMTP_ENABLED    
+    if SMTP_ENABLED
+      begin
         SystemMailer.upload_succeeded(document_upload).deliver!
         UserMailer.upload_finished(document_upload).deliver!
+      rescue *SMTP_ERRORS => e
+        print "SMTP Failed: Exception: #{e.message}"
+      end
     end
 
   end
@@ -198,7 +204,17 @@ namespace :fromthepage do
        print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
     end
     work.save!
+    record_deed(work)
     print "convert_to_work succeeded for #{work.title}\n"
+  end
+
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
   

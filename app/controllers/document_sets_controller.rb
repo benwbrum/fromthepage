@@ -7,12 +7,10 @@ class DocumentSetsController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def index
-    @document_sets = DocumentSet.all
-    respond_with(@document_sets)
   end
 
   def show
-#    respond_with(@document_set)
+    @collection = @document_set.collection
   end
 
   def new
@@ -28,9 +26,13 @@ class DocumentSetsController < ApplicationController
   def create
     @document_set = DocumentSet.new(document_set_params)
     @document_set.owner = current_user
-    @document_set.save!
-    flash[:notice] = 'Document set has been created'
-    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    if @document_set.save
+      flash[:notice] = 'Document set has been created'
+      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    else
+      render action: 'new'
+    end
+
   end
 
   def assign_works
@@ -48,11 +50,21 @@ class DocumentSetsController < ApplicationController
 
     redirect_to :action => :index, :collection_id => @collection.id
   end
+
   def update
     @document_set.update(document_set_params)
     @document_set.save!
     flash[:notice] = 'Document set has been saved'
-    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    unless request.referrer.include?("/settings")
+      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    else
+      redirect_to request.referrer
+    end
+  end
+
+  def settings
+    #document set edit needs the @document set variable
+    @document_set = @collection
   end
 
   def destroy
@@ -65,11 +77,11 @@ class DocumentSetsController < ApplicationController
     def set_document_set
       unless (defined? @document_set) && @document_set
         id = params[:document_set_id] || params[:id]
-        @document_set = DocumentSet.find(id)
+        @document_set = DocumentSet.friendly.find(id)
       end
     end
 
     def document_set_params
-      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture)
+      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
     end
 end

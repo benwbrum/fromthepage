@@ -5,8 +5,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :encryptable, :encryptor => :restful_authentication_sha1
 
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
+
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -37,7 +40,7 @@ class User < ActiveRecord::Base
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
   def all_owner_collections
-    query = Collection.where(owner_user_id: self.id, id: self.owned_collections.ids)
+    query = Collection.where("owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
     Collection.where(query.where_values.inject(:or)).uniq.order(:title)
   end
 
@@ -69,6 +72,13 @@ class User < ActiveRecord::Base
         return self == obj.collection.owner || obj.collection.owners.include?(self)
       else
         self == obj.owner      
+      end
+    end
+    if DocumentSet == obj.class
+      if obj.collection
+        return self == obj.collection.owner || obj.collection.owners.include?(self)
+      else
+        self == obj.owner
       end
     end
     return false
@@ -104,7 +114,38 @@ class User < ActiveRecord::Base
   end
   
   def unrestricted_collections
-    collections = self.all_owner_collections.unrestricted.order_by_recent_activity
+    collections = self.all_owner_collections.unrestricted
   end
-  
+
+  def unrestricted_document_sets
+    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+  end
+
+  def document_sets
+    DocumentSet.where(owner_user_id: self.id)
+  end
+
+  def owned_collection_and_document_sets
+    (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
+  end
+
+  def slug_candidates
+    if self.slug
+      [:slug]
+    else
+      [
+        :login,
+        [:login, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
+  end
+
+  def normalize_friendly_id(string)
+    super.truncate(240, separator: '-', omission: '').gsub('_', '-')
+  end
+
 end

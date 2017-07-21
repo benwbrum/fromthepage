@@ -1,7 +1,7 @@
 page_1:
   id: 1
   title: '1'
-  source_text: '[[John Samuel Smith|John]]  Mrs. Davis'
+  source_text: '[[John Samuel Smith]]  Mrs. Davis'
   base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_001.jpg')%>
   base_width: 1649
   base_height: 2860
@@ -11,7 +11,7 @@ page_1:
   lock_version: 0
   xml_text: 
   page_version_id: 
-  status: 
+  status: 'indexed'
   source_translation: 
   xml_translation: 
   search_text: 
@@ -62,7 +62,7 @@ page_4:
   lock_version: 0
   xml_text: 
   page_version_id: 
-  status: 
+  status: 'indexed'
   source_translation: 
   xml_translation: 
   search_text: 
@@ -170,8 +170,8 @@ page_10:
   search_text: 
 page_17:
   id: 17
-  title: '1'
-  source_text: 
+  title: 'Page 1'
+  source_text: [[Testing]]
   base_image: <%=Rails.root.join('public/images/uploaded/2/page_0001.jpg')%>
   base_width: 2529
   base_height: 3313
@@ -181,7 +181,7 @@ page_17:
   lock_version: 0
   xml_text: 
   page_version_id: 
-  status: 
+  status: "indexed"
   source_translation: 
   xml_translation: 
   search_text: 
@@ -199,7 +199,7 @@ page_18:
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Department
     of the Interior</p>\n      </page>\n"
   page_version_id: 
-  status: ''
+  status: 'transcribed'
   source_translation: 
   xml_translation: 
   search_text: " Department of the Interior \n\n\n\n"
@@ -256,8 +256,8 @@ page_21:
   search_text: 
 page_22:
   id: 22
-  title: '1'
-  source_text: '[[Testing|Tests]]'
+  title: 'Test Page 1'
+  source_text: '[[Testing]]'
   base_image: <%=Rails.root.join('public/images/uploaded/7/page_0001.jpg')%>
   base_width: 1138
   base_height: 2704
@@ -267,7 +267,7 @@ page_22:
   lock_version: 0
   xml_text: 
   page_version_id: 
-  status: 
+  status: 'indexed'
   source_translation: 
   xml_translation: 
   search_text: 
@@ -285,7 +285,7 @@ page_23:
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>should
     ascertain what</p>\n      </page>\n"
   page_version_id: 
-  status: ''
+  status: 'transcribed'
   source_translation: 
   xml_translation: 
   search_text: " should ascertain what \n\n\n\n"
@@ -320,7 +320,7 @@ page_25:
   xml_text: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Significs
     and Logic</p>\n      </page>\n"
   page_version_id: 
-  status: ''
+  status: 'transcribed'
   source_translation: 
   xml_translation: 
   search_text: " Significs and Logic \n\n\n\n"

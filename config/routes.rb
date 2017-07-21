@@ -10,9 +10,6 @@ Fromthepage::Application.routes.draw do
 
   resources :omeka_sites
   resources :omeka_items
-  # resources :sc_canvas
-  # resources :sc_manifests
-  # resources :sc_collections
 
   resources :notes
 
@@ -38,22 +35,12 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ }
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
- # get   '/iiif/admin/explore_manifest', :to => 'sc_collections#explore_manifest'
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
-#  get   '/iiif/admin/search_pontiiif', :to => 'sc_collections#search_pontiiif', :as => 'search_pontiiif'
 
-  get   'document_set/new', :to => 'document_sets#new'
-  get   'document_set/edit/:id', :to => 'document_sets#edit'
-  patch   'document_set/update/:id', :to => 'document_sets#update'
-  post   'document_set/assign_works', :to => 'document_sets#assign_works'
-  get   'document_set/:id', :to => 'document_sets#show'
-#  get   'document_set/:document_set_id', :to => 'document_sets#show'
-#  resources :document_sets
 
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
-  patch 'article/update', :to => 'article#update'
   put   'article/article_category', :to => 'article#article_category'
   patch 'category/update', :to => 'category#update'
   patch 'user/update', :to => 'user#update'
@@ -65,5 +52,58 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
+
+  get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
+  post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
+  post   'document_set/assign_works', :to => 'document_sets#assign_works'
+
+  resources :document_sets, except: [:show, :create, :edit]
+
+  scope ':user_slug' do
+    resources :collection, path: '', only: [:show] do
+      get 'statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
+      get 'document_sets/settings', path: '/settings', as: :settings, to: 'document_sets#settings'
+      get 'article/list/:collection_id', path: '/subjects', as: :subjects, to: 'article#list'
+      get 'export/index', path: '/export', as: :export, to: 'export#index'
+      get 'edit', on: :member
+      get 'new_work', on: :member
+      get 'contributors', on: :member, path: '/collaborators'
+ 
+      #work related routes
+      #have to use match because it must be both get and post
+      match 'display/read_work', path: '/:work_id', as: :read_work, to: 'display#read_work', via: [:get, :post]
+      #get 'display/read_all_works', as: :read_all_works, to: 'display#read_all_works'
+      resources :work, path: '', param: :work_id, only: [:edit] do
+        get 'versions', on: :member
+        get 'print', on: :member
+        get 'pages_tab', on: :member, as: :pages, path: '/pages'
+        patch 'update_work', on: :member, as: :update
+        post 'add_scribe', on: :member
+        get 'remove_scribe', on: :member
+      end
+      get 'work/show', path: ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
+      get 'display/list_pages', path: ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
+      get 'static/transcribe_help', path: ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+      
+      #page related routes
+      get 'display/display_page', path: ':work_id/display/:page_id/', as: 'display_page', to: 'display#display_page'
+      get 'transcribe/display_page', path: ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
+      get 'transcribe/guest', path: ':work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
+      get 'transcribe/translate', path: ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
+      get 'page/edit', path: ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
+      get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
+
+      #article related routes
+      match 'article/show', path: '/article/:article_id', to: 'article#show', via: [:get, :post]
+      get 'article/edit', path: 'article/:article_id/edit', to: 'article#edit'
+      get 'article_version/list', path: 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
+      patch 'article/update', path: 'article/update/:article_id', to: 'article#update'
+
+    end
+  end
+
+  get '/:user', path: '/:user_id', to: 'user#profile', as: :user_profile
+
+  get 'collection/update/:id', to: 'collection#update', as: :update_collection
 
 end

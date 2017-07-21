@@ -5,8 +5,7 @@ describe "subject linking" do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
-    @collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
-    @collections = Collection.where(id: @collection_ids)
+    @collections = Collection.all
     @collection = @collections.first
     @work = @collection.works.first
   end
@@ -17,7 +16,7 @@ describe "subject linking" do
 
   #it checks to make sure the subject is on the page
   it "looks at subjects in a collection" do
-    visit "/collection/show?collection_id=#{@collection.id}"
+    visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Categories")
     categories = Category.where(collection_id: @collection.id)
@@ -49,7 +48,7 @@ describe "subject linking" do
     logout(:user)
     login_as(@owner, :scope => :user)
     collection = @collections.last
-    visit "/collection/show?collection_id=#{collection.id}"
+    visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Subjects")
     page.find('a', text: "Testing").click
     page.find('.tabs').click_link("Settings")
@@ -57,6 +56,7 @@ describe "subject linking" do
     expect(page.find('.flash_message')).to have_content("You must remove all referring links")
     page.find('a', text: "Show pages that mention").click
     page.find('.work-page_title').find('a').click
+    page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: ""
     click_button('Save Changes')
     expect(page).to have_content("Facsimile")
@@ -194,10 +194,10 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{link_page.id}"
     page.find('.tabs').click_link("Transcribe")
     #make sure the autolink doesn't duplicate a link
-    expect(page).to have_content("[[John Samuel Smith|John]]")
+    expect(page).to have_content("[[John Samuel Smith]]")
     expect(page).to have_content("Mrs. Davis")
     click_button('Autolink')
-    expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith|John]]")
+    expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith]]")
     expect(page).not_to have_content("[[Mrs.]]")
     expect(page).to have_content("Mrs. Davis")
     #make sure it doesn't autolink something that has no subject

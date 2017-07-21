@@ -7,7 +7,7 @@
         -current_user.all_owner_collections.includes(:works).each do |c|
           .collection
             h4.collection_title
-              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
+              =link_to c.title, collection_path(c.owner, c)
             ol.collection_works
             -unless c.works.empty?
               -(c.works.sort_by { |work| work.title }).each do |w|
@@ -20,6 +20,17 @@
               .nodata
                 h5.nodata_title There are no works in this collection yet
                 p.nodata_text You can upload documents under #{start_project}
+      -unless current_user.document_sets.empty?
+        h3 Document Sets
+        -current_user.document_sets.each do |s|
+          .collection
+            h4.collection_title
+              =link_to s.title, collection_path(s.owner, s)
+            ol.collection_works
+            -unless s.works.empty?
+              -(s.works.sort_by { |work| work.title }).each do |w|
+                li =link_to w.title, collection_read_work_path(s.owner, s, w)
+
     -else
       -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
       -start_project = link_to 'start a project', { :controller => 'dashboard', :action => 'startproject' }

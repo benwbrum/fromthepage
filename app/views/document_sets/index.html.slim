@@ -1,6 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 8, :collection_id => @collection.id }})
 
-
 p Document sets are sub-sets of the documents in a collection.  They have several uses, including:
 ul
   li Focusing transcriber effort on a particular group of works.
@@ -26,17 +25,17 @@ ul
           td
             =document_set.is_public ? 'Public' : ''  
           td
-            =link_to 'Edit', { :controller => 'document_set', :action => 'edit', :collection_id => @collection.id, :id => document_set.id  }, 'data-litebox' => ''
+            =link_to 'Edit', edit_document_set_path(document_set), 'data-litebox' => ''
           td
             =link_to 'Delete',{ :controller => 'document_sets', :action => 'destroy', :document_set_id => document_set.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' }
               
 
 br
-=link_to 'Create a Document Set', { :controller => 'document_set', :action => 'new', :collection_id => @collection.id  }, class: 'button', 'data-litebox' => ''
+=link_to 'Create a Document Set', new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
 
 -if @collection.document_sets.present?
   h3 Assign Works to Document Sets
-  =form_tag({ :controller => 'document_set', :action => 'assign_works', :collection_id => @collection.id })
+  =form_tag(document_set_assign_works_path(collection_id: @collection.id))
     table.tabular
       thead
         tr
@@ -69,4 +68,4 @@ br
 
 
 -else
-  p this collection has no document sets
+  p This collection has no document sets

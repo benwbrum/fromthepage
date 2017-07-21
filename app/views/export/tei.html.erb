@@ -72,37 +72,48 @@ xml:id="export">
         </history>
       </msDesc>
 
-      <listPerson>
-        <% @person_articles.each do |person| %>
-          <person xml:id="S<%=person.id%>">
-            <persName><%= person.title %></persName>
-            <% unless person.source_text.blank? %>
-              <note>
-                <% unless person.source_text.blank? %>
-                  <%= raw(xml_to_export_tei(person.xml_text, @context, "S#{person.id}")) %>
-                <% end %>
-              </note>
-            <% end %>
-          </person>
-        <% end %>
-      </listPerson>
+      <% unless @person_articles.empty? %>
+        <listPerson>
+          <% @person_articles.each do |person| %>
+            <person xml:id="S<%=person.id%>">
+              <persName><%= person.title %></persName>
+              <% unless person.source_text.blank? %>
+                <note>
+                  <% unless person.source_text.blank? %>
+                    <%= raw(xml_to_export_tei(person.xml_text, @context, "S#{person.id}")) %>
+                  <% end %>
+                </note>
+              <% end %>
+            </person>
+          <% end %>
+        </listPerson>
+      <% end %>
 
-      <listPlace>
-        <% @place_articles.each do |place| %>
-          <place xml:id="S<%=place.id%>">
-            <placeName><%= place.title %></placeName>
-            <% unless place.source_text.blank? %>
-              <note>
-                <% unless place.source_text.blank? %>
-                  <%= raw(xml_to_export_tei(place.xml_text, @context, "S#{place.id}")) %>
-                <% end %>
-              </note>
-            <% end %>
-          </place>
-        <% end %>
-      </listPlace>
+      <% unless @place_articles.empty? %>
+        <listPlace>
+          <% @place_articles.each do |place| %>
+            <place xml:id="S<%=place.id%>">
+              <placeName><%= place.title %></placeName>
+              <% unless place.source_text.blank? %>
+                <note>
+                  <% unless place.source_text.blank? %>
+                    <%= raw(xml_to_export_tei(place.xml_text, @context, "S#{place.id}")) %>
+                  <% end %>
+                </note>
+              <% end %>
+            </place>
+          <% end %>
+        </listPlace>
+      <% end %>
     </sourceDesc>
+
   </fileDesc>
+
+  <encodingDesc>
+    <classDecl>
+      <%= raw(tei_taxonomy(@collection.categories.where("parent_id IS NULL"), @other_articles)) %>
+    </classDecl>
+  </encodingDesc>
 
   <profileDesc>
   </profileDesc>

@@ -1,14 +1,19 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection.id }})
-
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection }})
 .columns
   article.maincol
-    =form_for :collection, url: { action: 'update' } do |f|
-      =hidden_field_tag(:collection_id, @collection.id)
+    =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
       table.form
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
+        tr.big
+          th =f.label :slug, 'URL'
+          td =f.text_field :slug, value: @collection.slug
+        tr
+          th 
+          td
+            |The current URL for this collection is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
@@ -80,14 +85,6 @@
         =svg_symbol '#icon-lock', class: 'icon'
         span Make Collection Private
 
-
-    -if !@collection.supports_document_sets
-      h3 Document Sets
-      p This collection does not have any document sets.  Document sets are sub-sets of the works in this collection, 
-        which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
-      =link_to({ :action => 'enable_document_sets', :collection_id => @collection.id }, class: 'button')
-        span Create Document Sets
-
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
@@ -100,10 +97,26 @@
         .userpic
           =gravatar_image_tag user.email, :alt => user.display_name
         .username
-          =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+          =link_to user.display_name, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
+
+    h3 Document Sets
+    p Document sets are sub-sets of the works in this collection, 
+      which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents. 
+    -if !@collection.supports_document_sets
+      p This collection does not have any document sets.  
+      =link_to({ :action => 'enable_document_sets', :collection_id => @collection.id }, class: 'button')
+        span Enable Document Sets
+    -else
+      =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
+        span Disable Document Sets
+
+    h3 Blank Collection
+    p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button')
+      span Blank Collection
 
 =render({ :partial => '/shared/collection_footer' })
 
