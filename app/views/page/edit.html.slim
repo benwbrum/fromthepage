@@ -40,4 +40,4 @@
         =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 270 }, class: 'button outline', title: 'Rotate Counterclockwise')
           =svg_symbol "#icon-rotate-ccw", class: 'icon'
 
-  .page-image-preview =image_tag("#{file_to_url(@page.scaled_image(@page.shrink_factor))}?#{Time.now.to_i}")
+  .page-image-preview =image_tag("#{file_to_url(@page.canonical_facsimile_url)}?#{Time.now.to_i}")
