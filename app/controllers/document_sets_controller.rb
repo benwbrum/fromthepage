@@ -54,13 +54,13 @@ class DocumentSetsController < ApplicationController
   def add_work_to_set
     work = Work.friendly.find(params[:work])
     @collection.works << work
-    redirect_to action: 'settings', collection_id: @collection.slug
+    redirect_to action: 'settings', collection_id: @collection.slug, :anchor => "manage"
   end
 
   def remove_work_from_set
     work = Work.friendly.find(params[:work])
     @collection.works.delete(work)
-    redirect_to action: 'settings', collection_id: @collection.slug
+    redirect_to action: 'settings', collection_id: @collection.slug, :anchor => "manage"
   end
 
   def update
