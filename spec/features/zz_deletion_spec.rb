@@ -1,3 +1,4 @@
+
 #Note - this test must fall at the very end of the features specs
 require 'spec_helper'
 

@@ -69,7 +69,12 @@ describe "owner views" do
     page.find('.tabs').click_link("Collaborators")
     expect(page).to have_content(@collection.title)
     expect(page).to have_content("Contributions Between")
-    expect(page).to have_content("All Collaborators")
+    expect(page).to have_content("Active Collaborators")
+    expect(page).to have_content("All Collaborator Emails")
+    all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
+    all_transcribers.each do |t|
+      expect(page.find('#collaborators')).to have_content(t.email)
+    end
   end
 
 end
