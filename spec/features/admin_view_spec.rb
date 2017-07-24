@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe "admin actions" do
 
-before :all do
-  @admin = User.find_by(login: ADMIN)
-  @owner = User.find_by(login: OWNER)
-end
+  before :all do
+    @admin = User.find_by(login: ADMIN)
+    @owner = User.find_by(login: OWNER)
+  end
 
-before :each do
-    login_as(@admin, :scope => :user)
-end  
+  before :each do
+      login_as(@admin, :scope => :user)
+  end  
 
   it "looks at admin tabs" do
     user = User.find_by(login: USER)

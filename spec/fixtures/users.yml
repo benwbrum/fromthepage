@@ -48,3 +48,13 @@ user_5:
   admin: true
   encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
   password_salt: R2-cytow2JEPt3jD3Ts1
+user_6:
+  id: 6
+  login: ron
+  display_name: Ron
+  print_name: 
+  email: ron@test.com
+  owner: false
+  admin: false
+  encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
+  password_salt: R2-cytow2JEPt3jD3Ts1

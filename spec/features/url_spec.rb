@@ -8,7 +8,6 @@ describe "URL tests" do
     @collection = Collection.joins(:deeds).where(deeds: {user_id: @user.id}).first
     @work = @collection.works.first
     @page = @work.pages.first
-    @document_set = DocumentSet.where(owner_user_id: @owner.id).first
   end
 
   it "visits old URLs" do
@@ -95,6 +94,13 @@ describe "URL tests" do
     @collection.works.each do |w|
       expect(page).to have_content w.title
     end
+    #blank out the slug and make sure the original is there
+    visit "/#{@owner.slug}/#{@collection.slug}"
+    page.find('.tabs').click_link("Settings")
+    page.fill_in 'collection_slug', with: ""
+    click_button('Save Changes')
+    expect(page).to have_selector('h1', text: @collection.title)
+    expect(Collection.find_by(id: @collection.id).slug).to eq @collection.slug
   end
 
   it "edits a work slug" do
@@ -122,6 +128,13 @@ describe "URL tests" do
     visit "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
     expect(page).to have_selector('a', text: @collection.title)
     expect(page).to have_selector('h1', text: @work.title)
+    #blank out work slug
+    visit "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
+    expect(page).to have_selector('a', text: @collection.title)
+    page.find('.tabs').click_link("Settings")
+    page.fill_in 'work_slug', with: ""
+    click_button('Save Changes')
+    expect(Work.find_by(id: @work.id).slug).to eq @work.slug
   end
 
   it "edits a user slug" do
@@ -151,43 +164,14 @@ describe "URL tests" do
     visit "/#{@user.slug}"
     expect(page).to have_content(@user.display_name)
     expect(page).to have_content("User since #{@user.created_at.strftime("%b %d, %Y")}")
-  end
-
-  it "edits a document set slug" do
-    login_as(@owner, :scope => :user)
-    slug = "new-#{@document_set.slug}"
-    visit "/#{@owner.slug}/#{@document_set.slug}"
-    expect(page).to have_selector('h1', text: @document_set.title)
-    @document_set.works.each do |w|
-      expect(page).to have_content w.title
-    end
-    #note - have to edit slug from within the collection right now, not the doc set
-    visit "/#{@owner.slug}/#{@document_set.collection.slug}"
-    page.find('.tabs').click_link('Sets')
-    within(page.find('#sets')) do
-      within(page.find('tr', text: @document_set.title)) do
-          page.find('a', text: 'Edit').click
-      end
-    end
-    expect(page).to have_field('document_set[slug]', with: @document_set.slug)
-    page.fill_in 'document_set_slug', with: "new-#{@document_set.slug}"
-    page.find_button('Save Document Set').click
-    expect(page).to have_content("Document Sets for #{@document_set.collection.title}")
-    expect(page).to have_content(@document_set.title)
-    expect(DocumentSet.find_by(id: @document_set.id).slug).to eq "#{slug}"
-    #check new path
-    visit "/#{@owner.slug}/#{slug}"
-    expect(page).to have_selector('h1', text: @document_set.title)
-    @document_set.works.each do |w|
-      expect(page).to have_content w.title
-    end
-    #check the old path 
-    #(this variable is stored at the beginning of the test, so it's the original)
-    visit "/#{@owner.slug}/#{@document_set.slug}"
-    expect(page).to have_selector('h1', text: @document_set.title)
-    @document_set.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    #blank out user slug
+    visit dashboard_watchlist_path
+    page.find('a', text: 'Your Profile').click
+    page.find('a', text: 'Edit Profile').click
+    expect(page).to have_content("Update User Profile")
+    page.fill_in 'user_slug', with: ""
+    click_button('Update Profile')
+    expect(User.find_by(id: @user.id).slug).to eq @user.slug
   end
 
 end
