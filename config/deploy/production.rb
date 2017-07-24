@@ -46,5 +46,5 @@ server '96.126.116.203', user: 'fromthepage', roles: %{app}
 #   }
 
 
-set :branch, 'master'
+set :branch, 'fromthepage.com'
 
