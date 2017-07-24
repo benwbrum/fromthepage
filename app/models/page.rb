@@ -185,8 +185,16 @@ class Page < ActiveRecord::Base
     end
   end
 
-  def submit_background_processes
-    TexFigure.submit_background_process(self.id)
+  def submit_background_processes(type)
+    if type == "transcription"
+      latex = self.source_text.scan(LATEX_SNIPPET)
+    elsif type == "translation"
+      latex = self.source_translation.scan(LATEX_SNIPPET)
+    end
+
+    unless latex.blank?
+      TexFigure.submit_background_process(self.id)
+    end
   end
   
   def update_tex_figures
