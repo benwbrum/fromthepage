@@ -192,7 +192,7 @@ class Page < ActiveRecord::Base
       latex = self.source_translation.scan(LATEX_SNIPPET)
     end
 
-    unless latex.empty?
+    unless latex.blank?
       TexFigure.submit_background_process(self.id)
     end
   end
