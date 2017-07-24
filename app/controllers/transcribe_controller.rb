@@ -46,13 +46,19 @@ class TranscribeController  < ApplicationController
 
   def needs_review
     if params[:type] == 'translation'
-      if params[:page]['needs_review'] == '1'
+      if @page.work.collection.review_workflow == true && @page.translation_status == nil
+        @page.translation_status = Page::STATUS_NEEDS_REVIEW
+        record_translation_review_deed
+      elsif params[:page]['needs_review'] == '1'
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
         record_translation_review_deed
       else
         @page.translation_status = nil
         return
       end
+    elsif @page.work.collection.review_workflow == true && @page.status == nil
+      @page.status = Page::STATUS_NEEDS_REVIEW
+      record_review_deed
     else
       if params[:page]['needs_review'] == '1'
         @page.status = Page::STATUS_NEEDS_REVIEW
@@ -183,7 +189,7 @@ class TranscribeController  < ApplicationController
   
     #check to see if the page needs review
     needs_review
-
+    
     if params['save']
       log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
