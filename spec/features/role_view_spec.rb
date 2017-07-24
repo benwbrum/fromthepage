@@ -46,7 +46,7 @@ describe "different user role logins" do
 
   it "signs in an editor with no activity" do
       visit new_user_session_path
-      fill_in 'Login', with: REST_USER
+      fill_in 'Login', with: INACTIVE
       fill_in 'Password', with: @password
       click_button('Sign In')
       expect(page.current_path).to eq dashboard_watchlist_path
@@ -96,6 +96,7 @@ describe "different user role logins" do
   it "signs an owner in" do
     user = User.find_by(login: OWNER)
     @collections = user.all_owner_collections
+    @sets = user.document_sets
     visit new_user_session_path
     fill_in 'Login', with: OWNER
     fill_in 'Password', with: @password
@@ -107,6 +108,9 @@ describe "different user role logins" do
       c.works.each do |w|
         expect(page).to have_content(w.title)
       end
+    end
+    @sets.each do |s|
+      expect(page).to have_content(s.title)
     end
     visit root_path
     click_link('Dashboard')

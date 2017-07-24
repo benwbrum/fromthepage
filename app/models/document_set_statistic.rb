@@ -24,7 +24,7 @@ module DocumentSetStatistic
   end
 
   def contributor_count(last_days=nil)
-    User.joins(:deeds).where(deeds: {work_id: works.ids}).count
+    User.joins(:deeds).where(deeds: {work_id: works.ids}).distinct.count
   end
 
   def comment_count(last_days=nil)

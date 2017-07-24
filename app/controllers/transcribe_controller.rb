@@ -20,6 +20,7 @@ class TranscribeController  < ApplicationController
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
+    session[:col_id] = @collection.slug
   end
 
   def guest
@@ -31,13 +32,13 @@ class TranscribeController  < ApplicationController
       @page.translation_status = Page::STATUS_BLANK
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'display', :action => 'display_page', :page_id => @page.id and return
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate if @work.work_statistic
-      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id and return
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     else
       return true
     end
@@ -114,8 +115,7 @@ class TranscribeController  < ApplicationController
               return
             end
           end
-
-          redirect_to :action => 'assign_categories', :page_id => @page.id
+          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
         else
           log_transcript_error
           render :action => 'display_page'
@@ -154,7 +154,6 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
-        
     @translation = params[:translation]
     # look for uncategorized articles
     for article in @page.articles
@@ -165,13 +164,14 @@ class TranscribeController  < ApplicationController
     end
     # no uncategorized articles found, skip to display
     if @translation
-      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display', :translation => true
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: true)
     else
-      redirect_to  :action => 'display_page', :page_id => @page.id, :controller => 'display'
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
     end
   end
 
   def translate
+    session[:col_id] = @collection.slug
   end
 
   def save_translation
@@ -219,7 +219,7 @@ class TranscribeController  < ApplicationController
             end
           end
           
-          redirect_to :action => 'assign_categories', :page_id => @page.id, :translation => true
+          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :translation => true
         else
           log_translation_error
           render :action => 'translate'
@@ -244,11 +244,14 @@ class TranscribeController  < ApplicationController
       end
     elsif params['preview']
       @preview_xml = @page.wiki_to_xml(@page.source_translation, "translation")
+      translate
       render :action => 'translate'
     elsif params['edit']
+      translate
       render :action => 'translate'
     elsif params['autolink']
       @page.source_translation = autolink(@page.source_translation)
+      translate
       render :action => 'translate'
 
     end
@@ -340,7 +343,11 @@ protected
     deed.note = @note
     deed.page = @page
     deed.work = @work
-    deed.collection = @collection
+    if @collection.is_a?(Collection)
+      deed.collection = @collection
+    else
+      deed.collection = @collection.collection
+    end
     deed.user = current_user
 
     deed

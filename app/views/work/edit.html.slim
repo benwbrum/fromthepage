@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work.id }})
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work }})
 
 .columns
   article.maincol
@@ -22,7 +22,7 @@
         tr
           th
           td 
-            |The current URL for this work is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+            |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
  
         tr
           th
@@ -88,8 +88,8 @@
     p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
     hr
-    =form_for(@work, :url => { :action => 'update_work' }) do |f|
-      =hidden_field_tag(:work_id, @work.id)
+    =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work)) do |f|
+      =hidden_field_tag(:work_id, @work)
       p
         =f.check_box :scribes_can_edit_titles
         |&nbsp;
@@ -103,7 +103,7 @@
     -if @work.restrict_scribes
       h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
-        =hidden_field_tag :work_id, @work.id
+        =hidden_field_tag :work_id, @work
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'display_name'), include_blank: true
         =button_tag 'Add', disabled: 'true'
       -if @scribes.empty?
@@ -116,7 +116,7 @@
             .username
               =link_to user.display_name, user_profile_path(user)
               small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
+              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work }, class: 'remove', title: 'Remove'
 
 -content_for :javascript
   javascript:

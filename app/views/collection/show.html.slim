@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection.id } })
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection } })
 .columns
   article.maincol
     -if @collection.intro_block
@@ -52,7 +52,7 @@
                 span(style="width:#{progress_review}%")
 
     -if user_signed_in? && current_user.like_owner?(@collection)
-      p.nodata_text = link_to 'Add a new work', { :controller => 'collection', :action => 'new_work', :collection_id => @collection.id }
+      p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
     
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?

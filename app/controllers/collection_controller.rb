@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
-  before_action :set_collection, :only => [:show, :edit, :update]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -30,9 +30,14 @@ class CollectionController < ApplicationController
   def enable_document_sets
     @collection.supports_document_sets = true
     @collection.save!
-    redirect_to({ :controller => 'document_sets', :action => 'index', :collection_id => @collection.id })# { :controller => 'document_sets', :action => 'index', :collection_id => @collection.id }
+    redirect_to document_sets_path(collection_id: @collection)
   end
 
+  def disable_document_sets
+    @collection.supports_document_sets = false
+    @collection.save!
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
 
   def load_settings
     @main_owner = @collection.owner
@@ -40,9 +45,14 @@ class CollectionController < ApplicationController
     @nonowners = User.order(:display_name) - @owners
     @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
     @works_not_in_collection = current_user.owner_works - @collection.works
+    @collaborators = @collection.collaborators
+    @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
   end
 
   def show
+    if @collection.restricted
+      ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
+    end      
   end
 
   def owners
@@ -60,6 +70,16 @@ class CollectionController < ApplicationController
 
   def remove_owner
     @collection.owners.delete(@user)
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def add_collaborator
+    @collection.collaborators << @user
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def remove_collaborator
+    @collection.collaborators.delete(@user)
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
@@ -88,7 +108,14 @@ class CollectionController < ApplicationController
   end
 
   def update
-    if @collection.update_attributes(params[:collection])
+    if params[:collection][:slug] == ""
+      @collection.update(params[:collection].except(:slug))
+      title = @collection.title.parameterize
+      @collection.update(slug: title)
+    else
+      @collection.update(params[:collection])
+    end
+    if @collection.save!
       flash[:notice] = 'Collection has been updated'
       redirect_to action: 'edit', collection_id: @collection.id
     else
@@ -135,26 +162,24 @@ class CollectionController < ApplicationController
     @sc_collections = ScCollection.all
   end
 
-def contributors
-  #@collection = Collection.find_by(id: params[:collection_id])
-  #Get the start and end date params from date picker, if none, set defaults
-  start_date = params[:start_date]
-  end_date = params[:end_date]
-  
-  if start_date == nil
-    start_date = 1.week.ago
-    end_date = DateTime.now.utc
+  def contributors
+    #Get the start and end date params from date picker, if none, set defaults
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+    
+    if start_date == nil
+      start_date = 1.week.ago
+      end_date = DateTime.now.utc
+    end
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    @start_deed = start_date.strftime("%b %d, %Y")
+    @end_deed = end_date.strftime("%b %d, %Y")
+
+    new_contributors(@collection, start_date, end_date)
   end
-
-  start_date = start_date.to_datetime.beginning_of_day
-  end_date = end_date.to_datetime.end_of_day
-
-  @start_deed = start_date.strftime("%b %d, %Y")
-  @end_deed = end_date.strftime("%b %d, %Y")
-
-  new_contributors(@collection, start_date, end_date)
-  
-end
 
   def blank_collection
     collection = Collection.find_by(id: params[:collection_id])

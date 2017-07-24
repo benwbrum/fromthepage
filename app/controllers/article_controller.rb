@@ -16,12 +16,13 @@ class ArticleController < ApplicationController
   end
 
   def list
+    @categories = @collection.categories
     # Differences from previous implementation:
     # 1. List of articles needs to be collection-specific
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
     if @collection.is_a?(DocumentSet)
-      @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.collection.id])#.all
+      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL')
     else
       @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
     end
@@ -30,10 +31,10 @@ class ArticleController < ApplicationController
   def delete
     if @article.link_list.empty? && @article.target_article_links.empty?
       @article.destroy
-      redirect_to :controller => 'article', :action => 'list', :collection_id => @collection.id
+      redirect_to collection_subjects_path(@collection.owner, @collection)
     else
       flash.alert ="You must remove all referring links before you delete this subject."
-      redirect_to :action => :show, :article_id => @article.id
+      redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
     end
   end
 
@@ -173,6 +174,7 @@ class ArticleController < ApplicationController
     @article.graph_image = dot_out
     @min_rank = min_rank
     @article.save!
+    session[:col_id] = @collection.slug
   end
 
   protected

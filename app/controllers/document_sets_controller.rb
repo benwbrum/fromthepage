@@ -7,8 +7,6 @@ class DocumentSetsController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def index
-    @document_sets = DocumentSet.all
-    respond_with(@document_sets)
   end
 
   def show
@@ -52,11 +50,28 @@ class DocumentSetsController < ApplicationController
 
     redirect_to :action => :index, :collection_id => @collection.id
   end
+
   def update
-    @document_set.update(document_set_params)
+    if params[:document_set][:slug] == ""
+      @document_set.update(params[:document_set].except(:slug))
+      title = @document_set.title.parameterize
+      @document_set.update(slug: title)
+    else
+      @document_set.update(document_set_params)
+    end
+
     @document_set.save!
     flash[:notice] = 'Document set has been saved'
-    ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    unless request.referrer.include?("/settings")
+      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    else
+      redirect_to request.referrer
+    end
+  end
+
+  def settings
+    #document set edit needs the @document set variable
+    @document_set = @collection
   end
 
   def destroy

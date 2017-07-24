@@ -12,10 +12,16 @@ class UserController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(params[:user])
-      #record_deed
+    if params[:user][:slug] == ""
+      @user.update(params[:user].except(:slug))
+      login = @user.login.parameterize
+      @user.update(slug: login)
+    else
+      @user.update(params[:user])
+    end
+    if @user.save!
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to({ :action => 'profile', :user_id => @user.id, :anchor => '' })
+      ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
     else
       render :action => 'update_profile'
     end
@@ -25,7 +31,7 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:id])
     end
-    @collections = @user.unrestricted_collections
+    @collections = @user.owned_collection_and_document_sets
     @collection_ids = @collections.map {|collection| collection.id}
     @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
     @notes = @user.notes.limit(10)

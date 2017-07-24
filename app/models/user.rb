@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many(:owned_collections,
                           { :join_table => 'collection_owners',
                             :class_name => 'Collection'})
+  has_and_belongs_to_many(:collection_collaborations,
+                          { :join_table => 'collection_collaborators',
+                            :class_name => 'Collection'})
+
   has_many :page_versions, -> { order 'created_on DESC' }
   has_many :article_versions, -> { order 'created_on DESC' }
   has_many :notes, -> { order 'created_at DESC' }
@@ -61,6 +65,10 @@ class User < ActiveRecord::Base
 
   def can_transcribe?(work)
     !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
+  end
+
+  def collaborator?(collection)
+    collection.collaborators.include?(self)
   end
 
   def like_owner?(obj)
@@ -114,7 +122,19 @@ class User < ActiveRecord::Base
   end
   
   def unrestricted_collections
-    collections = self.all_owner_collections.unrestricted.order_by_recent_activity
+    collections = self.all_owner_collections.unrestricted
+  end
+
+  def unrestricted_document_sets
+    DocumentSet.where(owner_user_id: self.id).where(is_public: true)
+  end
+
+  def document_sets
+    DocumentSet.where(owner_user_id: self.id)
+  end
+
+  def owned_collection_and_document_sets
+    (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
   end
 
   def slug_candidates
