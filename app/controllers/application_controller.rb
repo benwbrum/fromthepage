@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
+  before_filter :update_omeka_urls
   before_action :store_current_location, :unless => :devise_controller?
   before_filter :load_html_blocks
   before_filter :authorize_collection
@@ -134,6 +135,12 @@ class ApplicationController < ActionController::Base
     Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
   end
 
+
+  def update_omeka_urls
+    if @work && @work.omeka_item && @work.omeka_item.needs_refresh?
+      @work.omeka_item.refresh_urls
+    end    
+  end
 
 
   # perform appropriate API call for updating the IA server
