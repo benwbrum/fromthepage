@@ -37,7 +37,10 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
-
+  get   'ZenasMatthews' => 'collection#show', :collection_id => 7
+  get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  get   'YaquinaLights' => 'collection#show', :collection_id => 58
+  
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
