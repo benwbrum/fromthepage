@@ -32,6 +32,12 @@
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
             |&nbsp;
             =f.label "Disable Subject Indexing"
+        tr
+          td(colspan="2")
+            p
+            =f.check_box :review_workflow, value: @collection.review_workflow
+            |&nbsp;
+            =f.label "All Initial Transcriptions Need Review"
 
 
       .toolbar

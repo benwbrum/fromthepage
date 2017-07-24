@@ -5,7 +5,6 @@ h1 ="Omeka Item: #{@omeka_item.title}"
   article.maincol
     .headline
       h4.headline_title =pluralize(@omeka_item.client_files.size, 'Item File')
-      .headline_aside =link_to 'Publish to Collaborators', { :action => :import, :id => @omeka_item.id }, class: 'button outline'
     .omeka-item-files
       -@omeka_item.client_files.each do |file|
         .omeka-item-file
@@ -21,7 +20,6 @@ h1 ="Omeka Item: #{@omeka_item.title}"
   aside.sidecol
     .headline
       h4.headline_title Item Details
-      .headline_aside =link_to 'Edit Details', edit_omeka_item_path(@omeka_item), :data => { litebox: { hash: 'edit-omeka-item' } }, class: 'button outline'
     ul.omeka-item-info
       -if @omeka_item.title.present?
         li(data-prefix="Title:") =@omeka_item.title
@@ -39,5 +37,9 @@ h1 ="Omeka Item: #{@omeka_item.title}"
         li(data-prefix="Coverage:") =@omeka_item.coverage
       li(data-prefix="Source:") =link_to(@omeka_item.omeka_site.title, @omeka_item.omeka_site)
       li(data-prefix="API URL:") =@omeka_item.omeka_url
-      li(data-prefix="Collection ID:") =@omeka_item.omeka_collection_id
-      li(data-prefix="Item ID:") =@omeka_item.omeka_id
+    div
+      =form_tag action: :import 
+        =hidden_field_tag :id, @omeka_item.id
+        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -'
+        =submit_tag 'Publish to Collaborators'
+    

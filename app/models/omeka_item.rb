@@ -10,36 +10,24 @@ class OmekaItem < ActiveRecord::Base
     client_item.files
   end
 
-  def import
+  def import(fromthepage_collection=nil)
     client_item = omeka_site.client.get_item(omeka_id)
 
-    if omeka_collection_id
-      # look for a parent collection mirror object in FromThePage
-      omeka_collection = OmekaCollection.where(:omeka_id => omeka_collection_id).first
-      unless omeka_collection
-        client_collection = client_item.collection
-        omeka_collection = OmekaCollection.new
-        omeka_collection.omeka_id = client_collection.data.id
-        omeka_collection.title = client_collection.dublin_core.title
-        omeka_collection.description = client_collection.dublin_core.description
-        omeka_collection.omeka_site = omeka_site
-        omeka_collection.save!
+    unless fromthepage_collection
+      if omeka_collection_id
+        # look for a parent collection mirror object in FromThePage
+        omeka_collection = OmekaCollection.where(:omeka_id => omeka_collection_id).first
+        unless omeka_collection
+          omeka_collection = create_mirror_collection(client_item.collection)
+        end
+      end
+      # if the item was in an Omeka collection, there is now a mirror object  
+      if omeka_collection.collection
+        fromthepage_collection = omeka_collection.collection
+      else
+        fromthepage_collection = create_mirror_collection(omeka_collection)
       end
     end
-    # if the item was in an Omeka collection, there is now a mirror object
-
-    unless omeka_collection.collection
-      # create a FromThePage collection
-      fromthepage_collection = Collection.new
-      fromthepage_collection.owner = User.current_user
-      fromthepage_collection.title = omeka_collection.title
-      fromthepage_collection.intro_block = omeka_collection.description
-      fromthepage_collection.save!
-
-      omeka_collection.collection = fromthepage_collection
-      omeka_collection.save!
-    end
-    # if the item was in an Omeka collection, there is now a FromThePage collection
 
     # now create mirror file records
     client_item.files.each do |client_file|
@@ -64,7 +52,7 @@ class OmekaItem < ActiveRecord::Base
     work.description = description
     work.physical_description = format
     work.author = creator
-    work.collection=omeka_collection.collection
+    work.collection=fromthepage_collection
     work.save!
     self.omeka_files.each do |omeka_file|
       page = Page.new
@@ -112,6 +100,32 @@ class OmekaItem < ActiveRecord::Base
   end
 
 protected
+
+  def create_mirror_collection(client_collection)
+    omeka_collection = OmekaCollection.new
+    omeka_collection.omeka_id = client_collection.data.id
+    omeka_collection.title = client_collection.dublin_core.title
+    omeka_collection.description = client_collection.dublin_core.description
+    omeka_collection.omeka_site = omeka_site
+    omeka_collection.save!
+    
+    omeka_collection
+  end
+
+  def create_fromthepage_collection(omeka_collection)
+    # create a FromThePage collection
+    fromthepage_collection = Collection.new
+    fromthepage_collection.owner = User.current_user
+    fromthepage_collection.title = omeka_collection.title
+    fromthepage_collection.intro_block = omeka_collection.description
+    fromthepage_collection.save!
+
+    omeka_collection.collection = fromthepage_collection
+    omeka_collection.save!    
+    
+    fromthepage_collection
+  end
+
 
   def record_deed(work)
     deed = Deed.new
