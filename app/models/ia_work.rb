@@ -141,6 +141,10 @@ class IaWork < ActiveRecord::Base
       leaf = IaLeaf.new
       leaf.leaf_number = page.xpath('@leafNum|@leafnum').text
       leaf.page_number = page.xpath('pageNumber|pagenumber').text
+      altpageelement = page.children.xpath("altPageNumber")
+      if !altpageelement.blank?
+        leaf.page_number = altpageelement.attr("prefix").value + " [" + altpageelement.children.text + "]"
+      end
       leaf.page_type = page.xpath('pageType|pagetype').text
       leaf.page_w = page.xpath('(cropBox|cropbox)/w').text
       leaf.page_h = page.xpath('(cropBox|cropbox)/h').text
