@@ -17,7 +17,11 @@ class OmekaItemsController < ApplicationController
   # GET /omeka_items/1
   # GET /omeka_items/1.json
   def show
-    @omeka_item = OmekaItem.find(params[:id])
+    if params[:client_item_id]
+      @omeka_item = OmekaItem.where(:omeka_id => params[:client_item_id]).first
+    else
+      @omeka_item = OmekaItem.find(params[:id])      
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -40,7 +44,6 @@ class OmekaItemsController < ApplicationController
     respond_to do |format|
       if @omeka_item.save
         format.html {
-          flash[:notice] = "Omeka item was successfully imported"
           redirect_to @omeka_item
         }
         format.json { render nothing: true, status: :created, location: @omeka_item }
@@ -53,7 +56,8 @@ class OmekaItemsController < ApplicationController
 
   def import
     @omeka_item = OmekaItem.find(params[:id])
-    @omeka_item.import
+    collection = Collection.find(params[:collection_id])
+    @omeka_item.import(collection)
 
     respond_to do |format|
       format.html {
