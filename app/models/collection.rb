@@ -15,7 +15,8 @@ class Collection < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug
+  has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
+  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow
 #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -50,7 +51,7 @@ class Collection < ActiveRecord::Base
   end
 
   def show_to?(user)
-    (!self.restricted && self.works.present?) || (user && user.like_owner?(self))
+    (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
   def create_categories

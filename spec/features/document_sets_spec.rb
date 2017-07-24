@@ -3,7 +3,6 @@ require 'spec_helper'
 describe "document sets", :order => :defined do
 
   before :all do
-
     @owner = User.find_by(login: 'margaret')
     @user = User.find_by(login: 'eleanor')
     @collections = @owner.all_owner_collections
@@ -13,45 +12,6 @@ describe "document sets", :order => :defined do
   before :each do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     @set = DocumentSet.first
-  end
-
-  it "adds new document sets" do
-    login_as(@owner, :scope => :user)
-    visit dashboard_owner_path
-    doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Settings")
-    page.find('.button', text: 'Enable Document Sets').click
-    expect(page).to have_content('Create a Document Set')
-    page.find('.button', text: 'Create a Document Set').click
-    page.fill_in 'document_set_title', with: "Test Document Set 1"
-    page.find_button('Create Document Set').click
-    expect(DocumentSet.last.is_public).to be true
-    expect(page).to have_content("Assign Works to Document Sets")
-    expect(page).to have_content("Test Document Set 1")
-    after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    expect(after_doc_set).to eq (doc_set + 1)
-    doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    page.find('.button', text: 'Create a Document Set').click
-    page.fill_in 'document_set_title', with: "Test Document Set 2"
-    page.uncheck 'Public'
-    page.find_button('Create Document Set').click
-    expect(page).to have_content("Test Document Set 2")
-    expect(DocumentSet.last.is_public).to be false
-    after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    expect(after_doc_set).to eq (doc_set + 1)
-  end
-
-  it "adds works to document sets" do
-    login_as(@owner, :scope => :user)
-    visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @collection.title).click
-    page.find('.tabs').click_link("Sets")
-    expect(page).to have_content("Document Sets for #{@collection.title}")
-    page.check("work_assignment_#{@document_sets.first.id}_#{@collection.works.first.id}")
-    page.check("work_assignment_#{@document_sets.first.id}_#{@collection.works.second.id}")
-    page.check("work_assignment_#{@document_sets.last.id}_#{@collection.works.last.id}")
-    page.find_button('Save').click
   end
 
   it "edits a document set (collection level)" do
@@ -300,7 +260,7 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     visit edit_collection_path(@collection.owner, @collection)
     page.find('.button', text: 'Disable Document Sets').click
-    expect(@collection.supports_document_sets).to be false
+    expect(Collection.find_by(id: @collection.id).supports_document_sets).to be false
   end
 
   it "enables document sets" do
@@ -310,6 +270,56 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq document_sets_path
     @collection = @collections.last
     expect(@collection.supports_document_sets).to be true
+  end
+
+  it "edits a document set slug" do
+    login_as(@owner, :scope => :user)
+    slug = "new-#{@set.slug}"
+    visit "/#{@owner.slug}/#{@set.slug}"
+    expect(page).to have_selector('h1', text: @set.title)
+    @set.works.each do |w|
+      expect(page).to have_content w.title
+    end
+    #note - checking editing of the slug from w/i the collection
+    visit "/#{@owner.slug}/#{@set.collection.slug}"
+    page.find('.tabs').click_link('Sets')
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @set.title)) do
+          page.find('a', text: 'Edit').click
+      end
+    end
+    expect(page).to have_field('document_set[slug]', with: @set.slug)
+    page.fill_in 'document_set_slug', with: "new-#{@set.slug}"
+    page.find_button('Save Document Set').click
+    expect(page).to have_content("Document Sets for #{@set.collection.title}")
+    expect(page).to have_content(@set.title)
+    expect(DocumentSet.find_by(id: @set.id).slug).to eq "#{slug}"
+    #check new path
+    visit "/#{@owner.slug}/#{slug}"
+    expect(page).to have_selector('h1', text: @set.title)
+    @set.works.each do |w|
+      expect(page).to have_content w.title
+    end
+    #check the old path 
+    #(this variable is stored at the beginning of the test, so it's the original)
+    visit "/#{@owner.slug}/#{@set.slug}"
+    expect(page).to have_selector('h1', text: @set.title)
+    @set.works.each do |w|
+      expect(page).to have_content w.title
+    end
+    #blank out doc set slug
+    visit "/#{@owner.slug}/#{@set.collection.slug}"
+    page.find('.tabs').click_link('Sets')
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @set.title)) do
+          page.find('a', text: 'Edit').click
+      end
+    end
+    page.fill_in 'document_set_slug', with: ""
+    page.find_button('Save Document Set').click
+    docset = DocumentSet.find_by(id: @set.id)
+    #note - the document set title was changed so the slug is slightly different
+    expect(docset.slug).to eq docset.title.parameterize
   end
 
 end

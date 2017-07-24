@@ -35,18 +35,6 @@ class PageController < ApplicationController
     redirect_to :back
   end
 
-  def reduce
-    reduce_by_one(@page)
-    set_dimensions(@page)
-    redirect_to :back
-  end
-
-  def enlarge
-    @page.shrink_factor = @page.shrink_factor - 1
-    @page.save!
-    set_dimensions(@page)
-    redirect_to :back
-  end
 
   # reordering functions
   def reorder_page

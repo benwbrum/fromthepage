@@ -3,7 +3,6 @@ require 'spec_helper'
 describe "convention related tasks", :order => :defined do
   Capybara.javascript_driver = :webkit
 
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -15,7 +14,11 @@ describe "convention related tasks", :order => :defined do
     @clean_conventions.gsub!(/\n/, ' ')
     @new_convention = "Collection level transcription convention"
     @work_convention = "Work level transcription conventions"
-    @tab = "Correct"
+    if @work.ocr_correction == true
+      @tab = "Correct"
+    else
+      @tab = "Transcribe"
+    end
   end
 
   before :each do
@@ -25,7 +28,10 @@ describe "convention related tasks", :order => :defined do
   it "checks for collection level transcription conventions" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    page.find('.tabs').click_link(@tab)
+    #if the page isn't already transcribed, must go to Transcribe tab
+    if page.has_content?("Facsimile")
+      page.find('.tabs').click_link(@tab)
+    end
     expect(page).to have_content @clean_conventions
   end
 
@@ -38,7 +44,9 @@ describe "convention related tasks", :order => :defined do
     click_button 'Save Changes'
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    page.find('.tabs').click_link(@tab)
+    if page.has_content?("Facsimile")
+      page.find('.tabs').click_link(@tab)
+    end
     expect(page).not_to have_content @clean_conventions
     expect(page).to have_content @work_convention
     convention_work = Work.find_by(id: @work.id)
@@ -60,7 +68,9 @@ describe "convention related tasks", :order => :defined do
     #check changed work for collection conventions
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    page.find('.tabs').click_link(@tab)
+    if page.has_content?("Facsimile")
+      page.find('.tabs').click_link(@tab)
+    end
     expect(page).not_to have_content @new_convention
     expect(page).to have_content @work_convention
   end
@@ -79,7 +89,9 @@ describe "convention related tasks", :order => :defined do
     expect(convention_work.transcription_conventions).to eq nil
     visit "/display/read_work?work_id=#{@work.id}"
     page.find('.work-page_title', text: @page.title).click_link(@page.title)
-    page.find('.tabs').click_link(@tab)
+    if page.has_content?("Facsimile")
+      page.find('.tabs').click_link(@tab)
+    end
     expect(page).to have_content @new_convention
     expect(page).not_to have_content @work_convention
   end
