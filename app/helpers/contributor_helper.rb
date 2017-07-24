@@ -38,7 +38,7 @@ module ContributorHelper
     @recent_work_add = @collection_deeds.where(deed_type: work_add)
     #get distinct user ids per deed and create list of users
     user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
-    @all_transcribers = User.where(id: user_deeds)
+    @active_transcribers = User.where(id: user_deeds)
 
     #find recent transcription deeds by user, then older deeds by user
     recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).distinct.pluck(:user_id)
@@ -48,6 +48,7 @@ module ContributorHelper
 
     #compare older to recent list to get new transcribers
     @new_transcribers = recent_users - older_users
+    @all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
   end
 
   def owner_expirations
