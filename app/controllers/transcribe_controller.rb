@@ -109,7 +109,7 @@ class TranscribeController  < ApplicationController
             @page.update_columns(status: Page::STATUS_INDEXED)
           end
           @work.work_statistic.recalculate if @work.work_statistic
-          @page.submit_background_processes
+          @page.submit_background_processes("transcription")
       
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
@@ -212,7 +212,7 @@ class TranscribeController  < ApplicationController
           end
 
           @work.work_statistic.recalculate if @work.work_statistic
-          @page.submit_background_processes
+          @page.submit_background_processes("translation")
 
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
