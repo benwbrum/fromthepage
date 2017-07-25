@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "document sets", :order => :defined do
 
   before :all do
-    @owner = User.find_by(login: 'margaret')
-    @user = User.find_by(login: 'eleanor')
+    @owner = User.find_by(login: OWNER)
+    @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.last
   end
@@ -14,7 +14,7 @@ describe "document sets", :order => :defined do
     @set = DocumentSet.first
   end
 
-  it "edits a document set (collection level)" do
+  it "edits a document set (start at collection level)" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @collection.title).click
@@ -27,37 +27,127 @@ describe "document sets", :order => :defined do
     end
     page.fill_in 'document_set_title', with: "Edited Test Document Set 1"
     page.find_button('Save Document Set').click
-    expect(page).to have_content("Document Sets for #{@collection.title}")
-    expect(page).to have_content(@document_sets.first.title)
-    within(page.find('#sets')) do
-      within(page.find('tr', text: @document_sets.first.title)) do
-        expect(page).to have_content("Public")
-      end
-    end
+    expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq "Edited Test Document Set 1"
+    expect(page.find('h1')).to have_content(@document_sets.first.title)
   end
 
-  it "views document sets" do
-    #need to restrict collection and see what the user can see
+  it "makes a document set private" do
     login_as(@owner, :scope => :user)
+    #create an additional document set to make private
+    visit document_sets_path(:collection_id => @collection)
+    page.find('.button', text: 'Create a Document Set').click
+    page.fill_in 'document_set_title', with: "Test Document Set 3"
+    page.find_button('Create Document Set').click
+    expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
+    expect(page.find('h1')).to have_content("Test Document Set 3")
+    expect(DocumentSet.last.is_public).to be true
+    #make the set private and assign works
+    page.find('.button', text: 'Make Document Set Private').click
+    expect(DocumentSet.last.is_public).to be false
+    page.check("work_assignment_#{@collection.works.third.id}")
+    page.find_button('Save').click
+    expect(DocumentSet.last.work_ids).to include @collection.works.third.id
+  end
+
+  it "views document sets - regular user" do
+    #need to restrict collection to test user view
+    @collection.restricted = true
+    @collection.save!
+    #user with no privileges first
+    @test_set = DocumentSet.last
+    login_as(@user, :scope => :user)
     visit dashboard_path
     @collections.each do |c|
-      expect(page).to have_content(c.title)
+      unless c.restricted
+        expect(page).to have_content(c.title)
+      else
+        expect(page).not_to have_content(c.title)
+      end
     end
     @document_sets.each do |set|
       if set.is_public
         expect(page).to have_content(set.title)
+      elsif !set.is_public
+        expect(page).not_to have_content(set.title)
       end
     end
+    #check to view public document set
     page.find('.maincol').find('a', text: @set.title).click
     expect(page).to have_content("Overview")
-    expect(page).to have_content(@collection.works.first.id)
-    expect(page).to have_content(@collection.works.second.id)
+    expect(page).to have_content(@collection.works.first.title)
+    expect(page).to have_content(@collection.works.second.title)
+    expect(page).not_to have_content(@collection.works.last.title)
     expect(page).to have_content(@set.works.first.title)
     page.find('.tabs').click_link('Statistics')
     expect(page).to have_content(@set.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
     expect(page).to have_content("Last 7 Days Statistics")
+    #can a restricted user access a private doc set through a link
+    visit collection_path(@owner, @test_set)
+    expect(page.current_path).to eq dashboard_path
+    expect(page.find('h1')).not_to have_content(@test_set.title)
+    #can a restricted user see a work from a private collection through a link
+    visit collection_read_work_path(@owner, @collection, @collection.works.last)
+    expect(page.current_path).to eq dashboard_path
+    expect(page.find('h1')).not_to have_content(@collection.works.last.title)
   end
+
+  it "adds a collaborator" do
+    @test_set = DocumentSet.last
+    #hack because of select 2 dropdown box
+    @test_set.collaborators << @user
+  end
+
+  it "tests a collaborator" do
+    @test_set = DocumentSet.last
+    login_as(@user, :scope => :user)
+    visit dashboard_path
+    @collections.each do |c|
+      unless c.restricted
+        expect(page).to have_content(c.title)
+      else
+        expect(page).not_to have_content(c.title)
+      end
+    end
+    @document_sets.each do |set|
+      if set.is_public
+        expect(page).to have_content(set.title)
+      elsif !set.is_public
+        if set.collaborators.include?(@user)
+          expect(page).to have_content(set.title)
+        else
+          expect(page).not_to have_content(set.title)
+        end
+      end
+    end
+    #check collaborator access to private doc set
+    visit collection_path(@owner, @test_set)
+    expect(page.find('h1')).to have_content(@test_set.title)
+    expect(page.find('.maincol')).to have_content(@test_set.works.first.title)
+    #check collaborator access through a link
+    visit collection_read_work_path(@owner, @test_set, @test_set.works.first)
+    expect(page.find('h1')).to have_content(@test_set.works.first.title)
+    #check that the collaborator can't access other private doc set
+    visit collection_read_work_path(@owner, DocumentSet.second, DocumentSet.second.works.first)
+    expect(page.current_path).to eq dashboard_path
+    expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
+  end
+
+  it "cleans up test data" do
+    @test_set = DocumentSet.last
+    @collection.restricted = false
+    @collection.save!
+    #delete the new document set
+    login_as(@owner, :scope => :user)
+    visit document_sets_path(:collection_id => @collection)
+    within(page.find('#sets')) do
+      within(page.find('tr', text: @test_set.title)) do
+          page.find('a', text: 'Delete').click
+      end
+    end
+    expect(DocumentSet.all.ids).not_to include @test_set.id
+  end
+
 
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
@@ -243,16 +333,6 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     click_link @set.title
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
-  end
-
-  it "edits a document set (document set level)" do
-    login_as(@owner, :scope => :user)
-    visit "/#{@owner.slug}/#{@set.slug}"
-    page.find('.tabs').click_link("Settings")
-    expect(page).to have_content("Title")
-    page.fill_in 'document_set_slug', with: "#{@set.slug}-new"
-    click_button('Save Document Set')
-    expect(DocumentSet.first.slug).to eq "#{@set.slug}-new"
   end
 
   it "disables document sets" do
