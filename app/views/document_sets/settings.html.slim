@@ -14,13 +14,13 @@
           tr
             th Work
             th Privacy
-            th
+            th.wrapped
               =@collection.title
                 /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
         tbody
           -@collection.collection.works.each do |work|
             tr
-              td
+              td.overflow
                 =work.title
                 -if work.supports_translation
                   span 
@@ -30,8 +30,8 @@
                      ocr
               td
                 i
-                  =work.restrict_scribes ? 'Private' : 'Public'
-              td
+                  =(work.restrict_scribes || work.collection.restricted) ? 'Private' : 'Public'
+              td.tocenter
                 =check_box_tag("work_assignment[#{work.id}]", "true", work.document_sets.exists?(@collection))
       br
       .aright =submit_tag "Save"
