@@ -28,7 +28,7 @@ class DocumentSetsController < ApplicationController
     @document_set.owner = current_user
     if @document_set.save
       flash[:notice] = 'Document set has been created'
-      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+      ajax_redirect_to collection_settings_path(@document_set.owner, @document_set)
     else
       render action: 'new'
     end
@@ -51,16 +51,13 @@ class DocumentSetsController < ApplicationController
     redirect_to :action => :index, :collection_id => @collection.id
   end
 
-  def add_work_to_set
-    work = Work.friendly.find(params[:work])
-    @collection.works << work
-    redirect_to action: 'settings', collection_id: @collection.slug, :anchor => "manage"
-  end
-
-  def remove_work_from_set
-    work = Work.friendly.find(params[:work])
-    @collection.works.delete(work)
-    redirect_to action: 'settings', collection_id: @collection.slug, :anchor => "manage"
+  def assign_to_set
+    work_map = params[:work_assignment]
+    @collection.works.clear
+    @collection.work_ids = work_map.keys.map { |id| id.to_i }
+    @collection.save!
+    redirect_to action: 'settings', collection_id: @collection.slug
+    #should we go to overview instead?
   end
 
   def update

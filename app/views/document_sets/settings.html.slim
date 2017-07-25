@@ -7,24 +7,36 @@
     =render 'edit'
 
     h2#manage Manage Works
-    h5 Already in the document set
-    ul.collection-works-manage
-      -@collection.works.each do |work|
-        li
-          =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
-          =link_to({ :action => 'remove_work_from_set', :work => work, :collection_id => @collection.slug }, class: 'action')
-            =svg_symbol '#icon-remove-sign', class: 'icon'
-            small Remove
 
-    h5 Not in the document set
-    ul.collection-works-manage
-      -@works_not_in_set.each do |work|
-        li
-          =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
-          =link_to({ :action => 'add_work_to_set', :work => work, :collection_id => @collection.slug }, class: 'action')
-            =svg_symbol '#icon-plus-sign', class: 'icon'
-            small Include
- 
+    =form_tag({ action: 'assign_to_set', collection_id: @collection})
+      table.datagrid
+        thead
+          tr
+            th Work
+            th Privacy
+            th
+              =@collection.title
+                /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
+        tbody
+          -@collection.collection.works.each do |work|
+            tr
+              td
+                =work.title
+                -if work.supports_translation
+                  span 
+                    translate
+                -if work.ia_work && work.ia_work.use_ocr
+                  span
+                     ocr
+              td
+                i
+                  =work.restrict_scribes ? 'Private' : 'Public'
+              td
+                =check_box_tag("work_assignment[#{work.id}]", "true", work.document_sets.exists?(@collection))
+      br
+      .aright =submit_tag "Save"
+
+
   aside.sidecol
 
     h3 Document Set Privacy
