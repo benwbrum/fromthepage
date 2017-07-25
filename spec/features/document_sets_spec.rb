@@ -82,6 +82,12 @@ describe "document sets", :order => :defined do
     expect(page).to have_content(@set.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
     expect(page).to have_content("Last 7 Days Statistics")
+    page.find('.tabs').click_link('Overview')
+    click_link @set.works.first.title
+    expect(page).to have_content(@set.works.first.title)
+    page.find('.work-page_title').click_link(@set.works.first.pages.first.title)
+    expect(page.current_path).not_to eq dashboard_path
+    expect(page.find('h1')).to have_content(@set.works.first.pages.first.title)
     #can a restricted user access a private doc set through a link
     visit collection_path(@owner, @test_set)
     expect(page.current_path).to eq dashboard_path
@@ -133,6 +139,19 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
   end
 
+  it "checks notes on a public doc set/private collection" do
+    login_as(@user)
+    visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
+    fill_in 'note_body', with: "Test private note"
+    click_button('Submit')
+    expect(page).to have_content "Note has been created"
+    note = Note.last
+    visit collection_path(@set.owner, @set)
+    page.find('a', text: "Test private note").click
+    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
+    page.find('.user-bubble_content', text: "Test private note")
+    end
+
   it "cleans up test data" do
     @test_set = DocumentSet.last
     @collection.restricted = false
@@ -146,6 +165,8 @@ describe "document sets", :order => :defined do
       end
     end
     expect(DocumentSet.all.ids).not_to include @test_set.id
+    #delete the note in case of conflicts
+#    Note.find_by(body: "Test private note").delete
   end
 
 
