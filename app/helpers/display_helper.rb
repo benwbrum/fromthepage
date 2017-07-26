@@ -43,18 +43,23 @@ module DisplayHelper
         @wording = 'Translate'
       elsif page.translation_status == 'review'
         @wording = 'Review'
-      elsif page.page_article_links.size == 0
+      elsif page.translation_status == 'translated'
         unless @collection.subjects_disabled
           @wording = 'Annotate'
         end
+      elsif page.translation_status == 'indexed'
+        @wording = 'Complete'
+        @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
       end
-    elsif page.page_article_links.size == 0
+    elsif page.status == 'transcribed'
       unless @collection.subjects_disabled
         @wording = 'Annotate'
       end
-    else
+    elsif page.status == 'indexed'
       @wording = 'Complete'
       @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
+    else
+      @wording = 'Transcribe'
     end
   end
 
