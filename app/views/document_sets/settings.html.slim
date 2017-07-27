@@ -13,7 +13,7 @@
         thead
           tr
             th Work
-            th Privacy
+            th Collaboration
             th.wrapped
               =@collection.title
                 /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
@@ -30,7 +30,7 @@
                      ocr
               td
                 i
-                  =(work.restrict_scribes || work.collection.restricted) ? 'Private' : 'Public'
+                  =work.restrict_scribes ? 'Restricted' : 'Unrestricted'
               td.tocenter
                 =check_box_tag("work_assignment[#{work.id}]", "true", work.document_sets.exists?(@collection))
       br

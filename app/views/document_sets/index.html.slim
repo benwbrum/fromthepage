@@ -40,7 +40,7 @@ br
       thead
         tr
           th Work
-          th Privacy
+          th Collaboration
           -@collection.document_sets.each do |document_set|
             th
               =document_set.title
@@ -58,7 +58,7 @@ br
                    ocr
             td
               i
-                =(work.restrict_scribes || work.collection.restricted) ? 'Private' : 'Public'
+                =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
             -@collection.document_sets.each do |document_set|
               td
                 =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", work.document_sets.exists?(document_set))
