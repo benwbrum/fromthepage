@@ -1,5 +1,5 @@
 require 'drb'
-require 'RMagick'
+require 'rmagick'
 require File.dirname(__FILE__) + '/../image_helper.rb'
 
 
