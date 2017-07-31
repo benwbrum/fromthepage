@@ -41,9 +41,11 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page.find('h1')).to have_content("Test Document Set 3")
     expect(DocumentSet.last.is_public).to be true
+    expect(page).not_to have_content("Document Set Collaborators")
     #make the set private and assign works
     page.find('.button', text: 'Make Document Set Private').click
     expect(DocumentSet.last.is_public).to be false
+    expect(page).to have_content("Document Set Collaborators")
     page.check("work_assignment_#{@collection.works.third.id}")
     page.find_button('Save').click
     expect(DocumentSet.last.work_ids).to include @collection.works.third.id
