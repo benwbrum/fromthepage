@@ -20,6 +20,10 @@ class DocumentSet < ActiveRecord::Base
     self.description
   end
   
+  def hide_completed
+    self.collection.hide_completed
+  end
+
   def subjects_disabled
     self.collection.subjects_disabled
   end

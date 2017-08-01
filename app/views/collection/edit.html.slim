@@ -38,6 +38,12 @@
             =f.check_box :review_workflow, value: @collection.review_workflow
             |&nbsp;
             =f.label "All Initial Transcriptions Need Review"
+        tr
+          td(colspan="2")
+            p
+            =f.check_box :hide_completed, value: @collection.hide_completed
+            |&nbsp;
+            =f.label "Hide completed works by default"
 
 
       .toolbar
