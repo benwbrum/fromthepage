@@ -15,7 +15,6 @@ module CollectionHelper
       @progress_review = work.work_statistic.pct_translation_needs_review.round
       @progress_completed = work.work_statistic.pct_translation_completed.round
       @type = "translated"
-
     end
 
     if @collection.subjects_disabled
@@ -24,17 +23,27 @@ module CollectionHelper
       else
         @wording = "#{@progress_completed}% #{@type}"
       end
+
+      if @progress_completed == 100
+        @completed = "Completed"
+      else
+        @completed = "Not Completed"
+      end
+
     elsif @progress_review == 0
       @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}"
+
     else
       @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}, #{@progress_review}% needs review"
+
+      if @progress_annotated == 100
+        @completed = "Completed"
+      else
+        @completed = "Not Completed"
+      end
+
     end
 
-    if @progress_annotated == 100
-      @completed = "Completed"
-    else
-      @completed = "Not Completed"
-    end
   end
 
 end
