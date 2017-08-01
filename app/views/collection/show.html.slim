@@ -11,15 +11,19 @@
           ==@collection.intro_block
 
     h2 Works
-    .toolbar.aright
+    .aright
       -if @collection.hide_completed
-
-        a.button.outline#hide_completed Show Completed Works
+        =label_tag "Show Completed Works"
+        |&nbsp; 
+        =check_box_tag :hide_completed
       -else
-        a.button.outline#hide_completed Hide Completed Works
-    |&nbsp;
+        =label_tag "Show Completed Works"
+        |&nbsp; 
+        =check_box_tag :hide_completed, checked: true
+      p
+
     -@collection.works.includes(:work_statistic).each do |work|
-      .collection-work
+      .collection-work.hidden
         h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
@@ -77,19 +81,18 @@
   javascript:
     $(function() {
       var hideCompleted = #{@collection.hide_completed};
-      hideWorks($(hideCompleted))
+      $(hideWorks(hideCompleted));
     });
     $(function(){
-      var showButton = $('#hide_completed')
+      var showCheckbox = $('#hide_completed')
+
       $(function(){
-        $(showButton).click(function(e){
+        $(showCheckbox).click(function(e){
           var hide;
-          if (this.innerText == "Show Completed Works"){
+          if (this.checked){
             hide = false;
-            this.innerText = "Hide Completed Works"
-          } else if (this.innerText == "Hide Completed Works"){
+          } else {
             hide = true;
-            this.innerText = "Show Completed Works";
           };
           hideWorks(hide);
         });
@@ -97,9 +100,9 @@
     });
 
     function hideWorks(param){
-      var hideCompleted = param
+      var showOrHide = param
       var work = $('.collection-work');
-      if (hideCompleted){
+      if (showOrHide){
         work.each(function(i){
           var completed = $(this).find('.completed').text();
           if (completed == "Completed"){
@@ -111,4 +114,5 @@
       } else {
         $(work).show();
       };
+      work.removeClass("hidden")
     }
