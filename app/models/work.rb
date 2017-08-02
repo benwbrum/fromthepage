@@ -18,7 +18,6 @@ class Work < ActiveRecord::Base
 
   after_save :update_statistic
   after_destroy :cleanup_images
-  before_save :set_featured_page
 
   attr_accessible :title,
                   :author,
@@ -145,13 +144,14 @@ class Work < ActiveRecord::Base
   end
 
   def thumbnail
-    if !self.picture.blank?
+    unless self.picture.blank?
       self.picture_url(:thumb)
-    elsif self.featured_page
+    else
+      if self.featured_page.nil?
+        self.set_featured_page
+      end
       featured_page = Page.find_by(id: self.featured_page)
       featured_page.thumbnail_url
-    else
-      self.pages.first.thumbnail_url
     end
   
   end
