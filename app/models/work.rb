@@ -144,16 +144,19 @@ class Work < ActiveRecord::Base
   end
 
   def thumbnail
-    unless self.picture.blank?
+    if !self.picture.blank?
       self.picture_url(:thumb)
     else
-      if self.featured_page.nil?
-        self.set_featured_page
+      unless self.pages.count == 0
+        if self.featured_page.nil?
+          set_featured_page
+        end
+        featured_page = Page.find_by(id: self.featured_page)
+        featured_page.thumbnail_url
+      else
+        return nil
       end
-      featured_page = Page.find_by(id: self.featured_page)
-      featured_page.thumbnail_url
     end
-  
   end
 
   def normalize_friendly_id(string)
@@ -177,11 +180,9 @@ class Work < ActiveRecord::Base
   end
 
   def set_featured_page
-    if self.featured_page.nil?
       num = (self.pages.count/3).round
       page = self.pages.offset(num).first
-      self.featured_page = page.id
-    end
+      self.update_columns(featured_page: page.id)
   end
 
 end
