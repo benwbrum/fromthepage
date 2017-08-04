@@ -60,6 +60,17 @@
   background-clip: padding-box;
   border: 1px solid rgba(#000, 0.06);
   background-color: mix(#FFF, $bodyBg, 35%);
+  overflow: hidden;
+  &_image {
+    display: inline-block;
+    float: left;
+    padding: 5px;
+    background: #FFF;
+    margin-right: $gapSize;
+    margin-bottom: $gapSize;
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.06);
+  }
   &_title {
     margin: 0;
     a {
@@ -74,9 +85,9 @@
   }
   &_stats {
     width: 100%;
-    display: table;
     color: $bodyFgFaded;
     margin: 0.5em 0 0 0;
+    overflow: auto;
     > span {
       padding-right: 10px;
       display: table-cell;
