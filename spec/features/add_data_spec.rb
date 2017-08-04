@@ -19,7 +19,7 @@ describe "uploads data for collections", :order => :defined do
     Collection.find_each(&:save)
     Work.find_each(&:save)
     User.find_each(&:save)
-    end
+  end
 
   it "starts a new project from tab" do
     visit dashboard_owner_path
@@ -94,6 +94,7 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "adds new document sets" do
+    @owner = User.find_by(login: OWNER)
     visit dashboard_owner_path
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.maincol').find('a', text: @set_collection.title).click
@@ -104,16 +105,23 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'document_set_title', with: "Test Document Set 1"
     page.find_button('Create Document Set').click
     expect(DocumentSet.last.is_public).to be true
-    expect(page).to have_content("Assign Works to Document Sets")
-    expect(page).to have_content("Test Document Set 1")
+    expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
+    expect(page).to have_content("Manage Works")
+    expect(page.find('h1')).to have_content("Test Document Set 1")
+    #add a work from the settings page
+    page.check("work_assignment_#{@set_collection.works.second.id}")
+    page.find_button('Save').click
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     expect(after_doc_set).to eq (doc_set + 1)
+    visit document_sets_path(:collection_id => @set_collection)
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     page.find('.button', text: 'Create a Document Set').click
     page.fill_in 'document_set_title', with: "Test Document Set 2"
     page.uncheck 'Public'
     page.find_button('Create Document Set').click
-    expect(page).to have_content("Test Document Set 2")
+    expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
+    expect(page).to have_content("Manage Works")
+    expect(page.find('h1')).to have_content("Test Document Set 2")
     expect(DocumentSet.last.is_public).to be false
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     expect(after_doc_set).to eq (doc_set + 1)
@@ -126,7 +134,6 @@ describe "uploads data for collections", :order => :defined do
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@set_collection.title}")
     page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.first.id}")
-    page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.second.id}")
     page.check("work_assignment_#{@document_sets.last.id}_#{@set_collection.works.last.id}")
     page.find_button('Save').click
   end

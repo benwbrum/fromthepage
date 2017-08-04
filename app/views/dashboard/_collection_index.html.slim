@@ -39,7 +39,7 @@
                         -progress_annotated = w.work_statistic.pct_annotated.round
                         -progress_transcribed = w.work_statistic.pct_transcribed.round
                         tr
-                          td =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
+                          td =link_to w.title, collection_work_contents_path(w.collection.owner, w.collection, w)
                           td =w.work_statistic.total_pages
                           -unless c.subjects_disabled
                             td ="#{progress_annotated}%"

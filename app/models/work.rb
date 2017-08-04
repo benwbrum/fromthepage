@@ -33,10 +33,14 @@ class Work < ActiveRecord::Base
                   :scribes_can_edit_titles,
                   :restrict_scribes,
                   :pages_are_meaningful,
-                  :slug
+                  :slug,
+                  :picture,
+                  :featured_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: true
+
+  mount_uploader :picture, PictureUploader
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
 
@@ -139,6 +143,22 @@ class Work < ActiveRecord::Base
 
   end
 
+  def thumbnail
+    if !self.picture.blank?
+      self.picture_url(:thumb)
+    else
+      unless self.pages.count == 0
+        if self.featured_page.nil?
+          set_featured_page
+        end
+        featured_page = Page.find_by(id: self.featured_page)
+        featured_page.thumbnail_url
+      else
+        return nil
+      end
+    end
+  end
+
   def normalize_friendly_id(string)
     string.truncate(230, separator: ' ', omission: '')
     super.gsub('_', '-')
@@ -157,6 +177,12 @@ class Work < ActiveRecord::Base
 
   def should_generate_new_friendly_id?
     slug_changed? || super
+  end
+
+  def set_featured_page
+      num = (self.pages.count/3).round
+      page = self.pages.offset(num).first
+      self.update_columns(featured_page: page.id)
   end
 
 end

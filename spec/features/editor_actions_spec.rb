@@ -62,10 +62,6 @@ describe "editor actions" do
     page.find('.tabs').click_link("About")
     expect(page).to have_content(@work.title)
     expect(page).to have_content("Description")
-    #Contents
-    page.find('.tabs').click_link("Contents")
-    expect(page).to have_content("Page Title")
-    expect(page).to have_content(@page.title)
     #Versions
     page.find('.tabs').click_link("Versions")
     expect(page).to have_content("Revision 0")
@@ -73,6 +69,16 @@ describe "editor actions" do
     page.find('.tabs').click_link("Help")
     expect(page).to have_content("Transcribing")
     expect(page).to have_content("Linking Subjects")
+    #Contents
+    page.find('.tabs').click_link("Contents")
+    expect(page).to have_content("Page Title")
+    expect(page).to have_content(@work.pages.last.title)
+    within(page.find('tr', text: @work.pages.last.title)) do
+      page.find('a', text: 'Transcribe').click
+    end
+    expect(page).to have_content("Transcription Conventions")
+    expect(page).to have_selector("textarea")
+
   end
 
   it "looks at pages" do
