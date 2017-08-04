@@ -10,22 +10,22 @@ ul
   h3 
     | Document Sets for 
     =@collection.title
-  table.tabular#sets
+  table.datagrid
     thead
       tr
         th Title
         th Privacy
-        th 
+        th Actions
         th
-    tbody
+    tbody#sets
       -@collection.document_sets.each do |document_set|
         tr
           td
-            =document_set.title  
+            =link_to document_set.title, collection_path(document_set.owner, document_set)
           td
-            =document_set.is_public ? 'Public' : ''  
+            =document_set.is_public ? 'Public' : 'Private'  
           td
-            =link_to 'Edit', edit_document_set_path(document_set), 'data-litebox' => ''
+            =link_to 'Edit', collection_settings_path(@collection.owner, document_set)
           td
             =link_to 'Delete',{ :controller => 'document_sets', :action => 'destroy', :document_set_id => document_set.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' }
               
@@ -36,11 +36,11 @@ br
 -if @collection.document_sets.present?
   h3 Assign Works to Document Sets
   =form_tag(document_set_assign_works_path(collection_id: @collection.id))
-    table.tabular
+    table.datagrid
       thead
         tr
           th Work
-          th Privacy
+          th Collaboration
           -@collection.document_sets.each do |document_set|
             th
               =document_set.title
@@ -58,7 +58,7 @@ br
                    ocr
             td
               i
-                =work.restrict_scribes ? 'Private' : 'Public'
+                =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
             -@collection.document_sets.each do |document_set|
               td
                 =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", work.document_sets.exists?(document_set))

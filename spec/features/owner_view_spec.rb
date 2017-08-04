@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "owner views" do
+describe "owner view - collection" do
 
   before :all do
 

@@ -24,6 +24,7 @@
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
     .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
     -unless @collection.subjects_disabled
+      .counter(data-prefix="#{number_with_delimiter @collection.index_count(7)}") #{'Page'.pluralize(@collection.new_subject_count(7))} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
       .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
@@ -49,7 +50,7 @@
         -completed = "translated"
 
       li
-        span =link_to w.title, { :controller => 'display', :action => 'list_pages', :work_id => w.id }
+        span =link_to w.title, collection_work_contents_path(w.collection.owner, w.collection, w)
         span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
         -unless @collection.subjects_disabled
           span =="<b>#{progress_annotated}%</b> indexed"

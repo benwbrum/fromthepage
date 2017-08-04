@@ -552,8 +552,9 @@ button, .button, .dropdown dd a {
   th {
     font-weight: bold;
     padding: 15px 10px;
-    white-space: nowrap;
+    //white-space: nowrap;
     background: rgba(#000, 0.1);
+    &.wrapped { word-wrap: break-word;}
   }
   td {
     padding: 10px;

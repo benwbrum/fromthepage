@@ -16,7 +16,11 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    #check to see if Collaborators are visible
+    expect(page).not_to have_content("Collection Collaborators")
     page.click_link('Make Collection Private')
+    #check to see if Collaborators are visible
+    expect(page).to have_content("Collection Collaborators")
   end
 
   it "checks that a restricted user can't view the collection" do
