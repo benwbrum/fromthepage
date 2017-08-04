@@ -2,6 +2,7 @@ require 'search_translator'
 class Page < ActiveRecord::Base
 
   include XmlSourceProcessor
+  include ApplicationHelper
 
   before_update :process_source
   before_update :populate_search
@@ -131,6 +132,18 @@ class Page < ActiveRecord::Base
       end
     end
     return thumbnail_filename
+  end
+
+  def thumbnail_url
+    if self.ia_leaf
+      self.ia_leaf.thumb_url
+    elsif self.sc_canvas
+      self.sc_canvas.thumbnail_url
+    elsif self.omeka_file
+      self.omeka_file.thumbnail_url
+    else
+      file_to_url(self.thumbnail_image)
+    end
   end
 
   # tested

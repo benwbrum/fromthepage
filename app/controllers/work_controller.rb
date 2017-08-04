@@ -149,6 +149,11 @@ class WorkController < ApplicationController
     render :text => work.collection.transcription_conventions
   end
 
+  def update_featured_page
+    @work.update(featured_page: params[:page_id])
+    redirect_to :back
+  end
+
   private
   def print_fn_stub
     @stub ||= DateTime.now.strftime("w#{@work.id}v#{@work.transcription_version}d%Y%m%dt%H%M%S")

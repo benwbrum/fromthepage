@@ -9,11 +9,12 @@ class DocumentSet < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
   has_and_belongs_to_many :works
+  has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
   def show_to?(user)
-    self.is_public? || self.collection.show_to?(user)
+    self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
   end
   
   def intro_block
