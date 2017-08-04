@@ -102,7 +102,7 @@ describe "collection settings js tasks", :order => :defined do
     #first need to set a work as complete
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
-      p.status = "indexed"
+      p.status = "transcribed"
       p.save!
     end
     #check to see if the work is visible

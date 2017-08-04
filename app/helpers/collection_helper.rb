@@ -22,16 +22,16 @@ module CollectionHelper
       else
         @wording = "#{@progress_completed}% #{@type}"
       end
-      total_progress = @progress_completed
+#      total_progress = @progress_completed
     elsif @progress_review == 0
       @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}"
-      total_progress = @progress_annotated
+#      total_progress = @progress_annotated
     else
       @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}, #{@progress_review}% needs review"
-      total_progress = @progress_annotated
+#      total_progress = @progress_annotated
     end
 
-    if total_progress == 100
+    if @progress_completed == 100
       @completed = "Completed"
     else
       @completed = "Not Completed"
