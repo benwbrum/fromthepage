@@ -31,6 +31,9 @@ gem 'protected_attributes'
 gem 'carrierwave'
 gem 'rubyzip'
 
+gem 'ahoy_matey'
+
+
 gem 'riiif'
 gem 'iiif-presentation'
 
