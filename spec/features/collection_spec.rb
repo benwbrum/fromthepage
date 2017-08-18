@@ -51,6 +51,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('h1')).to have_content(@work.pages.first.title)
     page.fill_in 'page_source_text', with: "Collaborator test"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page.find('.page-preview')).to have_content("Collaborator test")
   end
 

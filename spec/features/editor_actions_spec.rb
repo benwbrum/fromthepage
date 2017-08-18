@@ -107,6 +107,7 @@ describe "editor actions" do
     expect(page).to have_content('Preview')
     page.fill_in 'page_source_text', with: "Test Transcription"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
   end
