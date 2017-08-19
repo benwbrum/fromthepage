@@ -47,7 +47,6 @@ describe "guest user actions" do
     expect(page).to have_content("You may save up to three transcriptions as a guest.")
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Third Guest Deed"
-    binding.pry
     click_button('Save Changes')
     #after 3 transcriptions, the user should be forced to sign up
     expect(page.current_path).to eq new_user_registration_path
@@ -60,7 +59,7 @@ describe "guest user actions" do
     @user = User.last
     expect(@user.login).to eq('martha') 
     expect(@guest.id).to eq(@user.id)
-    expect(page.current_path). to eq collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
+    expect(page.current_path). to eq collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     page.find('.tabs').click_link("Versions")
     expect(page).to have_link("Martha")
     expect(page.find('.diff-list')).not_to have_content("Guest")

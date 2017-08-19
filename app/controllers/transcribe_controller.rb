@@ -118,6 +118,7 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
+              session[:user_return_to]=collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end
@@ -221,6 +222,7 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
+              session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end
