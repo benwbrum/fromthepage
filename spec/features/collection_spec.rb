@@ -103,6 +103,26 @@ describe "collection settings js tasks", :order => :defined do
     page.click_link("Make Collection Public")
   end
 
+  it "views completed works" , :js => true do
+    #first need to set a work as complete
+    hidden_work = @collection.works.last
+    hidden_work.pages.each do |p|
+      p.status = "transcribed"
+      p.save!
+    end
+    #check to see if the work is visible
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    #completed work shouldn't be visible at first
+    expect(page.find('.maincol')).not_to have_content(hidden_work.title)
+    #check checkbox to show all works    
+    page.check('hide_completed')
+    expect(page.find('.maincol')).to have_content(hidden_work.title)
+    #check checkbox to hide completed works
+    page.uncheck('hide_completed')
+    expect(page.find('.maincol')).not_to have_content(hidden_work.title)
+  end
+
 end
 
 =begin
