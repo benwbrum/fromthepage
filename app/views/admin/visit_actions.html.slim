@@ -1,0 +1,24 @@
+=render(:partial => 'header', :locals => { :selected => 2 })
+
+h3 Actions for #{@user.login}'s site visit on #{@visit.started_at.strftime('%b %d, %Y')}
+=link_to 'Other Visits', { :controller => 'admin', :action => 'user_visits', :user_id => @user.id }
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th Time
+      th Screen
+      th Collection
+      th Work
+      th Page
+      th Subject
+  tbody
+    -@actions.each do |a|
+      tr
+        td.nowrap =a.time.strftime('%H:%m:%S')
+        td.nowrap =a.name
+        td.nowrap =a.properties['collection_title']
+        td.nowrap =a.properties['work_title']
+        td.nowrap =a.properties['page_title']
+        td.nowrap =a.properties['article_title']
+
+=render(:partial => 'shared/pagination', :locals => { :model => @actions, :entries_info => true })

@@ -40,6 +40,19 @@ class AdminController < ApplicationController
   def edit_user
   end
 
+  def user_visits
+    @visits = @user.visits.order(started_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def visit_actions
+    @visit = Visit.find(params[:visit_id])
+    @actions = @visit.ahoy_events.order(time: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def visit_deeds
+    @visit = Visit.find(params[:visit_id])
+  end
+
   def update_user
     if @user.update_attributes(params[:user])
       flash[:notice] = "User profile has been updated"
