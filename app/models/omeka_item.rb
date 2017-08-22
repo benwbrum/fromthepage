@@ -36,7 +36,7 @@ class OmekaItem < ActiveRecord::Base
           OmekaFile.new({
             :omeka_id => client_file.data.id,
             :mime_type => client_file.data.mime_type,
-            :fullsize_url => client_file.data.file_urls.fullsize,
+            :fullsize_url => client_file.data.file_urls.original,
             :thumbnail_url => client_file.data.file_urls.thumbnail,
             :original_filename => client_file.data.original_filename,
             :omeka_order => client_file.data.order
@@ -107,7 +107,8 @@ class OmekaItem < ActiveRecord::Base
   
   def refresh_urls
     client_item = omeka_site.client.get_item(omeka_id)
-    fresh_files =  client_item.files.map { |e| [e.data.mime_type, e.data.id, e.data.file_urls.thumbnail, e.data.file_urls.fullsize] }
+    fresh_files =  client_item.files.map { |e| [e.data.mime_type, e.data.id, e.data.file_urls.thumbnail, e.data.file_urls.original] }
+    binding.pry
     fresh_files.each_with_index do |(mime_type, omeka_id, thumbnail_url, fullsize_url), i|
       if mime_type.match(/image/)
         omeka_file = self.omeka_files.where(:omeka_id => omeka_id).first
