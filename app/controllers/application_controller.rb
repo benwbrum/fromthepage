@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
   before_filter :masquerade_user!
+  after_action :track_action
 
   # Set the current user in User
   def set_current_user_in_model
@@ -265,6 +266,21 @@ end
       { :controller => controller, :action => action, :page_id => page.id}
     end
 =end
+  end
+
+
+  def track_action
+    ahoy.track_visit
+    extras = {}
+    extras[:collection_id] = @collection.id if @collection
+    extras[:collection_title] = @collection.title if @collection
+    extras[:work_id] = @work.id if @work
+    extras[:work_title] = @work.title if @work
+    extras[:page_id] = @page.id if @page
+    extras[:page_title] = @page.title if @page
+    extras[:article_id] = @article.id if @article
+    extras[:article_title] = @article.title if @article
+    ahoy.track("#{controller_name}##{action_name}", extras)
   end
 
 private

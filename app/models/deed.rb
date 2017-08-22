@@ -1,5 +1,4 @@
 class Deed < ActiveRecord::Base
-
   # constants
   PAGE_TRANSCRIPTION = 'page_trans'
   PAGE_EDIT = 'page_edit'
@@ -25,6 +24,7 @@ class Deed < ActiveRecord::Base
   validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW, TRANSLATION_INDEXED, WORK_ADDED ]
   scope :order_by_recent_activity, -> { order('created_at DESC') }
 
+  visitable # ahoy integration
 
   def deed_type_name
     return case self.deed_type
