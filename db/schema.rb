@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724144139) do
+ActiveRecord::Schema.define(version: 20170802134759) do
 
   create_table "article_article_links", force: true do |t|
     t.integer  "source_article_id"
@@ -25,11 +25,11 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   create_table "article_versions", force: true do |t|
     t.string   "title"
-    t.text     "source_text", limit: 16777215
-    t.text     "xml_text",    limit: 16777215
+    t.text     "source_text"
+    t.text     "xml_text"
     t.integer  "user_id"
     t.integer  "article_id"
-    t.integer  "version",                      default: 0
+    t.integer  "version",     default: 0
     t.datetime "created_on"
   end
 
@@ -38,10 +38,10 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
-    t.text     "source_text",   limit: 16777215
+    t.text     "source_text"
     t.datetime "created_on"
-    t.integer  "lock_version",                   default: 0
-    t.text     "xml_text",      limit: 16777215
+    t.integer  "lock_version",  default: 0
+    t.text     "xml_text"
     t.string   "graph_image"
     t.integer  "collection_id"
   end
@@ -96,31 +96,19 @@ ActiveRecord::Schema.define(version: 20170724144139) do
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
-    t.text     "intro_block",               limit: 16777215
-    t.text     "footer_block",              limit: 16777215
-    t.boolean  "restricted",                                 default: false
+    t.text     "intro_block"
+    t.string   "footer_block",              limit: 2000
+    t.boolean  "restricted",                             default: false
     t.string   "picture"
-    t.boolean  "supports_document_sets",                     default: false
-    t.boolean  "subjects_disabled",                          default: false
+    t.boolean  "supports_document_sets",                 default: false
+    t.boolean  "subjects_disabled",                      default: false
     t.text     "transcription_conventions"
     t.string   "slug"
+    t.boolean  "review_workflow",                        default: false
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
   add_index "collections", ["slug"], name: "index_collections_on_slug", unique: true, using: :btree
-
-  create_table "comments", force: true do |t|
-    t.integer  "parent_id"
-    t.integer  "user_id"
-    t.datetime "created_at",                                               null: false
-    t.integer  "commentable_id",                    default: 0,            null: false
-    t.string   "commentable_type",                  default: "",           null: false
-    t.integer  "depth"
-    t.string   "title"
-    t.text     "body",             limit: 16777215
-    t.string   "comment_type",     limit: 10,       default: "annotation"
-    t.string   "comment_status",   limit: 10
-  end
 
   create_table "deeds", force: true do |t|
     t.string   "deed_type",     limit: 10
@@ -141,6 +129,11 @@ ActiveRecord::Schema.define(version: 20170724144139) do
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
   add_index "deeds", ["user_id"], name: "index_deeds_on_user_id", using: :btree
   add_index "deeds", ["work_id"], name: "index_deeds_on_work_id", using: :btree
+
+  create_table "document_set_collaborators", id: false, force: true do |t|
+    t.integer "user_id"
+    t.integer "document_set_id"
+  end
 
   create_table "document_sets", force: true do |t|
     t.boolean  "is_public"
@@ -253,7 +246,7 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   create_table "notes", force: true do |t|
     t.string   "title"
-    t.text     "body",          limit: 16777215
+    t.text     "body"
     t.integer  "user_id"
     t.integer  "collection_id"
     t.integer  "work_id"
@@ -348,7 +341,7 @@ ActiveRecord::Schema.define(version: 20170724144139) do
     t.string   "view"
     t.string   "tag"
     t.string   "description"
-    t.text     "html",        limit: 16777215
+    t.text     "html"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -357,12 +350,12 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   create_table "page_versions", force: true do |t|
     t.string   "title"
-    t.text     "transcription",      limit: 16777215
-    t.text     "xml_transcription",  limit: 16777215
+    t.text     "transcription"
+    t.text     "xml_transcription"
     t.integer  "user_id"
     t.integer  "page_id"
-    t.integer  "work_version",                        default: 0
-    t.integer  "page_version",                        default: 0
+    t.integer  "work_version",       default: 0
+    t.integer  "page_version",       default: 0
     t.datetime "created_on"
     t.text     "source_translation"
     t.text     "xml_translation"
@@ -373,7 +366,7 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   create_table "pages", force: true do |t|
     t.string   "title"
-    t.text     "source_text",        limit: 16777215
+    t.text     "source_text"
     t.string   "base_image"
     t.integer  "base_width"
     t.integer  "base_height"
@@ -381,8 +374,8 @@ ActiveRecord::Schema.define(version: 20170724144139) do
     t.integer  "work_id"
     t.datetime "created_on"
     t.integer  "position"
-    t.integer  "lock_version",                        default: 0
-    t.text     "xml_text",           limit: 16777215
+    t.integer  "lock_version",       default: 0
+    t.text     "xml_text"
     t.integer  "page_version_id"
     t.string   "status"
     t.text     "source_translation"
@@ -401,11 +394,6 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   add_index "pages_sections", ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id", using: :btree
   add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
-
-  create_table "plugin_schema_info", id: false, force: true do |t|
-    t.string  "plugin_name"
-    t.integer "version"
-  end
 
   create_table "sc_canvases", force: true do |t|
     t.string   "sc_id"
@@ -465,8 +453,8 @@ ActiveRecord::Schema.define(version: 20170724144139) do
   add_index "sections", ["work_id"], name: "index_sections_on_work_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.string   "session_id",                  default: "", null: false
-    t.text     "data",       limit: 16777215
+    t.string   "session_id", null: false
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -500,7 +488,7 @@ ActiveRecord::Schema.define(version: 20170724144139) do
   add_index "tex_figures", ["page_id"], name: "index_tex_figures_on_page_id", using: :btree
 
   create_table "titled_images", force: true do |t|
-    t.string   "original_file",               default: "",    null: false
+    t.string   "original_file",                               null: false
     t.string   "title_seed",       limit: 20
     t.string   "title_override"
     t.string   "title"
@@ -573,24 +561,26 @@ ActiveRecord::Schema.define(version: 20170724144139) do
 
   create_table "works", force: true do |t|
     t.string   "title"
-    t.text     "description",               limit: 16777215
+    t.string   "description",               limit: 4000
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                           default: false
-    t.integer  "transcription_version",                      default: 0
-    t.text     "physical_description",      limit: 16777215
-    t.text     "document_history",          limit: 16777215
-    t.text     "permission_description",    limit: 16777215
+    t.boolean  "restrict_scribes",                       default: false
+    t.integer  "transcription_version",                  default: 0
+    t.text     "physical_description"
+    t.text     "document_history"
+    t.text     "permission_description"
     t.string   "location_of_composition"
     t.string   "author"
-    t.text     "transcription_conventions", limit: 16777215
+    t.text     "transcription_conventions"
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",                    default: false
-    t.boolean  "supports_translation",                       default: false
+    t.boolean  "scribes_can_edit_titles",                default: false
+    t.boolean  "supports_translation",                   default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                       default: true
+    t.boolean  "pages_are_meaningful",                   default: true
     t.boolean  "ocr_correction"
     t.string   "slug"
+    t.string   "picture"
+    t.integer  "featured_page"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

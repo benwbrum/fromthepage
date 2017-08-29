@@ -47,6 +47,8 @@ class User < ActiveRecord::Base
   validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
+  
+  after_destroy :clean_up_orphans
 
   def all_owner_collections
     query = Collection.where("owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
@@ -159,6 +161,13 @@ class User < ActiveRecord::Base
 
   def normalize_friendly_id(string)
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
+  end
+
+  def clean_up_orphans
+    self.notes.destroy_all
+    self.article_versions.destroy_all
+    self.page_versions.destroy_all
+    self.deeds.destroy_all
   end
 
 end
