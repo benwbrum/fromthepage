@@ -109,11 +109,13 @@ xml:id="export">
 
   </fileDesc>
 
-  <encodingDesc>
-    <classDecl>
-      <%= raw(tei_taxonomy(@collection.categories.where("parent_id IS NULL"), @other_articles)) %>
-    </classDecl>
-  </encodingDesc>
+  <% unless @other_articles.empty? %>
+    <encodingDesc>
+      <classDecl>
+        <%= raw(tei_taxonomy(@collection.categories.where("parent_id IS NULL"), @other_articles)) %>
+      </classDecl>
+    </encodingDesc>
+  <% end %>
 
   <profileDesc>
   </profileDesc>
@@ -140,7 +142,11 @@ xml:id="export">
     <% if @work.supports_translation? %>
       <div xml:id="original">
         <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
-        <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
+        <% if @work.sc_manifest %>
+          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
+        <% else %>
+          <pb xml:id="FO<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+        <% end %>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
@@ -160,7 +166,11 @@ xml:id="export">
       <div xml:id="translation">
         <% @context.translation_mode = true %>
         <% @work.pages.includes(:notes, :ia_leaf).each do |page| %>
-        <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
+        <% if @work.sc_manifest %>
+          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
+        <% else %>
+          <pb xml:id="FT<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+        <% end %>
         <% if @work.pages_are_meaningful? %>
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
@@ -173,7 +183,11 @@ xml:id="export">
       </div>
     <% else %>
       <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
-      <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.canonical_facsimile_url %>"/>
+      <% if @work.sc_manifest %>
+        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
+      <% else %>
+        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+      <% end %>
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
       <% end%>
