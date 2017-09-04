@@ -95,6 +95,11 @@ Fromthepage::Application.routes.draw do
       get 'transcribe/translate', path: ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get 'page/edit', path: ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
+      get 'export/page_plaintext_searchable', path: ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
+      get 'export/page_plaintext_verbatim', path: ':work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'
+      get 'export/page_plaintext_translation_verbatim', path: ':work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
+      get 'export/page_plaintext_emended', path: ':work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
+      get 'export/page_plaintext_translation_emended', path: ':work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
 
       #article related routes
       match 'article/show', path: '/article/:article_id', to: 'article#show', via: [:get, :post]

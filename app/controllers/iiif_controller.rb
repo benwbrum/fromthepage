@@ -400,6 +400,8 @@ private
     
     canvas.images << annotation
 
+    add_related_to_canvas(canvas, page)
+    add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
 
@@ -419,8 +421,9 @@ private
     annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
     canvas.images << annotation
 
+    add_related_to_canvas(canvas, page)
+    add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
-    add_annotations_to_canvas(canvas, page)
 
     canvas     
   end
@@ -446,9 +449,51 @@ private
     canvas
   end
   
+
+  def add_related_to_canvas(canvas,page)
+    canvas.related = [] unless canvas.related
+    canvas.related << { "label" => "Transcribe this page", "format" => "text/html", "@id" => url_for(:controller => :transcribe, :action => :display_page, :page_id => page.id)}
+    canvas.related << { "label" => "Translate this page", "format" => "text/html", "@id" => url_for(:controller => :transcribe, :action => :translate, :page_id => page.id)} if page.work.supports_translation?
+  end
+
   def add_services_to_canvas(canvas,page)
-    canvas.service << { "label" => "Transcribe this page", "profile" => "TODO for transcription", "@id" => url_for(:controller => :transcribe, :action => :display_page, :page_id => page.id)}
-    canvas.service << { "label" => "Translate this page", "profile" => "TODO for translation", "@id" => url_for(:controller => :transcribe, :action => :translate, :page_id => page.id)} if page.work.supports_translation?
+    canvas.service << { "label" => "Page Status", "profile" => "TODO", "@id" => "TODO"}
+  end
+
+  def add_seeAlso_to_canvas(canvas,page)
+    canvas.seeAlso = [] unless canvas.seeAlso
+    canvas.seeAlso << 
+      { "label" => "Searchable Plaintext", 
+        "format" => "text/plain", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#searchable-plaintext", 
+        "@id" => collection_page_export_plaintext_searchable_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+    }
+    canvas.seeAlso << 
+    { "label" => "Verbatim Plaintext", 
+      "format" => "text/plain", 
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-plaintext", 
+      "@id" => collection_page_export_plaintext_verbatim_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false) 
+    }
+    canvas.seeAlso << 
+    { "label" => "Emended Plaintext", 
+      "format" => "text/plain", 
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#emended-plaintext", 
+      "@id" => collection_page_export_plaintext_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+    }
+    if page.work.supports_translation?
+      canvas.seeAlso << 
+      { "label" => "Verbatim Translation Plaintext", 
+        "format" => "text/plain", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-translation-plaintext", 
+        "@id" => collection_page_export_plaintext_translation_verbatim_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+      }
+      canvas.seeAlso << 
+      { "label" => "Emended Translation Plaintext", 
+        "format" => "text/plain", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#emended-translation-plaintext", 
+        "@id" => collection_page_export_plaintext_translation_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+      }
+    end
   end
 
  def annotationlist_from_page(page,type)

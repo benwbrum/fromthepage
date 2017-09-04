@@ -241,6 +241,22 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
   end
+  
+  def verbatim_transcription_plaintext
+    formatted_plaintext(self.xml_text)
+  end
+
+  def verbatim_translation_plaintext
+    formatted_plaintext(self.xml_translation)
+  end
+
+  def emended_transcription_plaintext
+    emended_plaintext(self.xml_text)
+  end
+
+  def emended_translation_plaintext
+    emended_plaintext(self.xml_translation)
+  end
 
 
   #######################
@@ -269,6 +285,22 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
 private
+  def emended_plaintext(source)
+    doc = Nokogiri::XML(source)
+    doc.xpath("//link").each { |n| n.replace(n['target_title'])}    
+    formatted_plaintext_doc(doc)
+  end
+
+  def formatted_plaintext(source)
+    formatted_plaintext_doc(Nokogiri::XML(source))
+  end
+
+  def formatted_plaintext_doc(doc)
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//lb").each { |n| n.replace("\n")}
+    doc.text.sub(/^\s*/m, '')        
+  end
+
   def generate_thumbnail
     image = Magick::ImageList.new(self[:base_image])
     factor = 100.to_f / self[:base_height].to_f
