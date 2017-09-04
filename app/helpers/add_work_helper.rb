@@ -34,7 +34,7 @@ module AddWorkHelper
         begin
           SystemMailer.new_upload(@document_upload).deliver!
           flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
-        rescue *SMTP_ERRORS => e
+        rescue StandardError => e
           log_smtp_error(e, current_user)
           flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
         end

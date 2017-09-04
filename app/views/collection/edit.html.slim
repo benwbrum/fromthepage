@@ -13,7 +13,7 @@
         tr
           th 
           td
-            |The current URL for this collection is <b>www.fromthepage.com/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+            |The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
@@ -32,6 +32,18 @@
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
             |&nbsp;
             =f.label "Disable Subject Indexing"
+        tr
+          td(colspan="2")
+            p
+            =f.check_box :review_workflow, value: @collection.review_workflow
+            |&nbsp;
+            =f.label "All Initial Transcriptions Need Review"
+        tr
+          td(colspan="2")
+            p
+            =f.check_box :hide_completed, value: @collection.hide_completed
+            |&nbsp;
+            =f.label "Hide completed works by default"
 
 
       .toolbar
@@ -85,12 +97,30 @@
         =svg_symbol '#icon-lock', class: 'icon'
         span Make Collection Private
 
+    -if @collection.restricted
+      h3 Collection Collaborators
+      p.fglight Collaborators may transcribe and edit private collections.
+      =form_tag({ :action => 'add_collaborator' }, class: 'user-select-form') do
+        =hidden_field_tag :collection_id, @collection.id
+        =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
+        =button_tag 'Add', disabled: 'true'
+      -@collaborators.each do |user|
+        -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
+        .user-label
+          .userpic
+            =gravatar_image_tag user.email, :alt => user.display_name
+          .username
+            =link_to user.display_name, user_profile_path(user)
+            small =pluralize(contributions, 'contribution')
+          -if user != @main_owner
+            =link_to '', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
+
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
       =hidden_field_tag :collection_id, @collection.id
-      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true
-      =button_tag 'Add', disabled: 'true', id: 'test'
+      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true, prompt: 'Add new owner...'
+      =button_tag 'Add', disabled: 'true'
     -@owners.each do |user|
       -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
       .user-label
@@ -124,7 +154,6 @@
   javascript:
     $(function() {
       $('.user-select-form select').select2({
-        placeholder: 'Add new owner...',
       }).on('select2:select', function() {
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {

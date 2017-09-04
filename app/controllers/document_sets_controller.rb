@@ -28,7 +28,7 @@ class DocumentSetsController < ApplicationController
     @document_set.owner = current_user
     if @document_set.save
       flash[:notice] = 'Document set has been created'
-      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+      ajax_redirect_to collection_settings_path(@document_set.owner, @document_set)
     else
       render action: 'new'
     end
@@ -51,8 +51,24 @@ class DocumentSetsController < ApplicationController
     redirect_to :action => :index, :collection_id => @collection.id
   end
 
+  def assign_to_set
+    work_map = params[:work_assignment]
+    @collection.works.clear
+    @collection.work_ids = work_map.keys.map { |id| id.to_i }
+    @collection.save!
+    redirect_to action: 'settings', collection_id: @collection.slug
+    #should we go to overview instead?
+  end
+
   def update
-    @document_set.update(document_set_params)
+    if params[:document_set][:slug] == ""
+      @document_set.update(params[:document_set].except(:slug))
+      title = @document_set.title.parameterize
+      @document_set.update(slug: title)
+    else
+      @document_set.update(document_set_params)
+    end
+
     @document_set.save!
     flash[:notice] = 'Document set has been saved'
     unless request.referrer.include?("/settings")
@@ -65,6 +81,31 @@ class DocumentSetsController < ApplicationController
   def settings
     #document set edit needs the @document set variable
     @document_set = @collection
+    @works_not_in_set = @collection.collection.works - @collection.works
+    @collaborators = @document_set.collaborators
+    @noncollaborators = User.order(:display_name) - @collaborators
+  end
+
+  def add_set_collaborator
+    @collection.collaborators << @user
+    redirect_to collection_settings_path(@collection.owner, @collection)
+  end
+
+  def remove_set_collaborator
+    @collection.collaborators.delete(@user)
+    redirect_to collection_settings_path(@collection.owner, @collection)
+  end
+
+  def publish_set
+    @collection.is_public = true
+    @collection.save!
+    redirect_to collection_settings_path(@collection.owner, @collection)
+  end
+
+  def restrict_set
+    @collection.is_public = false
+    @collection.save!
+    redirect_to collection_settings_path(@collection.owner, @collection)
   end
 
   def destroy

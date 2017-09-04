@@ -46,13 +46,19 @@ class TranscribeController  < ApplicationController
 
   def needs_review
     if params[:type] == 'translation'
-      if params[:page]['needs_review'] == '1'
+      if @page.work.collection.review_workflow == true && @page.translation_status == nil
+        @page.translation_status = Page::STATUS_NEEDS_REVIEW
+        record_translation_review_deed
+      elsif params[:page]['needs_review'] == '1'
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
         record_translation_review_deed
       else
         @page.translation_status = nil
         return
       end
+    elsif @page.work.collection.review_workflow == true && @page.status == nil
+      @page.status = Page::STATUS_NEEDS_REVIEW
+      record_review_deed
     else
       if params[:page]['needs_review'] == '1'
         @page.status = Page::STATUS_NEEDS_REVIEW
@@ -86,6 +92,7 @@ class TranscribeController  < ApplicationController
       begin
         if @page.save
           log_transcript_success
+          flash[:notice] = "Saved"
           if @page.work.ocr_correction
             record_correction_deed
           else
@@ -103,7 +110,7 @@ class TranscribeController  < ApplicationController
             @page.update_columns(status: Page::STATUS_INDEXED)
           end
           @work.work_statistic.recalculate if @work.work_statistic
-          @page.submit_background_processes
+          @page.submit_background_processes("transcription")
       
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
@@ -111,6 +118,7 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
+              session[:user_return_to]=collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end
@@ -164,9 +172,9 @@ class TranscribeController  < ApplicationController
     end
     # no uncategorized articles found, skip to display
     if @translation
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: true)
+      redirect_to collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
     else
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     end
   end
 
@@ -183,7 +191,7 @@ class TranscribeController  < ApplicationController
   
     #check to see if the page needs review
     needs_review
-
+    
     if params['save']
       log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
@@ -206,7 +214,7 @@ class TranscribeController  < ApplicationController
           end
 
           @work.work_statistic.recalculate if @work.work_statistic
-          @page.submit_background_processes
+          @page.submit_background_processes("translation")
 
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
@@ -214,6 +222,7 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
+              session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end

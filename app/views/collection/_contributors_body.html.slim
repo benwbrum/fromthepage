@@ -16,20 +16,23 @@
 -else
   h3 No activity in this time frame
 
-.contributor-users.justified.nomargin
+.contributor-users.justified
   .justified_box>
-    h3 All Collaborators
-    -unless @all_transcribers.empty?
-      -@all_transcribers.each do |user|
+    h3 Active Collaborators
+    -unless @active_transcribers.empty?
+      -@active_transcribers.each do |user|
         p
-        =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
-            
+          =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
+          =" (#{(@user_time[user.id] / 60 + 1).floor} minutes)" if @user_time[user.id]  
+      p
+        -total_minutes = (@user_time.values.sum / 60).floor + 1
+        ="Total time: #{(total_minutes / 60)} hours, #{(total_minutes % 60)} minutes."
     -else
       h3 Collaborators
       p No Collaborators
 
 h3 All Collaborator Emails
-p 
+p#collaborators
   -unless @all_transcribers.empty?
     - @all_transcribers.each do |t|
       =t.display_name 

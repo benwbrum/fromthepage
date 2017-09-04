@@ -4,6 +4,7 @@ describe "needs review", :order => :defined do
   Capybara.javascript_driver = :webkit
 
   before :all do
+    @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collection = Collection.second
     @work = @collection.works.third
@@ -20,15 +21,14 @@ describe "needs review", :order => :defined do
   end
 
   it "sets the work to translation" do
-    owner = User.find_by(login: OWNER)
     logout(@user)
-    login_as(owner, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit "/work/edit?work_id=#{@work.id}"
     expect(page).to have_content(@work.title)
     page.check('work_supports_translation')
     click_button('Save Changes')
     expect(Work.find_by(id: @work.id).supports_translation).to be true
-    logout(owner)
+    logout(@owner)
   end
 
   it "marks pages blank" do
@@ -74,6 +74,7 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Review Text")
     expect(page).to have_content("Transcription")
     expect(Page.find_by(id: @page4.id).status).to eq ('review')
@@ -95,6 +96,8 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_translation', with: "Review Translate Text"
     page.check('page_needs_review')
     click_button('Save Changes')
+    page.click_link("Overview")
+    page.click_link('Show Translation')
     expect(page).to have_content("Review Translate Text")
     expect(page).to have_content("Translation")
     expect(Page.find_by(id: @page6.id).translation_status).to eq ('review')
@@ -220,6 +223,8 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_translation', with: "Change Review Translate Text"
     page.uncheck('page_needs_review')
     click_button('Save Changes')
+    page.click_link("Overview")
+    page.click_link('Show Translation')
     expect(page).to have_content("Change Review Translate Text")
     expect(page).to have_content("Translation")
     expect(Page.find_by(id: @page6.id).translation_status).to eq ('translated')
@@ -254,6 +259,27 @@ describe "needs review", :order => :defined do
     page.check('page_needs_review')
     expect(page.find('#page_needs_review')).to be_checked
     expect(page.find('#page_mark_blank')).not_to be_checked
+  end
+
+  it "sets a collection to needs review workflow" do
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.check('collection_review_workflow')
+    click_button('Save Changes')
+    review_page = @work.pages.first
+    expect(review_page.status).to be_nil
+    expect(review_page.translation_status).to be_nil
+    visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
+    page.fill_in 'page_source_text', with: "Needs Review Workflow Text"
+    click_button('Save Changes')
+    expect(page).to have_content("Needs Review Workflow Text")
+    expect(Page.find_by(id: review_page.id).status).to eq ('review')
+    visit collection_translate_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
+    page.fill_in 'page_source_translation', with: "Translation Needs Review Workflow Text"
+    click_button('Save Changes')
+    expect(page).to have_content("Translation Needs Review Workflow Text")
+    expect(Page.find_by(id: review_page.id).translation_status).to eq ('review')
   end
 
 end

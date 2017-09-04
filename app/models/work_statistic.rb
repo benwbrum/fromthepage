@@ -64,7 +64,7 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def pct_translation_completed
-    pct_translated + pct_translation_blank + pct_translation_annotated
+    pct_translated + pct_translation_annotated
   end
 
   def recalculate

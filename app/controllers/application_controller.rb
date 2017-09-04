@@ -1,12 +1,14 @@
 class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
+  before_filter :update_omeka_urls
   before_action :store_current_location, :unless => :devise_controller?
   before_filter :load_html_blocks
   before_filter :authorize_collection
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :set_current_user_in_model
   before_filter :masquerade_user!
+  after_action :track_action
 
   # Set the current user in User
   def set_current_user_in_model
@@ -135,6 +137,12 @@ class ApplicationController < ActionController::Base
   end
 
 
+  def update_omeka_urls
+    if @work && @work.omeka_item && @work.omeka_item.needs_refresh?
+      @work.omeka_item.refresh_urls
+    end    
+  end
+
 
   # perform appropriate API call for updating the IA server
   def update_ia_work_server
@@ -258,6 +266,21 @@ end
       { :controller => controller, :action => action, :page_id => page.id}
     end
 =end
+  end
+
+
+  def track_action
+    ahoy.track_visit
+    extras = {}
+    extras[:collection_id] = @collection.id if @collection
+    extras[:collection_title] = @collection.title if @collection
+    extras[:work_id] = @work.id if @work
+    extras[:work_title] = @work.title if @work
+    extras[:page_id] = @page.id if @page
+    extras[:page_title] = @page.title if @page
+    extras[:article_id] = @article.id if @article
+    extras[:article_title] = @article.title if @article
+    ahoy.track("#{controller_name}##{action_name}", extras)
   end
 
 private

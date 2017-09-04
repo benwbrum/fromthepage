@@ -32,19 +32,12 @@
   .headline
     h2.headline_title Page Image
     .headline_aside
-      span.fgfaded =="Dimensions: #{@page.base_width}&times;#{@page.base_height}, Shrink Factor: #{@page.shrink_factor}"
+      span.fgfaded =="Dimensions: #{@page.base_width}&times;#{@page.base_height}"
     .headline_aside
-      .button-stack
-        =link_to({ :action => 'reduce', :page_id => @page.id }, class: 'button outline', title: 'Reduce Image')
-          =svg_symbol "#icon-reduce", class: 'icon'
-        -if @page.shrink_factor > 0
-          =link_to({ :action => 'enlarge', :page_id => @page.id }, class: 'button outline', title: 'Enlarge Image')
-            =svg_symbol "#icon-enlarge", class: 'icon'
-
       .button-stack
         =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 90 }, class: 'button outline', title: 'Rotate Clockwise')
           =svg_symbol "#icon-rotate-cw", class: 'icon'
         =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 270 }, class: 'button outline', title: 'Rotate Counterclockwise')
           =svg_symbol "#icon-rotate-ccw", class: 'icon'
 
-  .page-image-preview =image_tag file_to_url(@page.scaled_image(@page.shrink_factor))
+  .page-image-preview =image_tag("#{file_to_url(@page.canonical_facsimile_url)}?#{Time.now.to_i}")

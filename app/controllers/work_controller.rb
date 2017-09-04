@@ -117,6 +117,7 @@ class WorkController < ApplicationController
   def update
     work = Work.find(params[:id])
     id = work.collection_id
+
     #check the work transcription convention against the collection version
     #if they're the same, don't update that attribute of the work
     params_convention = params[:work][:transcription_conventions]
@@ -128,6 +129,11 @@ class WorkController < ApplicationController
       work.update_attributes(params[:work])
     end
 
+    #if the slug field param is blank, set slug to original candidate
+    if params[:work][:slug] == ""
+      title = work.title.parameterize
+      work.update(slug: title)
+    end
     #record work add deed if the work is moved to another collection
     if work.collection_id != id
       record_deed(work)
@@ -141,6 +147,11 @@ class WorkController < ApplicationController
     work = Work.find_by(id: params[:work_id])
     work.update_attribute(:transcription_conventions, nil)
     render :text => work.collection.transcription_conventions
+  end
+
+  def update_featured_page
+    @work.update(featured_page: params[:page_id])
+    redirect_to :back
   end
 
   private
