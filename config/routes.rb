@@ -87,6 +87,11 @@ Fromthepage::Application.routes.draw do
       get 'work/show', path: ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get 'display/list_pages', path: ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get 'static/transcribe_help', path: ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+      get 'export/work_plaintext_searchable', path: ':work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
+      get 'export/work_plaintext_verbatim', path: ':work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
+      get 'export/work_plaintext_emended', path: ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
+      get 'export/work_plaintext_translation_verbatim', path: ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
+      get 'export/work_plaintext_translation_emended', path: ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
       
       #page related routes
       get 'display/display_page', path: ':work_id/display/:page_id/', as: 'display_page', to: 'display#display_page'

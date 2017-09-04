@@ -73,6 +73,30 @@ class Work < ActiveRecord::Base
     end
   end
   
+  def verbatim_transcription_plaintext
+    self.pages.map { |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
+  end
+
+  def verbatim_translation_plaintext
+    self.pages.map { |page| page.verbatim_translation_plaintext}.join("\n\n\n")
+  end
+
+  def emended_transcription_plaintext
+    self.pages.map { |page| page.emended_transcription_plaintext}.join("\n\n\n")
+  end
+
+  def emended_translation_plaintext
+    self.pages.map { |page| page.emended_translation_plaintext}.join("\n\n\n")
+  end
+
+  def searchable_plaintext
+    self.pages.map { |page| page.search_text}.join("\n\n\n")
+  end
+
+
+
+
+
   def suggest_next_page_title
     if self.pages.count == 0
       TitleStyle::render(TitleStyle::DEFAULT, 1)    
