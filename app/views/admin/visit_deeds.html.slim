@@ -1,0 +1,17 @@
+=render(:partial => 'header', :locals => { :selected => 2 })
+
+h3 Contributions for #{@user.login}'s site visit on #{@visit.started_at.strftime('%b %d, %Y')}
+=link_to 'Other Visits', { :controller => 'admin', :action => 'user_visits', :user_id => @user.id }
+table.datagrid.striped
+  -@visit.deeds.each do |d|
+    tr
+      td
+        =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
+          =gravatar_image_tag d.user.email, :alt => d.user.display_name
+      td.w100.toleft
+        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+      td
+        small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
+      td.nowrap
+        =time_tag(d.created_at, class: 'small fglight')
+          ="#{time_ago_in_words d.created_at} ago"

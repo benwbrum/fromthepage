@@ -92,6 +92,7 @@ class TranscribeController  < ApplicationController
       begin
         if @page.save
           log_transcript_success
+          flash[:notice] = "Saved"
           if @page.work.ocr_correction
             record_correction_deed
           else
@@ -117,6 +118,7 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
+              session[:user_return_to]=collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end
@@ -170,9 +172,9 @@ class TranscribeController  < ApplicationController
     end
     # no uncategorized articles found, skip to display
     if @translation
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: true)
+      redirect_to collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
     else
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     end
   end
 
@@ -220,6 +222,7 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
+              session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end

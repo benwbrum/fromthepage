@@ -59,6 +59,7 @@ describe "subject linking" do
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: ""
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Facsimile")
     click_link(collection.title)
     page.find('.tabs').click_link("Subjects")
@@ -76,6 +77,7 @@ describe "subject linking" do
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
@@ -84,6 +86,7 @@ describe "subject linking" do
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
     expect(links).to eq 1
@@ -106,6 +109,7 @@ describe "subject linking" do
     page.fill_in 'page_source_text', with: ""
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
   end
@@ -128,6 +132,7 @@ describe "subject linking" do
     expect(page).to have_content("Subject Linking Error: Blank text")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
   end
@@ -176,6 +181,8 @@ describe "subject linking" do
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    page.click_link("Overview")
+    page.click_link('Show Translation')
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "translation").count
     expect(links).to eq 1
@@ -183,6 +190,8 @@ describe "subject linking" do
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "[[Places|Texas]]"
     click_button('Save Changes')
+    page.click_link("Overview")
+    page.click_link('Show Translation')
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "translation").count
     expect(links).to eq 1
