@@ -1,0 +1,33 @@
+{
+  "@context": [
+    {
+      "ftp": "http://fromthepage.org/services#",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",   
+
+      "pageNeedsReview": {
+        "@id": "uv:pageNeedsReview",
+        "@type": "@vocab"
+      },
+      "pageUnedited": {
+        "@id": "uv:pageUnedited",
+        "@type": "@vocab"
+      },
+      "pageMarkedBlank": {
+        "@id": "uv:pageMarkedBlank",
+        "@type": "@vocab"
+      },
+      "pageHasTranscript": {
+        "@id": "uv:pageHasTranscript",
+        "@type": "@vocab"
+      },
+      "pageHasTranslation": {
+        "@id": "uv:pageHasTranslation",
+        "@type": "@vocab"
+      },
+      "pageHasSubjectTags": {
+        "@id": "uv:pageHasSubjectTags",
+        "@type": "@vocab"
+      }
+    }
+  ]
+}
