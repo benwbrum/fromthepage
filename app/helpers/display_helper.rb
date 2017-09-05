@@ -46,6 +46,8 @@ module DisplayHelper
       elsif page.translation_status == 'translated'
         unless @collection.subjects_disabled
           @wording = 'Index'
+        else
+          @wording = 'Completed'
         end
       elsif page.translation_status == 'indexed'
         @wording = 'Completed'
@@ -54,6 +56,8 @@ module DisplayHelper
     elsif page.status == 'transcribed'
       unless @collection.subjects_disabled
         @wording = 'Index'
+      else
+        @wording = 'Completed'
       end
     elsif page.status == 'indexed'
       @wording = 'Completed'
