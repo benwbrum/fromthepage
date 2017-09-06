@@ -1,32 +1,56 @@
 {
   "@context": [
     {
-      "ftp": "http://fromthepage.org/services#",
+      "fromthepage": "http://fromthepage.org/services#",
       "rdfs": "http://www.w3.org/2000/01/rdf-schema#",   
 
       "pageNeedsReview": {
-        "@id": "uv:pageNeedsReview",
-        "@type": "@vocab"
+        "@id": "fromthepage:pageNeedsReview",
+        "@type": "xsd:boolean"
       },
       "pageUnedited": {
-        "@id": "uv:pageUnedited",
-        "@type": "@vocab"
+        "@id": "fromthepage:pageUnedited",
+        "@type": "xsd:boolean"
       },
       "pageMarkedBlank": {
-        "@id": "uv:pageMarkedBlank",
-        "@type": "@vocab"
+        "@id": "fromthepage:pageMarkedBlank",
+        "@type": "xsd:boolean"
       },
       "pageHasTranscript": {
-        "@id": "uv:pageHasTranscript",
-        "@type": "@vocab"
+        "@id": "fromthepage:pageHasTranscript",
+        "@type": "xsd:boolean"
       },
       "pageHasTranslation": {
-        "@id": "uv:pageHasTranslation",
-        "@type": "@vocab"
+        "@id": "fromthepage:pageHasTranslation",
+        "@type": "xsd:boolean"
       },
       "pageHasSubjectTags": {
-        "@id": "uv:pageHasSubjectTags",
-        "@type": "@vocab"
+        "@id": "fromthepage:pageHasSubjectTags",
+        "@type": "xsd:boolean"
+      },
+      "pctHasTranscript": {
+        "@id": "fromthepage:pctHasTranscript",
+        "@type": "xsd:decimal"
+      },
+      "pctMarkedBlank": {
+        "@id": "fromthepage:pctMarkedBlank",
+        "@type": "xsd:decimal"
+      },
+      "pctNeedsReview": {
+        "@id": "fromthepage:pctNeedsReview",
+        "@type": "xsd:decimal"
+      },
+      "pctHasTranscriptOrMarkedBlank": {
+        "@id": "fromthepage:pctHasTranscriptOrMarkedBlank",
+        "@type": "xsd:decimal"
+      },
+      "pctHasTranscriptOrMarkedBlankNotNeedsReview": {
+        "@id": "fromthepage:pctHasTranscriptOrMarkedBlankNotNeedsReview",
+        "@type": "xsd:decimal"
+      },
+      "pctUnedited": {
+        "@id": "fromthepage:pctUnedited",
+        "@type": "xsd:decimal"
       }
     }
   ]
