@@ -24,15 +24,21 @@ class User < ActiveRecord::Base
   has_many :oai_sets
   has_many :ia_works
   has_many :omeka_sites
+  has_many :visits
   has_and_belongs_to_many(:scribe_works,
                           { :join_table => 'transcribe_authorizations',
                             :class_name => 'Work'})
   has_and_belongs_to_many(:owned_collections,
                           { :join_table => 'collection_owners',
                             :class_name => 'Collection'})
+  has_and_belongs_to_many(:document_set_collaborations,
+                          { :join_table => 'document_set_collaborators',
+                            :class_name => 'DocumentSet'
+                            })
   has_and_belongs_to_many(:collection_collaborations,
                           { :join_table => 'collection_collaborators',
                             :class_name => 'Collection'})
+
 
   has_many :page_versions, -> { order 'created_on DESC' }
   has_many :article_versions, -> { order 'created_on DESC' }
@@ -67,8 +73,8 @@ class User < ActiveRecord::Base
     !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
   end
 
-  def collaborator?(collection)
-    collection.collaborators.include?(self)
+  def collaborator?(obj)
+    obj.collaborators.include?(self)
   end
 
   def like_owner?(obj)

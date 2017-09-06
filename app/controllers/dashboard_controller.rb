@@ -62,7 +62,10 @@ class DashboardController < ApplicationController
 
   #Collaborator Dashboard - watchlist
   def watchlist
-    @collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.order_by_recent_activity.limit(5)
+    works = Work.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct
+    collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.order_by_recent_activity.limit(5)
+    document_sets = DocumentSet.joins(works: :deeds).where(works: {id: works.ids}).order('deeds.created_at DESC').distinct.limit(5)
+    @collections = (collections + document_sets).sort{|a,b| a.title <=> b.title }.take(5)
     @page = recent_work
   end
 

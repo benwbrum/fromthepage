@@ -16,7 +16,11 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    #check to see if Collaborators are visible
+    expect(page).not_to have_content("Collection Collaborators")
     page.click_link('Make Collection Private')
+    #check to see if Collaborators are visible
+    expect(page).to have_content("Collection Collaborators")
   end
 
   it "checks that a restricted user can't view the collection" do
@@ -47,6 +51,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('h1')).to have_content(@work.pages.first.title)
     page.fill_in 'page_source_text', with: "Collaborator test"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page.find('.page-preview')).to have_content("Collaborator test")
   end
 
@@ -96,6 +101,26 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.click_link("Make Collection Public")
+  end
+
+  it "views completed works" , :js => true do
+    #first need to set a work as complete
+    hidden_work = @collection.works.last
+    hidden_work.pages.each do |p|
+      p.status = "transcribed"
+      p.save!
+    end
+    #check to see if the work is visible
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    #completed work shouldn't be visible at first
+    expect(page.find('.maincol')).not_to have_content(hidden_work.title)
+    #check checkbox to show all works    
+    page.check('hide_completed')
+    expect(page.find('.maincol')).to have_content(hidden_work.title)
+    #check checkbox to hide completed works
+    page.uncheck('hide_completed')
+    expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
 
 end
