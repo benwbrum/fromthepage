@@ -40,16 +40,16 @@
         "@id": "fromthepage:pctNeedsReview",
         "@type": "xsd:decimal"
       },
+      "pctUnedited": {
+        "@id": "fromthepage:pctUnedited",
+        "@type": "xsd:decimal"
+      },
       "pctHasTranscriptOrMarkedBlank": {
         "@id": "fromthepage:pctHasTranscriptOrMarkedBlank",
         "@type": "xsd:decimal"
       },
       "pctHasTranscriptOrMarkedBlankNotNeedsReview": {
         "@id": "fromthepage:pctHasTranscriptOrMarkedBlankNotNeedsReview",
-        "@type": "xsd:decimal"
-      },
-      "pctUnedited": {
-        "@id": "fromthepage:pctUnedited",
         "@type": "xsd:decimal"
       }
     }
