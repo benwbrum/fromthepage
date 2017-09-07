@@ -34,7 +34,11 @@ class AdminController < ApplicationController
   end
 
   def user_list
-    @users = User.order(created_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    if params[:search]
+      @users = User.search(params[:search]).order(created_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    else
+      @users = User.order(created_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    end
   end
 
   def edit_user
