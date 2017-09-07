@@ -31,13 +31,13 @@ class TranscribeController  < ApplicationController
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
-      @work.work_statistic.recalculate if @work.work_statistic
+      @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
-      @work.work_statistic.recalculate if @work.work_statistic
+      @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     else
       return true
@@ -109,7 +109,7 @@ class TranscribeController  < ApplicationController
           if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
             @page.update_columns(status: Page::STATUS_INDEXED)
           end
-          @work.work_statistic.recalculate if @work.work_statistic
+          @work.work_statistic.recalculate({type: @page.status}) if @work.work_statistic
           @page.submit_background_processes("transcription")
       
           #if this is a guest user, force them to sign up after three saves
@@ -213,7 +213,7 @@ class TranscribeController  < ApplicationController
             @page.update_columns(translation_status: Page::STATUS_INDEXED)
           end
 
-          @work.work_statistic.recalculate if @work.work_statistic
+          @work.work_statistic.recalculate({type: @page.translation_status}) if @work.work_statistic
           @page.submit_background_processes("translation")
 
           #if this is a guest user, force them to sign up after three saves
