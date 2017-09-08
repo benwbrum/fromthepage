@@ -8,7 +8,7 @@
 
 p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
 
--@page.articles.distinct.each do |article|
+-@page.articles.each do |article|
   -if article.categories.length == 0
     -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
     .page-uncategorized
