@@ -1,11 +1,12 @@
 -unless @article.show_links(@collection).empty?
-  h5 ="#{pluralize(@article.show_links(@collection).size, 'page')} refer to #{@article.title}"
+  h5 ="#{pluralize((@article.show_links(@collection).count).count, 'page')} refer to #{@article.title}"
   p =link_to "Show pages that mention #{@article.title} in all works", controller: 'display', action: 'read_all_works', article_id: @article.id
   ul.article-links
     -@article.show_links(@collection).each do |link|
       li
+        -parameter = link.text_type == "translation" ? true : false
         =svg_symbol '#icon-page', class: 'icon'
-        =link_to link.page.title, collection_display_page_path(@collection.owner, @collection, link.page.work, link.page.id)
+        =link_to link.page.title, collection_display_page_path(@collection.owner, @collection, link.page.work, link.page, translation: parameter)
         =="&nbsp;&mdash;&nbsp;#{link.display_text}"
 
 -unless @article.target_article_links.empty?
