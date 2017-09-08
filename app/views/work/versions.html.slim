@@ -12,8 +12,9 @@
       th Date
     -@page_versions.each do |version|
       -user_link = link_to(version.user.display_name, user_profile_path(version.user))
+      -title = version.title.nil? ? version.page.title : version.title
       tr
-        td =link_to version.title, { :controller => 'page_version', :action => 'list', :page_id => version.page.id }
+        td =link_to title, { :controller => 'page_version', :action => 'list', :page_id => version.page.id }
         td =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
         td.fgfaded =="#{version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
 
