@@ -26,13 +26,22 @@ class IaController < ApplicationController
     work = @ia_work.convert_to_work
     flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work"
 
-    if params[:collection_id]
+    unless params[:collection_id].blank?
       work.collection = @collection
+      work.save!
+    else
+      #collection is required, but if something goes wrong due to browser version, create a collection
+      collection = Collection.new
+      collection.owner = current_user
+      collection.title = @ia_work.title.truncate(255, separator: ' ', omission: '')
+      collection.save!
+      work.collection = collection
       work.save!
     end
 
     redirect_to :controller => 'work', :action => 'edit', :work_id => work.id
   end
+
 
   def mark_beginning
     beginning_leaf = IaLeaf.find(params[:ia_leaf_id])

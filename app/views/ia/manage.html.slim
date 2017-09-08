@@ -48,6 +48,6 @@ h1 Manage Archive.org Import
           span Use OCR text for page contents?
         .ia-form_help Select this check-box to populate each page's initial transcript with the contents of the corresponding OCR.
       .ia-form_field
-        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -'
+        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -', required: true
       =button_tag 'Publish Work', class: 'ia-form_submit'
       .ia-form_help Once you've got titles and leaves ready, click Publish to convert the book to a ready-to-transcribe FromThePage work. This process will take several minutes to run.
