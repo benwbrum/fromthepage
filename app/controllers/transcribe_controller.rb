@@ -84,7 +84,7 @@ class TranscribeController  < ApplicationController
     needs_review
 
     if params['save']
-      log_transcript_attempt
+      message = log_transcript_attempt
       #leave the status alone if it's needs review, but otherwise set it to transcribed
       unless @page.status == Page::STATUS_NEEDS_REVIEW
         @page.status = Page::STATUS_TRANSCRIBED
@@ -125,11 +125,11 @@ class TranscribeController  < ApplicationController
           end
           redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
         else
-          log_transcript_error
+          log_transcript_error(message)
           render :action => 'display_page'
         end
       rescue REXML::ParseException => ex
-        log_transcript_exception(ex)
+        log_transcript_exception(ex, message)
         flash[:error] =
           "There was an error parsing the mark-up in your transcript.
            This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.
@@ -139,7 +139,7 @@ class TranscribeController  < ApplicationController
         flash.clear
         # raise ex
       rescue  => ex
-        log_transcript_exception(ex)
+        log_transcript_exception(ex, message)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
@@ -193,12 +193,11 @@ class TranscribeController  < ApplicationController
     needs_review
     
     if params['save']
-      log_translation_attempt
+      message = log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
       unless @page.translation_status == Page::STATUS_NEEDS_REVIEW
         @page.translation_status = Page::STATUS_TRANSLATED
       end
-
       begin
         if @page.save
           log_translation_success
@@ -230,11 +229,11 @@ class TranscribeController  < ApplicationController
           
           redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :translation => true
         else
-          log_translation_error
+          log_translation_error(message)
           render :action => 'translate'
         end
       rescue REXML::ParseException => ex
-        log_translation_exception(ex)
+        log_translation_exception(ex, message)
         flash[:error] =
           "There was an error parsing the mark-up in your translation.
            This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.
@@ -244,7 +243,7 @@ class TranscribeController  < ApplicationController
         flash.clear
         # raise ex
       rescue  => ex
-        log_translation_exception(ex)
+        log_translation_exception(ex, message)
         flash[:error] = ex.message
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
@@ -282,17 +281,20 @@ protected
     log_message << "#{attempt_type}\tSource Text:\nBEGIN_SOURCE_TEXT\n#{source_text}\nEND_SOURCE_TEXT\n\n"
 
     logger.info(log_message)
+    return log_message
   end
 
-  def log_exception(attempt_type, ex)
+  def log_exception(attempt_type, ex, message)
     log_message = "#{attempt_type}\t#{@transcript_date}\tERROR\tEXCEPTION\t"
     logger.error(log_message + ex.message)
     logger.error(ex.backtrace.join("\n"))
+    log_email_error(message, ex)
   end
 
-  def log_error(attempt_type)
+  def log_error(attempt_type, message)
     log_message = "#{attempt_type}\t#{@transcript_date}\tERROR\t"
     logger.info(@page.errors[:base].join("\t#{log_message}"))
+    log_email_error(message, @page.errors[:base])
   end
 
   def log_success(attempt_type)
@@ -303,15 +305,16 @@ protected
 
   def log_transcript_attempt
     # we have access to @page, @user, and params
-    log_attempt(TRANSCRIPTION, params[:page][:source_text])
+    log_message = log_attempt(TRANSCRIPTION, params[:page][:source_text])
+    return log_message
   end
 
-  def log_transcript_exception(ex)
-    log_exception(TRANSCRIPTION, ex)
+  def log_transcript_exception(ex, message)
+    log_exception(TRANSCRIPTION, ex, message)
   end
 
-  def log_transcript_error
-    log_error(TRANSCRIPTION)
+  def log_transcript_error(message)
+    log_error(TRANSCRIPTION, message)
   end
 
   def log_transcript_success
@@ -320,21 +323,31 @@ protected
 
   def log_translation_attempt
     # we have access to @page, @user, and params
-    log_attempt(TRANSLATION, params[:page][:source_translation])
+    log_message = log_attempt(TRANSLATION, params[:page][:source_translation])
+    return log_message
   end
 
-  def log_translation_exception(ex)
-    log_exception(TRANSLATION, ex)
+  def log_translation_exception(ex, message)
+    log_exception(TRANSLATION, ex, message)
   end
 
-  def log_translation_error
-    log_error(TRANSLATION)
+  def log_translation_error(message)
+    log_error(TRANSLATION, message)
   end
 
   def log_translation_success
     log_success(TRANSLATION)
   end
 
+  def log_email_error(message, ex)
+    if SMTP_ENABLED
+      begin
+        SystemMailer.page_save_failed(message, ex).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
+      end
+    end
+  end
 
   def record_deed
     deed = stub_deed
