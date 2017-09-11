@@ -72,7 +72,7 @@ describe "disable subject linking", :order => :defined do
     page.find('.work-page', text: @title).click_link(@title)
     expect(page).not_to have_content("Autolink")
     expect(page).to have_content("A single newline")
-    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+    page.fill_in 'page_source_text', with: "[[Texas]]"
     click_button("Save Changes")
     expect(page).to have_content("Texas")
     expect(page).to have_content("Transcription")

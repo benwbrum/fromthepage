@@ -1,6 +1,6 @@
 article_1:
   id: 1
-  title: Places
+  title: Texas
   lock_version: 0
   collection_id: 1
 
@@ -27,3 +27,9 @@ article_5:
   title: Mrs.
   lock_version: 0
   collection_id: 3
+
+article_6:
+  id: 6
+  title: Ada Lovelace
+  lock_version: 0
+  collection_id: 1
