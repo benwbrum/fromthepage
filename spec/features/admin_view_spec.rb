@@ -57,7 +57,7 @@ describe "admin actions" do
     #masquerade as the owner and see permissions
     page.find('tr', text: @owner.login).click_link("Login As")
     expect(page).to have_selector('a', text: 'Undo Login As')
-    click_link('Dashboard')
+    click_link(I18n.t('dashboard.plain'))
     #check the owner dashboard for correct contents
     expect(page).to have_content("Owner Dashboard")
     collections = Collection.where(owner_user_id: @owner.id)
