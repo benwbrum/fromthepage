@@ -13,11 +13,11 @@
     h2 Works
     .aright
       -if @collection.hide_completed
-        =label_tag "Show Transcribed Works"
+        =label_tag "Show Fully Transcribed Works"
         |&nbsp; 
         =check_box_tag :hide_completed
       -else
-        =label_tag "Show Transcribed Works"
+        =label_tag "Show Fully Transcribed Works"
         |&nbsp; 
         =check_box_tag(:hide_completed, 0, checked: true)
       p
