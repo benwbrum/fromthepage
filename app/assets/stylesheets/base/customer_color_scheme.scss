@@ -1,10 +1,10 @@
 // comment out the file
-/*
+
 // ---------------------------
 // CUSTOMER COLOR SCHEME
 // ---------------------------
 
-$fgBlack:                   #000;
+$fgBlack:                   #231F20;
 $fgWhite:                   #FFF;
 $fgGray:                    #888;
 $fgRed:                     #D00;
@@ -26,9 +26,9 @@ $bgPink:                    #FFF0F0;
 
 $fgSelected:                #FFF;
 $bgSelected:                #655;
-$fgLink:                    #0000ff;
-$fgHover:                   #D50;
-$bgHover:                   lighten($bgSelected, 47);
+$fgLink:                    #0B58A6;
+$fgHover:                   lighten($fgLink, 50%);
+$bgHover:                   lighten($fgLink, 50%);
 
 $fgH1:                      #655;
 $fgH2:                      darken($fgH1, 6%);
@@ -36,8 +36,8 @@ $fgH3:                      darken($fgH1, 12%);
 $fgH4:                      darken($fgH1, 18%);
 $fgH5:                      darken($fgH1, 24%);
 
-$themeLight:                #0000ff;
-$themeDark:                 #33cc33;
+$themeLight:                #0b58a6;
+$themeDark:                 #61bc46;
 
 $bodyFg:                    #200;
 $bodyBg:                    #fff;
@@ -52,4 +52,3 @@ $headerBg:                  $themeLight;
 $footerHeight:              80px;
 $footerFg:                  #fff;
 $footerBg:                  $themeDark;
-*/
