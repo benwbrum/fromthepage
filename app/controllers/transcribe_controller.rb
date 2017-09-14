@@ -31,13 +31,13 @@ class TranscribeController  < ApplicationController
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
-      @work.work_statistic.recalculate if @work.work_statistic
+      @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
-      @work.work_statistic.recalculate if @work.work_statistic
+      @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     else
       return true
@@ -98,18 +98,21 @@ class TranscribeController  < ApplicationController
           else
             record_deed
           end
-          # use the new links to blank the graphs
-          @page.clear_article_graphs
+          #don't reset subjects if they're disabled
+          unless @page.collection.subjects_disabled || (@page.source_text.include?("[[") == false)
+            # use the new links to blank the graphs
+            @page.clear_article_graphs
 
-          new_link_count = @page.page_article_links.where(text_type: 'transcription').count
-          logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
-          if old_link_count == 0 && new_link_count > 0
-            record_index_deed
+            new_link_count = @page.page_article_links.where(text_type: 'transcription').count
+            logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
+            if old_link_count == 0 && new_link_count > 0
+              record_index_deed
+            end
+            if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
+              @page.update_columns(status: Page::STATUS_INDEXED)
+            end
           end
-          if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
-            @page.update_columns(status: Page::STATUS_INDEXED)
-          end
-          @work.work_statistic.recalculate if @work.work_statistic
+          @work.work_statistic.recalculate({type: @page.status}) if @work.work_statistic
           @page.submit_background_processes("transcription")
       
           #if this is a guest user, force them to sign up after three saves
@@ -163,11 +166,14 @@ class TranscribeController  < ApplicationController
 
   def assign_categories
     @translation = params[:translation]
-    # look for uncategorized articles
-    for article in @page.articles
-      if article.categories.length == 0
-        render :action => 'assign_categories'
-        return
+    #no reason to check articles if subjects disabled
+    unless @page.collection.subjects_disabled
+      # look for uncategorized articles
+      for article in @page.articles
+        if article.categories.length == 0
+          render :action => 'assign_categories'
+          return
+        end
       end
     end
     # no uncategorized articles found, skip to display
@@ -204,16 +210,18 @@ class TranscribeController  < ApplicationController
           log_translation_success
           record_translation_deed
 
-          new_link_count = @page.page_article_links.where(text_type: 'translation').count
-          logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
-          if old_link_count == 0 && new_link_count > 0
-            record_translation_index_deed
+          unless @page.collection.subjects_disabled || (@page.source_translation.include?("[[") == false)
+            new_link_count = @page.page_article_links.where(text_type: 'translation').count
+            logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
+            if old_link_count == 0 && new_link_count > 0
+              record_translation_index_deed
+            end
+            if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
+              @page.update_columns(translation_status: Page::STATUS_INDEXED)
+            end
           end
-          if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
-            @page.update_columns(translation_status: Page::STATUS_INDEXED)
-          end
-
-          @work.work_statistic.recalculate if @work.work_statistic
+          
+          @work.work_statistic.recalculate({type: @page.translation_status}) if @work.work_statistic
           @page.submit_background_processes("translation")
 
           #if this is a guest user, force them to sign up after three saves
