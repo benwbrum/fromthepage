@@ -1,0 +1,9 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">Page Save Failed on FromThePage</h2>
+
+<p><b>Failure message</b></p>
+<p><%=@message%></p>
+<br>
+<%unless @ex.nil?%>
+  <p><b>Error/Exception message</b></p>
+  <p><%=@ex%></p>
+<%end%>
