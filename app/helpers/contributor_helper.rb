@@ -39,6 +39,12 @@ module ContributorHelper
     #get distinct user ids per deed and create list of users
     user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
     @active_transcribers = User.where(id: user_deeds)
+    deed_visits = Visit.where("id in (?)", @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:visit_id))
+    @user_time = {}
+    deed_visits.each do |visit|
+      @user_time[visit.user_id] = 0 unless @user_time[visit.user_id]
+      @user_time[visit.user_id] += visit.ahoy_events.last.time - visit.started_at
+    end
 
     #find recent transcription deeds by user, then older deeds by user
     recent_trans_deeds = transcription_deeds.where("created_at >= ?", start_date).distinct.pluck(:user_id)

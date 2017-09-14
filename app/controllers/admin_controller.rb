@@ -34,10 +34,27 @@ class AdminController < ApplicationController
   end
 
   def user_list
-    @users = User.order(created_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    if params[:search]
+      @users = User.search(params[:search]).order(created_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    else
+      @users = User.order(created_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    end
   end
 
   def edit_user
+  end
+
+  def user_visits
+    @visits = @user.visits.order(started_at: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def visit_actions
+    @visit = Visit.find(params[:visit_id])
+    @actions = @visit.ahoy_events.order(time: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def visit_deeds
+    @visit = Visit.find(params[:visit_id])
   end
 
   def update_user
@@ -106,7 +123,12 @@ class AdminController < ApplicationController
 
   def owner_list
     @collections = Collection.all
-    @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    #@owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    if params[:search]
+      @owners = User.search(params[:search]).where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    else
+      @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    end
   end
 
 end

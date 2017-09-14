@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :oai_sets
   has_many :ia_works
   has_many :omeka_sites
+  has_many :visits
   has_and_belongs_to_many(:scribe_works,
                           { :join_table => 'transcribe_authorizations',
                             :class_name => 'Work'})
@@ -168,6 +169,10 @@ class User < ActiveRecord::Base
     self.article_versions.destroy_all
     self.page_versions.destroy_all
     self.deeds.destroy_all
+  end
+  def self.search(search)
+    where("display_name LIKE ?", "%#{search}%")
+    where("login LIKE ?", "%#{search}%")
   end
 
 end
