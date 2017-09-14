@@ -59,12 +59,11 @@ class ScManifest < ActiveRecord::Base
     work.description = self.html_description
     work.collection = collection
     work.save!
-
     self.service.sequences.first.canvases.each do |canvas|
       sc_canvas = manifest_canvas_to_sc_canvas(canvas)
       page = sc_canvas_to_page(sc_canvas)
       work.pages << page
-      page.save!
+#      page.save!
       sc_canvas.page = page
       sc_canvas.height = canvas.height
       sc_canvas.width = canvas.width
