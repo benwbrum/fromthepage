@@ -2,7 +2,7 @@
 // CUSTOMER COLOR SCHEME
 // ---------------------------
 
-$fgBlack:                   #231F20;
+$fgBlack:                   #000;
 $fgWhite:                   #FFF;
 $fgGray:                    #888;
 $fgRed:                     #D00;
@@ -24,12 +24,15 @@ $bgPink:                    #FFF0F0;
 
 $fgSelected:                #FFF;
 $bgSelected:                #655;
+
 //this is the color of all links
-$fgLink:                    #0B58A6;
+$fgLink:                    #900;
+
 //the color when a link is hovered on
-$fgHover:                   lighten($fgLink, 50%);
+$fgHover:                   #D50;
+
 //the color when a link is hovered on
-$bgHover:                   lighten($fgLink, 50%);
+$bgHover:                   lighten($bgSelected, 47);
 
 //heading colors - h1 - h5
 $fgH1:                      #655;
@@ -39,26 +42,36 @@ $fgH4:                      darken($fgH1, 18%);
 $fgH5:                      darken($fgH1, 24%);
 
 //this sets the color of the header
-$themeLight:                #0b58a6;
+$themeLight:                #EDB;
+
 //this sets the color of the footer
-$themeDark:                 #61bc46;
+$themeDark:                 #433;
 
 
 $bodyFg:                    #200;
+
 //the background color of the app
-$bodyBg:                    #fff;
+$bodyBg:                    mix(#FFF, $themeLight, 70);
+
 $bodyFgFaded:               mix($bodyFg, $bodyBg, 60);
 $bodyFgLight:               mix($bodyFg, $bodyBg, 50);
 $borderColor:               mix(#000, $bodyBg, 15);
 
+//HEADER INFO
+
 $headerHeight:              80px;
+
 //the color of lettering on the header
-$headerFg:                  #fff;
+$headerFg:                  $themeDark;
+
 //header background color
 $headerBg:                  $themeLight;
 
+//FOOTER INFO
 $footerHeight:              80px;
+
 //the color of lettering on the footer
-$footerFg:                  #fff;
+$footerFg:                  mix(#FFF, $themeDark, 50);
+
 //footer background color
 $footerBg:                  $themeDark;
