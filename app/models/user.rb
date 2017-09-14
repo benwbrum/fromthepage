@@ -162,4 +162,9 @@ class User < ActiveRecord::Base
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def self.search(search)
+    where("display_name LIKE ?", "%#{search}%")
+    where("login LIKE ?", "%#{search}%")
+  end
+
 end
