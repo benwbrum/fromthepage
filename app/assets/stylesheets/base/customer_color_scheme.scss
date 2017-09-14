@@ -1,0 +1,64 @@
+// ---------------------------
+// CUSTOMER COLOR SCHEME
+// ---------------------------
+
+$fgBlack:                   #231F20;
+$fgWhite:                   #FFF;
+$fgGray:                    #888;
+$fgRed:                     #D00;
+$fgGreen:                   #490;
+$fgBlue:                    #08D;
+$fgOrange:                  #E60;
+$fgYellow:                  #FC3;
+$fgPurple:                  #939;
+$fgCyan:                    #099;
+
+$bgWhite:                   #FFF;
+$bgGray:                    #F9F9F9;
+$bgRed:                     #FFF0F0;
+$bgGreen:                   #F0F9D9;
+$bgBlue:                    #D9F0FF;
+$bgOrange:                  #FFF6CC;
+$bgYellow:                  #FFFCD6;
+$bgPink:                    #FFF0F0;
+
+$fgSelected:                #FFF;
+$bgSelected:                #655;
+//this is the color of all links
+$fgLink:                    #0B58A6;
+//the color when a link is hovered on
+$fgHover:                   lighten($fgLink, 50%);
+//the color when a link is hovered on
+$bgHover:                   lighten($fgLink, 50%);
+
+//heading colors - h1 - h5
+$fgH1:                      #655;
+$fgH2:                      darken($fgH1, 6%);
+$fgH3:                      darken($fgH1, 12%);
+$fgH4:                      darken($fgH1, 18%);
+$fgH5:                      darken($fgH1, 24%);
+
+//this sets the color of the header
+$themeLight:                #0b58a6;
+//this sets the color of the footer
+$themeDark:                 #61bc46;
+
+
+$bodyFg:                    #200;
+//the background color of the app
+$bodyBg:                    #fff;
+$bodyFgFaded:               mix($bodyFg, $bodyBg, 60);
+$bodyFgLight:               mix($bodyFg, $bodyBg, 50);
+$borderColor:               mix(#000, $bodyBg, 15);
+
+$headerHeight:              80px;
+//the color of lettering on the header
+$headerFg:                  #fff;
+//header background color
+$headerBg:                  $themeLight;
+
+$footerHeight:              80px;
+//the color of lettering on the footer
+$footerFg:                  #fff;
+//footer background color
+$footerBg:                  $themeDark;
