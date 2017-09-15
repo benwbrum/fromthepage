@@ -155,8 +155,11 @@ class Page < ActiveRecord::Base
     version.xml_transcription = self.xml_text
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
-    version.user = User.current_user
-    
+    unless User.current_user.nil?
+      version.user = User.current_user
+    else
+      version.user = User.find_by(id: self.work.owner_user_id)
+    end
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
     self.work.increment!(:transcription_version)
