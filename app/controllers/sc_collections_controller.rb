@@ -20,14 +20,45 @@ class ScCollectionsController < ApplicationController
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
 
+  def import
+    at_id = CGI::unescape(params[:at_id])
+    if at_id.include?("manifest")
+      @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+      render 'explore_manifest', at_id: at_id
+    elsif at_id.include?("collection")
+      @sc_collection = ScCollection.collection_for_at_id(at_id)
+      render 'explore_collection', at_id: at_id
+    end
+  end
+
   def explore_manifest
     at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
   end
 
+  def explore_collection
+    at_id = CGI::unescape(params[:at_id])
+    @sc_collection = ScCollection.collection_for_at_id(at_id)
+  end
+
   def import_manifest
     at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+  end
+
+  def import_collection
+    manifest_array = params[:manifest_id].keys.map {|id| id}
+    collection_id = params[:collection_id]
+    collection = Collection.find_by(id: params[:collection_id])
+    manifest_ids = manifest_array.join(" ")
+    #kick off the rake task here, then redirect to the collection
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection_id},#{current_user.id}]"
+    logger.info rake_call
+    system(rake_call)
+    #flash notice about the rake task
+    flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
+
+    redirect_to collection_path(collection.owner, collection)
   end
 
   def convert_manifest

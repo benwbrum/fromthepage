@@ -1,0 +1,43 @@
+h4 Collection: #{@sc_collection.label}
+p Id: #{@sc_collection.at_id}
+
+-if @sc_collection.service.collections.size > 0
+  h4 Collections:
+  ul
+    -@sc_collection.service.collections.each do |json_collection|
+     li
+       =link_to json_collection['label'], {:action => 'explore_collection', :at_id => CGI::escape(json_collection['@id'])}
+
+-unless @sc_collection.service.manifests.empty?
+  h4 Manifests:
+
+  =form_tag(action: 'import_collection')
+    =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), id: 'manifest_import', prompt: '- Select a collection -'
+    =submit_tag 'Import Checked Manifests'
+    ul
+      -@sc_collection.service.manifests.each do |json_manifest|
+        li
+          -at_id = json_manifest["@id"]
+          =check_box_tag("manifest_id[#{at_id}]")
+          |&nbsp;
+
+          =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => CGI::escape(json_manifest['@id']), :sc_collection_id => @sc_collection.id})
+    br
+
+-content_for :javascript
+  javascript:
+    $(function(){
+      $('#manifest_import').append("<option value='new'>Add New Collection</option>");
+    });
+
+    $(function(){
+      $('#manifest_import').on('change', function(){
+        var col = $(this).val();
+          if (col == 'new'){
+            new LiteBox({
+              url: '/collection/new',
+              hash: 'create-collection'
+            }).open();
+          };
+      });
+    })
