@@ -1,0 +1,52 @@
+.columns
+  article.maincol
+    h4 Manifest: #{{@sc_manifest.label}}
+  	
+  	-if @sc_manifest.service.description
+			p Description: #{{@sc_manifest.service.description}}
+		
+		-if @sc_manifest.service.metadata
+			p Metadata: #{{@sc_manifest.html_metadata}}
+
+		-if @sc_manifest.service.license
+			p License: #{@sc_manifest.service.license}
+
+		p 
+			'Id: 
+			=link_to @sc_manifest.at_id, @sc_manifest.at_id
+
+    =form_for(:sc_manifest, url: { action: 'convert_manifest' }, html: {class: 'iiif-select-form'}) do |f|
+    	=validation_summary @sc_manifest.errors
+      -unless @sc_collection.nil?
+      	=hidden_field_tag :sc_collection_id, @sc_collection.id
+      =hidden_field_tag :at_id, @sc_manifest.at_id
+      =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -', required: true
+      =f.button 'Import Manifest'
+
+		h5 Canvases:
+		ul
+			-@sc_manifest.service.sequences.first.canvases.each do |json_canvas|
+			  li
+			    =json_canvas.label
+
+-content_for :javascript
+  javascript:
+    $(function(){
+      $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
+      if ("#{@sc_collection.label}" != ''){
+      	$('#sc_manifest_collection_id').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
+    	}
+    });
+
+    $(function(){
+      $('#sc_manifest_collection_id').on('change', function(){
+        var col = $(this).val();
+          if (col == 'new'){
+            new LiteBox({
+              url: '/collection/new',
+              hash: 'create-collection'
+            }).open();
+          };
+      });
+    })
+

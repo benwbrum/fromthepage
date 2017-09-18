@@ -11,15 +11,16 @@ p Id: #{@sc_collection.at_id}
 -unless @sc_collection.service.manifests.empty?
   h4 Manifests:
 
-  =form_tag(action: 'import_collection')
-    =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), id: 'manifest_import', prompt: '- Select a collection -'
-    =submit_tag 'Import Checked Manifests'
-    ul
+  =form_tag({action: 'import_collection'}, class: 'iiif-select-form') do
+    =hidden_field_tag :sc_collection_id, @sc_collection.id
+    =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), id: 'manifest_import', prompt: '- Select a collection -', required: true
+    =button_tag 'Import Checked Manifests'
+    ul.iiif-works-list
       -@sc_collection.service.manifests.each do |json_manifest|
         li
           -at_id = json_manifest["@id"]
-          =check_box_tag("manifest_id[#{at_id}]")
-          |&nbsp;
+          =check_box_tag("manifest_id[#{at_id}]", 1, true)
+          |&nbsp;&nbsp;
 
           =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => CGI::escape(json_manifest['@id']), :sc_collection_id => @sc_collection.id})
     br
@@ -27,6 +28,8 @@ p Id: #{@sc_collection.at_id}
 -content_for :javascript
   javascript:
     $(function(){
+      var collection = "#{@sc_collection.label}"
+      $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
       $('#manifest_import').append("<option value='new'>Add New Collection</option>");
     });
 
@@ -41,3 +44,4 @@ p Id: #{@sc_collection.at_id}
           };
       });
     })
+

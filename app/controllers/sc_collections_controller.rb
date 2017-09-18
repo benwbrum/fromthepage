@@ -24,7 +24,14 @@ class ScCollectionsController < ApplicationController
     at_id = CGI::unescape(params[:at_id])
     if at_id.include?("manifest")
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+      parent_at_id = @sc_manifest.service["within"]["@id"]
+      unless parent_at_id.nil?
+        @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
+      else
+        @sc_collection = nil
+      end
       render 'explore_manifest', at_id: at_id
+
     elsif at_id.include?("collection")
       @sc_collection = ScCollection.collection_for_at_id(at_id)
       render 'explore_collection', at_id: at_id
@@ -35,37 +42,57 @@ class ScCollectionsController < ApplicationController
     at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
   end
-
+=begin
   def explore_collection
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
-
+=end
   def import_manifest
     at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
   end
 
   def import_collection
+    #map an array of at_ids for the selected manifests
     manifest_array = params[:manifest_id].keys.map {|id| id}
+    sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
+
     collection_id = params[:collection_id]
-    collection = Collection.find_by(id: params[:collection_id])
+    #if collection id is set to sc_collection or no collection is set,
+    # create a new collection with sc_collection label
+    unless collection_id == 'sc_collection'    
+      collection = Collection.find_by(id: params[:collection_id])
+    end
+
+    if collection.nil?
+      collection = create_collection(sc_collection, current_user)
+    end
+    #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection_id},#{current_user.id}]"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection.id},#{current_user.id}]"
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
     flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
 
-    redirect_to collection_path(collection.owner, collection)
+    ajax_redirect_to collection_path(collection.owner, collection)
+  end
+
+  def create_collection(sc_collection, current_user)
+    collection = Collection.new
+    collection.owner = current_user
+    collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
+    collection.save!
+    return collection
   end
 
   def convert_manifest
     at_id = params[:at_id]
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
     work = nil
-    if params[:use_parent_collection]
+    if params[:sc_manifest][:collection_id] == 'sc_collection'
       set_sc_collection
       work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
     else
