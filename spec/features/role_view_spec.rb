@@ -30,7 +30,7 @@ describe "different user role logins" do
 
   it "tests guest dashboard" do
     visit root_path
-    click_link('Dashboard')
+    click_link(I18n.t('dashboard.plain'))
     expect(page.current_path).to eq guest_dashboard_path
     expect(page).to have_content("Sign In")
     expect(page).not_to have_content("Signed In As")
@@ -50,7 +50,7 @@ describe "different user role logins" do
       fill_in 'Password', with: @password
       click_button('Sign In')
       expect(page.current_path).to eq dashboard_watchlist_path
-      expect(page).to have_content("Collaborator Dashboard")
+      expect(page).to have_content(I18n.t('dashboard.collaborator'))
       expect(page).to have_content("You haven't participated in any projects yet.")
       visit root_path
       click_link('Dashboard')
@@ -69,7 +69,7 @@ describe "different user role logins" do
     fill_in 'Password', with: @password
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
-    expect(page).to have_content("Collaborator Dashboard")
+    expect(page).to have_content(I18n.t('dashboard.collaborator'))
     expect(page).to have_content(collections.first.title)
     within ".sidecol" do
       expect(page).to have_content("Your Activity")
@@ -78,7 +78,7 @@ describe "different user role logins" do
     click_link('Dashboard')
     expect(page.current_path).to eq dashboard_watchlist_path
     #make sure user doesn't have admin access
-    expect(page).to have_selector('a', text: 'Collaborator Dashboard')
+    expect(page).to have_selector('a', text: I18n.t('dashboard.collaborator'))
     expect(page).not_to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
   end
@@ -90,7 +90,7 @@ describe "different user role logins" do
     fill_in 'Password', with: @password
     click_button('Sign In')
     expect(page.current_path).to eq dashboard_watchlist_path
-    expect(page).to have_content("Collaborator Dashboard")
+    expect(page).to have_content(I18n.t('dashboard.collaborator'))
   end
 
   it "signs an owner in" do
@@ -113,7 +113,7 @@ describe "different user role logins" do
       expect(page).to have_content(s.title)
     end
     visit root_path
-    click_link('Dashboard')
+    click_link(I18n.t('dashboard.plain'))
     expect(page.current_path).to eq dashboard_owner_path
     #check for owner but not admin dashboard
     expect(page).to have_selector('a', text: 'Owner Dashboard')
@@ -129,7 +129,7 @@ describe "different user role logins" do
     expect(page.current_path).to eq admin_path
     expect(page).to have_content("Administration")
     visit root_path
-    click_link('Dashboard')
+    click_link(I18n.t('dashboard.plain'))
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_selector('a', text: 'Admin Dashboard')
   end

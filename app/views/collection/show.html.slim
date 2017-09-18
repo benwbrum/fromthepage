@@ -11,48 +11,35 @@
           ==@collection.intro_block
 
     h2 Works
+    .aright
+      -if @collection.hide_completed
+        =label_tag "Show Fully Transcribed Works"
+        |&nbsp; 
+        =check_box_tag :hide_completed
+      -else
+        =label_tag "Show Fully Transcribed Works"
+        |&nbsp; 
+        =check_box_tag(:hide_completed, 0, checked: true)
+      p
+
     -@collection.works.includes(:work_statistic).each do |work|
-      .collection-work
+      .collection-work.hidden
         .collection-work_image
           -unless work.thumbnail.nil? 
             =image_tag(work.thumbnail)
         h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
-          -unless work.supports_translation
-            -progress_annotated = work.work_statistic.pct_annotated.round
-            -progress_review = work.work_statistic.pct_needs_review.round
-            -progress_completed = work.work_statistic.pct_completed.round
-
-            -if work.ocr_correction
-              -completed = "corrected"
-            -else
-              -completed = "transcribed"
-          -else
-            -progress_annotated = work.work_statistic.pct_translation_annotated.round
-            -progress_review = work.work_statistic.pct_translation_needs_review.round
-            -progress_completed = work.work_statistic.pct_translation_completed.round
-            -completed = "translated"
-
-
-          -if @collection.subjects_disabled
-            -unless progress_review == 0
-              -wording = "#{progress_completed}% #{completed}, #{progress_review}% needs review"
-            -else
-              -wording = "#{progress_completed}% #{completed}"
-          -elsif progress_review == 0
-            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}"
-          -else
-            -wording = "#{progress_annotated}% indexed, #{progress_completed}% #{completed}, #{progress_review}% needs review"
-
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{wording}"
+          -work_stats(work)
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
           span
             span.progress
               -unless @collection.subjects_disabled
-                span(style="width:#{progress_annotated}%")
-              span(style="width:#{progress_completed - progress_annotated}%")
-              -unless progress_review == 0
-                span(style="width:#{progress_review}%")
+                span(style="width:#{@progress_annotated}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
+              -unless @progress_review == 0
+                span(style="width:#{@progress_review}%")
+        span.completed(style="display: none;") #{@completed}
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
@@ -91,3 +78,44 @@
     =deeds_for({ :collection => @collection, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
 
 =render({ :partial => '/shared/collection_footer' })
+
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      var hideCompleted = #{@collection.hide_completed};
+      $(hideWorks(hideCompleted));
+    });
+    $(function(){
+      var showCheckbox = $('#hide_completed')
+
+      $(function(){
+        $(showCheckbox).click(function(e){
+          var hide;
+          if (this.checked){
+            hide = false;
+          } else {
+            hide = true;
+          };
+          hideWorks(hide);
+        });
+      });
+    });
+
+    function hideWorks(param){
+      var showOrHide = param
+      var work = $('.collection-work');
+      if (showOrHide){
+        work.each(function(i){
+          var completed = $(this).find('.completed').text();
+          if (completed == "Completed"){
+            $(this).hide();
+          } else {
+            $(this).show();
+          };
+        });
+      } else {
+        $(work).show();
+      };
+      work.removeClass("hidden")
+    }

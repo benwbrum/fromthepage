@@ -66,7 +66,6 @@ describe "IA import actions", :order => :defined do
     page.fill_in 'page_source_text', with: "Test OCR Correction"
     click_button('Save Changes')
     expect(page).to have_content("Test OCR Correction")
-    expect(page).to have_content("Facsimile")
     expect(page.find('.tabs')).to have_content("Correct")
     @ocr_page = @ocr_work.pages.first
     expect(@ocr_page.status).to eq "transcribed" 

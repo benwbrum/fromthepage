@@ -8,7 +8,7 @@
 
 p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
 
--@page.articles.each do |article|
+-@page.articles.distinct.each do |article|
   -if article.categories.length == 0
     -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
     .page-uncategorized
@@ -19,4 +19,8 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
           option(data-level=level value=c.id selected=selected) =c.title
 
 span.legend
-  =link_to 'Continue', collection_display_page_path(@collection.owner, @collection, @page.work, @page.id, translation: @translation), class: 'button outline round'
+  -if @translation
+    -next_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
+  -else
+    -next_path =collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
+  =link_to 'Continue', next_path, class: 'button outline round'

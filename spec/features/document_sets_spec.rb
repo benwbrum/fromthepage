@@ -273,6 +273,7 @@ describe "document sets", :order => :defined do
     if expect(page).to have_content("This page is not transcribed")
       page.find('.tabs').click_link("Transcribe")
       click_button('Save Changes')
+      page.click_link("Overview")
     end
     page.find('a', text: @article.title).click
     expect(page.current_path).to eq collection_article_show_path(@set.owner, @set, @article.id)
@@ -334,6 +335,7 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     page.fill_in 'page_source_text', with: "Document set breadcrumbs"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
@@ -344,6 +346,7 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     page.fill_in 'page_source_translation', with: "Document set breadcrumbs - translation"
     click_button('Save Changes')
+    page.click_link("Overview")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)

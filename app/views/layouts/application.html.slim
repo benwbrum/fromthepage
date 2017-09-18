@@ -52,9 +52,12 @@ html
       .toolbar
         .toolbar_group
           =link_to root_path, class: 'logo'
-            =svg_symbol '#logo'
+            -if USE_PNG_LOGO
+              =image_tag 'logo.png', height: '64'
+            -else
+              =svg_symbol '#logo'
         .toolbar_group
-          =link_to 'Dashboard', dashboard_role_path, class: 'header_link'
+          =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           =link_to 'Collections', dashboard_path, class: 'header_link'
           =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?

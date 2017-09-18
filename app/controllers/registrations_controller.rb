@@ -18,6 +18,7 @@ class RegistrationsController < Devise::RegistrationsController
     resource_saved = @user.save
     #this is the default Devise code
     yield resource if block_given?
+    
     if resource_saved
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
