@@ -1,7 +1,8 @@
 .columns
   article.maincol
     h4 Manifest: #{{@sc_manifest.label}}
-  	
+  	-if @sc_collection
+  		p Collection: #{@sc_collection.label}
   	-if @sc_manifest.service.description
 			p Description: #{{@sc_manifest.service.description}}
 		
@@ -33,7 +34,7 @@
   javascript:
     $(function(){
       $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
-      if ("#{@sc_collection.label}" != ''){
+      if (("#{@sc_collection.label}" != '') && ("#{@sc_collection.collection}" == '')){
       	$('#sc_manifest_collection_id').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
     	}
     });
