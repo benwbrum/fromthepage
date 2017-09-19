@@ -43,8 +43,10 @@
     -content_for :javascript
       javascript:
         $(function(){
-          var collection = "#{@sc_collection.label}"
-          $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
+          var collection = "#{@sc_collection.collection}"
+          if(collection == ''){
+            $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
+          }
           $('#manifest_import').append("<option value='new'>Add New Collection</option>");
         });
 

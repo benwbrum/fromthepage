@@ -15,11 +15,11 @@ class ScCollectionsController < ApplicationController
     redirect_to :action => :explore, :at_id => at_id
   end
 
-  def explore
+=begin  def explore
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
-
+=end
   def import
     at_id = CGI::unescape(params[:at_id])
     if at_id.include?("manifest")
@@ -48,11 +48,11 @@ class ScCollectionsController < ApplicationController
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
 
-  def import_manifest
+=begin  def import_manifest
     at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
   end
-
+=end
   def import_collection
     #map an array of at_ids for the selected manifests
     manifest_array = params[:manifest_id].keys.map {|id| id}
@@ -85,6 +85,7 @@ class ScCollectionsController < ApplicationController
     collection.owner = current_user
     collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
     collection.save!
+    sc_collection.update_column(:collection_id, collection.id)
     return collection
   end
 

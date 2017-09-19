@@ -23,7 +23,7 @@
               =text_field_tag :at_id
               =button_tag 'Import'
     h5 Explore Shared Canvas Universe
-    .aright =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => CGI::escape(@sc_universe_at_id)}, class: 'button'
+    .aright =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => CGI::escape(ScCollection::UNIVERSE)}, class: 'button'
 
     h3 Import from the Internet Archive
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }
