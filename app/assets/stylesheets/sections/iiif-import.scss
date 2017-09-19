@@ -2,6 +2,9 @@
   li {
     list-style-type: none;
   }
+  p {
+    margin: $gapSize/4;
+  }
 }
 
 .iiif-select-form {
@@ -22,6 +25,13 @@
     position: absolute;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+  }
+}
+
+.manifest-form {
+  padding-right: 150px;
+  button {
+  width: 150px;
   }
 }
 
@@ -57,3 +67,22 @@
   }
 }
 
+.iiif-collection {
+  width: 100%;
+  padding: $gapSize 0;
+  display: inline-block;
+  border-bottom: 1px dotted $borderColor;
+  &_thumbnail {
+    float: left;
+    margin-right: $gapSize;
+    img {
+      padding: 3px;
+      background: #FFF;
+      border: 1px solid rgba(#000, 0.1);
+    }
+  }
+  &_content {
+    overflow: hidden;
+    position: relative;
+  }
+}

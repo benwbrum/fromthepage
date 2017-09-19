@@ -54,6 +54,7 @@ class DashboardController < ApplicationController
     @omeka_sites = current_user.omeka_sites
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
+    @sc_universe_at_id = ScCollection::UNIVERSE
   end
 
   #Owner Dashboard - list of works
