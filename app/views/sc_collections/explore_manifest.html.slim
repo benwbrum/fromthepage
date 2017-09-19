@@ -24,11 +24,12 @@
     	=f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -', required: true
     	=f.button 'Import Manifest'
 
-		h5 Canvases:
-		ul
-			-@sc_manifest.service.sequences.first.canvases.each do |json_canvas|
-			  li
-			    =json_canvas.label
+		-unless @sc_manifest.service.sequences.empty?
+			h5 Canvases:
+			ul
+				-@sc_manifest.service.sequences.first.canvases.each do |json_canvas|
+				  li
+				    =json_canvas.label
 
 -content_for :javascript
   javascript:
