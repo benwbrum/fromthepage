@@ -34,9 +34,10 @@ namespace :fromthepage do
     if SMTP_ENABLED
       begin
         if errors.blank?
-          UserMailer.iiif_collection_import_succeeded(user_id, collection_id).deliver!
+          AdminMailer.iiif_collection_import_succeeded(user_id, collection_id).deliver!
         else
-          UserMailer.iiif_collection_import_failed(user_id, collection_id, errors).deliver!
+          AdminMailer.iiif_collection_import_failed(user_id, collection_id, errors).deliver!
+        end
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
