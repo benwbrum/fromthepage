@@ -19,6 +19,18 @@
         <div class="page-content">
           <%= raw(xml_to_html(page.xml_text, true, true)) %>
         </div>
+        <% if page.notes.present? %>
+          <div class="page-notes">
+            <strong>Notes:</strong>
+            <% page.notes.each do |note| %>
+              <div>
+                <p><span class="page-note-username"><%=note.user.display_name%></span></p>
+                <p class="page-note-content"><%= sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))%></p>
+                  
+              </div>
+            <% end %>
+          </div>
+        <% end %>
         <% if page.page_versions.present? %>
           <div class="page-history">
             <strong>Page Edit History:</strong>
@@ -36,6 +48,35 @@
       <br />
       <% end %>
     </div>
+
+    <% if @work.supports_translation %>
+      <hr />
+      <h2 class="divider">Page Translations</h2>
+  
+      <div class="pages">
+        <% @work.pages.each do |page| %>
+        <div id="translation-<%=page.id%>">
+          <h3><%= page.title %></h3>
+          <div class="page-content">
+            <%= raw(xml_to_html(page.xml_translation, true, true)) %>
+          </div>
+        </div>
+        <br />
+        <% if page.notes.present? %>
+          <div class="page-notes">
+            <strong>Notes:</strong>
+            <% page.notes.each do |note| %>
+              <div>
+                <p><span class="page-note-username"><%=note.user.display_name%></span></p>
+                <p class="page-note-content"><%= sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))%></p>
+                  
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <% end %>
+      </div>
+    <% end %>
 
     <hr />
     <h2 class="divider">Subjects and Indices</h2>
@@ -60,11 +101,17 @@
         <div class="article-indices">
           <strong>Pages:</strong>
           <ul>
-          <% article.pages.each do |entry| %>
-            <% if entry.work_id == @work.id %>
-              <li><small><%= link_to(entry.title, "#page-#{entry.id}") %></small></li>
+            <% article.show_links(@collection).each do |link| %>
+              <li>
+                <small>
+                <% if link.text_type == 'translation' %>
+                  <%= link_to(link.page.title, "#page-#{link.page_id}") %>
+                <% else %>
+                  <%= link_to(link.page.title, "#translation-#{link.page_id}") %> (translation)
+                <% end %>
+                </small>
+              </li>
             <% end %>
-          <% end %>
           </ul>
         </div>
         <!-- categorization here -->
