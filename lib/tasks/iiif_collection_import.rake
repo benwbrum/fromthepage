@@ -12,13 +12,13 @@ namespace :fromthepage do
 
     puts "manifest_ids were #{manifest_ids.inspect}"
     puts "collection_id is #{collection_id.inspect}"
-    puts "manifest_array is #{manifest_array}"
 
     manifest_array.each do |manifest|
       at_id = manifest
       sc_manifest = ScManifest.manifest_for_at_id(at_id)
       work = nil
-      work = sc_manifest.convert_with_collection(user, collection)              
+      work = sc_manifest.convert_with_collection(user, collection)
+      binding.pry            
     end
   end
 

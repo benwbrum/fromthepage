@@ -71,13 +71,18 @@ class ScCollectionsController < ApplicationController
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection.id},#{current_user.id}]"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection.id},#{current_user.id}] --trace >> #{log_file} &"
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
     flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
 
     ajax_redirect_to collection_path(collection.owner, collection)
+  end
+
+  def log_file
+    env = Rails.env.downcase
+    "#{Rails.root}/log/#{env}.log"
   end
 
   def create_collection(sc_collection, current_user)
