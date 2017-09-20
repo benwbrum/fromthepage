@@ -33,16 +33,16 @@ namespace :fromthepage do
     puts "Errors: #{errors}"
     if SMTP_ENABLED
       begin
-        #SystemMailer.upload_succeeded(document_upload).deliver!
-        #UserMailer.upload_finished(document_upload).deliver!
+        if errors.blank?
+          UserMailer.iiif_collection_import_succeeded(user_id, collection_id).deliver!
+        else
+          UserMailer.iiif_collection_import_failed(user_id, collection_id, errors).deliver!
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
       end
     end
 
-
   end
-
 
 
 =begin
