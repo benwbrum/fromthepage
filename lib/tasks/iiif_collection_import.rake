@@ -13,13 +13,34 @@ namespace :fromthepage do
     puts "manifest_ids were #{manifest_ids.inspect}"
     puts "collection_id is #{collection_id.inspect}"
 
+    errors = {}
+
     manifest_array.each do |manifest|
-      at_id = manifest
-      sc_manifest = ScManifest.manifest_for_at_id(at_id)
-      work = nil
-      work = sc_manifest.convert_with_collection(user, collection)
-      binding.pry            
+      begin
+        at_id = manifest
+        sc_manifest = ScManifest.manifest_for_at_id(at_id)
+        work = nil
+        work = sc_manifest.convert_with_collection(user, collection)
+        
+        unless work.errors.blank?
+          error.update(work.errors)
+        end
+      rescue => e
+        puts "#{e.message}"
+        errors.store(at_id, e.message)
+      end
     end
+    puts "Errors: #{errors}"
+    if SMTP_ENABLED
+      begin
+        #SystemMailer.upload_succeeded(document_upload).deliver!
+        #UserMailer.upload_finished(document_upload).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
+      end
+    end
+
+
   end
 
 

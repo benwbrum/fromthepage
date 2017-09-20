@@ -1,0 +1,15 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">Your upload is ready!</h2>
+<p>
+  Your import of the IIIF collection <%=link_to @collection.title, collection_path(@collection.owner, @collection, only_path: false)%> had errors.
+</p>
+<p>These are the error messages:</p>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Error</th>
+  </tr>
+  <% @errors.each do |key, value|%>
+  <tr>
+    <td><%=key%></td>
+    <td><%=value%></td>
+</table>
