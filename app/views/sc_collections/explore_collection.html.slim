@@ -28,7 +28,8 @@
 
       =form_tag({action: 'import_collection'}, class: 'iiif-select-form') do
         =hidden_field_tag :sc_collection_id, @sc_collection.id
-        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), id: 'manifest_import', prompt: '- Select an import collection -', required: true
+        -new_collection = @collection ? @collection.id : nil
+        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), id: 'manifest_import', prompt: '- Select an import collection -', required: true
         =button_tag 'Import Checked Manifests'
         ul.iiif-works-list
           -@sc_collection.service.manifests.each do |json_manifest|

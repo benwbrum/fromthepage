@@ -12,10 +12,10 @@ class ScCollectionsController < ApplicationController
   def search_pontiiif
     search_param = params[:search_param]
     at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
-    redirect_to :action => :explore, :at_id => at_id
+    redirect_to :action => :explore_collection, :at_id => at_id
   end
-
-=begin  def explore
+=begin
+  def explore
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
@@ -34,6 +34,7 @@ class ScCollectionsController < ApplicationController
 
     elsif at_id.include?("collection")
       @sc_collection = ScCollection.collection_for_at_id(at_id)
+      @collection = set_collection
       render 'explore_collection', at_id: at_id
     end
   end
@@ -41,18 +42,16 @@ class ScCollectionsController < ApplicationController
   def explore_manifest
     at_id = CGI::unescape(params[:at_id])
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    @collection = set_collection
   end
 
   def explore_collection
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
+    @collection = set_collection
   end
 
-=begin  def import_manifest
-    at_id = CGI::unescape(params[:at_id])
-    @sc_manifest = ScManifest.manifest_for_at_id(at_id)
-  end
-=end
+
   def import_collection
     #map an array of at_ids for the selected manifests
     manifest_array = params[:manifest_id].keys.map {|id| id}
@@ -150,6 +149,15 @@ class ScCollectionsController < ApplicationController
 
     def sc_collection_params
       params.require(:sc_collection).permit(:collection_id, :context)
+    end
+
+    def set_collection
+      #used to add new collections to select box on import
+      if session[:iiif_collection]
+        @collection = Collection.find_by(id: session[:iiif_collection])
+        session[:iiif_collection]=nil
+        return @collection
+      end
     end
     
 end
