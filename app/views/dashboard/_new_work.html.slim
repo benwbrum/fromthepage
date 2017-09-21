@@ -22,11 +22,11 @@
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import'
-    h5 Explore Shared Canvas Universe
-    .aright =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => CGI::escape(ScCollection::UNIVERSE)}, class: 'button'
+    h5 Explore IIIF Collections
+    =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => CGI::escape(ScCollection::UNIVERSE)}, class: 'button'
 
     h3 Import from the Internet Archive
-    =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }
+    =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
     h3 Import from Omeka
     -if @omeka_sites.blank?
       p.fgfaded You didn't connect any Omeka sites. Use the button below to create a new Omeka connection.
