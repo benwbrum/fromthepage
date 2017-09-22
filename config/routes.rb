@@ -109,4 +109,8 @@ Fromthepage::Application.routes.draw do
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
 
+  get 'static/faq', to: 'static#faq', as: :faq
+  get 'static/about', to: 'static#about', as: :about
+  get 'static/privacy', to: 'static#privacy', as: :privacy
+
 end
