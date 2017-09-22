@@ -134,13 +134,31 @@ class WorkController < ApplicationController
       title = work.title.parameterize
       work.update(slug: title)
     end
-    #record work add deed if the work is moved to another collection
-    if work.collection_id != id
-      record_deed(work)
-    end
 
     flash[:notice] = 'Work updated successfully'
     redirect_to :back
+  end
+
+  def change_collection
+    work = Work.find_by(id: params[:work_id])
+    collection_id = params[:new_id]
+    #change the collection id for the work and record deed
+    work.update(collection_id: collection_id)
+
+    record_deed(work)
+
+    #delete page_article_links for this work
+    page_ids = work.pages.ids
+    links = PageArticleLink.where(page_id: page_ids)
+    #links.destroy_all
+
+    #remove links from pages in this work
+
+
+    flash[:notice] = 'Work updated successfully'
+    
+    redirect_to :back
+
   end
 
   def revert

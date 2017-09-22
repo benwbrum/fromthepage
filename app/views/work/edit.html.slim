@@ -165,3 +165,27 @@
         });
       });
     });
+
+    $(function(){
+      $('#work_collection_id').on('change', function(){
+        var new_id = $(this).val();
+        var collection_id = "#{@work.collection.id}"
+        var subjects = "#{@work.collection.subjects_disabled}"
+        //this is a string because it's interpolated from rails
+        if (subjects == 'false'){
+          var response = confirm("Are you sure you want to move this work to a new collection?  You will lose all subject links.");
+          //if cancel, set the collection back to the original
+          if (response == false){
+            $('#work_collection_id').val(collection_id);
+            }
+          //if confirm, use ajax to run controller code and move the work
+          else {
+            $.ajax({
+              method: 'GET',
+              url: '/work/change_collection',
+              data: { work_id: "#{@work.id}", new_id: new_id }
+            });
+          }
+        };
+      });
+    });
