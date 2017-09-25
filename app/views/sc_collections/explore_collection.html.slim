@@ -18,7 +18,7 @@
       ul
         -@sc_collection.service.collections.each do |json_collection|
          li
-           =link_to json_collection['label'], {:action => 'explore_collection', :at_id => CGI::escape(json_collection['@id'])}
+           =link_to json_collection['label'], {:action => 'explore_collection', :at_id => json_collection['@id']}
 
     -unless @sc_collection.service.manifests.empty?
       h4 Manifests:
@@ -38,7 +38,7 @@
               =check_box_tag("manifest_id[#{at_id}]", 1, true, class: "manifest_checks")
               |&nbsp;&nbsp;
 
-              =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => CGI::escape(json_manifest['@id']), :sc_collection_id => @sc_collection.id})
+              =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
         br
 
     -content_for :javascript
