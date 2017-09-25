@@ -22,7 +22,13 @@ class ScCollectionsController < ApplicationController
 =end
   def import
     at_id = CGI::unescape(params[:at_id])
-    if at_id.include?("manifest")
+
+    if at_id.include?("collection")
+      @sc_collection = ScCollection.collection_for_at_id(at_id)
+      @collection = set_collection
+      render 'explore_collection', at_id: at_id
+
+    elsif at_id.include?("manifest")
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
       parent_at_id = @sc_manifest.service["within"]["@id"]
       unless parent_at_id.nil?
@@ -32,11 +38,12 @@ class ScCollectionsController < ApplicationController
       end
       render 'explore_manifest', at_id: at_id
 
-    elsif at_id.include?("collection")
-      @sc_collection = ScCollection.collection_for_at_id(at_id)
-      @collection = set_collection
-      render 'explore_collection', at_id: at_id
+    
+    else
+      flash[:error] = "Please enter a valid URL."
+      redirect_to :back
     end
+
   end
 
   def explore_manifest
@@ -159,5 +166,7 @@ class ScCollectionsController < ApplicationController
         return @collection
       end
     end
+
+
     
 end
