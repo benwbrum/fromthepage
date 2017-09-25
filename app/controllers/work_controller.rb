@@ -153,11 +153,11 @@ class WorkController < ApplicationController
     #links.destroy_all
 
     #remove links from pages in this work
-
+    work = Work.find_by(id: params[:work_id])
 
     flash[:notice] = 'Work updated successfully'
     
-    redirect_to :back
+    redirect_to edit_collection_work_path(work.collection.owner, work.collection, work)
 
   end
 
