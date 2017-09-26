@@ -22,7 +22,7 @@
       	=hidden_field_tag :sc_collection_id, @sc_collection.id
       =hidden_field_tag :at_id, @sc_manifest.at_id
       -new_collection = @collection ? @collection.id : nil
-    	=f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), prompt: '- Select a collection -', required: true
+    	=f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), prompt: '- Select a collection to import into -', required: true
     	=f.button 'Import Manifest'
 
 		-unless @sc_manifest.service.sequences.empty?
