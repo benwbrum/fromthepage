@@ -137,7 +137,7 @@ class WorkController < ApplicationController
       work.update(slug: title)
     end
 
-    if params[:collection_id] != id
+    if params[:work][:collection_id] != id.to_s
       change_collection
       flash[:notice] = 'Work updated successfully'
       #find new collection to properly redirect
