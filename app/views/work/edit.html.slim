@@ -167,8 +167,8 @@
     });
 
     $(function(){
-      $('#work_collection_id').on('change', function(){
-        var new_id = $(this).val();
+      $('button:contains("Save Changes")').on('click', function(){
+        var new_id = $("#work_collection_id").val();
         var collection_id = "#{@work.collection.id}"
         var subjects = "#{@subjects}"
         //this is a string because it's interpolated from rails

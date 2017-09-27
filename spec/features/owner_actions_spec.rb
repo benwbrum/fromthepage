@@ -135,11 +135,14 @@ describe "owner actions", :order => :defined do
     page.find('.maincol').find('a', text: @title).click
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
     expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
+
   end
 
   it "deletes a work" do
