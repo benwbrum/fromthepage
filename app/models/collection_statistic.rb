@@ -49,10 +49,14 @@ module CollectionStatistic
 
   def pct_completed
     complete = 0
-    self.works.includes(:work_statistic).each do |w|
-      complete += w.work_statistic.pct_completed
+    unless work_count == 0
+      self.works.includes(:work_statistic).each do |w|
+        complete += w.work_statistic.pct_completed
+      end
+      pct = complete/work_count
+    else
+      pct = 0
     end
-    pct = complete/work_count
     return pct
   end
 
