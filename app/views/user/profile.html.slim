@@ -28,11 +28,34 @@ section.user-profile
         span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
     -if @user.location.present?
       p.big(data-prefix='Location:') =@user.location
-    -if @user.website.present?
-      p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
-    -if @user.about.present?
-      p.big(data-prefix='About:') =@user.about
+    -if @user.owner
+      -if @user.website.present?
+        p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
+      -if @user.about.present?
+        p.big(data-prefix='About:') =@user.about
 
+-if @user.owner?
+  .columns
+    article.maincol
+      h2 Collections
+      =render '/dashboard/collection_index'
+    aside.sidecol
+      h2 Recent Activity
+      -@deeds.includes(:page, :user, :work, :collection).each do |d|
+        .deed-short.small
+          =time_tag(d.created_at, class: 'legend legend-left')
+            ="#{time_ago_in_words d.created_at} ago"
+          span.deed-short_content
+            =render(:partial => 'deed/deed.html', :locals => { :deed => d })
+
+      small.legend
+        =link_to 'Show More',
+          { :controller => 'deed',
+            :action => 'list',
+            :collection_ids => @collection_ids },
+          class: 'button outline round'
+
+h2 Recent Activity by #{@user.display_name}
 -if @notes.present?
   h3 Recent Notes
   table.datagrid
@@ -40,10 +63,10 @@ section.user-profile
       th Date
       th.w25 Page
       th.w75 Note
-    -@notes.each do |note|
+    -@notes.includes(:page).each do |note|
       -note_text = truncate(strip_tags(note.body), :length => 200)
       tr
-        td.nowrap =note.created_at.strftime("%b %d, %Y, %l:%M %p")
+        td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
         td.overflow =link_to note.page.title, { :controller => 'display', :action => 'display_page', :page_id => note.page_id }
         td =link_to note_text, { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "note-#{note.id}" }
   br
@@ -58,7 +81,7 @@ section.user-profile
       th.w15 Version
     -@page_versions.each do |version|
       tr
-        td.nowrap =version.created_on.strftime("%b %d, %Y, %l:%M %p")
+        td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
         td.overflow
           -if version.page.work.present?
             =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
@@ -77,9 +100,12 @@ section.user-profile
       th.w60 Categories
       th.w15 Version
     -@article_versions.each do |version|
-      -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
-      tr
-        td.nowrap =version.created_on.strftime("%b %d, %Y, %l:%M %p")
-        td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
-        td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
-        td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
+        -unless version.article.collection.subjects_disabled
+          -@collection = version.article.collection
+          -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
+          tr
+            td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
+            td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
+            td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
+            td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
+    

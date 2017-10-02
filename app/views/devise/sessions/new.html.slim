@@ -5,8 +5,8 @@ section.signon
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
-      =f.label :login, class: 'signon_label'
-        =f.text_field :login, autofocus: true, placeholder: 'Login'
+      =f.label :login_id, class: 'signon_label'
+        =f.text_field :login_id, autofocus: true, placeholder: 'Login'
         =svg_symbol '#icon-user', class: 'signon_label_icon'
       =f.label :password, class: 'signon_label'
         =f.password_field :password, autocomplete: 'off', placeholder: 'Password'
@@ -21,3 +21,4 @@ section.signon
             |&nbsp;Remember me
   hr
   =render 'devise/shared/links'
+  javascript:  mixpanel.track("Sign In");

@@ -21,74 +21,101 @@ html
     =stylesheet_link_tag "//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
     ="\n"
     =stylesheet_link_tag 'application'
+    javascript:  
+      (function(e,b){if(!b.__SV){var a,f,i,g;
+      window.mixpanel=b;
+      b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");
+      2==a.length&&(b=b[a[0]],h=a[1]);
+      b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";
+      c.people=c.people||[];c.toString=function(b){var a="mixpanel";
+      "mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};
+      c.people.toString=function(){return c.toString(1)+".people (stub)"};
+      i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+      for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};
+      b.__SV=1.2;a=e.createElement("script");
+      a.type="text/javascript";
+      a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+      f=e.getElementsByTagName("script")[0];
+      f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);mixpanel.init("d5e53d2387f7184a07bf99f207df9603");
+    =render :partial => '/layouts/fb_pixel'
 
-body
-  -flash.each do |type, message|
-    -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
-    .flash(class='flash-#{type}')
-      span.flash_message
-        =svg_symbol flash_icon[type], class: 'icon'
-        span =message
-      a.flash_close &times;
+  body
+    -flash.each do |type, message|
+      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
+      .flash(class='flash-#{type}')
+        span.flash_message
+          =svg_symbol flash_icon[type], class: 'icon'
+          span =message
+        a.flash_close &times;
 
-  header.header
-    .toolbar
-      .toolbar_group
-        =link_to root_path, class: 'logo'
-          =svg_symbol '#logo'
-      .toolbar_group
-        =link_to 'Dashboard', dashboard_role_path, class: 'header_link'
-        =link_to 'Collections', dashboard_path, class: 'header_link'
-        =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
+    header.header
+      .toolbar
+        .toolbar_group
+          =link_to root_path, class: 'logo'
+            -if USE_PNG_LOGO
+              =image_tag 'logo.png', height: '64'
+            -else
+              =svg_symbol '#logo'
+        .toolbar_group
+          =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
+          =link_to 'Collections', dashboard_path, class: 'header_link'
+          =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
+          -if (user_signed_in? && current_user.guest) || !user_signed_in?
+            =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
-        -if user_signed_in?
-          dl.dropdown.right
-            dt.header_link.header_user
-              span
-                big Signed In As
-                small =current_user.display_name
+          -if user_signed_in?
+            dl.dropdown.right
+              dt.header_link.header_user
+                span
+                  big Signed In As
+                  small =current_user.display_name
+                =svg_symbol '#header-user', class: 'icon'
+              dd
+                =link_to 'Admin Dashboard', admin_path if current_user.admin
+                =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
+                =link_to 'Collaborator Dashboard', dashboard_watchlist_path
+                hr
+                =link_to 'Your Profile', user_profile_path(current_user)
+                hr
+                =link_to 'Sign Out', destroy_user_session_path, method: :delete
+          -else
+            =link_to new_user_session_path, class: 'header_link header_user'
+              span Sign In
               =svg_symbol '#header-user', class: 'icon'
-            dd
-              =link_to 'Admin Dashboard', admin_path if current_user.admin
-              =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
-              =link_to 'Editor Dashboard', dashboard_watchlist_path
-              hr
-              =link_to 'Your Profile', { controller: 'user', action: 'profile', user_id: current_user.id }
-              hr
-              =link_to 'Sign Out', destroy_user_session_path, method: :delete
-        -else
-          =link_to new_user_session_path, class: 'header_link header_user'
-            span Sign In
-            =svg_symbol '#header-user', class: 'icon'
 
-  =(yield :content_above).force_encoding 'UTF-8'
+    -if user_masquerade?
+      h2.strong 
+        =link_to "Undo Login As \"#{current_user.display_name}\"", back_masquerade_path(current_user)
 
-  main.wrapper
-    =render :partial => '/shared/breadcrumbs'
-    =yield.force_encoding 'UTF-8'
 
-  =(yield :content_below).force_encoding 'UTF-8'
+    =(yield :content_above).force_encoding 'UTF-8'
 
-  footer.footer
-    .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
-    .footer_nav
-      =link_to 'About', { controller: 'static', action: 'about' }
-      =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
-      =link_to 'Privacy Policy', { controller: 'static', action: 'privacy' }
-      =mail_to 'benwbrum@gmail.com', 'Contact Us'
+    main.wrapper
+      =render :partial => '/shared/breadcrumbs'
+      =yield.force_encoding 'UTF-8'
 
-  .page-busy-overlay
+    =(yield :content_below).force_encoding 'UTF-8'
 
-  =javascript_include_tag 'application'
-  =yield :javascript
+    footer.footer
+      .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
+      .footer_nav
+        =link_to 'About', { controller: 'static', action: 'about' }
+        =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
+        =link_to 'Privacy Policy', { controller: 'static', action: 'privacy' }
+        =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
-  javascript:
-    var _gaq = _gaq || [];
-    _gaq.push(["_setAccount", "UA-1505790-5"]);
-    _gaq.push(["_trackPageview"]);
-    _gaq.push(["_trackPageLoadTime"]);
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
-    })();
+    .page-busy-overlay
+
+    =javascript_include_tag 'application'
+    =yield :javascript
+
+    javascript:
+      var _gaq = _gaq || [];
+      _gaq.push(["_setAccount", "UA-1505790-5"]);
+      _gaq.push(["_trackPageview"]);
+      _gaq.push(["_trackPageLoadTime"]);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
+      })();

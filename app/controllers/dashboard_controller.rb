@@ -1,7 +1,9 @@
 class DashboardController < ApplicationController
 
+  include AddWorkHelper
+
   before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject]
-  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject]
+  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -13,6 +15,8 @@ class DashboardController < ApplicationController
     if user_signed_in?
       if current_user.owner
         redirect_to dashboard_owner_path
+      elsif current_user.guest?
+        redirect_to guest_dashboard_path
       else
         redirect_to dashboard_watchlist_path
       end
@@ -22,23 +26,27 @@ class DashboardController < ApplicationController
   end
 
   def get_data
-    @collections = current_user.collections
+    @collections = current_user.all_owner_collections
     @notes = current_user.notes
     @works = current_user.owner_works
     @ia_works = current_user.ia_works
+    @document_sets = current_user.document_sets
 
     logger.debug("DEBUG: #{current_user.inspect}")
   end
 
-  # Public Dashboard
+  #Public Dashboard - list of all collections
   def index
-    collections = Collection.all
-    @document_sets = DocumentSet.all
+    collections = Collection.joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+    @document_sets = DocumentSet.joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
     @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
   end
 
-  # Owner Dashboard - start project
+  #Owner Dashboard - start project
+  #other methods in AddWorkHelper
   def startproject
+    @work = Work.new
+    @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
     @omeka_items = OmekaItem.all
@@ -47,80 +55,43 @@ class DashboardController < ApplicationController
     @sc_collections = ScCollection.all
   end
 
-  # Owner Dashboard - list of works
+  #Owner Dashboard - list of works
   def owner
   end
 
-  # Owner Dashboard - staging area
-#  def staging
-#  end
 
-  # Owner Dashboard - omeka import
-  def omeka
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
-  end
-
-  # Owner Dashboard - upload document
-  def upload
-    @document_upload = DocumentUpload.new
-  end
-
-  def new_upload
-    @document_upload = DocumentUpload.new(params[:document_upload])
-    @document_upload.user = current_user
-
-    if @document_upload.save
-        if SMTP_ENABLED
-          flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
-          SystemMailer.new_upload(@document_upload).deliver!
-        else
-          flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
-        end
-      @document_upload.submit_process
-      ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
-    else
-      render action: 'upload'
-    end
-  end
-  
-
-  # Editor Dashboard - watchlist
+  #Collaborator Dashboard - watchlist
   def watchlist
-    @user = current_user
-    collection_ids = Deed.where(:user_id => current_user.id).select(:collection_id).distinct.limit(5).map(&:collection_id)
-    @collections = Collection.where(:id => collection_ids).order_by_recent_activity
+    works = Work.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct
+    collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.order_by_recent_activity.limit(5)
+    document_sets = DocumentSet.joins(works: :deeds).where(works: {id: works.ids}).order('deeds.created_at DESC').distinct.limit(5)
+    @collections = (collections + document_sets).sort{|a,b| a.title <=> b.title }.take(5)
     @page = recent_work
   end
 
-  #Editor Dashboard - user with no activity watchlist
+  #Collaborator Dashboard - user with no activity watchlist
   def recent_work
-    recent_deeds = Deed.where("work_id is not null AND collection_id not in (SELECT id FROM collections where restricted = 1) AND work_id not in (SELECT id FROM works where restrict_scribes = 1)").order('created_at desc').limit(10)
-    @works = []
-    #iterate through recent deeds to find works with blank pages
-    recent_deeds.each do |d|
-      recent = Work.find_by(id: d.work_id)
-      if (recent != nil) && recent.pages.where("xml_text is null").any?
-        @works << recent
-      end
-    end
-    #find the first blank page in the most recently accessed work (as long as the works list isn't blank)
+    recent_deed_ids = Deed.joins(:collection, :work).merge(Collection.unrestricted).merge(Work.unrestricted)
+                  .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
+    @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: {status: nil})
+
+#find the first blank page in the most recently accessed work (as long as the works list isn't blank)
     unless @works.empty?
-      recent_work = (Work.find_by(id: @works.first.id)).pages.where("xml_text is null").first
+      recent_work = @works.first.pages.where(status: nil).first
     #if the works list is blank, return nil
     else
       recent_work = nil
     end
   end
 
- # Editor Dashboard - activity
+
+  #Collaborator Dashboard - activity
   def editor
     @user = current_user
   end
 
-#Guest Dashboard - activity
+  #Guest Dashboard - activity
   def guest
-    @collections = Collection.limit(5).order_by_recent_activity
+    @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
-
 end

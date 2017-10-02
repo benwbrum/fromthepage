@@ -9,6 +9,12 @@ class ScCollectionsController < ApplicationController
     respond_with(@sc_collections)
   end
 
+  def search_pontiiif
+    search_param = params[:search_param]
+    at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
+    redirect_to :action => :explore, :at_id => at_id
+  end
+
   def explore
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
@@ -32,13 +38,13 @@ class ScCollectionsController < ApplicationController
       set_sc_collection
       work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
     else
-      unless params[:collection_id]
+      unless params[:sc_manifest][:collection_id].blank?
+        @collection = Collection.find params[:sc_manifest][:collection_id]
+        work = @sc_manifest.convert_with_collection(current_user, @collection)              
+      else
         work = @sc_manifest.convert_with_no_collection(current_user) 
-      end          
-      @collection = Collection.find params[:sc_manifest][:collection_id]
-      work = @sc_manifest.convert_with_collection(current_user, @collection)              
+      end
     end
-    
     redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id 
   end
 

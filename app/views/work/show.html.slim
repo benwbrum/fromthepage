@@ -1,11 +1,11 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 3, :work_id => @work.id }})
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 3, :work_id => @work }})
 
 .columns
   article.mailcol
     h3 =@work.title
     -if @work.description.present?
       h5 Description
-      .big =@work.description
+      .big =raw(@work.description)
 
     -if @work.physical_description.present?
       h5 Physical Description
@@ -33,11 +33,11 @@
 
   aside.sidecol
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@work.owner), class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
         small Uploaded by
-        =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
+        =link_to @work.owner.display_name, user_profile_path(@work.owner)
     hr
     h5
       span.fgfaded Transcription Version:&nbsp;

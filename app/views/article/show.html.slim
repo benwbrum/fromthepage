@@ -3,10 +3,13 @@
 .article-columns.columns
   article.maincol
     -description = xml_to_html(@article.xml_text)
+    h3 Description
     -if description.present?
-      h3 Description
       .big ==description
-
+    -else
+      -if user_signed_in? && !current_user.guest
+        i =link_to 'Edit the description in the settings tab.', collection_article_edit_path(@collection.owner, @collection, @article)
+      
     h3 Related Subjects
     .article-graph
       =image_tag(file_to_url(@article.graph_image), :usemap => '#G')
@@ -41,11 +44,11 @@
       p.fglight
         |This subject does not belong to any category
         br
-        =link_to 'All uncategorized subjects in the collection', { action: 'list', collection_id: @article.collection_id, anchor: "category-none" }
+        =link_to 'All uncategorized subjects in the collection', { action: 'list', collection_id: @collection.slug, anchor: "category-none" }
     -else
       ul.article-category-list.big
         -@article.categories.each do |cat|
-          li ==(cat.ancestors.reverse.push(cat).map { |c| link_to c.title, { action: 'list', collection_id: @article.collection_id, anchor: "category-#{c.id}"} }).join(" &rarr; ")
+          li ==(cat.ancestors.reverse.push(cat).map { |c| link_to c.title, { action: 'list', collection_id: @collection.slug, anchor: "category-#{c.id}"} }).join(" &rarr; ")
 
     h3 References
     ul.article-category-list

@@ -1,19 +1,23 @@
 class Work < ActiveRecord::Base
-  has_many :pages, -> { order 'position' }
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
+
+  has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
-  has_many :deeds, -> { order 'created_at DESC' }
-  has_one :ia_work
-  has_one :omeka_item
-  has_one :sc_manifest
-  has_one :work_statistic
-  has_many :sections, -> { order 'position' }
-  has_many :table_cells, -> { order 'page_id, row, header' }
+  has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
+  has_one :ia_work, :dependent => :destroy
+  has_one :omeka_item, :dependent => :destroy
+  has_one :sc_manifest, :dependent => :destroy
+  has_one :work_statistic, :dependent => :destroy
+  has_many :sections, -> { order 'position' }, :dependent => :destroy
+  has_many :table_cells, -> { order 'page_id, row, header' }, :dependent => :destroy
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
   has_and_belongs_to_many :document_sets
 
   after_save :update_statistic
+  after_destroy :cleanup_images
 
   attr_accessible :title,
                   :author,
@@ -28,10 +32,17 @@ class Work < ActiveRecord::Base
                   :translation_instructions,
                   :scribes_can_edit_titles,
                   :restrict_scribes,
-                  :pages_are_meaningful
+                  :pages_are_meaningful,
+                  :slug,
+                  :picture,
+                  :featured_page
 
-  validates :title, presence: true, length: { minimum: 3 }
+  validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :slug, uniqueness: true
 
+  mount_uploader :picture, PictureUploader
+
+  scope :unrestricted, -> { where(restrict_scribes: false)}
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -76,16 +87,11 @@ class Work < ActiveRecord::Base
     end
   end
 
+  def revert
+  end
+
   def articles
-    my_articles = []
-    for page in self.pages
-      for article in page.articles
-        my_articles << article
-      end
-    end
-    my_articles.uniq!
-    logger.debug("DEBUG: articles=#{my_articles}")
-    return my_articles
+    Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
   # TODO make not awful
@@ -120,6 +126,63 @@ class Work < ActiveRecord::Base
     p 'update_statistic finish'
   end
 
+  def set_transcription_conventions
+    if self.transcription_conventions.present?
+      self.transcription_conventions
+    else
+      self.collection.transcription_conventions
+    end
+  end
 
+  def cleanup_images
+    new_dir_name = File.join(Rails.root, "public", "images", "uploaded", self.id.to_s)
+    if Dir.exist?(new_dir_name)
+      Dir.glob(File.join(new_dir_name, "*")){|f| File.delete(f)}
+      Dir.rmdir(new_dir_name)
+    end
+
+  end
+
+  def thumbnail
+    if !self.picture.blank?
+      self.picture_url(:thumb)
+    else
+      unless self.pages.count == 0
+        if self.featured_page.nil?
+          set_featured_page
+        end
+        featured_page = Page.find_by(id: self.featured_page)
+        featured_page.thumbnail_url
+      else
+        return nil
+      end
+    end
+  end
+
+  def normalize_friendly_id(string)
+    string.truncate(230, separator: ' ', omission: '')
+    super.gsub('_', '-')
+  end
+
+  def slug_candidates
+    if self.slug
+      [:slug]
+    else
+      [
+        :title,
+        [:title, :id]
+      ]
+    end
+  end
+
+  def should_generate_new_friendly_id?
+    slug_changed? || super
+  end
+
+  def set_featured_page
+      num = (self.pages.count/3).round
+      page = self.pages.offset(num).first
+      self.update_columns(featured_page: page.id)
+  end
 
 end

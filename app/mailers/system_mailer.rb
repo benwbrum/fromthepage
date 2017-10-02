@@ -24,6 +24,7 @@ class SystemMailer < ActionMailer::Base
   def email_stats(hours)
     @hours = hours
     @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
+    @recent_deeds = Deed.where("created_at > ?", Time.now - hours.to_i.hours)
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage had #{@recent_users.count} new users in last #{hours} hours."
   end
 
@@ -46,6 +47,13 @@ class SystemMailer < ActionMailer::Base
     @greeting = "Hi"
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New FromThePage user "
   end
+
+  def page_save_failed(message, ex)
+    @message = message
+    @ex = ex
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Page save failed"
+  end
+
 
   private
   def admin_emails

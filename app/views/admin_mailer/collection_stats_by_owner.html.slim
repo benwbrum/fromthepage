@@ -1,0 +1,12 @@
+-@collections.each do |c|
+  -new_contributors(c, @start_date, @end_date)
+  h2.nomargin ="#{c.title}"
+
+  -time = distance_of_time_in_words(@start_date, @end_date)
+
+  h2.nomargin ="Contributions for the past #{time}"
+
+  =render(:partial => 'collection/contributors_body', :locals => {:mailer => true})
+
+<br>
+i = "If you would prefer not to receive these emails, please contact support@fromthepage.com to opt out."

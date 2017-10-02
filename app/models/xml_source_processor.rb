@@ -14,46 +14,61 @@ module XmlSourceProcessor
     super    
   end
 
-  def validate
-#    valid = super
-#    debug("validate valid=#{valid}")
-    if @text_dirty && !validate_source
-#      valid = false
-    end
-#    debug("validate valid=#{valid}")
-    debug("validate errors=#{errors.count}")
-  end
-
   def validate_source
-    debug('validate_source')
     if self.source_text.blank?
       return
     end
+    validate_links(self.source_text)
+  end
+    
+  def validate_source_translation
+    if self.source_translation.blank?
+      return
+    end
+    validate_links(self.source_translation)
+  end
+
+#check the text for problems or typos with the subject links
+  def validate_links(text)
     # split on all begin-braces
-    tags = self.source_text.split('[[')
+    tags = text.split('[[')
     # remove the initial string which occurs before the first tag
     debug("validate_source: tags to process are #{tags.inspect}")
     tags = tags - [tags[0]]
     debug("validate_source: massaged tags to process are #{tags.inspect}")
     for tag in tags
       debug(tag)
-      unless tag.include?(']]')
-        errors.add_to_base("Mismatched braces: no closing braces after \"[[#{tag}\"!")
+
+      if tag.include?(']]]')
+        errors.add(:base, "Subject Linking Error: Tags should be created using 2 brackets, not 3")
+        return
       end
+      unless tag.include?(']]')
+        tag = tag.strip
+        errors.add(:base, "Subject Linking Error: Wrong number of closing braces after \"[[#{tag}\"")
+      end
+
       # just pull the pieces between the braces
       inner_tag = tag.split(']]')[0]
       if inner_tag =~ /^\s*$/
-        errors.add_to_base("Error: Blank tag in \"[[#{tag}\"!")
+        errors.add(:base, "Subject Linking Error: Blank tag in \"[[#{tag}\"")
+      end
+
+      #check for unclosed single bracket
+      if inner_tag.include?('[')
+        unless inner_tag.include?(']')
+          errors.add(:base, "Subject Linking Error: Unclosed bracket within \"#{inner_tag}\"")
+        end
       end
       # check for blank title or display name with pipes
       if inner_tag.include?("|")
         tag_parts = inner_tag.split('|')
         debug("validate_source: inner tag parts are #{tag_parts.inspect}")
         if tag_parts[0] =~ /^\s*$/
-          errors.add_to_base("Error: Blank target in \"[[#{inner_tag}]]\"!")
+          errors.add(:base, "Subject Linking Error: Blank subject in \"[[#{inner_tag}]]\"")
         end
         if tag_parts[1] =~ /^\s*$/
-          errors.add_to_base("Error: Blank display in \"[[#{inner_tag}]]\"!")
+          errors.add(:base, "Subject Linking Error: Blank text in \"[[#{inner_tag}]]\"")
         end
       end
     end
@@ -68,7 +83,7 @@ module XmlSourceProcessor
   ##############################################
   def process_source
     if @text_dirty
-      self.xml_text = wiki_to_xml(self.source_text)
+      self.xml_text = wiki_to_xml(self.source_text, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
     if @translation_dirty
@@ -76,7 +91,7 @@ module XmlSourceProcessor
     end
   end
 
-  def wiki_to_xml(wiki, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
+  def wiki_to_xml(wiki, text_type)
     xml_string = String.new(wiki || "")
 
     xml_string = process_latex_snippets(xml_string)
@@ -87,14 +102,13 @@ module XmlSourceProcessor
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
     postprocess_sections
-
     xml_string    
   end
 
 
-  def generate_preview
-    xml_string = wiki_to_xml(self.source_text)
-    xml_string = update_links_and_xml(xml_string, true)
+  def generate_preview(text_type)
+    xml_string = wiki_to_xml(self.source_text, text_type)
+    xml_string = update_links_and_xml(xml_string, true, text_type)
     return xml_string
   end
 
@@ -107,12 +121,11 @@ module XmlSourceProcessor
   def process_square_braces(text)
     # find all the links
     wikilinks = text.scan(BRACE_REGEX)
-    
     wikilinks.each do |wikilink_contents|
       # strip braces
       munged = wikilink_contents.sub('[[','')
       munged = munged.sub(']]','')
-            
+
       # extract the title and display
       if munged.include? '|'
         parts = munged.split '|'
@@ -122,11 +135,12 @@ module XmlSourceProcessor
         title = munged
         verbatim = munged
       end
+
       title = canonicalize_title(title)
       
       replacement = "<link target_title=\"#{title}\">#{verbatim}</link>"
-      
       text.sub!(wikilink_contents, replacement)      
+
     end
     
     text
@@ -195,17 +209,16 @@ module XmlSourceProcessor
         if line.match(SEPARATOR)
           # NO-OP
         elsif line.match(ROW)
-          line.chomp
+          # remove leading and trailing delimiters
+          clean_line=line.chomp.sub(/^\s*\|/, '').sub(/\|\s*$/,'')
           # fill the row
-          cells = line.split(/\s*\|\s*/)
-          cells.shift if line.match(/^\|/) # remove leading pipe 
+          cells = clean_line.split(/\s*\|\s*/,-1) # -1 means "don't prune empty values at the end"
           current_table[:rows] << cells
           rowline = ""
           cells.each_with_index do |cell, i|
             head = current_table[:header][i]
             role_string = " role=\"#{head}\""
             rowline += "<td>#{cell}</td> "
-            
           end
 
           if current_table[:rows].size == 1
@@ -271,7 +284,8 @@ module XmlSourceProcessor
     title = title.gsub(/\n/, ' ')
     # multiple spaces -> single spaces
     title = title.gsub(/\s+/, ' ')
-
+    # change double quotes to proper xml
+    title = title.gsub(/\"/, '&quot;')
     title
   end
 
@@ -314,25 +328,26 @@ EOF
   end
 
 
-  def update_links_and_xml(xml_string, preview_mode=false, text_type=Page::TEXT_TYPE::TRANSCRIPTION)
+  def update_links_and_xml(xml_string, preview_mode=false, text_type)
     # first clear out the existing links
     clear_links(text_type)
     processed = ""
     # process it
     doc = REXML::Document.new xml_string
-
     doc.elements.each("//link") do |element|
       # default the title to the text if it's not specified
       if !(title=element.attributes['target_title'])
         title = element.text
       end
-
       #display_text = element.text
       display_text = ""
       element.children.each do |e|
         display_text += e.to_s
       end
       debug("link display_text = #{display_text}")
+      #change the xml version of quotes back to double quotes for article title
+      title = title.gsub('&quot;', '"')
+
       # create new blank articles if they don't exist already
       if !(article = collection.articles.where(:title => title).first)
         article = Article.new

@@ -29,7 +29,11 @@ mongo.log
 *.csv
 *.out
 
-/public/assets/images/working
+/public/assets/
+
+config/database.yml
+config/environments/development.rb
+db/schema.rb
 
 # Ignore RVM-related files
 # .rvmrc

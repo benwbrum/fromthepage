@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work.id }})
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work }})
 
 .columns
   article.maincol
@@ -16,6 +16,14 @@
         tr
           th =f.label :location_of_composition, 'Location'
           td =f.text_field :location_of_composition, value: @work.location_of_composition
+        tr
+          th =f.label :slug, 'URL'
+          td =f.text_field :slug, value: @work.slug
+        tr
+          th
+          td 
+            |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+ 
         tr
           th
           td
@@ -50,7 +58,15 @@
         tr
           td(colspan="2")
             =f.label :transcription_conventions, class: 'above'
-            =f.text_area :transcription_conventions, rows: 5, value: @work.transcription_conventions
+            =f.text_area :transcription_conventions, rows: 5, value: @work.set_transcription_conventions
+        tr
+          td(colspan="2")
+            .aright
+              | Revert transcription conventions to collection default &nbsp;
+              -if @work.transcription_conventions.present?
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: false, id: 'revert'
+              -else
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: true, id: 'revert'
         tr
           td(colspan="2")
             =f.label :translation_instructions, class: 'above'
@@ -63,53 +79,89 @@
         .toolbar_group.aright =f.button 'Save Changes', class: 'big'
 
   aside.sidecol
+
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @work.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@work.owner), class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
         small Uploaded by
-        =link_to @work.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @work.owner.id }
+        =link_to @work.owner.display_name, user_profile_path(@work.owner)
     p.fglight The settings for this work are only accessible to work owners.
     p.fglight For more information on work settings, see the wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Preparing-a-Work-for-Transcription" target="_blank">Preparing a Work for Transcription</a>.
+
+    h4 Work Image
+    =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work), html: { multipart: true, class: 'image-form' }) do |f|
+      =hidden_field_tag(:work_id, @work)
+      label(data-empty="No Image" data-hover="Upload Image")
+        =f.file_field :picture, tabindex: '-1', accept: 'image/*'
+        -unless @work.picture.blank?
+          =image_tag(@work.picture_url(:thumb))
+    p.fglight A picture to be used to illustrate the work.  If no picture is uploaded, a page image will be used.
+
     hr
-    =form_for(@work, :url => { :action => 'update_work' }) do |f|
-      =hidden_field_tag(:work_id, @work.id)
+    =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work)) do |f|
+      =hidden_field_tag(:work_id, @work)
       p
         =f.check_box :scribes_can_edit_titles
         |&nbsp;
-        =f.label :scribes_can_edit_titles, 'Allow editors to edit page titles'
+        =f.label :scribes_can_edit_titles, 'Allow collaborators to edit page titles'
       p
         =f.check_box :restrict_scribes
         |&nbsp;
-        =f.label :restrict_scribes, 'Restrict editors'
+        =f.label :restrict_scribes, 'Restrict collaborators'
       small.legend =button_tag 'Apply', class: 'outline'
 
     -if @work.restrict_scribes
-      h3 Allowed Editors
+      h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
-        =hidden_field_tag :work_id, @work.id
+        =hidden_field_tag :work_id, @work
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'display_name'), include_blank: true
         =button_tag 'Add', disabled: 'true'
       -if @scribes.empty?
-        p.fglight No allowed scribes selected
+        p.fglight No allowed collaborators selected
       -else
         -@scribes.each do |user|
           .user-label
             .userpic
               =gravatar_image_tag user.email, :alt => user.display_name
             .username
-              =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id }
+              =link_to user.display_name, user_profile_path(user)
               small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
+              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work }, class: 'remove', title: 'Remove'
 
 -content_for :javascript
   javascript:
     $(function() {
       $('.user-select-form select').select2({
-        placeholder: 'Add new scribe...',
+        placeholder: 'Add new collaborator...',
       }).on('select2:select', function() {
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {
         $(this).siblings(':submit').prop('disabled', true);
+      });
+
+      $('.image-form :file').on('change', function() {
+        $(this).closest('form').submit();
+      });
+    });
+
+    $(function(){
+      $('#work_transcription_conventions').keyup(function(){
+        $('#revert').prop('disabled', false);
+      });
+    });
+
+    $(function(){
+      $('#revert').click(function(e){
+        e.preventDefault();
+        $.ajax({
+          method: 'GET',
+          url: '/work/revert',
+          data: { work_id: $(this).attr('work_id')}
+        }).success(function(data){
+          $('#work_transcription_conventions').val(data);
+        $('#revert').prop('disabled', true);
+
+        });
       });
     });

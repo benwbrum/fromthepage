@@ -7,9 +7,9 @@ class IaWork < ActiveRecord::Base
 
   def display_page
     # blank status of raw ocr before displaying -- if the user hits save, status will become default
-    if @page.status == Page::STATUS_RAW_OCR
-      @page.status = nil;
-    end
+  #  if @page.status == Page::STATUS_RAW_OCR
+  #    @page.status = nil;
+  #  end
   end
 
   def self.refresh_server(book_id)
@@ -71,8 +71,9 @@ class IaWork < ActiveRecord::Base
     work.description = self.description
     work.physical_description = self.notes
     work.author = self.creator
-    work.description += "<br/>Sponsored by: "+ self.sponsor
-    work.description += "<br/>Contributed by: "+ self.contributor
+    if self.use_ocr
+      work.ocr_correction = true
+    end
     work.save!
 
     self.ia_leaves.each do |leaf|
@@ -81,23 +82,24 @@ class IaWork < ActiveRecord::Base
       page.base_height = leaf.page_h
       page.base_width = leaf.page_w
       page.title = leaf.page_number
+      page.source_text = leaf.ocr_text if self.use_ocr
       work.pages << page #necessary to make acts_as_list work here
       work.save!
-      page.source_text = leaf.ocr_text if self.use_ocr
-      page.status = Page::STATUS_UNCORRECTED_OCR if self.use_ocr
-      page.save!
+
       leaf.page_id = page.id
       leaf.save!
     end
     work.save!
+    record_deed(work)
+
     self.work = work
     self.save!
-
     work
   end
 
   def ingest_work(id)
-
+    #find the length of the description column
+    limit = (IaWork.columns_hash['description'].limit)
     loc_doc = fetch_loc_doc(id)
     location = loc_doc.search('results').first
     server = location['server']
@@ -105,16 +107,18 @@ class IaWork < ActiveRecord::Base
 
     self.server = server
     self.ia_path = dir
-
     self.book_id = loc_doc.search('identifier').text
-    self[:title] = loc_doc.search('title').text             #work title
-    self[:creator] = loc_doc.search('creator').text          #work author
+    self[:title] = loc_doc.search('title').text            #work title
+    self[:creator] = loc_doc.search('creator').map{|e| e.text}.join('; ')       #work author
     self[:collection] = loc_doc.search('collection').text   #?
-    self[:description] = loc_doc.search('description').text #description
+    #description is truncated so it isn't too long for the description column
+    if loc_doc.search('abstract').blank?
+      self[:description] = loc_doc.search('description').text.truncate(limit) #description
+    else
+      self[:description] = loc_doc.search('abstract').text.truncate(limit) #description
+    end
     self[:subject] = loc_doc.search('subject').text         #description
     self[:notes] = loc_doc.search('notes').text             #physical description
-    self[:contributor] = loc_doc.search('contributor').text #description
-    self[:sponsor] = loc_doc.search('sponsor').text         #description
     self[:image_count] = loc_doc.search('imagecount').text
 
     image_format, archive_format = formats_from_loc(loc_doc)
@@ -137,6 +141,10 @@ class IaWork < ActiveRecord::Base
       leaf = IaLeaf.new
       leaf.leaf_number = page.xpath('@leafNum|@leafnum').text
       leaf.page_number = page.xpath('pageNumber|pagenumber').text
+      altpageelement = page.children.xpath("altPageNumber")
+      if !altpageelement.blank?
+        leaf.page_number = altpageelement.attr("prefix").value + " [" + altpageelement.children.text + "]"
+      end
       leaf.page_type = page.xpath('pageType|pagetype').text
       leaf.page_w = page.xpath('(cropBox|cropbox)/w').text
       leaf.page_h = page.xpath('(cropBox|cropbox)/h').text
@@ -288,6 +296,16 @@ private
     zip = zips.first.parent['name']
 
     return [scandata, djvu, zip]
+  end
+
+  protected
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
 

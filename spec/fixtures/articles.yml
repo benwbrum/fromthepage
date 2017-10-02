@@ -1,0 +1,35 @@
+article_1:
+  id: 1
+  title: Texas
+  lock_version: 0
+  collection_id: 1
+
+article_2:
+  id: 2
+  title: Testing
+  lock_version: 0
+  collection_id: 3
+
+article_3:
+  id: 3
+  title: John Samuel Smith
+  lock_version: 0
+  collection_id: 3
+
+article_4:
+  id: 4
+  title: Samuel Jones
+  lock_version: 0
+  collection_id: 3
+
+article_5:
+  id: 5
+  title: Mrs.
+  lock_version: 0
+  collection_id: 3
+
+article_6:
+  id: 6
+  title: Ada Lovelace
+  lock_version: 0
+  collection_id: 1

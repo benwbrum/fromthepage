@@ -7,52 +7,50 @@ class DisplayController < ApplicationController
 
   def read_work
     if params.has_key?(:work_id)
-      @work = Work.find_by_id(params[:work_id])
+      @work = Work.friendly.find(params[:work_id])
+    elsif params.has_key?(:id)
+      @work = Work.friendly.find(params[:id])
     elsif params.has_key?(:url)
       @work = Work.find_by_id(params[:url][:work_id])
     end
-
-    if @article
-      #logger.debug("in display controller, work.id is #{@work.id}, if @article is true")
-      # restrict to pages that include that subject
-      # this appears to be dead code in the new UI.  Redirect to the collection-wide display
-      redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
-#      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],
-#                                        :order => 'position',
-#                                        :per_page => PAGES_PER_SCREEN,
-#                                        :joins => 'INNER JOIN page_article_links pal ON pages.id = pal.page_id',
-#                                        :conditions => [ 'pal.article_id = ?', @article.id ]
-#      @pages.uniq!
-    else
-      #@pages = Page.paginate @work.id, :page => params[:page]
-      @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-=begin
-      @pages = Page.paginate_by_work_id @work.id, :page => params[:page],
-                                        :order => 'position',
-                                        :per_page => PAGES_PER_SCREEN
-=end
+    if params.has_key?(:needs_review)
+      @review = params[:needs_review]
     end
+    @total = @work.pages.count
+    if @article
+      # restrict to pages that include that subject
+      redirect_to :action => 'read_all_works', :article_id => @article.id, :page => 1 and return
+    else
+      if @review == 'review'
+        @pages = Page.where(work_id: params[:work_id]).review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
+      elsif @review == 'translation'
+        @pages = Page.order('position').where(work_id: params[:work_id]).translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
+      else
+        @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
+      end
+    end
+    session[:col_id] = @collection.slug
   end
 
   def read_all_works
     if @article
       # restrict to pages that include that subject
-      # @pages = Page.paginate :all, :page => params[:page],
-                                        # :order => 'work_id, position',
-                                        # :per_page => 5,
-                                        # :joins => 'INNER JOIN page_article_links pal ON pages.id = pal.page_id',
-                                        # :conditions => [ 'pal.article_id = ?', @article.id ]
-      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+      @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
       @pages.uniq!
     else
       @pages = Page.paginate :all, :page => params[:page],
                                         :order => 'work_id, position',
                                         :per_page => 5
     end
+    session[:col_id] = @collection.slug
   end
 
   def search
     if @article
+      session[:col_id] = @collection.slug
       # get the unique search terms
       terms = []
       @search_string = ""
@@ -71,33 +69,29 @@ class DisplayController < ApplicationController
       end
       if params[:unlinked_only]
         conditions =
-          ["works.collection_id = ? "+
-          "AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)"+
+          ["MATCH(search_text) AGAINST(? IN BOOLEAN MODE)"+
           " AND pages.id not in "+
           "    (SELECT page_id FROM page_article_links WHERE article_id = ?)",
-          @collection.id,
           @search_string,
           @article.id]
 
       else
         conditions =
-          ["works.collection_id = ? "+
-          "AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)",
-          @collection.id,
+          ["MATCH(search_text) AGAINST(? IN BOOLEAN MODE)",
           @search_string]
       end
-      #@pages = Page.paginate :all, :page => params[:page],  :order => 'work_id, position', :per_page => 5, :joins => :work, :conditions => conditions
-      @pages = Page.order('work_id, position').joins(:work).where(conditions).paginate(page: params[:page])
+      @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where(conditions).paginate(page: params[:page])
     else
-      @search_string = params[:search_string]
+      @search_string = CGI::escapeHTML(params[:search_string])
       # convert 'natural' search strings unless they're precise
       unless @search_string.match(/["+-]/)
         @search_string.gsub!(/(\S+)/, '+\1*')
       end
       # restrict to pages that include that subject
-      #@pages = Page.paginate :all, :page => params[:page],  :order => 'work_id, position', :per_page => 5, :joins => :work, :conditions => ["works.collection_id = ? AND MATCH(xml_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]
-      @pages = Page.order('work_id, position').joins(:work).where(["works.collection_id = ? AND MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @collection.id, @search_string]).paginate(page: params[:page])
+      @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @search_string).paginate(page: params[:page])
     end
     logger.debug "DEBUG #{@search_string}"
   end
+
+
 end

@@ -14,7 +14,7 @@
 <% if @sc_manifest.service.description %>
 	<p>
 		<strong>Description:</strong>
-		<%= @sc_manifest.service.description %>	
+		<%= raw(@sc_manifest.service.description) %>	
 	</p>
 <% end %>
 
@@ -22,7 +22,7 @@
 <% if @sc_manifest.service.metadata %>
 	<p>
 		<strong>Metadata:</strong>
-		<%= @sc_manifest.html_metadata %>
+		<%= raw(@sc_manifest.html_metadata) %>
 	</p>
 <% end %>
 

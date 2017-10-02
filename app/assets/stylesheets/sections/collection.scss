@@ -60,6 +60,17 @@
   background-clip: padding-box;
   border: 1px solid rgba(#000, 0.06);
   background-color: mix(#FFF, $bodyBg, 35%);
+  overflow: hidden;
+  &_image {
+    display: inline-block;
+    float: left;
+    padding: 5px;
+    background: #FFF;
+    margin-right: $gapSize;
+    margin-bottom: $gapSize;
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.06);
+  }
   &_title {
     margin: 0;
     a {
@@ -74,9 +85,9 @@
   }
   &_stats {
     width: 100%;
-    display: table;
     color: $bodyFgFaded;
     margin: 0.5em 0 0 0;
+    overflow: auto;
     > span {
       padding-right: 10px;
       display: table-cell;
@@ -91,6 +102,9 @@
   }
 }
 
+.hidden {
+  visibility: hidden;
+}
 
 // Collection users
 
@@ -282,6 +296,7 @@
 
 .collection-stats {
   &_counters {
+    text-align: center;
     font-size: 0;
     margin-bottom: $gapSize;
     padding-bottom: $gapSize;
@@ -291,7 +306,7 @@
       padding: 0;
     }
     .counter {
-      width: 20%;
+      width: 16.3%;
       line-height: 1.2;
       font-size: 2.344vw;
       vertical-align: top;
@@ -307,10 +322,11 @@
     }
   }
   &_recent {
+    text-align: center;
     font-size: 0;
     margin-bottom: $gapSize * 2;
     .counter {
-      width: 14.2%;
+      width: 11%;
       font-size: 15px;
       line-height: 1.2;
       vertical-align: top;

@@ -11,20 +11,41 @@ class UserController < ApplicationController
   def update_profile
   end
 
+  NOTOWNER = "NOTOWNER"
   def update
-    if @user.update_attributes(params[:user])
-      #record_deed
-      flash[:notice] = "User profile has been updated"
-      ajax_redirect_to({ :action => 'profile', :user_id => @user.id, :anchor => '' })
-    else
-      render :action => 'update_profile'
+    # spam check
+    if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
+      logger.error("Possible spam: deleting user #{@user.email}")
+      @user.destroy!
+      redirect_to dashboard_path
+    else 
+      params[:user].delete_if { |k,v| v == NOTOWNER }
+      if params[:user][:slug] == ""
+        @user.update(params[:user].except(:slug))
+        login = @user.login.parameterize
+        @user.update(slug: login)
+      else
+        @user.update(params[:user])
+      end
+      if @user.save!
+        flash[:notice] = "User profile has been updated"
+        ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
+      else
+        render :action => 'update_profile'
+      end
     end
   end
 
   def profile
+    unless @user
+      @user = User.friendly.find(params[:id])
+    end
+    @collections = @user.owned_collection_and_document_sets
+    @collection_ids = @collections.map {|collection| collection.id}
+    @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
     @notes = @user.notes.limit(10)
-    @page_versions = @user.page_versions.joins(:page).limit(10)
-    @article_versions = @user.article_versions.limit(10).joins(:article)
+    @page_versions = @user.page_versions.includes(page: :work).limit(10)
+    @article_versions = @user.article_versions.limit(10).joins(:article).includes(article: :categories)
   end
 
   def record_deed

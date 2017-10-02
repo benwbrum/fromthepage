@@ -1,0 +1,27 @@
+deed_1:
+  id: 1
+  deed_type: page_trans
+  page_id: 18
+  work_id: 3
+  collection_id: 3
+  article_id: 
+  user_id: 2
+  note_id: 
+deed_2:
+  id: 2
+  deed_type: page_trans
+  page_id: 23
+  work_id: 8
+  collection_id: 3
+  article_id: 
+  user_id: 2
+  note_id: 
+deed_3:
+  id: 3
+  deed_type: page_trans
+  page_id: 25
+  work_id: 9
+  collection_id: 1
+  article_id: 
+  user_id: 2
+  note_id: 

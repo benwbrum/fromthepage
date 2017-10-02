@@ -2,7 +2,7 @@
   article.maincol
     -if @search_string.present?
       h2 =="Search for #{@search_string}"
-
+    
     -if @pages.size == 0
       .nodata
         h4.nodata_title No pages found
@@ -32,38 +32,66 @@
 
             .work-page_text
               -transcription = xml_to_html(page.xml_text, false)
-              -if transcription.present?
+              -if current_user
+                -action = page_params(page)
+              -else
+                -action = page_params(page)
+              -if page.status == 'blank'
+                p.nodata_text =="This page is blank"
+              -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
-                -help_transcribe = link_to('help transcribe', page_params(page).merge({ :controller => 'transcribe'}))
-                p.nodata_text =="This page is not transcribed, please #{help_transcribe} this page"
+                -if page.work.ocr_correction
+                  -status = 'corrected'
+                  -help = link_to('help correct', action)
+                -else
+                  -status = 'transcribed'
+                  -help = link_to('help transcribe', action)
+                p.nodata_text =="This page is not #{status}, please #{help} this page"
 
             -if page.work.supports_translation
               button.outline.work-page_toggle-view Translation
               .work-page_text(style="display:none")
                 -translation = xml_to_html(page.xml_translation, false)
-                -if translation.present?
+                -if page.translation_status == 'blank'
+                  p.nodata_text =="This page is blank"
+                -elsif translation.present?
                   ==translation.force_encoding('utf-8')
                 -else
-                  -help_translate = link_to('help translate', page_params(page).merge({ :controller => 'transcribe', :action => 'translate'}))
+                  -help_translate = link_to('help translate', collection_translate_page_path(@collection.owner, @collection, page.work, page))
                   p.nodata_text =="This page is not translated, please #{help_translate} this page"
 
             -current_version = page.page_versions[0]
             -if current_version && current_version.page_version > 0
               small.work-page_edited
-                -user_link = link_to(current_version.user.display_name, { :controller => 'user', :action => 'profile', :user_id => current_version.user.id })
+                -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
                 =="Last edit #{edit_time} ago by #{user_link}"
-
-      =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+      
+      -if @review.nil?
+        =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+      -else
+        =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true, :needs_review => @review })
 
   -if @collection || @article
     aside.sidecol
+
       -if @collection
         =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
           =hidden_field_tag('collection_id', @collection.id)
           =search_field_tag 'search_string', @search_string, :placeholder => 'Search in collection...'
           =button_tag 'Search'
+
+      -if @work
+        -if @total != @count
+          =button_to "View All Pages", {action: "read_work", work_id: @work.id, needs_review: 'none'}
+        -else
+          =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }
+          br
+          -if @work.supports_translation
+            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation'}
+          
+
 
       -if @article
         h4 =@article.title
@@ -71,16 +99,17 @@
           =raw(xml_to_html(@article.xml_text))
         =render :partial => 'article/article_links'
 
-      -if @collection && @collection.categories.present?
-        h3 Categories
-        .category-tree
-          ==display_categories(@collection.categories, nil, true) do |category|
-            -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
-            -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
-            -if category.children.any?
-              -ret << "<span class=\"tree-bullet\"></span>"
-            -ret << "<span>#{category.title}</span>"
-            -ret << "</a>"
+      -if @collection.categories.present?
+        -unless @collection.subjects_disabled
+          h3 Categories
+          .category-tree
+            ==display_categories(@collection.categories, nil, true) do |category|
+              -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
+              -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
+              -if category.children.any?
+                -ret << "<span class=\"tree-bullet\"></span>"
+              -ret << "<span>#{category.title}</span>"
+              -ret << "</a>"
 
 -content_for :javascript
   javascript:

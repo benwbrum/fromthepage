@@ -137,10 +137,13 @@ code {
   
   table, th, td {
      border: 1px solid black;
-     padding: 0 0.3em;
-    
+     padding: 0 0.3em;    
   }   
 
+  th { 
+    border-bottom: 2px;
+  }
+  
   .bang {
     th {
       display: none;

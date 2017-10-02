@@ -8,6 +8,8 @@
 #    end
 class Article < ActiveRecord::Base
   include XmlSourceProcessor
+  #include ActiveModel::Dirty
+
   before_update :process_source
 
   validates_presence_of :title
@@ -23,34 +25,28 @@ class Article < ActiveRecord::Base
   scope :page_article_links, -> { includes(:page) }
   scope :page_article_links, -> { order("pages.work_id, pages.position ASC") }
 
-  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").include(:page)}
+  scope :pages_for_this_article, -> { order("pages.work_id, pages.position ASC").includes(:pages)}
 
   has_many :pages, :through => :page_article_links
 
-  has_many :article_versions
-  scope :article_versions, -> { order 'version' }
-
+  has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
   after_save :create_version
 
   attr_accessible :title
   attr_accessible :source_text
 
-
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
   end
 
-  def page_list
-    self.pages.order("pages.work_id, pages.position")
+  #needed for document sets to correctly display articles
+  def show_links(collection)
+    self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids}).group(:text_type, :page_id).order("pages.work_id, pages.title")
   end
 
-
-  @title_dirty = false
-
-  def title=(title)
-    @title_dirty = true
-    super
+  def page_list
+    self.pages.order("pages.work_id, pages.position")
   end
 
   def source_text
@@ -123,7 +119,7 @@ class Article < ActiveRecord::Base
   end
 
   # tested
-  def create_link(article, display_text)
+  def create_link(article, display_text, text_type)
     link = ArticleArticleLink.new
     link.source_article = self
     link.target_article = article
@@ -137,9 +133,10 @@ class Article < ActiveRecord::Base
   #######################
   # tested
   def create_version
-    if !@text_dirty or !@title_dirty
-      return
-    end
+
+  unless self.title_changed? || self.source_text_changed?
+    return
+  end
 
     version = ArticleVersion.new
     # copy article data

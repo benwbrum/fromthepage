@@ -1,0 +1,18 @@
+document_upload_1:
+  id: 1
+  user_id: 4
+  collection_id: 1
+  file: MS_844.ZIP
+  status: finished
+document_upload_2:
+  id: 2
+  user_id: 4
+  collection_id: 3
+  file: MF1323.1197_Reel_32_01.zip
+  status: finished
+document_upload_3:
+  id: 3
+  user_id: 4
+  collection_id: 1
+  file: MS_641-642.zip
+  status: finished

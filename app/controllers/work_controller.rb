@@ -83,17 +83,17 @@ class WorkController < ApplicationController
 
   def add_scribe
     @work.scribes << @user
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work
   end
 
   def remove_scribe
     @work.scribes.delete(@user)
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work
   end
 
   def update_work
     @work.update_attributes(params[:work])
-    redirect_to :action => 'edit', :work_id => @work.id
+    redirect_to :action => 'edit', :work_id => @work
   end
 
   # tested
@@ -106,6 +106,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
+      record_deed(@work)
       flash[:notice] = 'Work created successfully'
       ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
     else
@@ -115,8 +116,41 @@ class WorkController < ApplicationController
 
   def update
     work = Work.find(params[:id])
-    work.update_attributes(params[:work])
+    id = work.collection_id
+
+    #check the work transcription convention against the collection version
+    #if they're the same, don't update that attribute of the work
+    params_convention = params[:work][:transcription_conventions]
+    collection_convention = work.collection.transcription_conventions
+
+    if params_convention == collection_convention
+      work.update_attributes(params[:work].except(:transcription_conventions))
+    else
+      work.update_attributes(params[:work])
+    end
+
+    #if the slug field param is blank, set slug to original candidate
+    if params[:work][:slug] == ""
+      title = work.title.parameterize
+      work.update(slug: title)
+    end
+    #record work add deed if the work is moved to another collection
+    if work.collection_id != id
+      record_deed(work)
+    end
+
     flash[:notice] = 'Work updated successfully'
+    redirect_to :back
+  end
+
+  def revert
+    work = Work.find_by(id: params[:work_id])
+    work.update_attribute(:transcription_conventions, nil)
+    render :text => work.collection.transcription_conventions
+  end
+
+  def update_featured_page
+    @work.update(featured_page: params[:page_id])
     redirect_to :back
   end
 
@@ -160,6 +194,16 @@ class WorkController < ApplicationController
     msg += "<br />stderr:<br />"
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
     render(:text => msg )
+  end
+
+  protected
+  def record_deed(work)
+    deed = Deed.new
+    deed.work = work
+    deed.deed_type = Deed::WORK_ADDED
+    deed.collection = work.collection
+    deed.user = work.owner
+    deed.save!
   end
 
 end

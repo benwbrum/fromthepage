@@ -3,12 +3,16 @@
 .columns
   article.maincol
     -@collections.each do |c|
-      h4 =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id }, class: 'nodecor'
-      -c.deeds.limit(5).each do |d|
+      h4 =link_to c.title, collection_path(c.owner, c), class: 'nodecor'
+      -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+      -unless snippet.empty?
+        p.collection_snippet =snippet
+        br 
+      -c.deeds.includes(:user, :page, :work).limit(5).each do |d|
         //- Hide collection link
         -d.collection = nil
         .user-bubble
-          =link_to({ :controller => 'user', :action => 'profile', :user_id => d.user.id }, class: 'userpic')
+          =link_to(user_profile_path(d.user), class: 'userpic')
             =gravatar_image_tag d.user.email, :alt => d.user.display_name
           .user-bubble_content
             =time_tag d.created_at

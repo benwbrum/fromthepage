@@ -10,16 +10,18 @@
   <%= @sc_collection.at_id %>
 </p>
 
-<h4>Collections:</h4>
-
-<ul>
-	<% @sc_collection.service.collections.each do |json_collection| %>
-	  <li>
-	    <%= link_to json_collection.label, { :action => 'explore', :at_id => CGI::escape(json_collection['@id'])} %>
-	  </li>
-	<% end %>
-	
-</ul>
+<% if @sc_collection.service.collections.size > 0 %>
+  <h4>Collections:</h4>
+  
+  <ul>
+  	<% @sc_collection.service.collections.each do |json_collection| %>
+  	  <li>
+  	    <%= link_to json_collection['label'], { :action => 'explore', :at_id => CGI::escape(json_collection['@id'])} %>
+  	  </li>
+  	<% end %>
+  	
+  </ul>
+<% end %>
 
 <h4>Manifests:</h4>
 

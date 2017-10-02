@@ -1,5 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection.id } })
-
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 1, :collection_id => @collection } })
 .columns
   article.maincol
     -if @collection.intro_block
@@ -12,56 +11,43 @@
           ==@collection.intro_block
 
     h2 Works
-    -@collection.works.each do |work|
-      .collection-work
-        h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
+    .aright
+      -if @collection.hide_completed
+        =label_tag "Show Fully Transcribed Works"
+        |&nbsp; 
+        =check_box_tag :hide_completed
+      -else
+        =label_tag "Show Fully Transcribed Works"
+        |&nbsp; 
+        =check_box_tag(:hide_completed, 0, checked: true)
+      p
+
+    -@collection.works.includes(:work_statistic).each do |work|
+      .collection-work.hidden
+        .collection-work_image
+          -unless work.thumbnail.nil? 
+            =image_tag(work.thumbnail)
+        h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
-          -progress_annotated = work.work_statistic.pct_annotated.round
-          -progress_transcribed = work.work_statistic.pct_transcribed.round
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{progress_annotated}% indexed, #{progress_transcribed}% transcribed"
+          -work_stats(work)
+          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
           span
             span.progress
-              span(style="width:#{progress_annotated}%")
-              span(style="width:#{progress_transcribed - progress_annotated}%")
+              -unless @collection.subjects_disabled
+                span(style="width:#{@progress_annotated}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
+              -unless @progress_review == 0
+                span(style="width:#{@progress_review}%")
+        span.completed(style="display: none;") #{@completed}
 
-    -unless @collection.categories.empty?
-      h3 Subject Categories
-      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
-
-    .collection-users.justified
-      .justified_box>
-        h5 Top Transcribers
-        -unless @top_ten_transcribers.empty?
-          -@top_ten_transcribers.each do |user, count|
-            .collection-user(data-prefix="#{count}")
-              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
-                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-                span.vmiddle =user.display_name
-        -else
-          p.a50 No transcribers
-
-      .justified_box>
-        h5 Top Editors
-        -unless @top_ten_editors.empty?
-          -@top_ten_editors.each do |user, count|
-            .collection-user(data-prefix="#{count}")
-              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
-                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-                span.vmiddle =user.display_name
-        -else
-          p.a50 No editors
-
-      .justified_box>
-        h5 Top Indexers
-        -unless @top_ten_indexers.empty?
-          -@top_ten_indexers.each do |user, count|
-            .collection-user(data-prefix="#{count}")
-              =link_to({ :controller => 'user', :action => 'profile', :user_id => user.id }, class: 'collection-user_link')
-                span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-                span.vmiddle =user.display_name
-        -else
-          p.a50 No indexers
+    -if user_signed_in? && current_user.like_owner?(@collection)
+      p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
+    
+    -unless @collection.subjects_disabled
+      -unless @collection.categories.empty?
+        h3 Subject Categories
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection, anchor: "category-#{c.id}" } }.join(', ')
 
   aside.sidecol
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
@@ -70,16 +56,16 @@
       =button_tag 'Search'
 
     .user-label
-      =link_to({ :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }, class: 'userpic')
+      =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
         small Owned by
-        =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id }
+        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     h3 Recent Notes
     -@collection.notes.limit(10).each do |note|
-      -user = link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
-      -text = link_to truncate(note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
+      -user = link_to note.user.display_name, user_profile_path(note.user)
+      -text = link_to truncate(note.title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.page.work, note.page)
       .deed-short.small
         =time_tag(note.created_at, class: 'legend legend-left')
           ="#{time_ago_in_words note.created_at} ago"
@@ -89,6 +75,47 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
-    =deeds_for({ :collection => true, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT] })
+    =deeds_for({ :collection => @collection, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
 
 =render({ :partial => '/shared/collection_footer' })
+
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      var hideCompleted = #{@collection.hide_completed};
+      $(hideWorks(hideCompleted));
+    });
+    $(function(){
+      var showCheckbox = $('#hide_completed')
+
+      $(function(){
+        $(showCheckbox).click(function(e){
+          var hide;
+          if (this.checked){
+            hide = false;
+          } else {
+            hide = true;
+          };
+          hideWorks(hide);
+        });
+      });
+    });
+
+    function hideWorks(param){
+      var showOrHide = param
+      var work = $('.collection-work');
+      if (showOrHide){
+        work.each(function(i){
+          var completed = $(this).find('.completed').text();
+          if (completed == "Completed"){
+            $(this).hide();
+          } else {
+            $(this).show();
+          };
+        });
+      } else {
+        $(work).show();
+      };
+      work.removeClass("hidden")
+    }

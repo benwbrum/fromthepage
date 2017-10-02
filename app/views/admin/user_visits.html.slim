@@ -1,0 +1,29 @@
+=render(:partial => 'header', :locals => { :selected => 2 })
+
+h3 Site visits for #{@user.login}
+=link_to 'Other Users', { :controller => 'admin', :action => 'user_list' }
+
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th Last Sign In
+      th Duration
+      th Clicks
+      th Contributions
+      th Actions
+  tbody
+    -@visits.each do |v|
+      tr
+        td.nowrap =v.started_at.strftime('%b %d, %Y')
+        td.nowrap =distance_of_time_in_words v.started_at, v.ahoy_events.last.time
+        td.nowrap =v.ahoy_events.count
+        td.nowrap 
+          -if v.deeds.count > 0
+            =link_to v.deeds.count, { :controller => 'admin', :action => 'visit_deeds', :user_id => @user.id, :visit_id => v.id }
+          -else
+            =v.deeds.count
+        td.nowrap
+          .instack
+            =link_to 'Details', { :controller => 'admin', :action => 'visit_actions', :user_id => @user.id, :visit_id => v.id }
+
+=render(:partial => 'shared/pagination', :locals => { :model => @visits, :entries_info => true })

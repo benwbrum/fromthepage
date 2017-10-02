@@ -1,0 +1,30 @@
+category_1:
+  id: 1
+  title: People
+  parent_id: 
+  collection_id: 1
+category_2:
+  id: 2
+  title: Places
+  parent_id: 
+  collection_id: 1
+category_3:
+  id: 3
+  title: People
+  parent_id: 
+  collection_id: 2
+category_4:
+  id: 4
+  title: Places
+  parent_id: 
+  collection_id: 2
+category_5:
+  id: 5
+  title: People
+  parent_id: 
+  collection_id: 3
+category_6:
+  id: 6
+  title: Places
+  parent_id: 
+  collection_id: 3

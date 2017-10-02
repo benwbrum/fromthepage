@@ -1,0 +1,454 @@
+page_version_1:
+  id: 1
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 1
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_2:
+  id: 2
+  title: '2'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 2
+  work_version: 1
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_3:
+  id: 3
+  title: '3'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 3
+  work_version: 2
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_4:
+  id: 4
+  title: '4'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 4
+  work_version: 3
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_5:
+  id: 5
+  title: '5'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 5
+  work_version: 4
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_6:
+  id: 6
+  title: '6'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 6
+  work_version: 5
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_7:
+  id: 7
+  title: '7'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 7
+  work_version: 6
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_8:
+  id: 8
+  title: '8'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 8
+  work_version: 7
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_9:
+  id: 9
+  title: '9'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 9
+  work_version: 8
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_10:
+  id: 10
+  title: '10'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 10
+  work_version: 9
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_17:
+  id: 17
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 17
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_18:
+  id: 18
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 18
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_19:
+  id: 19
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 19
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_20:
+  id: 20
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 20
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_21:
+  id: 21
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 21
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_22:
+  id: 22
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 22
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_23:
+  id: 23
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 23
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_24:
+  id: 24
+  title: '1'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 24
+  work_version: 0
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_25:
+  id: 25
+  title: '2'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 25
+  work_version: 1
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_26:
+  id: 26
+  title: '3'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 26
+  work_version: 2
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_27:
+  id: 27
+  title: '4'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 27
+  work_version: 3
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_28:
+  id: 28
+  title: '5'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 28
+  work_version: 4
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_29:
+  id: 29
+  title: '6'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 29
+  work_version: 5
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_30:
+  id: 30
+  title: '7'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 30
+  work_version: 6
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_31:
+  id: 31
+  title: '8'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 31
+  work_version: 7
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_32:
+  id: 32
+  title: '9'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 32
+  work_version: 8
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_33:
+  id: 33
+  title: '10'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 33
+  work_version: 9
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_34:
+  id: 34
+  title: '11'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 34
+  work_version: 10
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_35:
+  id: 35
+  title: '12'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 35
+  work_version: 11
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_36:
+  id: 36
+  title: '13'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 36
+  work_version: 12
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_37:
+  id: 37
+  title: '14'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 37
+  work_version: 13
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_38:
+  id: 38
+  title: '15'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 38
+  work_version: 14
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_39:
+  id: 39
+  title: '16'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 39
+  work_version: 15
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_40:
+  id: 40
+  title: '17'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 40
+  work_version: 16
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_41:
+  id: 41
+  title: '18'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 41
+  work_version: 17
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_42:
+  id: 42
+  title: '19'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 42
+  work_version: 18
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_43:
+  id: 43
+  title: '20'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 43
+  work_version: 19
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_44:
+  id: 44
+  title: '21'
+  transcription: 
+  xml_transcription: 
+  user_id: 4
+  page_id: 44
+  work_version: 20
+  page_version: 0
+  source_translation: 
+  xml_translation: 
+page_version_98:
+  id: 98
+  title: '1'
+  transcription: Department of the Interior
+  xml_transcription: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Department
+    of the Interior</p>\n      </page>\n"
+  user_id: 2
+  page_id: 18
+  work_version: 1
+  page_version: 1
+  source_translation: 
+  xml_translation: 
+page_version_99:
+  id: 99
+  title: '1'
+  transcription: should ascertain what
+  xml_transcription: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>should
+    ascertain what</p>\n      </page>\n"
+  user_id: 2
+  page_id: 23
+  work_version: 1
+  page_version: 1
+  source_translation: 
+  xml_translation: 
+page_version_100:
+  id: 100
+  title: '2'
+  transcription: Significs and Logic
+  xml_transcription: "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>Significs
+    and Logic</p>\n      </page>\n"
+  user_id: 2
+  page_id: 25
+  work_version: 74
+  page_version: 1
+  source_translation: 
+  xml_translation: 

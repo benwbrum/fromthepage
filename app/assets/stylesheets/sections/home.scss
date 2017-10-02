@@ -20,15 +20,19 @@
   &_box {
     color: #FFF;
     text-align: left;
+    max-width: 600px;
     line-height: normal;
     display: inline-block;
     vertical-align: middle;
-    background: rgba(#100, 0.35);
+    background: rgba(#100, 0.5);
     padding: $gapSize $gapSize * 1.2;
     &_title {
       margin: 0;
       color: inherit;
-      font-size: 300%;
+      font-size: 240%;
+      &:first-letter {
+        margin-left: -0.4em;
+      }
     }
     &_text {
       font-size: 125%;
@@ -72,9 +76,12 @@
 
 .whouses {
   margin-bottom: $gapSize * 3;
+  .justified {
+    margin: 0 -$gapSize / 4;
+  }
   .justified_box {
-    width: 32%;
-    padding-bottom: $gapSize / 2;
+    width: 33.33%;
+    padding: 0 $gapSize / 4 $gapSize / 2 $gapSize / 4;
   }
   .cover {
     width: 100%;
@@ -140,5 +147,95 @@
     margin: 0.5em 0;
     color: $bodyFgLight;
     font-size: $fontSizeBig;
+  }
+}
+
+.main-quote {
+  max-width: 750px;
+  font-style: normal;
+  text-align: center;
+  margin: $gapSize * 2 auto;
+  &_text {
+    margin: 0.4em 0;
+    font-size: $fontSizeH3;
+    font-family: $fontFamilyHead;
+  }
+  &_cite {
+    line-height: 2;
+    font-style: normal;
+    color: $bodyFgFaded;
+    font-size: $fontSizeH5;
+    small {
+      display: block;
+      line-height: 1.2;
+      color: $bodyFgLight;
+      font-size: $fontSize;
+    }
+  }
+}
+
+.start-project {
+  margin: $gapSize * 3 0;
+  &:before { left: -1em; }
+  &:after { left: 1em; }
+  .button {
+    font-size: $fontSizeH4;
+    font-family: $fontFamilyHead;
+  }
+}
+
+.advantages {
+  margin-bottom: $gapSize * 2;
+  .justified_box {
+    width: 30%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 0 $gapSize 0;
+  }
+  &_text {
+    margin: 0.5em 0;
+    color: $bodyFgLight;
+    font-size: $fontSizeBig;
+  }
+  &_quote {
+    margin: 0;
+    &_text {
+      margin: 0 0 20px 0;
+      padding: $gapSize;
+      border-radius: 5px;
+      font-style: italic;
+      padding-left: 60px;
+      position: relative;
+      background: mix(#000, $bodyBg, 5);
+      &:before {
+        top: 0;
+        left: 15px;
+        content: '“';
+        font-size: 90px;
+        font-style: normal;
+        position: absolute;
+        color: rgba($bodyFgLight, 0.5);
+      }
+      &:after {
+        top: 100%;
+        left: 20px;
+        content: '';
+        position: absolute;
+        border: 0 solid transparent;
+        border-width: 20px 20px 0 0;
+        border-top-color: mix(#000, $bodyBg, 5);
+      }
+    }
+    &_cite {
+      line-height: 2;
+      font-style: normal;
+      color: $bodyFgFaded;
+      small {
+        display: block;
+        max-width: 200px;
+        line-height: 1.2;
+        color: $bodyFgLight;
+      }
+    }
   }
 }

@@ -4,15 +4,15 @@ class IaLeaf < ActiveRecord::Base
   belongs_to :page
 
   def thumb_url
-    "http://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_thumb.jpg"
+    "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_thumb.jpg"
   end
 
   def facsimile_url
-    "http://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}.jpg"
+    "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}.jpg"
   end
 
   def small_url
-    "http://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_small.jpg"
+    "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_small.jpg"
   end
 
 end

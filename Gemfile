@@ -6,7 +6,8 @@ gem 'pry'
 gem 'pry-byebug'
 
 gem 'will_paginate'
-gem 'rmagick', '2.13.2', require: "RMagick"
+#gem 'rmagick', '2.13.2', require: "RMagick"
+gem 'rmagick'
 gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.4.0'
@@ -23,12 +24,15 @@ gem 'omeka_client', git: 'https://github.com/benwbrum/omeka_client'
 gem 'acts_as_list'
 gem 'acts_as_tree'
 
-gem 'devise'
+gem 'devise', '3.4.1'
 gem 'devise-encryptable'
 
 gem 'protected_attributes'
 gem 'carrierwave'
 gem 'rubyzip'
+
+gem 'ahoy_matey'
+
 
 gem 'riiif'
 gem 'iiif-presentation'
@@ -45,8 +49,9 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0.beta'
-  gem 'factory_girl_rails', require: false
+  gem 'rspec-rails'
+  gem 'launchy'
+  gem 'capybara-webkit'
 
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
@@ -67,3 +72,9 @@ gem 'gravatar_image_tag'
 
 # New Relic
 gem 'newrelic_rpm'
+
+#Admin masquerade as a user
+gem 'devise_masquerade'
+
+#friendly routes
+gem 'friendly_id'

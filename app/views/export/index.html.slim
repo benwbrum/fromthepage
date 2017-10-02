@@ -1,30 +1,65 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection.id }})
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 
-h2.nomargin Export Subject Index
-p.big
+-unless @collection.subjects_disabled
+  h2.nomargin Export Subject Index
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export Subjects as CSV
+    span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+
+h2 Export All Works
+p.big 
   span.fright(style="margin-left: 30px")
-    =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
+
+    =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
       =svg_symbol '#icon-export', class: 'icon'
-      span Export Subjects as CSV
-  span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+      span Export All Works
+  
+  span Click the button to export all works from the collection into a zip file containing each work as an XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.
+
 
 h2 Export Individual Works
 p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.
 table.datagrid
   tr
-    th.w100 Work Title
+    th.w80 Work Title
     th Pages
-    th Indexed
-    th Transcribed
+    -unless @collection.subjects_disabled
+      th Indexed
+    th #{@header}
+    th Review
+    th.w100 Progress
     th(colspan="3") Export As
   -for work in @collection.works
-    -progress_annotated = work.work_statistic.pct_annotated.round
-    -progress_transcribed = work.work_statistic.pct_transcribed.round
+    -unless work.supports_translation
+      -progress_annotated = work.work_statistic.pct_annotated.round
+      -progress_completed = work.work_statistic.pct_completed.round
+      -progress_review = work.work_statistic.pct_needs_review.round
+    -else
+      -progress_annotated = work.work_statistic.pct_translation_annotated.round
+      -progress_completed = work.work_statistic.pct_translation_completed.round
+      -progress_review = work.work_statistic.pct_translation_needs_review.round
+
     tr
       td.big =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
       td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
-      td.nowrap.fgfaded ="#{progress_annotated}%"
-      td.nowrap.fgfaded ="#{progress_transcribed}%"
+      -unless @collection.subjects_disabled
+        td.nowrap.fgfaded.tocenter ="#{progress_annotated}%"
+      td.nowrap.fgfaded.tocenter ="#{progress_completed}%"
+      td.nowrap.fgfaded.tocenter ="#{progress_review}%"
+      td
+        .progress
+          -unless @collection.subjects_disabled
+            span(style="width:#{progress_annotated}%")
+            span(style="width:#{progress_completed - progress_annotated}%")
+            span(style="width:#{progress_review}%")
+
+          -else
+            span(style="width:#{progress_completed}%")
+            span(style="width:#{progress_review}%")
+
       td.nowrap
         =link_to({ :controller => 'export', :action => 'show', :work_id => work.id })
           =svg_symbol '#icon-export', class: 'icon'
@@ -61,6 +96,21 @@ table.datagrid
       // Remove 'page_busy' spinner once CSV download finished
       // Cookie should be set to 'true' in the controller method
       $('#btnCsvTblExport').on('click', function() {
+        Cookies.remove('download_finished');
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          console.log(cookie);
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });
+    $(function() {
+      // Remove 'page_busy' spinner once zipfile download finished
+      // Cookie should be set to 'true' in the controller method
+      $('#btnExportAll').on('click', function() {
         Cookies.remove('download_finished');
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');

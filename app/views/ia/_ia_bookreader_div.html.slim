@@ -65,7 +65,7 @@
       _rotate = 'undefined' == typeof(rotate) ? 0 : rotate;
 
       var query = $.param({ zip: this.zip, file: file, scale: _reduce, rotate: _rotate })
-      return 'http://'+this.server+'/BookReader/BookReaderImages.php?'+query;
+      return 'https://'+this.server+'/BookReader/BookReaderImages.php?'+query;
     }
 
     // Returns page filename
@@ -149,14 +149,14 @@
     br.server        = "#{@work.ia_work.server}";
     br.bookTitle     = "#{@work.ia_work.title}";
     br.bookPath      = "#{@work.ia_work.book_path}";
-    br.bookUrl       = "http://www.archive.org/details/#{@work.ia_work.book_id}";
+    br.bookUrl       = "https://www.archive.org/details/#{@work.ia_work.book_id}";
     br.imageFormat   = "#{@work.ia_work.image_format}";
     br.archiveFormat = "#{@work.ia_work.archive_format}";
 
     br.pageW         = [#{@page.ia_leaf.page_w}];
     br.pageH         = [#{@page.ia_leaf.page_h}];
     br.leafMap       = [#{@page.ia_leaf.leaf_number}];
-    br.pageNums      = [#{@page.ia_leaf.page_number}];
+    br.pageNums      = ['#{@page.ia_leaf.page_number}'];
     br.numLeafs      = br.pageW.length;
 
     br.init();

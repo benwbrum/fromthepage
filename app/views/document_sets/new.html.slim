@@ -2,13 +2,16 @@
   h1 Create New Document Set
   p If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
 
-  =form_for(@document_set, url: { :action => 'create' }) do |f|
+  =form_for(@document_set, url: create_document_set_path) do |f|
     =validation_summary @document_set.errors
     =f.hidden_field :collection_id
     table.form
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title
+      tr
+        th =f.label(:is_public, "Public")
+        td =f.check_box :is_public, {checked: true}
       tr
         td(colspan="2")
           =f.label :description, 'Description', class: 'above'

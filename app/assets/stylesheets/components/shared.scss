@@ -66,7 +66,6 @@
     vertical-align: middle;
   }
   &_content {
-    text-align: left;
     line-height: normal;
     white-space: normal;
     word-spacing: normal;
@@ -553,8 +552,9 @@ button, .button, .dropdown dd a {
   th {
     font-weight: bold;
     padding: 15px 10px;
-    white-space: nowrap;
+    //white-space: nowrap;
     background: rgba(#000, 0.1);
+    &.wrapped { word-wrap: break-word;}
   }
   td {
     padding: 10px;
@@ -579,6 +579,7 @@ button, .button, .dropdown dd a {
     }
     &.toleft { padding-left: 0; }
     &.toright { padding-right: 0; }
+    &.tocenter { text-align: center; }
   }
   thead + tbody tr:first-child td { border: 0; }
   &.striped tr:nth-child(even) {
@@ -674,7 +675,8 @@ button, .button, .dropdown dd a {
     background: $color;
     vertical-align: top;
     display: inline-block;
-    &:nth-child(2) { background: adjust-hue(lighten($color, 10%), -25deg); }
+    &:nth-child(2) { background: #A3E07A; }
+    &:nth-child(3) { background: #F0E68C; }
   }
 }
 

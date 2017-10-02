@@ -1,32 +1,14 @@
-=render({ :partial => 'owner_header', :locals => { :selected => 4 } })
+=render({ :partial => 'owner_header', :locals => { :selected => 5 } })
 
 .columns
   article.maincol
-    h3 Upload PDF or ZIP File
-    p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
-    =form_for :document_upload, url: { action: 'new_upload' } do |f|
-      =validation_summary @document_upload.errors
-      table.form
-        tr
-          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), prompt: '- Select a collection -'
-        tr
-          td
-            .input-file
-              =f.file_field :file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed'
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
-              button(type="button") Browse
-      ul
-        li ZIP files may contain folders containing images.
-        li Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
-        li Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
-        li ZIP files may contain PDFs
-      p.aright
-        =f.button 'Upload File', class: 'big'
+
+    =render 'upload'
 
   aside.sidecol
     h4 Page Image Guidelines
     .fglight
-      p PNG, GIF, and JPG files are all acceptible.
+      p PNG, GIF, and JPG files are all acceptable.
       p Images should be oriented so that they are right-side-up.
       p Images should be split down the spine, so that only one page is visible on an image.<br> (See the <a href="https://github.com/benwbrum/autosplit">autosplit</a> tool if you need to split two-page images.)
       p Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)

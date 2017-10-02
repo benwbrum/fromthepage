@@ -1,0 +1,72 @@
+work_statistic_1:
+  id: 1
+  work_id: 1
+  transcribed_pages: 0
+  annotated_pages: 0
+  total_pages: 10
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_2:
+  id: 2
+  work_id: 2
+  transcribed_pages: 0
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_3:
+  id: 3
+  work_id: 3
+  transcribed_pages: 1
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_4:
+  id: 4
+  work_id: 4
+  transcribed_pages: 0
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_5:
+  id: 5
+  work_id: 5
+  transcribed_pages: 0
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_6:
+  id: 6
+  work_id: 6
+  transcribed_pages: 0
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_7:
+  id: 7
+  work_id: 7
+  transcribed_pages: 0
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_8:
+  id: 8
+  work_id: 8
+  transcribed_pages: 1
+  annotated_pages: 0
+  total_pages: 1
+  blank_pages: 0
+  incomplete_pages: 0
+work_statistic_9:
+  id: 9
+  work_id: 9
+  transcribed_pages: 1
+  annotated_pages: 0
+  total_pages: 21
+  blank_pages: 0
+  incomplete_pages: 0
