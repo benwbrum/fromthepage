@@ -11,7 +11,6 @@
 
 		-if @sc_manifest.service.license
 			p License: #{@sc_manifest.service.license}
-
 		p 
 			'Id: 
 			=link_to @sc_manifest.at_id, @sc_manifest.at_id
@@ -36,8 +35,8 @@
   javascript:
     $(function(){
       $('#sc_manifest_collection_id').append("<option value='new'>Add New Collection</option>");
-      if (("#{@sc_collection.label}" != '') && ("#{@sc_collection.collection}" == '')){
-      	$('#sc_manifest_collection_id').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
+      if (("#{@label}" != '') && ("#{@col}" == '')){
+      	$('#sc_manifest_collection_id').append("<option value='sc_collection'>Create Collection: #{@label}</option>");
     	}
     });
 

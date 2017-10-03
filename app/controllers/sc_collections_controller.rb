@@ -32,14 +32,27 @@ class ScCollectionsController < ApplicationController
 
     elsif service["@type"] == "sc:Manifest"
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
-      parent_at_id = @sc_manifest.service["within"]["@id"]
-      unless parent_at_id.nil?
-        @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
-      else
+      find_parent = @sc_manifest.service["within"]
+      if find_parent.nil?
         @sc_collection = nil
+      else
+        parent_at_id = @sc_manifest.service["within"]["@id"]
+        unless parent_at_id.nil?
+          @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
+        else
+          @sc_collection = nil
+        end
+      end
+      #this allows jquery to recover if there is no parent collection
+      if @sc_collection
+        @label = @sc_collection.label
+        @col = @sc_collection.collection
+      else
+        @label = nil
+        @col = nil
       end
       render 'explore_manifest', at_id: at_id
-      end
+    end
     rescue => e
       flash[:error] = "Please enter a valid IIIF manifest URL."
       redirect_to :back
@@ -51,6 +64,13 @@ class ScCollectionsController < ApplicationController
     at_id = params[:at_id]
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
     @collection = set_collection
+    if @sc_collection
+      @label = @sc_collection.label
+      @col = @sc_collection.collection
+    else
+      @label = nil
+      @col = nil
+    end
   end
 
   def explore_collection
