@@ -20,6 +20,8 @@
                 .input-file
                   =text_field_tag :search_param
                   =button_tag 'Search'
+                  =label_tag :search_param, "Search IIIF", class: 'hidden'
+
     h5 Import an IIIF Manifest
     =form_tag({ controller: 'sc_collections', action: 'explore_manifest' }) do |f|
       table.form
@@ -27,6 +29,8 @@
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import'
+              =label_tag :at_id, "Import IIIF", class: 'hidden'
+
     
     h3 Import from the Internet Archive
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }

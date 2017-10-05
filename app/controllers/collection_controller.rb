@@ -74,6 +74,7 @@ class CollectionController < ApplicationController
   end
 
   def add_collaborator
+    @user = User.find_by(id: params[:collaborator_id])
     @collection.collaborators << @user
     redirect_to action: 'edit', collection_id: @collection.id
   end

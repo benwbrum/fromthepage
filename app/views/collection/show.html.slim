@@ -13,11 +13,11 @@
     h2 Works
     .aright
       -if @collection.hide_completed
-        =label_tag "Show Fully Transcribed Works"
+        =label_tag :hide_completed, "Show Fully Transcribed Works"
         |&nbsp; 
         =check_box_tag :hide_completed
       -else
-        =label_tag "Show Fully Transcribed Works"
+        =label_tag :hide_completed, "Show Fully Transcribed Works"
         |&nbsp; 
         =check_box_tag(:hide_completed, 0, checked: true)
       p
@@ -26,7 +26,7 @@
       .collection-work.hidden
         .collection-work_image
           -unless work.thumbnail.nil? 
-            =image_tag(work.thumbnail)
+            =image_tag(work.thumbnail, alt: work.title)
         h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
@@ -54,6 +54,8 @@
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
       =button_tag 'Search'
+      =label_tag 'search_string', "Search collection", class: 'hidden'
+
 
     .user-label
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
