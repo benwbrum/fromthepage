@@ -38,6 +38,6 @@
         td.nowrap
           .work-page-position
             =link_to({ controller: 'page', action: 'reorder_page', direction: 'up', page_id: page.id }, title: 'Move up')
-              =svg_symbol '#icon-arrow-top', class: 'icon'
+              =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Move up'
             =link_to({ controller: 'page', action: 'reorder_page', direction: 'down', page_id: page.id }, title: 'Move down')
-              =svg_symbol '#icon-arrow-bottom', class: 'icon'
+              =svg_symbol '#icon-arrow-bottom', class: 'icon', title: 'Move down'

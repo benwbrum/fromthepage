@@ -17,6 +17,7 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
         -@collection.categories.walk_tree do |c, level|
           -selected = true if article.categories.include?(c)
           option(data-level=level value=c.id selected=selected) =c.title
+        label(class="hidden"), Assign Categories
 
 span.legend
   -if @translation

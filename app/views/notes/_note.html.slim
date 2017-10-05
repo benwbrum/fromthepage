@@ -6,8 +6,8 @@
       .user-bubble_actions
         a(data-note-edit)
           =svg_symbol '#icon-edit', class: 'icon'
-        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => 'Are you sure you want to delete this note?' })
-          =svg_symbol '#icon-remove-sign', class: 'icon'
+        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => 'Are you sure you want to delete this note?' }, title: 'Delete')
+          =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete'
     =time_tag note.created_at
       =link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
       =" #{time_ago_in_words note.created_at} ago"

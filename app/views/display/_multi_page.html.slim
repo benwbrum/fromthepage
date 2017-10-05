@@ -81,6 +81,7 @@
           =hidden_field_tag('collection_id', @collection.id)
           =search_field_tag 'search_string', @search_string, :placeholder => 'Search in collection...'
           =button_tag 'Search'
+          =label_tag 'search_string', "Search in collection", class: 'hidden'
 
       -if @work
         -if @total != @count
