@@ -17,7 +17,6 @@ Fromthepage::Application.routes.draw do
 
   get   '/dashboard' => 'dashboard#index'
   get   '/dashboard/owner' => 'dashboard#owner'
-  get   '/dashboard/staging' => 'dashboard#staging'
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'

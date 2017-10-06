@@ -146,6 +146,22 @@ module XmlSourceProcessor
     text
   end
 
+  def remove_square_braces(text)
+    new_text = text.scan(BRACE_REGEX)
+    new_text.each do |results|
+      changed = results
+      #remove title
+      if results.include?('|')
+        changed = results.sub(/\[\[.*?\|/, '')
+      end
+      changed = changed.sub('[[', '')
+      changed = changed.sub(']]', '')
+
+      text.sub!(results, changed)
+    end
+    text
+  end
+
   LATEX_SNIPPET = /(\{\{tex:?(.*?):?tex\}\})/m
   def process_latex_snippets(text)
     return text unless self.respond_to? :tex_figures
