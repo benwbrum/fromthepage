@@ -25,7 +25,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     # will be replaced
 
     #| image_sets                  |
-    add_index :image_sets, :owner_user_id
+#    add_index :image_sets, :owner_user_id
 
     #| page_article_links          |
     add_index :page_article_links, :page_id
@@ -43,7 +43,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| sessions                    |
 
     #| titled_images               |
-    add_index :titled_images, :image_set_id
+#    add_index :titled_images, :image_set_id
 
     #| transcribe_authorizations   |
     # implicit, I hope
@@ -83,7 +83,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     # will be replaced
 
     #| image_sets                  |
-    remove_index :image_sets, :owner_user_id
+#    remove_index :image_sets, :owner_user_id
 
     #| page_article_links          |
     remove_index :page_article_links, :page_id
@@ -101,7 +101,7 @@ class AddIndexesToEverything < ActiveRecord::Migration
     #| sessions                    |
 
     #| titled_images               |
-    remove_index :titled_images, :image_set_id
+#    remove_index :titled_images, :image_set_id
 
     #| transcribe_authorizations   |
     # implicit, I hope
