@@ -12,7 +12,7 @@
       
     h3 Related Subjects
     .article-graph
-      =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: "Subjects mentioned frequently with #{@article}")
+      =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: "Related subjects")
       ==@map
     p.fglight =="The graph displays the other subjects mentioned on the same pages as the subject &ldquo;#{@article.title}&rdquo;. If the same subject occurs on a page with &ldquo;#{@article.title}&rdquo; more than once, it appears closer to &ldquo;#{@article.title}&rdquo; on the graph, and is colored in a darker shade. The closer a subject is to the center, the more &quot;related&quot; the subjects are."
 
@@ -22,8 +22,8 @@
         tr
           td(colspan="3")
             span Limit the graph to subjects in these categories (leave blank to show all):
-            =label_tag "data-graph-category", 'Select categories', class: 'hidden'
-            select(name="category_ids[]" size="10" multiple data-graph-category)
+            =label_tag "category-select", 'Select categories', class: 'hidden'
+            select(name="category_ids[]" size="10" id="category-select" aria-label="Select categories" multiple data-graph-category)
               -@collection.categories.walk_tree do |c, level|
                 -selected = true if @categories.include?(c)
                 option(data-level=level value=c.id selected=selected) =c.title
