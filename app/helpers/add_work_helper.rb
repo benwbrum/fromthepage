@@ -10,10 +10,6 @@ module AddWorkHelper
     @sc_collections = ScCollection.all
   end
 
-  # Owner Dashboard - staging area
-  def staging
-  end
-
   # Owner Dashboard - omeka import
   def omeka
     @omeka_items = OmekaItem.all

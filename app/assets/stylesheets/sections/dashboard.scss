@@ -166,29 +166,6 @@
   }
 }
 
-.imagesets {
-  width: 100%;
-  display: table;
-  margin: 0 0 $gapSize * 4 0;
-}
-
-.imageset {
-  display: table-row;
-  > * {
-    padding: 3px 5px;
-    display: table-cell;
-    vertical-align: top;
-  }
-  &_title {
-    padding-left: 0;
-    .dropdown { vertical-align: top; }
-  }
-  &_summary {
-    display: table-cell;
-    color: $bodyFgFaded;
-  }
-}
-
 .omeka-sites {
   padding: 0;
   list-style: none;
