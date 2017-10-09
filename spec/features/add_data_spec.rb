@@ -39,10 +39,9 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
     click_button('Import')
     expect(page).to have_content("Metadata")
-    click_link('Import')
-    expect(page).to have_content("Import Manifest")
+    expect(page).to have_content("Manifest")
     select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import')
+    click_button('Import Manifest')
     expect(page).to have_content(@collection.title)
     visit dashboard_owner_path
     works_count = Work.all.count
@@ -51,8 +50,7 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
     click_button('Import')
     expect(page).to have_content("Metadata")
-    click_link('Import')
-    expect(page).to have_content("Import Manifest")
+    expect(page).to have_content("Manifest")
     select(@collection.title, :from => 'sc_manifest_collection_id')
     click_button('Import')
     expect(page).to have_content(@collection.title)

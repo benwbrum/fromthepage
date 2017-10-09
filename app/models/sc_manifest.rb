@@ -32,7 +32,7 @@ class ScManifest < ActiveRecord::Base
     unless collection
       collection = Collection.new
       collection.owner = user
-      collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
+      collection.title = cleanup_label(sc_collection.label)
       collection.save!
       
       sc_collection.collection = collection
@@ -55,19 +55,21 @@ class ScManifest < ActiveRecord::Base
     
     work = Work.new    
     work.owner = user
-    work.title = self.label.truncate(255, separator: ' ', omission: '')
+
+    work.title = cleanup_label(self.label)
     work.description = self.html_description
     work.collection = collection
     work.save!
-    self.service.sequences.first.canvases.each do |canvas|
-      sc_canvas = manifest_canvas_to_sc_canvas(canvas)
-      page = sc_canvas_to_page(sc_canvas)
-      work.pages << page
-#      page.save!
-      sc_canvas.page = page
-      sc_canvas.height = canvas.height
-      sc_canvas.width = canvas.width
-      sc_canvas.save!
+    unless self.service.sequences.empty?
+      self.service.sequences.first.canvases.each do |canvas|
+        sc_canvas = manifest_canvas_to_sc_canvas(canvas)
+        page = sc_canvas_to_page(sc_canvas)
+        work.pages << page
+        sc_canvas.page = page
+        sc_canvas.height = canvas.height
+        sc_canvas.width = canvas.width
+        sc_canvas.save!
+      end
     end
     work.save!
     record_deed(work)
@@ -77,6 +79,16 @@ class ScManifest < ActiveRecord::Base
     
     work
   end
+
+  def cleanup_label(label)
+    new_label = label.truncate(255, separator: ' ', omission: '')
+    new_label.gsub!("&quot;", "'")
+    new_label.gsub!("&amp;", "&")
+    new_label.gsub!("&apos;", "'")
+
+    new_label
+  end
+
 
   def sc_canvas_to_page(sc_canvas)
     page = Page.new

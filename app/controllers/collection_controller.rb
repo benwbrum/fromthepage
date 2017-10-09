@@ -131,7 +131,12 @@ class CollectionController < ApplicationController
     @collection.owner = current_user
     if @collection.save
       flash[:notice] = 'Collection has been created'
-      ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
+      if request.referrer.include?('sc_collections')
+        session[:iiif_collection] = @collection.id
+        ajax_redirect_to(request.referrer)
+      else
+        ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
+      end
     else
       render action: 'new'
     end
