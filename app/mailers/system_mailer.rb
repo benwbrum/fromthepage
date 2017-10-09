@@ -54,7 +54,6 @@ class SystemMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Page save failed"
   end
 
-
   private
   def admin_emails
     User.where(:admin => true).to_a.map { |u| u.email }
