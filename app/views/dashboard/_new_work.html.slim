@@ -8,23 +8,24 @@
 
     h3 Import from an IIIF Repository
     -if pontiiif_server
-      h5 Search for IIIF Content
+      h5 
+        =label_tag :search_param, "Search for IIIF Content"
       =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
         table.form
             td
               .input-file
                 =text_field_tag :search_param
                 =button_tag 'Search'
-                =label_tag :search_param, "Search IIIF", class: 'hidden'
 
-    h5 Import an IIIF Manifest or Collection
+    h5 
+      =label_tag :at_id, "Import an IIIF Manifest or Collection"
+
     =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
       table.form
           td
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import'
-              =label_tag :at_id, "Import IIIF", class: 'hidden'
     
     h5 Explore IIIF Collections
     =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => ScCollection::UNIVERSE}, class: 'button'
