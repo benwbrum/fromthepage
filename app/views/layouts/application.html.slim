@@ -51,7 +51,7 @@ html lang="en-US"
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo', title: 'Home'
+          =link_to root_path, class: 'logo', title: 'Home', 'aria-label' => 'Home'
             -if USE_PNG_LOGO
               =image_tag 'logo.png', height: '64', alt: 'Home'
             -else
