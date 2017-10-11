@@ -13,9 +13,9 @@
       $('#BookReader').append(
         '<div id="BRnav">'+
           '<span id="BRtoolbarbuttons">'+
-            '<button class="BRicon zoom_in"></button>'+
+            '<button class="BRicon zoom_in" aria-label="Zoom in"></button>'+
             '<span id="BRzoom"></span>'+
-            '<button class="BRicon zoom_out"></button>'+
+            '<button class="BRicon zoom_out" aria-label="Zoom out"></button>'+
           '</span>'+
           //'<a class="BRlogo" href="'+this.logoURL+'" target="_blank"></a>'+
           //'<span id="BRembedreturn"><a href="'+this.bookUrl+'" target="_blank">'+this.bookTitle+'</a></span>'+
@@ -92,7 +92,6 @@
     // Returns page number
     br.getPageNum = function(index) {
       var pageNum = this.pageNums[index];
-
       return pageNum ? pageNum : 'n'+index;
     }
 
@@ -158,5 +157,6 @@
     br.leafMap       = [#{@page.ia_leaf.leaf_number}];
     br.pageNums      = ['#{@page.ia_leaf.page_number}'];
     br.numLeafs      = br.pageW.length;
+    br.pageTitle     = "#{@page.title}";
 
     br.init();
