@@ -16,6 +16,7 @@ namespace :fromthepage do
   end
   IMAGE_FILE_EXTENSIONS = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG']
   IMAGE_FILE_EXTENSIONS_PATTERN = /jpg|JPG|jpeg|JPEG|png|PNG/
+  TIFF_FILE_EXTENSIONS_PATTERN = /tif|TIF|tiff|TIFF/
 
   desc "Process a document upload"
   task :process_document_upload, [:document_upload_id] => :environment do |t,args|
@@ -64,6 +65,8 @@ namespace :fromthepage do
     unzip_tree(temp_dir)
     # extract any pdfs
     unpdf_tree(temp_dir)
+    #convert tiffs to jpgs
+    untiff_tree(temp_dir)
     # resize files
     compress_tree(temp_dir)
     # ingest
@@ -115,6 +118,26 @@ namespace :fromthepage do
       end
     end
   end
+
+  def untiff_tree(temp_dir)
+    print "convert tiffs from tree(#{temp_dir})\n"
+    ls = Dir.glob(File.join(temp_dir, "*"))
+    ls.each do |path|
+      print "\tuntiff_tree considering #{path})\n"
+      if Dir.exist? path
+        print "Found directory #{path}\n"
+        untiff_tree(path) #recurse
+      else
+        if File.extname(path).match TIFF_FILE_EXTENSIONS_PATTERN
+          print "Found tiff #{path}\n"
+          #convert tiff to jpg
+          destination = ImageHelper.convert_tiff(path)
+        end
+      end
+    end
+
+  end
+
   def compress_tree(temp_dir)
     print "compress tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*")).sort
@@ -143,6 +166,7 @@ namespace :fromthepage do
         ingest_tree(document_upload, path) #recurse
       end
     end    
+    
     # now process this directory if it contains image files
     image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
     if image_files.length > 0
