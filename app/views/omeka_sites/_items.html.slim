@@ -10,17 +10,18 @@ table.datagrid.omeka-collection-items
     tr.omeka-collection-item(class="#{'item-saved' if item_saved}")
       td
         big.omeka-collection-item_title =item.dublin_core.title
+        br
         -if item.dublin_core.description.present?
           small.omeka-collection-item_description =item.dublin_core.description
       td.nowrap =item.data.item_type.name if item.data.item_type.present?
       td.nowrap.fglight =item.data.added.to_date.strftime('%b %d, %Y')
       td.nowrap =pluralize(item.data.files.count, 'file')
       td.nowrap
-        .omeka-collection-item_saved
-          =svg_symbol '#icon-check-sign', class: 'icon'
-          span 
-            =link_to 'Saved', { controller: 'omeka_items', action: 'show', omeka_site_id: @omeka_site.id, client_item_id: item.data.id }
         -unless item_saved
-          =link_to({ controller: 'omeka_items', action: 'create', omeka_site_id: @omeka_site.id, client_item_id: item.data.id }, remote: false, data: { 'omeka-import' => '', 'method' => 'post', 'type' => 'json' }, class: 'omeka-collection-item_import')
-            =svg_symbol '#icon-plus-sign', class: 'icon'
-            span Choose
+          =link_to({ controller: 'omeka_items', action: 'create', omeka_site_id: @omeka_site.id, client_item_id: item.data.id }, remote: false, data: { 'omeka-import' => '', 'method' => 'post', 'type' => 'json' })
+            =svg_symbol '#icon-check-sign', class: 'icon'
+            span Load Item
+        -else
+          =link_to({ controller: 'omeka_items', action: 'show', omeka_site_id: @omeka_site.id, client_item_id: item.data.id })
+            =svg_symbol '#icon-check-sign', class: 'icon'
+            span Load Item
