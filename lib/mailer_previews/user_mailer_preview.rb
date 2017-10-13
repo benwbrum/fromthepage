@@ -4,4 +4,8 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.upload_finished(DocumentUpload.last)
   end
 
+  def new_owner
+    UserMailer.new_owner(User.last, "testing")
+  end
+
 end

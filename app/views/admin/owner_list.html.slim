@@ -4,6 +4,8 @@
   =search_field_tag :search, params[:search], placeholder: 'Search Owners...'
   =button_tag 'Search', :name => nil
 
+p 
+ =link_to 'Edit Owner Welcome Email', { :controller => 'admin', :action => 'new_owner' }, 'data-litebox' => ''
 
 table.admin-grid.datagrid.striped
   thead

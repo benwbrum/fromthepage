@@ -120,6 +120,10 @@ class AdminController < ApplicationController
 
   end
 
+  def new_owner
+    @text = PageBlock.find_by(view: "new_owner").html
+  end
+
   def owner_list
     @collections = Collection.all
     #@owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
@@ -128,6 +132,7 @@ class AdminController < ApplicationController
     else
       @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     end
+
   end
 
 end
