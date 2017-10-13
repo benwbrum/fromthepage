@@ -1,3 +1,4 @@
+=begin
 require 'drb'
 require 'rmagick'
 require File.dirname(__FILE__) + '/../image_helper.rb'
@@ -100,3 +101,4 @@ class ImageTransformerWorker < BackgrounDRb::Rails
 
 
 end
+=end

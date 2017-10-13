@@ -18,7 +18,6 @@ class AdminController < ApplicationController
     @works = Work.all
     @ia_works = IaWork.all
     @pages = Page.all
-    @image_sets = ImageSet.all
 
     @users = User.all
     @owners = @users.select {|i| i.owner == true}

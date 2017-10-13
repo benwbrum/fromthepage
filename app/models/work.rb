@@ -160,7 +160,7 @@ class Work < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    string.truncate(230, separator: ' ', omission: '')
+    string = string.truncate(230, separator: ' ', omission: '')
     super.gsub('_', '-')
   end
 

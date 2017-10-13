@@ -12,29 +12,120 @@ class ScCollectionsController < ApplicationController
   def search_pontiiif
     search_param = params[:search_param]
     at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
-    redirect_to :action => :explore, :at_id => at_id
+    redirect_to :action => :explore_collection, :at_id => at_id
   end
-
+=begin
   def explore
     at_id = CGI::unescape(params[:at_id])
     @sc_collection = ScCollection.collection_for_at_id(at_id)
   end
+=end
+  def import
+    at_id = params[:at_id]
+    begin
+      service = find_service(at_id)
 
-  def explore_manifest
-    at_id = CGI::unescape(params[:at_id])
-    @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    if service["@type"] == "sc:Collection"
+      @sc_collection = ScCollection.collection_for_at_id(at_id)
+      @collection = set_collection
+      render 'explore_collection', at_id: at_id
+
+    elsif service["@type"] == "sc:Manifest"
+      @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+      find_parent = @sc_manifest.service["within"]
+      if find_parent.nil?
+        @sc_collection = nil
+      else
+        parent_at_id = @sc_manifest.service["within"]["@id"]
+        unless parent_at_id.nil?
+          @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
+        else
+          @sc_collection = nil
+        end
+      end
+      #this allows jquery to recover if there is no parent collection
+      if @sc_collection
+        @label = @sc_collection.label
+        @col = @sc_collection.collection
+      else
+        @label = nil
+        @col = nil
+      end
+      render 'explore_manifest', at_id: at_id
+    end
+    rescue => e
+      flash[:error] = "Please enter a valid IIIF manifest URL."
+      redirect_to :back
+    end
+
   end
 
-  def import_manifest
-    at_id = CGI::unescape(params[:at_id])
+  def explore_manifest
+    at_id = params[:at_id]
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    @collection = set_collection
+    if @sc_collection
+      @label = @sc_collection.label
+      @col = @sc_collection.collection
+    else
+      @label = nil
+      @col = nil
+    end
+  end
+
+  def explore_collection
+    at_id = params[:at_id]
+    @sc_collection = ScCollection.collection_for_at_id(at_id)
+    @collection = set_collection
+  end
+
+
+  def import_collection
+    #map an array of at_ids for the selected manifests
+    manifest_array = params[:manifest_id].keys.map {|id| id}
+    sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
+
+    collection_id = params[:collection_id]
+    #if collection id is set to sc_collection or no collection is set,
+    # create a new collection with sc_collection label
+    unless collection_id == 'sc_collection'    
+      collection = Collection.find_by(id: params[:collection_id])
+    end
+
+    if collection.nil?
+      collection = create_collection(sc_collection, current_user)
+    end
+    #get a list of the manifests to pass to the rake task
+    manifest_ids = manifest_array.join(" ")
+    #kick off the rake task here, then redirect to the collection
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection.id},#{current_user.id}] --trace >> #{log_file} &"
+    logger.info rake_call
+    system(rake_call)
+    #flash notice about the rake task
+    flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
+
+    ajax_redirect_to collection_path(collection.owner, collection)
+  end
+
+  def log_file
+    env = Rails.env.downcase
+    "#{Rails.root}/log/#{env}.log"
+  end
+
+  def create_collection(sc_collection, current_user)
+    collection = Collection.new
+    collection.owner = current_user
+    collection.title = sc_collection.label.truncate(255, separator: ' ', omission: '')
+    collection.save!
+    sc_collection.update_column(:collection_id, collection.id)
+    return collection
   end
 
   def convert_manifest
     at_id = params[:at_id]
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
     work = nil
-    if params[:use_parent_collection]
+    if params[:sc_manifest][:collection_id] == 'sc_collection'
       set_sc_collection
       work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
     else
@@ -86,6 +177,22 @@ class ScCollectionsController < ApplicationController
 
     def sc_collection_params
       params.require(:sc_collection).permit(:collection_id, :context)
+    end
+
+    def set_collection
+      #used to add new collections to select box on import
+      if session[:iiif_collection]
+        @collection = Collection.find_by(id: session[:iiif_collection])
+        session[:iiif_collection]=nil
+        return @collection
+      end
+    end
+
+    def find_service(at_id)
+      connection = open(at_id)
+      manifest_json = connection.read
+      service = IIIF::Service.parse(manifest_json)
+      return service
     end
     
 end

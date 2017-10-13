@@ -1,8 +1,0 @@
-.litebox-embed(style="width:550px")
-  h1 Append Image Set
-  p =="Please choose an image set from the list below that will be appended to &ldquo;#{@image_set.summary}&rdquo; image set."
-  =form_tag({ :action => 'append' }) do
-    =hidden_field_tag :image_set_id, @image_set.id
-    p =select_tag 'set_to_append_id', options_from_collection_for_select(@left_sets, 'id', lambda { |set| "Image set ##{set.id} - #{set.summary}" }), size: '10'
-    .aright
-      =button_tag 'Continue', class: 'big'
