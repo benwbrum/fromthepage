@@ -16,6 +16,7 @@ gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
 gem 'mysql2','0.3.21'
+gem 'tzinfo-data'
 
 gem 'recaptcha', '0.3.6'
 
