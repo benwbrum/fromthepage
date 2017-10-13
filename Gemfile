@@ -15,7 +15,7 @@ gem 'capistrano-rails', '= 1.1.3'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
-gem 'mysql2','0.3.16'
+gem 'mysql2','0.3.21'
 
 gem 'recaptcha', '0.3.6'
 
