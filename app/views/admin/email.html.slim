@@ -1,0 +1,9 @@
+=render(:partial => 'header', :locals => { :selected => 6 })
+
+h3 New Owner Welcome Email
+
+p
+  =raw @text
+
+p 
+ =link_to 'Edit Owner Welcome Email', { :controller => 'admin', :action => 'new_owner' }, 'data-litebox' => '', class: 'button'

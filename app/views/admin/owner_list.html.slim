@@ -1,11 +1,8 @@
-=render(:partial => 'header', :locals => { :selected => 6 })
+=render(:partial => 'header', :locals => { :selected => 3 })
 
 =form_tag({:controller => 'admin', :action => 'owner_list'}, method: :get, enforce_utf8: false, class: 'collection-search') do
   =search_field_tag :search, params[:search], placeholder: 'Search Owners...'
   =button_tag 'Search', :name => nil
-
-p 
- =link_to 'Edit Owner Welcome Email', { :controller => 'admin', :action => 'new_owner' }, 'data-litebox' => ''
 
 table.admin-grid.datagrid.striped
   thead

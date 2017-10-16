@@ -2,6 +2,7 @@
 class CollectionController < ApplicationController
   include ContributorHelper
   include AddWorkHelper
+  include ErrorHelper
 
   public :render_to_string
 
@@ -65,6 +66,17 @@ class CollectionController < ApplicationController
     @user.owner = true
     @user.save!
     @collection.owners << @user
+    if SMTP_ENABLED
+      begin
+        text = PageBlock.find_by(view: "new_owner").html
+        UserMailer.new_owner(@user, text)
+      rescue StandardError => e
+        log_smtp_error(e, current_user)
+      end
+    end
+
+
+
     redirect_to action: 'edit', collection_id: @collection.id
   end
 

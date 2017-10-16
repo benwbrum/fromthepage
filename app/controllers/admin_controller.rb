@@ -4,7 +4,7 @@ class AdminController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner]
 
   def authorized?
     unless user_signed_in? && current_user.admin
@@ -120,8 +120,21 @@ class AdminController < ApplicationController
 
   end
 
+  def email
+    @text = PageBlock.find_by(view: "new_owner").html
+  end
+
   def new_owner
     @text = PageBlock.find_by(view: "new_owner").html
+  end
+
+  def welcome_text
+    block = PageBlock.find_by(view: "new_owner")
+    new_text = params[:admin][:welcome_text]
+    block.html = new_text
+    block.save!
+    flash[:notice] = "New owner email has been updated"
+    ajax_redirect_to({ :action => 'email' })
   end
 
   def owner_list
