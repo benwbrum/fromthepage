@@ -2,7 +2,6 @@
 class CollectionController < ApplicationController
   include ContributorHelper
   include AddWorkHelper
-  include ErrorHelper
 
   public :render_to_string
 

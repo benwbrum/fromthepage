@@ -1,4 +1,6 @@
 class AdminController < ApplicationController
+  include ErrorHelper
+
   before_filter :authorized?
 
   PAGES_PER_SCREEN = 20
