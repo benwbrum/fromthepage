@@ -69,14 +69,11 @@ class CollectionController < ApplicationController
     if SMTP_ENABLED
       begin
         text = PageBlock.find_by(view: "new_owner").html
-        UserMailer.new_owner(@user, text)
+        UserMailer.new_owner(@user, text).deliver!
       rescue StandardError => e
         log_smtp_error(e, current_user)
       end
     end
-
-
-
     redirect_to action: 'edit', collection_id: @collection.id
   end
 

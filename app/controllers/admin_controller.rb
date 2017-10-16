@@ -57,9 +57,21 @@ class AdminController < ApplicationController
   end
 
   def update_user
+    owner = @user.owner
     if @user.update_attributes(params[:user])
+      if owner == false && @user.owner == true
+        if SMTP_ENABLED
+          begin
+            text = PageBlock.find_by(view: "new_owner").html
+            UserMailer.new_owner(@user, text).deliver!
+          rescue StandardError => e
+            log_smtp_error(e, current_user)
+          end
+        end
+      end        
+
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to({ :action => 'user_list' })
+      ajax_redirect_to :action => 'user_list'
     else
       render :action => 'edit_user'
     end

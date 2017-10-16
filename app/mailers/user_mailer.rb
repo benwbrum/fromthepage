@@ -19,7 +19,7 @@ class UserMailer < ActionMailer::Base
   def new_owner(user, text)
     @owner = user
     @text = text
-    mail from: SENDING_EMAIL_ADDRESS, to: @owner.email, subject: "New FromThePage Owner"
+    mail to: @owner.email, subject: "New FromThePage Owner"
   end
 
 
