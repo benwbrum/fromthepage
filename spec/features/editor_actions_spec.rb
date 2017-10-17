@@ -56,7 +56,7 @@ describe "editor actions" , :order => :defined do
 
   it "looks at a work" do
     visit collection_path(@collection.owner, @collection)
-    click_link @work.title
+    page.find('.collection-work_title', text: @work.title).click_link
     expect(page).to have_content(@page.title)
     #Check the tabs in the work
     #About
