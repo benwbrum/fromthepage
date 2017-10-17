@@ -1,7 +1,7 @@
 namespace :fromthepage do
   desc "take the ryan white metadata xml file and generate names and descriptions"
   task process_xml: :environment do
-    doc = File.open("RWL.xml") { |f| Nokogiri::XML(f) }
+    doc = File.open("RWL_subset.xml") { |f| Nokogiri::XML(f) }
     # for each record 
     doc.xpath("//record").each do |record|
 	    # get a work name
@@ -9,7 +9,7 @@ namespace :fromthepage do
 	    #print "\n" + name + "\n"
 	    #print "\n" + record.xpath("spatial").text + "\n"
 	    # create a directory with the work name 
-	    directory = "tmp/" + name
+	    directory = "tmp/rwl/" + name
 	    begin
 		    Dir.mkdir(directory)
 		rescue => e
@@ -25,11 +25,11 @@ namespace :fromthepage do
 	    file.write("created_on_date: " + created + "\n")
 	    spatial = record.xpath("spatial").text
 	    if spatial.include? "Indiana" then
-		    file.write("document_set:\n\t- Indiana")
+		    file.write("document_set:\n   - Indiana")
 		elsif spatial.include? "United States" then
-			file.write("document_set:\n\t- United States")
+			file.write("document_set:\n   - United States")
 		else
-			file.write("document_set:\n\t- Other")
+			file.write("document_set:\n   - Other")
 		end
 		file.write("\nlocation_of_composition: " + record.xpath("spatial").text)
 		author = record.xpath("creator").min_by {|a| a.text.size}.text + " "
@@ -72,9 +72,16 @@ namespace :fromthepage do
 	    record.xpath("structure/page").each do |page|
 		    # get the filename for the page 
 		     pageptr = page.xpath("pageptr").first.text #filename, sorta
-		     #print "\t " + pageptr
-		    # get the page name 
-		    # convert the image file to the page_name.jpg in the directory above
+		     # get the page name 
+		     # add 1 to pageptr slap a .jp2 on the end
+		     filename = "#{(pageptr.to_i + 1).to_s}"
+		     print "\t " + filename 
+		     # convert the image file to the page_name.jpg in the directory above
+		     # convert images/10099.jp2 -quality 20 directory/10099.jpg
+		     convertcommand = "convert images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
+		     print "\t" + convertcommand
+		     system(convertcommand)
+		     # print "\t " + pageptr
 		end
 	end
 end
