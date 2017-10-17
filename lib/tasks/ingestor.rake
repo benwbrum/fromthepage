@@ -178,6 +178,8 @@ namespace :fromthepage do
     print "\tconvert_to_work collection = #{document_upload.collection.title}\n"
     print "\tconvert_to_work default title = #{File.basename(path).ljust(3,'.')}\n"
     print "\tconvert_to_work looking for metadata.yml in #{File.join(File.dirname(path), 'metadata.yml')}\n"
+    
+    
     if File.exist? File.join(path, 'metadata.yml')
       yaml = YAML.load_file(File.join(path, 'metadata.yml'))
     elsif File.exist? File.join(path, 'metadata.yaml')
@@ -192,9 +194,10 @@ namespace :fromthepage do
 #    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
     
-    yaml.keep_if { |e| WHITELIST.include? e }
-
-    print "\tconvert_to_work whitelisted metadata.yml values \n#{yaml.to_s}\n"
+    if yaml
+      yaml.keep_if { |e| WHITELIST.include? e }
+      print "\tconvert_to_work whitelisted metadata.yml values \n#{yaml.to_s}\n"
+    end
     work = Work.new(yaml)
     work.owner = document_upload.user
     work.collection = document_upload.collection
