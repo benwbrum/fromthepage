@@ -1,6 +1,7 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
 //p =link_to 'Anonymous Sessions', { :controller => 'admin', :action => 'session_list' }
+=label_tag :search, "Search users", class: "hidden"
 
 =form_tag({:controller => 'admin', :action => 'user_list'}, method: :get, enforce_utf8: false, class: 'collection-search') do
   =search_field_tag :search, params[:search], placeholder: 'Search Users...'

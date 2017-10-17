@@ -17,6 +17,7 @@
       .user-bubble_form_footer
         span.user-bubble_form_error
         =f.button 'Submit'
+        =f.label :body, 'Note body', class: 'hidden'
 
   -content_for :javascript
     javascript:

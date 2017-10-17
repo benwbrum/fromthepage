@@ -14,15 +14,17 @@
     }
     .legend {
       margin: 0;
-    }
-    [data-prefix]:before {
       color: $bodyFgLight;
       display: inline-block;
     }
-    [data-prefix]:not(:empty):before {
-      margin-right: 10px;
-      content: attr(data-prefix)':';
-    }
+    //[data-prefix]:before {
+    //  color: $bodyFgLight;
+    //  display: inline-block;
+    //}
+    //[data-prefix]:not(:empty):before {
+    //  margin-right: 10px;
+    //  content: attr(data-prefix)':';
+    //}
   }
   &_page {
     width: 100%;

@@ -19,7 +19,8 @@ h1 Manage Archive.org Import
               =link_to 'Conceal preceding pages', { :action => 'mark_beginning', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
               =link_to 'Conceal following pages', { :action => 'mark_end', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
           h5.legend.legend-left
-            span(data-prefix="Page #{page_index} of #{pages_total}") =leaf.page_number
+              span Page #{page_index} of #{pages_total}
+              =leaf.page_number
 
         .ia-import_page
           .ia-import_image =image_tag(leaf.small_url)
@@ -48,6 +49,6 @@ h1 Manage Archive.org Import
           span Use OCR text for page contents?
         .ia-form_help Select this check-box to populate each page's initial transcript with the contents of the corresponding OCR.
       .ia-form_field
-        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -', required: true
+        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -', required: true, 'aria-label' => 'Select a collection'
       =button_tag 'Publish Work', class: 'ia-form_submit'
       .ia-form_help Once you've got titles and leaves ready, click Publish to convert the book to a ready-to-transcribe FromThePage work. This process will take several minutes to run.
