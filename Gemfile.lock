@@ -231,6 +231,9 @@ GEM
       rspec-support (~> 3.0.0)
     rspec-support (3.0.4)
     rubyzip (1.2.0)
+    rvm1-capistrano3 (1.4.0)
+      capistrano (~> 3.0)
+      sshkit (>= 1.2)
     safely_block (0.2.0)
       errbase
     sass (3.4.22)
@@ -323,6 +326,7 @@ DEPENDENCIES
   rmagick
   rspec-rails
   rubyzip
+  rvm1-capistrano3
   sass-rails (~> 5.0.0)
   shoulda
   slim (~> 3.0.0)
