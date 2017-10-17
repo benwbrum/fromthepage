@@ -1,6 +1,6 @@
 #require_dependency "user"
 require 'fileutils'
-require 'RMagick'
+require 'rmagick'
 require 'zip'
 include Magick
 

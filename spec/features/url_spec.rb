@@ -138,32 +138,32 @@ describe "URL tests" do
   end
 
   it "edits a user slug" do
-    login_as(@user, :scope => :user)
+    login_as(@owner, :scope => :user)
     visit dashboard_watchlist_path
-    slug = "new-#{@user.slug}"
+    slug = "new-#{@owner.slug}"
     page.find('a', text: 'Your Profile').click
     #check original path
-    expect(page.current_path).to eq "/#{@user.slug}"
-    expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("User since #{@user.created_at.strftime("%b %d, %Y")}")
+    expect(page.current_path).to eq "/#{@owner.slug}"
+    expect(page).to have_content(@owner.display_name)
+    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     page.find('a', text: 'Edit Profile').click
     expect(page).to have_content("Update User Profile")
-    expect(page).to have_field('user[slug]', with: @user.slug)
-    page.fill_in 'user_slug', with: "new-#{@user.slug}"
+    expect(page).to have_field('user[slug]', with: @owner.slug)
+    page.fill_in 'user_slug', with: "new-#{@owner.slug}"
     click_button('Update Profile')
-    expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("User since #{@user.created_at.strftime("%b %d, %Y")}")
-    expect(User.find_by(id: @user.id).slug).to eq ("#{slug}")
+    expect(page).to have_content(@owner.display_name)
+    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
+    expect(User.find_by(id: @owner.id).slug).to eq ("#{slug}")
     #test new path
     visit "/#{slug}"
-    expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("User since #{@user.created_at.strftime("%b %d, %Y")}")
+    expect(page).to have_content(@owner.display_name)
+    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     #test old path
     #this variable is stored at the beginning of the test, so it's the original
     visit dashboard_path
     visit "/#{@user.slug}"
     expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("User since #{@user.created_at.strftime("%b %d, %Y")}")
+    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     #blank out user slug
     visit dashboard_watchlist_path
     page.find('a', text: 'Your Profile').click
@@ -171,7 +171,7 @@ describe "URL tests" do
     expect(page).to have_content("Update User Profile")
     page.fill_in 'user_slug', with: ""
     click_button('Update Profile')
-    expect(User.find_by(id: @user.id).slug).to eq @user.slug
+    expect(User.find_by(id: @owner.id).slug).to eq @owner.slug
   end
 
 end

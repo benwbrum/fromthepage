@@ -17,3 +17,11 @@ fourth:
 fifth:
   article_id: 5
   category_id: 5
+
+sixth:
+  article_id: 6
+  category_id: 1
+
+seventh:
+  article_id: 7
+  category_id: 4

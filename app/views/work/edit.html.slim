@@ -2,7 +2,7 @@
 
 .columns
   article.maincol
-    =form_for :work, url: { action: :update, id: @work.id }, html: { 'data-areyousure' => '' } do |f|
+    =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
       table.form
         tr.big
           th =f.label :title, 'Work title'
@@ -163,5 +163,25 @@
         $('#revert').prop('disabled', true);
 
         });
+      });
+    });
+
+    $(function(){
+      $("#update").on('submit', function(){
+        var new_id = $("#work_collection_id").val();
+        var collection_id = "#{@work.collection.id}"
+        var subjects = "#{@subjects}"
+        if (new_id != collection_id){
+        //this is a string because it's interpolated from rails
+        //if there are subject links, confirm before move
+          if (subjects == 'true'){
+            var response = confirm("Are you sure you want to move this work to a new collection?  You will lose all subject links.");
+            //if cancel, set the collection back to the original
+            if (response == false){
+              $('#work_collection_id').val(collection_id);
+              return;
+            }
+          };
+        };
       });
     });

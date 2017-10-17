@@ -11,19 +11,28 @@ class UserController < ApplicationController
   def update_profile
   end
 
+  NOTOWNER = "NOTOWNER"
   def update
-    if params[:user][:slug] == ""
-      @user.update(params[:user].except(:slug))
-      login = @user.login.parameterize
-      @user.update(slug: login)
-    else
-      @user.update(params[:user])
-    end
-    if @user.save!
-      flash[:notice] = "User profile has been updated"
-      ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
-    else
-      render :action => 'update_profile'
+    # spam check
+    if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
+      logger.error("Possible spam: deleting user #{@user.email}")
+      @user.destroy!
+      redirect_to dashboard_path
+    else 
+      params[:user].delete_if { |k,v| v == NOTOWNER }
+      if params[:user][:slug] == ""
+        @user.update(params[:user].except(:slug))
+        login = @user.login.parameterize
+        @user.update(slug: login)
+      else
+        @user.update(params[:user])
+      end
+      if @user.save!
+        flash[:notice] = "User profile has been updated"
+        ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
+      else
+        render :action => 'update_profile'
+      end
     end
   end
 

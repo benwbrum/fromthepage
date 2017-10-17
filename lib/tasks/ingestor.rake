@@ -153,19 +153,56 @@ namespace :fromthepage do
     print "Finished ingest_tree for #{temp_dir}\n"
     
   end
+
+  WHITELIST =  [
+   "title",
+   "description",
+   "restrict_scribes",
+   "physical_description",
+   "document_history",
+   "permission_description",
+   "location_of_composition",
+   "author",
+   "transcription_conventions",
+   "scribes_can_edit_titles",
+   "supports_translation",
+   "translation_instructions",
+   "pages_are_meaningful",
+   "slug",
+  ]
+
   
   def convert_to_work(document_upload, path)
     print "convert_to_work creating database record for #{path}\n"
     print "\tconvert_to_work owner = #{document_upload.user.login}\n"
     print "\tconvert_to_work collection = #{document_upload.collection.title}\n"
-    print "\tconvert_to_work title = #{File.basename(path).ljust(3,'.')}\n"
+    print "\tconvert_to_work default title = #{File.basename(path).ljust(3,'.')}\n"
+    print "\tconvert_to_work looking for metadata.yml in #{File.join(File.dirname(path), 'metadata.yml')}\n"
+    
+    
+    if File.exist? File.join(path, 'metadata.yml')
+      yaml = YAML.load_file(File.join(path, 'metadata.yml'))
+    elsif File.exist? File.join(path, 'metadata.yaml')
+      yaml = YAML.load_file(File.join(path, 'metadata.yaml'))
+    else
+      print "\tconvert_to_work no metadata.yml file; using default settings\n"
+      yaml = nil
+    end
+          
+    print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
+    
 #    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
     
-    work = Work.new
+    if yaml
+      yaml.keep_if { |e| WHITELIST.include? e }
+      print "\tconvert_to_work whitelisted metadata.yml values \n#{yaml.to_s}\n"
+    end
+    work = Work.new(yaml)
     work.owner = document_upload.user
     work.collection = document_upload.collection
-    work.title = File.basename(path).ljust(3,'.')
+
+    work.title = File.basename(path).ljust(3,'.') unless work.title
     work.save!
     
     new_dir_name = File.join(Rails.root,
@@ -178,13 +215,12 @@ namespace :fromthepage do
     FileUtils.mkdir_p(new_dir_name)
     IMAGE_FILE_EXTENSIONS.each do |ext|
 #      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
-      FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
-      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+    FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
+    Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
 #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
     # at this point, the new dir should have exactly what we want-- only image files that are adequatley compressed.
-    work.description = work.title
     ls = Dir.glob(File.join(new_dir_name, "*")).sort
     GC.start
     ls.each_with_index do |image_fn,i|

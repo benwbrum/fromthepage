@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "editor actions" do
+describe "editor actions" , :order => :defined do
+  Capybara.javascript_driver = :webkit
 
   before :all do
     @owner = User.find_by(login: OWNER)
@@ -128,16 +129,6 @@ describe "editor actions" do
     expect(page).to have_content("Test Translation")
   end
 
-  it "adds a note" do
-    visit "/display/display_page?page_id=#{@page.id}"
-    note = page.find('#note_body')
-    fill_in 'note_body', with: "Test note"
-    click_button('Submit')
-    expect(page).to have_content "Note has been created"
-    #delete the note - requires javascript
-  #  page.find('#note_body', text: "Test note")
-  end
-  
   it "checks a plain user profile" do
     login_as(@user, :scope => :user)
     visit dashboard_path
@@ -153,6 +144,45 @@ describe "editor actions" do
     expect(page.find('.dropdown')).not_to have_content @owner.display_name
     expect(page).to have_content @user.display_name
     expect(page).not_to have_selector('a', text: 'Undo Login As')
+  end
+
+  it "adds a note" do
+    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+    fill_in 'Write a new note...', with: "Test note"
+    click_button('Submit')
+    expect(page).to have_content "Note has been created"
+    click_button('Save Changes')
+    expect(page).to have_content('Saved')
+  end
+
+  it "tries to save transcription with unsaved note", :js => true do
+    col = Collection.second
+    test_page = col.works.first.pages.first
+    visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
+    text = Page.find_by(id: test_page.id).source_text
+    fill_in('Write a new note...', with: "Test two")
+    fill_in 'page_source_text', with: "Attempt to save"
+    message = accept_alert do
+      click_button('Save Changes')
+    end
+    expect(message).to have_content("You have unsaved notes.")
+    new_text = Page.find_by(id: test_page.id).source_text
+    #because of the note, page.source_text should not have changed
+    expect(new_text).to eq text
+    #save the note
+    click_button('Submit')
+    expect(test_page.notes.count).not_to be nil
+  end
+
+  it "deletes a note", :js => true do
+    col = Collection.second
+    test_page = col.works.first.pages.first
+    visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
+    title = test_page.notes.last.id
+    page.find('.user-bubble_content', text: "Test two")
+    page.click_link('', :href => "/notes/#{title}")
+    sleep(3)
+    expect(Note.find_by(id: title)).to be_nil
   end
 
 end
