@@ -22,6 +22,14 @@
         =check_box_tag(:hide_completed, 0, checked: true)
       p
 
+    -if @collection.hide_completed && @collection.pct_completed == 100
+      h5.collection-work#complete
+        |All works are fully transcribed.
+        |&nbsp;&nbsp;
+        =link_to "Click to show transcribed works", '#'
+        br
+    -else
+
     -@collection.works.includes(:work_statistic).each do |work|
       .collection-work.hidden
         .collection-work_image
@@ -86,9 +94,9 @@
       var hideCompleted = #{@collection.hide_completed};
       $(hideWorks(hideCompleted));
     });
+
     $(function(){
       var showCheckbox = $('#hide_completed')
-
       $(function(){
         $(showCheckbox).click(function(e){
           var hide;
@@ -98,24 +106,17 @@
             hide = true;
           };
           hideWorks(hide);
+          if(hide == false){
+            $('#complete').hide();
+          }
         });
       });
     });
 
-    function hideWorks(param){
-      var showOrHide = param
-      var work = $('.collection-work');
-      if (showOrHide){
-        work.each(function(i){
-          var completed = $(this).find('.completed').text();
-          if (completed == "Completed"){
-            $(this).hide();
-          } else {
-            $(this).show();
-          };
-        });
-      } else {
-        $(work).show();
-      };
-      work.removeClass("hidden")
-    }
+    $(function(){
+      $('#complete').click(function(){
+        $('#hide_completed').prop('checked', true);
+        hideWorks(false);
+        $(this).hide();
+      });
+    });
