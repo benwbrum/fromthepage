@@ -17,14 +17,13 @@ class OmekaSitesController < ApplicationController
   # GET /omeka_sites/items
   def items
     @omeka_site = OmekaSite.find(params[:omeka_site_id])
-
-    if params[:collection_id].present?
-      @omeka_items = @omeka_site.client.get_collection(params[:collection_id]).items
+    if params[:omeka_col_id].present?
+      @omeka_items = @omeka_site.client.get_collection(params[:omeka_col_id]).items
     else
       @omeka_items = @omeka_site.client.get_all_items().reject { |i| i.data.collection != nil }
     end
 
-    @imported_items = OmekaItem.where(omeka_collection_id: params[:collection_id]).map { |item| item.omeka_id }
+    @imported_items = OmekaItem.where(omeka_collection_id: params[:omeka_col_id]).map { |item| item.omeka_id }
 
     render partial: 'items.html', locals: { omeka_items: @omeka_items, imported_items: @imported_items }
   end

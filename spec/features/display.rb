@@ -1,3 +1,5 @@
+#this code needs to go into the IIIF-collections spec in the IIIF-collections branch (because it needs an imported collection to work correctly.)  I'm pushing up the code, but commenting it out, and will add it to IIIF collections once it can all be merged together.
+=begin
 require 'spec_helper'
 
 describe "uploads data for collections", :order => :defined do
@@ -12,32 +14,6 @@ describe "uploads data for collections", :order => :defined do
     login_as(@owner, :scope => :user)
   end
 
-  it "imports explores IIIF universe" do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find('a', text: 'Explore').click
-    expect(page).to have_content("Collection: IIIF Universe")
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content("Manifests")
-  end
-
-  it "imports an IIIF collection", :js => true do
-    #test import of collection
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.fill_in 'at_id', with: @at_id
-    click_button('Import')
-    expect(page).to have_content(@at_id)
-    expect(page).to have_content("Manifests")
-    select("Create Collection", :from => 'manifest_import')
-    click_button('Import Checked Manifests')
-    expect(page.find('.flash_message')).to have_content("IIIF collection import is processing")
-    expect(page).to have_content("Works")
-    sleep(15)
-    expect(Collection.last.title).to have_content("TextGrid")
-    expect(Collection.last.works.count).not_to be_nil
-  end
-
   it "tests for transcribed works", :js => true do
     col = Collection.last
     works = col.works
@@ -50,17 +26,15 @@ describe "uploads data for collections", :order => :defined do
     visit collection_path(col.owner, col)
     expect(page).to have_content("All works are fully transcribed")
     page.find('a', text: "Click to show transcribed works").click
-    sleep(2)
     expect(page).not_to have_content("All works are fully transcribed")
     expect(page).to have_content(works.first.title)
     page.uncheck('hide_completed')
-    sleep(2)
     expect(page).to have_content("All works are fully transcribed")
     expect(page).not_to have_content(works.first.title)
     page.check('hide_completed')
-    sleep(2)
     expect(page).not_to have_content("All works are fully transcribed")
     expect(page).to have_content(works.first.title)
   end
 
 end
+=end

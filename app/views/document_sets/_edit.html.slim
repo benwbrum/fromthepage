@@ -11,7 +11,7 @@
         th =f.label :slug, 'URL'
         td =f.text_field :slug, value: @document_set.slug
       tr
-        th
+        th.hidden URL
         td 
           |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@document_set.owner.slug}/#{@document_set.slug}</b>.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words.
       tr
