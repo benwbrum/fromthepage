@@ -322,7 +322,7 @@ describe "document sets", :order => :defined do
     #make sure it's right if you click on the page from the work
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    click_link(@page.title)
+    page.find('.work-page_title', text: @page.title).click_link
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     #so that it doesn't matter if the page has been transcribed, go directly to overview

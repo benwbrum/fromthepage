@@ -21,8 +21,9 @@ table.admin-grid.datagrid.striped
           -if document.collection.present?
             p.fgfaded(data-prefix="Collection: ")
               =link_to(document.collection.title, { controller: 'collection', action: 'show', collection_id: document.collection.id })
-          .small.fgfaded(data-prefix="File Name: ")
-            =link_to(document.file, document.file.to_s, target: '_blank')
+          -unless document.status == 'finished'
+            .small.fgfaded(data-prefix="File Name: ")
+              =link_to(document.file, document.file.to_s, target: '_blank')
         td.nowrap
           p
             =document.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
