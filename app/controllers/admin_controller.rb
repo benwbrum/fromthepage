@@ -134,21 +134,21 @@ class AdminController < ApplicationController
 
   end
 
-  def email
-    @text = PageBlock.find_by(view: "new_owner").html
+  def settings
+    @email_text = PageBlock.find_by(view: "new_owner").html
   end
 
-  def new_owner
-    @text = PageBlock.find_by(view: "new_owner").html
-  end
-
-  def welcome_text
+  def update
+    #need the original email text to update
     block = PageBlock.find_by(view: "new_owner")
-    new_text = params[:admin][:welcome_text]
-    block.html = new_text
-    block.save!
-    flash[:notice] = "New owner email has been updated"
-    ajax_redirect_to({ :action => 'email' })
+    if params[:admin][:welcome_text] != block.html
+      block.html = params[:admin][:welcome_text]
+      block.save!
+    end
+
+    flash[:notice] = "Admin settings have been updated"
+
+    redirect_to action: 'settings'
   end
 
   def owner_list

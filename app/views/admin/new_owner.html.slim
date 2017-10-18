@@ -1,8 +1,0 @@
-.litebox-embed(style="width:650px")
-  h1 Edit New Owner Email
-
-  =form_for :admin, url: {action: :welcome_text} do |f|
-    =f.text_area :welcome_text, rows: 12, value: @text
-    =f.label :welcome_text, "Edit text", class: 'hidden'
-    .aright =f.button 'Save Changes'
-
