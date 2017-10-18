@@ -296,8 +296,9 @@ namespace :fromthepage do
           print "\t\t\tdocument_sets_from_yaml creating document set #{set_title}"
           ds = DocumentSet.new
           ds.title = set_title
-          ds.collection=collection
-          ds.owner_user_id=collection.owner_user_id
+          ds.collection = collection
+          ds.is_public = !collection.restricted # inherit public setting of parent collection
+          ds.owner_user_id = collection.owner_user_id
           ds.save!
         end
         document_sets << ds
