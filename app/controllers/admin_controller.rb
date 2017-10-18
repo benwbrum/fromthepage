@@ -21,6 +21,7 @@ class AdminController < ApplicationController
 
     @users = User.all
     @owners = @users.select {|i| i.owner == true}
+    @version = ActiveRecord::Migrator.current_version
 =begin
     sql_online =
       'SELECT count(DISTINCT user_id) count '+
