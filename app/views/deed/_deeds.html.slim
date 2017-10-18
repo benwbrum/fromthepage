@@ -1,9 +1,11 @@
+-long_view = local_assigns[:options][:long_view] ? local_assigns[:options][:long_view] : nil
+
 -deeds.each do |d|
   .deed-short.small
     =time_tag(d.created_at, class: 'legend legend-left')
       ="#{time_ago_in_words d.created_at} ago"
     span.deed-short_content
-      =render(:partial => 'deed/deed.html', :locals => { :deed => d })
+      =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view })
 
 small.legend
   =link_to 'Show More',
