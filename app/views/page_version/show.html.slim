@@ -24,7 +24,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
             small =version.user.display_name
 
     td.diff-version
-      h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title
+      h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title ? @selected_version.title : "Untitled"
       div(data-diff-transcription="changed" data-empty="No transcription provided")
         ==xml_to_html(@selected_version.xml_transcription)
       -if @work.supports_translation

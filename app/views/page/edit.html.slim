@@ -12,7 +12,7 @@
           td
             .input-file
               =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+              input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse a file" readonly)
               button(type="button") Browse
       .toolbar
         .toolbar_group.w100

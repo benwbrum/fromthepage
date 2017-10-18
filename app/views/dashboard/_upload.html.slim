@@ -4,13 +4,15 @@
       =validation_summary @document_upload.errors
       table.form
         tr
+          =f.label :collection_id, class: "hidden"
           td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), {prompt: '- Select a collection -'}
         tr
           td
             .input-file
-              =f.file_field :file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed'
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+              =f.file_field(:file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed', title: 'Upload file')
+              input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse files" readonly)
               button(type="button") Browse
+
       ul
         li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
         li Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
