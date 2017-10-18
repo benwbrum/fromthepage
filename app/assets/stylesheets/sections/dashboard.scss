@@ -128,10 +128,9 @@
   &:before {
     color: $fgLink;
     }
-  &:before:hover {
+  &:hover:before {
     color: $fgHover;
     }
-
 }
 
 .admin-logfile {
