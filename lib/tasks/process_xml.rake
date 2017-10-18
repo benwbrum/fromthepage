@@ -3,20 +3,21 @@ namespace :fromthepage do
   task process_xml: :environment do
     doc = File.open("RWL_subset.xml") { |f| Nokogiri::XML(f) }
     # for each record 
-    doc.xpath("//record").each do |record|
+    doc.xpath("//record").each_with_index do |record, i|
 	    # get a work name
 	    name = record.xpath("title").text
 	    #print "\n" + name + "\n"
 	    #print "\n" + record.xpath("spatial").text + "\n"
-	    # create a directory with the work name 
-	    directory = "tmp/rwl/" + name
+	    # create a directory with the work name
+	    prefix = (i / 100).to_s.rjust(6, '0') 
+	    directory = "tmp/rwl/" + prefix + "/" + name
 	    begin
-		    Dir.mkdir(directory)
-		rescue => e
-			print "\n#{e}"
-			directory = "#{directory}.dupe"
-			Dir.mkdir(directory)
-		end
+        FileUtils.mkdir_p(directory)
+  		rescue => e
+  			print "\n#{e}"
+  			directory = "#{directory}.dupe"
+  			FileUtils.mkdir_p(directory)
+  		end
 	    # get the metadata and write it to a yaml file.
 	    #print directory + "/metadata.yaml"
 		file = File.new(directory + "/metadata.yaml", 'w')
