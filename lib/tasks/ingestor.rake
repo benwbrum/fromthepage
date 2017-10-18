@@ -180,6 +180,7 @@ namespace :fromthepage do
 
   WHITELIST =  [
    "title",
+   "identifier",
    "description",
    "restrict_scribes",
    "physical_description",
@@ -217,7 +218,7 @@ namespace :fromthepage do
     
 #    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
-    
+
     if yaml
       yaml.keep_if { |e| WHITELIST.include? e }
       print "\tconvert_to_work whitelisted metadata.yml values \n#{yaml.to_s}\n"
