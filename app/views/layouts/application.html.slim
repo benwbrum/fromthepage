@@ -1,7 +1,7 @@
 -# encoding: utf-8
 
 doctype html
-html
+html lang="en-US"
   head
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
@@ -51,11 +51,11 @@ html
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo'
+          =link_to root_path, class: 'logo', title: 'Home', 'aria-label' => 'Home'
             -if USE_PNG_LOGO
-              =image_tag 'logo.png', height: '64'
+              =image_tag 'logo.png', height: '64', alt: 'Home'
             -else
-              =svg_symbol '#logo'
+              =svg_symbol '#logo', title: 'Home'
         .toolbar_group
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           =link_to 'Collections', dashboard_path, class: 'header_link'

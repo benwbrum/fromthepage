@@ -12,7 +12,7 @@
       
     h3 Related Subjects
     .article-graph
-      =image_tag(file_to_url(@article.graph_image), :usemap => '#G')
+      =image_tag(file_to_url(@article.graph_image), :usemap => '#G', alt: "Related subjects")
       ==@map
     p.fglight =="The graph displays the other subjects mentioned on the same pages as the subject &ldquo;#{@article.title}&rdquo;. If the same subject occurs on a page with &ldquo;#{@article.title}&rdquo; more than once, it appears closer to &ldquo;#{@article.title}&rdquo; on the graph, and is colored in a darker shade. The closer a subject is to the center, the more &quot;related&quot; the subjects are."
 
@@ -21,13 +21,16 @@
       table.form
         tr
           td(colspan="3")
-            label.above Limit the graph to subjects in these categories (leave blank to show all):
-            select(name="category_ids[]" size="10" multiple data-graph-category)
+            span Limit the graph to subjects in these categories (leave blank to show all):
+            =label_tag "category-select", 'Select categories', class: 'hidden'
+            select(name="category_ids[]" size="10" id="category-select" aria-label="Select categories" multiple data-graph-category)
               -@collection.categories.walk_tree do |c, level|
                 -selected = true if @categories.include?(c)
                 option(data-level=level value=c.id selected=selected) =c.title
         tr
-          td =text_field_tag('min_rank', @min_rank, type: 'number', min: 1, style: 'width:50px')
+          =label_tag 'min_rank', "Minimum number of subjects", class: 'hidden'
+          td
+            =text_field_tag('min_rank', @min_rank, type: 'number', min: 1, style: 'width:50px')
           td.w100.fglight.small =="Show related subjects that appear on at least this number of pages in common with #{@article.title}."
           th =button_tag
             =svg_symbol '#icon-refresh', class: 'icon'

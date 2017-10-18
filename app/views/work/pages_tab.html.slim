@@ -37,7 +37,7 @@
           =link_to 'Delete', { controller: 'page', action: 'delete', page_id: page.id }, data: { :confirm => 'Are you sure you want to delete this page? After deleting you won\'t be able to recover it!' }
         td.nowrap
           .work-page-position
-            =link_to({ controller: 'page', action: 'reorder_page', direction: 'up', page_id: page.id }, title: 'Move up')
-              =svg_symbol '#icon-arrow-top', class: 'icon'
-            =link_to({ controller: 'page', action: 'reorder_page', direction: 'down', page_id: page.id }, title: 'Move down')
-              =svg_symbol '#icon-arrow-bottom', class: 'icon'
+            =link_to({ controller: 'page', action: 'reorder_page', direction: 'up', page_id: page.id }, title: 'Move up', 'aria-label' => 'Move up')
+              =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Move up'
+            =link_to({ controller: 'page', action: 'reorder_page', direction: 'down', page_id: page.id }, title: 'Move down', 'aria-label' => 'Move down')
+              =svg_symbol '#icon-arrow-bottom', class: 'icon', title: 'Move down'
