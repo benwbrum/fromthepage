@@ -31,8 +31,10 @@
               td
                 i
                   =work.restrict_scribes ? 'Restricted' : 'Unrestricted'
-              td.tocenter
+              td
+                =label_tag("work_assignment[#{work.id}]", "Add to set", class: 'hidden')
                 =check_box_tag("work_assignment[#{work.id}]", "true", work.document_sets.exists?(@collection))
+
       br
       .aright =submit_tag "Save"
 
@@ -58,6 +60,7 @@
         =hidden_field_tag :collection_id, @collection.slug
         =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
         =button_tag 'Add', disabled: 'true'
+        =label_tag 'user_id', "Add Collaborator", class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.count :conditions => "collection_id = #{@collection.slug}"
         .user-label

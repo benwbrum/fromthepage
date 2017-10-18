@@ -13,10 +13,10 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
     -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
     .page-uncategorized
       h4.page-uncategorized_subject(data-prefix="Subject: ") =="&ldquo;#{article.title}&rdquo;"
-      select(data-assign-categories="#{update_article_url}" size="1" multiple)
+      select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)
         -@collection.categories.walk_tree do |c, level|
           -selected = true if article.categories.include?(c)
-          option(data-level=level value=c.id selected=selected) =c.title
+          option(data-level=level value=c.id selected=selected aria-label="options") =c.title
 
 span.legend
   -if @translation

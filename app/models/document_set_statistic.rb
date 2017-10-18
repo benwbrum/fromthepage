@@ -51,6 +51,18 @@ module DocumentSetStatistic
     Deed.where(work_id: works.ids).where(deed_type: 'ocr_corr').count
   end
 
+  def pct_completed
+    complete = 0
+    unless work_count == 0
+      self.works.includes(:work_statistic).each do |w|
+        complete += w.work_statistic.pct_completed
+      end
+      pct = complete/work_count
+    else
+      pct = 0
+    end
+    return pct
+  end
 
   def last_days_clause(last_days, column = "created_at")
     clause = ""

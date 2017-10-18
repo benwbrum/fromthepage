@@ -9,7 +9,7 @@ h1 ="Browse #{@omeka_site.title}"
           h3.headline_title =collection.dublin_core.title
           .headline_aside
             span.omeka-collection_count =pluralize(collection.data.items.count, 'item')
-            =link_to 'Click to load', { action: 'items', omeka_site_id: @omeka_site.id, collection_id: collection.data.id }, remote: true, data: { 'omeka-items' => '' }, class: 'button outline'
+            =link_to 'Click to view', { action: 'items', omeka_site_id: @omeka_site.id, omeka_col_id: collection.data.id }, remote: true, data: { 'omeka-items' => '' }, class: 'button outline'
         -if collection.dublin_core.description.present?
           p.omeka-collection_description =collection.dublin_core.description
 
