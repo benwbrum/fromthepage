@@ -23,17 +23,9 @@ namespace :fromthepage do
 		file = File.new(directory + "/metadata.yaml", 'w')
 	    file.write("identifier: " + name + "\n")
 	    created = record.xpath("created").text
-	    file.write("created_on_date: " + created + "\n")
-	    spatial = record.xpath("spatial").text
-	    if spatial.include? "Indiana" then
-		    file.write("document_set:\n   - Indiana")
-		elsif spatial.include? "United States" then
-			file.write("document_set:\n   - United States")
-		else
-			file.write("document_set:\n   - Other")
-		end
-		file.write("\nlocation_of_composition: " + record.xpath("spatial").text)
+	    file.write("created_on_date: " + created)
 		author = record.xpath("creator").min_by {|a| a.text.size}.text + " "
+		author = author.gsub ";", ","
 	    file.write("\nauthor: " + author )
 	    file.write("\ndescription: " + record.xpath("extent").text)
 	    file.write("\npermission_description: http://rightsstatements.org/page/InC-EDU/1.0/?language=en")
@@ -67,6 +59,23 @@ namespace :fromthepage do
 		end
 	    file.write("\ntitle: " + title)
 	    print title + "\n"
+	    spatial = record.xpath("spatial").text
+	    file.write("\nlocation_of_composition: " + spatial)
+	    if spatial.include? "Indiana" then
+		    file.write("\ndocument_set:\n   - Indiana")
+		elsif spatial.include? "United States" then
+			file.write("\ndocument_set:\n   - United States")
+		else
+			file.write("\ndocument_set:\n   - Other")
+		end
+		if created.blank? 
+			file.write("\n   - undated")
+		elsif (m = /^\d{4}/.match(created)) 
+			file.write("\n   - #{m}")
+		else
+			file.write("\n   - undated")
+		end	
+
 	    file.close
 	    # get each page for the work
 	    # for each page
