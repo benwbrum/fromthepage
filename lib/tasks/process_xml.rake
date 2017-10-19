@@ -2,12 +2,11 @@ namespace :fromthepage do
   desc "take the ryan white metadata xml file and generate names and descriptions"
   task process_xml: :environment do
     doc = File.open("RWL_subset.xml") { |f| Nokogiri::XML(f) }
+    errfile = File.new("tmp/rwl/image_processing_errors.log", 'w')
     # for each record 
     doc.xpath("//record").each_with_index do |record, i|
       # get a work name
       name = record.xpath("title").text
-      #print "\n" + name + "\n"
-      #print "\n" + record.xpath("spatial").text + "\n"
       # create a directory with the work name
       prefix = (i / 100).to_s.rjust(6, '0') 
       directory = "tmp/rwl/" + prefix + "/" + name
@@ -19,7 +18,6 @@ namespace :fromthepage do
         FileUtils.mkdir_p(directory)
       end
       # get the metadata and write it to a yaml file.
-      #print directory + "/metadata.yaml"
     file = File.new(directory + "/metadata.yaml", 'w')
       file.write("identifier: " + name + "\n")
       created = record.xpath("created").text
@@ -29,7 +27,6 @@ namespace :fromthepage do
       file.write("\nauthor: " + author )
       file.write("\ndescription: " + record.xpath("extent").text)
       file.write("\npermission_description: http://rightsstatements.org/page/InC-EDU/1.0/?language=en")
-    
     recipient_orig = record.xpath("unmapped")[1]
     split_recipients = recipient_orig.text.split(";")
     recipients=[]
@@ -48,7 +45,6 @@ namespace :fromthepage do
     end
     title = author.truncate(35, separator: ' ') +  "to " + recipients.join(", ")
     unless created.blank?
-      #print "\ncreate date #{created}"
       if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.match(created))
         title << " on #{Date.parse(created).strftime("%B %d, %Y")}"
       elsif (/^\d{4}\-\d{1,2}\$/.match(created))
@@ -58,7 +54,6 @@ namespace :fromthepage do
       end
     end
       file.write("\ntitle: " + title)
-      print title + "\n"
       spatial = record.xpath("spatial").text
       file.write("\nlocation_of_composition: " + spatial)
       if spatial.include? "Indiana" then
@@ -85,14 +80,20 @@ namespace :fromthepage do
          # get the page name 
          # add 1 to pageptr slap a .jp2 on the end
          filename = "#{(pageptr.to_i + 1).to_s}"
-         print "\t " + filename 
          # convert the image file to the page_name.jpg in the directory above
          # convert images/10099.jp2 -quality 20 directory/10099.jpg
          convertcommand = "convert images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
-         print "\t" + convertcommand
-         system(convertcommand)
-         # print "\t " + pageptr
+         unless system(convertcommand)
+            #write diretory name/id to a file
+            errfile.write("bad directory #{name}\n")
+            errfile.write("bad image #{filename}\n")
+            #delete directory
+            system("rm -r #{directory}")
+            #break out of each
+            break
+           end
       end #end page
     end #end record
+    errfile.close
   end #end task
 end #end namespace
