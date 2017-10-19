@@ -57,6 +57,14 @@ class DocumentSet < ActiveRecord::Base
     self.collection.footer_block
   end
 
+  def help
+    self.collection.help
+  end
+
+  def link_help
+    self.collection.link_help
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
