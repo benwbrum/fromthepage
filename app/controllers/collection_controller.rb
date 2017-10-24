@@ -52,7 +52,8 @@ class CollectionController < ApplicationController
   def show
     if @collection.restricted
       ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
-    end      
+    end
+    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
   end
 
   def owners

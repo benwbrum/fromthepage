@@ -30,7 +30,7 @@
         br
     -else
 
-    -@collection.works.includes(:work_statistic).each do |work|
+    -@works.each do |work|
       .collection-work.hidden
         .collection-work_image
           -unless work.thumbnail.nil? 
@@ -48,6 +48,9 @@
               -unless @progress_review == 0
                 span(style="width:#{@progress_review}%")
         span.completed(style="display: none;") #{@completed}
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
