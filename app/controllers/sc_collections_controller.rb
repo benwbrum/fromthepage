@@ -14,12 +14,7 @@ class ScCollectionsController < ApplicationController
     at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
     redirect_to :action => :explore_collection, :at_id => at_id
   end
-=begin
-  def explore
-    at_id = CGI::unescape(params[:at_id])
-    @sc_collection = ScCollection.collection_for_at_id(at_id)
-  end
-=end
+
   def import
     at_id = params[:at_id]
     begin
@@ -93,6 +88,10 @@ class ScCollectionsController < ApplicationController
       collection = create_collection(sc_collection, current_user)
     end
 
+    #make sure import folder exists
+    unless Dir.exist?("#{Rails.root}/public/imports")
+      Dir.mkdir("#{Rails.root}/public/imports")
+    end
     #create logfile for collection
     log_file = "#{Rails.root}/public/imports/#{collection.id}_iiif.log"
 
