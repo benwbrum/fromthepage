@@ -64,6 +64,11 @@
       =button_tag 'Search'
       =label_tag 'search_string', "Search collection", class: 'hidden'
 
+    =form_tag({:controller => 'collection', :action => 'show'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag('collection_id', @collection.id)
+      =search_field_tag :search, params[:search], placeholder: 'Search for works...'
+      =button_tag 'Search'
+      =label_tag 'search', "Search for works", class: 'hidden'
 
     .user-label
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
