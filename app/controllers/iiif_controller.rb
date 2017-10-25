@@ -311,7 +311,7 @@ private
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
         :service_id => "#{url_for(:root)}image-service/#{page.id}", 
-        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg",
+        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
         :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
