@@ -12,4 +12,5 @@ section.admin-counters
   =link_to ({ :controller => 'admin', :action => 'user_list'}) do
     .counter(data-prefix="#{number_with_delimiter @users.length}") #{'Registered user'.pluralize(@users.length)}
 
-h4.acenter="Last deed logged #{time_ago_in_words Deed.last.created_at} ago by #{Deed.last.user.display_name}"
+-unless Deed.last.nil?
+ h4.acenter="Last deed logged #{time_ago_in_words Deed.last.created_at} ago by #{Deed.last.user.display_name}"
