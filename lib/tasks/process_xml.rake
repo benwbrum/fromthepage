@@ -1,7 +1,7 @@
 namespace :fromthepage do
   desc "take the ryan white metadata xml file and generate names and descriptions"
   task process_xml: :environment do
-    doc = File.open("tmp/RWL-All.xml") { |f| Nokogiri::XML(f) }
+    doc = File.open("tmp/RWL-3rd.xml") { |f| Nokogiri::XML(f) }
     errfile = File.new("tmp/rwl/image_processing_errors.log", 'w')
     # for each record 
     doc.xpath("//record").each_with_index do |record, i|
@@ -17,60 +17,66 @@ namespace :fromthepage do
         directory = "#{directory}.dupe"
         FileUtils.mkdir_p(directory)
       end
+      file = File.new(directory + "/metadata.yaml", 'w')
       # get the metadata and write it to a yaml file.
-    file = File.new(directory + "/metadata.yaml", 'w')
-      file.write("identifier: " + name + "\n")
       created = record.xpath("created").text
-      file.write("created_on_date: " + created)
-    author = record.xpath("creator").min_by {|a| a.text.size}.text + " "
-    author = author.gsub ";", ","
-      file.write("\nauthor: " + author )
-      file.write("\ndescription: " + record.xpath("extent").text)
-      file.write("\npermission_description: http://rightsstatements.org/page/InC-EDU/1.0/?language=en")
-    recipient_orig = record.xpath("unmapped")[1]
-    split_recipients = recipient_orig.text.split(";")
-    recipients=[]
-    for r in split_recipients
-      if r.include? ","
-        recipients << "#{r.split(", ")[1].strip} #{r.split(", ")[0].strip}"
-      else
-        recipients << "#{r}"
+      metadata = {}
+      metadata["identifier"] = name
+      metadata["created_on_date"] = created
+      author = record.xpath("creator").min_by {|a| a.text.size}.text + " "
+      author = author.gsub ";", ","
+      metadata["author"] = author
+      metadata["description"] = record.xpath("extent").text
+      metadata["permission_description"] = "http://rightsstatements.org/page/InC-EDU/1.0/?language=en"
+      recipient_orig = record.xpath("unmapped")[1]
+      split_recipients = recipient_orig.text.split(";")
+      recipients=[]
+      for r in split_recipients
+        if r.include? ","
+          recipients << "#{r.split(", ")[1].strip} #{r.split(", ")[0].strip}"
+        else
+          recipients << "#{r}"
+        end
       end
-    end
-    if recipients.empty?
-      recipients << "[unamed recipient]"
-    end
-    if author.strip.empty?
-      author = "[unamed sender] "
-    end
-    title = author.truncate(35, separator: ' ') +  "to " + recipients.join(", ")
-    unless created.blank?
-      if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.match(created))
-        title << " on #{Date.parse(created).strftime("%B %d, %Y")}"
-      elsif (/^\d{4}\-\d{1,2}\$/.match(created))
-        title << " on #{Date.strptime(created, "%Y-%m").strftime("%B %Y")}"
-      else
-        title << " on #{created}"
+      if recipients.empty?
+        recipients << "[unamed recipient]"
       end
-    end
-      file.write("\ntitle: " + title)
+      if author.strip.empty?
+        author = "[unamed sender] "
+      end
+      title = author.truncate(35, separator: ' ') +  "to " + recipients.join(", ")
+      unless created.blank?
+        if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.match(created))
+          title << " on #{Date.parse(created).strftime("%B %d, %Y")}"
+        elsif (/^\d{4}\-\d{1,2}\$/.match(created))
+          title << " on #{Date.strptime(created, "%Y-%m").strftime("%B %Y")}"
+        else
+          title << " on #{created}"
+        end
+      end
+      metadata["title"] = title
+  
       spatial = record.xpath("spatial").text
-      file.write("\nlocation_of_composition: " + spatial)
+      metadata["location_of_composition"] = spatial
+      location_set = ""
       if spatial.include? "Indiana" then
-        file.write("\ndocument_set:\n   - Indiana")
-    elsif spatial.include? "United States" then
-      file.write("\ndocument_set:\n   - United States")
-    else
-      file.write("\ndocument_set:\n   - Other")
-    end
-    if created.blank? 
-      file.write("\n   - undated")
-    elsif (m = /^\d{4}/.match(created)) 
-      file.write("\n   - #{m}")
-    else
-      file.write("\n   - undated")
-    end 
-
+        location_set = "Indiana"
+      elsif spatial.include? "United States" then
+        location_set = "United States"
+      else
+        location_set = "Other"
+      end
+    
+      date_set = ""
+      if created.blank? 
+        date_set = "undated"
+      elsif (m = /^\d{4}/.match(created)) 
+        date_set = m.to_s
+      else
+        date_set = "undated"
+      end 
+      metadata['document_set'] = [location_set, date_set]
+      file.write(metadata.to_yaml)
       file.close
       # get each page for the work
       # for each page
@@ -82,7 +88,7 @@ namespace :fromthepage do
          filename = "#{(pageptr.to_i + 1).to_s}"
          # convert the image file to the page_name.jpg in the directory above
          # convert images/10099.jp2 -quality 20 directory/10099.jpg
-         convertcommand = "convert tmp/RWL-All-Images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
+         convertcommand = "convert RWL-All-Images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
          unless system(convertcommand)
             #write diretory name/id to a file
             errfile.write("bad directory #{name}\n")
