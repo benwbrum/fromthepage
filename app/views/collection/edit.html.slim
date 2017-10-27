@@ -54,15 +54,7 @@
         .toolbar_group
           =f.button 'Save Changes', class: 'big'
 
-    h2 Manage Works
-    h5 Works in the collection
-    ul.collection-works-manage
-      -@collection.works.each do |work|
-        li
-          =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
-    p.nodata_text To move a work to another collection, use the collection dropdown on the work settings page.
-
-    h5 Add a new work
+    h3 Add a new work
     -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => @collection.id }
     p.nodata_text You can add another work under #{start_project}  
 
