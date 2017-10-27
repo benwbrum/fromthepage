@@ -32,7 +32,8 @@ table.datagrid
     th Review
     th.w100 Progress
     th(colspan="3") Export As
-  -for work in @collection.works
+
+  -for work in @works
     -unless work.supports_translation
       -progress_annotated = work.work_statistic.pct_annotated.round
       -progress_completed = work.work_statistic.pct_completed.round
@@ -72,6 +73,9 @@ table.datagrid
         =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'button', id: 'btnCsvTblExport')
           =svg_symbol '#icon-export', class: 'icon'
           span Table CSV
+
+=render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
 
 =render({ :partial => '/shared/collection_footer' })
 
