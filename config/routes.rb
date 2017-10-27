@@ -70,6 +70,7 @@ Fromthepage::Application.routes.draw do
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'
+      get 'works_list', path: 'works_list', as: :works_list, to: 'collection#works_list'
  
       #work related routes
       #have to use match because it must be both get and post

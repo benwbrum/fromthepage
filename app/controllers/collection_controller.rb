@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -198,6 +198,11 @@ class CollectionController < ApplicationController
     collection.blank_out_collection
     redirect_to action: 'show', collection_id: params[:collection_id]
   end
+
+  def works_list
+    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 15)
+  end
+
 
 private
   def set_collection
