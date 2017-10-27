@@ -49,12 +49,11 @@
       :path => "#{document_sets_path(:collection_id => @collection)}",
     }]
 
-  -if @collection.works.count > 15
-    -tabs += [{\
-      :name => 'Works List',
-      :selected => 9,
-      :path => "#{collection_works_list_path(@collection.owner, @collection)}",
-    }]
+  -tabs += [{\
+    :name => 'Works List',
+    :selected => 9,
+    :path => "#{collection_works_list_path(@collection.owner, @collection)}",
+  }]
 
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""

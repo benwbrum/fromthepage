@@ -206,9 +206,6 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Statistics")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
     expect(page.find('h1')).to have_content(@set.title)
-    @set.works.each do |w|
-      expect(page.find('.collection-work-stats')).to have_content(w.title)
-    end
   end
 
   it "checks document set breadcrumbs - subjects" do

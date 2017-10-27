@@ -168,10 +168,9 @@ describe "needs review", :order => :defined do
     end
   end
 
-  it "checks collection statistics" do
-    visit collection_statistics_path(@collection.owner, @collection)
+  it "checks statistics in works list" do
+    visit collection_works_list_path(@collection.owner, @collection)
     expect(page).to have_content(@collection.title)
-    expect(page).to have_content("Work Progress")
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"
