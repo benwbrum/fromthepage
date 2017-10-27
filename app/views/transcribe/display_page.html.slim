@@ -142,5 +142,5 @@ h2.legend Page Notes
 
     });
 
-
-javascript:  mixpanel.track("Transcribe Page");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Transcribe Page");

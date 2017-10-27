@@ -21,4 +21,5 @@ section.signon
             |&nbsp;Remember me
   hr
   =render 'devise/shared/links'
-  javascript:  mixpanel.track("Sign In");
+  -unless MIXPANEL_ID.blank?
+    javascript:  mixpanel.track("Sign In");

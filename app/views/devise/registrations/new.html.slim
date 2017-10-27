@@ -2,8 +2,8 @@
 
 section.signon
   h1 Sign Up
-  p Please fill in the following information to create a new FromThePage account. 
-  
+  p Please fill in the following information to create a new FromThePage account.
+
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
@@ -24,4 +24,5 @@ section.signon
     =f.button 'Create Account', class: 'big'
   hr
   =render 'devise/shared/links'
-javascript:  mixpanel.track("Sign Up");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Sign Up");

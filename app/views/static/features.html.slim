@@ -26,4 +26,5 @@ section.features
       h4.features_title OCR Correction
       p.features_text Not just for handwritten materials, FromThePage can import OCR alongside the original image for users to correct and edit.
 
-javascript:  mixpanel.track("Features");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Features");

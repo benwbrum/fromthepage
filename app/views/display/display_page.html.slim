@@ -57,7 +57,7 @@
         .centered
           .centered_content
             h5.nodata_title This page is not #{text_type}
-            p.nodata_text 
+            p.nodata_text
               -if current_user
                 -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
                 =="Please #{help_link} this page"
@@ -72,5 +72,6 @@ h2.legend#notes Page Notes
   =render :partial => "notes/notes"
 
 =render({ :partial => '/shared/collection_footer' })
-  
-javascript:  mixpanel.track("Display Page");  
+
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Display Page");  

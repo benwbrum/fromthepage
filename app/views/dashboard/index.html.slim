@@ -9,5 +9,5 @@ h1 Collections
     h2 Recent Activity
     =deeds_for()
 
-
-javascript:  mixpanel.track("Dashboard");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Dashboard");
