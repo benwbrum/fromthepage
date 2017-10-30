@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812191641) do
+ActiveRecord::Schema.define(version: 20171013161241) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
