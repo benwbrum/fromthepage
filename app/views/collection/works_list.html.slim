@@ -30,5 +30,27 @@
           span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
           span =w.restrict_scribes  ? 'Collaboration Restricted' : 'Collaboration Unrestricted'
           -if @collection.is_a?(DocumentSet)
-            span =link_to 'Remove from Set', '#'
+            span =link_to 'Remove from Set', remove_from_set_path(collection_id: @collection.slug, work_id: w.id), class: 'remove_from_set', id: "#{w.id}"
       =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('#work-select').select2MultiCheckboxes({
+        templateSelection: function(selected, total){
+          return "Add works to set...";
+          //return "Selected " + selected.length + " of " + total;
+        }
+      });
+
+      $('.remove_from_set').click(function(e){
+        /*$.ajax({
+        
+          data: 
+          work_id: this.id,
+          collection_id: "#{@collection.slug}"
+        })*/
+        //debugger;
+      })
+
+    });

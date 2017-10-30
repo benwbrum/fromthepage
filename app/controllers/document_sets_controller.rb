@@ -53,10 +53,19 @@ class DocumentSetsController < ApplicationController
 
   def assign_to_set
     work_map = params[:work_assignment]
-    @collection.work_ids = work_map.map { |id| id.to_i }
+    ids = @collection.work_ids + work_map.map { |id| id.to_i }
+    @collection.work_ids = ids
     @collection.save!
-    redirect_to action: 'settings', collection_id: @collection.slug
-    #should we go to overview instead?
+    redirect_to collection_works_list_path(@collection.owner, @collection)
+  end
+
+  def remove_from_set
+    @collection = DocumentSet.friendly.find(params[:collection_id])
+    work = [params[:work_id].to_i]
+    ids = @collection.work_ids - work
+    @collection.work_ids = ids
+    @collection.save!
+    redirect_to collection_works_list_path(@collection.owner, @collection)
   end
 
   def update
