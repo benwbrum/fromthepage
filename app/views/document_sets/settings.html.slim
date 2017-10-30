@@ -8,36 +8,11 @@
 
     h2#manage Manage Works
 
-    =form_tag({ action: 'assign_to_set', collection_id: @collection})
-      table.datagrid
-        thead
-          tr
-            th Work
-            th Collaboration
-            th.wrapped
-              =@collection.title
-                /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
-        tbody
-          -@collection.collection.works.each do |work|
-            tr
-              td.overflow
-                =work.title
-                -if work.supports_translation
-                  span 
-                    translate
-                -if work.ia_work && work.ia_work.use_ocr
-                  span
-                     ocr
-              td
-                i
-                  =work.restrict_scribes ? 'Restricted' : 'Unrestricted'
-              td
-                =label_tag("work_assignment[#{work.id}]", "Add to set", class: 'hidden')
-                =check_box_tag("work_assignment[#{work.id}]", "true", work.document_sets.exists?(@collection))
-
-      br
-      .aright =submit_tag "Save"
-
+    =form_tag({ action: 'assign_to_set'}, class: 'work-select-form') do
+      =hidden_field_tag :collection_id, @collection.slug
+      =select_tag 'work_assignment', options_from_collection_for_select(@works_not_in_set, 'id', 'title'), id: 'work-select', multiple: true
+      =button_tag 'Add'
+      =label_tag 'work_assignment', "Add work to set", class: 'hidden'
 
   aside.sidecol
 
@@ -82,7 +57,10 @@
         $(this).siblings(':submit').prop('disabled', true);
       });
 
-      $('.image-form :file').on('change', function() {
-        $(this).closest('form').submit();
+      $('#work-select').select2MultiCheckboxes({
+        templateSelection: function(selected, total){
+          return "Selected " + selected.length + " of " + total;
+        }
       });
+
     });

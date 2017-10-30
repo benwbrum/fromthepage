@@ -2,7 +2,7 @@
 .columns
   article.maincol
     h2 Works
-    p.aright Sort works/drop down
+    p Sort works/drop down
 
     ul.collection-work-stats
       -@works.each do |w|
@@ -28,16 +28,7 @@
             span =="<b>#{progress_annotated}%</b> indexed"
           span =="<b>#{progress_completed}%</b> #{completed}"
           span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
-          span
-            span.progress
-              -unless @collection.subjects_disabled
-                span(style="width:#{progress_annotated}%")
-                span(style="width:#{progress_completed - progress_annotated}%")
-                -unless progress_review == 0
-                  span(style="width:#{progress_review}%")
-
-              -else
-                span(style="width:#{progress_completed}%")
-                -unless progress_review == 0
-                  span(style="width:#{progress_review}%")
+          span =w.restrict_scribes  ? 'Collaboration Restricted' : 'Collaboration Unrestricted'
+          -if @collection.is_a?(DocumentSet)
+            span =link_to 'Remove from Set', '#'
       =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })

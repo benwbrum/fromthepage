@@ -53,8 +53,7 @@ class DocumentSetsController < ApplicationController
 
   def assign_to_set
     work_map = params[:work_assignment]
-    @collection.works.clear
-    @collection.work_ids = work_map.keys.map { |id| id.to_i }
+    @collection.work_ids = work_map.map { |id| id.to_i }
     @collection.save!
     redirect_to action: 'settings', collection_id: @collection.slug
     #should we go to overview instead?
