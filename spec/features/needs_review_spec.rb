@@ -169,6 +169,8 @@ describe "needs review", :order => :defined do
   end
 
   it "checks statistics in works list" do
+    logout(@user)
+    login_as(@owner, :scope => :user)
     visit collection_works_list_path(@collection.owner, @collection)
     expect(page).to have_content(@collection.title)
     @collection.works.each do |w|

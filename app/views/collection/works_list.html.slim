@@ -8,4 +8,5 @@
       =render 'collection_works'
     -elsif @collection.is_a?(DocumentSet)
       =render 'document_sets/set_works'
-      =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+    
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
