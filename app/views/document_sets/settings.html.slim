@@ -8,11 +8,12 @@
 
     h2#manage Manage Works
 
-    =form_tag({ action: 'assign_to_set'}, class: 'work-select-form') do
+    =form_tag({ action: 'assign_to_set'}) do
       =hidden_field_tag :collection_id, @collection.slug
       =select_tag 'work_assignment', options_from_collection_for_select(@works_not_in_set, 'id', 'title'), id: 'work-select', multiple: true
-      =button_tag 'Add'
       =label_tag 'work_assignment', "Add work to set", class: 'hidden'
+      .toolbar
+        .toolbar_group.aright =button_tag 'Add to set'
 
   aside.sidecol
 
@@ -57,11 +58,8 @@
         $(this).siblings(':submit').prop('disabled', true);
       });
 
-      $('#work-select').select2MultiCheckboxes({
-        templateSelection: function(selected, total){
-          return "Add works to set...";
-          //return "Selected " + selected.length + " of " + total;
-        }
+      $('#work-select').select2({
+        placeholder: 'Add works to set',
+        closeOnSelect: false
       });
-
     });

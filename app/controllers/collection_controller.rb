@@ -9,7 +9,7 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_filter :authorized?, :only => [:new, :edit, :update, :delete]
+  before_filter :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
@@ -200,7 +200,7 @@ class CollectionController < ApplicationController
   end
 
   def works_list
-    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 15)
+    @works = @collection.works.includes(:work_statistic).order(:title).paginate(page: params[:page], per_page: 15)
   end
 
 

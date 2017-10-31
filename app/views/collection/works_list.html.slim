@@ -4,53 +4,8 @@
     h2 Works
     p Sort works/drop down
 
-    ul.collection-work-stats
-      -@works.each do |w|
-        -unless w.supports_translation
-          -progress_annotated = w.work_statistic.pct_annotated.round
-          -progress_review = w.work_statistic.pct_needs_review.round
-          -progress_completed = w.work_statistic.pct_completed.round
-
-          -if w.ocr_correction
-            -completed = "corrected"
-          -else
-            -completed = "transcribed"
-        -else
-          -progress_annotated = w.work_statistic.pct_translation_annotated.round
-          -progress_review = w.work_statistic.pct_translation_needs_review.round
-          -progress_completed = w.work_statistic.pct_translation_completed.round
-          -completed = "translated"
-
-        li
-          span =link_to w.title, collection_work_contents_path(w.collection.owner, w.collection, w)
-          span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
-          -unless @collection.subjects_disabled
-            span =="<b>#{progress_annotated}%</b> indexed"
-          span =="<b>#{progress_completed}%</b> #{completed}"
-          span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
-          span =w.restrict_scribes  ? 'Collaboration Restricted' : 'Collaboration Unrestricted'
-          -if @collection.is_a?(DocumentSet)
-            span =link_to 'Remove from Set', remove_from_set_path(collection_id: @collection.slug, work_id: w.id), class: 'remove_from_set', id: "#{w.id}"
+    -if @collection.is_a?(Collection)
+      =render 'collection_works'
+    -elsif @collection.is_a?(DocumentSet)
+      =render 'document_sets/set_works'
       =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
-
--content_for :javascript
-  javascript:
-    $(function() {
-      $('#work-select').select2MultiCheckboxes({
-        templateSelection: function(selected, total){
-          return "Add works to set...";
-          //return "Selected " + selected.length + " of " + total;
-        }
-      });
-
-      $('.remove_from_set').click(function(e){
-        /*$.ajax({
-        
-          data: 
-          work_id: this.id,
-          collection_id: "#{@collection.slug}"
-        })*/
-        //debugger;
-      })
-
-    });

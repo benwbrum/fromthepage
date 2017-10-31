@@ -61,9 +61,9 @@ class DocumentSetsController < ApplicationController
 
   def remove_from_set
     @collection = DocumentSet.friendly.find(params[:collection_id])
-    work = [params[:work_id].to_i]
-    ids = @collection.work_ids - work
-    @collection.work_ids = ids
+    ids = params[:work].map {|k, v| k.to_i}
+    new_ids = @collection.work_ids - ids
+    @collection.work_ids = new_ids
     @collection.save!
     redirect_to collection_works_list_path(@collection.owner, @collection)
   end
