@@ -7,13 +7,43 @@
     =render 'edit'
 
     h2#manage Manage Works
+    =form_tag({:controller => 'document_sets', :action => 'settings'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag('collection_id', @collection.slug)
+      =search_field_tag :search, params[:search], placeholder: 'Search for works...'
+      =button_tag 'Search'
+      =label_tag 'search', "Search for works", class: 'hidden'
+
 
     =form_tag({ action: 'assign_to_set'}) do
       =hidden_field_tag :collection_id, @collection.slug
-      =select_tag 'work_assignment', options_from_collection_for_select(@works_not_in_set, 'id', 'title'), id: 'work-select', multiple: true
-      =label_tag 'work_assignment', "Add work to set", class: 'hidden'
-      .toolbar
-        .toolbar_group.aright =button_tag 'Add to set'
+
+      table.datagrid
+        thead
+          tr
+            th Work
+            th Collaboration
+            th Add
+        tbody
+          -@works.each do |work|
+            tr
+              td
+                =work.title
+                -if work.supports_translation
+                  span 
+                    translate
+                -if work.ia_work && work.ia_work.use_ocr
+                  span
+                     ocr
+              td
+                i
+                  =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
+              td
+                =check_box_tag("work[#{work.id}]")
+      br
+      .aright
+        =submit_tag "Save"
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
   aside.sidecol
 
@@ -56,10 +86,5 @@
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {
         $(this).siblings(':submit').prop('disabled', true);
-      });
-
-      $('#work-select').select2({
-        placeholder: 'Add works to set',
-        closeOnSelect: false
       });
     });

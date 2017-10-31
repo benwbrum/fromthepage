@@ -57,8 +57,11 @@ class DocumentSetsController < ApplicationController
   end
 
   def assign_to_set
-    work_map = params[:work_assignment]
-    ids = @collection.work_ids + work_map.map { |id| id.to_i }
+    unless @collection
+      @collection = DocumentSet.friendly.find(params[:collection_id])
+    end
+    new_ids = params[:work].keys.map {|id| id.to_i}
+    ids = @collection.work_ids + new_ids
     @collection.work_ids = ids
     @collection.save!
     redirect_to collection_works_list_path(@collection.owner, @collection)
@@ -92,9 +95,14 @@ class DocumentSetsController < ApplicationController
   end
 
   def settings
+    #works not yet in document set
+    if params[:search]
+      @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
+    else
+      @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
+    end
     #document set edit needs the @document set variable
     @document_set = @collection
-    @works_not_in_set = @collection.collection.works - @collection.works
     @collaborators = @document_set.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators
   end
