@@ -46,7 +46,7 @@ br
               =document_set.title
               /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
       tbody
-        -@collection.works.each do |work|
+        -@works.each do |work|
           tr
             td
               =work.title
@@ -65,7 +65,7 @@ br
     br
     =submit_tag "Save"
 
-
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
 -else
   p This collection has no document sets

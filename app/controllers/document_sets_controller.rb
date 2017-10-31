@@ -7,6 +7,7 @@ class DocumentSetsController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def index
+    @works = @collection.works.order(:title).paginate(page: params[:page], per_page: 20)
   end
 
   def show
@@ -39,10 +40,14 @@ class DocumentSetsController < ApplicationController
     set_work_map = params[:work_assignment]
     if set_work_map
       @collection.document_sets.each do |document_set|
-        document_set.works.clear
+        #document_set.works.clear
         work_map = set_work_map[document_set.id.to_s]
+        current_ids = document_set.works.pluck(:id)
         if work_map
-          document_set.work_ids = work_map.keys.map { |id| id.to_i }
+          new_ids = work_map.keys.map { |id| id.to_i }
+          set = (current_ids - new_ids + new_ids)
+          document_set.work_ids = set
+
           document_set.save!          
         end
       end
@@ -61,7 +66,7 @@ class DocumentSetsController < ApplicationController
 
   def remove_from_set
     @collection = DocumentSet.friendly.find(params[:collection_id])
-    ids = params[:work].map {|k, v| k.to_i}
+    ids = params[:work].keys.map {|id| id.to_i}
     new_ids = @collection.work_ids - ids
     @collection.work_ids = new_ids
     @collection.save!

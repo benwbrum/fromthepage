@@ -13,5 +13,5 @@
             span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
             span =w.restrict_scribes  ? 'Restricted' : 'Unrestricted'
             span =check_box_tag "work[#{w.id}]"
-      .toolbar
-        .toolbar_group.aright =button_tag 'Remove works'
+      br
+      .aright =button_tag 'Remove works'
