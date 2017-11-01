@@ -10,17 +10,18 @@
         .collection-intro_about
           ==@collection.intro_block
 
-    h2 Works
-    .aright
-      -if @collection.hide_completed
-        =label_tag :hide_completed, "Show Fully Transcribed Works"
-        |&nbsp; 
-        =check_box_tag :hide_completed
-      -else
-        =label_tag :hide_completed, "Show Fully Transcribed Works"
-        |&nbsp; 
-        =check_box_tag(:hide_completed, 0, checked: true)
-      p
+    div.collection-work-list
+      h2 Works
+
+      .transcribed
+        -if @collection.hide_completed
+          =label_tag :hide_completed, "Show Fully Transcribed Works"
+          |&nbsp; 
+          =check_box_tag :hide_completed
+        -else
+          =label_tag :hide_completed, "Show Fully Transcribed Works"
+          |&nbsp; 
+          =check_box_tag(:hide_completed, 0, checked: true)
 
     -if @collection.hide_completed && @collection.pct_completed == 100
       h5.collection-work#complete

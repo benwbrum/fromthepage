@@ -1,10 +1,11 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection } })
 .columns
   article.maincol
-    h2 Works
-    =form_tag(collection_works_list_path(@collection.owner, @collection), method: :get, enforce_utf8: false, class: 'user-select-form', id: 'sort_works') do
-      =select_tag "sort_by", options_for_select(["Alphabetical", "Recent Activity"]), prompt: 'Sort Works By...'
-      =label_tag 'sort_by', "Sort Works By:", class: 'hidden'
+    div.collection-work-list
+      h2 Works
+      =form_tag(collection_works_list_path(@collection.owner, @collection), method: :get, enforce_utf8: false, id: 'sort-works', class: 'row-alignment') do
+        =select_tag "sort_by", options_for_select(["Alphabetical", "Recent Activity"]), prompt: 'Sort Works By...'
+        =label_tag 'sort_by', "Sort Works By:", class: 'hidden'
 
     -if @collection.is_a?(Collection)
       =render 'collection_works'
@@ -18,7 +19,7 @@
 -content_for :javascript
   javascript:
     $(function() {
-      $('#sort_works').on('change', function(){
+      $('#sort-works').on('change', function(){
         this.submit();
       });
     });

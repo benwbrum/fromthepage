@@ -54,6 +54,7 @@
 }
 
 .collection-work {
+  clear: both;
   padding: $gapSize;
   border-radius: 4px;
   margin-bottom: $gapSize / 2;
@@ -402,6 +403,28 @@
   }
 }
 
+// Collection works list
+
+.collection-work-list {
+  position: relative;
+  .row-alignment {
+    width: 33%;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  h2 {
+    width: 30%;
+    float: left;
+  }
+  .transcribed {
+    float: right;
+    padding: 6px 15px 0 0;
+    label {
+      display: inline;
+    }
+  }
+}
 
 // Collection footer
 
