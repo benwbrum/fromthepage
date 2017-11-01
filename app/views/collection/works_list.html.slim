@@ -2,7 +2,9 @@
 .columns
   article.maincol
     h2 Works
-    p Sort works/drop down
+    =form_tag(collection_works_list_path(@collection.owner, @collection), method: :get, enforce_utf8: false, class: 'user-select-form', id: 'sort_works') do
+      =select_tag "sort_by", options_for_select(["Alphabetical", "Recent Activity"]), prompt: 'Sort Works By...'
+      =label_tag 'sort_by', "Sort Works By:", class: 'hidden'
 
     -if @collection.is_a?(Collection)
       =render 'collection_works'
@@ -12,3 +14,11 @@
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
 =render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('#sort_works').on('change', function(){
+        this.submit();
+      });
+    });

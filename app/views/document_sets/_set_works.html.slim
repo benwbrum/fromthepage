@@ -9,7 +9,7 @@
         -@works.each do |w|
           -work_stats(w)
           li
-            span =link_to w.title, collection_work_contents_path(w.collection.owner, w.collection, w)
+            span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
             span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
             span =w.restrict_scribes  ? 'Restricted' : 'Unrestricted'
             span =check_box_tag "work[#{w.id}]"
