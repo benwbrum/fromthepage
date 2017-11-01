@@ -79,7 +79,7 @@ class ExportController < ApplicationController
         @works.each do |work|
           @work = work
           export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-          zos.put_next_entry "#{work.slug.truncate(100, omission: "")}.xhtml"
+          zos.put_next_entry "#{work.slug.truncate(200, omission: "")}.xhtml"
           zos.print export_view
         end
       end
