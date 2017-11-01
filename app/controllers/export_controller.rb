@@ -1,5 +1,6 @@
 class ExportController < ApplicationController
   require 'zip'
+  include CollectionHelper
 
   def index
     @collection = Collection.friendly.find(params[:collection_id])
@@ -68,7 +69,7 @@ class ExportController < ApplicationController
 
   def export_all_works
     cookies['download_finished'] = 'true'
-    @works = Work.includes(pages: [{page_versions: :user}]).where(collection_id: @collection.id)
+    @works = Work.includes(pages: [:notes, :articles, {page_versions: :user}]).where(collection_id: @collection.id)
 
 #create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
@@ -78,7 +79,7 @@ class ExportController < ApplicationController
         @works.each do |work|
           @work = work
           export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-          zos.put_next_entry "#{work.title}.xhtml"
+          zos.put_next_entry "#{work.slug.truncate(100, omission: "")}.xhtml"
           zos.print export_view
         end
       end
