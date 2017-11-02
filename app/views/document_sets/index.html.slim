@@ -59,9 +59,10 @@ br
             td
               i
                 =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
+            -ids = work.document_sets.ids
             -@collection.document_sets.each do |document_set|
               td
-                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", work.document_sets.exists?(document_set))
+                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", ids.include?(document_set.id))
     br
     =submit_tag "Save"
 
