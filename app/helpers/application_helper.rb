@@ -87,10 +87,8 @@ module ApplicationHelper
     if options[:collection]
       deeds = @collection.deeds.includes(:page, :user).where(condition).order_by_recent_activity.limit(limit)
     else
-      #condition[0] << " AND " unless condition[0].length == 0
-      #condition[0] << "collections.restricted = 0"
+      #restricting to visible collections first speeds up the query
       limited = Deed.joins(:collection).where('collections.restricted = 0')
-
       deeds = limited.includes(:page, :user, collection: [:works]).where(condition).order('deeds.created_at DESC').limit(limit)#.references(:collection)
     end
 
