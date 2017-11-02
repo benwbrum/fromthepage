@@ -73,8 +73,7 @@
             =f.text_area :translation_instructions, rows: 5, value: @work.translation_instructions
       .toolbar
         .toolbar_group
-          =link_to({ :controller => 'work', :action => 'delete', :work_id => @work.id }, data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' })
-            =svg_symbol '#icon-remove-sign', class: 'icon'
+          =link_to({ :controller => 'work', :action => 'delete', :work_id => @work.id }, data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' }, class: 'button')
             span Delete Work
         .toolbar_group.aright =f.button 'Save Changes', class: 'big'
 
