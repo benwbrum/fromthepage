@@ -37,7 +37,7 @@
               td
                 i
                   =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
-              td
+              td.document_set
                 =check_box_tag("work[#{work.id}]")
       br
       .aright

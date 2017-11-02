@@ -43,7 +43,7 @@ class Work < ActiveRecord::Base
   mount_uploader :picture, PictureUploader
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
-  scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC') }
+  scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
   
   
   module TitleStyle
