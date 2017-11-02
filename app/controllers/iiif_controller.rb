@@ -304,11 +304,7 @@ private
   end
 
   def region_from_page(page)
-    if page.base_width.nil? && page.sc_canvas
-      canvas_id_from_page(page) + "#xywh=0,0,#{page.sc_canvas.width},#{page.sc_canvas.height}"
-    else
-      canvas_id_from_page(page) + "#xywh=0,0,#{page.base_width},#{page.base_height}"
-    end
+    canvas_id_from_page(page) + "#xywh=0,0,#{(page.base_width || page.sc_canvas.width)},#{(page.base_height || page.sc_canvas.height)}"
   end
 
   def iiif_create_image_resource(page)
