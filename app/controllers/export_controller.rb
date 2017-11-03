@@ -68,7 +68,6 @@ class ExportController < ApplicationController
   end
 
   def export_all_works
-    cookies['download_finished'] = 'true'
     unless @collection.subjects_disabled
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
     else
@@ -91,6 +90,7 @@ class ExportController < ApplicationController
       send_data compressed_filestream.read, filename: "#{@collection.title}.zip"
       end
     end
+    cookies['download_finished'] = 'true'
 
   end
 
