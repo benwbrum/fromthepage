@@ -50,12 +50,6 @@ br
           tr
             td
               =work.title
-              -if work.supports_translation
-                span 
-                  translate
-              -if work.ia_work && work.ia_work.use_ocr
-                span
-                   ocr
             td
               i
                 =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
