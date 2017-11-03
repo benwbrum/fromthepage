@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812191641) do
+ActiveRecord::Schema.define(version: 20171103141353) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -566,6 +566,8 @@ ActiveRecord::Schema.define(version: 20170812191641) do
     t.integer  "translated_blank"
     t.integer  "translated_review"
     t.integer  "translated_annotated"
+    t.integer  "complete"
+    t.integer  "translation_complete"
   end
 
   create_table "works", force: true do |t|

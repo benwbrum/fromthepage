@@ -44,8 +44,9 @@ class Work < ActiveRecord::Base
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
   scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
-  
-  
+  scope :order_by_completed, -> { joins(:work_statistic).reorder('work_statistics.complete DESC')}
+  scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
+
   module TitleStyle
     REPLACE = 'REPLACE'
     

@@ -201,7 +201,7 @@ class CollectionController < ApplicationController
 
   def works_list
     if params[:sort_by] == "Percent Complete"
-      @works = @collection.works.includes(:work_statistic).order(:title).paginate(page: params[:page], per_page: 15)
+      @works = @collection.works.includes(:work_statistic).order_by_completed.paginate(page: params[:page], per_page: 15)
     elsif params[:sort_by] == "Recent Activity"
       @works = @collection.works.includes(:work_statistic).order_by_recent_activity.paginate(page: params[:page], per_page: 15)
     else

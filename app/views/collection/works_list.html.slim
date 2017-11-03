@@ -4,7 +4,7 @@
     div.collection-work-list
       h2 Works
       =form_tag(collection_works_list_path(@collection.owner, @collection), method: :get, enforce_utf8: false, id: 'sort-works', class: 'row-alignment') do
-        =select_tag "sort_by", options_for_select(["Alphabetical", "Recent Activity"]), prompt: 'Sort Works By...'
+        =select_tag "sort_by", options_for_select(["Alphabetical", "Recent Activity", "Percent Complete"]), prompt: 'Sort Works By...'
         =label_tag 'sort_by', "Sort Works By:", class: 'hidden'
 
     -if @collection.is_a?(Collection)
