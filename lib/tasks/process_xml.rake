@@ -1,7 +1,7 @@
 namespace :fromthepage do
   desc "take the ryan white metadata xml file and generate names and descriptions"
   task process_xml: :environment do
-    doc = File.open("tmp/RWL-3rd.xml") { |f| Nokogiri::XML(f) }
+    doc = File.open("tmp/RWL-box24.xml") { |f| Nokogiri::XML(f) }
     errfile = File.new("tmp/rwl/image_processing_errors.log", 'w')
     # for each record 
     doc.xpath("//record").each_with_index do |record, i|
@@ -10,6 +10,12 @@ namespace :fromthepage do
       # create a directory with the work name
       prefix = (i / 100).to_s.rjust(6, '0') 
       directory = "tmp/rwl/" + prefix + "/" + name
+      # if directory exists, break out of loop
+      if Dir.glob("*/#{name}").count > 0
+        break
+      else
+        directory = "tmp/rwl3/" + prefix + "/" + name
+      end
       begin
         FileUtils.mkdir_p(directory)
       rescue => e
