@@ -2,8 +2,58 @@
     <div id="example-inline-configuration-for-iiif" style="width:100%;height:100%;border:1px solid black;color:#333;background-color: black;">
 		<script type="text/javascript">
 		    OpenSeadragon({
-		        id:                 "example-inline-configuration-for-iiif",  //div id to put this image in 
-		        prefixUrl:          "/assets/iiif-images/",
+		        id:                 "example-inline-configuration-for-iiif",  //div id to put this image in
+            prefixUrl:          "",
+            navImages:     {
+              zoomIn: {
+                REST: "<%= asset_path('iiif-images/zoomin_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/zoomin_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/zoomin_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/zoomin_pressed.png') %>"
+              },
+              zoomOut: {
+                REST: "<%= asset_path('iiif-images/zoomout_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/zoomout_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/zoomout_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/zoomout_pressed.png') %>"
+              },
+              home: {
+                REST: "<%= asset_path('iiif-images/home_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/home_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/home_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/home_pressed.png') %>"
+              },
+              fullpage: {
+                REST: "<%= asset_path('iiif-images/fullpage_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/fullpage_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/fullpage_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/fullpage_pressed.png') %>"
+              },
+              rotateleft: {
+                REST: "<%= asset_path('iiif-images/rotateleft_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/rotateleft_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/rotateleft_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/rotateleft_pressed.png') %>"
+              },
+              rotateright: {
+                REST: "<%= asset_path('iiif-images/rotateright_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/rotateright_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/rotateright_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/rotateright_pressed.png') %>"
+              },
+              previous: {
+                REST: "<%= asset_path('iiif-images/previous_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/previous_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/previous_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/previous_pressed.png') %>"
+              },
+              next: {
+                REST: "<%= asset_path('iiif-images/next_rest.png') %>",
+                GROUP: "<%= asset_path('iiif-images/next_grouphover.png') %>",
+                HOVER: "<%= asset_path('iiif-images/next_hover.png') %>",
+                DOWN: "<%= asset_path('iiif-images/next_pressed.png') %>"
+              }
+            },
 		        preserveViewport:   true,
 		        visibilityRatio:    1,
 		        minZoomLevel:       1,
