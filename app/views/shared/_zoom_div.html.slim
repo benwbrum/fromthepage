@@ -16,6 +16,8 @@
         var datakey = data.images[0];
         var storage = localStorage['zoomer:' + datakey];
         var properties = ['targetImageWidth','targetImageHeight','targetPositionerTop','targetPositionerLeft'];
+        //set alt test for image
+        data.$image[0].alt = "#{@page.title}"
 
         if(storage) {
           try {

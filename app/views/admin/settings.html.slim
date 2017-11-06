@@ -1,0 +1,17 @@
+=render(:partial => 'header', :locals => { :selected => 6 })
+
+.columns
+  article.maincol
+
+    =form_for :admin, url: {action: :update} do |f|
+      table.form
+        tr
+          td(colspan="2")
+            =f.label :welcome_text, "Edit owner welcome email", class: 'above'
+            =f.text_area :welcome_text, rows: 12, value: @email_text
+
+      .toolbar
+        .toolbar_group.aright
+          =f.button 'Save Changes', class: 'big'
+
+  aside.sidecol

@@ -1,0 +1,9 @@
+h2 IIIF Collection Import Errors
+p
+  'Your import of the IIIF collection 
+  =link_to @collection.title, collection_path(@collection.owner, @collection, only_path: false)
+  |  had errors.
+p These are the error messages:
+-@errors.each do |key, value|
+  p <b>ID:</b> #{key}
+    <br> <b>Error:</b> #{value}

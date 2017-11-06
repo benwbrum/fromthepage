@@ -7,15 +7,13 @@
   .page-toolbar
     .toolbar
       .toolbar_group.w100.aright
-        span Mark as blank
-        |&nbsp;
+        =f.label 'mark_blank', 'Mark as blank'
         -if @page.status == 'blank'
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
       .toolbar_group.w100.aright
-        span Page Needs Review
-        |&nbsp;
+        =f.label 'needs_review', 'Page Needs Review'
         -if @page.translation_status == 'review'
           =f.check_box('needs_review', {checked: true})
         -else
@@ -67,6 +65,8 @@
 
       .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+        =f.label :source_translation, 'Edit translation', class: 'hidden'
+
 
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions

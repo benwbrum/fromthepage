@@ -28,16 +28,14 @@
           span Always show in fullscreen
 
       .toolbar_group.w100.aright
-        span Mark as blank
-        |&nbsp;
+        =f.label 'mark_blank', 'Mark as blank'
         -if @page.status == 'blank'
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
 
       .toolbar_group.w100.aright
-        span Needs Review
-        |&nbsp;
+        =f.label 'needs_review', 'Needs Review'
         -if @page.status == 'review'
           =f.check_box('needs_review', {checked: true})
         -else
@@ -83,6 +81,7 @@
               span =f.label :title, 'Title:', class: 'a50'
               span =f.text_field :title
           =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+          =f.label :source_text, 'Edit transcription', class: 'hidden'
 
 .fgfaded ==@work.set_transcription_conventions
 

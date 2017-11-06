@@ -72,7 +72,6 @@
   &:hover td { background: rgba(#000, 0.03); }
   &_saved {
     display: none;
-    color: $fgGreen;
   }
   &_import[disabled] {
     cursor: default;
@@ -81,4 +80,15 @@
   }
   &.item-saved &_saved { display: block; }
   &.item-saved &_import { display: none; }
+}
+
+.omeka-form {
+  &_field {
+    margin-bottom: $gapSize;
+  }
+  &_submit {
+    width: 100%;
+    font-size: $fontSizeStrong;
+    margin-bottom: $gapSize / 2;
+  }
 }

@@ -27,8 +27,6 @@ module ImageHelper
     
   end
   
-
-  
   def self.extract_pdf(filename)
     pattern = Regexp.new(File.extname(filename) + "$")
     destination = filename.gsub(pattern, '')
@@ -83,6 +81,14 @@ module ImageHelper
       FileUtils.cp(working_file, filename)
       File.unlink(working_file)
     end  
+  end
+
+  def self.convert_tiff(filename)
+    original = Magick::ImageList.new(filename)
+    new_file = File.join((File.dirname(filename)), (File.basename(filename, ".*") + ".jpg"))
+    print "Converted file path is #{new_file}"
+    converted = original.write("#{new_file}")
+    return converted
   end
 
   def self.needs_compression?(filename)

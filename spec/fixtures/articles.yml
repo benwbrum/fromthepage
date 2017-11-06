@@ -33,3 +33,8 @@ article_6:
   title: Ada Lovelace
   lock_version: 0
   collection_id: 1
+
+article_7:
+  id: 7
+  title: Switzerland
+  collection_id: 2

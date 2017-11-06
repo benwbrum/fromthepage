@@ -1,0 +1,34 @@
+# Title of a work -- this brief string is displayed prominently to end users
+title: '1918'
+# Description -- a block of HTML describing the work
+description: 1918 Diary of Julia Craddock Brumfield
+# Physical Description -- raw HTML is accepted
+physical_description: ''
+# Document History -- raw HTML is accepted
+document_history: ''
+# Permission Description -- raw HTML is accepted
+permission_description: ''
+# location of composition (brief string)
+location_of_composition: Renan, Virginia
+# author or creator (brief string)
+author: Julia Ann Craddock Brumfield (1844-1938)
+# HTML transcription conventions.  Only specified to override the transcription conventions for the collection
+transcription_conventions: "<p><b>Transcription Conventions for 1918</b>\r\n<ul><li><i>Spelling:</i>Use
+  original spelling if possible.</li>\r\n<li><i>Capitalization:</i>Modernize for readability</li>\r\n<li><i>Punctuation:</i>Add
+  modern periods, but don't add punctuation like commas and apostrophes.</li>\r\n<li><i>Line
+  Breaks:</i>Hit <code>return</code> once after each line ends.  Two returns indicate
+  a new paragraph, which is usually indentation  following the preceding sentence
+  in the original.  The times at the end of each entry should get their own paragraph,
+  since the software does not support indentation in the transcriptions.</li>\r\n<li><i>Illegible
+  text</i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li>\r\n</ul></p>"
+# Boolean allowing collaborators to change page titles.  Set to true if you request users to catalog each page
+scribes_can_edit_titles: false
+# Boolean enabling translation as a step following transcription
+supports_translation: false
+# HTML block to be displayed to collaborators as they translate this work
+translation_instructions: ''
+# Boolean for how prominently to display a page.  Setting to false will suppress page title displays.
+pages_are_meaningful: true
+# Slug to be used for URL permalink
+slug: '1918'
+
