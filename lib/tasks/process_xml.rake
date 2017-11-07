@@ -2,7 +2,7 @@ namespace :fromthepage do
   desc "take the ryan white metadata xml file and generate names and descriptions"
   task process_xml: :environment do
     doc = File.open("tmp/RWL-box24.xml") { |f| Nokogiri::XML(f) }
-    errfile = File.new("tmp/rwl/image_processing_errors.log", 'w')
+    errfile = File.new("tmp/rwl4/image_processing_errors.log", 'w')
     # for each record 
     doc.xpath("//record").each_with_index do |record, i|
       # get a work name
@@ -14,7 +14,7 @@ namespace :fromthepage do
       if Dir.glob("*/#{name}").count > 0
         break
       else
-        directory = "tmp/rwl3/" + prefix + "/" + name
+        directory = "tmp/rwl4/" + prefix + "/" + name
       end
       begin
         FileUtils.mkdir_p(directory)
@@ -94,7 +94,7 @@ namespace :fromthepage do
          filename = "#{(pageptr.to_i + 1).to_s}"
          # convert the image file to the page_name.jpg in the directory above
          # convert images/10099.jp2 -quality 20 directory/10099.jpg
-         convertcommand = "convert RWL-All-Images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
+         convertcommand = "convert RWL-IL-Images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
          unless system(convertcommand)
             #write diretory name/id to a file
             errfile.write("bad directory #{name}\n")
