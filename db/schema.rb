@@ -592,6 +592,7 @@ ActiveRecord::Schema.define(version: 20171103141353) do
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
+    t.string   "identifier"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

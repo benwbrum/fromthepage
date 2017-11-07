@@ -25,6 +25,12 @@
             |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
  
         tr
+          th =f.label :identifier, 'Identifier'
+          td =f.text_field :identifier, value: @work.identifier
+        tr
+          th.hidden Identifier Help
+          td Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
+        tr
           th.hidden Pages are meaningful
           td
             p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
