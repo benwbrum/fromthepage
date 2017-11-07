@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection }})
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 .columns
   article.maincol
     =form_for :collection, url: update_collection_path(@collection) do |f|
@@ -48,21 +48,12 @@
 
       .toolbar
         .toolbar_group.w100
-          =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' })
-            =svg_symbol '#icon-remove-sign', class: 'icon'
+          =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' }, class: 'button')
             span Delete Collection
         .toolbar_group
           =f.button 'Save Changes', class: 'big'
 
-    h2 Manage Works
-    h5 Works in the collection
-    ul.collection-works-manage
-      -@collection.works.each do |work|
-        li
-          =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
-    p.nodata_text To move a work to another collection, use the collection dropdown on the work settings page.
-
-    h5 Add a new work
+    h3 Add a new work
     -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => @collection.id }
     p.nodata_text You can add another work under #{start_project}  
 

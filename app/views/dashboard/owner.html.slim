@@ -8,11 +8,19 @@
           .collection
             h4.collection_title
               =link_to c.title, collection_path(c.owner, c)
+              -collection_list(c)
             ol.collection_works
-            -unless c.works.empty?
-              -(c.works.sort_by { |work| work.title }).each do |w|
+            -unless @works.empty?
+              -@works.each do |w|
                 li =link_to w.title, { :controller => 'work', :action => 'edit', :work_id => w.id }
+              -more_works = link_to 'See All Works...', collection_works_list_path(c.owner, c)
               -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => c.id }
+              p.nodata_text 
+                  i 
+                    |Total work count: #{@count}
+                  -if @count > 15
+                    i &nbsp; #{more_works}
+                    br
               p.nodata_text 
                 i You can add another work under #{start_project}
             -else

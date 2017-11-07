@@ -46,7 +46,7 @@ describe "editor actions" , :order => :defined do
     expect(page).to have_content("Places")
     #Statistics
     page.find('.tabs').click_link("Statistics")
-    expect(page).to have_content("Work Progress")
+    expect(page).to have_content("Collaborators")
     #make sure we don't have the owner tabs
     expect(page.find('.tabs')).not_to have_content("Settings")
     expect(page.find('.tabs')).not_to have_content("Export")

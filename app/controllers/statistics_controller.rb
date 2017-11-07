@@ -1,8 +1,8 @@
 class StatisticsController < ApplicationController
 
   def collection
-    @works = @collection.works :include => 'work_statistics'
-    @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
+    @works = @collection.works
+  #  @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
 
     @users = User.all
     @all_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)

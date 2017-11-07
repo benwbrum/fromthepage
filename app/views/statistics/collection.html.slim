@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 7, :collection_id => @collection.id }})
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection.id }})
 -unless @works.empty?
   section.collection-stats
     .collection-stats_counters
@@ -30,45 +30,6 @@
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.translation_count(7)}") #{'Page'.pluralize(@collection.translation_count(7))} translated
     .counter(data-prefix="#{number_with_delimiter @collection.ocr_count(7)}") OCR #{'Correction'.pluralize(@collection.ocr_count(7))}
-
-  h2 Work Progress
-  ul.collection-work-stats
-    -@works.each do |w|
-      -unless w.supports_translation
-        -progress_annotated = w.work_statistic.pct_annotated.round
-        -progress_review = w.work_statistic.pct_needs_review.round
-        -progress_completed = w.work_statistic.pct_completed.round
-
-        -if w.ocr_correction
-          -completed = "corrected"
-        -else
-          -completed = "transcribed"
-      -else
-        -progress_annotated = w.work_statistic.pct_translation_annotated.round
-        -progress_review = w.work_statistic.pct_translation_needs_review.round
-        -progress_completed = w.work_statistic.pct_translation_completed.round
-        -completed = "translated"
-
-      li
-        span =link_to w.title, collection_work_contents_path(w.collection.owner, w.collection, w)
-        span =="<b>#{w.work_statistic.total_pages}</b> #{'page'.pluralize(w.work_statistic.total_pages)}"
-        -unless @collection.subjects_disabled
-          span =="<b>#{progress_annotated}%</b> indexed"
-        span =="<b>#{progress_completed}%</b> #{completed}"
-        span =="<b>#{progress_review}%</b> needs review" unless progress_review == 0
-        span
-          span.progress
-            -unless @collection.subjects_disabled
-              span(style="width:#{progress_annotated}%")
-              span(style="width:#{progress_completed - progress_annotated}%")
-              -unless progress_review == 0
-                span(style="width:#{progress_review}%")
-
-            -else
-              span(style="width:#{progress_completed}%")
-              -unless progress_review == 0
-                span(style="width:#{progress_review}%")
-
 
 h2 Collaborators
 

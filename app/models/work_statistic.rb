@@ -99,6 +99,8 @@ class WorkStatistic < ActiveRecord::Base
       self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
       self[:translated_review] = work.pages.where("translation_status = '#{Page::STATUS_NEEDS_REVIEW}'").count
     end
+    self[:complete] = self.pct_completed
+    self[:translation_complete] = self.pct_translation_completed
     save!
   end
 

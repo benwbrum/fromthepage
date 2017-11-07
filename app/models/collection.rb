@@ -116,6 +116,11 @@ class Collection < ActiveRecord::Base
     puts "#{self.title} collection has been reset"
   end
 
+  def search_works(search)
+    self.works.where("title LIKE ?", "%#{search}%")
+  end
+
+
   protected
     def set_transcription_conventions
       unless self.transcription_conventions.present?

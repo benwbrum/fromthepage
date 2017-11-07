@@ -16,6 +16,13 @@ class UserMailer < ActionMailer::Base
     mail to: @document_upload.user.email, subject: "Your upload is ready"
   end
 
+  def new_owner(user, text)
+    @owner = user
+    @text = text
+    mail to: @owner.email, subject: "New FromThePage Owner"
+  end
+
+
   private
   def add_inline_attachments!
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
