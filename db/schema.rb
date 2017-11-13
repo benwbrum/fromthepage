@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812191641) do
+ActiveRecord::Schema.define(version: 20171018134144) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -590,6 +590,7 @@ ActiveRecord::Schema.define(version: 20170812191641) do
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
+    t.string   "identifier"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree
