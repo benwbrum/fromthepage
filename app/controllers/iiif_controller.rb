@@ -53,9 +53,10 @@ class IiifController < ApplicationController
             }
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
-    #manifest.description = work.description unless work.description.blank?
+    dc_source = dc_source_from_work(work)
+    manifest.metadata = [dc_source] if dc_source
+      
     if work.sc_manifest
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
     else
       manifest.description = work.description unless work.description.blank?
@@ -291,12 +292,31 @@ private
                 }
           manifest = IIIF::Presentation::Manifest.new(seed)
           manifest.label = work.title
-
-          iiif_collection.manifests << manifest
+          dc_source = dc_source_from_work(work)
+          manifest.metadata = [dc_source] if dc_source
+        
+          iiif_collection.manifests << manifest            
         end
       end
     end
     iiif_collection
+  end
+
+  def dc_source_from_work(work)
+    dc_source = nil
+    if !work.identifier.blank? || work.sc_manifest
+      dc_source = {"label" => "dc:source"}
+      if work.identifier && work.sc_manifest
+        dc_source["value"] = [work.identifier, work.sc_manifest.at_id]
+      else
+        if work.sc_manifest
+          dc_source["value"] = work.sc_manifest.at_id
+        else
+          dc_source["value"] = work.identifier
+        end
+      end
+    end
+    dc_source
   end
 
   def canvas_id_from_page(page)
