@@ -124,6 +124,15 @@
   }
 }
 
+.counter.link {
+  &:before {
+    color: $fgLink;
+    }
+  &:hover:before {
+    color: $fgHover;
+    }
+}
+
 .admin-logfile {
   color: #333;
   font-size: 12px;

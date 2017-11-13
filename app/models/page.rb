@@ -32,6 +32,7 @@ class Page < ActiveRecord::Base
   after_initialize :defaults
   after_destroy :update_work_stats
   after_destroy :delete_deeds
+  after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   attr_accessible :title
   attr_accessible :source_text
@@ -306,5 +307,8 @@ private
     Deed.where(page_id: self.id).destroy_all
   end
 
+  def update_featured_page
+      self.work.update_columns(featured_page: nil)
+  end
 
 end
