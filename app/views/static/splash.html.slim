@@ -2,6 +2,12 @@
 -content_for :meta_description, "FromThePage is free software that allows volunteers to transcribe handwritten documents online. Easy to index and annotate subjects within a text using a wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search."
 -content_for :meta_keywords, "transcribe handwritten documents online free open-source wiki historical crowdsourcing transcription"
 
+-content_for :content_above
+  section.intro
+    .wrapper: .intro_box
+      h1.intro_box_title &ldquo;Simply the finest crowdsourcing manuscript transcription software on the planet&rdquo;
+      p.intro_box_text That's a quote by Max Spiegel, who runs Zeprapedia, Philip K. Dick's Exegesis, at Penn State.  He's one of many people running collaborative transcription projects on FromThePage.
+      p.intro_box_text You've scanned your collection for years, but no one can find the text locked in your images.  Use FromThePage to free your images and engage collaborators everywhere.
 
 blockquote.main-quote
   p.main-quote_text &ldquo;At it's best, crowd-sourcing is not about getting someone to do work for you, it is about offering your users the opportunity to participate in public memory.&rdquo;
@@ -149,3 +155,42 @@ section.features
     li.justified_box>
       h4.features_title OCR Correction
       p.features_text Not just for handwritten materials, FromThePage can import OCR alongside the original image for users to correct and edit.
+
+section.spotlight
+  h3.legend Project Spotlight
+  ul.justified.vtop
+    li.justified_box>
+      figure.cover
+        =image_tag 'cover-wenham.jpg', class: 'cover_image', size: '200', alt: 'Julia Brumfield'
+        figcaption.cover_caption
+          |The <b><a href="/JuliaBrumfield">Julia Brumfield Diaries</a></b> are an incomplete collection of diaries written between 1915 and 1938 chronicling life on a tobacco farm in Pittsylvania County, Virginia. Currently the diaries for the years 1918 through 1923 have been scanned, and <a href="/display/read_work?ol=s_sp_1918&amp;work_id=2">1918</a> and <a href="/display/read_work?ol=s_sp_1919&amp;work_id=3">1919</a> have been fully transcribed and indexed, while <a href="/display/read_work?ol=s_sp_1920&amp;work_id=9">1920</a> and <a href="/display/read_work?ol=s_sp_1921&amp;work_id=6">1921</a> are still being indexed.
+    li.justified_box>
+      figure.cover
+        =image_tag 'zenasmatthewssquare.jpg', class: 'cover_image', size: '200', alt: 'Zenas Matthews'
+        figcaption.cover_caption
+          |The <b><a href="/ZenasMatthews">Zenas Matthews Diary and Service Papers</a></b> record the diarist’s service in the 1846 US-Mexican War. In addition to the diary Matthews carried from Texas to Monterey, the papers contain a letter written by Col. Jack C. Hays attesting to his honorable discharge. The collection is housed in <a href="http://southwestern.edu/library/special-collections/special-collections.html">Special Collections</a> at <a href="http://www.southwestern.edu/">Southwestern University</a>.
+    li.justified_box>
+      figure.cover
+        =image_tag 'cover-wenham.jpg', class: 'cover_image', size: '200', alt: 'East Civil War Papers'
+        figcaption.cover_caption
+          |The <b><a href="/collection/show?collection_id=4">East Civil War Papers</a></b> attest to the Civil War experience of George W. East, a private who enlisted in the 53rd Virginia Infantry, participated in Pickett’s Charge, and died in the prisoner-of-war camp at Point Lookout, Maryland. The papers include an empty envelope and a letter written by East in 1862, as well as a letter written by East’s cousin describing his death at Point Lookout.
+    li.justified_box>
+      figure.cover
+        =image_tag 'afpbeaversquare.jpg', class: 'cover_image', size: '200', alt: 'Austin Fanzine Project'
+        figcaption.cover_caption
+          |The <b><a href="/collection/show?collection_id=11">Austin Fanzine Project</a></b>  is comprised of several fanzines covering the music scene in Austin, Texas during the late 1990s.  Read more about it at <a href="http://www.austinfanzineproject.org/">the project blog</a>.
+
+javascript: mixpanel.track("Landing Page");
+
+-if @show_welcome_lightbox
+  #welcome-message(style="display:none")
+    h1 Welcome!
+    p.strong Welcome to FromThePage 2. This site offers a sneak preview of the new verision of FromThePage.
+    p.big Check out the new features and learn how FromThePage can help to transcribe handwritten documents online.
+    =link_to 'Learn more about FromThePage 2', { :controller => 'static', :action => 'about', :anchor => 'fromthepage2' }, class: 'button'
+
+  -content_for :javascript
+    javascript:
+      $(function() {
+        new LiteBox({ content: '#welcome-message' }).open();
+      });
