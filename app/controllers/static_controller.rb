@@ -7,4 +7,8 @@ class StaticController < ApplicationController
     end
   end
 
+  def metadata
+    render :file => 'static/metadata.yml', :layout => false, :content_type => "text/plain"
+  end
+
 end

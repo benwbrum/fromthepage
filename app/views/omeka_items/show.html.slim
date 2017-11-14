@@ -1,15 +1,20 @@
 -content_for :page_title, "Omeka Item: #{@omeka_item.title}"
 
-h1 ="Omeka Item: #{@omeka_item.title}"
+h1 ="Manage Omeka Import"
+
 .columns.omeka-item
   article.maincol
     .headline
-      h4.headline_title =pluralize(@omeka_item.client_files.size, 'Item File')
+      h3.headline_title ="Omeka Item: #{@omeka_item.title}"
+
+    p =pluralize(@omeka_item.client_files.size, 'Item File')
+    p This item has been imported from Omeka but has not yet been converted to a work. Below you see the list of imported pages.   You can  convert this import into a work by publishing it into a collection. 
+
     .omeka-item-files
       -@omeka_item.client_files.each do |file|
         .omeka-item-file
           .omeka-item-file_image
-            =link_to image_tag(file.data.file_urls.thumbnail), file.data.file_urls.fullsize, 'data-imageview' => ''
+            =link_to image_tag(file.data.file_urls.thumbnail, alt: "ID: #{file.data.id}"), file.data.file_urls.fullsize, 'data-imageview' => ''
           .omeka-item-file_description
             ul.omeka-item-info
               li(data-prefix="File ID:") =file.data.id
@@ -37,9 +42,11 @@ h1 ="Omeka Item: #{@omeka_item.title}"
         li(data-prefix="Coverage:") =@omeka_item.coverage
       li(data-prefix="Source:") =link_to(@omeka_item.omeka_site.title, @omeka_item.omeka_site)
       li(data-prefix="API URL:") =@omeka_item.omeka_url
-    div
-      =form_tag action: :import 
-        =hidden_field_tag :id, @omeka_item.id
-        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -'
-        =submit_tag 'Publish to Collaborators'
     
+    h3 Publish to Collaborators
+    =form_tag({action: :import}, class: 'omeka-form') do
+      =hidden_field_tag :id, @omeka_item.id
+      .omeka-form_field
+        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title'), prompt: '- Select a collection -', 'aria-label' => 'Select a collection for import'
+      =button_tag 'Publish Work', class: 'omeka-form_submit'
+  

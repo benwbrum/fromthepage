@@ -1,6 +1,6 @@
 class CreateTitledImages < ActiveRecord::Migration
   def self.up
-    create_table :titled_images do |t|
+=begin    create_table :titled_images do |t|
       t.column :original_file,  :string, :limit => 255, :null => false
       t.column :title_seed,     :string, :limit => 20
       t.column :title_override, :string, :limit => 255
@@ -15,9 +15,10 @@ class CreateTitledImages < ActiveRecord::Migration
       t.column :position, :integer
       t.column :created_on, :datetime
     end
+=end  
   end
 
   def self.down
-    drop_table :titled_images
+#    drop_table :titled_images
   end
 end

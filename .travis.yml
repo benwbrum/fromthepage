@@ -1,0 +1,31 @@
+dist: trusty
+sudo: false
+language: ruby
+
+rvm:
+  - 2.2.0
+
+cache: bundler
+
+services:
+  - mysql
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install ghostscript
+  - sudo apt-get install graphviz
+
+before_script:
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
+  - bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
+
+script:
+  - xvfb-run bundle exec rspec spec/features/
+
+branches:
+  only:
+    - master
+    - ui-design
+    - fromthepage.com
+    - indianapolis

@@ -28,23 +28,21 @@
           span Always show in fullscreen
 
       .toolbar_group.w100.aright
-        span Mark as blank
-        |&nbsp;
+        =f.label 'mark_blank', 'Mark as blank'
         -if @page.status == 'blank'
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
 
       .toolbar_group.w100.aright
-        span Needs Review
-        |&nbsp;
+        =f.label 'needs_review', 'Needs Review'
         -if @page.status == 'review'
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
 
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save'
+        =button_tag 'Save Changes', :name => 'save', id: 'save_button'
 
 
   .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
@@ -82,7 +80,8 @@
             .page-editarea_title
               span =f.label :title, 'Title:', class: 'a50'
               span =f.text_field :title
-          =f.text_area :source_text
+          =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+          =f.label :source_text, 'Edit transcription', class: 'hidden'
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -128,5 +127,19 @@ h2.legend Page Notes
         $('#page_needs_review').prop('checked', false);
       });
     });
+
+    $(function(){
+      $('#save_button').click(function(e){
+        var noteText = $('.user-bubble_form #note_body:last').val();
+        if (noteText != ''){
+          e.preventDefault();
+          alert("You have unsaved notes. Please save or discard notes before saving transcription.");
+        } else {
+          return;
+        }
+      })
+
+    });
+
 
 javascript:  mixpanel.track("Transcribe Page");

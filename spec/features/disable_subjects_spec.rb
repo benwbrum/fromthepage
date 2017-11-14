@@ -69,10 +69,10 @@ describe "disable subject linking", :order => :defined do
 
   it "checks page level subject items" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
-    page.find('.work-page', text: @title).click_link(@title)
+    page.find('.work-page_title', text: @title).click_link(@title)
     expect(page).not_to have_content("Autolink")
     expect(page).to have_content("A single newline")
-    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+    page.fill_in 'page_source_text', with: "[[Texas]]"
     click_button("Save Changes")
     expect(page).to have_content("Texas")
     expect(page).to have_content("Transcription")
@@ -97,7 +97,7 @@ describe "disable subject linking", :order => :defined do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
-    page.find('.work-page', text: @title).click_link(@title)
+    page.find('.work-page_title', text: @title).click_link(@title)
     expect(page).to have_content("Transcription")
     expect(page).to have_selector('a', text: 'Texas')
     

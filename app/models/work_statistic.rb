@@ -67,18 +67,38 @@ class WorkStatistic < ActiveRecord::Base
     pct_translated + pct_translation_annotated
   end
 
-  def recalculate
+  def recalculate(options={})
     self[:total_pages] = work.pages.count
-    self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
-    self[:annotated_pages] = work.pages.where("status = '#{Page::STATUS_INDEXED}'").count
-    self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
-    self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
-    self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
-    self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
-    self[:translated_blank] = work.pages.where("translation_status = '#{Page::STATUS_BLANK}'").count
-    self[:translated_review] = work.pages.where("translation_status = '#{Page::STATUS_NEEDS_REVIEW}'").count
-    self[:translated_annotated] = work.pages.where("translation_status = '#{Page::STATUS_INDEXED}'").count
-
+    case options[:type]
+    when 'transcribed'
+      self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
+    when 'corrected'
+      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
+    when 'translated'
+      self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
+    when 'blank'
+      self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
+      self[:translated_blank] = work.pages.where("translation_status = '#{Page::STATUS_BLANK}'").count
+    when 'indexed'
+      self[:annotated_pages] = work.pages.where("status = '#{Page::STATUS_INDEXED}'").count
+      self[:translated_annotated] = work.pages.where("translation_status = '#{Page::STATUS_INDEXED}'").count
+      self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
+      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
+      self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
+    when 'review'
+      self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+      self[:translated_review] = work.pages.where("translation_status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+    else
+      self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
+      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
+      self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
+      self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
+      self[:translated_blank] = work.pages.where("translation_status = '#{Page::STATUS_BLANK}'").count
+      self[:annotated_pages] = work.pages.where("status = '#{Page::STATUS_INDEXED}'").count
+      self[:translated_annotated] = work.pages.where("translation_status = '#{Page::STATUS_INDEXED}'").count
+      self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+      self[:translated_review] = work.pages.where("translation_status = '#{Page::STATUS_NEEDS_REVIEW}'").count
+    end
     save!
   end
 

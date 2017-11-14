@@ -47,6 +47,18 @@ module CollectionStatistic
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
   end
 
+  def pct_completed
+    complete = 0
+    unless work_count == 0
+      self.works.includes(:work_statistic).each do |w|
+        complete += w.work_statistic.pct_completed
+      end
+      pct = complete/work_count
+    else
+      pct = 0
+    end
+    return pct
+  end
 
   def last_days_clause(last_days, column = "created_at")
     clause = ""

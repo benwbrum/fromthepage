@@ -28,10 +28,11 @@ section.user-profile
         span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
     -if @user.location.present?
       p.big(data-prefix='Location:') =@user.location
-    -if @user.website.present?
-      p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
-    -if @user.about.present?
-      p.big(data-prefix='About:') =@user.about
+    -if @user.owner
+      -if @user.website.present?
+        p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
+      -if @user.about.present?
+        p.big(data-prefix='About:') =@user.about
 
 -if @user.owner?
   .columns

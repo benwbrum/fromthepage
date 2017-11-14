@@ -7,29 +7,31 @@
     =render 'dashboard/empty'
 
     h3 Import from an IIIF Repository
-    p.fgfaded Shared Canvas Universe
-    ul.omeka-sites
-      -@universe_collections.each do |sc_collection|
-        li.omeka-site
-          h5.omeka-site_title =link_to sc_collection.label, {:controller => 'sc_collections', :action => 'explore', :at_id => CGI::escape(sc_collection.at_id)}    
-      -if pontiiif_server
-        h5 Search for IIIF Content
-        =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
-          table.form
-              td
-                .input-file
-                  =text_field_tag :search_param
-                  =button_tag 'Search'
-    h5 Import an IIIF Manifest
-    =form_tag({ controller: 'sc_collections', action: 'explore_manifest' }) do |f|
+    -if pontiiif_server
+      h5 
+        =label_tag :search_param, "Search for IIIF Content"
+      =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
+        table.form
+            td
+              .input-file
+                =text_field_tag :search_param
+                =button_tag 'Search'
+
+    h5 
+      =label_tag :at_id, "Import an IIIF Manifest or Collection"
+
+    =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
       table.form
           td
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import'
     
+    h5 Explore IIIF Collections
+    =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => ScCollection::UNIVERSE}, class: 'button'
+
     h3 Import from the Internet Archive
-    =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }
+    =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
     h3 Import from Omeka
     -if @omeka_sites.blank?
       p.fgfaded You didn't connect any Omeka sites. Use the button below to create a new Omeka connection.

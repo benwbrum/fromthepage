@@ -13,4 +13,17 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.collection_stats_by_owner(owner, 1.day.ago, DateTime.now.utc)
   end
 
+  def iiif_collection_import_failed
+    manifests = ScManifest.last(5)
+    errors = {}
+    manifests.each do |m|
+      errors.store(m.at_id, m.label)
+    end
+    AdminMailer.iiif_collection_import_failed(916, 168, errors)
+  end
+
+  def iiif_collection_import_succeeded
+    AdminMailer.iiif_collection_import_succeeded(916, 168)
+  end
+  
 end

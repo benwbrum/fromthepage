@@ -7,9 +7,9 @@
 }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Dashboard"
+-content_for :page_title, "#{selected_tab} - #{t('dashboard.plain')}"
 
-h1 Dashboard
+h1 =t 'dashboard.plain'
 .tabs
   -for tab in tabs
     =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
