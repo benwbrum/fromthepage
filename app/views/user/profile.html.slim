@@ -6,7 +6,7 @@
 section.user-profile
   .user-profile_image
     .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
-    -if @user.owner?
+    //-if @user.owner?
       .user-profile_badge: span owner
   .user-profile_details
     .headline
@@ -55,57 +55,58 @@ section.user-profile
             :collection_ids => @collection_ids },
           class: 'button outline round'
 
-h2 Recent Activity by #{@user.display_name}
--if @notes.present?
-  h3 Recent Notes
-  table.datagrid
-    tr
-      th Date
-      th.w25 Page
-      th.w75 Note
-    -@notes.includes(:page).each do |note|
-      -note_text = truncate(strip_tags(note.body), :length => 200)
+-unless @user.owner?
+  h2 Recent Activity by #{@user.display_name}
+  -if @notes.present?
+    h3 Recent Notes
+    table.datagrid
       tr
-        td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
-        td.overflow =link_to note.page.title, { :controller => 'display', :action => 'display_page', :page_id => note.page_id }
-        td =link_to note_text, { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "note-#{note.id}" }
-  br
+        th Date
+        th.w25 Page
+        th.w75 Note
+      -@notes.includes(:page).each do |note|
+        -note_text = truncate(strip_tags(note.body), :length => 200)
+        tr
+          td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
+          td.overflow =link_to note.page.title, { :controller => 'display', :action => 'display_page', :page_id => note.page_id }
+          td =link_to note_text, { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "note-#{note.id}" }
+    br
 
--if @page_versions.present?
-  h3 Recent Page Edits
-  table.datagrid
-    tr
-      th Date
-      th.w25 Work
-      th.w60 Page
-      th.w15 Version
-    -@page_versions.each do |version|
+  -if @page_versions.present?
+    h3 Recent Page Edits
+    table.datagrid
       tr
-        td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
-        td.overflow
-          -if version.page.work.present?
-            =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
-          -else
-            span.a50 No work
-        td =link_to version.page.title, { :controller => 'display', :action => 'display_page', :page_id => version.page.id }
-        td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
-  br
+        th Date
+        th.w25 Work
+        th.w60 Page
+        th.w15 Version
+      -@page_versions.each do |version|
+        tr
+          td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
+          td.overflow
+            -if version.page.work.present?
+              =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
+            -else
+              span.a50 No work
+          td =link_to version.page.title, { :controller => 'display', :action => 'display_page', :page_id => version.page.id }
+          td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
+    br
 
--if @article_versions.present?
-  h3 Recent Article Edits
-  table.datagrid
-    tr
-      th Date
-      th.w25 Article
-      th.w60 Categories
-      th.w15 Version
-    -@article_versions.each do |version|
-        -unless version.article.collection.subjects_disabled
-          -@collection = version.article.collection
-          -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
-          tr
-            td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
-            td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
-            td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
-            td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
-    
+  -if @article_versions.present?
+    h3 Recent Article Edits
+    table.datagrid
+      tr
+        th Date
+        th.w25 Article
+        th.w60 Categories
+        th.w15 Version
+      -@article_versions.each do |version|
+          -unless version.article.collection.subjects_disabled
+            -@collection = version.article.collection
+            -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
+            tr
+              td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
+              td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
+              td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
+              td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
+      

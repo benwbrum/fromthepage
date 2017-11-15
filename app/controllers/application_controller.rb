@@ -111,7 +111,13 @@ class ApplicationController < ActionController::Base
       @collection = Collection.friendly.find(id)
     elsif DocumentSet.friendly.exists?(id)
       @collection = DocumentSet.friendly.find(id)
+    elsif !DocumentSet.find_by(slug: id).nil?
+      @collection = DocumentSet.find_by(slug: id)
+    elsif !Collection.find_by(slug: id).nil?
+      @collection = Collection.find_by(slug: id)
+ 
     end
+    return @collection
   end
 
   def bad_record_id

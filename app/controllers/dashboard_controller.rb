@@ -37,8 +37,8 @@ class DashboardController < ApplicationController
 
   #Public Dashboard - list of all collections
   def index
-    collections = Collection.joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
-    @document_sets = DocumentSet.joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+    collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+    @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
     @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
   end
 
