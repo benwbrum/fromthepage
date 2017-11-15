@@ -14,12 +14,7 @@ class ScCollectionsController < ApplicationController
     at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
     redirect_to :action => :explore_collection, :at_id => at_id
   end
-=begin
-  def explore
-    at_id = CGI::unescape(params[:at_id])
-    @sc_collection = ScCollection.collection_for_at_id(at_id)
-  end
-=end
+
   def import
     at_id = params[:at_id]
     begin
@@ -81,10 +76,7 @@ class ScCollectionsController < ApplicationController
 
 
   def import_collection
-    #map an array of at_ids for the selected manifests
-    manifest_array = params[:manifest_id].keys.map {|id| id}
     sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
-
     collection_id = params[:collection_id]
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
@@ -95,21 +87,26 @@ class ScCollectionsController < ApplicationController
     if collection.nil?
       collection = create_collection(sc_collection, current_user)
     end
+
+    #make sure import folder exists
+    unless Dir.exist?("#{Rails.root}/public/imports")
+      Dir.mkdir("#{Rails.root}/public/imports")
+    end
+    #create logfile for collection
+    log_file = "#{Rails.root}/public/imports/#{collection.id}_iiif.log"
+
+    #map an array of at_ids for the selected manifests
+    manifest_array = params[:manifest_id].keys.map {|id| id}
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection['#{manifest_ids}',#{collection.id},#{current_user.id}] --trace >> #{log_file} &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id}] --trace >> #{log_file} &"
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
     flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
 
     ajax_redirect_to collection_path(collection.owner, collection)
-  end
-
-  def log_file
-    env = Rails.env.downcase
-    "#{Rails.root}/log/#{env}.log"
   end
 
   def create_collection(sc_collection, current_user)

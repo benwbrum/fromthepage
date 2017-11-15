@@ -1,7 +1,6 @@
 
     .collections
       -@collections.each do |c|
-        -works_count = c.works.size
         -if c.show_to?(current_user)
           -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
           -owner_link = link_to c.owner.display_name, user_profile_path(c.owner)
@@ -14,9 +13,4 @@
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary
-                -if(works_count > 0)
-                    =svg_symbol '#icon-book', class: 'icon'
-                    span =pluralize(works_count, 'work')
-                -else
-                  span No works
                 span =="Owned by #{owner_link}"
