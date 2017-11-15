@@ -99,6 +99,7 @@ html lang="en-US"
     footer.footer
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
       .footer_nav
+        =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
         =link_to 'About', about_path
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
         =link_to 'Privacy Policy', privacy_path
