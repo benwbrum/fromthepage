@@ -85,7 +85,7 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/statistics"
     expect(page).to have_content("Last 7 Days Statistics")
     page.find('.tabs').click_link('Overview')
-    click_link @set.works.first.title
+    page.find('.collection-work_title', text: @set.works.first.title).click_link
     expect(page).to have_content(@set.works.first.title)
     page.find('.work-page_title').click_link(@set.works.first.pages.first.title)
     expect(page.current_path).not_to eq dashboard_path
@@ -286,7 +286,7 @@ describe "document sets", :order => :defined do
     @page = work.pages.first
     visit dashboard_path
     page.find('.maincol').find('a', text: @set.title).click
-    click_link(work.title)
+    page.find('.collection-work_title', text: work.title).click_link
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     click_button('Pages That Need Review')
@@ -322,7 +322,7 @@ describe "document sets", :order => :defined do
     #make sure it's right if you click on the page from the work
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    click_link(@page.title)
+    page.find('.work-page_title', text: @page.title).click_link
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     #so that it doesn't matter if the page has been transcribed, go directly to overview

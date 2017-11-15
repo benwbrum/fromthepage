@@ -79,14 +79,7 @@ class ApplicationController < ActionController::Base
     if params[:collection_id]
       @collection = set_friendly_collection(params[:collection_id])
     end
-    # image stuff is orthogonal to collections
-    if params[:titled_image_id]
-      @titled_image = TitledImage.find(params[:titled_image_id])
-      @image_set = @titled_image.image_set
-    end
-    if params[:image_set_id]
-      @image_set = ImageSet.find(params[:image_set_id])
-    end
+
     if params[:user_id]
       @user = User.friendly.find(params[:user_id])
     end
@@ -118,7 +111,13 @@ class ApplicationController < ActionController::Base
       @collection = Collection.friendly.find(id)
     elsif DocumentSet.friendly.exists?(id)
       @collection = DocumentSet.friendly.find(id)
+    elsif !DocumentSet.find_by(slug: id).nil?
+      @collection = DocumentSet.find_by(slug: id)
+    elsif !Collection.find_by(slug: id).nil?
+      @collection = Collection.find_by(slug: id)
+ 
     end
+    return @collection
   end
 
   def bad_record_id
@@ -247,25 +246,6 @@ end
     else
       collection_display_page_path(@collection.owner, @collection, page.work, page)
     end
-=begin
-    if page.status == nil
-      controller = 'transcribe'
-      if user_signed_in?
-        action = 'display_page'
-      else
-        action = 'guest'
-      end
-    else
-      controller = 'display'
-      action = 'display_page'
-    end
-
-    if @document_set
-      { :controller => controller, :action => action, :page_id => page.id, :document_set_id => @document_set.id }
-    else
-      { :controller => controller, :action => action, :page_id => page.id}
-    end
-=end
   end
 
 

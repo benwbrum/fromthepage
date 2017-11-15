@@ -18,13 +18,14 @@
             =f.text_area :source_text, rows: 15
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
-      label.above Categories
-      select(data-assign-categories="#{update_article_url}" size="1" multiple)
+
+      |Categories
+      select(data-assign-categories="#{update_article_url}" size="1" id="category-select" aria-label="Select categories" multiple)
         -@collection.categories.walk_tree do |c, level|
           -selected = true if @article.categories.include?(c)
           option(data-level=level value=c.id selected=selected) =c.title
-
       .fglight
+        br
         =render :partial => 'shared/markup_help'
 
       .toolbar

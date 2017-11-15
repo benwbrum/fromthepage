@@ -17,6 +17,8 @@ default: &default
   password:
   socket: /var/run/mysqld/mysqld.sock
   strict: false
+  variables:
+    sql_mode: TRADITIONAL
 
 development:
   <<: *default

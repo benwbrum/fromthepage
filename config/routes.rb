@@ -17,7 +17,6 @@ Fromthepage::Application.routes.draw do
 
   get   '/dashboard' => 'dashboard#index'
   get   '/dashboard/owner' => 'dashboard#owner'
-  get   '/dashboard/staging' => 'dashboard#staging'
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'
@@ -108,5 +107,9 @@ Fromthepage::Application.routes.draw do
   get '/:user', path: '/:user_id', to: 'user#profile', as: :user_profile
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
+
+  get 'static/faq', to: 'static#faq', as: :faq
+  get 'static/about', to: 'static#about', as: :about
+  get 'static/privacy', to: 'static#privacy', as: :privacy
 
 end

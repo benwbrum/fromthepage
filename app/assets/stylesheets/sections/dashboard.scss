@@ -124,6 +124,15 @@
   }
 }
 
+.counter.link {
+  &:before {
+    color: $fgLink;
+    }
+  &:hover:before {
+    color: $fgHover;
+    }
+}
+
 .admin-logfile {
   color: #333;
   font-size: 12px;
@@ -163,29 +172,6 @@
     width: 20%;
     border-left: 1px solid rgba(#000, 0.1);
     &:first-child { border: 0; }
-  }
-}
-
-.imagesets {
-  width: 100%;
-  display: table;
-  margin: 0 0 $gapSize * 4 0;
-}
-
-.imageset {
-  display: table-row;
-  > * {
-    padding: 3px 5px;
-    display: table-cell;
-    vertical-align: top;
-  }
-  &_title {
-    padding-left: 0;
-    .dropdown { vertical-align: top; }
-  }
-  &_summary {
-    display: table-cell;
-    color: $bodyFgFaded;
   }
 }
 

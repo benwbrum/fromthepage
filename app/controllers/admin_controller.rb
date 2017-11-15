@@ -1,10 +1,12 @@
 class AdminController < ApplicationController
+  include ErrorHelper
+
   before_filter :authorized?
 
   PAGES_PER_SCREEN = 20
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner]
 
   def authorized?
     unless user_signed_in? && current_user.admin
@@ -18,10 +20,10 @@ class AdminController < ApplicationController
     @works = Work.all
     @ia_works = IaWork.all
     @pages = Page.all
-    @image_sets = ImageSet.all
 
     @users = User.all
     @owners = @users.select {|i| i.owner == true}
+    @version = ActiveRecord::Migrator.current_version
 =begin
     sql_online =
       'SELECT count(DISTINCT user_id) count '+
@@ -58,9 +60,21 @@ class AdminController < ApplicationController
   end
 
   def update_user
+    owner = @user.owner
     if @user.update_attributes(params[:user])
+      if owner == false && @user.owner == true
+        if SMTP_ENABLED
+          begin
+            text = PageBlock.find_by(view: "new_owner").html
+            UserMailer.new_owner(@user, text).deliver!
+          rescue StandardError => e
+            log_smtp_error(e, current_user)
+          end
+        end
+      end        
+
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to({ :action => 'user_list' })
+      ajax_redirect_to :action => 'user_list'
     else
       render :action => 'edit_user'
     end
@@ -121,6 +135,23 @@ class AdminController < ApplicationController
 
   end
 
+  def settings
+    @email_text = PageBlock.find_by(view: "new_owner").html
+  end
+
+  def update
+    #need the original email text to update
+    block = PageBlock.find_by(view: "new_owner")
+    if params[:admin][:welcome_text] != block.html
+      block.html = params[:admin][:welcome_text]
+      block.save!
+    end
+
+    flash[:notice] = "Admin settings have been updated"
+
+    redirect_to action: 'settings'
+  end
+
   def owner_list
     @collections = Collection.all
     #@owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
@@ -129,6 +160,7 @@ class AdminController < ApplicationController
     else
       @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     end
+
   end
 
 end

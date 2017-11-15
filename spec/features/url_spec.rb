@@ -27,7 +27,7 @@ describe "URL tests" do
     visit dashboard_watchlist_path
     page.find('h4', text: @collection.title).click_link(@collection.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}"
-    click_link @work.title
+    page.find('.collection-work_title', text: @work.title).click_link
     expect(page.current_path).to eq "/#{@owner.slug}/#{@collection.slug}/#{@work.slug}"
     #check breadcrumb
     expect(page).to have_selector('a', text: @collection.title)
@@ -44,15 +44,15 @@ describe "URL tests" do
     login_as(@user, :scope => :user)
     #look at the owner profile
     visit "/#{@owner.slug}"
-    expect(page.find('.user-profile_badge')).to have_content('owner')
     expect(page).to have_content("Collections")
     @owner.all_owner_collections.each do |c|
       expect(page).to have_content(c.title)
     end
+    expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
     #look at a user profile
     visit "/#{@user.slug}"
     expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("Recent Activity")
+    expect(page).to have_content("Recent Activity by #{@user.display_name}")
     #make sure links go to user profile
     visit dashboard_watchlist_path
     click_link(@owner.display_name, match: :first)

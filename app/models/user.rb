@@ -20,7 +20,6 @@ class User < ActiveRecord::Base
            { :foreign_key => "owner_user_id",
              :class_name => 'Work' })
   has_many :collections, :foreign_key => "owner_user_id"
-  has_many :image_sets, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
   has_many :omeka_sites
@@ -46,7 +45,7 @@ class User < ActiveRecord::Base
   has_many :deeds
 
   validates :display_name, presence: true
-  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}
+  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
   after_destroy :clean_up_orphans
@@ -67,7 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def owner_works
-    works = Work.where(id: self.all_owner_collections.ids)
+    works = Work.where(collection_id: self.all_owner_collections.ids)
     return works
   end
 
