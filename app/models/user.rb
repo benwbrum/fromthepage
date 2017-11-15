@@ -66,7 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def owner_works
-    works = Work.where(id: self.all_owner_collections.ids)
+    works = Work.where(collection_id: self.all_owner_collections.ids)
     return works
   end
 
