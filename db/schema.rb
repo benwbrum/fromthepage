@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013161241) do
+ActiveRecord::Schema.define(version: 20171018172935) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 20171013161241) do
     t.string   "slug"
     t.boolean  "review_workflow",                        default: false
     t.boolean  "hide_completed",                         default: true
+    t.text     "help"
+    t.text     "link_help"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -590,6 +592,7 @@ ActiveRecord::Schema.define(version: 20171013161241) do
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
+    t.string   "identifier"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

@@ -23,23 +23,23 @@
     -unless @sc_collection.service.manifests.empty?
       h4 Manifests: 
 
-      =form_tag({action: 'import_collection'}, class: 'iiif-select-form') do
+      =form_tag({action: 'import_collection'}) do
         =hidden_field_tag :sc_collection_id, @sc_collection.id
         -new_collection = @collection ? @collection.id : nil
-        =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), id: 'manifest_import', prompt: '- Select a collection to import into -', required: true, 'aria-label' => "Select a collection"
-        =button_tag 'Import Checked Manifests'
+        .iiif-select-form
+          =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), id: 'manifest_import', prompt: '- Select a collection to import into -', required: true, 'aria-label' => "Select a collection"
+          =button_tag 'Import Checked Manifests'
 
         =check_box_tag("select_all", 1, true)
         |&nbsp;&nbsp;
         =label_tag 'select_all', "Select All Manifests"
 
         ul.iiif-works-list
-          -@sc_collection.service.manifests.each do |json_manifest|
+          -@sc_collection.service.manifests.each_with_index do |json_manifest, index|
             li
               -at_id = json_manifest["@id"]
-              =check_box_tag("manifest_id[#{at_id}]", 1, true, class: "manifest_checks")
-              |&nbsp;&nbsp;
-              =label_tag "manifest_id[#{at_id}]" do
+              =check_box_tag("manifest_id[#{index}]", 1, true, class: "manifest_checks")
+              =label_tag "manifest_id[#{index}]", class: 'manifest_labels' do
                 =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
         br
 

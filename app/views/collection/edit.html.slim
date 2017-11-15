@@ -17,7 +17,7 @@
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
-            =f.text_area :intro_block, rows: 12, value: @collection.intro_block
+            =f.text_area :intro_block, rows: 10, value: @collection.intro_block
         tr
           td(colspan="2")
             =f.label :footer_block, 'Footer', class: "above"
@@ -26,6 +26,14 @@
           td(colspan="2")
             =f.label :transcription_conventions, 'Transcription Conventions', class: "above"
             =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
+        tr
+          td(colspan="2")
+            =f.label :help, 'Basic Help Text', class: "above"
+            =f.text_area :help, rows: 8, value: @collection.help
+        tr
+          td(colspan="2")
+            =f.label :link_help, 'Subject Linking Help Text (not displayed if subjects are disabled)', class: "above"
+            =f.text_area :link_help, rows: 10, value: @collection.link_help
         tr
           td(colspan="2")
             p

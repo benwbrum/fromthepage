@@ -53,9 +53,10 @@ class IiifController < ApplicationController
             }
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
-    #manifest.description = work.description unless work.description.blank?
+    dc_source = dc_source_from_work(work)
+    manifest.metadata = [dc_source] if dc_source
+      
     if work.sc_manifest
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
     else
       manifest.description = work.description unless work.description.blank?
@@ -291,12 +292,31 @@ private
                 }
           manifest = IIIF::Presentation::Manifest.new(seed)
           manifest.label = work.title
-
-          iiif_collection.manifests << manifest
+          dc_source = dc_source_from_work(work)
+          manifest.metadata = [dc_source] if dc_source
+        
+          iiif_collection.manifests << manifest            
         end
       end
     end
     iiif_collection
+  end
+
+  def dc_source_from_work(work)
+    dc_source = nil
+    if !work.identifier.blank? || work.sc_manifest
+      dc_source = {"label" => "dc:source"}
+      if work.identifier && work.sc_manifest
+        dc_source["value"] = [work.identifier, work.sc_manifest.at_id]
+      else
+        if work.sc_manifest
+          dc_source["value"] = work.sc_manifest.at_id
+        else
+          dc_source["value"] = work.identifier
+        end
+      end
+    end
+    dc_source
   end
 
   def canvas_id_from_page(page)
@@ -310,15 +330,15 @@ private
   def iiif_create_image_resource(page)
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
-        :service_id => "#{url_for(:root)}image-service/#{page.id}",
-        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg",
+        :service_id => "#{url_for(:root)}image-service/#{page.id}", 
+        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
-
+        :profile => 'http://iiif.io/api/image/2/level1.json',
+                
        })
-
-    image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
+       
+    image_resource.service['@context'] = 'http://iiif.io/api/image/2/context.json'
     image_resource
   end
 

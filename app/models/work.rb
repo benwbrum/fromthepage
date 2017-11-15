@@ -35,7 +35,8 @@ class Work < ActiveRecord::Base
                   :pages_are_meaningful,
                   :slug,
                   :picture,
-                  :featured_page
+                  :featured_page,
+                  :identifier
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: true
