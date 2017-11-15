@@ -32,7 +32,7 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install ghostscript
   - sudo apt-get install graphviz
-  - bash .travis_setup.sh
+  - bash travis/.travis_setup.sh
 
 before_script:
   - bundle exec rake db:create
