@@ -14,7 +14,7 @@ DIFF_SEARCH=$(git diff --name-only $TRAVIS_COMMIT_RANGE)
 echo "Commit includes these files:"
 echo $DIFF_SEARCH
 
-PATTERN='binding.pry'
+PATTERN="binding\.pry"
 
 echo "try the grep"
 grep -v '\#' $DIFF_SEARCH | grep -i $PATTERN
