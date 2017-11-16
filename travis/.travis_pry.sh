@@ -15,11 +15,10 @@ echo $DIFF_SEARCH
 
 PATTERN='binding\.pry'
 
-RESULT=$(grep -v '\#' $DIFF_SEARCH | grep -i $PATTERN)
+grep -v '\#' $DIFF_SEARCH | grep -i $PATTERN
 
-echo $RESULT
 
-if [ "$RESULT" ]; then
+if [ "$(grep -v '\#' $DIFF_SEARCH | grep -i $PATTERN)" ]; then
   echo "Exit build; found binding.pry in this commit."
   exit 1
 fi
