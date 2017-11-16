@@ -11,9 +11,13 @@ echo "Testing $TEST_BRANCH"
 
 DIFF_SEARCH=$(git diff --name-only $TRAVIS_COMMIT_RANGE)
 
+echo $DIFF_SEARCH
+
 PATTERN='binding\.pry'
 
 RESULT=$(grep -v '#' $DIFF_SEARCH | grep -i $PATTERN)
+
+echo $RESULT
 
 if [ "$RESULT" ]; then
   echo "Exit build; found binding.pry in this commit."
