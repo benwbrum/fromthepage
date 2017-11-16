@@ -26,6 +26,11 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+
+}
+
+.manifest_labels {
+  display: inline;
 }
 
 .manifest-form {
@@ -45,8 +50,11 @@
     position: relative;
     display: inline-block;
     padding: $gapSize / 4;
-    padding-right: 100px;
     box-sizing: border-box;
+    .manifest_checks { 
+      width: 15px;
+      margin-right: 5px;
+      }
     &:first-child { border-top-width: 1px; }
     &:hover {
       background-color: rgba(#000, 0.03);

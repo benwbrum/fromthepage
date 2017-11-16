@@ -134,7 +134,7 @@ describe "editor actions" , :order => :defined do
     visit dashboard_path
     page.find('a', text: 'Your Profile').click
     expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("Recent Activity by")
+    expect(page).to have_content("Recent Activity by #{@user.display_name}")
     expect(page).not_to have_selector('.columns')
   end
 

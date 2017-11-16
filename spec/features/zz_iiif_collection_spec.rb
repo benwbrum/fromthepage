@@ -63,4 +63,10 @@ describe "uploads data for collections", :order => :defined do
     expect(page).to have_content(works.first.title)
   end
 
+  it "cleans up the logfile" do
+    col = Collection.last
+    log_file = "#{Rails.root}/public/imports/#{col.id}_iiif.log"
+    File.delete(log_file)
+  end
+
 end

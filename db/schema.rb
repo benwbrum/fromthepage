@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 20171103141353) do
     t.string   "slug"
     t.boolean  "review_workflow",                        default: false
     t.boolean  "hide_completed",                         default: true
+    t.text     "help"
+    t.text     "link_help"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
