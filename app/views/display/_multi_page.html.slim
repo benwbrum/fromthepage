@@ -85,12 +85,13 @@
 
       -if @work
         -if @total != @count
-          =button_to "View All Pages", {action: "read_work", work_id: @work.id, needs_review: 'none'}
+          =button_to "View All Pages", {action: "read_work", work_id: @work.id, needs_review: 'none'}, class: 'review-button'
         -else
-          =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }
-          br
+          =button_to "Pages That Need Transcription", {action: "read_work", work_id: @work.id, needs_review: 'transcription' }, class: 'review-button'
+          =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
+
           -if @work.supports_translation
-            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation'}
+            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation'}, class: 'review-button'
           
 
 
@@ -102,7 +103,7 @@
 
       -if @collection.categories.present?
         -unless @collection.subjects_disabled
-          h3 Categories
+          h3.categories Categories
           .category-tree
             ==display_categories(@collection.categories, nil, true) do |category|
               -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
