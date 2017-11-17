@@ -67,6 +67,8 @@ class WorkController < ApplicationController
     redirect_to dashboard_owner_path
   end
 
+binding.pry
+
   def new
     @work = Work.new
     @collections = current_user.all_owner_collections
