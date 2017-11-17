@@ -65,8 +65,6 @@ class WorkController < ApplicationController
   def delete
     @work.destroy
     redirect_to dashboard_owner_path
-
-binding.pry
   end
 
   def new
