@@ -234,5 +234,4 @@ class WorkController < ApplicationController
     deed.user = work.owner
     deed.save!
   end
-
 end
