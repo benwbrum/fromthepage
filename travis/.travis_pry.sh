@@ -17,7 +17,7 @@ echo "$DIFF_SEARCH"
 
 PATTERN='binding\.pry'
 
-RESULT=$(grep -v -E "#" "$DIFF_SEARCH" | grep -i "$PATTERN")
+RESULT=$(grep -v -E '#' $DIFF_SEARCH | grep -i $PATTERN)
 echo "$RESULT"
 
 if [ "$RESULT" ]; then
