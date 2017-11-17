@@ -185,4 +185,35 @@ describe "editor actions" , :order => :defined do
     expect(Note.find_by(id: title)).to be_nil
   end
 
+  it "filters list of pages the need transcription" do
+    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
+    expect(page).to have_content(@work.title)
+    pages = @work.pages.limit(5)
+    pages.each do |p|
+      expect(page.find('.maincol')).to have_selector('.work-page_title', text: p.title)
+    end
+
+    #look at pages that need transcription
+    click_button('Pages That Need Transcription')
+
+    #first two pages are transcribed; they shouldn't show up
+    expect(page.find('.maincol')).not_to have_selector('.work-page_title', text: pages.first.title)
+    expect(page.find('.maincol')).not_to have_selector('.work-page_title', text: pages.second.title)
+    #next three pages aren't transcribed; they shold show up
+    expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.third.title)
+    expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.fourth.title)
+    expect(page.find('.maincol')).to have_selector('.work-page_title', text: pages.fifth.title)
+    expect(page).to have_button('View All Pages')
+    expect(page.find('.pagination_info')).to have_content(@work.pages.needs_transcription.count)
+
+    #return to original list
+    click_button('View All Pages')
+    pages = @work.pages.limit(5)
+    pages.each do |p|
+      expect(page.find('.maincol')).to have_selector('.work-page_title', text: p.title)
+    end
+    expect(page).to have_button('Pages That Need Transcription')
+    expect(page.find('.pagination_info')).to have_content(@work.pages.count)
+  end
+
 end
