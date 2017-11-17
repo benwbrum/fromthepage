@@ -10,7 +10,7 @@ class UserController < ApplicationController
 
   def update_profile
   end
-
+binding.pry
   NOTOWNER = "NOTOWNER"
   def update
     # spam check
