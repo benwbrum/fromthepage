@@ -91,7 +91,9 @@
           =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
 
           -if @work.supports_translation
-            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation'}, class: 'review-button'
+            =button_to "Pages That Need Translation", {action: "read_work", work_id: @work.id, needs_review: 'translation' }, class: 'review-button'
+            =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation_review'}, class: 'review-button'
+
           
 
 
