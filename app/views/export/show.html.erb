@@ -7,7 +7,11 @@
   
   <body>
     <h1 class="work-title"><%= @work.title %></h1>
-    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.</div>
+    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.
+      <% unless @work.identifier.blank? %>
+        <p>Identifier: <%=@work.identifier%></p>
+      <% end %>
+    </div>
 
     <hr />
     <h2 class="divider">Page Transcripts</h2>
