@@ -97,6 +97,18 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
+  def enable_fields
+    @collection.field_based = true
+    @collection.save!
+    redirect_to action: 'edit', collection_id: @collection
+  end
+
+  def disable_fields
+    @collection.field_based = false
+    @collection.save!
+    redirect_to action: 'edit', collection_id: @collection
+  end
+
   def delete
     @collection.destroy
     redirect_to dashboard_owner_path

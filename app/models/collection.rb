@@ -12,6 +12,7 @@ class Collection < ActiveRecord::Base
   has_many :categories, -> { order 'title' }
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :sc_collection, :dependent => :destroy
+  has_many :transcription_fields, :dependent => :destroy
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
