@@ -13,3 +13,6 @@
     td =text_field_tag "transcription_fields[][label]", "#{label_value}"
     th =label_tag :options
     td =text_area_tag "transcription_fields[][options]", "#{options_value}"
+    td 
+      -unless field.blank?
+        =hidden_field_tag "transcription_fields[][id]", field.id

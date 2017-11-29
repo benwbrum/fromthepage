@@ -10,17 +10,25 @@ class TranscriptionFieldController < ApplicationController
 
   def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
-    array = @collection.trascription_fields
     new_fields = params[:transcription_fields]
-      new_fields.each do |fields|
-        binding.pry
-      transcription_field = TranscriptionField.new(fields)
-      transcription_field.collection_id = params[:collection_id]
-      transcription_field.save
+    new_fields.each do |fields|
+      #ignore blank fields
+      unless fields['line_number'].blank? || fields['label'].blank?
+        if fields['id'].blank?
+          #if the field doesn't exist, create a new one
+          transcription_field = TranscriptionField.new(fields)
+          transcription_field.collection_id = params[:collection_id]
+          transcription_field.save
+        else
+          #otherwise update field if anything changed
+          transcription_field = TranscriptionField.find_by(id: fields['id'])
+          #remove ID from params before update
+          fields.delete("id")
+          transcription_field.update_attributes(fields)
+        end
+      end
     end
-    @field_array = @collection.transcription_fields
 
-    binding.pry
     redirect_to edit_fields_path(collection_id: @collection)
   end
 

@@ -1,4 +1,5 @@
 h3 Show layout
--field_layout(@collection)
--@fields.each do |f|
-  =f.label
+-field_order(@collection)
+-@fields.each do |line, field|
+  -field_layout(field)
+  br

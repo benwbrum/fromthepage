@@ -8,8 +8,10 @@ h3.fields_margin Edit Transcription Fields
     -unless @current_fields.blank?
       -@current_fields.each do |f|
         =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: f}})
-    -3.times do
       =render ({ partial: 'new_field_form', locals: {collection_id: @collection}})
+    -else
+      -3.times do
+        =render ({ partial: 'new_field_form', locals: {collection_id: @collection}})
 
   =submit_tag 'Add Fields', class: 'button'
 
