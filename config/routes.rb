@@ -59,6 +59,7 @@ Fromthepage::Application.routes.draw do
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
   get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
+  post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
 
   resources :document_sets, except: [:show, :create, :edit]
 

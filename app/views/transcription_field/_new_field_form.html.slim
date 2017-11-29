@@ -1,0 +1,15 @@
+  -field = local_assigns[:field]
+  -line_number_value = !field.blank? ? field.line_number : nil
+  -input_type_value = !field.blank? ? field.input_type : nil
+  -label_value = !field.blank? ? field.label : nil
+  -options_value = !field.blank? ? field.options : nil
+
+  tr
+    th =label_tag 'Line'
+    td =text_field_tag "transcription_fields[][line_number]", "#{line_number_value}"
+    th =label_tag :input_type
+    td =select_tag("transcription_fields[][input_type]", options_for_select(TranscriptionField::INPUTS, "#{input_type_value}"))
+    th =label_tag :label
+    td =text_field_tag "transcription_fields[][label]", "#{label_value}"
+    th =label_tag :options
+    td =text_area_tag "transcription_fields[][options]", "#{options_value}"

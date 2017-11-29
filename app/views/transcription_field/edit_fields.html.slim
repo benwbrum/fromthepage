@@ -1,6 +1,16 @@
 .litebox-embed
-h3 Edit Transcription Fields
+h3.fields_margin Edit Transcription Fields
 
-=render ({ partial: 'new', locals: {collection_id: @collection}})
+=form_tag add_fields_path
+  =hidden_field_tag(:collection_id, @collection.id)
+  p Separate multiple options for a select field by semicolons.
+  table.field_form
+    -unless @current_fields.blank?
+      -@current_fields.each do |f|
+        =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: f}})
+    -3.times do
+      =render ({ partial: 'new_field_form', locals: {collection_id: @collection}})
+
+  =submit_tag 'Add Fields', class: 'button'
 
 =render ({partial: 'field_layout', locals: {collection_id: @collection}})

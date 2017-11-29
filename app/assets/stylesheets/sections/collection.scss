@@ -402,6 +402,28 @@
   }
 }
 
+//Edit transcription fields
+.button.fields {
+  margin-top: $gapSize/2;
+}
+
+h3.fields_margin {
+  margin-top: 0;
+}
+
+.field_form {
+  width: 100%;
+  border-collapse: separate;
+  th {
+    font-weight: normal;
+    white-space: nowrap;
+    padding: 4px 0 4px 16px;
+  }
+  td { 
+    padding: 4px 0 4px 8px;
+  }
+  th, td { &:first-child { padding-left: 0; } }
+}
 
 // Collection footer
 

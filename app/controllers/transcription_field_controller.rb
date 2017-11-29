@@ -5,17 +5,22 @@ class TranscriptionFieldController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil}
 
   def edit_fields
+    @current_fields = @collection.transcription_fields
   end
 
-  def new
-  end
-
-  def add_field
+  def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
+    array = @collection.trascription_fields
+    new_fields = params[:transcription_fields]
+      new_fields.each do |fields|
+        binding.pry
+      transcription_field = TranscriptionField.new(fields)
+      transcription_field.collection_id = params[:collection_id]
+      transcription_field.save
+    end
+    @field_array = @collection.transcription_fields
+
     binding.pry
-    @transcription_field = TranscriptionField.new(params[:transcription_field])
-    @transcription_field.collection_id = params[:collection_id]
-    @transcription_field.save
     redirect_to edit_fields_path(collection_id: @collection)
   end
 
