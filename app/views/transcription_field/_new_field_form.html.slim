@@ -13,6 +13,11 @@
     td =text_field_tag "transcription_fields[][label]", "#{label_value}"
     th =label_tag :options
     td =text_area_tag "transcription_fields[][options]", "#{options_value}"
-    td 
-      -unless field.blank?
+    -unless field.blank?
+      td 
         =hidden_field_tag "transcription_fields[][id]", field.id
+      td.nowrap
+        =link_to({ controller: 'transcription_field', action: 'reorder_field', direction: 'up', field_id: field.id, collection_id: @collection }, title: 'Move up', 'aria-label' => 'Move up')
+          =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Move up'
+        =link_to({ controller: 'transcription_field', action: 'reorder_field', direction: 'down', field_id: field.id, collection_id: @collection }, title: 'Move down', 'aria-label' => 'Move down')
+          =svg_symbol '#icon-arrow-bottom', class: 'icon', title: 'Move down'

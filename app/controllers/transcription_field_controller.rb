@@ -32,6 +32,19 @@ class TranscriptionFieldController < ApplicationController
     redirect_to edit_fields_path(collection_id: @collection)
   end
 
+  # reordering functions
+  def reorder_field
+    @collection = Collection.friendly.find(params[:collection_id])
+    field = TranscriptionField.find_by(id: params[:field_id])
+    if(params[:direction]=='up')
+      field.move_higher
+    else
+      field.move_lower
+    end
+    redirect_to edit_fields_path(collection_id: @collection)
+  end
+
+
   private
 
     def authorized?

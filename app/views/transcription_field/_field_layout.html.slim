@@ -1,5 +1,10 @@
 h3 Show layout
 -field_order(@collection)
--@fields.each do |line, field|
-  -field_layout(field)
-  br
+table.field_form
+  -@fields.each do |line, field|
+    tr
+    -field_layout(field)
+    -@field_array.each do |field|
+      th =label_tag field.label
+      td
+    br
