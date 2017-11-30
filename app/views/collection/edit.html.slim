@@ -137,11 +137,11 @@
     p Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries.
     -if !@collection.field_based
       =link_to({ :action => 'enable_fields', :collection_id => @collection.id}, class: 'button', 'aria-label' => 'Field based transcription')
-        span Field Based Transcription
+        span Enable Field Based Transcription
     -else
       =link_to({ :action => 'disable_fields', :collection_id => @collection.id}, class: 'button', 'aria-label' => 'Revert to document based transcription')
         span Revert to Document Based Transcription
-      =link_to 'Edit Fields', { :controller => 'transcription_field', :action => 'edit_fields', :collection_id => @collection }, :data => { litebox: { hash: '' } }, class: 'button fields', 'aria-label' => 'Edit fields'
+      =link_to 'Edit Fields', { :controller => 'transcription_field', :action => 'edit_fields', :collection_id => @collection }, class: 'button fields', 'aria-label' => 'Edit fields'
 
     h3 Document Sets
     p Document sets are sub-sets of the works in this collection, 
@@ -174,4 +174,9 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
+      $('.litebox_container').click(function(){
+        //e.preventDefault();
+        debugger;
+      });
+
     });

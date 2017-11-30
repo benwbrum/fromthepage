@@ -1,4 +1,5 @@
-.litebox-embed
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection.id }})
+
 h3.fields_margin Edit Transcription Fields
 
 =form_tag add_fields_path
@@ -13,6 +14,15 @@ h3.fields_margin Edit Transcription Fields
       -3.times do
         =render ({ partial: 'new_field_form', locals: {collection_id: @collection}})
 
-  =submit_tag 'Add Fields', class: 'button'
+  =button_tag 'Done', type: 'submit', class: 'right'
+
+  =button_tag 'Save and Add Additional Fields', type: 'button', id: 'add-fields'
 
 =render ({partial: 'field_layout', locals: {collection_id: @collection}})
+
+=render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      });

@@ -425,6 +425,10 @@ h3.fields_margin {
   th, td { &:first-child { padding-left: 0; } }
 }
 
+a.field_icons {
+  margin: 5px;
+}
+
 // Collection footer
 
 .collection-footer {

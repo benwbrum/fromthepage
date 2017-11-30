@@ -4,8 +4,15 @@ class TranscriptionFieldController < ApplicationController
   #no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil}
 
+  def delete
+    @collection = Collection.friendly.find(params[:collection_id])
+    field = TranscriptionField.find_by(id: params[:field_id])
+    field.destroy
+    redirect_to edit_fields_path(collection_id: @collection)
+  end
+
   def edit_fields
-    @current_fields = @collection.transcription_fields
+    @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
   end
 
   def add_fields
