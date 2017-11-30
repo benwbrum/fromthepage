@@ -407,10 +407,6 @@
   margin-top: $gapSize/2;
 }
 
-h3.fields_margin {
-  margin-top: 0;
-}
-
 .field_form {
   width: 100%;
   border-collapse: separate;
@@ -423,6 +419,7 @@ h3.fields_margin {
     padding: 4px 0 4px 8px;
   }
   th, td { &:first-child { padding-left: 0; } }
+  margin-bottom: 15px;
 }
 
 a.field_icons {

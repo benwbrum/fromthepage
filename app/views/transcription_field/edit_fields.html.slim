@@ -1,11 +1,11 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection.id }})
 
-h3.fields_margin Edit Transcription Fields
+h2.nomargin Edit Transcription Fields
 
 =form_tag add_fields_path
   =hidden_field_tag(:collection_id, @collection.id)
   p Separate multiple options for a select field by semicolons.
-  table.field_form
+  table.field_form#new-fields
     -unless @current_fields.blank?
       -@current_fields.each do |f|
         =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: f}})
@@ -13,10 +13,14 @@ h3.fields_margin Edit Transcription Fields
     -else
       -3.times do
         =render ({ partial: 'new_field_form', locals: {collection_id: @collection}})
-
-  =button_tag 'Done', type: 'submit', class: 'right'
-
-  =button_tag 'Save and Add Additional Fields', type: 'button', id: 'add-fields'
+  .toolbar.aright
+    .toolbar_group
+      =button_tag 'Add Additional Fields', type: 'button', id: 'add-fields'
+  .toolbar.aright
+    .toolbar_group
+      =button_tag 'Save', name: 'save', type: 'submit'
+      =button_tag 'Done', name: 'done', type: 'submit'
+      =link_to 'Cancel', edit_collection_path(@collection.owner, @collection), class: 'button'
 
 =render ({partial: 'field_layout', locals: {collection_id: @collection}})
 
@@ -25,4 +29,8 @@ h3.fields_margin Edit Transcription Fields
 -content_for :javascript
   javascript:
     $(function() {
+      $('#add-fields').click(function(e){
+        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}");
+        $(this).submit();
       });
+    });

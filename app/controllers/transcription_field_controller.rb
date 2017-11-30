@@ -35,8 +35,11 @@ class TranscriptionFieldController < ApplicationController
         end
       end
     end
-
-    redirect_to edit_fields_path(collection_id: @collection)
+    if params[:done].nil?
+      redirect_to edit_fields_path(collection_id: @collection)
+    else
+      redirect_to edit_collection_path(@collection.owner, @collection)
+    end
   end
 
   # reordering functions
