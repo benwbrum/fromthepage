@@ -70,4 +70,5 @@ p.free-trial If you want to test drive FromThePage before you sign up for a paid
 
 p.free-trial The software is released under the GNU AGPL v3.0, a Free/Open Source license. #{link_to 'Click here', { controller: 'static', action: 'run_server' }} if you want to install it on your own server.
 
-javascript:  mixpanel.track("Pricing Plans");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Pricing Plans");

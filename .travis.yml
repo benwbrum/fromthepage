@@ -1,19 +1,40 @@
 dist: trusty
 sudo: false
 language: ruby
-
-rvm:
-  - 2.2.0
-
 cache: bundler
 
-services:
-  - mysql
+rvm: 2.2.0
+
+jobs:
+  include:
+    - stage: test for pry
+      rvm: 2.4.1
+      before_install:
+      - bash travis/.travis_pry.sh
+      install: skip
+      before_script: skip
+      script: echo No pry found
+    - stage: test
+      env: DB=mysql
+      gemfile: Gemfile
+    - env: DB=mysql
+      gemfile: gemfiles/Gemfile.mysql57
+    - env: DB=mysql57
+      gemfile: gemfiles/Gemfile.mysql57
+    - addons:
+        mariadb: '10.0'
+      env: DB=mariadb
+      gemfile: Gemfile
+    - addons:
+        mariadb: '10.0'
+      env: DB=mariadb
+      gemfile: gemfiles/Gemfile.mysql57
 
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install ghostscript
   - sudo apt-get install graphviz
+  - bash travis/.travis_setup.sh
 
 before_script:
   - bundle exec rake db:create

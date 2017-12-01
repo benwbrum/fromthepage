@@ -9,8 +9,8 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_filter :authorized?, :only => [:new, :edit, :update, :delete]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work]
+  before_filter :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -53,7 +53,12 @@ class CollectionController < ApplicationController
     if @collection.restricted
       ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
     end
-    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+
+    if params[:search]
+      @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    else  
+      @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    end
   end
 
   def owners
@@ -193,6 +198,17 @@ class CollectionController < ApplicationController
     collection.blank_out_collection
     redirect_to action: 'show', collection_id: params[:collection_id]
   end
+
+  def works_list
+    if params[:sort_by] == "Percent Complete"
+      @works = @collection.works.includes(:work_statistic).order_by_completed.paginate(page: params[:page], per_page: 15)
+    elsif params[:sort_by] == "Recent Activity"
+      @works = @collection.works.includes(:work_statistic).order_by_recent_activity.paginate(page: params[:page], per_page: 15)
+    else
+      @works = @collection.works.includes(:work_statistic).order(:title).paginate(page: params[:page], per_page: 15)
+    end
+  end
+
 
 private
   def set_collection

@@ -303,6 +303,8 @@ namespace :fromthepage do
         end
         document_sets << ds
       end
+      collection.supports_document_sets = true
+      collection.save!
     end
     
     document_sets

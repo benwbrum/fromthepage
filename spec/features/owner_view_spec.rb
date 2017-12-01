@@ -35,22 +35,24 @@ describe "owner view - collection" do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Statistics")
     expect(page).to have_content("Works")
-    expect(page).to have_content("Work Progress")
+    expect(page).to have_content("Collaborators")
+    #need to check actual stats
+    #wording is checked in needs review and archive import
+  end
+
+  it "looks at works list tab" do
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Works List")
+    expect(page).to have_content("Works")
     @collections.first.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    #need to check actual stats
-    #wording is checked in needs review and archive import
   end
 
   it "looks at settings tab" do
     visit "/collection/show?collection_id=#{@collection.id}"
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content(@collection.title)
-    expect(page).to have_content("Manage Works")
-    @collections.first.works.each do |w|
-      expect(page).to have_content(w.title)
-    end
   end
 
   it "looks at export tab" do

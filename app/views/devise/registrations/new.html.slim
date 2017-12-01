@@ -23,4 +23,5 @@ section.signon
     =f.button 'Create Account', class: 'big'
   hr
   =render 'devise/shared/links'
-javascript:  mixpanel.track("Sign Up");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Sign Up");

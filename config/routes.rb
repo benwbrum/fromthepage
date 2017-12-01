@@ -62,6 +62,7 @@ Fromthepage::Application.routes.draw do
   get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
+  get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
 
   resources :document_sets, except: [:show, :create, :edit]
 
@@ -74,6 +75,7 @@ Fromthepage::Application.routes.draw do
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'
+      get 'works_list', path: 'works_list', as: :works_list, to: 'collection#works_list'
  
       #work related routes
       #have to use match because it must be both get and post
