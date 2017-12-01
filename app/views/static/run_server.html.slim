@@ -42,4 +42,5 @@ section.service
 big.legend
   =link_to 'Continue to FromThePage.org', 'http://www.fromthepage.org', class: 'button outline round'
 
-javascript:  mixpanel.track("Run Server");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Run Server");
