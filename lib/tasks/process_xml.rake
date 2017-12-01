@@ -1,21 +1,16 @@
 namespace :fromthepage do
   desc "take the ryan white metadata xml file and generate names and descriptions"
   task process_xml: :environment do
-    doc = File.open("tmp/RWL-box24.xml") { |f| Nokogiri::XML(f) }
-    errfile = File.new("tmp/rwl4/image_processing_errors.log", 'w')
+    doc = File.open("tmp/RWL-11162017-fills.xml") { |f| Nokogiri::XML(f) }
+    errfile = File.new("tmp/rwl6/image_processing_errors.log", 'w')
     # for each record 
     doc.xpath("//record").each_with_index do |record, i|
       # get a work name
       name = record.xpath("title").text
       # create a directory with the work name
       prefix = (i / 100).to_s.rjust(6, '0') 
-      directory = "tmp/rwl/" + prefix + "/" + name
-      # if directory exists, break out of loop
-      if Dir.glob("*/#{name}").count > 0
-        break
-      else
-        directory = "tmp/rwl4/" + prefix + "/" + name
-      end
+      directory = "tmp/rwl6/" + prefix + "/" + name
+      #end
       begin
         FileUtils.mkdir_p(directory)
       rescue => e
@@ -70,7 +65,7 @@ namespace :fromthepage do
       elsif spatial.include? "United States" then
         location_set = "United States"
       else
-        location_set = "Other"
+        location_set = "International Letters"
       end
     
       date_set = ""
@@ -94,7 +89,7 @@ namespace :fromthepage do
          filename = "#{(pageptr.to_i + 1).to_s}"
          # convert the image file to the page_name.jpg in the directory above
          # convert images/10099.jp2 -quality 20 directory/10099.jpg
-         convertcommand = "convert RWL-IL-Images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
+         convertcommand = "convert RWL-All-Images/#{filename}.jp2 -quality 20 #{directory}/#{filename}.jpg"
          unless system(convertcommand)
             #write diretory name/id to a file
             errfile.write("bad directory #{name}\n")
@@ -102,7 +97,7 @@ namespace :fromthepage do
             #delete directory
             system("rm -r #{directory}")
             #break out of each
-            break
+            #break
            end
       end #end page
     end #end record
