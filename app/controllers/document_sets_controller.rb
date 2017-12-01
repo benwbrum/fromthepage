@@ -7,6 +7,7 @@ class DocumentSetsController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def index
+    @works = @collection.works.order(:title).paginate(page: params[:page], per_page: 20)
   end
 
   def show
@@ -39,10 +40,14 @@ class DocumentSetsController < ApplicationController
     set_work_map = params[:work_assignment]
     if set_work_map
       @collection.document_sets.each do |document_set|
-        document_set.works.clear
+        #document_set.works.clear
         work_map = set_work_map[document_set.id.to_s]
+        current_ids = document_set.works.pluck(:id)
         if work_map
-          document_set.work_ids = work_map.keys.map { |id| id.to_i }
+          new_ids = work_map.keys.map { |id| id.to_i }
+          set = (current_ids - new_ids + new_ids)
+          document_set.work_ids = set
+
           document_set.save!          
         end
       end
@@ -52,12 +57,23 @@ class DocumentSetsController < ApplicationController
   end
 
   def assign_to_set
-    work_map = params[:work_assignment]
-    @collection.works.clear
-    @collection.work_ids = work_map.keys.map { |id| id.to_i }
+    unless @collection
+      @collection = DocumentSet.friendly.find(params[:collection_id])
+    end
+    new_ids = params[:work].keys.map {|id| id.to_i}
+    ids = @collection.work_ids + new_ids
+    @collection.work_ids = ids
     @collection.save!
-    redirect_to action: 'settings', collection_id: @collection.slug
-    #should we go to overview instead?
+    redirect_to collection_works_list_path(@collection.owner, @collection)
+  end
+
+  def remove_from_set
+    @collection = DocumentSet.friendly.find(params[:collection_id])
+    ids = params[:work].keys.map {|id| id.to_i}
+    new_ids = @collection.work_ids - ids
+    @collection.work_ids = new_ids
+    @collection.save!
+    redirect_to collection_works_list_path(@collection.owner, @collection)
   end
 
   def update
@@ -79,9 +95,14 @@ class DocumentSetsController < ApplicationController
   end
 
   def settings
+    #works not yet in document set
+    if params[:search]
+      @works = @collection.search_collection_works(params[:search]).where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
+    else
+      @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
+    end
     #document set edit needs the @document set variable
     @document_set = @collection
-    @works_not_in_set = @collection.collection.works - @collection.works
     @collaborators = @document_set.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators
   end

@@ -108,7 +108,7 @@ class OmekaItem < ActiveRecord::Base
   def refresh_urls
     client_item = omeka_site.client.get_item(omeka_id)
     fresh_files =  client_item.files.map { |e| [e.data.mime_type, e.data.id, e.data.file_urls.thumbnail, e.data.file_urls.original] }
-    binding.pry
+
     fresh_files.each_with_index do |(mime_type, omeka_id, thumbnail_url, fullsize_url), i|
       if mime_type.match(/image/)
         omeka_file = self.omeka_files.where(:omeka_id => omeka_id).first

@@ -1,7 +1,6 @@
 
     .collections
       -@collections.each do |c|
-        -works_count = c.works.size
         -if c.show_to?(current_user)
           -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
           -owner_link = link_to c.owner.display_name, user_profile_path(c.owner)
@@ -14,43 +13,4 @@
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary
-                -if(works_count > 0)
-                  a.button.outline.round(data-toggle-stats)
-                    =svg_symbol '#icon-book', class: 'icon'
-                    span =pluralize(works_count, 'work')
-                -else
-                  span No works
                 span =="Owned by #{owner_link}"
-
-              -unless c.works.empty?
-                -works = c.works.includes(:work_statistic)
-                -works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
-                .collection_stats(style="display:none")
-                  .collection_stats-bubble
-                    table
-                      tr
-                        th.w100 Work Title
-                        th Pages
-                        -unless c.subjects_disabled
-                          th Indexed
-                        th Transcribed
-                        th Progress
-                      -works.each do |w|
-                        -progress_annotated = w.work_statistic.pct_annotated.round
-                        -progress_transcribed = w.work_statistic.pct_transcribed.round
-                        tr
-                          td =link_to w.title, collection_work_contents_path(w.collection.owner, w.collection, w)
-                          td =w.work_statistic.total_pages
-                          -unless c.subjects_disabled
-                            td ="#{progress_annotated}%"
-                            td ="#{progress_transcribed}%"
-                            td
-                              span.progress
-                                span(style="width:#{progress_annotated}%")
-                                span(style="width:#{progress_transcribed - progress_annotated}%")
-                          -else
-                            td ="#{progress_transcribed}%"
-                            td
-                              span.progress
-                                span(style="width:#{progress_transcribed}%")
-

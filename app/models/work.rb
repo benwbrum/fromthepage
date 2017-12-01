@@ -35,7 +35,8 @@ class Work < ActiveRecord::Base
                   :pages_are_meaningful,
                   :slug,
                   :picture,
-                  :featured_page
+                  :featured_page,
+                  :identifier
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: true
@@ -43,6 +44,9 @@ class Work < ActiveRecord::Base
   mount_uploader :picture, PictureUploader
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
+  scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
+  scope :order_by_completed, -> { joins(:work_statistic).reorder('work_statistics.complete DESC')}
+  scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -184,7 +188,7 @@ class Work < ActiveRecord::Base
   end
 
   def normalize_friendly_id(string)
-    string.truncate(230, separator: ' ', omission: '')
+    string = string.truncate(230, separator: ' ', omission: '')
     super.gsub('_', '-')
   end
 

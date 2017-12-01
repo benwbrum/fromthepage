@@ -18,13 +18,13 @@
         .work-page
           .work-page_thumbnail
             -if page.ia_leaf
-              =link_to(image_tag(page.ia_leaf.thumb_url), page_params(page) )
+              =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page) )
             -elsif page.sc_canvas
-              =link_to(image_tag(page.sc_canvas.thumbnail_url), page_params(page))
+              =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page))
             -elsif page.omeka_file
-              =link_to image_tag(page.omeka_file.thumbnail_url), page_params(page)
+              =link_to image_tag(page.omeka_file.thumbnail_url, alt: page.title), page_params(page)
             -else
-              =link_to image_tag(file_to_url(page.thumbnail_image)), page_params(page)
+              =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
 
           .work-page_content
             -if page.work.pages_are_meaningful
@@ -81,6 +81,7 @@
           =hidden_field_tag('collection_id', @collection.id)
           =search_field_tag 'search_string', @search_string, :placeholder => 'Search in collection...'
           =button_tag 'Search'
+          =label_tag 'search_string', "Search in collection", class: 'hidden'
 
       -if @work
         -if @total != @count

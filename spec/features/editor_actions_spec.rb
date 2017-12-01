@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe "editor actions" do
+describe "editor actions" , :order => :defined do
+  Capybara.javascript_driver = :webkit
 
   before :all do
     @owner = User.find_by(login: OWNER)
@@ -19,7 +20,7 @@ describe "editor actions" do
 
   it "checks that an editor with permissions can see a restricted work" do
     visit "/display/read_work?work_id=#{@auth.work_id}"
-    click_link @work.pages.first.title
+    page.find('.work-page_title', text: @work.pages.first.title).click_link
     expect(page.find('.tabs')).to have_content("Transcribe")
   end
 
@@ -28,7 +29,7 @@ describe "editor actions" do
     @rest_user = User.find_by(login: REST_USER)
     login_as(@rest_user, :scope => :user)
     visit "/display/read_work?work_id=#{@auth.work_id}"
-    click_link @work.pages.first.title
+    page.find('.work-page_title', text: @work.pages.first.title).click_link
     expect(page.find('.tabs')).not_to have_content("Transcribe")
   end
 
@@ -45,7 +46,7 @@ describe "editor actions" do
     expect(page).to have_content("Places")
     #Statistics
     page.find('.tabs').click_link("Statistics")
-    expect(page).to have_content("Work Progress")
+    expect(page).to have_content("Collaborators")
     #make sure we don't have the owner tabs
     expect(page.find('.tabs')).not_to have_content("Settings")
     expect(page.find('.tabs')).not_to have_content("Export")
@@ -55,7 +56,7 @@ describe "editor actions" do
 
   it "looks at a work" do
     visit collection_path(@collection.owner, @collection)
-    click_link @work.title
+    page.find('.collection-work_title', text: @work.title).click_link
     expect(page).to have_content(@page.title)
     #Check the tabs in the work
     #About
@@ -84,7 +85,7 @@ describe "editor actions" do
   it "looks at pages" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content("please help transcribe this page")
-    click_link @page.title
+    page.find('.work-page_title', text: @page.title).click_link
     page.find('#page_source_text')
     expect(page).to have_button('Preview')
     expect(page).to have_content(@page.title)
@@ -128,22 +129,12 @@ describe "editor actions" do
     expect(page).to have_content("Test Translation")
   end
 
-  it "adds a note" do
-    visit "/display/display_page?page_id=#{@page.id}"
-    note = page.find('#note_body')
-    fill_in 'note_body', with: "Test note"
-    click_button('Submit')
-    expect(page).to have_content "Note has been created"
-    #delete the note - requires javascript
-  #  page.find('#note_body', text: "Test note")
-  end
-  
   it "checks a plain user profile" do
     login_as(@user, :scope => :user)
     visit dashboard_path
     page.find('a', text: 'Your Profile').click
     expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("Recent Activity by")
+    expect(page).to have_content("Recent Activity by #{@user.display_name}")
     expect(page).not_to have_selector('.columns')
   end
 
@@ -153,6 +144,45 @@ describe "editor actions" do
     expect(page.find('.dropdown')).not_to have_content @owner.display_name
     expect(page).to have_content @user.display_name
     expect(page).not_to have_selector('a', text: 'Undo Login As')
+  end
+
+  it "adds a note" do
+    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+    fill_in 'Write a new note...', with: "Test note"
+    click_button('Submit')
+    expect(page).to have_content "Note has been created"
+    click_button('Save Changes')
+    expect(page).to have_content('Saved')
+  end
+
+  it "tries to save transcription with unsaved note", :js => true do
+    col = Collection.second
+    test_page = col.works.first.pages.first
+    visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
+    text = Page.find_by(id: test_page.id).source_text
+    fill_in('Write a new note...', with: "Test two")
+    fill_in 'page_source_text', with: "Attempt to save"
+    message = accept_alert do
+      click_button('Save Changes')
+    end
+    expect(message).to have_content("You have unsaved notes.")
+    new_text = Page.find_by(id: test_page.id).source_text
+    #because of the note, page.source_text should not have changed
+    expect(new_text).to eq text
+    #save the note
+    click_button('Submit')
+    expect(test_page.notes.count).not_to be nil
+  end
+
+  it "deletes a note", :js => true do
+    col = Collection.second
+    test_page = col.works.first.pages.first
+    visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
+    title = test_page.notes.last.id
+    page.find('.user-bubble_content', text: "Test two")
+    page.click_link('', :href => "/notes/#{title}")
+    sleep(3)
+    expect(Note.find_by(id: title)).to be_nil
   end
 
 end

@@ -1,6 +1,7 @@
 # handles administrative tasks for the work object
 class WorkController < ApplicationController
   # require 'ftools'
+  include XmlSourceProcessor
 
   protect_from_forgery :except => [:set_work_title,
                                    :set_work_description,
@@ -79,6 +80,8 @@ class WorkController < ApplicationController
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes
     @collections = current_user.collections
+    #set subjects to true if there are any articles/page_article_links
+    @subjects = !@work.articles.blank?
   end
 
   def add_scribe
@@ -115,9 +118,8 @@ class WorkController < ApplicationController
   end
 
   def update
-    work = Work.find(params[:id])
+    work = Work.find(params[:id]) || Work.find_by(id: params[:work_id])
     id = work.collection_id
-
     #check the work transcription convention against the collection version
     #if they're the same, don't update that attribute of the work
     params_convention = params[:work][:transcription_conventions]
@@ -134,13 +136,40 @@ class WorkController < ApplicationController
       title = work.title.parameterize
       work.update(slug: title)
     end
-    #record work add deed if the work is moved to another collection
-    if work.collection_id != id
-      record_deed(work)
-    end
 
-    flash[:notice] = 'Work updated successfully'
-    redirect_to :back
+    if params[:work][:collection_id] != id.to_s
+      change_collection
+      flash[:notice] = 'Work updated successfully'
+      #find new collection to properly redirect
+      col = Collection.find_by(id: work.collection_id)
+      redirect_to edit_collection_work_path(col.owner, col, work)
+    else
+      flash[:notice] = 'Work updated successfully'
+      redirect_to :back
+    end
+  end
+
+  def change_collection
+    work = Work.find_by(id: params[:id])
+
+    record_deed(work)
+    unless work.articles.blank?
+      #delete page_article_links for this work
+      page_ids = work.pages.ids
+      links = PageArticleLink.where(page_id: page_ids)
+      links.destroy_all
+
+      #remove links from pages in this work
+      work.pages.each do |p|
+        unless p.source_text.nil?
+          p.remove_transcription_links(p.source_text)
+        end
+        unless p.source_translation.nil?
+          p.remove_translation_links(p.source_translation)
+        end
+      end
+      work.save!
+    end
   end
 
   def revert
@@ -205,5 +234,4 @@ class WorkController < ApplicationController
     deed.user = work.owner
     deed.save!
   end
-
 end

@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 2, :collection_id => @collection }})
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 .columns
   article.maincol
     -link = link_to 'here', document_sets_path(:collection_id => @collection.collection)
@@ -7,20 +7,26 @@
     =render 'edit'
 
     h2#manage Manage Works
+    =form_tag({:controller => 'document_sets', :action => 'settings'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag('collection_id', @collection.slug)
+      =search_field_tag :search, params[:search], placeholder: 'Search for works...'
+      =button_tag 'Search'
+      =label_tag 'search', "Search for works", class: 'hidden'
 
-    =form_tag({ action: 'assign_to_set', collection_id: @collection})
+
+    =form_tag({ action: 'assign_to_set'}) do
+      =hidden_field_tag :collection_id, @collection.slug
+
       table.datagrid
         thead
           tr
             th Work
             th Collaboration
-            th.wrapped
-              =@collection.title
-                /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
+            th Add
         tbody
-          -@collection.collection.works.each do |work|
+          -@works.each do |work|
             tr
-              td.overflow
+              td
                 =work.title
                 -if work.supports_translation
                   span 
@@ -30,12 +36,14 @@
                      ocr
               td
                 i
-                  =work.restrict_scribes ? 'Restricted' : 'Unrestricted'
-              td.tocenter
-                =check_box_tag("work_assignment[#{work.id}]", "true", work.document_sets.exists?(@collection))
+                  =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
+              td.document_set
+                =check_box_tag("work[#{work.id}]")
       br
-      .aright =submit_tag "Save"
+      .aright
+        =submit_tag "Save"
 
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
   aside.sidecol
 
@@ -58,6 +66,7 @@
         =hidden_field_tag :collection_id, @collection.slug
         =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
         =button_tag 'Add', disabled: 'true'
+        =label_tag 'user_id', "Add Collaborator", class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.count :conditions => "collection_id = #{@collection.slug}"
         .user-label
@@ -77,9 +86,5 @@
         $(this).siblings(':submit').prop('disabled', false);
       }).on('select2:unselect', function() {
         $(this).siblings(':submit').prop('disabled', true);
-      });
-
-      $('.image-form :file').on('change', function() {
-        $(this).closest('form').submit();
       });
     });

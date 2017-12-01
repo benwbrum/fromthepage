@@ -4,41 +4,41 @@
   :path => "#{collection_path(@collection.owner, @collection)}",
 },{\
   :name => 'Statistics',
-  :selected => 7,
+  :selected => 2,
   :path => "#{collection_statistics_path(@collection.owner, @collection)}",
 }]
 
 -unless @collection.subjects_disabled
   -tabs +=[{\
   :name => 'Subjects',
-  :selected => 6,
+  :selected => 3,
   :path => "#{collection_subjects_path(@collection.owner, @collection)}",
 }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
     :name => 'Collaborators',
-    :selected => 9,
+    :selected => 4,
     :path => "#{contributors_collection_path(@collection.owner, @collection)}",
   }]
   -if @collection.is_a?(Collection)
     -tabs += [{\
       :name => 'Settings',
-      :selected => 2,
+      :selected => 5,
       :path => "#{edit_collection_path(@collection.owner, @collection)}",
     },{\
         :name => 'Export',
-        :selected => 5,
+        :selected => 6,
         :path => "#{collection_export_path(@collection.owner, @collection)}",
     },{\
         :name => 'Add Work',
-        :selected => 4,
+        :selected => 7,
         :path => "#{new_work_collection_path(@collection.owner, @collection)}",
       }]
   -else
     -tabs += [{\
     :name => 'Settings',
-    :selected => 2,
+    :selected => 5,
     :path => "#{collection_settings_path(@collection.owner, @collection)}",
     }]
 
@@ -48,6 +48,12 @@
       :selected => 8,
       :path => "#{document_sets_path(:collection_id => @collection)}",
     }]
+
+  -tabs += [{\
+    :name => 'Works List',
+    :selected => 9,
+    :path => "#{collection_works_list_path(@collection.owner, @collection)}",
+  }]
 
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""

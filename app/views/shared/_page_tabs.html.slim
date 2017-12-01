@@ -59,8 +59,8 @@
     nav.page-nav
       -if @page != @work.pages.first
         -higher_item = @page.higher_item
-        =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev')
-          =svg_symbol '#icon-arrow-left', class: 'icon'
+        =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page')
+          =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
       -else
         span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
 
@@ -68,8 +68,8 @@
 
       -if !@page.last?
         -lower_item = @page.lower_item
-        =link_to({ :page_id => lower_item.id }, class: 'page-nav_next')
-          =svg_symbol '#icon-arrow-right', class: 'icon'
+        =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page')
+          =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
       -else
         span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
 

@@ -27,7 +27,7 @@ ul
           td
             =link_to 'Edit', collection_settings_path(@collection.owner, document_set)
           td
-            =link_to 'Delete',{ :controller => 'document_sets', :action => 'destroy', :document_set_id => document_set.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' }
+            =link_to 'Delete',{ :controller => 'document_sets', :action => 'destroy', :document_set_id => document_set.id }, data: { :confirm => 'Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.' }
               
 
 br
@@ -46,26 +46,21 @@ br
               =document_set.title
               /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
       tbody
-        -@collection.works.each do |work|
+        -@works.each do |work|
           tr
             td
               =work.title
-              -if work.supports_translation
-                span 
-                  translate
-              -if work.ia_work && work.ia_work.use_ocr
-                span
-                   ocr
             td
               i
                 =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
+            -ids = work.document_sets.ids
             -@collection.document_sets.each do |document_set|
               td
-                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", work.document_sets.exists?(document_set))
+                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", ids.include?(document_set.id))
     br
     =submit_tag "Save"
 
-
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
 -else
   p This collection has no document sets

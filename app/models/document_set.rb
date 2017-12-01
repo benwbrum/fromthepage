@@ -57,6 +57,14 @@ class DocumentSet < ActiveRecord::Base
     self.collection.footer_block
   end
 
+  def help
+    self.collection.help
+  end
+
+  def link_help
+    self.collection.link_help
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
@@ -76,4 +84,11 @@ class DocumentSet < ActiveRecord::Base
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def search_works(search)
+    self.works.where("title LIKE ?", "%#{search}%")
+  end
+
+  def search_collection_works(search)
+    self.collection.works.where("title LIKE ?", "%#{search}%")
+  end
 end

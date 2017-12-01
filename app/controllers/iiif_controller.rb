@@ -4,19 +4,19 @@ class IiifController < ApplicationController
     site_collection = IIIF::Presentation::Collection.new
     site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collections', :only_path => false})
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}"
-    
+
     Collection.where(:restricted => false).each do |collection|
-      iiif_collection = iiif_collection_from_collection(collection,false)      
-      
+      iiif_collection = iiif_collection_from_collection(collection,false)
+
       site_collection.collections << iiif_collection
     end
-    
+
     render :text => site_collection.to_json(pretty: true), :content_type => "application/json"
   end
-    
+
   def collection
-    iiif_collection = iiif_collection_from_collection(@collection,true)      
-    
+    iiif_collection = iiif_collection_from_collection(@collection,true)
+
     render :text => iiif_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -29,12 +29,12 @@ class IiifController < ApplicationController
     if sc_collection = ScCollection.where(:at_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'collection', :collection_id => sc_collection.collection_id
       return
-    end    
+    end
 
     if sc_manifest = ScManifest.where(:at_id => at_id).last
       redirect_to({:controller => 'iiif', :action => 'manifest', :id => sc_manifest.work_id, :only_path => false})
       return
-    end    
+    end
 
     if sc_canvas = ScCanvas.where(:sc_canvas_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
@@ -75,19 +75,20 @@ class IiifController < ApplicationController
         
     render :text => domain_collection.to_json(pretty: true), :content_type => "application/json"
   end
-    
+
   def manifest
     work_id =  params[:id]
     work = Work.find work_id
-    seed = { 
-              '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}), 
+    seed = {
+              '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}),
               'label' => work.title
             }
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
-    #manifest.description = work.description unless work.description.blank?
+    dc_source = dc_source_from_work(work)
+    manifest.metadata = [dc_source] if dc_source
+      
     if work.sc_manifest
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
     else
       manifest.description = work.description unless work.description.blank?
@@ -147,16 +148,16 @@ class IiifController < ApplicationController
     sequence = iiif_sequence_from_work_id(work_id)
     manifest.sequences << sequence
 
-    seed = { 
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'transcription', :only_path => false}), 
+    seed = {
+              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'transcription', :only_path => false}),
               'label' => "transcription layer"
             }
     layer = IIIF::Presentation::Layer.new(seed)
     manifest["otherContent"] = [layer]
 
     if work.supports_translation?
-      seed = { 
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}), 
+      seed = {
+              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}),
               'label' => "translation layer"
             }
       layer = IIIF::Presentation::Layer.new(seed)
@@ -164,8 +165,8 @@ class IiifController < ApplicationController
     end
 
     if true #any notes
-      seed = { 
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'notes', :only_path => false}), 
+      seed = {
+              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'notes', :only_path => false}),
               'label' => "notes layer"
             }
       layer = IIIF::Presentation::Layer.new(seed)
@@ -176,13 +177,13 @@ class IiifController < ApplicationController
   end
 
   def canvas
-    if @page.sc_canvas 
+    if @page.sc_canvas
       render :text => canvas_from_iiif_page(@page).to_json(pretty: true), :content_type => "application/json"
     else
       render :text => canvas_from_page(@page).to_json(pretty: true), :content_type => "application/json"
     end
   end
-  
+
   def list
     type = params[:annotation_type]
     if type == 'notes'  #notes need to be handled separately
@@ -204,8 +205,8 @@ class IiifController < ApplicationController
     work = Work.find work_id
     #params[:type]
     if params[:type]=="transcription"
-      seed = { 
-                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}), 
+      seed = {
+                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}),
                 'label' => params[:type] + " layer"
               }
       layer = IIIF::Presentation::Layer.new(seed)
@@ -217,11 +218,17 @@ class IiifController < ApplicationController
         end
       end
     end
-   
+
    if work.supports_translation? && params[:type]=="translation"
+<<<<<<< HEAD
       seed = { 
               '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}), 
               'label' => "Translation"
+=======
+      seed = {
+              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}),
+              'label' => "translation layer"
+>>>>>>> ui-design
             }
       layer = IIIF::Presentation::Layer.new(seed)
       layer["otherContent"] = []
@@ -234,9 +241,15 @@ class IiifController < ApplicationController
     end
 
    if params[:type]=="notes"
+<<<<<<< HEAD
       seed = { 
                 '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}), 
                 'label' => params[:type].titlize + " layer"
+=======
+      seed = {
+                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}),
+                'label' => params[:type] + " layer"
+>>>>>>> ui-design
               }
       layer = IIIF::Presentation::Layer.new(seed)
       layer["otherContent"]=[]
@@ -252,11 +265,11 @@ class IiifController < ApplicationController
 
     render :text => layer.to_json(pretty: true), :content_type => "application/json"
   end
-  
+
   def sequence
     work_id = @work.id
     sequence = iiif_sequence_from_work_id(work_id)
-    render :text => sequence.to_json(pretty: true), :content_type => "application/json" 
+    render :text => sequence.to_json(pretty: true), :content_type => "application/json"
   end
 
   def annotation
@@ -264,7 +277,7 @@ class IiifController < ApplicationController
     type = params[:annotation_type]
     annotation = iiif_annotation_by_type(page_id,type)
     annotation['@id'] = url_for({:controller => 'iiif', :action => 'annotation', :page_id => @page.id, :annotation_type => type, :only_path => false})
-    render :text => annotation.to_json(pretty: true), :content_type => "application/json" 
+    render :text => annotation.to_json(pretty: true), :content_type => "application/json"
   end
 
   def notes
@@ -285,8 +298,8 @@ class IiifController < ApplicationController
     page = Page.find params[:page_id]
     note = iiif_page_note(@page,noteid)
     note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
-    render :text => note.to_json(pretty: true), :content_type => "application/json"   
-  end    
+    render :text => note.to_json(pretty: true), :content_type => "application/json"
+  end
 
 private
   def iiif_page_note(page, noteid)
@@ -308,7 +321,7 @@ private
       annotation['on'] = region_from_page(@page)
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "plaintext_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
       annotation.resource["format"] =  "text/plain"
-    
+
       doc = Nokogiri::XML(@page.xml_text.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
       no_tags = doc.text
 
@@ -320,7 +333,7 @@ private
         annotation['on'] = region_from_page(@page)
         annotation.resource = IIIF::Presentation::Resource.new({'@id' => "translation_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
         annotation.resource["format"] =  "text/plain"
-    
+
         doc = Nokogiri::XML(@page.xml_translation.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
         no_tags = doc.text
 
@@ -340,7 +353,7 @@ private
   def iiif_image_annotation_from_work_id(work_id)
     annotation
   end
- 
+
   def iiif_sequence_from_work_id(work_id)
     sequence = IIIF::Presentation::Sequence.new
     sequence['@id'] = url_for({:controller => 'iiif', :action => 'sequence', :work_id => work_id, :sequence_name => 'default', :only_path => false})
@@ -357,12 +370,12 @@ private
     ]
     pages = work.pages
     pages.each do |page|
-      if page.sc_canvas 
+      if page.sc_canvas
         sequence.canvases << canvas_from_iiif_page(page)
       else
         sequence.canvases << canvas_from_page(page)
       end
-    end   
+    end
     sequence
   end
 
@@ -377,22 +390,41 @@ private
     if collection.sc_collection
       iiif_collection.metadata = [{"label" => "dc:source", "value" => collection.sc_collection.at_id }]
     end
-  
-    if depth == true   
+
+    if depth == true
       collection.works.each do |work|
         unless work.ia_work
-          seed = { 
-                    '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}), 
+          seed = {
+                    '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}),
                     'label' => work.title
                 }
           manifest = IIIF::Presentation::Manifest.new(seed)
           manifest.label = work.title
+          dc_source = dc_source_from_work(work)
+          manifest.metadata = [dc_source] if dc_source
         
           iiif_collection.manifests << manifest            
         end
       end
     end
-    iiif_collection  
+    iiif_collection
+  end
+
+  def dc_source_from_work(work)
+    dc_source = nil
+    if !work.identifier.blank? || work.sc_manifest
+      dc_source = {"label" => "dc:source"}
+      if work.identifier && work.sc_manifest
+        dc_source["value"] = [work.identifier, work.sc_manifest.at_id]
+      else
+        if work.sc_manifest
+          dc_source["value"] = work.sc_manifest.at_id
+        else
+          dc_source["value"] = work.identifier
+        end
+      end
+    end
+    dc_source
   end
 
   def canvas_id_from_page(page)
@@ -402,23 +434,23 @@ private
       url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
     end
   end
-  
+
   def region_from_page(page)
-    canvas_id_from_page(page) + "#xywh=0,0,#{page.base_width},#{page.base_height}"  
+    canvas_id_from_page(page) + "#xywh=0,0,#{(page.base_width || page.sc_canvas.width)},#{(page.base_height || page.sc_canvas.height)}"
   end
 
   def iiif_create_image_resource(page)
     image_resource = IIIF::Presentation::ImageResource.create_image_api_image_resource(
       {
         :service_id => "#{url_for(:root)}image-service/#{page.id}", 
-        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg",
+        :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
+        :profile => 'http://iiif.io/api/image/2/level1.json',
                 
        })
        
-    image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
+    image_resource.service['@context'] = 'http://iiif.io/api/image/2/context.json'
     image_resource
   end
 
@@ -429,10 +461,10 @@ private
         :resource_id => page.sc_canvas.sc_resource_id,
         :height => (page.base_height || page.sc_canvas.height),
         :width => (page.base_width || page.sc_canvas.width),
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',      
+        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
        })
     #image_resource.service_id = page.sc_canvas.sc_service_id
-    #image_resource.resource_id = page.sc_canvas.sc_resource_id  
+    #image_resource.resource_id = page.sc_canvas.sc_resource_id
     #image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
 
     image_resource.service['@context'] = page.sc_canvas.sc_service_context
@@ -448,10 +480,10 @@ private
     canvas['@id'] = canvas_id_from_page(page)
 
     annotation = IIIF::Presentation::Annotation.new
-    annotation.resource = iiif_create_iiif_image_resource(page)    
+    annotation.resource = iiif_create_iiif_image_resource(page)
     annotation['on'] = canvas['@id']
     annotation['@id'] = page.sc_canvas.sc_service_id
-    
+
     canvas.images << annotation
 
     add_related_to_canvas(canvas, page)
@@ -459,7 +491,12 @@ private
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
 
+<<<<<<< HEAD
     canvas     
+=======
+    canvas
+
+>>>>>>> ui-design
   end
 
   def canvas_from_page(page)
@@ -468,7 +505,7 @@ private
     canvas.width = page.base_width
     canvas.height = page.base_height
     canvas['@id'] = canvas_id_from_page(page)
-    
+
     annotation = IIIF::Presentation::Annotation.new
     annotation.resource = iiif_create_image_resource(page)
     annotation['on'] = canvas['@id']
@@ -563,7 +600,7 @@ private
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
       annotation_list['label'] = "Transcription"
     end
-  when 'translation' 
+  when 'translation'
     unless page.source_translation.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
@@ -578,5 +615,5 @@ private
   end
     annotation_list
   end
-  
+
 end

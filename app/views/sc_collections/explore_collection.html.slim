@@ -1,0 +1,83 @@
+.columns
+  article.maincol
+    h4 Collection: #{@sc_collection.label}
+    .iiif-import 
+      p Id: #{@sc_collection.at_id}
+
+    .iiif-collection
+      -if @sc_collection.service.thumbnail
+        .iiif-collection_thumbnail
+          =image_tag(@sc_collection.service.thumbnail)
+      -if @sc_collection.service.description
+        .iiif-collection_content
+          =@sc_collection.service.description
+
+
+    -if @sc_collection.service.collections.size > 0
+      h4 Collections:
+      ul
+        -@sc_collection.service.collections.each do |json_collection|
+         li
+           =link_to json_collection['label'], {:action => 'explore_collection', :at_id => json_collection['@id']}
+
+    -unless @sc_collection.service.manifests.empty?
+      h4 Manifests: 
+
+      =form_tag({action: 'import_collection'}) do
+        =hidden_field_tag :sc_collection_id, @sc_collection.id
+        -new_collection = @collection ? @collection.id : nil
+        .iiif-select-form
+          =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), id: 'manifest_import', prompt: '- Select a collection to import into -', required: true, 'aria-label' => "Select a collection"
+          =button_tag 'Import Checked Manifests'
+
+        =check_box_tag("select_all", 1, true)
+        |&nbsp;&nbsp;
+        =label_tag 'select_all', "Select All Manifests"
+
+        ul.iiif-works-list
+          -@sc_collection.service.manifests.each_with_index do |json_manifest, index|
+            li
+              -at_id = json_manifest["@id"]
+              =check_box_tag("manifest_id[#{index}]", 1, true, class: "manifest_checks")
+              =label_tag "manifest_id[#{index}]", class: 'manifest_labels' do
+                =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
+        br
+
+    -content_for :javascript
+      javascript:
+        $(function(){
+          var collection = "#{@sc_collection.collection}"
+          if(collection == ''){
+            $('#manifest_import').append("<option value='sc_collection'>Create Collection: #{@sc_collection.label}</option>");
+          }
+          $('#manifest_import').append("<option value='new'>Add New Collection</option>");
+        });
+
+        $(function(){
+          $('#manifest_import').on('change', function(){
+            var col = $(this).val();
+              if (col == 'new'){
+                new LiteBox({
+                  url: '/collection/new',
+                  hash: 'create-collection'
+                }).open();
+              };
+          });
+        });
+
+        $(function(){
+          $('#select_all').on('change', function(){
+            if (this.checked){
+              $('.manifest_checks').prop('checked', true);
+            } else if (!this.checked) {
+              $('.manifest_checks').prop('checked', false);
+            }
+          });
+        });
+
+        $(function(){
+          $('.manifest_checks').on('click', function(){
+            $('#select_all').prop('checked', false);
+          });
+        });
+

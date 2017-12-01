@@ -168,10 +168,11 @@ describe "needs review", :order => :defined do
     end
   end
 
-  it "checks collection statistics" do
-    visit collection_statistics_path(@collection.owner, @collection)
+  it "checks statistics in works list" do
+    logout(@user)
+    login_as(@owner, :scope => :user)
+    visit collection_works_list_path(@collection.owner, @collection)
     expect(page).to have_content(@collection.title)
-    expect(page).to have_content("Work Progress")
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"
@@ -203,7 +204,7 @@ describe "needs review", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     expect(@page4.status).to eq ('review')
     expect(page).to have_content(@collection.title)
-    click_link @work.title
+    page.find('.collection-work_title', text: @work.title).click_link
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Change Review Text"

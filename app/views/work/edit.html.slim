@@ -2,7 +2,7 @@
 
 .columns
   article.maincol
-    =form_for :work, url: { action: :update, id: @work.id }, html: { 'data-areyousure' => '' } do |f|
+    =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
       table.form
         tr.big
           th =f.label :title, 'Work title'
@@ -20,12 +20,18 @@
           th =f.label :slug, 'URL'
           td =f.text_field :slug, value: @work.slug
         tr
-          th
+          th.hidden Current URL
           td 
             |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
  
         tr
-          th
+          th =f.label :identifier, 'Identifier'
+          td =f.text_field :identifier, value: @work.identifier
+        tr
+          th.hidden Identifier Help
+          td Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
+        tr
+          th.hidden Pages are meaningful
           td
             p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
@@ -33,7 +39,7 @@
             =f.label :pages_are_meaningful
         
         tr
-          th
+          th.hidden Supports Translation
           td
             p <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
             =f.check_box :supports_translation, value: @work.supports_translation
@@ -73,8 +79,7 @@
             =f.text_area :translation_instructions, rows: 5, value: @work.translation_instructions
       .toolbar
         .toolbar_group
-          =link_to({ :controller => 'work', :action => 'delete', :work_id => @work.id }, data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' })
-            =svg_symbol '#icon-remove-sign', class: 'icon'
+          =link_to({ :controller => 'work', :action => 'delete', :work_id => @work.id }, data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' }, class: 'button')
             span Delete Work
         .toolbar_group.aright =f.button 'Save Changes', class: 'big'
 
@@ -92,7 +97,7 @@
     h4 Work Image
     =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work), html: { multipart: true, class: 'image-form' }) do |f|
       =hidden_field_tag(:work_id, @work)
-      label(data-empty="No Image" data-hover="Upload Image")
+      label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image")
         =f.file_field :picture, tabindex: '-1', accept: 'image/*'
         -unless @work.picture.blank?
           =image_tag(@work.picture_url(:thumb))
@@ -163,5 +168,25 @@
         $('#revert').prop('disabled', true);
 
         });
+      });
+    });
+
+    $(function(){
+      $("#update").on('submit', function(){
+        var new_id = $("#work_collection_id").val();
+        var collection_id = "#{@work.collection.id}"
+        var subjects = "#{@subjects}"
+        if (new_id != collection_id){
+        //this is a string because it's interpolated from rails
+        //if there are subject links, confirm before move
+          if (subjects == 'true'){
+            var response = confirm("Are you sure you want to move this work to a new collection?  You will lose all subject links.");
+            //if cancel, set the collection back to the original
+            if (response == false){
+              $('#work_collection_id').val(collection_id);
+              return;
+            }
+          };
+        };
       });
     });

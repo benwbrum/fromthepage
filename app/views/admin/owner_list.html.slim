@@ -1,4 +1,9 @@
-=render(:partial => 'header', :locals => { :selected => 6 })
+=render(:partial => 'header', :locals => { :selected => 3 })
+
+=form_tag({:controller => 'admin', :action => 'owner_list'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+  =search_field_tag :search, params[:search], placeholder: 'Search Owners...'
+  =button_tag 'Search', :name => nil
+  =label_tag :search, "Search users", class: "hidden"
 
 table.admin-grid.datagrid.striped
   thead
@@ -32,7 +37,7 @@ table.admin-grid.datagrid.striped
         td.nowrap
           .instack
             =link_to 'Login As', user_masquerade_path(o)
-            =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => o.id }, :data => { litebox: { hash: "edit-user-#{o.id}" }}
+            =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => o.id }, :data => { litebox: { hash: "" }}
             =link_to 'Delete', { :action => 'delete_user', :user_id => o.id }, data: { confirm: 'Are you sure you want to delete user? After deleting you won\'t be able to recover it!' }
 
 =render(:partial => 'shared/pagination', :locals => { :model => @owners, :entries_info => true })

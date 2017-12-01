@@ -1,0 +1,52 @@
+dist: trusty
+sudo: false
+language: ruby
+cache: bundler
+
+rvm: 2.2.0
+
+jobs:
+  include:
+    - stage: test for pry
+      rvm: 2.4.1
+      before_install:
+      - bash travis/.travis_pry.sh
+      install: skip
+      before_script: skip
+      script: echo No pry found
+    - stage: test
+      env: DB=mysql
+      gemfile: Gemfile
+    - env: DB=mysql
+      gemfile: gemfiles/Gemfile.mysql57
+    - env: DB=mysql57
+      gemfile: gemfiles/Gemfile.mysql57
+    - addons:
+        mariadb: '10.0'
+      env: DB=mariadb
+      gemfile: Gemfile
+    - addons:
+        mariadb: '10.0'
+      env: DB=mariadb
+      gemfile: gemfiles/Gemfile.mysql57
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install ghostscript
+  - sudo apt-get install graphviz
+  - bash travis/.travis_setup.sh
+
+before_script:
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
+  - bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
+
+script:
+  - xvfb-run bundle exec rspec spec/features/
+
+branches:
+  only:
+    - master
+    - ui-design
+    - fromthepage.com
+    - indianapolis

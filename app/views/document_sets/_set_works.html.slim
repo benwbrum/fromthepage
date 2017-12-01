@@ -1,0 +1,17 @@
+    =form_for :document_set, url: remove_from_set_path, method: :get do |f|
+      =hidden_field_tag :collection_id, @collection.slug
+      ul.collection-work-stats
+        li
+          span Work title
+          span Progress
+          span Collaboration
+          span Remove from set
+        -@works.each do |w|
+          -work_stats(w)
+          li.document_set
+            span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
+            span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
+            span =w.restrict_scribes  ? 'Restricted' : 'Unrestricted'
+            span =check_box_tag "work[#{w.id}]"
+      br
+      .aright =button_tag 'Remove works'

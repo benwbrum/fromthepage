@@ -10,23 +10,32 @@
         .collection-intro_about
           ==@collection.intro_block
 
-    h2 Works
-    .aright
-      -if @collection.hide_completed
-        =label_tag "Show Transcribed Works"
-        |&nbsp; 
-        =check_box_tag :hide_completed
-      -else
-        =label_tag "Show Transcribed Works"
-        |&nbsp; 
-        =check_box_tag(:hide_completed, 0, checked: true)
-      p
+    div.collection-work-list
+      h2 Works
 
-    -@collection.works.includes(:work_statistic).each do |work|
+      .transcribed
+        -if @collection.hide_completed
+          =label_tag :hide_completed, "Show Fully Transcribed Works"
+          |&nbsp; 
+          =check_box_tag :hide_completed
+        -else
+          =label_tag :hide_completed, "Show Fully Transcribed Works"
+          |&nbsp; 
+          =check_box_tag(:hide_completed, 0, checked: true)
+
+    -if @collection.hide_completed && @collection.pct_completed == 100
+      h5.collection-work#complete
+        |All works are fully transcribed.
+        |&nbsp;&nbsp;
+        =link_to "Click to show transcribed works", '#'
+        br
+    -else
+
+    -@works.each do |work|
       .collection-work.hidden
         .collection-work_image
           -unless work.thumbnail.nil? 
-            =image_tag(work.thumbnail)
+            =image_tag(work.thumbnail, alt: work.title)
         h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
@@ -41,8 +50,12 @@
                 span(style="width:#{@progress_review}%")
         span.completed(style="display: none;") #{@completed}
 
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
+
     -if user_signed_in? && current_user.like_owner?(@collection)
-      p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
+      -if @collection.is_a?(Collection)
+        p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
     
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
@@ -54,6 +67,13 @@
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
       =button_tag 'Search'
+      =label_tag 'search_string', "Search collection", class: 'hidden'
+
+    =form_tag({:controller => 'collection', :action => 'show'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =hidden_field_tag('collection_id', @collection.id)
+      =search_field_tag :search, params[:search], placeholder: 'Search for works...'
+      =button_tag 'Search'
+      =label_tag 'search', "Search for works", class: 'hidden'
 
     .user-label
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
@@ -75,7 +95,7 @@
       =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
 
     h3 Recent Edits
-    =deeds_for({ :collection => @collection, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW] })
+    =deeds_for({ :collection => @collection, :limit => 10, :types => [Deed::PAGE_TRANSCRIPTION, Deed::PAGE_EDIT, Deed::ARTICLE_EDIT, Deed::OCR_CORRECTED, Deed::NEEDS_REVIEW, Deed::TRANSLATION_REVIEW], :long_view => true })
 
 =render({ :partial => '/shared/collection_footer' })
 
@@ -86,9 +106,9 @@
       var hideCompleted = #{@collection.hide_completed};
       $(hideWorks(hideCompleted));
     });
+
     $(function(){
       var showCheckbox = $('#hide_completed')
-
       $(function(){
         $(showCheckbox).click(function(e){
           var hide;
@@ -98,24 +118,17 @@
             hide = true;
           };
           hideWorks(hide);
+          if(hide == false){
+            $('#complete').hide();
+          }
         });
       });
     });
 
-    function hideWorks(param){
-      var showOrHide = param
-      var work = $('.collection-work');
-      if (showOrHide){
-        work.each(function(i){
-          var completed = $(this).find('.completed').text();
-          if (completed == "Completed"){
-            $(this).hide();
-          } else {
-            $(this).show();
-          };
-        });
-      } else {
-        $(work).show();
-      };
-      work.removeClass("hidden")
-    }
+    $(function(){
+      $('#complete').click(function(){
+        $('#hide_completed').prop('checked', true);
+        hideWorks(false);
+        $(this).hide();
+      });
+    });

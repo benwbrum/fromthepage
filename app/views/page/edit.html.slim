@@ -12,12 +12,11 @@
           td
             .input-file
               =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
+              input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse a file" readonly)
               button(type="button") Browse
       .toolbar
         .toolbar_group.w100
-          =link_to({ :action => 'delete', :page_id => @page.id }, data: { :confirm => 'Are you sure you want to delete this page? After deleting you won\'t be able to recover it!' })
-            =svg_symbol '#icon-remove-sign', class: 'icon'
+          =link_to({ :action => 'delete', :page_id => @page.id }, data: { :confirm => 'Are you sure you want to delete this page? After deleting you won\'t be able to recover it!' }, class: 'button')
             span Delete Page
         .toolbar_group =f.button 'Save Changes', class: 'big'
 

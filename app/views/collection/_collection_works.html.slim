@@ -1,0 +1,20 @@
+
+    ul.collection-work-stats
+      li
+        span Work title
+        span Progress
+        span.progress_bar
+      -@works.each do |w|
+        -work_stats(w)
+
+        li
+          span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
+          span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
+
+          span
+            span.progress
+              -unless @collection.subjects_disabled
+                span(style="width:#{@progress_annotated}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
+              -unless @progress_review == 0
+                span(style="width:#{@progress_review}%")

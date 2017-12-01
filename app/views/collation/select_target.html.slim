@@ -1,8 +1,0 @@
-.litebox-embed(style="width:550px")
-  h1 Merge Image Sets
-  p =="Please choose an image set from the list below that will be merged with &ldquo;#{@image_set.summary}&rdquo; image set."
-  =form_tag({ :action => 'select_target_process' }) do
-    =hidden_field_tag :right_set_id, @right_set.id
-    p =select_tag 'left_set_id', options_from_collection_for_select(@left_sets, 'id', lambda { |set| "Image set ##{set.id} - #{set.summary}" }), size: '10'
-    .aright
-      =button_tag 'Continue', class: 'big'

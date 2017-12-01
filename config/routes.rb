@@ -17,7 +17,6 @@ Fromthepage::Application.routes.draw do
 
   get   '/dashboard' => 'dashboard#index'
   get   '/dashboard/owner' => 'dashboard#owner'
-  get   '/dashboard/staging' => 'dashboard#staging'
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'
@@ -59,6 +58,7 @@ Fromthepage::Application.routes.draw do
   get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
+  get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
 
   resources :document_sets, except: [:show, :create, :edit]
 
@@ -71,6 +71,7 @@ Fromthepage::Application.routes.draw do
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'
+      get 'works_list', path: 'works_list', as: :works_list, to: 'collection#works_list'
  
       #work related routes
       #have to use match because it must be both get and post
@@ -118,5 +119,9 @@ Fromthepage::Application.routes.draw do
   get '/:user', path: '/:user_id', to: 'user#profile', as: :user_profile
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
+
+  get 'static/faq', to: 'static#faq', as: :faq
+  get 'static/about', to: 'static#about', as: :about
+  get 'static/privacy', to: 'static#privacy', as: :privacy
 
 end

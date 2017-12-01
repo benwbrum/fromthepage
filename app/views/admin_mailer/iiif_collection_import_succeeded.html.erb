@@ -1,0 +1,9 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">IIIF Collection Import Succeeded</h2>
+<p>
+  Your import of the IIIF collection <%=link_to @collection.title, collection_path(@collection.owner, @collection, only_path: false)%> was successful.
+</p>
+<p>These are the works in the collection:</p>
+<ul><% @collection.works.each do |work|%>
+  <li><%=work.title%></li>
+  <%end%>
+</ul>

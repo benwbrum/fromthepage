@@ -7,7 +7,7 @@
 
 .collection-search {
   position: relative;
-  margin-bottom: 2em;
+  //margin-bottom: 2em;
   padding-right: 75px;
   input[type=search] {
     height: 34px;
@@ -54,6 +54,7 @@
 }
 
 .collection-work {
+  clear: both;
   padding: $gapSize;
   border-radius: 4px;
   margin-bottom: $gapSize / 2;
@@ -402,6 +403,28 @@
   }
 }
 
+// Collection works list
+
+.collection-work-list {
+  position: relative;
+  .row-alignment {
+    width: 33%;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  h2 {
+    width: 30%;
+    float: left;
+  }
+  .transcribed {
+    float: right;
+    padding: 6px 15px 0 0;
+    label {
+      display: inline;
+    }
+  }
+}
 
 // Collection footer
 
@@ -411,4 +434,14 @@
   margin-top: $gapSize * 3;
   padding-top: $gapSize * 1.5;
   border-top: 1px dotted $borderColor;
+}
+
+// Document Set work list
+
+td.document_set input[type="checkbox"] {
+  margin-left: 8px;
+}
+
+li.document_set input[type="checkbox"] {
+  margin-left: 50px;
 }

@@ -39,10 +39,9 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
     click_button('Import')
     expect(page).to have_content("Metadata")
-    click_link('Import')
-    expect(page).to have_content("Import Manifest")
+    expect(page).to have_content("Manifest")
     select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import')
+    click_button('Import Manifest')
     expect(page).to have_content(@collection.title)
     visit dashboard_owner_path
     works_count = Work.all.count
@@ -51,8 +50,7 @@ describe "uploads data for collections", :order => :defined do
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
     click_button('Import')
     expect(page).to have_content("Metadata")
-    click_link('Import')
-    expect(page).to have_content("Import Manifest")
+    expect(page).to have_content("Manifest")
     select(@collection.title, :from => 'sc_manifest_collection_id')
     click_button('Import')
     expect(page).to have_content(@collection.title)
@@ -108,9 +106,10 @@ describe "uploads data for collections", :order => :defined do
     expect(page.current_path).to eq collection_settings_path(@owner, DocumentSet.last)
     expect(page).to have_content("Manage Works")
     expect(page.find('h1')).to have_content("Test Document Set 1")
-    #add a work from the settings page
-    page.check("work_assignment_#{@set_collection.works.second.id}")
-    page.find_button('Save').click
+    #add a work - has to be done manually b/c it's jquery
+    id = @set_collection.works.second.id
+    DocumentSet.last.work_ids = id
+    DocumentSet.last.save!
     after_doc_set = DocumentSet.where(owner_user_id: @owner.id).count
     expect(after_doc_set).to eq (doc_set + 1)
     visit document_sets_path(:collection_id => @set_collection)
