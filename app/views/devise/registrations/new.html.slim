@@ -2,8 +2,9 @@
 
 section.signon
   h1 Sign Up
-  p Please fill in the following information to create a new FromThePage account.
-
+  p Please fill in the following information to create a new FromThePage account. 
+  p By registering with this website you certify that you are at least 13 years of age or have parental permission.
+  
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field

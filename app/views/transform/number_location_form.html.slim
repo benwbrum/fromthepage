@@ -1,7 +1,0 @@
--content_for :page_title, "Image Set: Page Number Location"
-
-h1 Page Number Location
-p Please click on the image area where page number is located.
-=form_tag({ :action => 'number_location_process' }, class: 'imageset-number-location') do
-  =hidden_field_tag 'image_set_id', @image_set.id
-  =image_submit_tag file_to_url(@image.shrunk_file), name: 'coordinate'

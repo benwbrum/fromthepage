@@ -1,7 +1,0 @@
-<% form_tag( {:action => 'directory_form'} ) %>
-  <pre><%= @current.inspect %></pre>
-  <% @number_images.each do |number_image| %>
-    <div><%= image_tag number_image %></div>
-  <% end %>
-  <p><%= submit_tag 'Next' %></p>
-<% end %>

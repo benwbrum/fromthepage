@@ -32,6 +32,7 @@ class Page < ActiveRecord::Base
   after_initialize :defaults
   after_destroy :update_work_stats
   after_destroy :delete_deeds
+  after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   attr_accessible :title
   attr_accessible :source_text
@@ -155,8 +156,11 @@ class Page < ActiveRecord::Base
     version.xml_transcription = self.xml_text
     version.source_translation = self.source_translation
     version.xml_translation = self.xml_translation
-    version.user = User.current_user
-    
+    unless User.current_user.nil?
+      version.user = User.current_user
+    else
+      version.user = User.find_by(id: self.work.owner_user_id)
+    end
     # now do the complicated version update thing
     version.work_version = self.work.transcription_version
     self.work.increment!(:transcription_version)
@@ -268,6 +272,22 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     filename.sub("#{ext}","_thumb#{ext}")
   end
 
+  def remove_transcription_links(text)
+    self.update_columns(source_text: remove_square_braces(text))
+    @text_dirty = true
+    process_source
+    self.status = 'transcribed'
+    self.save!
+  end
+
+  def remove_translation_links(text)
+    self.update_columns(source_translation: remove_square_braces(text))
+    @translation_dirty = true
+    process_source
+    self.status = 'translated'
+    self.save!
+  end
+
 private
   def generate_thumbnail
     image = Magick::ImageList.new(self[:base_image])
@@ -285,6 +305,10 @@ private
 
   def delete_deeds
     Deed.where(page_id: self.id).destroy_all
+  end
+
+  def update_featured_page
+      self.work.update_columns(featured_page: nil)
   end
 
 end

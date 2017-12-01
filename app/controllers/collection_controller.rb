@@ -52,7 +52,8 @@ class CollectionController < ApplicationController
   def show
     if @collection.restricted
       ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
-    end      
+    end
+    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
   end
 
   def owners
@@ -74,6 +75,7 @@ class CollectionController < ApplicationController
   end
 
   def add_collaborator
+    @user = User.find_by(id: params[:collaborator_id])
     @collection.collaborators << @user
     redirect_to action: 'edit', collection_id: @collection.id
   end
@@ -131,7 +133,12 @@ class CollectionController < ApplicationController
     @collection.owner = current_user
     if @collection.save
       flash[:notice] = 'Collection has been created'
-      ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
+      if request.referrer.include?('sc_collections')
+        session[:iiif_collection] = @collection.id
+        ajax_redirect_to(request.referrer)
+      else
+        ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
+      end
     else
       render action: 'new'
     end
@@ -192,15 +199,15 @@ private
     unless @collection
       if Collection.friendly.exists?(params[:id])
         @collection = Collection.friendly.find(params[:id])
-=begin        if request.path != collection_path(@collection.owner, @collection)
-          return redirect_to @collection, :status => :moved_permanently
-        end
-=end
       elsif DocumentSet.friendly.exists?(params[:id])
         @collection = DocumentSet.friendly.find(params[:id])
+      elsif !DocumentSet.find_by(slug: params[:id]).nil?
+        @collection = DocumentSet.find_by(slug: params[:id])
+      elsif !Collection.find_by(slug: params[:id]).nil?
+        @collection = Collection.find_by(slug: params[:id])
       end
     end
-  end    
+  end
 
   def set_collection_for_work(collection, work)
     # first update the id on the work

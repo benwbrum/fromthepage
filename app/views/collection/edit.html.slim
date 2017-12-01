@@ -11,13 +11,13 @@
           th =f.label :slug, 'URL'
           td =f.text_field :slug, value: @collection.slug
         tr
-          th 
+          th.hidden URL
           td
             |The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
-            =f.text_area :intro_block, rows: 12, value: @collection.intro_block
+            =f.text_area :intro_block, rows: 10, value: @collection.intro_block
         tr
           td(colspan="2")
             =f.label :footer_block, 'Footer', class: "above"
@@ -28,22 +28,30 @@
             =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
         tr
           td(colspan="2")
+            =f.label :help, 'Basic Help Text', class: "above"
+            =f.text_area :help, rows: 8, value: @collection.help
+        tr
+          td(colspan="2")
+            =f.label :link_help, 'Subject Linking Help Text (not displayed if subjects are disabled)', class: "above"
+            =f.text_area :link_help, rows: 10, value: @collection.link_help
+        tr
+          td(colspan="2")
             p
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
             |&nbsp;
-            =f.label "Disable Subject Indexing"
+            =f.label :subjects_disabled, "Disable subject indexing"
         tr
           td(colspan="2")
             p
             =f.check_box :review_workflow, value: @collection.review_workflow
             |&nbsp;
-            =f.label "All Initial Transcriptions Need Review"
+            =f.label :review_workflow, "All initial transcriptions need review"
         tr
           td(colspan="2")
             p
             =f.check_box :hide_completed, value: @collection.hide_completed
             |&nbsp;
-            =f.label "Hide completed works by default"
+            =f.label :hide_completed, "Hide completed works by default"
 
 
       .toolbar
@@ -55,22 +63,13 @@
           =f.button 'Save Changes', class: 'big'
 
     h2 Manage Works
-    h5 Already in the collection
+    h5 Works in the collection
     ul.collection-works-manage
       -@collection.works.each do |work|
         li
           =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
-          =link_to({ :action => 'remove_work_from_collection', :work_id => work.id, :collection_id => @collection.id }, class: 'action')
-            =svg_symbol '#icon-remove-sign', class: 'icon'
-            small Remove
-    h5 Works in other collections
-    ul.collection-works-manage
-      -@works_not_in_collection.each do |work|
-        li
-          =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
-          =link_to({ :action => 'add_work_to_collection', :work_id => work.id, :collection_id => @collection.id }, class: 'action')
-            =svg_symbol '#icon-plus-sign', class: 'icon'
-            small Include
+    p.nodata_text To move a work to another collection, use the collection dropdown on the work settings page.
+
     h5 Add a new work
     -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => @collection.id }
     p.nodata_text You can add another work under #{start_project}  
@@ -79,10 +78,10 @@
     h3 Collection Image
     =form_for :collection, url: { action: 'update' }, html: { multipart: true, class: 'image-form' } do |f|
       =hidden_field_tag(:collection_id, @collection.id)
-      label(data-empty="No Image" data-hover="Upload Image")
+      label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image" title="Upload Image")
         =f.file_field :picture, tabindex: '-1', accept: 'image/*'
         -unless @collection.picture.blank?
-          =image_tag(@collection.picture_url(:thumb))
+          =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
     p.fglight A picture to be used to illustrate the collection description.
 
     h3 Collection Privacy
@@ -102,8 +101,9 @@
       p.fglight Collaborators may transcribe and edit private collections.
       =form_tag({ :action => 'add_collaborator' }, class: 'user-select-form') do
         =hidden_field_tag :collection_id, @collection.id
-        =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
+        =select_tag 'collaborator_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
         =button_tag 'Add', disabled: 'true'
+        =label_tag 'collaborator_id', "Add Collaborator", class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
         .user-label
@@ -113,7 +113,7 @@
             =link_to user.display_name, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
-            =link_to '', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
+            =link_to 'Remove', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
 
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
@@ -121,6 +121,7 @@
       =hidden_field_tag :collection_id, @collection.id
       =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true, prompt: 'Add new owner...'
       =button_tag 'Add', disabled: 'true'
+      =label_tag 'user_id', "Add Owner", class: 'hidden'
     -@owners.each do |user|
       -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
       .user-label
@@ -130,7 +131,7 @@
           =link_to user.display_name, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
-          =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove'
+          =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove owner'
 
     h3 Document Sets
     p Document sets are sub-sets of the works in this collection, 

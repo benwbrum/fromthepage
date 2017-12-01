@@ -1,7 +1,7 @@
 -# encoding: utf-8
 
 doctype html
-html
+html lang="en-US"
   head
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
@@ -38,15 +38,15 @@ html
     header.header
       .toolbar
         .toolbar_group
-          =link_to root_path, class: 'logo'
+          =link_to root_path, class: 'logo', title: 'Home', 'aria-label' => 'Home'
             -if USE_PNG_LOGO
-              =image_tag 'logo.png', height: '64'
+              =image_tag 'logo.png', height: '64', alt: 'Home'
             -else
-              =svg_symbol '#logo'
+              =svg_symbol '#logo', title: 'Home'
         .toolbar_group
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           =link_to 'Collections', dashboard_path, class: 'header_link'
-          =link_to 'FAQ', { controller: 'static', action: 'faq' }, class: 'header_link'
+          =link_to 'FAQ', faq_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
@@ -86,9 +86,10 @@ html
     footer.footer
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
       .footer_nav
-        =link_to 'About', { controller: 'static', action: 'about' }
+        =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
+        =link_to 'About', about_path
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
-        =link_to 'Privacy Policy', { controller: 'static', action: 'privacy' }
+        =link_to 'Privacy Policy', privacy_path
         =mail_to 'benwbrum@gmail.com', 'Contact Us'
 
     .page-busy-overlay

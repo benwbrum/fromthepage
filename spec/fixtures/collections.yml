@@ -7,6 +7,8 @@ collection_1:
   restricted: false
   picture: 
   transcription_conventions: "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li>\n <li>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views.</li></ul>"
+  help: "<h2> Transcribing</h2>\n<p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>\n<p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>\n<p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>"
+  link_help: "This is help text for Linking Subjects."
   supports_document_sets: false
 collection_2:
   id: 2
@@ -17,6 +19,8 @@ collection_2:
   restricted: false
   picture: 
   transcription_conventions: "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li>\n <li>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views.</li></ul>"
+  help: "<h2> Transcribing</h2>\n<p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>\n<p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>\n<p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>"
+  link_help: "This is help text for Linking Subjects."
   supports_document_sets: false
 collection_3:
   id: 3
@@ -27,5 +31,7 @@ collection_3:
   restricted: false
   picture: 
   transcription_conventions: "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li>\n <li>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views.</li></ul>"
+  help: "<h2> Transcribing</h2>\n<p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>\n<p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>\n<p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>"
+  link_help: "This is help text for Linking Subjects."
   supports_document_sets: false
     

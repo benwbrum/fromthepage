@@ -20,7 +20,7 @@ describe "editor actions" , :order => :defined do
 
   it "checks that an editor with permissions can see a restricted work" do
     visit "/display/read_work?work_id=#{@auth.work_id}"
-    click_link @work.pages.first.title
+    page.find('.work-page_title', text: @work.pages.first.title).click_link
     expect(page.find('.tabs')).to have_content("Transcribe")
   end
 
@@ -29,7 +29,7 @@ describe "editor actions" , :order => :defined do
     @rest_user = User.find_by(login: REST_USER)
     login_as(@rest_user, :scope => :user)
     visit "/display/read_work?work_id=#{@auth.work_id}"
-    click_link @work.pages.first.title
+    page.find('.work-page_title', text: @work.pages.first.title).click_link
     expect(page.find('.tabs')).not_to have_content("Transcribe")
   end
 
@@ -56,7 +56,7 @@ describe "editor actions" , :order => :defined do
 
   it "looks at a work" do
     visit collection_path(@collection.owner, @collection)
-    click_link @work.title
+    page.find('.collection-work_title', text: @work.title).click_link
     expect(page).to have_content(@page.title)
     #Check the tabs in the work
     #About
@@ -85,7 +85,7 @@ describe "editor actions" , :order => :defined do
   it "looks at pages" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     expect(page).to have_content("please help transcribe this page")
-    click_link @page.title
+    page.find('.work-page_title', text: @page.title).click_link
     page.find('#page_source_text')
     expect(page).to have_button('Preview')
     expect(page).to have_content(@page.title)
@@ -134,7 +134,7 @@ describe "editor actions" , :order => :defined do
     visit dashboard_path
     page.find('a', text: 'Your Profile').click
     expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("Recent Activity by")
+    expect(page).to have_content("Recent Activity by #{@user.display_name}")
     expect(page).not_to have_selector('.columns')
   end
 

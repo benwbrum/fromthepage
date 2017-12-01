@@ -135,11 +135,56 @@ describe "owner actions", :order => :defined do
     page.find('.maincol').find('a', text: @title).click
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
     expect(page.find('#work_collection_id')).to have_content(@collections.second.title)
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
     expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
+  end
+
+  it "doesn't move a work with articles", :js => true do
+    col = Collection.second
+    work = col.works.second
+    test_page = work.pages.first
+    visit collection_transcribe_page_path(col.owner, col, work, test_page)
+    page.fill_in 'page_source_text', with: "[[Switzerland]]"
+    click_button('Save Changes')
+    expect(page.find('.flash_message')).to have_content("Saved")
+    visit edit_collection_work_path(col.owner, col, work)
+    expect(page).to have_content("Work title")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
+    select(@collection.title, :from => 'work_collection_id')
+    #reject the modal and get text
+    message = page.dismiss_confirm do
+      click_button('Save Changes')
+    end
+    expect(message).to have_content("Are you sure you want to move this work")
+    expect(Work.find_by(id: work.id).collection).to eq col
+  end
+
+  it "moves a work with articles" do
+    col = Collection.second
+    work = col.works.second
+    test_page = work.pages.first
+    #note: this is probably redundant, but it prevents failure from other tests
+    visit collection_transcribe_page_path(col.owner, col, work, test_page)
+    page.fill_in 'page_source_text', with: "[[Switzerland]]"
+    click_button('Save Changes')
+    expect(page.find('.flash_message')).to have_content("Saved")
+    visit edit_collection_work_path(col.owner, col, work)
+    expect(page).to have_content("Work title")
+    expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
+    select(@collection.title, :from => 'work_collection_id')
+    click_button('Save Changes')
+    #the modal is silently accepted by default
+    expect(Work.find_by(id: work.id).collection).not_to eq col
+    expect(Work.find_by(id: work.id).collection).to eq @collection
+    #check the links
+    expect(PageArticleLink.where(page_id: work.pages.ids)).to be_empty
+    test_page2 = Page.find_by(id: test_page.id)
+    expect(test_page2.source_text).not_to have_content('[[')
   end
 
   it "deletes a work" do
@@ -158,7 +203,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content(@owner.display_name)
     expect(page).to have_selector('.columns')
     expect(page.find('.maincol')).to have_content("Collections")
-    expect(page).to have_content("Recent Activity by")
+    expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
     @collections.each do |c|
         expect(page).to have_content(c.title)
     end

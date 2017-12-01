@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170812191641) do
+ActiveRecord::Schema.define(version: 20171018172935) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -118,6 +118,8 @@ ActiveRecord::Schema.define(version: 20170812191641) do
     t.string   "slug"
     t.boolean  "review_workflow",                        default: false
     t.boolean  "hide_completed",                         default: true
+    t.text     "help"
+    t.text     "link_help"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -236,27 +238,6 @@ ActiveRecord::Schema.define(version: 20170812191641) do
     t.string   "zip_file"
     t.boolean  "use_ocr",                     default: false
   end
-
-  create_table "image_sets", force: true do |t|
-    t.string   "path"
-    t.string   "title_format"
-    t.datetime "created_on"
-    t.integer  "orientation"
-    t.integer  "original_width"
-    t.integer  "original_height"
-    t.integer  "original_to_base_halvings"
-    t.integer  "owner_user_id"
-    t.string   "step"
-    t.string   "status"
-    t.string   "status_message"
-    t.integer  "crop_band_start"
-    t.integer  "crop_band_height"
-    t.integer  "rotate_pid"
-    t.integer  "shrink_pid"
-    t.integer  "crop_pid"
-  end
-
-  add_index "image_sets", ["owner_user_id"], name: "index_image_sets_on_owner_user_id", using: :btree
 
   create_table "notes", force: true do |t|
     t.string   "title"
@@ -501,22 +482,6 @@ ActiveRecord::Schema.define(version: 20170812191641) do
 
   add_index "tex_figures", ["page_id"], name: "index_tex_figures_on_page_id", using: :btree
 
-  create_table "titled_images", force: true do |t|
-    t.string   "original_file",                               null: false
-    t.string   "title_seed",       limit: 20
-    t.string   "title_override"
-    t.string   "title"
-    t.boolean  "shrink_completed",            default: false
-    t.boolean  "rotate_completed",            default: false
-    t.boolean  "crop_completed",              default: false
-    t.integer  "image_set_id"
-    t.integer  "position"
-    t.datetime "created_on"
-    t.integer  "lock_version",                default: 0
-  end
-
-  add_index "titled_images", ["image_set_id"], name: "index_titled_images_on_image_set_id", using: :btree
-
   create_table "transcribe_authorizations", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "work_id"
@@ -627,6 +592,7 @@ ActiveRecord::Schema.define(version: 20170812191641) do
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
+    t.string   "identifier"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

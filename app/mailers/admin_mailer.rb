@@ -34,6 +34,19 @@ class AdminMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity"
   end
 
+  def iiif_collection_import_failed(user_id, collection_id, errors)
+    user_email = User.find_by(id: user_id).email
+    @collection = Collection.find_by(id: collection_id)
+    @errors = errors
+    mail to: user_email, subject: "#{@collection.title} - Import Errors"
+  end
+
+  def iiif_collection_import_succeeded(user_id, collection_id)
+    user_email = User.find_by(id: user_id).email
+    @collection = Collection.find_by(id: collection_id)
+    mail to: user_email, subject: "#{@collection.title} - Import Complete"
+  end
+
 
   private
   def admin_emails
