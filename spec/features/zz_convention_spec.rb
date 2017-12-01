@@ -33,6 +33,7 @@ describe "convention related tasks", :order => :defined do
       page.find('.tabs').click_link(@tab)
     end
     expect(page).to have_content @clean_conventions
+    expect(page).to have_content("More help")
   end
 
   it "changes work level transcription conventions" do
