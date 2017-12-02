@@ -2,31 +2,30 @@
   "@context": [
     {
       "fromthepage": "http://fromthepage.org/services#",
-      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",   
-
-      "pageNeedsReview": {
-        "@id": "fromthepage:pageNeedsReview",
-        "@type": "xsd:boolean"
+      "pageStatus": {       
+        "@type": "@id",
+        "@id": "iiif:pageStatus",
+        "@container": "@set"   
+      }
+      
+      
+      "needsReview": {
+        "@id": "fromthepage:pageNeedsReview"
       },
-      "pageUnedited": {
-        "@id": "fromthepage:pageUnedited",
-        "@type": "xsd:boolean"
+      "unedited": {
+        "@id": "fromthepage:pageUnedited"
       },
-      "pageMarkedBlank": {
-        "@id": "fromthepage:pageMarkedBlank",
-        "@type": "xsd:boolean"
+      "markedBlank": {
+        "@id": "fromthepage:pageMarkedBlank"
       },
-      "pageHasTranscript": {
-        "@id": "fromthepage:pageHasTranscript",
-        "@type": "xsd:boolean"
+      "hasTranscript": {
+        "@id": "fromthepage:pageHasTranscript"
       },
-      "pageHasTranslation": {
-        "@id": "fromthepage:pageHasTranslation",
-        "@type": "xsd:boolean"
+      "hasTranslation": {
+        "@id": "fromthepage:pageHasTranslation"
       },
-      "pageHasSubjectTags": {
-        "@id": "fromthepage:pageHasSubjectTags",
-        "@type": "xsd:boolean"
+      "hasSubjectTags": {
+        "@id": "fromthepage:pageHasSubjectTags"
       },
       "pctHasTranscript": {
         "@id": "fromthepage:pctHasTranscript",
