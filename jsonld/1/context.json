@@ -2,13 +2,12 @@
   "@context": [
     {
       "fromthepage": "http://fromthepage.org/services#",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
       "pageStatus": {       
         "@type": "@id",
         "@id": "iiif:pageStatus",
         "@container": "@set"   
-      }
-      
-      
+      },
       "needsReview": {
         "@id": "fromthepage:pageNeedsReview"
       },
