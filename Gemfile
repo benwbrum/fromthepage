@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.2'
+gem 'rails', '4.2.9'
 
 gem 'pry'
 gem 'pry-byebug'
@@ -15,7 +15,7 @@ gem 'capistrano-rails', '= 1.1.3'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'jquery-rails'
 
-gem 'mysql2','0.3.16'
+gem 'mysql2','0.4.9'
 
 gem 'recaptcha', '0.3.6'
 
@@ -30,9 +30,6 @@ gem 'devise-encryptable'
 gem 'protected_attributes'
 gem 'carrierwave'
 gem 'rubyzip'
-
-gem 'ahoy_matey'
-
 
 gem 'riiif'
 gem 'iiif-presentation'
@@ -70,8 +67,15 @@ gem 'slim', '~> 3.0.0'
 # Gravatar Image Tag
 gem 'gravatar_image_tag'
 
+# New Relic
+gem 'newrelic_rpm'
+
 #Admin masquerade as a user
 gem 'devise_masquerade'
 
 #friendly routes
 gem 'friendly_id'
+
+gem 'tzinfo-data'
+
+gem 'ahoy_matey'
