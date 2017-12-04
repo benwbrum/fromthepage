@@ -19,7 +19,8 @@ class TranscribeController  < ApplicationController
   def display_page
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
-    @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
+    default = @collection.field_based ? 'ttb' : 'ltr'
+    @layout_mode = cookies[:transcribe_layout_mode] || default;
     session[:col_id] = @collection.slug
   end
 
