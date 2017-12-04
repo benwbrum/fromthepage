@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password:
-  socket: /var/run/mysqld/mysqld.sock
+  username: <%= ENV['DATABASE_USER'] %>
+  password: <%= ENV['DATABASE_PASSWORD'] %>
+  host: <%= ENV['DATABASE_HOST'] %>
   strict: false
   variables:
     sql_mode: TRADITIONAL
@@ -53,5 +53,3 @@ test:
 production:
   <<: *default
   database: diary_production
-  username: diary
-  password: <%= ENV['DIARY_DATABASE_PASSWORD'] %>
