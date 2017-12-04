@@ -409,21 +409,30 @@
 
 .field_form {
   width: 100%;
-  border-collapse: separate;
+  //border-collapse: separate;
+  table-layout: auto;
   th {
     font-weight: normal;
     white-space: nowrap;
-    padding: 4px 0 4px 16px;
+    text-align: center;
+    word-wrap: break-word;
   }
-  td { 
+  td {
     padding: 4px 0 4px 8px;
   }
-  th, td { &:first-child { padding-left: 0; } }
   margin-bottom: 15px;
+  .first {width: 15px;}
+  .fourth {width: 100%;}
+
 }
 
 a.field_icons {
   margin: 5px;
+  color: $bodyFgLight;
+  display: inline-block;
+  &:hover {
+    color: $bodyFg;
+  }
 }
 
 // Collection footer

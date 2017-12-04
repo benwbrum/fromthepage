@@ -11,10 +11,10 @@ h2.nomargin Edit Transcription Fields
   table.field_form#new-fields
     thead
       tr
-        th =label_tag :line_number, 'Line'
+        th =label_tag :line_number, 'Line', class: 'first'
         th =label_tag :label
         th =label_tag :input_type
-        th =label_tag :options, 'Options for select field'
+        th =label_tag :options, "Separate multiple select field options with semicolons"
     tbody
       -unless @current_fields.blank?
         -@current_fields.each do |f|
