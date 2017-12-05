@@ -12,4 +12,4 @@ div.editarea
             -field_select(field)
             =select_tag(field.label, options_for_select(@options))
           -else
-            =textarea_tag "#{field.label}", rows: 3
+            =text_area_tag "#{field.label}"
