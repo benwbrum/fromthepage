@@ -27,9 +27,8 @@ h2.nomargin Edit Transcription Fields
       =link_to 'Cancel', edit_collection_path(@collection.owner, @collection), class: 'button fields'
       =button_tag 'Done', name: 'done', type: 'submit', class: 'button fields'
 
-h2.nomargin Preview
-.page-editarea
-  =render ({partial: 'field_layout', locals: {collection_id: @collection}})
+h2.acenter Preview
+=render ({partial: 'field_layout', locals: {collection_id: @collection}})
 
 =render({ :partial => '/shared/collection_footer' })
 
