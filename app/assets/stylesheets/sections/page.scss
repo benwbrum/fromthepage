@@ -188,7 +188,7 @@
     background: none;
     box-shadow: none;
   }
-  textarea {
+  textarea, div.editarea {
     height: 100%;
     margin-top: 45px;
     resize: none;
@@ -211,6 +211,27 @@
     + textarea { height: calc(100% - 55px); }
   }
 }
+
+div.editarea {
+  overflow: auto;
+  span {
+    display: inline-block;
+    margin-bottom: $gapSize;
+  }
+  input, textarea, select {
+    border: 1px solid $inputBorderColor;
+    background-color: $inputBackground;
+    box-shadow: inset 0 1px rgba(#000, 0.03);
+    width: calc(99% - 100px);
+  }
+  label {
+    width: 100px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+  }
+}
+
 
 .page-imagescan {
   height: 100%;

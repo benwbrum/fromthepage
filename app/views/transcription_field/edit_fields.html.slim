@@ -10,11 +10,10 @@ h2.nomargin Edit Transcription Fields
   p Separate multiple options for a select field by semicolons.
   table.field_form#new-fields
     thead
-      tr
-        th =label_tag :line_number, 'Line', class: 'first'
-        th =label_tag :label
-        th =label_tag :input_type
-        th =label_tag :options, "Separate multiple select field options with semicolons"
+      th =label_tag :line_number, 'Line', class: 'first'
+      th =label_tag :label
+      th =label_tag :input_type
+      th =label_tag :options, "Separate multiple select field options with semicolons"
     tbody
       -unless @current_fields.blank?
         -@current_fields.each do |f|
@@ -25,10 +24,12 @@ h2.nomargin Edit Transcription Fields
   .toolbar.aright
     .toolbar_group
       =button_tag 'Save', name: 'save', type: 'submit', class: 'button fields'
-      =button_tag 'Done', name: 'done', type: 'submit', class: 'button fields'
       =link_to 'Cancel', edit_collection_path(@collection.owner, @collection), class: 'button fields'
+      =button_tag 'Done', name: 'done', type: 'submit', class: 'button fields'
 
-=render ({partial: 'field_layout', locals: {collection_id: @collection}})
+h2.nomargin Preview
+.page-editarea
+  =render ({partial: 'field_layout', locals: {collection_id: @collection}})
 
 =render({ :partial => '/shared/collection_footer' })
 

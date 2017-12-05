@@ -6,7 +6,11 @@ module TranscriptionFieldHelper
   def field_layout(array)
     @field_array = array
     count = @field_array.count
-    @width = 100/count unless count == nil
+    @width = 95/count unless count == nil
+  end
+
+  def field_select(field)
+    @options = field.options.split(";")
   end
 
 end

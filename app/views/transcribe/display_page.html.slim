@@ -80,8 +80,11 @@
             .page-editarea_title
               span =f.label :title, 'Title:', class: 'a50'
               span =f.text_field :title
-          =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-          =f.label :source_text, 'Edit transcription', class: 'hidden'
+          -if !@collection.field_based
+            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+            =f.label :source_text, 'Edit transcription', class: 'hidden'
+          -else
+            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection}})
 
 .fgfaded ==@work.set_transcription_conventions
 
