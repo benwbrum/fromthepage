@@ -31,7 +31,7 @@ mongo.log
 
 /public/assets/
 
-config/database.yml
+config/application.yml
 config/environments/development.rb
 db/schema.rb
 

@@ -1,0 +1,5 @@
+#You have to configure here your environment var
+
+DATABASE_HOST: "127.0.0.1"
+DATABASE_USERNAME: "root"
+DATABASE_PASSWORD: "root"
