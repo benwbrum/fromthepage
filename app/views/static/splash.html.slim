@@ -181,16 +181,3 @@ section.spotlight
           |The <b><a href="/collection/show?collection_id=11">Austin Fanzine Project</a></b>  is comprised of several fanzines covering the music scene in Austin, Texas during the late 1990s.  Read more about it at <a href="http://www.austinfanzineproject.org/">the project blog</a>.
 
 javascript: mixpanel.track("Landing Page");
-
--if @show_welcome_lightbox
-  #welcome-message(style="display:none")
-    h1 Welcome!
-    p.strong Welcome to FromThePage 2. This site offers a sneak preview of the new verision of FromThePage.
-    p.big Check out the new features and learn how FromThePage can help to transcribe handwritten documents online.
-    =link_to 'Learn more about FromThePage 2', { :controller => 'static', :action => 'about', :anchor => 'fromthepage2' }, class: 'button'
-
-  -content_for :javascript
-    javascript:
-      $(function() {
-        new LiteBox({ content: '#welcome-message' }).open();
-      });
