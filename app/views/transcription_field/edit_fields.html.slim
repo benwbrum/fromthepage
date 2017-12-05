@@ -36,8 +36,9 @@ h2.nomargin Preview
 -content_for :javascript
   javascript:
     $(function() {
+
       $('#add-field').click(function(e){
-        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}");
+        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}").on('change', '.input_type', function(){addOptions(this)});
       });
 
       $('table#new-fields tbody tr').each(function(){
@@ -49,14 +50,18 @@ h2.nomargin Preview
       })
       
       $('.input_type').change(function(){
-        var parentTr = this.parentElement.parentElement;
-        var optionsObj = $(parentTr).find('td .field-options')[0];
-        var index = this.options.selectedIndex;
-        if (index == 1){
-          $(optionsObj).prop('disabled', false);
-        }
+          addOptions(this);
       });
 
-
+      function addOptions(selector){
+        var parentTr = selector.parentElement.parentElement;
+        var optionsObj = $(parentTr).find('td .field-options')[0];
+        var index = selector.options.selectedIndex;
+        if (index == 1){
+          $(optionsObj).prop('disabled', false);
+        } else {
+          $(optionsObj).prop('disabled', true);
+        }
+      };
 
     });
