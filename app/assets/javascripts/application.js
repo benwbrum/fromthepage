@@ -281,4 +281,16 @@ function hideWorks(param){
     $(work).show();
   };
   work.removeClass("hidden")
-}
+};
+
+//Enable and disable select options for field-based transcription
+function addOptions(selector){
+  var parentTr = selector.parentElement.parentElement;
+  var optionsObj = $(parentTr).find('td .field-options')[0];
+  var index = selector.options.selectedIndex;
+  if (index == 1){
+    $(optionsObj).prop('disabled', false);
+  } else {
+    $(optionsObj).prop('disabled', true);
+  }
+};
