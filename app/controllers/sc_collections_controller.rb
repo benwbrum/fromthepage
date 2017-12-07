@@ -55,9 +55,16 @@ class ScCollectionsController < ApplicationController
 
   end
 
+
   def explore_manifest
     at_id = params[:at_id]
-    @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    
+    begin  
+      @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+    rescue ArgumentError
+      redirect_to :action => 'explore_collection', :at_id => at_id
+      return    
+    end  
     @collection = set_collection
     if @sc_collection
       @label = @sc_collection.label

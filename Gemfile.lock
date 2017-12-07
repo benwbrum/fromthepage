@@ -8,6 +8,16 @@ GIT
       rest (~> 2.6.3)
 
 GIT
+  remote: https://github.com/benwbrum/osullivan
+  revision: 814ac4ddabb2423de9d7e4f6b2dc8d8153317903
+  branch: service_is_array
+  specs:
+    iiif-presentation (0.2.0)
+      activesupport (>= 3.2.18)
+      faraday (>= 0.9)
+      json
+
+GIT
   remote: https://github.com/mispy/ruby-oai.git
   revision: 8a2fa086814f5c6e5a206a6adce18cf0593951a7
   specs:
@@ -127,10 +137,6 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.4)
-    iiif-presentation (0.2.0)
-      activesupport (>= 3.2.18)
-      faraday (>= 0.9)
-      json
     jquery-rails (3.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -303,7 +309,7 @@ DEPENDENCIES
   devise_masquerade
   friendly_id
   gravatar_image_tag
-  iiif-presentation
+  iiif-presentation!
   jquery-rails
   launchy
   meta_request
@@ -326,6 +332,3 @@ DEPENDENCIES
   therubyracer
   uglifier
   will_paginate
-
-BUNDLED WITH
-   1.12.5

@@ -7,6 +7,7 @@ html lang="en-US"
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
     title =page_title(yield(:page_title))
     meta(name="viewport" content="width=device-width")
+    meta(name="google" content="notranslate")
     -if content_for?(:meta_description)
       meta(name="description" content="#{yield(:meta_description).squish}")
     -if content_for?(:meta_keywords)
@@ -46,7 +47,6 @@ html lang="en-US"
         .toolbar_group
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           =link_to 'Collections', dashboard_path, class: 'header_link'
-          =link_to 'FAQ', faq_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
@@ -86,11 +86,12 @@ html lang="en-US"
     footer.footer
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
       .footer_nav
+        =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
         =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
         =link_to 'About', about_path
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
         =link_to 'Privacy Policy', privacy_path
-        =mail_to 'benwbrum@gmail.com', 'Contact Us'
+        =mail_to 'support@fromthepage.com', 'Contact Us'
 
     .page-busy-overlay
 
