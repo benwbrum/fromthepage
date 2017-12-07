@@ -36,7 +36,7 @@ gem 'ahoy_matey'
 
 
 gem 'riiif'
-gem 'iiif-presentation'
+gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 
 group :assets do
   gem 'therubyracer'
