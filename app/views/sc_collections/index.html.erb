@@ -10,7 +10,7 @@
   <tbody>
     <% @universe_collections.each do |sc_collection| %>
       <tr>
-        <td><%= link_to sc_collection.label, { :action => 'explore', :at_id => sc_collection.at_id} %></td>
+        <td><%= link_to sc_collection.label, { :action => 'explore_collection', :at_id => sc_collection.at_id} %></td>
       </tr>
     <% end %>
   </tbody>
