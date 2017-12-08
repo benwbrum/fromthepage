@@ -60,10 +60,10 @@ class ExportController < ApplicationController
   end
   
   def table_csv
-    cookies['download_finished'] = 'true'
     send_data(export_tables_as_csv(@work),
               :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
+    cookies['download_finished'] = 'true'
     
   end
 
@@ -118,25 +118,26 @@ private
           section_cells = [section_title_text, section_title_subjects, section_title_categories]
           data_cells = Array.new(headings.count, "")
 
-          #group the table cells per page into rows
-          page.table_cells.includes(:section).group_by(&:row).each do |row, cell_array|
-            #get the cell data and add it to the array
-            cell_array.each do |cell|
-              if section != cell.section
-              section_title_text = XmlSourceProcessor::cell_to_plaintext(cell.section.title)
-              section_title_subjects = XmlSourceProcessor::cell_to_subject(cell.section.title)
-              section_title_categories = XmlSourceProcessor::cell_to_category(cell.section.title)
-              end 
-              section_cells = [section_title_text, section_title_subjects, section_title_categories]
-              target = (raw_headings.index(cell.header))*2
-              data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-              data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
-            end
-            # write the record to the CSV and start a new record
-            csv << (page_cells + section_cells + data_cells)
-            #create a new array for the next row
-            data_cells = Array.new(headings.count, "")
+          #get the table sections and iterate cells within the sections
+          page.sections.each do |section|
+            section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title)
+            section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title)
+            section_title_categories = XmlSourceProcessor::cell_to_category(section.title)
+            section_cells = [section_title_text, section_title_subjects, section_title_categories]
+            #group the table cells per section into rows
+            section.table_cells.group_by(&:row).each do |row, cell_array|
+              #get the cell data and add it to the array
+              cell_array.each do |cell|
+                target = (raw_headings.index(cell.header))*2
+                data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
+                data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
+              end
 
+              # write the record to the CSV and start a new record
+              csv << (page_cells + section_cells + data_cells)
+              #create a new array for the next row
+              data_cells = Array.new(headings.count, "")
+            end
           end
         end
       end
