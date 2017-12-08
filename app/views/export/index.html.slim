@@ -69,7 +69,7 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
       td.nowrap
-        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'button', id: 'btnCsvTblExport')
+        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, id: 'btnCsvTblExport')
           =svg_symbol '#icon-export', class: 'icon'
           span Table CSV
 
