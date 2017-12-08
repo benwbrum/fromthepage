@@ -3,27 +3,29 @@ sudo: false
 language: ruby
 cache: bundler
 
-rvm:
-  - 2.2.0
+rvm: 2.2.0
 
-matrix:
+jobs:
   include:
-    - rvm: 2.2.0
+    - stage: test for pry
+      rvm: 2.4.1
+      before_install:
+      - bash travis/.travis_pry.sh
+      install: skip
+      before_script: skip
+      script: echo No pry found
+    - stage: test
       env: DB=mysql
       gemfile: Gemfile
-    - rvm: 2.2.0
-      env: DB=mysql
+    - env: DB=mysql
       gemfile: gemfiles/Gemfile.mysql57
-    - rvm: 2.2.0
-      env: DB=mysql57
+    - env: DB=mysql57
       gemfile: gemfiles/Gemfile.mysql57
-    - rvm: 2.2.0
-      addons:
+    - addons:
         mariadb: '10.0'
       env: DB=mariadb
       gemfile: Gemfile
-    - rvm: 2.2.0
-      addons:
+    - addons:
         mariadb: '10.0'
       env: DB=mariadb
       gemfile: gemfiles/Gemfile.mysql57

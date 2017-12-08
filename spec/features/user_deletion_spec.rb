@@ -4,7 +4,7 @@ describe "User deletion" do
 
   before :all do
     # create a user
-    # do a llot of things as that user
+    # do a lot of things as that user
      # transcribe a page
      # edit an article
     # delete the user

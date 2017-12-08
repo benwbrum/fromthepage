@@ -123,22 +123,27 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
 
-end
-
-=begin
-def select2(values, id)
-  values.each do |val|
-    if page.has_no_css? ".select2-dropdown"
-      within(id) do
-        find('span.select2').click
-      end
+  it "sorts works in works list", :js => true do
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Works List")
+    expect(page).to have_content("Works")
+    @collection.works.each do |w|
+      expect(page).to have_content(w.title)
     end
-    within ".select2-dropdown" do
-      find('li', text: val).click
-    end
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.first.title
+    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.last.title
+    #sort by percent complete
+    page.select('Percent Complete', from: 'sort_by')
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_completed.first.title
+    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
+    #sort by recent activity
+    page.select('Recent Activity', from: 'sort_by')
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.first.title
+    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
   end
+
 end
-=end
 
 =begin
     #I can't access the select2 dropdown, but this code was the closest

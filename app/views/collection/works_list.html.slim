@@ -1,0 +1,25 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 9, :collection_id => @collection } })
+.columns
+  article.maincol
+    div.collection-work-list
+      h2 Works
+      =form_tag(collection_works_list_path(@collection.owner, @collection), method: :get, enforce_utf8: false, id: 'sort-works', class: 'row-alignment') do
+        =select_tag "sort_by", options_for_select(["Alphabetical", "Recent Activity", "Percent Complete"]), prompt: 'Sort Works By...'
+        =label_tag 'sort_by', "Sort Works By:", class: 'hidden'
+
+    -if @collection.is_a?(Collection)
+      =render 'collection_works'
+    -elsif @collection.is_a?(DocumentSet)
+      =render 'document_sets/set_works'
+    
+    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
+=render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('#sort-works').on('change', function(){
+        this.submit();
+      });
+    });

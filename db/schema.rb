@@ -578,6 +578,8 @@ ActiveRecord::Schema.define(version: 20171128132959) do
     t.integer  "translated_blank"
     t.integer  "translated_review"
     t.integer  "translated_annotated"
+    t.integer  "complete"
+    t.integer  "translation_complete"
   end
 
   create_table "works", force: true do |t|

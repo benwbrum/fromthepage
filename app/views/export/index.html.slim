@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
 
 -unless @collection.subjects_disabled
   h2.nomargin Export Subject Index
@@ -32,33 +32,27 @@ table.datagrid
     th Review
     th.w100 Progress
     th(colspan="3") Export As
-  -for work in @collection.works
-    -unless work.supports_translation
-      -progress_annotated = work.work_statistic.pct_annotated.round
-      -progress_completed = work.work_statistic.pct_completed.round
-      -progress_review = work.work_statistic.pct_needs_review.round
-    -else
-      -progress_annotated = work.work_statistic.pct_translation_annotated.round
-      -progress_completed = work.work_statistic.pct_translation_completed.round
-      -progress_review = work.work_statistic.pct_translation_needs_review.round
+
+  -for work in @works
+    -work_stats(work)
 
     tr
       td.big =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id }
       td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
       -unless @collection.subjects_disabled
-        td.nowrap.fgfaded.tocenter ="#{progress_annotated}%"
-      td.nowrap.fgfaded.tocenter ="#{progress_completed}%"
-      td.nowrap.fgfaded.tocenter ="#{progress_review}%"
+        td.nowrap.fgfaded.tocenter ="#{@progress_annotated}%"
+      td.nowrap.fgfaded.tocenter ="#{@progress_completed}%"
+      td.nowrap.fgfaded.tocenter ="#{@progress_review}%"
       td
         .progress
           -unless @collection.subjects_disabled
-            span(style="width:#{progress_annotated}%")
-            span(style="width:#{progress_completed - progress_annotated}%")
-            span(style="width:#{progress_review}%")
+            span(style="width:#{@progress_annotated}%")
+            span(style="width:#{@progress_completed - @progress_annotated}%")
+            span(style="width:#{@progress_review}%")
 
           -else
-            span(style="width:#{progress_completed}%")
-            span(style="width:#{progress_review}%")
+            span(style="width:#{@progress_completed}%")
+            span(style="width:#{@progress_review}%")
 
       td.nowrap
         =link_to({ :controller => 'export', :action => 'show', :work_id => work.id })
@@ -73,6 +67,9 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span Table CSV
 
+=render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
+
 =render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
@@ -84,7 +81,6 @@ table.datagrid
         Cookies.remove('download_finished');
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');
-          console.log(cookie);
           if(cookie === 'true') {
             $('html').removeClass('page-busy');
             window.clearInterval(downloadCheckTimer);
@@ -99,7 +95,6 @@ table.datagrid
         Cookies.remove('download_finished');
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');
-          console.log(cookie);
           if(cookie === 'true') {
             $('html').removeClass('page-busy');
             window.clearInterval(downloadCheckTimer);
@@ -111,10 +106,9 @@ table.datagrid
       // Remove 'page_busy' spinner once zipfile download finished
       // Cookie should be set to 'true' in the controller method
       $('#btnExportAll').on('click', function() {
-        Cookies.remove('download_finished');
+        Cookies.remove('download_finished', {path: '/'});
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');
-          console.log(cookie);
           if(cookie === 'true') {
             $('html').removeClass('page-busy');
             window.clearInterval(downloadCheckTimer);

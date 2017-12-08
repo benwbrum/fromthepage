@@ -7,6 +7,7 @@ html lang="en-US"
     meta(http-equiv="X-UA-Compatible" content="IE=edge")
     title =page_title(yield(:page_title))
     meta(name="viewport" content="width=device-width")
+    meta(name="google" content="notranslate")
     -if content_for?(:meta_description)
       meta(name="description" content="#{yield(:meta_description).squish}")
     -if content_for?(:meta_keywords)
@@ -21,23 +22,10 @@ html lang="en-US"
     =stylesheet_link_tag "//fonts.googleapis.com/css?family=Source+Serif+Pro:400,700|Crete+Round"
     ="\n"
     =stylesheet_link_tag 'application'
-    javascript:  
-      (function(e,b){if(!b.__SV){var a,f,i,g;
-      window.mixpanel=b;
-      b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");
-      2==a.length&&(b=b[a[0]],h=a[1]);
-      b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";
-      c.people=c.people||[];c.toString=function(b){var a="mixpanel";
-      "mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};
-      c.people.toString=function(){return c.toString(1)+".people (stub)"};
-      i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-      for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};
-      b.__SV=1.2;a=e.createElement("script");
-      a.type="text/javascript";
-      a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
-      f=e.getElementsByTagName("script")[0];
-      f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);mixpanel.init("d5e53d2387f7184a07bf99f207df9603");
-    =render :partial => '/layouts/fb_pixel'
+    -unless MIXPANEL_ID.blank?
+      =render :partial => '/layouts/mixpanel'
+    -unless FACEBOOK_PIXEL_ID.blank?
+      =render :partial => '/layouts/fb_pixel'
 
   body
     -flash.each do |type, message|
@@ -59,7 +47,6 @@ html lang="en-US"
         .toolbar_group
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           =link_to 'Collections', dashboard_path, class: 'header_link'
-          =link_to 'FAQ', faq_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
@@ -84,7 +71,7 @@ html lang="en-US"
               =svg_symbol '#header-user', class: 'icon'
 
     -if user_masquerade?
-      h2.strong 
+      h2.strong
         =link_to "Undo Login As \"#{current_user.display_name}\"", back_masquerade_path(current_user)
 
 
@@ -99,24 +86,17 @@ html lang="en-US"
     footer.footer
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
       .footer_nav
+        =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
         =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
         =link_to 'About', about_path
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
         =link_to 'Privacy Policy', privacy_path
-        =mail_to 'benwbrum@gmail.com', 'Contact Us'
+        =mail_to 'support@fromthepage.com', 'Contact Us'
 
     .page-busy-overlay
 
     =javascript_include_tag 'application'
     =yield :javascript
 
-    javascript:
-      var _gaq = _gaq || [];
-      _gaq.push(["_setAccount", "UA-1505790-5"]);
-      _gaq.push(["_trackPageview"]);
-      _gaq.push(["_trackPageLoadTime"]);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('head')[0]; s.appendChild(ga);
-      })();
+    -unless GA_ACCOUNT.blank?
+      =render :partial => '/layouts/ga'

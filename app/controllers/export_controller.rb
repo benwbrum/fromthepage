@@ -1,8 +1,9 @@
 class ExportController < ApplicationController
   require 'zip'
+  include CollectionHelper
 
   def index
-    @collection = Collection.includes(works: :work_statistic).friendly.find(params[:collection_id])
+    @collection = Collection.friendly.find(params[:collection_id])
     #check if there are any translated works in the collection
     if @collection.works.where(supports_translation: true).exists?
       @header = "Translated"
@@ -10,11 +11,12 @@ class ExportController < ApplicationController
       @header = "Transcribed"
     end
 
+    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 15)
 
   end
 
   def show
-    @work = Work.includes(:pages, pages: [{page_versions: :user}]).find_by(id: params[:work_id])
+    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
     render :layout => false
   end
 
@@ -66,8 +68,11 @@ class ExportController < ApplicationController
   end
 
   def export_all_works
-    cookies['download_finished'] = 'true'
-    @works = Work.includes(pages: [{page_versions: :user}]).where(collection_id: @collection.id)
+    unless @collection.subjects_disabled
+      @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
+    else
+      @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
+    end      
 
 #create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
@@ -77,7 +82,7 @@ class ExportController < ApplicationController
         @works.each do |work|
           @work = work
           export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-          zos.put_next_entry "#{work.title}.xhtml"
+          zos.put_next_entry "#{work.slug.truncate(200, omission: "")}.xhtml"
           zos.print export_view
         end
       end
@@ -85,6 +90,7 @@ class ExportController < ApplicationController
       send_data compressed_filestream.read, filename: "#{@collection.title}.zip"
       end
     end
+    cookies['download_finished'] = 'true'
 
   end
 

@@ -35,12 +35,11 @@ describe "disable subject linking", :order => :defined do
     expect(page.find('.tabs')).not_to have_content("Subjects")
     #check for subject related items on Statistics tab
     page.find('.tabs').click_link("Statistics")
-    expect(page).to have_content("Work Progress")
+    expect(page).to have_content("Collaborators")
     expect(page).not_to have_content('Subjects')
     expect(page).not_to have_content('References')
     expect(page).not_to have_content('Pages indexed')
     expect(page).not_to have_content('New subjects')
-    expect(page).not_to have_content("% indexed")
     expect(page).not_to have_content("Indexing")
     #check for subject related items on Export tab
     page.find('.tabs').click_link("Export")

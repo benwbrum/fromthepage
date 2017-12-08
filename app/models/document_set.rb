@@ -88,4 +88,11 @@ class DocumentSet < ActiveRecord::Base
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def search_works(search)
+    self.works.where("title LIKE ?", "%#{search}%")
+  end
+
+  def search_collection_works(search)
+    self.collection.works.where("title LIKE ?", "%#{search}%")
+  end
 end

@@ -7,7 +7,11 @@
   
   <body>
     <h1 class="work-title"><%= @work.title %></h1>
-    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.</div>
+    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.
+      <% unless @work.identifier.blank? %>
+        <p>Identifier: <%=@work.identifier%></p>
+      <% end %>
+    </div>
 
     <hr />
     <h2 class="divider">Page Transcripts</h2>
@@ -79,46 +83,48 @@
     <% end %>
 
     <hr />
-    <h2 class="divider">Subjects and Indices</h2>
+    <% unless @work.collection.subjects_disabled %>
+      <h2 class="divider">Subjects and Indices</h2>
 
-    <div class="subjects">
-      <% @work.articles.sort{ |x,y| x.title.upcase <=> y.title.upcase }.each do |article| %>
-      <div id="article-<%=article.id%>">
-        <h3 class="article-title"><%=article.title %></h3>
-        <div class="article-content">
-          <%= raw(xml_to_html(article.xml_text, true, true)) %>
-        </div>
-        <% if article.categories.present? %>
-          <div class="article-categories">
-            <strong>Categories:</strong>
+      <div class="subjects">
+        <% @work.articles.sort{ |x,y| x.title.upcase <=> y.title.upcase }.each do |article| %>
+        <div id="article-<%=article.id%>">
+          <h3 class="article-title"><%=article.title %></h3>
+          <div class="article-content">
+            <%= raw(xml_to_html(article.xml_text, true, true)) %>
+          </div>
+          <% if article.categories.present? %>
+            <div class="article-categories">
+              <strong>Categories:</strong>
+              <ul>
+              <% article.categories.each do |cat| %>
+                <li><small><%= raw((cat.ancestors.reverse.push(cat).map { |c| c.title }).join(" &rarr; ")) %></small></li>
+              <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <div class="article-indices">
+            <strong>Pages:</strong>
             <ul>
-            <% article.categories.each do |cat| %>
-              <li><small><%= raw((cat.ancestors.reverse.push(cat).map { |c| c.title }).join(" &rarr; ")) %></small></li>
-            <% end %>
+              <% article.show_links(@collection).each do |link| %>
+                <li>
+                  <small>
+                  <% if link.text_type == 'translation' %>
+                    <%= link_to(link.page.title, "#page-#{link.page_id}") %>
+                  <% else %>
+                    <%= link_to(link.page.title, "#translation-#{link.page_id}") %> (translation)
+                  <% end %>
+                  </small>
+                </li>
+              <% end %>
             </ul>
           </div>
-        <% end %>
-        <div class="article-indices">
-          <strong>Pages:</strong>
-          <ul>
-            <% article.show_links(@collection).each do |link| %>
-              <li>
-                <small>
-                <% if link.text_type == 'translation' %>
-                  <%= link_to(link.page.title, "#page-#{link.page_id}") %>
-                <% else %>
-                  <%= link_to(link.page.title, "#translation-#{link.page_id}") %> (translation)
-                <% end %>
-                </small>
-              </li>
-            <% end %>
-          </ul>
+          <!-- categorization here -->
+          <!-- subject article edit history here -->
         </div>
-        <!-- categorization here -->
-        <!-- subject article edit history here -->
+        <br />
+        <% end %>
       </div>
-      <br />
-      <% end %>
-    </div>
+    <% end %>  
   </body>
 </html>

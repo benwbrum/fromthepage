@@ -88,8 +88,11 @@
 
 .fgfaded ==@work.set_transcription_conventions
 
-.fgfaded
+.fgfaded.page-indent
   =render :partial => 'shared/markup_help'
+
+.page-indent
+  =link_to 'More help....', collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
 h2.legend Page Notes
 .page-notes
@@ -144,5 +147,5 @@ h2.legend Page Notes
 
     });
 
-
-javascript:  mixpanel.track("Transcribe Page");
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Transcribe Page");

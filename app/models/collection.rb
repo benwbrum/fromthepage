@@ -34,7 +34,7 @@ class Collection < ActiveRecord::Base
 
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|
-      csv << %w{ Work_Title Page_Title Page_Position Page_URL Subject Text Category Category Category }
+      csv << %w{ Work_Title Identifier Page_Title Page_Position Page_URL Subject Text Category Category Category }
       self.works.each do |work|
         work.pages.includes(:page_article_links, articles: [:categories]).each do |page|
           page_url="http://#{Rails.application.routes.default_url_options[:host]}/display/display_page?page_id=#{page.id}"
@@ -45,7 +45,7 @@ class Collection < ActiveRecord::Base
             article.categories.each do |category|
               category_array << category.title
             end
-            csv << [work.title, page.title, page.position, page_url, link.article.title, display_text, category_array.sort].flatten
+            csv << [work.title, work.identifier, page.title, page.position, page_url, link.article.title, display_text, category_array.sort].flatten
           end
         end
       end
@@ -118,6 +118,11 @@ class Collection < ActiveRecord::Base
     end
     puts "#{self.title} collection has been reset"
   end
+
+  def search_works(search)
+    self.works.where("title LIKE ?", "%#{search}%")
+  end
+
 
   protected
     def set_transcription_conventions

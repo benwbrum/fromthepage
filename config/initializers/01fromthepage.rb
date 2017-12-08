@@ -2,3 +2,6 @@ ADMIN_EMAILS = 'saracarl@gmail.com, benwbrum@gmail.com'
 SENDING_EMAIL_ADDRESS = 'support@fromthepage.com'
 SMTP_ENABLED = false
 USE_PNG_LOGO = false
+FACEBOOK_PIXEL_ID = '194616117686834'
+MIXPANEL_ID = 'd5e53d2387f7184a07bf99f207df9603'
+GA_ACCOUNT = 'UA-1505790-5'
