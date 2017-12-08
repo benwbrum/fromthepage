@@ -92,7 +92,7 @@ table.datagrid
       // Remove 'page_busy' spinner once CSV download finished
       // Cookie should be set to 'true' in the controller method
       $('#btnCsvTblExport').on('click', function() {
-        Cookies.remove('download_finished');
+        Cookies.remove('download_finished', {path: '/'});
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');
           if(cookie === 'true') {

@@ -142,7 +142,6 @@ private
       end
     end
     cookies['download_finished'] = 'true'
-    
     csv_string
   end
 
