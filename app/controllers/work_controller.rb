@@ -109,6 +109,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
+      # call GamificationHelper
       record_deed(@work)
       flash[:notice] = 'Work created successfully'
       ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })

@@ -207,6 +207,7 @@ class ApplicationController < ActionController::Base
 
   # Redirect to admin or owner dashboard after sign in
   def after_sign_in_path_for(resource)
+    # call GamificationHelper
     if current_user.admin
       admin_path
     elsif current_user.owner
