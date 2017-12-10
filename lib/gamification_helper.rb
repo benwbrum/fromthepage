@@ -8,7 +8,6 @@ class GamificationHelper
     def self.loginEvent(mail)
         activity={"email":mail,"project":"cientopolis","event":"login","count":1}
         @metagameClient.make_activity(activity)
-
     end
 
     #### Creacion de cuenta ####
@@ -25,19 +24,19 @@ class GamificationHelper
 
     #### crear trabajo ####
     def self.createWorkEvent(mail)
-        activity={"email":mail,"project":"cientopolis","event":"createWork","count":1}
+        activity={"email":mail,"project":"cientopolis","event":"new_work","count":1}
         @metagameClient.make_activity(activity)
     end
 
     #### subir colección ####
     def self.pushCollectionEvent(mail)
-        activity={"email":mail,"project":"cientopolis","event":"login","count":1}
+        activity={"email":mail,"project":"cientopolis","event":"push_collection","count":1}
         @metagameClient.make_activity(activity)
     end
 
     #### mejorar el contenido de una transcripcion. ####
     def self.upgradeTranscriptionEvent(mail)
-        activity={"email":mail,"project":"cientopolis","event":"login","count":1}
+        activity={"email":mail,"project":"cientopolis","event":"upgrade_transcription","count":1}
         @metagameClient.make_activity(activity)
     end
 
