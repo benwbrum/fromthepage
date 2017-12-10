@@ -4,38 +4,46 @@ class GamificationHelper
 
     @@metagameClient = MetagameClient.new(ENV['METAGAME_URL'],ENV['METAGAME_TOKEN'])
 
+    #### login diario ####
     def self.loginEvent(mail)
         activity={"email":mail,"project":"cientopolis","event":"login","count":1}
         @metagameClient.make_activity(activity)
-
     end
 
+    #### Creacion de cuenta ####
     def self.registerEvent(mail)
         activity={"email":mail,"project":"cientopolis","event":"register","count":1}
         @metagameClient.make_activity(activity)
     end
 
-    def self.newProjectEvent()
+    ##### creacion de proyecto ####
+    def self.newProjectEvent(mail)
         activity={"email":mail,"project":"cientopolis","event":"new_project","count":1}
         @metagameClient.make_activity(activity)
     end
 
-    def self.createWorkEvent()
-        activity={"email":mail,"project":"cientopolis","event":"createWork","count":1}
+    #### crear trabajo ####
+    def self.createWorkEvent(mail)
+        activity={"email":mail,"project":"cientopolis","event":"new_work","count":1}
         @metagameClient.make_activity(activity)
     end
 
-    def self.pushCollectionEvent()
-        activity={"email":mail,"project":"cientopolis","event":"login","count":1}
+    #### subir colección ####
+    def self.pushCollectionEvent(mail)
+        activity={"email":mail,"project":"cientopolis","event":"push_collection","count":1}
         @metagameClient.make_activity(activity)
     end
 
-    def self.upgradeTranscriptionEvent()
-        activity={"email":mail,"project":"cientopolis","event":"login","count":1}
+    #### mejorar el contenido de una transcripcion. ####
+    def self.upgradeTranscriptionEvent(mail)
+        activity={"email":mail,"project":"cientopolis","event":"upgrade_transcription","count":1}
         @metagameClient.make_activity(activity)
     end
 
-    def self.getBadgesEvent()
+    #### recuperar insignias y cosas que tiene ####
+    def self.getBadgesEvent(mail)
+        filters={"project":"cientopolis","email":mail}
+        @metagameClient.list_badges(filters)
     end
 
     def self.clientParams
