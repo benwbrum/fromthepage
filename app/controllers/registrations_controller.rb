@@ -1,3 +1,4 @@
+require 'gamification_helper'
 class RegistrationsController < Devise::RegistrationsController
 
   def new
@@ -21,6 +22,8 @@ class RegistrationsController < Devise::RegistrationsController
     
     if resource_saved
       # call GamificationHelper
+      GamificationHelper.registerEvent(@user.email)
+
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
