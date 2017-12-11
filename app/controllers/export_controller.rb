@@ -106,16 +106,15 @@ private
     end
     
     csv_string = CSV.generate(:force_quotes => true) do |csv|
-      csv << (['Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + headings)
+      if work.sections.blank?
+        csv << (['Page Title', 'Page Position', 'Page URL' ] + headings)
+      else
+        csv << (['Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + headings)
+      end
       work.pages.includes(:table_cells).each do |page|
         unless page.table_cells.empty?
           page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
           page_cells = [page.title, page.position, page_url]
-          section_title_text = nil
-          section_title_subjects = nil
-          section_title_categories = nil
-          section = nil
-          section_cells = [section_title_text, section_title_subjects, section_title_categories]
           data_cells = Array.new(headings.count, "")
 
           if page.sections.blank?
@@ -124,14 +123,15 @@ private
               #get the cell data and add it to the array
               cell_data(cell_array, raw_headings, data_cells)
               # write the record to the CSV and start a new record
-              csv << (page_cells + section_cells + data_cells)
+              csv << (page_cells + data_cells)
+              #csv << (page_cells + section_cells + data_cells)
               #create a new array for the next row
               data_cells = Array.new(headings.count, "")
 
             end
 
           else
-            #get the table sections and iterate cells within the sections
+            #get the table sections/headers and iterate cells within the sections
             page.sections.each do |section|
               section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
               section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
