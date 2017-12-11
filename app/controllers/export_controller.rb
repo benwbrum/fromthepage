@@ -122,12 +122,7 @@ private
             #get cell data for a page with only one table
             page.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_array.each do |cell|
-                target = (raw_headings.index(cell.header))*2
-                data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-                data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
-              end
-
+              cell_data(cell_array, raw_headings, data_cells)
               # write the record to the CSV and start a new record
               csv << (page_cells + section_cells + data_cells)
               #create a new array for the next row
@@ -138,19 +133,14 @@ private
           else
             #get the table sections and iterate cells within the sections
             page.sections.each do |section|
-              section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title)
-              section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title)
-              section_title_categories = XmlSourceProcessor::cell_to_category(section.title)
+              section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
+              section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
+              section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
               section_cells = [section_title_text, section_title_subjects, section_title_categories]
               #group the table cells per section into rows
               section.table_cells.group_by(&:row).each do |row, cell_array|
                 #get the cell data and add it to the array
-                cell_array.each do |cell|
-                  target = (raw_headings.index(cell.header))*2
-                  data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-                  data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
-                end
-
+                cell_data(cell_array, raw_headings, data_cells)
                 # write the record to the CSV and start a new record
                 csv << (page_cells + section_cells + data_cells)
                 #create a new array for the next row
@@ -164,5 +154,14 @@ private
     cookies['download_finished'] = 'true'
     csv_string
   end
+
+  def cell_data(array, raw_headings, data_cells)
+    array.each do |cell|
+      target = (raw_headings.index(cell.header))*2
+      data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
+      data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
+    end
+  end
+
 
 end
