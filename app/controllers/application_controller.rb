@@ -1,5 +1,3 @@
-require 'gamification_helper'
-
 class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server

@@ -132,7 +132,10 @@ class CollectionController < ApplicationController
     @collection.intro_block = params[:collection][:intro_block]
     @collection.owner = current_user
     if @collection.save
-      # call GamificationHelper
+      
+      # record activity on gamification services 
+      GamificationHelper.createCollectionEvent(current_user.email)
+      
       flash[:notice] = 'Collection has been created'
       if request.referrer.include?('sc_collections')
         session[:iiif_collection] = @collection.id

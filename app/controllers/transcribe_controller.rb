@@ -125,7 +125,11 @@ class TranscribeController  < ApplicationController
               redirect_to new_user_registration_path, :resource => current_user
               return
             end
+          else
+            # record activity on gamification services 
+            GamificationHelper.editTranscriptionEvent(current_user.email)
           end
+          
           redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
         else
           log_transcript_error(message)
@@ -229,7 +233,6 @@ class TranscribeController  < ApplicationController
             if deeds < 3
               flash[:notice] = "You may save up to three transcriptions as a guest."
             else
-              # call GamificationHelper
               session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return

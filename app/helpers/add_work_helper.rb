@@ -26,9 +26,12 @@ module AddWorkHelper
     @document_upload.user = current_user
 
     if @document_upload.save
+      # record activity on gamification services 
+      GamificationHelper.createWorkEvent(current_user.email)
+      GamificationHelper.uploadWorkEvent(current_user.email)
+
       if SMTP_ENABLED
         begin
-          # call GamificationHelper
           SystemMailer.new_upload(@document_upload).deliver!
           flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
         rescue StandardError => e
@@ -58,7 +61,9 @@ module AddWorkHelper
     @collections = current_user.all_owner_collections
 
     if @work.save
-      # call GamificationHelper
+      # record activity on gamification services 
+      GamificationHelper.createWorkEvent(current_user.email)
+      
       flash[:notice] = 'Work created successfully'
       record_deed
       ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
