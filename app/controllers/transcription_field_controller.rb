@@ -7,6 +7,7 @@ class TranscriptionFieldController < ApplicationController
   def delete
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])
+    field.remove_from_list
     field.destroy
     redirect_to edit_fields_path(collection_id: @collection)
   end
