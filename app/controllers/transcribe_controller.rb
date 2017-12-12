@@ -83,6 +83,11 @@ class TranscribeController  < ApplicationController
     end
     #check to see if the page needs to be marked as needing review
     needs_review
+    
+    if @page.field_based
+      @field_cells = params[:fields]
+      @page.process_fields(@field_cells)
+    end
 
     if params['save']
       message = log_transcript_attempt

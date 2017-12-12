@@ -84,7 +84,7 @@
             =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
             =f.label :source_text, 'Edit transcription', class: 'hidden'
           -else
-            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection}})
+            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
 .fgfaded ==@work.set_transcription_conventions
 

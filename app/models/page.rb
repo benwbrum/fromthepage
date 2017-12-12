@@ -61,6 +61,10 @@ class Page < ActiveRecord::Base
     work.collection
   end
 
+  def field_based
+    self.collection.field_based
+  end
+
   def articles_with_text
     articles :conditions => ['articles.source_text is not null']
   end

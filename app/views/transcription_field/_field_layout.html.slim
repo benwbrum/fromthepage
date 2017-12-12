@@ -7,9 +7,9 @@ div.editarea
         span(style="width:#{@width}%")
           =label_tag field.label
           -if field.input_type == "text"
-            =text_field_tag "#{field.label}"
+            =text_field_tag "fields[#{field.label}]"
           -elsif field.input_type == "select"
             -field_select(field)
-            =select_tag(field.label, options_for_select(@options))
+            =select_tag("fields[#{field.label}]", options_for_select(@options))
           -else
-            =text_area_tag "#{field.label}"
+            =text_area_tag "fields[#{field.label}]"
