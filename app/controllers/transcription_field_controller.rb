@@ -19,7 +19,6 @@ class TranscriptionFieldController < ApplicationController
     @collection = Collection.friendly.find(params[:collection_id])
     new_fields = params[:transcription_fields]
     new_fields.each do |fields|
-      binding.pry
       #ignore blank fields
       unless fields['line_number'].blank? || fields['label'].blank?
         if fields[:options].blank?
