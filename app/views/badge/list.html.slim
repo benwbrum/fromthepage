@@ -1,0 +1,17 @@
+-content_for :page_title
+  ="My Badges"
+  -if @collection
+    =" - #{@collection.title}"
+  -if @user
+    =" - #{@user.display_name}"
+
+h1 My Badges
+-if @collection
+  h3 ="Collection: #{@collection.title}"
+-if @user
+  h3 ="User: #{@user.display_name}"
+
+div.row
+  -@badges.each do |b|
+    div.col-4
+      h4.acenter =b.name

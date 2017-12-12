@@ -43,6 +43,20 @@ class HttpClient
         res = Net::HTTP.start(uri.hostname,uri.port, :use_ssl => uri.scheme == 'https') {|http|
             http.request(req)
         }
+        process_response(res)
     end
 
+    private
+    def process_response(response)
+      case response
+        when Net::HTTPSuccess
+          JSON.parse(response.body, object_class: OpenStruct)
+        when Net::HTTPUnauthorized
+          {'error' => "#{response.message}: username and password set and correct?"}
+        when Net::HTTPServerError
+          {'error' => "#{response.message}: try again later?"}
+        else
+          {'error' => response.message}
+      end
+    end
 end
