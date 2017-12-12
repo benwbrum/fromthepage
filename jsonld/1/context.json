@@ -30,6 +30,10 @@
         "@id": "fromthepage:pctHasTranscript",
         "@type": "xsd:decimal"
       },
+      "pctHasTranslation": {
+        "@id": "fromthepage:pctHasTranscript",
+        "@type": "xsd:decimal"
+      },
       "pctMarkedBlank": {
         "@id": "fromthepage:pctMarkedBlank",
         "@type": "xsd:decimal"
@@ -46,7 +50,15 @@
         "@id": "fromthepage:pctHasTranscriptOrMarkedBlank",
         "@type": "xsd:decimal"
       },
+      "pctHasTranslationOrMarkedBlank": {
+        "@id": "fromthepage:pctHasTranscriptOrMarkedBlank",
+        "@type": "xsd:decimal"
+      },
       "pctHasTranscriptOrMarkedBlankNotNeedsReview": {
+        "@id": "fromthepage:pctHasTranscriptOrMarkedBlankNotNeedsReview",
+        "@type": "xsd:decimal"
+      },
+      "pctHasTranslationOrMarkedBlankNotNeedsReview": {
         "@id": "fromthepage:pctHasTranscriptOrMarkedBlankNotNeedsReview",
         "@type": "xsd:decimal"
       }
