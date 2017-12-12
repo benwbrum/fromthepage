@@ -2,7 +2,7 @@ module XmlSourceProcessor
 
   @text_dirty = false
   @translation_dirty = false
-  @fields = false  
+  #@fields = false  
 
   def source_text=(text)
     @text_dirty = true
@@ -27,21 +27,6 @@ module XmlSourceProcessor
     end
     validate_links(self.source_translation)
   end
-
-  #create table cells if the collection is field based
-  def process_fields(field_cells)
-    cells = self.table_cells.each {|c| c.delete}
-    field_cells.each do |key, value|
-      tc = TableCell.new(row: 1, header: key, content: value)
-      tc.work = self.work
-      tc.page = self
-      tc.section = nil
-      tc.save!
-    end
-
-    @fields = true
-  end
-
 
 #check the text for problems or typos with the subject links
   def validate_links(text)
@@ -104,11 +89,6 @@ module XmlSourceProcessor
     if @translation_dirty
       self.xml_translation = wiki_to_xml(self.source_translation, Page::TEXT_TYPE::TRANSLATION)      
     end
-
-    if @fields
-      field_cells = self.table_cells
-      self.xml_text = cell_table(field_cells)
-    end
   end
 
   def wiki_to_xml(wiki, text_type)
@@ -122,16 +102,6 @@ module XmlSourceProcessor
     xml_string = update_links_and_xml(xml_string, false, text_type)
     postprocess_sections
     xml_string    
-  end
-
-  def cell_table(cells)
-    xml_string = String.new("<table>")
-    cells.each do |c|
-      xml_string << "<tr>\n<td>#{c.header}</td><td>#{c.content}</td>\n</tr>"
-    end
-    xml_string << "</table>"
-    xml_string = valid_xml_from_source(xml_string)
-
   end
 
   def generate_preview(text_type)

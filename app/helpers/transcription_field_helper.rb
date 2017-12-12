@@ -11,7 +11,8 @@ module TranscriptionFieldHelper
 
   def field_data(field)
     if @page
-      @value = @page.table_cells.find_by(header: field.label).content
+      cell = @page.table_cells.find_by(header: field.label)
+      @value = cell ? cell.content : nil
     end
     @options = field.options.split(";") unless field.options.nil?
   end

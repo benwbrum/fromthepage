@@ -252,6 +252,23 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
   end
 
+  #create table cells if the collection is field based
+  def process_fields(field_cells)
+    string = String.new
+    cells = self.table_cells.each {|c| c.delete}
+    field_cells.each do |key, value|
+      tc = TableCell.new(row: 1, header: key, content: value)
+      tc.work = self.work
+      tc.page = self
+      tc.section = nil
+      tc.save!
+      string << key + ": " + value + "\n"
+    end
+
+    self.source_text = string
+
+  end
+
 
   #######################
   # XML Source support
