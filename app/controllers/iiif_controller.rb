@@ -1,5 +1,7 @@
 require 'iiif/presentation'
 class IiifController < ApplicationController
+  before_action :set_cors_headers
+  
   def collections
     site_collection = IIIF::Presentation::Collection.new
     site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collections', :only_path => false})
@@ -220,15 +222,9 @@ class IiifController < ApplicationController
     end
 
    if work.supports_translation? && params[:type]=="translation"
-<<<<<<< HEAD
       seed = { 
               '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}), 
               'label' => "Translation"
-=======
-      seed = {
-              '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => 'translation', :only_path => false}),
-              'label' => "translation layer"
->>>>>>> ui-design
             }
       layer = IIIF::Presentation::Layer.new(seed)
       layer["otherContent"] = []
@@ -241,15 +237,9 @@ class IiifController < ApplicationController
     end
 
    if params[:type]=="notes"
-<<<<<<< HEAD
       seed = { 
                 '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}), 
                 'label' => params[:type].titlize + " layer"
-=======
-      seed = {
-                '@id' => url_for({:controller => 'iiif', :id => work_id, :action => 'layer', :type => params[:type], :only_path => false}),
-                'label' => params[:type] + " layer"
->>>>>>> ui-design
               }
       layer = IIIF::Presentation::Layer.new(seed)
       layer["otherContent"]=[]
@@ -491,12 +481,7 @@ private
     add_services_to_canvas(canvas, page)
     add_annotations_to_canvas(canvas, page)
 
-<<<<<<< HEAD
     canvas     
-=======
-    canvas
-
->>>>>>> ui-design
   end
 
   def canvas_from_page(page)
@@ -616,4 +601,11 @@ private
     annotation_list
   end
 
+  def set_cors_headers    
+    headers['Access-Control-Allow-Origin'] = '*'
+#    headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, OPTIONS'
+    headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
+    headers['Access-Control-Request-Method'] = '*'
+    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  end
 end
