@@ -18,6 +18,9 @@ class ScManifest < ActiveRecord::Base
     #manifest_json = TEST_MANIFEST
     service = IIIF::Service.parse(manifest_json)
 
+    if service['@type'] == "sc:Collection"
+      raise ArgumentError, "#{at_id} contains a collection, not an item"
+    end
     sc_manifest = ScManifest.new
     #sc_manifest.at_id = service['@id']
     sc_manifest.at_id = at_id

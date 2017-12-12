@@ -42,6 +42,8 @@ class Page < ActiveRecord::Base
   scope :unrestricted, -> { where(restricted: false)}
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
+  scope :needs_transcription, -> { where(status: nil)}
+  scope :needs_translation, -> { where(translation_status: nil)}
   
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'

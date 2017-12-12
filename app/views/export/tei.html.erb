@@ -60,6 +60,9 @@ xml:id="export">
       <msDesc>
         <msIdentifier>
           <collection><%= @collection.title %></collection>
+          <% unless @work.identifier.blank? %>
+            <idno><%=@work.identifier%></idno>
+          <% end %>
         </msIdentifier>
         <physDesc>
           <p><%= @work.physical_description%></p>
