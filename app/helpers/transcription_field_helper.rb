@@ -9,8 +9,11 @@ module TranscriptionFieldHelper
     @width = 95/count unless count == nil
   end
 
-  def field_select(field)
-    @options = field.options.split(";")
+  def field_data(field)
+    if @page
+      @value = @page.table_cells.find_by(header: field.label).content
+    end
+    @options = field.options.split(";") unless field.options.nil?
   end
 
 end

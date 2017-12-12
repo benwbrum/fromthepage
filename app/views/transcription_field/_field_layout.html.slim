@@ -5,11 +5,11 @@ div.editarea
       -field_layout(array)
       -@field_array.each do |field|
         span(style="width:#{@width}%")
+          -field_data(field)
           =label_tag field.label
           -if field.input_type == "text"
-            =text_field_tag "fields[#{field.label}]"
+            =text_field_tag "fields[#{field.label}]", @value
           -elsif field.input_type == "select"
-            -field_select(field)
-            =select_tag("fields[#{field.label}]", options_for_select(@options))
+            =select_tag("fields[#{field.label}]", options_for_select(@options, @value))
           -else
-            =text_area_tag "fields[#{field.label}]"
+            =text_area_tag "fields[#{field.label}]", @value

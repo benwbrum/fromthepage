@@ -19,8 +19,14 @@ class TranscriptionFieldController < ApplicationController
     @collection = Collection.friendly.find(params[:collection_id])
     new_fields = params[:transcription_fields]
     new_fields.each do |fields|
+      binding.pry
       #ignore blank fields
       unless fields['line_number'].blank? || fields['label'].blank?
+        if fields[:options].blank?
+          fields[:options] = nil
+        else
+          fields[:options].gsub!(/;\s/, ';')
+        end
         if fields['id'].blank?
           #if the field doesn't exist, create a new one
           transcription_field = TranscriptionField.new(fields)
