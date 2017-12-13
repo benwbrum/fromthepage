@@ -228,6 +228,8 @@ div.editarea {
   }
   textarea {
     margin-top: 0;
+    resize: vertical;
+    overflow: auto;
   }
   label {
     box-sizing: border-box;
