@@ -11,7 +11,10 @@ h1 My Badges
 -if @user
   h3 ="User: #{@user.display_name}"
 
-div.row
+div.badges-list.row
   -@badges.each do |b|
-    div.col-4
+    div.col-md-4.col-xs-6
+      div.row
+        div.col-md-offset-3.col-xs-offset-4.col-md-6.col-xs-4
+          img.responsive src=b.image
       h4.acenter =b.name
