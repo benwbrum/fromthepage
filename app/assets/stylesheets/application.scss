@@ -109,6 +109,8 @@ $gapSize:                   20px;
 @import "sections/omeka";
 @import "sections/iiif-import";
 
+@import "font-awesome";
+
 @import "plugins/select2/core";
 @import "plugins/zoomer";
 @import "plugins/bookreader";
@@ -132,3 +134,4 @@ $gapSize:                   20px;
 }
 
 @import "datepicker/datepicker";
+@import "iziToast/iziToast";
