@@ -257,13 +257,20 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     string = String.new
     cells = self.table_cells.each {|c| c.delete}
     unless field_cells.blank?
-      field_cells.each do |key, value|
-        tc = TableCell.new(row: 1, header: key, content: value)
+      field_cells.each do |id, cell_data|
+        tc = TableCell.new(row: 1)
         tc.work = self.work
         tc.page = self
-        tc.section = nil
+        tc.transcription_field_id = id.to_i
+
+        cell_data.each do |key, value|
+          #tc = TableCell.new(row: 1, header: key, content: value)
+          tc.header = key
+          tc.content = value
+          string << key + ": " + value + "\n"
+        end
+
         tc.save!
-        string << key + ": " + value + "\n"
       end
     end
     self.source_text = string

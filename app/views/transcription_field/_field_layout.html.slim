@@ -3,13 +3,14 @@ div.editarea
   -@fields.each do |line, array|
     div
       -field_layout(array)
-      -@field_array.each do |field|
+      -@field_array.each do |field, cell|
         span(style="width:#{@width}%")
-          -field_data(field)
           =label_tag field.label
+          -content = cell.nil? ? nil : cell.content
           -if field.input_type == "text"
-            =text_field_tag "fields[#{field.label}]", @value
+            =text_field_tag "fields[#{field.id}][#{field.label}]", content
           -elsif field.input_type == "select"
-            =select_tag("fields[#{field.label}]", options_for_select(@options, @value))
+            -options = field.options.split(";") unless field.options.nil?
+            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content))
           -else
-            =text_area_tag "fields[#{field.label}]", @value
+            =text_area_tag "fields[#{field.id}][#{field.label}]", content

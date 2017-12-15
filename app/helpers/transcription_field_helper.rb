@@ -4,17 +4,18 @@ module TranscriptionFieldHelper
   end
 
   def field_layout(array)
-    @field_array = array
-    count = @field_array.count
+    count = array.count
     @width = 95/count unless count == nil
-  end
-
-  def field_data(field)
+    ids = array.map {|a| a.id}
+    @values = []
     if @page
-      cell = @page.table_cells.find_by(header: field.label)
-      @value = cell ? cell.content : nil
+      ids.each do |id|
+        @values << @page.table_cells.find_by(transcription_field_id: id) || nil
+      end
+    else
+      @values = Array.new(ids.count, nil)
     end
-    @options = field.options.split(";") unless field.options.nil?
+    @field_array = array.zip(@values)
   end
 
 end
