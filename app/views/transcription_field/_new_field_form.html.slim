@@ -17,5 +17,5 @@
             =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Move up'
           =link_to({ controller: 'transcription_field', action: 'reorder_field', direction: 'down', field_id: field.id, collection_id: @collection }, title: 'Move down', 'aria-label' => 'Move down', class: 'field_icons')
             =svg_symbol '#icon-arrow-bottom', class: 'icon', title: 'Move down'
-          =link_to({ :controller => 'transcription_field', action: 'delete', field_id: field.id, collection_id: @collection }, class: 'field_icons', 'aria-label' => 'Delete field')
+          =link_to({ :controller => 'transcription_field', action: 'delete', field_id: field.id, collection_id: @collection }, class: 'field_icons', title: 'Delete field', 'aria-label' => 'Delete field')
               =svg_symbol '#icon-remove-sign', class: 'icon'

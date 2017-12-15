@@ -32,13 +32,13 @@ describe "collection settings js tasks", :order => :defined do
     page.find('#new-fields tbody tr[2]').fill_in('transcription_fields__line_number', with: 1)
     page.find('#new-fields tbody tr[2]').fill_in('transcription_fields__label', with: 'Second field')
     page.find('#new-fields tbody tr[2]').select('textarea', from: 'transcription_fields__input_type')
-    #page.find('#new-fields tbody tr[3]').fill_in('transcription_fields__line_number', with: 2)
-    #page.find('#new-fields tbody tr[3]').fill_in('transcription_fields__label', with: 'Third field')
-    #page.find('#new-fields tbody tr[3]').select('select', from: 'transcription_fields__input_type')
+    page.find('#new-fields tbody tr[3]').fill_in('transcription_fields__line_number', with: 2)
+    page.find('#new-fields tbody tr[3]').fill_in('transcription_fields__label', with: 'Third field')
     click_button 'Save'
-    expect(TranscriptionField.all.count).to eq 2
+    expect(TranscriptionField.all.count).to eq 3
   end
 
+  #note - would like to do select field, but trouble with the js
 
   it "adds fields for transcription", :js => true do
     count = page.all('#new-fields tbody tr').count
@@ -46,6 +46,39 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Edit Fields")
     click_button 'Add Additional Field'
     expect(page.all('#new-fields tbody tr').count).to be > count
+  end
+
+  it "transcribes field-based works" do
+    work = @collection.works.first
+    field_page = work.pages.first
+    visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)
+    expect(page).to have_content("First field")
+    expect(page).to have_content("Second field")
+    expect(page).to have_content("Third field")
+    page.fill_in('fields_1_First_field', with: "Field one")
+    page.fill_in('fields_2_Second_field', with: "Field two")
+    page.fill_in('fields_3_Third_field', with: "Field three")
+    click_button 'Save Changes'
+    click_button 'Preview'
+    expect(page.find('.page-preview')).to have_content("First field: Field one")
+    click_button 'Edit'
+    expect(page.find('.page-editarea')).to have_selector('#fields_1_First_field')
+  end
+
+  it "reorders a transcription field" do
+    field1 = TranscriptionField.find_by(label: "First field").position
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Edit Fields")
+    page.find('#new-fields tbody tr[1]').click_link('Move down')
+    expect(TranscriptionField.find_by(label: "First field").position).not_to eq field1
+  end
+
+  it "deletes a transcription field" do
+    count = TranscriptionField.all.count
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Edit Fields")
+    page.find('#new-fields tbody tr[1]').click_link('Delete field')
+    expect(TranscriptionField.all.count).to be < count
   end
 
   it "sets collection back to document based transcription" do
