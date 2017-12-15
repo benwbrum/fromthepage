@@ -133,9 +133,12 @@ class CollectionController < ApplicationController
     @collection.owner = current_user
     if @collection.save
       
-      # record activity on gamification services 
-      GamificationHelper.createCollectionEvent(current_user.email)
-      
+      # record activity on gamification services
+      got_badge=GamificationHelper.createCollectionEvent(current_user.email)
+      if got_badge
+        flash[:notification] = {'title':'New Badge Obtained!','message':'First-collection created!'}
+      end
+
       flash[:notice] = 'Collection has been created'
       if request.referrer.include?('sc_collections')
         session[:iiif_collection] = @collection.id

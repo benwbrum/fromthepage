@@ -41,12 +41,13 @@ html lang="en-US"
 
   body
     -flash.each do |type, message|
-      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
-      .flash(class='flash-#{type}')
-        span.flash_message
-          =svg_symbol flash_icon[type], class: 'icon'
-          span =message
-        a.flash_close &times;
+      -if type != 'notification'
+        -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
+        .flash(class='flash-#{type}')
+          span.flash_message
+            =svg_symbol flash_icon[type], class: 'icon'
+            span =message
+          a.flash_close &times;
 
     header.header
       .toolbar
@@ -104,11 +105,14 @@ html lang="en-US"
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
         =link_to 'Privacy Policy', privacy_path
         =mail_to 'benwbrum@gmail.com', 'Contact Us'
-
     .page-busy-overlay
 
     =javascript_include_tag 'application'
     =yield :javascript
+
+    -if flash[:notification] != nil 
+      javascript:
+        showNotification("#{flash[:notification]['title']}","#{flash[:notification]['message']}",'fa fa-trophy')
 
     javascript:
       var _gaq = _gaq || [];

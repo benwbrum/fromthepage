@@ -296,7 +296,7 @@ function showNotification(title,message,icon = null){
         transitionIn: 'flipInX',
         transitionOut: 'flipOutX',
         progressBarColor: 'rgb(0, 255, 184)',
-        image: 'images/icon.jpg',
+        image: '/images/icon.jpg',
         imageWidth: 70,
         layout: 2,
         onClosing: function(){
