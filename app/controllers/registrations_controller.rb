@@ -1,3 +1,5 @@
+require 'gamification_helper'
+
 class RegistrationsController < Devise::RegistrationsController
 
   def new
