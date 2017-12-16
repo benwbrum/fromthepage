@@ -2,7 +2,7 @@ require 'gamification_clients/metagame-client'
 
 class GamificationHelper
 
-    @@project = ENV['PROJECT_NAME']
+    @@project = ENV['METAGAME_PROJECT_NAME']
     @@metagameClient = MetagameClient.new(ENV['METAGAME_URL'],ENV['METAGAME_TOKEN'])
 
     #### login diario ####
