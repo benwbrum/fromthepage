@@ -67,7 +67,7 @@ class GamificationHelper
     #### intenta asignar la insignia al usuario respondiendo si pudo ####
     private
     def self._try_assign_badge(email,badge_name)
-        badge=self._get_badge("first-collection")
+        badge=self._get_badge(badge_name)
         response=@@metagameClient.add_issue(email,badge.id)
         if response.respond_to?("ok")
             return true

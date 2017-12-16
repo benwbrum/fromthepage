@@ -136,7 +136,7 @@ class CollectionController < ApplicationController
       # record activity on gamification services
       got_badge=GamificationHelper.createCollectionEvent(current_user.email)
       if got_badge
-        flash[:notification] = {'title':'New Badge Obtained!','message':'First-collection created!'}
+        flash[:notification] = {'title':'New Badge Obtained!','message':'First Collection created!'}
       end
 
       flash[:notice] = 'Collection has been created'

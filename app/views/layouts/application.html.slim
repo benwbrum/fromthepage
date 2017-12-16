@@ -110,9 +110,15 @@ html lang="en-US"
     =javascript_include_tag 'application'
     =yield :javascript
 
-    -if flash[:notification] != nil 
-      javascript:
-        showNotification("#{flash[:notification]['title']}","#{flash[:notification]['message']}",'fa fa-trophy')
+    -if flash[:notification] != nil
+      -if flash[:notification].kind_of?(Array)
+        -flash[:notification].each do |notification|
+            javascript:
+              showNotification("#{notification['title']}","#{notification['message']}",'fa fa-trophy')
+      -else
+        - notification=flash[:notification]
+        javascript:
+          showNotification("#{notification['title']}","#{notification['message']}",'fa fa-trophy')
 
     javascript:
       var _gaq = _gaq || [];
