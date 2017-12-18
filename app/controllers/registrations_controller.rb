@@ -4,6 +4,14 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def destroy
+    resource.soft_delete
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message :notice, :destroyed if is_flashing_format?
+    yield resource if block_given?
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name)}
+  end
+
   def create
     #merge the new user information into the guest user id to change into normal user
     if current_user && current_user.guest?
