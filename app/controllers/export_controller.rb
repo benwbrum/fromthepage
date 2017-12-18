@@ -97,14 +97,19 @@ class ExportController < ApplicationController
 private
 
   def export_tables_as_csv(work)
-    raw_headings = work.table_cells.pluck('DISTINCT header')
+    if work.field_based
+      raw_headings = work.collection.transcription_fields.order(:position).pluck(:label)
+    else
+      raw_headings = work.table_cells.pluck('DISTINCT header')
+    end
     headings = []
+
     raw_headings.each do |raw_heading|
       munged_heading = raw_heading  #.sub(/^\s*!?/,'').sub(/\s*$/,'')
       headings << "#{munged_heading} (text)"
       headings << "#{munged_heading} (subject)"
     end
-    
+
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       if work.sections.blank?
         csv << (['Page Title', 'Page Position', 'Page URL' ] + headings)
@@ -127,7 +132,6 @@ private
               #csv << (page_cells + section_cells + data_cells)
               #create a new array for the next row
               data_cells = Array.new(headings.count, "")
-
             end
 
           else

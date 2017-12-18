@@ -189,4 +189,8 @@ class Work < ActiveRecord::Base
       self.update_columns(featured_page: page.id)
   end
 
+  def field_based
+    self.collection.field_based
+  end
+
 end
