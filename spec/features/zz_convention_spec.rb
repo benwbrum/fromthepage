@@ -62,7 +62,7 @@ describe "convention related tasks", :order => :defined do
     click_button 'Save Changes'
     #check unchanged work for collection conventions
     work2 = @collection.works.first
-    page2 = work2.pages.first
+    page2 = work2.pages.second
     visit collection_read_work_path(work2.collection.owner, work2.collection, work2)
     page.find('.work-page_title', text: page2.title).click_link(page2.title)
     expect(page).to have_content @new_convention
