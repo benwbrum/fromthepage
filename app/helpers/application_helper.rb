@@ -88,8 +88,8 @@ module ApplicationHelper
       deeds = @collection.deeds.active.includes(:page, :user).where(condition).order('deeds.created_at DESC').limit(limit)
     else
       #restricting to visible collections first speeds up the query
-      limited = Deed.joins(:collection).where('collections.restricted = 0').active
-      deeds = limited.includes(:page, :user, collection: [:works]).where(condition).order('deeds.created_at DESC').limit(limit)#.references(:collection)
+      limited = Deed.joins(:collection).where('collections.restricted = 0')
+      deeds = limited.active.includes(:page, :user, collection: [:works]).where(condition).order('deeds.created_at DESC').limit(limit)#.references(:collection)
     end
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
   end
