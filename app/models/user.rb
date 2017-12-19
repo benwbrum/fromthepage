@@ -173,6 +173,7 @@ class User < ActiveRecord::Base
       self.deleted = true
       self.admin = false
       self.owner = false
+      self.password = [*'A'..'Z'].sample(8).join
       self.save!
     end
   end
