@@ -71,6 +71,7 @@ class IiifController < ApplicationController
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
       manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
+      manifest.service = status_service_for_work(work)
     
       domain_collection.manifests << manifest            
     end
@@ -146,7 +147,7 @@ class IiifController < ApplicationController
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#searchable-plaintext", 
         "@id" => collection_work_export_plaintext_searchable_path(work.collection.owner, work.collection, work, :only_path => false)
     }
-    manifest.service << { "@id" => "TODO", "label" => "Status", "profile" => "canonical url for fromthepage", "@context" => "TODO"}
+    manifest.service << status_service_for_manifest(work)
     sequence = iiif_sequence_from_work_id(work_id)
     manifest.sequences << sequence
 
@@ -202,7 +203,6 @@ class IiifController < ApplicationController
   end
 
   def layer
-    #binding.pry
     work_id = params[:id]
     work = Work.find work_id
     #params[:type]
@@ -274,7 +274,6 @@ class IiifController < ApplicationController
     page = Page.find params[:page_id]
     annotation_list = IIIF::Presentation::AnnotationList.new
     annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'notes', :page_id => @page.id, :only_path => false})
-    #binding.pry
     @page.notes.each_with_index do |note, i|
       note = iiif_page_note(@page,i+1)
       note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => i+1, :only_path => false})
@@ -291,9 +290,20 @@ class IiifController < ApplicationController
     render :text => note.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def canvas_status
+    page = Page.find params[:page_id]
+    service = status_service_for_page(page)
+    render :text => service.to_json(pretty: true), :content_type => "application/json"
+  end
+  
+  def manifest_status
+    work = Work.find params[:work_id]
+    service = status_service_for_work(work)
+    render :text => service.to_json(pretty: true), :content_type => "application/json"    
+  end
+
 private
   def iiif_page_note(page, noteid)
-    #binding.pry
     note = IIIF::Presentation::Annotation.new
     #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
     note['on'] = region_from_page(@page)
@@ -392,6 +402,7 @@ private
           manifest.label = work.title
           dc_source = dc_source_from_work(work)
           manifest.metadata = [dc_source] if dc_source
+          manifest.service = status_service_for_manifest(work)
         
           iiif_collection.manifests << manifest            
         end
@@ -599,6 +610,39 @@ private
     end
   end
     annotation_list
+  end
+
+  def status_service_for_manifest(work)
+    service = IIIF::Service.new
+    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations-(draft)" # TODO upadte
+    service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
+    service["@id"] = url_for({:controller => 'iiif', :action => 'manifest_status', :work_id => work.id, :only_path => false})
+
+    stats = work.work_statistic
+    total = stats.total_pages
+
+    service["pctHasTranscript"] = stats.pct_transcribed
+    service["pctOcrCorrected"] = stats.pct_corrected
+    service["pctHasTranslation"] = stats.pct_translated
+    service["pctMarkedBlank"] = stats.pct_blank
+    service["pctNeedsReview"] = stats.pct_needs_review
+    service["pctHasTranscriptOrMarkedBlank"] = format_pct(stats.transcribed_pages + stats.blank_pages,total)
+#    service["pctHasTranscriptOrMarkedBlankNotNeedsReview"] = format_pct(stats.transcribed_pages,total)
+    service["pctHasTranslationOrMarkedBlank"] = format_pct(stats.translated_pages + stats.translated_blank,total)
+#    service["pctHasTranslationOrMarkedBlankNotNeedsReview"] = format_pct(stats.transcribed_pages,total)
+    service
+  end
+  
+  def status_service_for_page(page)
+    service = {}
+    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations-(draft)" # TODO upadte
+    service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
+    url_for({:controller => 'iiif', :action => 'canvas_status', :page_id => @page.id, :only_path => false})    
+  end
+
+  def format_pct(numerator, denominator)
+    raw = numerator * 100.0 / denominator
+    raw.round(1)
   end
 
   def set_cors_headers    

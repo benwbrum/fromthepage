@@ -28,6 +28,8 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/:page_id/notes', :to => 'iiif#notes'  
   get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
   get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
+  get   '/iiif/:work_id/status', :to => 'iiif#manifest_status' 
+  get   '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status' 
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
   get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence' 
