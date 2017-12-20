@@ -212,6 +212,11 @@
   }
 }
 
+.fieldarea, .fieldarea > .page-editarea {
+  background-color: $bodyBg;
+  border: 0;
+}
+
 div.editarea {
   box-sizing: border-box;
   overflow: auto;
