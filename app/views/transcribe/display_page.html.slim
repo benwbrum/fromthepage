@@ -56,38 +56,35 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
-    -if !@collection.field_based
-      .page-column
-    -else
-      .page-column.fieldarea
-        -if @page.status == 'blank'
-          .centered
-            .centered_content
-              p.nodata_text=="This page is marked blank"
-          .page-editarea(style=("display:none"))
-            =f.text_area :source_text
+    .page-column
+      -if @page.status == 'blank'
+        .centered
+          .centered_content
+            p.nodata_text=="This page is marked blank"
+        .page-editarea(style=("display:none"))
+          =f.text_area :source_text
 
-        -else
-          .page-column_actions
-            -unless @preview_xml
-              =>button_tag 'Preview', :name => 'preview'
-            -else
-              =>button_tag 'Edit', :name => 'edit'
-            -unless @collection.subjects_disabled
-              =>button_tag 'Autolink', :name => 'autolink'
-          -if @preview_xml
-            .page-preview ==xml_to_html(@preview_xml)
+      -else
+        .page-column_actions
+          -unless @preview_xml
+            =>button_tag 'Preview', :name => 'preview'
+          -else
+            =>button_tag 'Edit', :name => 'edit'
+          -unless @collection.subjects_disabled
+            =>button_tag 'Autolink', :name => 'autolink'
+        -if @preview_xml
+          .page-preview ==xml_to_html(@preview_xml)
 
-          .page-editarea(style=("display:none" if @preview_xml))
-            -if @work.scribes_can_edit_titles
-              .page-editarea_title
-                span =f.label :title, 'Title:', class: 'a50'
-                span =f.text_field :title
-            -if !@collection.field_based
-              =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-              =f.label :source_text, 'Edit transcription', class: 'hidden'
-            -else
-              =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
+        .page-editarea(style=("display:none" if @preview_xml))
+          -if @work.scribes_can_edit_titles
+            .page-editarea_title
+              span =f.label :title, 'Title:', class: 'a50'
+              span =f.text_field :title
+          -if !@collection.field_based
+            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+            =f.label :source_text, 'Edit transcription', class: 'hidden'
+          -else
+            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
 .fgfaded ==@work.set_transcription_conventions
 

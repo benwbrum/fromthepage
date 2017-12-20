@@ -1,11 +1,11 @@
     -field = local_assigns[:field]
-    -line_number_value = !field.blank? ? field.line_number : nil
+    -line_number_value = !field.blank? ? field.line_number : local_assigns[:line_number]
     -input_type_value = !field.blank? ? field.input_type : nil
     -label_value = !field.blank? ? field.label : nil
     -options_value = !field.blank? ? field.options : nil
 
     tr
-      td.first =text_field_tag "transcription_fields[][line_number]", "#{line_number_value}", 'aria-label' => 'Line number', class: 'first'
+      td.first =text_field_tag "transcription_fields[][line_number]", "#{line_number_value}", 'aria-label' => 'Line number', class: 'first hidden'
       td =text_field_tag "transcription_fields[][label]", "#{label_value}", 'aria-label' => 'Field label'
       td =select_tag("transcription_fields[][input_type]", options_for_select(TranscriptionField::INPUTS, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type third')
       td =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => 'Field options', class: 'field-options fourth', disabled: true

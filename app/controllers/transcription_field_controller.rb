@@ -14,6 +14,7 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
+    @count = 0
   end
 
   def add_fields
@@ -60,6 +61,12 @@ class TranscriptionFieldController < ApplicationController
     redirect_to edit_fields_path(collection_id: @collection)
   end
 
+  def line_form
+    @line_count = params[:line_count].next
+    respond_to do |format|
+      format.js
+    end
+  end
 
   private
 

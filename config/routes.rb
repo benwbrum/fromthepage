@@ -56,11 +56,12 @@ Fromthepage::Application.routes.draw do
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
+  get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
   get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
   post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
-  get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
+  get 'transcription_field/line_form', to: 'transcription_field#line_form'
 
   resources :document_sets, except: [:show, :create, :edit]
 

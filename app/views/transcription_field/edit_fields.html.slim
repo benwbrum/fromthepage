@@ -1,34 +1,36 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection.id }})
-.maincol
+div.columns
+  div.maincol
 
-h2.nomargin Edit Transcription Fields
+    h2 Edit Transcription Fields
 
-=form_tag add_fields_path
-  =hidden_field_tag(:collection_id, @collection.id)
-  table.field_form#new-fields
-    thead
-      th =label_tag :line_number, 'Line', class: 'first'
-      th =label_tag :label
-      th =label_tag :input_type
-      th =label_tag :options, "Field options (separate with semicolons)"
-    tbody
-      -unless @current_fields.blank?
-        -@current_fields.each do |f|
-          =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: f}})
-      -else
-        -3.times do
-          =render ({ partial: 'new_field_form', locals: {collection_id: @collection}})
-  .toolbar.aright
-    .toolbar_group
-      =button_tag 'Add Additional Field', type: 'button', id: 'add-field', class: 'button fields'
-      =button_tag 'Save', name: 'save', type: 'submit', class: 'button fields'
-      =link_to 'Cancel', edit_collection_path(@collection.owner, @collection), class: 'button fields'
-      =button_tag 'Done', name: 'done', type: 'submit', class: 'button fields'
+    =form_tag add_fields_path
+      =hidden_field_tag(:collection_id, @collection.id)
+      table.field_form#new-fields
+        -unless @current_fields.blank?
+          -@current_fields.group_by(&:line_number).each do |line, field|
+            =render ({partial: 'line_form', locals: {line_number: "Line #{line}"}})
+            -@count = @count += 1
+            -field.each do |field|
+              =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: field}})
+        -else
+          =render ({partial: 'line_form', locals: {line_number: "Line 1"}})
+          -3.times do
+            =render ({ partial: 'new_field_form', locals: {collection_id: @collection, line_number: 1}})
+      .toolbar.aright.fields
+        .toolbar_group
+          =button_tag 'Add Additional Line', type: 'button', id: 'add-line', class: 'button fields', remote: true
+          =button_tag 'Add Additional Field', type: 'button', id: 'add-field', class: 'button fields'
+          =button_tag 'Save', name: 'save', type: 'submit', class: 'button fields'
+          =link_to 'Cancel', edit_collection_path(@collection.owner, @collection), class: 'button fields'
+          =button_tag 'Done', name: 'done', type: 'submit', class: 'button fields'
 
-h2.acenter Preview
-=render ({partial: 'field_layout', locals: {collection_id: @collection}})
+    h2.acenter Preview
+    =render ({partial: 'field_layout', locals: {collection_id: @collection}})
 
-=render({ :partial => '/shared/collection_footer' })
+    =render({ :partial => '/shared/collection_footer' })
+
+  div.sidecol
 
 -content_for :javascript
   javascript:
@@ -38,7 +40,21 @@ h2.acenter Preview
         $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}").on('change', '.input_type', function(){addOptions(this)});
       });
 
-      $('table#new-fields tbody tr').each(function(){
+      $('#add-line').click(function(e){
+        var line_count = $('th#line_num').last()[0].outerText;
+        $.ajax({
+          method: 'GET',
+          url: '/transcription_field/line_form',
+          data: {line_count: line_count}
+        });
+      });
+
+
+      $('#add-lines').click(function(e){
+        $('#new-fields').append("#{j render partial: 'line_form', locals: {line_number: @count}}").append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}").on('change', '.input_type', function(){addOptions(this)});
+      });
+
+      $('table#new-fields tr').each(function(){
         var optionsObj = $(this).find('td .field-options')[0];
         var index = $(this).find('td .input_type')[0].options.selectedIndex;
         if (index == 1){
