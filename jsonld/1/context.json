@@ -11,8 +11,8 @@
       "needsReview": {
         "@id": "fromthepage:pageNeedsReview"
       },
-      "unedited": {
-        "@id": "fromthepage:pageUnedited"
+      "ocrCorrected": {
+        "@id": "fromthepage:pageCorrected"
       },
       "markedBlank": {
         "@id": "fromthepage:pageMarkedBlank"
@@ -34,6 +34,10 @@
         "@id": "fromthepage:pctHasTranscript",
         "@type": "xsd:decimal"
       },
+      "pctHasSubjectTags": {
+        "@id": "fromthepage:pctHasSubjectTags",
+        "@type": "xsd:decimal"
+      },
       "pctMarkedBlank": {
         "@id": "fromthepage:pctMarkedBlank",
         "@type": "xsd:decimal"
@@ -42,8 +46,8 @@
         "@id": "fromthepage:pctNeedsReview",
         "@type": "xsd:decimal"
       },
-      "pctUnedited": {
-        "@id": "fromthepage:pctUnedited",
+      "pctOcrCorrected": {
+        "@id": "fromthepage:pctOcrCorrected",
         "@type": "xsd:decimal"
       },
       "pctHasTranscriptOrMarkedBlank": {
