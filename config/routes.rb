@@ -59,7 +59,7 @@ Fromthepage::Application.routes.draw do
   get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post   'document_set/assign_works', :to => 'document_sets#assign_works'
-  get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
+  #get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
   post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
   get 'transcription_field/line_form', to: 'transcription_field#line_form'
 
@@ -71,6 +71,8 @@ Fromthepage::Application.routes.draw do
       get 'document_sets/settings', path: '/settings', as: :settings, to: 'document_sets#settings'
       get 'article/list/:collection_id', path: '/subjects', as: :subjects, to: 'article#list'
       get 'export/index', path: '/export', as: :export, to: 'export#index'
+      get 'transcription_field/edit_fields', path: '/edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'

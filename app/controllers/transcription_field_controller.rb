@@ -9,7 +9,7 @@ class TranscriptionFieldController < ApplicationController
     field = TranscriptionField.find_by(id: params[:field_id])
     field.remove_from_list
     field.destroy
-    redirect_to edit_fields_path(collection_id: @collection)
+    redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end
 
   def edit_fields
@@ -45,7 +45,7 @@ class TranscriptionFieldController < ApplicationController
       end
     end
     if params[:done].nil?
-      redirect_to edit_fields_path(collection_id: @collection)
+      redirect_to collection_edit_fields_path(@collection.owner, @collection)
     else
       redirect_to edit_collection_path(@collection.owner, @collection)
     end
@@ -60,7 +60,7 @@ class TranscriptionFieldController < ApplicationController
     else
       field.move_lower
     end
-    redirect_to edit_fields_path(collection_id: @collection)
+    redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end
 
   def line_form

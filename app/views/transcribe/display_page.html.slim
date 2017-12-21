@@ -56,7 +56,8 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
-    .page-column
+          
+    div class=(!@collection.field_based ? 'page-column' : 'page-column fieldarea')
       -if @page.status == 'blank'
         .centered
           .centered_content

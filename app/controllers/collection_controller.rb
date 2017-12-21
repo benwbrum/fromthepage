@@ -105,7 +105,7 @@ class CollectionController < ApplicationController
   def enable_fields
     @collection.field_based = true
     @collection.save!
-    redirect_to action: 'edit', collection_id: @collection
+    redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end
 
   def disable_fields

@@ -18,6 +18,8 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.click_link("Enable Field Based Transcription")
+    expect(page).to have_content("Edit Transcription Fields")
+    page.find('.tabs').click_link("Settings")
     expect(page).to have_selector('a', text: 'Edit Fields')
     page.find('.sidecol').click_link('Edit Fields')
     expect(page).to have_content("Edit Transcription Fields")
@@ -35,16 +37,25 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.all.count).to eq 3
   end
 
-  #need to add test for adding line
-
   #note - would like to do select field, but trouble with the js
 
   it "adds fields for transcription", :js => true do
-    count = page.all('#new-fields tr').count
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Edit Fields")
+    count = page.all('#new-fields tr').count
     click_button 'Add Additional Field'
-    expect(page.all('#new-fields tbody tr').count).to be > count
+    expect(page.all('#new-fields tr').count).to eq (count+1)
+  end
+
+  it "adds new line", :js => true do
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Edit Fields")
+    count = page.all('#new-fields tr').count
+    line_count = page.all('#new-fields tr th#line_num').count
+    click_button 'Add Additional Line'
+    sleep(3)
+    expect(page.all('#new-fields tr').count).to eq (count + 2)
+    expect(page.all('#new-fields tr th#line_num').count).to eq (line_count + 1)
   end
 
   it "transcribes field-based works" do
