@@ -14,30 +14,32 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
-    @count = 0
   end
 
   def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
     new_fields = params[:transcription_fields]
-    new_fields.each do |fields|
+    new_fields.each_with_index do |fields, index|
+      if fields[:line_number] == "new"
+        fields[:line_number] = new_fields[index-1][:line_number]
+      end
       #ignore blank fields
-      unless fields['line_number'].blank? || fields['label'].blank?
+      unless fields[:line_number].blank? || fields[:label].blank?
         if fields[:options].blank?
           fields[:options] = nil
         else
           fields[:options].gsub!(/;\s/, ';')
         end
-        if fields['id'].blank?
+        if fields[:id].blank?
           #if the field doesn't exist, create a new one
           transcription_field = TranscriptionField.new(fields)
           transcription_field.collection_id = params[:collection_id]
           transcription_field.save
         else
           #otherwise update field if anything changed
-          transcription_field = TranscriptionField.find_by(id: fields['id'])
+          transcription_field = TranscriptionField.find_by(id: fields[:id])
           #remove ID from params before update
-          fields.delete("id")
+          fields.delete(:id)
           transcription_field.update_attributes(fields)
         end
       end
@@ -63,6 +65,7 @@ class TranscriptionFieldController < ApplicationController
 
   def line_form
     @line_count = params[:line_count].next
+    @count = @line_count.split(" ").last.to_i
     respond_to do |format|
       format.js
     end

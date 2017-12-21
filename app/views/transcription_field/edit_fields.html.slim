@@ -34,9 +34,8 @@ div.columns
 -content_for :javascript
   javascript:
     $(function() {
-
       $('#add-field').click(function(e){
-        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}");
+        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection, line_number: 'new'}}");
       });
 
       $('#add-line').click(function(e){
@@ -53,7 +52,7 @@ div.columns
       })
 
       $('table#new-fields tr').each(function(){
-        if ($(this).find('th#line_num') == false){
+        if ($(this).find('th#line_num').val() === undefined){
           var optionsObj = $(this).find('td .field-options')[0];
           var index = $(this).find('td .input_type')[0].options.selectedIndex;
           if (index == 1){
