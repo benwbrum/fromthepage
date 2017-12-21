@@ -10,7 +10,6 @@ div.columns
         -unless @current_fields.blank?
           -@current_fields.group_by(&:line_number).each do |line, field|
             =render ({partial: 'line_form', locals: {line_number: "Line #{line}"}})
-            -@count = @count += 1
             -field.each do |field|
               =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: field}})
         -else
@@ -37,7 +36,7 @@ div.columns
     $(function() {
 
       $('#add-field').click(function(e){
-        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}").on('change', '.input_type', function(){addOptions(this)});
+        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}");
       });
 
       $('#add-line').click(function(e){
@@ -49,21 +48,17 @@ div.columns
         });
       });
 
-
-      $('#add-lines').click(function(e){
-        $('#new-fields').append("#{j render partial: 'line_form', locals: {line_number: @count}}").append("#{j render partial: 'new_field_form', locals: {collection_id: @collection}}").on('change', '.input_type', function(){addOptions(this)});
-      });
+      $(document).on('change', '.input_type', function(){
+          addOptions(this);
+      })
 
       $('table#new-fields tr').each(function(){
-        var optionsObj = $(this).find('td .field-options')[0];
-        var index = $(this).find('td .input_type')[0].options.selectedIndex;
-        if (index == 1){
-          $(optionsObj).prop('disabled', false);
-        }
+        if ($(this).find('th#line_num') == false){
+          var optionsObj = $(this).find('td .field-options')[0];
+          var index = $(this).find('td .input_type')[0].options.selectedIndex;
+          if (index == 1){
+            $(optionsObj).prop('disabled', false);
+          };
+        };
       })
-      
-      $('.input_type').change(function(){
-          addOptions(this);
-      });
-
     });
