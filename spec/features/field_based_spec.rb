@@ -27,21 +27,20 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.all.count).to eq 0
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Edit Fields")
-    page.find('#new-fields tbody tr[1]').fill_in('transcription_fields__line_number', with: 1)
-    page.find('#new-fields tbody tr[1]').fill_in('transcription_fields__label', with: 'First field')
-    page.find('#new-fields tbody tr[2]').fill_in('transcription_fields__line_number', with: 1)
-    page.find('#new-fields tbody tr[2]').fill_in('transcription_fields__label', with: 'Second field')
-    page.find('#new-fields tbody tr[2]').select('textarea', from: 'transcription_fields__input_type')
-    page.find('#new-fields tbody tr[3]').fill_in('transcription_fields__line_number', with: 2)
-    page.find('#new-fields tbody tr[3]').fill_in('transcription_fields__label', with: 'Third field')
+    page.find('#new-fields tr[2]').fill_in('transcription_fields__label', with: 'First field')
+    page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'Second field')
+    page.find('#new-fields tr[3]').select('textarea', from: 'transcription_fields__input_type')
+    page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Third field')
     click_button 'Save'
     expect(TranscriptionField.all.count).to eq 3
   end
 
+  #need to add test for adding line
+
   #note - would like to do select field, but trouble with the js
 
   it "adds fields for transcription", :js => true do
-    count = page.all('#new-fields tbody tr').count
+    count = page.all('#new-fields tr').count
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Edit Fields")
     click_button 'Add Additional Field'
@@ -69,7 +68,7 @@ describe "collection settings js tasks", :order => :defined do
     field1 = TranscriptionField.find_by(label: "First field").position
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Edit Fields")
-    page.find('#new-fields tbody tr[1]').click_link('Move down')
+    page.find('#new-fields tr[2]').click_link('Move down')
     expect(TranscriptionField.find_by(label: "First field").position).not_to eq field1
   end
 
@@ -77,7 +76,7 @@ describe "collection settings js tasks", :order => :defined do
     count = TranscriptionField.all.count
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Edit Fields")
-    page.find('#new-fields tbody tr[1]').click_link('Delete field')
+    page.find('#new-fields tr[2]').click_link('Delete field')
     expect(TranscriptionField.all.count).to be < count
   end
 
