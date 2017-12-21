@@ -548,7 +548,7 @@ private
   end
 
   def add_services_to_canvas(canvas,page)
-    canvas.service << { "label" => "Page Status", "profile" => "TODO", "@context" => "TODO", "@id" => "TODO"}
+    canvas.service = status_service_for_page(page)
   end
 
   def add_seeAlso_to_canvas(canvas,page)
@@ -614,6 +614,7 @@ private
 
   def status_service_for_manifest(work)
     service = IIIF::Service.new
+    service["label"] = "Work Status"
     service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations-(draft)" # TODO upadte
     service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
     service["@id"] = url_for({:controller => 'iiif', :action => 'manifest_status', :work_id => work.id, :only_path => false})
@@ -621,23 +622,32 @@ private
     stats = work.work_statistic
     total = stats.total_pages
 
-    service["pctHasTranscript"] = stats.pct_transcribed
+    service["pctHasTranscript"] = stats.pct_transcribed + stats.pct_needs_review
     service["pctOcrCorrected"] = stats.pct_corrected
     service["pctHasTranslation"] = stats.pct_translated
     service["pctMarkedBlank"] = stats.pct_blank
     service["pctNeedsReview"] = stats.pct_needs_review
-    service["pctHasTranscriptOrMarkedBlank"] = format_pct(stats.transcribed_pages + stats.blank_pages,total)
-#    service["pctHasTranscriptOrMarkedBlankNotNeedsReview"] = format_pct(stats.transcribed_pages,total)
-    service["pctHasTranslationOrMarkedBlank"] = format_pct(stats.translated_pages + stats.translated_blank,total)
-#    service["pctHasTranslationOrMarkedBlankNotNeedsReview"] = format_pct(stats.transcribed_pages,total)
+    service["pctHasTranscriptOrMarkedBlank"] = stats.pct_transcribed_or_blank + stats.pct_needs_review 
+    service["pctHasTranscriptOrMarkedBlankNotNeedsReview"] =  stats.pct_transcribed_or_blank
+    service["pctHasTranslationOrMarkedBlank"] = stats.pct_translated_or_blank + stats.pct_translation_needs_review
+    service["pctHasTranslationOrMarkedBlankNotNeedsReview"] = stats.pct_translated_or_blank
     service
   end
   
   def status_service_for_page(page)
-    service = {}
+    service = IIIF::Service.new
+    service["label"] = "Page Status"
     service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations-(draft)" # TODO upadte
     service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
-    url_for({:controller => 'iiif', :action => 'canvas_status', :page_id => @page.id, :only_path => false})    
+    service["@id"] = url_for({:controller => 'iiif', :action => 'canvas_status', :page_id => page.id, :only_path => false})    
+    service["pageStatus"] = []
+    service["pageStatus"] << "needsReview" if page.status == Page::STATUS_NEEDS_REVIEW
+    service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED)
+    service["pageStatus"] << "markedBlank" if page.status == Page::STATUS_BLANK
+    service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED
+    service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSLATED
+    service["pageStatus"] << "hasSubjectTags" if page.status == Page::STATUS_INDEXED
+    service
   end
 
   def format_pct(numerator, denominator)

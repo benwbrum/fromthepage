@@ -56,11 +56,11 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def pct_transcribed_or_blank
-    
+    pct_blank + pct_transcribed
   end
   
   def pct_translated_or_blank
-    
+    pct_translation_blank + pct_translated    
   end
   
   def pct_transcribed_or_blank_not_review
