@@ -6,4 +6,7 @@ class TableCell < ActiveRecord::Base
   
   attr_accessible :header, :row, :content
 
+  scope :page_order, -> { order 'section_id, row, header' }
+  scope :work_order , -> { order 'page_id, row, header' }
+
 end

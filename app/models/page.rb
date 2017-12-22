@@ -23,7 +23,7 @@ class Page < ActiveRecord::Base
   has_one :ia_leaf, :dependent => :destroy
   has_one :omeka_file, :dependent => :destroy
   has_one :sc_canvas, :dependent => :destroy
-  has_many :table_cells, -> { order 'section_id, row, header' }, :dependent => :destroy
+  has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
 
   after_save :create_version
