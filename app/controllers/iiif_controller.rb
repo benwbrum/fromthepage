@@ -22,12 +22,41 @@ class IiifController < ApplicationController
     render :text => iiif_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def contributions
+    domain = params[:domain]
+    raw_terminus_a_quo = params[:terminus_a_quo]
+    raw_terminus_ad_quem = params[:terminus_ad_quem]
+    
+    terminus_a_quo = nil
+    terminus_ad_quem = nil
+    # error processing -- return 400 Bad Request with explanatory text in HTML or JSON within a respond_to
+    # see https://cloud.google.com/storage/docs/json_api/v1/status-codes
+    if domain.blank?
+      render :status => 400, :text => "Usage: {url}/iiif/contributions/<b><i>domain</i></b>/<i>beginning of window</i>/<i>end of window</i><br />See <a href=\"https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations\">docs</a> for more help."
+      return
+    end      
+    
+    begin
+      terminus_a_quo = DateTime.parse(raw_terminus_a_quo) if raw_terminus_a_quo
+    rescue
+      render :status => 400, :text => "Could not parse #{raw_terminus_a_quo} as a date. Try a format like #{DateTime.now.iso8601}"
+      return
+    end
+    begin
+      terminus_ad_quem =     DateTime.parse(raw_terminus_ad_quem) if raw_terminus_ad_quem    
+    rescue
+      render :status => 400, :text => "Could not parse #{raw_terminus_ad_quem} as a date. Try a format like #{DateTime.now.iso8601}"
+      return      
+    end
+    contributions = collection_for_domain(domain, terminus_a_quo, terminus_ad_quem)
+    render :text => contributions.to_json(pretty: true), :content_type => "application/json"
+  end
+
   def for
     at_id = params[:id]
     if at_id.match /https?:\/\w/
       at_id.sub!(":/", "://")
     end
-
     if sc_collection = ScCollection.where(:at_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'collection', :collection_id => sc_collection.collection_id
       return
@@ -50,19 +79,19 @@ class IiifController < ApplicationController
     end
   end
   
-  def collection_for_domain(domain)
-    collections = Collection.joins(:sc_collection).where("at_id LIKE ?", "%#{domain}%")
-    works = Work.joins(:sc_manifest).where("at_id LIKE ?", "%#{domain}%")
+  def collection_for_domain(domain, terminus_a_quo = nil, terminus_ad_quem = nil)
+    if terminus_a_quo && terminus_ad_quem
+      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => Deed::CONTRIBUTOR_DEED_TYPES}).distinct
+    elsif terminus_a_quo
+      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{Deed::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct      
+    else
+      works = Work.joins(:sc_manifest).where("at_id LIKE ?", "%#{domain}%")
+    end
 
     domain_collection = IIIF::Presentation::Collection.new
     domain_collection['@id'] = url_for({:controller => 'iiif', :action => 'for', :id => domain, :only_path => false})
     domain_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
-    
-    collections.each do |collection|
-      iiif_collection = iiif_collection_from_collection(collection,false)        
-      domain_collection.collections << iiif_collection
-    end
-    
+      
     works.each do |work|
       seed = { 
                 '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}), 
@@ -71,12 +100,12 @@ class IiifController < ApplicationController
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
       manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
-      manifest.service = status_service_for_work(work)
+      manifest.service = status_service_for_manifest(work)
     
       domain_collection.manifests << manifest            
     end
-        
-    render :text => domain_collection.to_json(pretty: true), :content_type => "application/json"
+
+    domain_collection        
   end
 
   def manifest
