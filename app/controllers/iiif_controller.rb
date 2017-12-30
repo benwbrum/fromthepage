@@ -5,7 +5,8 @@ class IiifController < ApplicationController
   def collections
     site_collection = IIIF::Presentation::Collection.new
     site_collection['@id'] = url_for({:controller => 'iiif', :action => 'collections', :only_path => false})
-    site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}"
+    site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]}."
+    site_collection.metadata << { "label" => "FromThePage Support for IIIF", "value" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations"}
 
     Collection.where(:restricted => false).each do |collection|
       iiif_collection = iiif_collection_from_collection(collection,false)
@@ -147,33 +148,33 @@ class IiifController < ApplicationController
     manifest.seeAlso << 
     { "label" => "Verbatim Plaintext", 
       "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-plaintext", 
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1", 
       "@id" => collection_work_export_plaintext_verbatim_path(work.collection.owner, work.collection, work, :only_path => false) 
     }
     manifest.seeAlso << 
     { "label" => "Emended Plaintext", 
       "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#emended-plaintext", 
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext", 
       "@id" => collection_work_export_plaintext_emended_path(work.collection.owner, work.collection, work, :only_path => false)
     }
     if work.supports_translation?
       manifest.seeAlso << 
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-translation-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext", 
         "@id" => collection_work_export_plaintext_translation_verbatim_path(work.collection.owner, work.collection, work, :only_path => false)
       }
       manifest.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#emended-translation-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext", 
         "@id" => collection_work_export_plaintext_translation_emended_path(work.collection.owner, work.collection, work, :only_path => false)
       }
     end    
     manifest.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#searchable-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search", 
         "@id" => collection_work_export_plaintext_searchable_path(work.collection.owner, work.collection, work, :only_path => false)
     }
     manifest.service << status_service_for_manifest(work)
@@ -391,7 +392,7 @@ private
     sequence['rendering'] = [
       { "label" => "Verbatim Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext", 
         "@id" => collection_work_export_plaintext_verbatim_path(work.collection.owner, work.collection, work, :only_path => false) 
       },
       { "@id" => url_for(:controller => :export, :action => :show, :work_id => work.id), "label" => "XHTML Export", "profile" => "XHTML URL"},     
@@ -585,32 +586,32 @@ private
     canvas.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#searchable-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
         "@id" => collection_page_export_plaintext_searchable_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
     }
     canvas.seeAlso << 
     { "label" => "Verbatim Plaintext", 
       "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-plaintext", 
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2", 
       "@id" => collection_page_export_plaintext_verbatim_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false) 
     }
     canvas.seeAlso << 
     { "label" => "Emended Plaintext", 
       "format" => "text/plain", 
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#emended-plaintext", 
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1", 
       "@id" => collection_page_export_plaintext_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
     }
     if page.work.supports_translation?
       canvas.seeAlso << 
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#verbatim-translation-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1", 
         "@id" => collection_page_export_plaintext_translation_verbatim_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
       }
       canvas.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Plaintext-Export-Formats#emended-translation-plaintext", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1", 
         "@id" => collection_page_export_plaintext_translation_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
       }
     end
@@ -644,7 +645,7 @@ private
   def status_service_for_manifest(work)
     service = IIIF::Service.new
     service["label"] = "Work Status"
-    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations-(draft)" # TODO upadte
+    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service"
     service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
     service["@id"] = url_for({:controller => 'iiif', :action => 'manifest_status', :work_id => work.id, :only_path => false})
 
@@ -666,7 +667,7 @@ private
   def status_service_for_page(page)
     service = IIIF::Service.new
     service["label"] = "Page Status"
-    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations-(draft)" # TODO upadte
+    service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service-1"
     service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
     service["@id"] = url_for({:controller => 'iiif', :action => 'canvas_status', :page_id => page.id, :only_path => false})    
     service["pageStatus"] = []
