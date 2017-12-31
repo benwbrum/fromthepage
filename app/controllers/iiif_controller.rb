@@ -669,7 +669,7 @@ private
     service["label"] = "Page Status"
     service["profile"] = "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#service-1"
     service["@context"] = "http://www.fromthepage.org/jsonld/1/context.json"
-    service["@id"] = url_for({:controller => 'iiif', :action => 'canvas_status', :page_id => page.id, :only_path => false})    
+    service["@id"] = url_for({:controller => 'iiif', :action => 'canvas_status', :work_id => page.work.id, :page_id => page.id, :only_path => false})    
     service["pageStatus"] = []
     service["pageStatus"] << "needsReview" if page.status == Page::STATUS_NEEDS_REVIEW
     service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED)
