@@ -23,6 +23,8 @@ module Fromthepage
     config.neato = '/usr/bin/env neato'
     config.encoding = 'utf-8'
 
+    config.api_only = false
+
     config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
 
     config.action_dispatch.default_headers = {
@@ -45,4 +47,3 @@ module Fromthepage
     end
   end
 end
-

@@ -265,6 +265,10 @@ end
     ahoy.track("#{controller_name}##{action_name}", extras)
   end
 
+def serialize(object)
+  render json: object
+end
+
 private
   def store_current_location
     store_location_for(:user, request.url)

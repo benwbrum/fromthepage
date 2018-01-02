@@ -52,6 +52,13 @@ Fromthepage::Application.routes.draw do
 
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
+  
+  namespace :api do
+    resources :test, path: 'test', only: [:index]
+    resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
+      get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
+    end
+  end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 

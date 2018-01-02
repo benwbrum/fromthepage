@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.9'
 
+gem 'rails-api' 
+
 gem 'pry'
 gem 'pry-byebug'
 
