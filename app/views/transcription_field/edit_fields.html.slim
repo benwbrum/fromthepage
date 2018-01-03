@@ -39,11 +39,11 @@ div.columns
       });
 
       $('#add-line').click(function(e){
-        var line_count = $('th#line_num').last()[0].outerText;
+        var lineCount = $('th#line_num').last()[0].outerText;
         $.ajax({
           method: 'GET',
           url: '/transcription_field/line_form',
-          data: {line_count: line_count}
+          data: {line_count: lineCount}
         });
       });
 

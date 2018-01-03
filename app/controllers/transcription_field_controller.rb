@@ -56,9 +56,17 @@ class TranscriptionFieldController < ApplicationController
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])
     if(params[:direction]=='up')
-      field.move_higher
+      if field.line_number != field.higher_item.line_number
+        field.update_columns(line_number: field.higher_item.line_number)
+      else
+        field.move_higher
+      end
     else
-      field.move_lower
+      if field.line_number != field.lower_item.line_number
+        field.update_columns(line_number: field.lower_item.line_number)
+      else
+        field.move_lower
+      end
     end
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end
