@@ -1,8 +1,7 @@
 # handles administrative tasks for the collection object
 class Api::CollectionController < ApplicationController
   
-  #TODO add login by token
-  #before_filter :authorized?, :only => [:new, :edit, :update, :delete, :destroy, :create]
+  before_filter :authorized?, :only => [:new, :edit, :update, :delete, :destroy, :create]
   before_action :set_collection, :only => [:show, :edit, :update, :destroy, :contributors, :new_work]
   before_filter :load_settings, :only => [:edit, :update, :upload]
   
@@ -85,12 +84,18 @@ class Api::CollectionController < ApplicationController
   
   # FIXME put in superclass and fix error actions
   def authorized?
-    unless user_signed_in?
-      ajax_redirect_to dashboard_path
-    end
-
-    if @collection &&  !current_user.like_owner?(@collection)
-      ajax_redirect_to dashboard_path
+    # unless user_signed_in?
+    #   ajax_redirect_to dashboard_path
+    # end
+    # 
+    # if @collection &&  !current_user.like_owner?(@collection)
+    #   ajax_redirect_to dashboard_path
+    # end
+    
+    if user_signed_in?
+      puts "*** Signed in as " + current_user.login + "! ***"
+    else
+      puts "*** User not signed ***"
     end
   end
   

@@ -116,6 +116,8 @@ GEM
       warden (~> 1.2.3)
     devise-encryptable (0.2.0)
       devise (>= 2.1.0)
+    devise-token_authenticatable (0.3.2)
+      devise (~> 3.4.0)
     devise_masquerade (0.6.0)
       devise (>= 2.1.0)
       railties (>= 3.0)
@@ -337,6 +339,7 @@ DEPENDENCIES
   database_cleaner
   devise (= 3.4.1)
   devise-encryptable
+  devise-token_authenticatable (~> 0.3)
   devise_masquerade
   figaro
   friendly_id

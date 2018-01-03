@@ -84,3 +84,5 @@ gem 'ahoy_matey'
 
 # Use figaro to set env vars
 gem "figaro"
+
+gem 'devise-token_authenticatable', '~> 0.3'

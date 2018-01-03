@@ -265,7 +265,7 @@ end
     ahoy.track("#{controller_name}##{action_name}", extras)
   end
 
-def serialize(object)
+def render_serialized(object)
   render json: object
 end
 
