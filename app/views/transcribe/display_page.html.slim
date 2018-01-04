@@ -66,6 +66,8 @@
 
       -else
         .page-column_actions
+          =button_tag 'Start', name: 'speech', id: 'start'
+          =button_tag 'Stop', id: 'stop'
           -unless @preview_xml
             =>button_tag 'Preview', :name => 'preview'
           -else
@@ -80,7 +82,7 @@
             .page-editarea_title
               span =f.label :title, 'Title:', class: 'a50'
               span =f.text_field :title
-          =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+          =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, id: 'transcription')
           =f.label :source_text, 'Edit transcription', class: 'hidden'
 
 .fgfaded ==@work.set_transcription_conventions
@@ -143,6 +145,38 @@ h2.legend Page Notes
       })
 
     });
+
+    $(function(){
+      $('#start').click(function(e){
+        e.preventDefault();
+        startDictation();
+      });
+    })
+
+    function startDictation(){
+      if (window.hasOwnProperty('webkitSpeechRecognition')){
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        var final_transcript = '';
+        recognition.start();
+
+        recognition.onresult = function(e){
+          for (var i = e.resultIndex; i < e.results.length; ++i){
+              final_transcript += e.results[i][0].transcript;
+          }
+          $('#transcription')[0].innerHTML = final_transcript;
+        };
+        recognition.onerror = function(e){
+          recognition.stop();
+        }
+        $('#stop').click(function(e){
+          e.preventDefault();
+          recognition.stop();
+        })
+      }
+    }
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Transcribe Page");
