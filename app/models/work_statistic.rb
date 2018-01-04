@@ -63,14 +63,6 @@ class WorkStatistic < ActiveRecord::Base
     pct_translation_blank + pct_translated    
   end
   
-  def pct_transcribed_or_blank_not_review
-    
-  end
-  
-  def pct_translated_or_blank_not_review
-    
-  end
-  
 
   def pct_completed
     if self.work.ocr_correction
