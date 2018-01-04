@@ -39,7 +39,7 @@
   :path => "#{collection_page_version_path(@collection.owner, @collection, @work, @page.id)}",
 }]
 
--if @work.owner == current_user
+-if user_signed_in? && current_user.like_owner?(@work)
   -tabs += [{\
     :name => 'Settings',
     :selected => 4,
