@@ -39,7 +39,7 @@ div.columns
       });
 
       $('#add-line').click(function(e){
-        var lineCount = $('th#line_num').last()[0].outerText;
+        var lineCount = $('th#line_num').last().text();
         $.ajax({
           method: 'GET',
           url: '/transcription_field/line_form',
