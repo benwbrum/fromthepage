@@ -94,6 +94,48 @@ class ExportController < ApplicationController
 
   end
 
+  def page_plaintext_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @page.verbatim_transcription_plaintext
+  end
+
+  def page_plaintext_translation_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @page.verbatim_translation_plaintext
+  end
+
+  def page_plaintext_emended
+    render  :layout => false, :content_type => "text/plain", :text => @page.emended_transcription_plaintext
+  end
+
+  def page_plaintext_translation_emended
+    render  :layout => false, :content_type => "text/plain", :text => @page.emended_translation_plaintext
+  end
+
+  def page_plaintext_searchable
+    render  :layout => false, :content_type => "text/plain", :text => @page.search_text
+  end
+
+
+  def work_plaintext_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_transcription_plaintext
+  end
+
+  def work_plaintext_translation_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_translation_plaintext
+  end
+
+  def work_plaintext_emended
+    render  :layout => false, :content_type => "text/plain", :text => @work.emended_transcription_plaintext
+  end
+
+  def work_plaintext_translation_emended
+    render  :layout => false, :content_type => "text/plain", :text => @work.emended_translation_plaintext
+  end
+
+  def work_plaintext_searchable
+    render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
+  end
+
+
 private
 
   def export_tables_as_csv(work)

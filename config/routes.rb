@@ -32,10 +32,15 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/:page_id/notes', :to => 'iiif#notes'  
   get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
   get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
+  get   '/iiif/:work_id/status', :to => 'iiif#manifest_status' 
+  get   '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status' 
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
-  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence' 
-  get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ }
+  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
+  get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
+  get   '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', :to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain/:terminus_a_quo', :to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain', :to => 'iiif#contributions'
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
@@ -92,6 +97,11 @@ Fromthepage::Application.routes.draw do
       get 'work/show', path: ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get 'display/list_pages', path: ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get 'static/transcribe_help', path: ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+      get 'export/work_plaintext_searchable', path: ':work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
+      get 'export/work_plaintext_verbatim', path: ':work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
+      get 'export/work_plaintext_emended', path: ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
+      get 'export/work_plaintext_translation_verbatim', path: ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
+      get 'export/work_plaintext_translation_emended', path: ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
       
       #page related routes
       get 'display/display_page', path: ':work_id/display/:page_id/', as: 'display_page', to: 'display#display_page'
@@ -100,6 +110,11 @@ Fromthepage::Application.routes.draw do
       get 'transcribe/translate', path: ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get 'page/edit', path: ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
+      get 'export/page_plaintext_searchable', path: ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
+      get 'export/page_plaintext_verbatim', path: ':work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'
+      get 'export/page_plaintext_translation_verbatim', path: ':work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
+      get 'export/page_plaintext_emended', path: ':work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
+      get 'export/page_plaintext_translation_emended', path: ':work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
 
       #article related routes
       match 'article/show', path: '/article/:article_id', to: 'article#show', via: [:get, :post]

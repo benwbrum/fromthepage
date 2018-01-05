@@ -13,6 +13,21 @@ class Deed < ActiveRecord::Base
   TRANSLATION_INDEXED = 'xlat_index'
   WORK_ADDED = 'work_add'
 
+  CONTRIBUTOR_DEED_TYPES = [
+    PAGE_TRANSCRIPTION,
+    PAGE_EDIT,
+    PAGE_INDEXED,
+    ARTICLE_EDIT,
+    NOTE_ADDED,
+    PAGE_TRANSLATED,
+    PAGE_TRANSLATION_EDIT,
+    OCR_CORRECTED,
+    NEEDS_REVIEW,
+    TRANSLATION_REVIEW,
+    TRANSLATION_INDEXED
+  ]
+
+
   # associations
   belongs_to :article
   belongs_to :collection
