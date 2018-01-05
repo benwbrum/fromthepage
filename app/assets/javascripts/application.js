@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
-
+//= require transcribe.js
 
 ;(function($, window, document, undefined) {
 
