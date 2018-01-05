@@ -1,9 +1,12 @@
 # handles administrative tasks for the collection object
-class Api::CollectionController < ApplicationController
+class Api::CollectionController < Api::ApiController
   
-  before_filter :authorized?, :only => [:new, :edit, :update, :delete, :destroy, :create]
   before_action :set_collection, :only => [:show, :edit, :update, :destroy, :contributors, :new_work]
   before_filter :load_settings, :only => [:edit, :update, :upload]
+  
+  def public_actions
+    return [:show]
+  end
   
   ### Endpoints Methods ###
   
@@ -80,23 +83,6 @@ class Api::CollectionController < ApplicationController
     # @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
-  end
-  
-  # FIXME put in superclass and fix error actions
-  def authorized?
-    # unless user_signed_in?
-    #   ajax_redirect_to dashboard_path
-    # end
-    # 
-    # if @collection &&  !current_user.like_owner?(@collection)
-    #   ajax_redirect_to dashboard_path
-    # end
-    
-    if user_signed_in?
-      puts "*** Signed in as " + current_user.login + "! ***"
-    else
-      puts "*** User not signed ***"
-    end
   end
   
   private
