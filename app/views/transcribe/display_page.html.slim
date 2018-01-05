@@ -66,8 +66,9 @@
 
       -else
         .page-column_actions
-          =button_tag 'Start', name: 'speech', id: 'start'
-          =button_tag 'Stop', id: 'stop'
+          -if @collection.voice_recognition
+            =button_tag 'Start', name: 'speech', id: 'start'
+            =button_tag 'Stop', id: 'stop'
           -unless @preview_xml
             =>button_tag 'Preview', :name => 'preview'
           -else

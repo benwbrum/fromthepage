@@ -52,6 +52,13 @@
             =f.check_box :hide_completed, value: @collection.hide_completed
             |&nbsp;
             =f.label :hide_completed, "Hide completed works by default"
+        -if @ssl
+          tr
+            td(colspan="2")
+              p
+              =f.check_box :voice_recognition, value: @collection.voice_recognition
+              |&nbsp;
+              =f.label :voice_recognition, "Speech to text available for transcribing"
 
 
       .toolbar

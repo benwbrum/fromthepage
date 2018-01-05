@@ -112,6 +112,7 @@ class CollectionController < ApplicationController
   end
 
   def edit
+    @ssl = Rails.application.config.force_ssl
   end
 
   def update
