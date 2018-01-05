@@ -19,7 +19,8 @@ class TranscribeController  < ApplicationController
   def display_page
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
-    @layout_mode = cookies[:transcribe_layout_mode] || 'ltr';
+    default = @collection.field_based ? 'ttb' : 'ltr'
+    @layout_mode = cookies[:transcribe_layout_mode] || default;
     session[:col_id] = @collection.slug
   end
 
@@ -75,6 +76,12 @@ class TranscribeController  < ApplicationController
 
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
+
+    if @page.field_based
+      @field_cells = params[:fields]
+      @page.process_fields(@field_cells)
+    end
+
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
@@ -82,6 +89,7 @@ class TranscribeController  < ApplicationController
     end
     #check to see if the page needs to be marked as needing review
     needs_review
+    
 
     if params['save']
       message = log_transcript_attempt
