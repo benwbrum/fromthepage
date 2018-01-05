@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171103141353) do
+ActiveRecord::Schema.define(version: 20171212172717) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20171103141353) do
     t.boolean  "hide_completed",                         default: true
     t.text     "help"
     t.text     "link_help"
+    t.boolean  "field_based",                            default: false
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -462,10 +463,11 @@ ActiveRecord::Schema.define(version: 20171103141353) do
     t.integer  "page_id"
     t.integer  "section_id"
     t.string   "header"
-    t.string   "content"
+    t.text     "content"
     t.integer  "row"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "transcription_field_id"
   end
 
   add_index "table_cells", ["page_id"], name: "index_table_cells_on_page_id", using: :btree
@@ -485,6 +487,15 @@ ActiveRecord::Schema.define(version: 20171103141353) do
   create_table "transcribe_authorizations", id: false, force: true do |t|
     t.integer "user_id"
     t.integer "work_id"
+  end
+
+  create_table "transcription_fields", force: true do |t|
+    t.string  "label"
+    t.integer "collection_id"
+    t.string  "input_type"
+    t.text    "options"
+    t.integer "line_number"
+    t.integer "position"
   end
 
   create_table "users", force: true do |t|

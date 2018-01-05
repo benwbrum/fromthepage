@@ -2,7 +2,7 @@ module XmlSourceProcessor
 
   @text_dirty = false
   @translation_dirty = false
-  
+  #@fields = false  
 
   def source_text=(text)
     @text_dirty = true
@@ -93,7 +93,6 @@ module XmlSourceProcessor
 
   def wiki_to_xml(wiki, text_type)
     xml_string = String.new(wiki || "")
-
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
     xml_string = process_square_braces(xml_string)
@@ -104,7 +103,6 @@ module XmlSourceProcessor
     postprocess_sections
     xml_string    
   end
-
 
   def generate_preview(text_type)
     xml_string = wiki_to_xml(self.source_text, text_type)
@@ -318,18 +316,6 @@ module XmlSourceProcessor
     return text
   end
 
-#   dead code
-  # def process_titles(text)
-    # 6.downto(2) do |depth|
-      # text.scan(/(={#{depth}}([^=]+)={#{depth}})/).each do |wiki_title|
-        # text = text.sub(wiki_title.first, "<entryHeading title=\"#{wiki_title.last}\" depth=\"#{depth}\" />")
-      # end
-    # end
-# 
-    # text
-  # end
-# 
-
   def valid_xml_from_source(source)
     source = source || ""
     safe = source.gsub /\&/, '&amp;'
@@ -342,7 +328,6 @@ module XmlSourceProcessor
       </page>
 EOF
   end
-
 
   def update_links_and_xml(xml_string, preview_mode=false, text_type)
     # first clear out the existing links

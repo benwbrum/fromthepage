@@ -23,7 +23,7 @@ class Page < ActiveRecord::Base
   has_one :ia_leaf, :dependent => :destroy
   has_one :omeka_file, :dependent => :destroy
   has_one :sc_canvas, :dependent => :destroy
-  has_many :table_cells, -> { order 'section_id, row, header' }, :dependent => :destroy
+  has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
 
   after_save :create_version
@@ -59,6 +59,10 @@ class Page < ActiveRecord::Base
   # tested
   def collection
     work.collection
+  end
+
+  def field_based
+    self.collection.field_based
   end
 
   def articles_with_text
@@ -262,6 +266,31 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def emended_translation_plaintext
     emended_plaintext(self.xml_translation)
+  end
+
+  #create table cells if the collection is field based
+  def process_fields(field_cells)
+    string = String.new
+    cells = self.table_cells.each {|c| c.delete}
+    unless field_cells.blank?
+      field_cells.each do |id, cell_data|
+        tc = TableCell.new(row: 1)
+        tc.work = self.work
+        tc.page = self
+        tc.transcription_field_id = id.to_i
+
+        cell_data.each do |key, value|
+          #tc = TableCell.new(row: 1, header: key, content: value)
+          tc.header = key
+          tc.content = value
+          string << key + ": " + value + "\n"
+        end
+
+        tc.save!
+      end
+    end
+    self.source_text = string
+
   end
 
 
