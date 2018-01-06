@@ -58,6 +58,7 @@ Fromthepage::Application.routes.draw do
     resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
       get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
     end
+    post 'login', :to=>'login#login'
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]

@@ -5,7 +5,7 @@ class Api::CollectionController < Api::ApiController
   before_filter :load_settings, :only => [:edit, :update, :upload]
   
   def public_actions
-    return [:show]
+    return [:show,:show_works]
   end
   
   ### Endpoints Methods ###
