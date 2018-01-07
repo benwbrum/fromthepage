@@ -30,3 +30,10 @@ es:
       error: "Error del servidor, contáctese con el administrador"
     session:
       not_allowed: "Para acceder a este contenido debes iniciar sesión"
+    collection:
+      create:
+        success: "La Colección ha sido creada"
+      update:
+        success: "La Colección ha sido actualizada"
+      destroy:
+        success: "La Colección ha sido borrada"

@@ -27,7 +27,7 @@ class Api::CollectionController < Api::ApiController
       # else
         # ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
       # end
-      render_serialized ResponseWS.default_ok(@collection)
+      render_serialized ResponseWS.ok('api.collection.create.success',@collection)
     else
       # render action: 'new'
       render_serialized ResponseWS.default_error
@@ -46,7 +46,7 @@ class Api::CollectionController < Api::ApiController
       # flash[:notice] = 'Collection has been updated'
       # redirect_to action: 'edit', collection_id: @collection.id
       
-      render_serialized ResponseWS.default_ok(@collection)
+      render_serialized ResponseWS.ok('api.collection.update.success',@collection)
     else
       # render action: 'edit'
       render_serialized ResponseWS.default_error
@@ -56,7 +56,7 @@ class Api::CollectionController < Api::ApiController
   def destroy
     @collection.destroy
     # redirect_to dashboard_owner_path
-    response_serialized_object @collection
+    render_serialized ResponseWS.ok('api.collection.destroy.success',@collection)
   end
   
   def show    

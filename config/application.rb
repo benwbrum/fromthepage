@@ -23,6 +23,8 @@ module Fromthepage
 
     config.neato = '/usr/bin/env neato'
     config.encoding = 'utf-8'
+    
+    config.active_record.raise_in_transactional_callbacks = true
 
     config.api_only = false
 

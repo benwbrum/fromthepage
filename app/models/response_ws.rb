@@ -13,11 +13,11 @@ class ResponseWS
   end
 
   def self.simple_ok(message)
-    ResponseWS.new("OK",message,nil)
+    ResponseWS.ok(message,nil)
   end
   
   def self.default_ok(data)
-    ResponseWS.new("OK",'api.default.ok',data)
+    ResponseWS.ok('api.default.ok',data)
   end
   
   def self.error(message,data)
@@ -25,11 +25,11 @@ class ResponseWS
   end
   
   def self.simple_error(message)
-    ResponseWS.new("ERROR",message,nil)
+    ResponseWS.error(message,nil)
   end
   
   def self.default_error
-    ResponseWS.new("ERROR",'api.default.error',nil)
+    ResponseWS.error('api.default.error',nil)
   end
   
 end

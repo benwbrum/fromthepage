@@ -30,3 +30,10 @@ en:
       error: "Server error, Contact the administrator"
     session:
       not_allowed: "To access this content you must log in to this site"
+    collection:
+      create:
+        success: "Collection has been created"
+      update:
+        success: "Collection has been updated"
+      destroy:
+        success: "Collection has been deleted"
