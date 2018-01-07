@@ -25,7 +25,7 @@ class Api::WorkController < Api::ApiController
   def destroy
     @work.destroy
     # redirect_to dashboard_owner_path
-    response_serialized_object @work
+    render_serialized ResponseWS.ok('api.work.destroy.success',@work)
   end
 
   def show    
@@ -65,7 +65,7 @@ class Api::WorkController < Api::ApiController
       # flash[:notice] = 'Work created successfully'
       # ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
 
-      render_serialized ResponseWS.default_ok(@work)
+      render_serialized ResponseWS.ok('api.work.create.success',@work)
     else
       render_serialized ResponseWS.default_error
     end
@@ -102,7 +102,7 @@ class Api::WorkController < Api::ApiController
       # redirect_to :back
     end
     
-    render_serialized ResponseWS.default_ok(work)
+    render_serialized ResponseWS.ok('api.work.update.success',work)
   end
 
   def change_collection

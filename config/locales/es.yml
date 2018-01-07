@@ -37,3 +37,10 @@ es:
         success: "La Colección ha sido actualizada"
       destroy:
         success: "La Colección ha sido borrada"
+      work:
+        create:
+          success: "El Trabajo ha sido creada"
+        update:
+          success: "El Trabajo ha sido actualizada"
+        destroy:
+          success: "El Trabajo ha sido borrada"

@@ -37,3 +37,10 @@ en:
         success: "Collection has been updated"
       destroy:
         success: "Collection has been deleted"
+    work:
+      create:
+        success: "Work has been created"
+      update:
+        success: "Work has been updated"
+      destroy:
+        success: "Work has been deleted"
