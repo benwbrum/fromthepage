@@ -61,6 +61,8 @@ Fromthepage::Application.routes.draw do
     end
     resources :work, path: 'work', only: [:create, :update, :destroy, :show] do
     end
+    resources :page, path: 'page', only: [:create, :update, :destroy, :show] do
+    end
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
