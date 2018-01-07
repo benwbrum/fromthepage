@@ -1,6 +1,6 @@
-# English i18n Messages
+# Spanish i18n Messages
 
-en:
+es:
   hello: "Hello world"
   will_paginate:
     previous_label: "&#8592;"
@@ -26,7 +26,7 @@ en:
         
   api:
     default:
-      ok: "The operation was successfully completed"
-      error: "Server error, Contact the administrator"
+      ok: "La operación se realizó exitosamente"
+      error: "Error del servidor, contáctese con el administrador"
     session:
-      not_allowed: "To access this content you must log in to this site"
+      not_allowed: "Para acceder a este contenido debes iniciar sesión"

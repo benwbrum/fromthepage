@@ -4,7 +4,7 @@ class ResponseWS
   
   def initialize(status,message,data)
     @status = status
-    @message = message
+    @message = I18n.t(message, :default => message)
     @data = data
   end
   
@@ -17,7 +17,7 @@ class ResponseWS
   end
   
   def self.default_ok(data)
-    ResponseWS.new("OK","La operación se realizó exitosamente",data)
+    ResponseWS.new("OK",'api.default.ok',data)
   end
   
   def self.error(message,data)
@@ -29,7 +29,7 @@ class ResponseWS
   end
   
   def self.default_error
-    ResponseWS.new("ERROR","Error del servidor, contáctese con el administrador",nil)
+    ResponseWS.new("ERROR",'api.default.error',nil)
   end
   
 end

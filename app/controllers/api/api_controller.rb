@@ -1,5 +1,8 @@
 class Api::ApiController < ApplicationController
   
+  include I18nHelper
+  
+  before_action :set_locale
   before_action :authorized?
   
   def authorized?
@@ -29,6 +32,6 @@ class Api::ApiController < ApplicationController
   
   private
     def _not_signed_error
-      return ResponseWS.simple_error("Para acceder a este contenido debes iniciar sesión")
+      return ResponseWS.simple_error('api.session.not_allowed')
     end
 end
