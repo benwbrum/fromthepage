@@ -56,11 +56,11 @@ class Api::CollectionController < Api::ApiController
   def destroy
     @collection.destroy
     # redirect_to dashboard_owner_path
-    render_serialized @collection
+    response_serialized_object @collection
   end
   
   def show    
-    render_serialized @collection
+    response_serialized_object @collection
   end
   
   def show_works
@@ -68,7 +68,7 @@ class Api::CollectionController < Api::ApiController
     #   ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
     # end    
     @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-    render_serialized @works
+    response_serialized_object @works
   end
   
   

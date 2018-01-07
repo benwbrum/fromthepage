@@ -5,13 +5,13 @@ class Api::ApiController < ApplicationController
   def authorized?
     unless public_actions.include? action_name.to_sym
       unless user_signed_in?
-        puts "*** User not signed ***"
+        logger.debug "[ACCESS] #{controller_name}##{action_name} -> User not authorized"
         render_serialized _not_signed_error
       else
-        puts "*** Signed in as " + current_user.login + "! ***"
+        logger.debug "[ACCESS] #{controller_name}##{action_name} -> Signed as #{current_user.login}"
       end
     else
-      puts "*** Public Action ***"
+      logger.debug "[ACCESS] #{controller_name}##{action_name} -> Public action"
     end
   end
   
@@ -21,6 +21,10 @@ class Api::ApiController < ApplicationController
   
   def render_serialized(object)
     render json: object
+  end
+  
+  def response_serialized_object(object)
+    render_serialized ResponseWS.default_ok(object)
   end
   
   private
