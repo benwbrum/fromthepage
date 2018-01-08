@@ -61,8 +61,8 @@ class Api::PageController < Api::ApiController
     if @page.save
       # flash[:notice] = 'Page created successfully'
 
-      if params[:page][:base_image]
-        process_uploaded_file(@page, @page.base_image)
+      if params[:image_base64]
+        process_base64_image(page)
       end
 
       # if subaction == 'save_and_new'
@@ -82,9 +82,9 @@ class Api::PageController < Api::ApiController
     page.work = @work
     page.update_attributes(params[:page])
     # flash[:notice] = 'Page has been successfully updated'
-
-    if params[:page][:base_image]
-      process_uploaded_file(page, page.base_image)
+    
+    if params[:image_base64]
+      process_base64_image(page)
     end
 
     # redirect_to :back
@@ -93,30 +93,21 @@ class Api::PageController < Api::ApiController
 
 
 private
-  def process_uploaded_file(page, filename)
-    if filename.blank?
-      # create a new filename
-      filename = "#{Rails.root}/public/images/working/upload/#{page.id}.jpg"
-    end
+  def process_base64_image(page)
+    # create a new filename
+    filename = "#{Rails.root}/public/images/working/upload/#{page.id}.jpg"
     dirname = File.dirname(filename)
     unless Dir.exist? dirname
       FileUtils.mkdir_p(dirname)
     end
+    
+    decoded_base64_content = Base64.decode64(params[:image_base64]) 
     File.open(filename, "wb") do |f|
-      f.write(params[:page][:base_image].read)
+      f.write(decoded_base64_content)
     end
     page.base_image = filename
     page.shrink_factor = 0
     set_dimensions(page)
-    #reduce_by_one(page)
-  end
-
-  def reduce_by_one(page)
-    page.shrink_factor = page.shrink_factor + 1
-    shrink_file(page.scaled_image(0),
-                page.scaled_image(page.shrink_factor),
-                page.shrink_factor)
-    page.save!
   end
 
   def set_dimensions(page)
