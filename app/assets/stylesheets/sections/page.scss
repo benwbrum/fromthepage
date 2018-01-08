@@ -148,6 +148,11 @@
     left: 50%;
     border-width: 0 0 0 1px;
   }
+  &_voice {
+    top: 10px;
+    left: 10px;
+    position: absolute;
+  }
   &_actions {
     top: 14px;
     right: 6px;

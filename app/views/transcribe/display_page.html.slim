@@ -65,10 +65,12 @@
           =f.text_area :source_text
 
       -else
+        -if @collection.voice_recognition
+          .page-column_voice
+            =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img'
+            =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img', style: 'display:none'
+
         .page-column_actions
-          -if @collection.voice_recognition
-            =button_tag 'Start', name: 'speech', id: 'start'
-            =button_tag 'Stop', id: 'stop'
           -unless @preview_xml
             =>button_tag 'Preview', :name => 'preview'
           -else
@@ -148,9 +150,11 @@ h2.legend Page Notes
     });
 
     $(function(){
-      $('#start').click(function(e){
+      $('#start_img').click(function(e){
         e.preventDefault();
-        startDictation();
+        $('#start_img').hide();
+        $('#stop_img').show();
+        startDictation($(this.form));
       });
     })
 
