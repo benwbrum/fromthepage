@@ -122,21 +122,15 @@ h2.legend Page Notes
         var checked = this.checked ? 'yes' : 'no';
         Cookies.set('auto_fullscreen', checked, { expires: 365 });
       });
-    });
 
-    $(function(){
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
       });
-    });
 
-    $(function(){
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-    });
 
-    $(function(){
       $('#save_button').click(function(e){
         var noteText = $('.user-bubble_form #note_body:last').val();
         if (noteText != ''){
@@ -145,19 +139,15 @@ h2.legend Page Notes
         } else {
           return;
         }
-      })
+      });
 
-    });
-
-    $(function(){
       $('#start_img').click(function(e){
         e.preventDefault();
         $('#start_img').hide();
         $('#stop_img').show();
         startDictation($(this.form));
       });
-    })
-
+    });
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Transcribe Page");

@@ -11,10 +11,10 @@
           td.w100 =f.text_field :title
         tr
           td(colspan="2")
-            //-if @preview_xml
-              ==xml_to_html(@preview_xml)
-              hr
             =f.label :source_text, 'Description', class: 'above'
+            -if @collection.voice_recognition
+              =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img'
+              =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img', style: 'display:none'
             =f.text_area :source_text, rows: 15
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
@@ -36,7 +36,7 @@
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       br
-      =link_to({ :controller => 'article', :action => 'delete', :article_id => @article.id, :collection_id => @collection.slug}, data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"})
+      =link_to({ :controller => 'article', :action => 'delete', :article_id => @article.id, :collection_id => @collection.slug}, data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"}, class: 'button')
         =svg_symbol '#icon-remove-sign', class: 'icon'
         span Delete Subject
 
@@ -60,3 +60,14 @@
                 small.label =pluralize(dup.link_list.size, 'page')
         .toolbar
           .toolbar_group.aright =button_tag 'Combine Selected'
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('#start_img').click(function(e){
+        e.preventDefault();
+        $('#start_img').hide();
+        $('#stop_img').show();
+        startDictation($(this.form));
+      });
+    });

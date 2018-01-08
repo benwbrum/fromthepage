@@ -53,6 +53,11 @@
                 =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
 
     .page-column
+      -if @collection.voice_recognition
+        .page-column_voice
+          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img'
+          =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img', style: 'display:none'
+    
       .page-column_actions
         -unless @preview_xml
           =>button_tag 'Preview', :name => 'preview'
@@ -84,10 +89,15 @@ h2.legend Page Notes
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
       });
-    });
 
-    $(function(){
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-    });
+
+      $('#start_img').click(function(e){
+        e.preventDefault();
+        $('#start_img').hide();
+        $('#stop_img').show();
+        startDictation($(this.form));
+      });
+    })
