@@ -1,7 +1,10 @@
 //functions to allow for speech to text
 
-function startDictation(form){
+function startDictation(form, recognizing, id){
   if (window.hasOwnProperty('webkitSpeechRecognition')){
+    var recognizing = recognizing;
+    var startObj = $(id);
+    var stopObj = startObj.next();
     var voiceData = form.find('textarea')[0]
     var recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
@@ -17,13 +20,15 @@ function startDictation(form){
       voiceData.innerHTML = final_transcript;
     };
     recognition.onerror = function(e){
+      recognizing = false;
       recognition.stop();
     }
-    $('#stop_img').click(function(e){
+    stopObj.click(function(e){
       e.preventDefault();
       recognition.stop();
+      recognizing = false;
       $(this).hide();
-      $('#start_img').show();
+      startObj.show();
     })
   }
 }

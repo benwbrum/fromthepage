@@ -96,3 +96,32 @@
   }
   input:checked + span { color: $fgHover; }
 }
+
+.voice-div {
+  position: relative;
+}
+
+.article-editarea {
+  height: 100%;
+  overflow: hidden;
+  background: #FFF;
+  box-sizing: border-box;
+  border: 1px solid $inputBorderColor;
+  input, textarea {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+  textarea {
+    height: 100%;
+    margin-top: 30px;
+    resize: none;
+    padding: $gapSize / 2;
+  }
+}
+
+.article-voice {
+  position: absolute;
+  right: 10px;
+  top: 35px;
+}

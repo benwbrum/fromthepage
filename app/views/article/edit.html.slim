@@ -10,12 +10,13 @@
           th =f.label :title
           td.w100 =f.text_field :title
         tr
-          td(colspan="2")
+          td.voice-div(colspan="2")
             =f.label :source_text, 'Description', class: 'above'
             -if @collection.voice_recognition
-              =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img'
-              =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img', style: 'display:none'
-            =f.text_area :source_text, rows: 15
+              =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img'
+              =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'article-voice', id: 'stop_img', style: 'display:none'
+            div class=('article-editarea' if @collection.voice_recognition)
+              =f.text_area :source_text, rows: 15
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
@@ -66,8 +67,11 @@
     $(function() {
       $('#start_img').click(function(e){
         e.preventDefault();
-        $('#start_img').hide();
-        $('#stop_img').show();
-        startDictation($(this.form));
+        var recognizing = true;
+        var id = '#' + this.id;
+        //change to microphone on image
+        $(this).hide();
+        $(this).next().show();
+        startDictation($(this.form), recognizing, id);
       });
     });

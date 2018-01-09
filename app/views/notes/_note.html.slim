@@ -19,5 +19,23 @@
         =f.text_area :body, :rows => 4
       .user-bubble_form_footer
         span.user-bubble_form_error
+        -if @collection.voice_recognition
+          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_update'
+          =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img_update', style: 'display:none'
         a(data-note-edit) Cancel
         =f.button 'Update'
+
+-content_for :javascript
+  javascript:
+    $(function(){
+      //Speech to text
+      $('#start_img_update').click(function(e){
+        e.preventDefault();
+        var recognizing = true;
+        var id = '#' + this.id;
+        //change to microphone on image
+        $(this).hide();
+        $(this).next().show();
+        startDictation($(this.form), recognizing, id);
+      });
+    });

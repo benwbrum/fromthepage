@@ -57,7 +57,7 @@
         .page-column_voice
           =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img'
           =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img', style: 'display:none'
-    
+
       .page-column_actions
         -unless @preview_xml
           =>button_tag 'Preview', :name => 'preview'
@@ -96,8 +96,11 @@ h2.legend Page Notes
 
       $('#start_img').click(function(e){
         e.preventDefault();
-        $('#start_img').hide();
-        $('#stop_img').show();
-        startDictation($(this.form));
+        var recognizing = true;
+        var id = '#' + this.id;
+        //change to microphone on image
+        $(this).hide();
+        $(this).next().show();
+        startDictation($(this.form), recognizing, id);
       });
-    })
+    });
