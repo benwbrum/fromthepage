@@ -65,6 +65,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.link_help
   end
 
+  def voice_recognition
+    self.collection.voice_recognition
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
