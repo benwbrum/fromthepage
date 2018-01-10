@@ -1,4 +1,4 @@
-//functions for speech to text
+//voice to text functions
 
 //set variables and initial recognition behavior
 var recognizing = false;
@@ -8,7 +8,6 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
   var recognition = new webkitSpeechRecognition();
   recognition.continuous = true;
   recognition.interimResults = true;
-  recognition.lang = 'en-US';
 
   recognition.onstart = function(){
     recognizing = true;
@@ -39,6 +38,7 @@ function startButton(e){
 }
 
 function startDictation(target){
+  recognition.lang = window.lang;
   recognizing = true;
   button = target;
   var form = $(button.form)

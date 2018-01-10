@@ -60,3 +60,7 @@
                 small.label =pluralize(dup.link_list.size, 'page')
         .toolbar
           .toolbar_group.aright =button_tag 'Combine Selected'
+
+-content_for :javascript
+  javascript:
+    var lang = "#{@collection.language}";

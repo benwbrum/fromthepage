@@ -84,6 +84,8 @@ h2.legend Page Notes
 -content_for :javascript
   javascript:
 
+    var lang = "#{@collection.language}";
+
     $(function(){
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);

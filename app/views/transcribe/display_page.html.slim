@@ -104,6 +104,9 @@ h2.legend Page Notes
 
 -content_for :javascript
   javascript:
+    //set language for voice to text
+    var lang = "#{@collection.language}";
+
     $(function() {
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
