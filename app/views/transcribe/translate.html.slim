@@ -55,8 +55,7 @@
     .page-column
       -if @collection.voice_recognition
         .page-column_voice
-          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img'
-          =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img', style: 'display:none'
+          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
 
       .page-column_actions
         -unless @preview_xml
@@ -92,15 +91,5 @@ h2.legend Page Notes
 
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
-      });
-
-      $('#start_img').click(function(e){
-        e.preventDefault();
-        var recognizing = true;
-        var id = '#' + this.id;
-        //change to microphone on image
-        $(this).hide();
-        $(this).next().show();
-        startDictation($(this.form), recognizing, id);
       });
     });

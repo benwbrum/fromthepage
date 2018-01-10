@@ -1,34 +1,59 @@
-//functions to allow for speech to text
+//functions for speech to text
 
-function startDictation(form, recognizing, id){
-  if (window.hasOwnProperty('webkitSpeechRecognition')){
-    var recognizing = recognizing;
-    var startObj = $(id);
-    var stopObj = startObj.next();
-    var voiceData = form.find('textarea')[0]
-    var recognition = new webkitSpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
-    var final_transcript = '';
-    recognition.start();
+//set variables and initial recognition behavior
+var recognizing = false;
+var button;
 
-    recognition.onresult = function(e){
-      for (var i = e.resultIndex; i < e.results.length; ++i){
-          final_transcript += e.results[i][0].transcript;
-      }
-      voiceData.innerHTML = final_transcript;
-    };
-    recognition.onerror = function(e){
-      recognizing = false;
-      recognition.stop();
-    }
-    stopObj.click(function(e){
-      e.preventDefault();
-      recognition.stop();
-      recognizing = false;
-      $(this).hide();
-      startObj.show();
-    })
+if (window.hasOwnProperty('webkitSpeechRecognition')){
+  var recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  recognition.onstart = function(){
+    recognizing = true;
+    button.src = '/assets/mic-on-icon.png'
+  };
+}
+
+//change image when stop
+recognition.onend = function(){
+  recognizing = false;
+  button.src = '/assets/mic-icon.png';
+}
+
+recognition.onerror = function(e){
+  recognizing = false;
+  recognition.stop();
+  button.src = '/assets/mic-icon.png';
+}
+
+//toggle speech to text on and off
+function startButton(e){
+  e.preventDefault();
+  if (recognizing) {
+    recognition.stop();
+    return;
   }
+  startDictation(e.target);
+}
+
+function startDictation(target){
+  recognizing = true;
+  button = target;
+  var form = $(button.form)
+  var voiceData = form.find('textarea')
+  var initialText = voiceData.text();
+  var final_transcript = initialText + '\n';
+  var interim_transcript = initialText + '\n';
+
+  recognition.start();
+  recognition.onresult = function(e){
+    for (var i = e.resultIndex; i < e.results.length; ++i){
+      if (e.results[i].isFinal){
+        final_transcript += e.results[i][0].transcript;
+      }
+    }
+    voiceData.text(final_transcript);
+  };
 }

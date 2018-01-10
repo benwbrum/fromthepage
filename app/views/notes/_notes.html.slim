@@ -19,23 +19,12 @@
         span.user-bubble_form_error
         =f.label :body, 'Note body', class: 'hidden'
         -if @collection.voice_recognition
-          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_note'
-          =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'voice', id: 'stop_img_note', style: 'display:none'
+          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_note', onclick: 'startButton(event);'
         =f.button 'Submit'
 
   -content_for :javascript
     javascript:
       $(function() {
-        //Speech to text
-        $('#start_img_note').click(function(e){
-        e.preventDefault();
-        var recognizing = true;
-        var id = '#' + this.id;
-        //change to microphone on image
-        $(this).hide();
-        $(this).next().show();
-        startDictation($(this.form), recognizing, id);
-      });
         // Toggle note edit
         $(document).on('click', '[data-note-edit]', function() {
           var $container = $(this).closest('.user-bubble').toggleClass('edit');

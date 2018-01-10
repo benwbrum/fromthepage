@@ -13,8 +13,7 @@
           td.voice-div(colspan="2")
             =f.label :source_text, 'Description', class: 'above'
             -if @collection.voice_recognition
-              =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img'
-              =image_tag 'mic-on-icon.png', height: '40', alt: 'Microphone On', class: 'article-voice', id: 'stop_img', style: 'display:none'
+              =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
             div class=('article-editarea' if @collection.voice_recognition)
               =f.text_area :source_text, rows: 15
 
@@ -61,17 +60,3 @@
                 small.label =pluralize(dup.link_list.size, 'page')
         .toolbar
           .toolbar_group.aright =button_tag 'Combine Selected'
-
--content_for :javascript
-  javascript:
-    $(function() {
-      $('#start_img').click(function(e){
-        e.preventDefault();
-        var recognizing = true;
-        var id = '#' + this.id;
-        //change to microphone on image
-        $(this).hide();
-        $(this).next().show();
-        startDictation($(this.form), recognizing, id);
-      });
-    });
