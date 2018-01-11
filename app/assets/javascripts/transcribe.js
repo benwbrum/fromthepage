@@ -1,8 +1,11 @@
-//voice to text functions
+//Voice to text functionality
 
 //set variables and initial recognition behavior
 var recognizing = false;
+//this finds the correct button on the page
 var button;
+//this finds the correct information span on the page
+var voiceSpan;
 
 if (window.hasOwnProperty('webkitSpeechRecognition')){
   var recognition = new webkitSpeechRecognition();
@@ -11,7 +14,8 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
 
   recognition.onstart = function(){
     recognizing = true;
-    button.src = '/assets/mic-on-icon.png'
+    button.src = '/assets/mic-on-icon.png';
+    voiceSpan.text("Listening");
   };
 }
 
@@ -19,12 +23,15 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
 recognition.onend = function(){
   recognizing = false;
   button.src = '/assets/mic-icon.png';
+  voiceSpan.text("Click microphone for dictation");
 }
 
 recognition.onerror = function(e){
   recognizing = false;
   recognition.stop();
   button.src = '/assets/mic-icon.png';
+  voiceSpan.text("Recording Error");
+  voiceSpan.addClass('voice-error');
 }
 
 //toggle speech to text on and off
@@ -41,8 +48,9 @@ function startDictation(target){
   recognition.lang = window.lang;
   recognizing = true;
   button = target;
-  var form = $(button.form)
-  var voiceData = form.find('textarea')
+  var form = $(button.form);
+  var voiceData = form.find('textarea');
+  voiceSpan = form.find('.voice-info');
   var initialText = voiceData.text();
   var final_transcript = initialText + '\n';
   var interim_transcript = initialText + '\n';
@@ -56,4 +64,17 @@ function startDictation(target){
     }
     voiceData.text(final_transcript);
   };
+}
+
+//Check for unsaved notes before save
+function unsavedNotes(e){
+  var noteText = $('.user-bubble_form #note_body:last').text();
+  if (noteText != ''){
+    e.preventDefault();
+    alert("You have unsaved notes. Please save or discard notes before saving transcription.");
+  } else {
+    return;
+  }
+
+
 }

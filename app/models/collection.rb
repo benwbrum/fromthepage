@@ -16,7 +16,7 @@ class Collection < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow, :hide_completed, :help, :link_help, :voice_recognition
+  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow, :hide_completed, :help, :link_help, :voice_recognition, :language
 #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -30,6 +30,7 @@ class Collection < ActiveRecord::Base
 
   scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
   scope :unrestricted, -> { where(restricted: false)}
+
 
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|

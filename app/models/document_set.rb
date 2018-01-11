@@ -69,6 +69,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.voice_recognition
   end
 
+  def language
+    self.collection.language
+  end
+
   def slug_candidates
     if self.slug
       [:slug]

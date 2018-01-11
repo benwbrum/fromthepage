@@ -19,6 +19,7 @@
         span.user-bubble_form_error
         =f.label :body, 'Note body', class: 'hidden'
         -if @collection.voice_recognition
+          span.voice-info.voice Click microphone to dictate
           =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_note', onclick: 'startButton(event);'
         =f.button 'Submit'
 

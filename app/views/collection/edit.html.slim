@@ -59,7 +59,10 @@
               =f.check_box :voice_recognition, value: @collection.voice_recognition
               |&nbsp;
               =f.label :voice_recognition, "Speech to text available for transcribing"
-
+          tr  
+            td(colspan="2")  
+              =f.label :language, "Choose language"
+              =f.select :language, options_for_select(@language_options, @collection.language)
 
       .toolbar
         .toolbar_group.w100

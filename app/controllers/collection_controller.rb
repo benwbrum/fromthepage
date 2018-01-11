@@ -112,6 +112,7 @@ class CollectionController < ApplicationController
   end
 
   def edit
+    @language_options = {"English" => "EN-us", "Spanish" => "ES", "German" => "DE"}
     @ssl = Rails.application.config.force_ssl
   end
 
@@ -123,6 +124,7 @@ class CollectionController < ApplicationController
     else
       @collection.update(params[:collection])
     end
+
     if @collection.save!
       flash[:notice] = 'Collection has been updated'
       redirect_to action: 'edit', collection_id: @collection.id

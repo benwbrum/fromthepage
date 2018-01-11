@@ -42,7 +42,7 @@
           =f.check_box('needs_review', {checked: false})
 
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save', id: 'save_button'
+        =button_tag 'Save Changes', :name => 'save', id: 'save_button', onclick: 'unsavedNotes(event);'
 
 
   .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
@@ -68,6 +68,7 @@
         -if @collection.voice_recognition
           .page-column_voice
             =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            span.voice-info Click microphone to dictate
 
         .page-column_actions
           -unless @preview_xml
@@ -133,15 +134,6 @@ h2.legend Page Notes
         $('#page_needs_review').prop('checked', false);
       });
 
-      $('#save_button').click(function(e){
-        var noteText = $('.user-bubble_form #note_body:last').val();
-        if (noteText != ''){
-          e.preventDefault();
-          alert("You have unsaved notes. Please save or discard notes before saving transcription.");
-        } else {
-          return;
-        }
-      });
     });
 
 -unless MIXPANEL_ID.blank?
