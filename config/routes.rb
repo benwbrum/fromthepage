@@ -3,6 +3,8 @@ Fromthepage::Application.routes.draw do
   root :to => 'static#splash'
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations"}
+ 
+
 
   iiif_for 'riiif/image', at: '/image-service'
   
@@ -54,6 +56,12 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
   
   namespace :api do
+    devise_for controllers:{registration:"/api/registration"}
+    devise_scope :user do
+       post 'registration' => 'registration#create'
+    end
+
+   
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
     resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
@@ -62,6 +70,8 @@ Fromthepage::Application.routes.draw do
     resources :work, path: 'work', only: [:create, :update, :destroy, :show] do
     end
     resources :page, path: 'page', only: [:create, :update, :destroy, :show] do
+    end
+    resources :registration, path: 'registration', only: [:create] do
     end
   end
 

@@ -42,6 +42,7 @@ group :assets do
 end
 
 group :test do
+  gem 'faker'       # Gem to generate mock data
   gem 'database_cleaner'
   gem 'capybara'
   gem 'shoulda'
@@ -86,3 +87,5 @@ gem 'ahoy_matey'
 gem "figaro"
 
 gem 'devise-token_authenticatable', '~> 0.3'
+
+gem 'factory_girl_rails'

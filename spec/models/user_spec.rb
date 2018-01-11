@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'factory_girl_rails'
 
 describe User do
 

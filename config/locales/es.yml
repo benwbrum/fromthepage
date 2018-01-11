@@ -44,3 +44,6 @@ es:
           success: "El Trabajo ha sido actualizada"
         destroy:
           success: "El Trabajo ha sido borrada"
+    registration:
+      create:
+        success: "El Usuario ha sido creado"

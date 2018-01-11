@@ -44,3 +44,6 @@ en:
         success: "Work has been updated"
       destroy:
         success: "Work has been deleted"
+    registration:
+      create:
+        success: "User has been created"
