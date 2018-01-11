@@ -2,6 +2,7 @@
 
 //set variables and initial recognition behavior
 var recognizing = false;
+var ignore_onend;
 //this finds the correct button on the page
 var button;
 //this finds the correct information span on the page
@@ -22,14 +23,18 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
 //change image when stop
 recognition.onend = function(){
   recognizing = false;
+  if (ignore_onend){
+    return;
+  }
   button.src = '/assets/mic-icon.png';
   voiceSpan.text("Click microphone for dictation");
 }
 
 recognition.onerror = function(e){
   recognizing = false;
+  ignore_onend = true;
   recognition.stop();
-  button.src = '/assets/mic-icon.png';
+  button.src = '/assets/mic-off-icon.png';
   voiceSpan.text("Recording Error");
   voiceSpan.addClass('voice-error');
 }
@@ -41,6 +46,7 @@ function startButton(e){
     recognition.stop();
     return;
   }
+  ignore_onend = null;
   startDictation(e.target);
 }
 
@@ -51,6 +57,9 @@ function startDictation(target){
   var form = $(button.form);
   var voiceData = form.find('textarea');
   voiceSpan = form.find('.voice-info');
+  if (voiceSpan.hasClass('voice-error')){
+    voiceSpan.removeClass('voice-error');
+  }
   var initialText = voiceData.text();
   var final_transcript = initialText + '\n';
   var interim_transcript = initialText + '\n';
