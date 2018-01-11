@@ -68,7 +68,7 @@ function startDictation(target){
 
 //Check for unsaved notes before save
 function unsavedNotes(e){
-  var noteText = $('.user-bubble_form #note_body:last').text();
+  var noteText = $('.user-bubble_form #note_body:last').val();
   if (noteText != ''){
     e.preventDefault();
     alert("You have unsaved notes. Please save or discard notes before saving transcription.");

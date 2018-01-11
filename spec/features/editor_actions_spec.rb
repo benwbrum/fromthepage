@@ -165,6 +165,7 @@ describe "editor actions" , :order => :defined do
     message = accept_alert do
       click_button('Save Changes')
     end
+    sleep(2)
     expect(message).to have_content("You have unsaved notes.")
     new_text = Page.find_by(id: test_page.id).source_text
     #because of the note, page.source_text should not have changed
