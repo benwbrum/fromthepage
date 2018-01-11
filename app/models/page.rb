@@ -134,7 +134,7 @@ class Page < ActiveRecord::Base
       return nil
     end
     if !File.exists?(thumbnail_filename())
-      if File.exists? self.base_image
+      if File.exists?(modernize_absolute(self.base_image))
         generate_thumbnail
       end
     end
@@ -313,8 +313,10 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     return link.id
   end
 
+
+
   def thumbnail_filename
-    filename=self.base_image
+    filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
     filename.sub("#{ext}","_thumb#{ext}")
   end
@@ -352,8 +354,16 @@ private
     doc.text.sub(/^\s*/m, '')        
   end
 
+  def modernize_absolute(filename)
+    if filename
+      File.join(Rails.root, 'public', filename.sub(/.*public/, ''))
+    else
+      ""
+    end
+  end
+
   def generate_thumbnail
-    image = Magick::ImageList.new(self[:base_image])
+    image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
     factor = 100.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
