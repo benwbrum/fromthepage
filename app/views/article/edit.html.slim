@@ -13,6 +13,7 @@
           td.voice-div(colspan="2")
             =f.label :source_text, 'Description', class: 'above'
             -if @collection.voice_recognition
+              span.voice-info Click microphone to dictate
               =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
             div class=('article-editarea' if @collection.voice_recognition)
               =f.text_area :source_text, rows: 15

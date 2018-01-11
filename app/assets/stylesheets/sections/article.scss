@@ -99,6 +99,11 @@
 
 .voice-div {
   position: relative;
+  span {
+    position: absolute;
+    top: 45px;
+    right: 60px;
+  }
 }
 
 .article-editarea {
@@ -124,4 +129,5 @@
   position: absolute;
   right: 10px;
   top: 35px;
+
 }
