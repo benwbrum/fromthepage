@@ -12,10 +12,11 @@
         tr
           td.voice-div(colspan="2")
             =f.label :source_text, 'Description', class: 'above'
-            -if @collection.voice_recognition
-              span.voice-info Click microphone to dictate
-              =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
             div class=('article-editarea' if @collection.voice_recognition)
+              -if @collection.voice_recognition
+                =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
+                span.voice-info.article-voice Click microphone to dictate
+                
               =f.text_area :source_text, rows: 15
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })

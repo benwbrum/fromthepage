@@ -97,15 +97,6 @@
   input:checked + span { color: $fgHover; }
 }
 
-.voice-div {
-  position: relative;
-  span {
-    position: absolute;
-    top: 45px;
-    right: 60px;
-  }
-}
-
 .article-editarea {
   height: 100%;
   overflow: hidden;
@@ -119,15 +110,17 @@
   }
   textarea {
     height: 100%;
-    margin-top: 30px;
     resize: none;
     padding: $gapSize / 2;
   }
 }
 
-.article-voice {
-  position: absolute;
-  right: 10px;
-  top: 35px;
+span.article-voice {
+  float: right;
+  margin-top: 20px;
+}
 
+.article-voice {
+  float: right;
+  margin: 10px 10px 0;
 }
