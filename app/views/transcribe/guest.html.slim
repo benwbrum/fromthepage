@@ -14,9 +14,13 @@
   .page-column
     .centered
       .centered_content
-        p.big You may save up to three transcriptions <br> as a guest or sign up now.
-        p =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
-        p =button_to "Sign Up Now", new_user_registration_path, :method => 'get'
+        -unless @page.work.restrict_scribes
+          p.big You may save up to three transcriptions <br> as a guest or sign up now.
+          p =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+          p =button_to "Sign Up Now", new_user_registration_path, :method => 'get'
+        -else
+          p.nodata_text =="Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+
 
 -if @work.transcription_conventions.present?
   .fgfaded ==@work.transcription_conventions

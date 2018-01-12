@@ -36,18 +36,23 @@
                 -action = page_params(page)
               -else
                 -action = page_params(page)
+              
               -if page.status == 'blank'
                 p.nodata_text =="This page is blank"
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
-                -if page.work.ocr_correction
-                  -status = 'corrected'
-                  -help = link_to('help correct', action)
+                -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
+                  -if page.work.ocr_correction
+                    -status = 'corrected'
+                    -help = link_to('help correct', action)
+                  -else
+                    -status = 'transcribed'
+                    -help = link_to('help transcribe', action)
+                  p.nodata_text =="This page is not #{status}, please #{help} this page"
                 -else
-                  -status = 'transcribed'
-                  -help = link_to('help transcribe', action)
-                p.nodata_text =="This page is not #{status}, please #{help} this page"
+                  p.nodata_text == "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+
 
             -if page.work.supports_translation
               button.outline.work-page_toggle-view Translation
