@@ -3,7 +3,7 @@
   article.maincol
     =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
-      table.form
+      table.form.collection-settings
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
@@ -38,31 +38,27 @@
           td(colspan="2")
             p
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
-            |&nbsp;
             =f.label :subjects_disabled, "Disable subject indexing"
         tr
           td(colspan="2")
             p
             =f.check_box :review_workflow, value: @collection.review_workflow
-            |&nbsp;
             =f.label :review_workflow, "All initial transcriptions need review"
         tr
           td(colspan="2")
             p
             =f.check_box :hide_completed, value: @collection.hide_completed
-            |&nbsp;
             =f.label :hide_completed, "Hide completed works by default"
         -if @ssl
           tr
             td(colspan="2")
               p
               =f.check_box :voice_recognition, value: @collection.voice_recognition
-              |&nbsp;
               =f.label :voice_recognition, "Speech to text available for transcribing"
           tr  
-            td(colspan="2")  
-              =f.label :language, "Choose language"
-              =f.select :language, options_for_select(@language_options, @collection.language)
+            td(colspan="2")
+              =f.label :language, "Choose language", class: 'collection-label'
+              =f.select :language, options_for_select(@language_options, @collection.language), {}, {class: 'w40'}
 
       .toolbar
         .toolbar_group.w100
