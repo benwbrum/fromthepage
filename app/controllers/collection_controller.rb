@@ -112,11 +112,11 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    @language_options = {"English" => "EN-us", "Spanish" => "ES", "German" => "DE"}
     @ssl = Rails.application.config.force_ssl
   end
 
   def update
+binding.pry
     if params[:collection][:slug] == ""
       @collection.update(params[:collection].except(:slug))
       title = @collection.title.parameterize

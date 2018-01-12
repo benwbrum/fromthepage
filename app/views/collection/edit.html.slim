@@ -57,8 +57,9 @@
               =f.label :voice_recognition, "Speech to text available for transcribing"
           tr  
             td(colspan="2")
-              =f.label :language, "Choose language", class: 'collection-label'
-              =f.select :language, options_for_select(@language_options, @collection.language), {}, {class: 'w40'}
+              =label_tag :language, "Choose language", class: 'collection-label'
+              select id='select_language' onchange='updateCountry()' class='w30'
+              select id='select_dialect' class='w40'
 
       .toolbar
         .toolbar_group.w100
@@ -160,5 +161,9 @@
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
+      });
+      $(function(){
+        var defaultLang = "#{@collection.language}";
+        findDefault(defaultLang);
       });
     });

@@ -60,9 +60,15 @@ function startDictation(target){
   if (voiceSpan.hasClass('voice-error')){
     voiceSpan.removeClass('voice-error');
   }
-  var initialText = voiceData.text();
-  var final_transcript = initialText + '\n';
-  var interim_transcript = initialText + '\n';
+  var initialText
+
+  if (voiceData.text() != '') {
+    initialText = voiceData.text() + '\n';
+  } else {
+    initialText = '';
+  }
+  var final_transcript = initialText;
+  var interim_transcript = initialText;
 
   recognition.start();
   recognition.onresult = function(e){

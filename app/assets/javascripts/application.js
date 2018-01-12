@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require_tree ./plugins
 //= require transcribe.js
+//= require collection.js
 
 ;(function($, window, document, undefined) {
 
