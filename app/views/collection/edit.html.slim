@@ -58,8 +58,8 @@
           tr  
             td(colspan="2")
               =label_tag :language, "Choose language", class: 'collection-label'
-              select id='select_language' onchange='updateCountry()' class='w30'
-              select id='select_dialect' class='w40'
+              =select_tag :language, {}, {onchange:'updateCountry()', class: 'w30'}
+              =select_tag :dialect, {}, {class: 'w40'}
 
       .toolbar
         .toolbar_group.w100
@@ -163,7 +163,8 @@
         $(this).closest('form').submit();
       });
       $(function(){
-        var defaultLang = "#{@collection.language}";
-        findDefault(defaultLang);
+        var initialLang = "#{@lang_index}";
+        var initialDialect = "#{@dialect_index}"
+        findDefault(initialLang, initialDialect);
       });
     });
