@@ -108,10 +108,10 @@ for (var i = 0; i < langs.length; i++) {
 }
 // Set default language / dialect.
 
-function findDefault(lang, dialect) {
+function findDefault(lang, defaultDialect) {
 language.selectedIndex = lang;
 updateCountry();
-dialect.selectedIndex = dialect; 
+dialect.selectedIndex = defaultDialect; 
 }
 //update with dialects select
 function updateCountry() {

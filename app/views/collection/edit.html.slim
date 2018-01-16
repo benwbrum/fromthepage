@@ -57,9 +57,10 @@
               =f.label :voice_recognition, "Speech to text available for transcribing"
           tr  
             td(colspan="2")
-              =label_tag :language, "Choose language", class: 'collection-label'
-              =select_tag :language, {}, {onchange:'updateCountry()', class: 'w30'}
-              =select_tag :dialect, {}, {class: 'w40'}
+              div#lang_opts class=('hidden' if @collection.voice_recognition.blank?)
+                =label_tag :language, "Choose language", class: 'collection-label'
+                =select_tag :language, {}, {onchange:'updateCountry()', class: 'w30'}
+                =select_tag :dialect, {}, {class: 'w40'}
 
       .toolbar
         .toolbar_group.w100
@@ -162,9 +163,17 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
-      $(function(){
-        var initialLang = "#{@lang_index}";
-        var initialDialect = "#{@dialect_index}"
-        findDefault(initialLang, initialDialect);
+
+      var initialLang = "#{@lang_index}";
+      var initialDialect = "#{@dialect_index}"
+      findDefault(initialLang, initialDialect);
+
+      $('#collection_voice_recognition').click(function(){
+        if (this.checked == true){
+          $('#lang_opts').removeClass('hidden');
+        } else {
+          $('#lang_opts').addClass('hidden');
+          dialect.style.visibility = 'hidden';
+        };
       });
     });
