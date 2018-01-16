@@ -113,20 +113,16 @@ class CollectionController < ApplicationController
 
   def edit
     @ssl = Rails.application.config.force_ssl
-
-    #only need to set this if the collection is set to voice dictation
-    if @collection.voice_recognition
-      #array of languages
-      array = Collection::LANGUAGE_ARRAY
-      #find the language portion of the language/dialect or set to nil
-      lang = !@collection.language.blank? ? @collection.language.split('-').first : nil
-      #find the index of the language in the array (transform to integer)
-      @lang_index = array.size.times.select {|i| array[i].include?(lang)}[0]
-      #then find the index of the nested dialect within the language array
-      int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(@collection.language)}[0]
-      #transform to integer and subtract 2 because of how the array is nested
-      @dialect_index = !int.nil? ? int-2 : nil
-    end
+    #array of languages
+    array = Collection::LANGUAGE_ARRAY
+    #find the language portion of the language/dialect or set to nil
+    lang = !@collection.language.blank? ? @collection.language.split('-').first : nil
+    #find the index of the language in the array (transform to integer)
+    @lang_index = array.size.times.select {|i| array[i].include?(lang)}[0]
+    #then find the index of the nested dialect within the language array
+    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(@collection.language)}[0]
+    #transform to integer and subtract 2 because of how the array is nested
+    @dialect_index = !int.nil? ? int-2 : nil
   end
 
   def update

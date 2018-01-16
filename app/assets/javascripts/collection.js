@@ -103,11 +103,14 @@ var langs =
  ['हिन्दी',             ['hi-IN']],
  ['ภาษาไทย',         ['th-TH']]];
 
-for (var i = 0; i < langs.length; i++) {
-  language.options[i] = new Option(langs[i][0], i);
-}
+$(function(){
+  if ($('div.collection_settings').length){
+    for (var i = 0; i < langs.length; i++) {
+      language.options[i] = new Option(langs[i][0], i);
+    }
+  }
+});
 // Set default language / dialect.
-
 function findDefault(lang, defaultDialect) {
 language.selectedIndex = lang;
 updateCountry();

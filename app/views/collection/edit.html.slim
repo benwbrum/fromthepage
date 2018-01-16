@@ -1,5 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
-.columns
+.columns.collection_settings
   article.maincol
     =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
@@ -171,6 +171,7 @@
       $('#collection_voice_recognition').click(function(){
         if (this.checked == true){
           $('#lang_opts').removeClass('hidden');
+          findDefault(initialLang, initialDialect);
         } else {
           $('#lang_opts').addClass('hidden');
           dialect.style.visibility = 'hidden';
