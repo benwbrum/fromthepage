@@ -47,3 +47,10 @@ es:
     registration:
       create:
         success: "El Usuario ha sido creado"
+      update:
+        success: "El Usuario ha sido modificado"
+      destroy:
+        success: "El Usuario ha sido borrado"
+    user:
+      update:
+        success: "El usuario ha sido modificado"
