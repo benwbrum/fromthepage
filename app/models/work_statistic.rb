@@ -55,6 +55,15 @@ class WorkStatistic < ActiveRecord::Base
     [[0, raw].max, 100].min
   end
 
+  def pct_transcribed_or_blank
+    pct_blank + pct_transcribed
+  end
+  
+  def pct_translated_or_blank
+    pct_translation_blank + pct_translated    
+  end
+  
+
   def pct_completed
     if self.work.ocr_correction
       pct_corrected + pct_annotated

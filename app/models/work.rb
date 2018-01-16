@@ -11,7 +11,7 @@ class Work < ActiveRecord::Base
   has_one :sc_manifest, :dependent => :destroy
   has_one :work_statistic, :dependent => :destroy
   has_many :sections, -> { order 'position' }, :dependent => :destroy
-  has_many :table_cells, -> { order 'page_id, row, header' }, :dependent => :destroy
+  has_many :table_cells, :dependent => :destroy
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
   has_and_belongs_to_many :document_sets
@@ -77,6 +77,30 @@ class Work < ActiveRecord::Base
     end
   end
   
+  def verbatim_transcription_plaintext
+    self.pages.map { |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
+  end
+
+  def verbatim_translation_plaintext
+    self.pages.map { |page| page.verbatim_translation_plaintext}.join("\n\n\n")
+  end
+
+  def emended_transcription_plaintext
+    self.pages.map { |page| page.emended_transcription_plaintext}.join("\n\n\n")
+  end
+
+  def emended_translation_plaintext
+    self.pages.map { |page| page.emended_translation_plaintext}.join("\n\n\n")
+  end
+
+  def searchable_plaintext
+    self.pages.map { |page| page.search_text}.join("\n\n\n")
+  end
+
+
+
+
+
   def suggest_next_page_title
     if self.pages.count == 0
       TitleStyle::render(TitleStyle::DEFAULT, 1)    
@@ -122,12 +146,10 @@ class Work < ActiveRecord::Base
   end
 
   def update_statistic
-    p 'update_statistic start'
     unless self.work_statistic
       self.work_statistic = WorkStatistic.new
     end
     self.work_statistic.recalculate
-    p 'update_statistic finish'
   end
 
   def set_transcription_conventions
@@ -187,6 +209,10 @@ class Work < ActiveRecord::Base
       num = (self.pages.count/3).round
       page = self.pages.offset(num).first
       self.update_columns(featured_page: page.id)
+  end
+
+  def field_based
+    self.collection.field_based
   end
 
 end

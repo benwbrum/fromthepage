@@ -56,7 +56,8 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
-    .page-column
+          
+    div class=(!@collection.field_based ? 'page-column' : 'page-column fieldarea')
       -if @page.status == 'blank'
         .centered
           .centered_content
@@ -85,8 +86,11 @@
             .page-editarea_title
               span =f.label :title, 'Title:', class: 'a50'
               span =f.text_field :title
-          =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-          =f.label :source_text, 'Edit transcription', class: 'hidden'
+          -if !@collection.field_based
+            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
+            =f.label :source_text, 'Edit transcription', class: 'hidden'
+          -else
+            =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
 .fgfaded ==@work.set_transcription_conventions
 

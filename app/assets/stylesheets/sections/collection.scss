@@ -394,6 +394,48 @@
   }
 }
 
+//Edit transcription fields
+.button.fields {
+  margin: $gapSize/2 $gapSize/2 0 0;
+}
+
+.toolbar.fields {
+  width: 95%;
+}
+
+.field_form {
+  width: 100%;
+  //border-collapse: separate;
+  table-layout: auto;
+  label { margin-left: 5px;}
+  th {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
+    word-wrap: break-word;
+    padding: 4px 0 4px 8px;
+  }
+  td {
+    padding: 4px 0 4px 8px;
+  }
+  margin-bottom: 15px;
+  .first {width: 15px;}
+  .fourth {width: 100%;}
+
+  textarea {
+    height: calc(2em + 2px);
+  }
+}
+
+a.field_icons {
+  margin: 5px;
+  color: $bodyFgLight;
+  display: inline-block;
+  &:hover {
+    color: $bodyFg;
+  }
+}
+
 // Collection works list
 
 .collection-work-list {

@@ -23,7 +23,7 @@ class Page < ActiveRecord::Base
   has_one :ia_leaf, :dependent => :destroy
   has_one :omeka_file, :dependent => :destroy
   has_one :sc_canvas, :dependent => :destroy
-  has_many :table_cells, -> { order 'section_id, row, header' }, :dependent => :destroy
+  has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
 
   after_save :create_version
@@ -44,6 +44,8 @@ class Page < ActiveRecord::Base
   scope :translation_review, -> { where(translation_status: 'review')}
   scope :needs_transcription, -> { where(status: nil)}
   scope :needs_translation, -> { where(translation_status: nil)}
+  scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
+  scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
   
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
@@ -59,6 +61,10 @@ class Page < ActiveRecord::Base
   # tested
   def collection
     work.collection
+  end
+
+  def field_based
+    self.collection.field_based
   end
 
   def articles_with_text
@@ -247,6 +253,47 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
   end
+  
+  def verbatim_transcription_plaintext
+    formatted_plaintext(self.xml_text)
+  end
+
+  def verbatim_translation_plaintext
+    formatted_plaintext(self.xml_translation)
+  end
+
+  def emended_transcription_plaintext
+    emended_plaintext(self.xml_text)
+  end
+
+  def emended_translation_plaintext
+    emended_plaintext(self.xml_translation)
+  end
+
+  #create table cells if the collection is field based
+  def process_fields(field_cells)
+    string = String.new
+    cells = self.table_cells.each {|c| c.delete}
+    unless field_cells.blank?
+      field_cells.each do |id, cell_data|
+        tc = TableCell.new(row: 1)
+        tc.work = self.work
+        tc.page = self
+        tc.transcription_field_id = id.to_i
+
+        cell_data.each do |key, value|
+          #tc = TableCell.new(row: 1, header: key, content: value)
+          tc.header = key
+          tc.content = value
+          string << key + ": " + value + "\n"
+        end
+
+        tc.save!
+      end
+    end
+    self.source_text = string
+
+  end
 
 
   #######################
@@ -291,6 +338,22 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
 private
+  def emended_plaintext(source)
+    doc = Nokogiri::XML(source)
+    doc.xpath("//link").each { |n| n.replace(n['target_title'])}    
+    formatted_plaintext_doc(doc)
+  end
+
+  def formatted_plaintext(source)
+    formatted_plaintext_doc(Nokogiri::XML(source))
+  end
+
+  def formatted_plaintext_doc(doc)
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//lb").each { |n| n.replace("\n")}
+    doc.text.sub(/^\s*/m, '')        
+  end
+
   def generate_thumbnail
     image = Magick::ImageList.new(self[:base_image])
     factor = 100.to_f / self[:base_height].to_f

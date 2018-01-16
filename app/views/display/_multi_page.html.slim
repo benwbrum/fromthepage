@@ -36,18 +36,23 @@
                 -action = page_params(page)
               -else
                 -action = page_params(page)
+              
               -if page.status == 'blank'
                 p.nodata_text =="This page is blank"
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
-                -if page.work.ocr_correction
-                  -status = 'corrected'
-                  -help = link_to('help correct', action)
+                -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
+                  -if page.work.ocr_correction
+                    -status = 'corrected'
+                    -help = link_to('help correct', action)
+                  -else
+                    -status = 'transcribed'
+                    -help = link_to('help transcribe', action)
+                  p.nodata_text =="This page is not #{status}, please #{help} this page"
                 -else
-                  -status = 'transcribed'
-                  -help = link_to('help transcribe', action)
-                p.nodata_text =="This page is not #{status}, please #{help} this page"
+                  p.nodata_text == "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+
 
             -if page.work.supports_translation
               button.outline.work-page_toggle-view Translation
@@ -89,10 +94,13 @@
         -else
           =button_to "Pages That Need Transcription", {action: "read_work", work_id: @work.id, needs_review: 'transcription' }, class: 'review-button'
           =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
+          =button_to "Pages That Need Indexing", {action: "read_work", work_id: @work.id, needs_review: 'index' }, class: 'review-button'
+
 
           -if @work.supports_translation
             =button_to "Pages That Need Translation", {action: "read_work", work_id: @work.id, needs_review: 'translation' }, class: 'review-button'
             =button_to "Translations That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'translation_review'}, class: 'review-button'
+            =button_to "Translations That Need Indexing", {action: "read_work", work_id: @work.id, needs_review: 'translation_index'}, class: 'review-button'
 
           
 

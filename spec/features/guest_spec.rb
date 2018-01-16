@@ -36,7 +36,7 @@ describe "guest user actions" do
     expect(@guest.guest).to be true
     page.fill_in 'page_source_text', with: "Guest Transcription 1"
     click_button('Save Changes')
-    expect(page).to have_content("You may save up to three transcriptions as a guest.")
+    expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
     #check to see what the page versions say
     page.find('.tabs').click_link("Versions")
     expect(page).to have_content("revisions")
@@ -44,7 +44,7 @@ describe "guest user actions" do
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "Guest Translation"
     click_button('Save Changes')
-    expect(page).to have_content("You may save up to three transcriptions as a guest.")
+    expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Third Guest Deed"
     click_button('Save Changes')

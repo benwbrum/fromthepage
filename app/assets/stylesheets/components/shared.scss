@@ -997,7 +997,7 @@ button, .button, .dropdown dd a {
   height: 100%;
   border-width: 0 1px 0 0;
   .scroll-container {
-    max-height: 100%;
+    //max-height: 100%;
     overflow-y: auto;
     padding-right: $gapSize / 2;
   }

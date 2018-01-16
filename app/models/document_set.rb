@@ -73,6 +73,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.language
   end
 
+  def field_based
+    self.collection.field_based
+  end
+
   def slug_candidates
     if self.slug
       [:slug]

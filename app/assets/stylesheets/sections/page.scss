@@ -140,6 +140,7 @@
   position: absolute;
   box-sizing: border-box;
   border: 1px solid rgba($borderColor, 0.6);
+  background: #FFF;
   &:first-child {
     left: 0;
     border-width: 0;
@@ -198,7 +199,6 @@
 
 .page-editarea {
   height: 100%;
-  overflow: hidden;
   background: #FFF;
   box-sizing: border-box;
   input, textarea {
@@ -206,7 +206,7 @@
     background: none;
     box-shadow: none;
   }
-  textarea {
+  textarea, div.editarea {
     height: 100%;
     margin-top: 45px;
     resize: none;
@@ -229,6 +229,41 @@
     + textarea { height: calc(100% - 55px); }
   }
 }
+
+.fieldarea, .fieldarea > .page-editarea {
+  background-color: $bodyBg;
+  border: 0;
+}
+
+div.editarea {
+  box-sizing: border-box;
+  overflow: auto;
+  span {
+    box-sizing: border-box;
+    display: inline-block;
+    margin-bottom: $gapSize;
+  }
+  input, textarea, select {
+    border: 1px solid $inputBorderColor;
+    background-color: $inputBackground;
+    box-shadow: inset 0 1px rgba(#000, 0.03);
+    width: calc(99% - 100px);
+  }
+  textarea {
+    margin-top: 0;
+    resize: vertical;
+    overflow: auto;
+  }
+  label {
+    box-sizing: border-box;
+    width: 100px;
+    text-align: right;
+    vertical-align: middle;
+    overflow: hidden;
+    padding-right: 10px;
+  }
+}
+
 
 .page-imagescan {
   height: 100%;

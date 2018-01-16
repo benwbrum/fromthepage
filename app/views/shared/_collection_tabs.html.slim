@@ -35,6 +35,13 @@
         :selected => 7,
         :path => "#{new_work_collection_path(@collection.owner, @collection)}",
       }]
+    -if @collection.field_based
+      -tabs += [{\
+        :name => 'Edit Fields',
+        :selected => 10,
+        :path => "#{collection_edit_fields_path(@collection.owner, @collection)}",
+      }]
+
   -else
     -tabs += [{\
     :name => 'Settings',
