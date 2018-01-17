@@ -124,15 +124,19 @@ class CollectionController < ApplicationController
   end
 
   def edit
-    @ssl = Rails.application.config.force_ssl
+    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
     #array of languages
     array = Collection::LANGUAGE_ARRAY
+
+    #set language to default if it doesn't exist
+
+    lang = !@collection.language.blank? ? @collection.language : "en-US"
     #find the language portion of the language/dialect or set to nil
-    lang = !@collection.language.blank? ? @collection.language.split('-').first : nil
+    part = lang.split('-').first
     #find the index of the language in the array (transform to integer)
-    @lang_index = array.size.times.select {|i| array[i].include?(lang)}[0]
+    @lang_index = array.size.times.select {|i| array[i].include?(part)}[0]
     #then find the index of the nested dialect within the language array
-    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(@collection.language)}[0]
+    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
     #transform to integer and subtract 2 because of how the array is nested
     @dialect_index = !int.nil? ? int-2 : nil
   end

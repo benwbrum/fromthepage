@@ -125,5 +125,17 @@ function updateCountry() {
   for (var i = 1; i < list.length; i++) {
     dialect.options.add(new Option(list[i][1], list[i][0]));
   }
-  dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
+  if (collection_voice_recognition.checked){
+    dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
+  }
+}
+
+function showLang(e){
+  if (e.target.checked == true){
+    $('#lang_opts').removeClass('hidden');
+    findDefault(initialLang, initialDialect);
+  } else {
+    $('#lang_opts').addClass('hidden');
+    dialect.style.visibility = 'hidden';
+  }
 }

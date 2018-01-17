@@ -53,13 +53,14 @@
           tr
             td(colspan="2")
               p
-              =f.check_box :voice_recognition, value: @collection.voice_recognition
+              =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, "Speech to text available for transcribing"
           tr  
             td(colspan="2")
               div#lang_opts class=('hidden' if @collection.voice_recognition.blank?)
                 =label_tag :language, "Choose language", class: 'collection-label'
                 =select_tag :language, {}, {onchange:'updateCountry()', class: 'w30'}
+                |&nbsp;
                 =select_tag :dialect, {}, {class: 'w40'}
 
       .toolbar
@@ -162,6 +163,10 @@
 
 -content_for :javascript
   javascript:
+
+    var initialLang;
+    var initialDialect;
+
     $(function() {
       $('.user-select-form select').select2({
       }).on('select2:select', function() {
@@ -174,23 +179,8 @@
         $(this).closest('form').submit();
       });
 
-      var initialLang = "#{@lang_index}";
-      var initialDialect = "#{@dialect_index}"
+      initialLang = "#{@lang_index}";
+      initialDialect = "#{@dialect_index}"
       findDefault(initialLang, initialDialect);
 
-      $('#collection_voice_recognition').click(function(){
-        if (this.checked == true){
-          $('#lang_opts').removeClass('hidden');
-          findDefault(initialLang, initialDialect);
-        } else {
-          $('#lang_opts').addClass('hidden');
-          dialect.style.visibility = 'hidden';
-        };
-      });
-/*
-      $('.litebox_container').click(function(){
-        //e.preventDefault();
-        debugger;
-      });
-*/
     });
