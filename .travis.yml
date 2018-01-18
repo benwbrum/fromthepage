@@ -32,12 +32,6 @@ jobs:
       gemfile: gemfiles/Gemfile.mysql57
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install ghostscript
-  - sudo apt-get install graphviz
-  - sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-  - qmake --version
-  - qtchooser -list-versions
   - bash travis/.travis_setup.sh
 
 before_script:
