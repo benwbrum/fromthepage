@@ -83,7 +83,7 @@
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     h3 Recent Notes
-    -@collection.notes.limit(10).each do |note|
+    -@collection.notes.active.limit(10).each do |note|
       -user = link_to note.user.display_name, user_profile_path(note.user)
       -text = link_to truncate(note.title, :length => 100), collection_display_page_path(@collection.owner, @collection, note.page.work, note.page)
       .deed-short.small

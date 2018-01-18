@@ -10,9 +10,9 @@ class PageController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
 
   def authorized?
-    if user_signed_in? && current_user.owner
+    if user_signed_in?
       if @work
-        redirect_to dashboard_path unless @work.owner == current_user
+        redirect_to dashboard_path unless current_user.like_owner?(@work)
       end
     else
       redirect_to dashboard_path

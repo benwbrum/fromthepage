@@ -58,14 +58,15 @@
           .centered_content
             h5.nodata_title This page is not #{text_type}
             p.nodata_text
-              -if current_user
+              -if current_user && current_user.can_transcribe?(@page.work)
                 -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
                 =="Please #{help_link} this page"
                 =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
-              -else
+              -elsif !current_user && !@page.work.restrict_scribes
                 -help_link = link_to(help_word, { :controller => 'transcribe', :action => 'guest', :page_id => @page.id })
                 =="Please #{help_link} this page"
-
+              -else
+                =="Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
 
 h2.legend#notes Page Notes
 .page-notes

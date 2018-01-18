@@ -16,4 +16,6 @@ class Note < ActiveRecord::Base
 
   validates :body, presence: true
 
+  scope :active, -> { joins(:user).where(users: {deleted: false}) }
+
 end
