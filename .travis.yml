@@ -1,7 +1,6 @@
 dist: trusty
 sudo: false
 language: ruby
-cache: bundler
 
 rvm: 2.2.0
 
@@ -35,11 +34,12 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install ghostscript
   - sudo apt-get install graphviz
-  - sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-  - qtchooser -qt=qt5
+  - sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
-
+  - qtchooser -qt=qt5
   - bash travis/.travis_setup.sh
+  - bundle install
+  - gem pristine capybara-webkit
 
 before_script:
   - bundle exec rake db:create
