@@ -38,8 +38,6 @@ before_install:
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
   - qtchooser -qt=qt5
   - bash travis/.travis_setup.sh
-  - bundle install
-  - gem pristine capybara-webkit
 
 before_script:
   - bundle exec rake db:create

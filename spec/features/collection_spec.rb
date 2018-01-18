@@ -10,6 +10,10 @@ describe "collection settings js tasks", :order => :defined do
     @collection = @collections.second
     @work = @collection.works.second
     @rest_user = User.find_by(login: REST_USER)
+    @page = @work.pages.first
+    @wording = "Click microphone to dictate"
+    @article = @collection.articles.first
+
   end
 
   it "sets collection to private" do
@@ -141,6 +145,82 @@ describe "collection settings js tasks", :order => :defined do
     page.select('Recent Activity', from: 'sort_by')
     expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.first.title
     expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
+  end
+
+  it "checks for microphones (not enabled)" do
+    login_as(@owner, :scope => :user)
+    #first set the work to translation
+    @work.supports_translation = true
+    @work.save
+     #transcribe
+    visit collection_transcribe_page_path(@collection.owner, @collection, @work, @page)
+    if page.has_content?('Facsimile')
+      page.find('.tabs').click_link('Transcribe')
+    end
+    #transcription div
+    expect(page).not_to have_selector('.page-column_voice')
+    #note
+    expect(page).not_to have_selector('.voice-info')
+    expect(page).not_to have_content(@wording)
+    #translate
+   page.find('.tabs').click_link('Translate')
+    expect(page).not_to have_selector('.page-column_voice')
+    #article
+    visit collection_article_edit_path(@collection.owner, @collection, @article)
+    expect(page).not_to have_content(@wording)
+    expect(page).not_to have_selector('.article-editarea')
+  end
+
+  it "turns on voice transcription", :js => true do
+    login_as(@owner, :scope => :user)
+    expect(@collection.voice_recognition).to be false
+    visit edit_collection_path(@collection.owner, @collection)
+    expect(page).not_to have_selector('#lang_opts')
+    page.check 'collection_voice_recognition'
+    expect(page).to have_selector('#lang_opts')
+    click_button 'Save Changes'
+    sleep(2)
+    expect(Collection.second.voice_recognition).to be true
+  end
+
+  it "checks for microphones (enabled)" do
+    login_as(@owner, :scope => :user)
+    #first set the work to translation
+    @work.supports_translation = true
+    @work.save
+    #transcribe
+    visit collection_transcribe_page_path(@collection.owner, @collection, @work, @page)
+    if page.has_content?('Facsimile')
+      page.find('.tabs').click_link('Transcribe')
+    end
+    #transcription div
+    expect(page).to have_selector('.page-column_voice')
+    expect(page.find('.page-column_voice')).to have_content(@wording)
+    #note
+    expect(page.find('.user-bubble_form_footer')).to have_content(@wording)
+    #expect(page.find('.voice-info')).to have_content(@wording)
+    #translate
+    page.find('.tabs').click_link('Translate')
+    expect(page).to have_selector('.page-column_voice')
+    expect(page.find('.page-column_voice')).to have_content(@wording)
+    #article
+    visit collection_article_edit_path(@collection.owner, @collection, @article)
+    expect(page.find('.article-editarea')).to have_content(@wording)
+  end
+
+  it "turns off voice transcription", :js => true do
+    login_as(@owner, :scope => :user)
+    @collection = Collection.second
+    expect(@collection.voice_recognition).to be true
+    visit edit_collection_path(@collection.owner, @collection)
+    page.uncheck 'collection_voice_recognition'
+    expect(page).not_to have_selector('#lang_opts')
+    click_button 'Save Changes'
+    #turn off work translation
+    @work.supports_translation = false
+    @work.save
+    sleep(2)
+    expect(Collection.second.voice_recognition).to be false
   end
 
 end
