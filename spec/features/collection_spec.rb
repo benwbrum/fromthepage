@@ -2,9 +2,9 @@
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do
-  Capybara.javascript_driver = :webkit
 
   before :all do
+    Capybara.javascript_driver = :webkit
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.second
@@ -171,13 +171,14 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).not_to have_selector('.article-editarea')
   end
 
-  it "turns on voice transcription" do
+  it "turns on voice transcription", :js => true do
+    page.driver.allow_unknown_urls
     login_as(@owner, :scope => :user)
     expect(@collection.voice_recognition).to be false
     visit edit_collection_path(@collection.owner, @collection)
     expect(page).not_to have_selector('#lang_opts')
     page.check 'collection_voice_recognition'
-    #expect(page).to have_selector('#lang_opts')
+    expect(page).to have_selector('#lang_opts')
     click_button 'Save Changes'
     sleep(2)
     expect(Collection.second.voice_recognition).to be true
