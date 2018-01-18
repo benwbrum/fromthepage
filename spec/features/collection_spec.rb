@@ -172,7 +172,6 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "turns on voice transcription", :js => true do
-    page.driver.allow_unknown_urls
     login_as(@owner, :scope => :user)
     expect(@collection.voice_recognition).to be false
     visit edit_collection_path(@collection.owner, @collection)
