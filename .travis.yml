@@ -1,7 +1,6 @@
 dist: trusty
 sudo: false
 language: ruby
-cache: bundler
 
 rvm: 2.2.0
 
@@ -40,7 +39,6 @@ before_install:
   - bash travis/.travis_setup.sh
 
 before_script:
-  - gem install capybara-webkit
   - bundle exec rake db:create
   - bundle exec rake db:migrate
   - bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
