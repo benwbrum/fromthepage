@@ -146,7 +146,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.first.title
     expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
   end
-
+=begin
   it "checks for microphones (not enabled)" do
     login_as(@owner, :scope => :user)
     #first set the work to translation
@@ -222,7 +222,7 @@ describe "collection settings js tasks", :order => :defined do
     sleep(2)
     expect(Collection.second.voice_recognition).to be false
   end
-
+=end
 end
 
 =begin

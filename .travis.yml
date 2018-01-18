@@ -1,6 +1,7 @@
 dist: trusty
 sudo: false
 language: ruby
+cache: bundler
 
 rvm: 2.2.0
 
@@ -16,7 +17,6 @@ jobs:
     - stage: test
       env: DB=mysql
       gemfile: Gemfile
-  exclude:  
     - env: DB=mysql
       gemfile: gemfiles/Gemfile.mysql57
     - env: DB=mysql57
@@ -45,8 +45,7 @@ before_script:
   - bundle exec rake db:fixtures:load FIXTURES_PATH=spec/fixtures
 
 script:
-  - xvfb-run bundle exec rspec spec/features/add_data_spec.rb
-  - xvfb-run bundle exec rspec spec/features/collection_spec.rb
+  - xvfb-run bundle exec rspec spec/features
 
 branches:
   only:

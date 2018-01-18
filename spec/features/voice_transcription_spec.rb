@@ -1,4 +1,3 @@
-=begin
 require 'spec_helper'
 
 describe "voice transcription", :order => :defined do
@@ -92,4 +91,3 @@ it "checks for microphones (enabled)" do
   end
 
 end
-=end

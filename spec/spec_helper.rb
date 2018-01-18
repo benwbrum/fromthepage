@@ -67,7 +67,7 @@ end
 
 Capybara::Webkit.configure do |config|
   config.allow_unknown_urls
-  config.debug = true
+  #config.debug = true
 end
 
 Capybara.configure do |config|
