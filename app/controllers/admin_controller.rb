@@ -81,7 +81,8 @@ class AdminController < ApplicationController
   end
 
   def delete_user
-    @user.destroy
+    @user.soft_delete
+    #@user.destroy
     flash[:notice] = "User profile has been deleted"
     redirect_to :action => 'user_list'
   end

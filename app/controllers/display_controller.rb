@@ -27,11 +27,17 @@ class DisplayController < ApplicationController
       elsif @review == 'transcription'
         @pages = Page.where(work_id: params[:work_id]).needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+      elsif @review == 'index'
+        @pages = Page.where(work_id: params[:work_id]).needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
       elsif @review == 'translation'
         @pages = Page.where(work_id: params[:work_id]).needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
       elsif @review == 'translation_review'
         @pages = Page.order('position').where(work_id: params[:work_id]).translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
+        @count = @pages.count
+      elsif @review == 'translation_index'
+        @pages = Page.order('position').where(work_id: params[:work_id]).needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
       else
         @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)

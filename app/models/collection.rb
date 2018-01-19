@@ -10,7 +10,7 @@ class Collection < ActiveRecord::Base
   has_many :articles, :dependent => :destroy
   has_many :document_sets, -> { order 'title' }, :dependent => :destroy
   has_many :categories, -> { order 'title' }
-  has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
+  has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, :dependent => :destroy
 

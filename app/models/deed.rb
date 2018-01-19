@@ -38,6 +38,7 @@ class Deed < ActiveRecord::Base
 
   validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW, TRANSLATION_INDEXED, WORK_ADDED ]
   scope :order_by_recent_activity, -> { order('created_at DESC') }
+  scope :active, -> { joins(:user).where(users: {deleted: false}) }
 
   visitable # ahoy integration
 
