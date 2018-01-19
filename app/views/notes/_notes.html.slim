@@ -10,14 +10,18 @@
 -if user_signed_in?
   .user-bubble
     .userpic =gravatar_image_tag current_user.email, :alt => current_user.display_name
+
     =form_for :note, url: notes_path, remote: true, html: { class: 'user-bubble_form' } do |f|
       =hidden_field_tag(:page_id, @page.id)
       .user-bubble_form_editor
         =f.text_area :body, :rows => 4, :placeholder => 'Write a new note...'
       .user-bubble_form_footer
         span.user-bubble_form_error
-        =f.button 'Submit'
         =f.label :body, 'Note body', class: 'hidden'
+        -if @collection.voice_recognition
+          span.voice-info.voice
+          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_note', onclick: 'startButton(event);'
+        =f.button 'Submit'
 
   -content_for :javascript
     javascript:
@@ -60,4 +64,6 @@
             $container.fadeOut(function() { $(this).remove(); });
           }
         });
+
+
       });

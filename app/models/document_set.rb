@@ -65,6 +65,14 @@ class DocumentSet < ActiveRecord::Base
     self.collection.link_help
   end
 
+  def voice_recognition
+    self.collection.voice_recognition
+  end
+
+  def language
+    self.collection.language
+  end
+
   def field_based
     self.collection.field_based
   end
