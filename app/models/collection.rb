@@ -108,7 +108,7 @@ class Collection < ActiveRecord::Base
     #for each page, delete page versions, update all attributes, save
     pages.each do |p|
       p.page_versions.destroy_all
-      p.update_columns(source_text: nil, base_image:nil, base_width: nil, base_height: nil, shrink_factor: nil, created_on: Time.now, lock_version: 0, xml_text: nil, status: nil, source_translation: nil, xml_translation: nil, translation_status: nil, search_text: "\n\n\n\n")
+      p.update_columns(source_text: nil, created_on: Time.now, lock_version: 0, xml_text: nil, status: nil, source_translation: nil, xml_translation: nil, translation_status: nil, search_text: "\n\n\n\n")
       p.save!
     end
 
