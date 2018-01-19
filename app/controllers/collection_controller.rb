@@ -104,6 +104,8 @@ class CollectionController < ApplicationController
 
   def enable_fields
     @collection.field_based = true
+    @collection.voice_recognition = false
+    @collection.language = nil
     @collection.save!
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end

@@ -15,7 +15,7 @@
             div class=('article-editarea' if @collection.voice_recognition)
               -if @collection.voice_recognition
                 =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
-                span.voice-info.article-voice Click microphone to dictate
+                span.voice-info.article-voice
                 
               =f.text_area :source_text, rows: 15
 

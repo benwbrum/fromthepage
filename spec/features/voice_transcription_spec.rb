@@ -9,7 +9,6 @@ describe "voice transcription", :order => :defined do
     @collection = Collection.second
     @work = @collection.works.first
     @page = @work.pages.first
-    @wording = "Click microphone to dictate"
     @article = @collection.articles.first
   end
 
@@ -29,16 +28,18 @@ describe "voice transcription", :order => :defined do
     end
     #transcription div
     expect(page).not_to have_selector('.page-column_voice')
+    expect(page).not_to have_selector('#start_img')
     #note
     expect(page).not_to have_selector('.voice-info')
-    expect(page).not_to have_content(@wording)
+    expect(page).not_to have_selector('#start_img_note')
     #translate
-   page.find('.tabs').click_link('Translate')
+    page.find('.tabs').click_link('Translate')
     expect(page).not_to have_selector('.page-column_voice')
+    expect(page).not_to have_selector('#start_img')
     #article
     visit collection_article_edit_path(@collection.owner, @collection, @article)
-    expect(page).not_to have_content(@wording)
     expect(page).not_to have_selector('.article-editarea')
+    expect(page).not_to have_selector('#start_img')
   end
 
   it "turns on voice transcription", :js => true do
@@ -63,17 +64,17 @@ it "checks for microphones (enabled)" do
     end
     #transcription div
     expect(page).to have_selector('.page-column_voice')
-    expect(page.find('.page-column_voice')).to have_content(@wording)
+    expect(page).to have_selector('#start_img')
     #note
-    expect(page.find('.user-bubble_form_footer')).to have_content(@wording)
-    #expect(page.find('.voice-info')).to have_content(@wording)
+    expect(page).to have_selector('#start_img_note')
     #translate
     page.find('.tabs').click_link('Translate')
     expect(page).to have_selector('.page-column_voice')
-    expect(page.find('.page-column_voice')).to have_content(@wording)
+    expect(page).to have_selector('#start_img')
     #article
     visit collection_article_edit_path(@collection.owner, @collection, @article)
-    expect(page.find('.article-editarea')).to have_content(@wording)
+    expect(page).to have_selector('.article-editarea')
+    expect(page).to have_selector('#start_img')
   end
 
   it "turns off voice transcription", :js => true do

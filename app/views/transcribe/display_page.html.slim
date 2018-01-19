@@ -69,7 +69,7 @@
         -if @collection.voice_recognition
           .page-column_voice
             =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
-            span.voice-info Click microphone to dictate
+            span.voice-info
 
         .page-column_actions
           -unless @preview_xml

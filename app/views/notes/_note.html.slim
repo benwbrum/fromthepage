@@ -20,7 +20,7 @@
       .user-bubble_form_footer
         span.user-bubble_form_error
         -if @collection.voice_recognition
-          span.voice-info.voice Click microphone to dictate
+          span.voice-info.voice
           =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_update', onclick: 'startButton(event);'
         a(data-note-edit) Cancel
         =f.button 'Update'
