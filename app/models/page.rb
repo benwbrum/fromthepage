@@ -182,7 +182,6 @@ class Page < ActiveRecord::Base
     if @sections
       self.sections.each { |s| s.delete }
       self.table_cells.each { |c| c.delete }
-  #    binding.pry
       
       @sections.each do |section|
         section.pages << self
