@@ -13,6 +13,7 @@ class ExportController < ApplicationController
 
     @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 15)
 
+    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: {work_id: nil}).distinct
   end
 
   def show
@@ -91,6 +92,13 @@ class ExportController < ApplicationController
       end
     end
     cookies['download_finished'] = 'true'
+  end
+
+  def export_all_tables
+    #loop through each work with table data and add to the csv
+    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: {work_id: nil}).distinct
+    
+    cookies['download_finished'] = 'true'
 
   end
 
@@ -114,7 +122,6 @@ class ExportController < ApplicationController
     render  :layout => false, :content_type => "text/plain", :text => @page.search_text
   end
 
-
   def work_plaintext_verbatim
     render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_transcription_plaintext
   end
@@ -134,7 +141,6 @@ class ExportController < ApplicationController
   def work_plaintext_searchable
     render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
   end
-
 
 private
 
