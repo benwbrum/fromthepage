@@ -135,6 +135,9 @@ class Page < ActiveRecord::Base
     if self.ia_leaf
       return nil
     end
+    if self.base_image.blank?
+      return nil
+    end
     if !File.exists?(thumbnail_filename())
       if File.exists?(modernize_absolute(self.base_image))
         generate_thumbnail
