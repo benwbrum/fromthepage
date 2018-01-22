@@ -33,7 +33,7 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
     recognizing = false;
     ignore_onend = true;
     recognition.stop();
-    button.src = "<%= asset_path('mic-off-icon.png') %>";
+    button.src = "<%= asset_path('mic-error-icon.png') %>";
     voiceSpan.text("Recording Error");
     voiceSpan.addClass('voice-error');
   };
