@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
-//= require transcribe.js
+//= require transcribe.js.erb
 //= require collection.js
 
 ;(function($, window, document, undefined) {

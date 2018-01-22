@@ -15,7 +15,7 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
 
   recognition.onstart = function(){
     recognizing = true;
-    button.src = '/assets/mic-on-icon.png';
+    button.src = "<%= asset_path('mic-on-icon.png')%>";
     voiceSpan.text("Listening");
   };
 
@@ -25,7 +25,7 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
     if (ignore_onend){
       return;
     }
-    button.src = '/assets/mic-icon.png';
+    button.src = "<%= asset_path('mic-icon.png') %>";
     voiceSpan.text("Click microphone for dictation");
   };
 
@@ -33,7 +33,7 @@ if (window.hasOwnProperty('webkitSpeechRecognition')){
     recognizing = false;
     ignore_onend = true;
     recognition.stop();
-    button.src = '/assets/mic-off-icon.png';
+    button.src = "<%= asset_path('mic-off-icon.png') %>";
     voiceSpan.text("Recording Error");
     voiceSpan.addClass('voice-error');
   };
