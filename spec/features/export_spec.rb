@@ -50,11 +50,10 @@ describe "export tasks" do
     expect(page).to have_content("TEI export")
   end
 
-  it "exports a table csv" do
+  it "failes to export a table csv" do
     visit "/export?collection_id=#{@collection.id}"
     expect(page).to have_content("Export Individual Works")
-    page.find('tr', text: @work.title).find('.btnCsvTblExport').click
-    expect(page.response_headers['Content-Type']).to eq 'application/csv'
+    expect(page.find('tr', text: @work.title)).not_to have_selector('.btnCsvTblExport')
   end
 
 end

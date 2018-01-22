@@ -284,7 +284,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           #tc = TableCell.new(row: 1, header: key, content: value)
           tc.header = key
           tc.content = value
-          string << key + ": " + value + "\n"
+          string << key + ": " + value + "\n\n"
         end
 
         tc.save!

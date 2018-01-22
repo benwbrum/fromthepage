@@ -91,6 +91,15 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.all.count).to be < count
   end
 
+  #note: these are hidden unless there is table data
+  it "exports a table csv" do
+    work = @collection.works.first
+    visit "/export?collection_id=#{@collection.id}"
+    expect(page).to have_content("Export Individual Works")
+    page.find('tr', text: work.title).find('.btnCsvTblExport').click
+    expect(page.response_headers['Content-Type']).to eq 'application/csv'
+  end
+
   it "sets collection back to document based transcription" do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
