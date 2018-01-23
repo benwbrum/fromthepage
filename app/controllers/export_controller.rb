@@ -179,10 +179,10 @@ private
 
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       if table_obj.sections.blank?
-        csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
+        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
         col_sections = false
       else
-        csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
+        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
         col_sections = true
       end
       works.each do |w|
@@ -197,7 +197,7 @@ private
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-        page_cells = [work.title, page.title, page.position, page_url]
+        page_cells = [work.title, work.identifier, page.title, page.position, page_url]
         data_cells = Array.new(@headings.count, "")
 
         if page.sections.blank?
