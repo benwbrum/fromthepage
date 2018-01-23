@@ -42,7 +42,7 @@
           =f.check_box('needs_review', {checked: false})
 
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save', id: 'save_button'
+        =button_tag 'Save Changes', :name => 'save', id: 'save_button', onclick: 'unsavedNotes(event);'
 
 
   .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
@@ -66,6 +66,11 @@
           =f.text_area :source_text
 
       -else
+        -if @collection.voice_recognition
+          .page-column_voice
+            =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            span.voice-info
+
         .page-column_actions
           -unless @preview_xml
             =>button_tag 'Preview', :name => 'preview'
@@ -104,6 +109,9 @@ h2.legend Page Notes
 
 -content_for :javascript
   javascript:
+    //set language for voice to text
+    var lang = "#{@collection.language}";
+
     $(function() {
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
@@ -121,30 +129,14 @@ h2.legend Page Notes
         var checked = this.checked ? 'yes' : 'no';
         Cookies.set('auto_fullscreen', checked, { expires: 365 });
       });
-    });
 
-    $(function(){
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
       });
-    });
 
-    $(function(){
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-    });
-
-    $(function(){
-      $('#save_button').click(function(e){
-        var noteText = $('.user-bubble_form #note_body:last').val();
-        if (noteText != ''){
-          e.preventDefault();
-          alert("You have unsaved notes. Please save or discard notes before saving transcription.");
-        } else {
-          return;
-        }
-      })
 
     });
 

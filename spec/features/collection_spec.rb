@@ -2,14 +2,18 @@
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do
-  Capybara.javascript_driver = :webkit
 
   before :all do
+    Capybara.javascript_driver = :webkit
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.second
     @work = @collection.works.second
     @rest_user = User.find_by(login: REST_USER)
+    @page = @work.pages.first
+    @wording = "Click microphone to dictate"
+    @article = @collection.articles.first
+
   end
 
   it "sets collection to private" do
@@ -144,13 +148,3 @@ describe "collection settings js tasks", :order => :defined do
   end
 
 end
-
-=begin
-    #I can't access the select2 dropdown, but this code was the closest
-    login_as(@owner, :scope => :user)
-    visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Settings")
-    select2([@rest_user.display_name], '#collaborators')
-    page.find('#collaborators').find('button', text: 'Add').trigger(:submit)
-=end
-
