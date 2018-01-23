@@ -62,7 +62,7 @@ class ExportController < ApplicationController
   
   def table_csv
     send_data(export_tables_as_csv(@work),
-              :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :filename => "fromthepage_tables_export_#{@work.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
     
@@ -95,11 +95,11 @@ class ExportController < ApplicationController
   end
 
   def export_all_tables
-    #loop through each work with table data and add to the csv
-    @table_export = @collection.works.joins(:table_cells).where.not(table_cells: {work_id: nil}).distinct
-    
+    send_data(export_tables_as_csv(@collection),
+              :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
     cookies['download_finished'] = 'true'
-
+   
   end
 
   def page_plaintext_verbatim
@@ -144,45 +144,58 @@ class ExportController < ApplicationController
 
 private
 
-  def export_tables_as_csv(work)
-    field_headings = work.collection.transcription_fields.order(:position).pluck(:label)
-    cell_headings = work.table_cells.pluck('DISTINCT header')
-    raw_headings = field_headings + cell_headings
-    headings = []
+  def get_headings(obj)
+    if obj.is_a?(Collection)
+      field_headings = obj.transcription_fields.order(:position).pluck(:label)
+      cell_headings = TableCell.where(work_id: obj.works.ids).pluck('DISTINCT header')
+    elsif obj.is_a?(Work)
+      field_headings = obj.collection.transcription_fields.order(:position).pluck(:label)
+      cell_headings = obj.table_cells.pluck('DISTINCT header')
+    end
+    @raw_headings = (field_headings + cell_headings).uniq
+    @headings = []
 
     #get headings from field-based
     field_headings.each do |raw_heading|
-      headings << "#{raw_heading} (text)"
-      headings << "#{raw_heading} (subject)"
+      @headings << "#{raw_heading} (text)"
+      @headings << "#{raw_heading} (subject)"
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
-      headings << "#{raw_heading} (text)"
-      headings << "#{raw_heading} (subject)"
+      @headings << "#{raw_heading} (text)"
+      @headings << "#{raw_heading} (subject)"
     end
+    @headings.uniq!
+
+  end
+
+  def export_tables_as_csv(obj)
+    get_headings(obj)
+
+    work = obj
 
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       if work.sections.blank?
-        csv << (['Page Title', 'Page Position', 'Page URL' ] + headings)
+        csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
       else
-        csv << (['Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + headings)
+        csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
       end
       work.pages.includes(:table_cells).each do |page|
         unless page.table_cells.empty?
           page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-          page_cells = [page.title, page.position, page_url]
-          data_cells = Array.new(headings.count, "")
+          page_cells = [work.title, page.title, page.position, page_url]
+          data_cells = Array.new(@headings.count, "")
 
           if page.sections.blank?
             #get cell data for a page with only one table
             page.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, raw_headings, data_cells)
+              cell_data(cell_array, @raw_headings, data_cells)
               # write the record to the CSV and start a new record
               csv << (page_cells + data_cells)
               #csv << (page_cells + section_cells + data_cells)
               #create a new array for the next row
-              data_cells = Array.new(headings.count, "")
+              data_cells = Array.new(@headings.count, "")
             end
 
           else
@@ -195,11 +208,11 @@ private
               #group the table cells per section into rows
               section.table_cells.group_by(&:row).each do |row, cell_array|
                 #get the cell data and add it to the array
-                cell_data(cell_array, raw_headings, data_cells)
+                cell_data(cell_array, @raw_headings, data_cells)
                 # write the record to the CSV and start a new record
                 csv << (page_cells + section_cells + data_cells)
                 #create a new array for the next row
-                data_cells = Array.new(headings.count, "")
+                data_cells = Array.new(@headings.count, "")
               end
             end
           end
