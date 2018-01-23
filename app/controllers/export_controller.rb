@@ -144,14 +144,9 @@ class ExportController < ApplicationController
 
 private
 
-  def get_headings(obj)
-    if obj.is_a?(Collection)
-      field_headings = obj.transcription_fields.order(:position).pluck(:label)
-      cell_headings = TableCell.where(work_id: obj.works.ids).pluck('DISTINCT header')
-    elsif obj.is_a?(Work)
-      field_headings = obj.collection.transcription_fields.order(:position).pluck(:label)
-      cell_headings = obj.table_cells.pluck('DISTINCT header')
-    end
+  def get_headings(collection, ids)
+    field_headings = collection.transcription_fields.order(:position).pluck(:label)
+    cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
 
@@ -168,23 +163,30 @@ private
     @headings.uniq!
   end
 
-  def export_tables_as_csv(obj)
-    get_headings(obj)
+  def export_tables_as_csv(table_obj)
+    if table_obj.is_a?(Collection)
+      collection = table_obj
+      ids = table_obj.works.ids
+      works = table_obj.works
+    elsif table_obj.is_a?(Work)
+      collection = table_obj.collection
+      #need arrays so they will act equivalently to the collection works
+      ids = [table_obj.id]
+      works = [table_obj]
+    end
+
+    get_headings(collection, ids)
 
     csv_string = CSV.generate(:force_quotes => true) do |csv|
-      if obj.sections.blank?
+      if table_obj.sections.blank?
         csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
       else
         csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
       end
 
-      if obj.is_a?(Collection)
-        obj.works.each do |work|
-          csv = generate_csv(work, csv)
-        end
-      elsif obj.is_a?(Work)
-        csv = generate_csv(obj, csv)
-      end      
+      works.each do |w|
+        csv = generate_csv(w, csv)
+      end
     end
     cookies['download_finished'] = 'true'
     csv_string
