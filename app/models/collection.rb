@@ -123,6 +123,9 @@ class Collection < ActiveRecord::Base
     self.works.where("title LIKE ?", "%#{search}%")
   end
 
+  def sections
+    Section.where(work_id: self.works.ids)
+  end
 
   protected
     def set_transcription_conventions

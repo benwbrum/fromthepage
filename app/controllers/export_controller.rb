@@ -54,10 +54,10 @@ class ExportController < ApplicationController
   end
 
   def subject_csv
-    cookies['download_finished'] = 'true'
     send_data(@collection.export_subjects_as_csv,
               :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
+    cookies['download_finished'] = 'true'
   end
   
   def table_csv
@@ -166,62 +166,73 @@ private
       @headings << "#{raw_heading} (subject)"
     end
     @headings.uniq!
-
   end
 
   def export_tables_as_csv(obj)
     get_headings(obj)
 
-    work = obj
-
     csv_string = CSV.generate(:force_quotes => true) do |csv|
-      if work.sections.blank?
+      if obj.sections.blank?
         csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
       else
         csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
       end
-      work.pages.includes(:table_cells).each do |page|
-        unless page.table_cells.empty?
-          page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-          page_cells = [work.title, page.title, page.position, page_url]
-          data_cells = Array.new(@headings.count, "")
 
-          if page.sections.blank?
-            #get cell data for a page with only one table
-            page.table_cells.group_by(&:row).each do |row, cell_array|
+      if obj.is_a?(Collection)
+        obj.works.each do |work|
+          csv = generate_csv(work, csv)
+        end
+      elsif obj.is_a?(Work)
+        csv = generate_csv(obj, csv)
+      end      
+    end
+    cookies['download_finished'] = 'true'
+    csv_string
+  end
+
+  def generate_csv(work, csv)
+    work.pages.includes(:table_cells).each do |page|
+      unless page.table_cells.empty?
+        page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
+        page_cells = [work.title, page.title, page.position, page_url]
+        data_cells = Array.new(@headings.count, "")
+
+        if page.sections.blank?
+          #get cell data for a page with only one table
+          page.table_cells.group_by(&:row).each do |row, cell_array|
+            #get the cell data and add it to the array
+            cell_data(cell_array, @raw_headings, data_cells)
+            # write the record to the CSV and start a new record
+            csv << (page_cells + data_cells)
+            #csv << (page_cells + section_cells + data_cells)
+            #create a new array for the next row
+            data_cells = Array.new(@headings.count, "")
+          end
+
+        else
+          #get the table sections/headers and iterate cells within the sections
+          page.sections.each do |section|
+            section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
+            section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
+            section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
+            section_cells = [section_title_text, section_title_subjects, section_title_categories]
+            #group the table cells per section into rows
+            section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
               cell_data(cell_array, @raw_headings, data_cells)
               # write the record to the CSV and start a new record
-              csv << (page_cells + data_cells)
-              #csv << (page_cells + section_cells + data_cells)
+              csv << (page_cells + section_cells + data_cells)
               #create a new array for the next row
               data_cells = Array.new(@headings.count, "")
-            end
-
-          else
-            #get the table sections/headers and iterate cells within the sections
-            page.sections.each do |section|
-              section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
-              section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
-              section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
-              section_cells = [section_title_text, section_title_subjects, section_title_categories]
-              #group the table cells per section into rows
-              section.table_cells.group_by(&:row).each do |row, cell_array|
-                #get the cell data and add it to the array
-                cell_data(cell_array, @raw_headings, data_cells)
-                # write the record to the CSV and start a new record
-                csv << (page_cells + section_cells + data_cells)
-                #create a new array for the next row
-                data_cells = Array.new(@headings.count, "")
-              end
             end
           end
         end
       end
     end
-    cookies['download_finished'] = 'true'
-    csv_string
+    return csv
   end
+
+
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
