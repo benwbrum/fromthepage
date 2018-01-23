@@ -180,19 +180,20 @@ private
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       if table_obj.sections.blank?
         csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
+        col_sections = false
       else
         csv << (['Work Title', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
+        col_sections = true
       end
-
       works.each do |w|
-        csv = generate_csv(w, csv)
+        csv = generate_csv(w, csv, col_sections)
       end
     end
     cookies['download_finished'] = 'true'
     csv_string
   end
 
-  def generate_csv(work, csv)
+  def generate_csv(work, csv, col_sections)
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
@@ -204,9 +205,14 @@ private
           page.table_cells.group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
             cell_data(cell_array, @raw_headings, data_cells)
+            #shift cells over if any page has sections
+            if !col_sections
+              section_cells = []
+            else
+              section_cells = ["", "", ""]
+            end
             # write the record to the CSV and start a new record
-            csv << (page_cells + data_cells)
-            #csv << (page_cells + section_cells + data_cells)
+            csv << (page_cells + section_cells + data_cells)
             #create a new array for the next row
             data_cells = Array.new(@headings.count, "")
           end
