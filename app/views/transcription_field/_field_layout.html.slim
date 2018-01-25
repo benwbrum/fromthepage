@@ -1,7 +1,7 @@
 -field_order(@collection)
 div.editarea
   -@fields.each do |line, array|
-    div.field_edit
+    div
       -field_layout(array)
       -@field_array.each do |field, cell|
         -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
