@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :encryptable, :encryptor => :restful_authentication_sha1
 
+  include OwnerStatistic
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
@@ -112,11 +113,7 @@ class User < ActiveRecord::Base
   end
 
   def owned_page_count
-    count = 0
-    self.all_owner_collections.each do |c|
-      count = count + c.page_count
-    end
-    return count
+    count = Page.where(work_id: self.owner_works.ids).count
   end
 
   def self.find_first_by_auth_conditions(warden_conditions)
