@@ -7,48 +7,48 @@ module DocumentSetStatistic
     self.works
   end
 
+  def pages
+    Page.where(work_id: works.ids)
+  end
+
   def page_count
-    Page.where(work_id: works.ids).count
+    pages.count
   end
 
-  def subject_count
-    self.collection.articles.count
-  end
-
-  def new_subject_count(last_days)
-    Article.where("collection_id = ? AND created_on >= ?", "#{self.collection.id}", "#{last_days.days.ago}").count
+  def subject_count(last_days=nil)
+    self.articles.where("#{last_days_clause(last_days, 'articles.created_on')}").count
   end
 
   def mention_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM page_article_links pal INNER JOIN articles a ON pal.article_id = a.id WHERE a.collection_id = #{self.collection.id}  #{last_days_clause(last_days, 'pal.created_on')}")
+    PageArticleLink.where(page_id: self.pages.ids).where("#{last_days_clause(last_days, 'created_on')}").count
   end
 
   def contributor_count(last_days=nil)
-    User.joins(:deeds).where(deeds: {work_id: works.ids}).distinct.count
+    User.joins(:deeds).where(deeds: {work_id: works.ids}).where("#{last_days_clause(last_days, 'deeds.created_at')}").distinct.count
   end
 
   def comment_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'note_add').count
+    Deed.where(work_id: works.ids).where(deed_type: 'note_add').where("#{last_days_clause(last_days)}").count
   end
 
   def transcription_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_trans').count
+    Deed.where(work_id: works.ids).where(deed_type: 'page_trans').where("#{last_days_clause(last_days)}").count
   end
 
   def edit_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_edit').count
+    Deed.where(work_id: works.ids).where(deed_type: 'page_edit').where("#{last_days_clause(last_days)}").count
   end
 
   def index_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_index').count
+    Deed.where(work_id: works.ids).where(deed_type: 'page_index').where("#{last_days_clause(last_days)}").count
   end
 
   def translation_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_pg_xlat').count
+    Deed.where(work_id: works.ids).where(deed_type: 'page_pg_xlat').where("#{last_days_clause(last_days)}").count
   end
 
   def ocr_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'ocr_corr').count
+    Deed.where(work_id: works.ids).where(deed_type: 'ocr_corr').where("#{last_days_clause(last_days)}").count
   end
 
   def pct_completed
@@ -66,12 +66,11 @@ module DocumentSetStatistic
 
   def last_days_clause(last_days, column = "created_at")
     clause = ""
-
     if last_days
-      clause = " AND #{column} > DATE_ADD(CURDATE(), INTERVAL -#{last_days} DAY)"
+      timeframe = last_days.days.ago
+      clause = "#{column} >= '#{timeframe}'"
     end
-
-    clause
+    return clause
   end
 end
 

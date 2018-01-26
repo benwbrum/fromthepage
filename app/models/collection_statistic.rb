@@ -7,8 +7,8 @@ module CollectionStatistic
     Collection.count_by_sql("SELECT COUNT(*) FROM pages p INNER JOIN works w ON p.work_id = w.id WHERE w.collection_id = #{self.id}")
   end
 
-  def subject_count
-    self.articles.count
+  def subject_count(last_days=nil)
+    self.articles.where("#{timeframe_clause(last_days, 'created_on')}").count
   end
 
   def new_subject_count(last_days)
@@ -58,6 +58,15 @@ module CollectionStatistic
       pct = 0
     end
     return pct
+  end
+
+  def timeframe_clause(last_days, column = "created_at")
+    clause = ""
+    if last_days
+      timeframe = last_days.days.ago
+      clause = "#{column} >= '#{timeframe}'"
+    end
+    return clause
   end
 
   def last_days_clause(last_days, column = "created_at")

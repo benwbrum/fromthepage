@@ -112,10 +112,6 @@ class User < ActiveRecord::Base
     self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
   end
 
-  def owned_page_count
-    count = Page.where(work_id: self.owner_works.ids).count
-  end
-
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login_id)

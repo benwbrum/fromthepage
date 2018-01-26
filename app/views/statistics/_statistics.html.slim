@@ -23,9 +23,9 @@
     .counter(data-prefix="#{number_with_delimiter @collection.transcription_count(7)}") #{'Page'.pluralize(@collection.transcription_count(7))} transcribed
     .counter(data-prefix="#{number_with_delimiter @collection.edit_count(7)}") Page #{'edit'.pluralize(@collection.edit_count(7))}
     -unless @collection.subjects_disabled
-      .counter(data-prefix="#{number_with_delimiter @collection.index_count(7)}") #{'Page'.pluralize(@collection.new_subject_count(7))} indexed
+      .counter(data-prefix="#{number_with_delimiter @collection.index_count(7)}") #{'Page'.pluralize(@collection.index_count(7))} indexed
       .counter(data-prefix="#{number_with_delimiter @collection.mention_count(7)}") #{'Reference'.pluralize(@collection.mention_count(7))}
-      .counter(data-prefix="#{number_with_delimiter @collection.new_subject_count(7)}") New #{'subject'.pluralize(@collection.new_subject_count(7))}
+      .counter(data-prefix="#{number_with_delimiter @collection.subject_count(7)}") New #{'subject'.pluralize(@collection.subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.comment_count(7)}") #{'Note'.pluralize(@collection.comment_count(7))}
     .counter(data-prefix="#{number_with_delimiter @collection.translation_count(7)}") #{'Page'.pluralize(@collection.translation_count(7))} translated
     .counter(data-prefix="#{number_with_delimiter @collection.ocr_count(7)}") OCR #{'Correction'.pluralize(@collection.ocr_count(7))}

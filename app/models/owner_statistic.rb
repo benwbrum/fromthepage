@@ -5,7 +5,7 @@ module OwnerStatistic
   end
 
   def page_count
-    self.owned_page_count
+    count = Page.where(work_id: self.owner_works.ids).count
   end
 
   def owner_subjects
@@ -16,22 +16,16 @@ module OwnerStatistic
     [self.all_owner_collections.ids]
   end
 
-  def subject_count
-    owner_subjects.count
-  end
-
-  def new_subject_count(last_days)
-     owner_subjects.where("created_on >= ?", "#{last_days.days.ago}").count
+  def subject_count(last_days=nil)
+    owner_subjects.where("#{last_days_clause(last_days, 'created_on')}").count
   end
 
   def mention_count(last_days=nil)
-    PageArticleLink.where(article_id: owner_subjects.ids).where("#{timeframe_clause(last_days)}").count
+    PageArticleLink.where(article_id: owner_subjects.ids).where("#{last_days_clause(last_days, 'created_on')}").count
   end
 
   def contributor_count(last_days=nil)
-    #created_on is an ambiguous reference (need to refer to deeds; isn't working)
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).where("#{last_days_clause(last_days)}").references(:deeds).distinct.count
-   
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).where("#{last_days_clause(last_days, 'deeds.created_at')}").distinct.count
   end
 
   def comment_count(last_days=nil)
@@ -59,43 +53,13 @@ module OwnerStatistic
     Deed.where(collection_id: collection_ids).where(deed_type: 'ocr_corr').where("#{last_days_clause(last_days)}").count
   end
 
-  def timeframe_clause(last_days)
+  def last_days_clause(last_days, column = "created_at")
     clause = ""
     if last_days
       timeframe = last_days.days.ago
-      clause = "created_on >= '#{timeframe}'"
+      clause = "#{column} >= '#{timeframe}'"
     end
     return clause
   end
 
-  def last_days_clause(last_days, column = "created_at")
-    clause = ""
-
-    if last_days
-      timeframe = last_days.days.ago
-      clause = "created_at >= '#{timeframe}'"
-    end
-
-    clause
-  end
-
-
-=begin
-
-
-
-  def pct_completed
-    complete = 0
-    unless work_count == 0
-      self.works.includes(:work_statistic).each do |w|
-        complete += w.work_statistic.pct_completed
-      end
-      pct = complete/work_count
-    else
-      pct = 0
-    end
-    return pct
-  end
-
-=end
 end
