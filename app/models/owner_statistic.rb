@@ -62,4 +62,9 @@ module OwnerStatistic
     return clause
   end
 
+  #this is to prevent an error in the statistics view
+  def subjects_disabled
+    false
+  end
+
 end

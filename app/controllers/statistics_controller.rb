@@ -2,6 +2,7 @@ class StatisticsController < ApplicationController
 
   def collection
     @works = @collection.works
+    @statistics_object = @collection
   #  @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
 
     @users = User.all

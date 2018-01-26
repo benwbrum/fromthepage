@@ -60,7 +60,8 @@ class DashboardController < ApplicationController
 
   #Owner Summary Statistics - statistics for all owned collections
   def summary
-    @collection = current_user.collections.last
+    @statistics_object = current_user
+    @works = current_user.owner_works
   end
 
   #Collaborator Dashboard - watchlist
