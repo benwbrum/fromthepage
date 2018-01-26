@@ -15,5 +15,7 @@ ul.signon_links
     li =link_to 'Didn\'t receive unlock instructions?', new_unlock_path(resource_name)
 
   -if devise_mapping.omniauthable?
-    -resource_class.omniauth_providers.each do |provider|
-      li =link_to 'Sign in with #{provider.to_s.titleize}', omniauth_authorize_path(resource_name, provider)
+    -if ENABLE_GOOGLEOAUTH
+      li = link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)
+    -if ENABLE_SAML
+      li = link_to "Sign in with SAML", user_omniauth_authorize_path(:saml)

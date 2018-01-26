@@ -2,7 +2,7 @@ Fromthepage::Application.routes.draw do
 
   root :to => 'static#splash'
 
-  devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations"}
+  devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
 
   iiif_for 'riiif/image', at: '/image-service'
   
