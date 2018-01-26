@@ -517,6 +517,7 @@ ActiveRecord::Schema.define(version: 20180126165838) do
     t.text    "options"
     t.integer "line_number"
     t.integer "position"
+    t.integer "percentage"
   end
 
   create_table "users", force: true do |t|
