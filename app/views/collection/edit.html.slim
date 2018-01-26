@@ -1,9 +1,9 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
-.columns
+.columns.collection_settings
   article.maincol
     =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
-      table.form
+      table.form.collection-settings
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
@@ -38,21 +38,30 @@
           td(colspan="2")
             p
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
-            |&nbsp;
             =f.label :subjects_disabled, "Disable subject indexing"
         tr
           td(colspan="2")
             p
             =f.check_box :review_workflow, value: @collection.review_workflow
-            |&nbsp;
             =f.label :review_workflow, "All initial transcriptions need review"
         tr
           td(colspan="2")
             p
             =f.check_box :hide_completed, value: @collection.hide_completed
-            |&nbsp;
             =f.label :hide_completed, "Hide completed works by default"
-
+        -if @ssl && !@collection.field_based
+          tr
+            td(colspan="2")
+              p
+              =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
+              =f.label :voice_recognition, "Speech to text available for transcribing"
+          tr  
+            td(colspan="2")
+              div#lang_opts class=('hidden' if @collection.voice_recognition.blank?)
+                =label_tag :language, "Choose language", class: 'collection-label'
+                =select_tag :language, {}, {onchange:'updateCountry()', class: 'w30'}
+                |&nbsp;
+                =select_tag :dialect, {}, {class: 'w40'}
 
       .toolbar
         .toolbar_group.w100
@@ -125,7 +134,7 @@
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove owner'
 
     h3 Transcription Type
-    p Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries.
+    p Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
     -if !@collection.field_based
       =link_to({ :action => 'enable_fields', :collection_id => @collection.id}, class: 'button', 'aria-label' => 'Field based transcription')
         span Enable Field Based Transcription
@@ -154,6 +163,10 @@
 
 -content_for :javascript
   javascript:
+
+    var initialLang;
+    var initialDialect;
+
     $(function() {
       $('.user-select-form select').select2({
       }).on('select2:select', function() {
@@ -165,9 +178,9 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
-      $('.litebox_container').click(function(){
-        //e.preventDefault();
-        debugger;
-      });
+
+      initialLang = "#{@lang_index}";
+      initialDialect = "#{@dialect_index}"
+      findDefault(initialLang, initialDialect);
 
     });

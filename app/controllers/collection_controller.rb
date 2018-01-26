@@ -104,6 +104,8 @@ class CollectionController < ApplicationController
 
   def enable_fields
     @collection.field_based = true
+    @collection.voice_recognition = false
+    @collection.language = nil
     @collection.save!
     redirect_to collection_edit_fields_path(@collection.owner, @collection)
   end
@@ -124,9 +126,27 @@ class CollectionController < ApplicationController
   end
 
   def edit
+    @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
+    #array of languages
+    array = Collection::LANGUAGE_ARRAY
+
+    #set language to default if it doesn't exist
+
+    lang = !@collection.language.blank? ? @collection.language : "en-US"
+    #find the language portion of the language/dialect or set to nil
+    part = lang.split('-').first
+    #find the index of the language in the array (transform to integer)
+    @lang_index = array.size.times.select {|i| array[i].include?(part)}[0]
+    #then find the index of the nested dialect within the language array
+    int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
+    #transform to integer and subtract 2 because of how the array is nested
+    @dialect_index = !int.nil? ? int-2 : nil
   end
 
   def update
+    if params[:dialect]
+      @collection.language = params[:dialect]
+    end
     if params[:collection][:slug] == ""
       @collection.update(params[:collection].except(:slug))
       title = @collection.title.parameterize
@@ -134,6 +154,7 @@ class CollectionController < ApplicationController
     else
       @collection.update(params[:collection])
     end
+
     if @collection.save!
       flash[:notice] = 'Collection has been updated'
       redirect_to action: 'edit', collection_id: @collection.id

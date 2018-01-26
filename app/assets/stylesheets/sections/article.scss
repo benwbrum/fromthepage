@@ -96,3 +96,31 @@
   }
   input:checked + span { color: $fgHover; }
 }
+
+.article-editarea {
+  height: 100%;
+  overflow: hidden;
+  background: #FFF;
+  box-sizing: border-box;
+  border: 1px solid $inputBorderColor;
+  input, textarea {
+    border: 0;
+    background: none;
+    box-shadow: none;
+  }
+  textarea {
+    height: 100%;
+    resize: none;
+    padding: $gapSize / 2;
+  }
+}
+
+span.article-voice {
+  float: right;
+  margin-top: 20px;
+}
+
+.article-voice {
+  float: right;
+  margin: 10px 10px 0;
+}

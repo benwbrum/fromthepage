@@ -5,7 +5,7 @@ module TranscriptionFieldHelper
 
   def field_layout(array)
     count = array.count
-    @width = 95/count unless count == nil
+    @width = 100/count unless count == nil
     ids = array.map {|a| a.id}
     @values = []
     if @page
