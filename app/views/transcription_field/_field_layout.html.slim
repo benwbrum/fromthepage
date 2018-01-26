@@ -4,7 +4,8 @@ div.editarea
     div
       -field_layout(array)
       -@field_array.each do |field, cell|
-        span(style="width:#{@width}%")
+        -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
+        span(style="width:#{span_width}%")
           =label_tag field.label
           <br>
           -content = cell.nil? ? nil : cell.content
