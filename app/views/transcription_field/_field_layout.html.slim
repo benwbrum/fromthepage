@@ -6,6 +6,7 @@ div.editarea
       -@field_array.each do |field, cell|
         span(style="width:#{@width}%")
           =label_tag field.label
+          <br>
           -content = cell.nil? ? nil : cell.content
           -if field.input_type == "text"
             =text_field_tag "fields[#{field.id}][#{field.label}]", content
