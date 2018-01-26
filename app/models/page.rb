@@ -38,6 +38,8 @@ class Page < ActiveRecord::Base
   attr_accessible :source_text
   attr_accessible :source_translation
   attr_accessible :status
+  attr_accessible :metadata
+  serialize :metadata, Hash
 
   scope :unrestricted, -> { where(restricted: false)}
   scope :review, -> { where(status: 'review')}
