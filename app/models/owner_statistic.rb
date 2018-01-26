@@ -62,6 +62,11 @@ module OwnerStatistic
     return clause
   end
 
+  def all_collaborators
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
+  end
+
+
   #this is to prevent an error in the statistics view
   def subjects_disabled
     false

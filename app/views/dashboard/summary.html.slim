@@ -1,3 +1,10 @@
 =render({ :partial => 'owner_header', :locals => { :selected => 3 } })
 
 =render partial: 'statistics/statistics'
+
+h3 All Collaborator Emails
+p#collaborators
+  -unless @all_collaborators.empty?
+    p #{@all_collaborators}
+  -else
+    p No collaborators

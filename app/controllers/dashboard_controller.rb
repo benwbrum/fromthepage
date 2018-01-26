@@ -61,7 +61,8 @@ class DashboardController < ApplicationController
   #Owner Summary Statistics - statistics for all owned collections
   def summary
     @statistics_object = current_user
-    @works = current_user.owner_works
+    @all_collaborators = current_user.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+
   end
 
   #Collaborator Dashboard - watchlist
