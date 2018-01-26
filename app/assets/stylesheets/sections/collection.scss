@@ -370,25 +370,6 @@
 // Collection settings
 
 .collection-works-manage {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  li {
-    margin: 0;
-    width: 100%;
-    position: relative;
-    display: inline-block;
-    padding: $gapSize / 4;
-    padding-right: 100px;
-    box-sizing: border-box;
-    border: 1px solid rgba(#000, 0.08);
-    border-width: 0 0 1px 0;
-    &:first-child { border-top-width: 1px; }
-    &:hover {
-      background-color: rgba(#000, 0.03);
-      .action { display: block; }
-    }
-  }
   .action {
     top: 50%;
     display: none;
@@ -400,6 +381,16 @@
     margin-top: -$iconSize / 2;
     &:hover { color: $fgHover; }
     .icon { vertical-align: top; }
+  }
+}
+
+.collection-settings {
+  td input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  .collection-label {
+    margin-left: 18px;
+    margin-right: 10px;
   }
 }
 
@@ -430,12 +421,11 @@
   margin-bottom: 15px;
   .first {width: 15px;}
   .fourth {width: 100%;}
+  .percent {width: 50px;}
 
   textarea {
     height: calc(2em + 2px);
   }
-
-
 }
 
 a.field_icons {

@@ -13,7 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
-
+//= require transcribe.js.erb
+//= require collection.js
 
 ;(function($, window, document, undefined) {
 
@@ -281,7 +282,7 @@ function hideWorks(param){
     $(work).show();
   };
   work.removeClass("hidden")
-};
+}
 
 //Enable and disable select options for field-based transcription
 function addOptions(selector){
