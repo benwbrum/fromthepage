@@ -233,7 +233,6 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   if ENABLE_GOOGLEOAUTH then
     config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {}
-    #config.omniauth :google_oauth2, '1072844221927-qokb3rhvjn8ouvobfiv2l0eqtg0agtdd.apps.googleusercontent.com', 'qXqWyPAMXhvSZZwX4IOJ3smE', {}
   end
   
   if ENABLE_SAML then
