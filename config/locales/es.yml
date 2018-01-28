@@ -61,3 +61,13 @@ es:
     registration:
       create:
         success: "El Usuario ha sido creado"
+<<<<<<< HEAD
+=======
+      update:
+        success: "El Usuario ha sido modificado"
+      destroy:
+        success: "El Usuario ha sido borrado"
+    user:
+      update:
+        success: "El usuario ha sido modificado"
+>>>>>>> 54ab6225cee7c2b938f1e766cf759a49357ca9bc

@@ -61,3 +61,10 @@ en:
     registration:
       create:
         success: "User has been created"
+      update:
+        success: "User has been updated"
+      destroy:
+        success: "User has been deleted"
+    user:
+      update:
+        success: "User has been updated"

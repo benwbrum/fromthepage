@@ -1,6 +1,6 @@
 require 'gamification_helper'
 class Api::RegistrationController < Api::ApiDeviceRegistrationController
-
+ layout false
   def new
     super
   end
@@ -49,12 +49,27 @@ class Api::RegistrationController < Api::ApiDeviceRegistrationController
       if @validatable
         @minimum_password_length = resource_class.password_length.min
       end
-      puts "-------"
-      puts resource.errors.full_messages.to_sentence
+   
       render_serialized ResponseWS.error(resource.errors.full_messages.to_sentence,nil)
     end
   end
 
+#redefino la salida del edit profile de Devise
+  def update
+     yield resource if block_given?
+     if @user.save!
+       render_serialized ResponseWS.ok('api.registration.update.success',@user)
+     else
+       render_serialized ResponseWS.error(resource.errors.full_messages.to_sentence,nil) 
+     end
+  end
 
-
+  def destroy
+    yield resource if block_given?
+    if @user.destroy!
+      render_serialized ResponseWS.ok('api.registration.destroy.success',@user)
+    else
+      render_serialized ResponseWS.error(resource.errors.full_messages.to_sentence,nil) 
+    end
+  end
 end

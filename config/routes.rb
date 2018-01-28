@@ -58,12 +58,14 @@ Fromthepage::Application.routes.draw do
   namespace :api do
     devise_for controllers:{registration:"/api/registration"}
     devise_scope :user do
-       post 'registration' => 'registration#create'
+      post 'registration' => 'registration#create'
+      put 'registration' => 'registration#update'
     end
 
    
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
+    patch '/api/user', :to=>'user#update'
     resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
       get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
     end
@@ -73,9 +75,13 @@ Fromthepage::Application.routes.draw do
     end
     resources :registration, path: 'registration', only: [:create] do
     end
+<<<<<<< HEAD
     resources :page, path: 'transcribe', only: [] do
       post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
       post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
+=======
+    resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
+>>>>>>> 54ab6225cee7c2b938f1e766cf759a49357ca9bc
     end
   end
 
