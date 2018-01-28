@@ -78,6 +78,7 @@ Fromthepage::Application.routes.draw do
     resources :page, path: 'transcribe', only: [] do
       post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
       post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
+    end  
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
   end
