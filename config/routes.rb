@@ -75,13 +75,10 @@ Fromthepage::Application.routes.draw do
     end
     resources :registration, path: 'registration', only: [:create] do
     end
-<<<<<<< HEAD
     resources :page, path: 'transcribe', only: [] do
       post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
       post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
-=======
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
->>>>>>> 54ab6225cee7c2b938f1e766cf759a49357ca9bc
     end
   end
 
