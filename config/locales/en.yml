@@ -44,6 +44,20 @@ en:
         success: "Work has been updated"
       destroy:
         success: "Work has been deleted"
+    transcription:
+      save:
+        success: "Transcription has been saved"
+        success_guest: "Transcription has been saved, remember you may save up to three transcriptions as a guest."
+        error:
+          parse: "There was an error parsing the mark-up in your transcript. This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open. Check any instances of < or > symbols in your text."
+          guest_limit: "To continue transcribing, you must be signed in."
+    translation:
+      save:
+        success: "Translation has been saved"
+        success_guest: "Translation has been saved, remember you may save up to three translations as a guest."
+        error:
+          parse: "There was an error parsing the mark-up in your translation. This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open. Check any instances of < or > symbols in your text."
+          guest_limit: "To continue transcribing, you must be signed in."
     registration:
       create:
         success: "User has been created"

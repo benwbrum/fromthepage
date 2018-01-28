@@ -73,6 +73,10 @@ Fromthepage::Application.routes.draw do
     end
     resources :registration, path: 'registration', only: [:create] do
     end
+    resources :page, path: 'transcribe', only: [] do
+      post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
+      post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
+    end
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]

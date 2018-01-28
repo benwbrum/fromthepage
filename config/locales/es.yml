@@ -37,13 +37,27 @@ es:
         success: "La Colección ha sido actualizada"
       destroy:
         success: "La Colección ha sido borrada"
-      work:
-        create:
-          success: "El Trabajo ha sido creada"
-        update:
-          success: "El Trabajo ha sido actualizada"
-        destroy:
-          success: "El Trabajo ha sido borrada"
+    work:
+      create:
+        success: "El Trabajo ha sido creada"
+      update:
+        success: "El Trabajo ha sido actualizada"
+      destroy:
+        success: "El Trabajo ha sido borrada"
+    transcription:
+      save:
+        success: "La Transcripción ha sido guardada"
+        success_guest: "La Transcripción ha sido guardada, recuerde que puede guardar hasta tres transcripciones como usuario invitado."
+        error:
+          parse: "Hubo un error al analizar la sintaxis de su transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja abierta una etiqueta HTML. Compruebe cualquier instancia de los símbolos < o > en su texto."
+          guest_limit: "Para continuar la transcripción debe iniciar sesión."
+    translation:
+      save:
+        success: "La Traducción ha sido guardada"
+        success_guest: "La Traducción ha sido guardada, recuerde que puede guardar hasta tres traducciones como usuario invitado."
+        error:
+          parse: "Hubo un error al analizar la sintaxis de su traducción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja abierta una etiqueta HTML. Compruebe cualquier instancia de los símbolos < o > en su texto."
+          guest_limit: "Para continuar transcribiendo debe iniciar sesión."
     registration:
       create:
         success: "El Usuario ha sido creado"
