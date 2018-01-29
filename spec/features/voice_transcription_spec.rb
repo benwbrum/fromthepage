@@ -47,6 +47,7 @@ describe "voice transcription", :order => :defined do
     visit edit_collection_path(@collection.owner, @collection)
     expect(page).not_to have_selector('#lang_opts')
     page.check 'collection_voice_recognition'
+    sleep(2)
     expect(page).to have_selector('#lang_opts')
     click_button 'Save Changes'
     sleep(2)
