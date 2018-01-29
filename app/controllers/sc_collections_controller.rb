@@ -1,3 +1,4 @@
+require 'contentdm_translator'
 class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: [:show, :edit, :update, :destroy, :explore_manifest, :import_manifest]
 
@@ -139,6 +140,10 @@ class ScCollectionsController < ApplicationController
       else
         work = @sc_manifest.convert_with_no_collection(current_user) 
       end
+    end
+    if ContentdmTranslator.iiif_manifest_is_cdm? at_id
+      ocr = !params[:contentdm_ocr].blank?
+      ContentdmTranslator.update_work_from_cdm(work, ocr)
     end
     redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id 
   end

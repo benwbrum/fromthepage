@@ -24,7 +24,7 @@ module ContentdmTranslator
     page.metadata=metadata
     
     if ocr_correction
-      page.source_text = ocr_from_cdm_info(info).encode(:xml => text)
+      page.source_text = ocr_from_cdm_info(info).encode(:xml => :text)
     end
     
     begin
