@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :masqueradable, 
          :recoverable, :rememberable, :trackable, :validatable,
-         :encryptable, :encryptor => :restful_authentication_sha1
+         :omniauthable, :encryptable, :encryptor => :restful_authentication_sha1, 
+         :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
   extend FriendlyId
@@ -50,6 +51,22 @@ class User < ActiveRecord::Base
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
   #before_destroy :clean_up_orphans
+
+  def self.from_omniauth(access_token)
+    data = access_token.info
+    user = User.where(email: data['email']).first  #Will need to do email or name/username
+    # Uncomment the section below if you want users to be created if they don't exist
+    unless user
+        user = User.create(name: data['name'],
+           login: data['email'].gsub(/@.*/,''),
+           email: data['email'],
+           password: Devise.friendly_token[0,20],
+           display_name: data['name'],
+           print_name: data['name']
+        )
+    end
+    user
+  end
 
   def all_owner_collections
     query = Collection.where("owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
