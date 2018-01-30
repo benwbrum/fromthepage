@@ -106,6 +106,26 @@ describe "collection settings js tasks", :order => :defined do
     expect(TranscriptionField.all.count).to be < count
   end
 
+  it "uses page arrows with unsaved transcription", :js => true do
+    test_page = @collection.works.first.pages.second
+    #next page arrow
+    visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
+    page.fill_in('fields_1_First_field', with: "Field one")
+    message = accept_alert do
+      page.click_link("Next page")
+    end
+    sleep(3)
+    expect(message).to have_content("You have unsaved changes.")
+    visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
+    #previous page arrow - make sure it also works with notes
+    fill_in('Write a new note...', with: "Test two")
+    message = accept_alert do
+      page.click_link("Previous page")
+    end
+    sleep(3)
+    expect(message).to have_content("You have unsaved changes.")
+  end
+
   #note: these are hidden unless there is table data
   it "exports a table csv" do
     work = @collection.works.first

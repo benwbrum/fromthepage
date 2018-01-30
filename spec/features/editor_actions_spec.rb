@@ -195,7 +195,7 @@ describe "editor actions" , :order => :defined do
     message = accept_alert do
       page.click_link("Next page")
     end
-    sleep(2)
+    sleep(3)
     expect(message).to have_content("You have unsaved changes.")
     visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
     #previous page arrow - make sure it also works with notes
@@ -203,7 +203,7 @@ describe "editor actions" , :order => :defined do
     message = accept_alert do
       page.click_link("Previous page")
     end
-    sleep(2)
+    sleep(3)
     expect(message).to have_content("You have unsaved changes.")
   end
 
