@@ -124,6 +124,10 @@ class Collection < ActiveRecord::Base
     self.works.where("title LIKE ?", "%#{search}%")
   end
 
+  def sections
+    Section.where(work_id: self.works.ids)
+  end
+
   #constant
   LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
  ['አማርኛ', 'am', ['am-ET']],

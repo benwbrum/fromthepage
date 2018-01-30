@@ -2,8 +2,8 @@ class DashboardController < ApplicationController
 
   include AddWorkHelper
 
-  before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject]
-  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work]
+  before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject, :summary]
+  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work, :summary]
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -58,6 +58,12 @@ class DashboardController < ApplicationController
   def owner
   end
 
+  #Owner Summary Statistics - statistics for all owned collections
+  def summary
+    @statistics_object = current_user
+    @all_collaborators = current_user.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+
+  end
 
   #Collaborator Dashboard - watchlist
   def watchlist

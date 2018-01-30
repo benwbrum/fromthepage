@@ -30,11 +30,26 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Edit Fields")
     page.find('#new-fields tr[2]').fill_in('transcription_fields__label', with: 'First field')
+    page.find('#new-fields tr[2]').fill_in('transcription_fields__percentage', with: 20)
     page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'Second field')
     page.find('#new-fields tr[3]').select('textarea', from: 'transcription_fields__input_type')
     page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Third field')
     click_button 'Save'
     expect(TranscriptionField.all.count).to eq 3
+    expect(TranscriptionField.first.percentage).to eq 20
+  end
+
+  it "checks the field preview on edit page" do
+    #check the field preview
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Edit Fields")
+    expect(page.find('div.editarea')).to have_content("First field")
+    expect(page.find('div.editarea')).to have_content("Second field")
+    expect(page.find('div.editarea')).to have_content("Third field")
+    #check field width for first field (set to 20%)
+    expect(page.find('div.editarea span[1]')[:style]).to eq "width:19%"
+    #check field width for second field (not set)
+    expect(page.find('div.editarea span[2]')[:style]).not_to eq "width:19%"
   end
 
   #note - would like to do select field, but trouble with the js
@@ -89,6 +104,22 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Edit Fields")
     page.find('#new-fields tr[2]').click_link('Delete field')
     expect(TranscriptionField.all.count).to be < count
+  end
+
+  #note: these are hidden unless there is table data
+  it "exports a table csv" do
+    work = @collection.works.first
+    visit collection_export_path(@collection.owner, @collection)
+    expect(page).to have_content("Export Individual Works")
+    page.find('tr', text: work.title).find('.btnCsvTblExport').click
+    expect(page.response_headers['Content-Type']).to eq 'application/csv'
+  end
+
+  it "exports table data for an entire collection" do
+    visit collection_export_path(@collection.owner, @collection)
+    expect(page).to have_content("Export All Tables")
+    page.find('#btnExportTables').click
+    expect(page.response_headers['Content-Type']).to eq 'application/csv'
   end
 
   it "sets collection back to document based transcription" do

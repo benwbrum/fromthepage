@@ -4,7 +4,7 @@
   h2.nomargin Export Subject Index
   p.big
     span.fright(style="margin-left: 30px")
-      =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button', id: 'btnCsvExport')
+      =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button btnExport', id: 'btnCsvExport')
         =svg_symbol '#icon-export', class: 'icon'
         span Export Subjects as CSV
     span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
@@ -13,11 +13,20 @@ h2 Export All Works
 p.big 
   span.fright(style="margin-left: 30px")
 
-    =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button', id: 'btnExportAll')
+    =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button btnExport', id: 'btnExportAll')
       =svg_symbol '#icon-export', class: 'icon'
       span Export All Works
   
   span Click the button to export all works from the collection into a zip file containing each work as an XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.
+
+-unless @table_export.blank?
+  h2 Export All Tables
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to({ :controller => 'export', :action => 'export_all_tables', :collection_id => @collection.id }, class: 'button btnExport', id: 'btnExportTables')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export All Table Data as CSV
+    span Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
 
 
 h2 Export Individual Works
@@ -63,9 +72,10 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
       td.nowrap
-        =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport')
-          =svg_symbol '#icon-export', class: 'icon'
-          span Table CSV
+        -unless work.table_cells.blank?
+          =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
+            =svg_symbol '#icon-export', class: 'icon'
+            span Table CSV
 
 =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
@@ -77,35 +87,7 @@ table.datagrid
     $(function() {
       // Remove 'page_busy' spinner once CSV download finished
       // Cookie should be set to 'true' in the controller method
-      $('#btnCsvExport').on('click', function() {
-        Cookies.remove('download_finished', {path: '/'});
-        var downloadCheckTimer = window.setInterval(function() {
-          var cookie = Cookies.get('download_finished');
-          if(cookie === 'true') {
-            $('html').removeClass('page-busy');
-            window.clearInterval(downloadCheckTimer);
-          }
-        }, 1000);
-      });
-    });
-    $(function() {
-      // Remove 'page_busy' spinner once CSV download finished
-      // Cookie should be set to 'true' in the controller method
-      $('.btnCsvTblExport').on('click', function() {
-        Cookies.remove('download_finished', {path: '/'});
-        var downloadCheckTimer = window.setInterval(function() {
-          var cookie = Cookies.get('download_finished');
-          if(cookie === 'true') {
-            $('html').removeClass('page-busy');
-            window.clearInterval(downloadCheckTimer);
-          }
-        }, 1000);
-      });
-    });
-    $(function() {
-      // Remove 'page_busy' spinner once zipfile download finished
-      // Cookie should be set to 'true' in the controller method
-      $('#btnExportAll').on('click', function() {
+      $('.btnExport').on('click', function() {
         Cookies.remove('download_finished', {path: '/'});
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');
