@@ -100,7 +100,7 @@ function unsavedTranscription(e){
 function checkForUnsaved(inputs, msg, e){
   inputs.each(function(){
     if (this.type == 'select-one'){
-      if(!(this.options[this.selectedIndex].defaultSelected)){
+      if(!(this.options[this.selectedIndex].defaultSelected) && (this.value != this.options[0].value)){
         e.preventDefault();
         alert(msg);
         return false;
