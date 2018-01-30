@@ -91,7 +91,6 @@ function unsavedNotes(e){
 
 //check for unsaved transcriptions before changing page
 function unsavedTranscription(e){
-    //had to use string instead of boolean b/c of slim/javascript issues
   var msg = "You have unsaved changes. Please save or discard your work before going to the next page.";
   var inputs = $('textarea').add($('.field-input'));
   checkForUnsaved(inputs, msg, e);
@@ -99,12 +98,20 @@ function unsavedTranscription(e){
 
 //actual function to check for unsaved changes
 function checkForUnsaved(inputs, msg, e){
-  debugger;
   inputs.each(function(){
-    if (this.value != this.defaultValue){
-      e.preventDefault();
-      alert(msg);
-      return false;
+    if (this.type == 'select-one'){
+      if(!(this.options[this.selectedIndex].defaultSelected)){
+        e.preventDefault();
+        alert(msg);
+        return false;
+      }
     }
-  })
+    else {
+      if (this.value != this.defaultValue){
+        e.preventDefault();
+        alert(msg);
+        return false;
+      };
+    };
+  });
 }
