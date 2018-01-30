@@ -16,11 +16,29 @@ describe "owner view - collection" do
 
   it "looks at owner tabs" do
     visit dashboard_owner_path
+    #look at owner stats in dashboard
+    expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
+    expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
+    expect(page.find('.owner-counters .counter[3]')['data-prefix'].to_i).to eq @owner.notes.count
+    expect(page.find('.owner-counters .counter[4]')['data-prefix'].to_i).to eq @owner.document_sets.count
+
+    #look at tabs
     page.find('.tabs').click_link("Start A Project")
     expect(page.current_path).to eq '/dashboard/startproject'
     expect(page).to have_content("Upload PDF or ZIP File")
     page.find('.tabs').click_link("Your Works")
     expect(page.current_path).to eq dashboard_owner_path
+  end
+
+  it "looks at statistics tab" do
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Summary")
+    expect(page).to have_selector('.collection-stats_counters')
+    expect(page).to have_content("Last 7 Days Statistics")
+    expect(page).to have_content("All Collaborator Emails")
+    expect(page.find('.collection-stats_counters[1] .counter[1]')['data-prefix'].to_i).to eq @works.count
+    expect(page.find('#collaborators')).to have_content(@owner.all_collaborators.first.display_name)
+    expect(page.find('#collaborators')).to have_content(@owner.all_collaborators.first.email)
   end
 
   it "looks at subjects tab" do
@@ -36,8 +54,7 @@ describe "owner view - collection" do
     page.find('.tabs').click_link("Statistics")
     expect(page).to have_content("Works")
     expect(page).to have_content("Collaborators")
-    #need to check actual stats
-    #wording is checked in needs review and archive import
+    expect(page.find('.collection-stats_counters[1] .counter[1]')['data-prefix'].to_i).to eq @collection.works.count
   end
 
   it "looks at works list tab" do

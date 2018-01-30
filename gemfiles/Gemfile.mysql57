@@ -37,6 +37,9 @@ gem 'ahoy_matey'
 gem 'riiif'
 gem 'iiif-presentation'
 
+gem 'omniauth-saml'
+gem 'omniauth-google-oauth2'
+
 group :assets do
   gem 'therubyracer'
   gem 'uglifier'
