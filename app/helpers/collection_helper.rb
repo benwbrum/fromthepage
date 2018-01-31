@@ -18,6 +18,22 @@ module CollectionHelper
     end
   end
 
+  def all_complete
+    #if the collection is completed transcribed/translated
+    if @collection.pct_completed == 100
+      #if it's set to hide completed and the show button hasn't been pressed, don't show
+      if (@collection.hide_completed) && params[:works] != 'show'
+        return true
+      #if the hide button is pressed, don't show
+      elsif params[:works] == 'hide'
+        return true
+      #otherwise do show
+      else
+        return false
+      end
+    end
+  end
+
   def work_stats(work)
     unless work.supports_translation
       @progress_annotated = work.work_statistic.pct_annotated.round

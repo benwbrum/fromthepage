@@ -17,10 +17,9 @@
         -link
         =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type), class: 'button'
 
-    -if (@collection.hide_completed) && (@collection.pct_completed == 100)
-      -unless params[:works] == 'show'
-        h5.collection-work.acenter
-          |All works are fully transcribed.
+    -if all_complete
+      h5.collection-work.acenter
+        |All works are fully transcribed.
 
     -@works.each do |work|
       .collection-work
