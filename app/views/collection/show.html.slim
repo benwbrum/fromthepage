@@ -14,15 +14,13 @@
       h2 Works
 
       .transcribed
-        -if params[:works] == 'show'
-          =link_to "Hide Fully Transcribed Works", collection_path(@collection.owner, @collection, works: 'hide'), class: 'button'
-        -else @collection.hide_completed
-          =link_to "Show Fully Transcribed Works", collection_path(@collection.owner, @collection, works: 'show'), class: 'button'
+        -link
+        =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type), class: 'button'
 
-    -if @collection.hide_completed && @collection.pct_completed == 100
-      h5.collection-work.acenter
-        |All works are fully transcribed.
-    -else
+    -if (@collection.hide_completed) && (@collection.pct_completed == 100)
+      -unless params[:works] == 'show'
+        h5.collection-work.acenter
+          |All works are fully transcribed.
 
     -@works.each do |work|
       .collection-work

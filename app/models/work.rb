@@ -47,6 +47,8 @@ class Work < ActiveRecord::Base
   scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
   scope :order_by_completed, -> { joins(:work_statistic).reorder('work_statistics.complete DESC')}
   scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
+  scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
+  scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
 
   module TitleStyle
     REPLACE = 'REPLACE'

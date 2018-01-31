@@ -1,4 +1,23 @@
 module CollectionHelper
+
+  def link
+    if params[:works] == 'show'
+      @link_title = "Hide Fully Transcribed Works"
+      @link_type = "hide"
+    elsif params[:works] == 'hide'
+      @link_title = "Show Fully Transcribed Works"
+      @link_type = "show"
+    else
+      if @collection.hide_completed
+        @link_title = "Show Fully Transcribed Works"
+        @link_type = "show"
+      else
+        @link_title = "Hide Fully Transcribed Works"
+        @link_type = "hide"
+      end
+    end
+  end
+
   def work_stats(work)
     unless work.supports_translation
       @progress_annotated = work.work_statistic.pct_annotated.round
