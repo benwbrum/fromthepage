@@ -56,7 +56,11 @@ class CollectionController < ApplicationController
 
     if params[:search]
       @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-    else  
+    elsif (params[:works] == 'show')
+      @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    elsif params[:works] == 'hide' || (@collection.hide_completed)
+      @works = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).paginate(page: params[:page], per_page: 10)
+    else
       @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
     end
   end

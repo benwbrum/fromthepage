@@ -97,10 +97,6 @@ class Work < ActiveRecord::Base
     self.pages.map { |page| page.search_text}.join("\n\n\n")
   end
 
-
-
-
-
   def suggest_next_page_title
     if self.pages.count == 0
       TitleStyle::render(TitleStyle::DEFAULT, 1)    
