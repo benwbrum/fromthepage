@@ -32,7 +32,7 @@ table.admin-grid.datagrid.striped
             small(data-prefix='From ') =o.location
         td.nowrap =o.account_type
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
-        td.nowrap =o.owned_page_count
+        td.nowrap =o.page_count
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
         td.nowrap
           .instack
