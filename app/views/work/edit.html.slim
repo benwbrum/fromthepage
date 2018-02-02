@@ -120,8 +120,8 @@
       h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
         =hidden_field_tag :work_id, @work
-        =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'display_name'), include_blank: true
-        =button_tag 'Add', disabled: 'true'
+        =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
+        =button_tag 'Add'
       -if @scribes.empty?
         p.fglight No allowed collaborators selected
       -else
@@ -139,24 +139,16 @@
     $(function() {
       $('.user-select-form select').select2({
         placeholder: 'Add new collaborator...',
-      }).on('select2:select', function() {
-        $(this).siblings(':submit').prop('disabled', false);
-      }).on('select2:unselect', function() {
-        $(this).siblings(':submit').prop('disabled', true);
       });
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
-    });
-
-    $(function(){
+    
       $('#work_transcription_conventions').keyup(function(){
         $('#revert').prop('disabled', false);
       });
-    });
-
-    $(function(){
+    
       $('#revert').click(function(e){
         e.preventDefault();
         $.ajax({
@@ -169,9 +161,7 @@
 
         });
       });
-    });
-
-    $(function(){
+    
       $("#update").on('submit', function(){
         var new_id = $("#work_collection_id").val();
         var collection_id = "#{@work.collection.id}"
