@@ -24,14 +24,11 @@ module ContentdmTranslator
     page.metadata=metadata
     
     if ocr_correction
-      page.source_text = ocr_from_cdm_info(info).encode(:xml => :text)
+      ocr = ocr_from_cdm_info(info)
+      page.source_text = ocr.encode(:xml => :text) if ocr
     end
     
-    begin
-      page.save!
-    rescue
-      binding.pry
-    end
+    page.save!
   end
   
   def self.fetch_cdm_info(page)

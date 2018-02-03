@@ -143,7 +143,13 @@ class ScCollectionsController < ApplicationController
     end
     if ContentdmTranslator.iiif_manifest_is_cdm? at_id
       ocr = !params[:contentdm_ocr].blank?
-      ContentdmTranslator.update_work_from_cdm(work, ocr)
+
+      log_file = "#{Rails.root}/public/imports/work_#{work.id}_cdm.log"
+      rake_call = "#{RAKE} fromthepage:cdm_work_update[#{work.id},#{ocr}] --trace >> #{log_file} &"
+      logger.info rake_call
+      system(rake_call)
+      #flash notice about the rake task
+      flash[:notice] = "Metadata #{ocr ? 'and OCR text ' : ''} is being imported from CONTENTdm and should appear shortly."
     end
     redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id 
   end
