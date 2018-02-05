@@ -107,7 +107,7 @@ describe "collection settings js tasks", :order => :defined do
     page.click_link("Make Collection Public")
   end
 
-  it "views completed works" , :js => true do
+  it "views completed works" do
     #first need to set a work as complete
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
@@ -119,13 +119,14 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
-    #check checkbox to show all works    
-    page.check('hide_completed')
+    #click button to show all works
+    page.click_link("Show Fully Transcribed Works")
     expect(page.find('.maincol')).to have_content(hidden_work.title)
-    #check checkbox to hide completed works
-    page.uncheck('hide_completed')
+    #click button to hide completed works
+    page.click_link("Hide Fully Transcribed Works")
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
+
 
   it "sorts works in works list", :js => true do
     login_as(@owner, :scope => :user)
