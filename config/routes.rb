@@ -61,8 +61,7 @@ Fromthepage::Application.routes.draw do
       post 'registration' => 'registration#create'
       put 'registration' => 'registration#update'
     end
-
-   
+    
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
     patch '/api/user', :to=>'user#update'
@@ -81,6 +80,7 @@ Fromthepage::Application.routes.draw do
     end  
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
+    match '*unmatched_route', :to => "api#preflight_request", via: :options
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]

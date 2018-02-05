@@ -31,9 +31,11 @@ module Fromthepage
     config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
 
     config.action_dispatch.default_headers = {
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Request-Method' => "GET"
-      }
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Allow-Methods' => "*",
+      'Access-Control-Request-Method' => "*",
+      'Access-Control-Allow-Headers' => "*"
+    }
 
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       class_attr_index = html_tag.index 'class="'
