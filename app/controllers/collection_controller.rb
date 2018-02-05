@@ -83,6 +83,8 @@ class CollectionController < ApplicationController
     @user.owner = true
     @user.save!
     @collection.owners << @user
+    @user.notification.owner_stats = true
+    @user.notification.save!
     redirect_to action: 'edit', collection_id: @collection.id
   end
 

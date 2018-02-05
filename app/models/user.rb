@@ -52,6 +52,7 @@ class User < ActiveRecord::Base
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
+  after_save :create_notifications
   #before_destroy :clean_up_orphans
 
   def self.from_omniauth(access_token)
@@ -193,6 +194,12 @@ class User < ActiveRecord::Base
   def self.search(search)
     where("display_name LIKE ?", "%#{search}%")
     where("login LIKE ?", "%#{search}%")
+  end
+
+  def create_notifications
+    unless self.notification
+      self.notification = Notification.new
+    end
   end
 
 end
