@@ -38,7 +38,7 @@ describe "uploads data for collections", :order => :defined do
     expect(Collection.last.works.count).not_to be_nil
   end
 
-  it "tests for transcribed works", :js => true do
+  it "tests for transcribed works" do
     col = Collection.last
     works = col.works
     works.each do |w|
@@ -49,18 +49,12 @@ describe "uploads data for collections", :order => :defined do
     end
     visit collection_path(col.owner, col)
     expect(page).to have_content("All works are fully transcribed")
-    page.find('a', text: "Click to show transcribed works").click
-    sleep(2)
+    page.click_link("Show Fully Transcribed Works")
     expect(page).not_to have_content("All works are fully transcribed")
     expect(page).to have_content(works.first.title)
-    page.uncheck('hide_completed')
-    sleep(2)
+    page.click_link("Hide Fully Transcribed Works")
     expect(page).to have_content("All works are fully transcribed")
     expect(page).not_to have_content(works.first.title)
-    page.check('hide_completed')
-    sleep(2)
-    expect(page).not_to have_content("All works are fully transcribed")
-    expect(page).to have_content(works.first.title)
   end
 
   it "cleans up the logfile" do

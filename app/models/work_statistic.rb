@@ -66,14 +66,14 @@ class WorkStatistic < ActiveRecord::Base
 
   def pct_completed
     if self.work.ocr_correction
-      pct_corrected + pct_annotated
+      (pct_corrected + pct_annotated).round(2)
     else
-      pct_transcribed + pct_annotated
+      (pct_transcribed + pct_annotated).round(2)
     end
   end
 
   def pct_translation_completed
-    pct_translated + pct_translation_annotated
+    (pct_translated + pct_translation_annotated).round(2)
   end
 
   def recalculate(options={})
