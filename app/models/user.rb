@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   has_many :ia_works
   has_many :omeka_sites
   has_many :visits
+  has_one :notification, :dependent => :destroy
+
   has_and_belongs_to_many(:scribe_works,
                           { :join_table => 'transcribe_authorizations',
                             :class_name => 'Work'})
