@@ -22,6 +22,12 @@ class UserMailer < ActionMailer::Base
     mail to: @owner.email, subject: "New FromThePage Owner"
   end
 
+  def added_note(user, note)
+    @user = user
+    @note = note
+    @page = note.page
+    mail to: @user.email, subject: "New FromThePage Note"
+  end
 
   private
   def add_inline_attachments!

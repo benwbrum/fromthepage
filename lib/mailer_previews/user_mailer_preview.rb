@@ -10,4 +10,10 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.new_owner(user, block)
   end
 
+  def added_note
+    user = User.find_by(login: 'admin')
+    note = Note.first
+    UserMailer.added_note(user, note)
+  end
+
 end

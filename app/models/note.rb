@@ -14,8 +14,24 @@ class Note < ActiveRecord::Base
   belongs_to :collection
   has_one :deed, :dependent => :destroy
 
+  after_save :email_users
+
   validates :body, presence: true
 
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
+
+  def email_users
+    #find previous note
+    previous_note = self.page.notes.last(2).first
+    user = previous_note.user
+    #send email regarding previous note
+    if SMTP_ENABLED
+      begin
+        UserMailer.added_note(user, self).deliver!
+      rescue StandardError => e
+        log_smtp_error(e, current_user)
+      end
+    end
+  end
 
 end
