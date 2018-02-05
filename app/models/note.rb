@@ -29,7 +29,7 @@ class Note < ActiveRecord::Base
       begin
         UserMailer.added_note(user, self).deliver!
       rescue StandardError => e
-        log_smtp_error(e, current_user)
+        print "SMTP Failed: Exception: #{e.message}"
       end
     end
   end

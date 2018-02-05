@@ -4,7 +4,7 @@ p We just wanted to let you know that the following note has been added to a pag
 
 p "#{@note.body}"
 
-span =link_to "Click here", collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+span =link_to "Click here", collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)
 |&nbsp; to view the note in #{@page.collection.title}: #{@page.work.title}.
 
 p Thanks, 
