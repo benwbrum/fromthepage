@@ -29,6 +29,24 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "New FromThePage Note"
   end
 
+  def added_collaborator(user, work)
+    @user = user
+    @work = work
+    mail to: @user.email, subject: "New FromThePage Collaborator"
+  end
+
+  def added_work(user, work)
+    @user = user
+    @work = work
+    mail to: @user.email, subject: "New FromThePage Work"
+  end
+
+  def page_edited(user, page)
+    @user = user
+    @page = page
+    mail to: @user.email, subject: "Page edited in FromThePage work"
+  end
+
   private
   def add_inline_attachments!
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
