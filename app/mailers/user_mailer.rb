@@ -29,7 +29,17 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "New FromThePage Note"
   end
 
-  def added_collaborator(user, work)
+  def collection_collaborator(user, obj)
+    @user = user
+    if obj.is_a?(Collection)
+      @collection = obj
+    else
+      @collection = obj
+    end
+    mail to: @user.email, subject: "New FromThePage Collaborator"
+  end
+
+  def work_collaborator(user, work)
     @user = user
     @work = work
     mail to: @user.email, subject: "New FromThePage Collaborator"
