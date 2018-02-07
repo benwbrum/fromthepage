@@ -86,6 +86,7 @@ class ScCollectionsController < ApplicationController
   def import_collection
     sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
     collection_id = params[:collection_id]
+    cdm_ocr = !params[:contentdm_ocr].blank?
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
     unless collection_id == 'sc_collection'    
@@ -108,7 +109,7 @@ class ScCollectionsController < ApplicationController
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id}] --trace >> #{log_file} &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
