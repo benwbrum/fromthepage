@@ -35,8 +35,11 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "adds collaborators to a private collection" do
-    #hack because of the problems with the select2 code
-    @collection.collaborators << @rest_user
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    select(@rest_user.name_with_identifier, from: 'collaborator_id')
+    page.find('#collaborator_id+button').click
   end
 
   it "checks that an added user can edit a work in the collection" do
@@ -60,8 +63,10 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "removes collaborators from a private collection" do
-    #hack because of problems with select2
-    @collection.collaborators.delete(@rest_user)
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
   end
 
   it "checks that the removed user can't view the collection" do
@@ -72,9 +77,11 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "adds owners to a private collection" do
-    @rest_user.owner = true
-    @rest_user.save!
-    @collection.owners << @rest_user
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    select(@rest_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
   end
 
   it "checks added owner permissions" do
@@ -90,11 +97,15 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "removes owner from a private collection" do
-    @collection.owners.delete(@rest_user)
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
+
   end
 
   it "checks removed owner permissions" do
-   login_as(@rest_user, :scope => :user)
+    login_as(@rest_user, :scope => :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
     expect(page).not_to have_content(@collection.title)

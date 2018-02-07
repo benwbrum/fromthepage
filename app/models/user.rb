@@ -128,6 +128,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def name_with_identifier
+    self.display_name + ' - ' + self.email
+  end
+
   def collections
     self.owned_collections + Collection.where(:owner_user_id => self.id)#.all
   end
