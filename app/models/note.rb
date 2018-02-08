@@ -21,15 +21,17 @@ class Note < ActiveRecord::Base
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
 
   def email_users
-    #find previous note
-    previous_note = self.page.notes.last(2).first
-    user = previous_note.user
-    #send email regarding previous note
     if SMTP_ENABLED
-      begin
-        UserMailer.added_note(user, self).deliver!
-      rescue StandardError => e
-        print "SMTP Failed: Exception: #{e.message}"
+      previous_users = User.joins(:notes).where(notes: {id: self.page.notes.ids}).distinct
+      previous_users.each do |user|
+        #send email regarding previous note, if it isn't the same user
+        unless user.id == self.user_id
+          begin
+            UserMailer.added_note(user, self).deliver!
+          rescue StandardError => e
+            print "SMTP Failed: Exception: #{e.message}"
+          end
+        end
       end
     end
   end

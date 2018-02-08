@@ -16,6 +16,8 @@ describe "editor actions" , :order => :defined do
 
   before :each do
     login_as(@user, :scope => :user)
+    #this sets up the mailer for testing
+    ActionMailer::Base.perform_deliveries = true
   end    
 
   it "checks that an editor with permissions can see a restricted work" do
@@ -51,7 +53,6 @@ describe "editor actions" , :order => :defined do
     expect(page.find('.tabs')).not_to have_content("Settings")
     expect(page.find('.tabs')).not_to have_content("Export")
     expect(page.find('.tabs')).not_to have_content("Collaborators")
-
   end
 
   it "looks at a work" do
@@ -153,6 +154,30 @@ describe "editor actions" , :order => :defined do
     expect(page).to have_content "Note has been created"
     click_button('Save Changes')
     expect(page).to have_content('Saved')
+  end
+
+  it "adds a response note (with email)" do
+    SMTP_ENABLED = true
+    #now the actual test
+    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+    ActionMailer::Base.deliveries.clear
+    fill_in('Write a new note...', with: "Note by user")
+    click_button('Submit')
+    expect(page).to have_content "Note has been created"
+    #no email should be generated, because this is the same user as the previous note
+    expect(ActionMailer::Base.deliveries.count).to eq 0
+    logout(:user)
+    #login as different user for next note.
+    login_as(@owner, :scope => :user)
+    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+    fill_in('Write a new note...', with: "Email test note")
+    click_button('Submit')
+    expect(page).to have_content "Note has been created"
+    expect(ActionMailer::Base.deliveries.count).not_to eq 0
+    expect(ActionMailer::Base.deliveries.first.from).to include SENDING_EMAIL_ADDRESS
+    expect(ActionMailer::Base.deliveries.first.to).to include @user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Note"
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("Email test note")
   end
 
   it "tries to save transcription with unsaved note", :js => true do
