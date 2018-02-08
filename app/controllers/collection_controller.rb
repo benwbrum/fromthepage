@@ -99,7 +99,7 @@ class CollectionController < ApplicationController
   def add_collaborator
     @user = User.find_by(id: params[:collaborator_id])
     @collection.collaborators << @user
-    unless !@user.add_as_collaborator
+    unless !@user.notification.add_as_collaborator
       send_email(@user, @collection)
     end
     redirect_to action: 'edit', collection_id: @collection.id
