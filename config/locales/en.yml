@@ -30,6 +30,9 @@ en:
       error: "Server error, Contact the administrator"
     session:
       not_allowed: "To access this content you must log in to this site"
+    login:
+      success: "Welcome to Transcriptor!"
+      fail: "Username or password not valid, try again."
     collection:
       create:
         success: "Collection has been created"

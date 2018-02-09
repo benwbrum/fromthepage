@@ -30,6 +30,9 @@ es:
       error: "Error del servidor, contáctese con el administrador"
     session:
       not_allowed: "Para acceder a este contenido debes iniciar sesión"
+    login:
+      success: "¡Bienvenido a Transcriptor!"
+      fail: "Usuario o contraseña no válidos, vuelva a intentarlo."
     collection:
       create:
         success: "La Colección ha sido creada"

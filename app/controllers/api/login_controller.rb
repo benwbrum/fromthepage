@@ -8,8 +8,11 @@ class Api::LoginController < Api::ApiController
     username = params[:username]
     password = params[:password]
     user = User.find_for_authentication(:login => username)
-    user.valid_password?(password) ? user : nil
-    render_serialized(user)
+    if (user != nil && user.valid_password?(password))
+      render_serialized ResponseWS.ok('api.login.success',user)
+    else
+      render_serialized ResponseWS.simple_error('api.login.fail')
+    end
   end
 
 end
