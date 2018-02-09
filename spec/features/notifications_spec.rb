@@ -9,7 +9,6 @@ describe "notifications" , :order => :defined do
     @collection = Collection.first
     @work = @collection.works.first
     @page = @work.pages.first
-    ActionMailer::Base.perform_deliveries = true
   end
 
   it "resets note notifications" do

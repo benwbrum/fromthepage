@@ -109,7 +109,7 @@ class DocumentSetsController < ApplicationController
 
   def add_set_collaborator
     @collection.collaborators << @user
-    unless !@user.notification.add_as_collaborator
+    if @user.notification.add_as_collaborator
       if SMTP_ENABLED
         begin
           UserMailer.collection_collaborator(@user, @collection).deliver!

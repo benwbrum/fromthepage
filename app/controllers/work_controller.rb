@@ -86,7 +86,7 @@ class WorkController < ApplicationController
 
   def add_scribe
     @work.scribes << @user
-    unless !@user.notification.add_as_collaborator
+    if @user.notification.add_as_collaborator
       if SMTP_ENABLED
         begin
           UserMailer.work_collaborator(@user, @work).deliver!

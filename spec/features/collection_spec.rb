@@ -20,8 +20,6 @@ describe "collection settings js tasks", :order => :defined do
     @page = @work.pages.first
     @wording = "Click microphone to dictate"
     @article = @collection.articles.first
-    #set up for testing email notifications
-    ActionMailer::Base.perform_deliveries = true
   end
 
   it "sets collection to private" do
@@ -47,13 +45,13 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    #this user should not get an email (notifications turned off)
     select(@rest_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
-    #this user should not get an email (notifications turned off)
     expect(ActionMailer::Base.deliveries).to be_empty
+    #this user should get an email
     select(@notify_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
-    #this user should get an email
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Collaborator"
@@ -86,6 +84,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
     page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
   it "checks that the removed user can't view the collection" do
@@ -100,13 +99,13 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
+    #this user should not get an email (notifications turned off)
     select(@rest_user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
-    #this user should not get an email (notifications turned off)
     expect(ActionMailer::Base.deliveries).to be_empty
-    select(@notify_user.name_with_identifier, from: 'collaborator_id')
-    page.find('#collaborator_id+button').click
     #this user should get an email
+    select(@notify_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
     expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Collaborator"
@@ -131,6 +130,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
     page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
   it "checks removed owner permissions" do

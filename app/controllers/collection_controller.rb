@@ -85,7 +85,7 @@ class CollectionController < ApplicationController
     @collection.owners << @user
     @user.notification.owner_stats = true
     @user.notification.save!
-    unless !@user.notification.add_as_owner
+    if @user.notification.add_as_owner
       send_email(@user, @collection)
     end
     redirect_to action: 'edit', collection_id: @collection.id
@@ -99,7 +99,7 @@ class CollectionController < ApplicationController
   def add_collaborator
     @user = User.find_by(id: params[:collaborator_id])
     @collection.collaborators << @user
-    unless !@user.notification.add_as_collaborator
+    if @user.notification.add_as_collaborator
       send_email(@user, @collection)
     end
     redirect_to action: 'edit', collection_id: @collection.id

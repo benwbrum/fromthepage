@@ -5,8 +5,13 @@ describe "document sets", :order => :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
+    @rest_user = User.find_by(login: REST_USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.last
+    #set up the restricted user not to be emailed
+    notification = Notification.find_by(user_id: @rest_user.id)
+    notification.add_as_collaborator = false
+    notification.save!
   end
 
   before :each do
@@ -109,12 +114,22 @@ describe "document sets", :order => :defined do
   end
 
   it "adds a collaborator" do
+    ActionMailer::Base.deliveries.clear
     @test_set = DocumentSet.last
     login_as(@owner, :scope => :user)
     visit collection_path(@test_set.owner, @test_set)
     page.find('.tabs').click_link("Settings")
+    #this user should not receive an email (notifications off)
+    select(@rest_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).to be_empty
+    #this user should receive an email
     select(@user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).not_to be_empty
+    expect(ActionMailer::Base.deliveries.first.to).to include @user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Collaborator"
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
   it "tests a collaborator" do
@@ -153,9 +168,9 @@ describe "document sets", :order => :defined do
   end
 
   it "checks notes on a public doc set/private collection" do
-    login_as(@user)
+    login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
-    fill_in 'note_body', with: "Test private note"
+    fill_in 'Write a new note...', with: "Test private note"
     click_button('Submit')
     expect(page).to have_content "Note has been created"
     note = Note.last
@@ -178,8 +193,6 @@ describe "document sets", :order => :defined do
       end
     end
     expect(DocumentSet.all.ids).not_to include @test_set.id
-    #delete the note in case of conflicts
-#    Note.find_by(body: "Test private note").delete
   end
 
   it "looks at document sets owner tabs" do
@@ -336,6 +349,7 @@ describe "document sets", :order => :defined do
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+    save_and_open_page
     page.find('.tabs').click_link("Transcribe")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
