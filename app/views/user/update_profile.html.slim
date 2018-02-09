@@ -39,6 +39,9 @@
         td =f.check_box("notifications[add_as_owner]", {checked: @user.notification.add_as_owner})
         th =f.label :add_as_owner, "Added to private work as an owner"
       tr
+        td =f.check_box("notifications[note_added]", {checked: @user.notification.note_added})
+        th =f.label :page_edited, "Note added in response to a comment you made"
+      tr
         td =f.check_box("notifications[work_added]", {checked: @user.notification.work_added})
         th =f.label :work_added, "Work added to collection you've worked on"
       tr
