@@ -22,11 +22,6 @@ describe "collection settings js tasks", :order => :defined do
     @article = @collection.articles.first
     #set up for testing email notifications
     ActionMailer::Base.perform_deliveries = true
-    SMTP_ENABLED = true
-  end
-
-  after :all do
-    SMTP_ENABLED = false
   end
 
   it "sets collection to private" do

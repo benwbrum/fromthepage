@@ -10,11 +10,6 @@ describe "notifications" , :order => :defined do
     @work = @collection.works.first
     @page = @work.pages.first
     ActionMailer::Base.perform_deliveries = true
-    SMTP_ENABLED = true
-  end
-
-  after :all do
-    SMTP_ENABLED = false
   end
 
   it "resets note notifications" do
