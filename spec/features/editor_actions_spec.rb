@@ -16,8 +16,6 @@ describe "editor actions" , :order => :defined do
 
   before :each do
     login_as(@user, :scope => :user)
-    #this sets up the mailer for testing
-    ActionMailer::Base.perform_deliveries = true
   end    
 
   it "checks that an editor with permissions can see a restricted work" do
@@ -154,45 +152,6 @@ describe "editor actions" , :order => :defined do
     expect(page).to have_content "Note has been created"
     click_button('Save Changes')
     expect(page).to have_content('Saved')
-  end
-
-  it "adds a response note (with email)" do
-    #setup for test
-    SMTP_ENABLED = true
-    notification = Notification.find_by(user_id: @owner.id)
-    notification.note_added = false
-    notification.save!
-
-    #now the actual test
-    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
-    ActionMailer::Base.deliveries.clear
-    fill_in('Write a new note...', with: "Note by user")
-    click_button('Submit')
-    expect(page).to have_content "Note has been created"
-    #no email should be generated, because this is the same user as the previous note
-    expect(ActionMailer::Base.deliveries).to be_empty
-    logout(:user)
-    #login as different user for next note.
-    login_as(@owner, :scope => :user)
-    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
-    fill_in('Write a new note...', with: "Email test note")
-    click_button('Submit')
-    expect(page).to have_content "Note has been created"
-    expect(ActionMailer::Base.deliveries).not_to be_empty
-    expect(ActionMailer::Base.deliveries.first.from).to include SENDING_EMAIL_ADDRESS
-    expect(ActionMailer::Base.deliveries.first.to).to include @user.email
-    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Note"
-    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("Email test note")
-    #log back in as user; make sure owner doesn't receive an email
-    logout(:user)
-    ActionMailer::Base.deliveries.clear
-    login_as(@user, :scope => :user)
-    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
-    fill_in('Write a new note...', with: "Final note")
-    click_button('Submit')
-    expect(page).to have_content "Note has been created"
-    #this should not send any emails b/c owner has the setting turned off
-    expect(ActionMailer::Base.deliveries).to be_empty
   end
 
   it "tries to save transcription with unsaved note", :js => true do
