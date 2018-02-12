@@ -45,16 +45,10 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "New FromThePage Collaborator"
   end
 
-  def added_work(user, work)
+  def user_activity(user, work)
     @user = user
     @work = work
-    mail to: @user.email, subject: "New FromThePage Work"
-  end
-
-  def page_edited(user, page)
-    @user = user
-    @page = page
-    mail to: @user.email, subject: "Page edited in FromThePage work"
+    mail to: @user.email, subject: "New FromThePage Activity"
   end
 
   private

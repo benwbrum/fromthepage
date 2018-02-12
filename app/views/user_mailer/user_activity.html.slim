@@ -1,5 +1,18 @@
 p Hi #{@user.display_name} --
 
+p We just wanted to let you know that #{@work.owner.display_name} added #{@work.title} to the collection #{@work.collection.title}.
+
+span =link_to "Click here", collection_read_work_path(@work.collection.owner, @work.collection, @work, only_path: false)
+|&nbsp; to view #{@work.collection.title}: #{@work.title}.
+
+p Thanks, 
+|FromThePage
+
+
+
+
+p Hi #{@user.display_name} --
+
 p We just wanted to let you know that page #{@page.title} from work #{@page.work.title} in the collection #{@page.collection.title} has been edited since you worked on it.
 
 span =link_to "Click here", collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)

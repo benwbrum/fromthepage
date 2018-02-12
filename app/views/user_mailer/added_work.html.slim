@@ -1,9 +1,0 @@
-p Hi #{@user.display_name} --
-
-p We just wanted to let you know that #{@work.owner.display_name} added #{@work.title} to the collection #{@work.collection.title}.
-
-span =link_to "Click here", collection_read_work_path(@work.collection.owner, @work.collection, @work, only_path: false)
-|&nbsp; to view #{@work.collection.title}: #{@work.title}.
-
-p Thanks, 
-|FromThePage

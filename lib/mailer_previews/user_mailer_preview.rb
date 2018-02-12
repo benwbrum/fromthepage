@@ -34,16 +34,10 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.work_collaborator(user, work)
   end
 
-  def added_work
+  def user_activity
     user = User.find_by(login: 'admin')
     work = Work.last(3).first
     UserMailer.added_work(user, work)
   end
-
-  def page_edited
-    user = User.find_by(login: 'admin')
-    page = Page.last(5).first
-    UserMailer.page_edited(user, page)
-  end    
 
 end
