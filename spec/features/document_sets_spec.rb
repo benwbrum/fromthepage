@@ -19,10 +19,14 @@ describe "document sets", :order => :defined do
     @set = DocumentSet.first
   end
 
-  it "turns off hiding completed works" do
-    #turns off so it doesn't mess up doc sets test (it isn't relevant)
+  it "sets up works for doc set tests" do
+    #turns off hiding worksso it doesn't mess up doc sets test (it isn't relevant)
     @collection.hide_completed = false
     @collection.save
+    #change work restrictions temporarily so they don't interfere with doc set permissions
+    work = Work.find_by(id: @set.works.first.id)
+    work.restrict_scribes = false
+    work.save!
   end
 
   it "edits a document set (start at collection level)" do
@@ -349,7 +353,6 @@ describe "document sets", :order => :defined do
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
-    save_and_open_page
     page.find('.tabs').click_link("Transcribe")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
@@ -440,11 +443,14 @@ describe "document sets", :order => :defined do
     expect(docset.slug).to eq docset.title.parameterize
   end
 
-  it "turns on hiding completed works" do
-    #turns back on to work right with other tests
+  it "resets work settings" do
+    #resets hiding completed works
     @collection.hide_completed = true
     @collection.save
+    #resets work restrictions
+    work = Work.find_by(id: @set.works.first.id)
+    work.restrict_scribes = true
+    work.save!
   end
-
 
 end
