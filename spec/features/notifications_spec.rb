@@ -6,6 +6,7 @@ describe "notifications" , :order => :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
+    @admin = User.find_by(login: ADMIN)
     @collection = Collection.first
     @work = @collection.works.first
     @page = @work.pages.first
@@ -48,14 +49,17 @@ describe "notifications" , :order => :defined do
     #log back in as user; make sure owner doesn't receive an email
     logout(:user)
     ActionMailer::Base.deliveries.clear
-    login_as(@user, :scope => :user)
+    login_as(@admin, :scope => :user)
     visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
     fill_in('Write a new note...', with: "Final note")
     click_button('Submit')
     expect(page).to have_content "Note has been created"
-    #this should not send any emails b/c owner has the setting turned off
-    expect(ActionMailer::Base.deliveries).to be_empty
+    #user should receive an email, but owner should not
+    expect(ActionMailer::Base.deliveries).not_to be_empty
+    emails = ActionMailer::Base.deliveries.map {|mail| mail.to}
+    expect(emails).to include [@user.email]
+    expect(emails).not_to include [@owner.email]
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Note"
   end
-
 
 end
