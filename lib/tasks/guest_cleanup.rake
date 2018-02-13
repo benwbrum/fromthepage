@@ -17,6 +17,8 @@ namespace :fromthepage do
       guest_user.password = password
       guest_user.password_confirmation = password
       guest_user.save!
+      notification = Notification.find_by(user_id: guest_user.id)
+      notification.update(work_added: false, add_as_owner: false, add_as_collaborator: false, page_edited: false, note_added: false)
       @guest_user = guest_user
     end
 

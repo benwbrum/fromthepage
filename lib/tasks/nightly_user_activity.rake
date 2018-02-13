@@ -8,26 +8,41 @@ namespace :fromthepage do
     #get all users from collection
     works_users = User.joins(:deeds).where(deeds: {collection_id: col_ids}).joins(:notification).where(notifications: {work_added: true}).distinct
     #find edited pages
-    page_ids = Page.joins(:deeds).where(deeds: {deed_type: ['page_edit', 'page_index', 'ocr_corr']}).merge(Deed.past_day).distinct.pluck(:id)
+    active_pages = Page.joins(:deeds).where(deeds: {deed_type: ['page_edit', 'page_index', 'ocr_corr']}).merge(Deed.past_day).distinct
     #get users from edited pages
-    page_users = User.joins(:deeds).where(deeds: {page_id: page_ids}).where(deeds: {deed_type: ['page_trans', 'page_edit', 'page_index', 'ocr_corr']}).joins(:notification).where(notifications: {page_edited: true}).distinct
+    page_users = User.joins(:deeds).where(deeds: {page_id: active_pages.ids}).where(deeds: {deed_type: ['page_trans', 'page_edit', 'page_index', 'ocr_corr']}).joins(:notification).where(notifications: {page_edited: true}).distinct
     #combine user lists
     all_users = (works_users + page_users).uniq
     #for each user, get added works and edited pages then pass to mailer
-    all_users.each do |user|
-      if works_users.include?(user) && user.notification.work_added
-        #find the collections this user has worked in
-        ids = user.deeds.pluck(:collection_id).uniq
-        #find which of the new works are in collections the user has contributed to but that the user hasn't uploaded themselves
-        works = added_works.where.not(deeds: {user_id: user.id}).where(collection_id: ids)
-        works.each do |work|
-          puts "#{user.display_name} had #{work.title} added to #{work.collection.title}"
+    if SMTP_ENABLED
+      all_users.each do |user|
+        if works_users.include?(user) && user.notification.work_added
+          #find the collections this user has worked in
+          user_col_ids = user.deeds.pluck(:collection_id).uniq
+          #find which of the new works are in collections the user has contributed to but that the user hasn't uploaded themselves
+          works = added_works.where.not(deeds: {user_id: user.id}).where(collection_id: user_col_ids)
         end
-      end
-      if page_users.include?(user) && user.notification.page_edited
-        pages = Page.where(id: page_ids).joins(:deeds).where(deeds: {user_id: user.id}).distinct
-        pages.each do |page|
-          puts "#{user.display_name} worked on edited page: #{page.title} in #{page.work.title}"
+        if page_users.include?(user) && user.notification.page_edited
+          #find which pages the user has worked on
+          user_page_ids = user.deeds.pluck(:page_id).uniq
+          #find pages that have been newly edited by someone other than the user
+          pages = active_pages.where.not(deeds: {user_id: user.id}).where(id: user_page_ids)
+        end
+        puts "#{user.display_name} -- #{works} -- #{pages}"
+        unless works.nil?
+          works.each do |work|
+            puts "#{user.display_name} - has worked in collection where #{work.title} was added"
+          end
+        end
+        unless pages.nil?
+          pages.each do |page|
+            puts "#{user.display_name} has worked on page #{page.title} in collection #{page.collection.title}, which was edited"
+          end
+        end
+        begin
+          UserMailer.nightly_user_activity(user, pages, works).deliver!
+        rescue StandardError => e
+          print "SMTP Failed: Exception: #{e.message}"
         end
       end
     end
