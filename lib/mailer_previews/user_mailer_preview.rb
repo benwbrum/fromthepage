@@ -34,10 +34,11 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.work_collaborator(user, work)
   end
 
-  def user_activity
+  def nightly_user_activity
     user = User.find_by(login: 'admin')
-    work = Work.last(3).first
-    UserMailer.added_work(user, work)
+    works = Work.last(1)
+    pages = Page.last(3)
+    UserMailer.nightly_user_activity(user, pages, works)
   end
 
 end
