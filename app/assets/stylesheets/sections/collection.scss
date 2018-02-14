@@ -388,9 +388,12 @@
 .collection-settings {
   td input[type="checkbox"] {
     margin-right: 5px;
+    margin-top: 10px;
+  }
+  td select {
+    margin-top: 10px;
   }
   .collection-label {
-    margin-left: 18px;
     margin-right: 10px;
   }
 }
