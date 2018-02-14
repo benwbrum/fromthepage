@@ -138,6 +138,7 @@ GEM
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.4)
+    iso-639 (0.2.8)
     jquery-rails (3.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -258,6 +259,7 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
+    rtl (0.2.3)
     ruby-saml (1.6.1)
       nokogiri (>= 1.5.10)
     rubyzip (1.2.1)
@@ -336,6 +338,7 @@ DEPENDENCIES
   friendly_id
   gravatar_image_tag
   iiif-presentation!
+  iso-639
   jquery-rails
   launchy
   meta_request
@@ -353,6 +356,7 @@ DEPENDENCIES
   riiif
   rmagick
   rspec-rails
+  rtl
   rubyzip
   sass-rails (~> 5.0.0)
   shoulda
@@ -362,4 +366,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.12.5
+   1.16.0

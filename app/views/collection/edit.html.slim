@@ -49,6 +49,12 @@
             p
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, "Hide completed works by default"
+        tr
+          td(colspan="2")
+            p
+            =f.label :text_language, "Select the language of the text"
+            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng'))
+
         -if @ssl && !@collection.field_based
           tr
             td(colspan="2")
