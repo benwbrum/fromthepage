@@ -4,7 +4,7 @@
   article.maincol
     =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
       -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-      table.form.settings.settings lang="#{@collection.text_language}" dir=direction class=direction
+      table.form.settings lang="#{@collection.text_language}" dir=direction class=direction
         tr.big
           th =f.label :title, 'Work title'
           td.w100 =f.text_field :title, value: @work.title
@@ -23,7 +23,7 @@
         tr
           th.hidden Current URL
           td
-            p.nomargin The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+            p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
  
         tr
           th =f.label :identifier, 'Identifier'
@@ -31,11 +31,11 @@
         tr
           th.hidden Identifier Help
           td
-            p.nomargin Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
+            p.nomargin.settings Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
         tr
           th.hidden Pages are meaningful
           td
-            p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
+            p.settings <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
             =f.label :pages_are_meaningful
@@ -43,7 +43,7 @@
         tr
           th.hidden Supports Translation
           td
-            p <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
+            p.settings <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
             =f.check_box :supports_translation, value: @work.supports_translation
             |&nbsp;
             =f.label :supports_translation

@@ -189,7 +189,8 @@ code {
 }
 
 .rtl {
-  p {
+  p {text-align: right;}
+  p.settings {
     direction: ltr;
     text-align: left;
     }

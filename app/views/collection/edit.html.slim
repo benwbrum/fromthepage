@@ -4,7 +4,7 @@
     =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
       -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-      table.form.collection-settings.settings lang="#{@collection.text_language}" dir=direction class=direction
+      table.form.collection-settings lang="#{@collection.text_language}" dir=direction class=direction
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title
@@ -14,7 +14,7 @@
         tr
           th.hidden URL
           td
-            p.nomargin The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+            p.nomargin.settings The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"

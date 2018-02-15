@@ -8,6 +8,7 @@
   -path.push(link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work))
 
 -if path.present?
-  ul.breadcrumbs
+  -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+  ul.breadcrumbs lang="#{@collection.text_language}" dir=direction
     -path.each do |item|
       li ==item
