@@ -7,6 +7,7 @@ ul
   li Aggregating works into thematic exhibits
 
 -if @collection.document_sets.present?
+  -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
   h3 
     | Document Sets for 
     =@collection.title
@@ -17,7 +18,7 @@ ul
         th Privacy
         th Actions
         th
-    tbody#sets lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
+    tbody#sets lang="#{@collection.text_language}" dir=direction class=direction
       -@collection.document_sets.each do |document_set|
         tr
           td
@@ -45,7 +46,7 @@ br
             th
               =document_set.title
               /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
-      tbody lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
+      tbody lang="#{@collection.text_language}" dir=direction class=direction
         -@works.each do |work|
           tr
             td

@@ -1,7 +1,8 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 3, :work_id => @work }})
 
 .columns
-  article.mailcol lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
+  -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+  article.mailcol lang="#{@collection.text_language}" dir=direction class=direction
     h3 =@work.title
     -if @work.description.present?
       h5 Description

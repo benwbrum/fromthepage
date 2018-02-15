@@ -26,7 +26,8 @@
             -else
               =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
 
-          .work-page_content lang="#{@collection.text_language}" dir=("rtl" if Rtl.rtl?(@collection.text_language))
+          -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+          .work-page_content lang="#{@collection.text_language}" dir=direction class=direction
             -if page.work.pages_are_meaningful
               h4.work-page_title =link_to page.title, page_params(page)
 

@@ -8,7 +8,8 @@
           span Remove from set
         -@works.each do |w|
           -work_stats(w)
-          li.document_set lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
+          -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+          li.document_set lang="#{@collection.text_language}" dir=direction class=direction
             span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
             span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
             span =w.restrict_scribes  ? 'Restricted' : 'Unrestricted'

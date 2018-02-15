@@ -189,8 +189,10 @@ code {
 }
 
 .rtl {
-  direction: rtl;
-  p {direction: ltr;}
+  p {
+    direction: ltr;
+    text-align: left;
+    }
   label {
     margin-left: 5px;
     margin-right: 5px;

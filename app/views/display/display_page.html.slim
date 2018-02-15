@@ -25,7 +25,8 @@
         =render :partial => '/shared/zoom_div'
 
   .page-column
-    .page-preview lang="#{@collection.text_language}" dir=("rtl" if Rtl.rtl?(@collection.text_language))
+    -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+    .page-preview lang="#{@collection.text_language}" dir=direction class=direction
 
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
