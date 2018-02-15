@@ -73,6 +73,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.language
   end
 
+  def text_language
+    self.collection.text_language
+  end
+
   def field_based
     self.collection.field_based
   end

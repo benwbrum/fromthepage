@@ -3,7 +3,7 @@
 .columns
   article.maincol
     =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
-      table.form
+      table.form lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
         tr.big
           th =f.label :title, 'Work title'
           td.w100 =f.text_field :title, value: @work.title
@@ -21,15 +21,16 @@
           td =f.text_field :slug, value: @work.slug
         tr
           th.hidden Current URL
-          td 
-            |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+          td
+            p.nomargin The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
  
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
         tr
           th.hidden Identifier Help
-          td Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
+          td
+            p.nomargin Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
         tr
           th.hidden Pages are meaningful
           td

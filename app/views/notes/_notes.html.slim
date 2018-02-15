@@ -13,7 +13,7 @@
 
     =form_for :note, url: notes_path, remote: true, html: { class: 'user-bubble_form' } do |f|
       =hidden_field_tag(:page_id, @page.id)
-      .user-bubble_form_editor
+      .user-bubble_form_editor lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
         =f.text_area :body, :rows => 4, :placeholder => 'Write a new note...'
       .user-bubble_form_footer
         span.user-bubble_form_error

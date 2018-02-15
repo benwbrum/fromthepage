@@ -4,7 +4,7 @@
 
   =form_for(@collection, url: { :action => 'create' }) do |f|
     =validation_summary @collection.errors
-    table.form
+    table.form lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title

@@ -26,7 +26,7 @@
         tbody
           -@works.each do |work|
             tr
-              td
+              td lang="#{@collection.text_language}" class=("rtl" if Rtl.rtl?(@collection.text_language))
                 =work.title
                 -if work.supports_translation
                   span 

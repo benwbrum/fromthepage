@@ -11,7 +11,7 @@
     =time_tag note.created_at
       =link_to note.user.display_name, { :controller => 'user', :action => 'profile', :user_id => note.user.id }
       =" #{time_ago_in_words note.created_at} ago"
-    p ==sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))
+    p lang="#{@collection.text_language}" dir=("rtl" if Rtl.rtl?(@collection.text_language)) ==sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))
 
   -if note.user == current_user
     =form_for note, remote: true, :html => { class: 'user-bubble_form' } do |f|

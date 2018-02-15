@@ -188,3 +188,11 @@ code {
   }
 }
 
+.rtl {
+  direction: rtl;
+  p {direction: ltr;}
+  label {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
