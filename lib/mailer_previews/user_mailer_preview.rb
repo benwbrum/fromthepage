@@ -38,7 +38,8 @@ class UserMailerPreview < ActionMailer::Preview
     user = User.find_by(login: 'admin')
     works = Work.last(1)
     pages = Page.last(3)
-    UserMailer.nightly_user_activity(user, pages, works)
+    note_pages = Page.first
+    UserMailer.nightly_user_activity(user, pages, works, note_pages)
   end
 
 end
