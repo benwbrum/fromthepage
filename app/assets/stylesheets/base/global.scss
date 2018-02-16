@@ -199,3 +199,7 @@ code {
     margin-right: 5px;
   }
 }
+
+p.rtl, h4.rtl, td.diff-version.rtl {
+  text-align: right;
+}
