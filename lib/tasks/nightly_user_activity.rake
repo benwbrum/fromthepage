@@ -25,10 +25,9 @@ namespace :fromthepage do
         if page_users.include?(user) && user.notification.page_edited
           #find which pages the user has worked on
           user_page_ids = user.deeds.pluck(:page_id).uniq
-          #find pages that have been newly edited by someone other than the user
-          pages = active_pages.where.not(deeds: {user_id: user.id}).where(id: user_page_ids)
+          #find pages that have been newly edited by someone other than the user (the user is not the last editor)
+          pages = active_pages.where(id: user_page_ids).select {|page| page if page.deeds.last.user_id != user.id}
         end
-        puts "#{user.display_name} -- #{works} -- #{pages}"
         unless works.nil?
           works.each do |work|
             puts "#{user.display_name} - has worked in collection where #{work.title} was added"
@@ -42,7 +41,7 @@ namespace :fromthepage do
         begin
           UserMailer.nightly_user_activity(user, pages, works).deliver!
         rescue StandardError => e
-          print "SMTP Failed: Exception: #{e.message}"
+          print "SMTP Failed: Exception: #{e.message} \n"
         end
       end
     end
