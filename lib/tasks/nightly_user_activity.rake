@@ -11,8 +11,10 @@ namespace :fromthepage do
     active_pages = Page.joins(:deeds).where(deeds: {deed_type: ['page_edit', 'ocr_corr', 'review']}).merge(Deed.past_day).distinct
     #find pages with notes
     note_pages = Page.joins(:deeds).where(deeds: {deed_type: 'note_add'}).merge(Deed.past_day).distinct
+    #combine the ids from the pages (otherwise if one is blank, the array fails)
+    ids = active_pages.ids + note_pages.ids
     #get users from edited pages
-    page_users = User.joins(:deeds).where(deeds: {page_id: [active_pages.ids, note_pages.ids]}).where(deeds: {deed_type: ['page_trans', 'page_edit', 'review', 'note_add', 'ocr_corr']}).joins(:notification).where(notifications: {page_edited: true}).distinct
+    page_users = User.joins(:deeds).where(deeds: {page_id: ids}).where(deeds: {deed_type: ['page_trans', 'page_edit', 'review', 'note_add', 'ocr_corr']}).joins(:notification).where(notifications: {page_edited: true}).distinct
     #combine user lists
     all_users = (works_users + page_users).uniq
     #for each user, get added works and edited pages then pass to mailer
