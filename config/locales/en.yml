@@ -47,6 +47,13 @@ en:
         success: "Work has been updated"
       destroy:
         success: "Work has been deleted"
+    mark:
+      create:
+        success: "Mark has been created"
+      update:
+        success: "Mark has been updated"
+      destroy:
+        success: "Mark has been deleted"
     transcription:
       save:
         success: "Transcription has been saved"

@@ -47,6 +47,13 @@ es:
         success: "El Trabajo ha sido actualizada"
       destroy:
         success: "El Trabajo ha sido borrada"
+    mark:
+      create:
+        success: "La Marca ha sido creada"
+      update:
+        success: "La Marca ha sido actualizada"
+      destroy:
+        success: "La Marca ha sido borrada"
     transcription:
       save:
         success: "La Transcripción ha sido guardada"

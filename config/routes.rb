@@ -71,6 +71,9 @@ Fromthepage::Application.routes.draw do
     resources :work, path: 'work', only: [:create, :update, :destroy, :show] do
     end
     resources :page, path: 'page', only: [:create, :update, :destroy, :show] do
+      get '', path: 'marks', as: :show_marks, to: 'mark#list_by_page'
+    end
+    resources :mark, path: 'mark', only: [:index, :create, :update, :destroy, :show] do
     end
     resources :registration, path: 'registration', only: [:create] do
     end

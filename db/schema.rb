@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180102212436) do
+ActiveRecord::Schema.define(version: 20180217191002) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -238,6 +238,16 @@ ActiveRecord::Schema.define(version: 20180102212436) do
     t.string   "zip_file",       limit: 255
     t.boolean  "use_ocr",                     default: false
   end
+
+  create_table "marks", force: :cascade do |t|
+    t.integer "page_id",     limit: 4
+    t.text    "text",        limit: 65535
+    t.string  "text_type",   limit: 255
+    t.text    "coordinates", limit: 65535
+    t.string  "shape_type",  limit: 255
+  end
+
+  add_index "marks", ["page_id"], name: "index_marks_on_page_id", using: :btree
 
   create_table "notes", force: :cascade do |t|
     t.string   "title",         limit: 255
