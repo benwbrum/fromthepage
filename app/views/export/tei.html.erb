@@ -125,7 +125,7 @@ xml:id="export">
     <%unless @work.collection.text_language.blank?%>
       <%code = @work.collection.text_language%>
       <langUsage>
-        <langugage ident="<%=code%>"><%=ISO_639.find_by_code(code).english_name%></langugage>
+        <language ident="<%=code%>"><%=ISO_639.find_by_code(code).english_name%></language>
       </langUsage>
     <%end%>
   </profileDesc>
