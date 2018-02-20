@@ -653,8 +653,8 @@ private
     total = stats.total_pages
 
     service["pctComplete"] = stats.pct_completed
-    service["pctTranscribed"] = !work.ocr_correction ? stats.pct_completed : 0
-    service["pctOcrCorrected"] = work.ocr_correction ? stats.pct_completed : 0
+    service["pctTranscribed"] = !work.ocr_correction ? stats.pct_completed : 0.0
+    service["pctOcrCorrected"] = work.ocr_correction ? stats.pct_completed : 0.0
     service["pctIndexed"] = stats.pct_annotated
     service["pctMarkedBlank"] = stats.pct_blank
     service["pctNeedsReview"] = stats.pct_needs_review
