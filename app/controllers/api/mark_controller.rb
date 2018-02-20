@@ -8,13 +8,17 @@ class Api::MarkController < Api::ApiController
   end
 
   def index
-    @marks = Mark.all
-    render_serialized ResponseWS.default_ok(@marks)
+    marks = Mark.all
+    responseMarks=[]
+    marks.map{|mark| responseMarks.push(mark.valueObject) }
+    render_serialized ResponseWS.default_ok(responseMarks)
   end
   
   def list_by_page
-    @marks = Mark.where(page_id: params[:page_id]).all
-    render_serialized ResponseWS.default_ok(@marks)
+    marks = Mark.where(page_id: params[:page_id]).all
+    responseMarks=[]
+    marks.map{|mark| responseMarks.push(mark.valueObject) }
+    render_serialized ResponseWS.default_ok(responseMarks)
   end
 
   def create
