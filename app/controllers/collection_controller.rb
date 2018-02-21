@@ -83,6 +83,11 @@ class CollectionController < ApplicationController
     @user.owner = true
     @user.save!
     @collection.owners << @user
+    @user.notification.owner_stats = true
+    @user.notification.save!
+    if @user.notification.add_as_owner
+      send_email(@user, @collection)
+    end
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
@@ -94,12 +99,25 @@ class CollectionController < ApplicationController
   def add_collaborator
     @user = User.find_by(id: params[:collaborator_id])
     @collection.collaborators << @user
+    if @user.notification.add_as_collaborator
+      send_email(@user, @collection)
+    end
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
   def remove_collaborator
     @collection.collaborators.delete(@user)
     redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def send_email(user, collection)
+    if SMTP_ENABLED
+      begin
+        UserMailer.collection_collaborator(user, collection).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message}"
+      end
+    end
   end
 
   def publish_collection

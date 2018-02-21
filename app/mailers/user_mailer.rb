@@ -22,6 +22,36 @@ class UserMailer < ActionMailer::Base
     mail to: @owner.email, subject: "New FromThePage Owner"
   end
 
+  def added_note(user, note)
+    @user = user
+    @note = note
+    @page = note.page
+    mail to: @user.email, subject: "New FromThePage Note"
+  end
+
+  def collection_collaborator(user, obj)
+    @user = user
+    if obj.is_a?(Collection)
+      @collection = obj
+    else
+      @collection = obj
+    end
+    mail to: @user.email, subject: "New FromThePage Collaborator"
+  end
+
+  def work_collaborator(user, work)
+    @user = user
+    @work = work
+    mail to: @user.email, subject: "New FromThePage Collaborator"
+  end
+
+  def nightly_user_activity(user, pages=nil, works=nil, note_pages=nil)
+    @user = user
+    @added_works = works
+    @active_pages = pages
+    @active_note_pages = note_pages
+    mail to: @user.email, subject: "New FromThePage Activity"
+  end
 
   private
   def add_inline_attachments!

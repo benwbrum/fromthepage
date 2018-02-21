@@ -1,0 +1,24 @@
+p Hi #{@user.display_name} --
+
+p We just wanted to let you know that there's been activity in a collection that you worked on.
+
+-unless @added_works.blank?
+  -@added_works.each do |work|
+    p #{work.owner.display_name} added #{work.title} to the collection #{work.collection.title}.  
+    span =link_to "Click here", collection_read_work_path(work.collection.owner, work.collection, work, only_path: false)
+    |&nbsp; to view #{work.collection.title}: #{work.title}.
+p
+-unless @active_pages.blank?
+  -@active_pages.each do |page|
+    =link_to "Click here", collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
+    |&nbsp; to view page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been edited since you worked on it.
+    p
+p
+-unless @active_note_pages.blank?
+  -@active_note_pages.each do |page|
+    =link_to "Click here", collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
+    |&nbsp; to view the note on page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been added since you worked on it.
+    p
+
+p Thanks, 
+|FromThePage

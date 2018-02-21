@@ -80,3 +80,7 @@ USER = "eleanor"
 OWNER = "margaret"
 NEW_OWNER = "harry"
 ADMIN = "julia"
+
+#set this for mailer tests
+SMTP_ENABLED = true
+ActionMailer::Base.perform_deliveries = true
