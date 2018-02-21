@@ -190,6 +190,9 @@ private
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
 
+    @page_metadata_headings = collection.page_metadata_fields
+    @headings += @page_metadata_headings
+
     #get headings from field-based
     field_headings.each do |raw_heading|
       @headings << "#{raw_heading} (text)"
@@ -238,6 +241,7 @@ private
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
         page_cells = [work.title, work.identifier, page.title, page.position, page_url]
+        page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
 
         if page.sections.blank?
@@ -252,7 +256,7 @@ private
               section_cells = ["", "", ""]
             end
             # write the record to the CSV and start a new record
-            csv << (page_cells + section_cells + data_cells)
+            csv << (page_cells + page_metadata_cells + section_cells + data_cells)
             #create a new array for the next row
             data_cells = Array.new(@headings.count, "")
           end
@@ -269,7 +273,7 @@ private
               #get the cell data and add it to the array
               cell_data(cell_array, @raw_headings, data_cells)
               # write the record to the CSV and start a new record
-              csv << (page_cells + section_cells + data_cells)
+              csv << (page_cells + page_metadata_cells + section_cells + data_cells)
               #create a new array for the next row
               data_cells = Array.new(@headings.count, "")
             end
@@ -280,7 +284,14 @@ private
     return csv
   end
 
-
+  def page_metadata_cells(page)
+    metadata_cells = []
+    @page_metadata_headings.each do |key|
+      metadata_cells << page.metadata[key]
+    end
+    
+    metadata_cells
+  end
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
