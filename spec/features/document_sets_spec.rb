@@ -132,7 +132,7 @@ describe "document sets", :order => :defined do
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @user.email
-    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Collaborator"
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@test_set.title}"
     expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
