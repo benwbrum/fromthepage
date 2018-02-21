@@ -36,13 +36,13 @@ class UserMailer < ActionMailer::Base
     else
       @collection = obj
     end
-    mail to: @user.email, subject: "New FromThePage Collaborator"
+    mail to: @user.email, subject: "You've been added to #{@collection.title}"
   end
 
   def work_collaborator(user, work)
     @user = user
     @work = work
-    mail to: @user.email, subject: "New FromThePage Collaborator"
+    mail to: @user.email, subject: "You've been added to #{@work.title}"
   end
 
   def nightly_user_activity(user, pages=nil, works=nil, note_pages=nil)

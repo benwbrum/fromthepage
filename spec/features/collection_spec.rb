@@ -54,7 +54,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('#collaborator_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
-    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Collaborator"
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
     expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
@@ -108,7 +108,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).not_to be_empty
     expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
-    expect(ActionMailer::Base.deliveries.first.subject).to eq "New FromThePage Collaborator"
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
     expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
