@@ -1,6 +1,10 @@
+require 'contentdm_translator'
 class ExportController < ApplicationController
   require 'zip'
   include CollectionHelper
+
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
 
   def index
     @collection = Collection.friendly.find(params[:collection_id])
@@ -141,7 +145,43 @@ class ExportController < ApplicationController
   def work_plaintext_searchable
     render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
   end
+  
+  
+  def edit_contentdm_credentials
+    # display the edit form
+  end
+  
+  def update_contentdm_credentials
+    # test credentials
+    license_key = params[:collection][:license_key]
+    contentdm_user_name = params[:contentdm_user_name]
+    contentdm_password = params[:contentdm_password]
 
+    error_message, fts_field = ContentdmTranslator.fst_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
+
+    # persist license key so the user doesn't have to retype it    
+    if error_message.blank? || !error_message.match(/license.*invalid/)
+      @collection.license_key = license_key
+      @collection.save!
+    end
+    
+    # redirect to or render edit screen with error
+    if error_message
+      flash[:error] = error_message
+      render :action => :edit_contentdm_credentials, :collection_id => @collection.id
+      return
+    end
+
+    # pass credentials, FTS field, and search to background job
+    log_file = File.join(Rails.root, 'public', 'export', "cdm_export_#{@collection.id}.log")
+    cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file}"
+    logger.info(cmd)
+    system({:contentdm_username => contentdm_user_name, :contentdm_password => contentdm_password, :contentdm_license => license_key}, cmd)
+
+    # display results somehow
+    flash[:notice] = "Updating CONTENTdm.  After the update is complete, you will need to rebuild your index for the changes to appear."
+    ajax_redirect_to :action => :index, :collection_id => @collection.id
+  end
 private
 
   def get_headings(collection, ids)

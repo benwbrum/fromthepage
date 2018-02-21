@@ -66,10 +66,11 @@ class WorkStatistic < ActiveRecord::Base
 
   def pct_completed
     if self.work.ocr_correction
-      pct_corrected + pct_annotated
+      raw = pct_corrected + pct_annotated # includes blank
     else
-      pct_transcribed + pct_annotated
+      raw = pct_transcribed + pct_annotated + pct_blank
     end
+    raw.round
   end
 
   def pct_translation_completed

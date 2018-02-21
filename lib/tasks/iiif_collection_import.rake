@@ -35,11 +35,11 @@ namespace :fromthepage do
         rescue => e
           puts "#{e.message}"
           errors.store(at_id, e.message)
-          errors.store(at_id, e.backtrace.join("\n"))
+#          errors.store(at_id, e.backtrace.join("\n"))
         end
       end
     end
-    puts "Collection import has completed with these errors: #{errors}"
+    puts "Collection import has completed with these errors: \n#{errors.flatten.join("\n")}"
 
     if SMTP_ENABLED
       begin

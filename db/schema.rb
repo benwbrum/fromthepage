@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180126165838) do
+ActiveRecord::Schema.define(version: 20180211133052) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 20180126165838) do
     t.boolean  "field_based",                                default: false
     t.boolean  "voice_recognition",                          default: false
     t.string   "language"
+    t.string   "license_key"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -549,6 +550,8 @@ ActiveRecord::Schema.define(version: 20180126165838) do
     t.boolean  "guest"
     t.string   "slug"
     t.boolean  "deleted",                   default: false
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", using: :btree

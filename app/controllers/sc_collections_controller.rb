@@ -29,7 +29,7 @@ class ScCollectionsController < ApplicationController
     elsif service["@type"] == "sc:Manifest"
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
       find_parent = @sc_manifest.service["within"]
-      if find_parent.nil?
+      if find_parent.nil? || !find_parent.is_a?(Hash)
         @sc_collection = nil
       else
         parent_at_id = @sc_manifest.service["within"]["@id"]
