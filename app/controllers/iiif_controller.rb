@@ -652,15 +652,17 @@ private
     stats = work.work_statistic
     total = stats.total_pages
 
-    service["pctHasTranscript"] = stats.pct_transcribed + stats.pct_needs_review
-    service["pctOcrCorrected"] = stats.pct_corrected
-    service["pctHasTranslation"] = stats.pct_translated
+    service["pctComplete"] = stats.pct_completed
+    service["pctTranscribed"] = !work.ocr_correction ? stats.pct_completed : 0.0
+    service["pctOcrCorrected"] = work.ocr_correction ? stats.pct_completed : 0.0
+    service["pctIndexed"] = stats.pct_annotated
     service["pctMarkedBlank"] = stats.pct_blank
     service["pctNeedsReview"] = stats.pct_needs_review
-    service["pctHasTranscriptOrMarkedBlank"] = stats.pct_transcribed_or_blank + stats.pct_needs_review 
-    service["pctHasTranscriptOrMarkedBlankNotNeedsReview"] =  stats.pct_transcribed_or_blank
-    service["pctHasTranslationOrMarkedBlank"] = stats.pct_translated_or_blank + stats.pct_translation_needs_review
-    service["pctHasTranslationOrMarkedBlankNotNeedsReview"] = stats.pct_translated_or_blank
+    service["pctTranslationComplete"] = stats.pct_translation_completed
+    service["pctTranslated"] = stats.pct_translation_completed
+    service["pctTranslationNeedsReview"] = stats.pct_translation_needs_review
+    service["pctTranslationIndexed"] = stats.pct_translation_annotated
+    service["pctTranslationMarkedBlank"] = stats.pct_translation_blank
     service
   end
   
@@ -675,7 +677,7 @@ private
     service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED)
     service["pageStatus"] << "markedBlank" if page.status == Page::STATUS_BLANK
     service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED
-    service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSLATED
+    service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.translation.status == Page::STATUS_TRANSLATED
     service["pageStatus"] << "hasSubjectTags" if page.status == Page::STATUS_INDEXED
     service
   end
