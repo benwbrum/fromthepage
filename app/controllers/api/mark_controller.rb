@@ -28,7 +28,7 @@ class Api::MarkController < Api::ApiController
     end
 
     if @mark.save
-      render_serialized ResponseWS.ok("api.mark.create.success", @mark)
+      render_serialized ResponseWS.ok("api.mark.create.success", @mark.valueObject)
     else
       render_serialized ResponseWS.default_error
     end
@@ -36,12 +36,12 @@ class Api::MarkController < Api::ApiController
   
   def update
     @mark.update_attributes(mark_params)
-    render_serialized ResponseWS.ok("api.mark.update.success", @mark)
+    render_serialized ResponseWS.ok("api.mark.update.success", @mark.valueObject)
   end
   
   def destroy
     @mark.destroy
-    render_serialized ResponseWS.ok("api.mark.destroy.success", @mark)
+    render_serialized ResponseWS.ok("api.mark.destroy.success", @mark.valueObject)
   end
   
   private
