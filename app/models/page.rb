@@ -107,6 +107,14 @@ class Page < ActiveRecord::Base
   def base_image
     self[:base_image] || ""
   end
+  
+  def base_image_url
+    if self[:base_image]
+      file_to_url(self[:base_image])
+    else
+      ''
+    end
+  end
 
   def shrink_factor
     self[:shrink_factor] || 0
@@ -286,6 +294,12 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     process_source
     self.status = 'translated'
     self.save!
+  end
+  
+  def serializable_hash(options={})
+    options[:except] ||= [:base_image]
+    options[:methods] ||= [:base_image_url]
+    super(options)
   end
 
 private
