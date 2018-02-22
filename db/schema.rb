@@ -258,12 +258,11 @@ ActiveRecord::Schema.define(version: 20180205190722) do
   add_index "notes", ["page_id"], name: "index_notes_on_page_id", using: :btree
 
   create_table "notifications", force: true do |t|
-    t.boolean  "work_added",          default: true
     t.boolean  "add_as_owner",        default: true
     t.boolean  "add_as_collaborator", default: true
-    t.boolean  "page_edited",         default: true
     t.boolean  "note_added",          default: true
     t.boolean  "owner_stats",         default: false
+    t.boolean  "user_activity",       default: true
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

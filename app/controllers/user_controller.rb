@@ -41,6 +41,12 @@ class UserController < ApplicationController
     end
   end
 
+  def update_profile
+    unless @user
+      @user = User.friendly.find(params[:user_slug])
+    end
+  end
+
   def profile
     unless @user
       @user = User.friendly.find(params[:id])

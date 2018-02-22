@@ -1,4 +1,5 @@
 class UserMailer < ActionMailer::Base
+  include UserHelper
 
   default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
@@ -45,11 +46,9 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "You've been added to #{@work.title}"
   end
 
-  def nightly_user_activity(user, pages=nil, works=nil, note_pages=nil)
+  def nightly_user_activity(user)
     @user = user
-    @added_works = works
-    @active_pages = pages
-    @active_note_pages = note_pages
+    user_activity(@user)
     mail to: @user.email, subject: "New FromThePage Activity"
   end
 
