@@ -7,3 +7,7 @@ span =link_to "Click here", collection_path(@collection.owner, @collection, only
 
 p Thanks, 
 |FromThePage
+
+p
+span =link_to "Click here", update_profile_path(@user, only_path: false)
+|&nbsp; to turn off this notification.
