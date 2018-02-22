@@ -18,7 +18,7 @@ We just wanted to let you know that there's been activity in a collection that y
 
 <%unless @active_note_pages.blank?%>
   <%@active_note_pages.each do |page|%>
-    We just wanted to let you know that a note has been added to a page you worked on in work <%=page.work.title%>, in the collection <%=page.collection.title%>.
+    A note has been added to a page you worked on in work <%=page.work.title%>, in the collection <%=page.collection.title%>.
     To view the note on page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)%>
   <%end%>
 <%end%>

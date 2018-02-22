@@ -12,13 +12,11 @@ namespace :fromthepage do
     #pass users to mailer
     if SMTP_ENABLED
       all_users.each do |user|
-        #making absolutely sure the user isn't notified if they don't want to be
-        unless !user.notification.user_activity
-          begin
-            UserMailer.nightly_user_activity(user).deliver!
-          rescue StandardError => e
-            print "SMTP Failed: Exception: #{e.message} \n"
-          end
+        puts "#{user.display_name} had activity in the past 24 hours"
+        begin
+          UserMailer.nightly_user_activity(user).deliver!
+        rescue StandardError => e
+          print "SMTP Failed: Exception: #{e.message} \n"
         end
       end
     end
