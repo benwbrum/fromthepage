@@ -8,15 +8,27 @@ module UserHelper
     @added_works = Work.where(collection_id: col_ids).joins(:deeds).where(deeds: {deed_type: 'work_add'}).merge(Deed.past_day).where.not(deeds: {user_id: @user.id}).distinct
     #find edited pages
     pages = Page.joins(:deeds).where(deeds: {deed_type: ['page_edit', 'ocr_corr', 'review']}).merge(Deed.past_day).distinct
+    #find edited translations
+    translated_pages = Page.joins(:deeds).where(deeds: {deed_type: ['pg_xlat_ed', 'xlat_rev']}).merge(Deed.past_day).distinct
     #find pages with notes
     note_pages = Page.joins(:deeds).where(deeds: {deed_type: 'note_add'}).merge(Deed.past_day).distinct
 
     #find which pages the user has worked on
-    user_page_ids = user.deeds.where(deeds: {deed_type: ['page_trans', 'page_edit', 'review', 'note_add', 'ocr_corr']}).pluck(:page_id).uniq
+    user_page_ids = @user.deeds.pluck(:page_id).uniq.compact
     #find pages that have been newly edited by someone other than the user (the user is not the last editor)
     @active_pages = pages.where(id: user_page_ids).select {|page| page if page.deeds.where(deed_type: ['page_trans', 'page_edit', 'review', 'ocr_corr']).last.user_id != user.id}
+    #find translation pages that have been newly edited by someone other than the user
+    @translation_pages = translated_pages.where(id: user_page_ids).select {|page| page if page.deeds.where(deed_type: ['pg_xlat', 'pg_xlat_ed', 'xlat_rev']).last.user_id != user.id}
     #find pages that the user has worked on that has had notes added recently
     @active_note_pages = note_pages.where(id: user_page_ids).select {|page| page if page.deeds.where(deed_type: 'note_add').last.user_id != user.id}
   end
 
 end
+
+  PAGE_TRANSLATED = 'pg_xlat'
+  PAGE_TRANSLATION_EDIT = 'pg_xlat_ed'
+  OCR_CORRECTED = 'ocr_corr'
+  NEEDS_REVIEW = 'review'
+  TRANSLATION_REVIEW = 'xlat_rev'
+  TRANSLATION_INDEXED = 'xlat_index'
+  WORK_ADDED = 'work_add'
