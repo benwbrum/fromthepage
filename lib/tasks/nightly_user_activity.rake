@@ -8,7 +8,7 @@ namespace :fromthepage do
     #find users with edited pages or added works
     #note that injecting this query allows us to use or and get an active record relation, which isn't available in Rails 4.1.2
     query = Deed.where('page_id in (?) or collection_id = ?', active_pages.ids, collections.ids)
-    all_users = User.joins(:deeds).where(deeds: {query.where_values.inject(:or)}).where('deeds.created_at >= ?', 1.day.ago).joins(:notification).where(notifications: {user_activity: true}).distinct
+    all_users = User.joins(:deeds).where(query.where_values.inject(:or)).where('deeds.created_at >= ?', 1.day.ago).joins(:notification).where(notifications: {user_activity: true}).distinct
     #pass users to mailer
     if SMTP_ENABLED
       all_users.each do |user|
