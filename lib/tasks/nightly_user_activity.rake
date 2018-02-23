@@ -12,7 +12,7 @@ namespace :fromthepage do
     #pass users to mailer
     if SMTP_ENABLED
       all_users.each do |user|
-        puts "#{user.display_name} had activity in the past 24 hours"
+        puts "There was activity on #{user.display_name}\'s previous work in the past 24 hours"
         begin
           UserMailer.nightly_user_activity(user).deliver!
         rescue StandardError => e

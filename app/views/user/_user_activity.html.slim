@@ -13,10 +13,10 @@
     |&nbsp; to view page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been edited since you worked on it.
     p
 
--unless @translation_pages.blank?
+-unless @active_translations.blank?
   p
   h3(style="margin-bottom:0") Edited Translations
-  -@translation_pages.each do |page|
+  -@active_translations.each do |page|
     =link_to "Click here", collection_translate_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
     |&nbsp; to view translation page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been edited since you worked on it.
     p

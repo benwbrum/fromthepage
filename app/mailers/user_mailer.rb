@@ -49,7 +49,9 @@ class UserMailer < ActionMailer::Base
   def nightly_user_activity(user)
     @user = user
     user_activity(@user)
-    mail to: @user.email, subject: "New FromThePage Activity"
+    if @active_user
+      mail to: @user.email, subject: "New FromThePage Activity"
+    end
   end
 
   private
