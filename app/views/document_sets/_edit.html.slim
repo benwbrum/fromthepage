@@ -3,8 +3,7 @@
   =form_for(@document_set, url: document_set_path(@document_set)) do |f|
     =validation_summary @document_set.errors
     =f.hidden_field :collection_id
-    -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-    table.form.settings lang="#{@collection.text_language}" dir=direction class=direction
+    table.form.settings[*language_attrs(@collection)]
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title

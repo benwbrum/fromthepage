@@ -5,8 +5,7 @@
     =form_for(@article, url: collection_article_update_path(@collection.owner, @collection, @article)) do |f|
       =hidden_field_tag(:article_id, @article.id)
       =validation_summary @article.errors
-      -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-      table.form lang="#{@collection.text_language}" dir=direction class=direction
+      table.form[*language_attrs(@collection)]
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title

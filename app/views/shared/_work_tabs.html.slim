@@ -45,8 +45,7 @@
 -content_for :page_title, selected == 1 ? "#{work_title}" : "#{selected_tab} - #{work_title}"
 -content_for :meta_description, "#{work_title} - #{tab_title}. #{strip_tags(@work.description)}"
 
--direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-h1 lang="#{@collection.text_language}" dir=direction =@work.title
+h1[*language_attrs(@collection)] =@work.title
 .tabs
   -for tab in tabs
       =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]

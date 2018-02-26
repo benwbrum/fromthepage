@@ -3,8 +3,7 @@
   article.maincol
     =form_for :collection, url: update_collection_path(@collection) do |f|
       =validation_summary @collection.errors
-      -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-      table.form.collection-settings lang="#{@collection.text_language}" dir=direction class=direction
+      table.form.collection-settings[*language_attrs(@collection)]
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title, value: @collection.title

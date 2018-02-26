@@ -26,8 +26,7 @@
         tbody
           -@works.each do |work|
             tr
-              -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-              td lang="#{@collection.text_language}" dir=direction class=direction
+              td[*language_attrs(@collection)]
                 =work.title
                 -if work.supports_translation
                   span 

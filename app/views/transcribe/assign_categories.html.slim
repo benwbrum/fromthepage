@@ -8,17 +8,15 @@
 
 p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
 
--direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-
 -@page.articles.distinct.each do |article|
   -if article.categories.length == 0
     -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
     .page-uncategorized
-      h4.page-uncategorized_subject(data-prefix="Subject: " lang="#{@collection.text_language}" dir=direction class=direction) =="&ldquo;#{article.title}&rdquo;"
+      h4.page-uncategorized_subject(data-prefix="Subject: " *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
       select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)
         -@collection.categories.walk_tree do |c, level|
           -selected = true if article.categories.include?(c)
-          option(data-level=level value=c.id selected=selected aria-label="options" lang="#{@collection.text_language}" dir=direction) =c.title
+          option(data-level=level value=c.id selected=selected aria-label="options" *language_attrs(@collection)) =c.title
 
 span.legend
   -if @translation

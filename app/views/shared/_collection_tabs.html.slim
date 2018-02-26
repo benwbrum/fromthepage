@@ -67,8 +67,7 @@
 -content_for :page_title, selected == 1 ? @collection.title : "#{selected_tab} - #{@collection.title}"
 -content_for :meta_description, "#{@collection.title} - collection #{selected_tab.downcase}. #{strip_tags(@collection.intro_block)}"
 
--direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-div lang="#{@collection.text_language}" dir=direction
+div[*language_attrs(@collection)]
   -if @document_set
     h1 =@document_set.title
   -else

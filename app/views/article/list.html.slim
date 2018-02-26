@@ -16,8 +16,7 @@
       -if @uncategorized_articles.present?
         ul
           li: a.tree-item(href="#category-none") Uncategorized
-    -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-      
+
     .category-articles
       -@categories.each do |category|
         dl.category-article(id="category-#{category.id}")
@@ -42,7 +41,7 @@
               p.acenter.fglight There are no subjects for the category selected
             -else
               -category.articles_list(@collection).each do |article|
-                p lang="#{@collection.text_language}" dir=direction class=direction
+                p[*language_attrs(@collection)]
                   =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
       -if @uncategorized_articles.present?
         dl.category-article#category-none

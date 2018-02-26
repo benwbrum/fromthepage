@@ -22,13 +22,12 @@
         |All works are fully transcribed.
 
     -@works.each do |work|
-      -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
       .collection-work
         .collection-work_image
           -unless work.thumbnail.nil? 
             =image_tag(work.thumbnail, alt: work.title)
-        h4.collection-work_title lang="#{@collection.text_language}" dir=direction class=direction =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
-        p.collection-work_snippet lang="#{@collection.text_language}" dir=direction class=direction =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+        h4.collection-work_title[*language_attrs(@collection)] =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
+        p.collection-work_snippet[*language_attrs(@collection)] =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -work_stats(work)
           span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"

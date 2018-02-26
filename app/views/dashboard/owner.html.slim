@@ -5,8 +5,7 @@
     -unless current_user.all_owner_collections.empty?
       .collections
         -current_user.all_owner_collections.includes(:works).each do |c|
-          -direction = Rtl.rtl?(c.text_language) ? 'rtl' : 'ltr'
-          .collection lang="#{c.text_language}" dir=direction class=direction
+          .collection[*language_attrs(c)]
             h4.collection_title
               =link_to c.title, collection_path(c.owner, c)
               -collection_list(c)

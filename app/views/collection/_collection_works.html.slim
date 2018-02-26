@@ -6,8 +6,7 @@
         span.progress_bar
       -@works.each do |w|
         -work_stats(w)
-        -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-        li lang="#{@collection.text_language}" dir=direction class=direction
+        li[*language_attrs(@collection)]
           span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
           span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
 
