@@ -3,7 +3,7 @@
 .columns
   article.maincol
     =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
-      table.form.settings[*language_attrs(@collection)]
+      table.form.settings
         tr.big
           th =f.label :title, 'Work title'
           td.w100 =f.text_field :title, value: @work.title
