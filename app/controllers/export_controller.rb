@@ -156,7 +156,7 @@ class ExportController < ApplicationController
     license_key = params[:collection][:license_key]
     contentdm_user_name = params[:contentdm_user_name]
     contentdm_password = params[:contentdm_password]
-
+    
     error_message, fts_field = ContentdmTranslator.fst_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
 
     # persist license key so the user doesn't have to retype it    
@@ -173,13 +173,13 @@ class ExportController < ApplicationController
     end
 
     # pass credentials, FTS field, and search to background job
-    log_file = File.join(Rails.root, 'public', 'export', "cdm_export_#{@collection.id}.log")
-    cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file}"
+    log_file = ContentdmTranslator.log_file(@collection)
+    cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file} 2>&1 &"
     logger.info(cmd)
-    system({:contentdm_username => contentdm_user_name, :contentdm_password => contentdm_password, :contentdm_license => license_key}, cmd)
+    system({'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key}, cmd)
 
     # display results somehow
-    flash[:notice] = "Updating CONTENTdm.  After the update is complete, you will need to rebuild your index for the changes to appear."
+    flash[:notice] = "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."
     ajax_redirect_to :action => :index, :collection_id => @collection.id
   end
 private
