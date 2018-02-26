@@ -68,8 +68,7 @@
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
-      -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-      .page-editarea(style=("display:none" if @preview_xml) lang="#{@collection.text_language}" dir=direction class=direction)
+      .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
         =f.label :source_translation, 'Edit translation', class: 'hidden'
 

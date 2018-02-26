@@ -1,8 +1,7 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 9, :work_id => @work.id }})
 
 .columns
-  -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-  article.maincol lang="#{@collection.text_language}" dir=direction class=direction
+  article.maincol
     =@collection.help.html_safe
 
     -unless @collection.subjects_disabled
