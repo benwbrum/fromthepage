@@ -6,7 +6,6 @@
         span.progress_bar
       -@works.each do |w|
         -work_stats(w)
-
         li
           span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
           span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"

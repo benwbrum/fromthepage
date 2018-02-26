@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   
   def billing_host
     if defined? BILLING_HOST
@@ -19,7 +18,6 @@ module ApplicationHelper
       end
     end
   end
-
 
   def html_block(tag)
     render({ :partial => 'page_block/html_block',
@@ -128,6 +126,13 @@ module ApplicationHelper
   
   def pontiiif_server
     Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
+  end
+
+  def language_attrs(collection)
+    direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
+    language = !collection.text_language.nil? ? collection.text_language : nil
+    attrs = {'lang'=>"#{language}", 'dir'=>"#{direction}", 'class'=>"#{direction}"}
+    return attrs
   end
 
 end

@@ -13,7 +13,7 @@
         tr
           th.hidden URL
           td
-            |The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+            p.nomargin.settings The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
@@ -36,23 +36,24 @@
             =f.text_area :link_help, rows: 10, value: @collection.link_help
         tr
           td(colspan="2")
-            p
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
             =f.label :subjects_disabled, "Disable subject indexing"
         tr
           td(colspan="2")
-            p
             =f.check_box :review_workflow, value: @collection.review_workflow
             =f.label :review_workflow, "All initial transcriptions need review"
         tr
           td(colspan="2")
-            p
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, "Hide completed works by default"
+        tr
+          td(colspan="2")
+            =f.label :text_language, "Select the language of the transcription text", class: 'collection-label'
+            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
+
         -if @ssl && !@collection.field_based
           tr
             td(colspan="2")
-              p
               =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, "Speech to text available for transcribing"
           tr  
@@ -175,6 +176,9 @@
       $('#user_id').select2({
         placeholder: 'Add new owner...',
       });
+
+      $('#collection_text_language').select2(
+        );
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
