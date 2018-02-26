@@ -201,6 +201,33 @@
   }
 }
 
+//--------------------------------
+// LANDING PAGE
+//--------------------------------
+.owl-carousel.carousel {
+  width: 75%;
+  margin: 0 auto;
+}
+.carousel {
+  &_image {
+    display: table-cell;
+    vertical-align: top;
+    padding-right: $gapSize;
+    img {
+      padding: 5px;
+      background: #FFF;
+      background-clip: padding-box;
+      border: 1px solid rgba(#000, 0.06);
+    }
+  }
+}
+
+.project_list {
+  
+}
+
+
+
 
 // ---------------------------
 // EDITOR SECTION

@@ -1,0 +1,34 @@
+.owl-carousel.owl-theme.carousel
+  -@collections.each do |c|
+    .carousel_image
+      =image_tag(c.picture_url(:thumb))
+.columns
+  article.maincol
+    .project_list
+    h2 Project List
+    -@owners.each do |owner|
+      p =owner.display_name
+
+  aside.sidecol
+    p Search for collections/projects
+
+-content_for :javascript
+  javascript:
+    $(function(){
+      $('.owl-carousel').owlCarousel({
+        loop:true,
+        center:true,
+        nav:true,
+        responsive:{
+          0:{
+            items:1
+          },
+          600:{
+            items:3
+          },
+          1000:{
+            items:5
+          }
+        },
+      });
+    });

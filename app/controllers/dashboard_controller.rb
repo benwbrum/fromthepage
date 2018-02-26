@@ -89,7 +89,6 @@ class DashboardController < ApplicationController
     end
   end
 
-
   #Collaborator Dashboard - activity
   def editor
     @user = current_user
@@ -99,4 +98,10 @@ class DashboardController < ApplicationController
   def guest
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
+
+  def landing_page
+    @collections = Collection.unrestricted.where.not(picture: nil)
+    @owners = User.where(owner: true).order(display_name: :asc)
+  end
+
 end
