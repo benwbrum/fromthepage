@@ -220,7 +220,6 @@ describe "owner actions", :order => :defined do
     click_button 'Save Changes'
     #note: this is just to make sure it's on the settings page again
     expect(page).to have_content('Collection Owners')
-    expect(page).to have_selector('table.collection-settings.rtl')
     expect(Collection.last.text_language).to eq 'ara'
   end
 
