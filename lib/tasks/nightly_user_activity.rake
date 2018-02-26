@@ -4,7 +4,7 @@ namespace :fromthepage do
     #find collections where works have been added
     collections = Collection.joins(:deeds).where(deeds: {deed_type: 'work_add'}).merge(Deed.past_day).distinct
     #find edited pages
-    active_pages = Page.joins(:deeds).where(deeds: {deed_type: ['page_edit', 'ocr_corr', 'review', 'note_add', 'pg_xlat_ed', 'xlat_rev']}).merge(Deed.past_day).distinct
+    active_pages = Page.joins(:deeds).merge(Deed.past_day).distinct
     #find users with edited pages or added works
     #note that injecting this query allows us to use or and get an active record relation, which isn't available in Rails 4.1.2
     query = Deed.where('page_id in (?) or collection_id = ?', active_pages.ids, collections.ids)
