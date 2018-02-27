@@ -8,6 +8,6 @@
   -path.push(link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work))
 
 -if path.present?
-  ul.breadcrumbs
+  ul.breadcrumbs[*language_attrs(@collection)]
     -path.each do |item|
       li ==item
