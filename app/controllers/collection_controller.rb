@@ -156,6 +156,7 @@ class CollectionController < ApplicationController
   end
 
   def edit
+    @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
     @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
     #array of languages
     array = Collection::LANGUAGE_ARRAY
