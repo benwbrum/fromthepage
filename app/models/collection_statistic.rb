@@ -44,11 +44,9 @@ module CollectionStatistic
   end
 
   def pct_completed
-    complete = 0
     unless work_count == 0
-      self.works.includes(:work_statistic).each do |w|
-        complete += w.work_statistic.pct_completed
-      end
+      complete = self.works.where(supports_translation: false).joins(:work_statistic).sum(:complete)
+      complete = complete + self.works.where(supports_translation: true).joins(:work_statistic).sum(:translation_complete)
       pct = complete/work_count
     else
       pct = 0

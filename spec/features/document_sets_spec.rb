@@ -14,6 +14,12 @@ describe "document sets", :order => :defined do
     @set = DocumentSet.first
   end
 
+  it "turns off hiding completed works" do
+    #turns off so it doesn't mess up doc sets test (it isn't relevant)
+    @collection.hide_completed = false
+    @collection.save
+  end
+
   it "edits a document set (start at collection level)" do
     login_as(@owner, :scope => :user)
     visit dashboard_owner_path
@@ -104,8 +110,11 @@ describe "document sets", :order => :defined do
 
   it "adds a collaborator" do
     @test_set = DocumentSet.last
-    #hack because of select 2 dropdown box
-    @test_set.collaborators << @user
+    login_as(@owner, :scope => :user)
+    visit collection_path(@test_set.owner, @test_set)
+    page.find('.tabs').click_link("Settings")
+    select(@user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
   end
 
   it "tests a collaborator" do
@@ -172,7 +181,6 @@ describe "document sets", :order => :defined do
     #delete the note in case of conflicts
 #    Note.find_by(body: "Test private note").delete
   end
-
 
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
@@ -417,5 +425,12 @@ describe "document sets", :order => :defined do
     #note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize
   end
+
+  it "turns on hiding completed works" do
+    #turns back on to work right with other tests
+    @collection.hide_completed = true
+    @collection.save
+  end
+
 
 end

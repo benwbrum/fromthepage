@@ -28,6 +28,14 @@ p.big
         span Export All Table Data as CSV
     span Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
 
+-if ContentdmTranslator.collection_is_cdm? @collection
+  h2 Export to CONTENTdm
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to({ :controller => 'export', :action => 'edit_contentdm_credentials', :collection_id => @collection.id }, {:class => 'button btnExport', :id => 'btnExportContentdm', :data => { :litebox => { :hash => "", :collection_id => @collection.id }, :collection_id => @collection.id}})
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export to CONTENTdm
+    span Click the button to export completed transcripts from the entire collection to CONTENTdm.
 
 h2 Export Individual Works
 p.big You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document.

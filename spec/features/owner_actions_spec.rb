@@ -10,6 +10,7 @@ describe "owner actions", :order => :defined do
     @collection = @collections.first
     @works = @owner.owner_works
     @title = "This is an empty work"
+    @rtl_collection = Collection.last
   end
 
   before :each do
@@ -210,6 +211,33 @@ describe "owner actions", :order => :defined do
     @owner.unrestricted_document_sets.each do |d|
       expect(page).to have_content(d.title)
     end
+  end
+
+  it "changes the collection's default language" do
+    visit edit_collection_path(@owner, @rtl_collection)
+    expect(page).to have_selector('#collection_text_language')
+    select('Arabic', from: 'collection_text_language')
+    click_button 'Save Changes'
+    #note: this is just to make sure it's on the settings page again
+    expect(page).to have_content('Collection Owners')
+    expect(Collection.last.text_language).to eq 'ara'
+  end
+
+  it "checks rtl transcription page views" do
+    rtl_page = @rtl_collection.works.first.pages.first
+    visit collection_transcribe_page_path(@rtl_collection.owner, @rtl_collection, rtl_page.work, rtl_page)
+    #check transcription page direction
+    expect(page.find('.page-editarea')[:dir]).to eq 'rtl'
+    #check overview page direction
+    page.find('.tabs').click_link('Overview')
+    expect(page.find('.page-preview')[:dir]).to eq 'rtl'
+  end
+
+  it "resets the default language" do
+    rtl_collection = Collection.last
+    rtl_collection.text_language = "eng"
+    rtl_collection.save!
+    expect(rtl_collection.text_language).to eq 'eng'
   end
 
 end

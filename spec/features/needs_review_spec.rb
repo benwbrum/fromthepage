@@ -138,8 +138,10 @@ describe "needs review", :order => :defined do
     expect(page.find('.pagination_info')).to have_content(@work.pages.translation_review.count)
   end
 
-  it "checks collection overview stats" do
+  it "checks collection overview stats view" do
     visit collection_path(@collection.owner, @collection)
+    #show all works before checking for stats
+    page.click_link("Show Fully Transcribed Works")
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"

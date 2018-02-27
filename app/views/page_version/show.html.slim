@@ -15,6 +15,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         =label_tag :compare_version_id, 'Compared with'
         =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
   tr
+
     td.diff-list
       .scroll-container
         -@page.page_versions.each do |version|
@@ -23,7 +24,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
               =version.created_on.strftime("%b %d, %Y")
             small =version.user.display_name
 
-    td.diff-version
+    td.diff-version[*language_attrs(@collection)]
       h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title ? @selected_version.title : "Untitled"
       div(data-diff-transcription="changed" data-empty="No transcription provided")
         ==xml_to_html(@selected_version.xml_transcription)
@@ -33,7 +34,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         div(data-diff-translation="changed" data-empty="No translation provided")
           ==xml_to_html(@selected_version.xml_translation)
 
-    td.diff-version
+    td.diff-version[*language_attrs(@collection)]
       h4(data-diff-title="original" data-empty="Untitled") =(@previous_version.title rescue "")
       div(data-diff-transcription="original" data-empty="No transcription provided")
         ==xml_to_html((@previous_version.xml_transcription rescue ""))
