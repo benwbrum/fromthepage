@@ -8,7 +8,7 @@
     table.form
       tr.big
         th =f.label :title
-        td.w100[*language_attrs(@collection)] =f.text_field :title
+        td.w100 =f.text_field :title
       tr
         th =f.label(:is_public, "Public")
         td =f.check_box :is_public, {checked: true}
