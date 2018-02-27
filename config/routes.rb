@@ -20,7 +20,7 @@ Fromthepage::Application.routes.draw do
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'
-  get   'landing_page', to: 'dashboard#landing_page', path: '/findproject'
+  get   'landing_page', to: 'dashboard#landing_page', path: '/findaproject'
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/:id/layer/:type', :to => 'iiif#layer'

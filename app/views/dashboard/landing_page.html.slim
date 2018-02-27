@@ -1,13 +1,20 @@
-.owl-carousel.owl-theme.carousel
-  -@collections.each do |c|
-    .carousel_image
-      =image_tag(c.picture_url(:thumb))
+.carousel-no-style
+  button.prev &laquo;
+  button.next &raquo;
+  ul
+    -@collections.each do |c|
+      li.nomargin(style="overflow:hidden float:left")
+        -link_work = find_link_work(c)
+        =image_tag(c.picture_url(:thumb), style:"width: 150px; height: 150px")
 .columns
   article.maincol
     .project_list
     h2 Project List
     -@owners.each do |owner|
-      p =owner.display_name
+      h4 =owner.display_name
+      -projects = owner_projects(owner)
+      -projects.each do |project|
+        p =project.title      
 
   aside.sidecol
     p Search for collections/projects
@@ -15,20 +22,8 @@
 -content_for :javascript
   javascript:
     $(function(){
-      $('.owl-carousel').owlCarousel({
-        loop:true,
-        center:true,
-        nav:true,
-        responsive:{
-          0:{
-            items:1
-          },
-          600:{
-            items:3
-          },
-          1000:{
-            items:5
-          }
-        },
+      $('.carousel-no-style').jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev"
       });
     });

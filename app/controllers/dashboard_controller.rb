@@ -100,10 +100,8 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    @collections = Collection.unrestricted.where.not(picture: nil)
-    #collections that aren't complete:
-    #Collection.joins(works: :work_statistic).where.not(work_statistics: {complete: 100})
-    @owners = User.where(owner: true).order(display_name: :asc)
+    @owners = User.where.not(account_type: nil).order(:display_name)
+    @collections = Collection.unrestricted.where.not(picture: nil).joins(works: :work_statistic).where.not(work_statistics: {complete: 100}).distinct
   end
 
 end
