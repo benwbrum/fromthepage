@@ -5,7 +5,7 @@
     -description = xml_to_html(@article.xml_text)
     h3 Description
     -if description.present?
-      .big ==description
+      .big[*language_attrs(@collection)] ==description
     -else
       -if user_signed_in? && !current_user.guest
         i =link_to 'Edit the description in the settings tab.', collection_article_edit_path(@collection.owner, @collection, @article)

@@ -79,3 +79,7 @@ gem 'devise_masquerade'
 
 #friendly routes
 gem 'friendly_id'
+
+#support right to left languages
+gem 'rtl'
+gem 'iso-639'

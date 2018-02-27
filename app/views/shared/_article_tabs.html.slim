@@ -22,7 +22,7 @@
 -content_for :page_title, selected == 1 ? @article.title : "#{selected_tab} - #{@article.title}"
 -content_for :meta_description, "#{@article.title} - subject #{selected_tab.downcase}. #{strip_tags(description).truncate(150, separator: ' ')}"
 
-h1 =@article.title
+h1[*language_attrs(@collection)] =@article.title
 .tabs
   -for tab in tabs
     -if tab[:path]
