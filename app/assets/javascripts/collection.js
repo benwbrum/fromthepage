@@ -104,7 +104,7 @@ var langs =
  ['ภาษาไทย',         ['th-TH']]];
 
 $(function(){
-  if ($('div.collection_settings').length){
+  if ($('div.collection_settings').length && ($('#language').length == 1)){
     for (var i = 0; i < langs.length; i++) {
       language.options[i] = new Option(langs[i][0], i);
     }

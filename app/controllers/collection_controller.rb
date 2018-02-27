@@ -56,7 +56,19 @@ class CollectionController < ApplicationController
 
     if params[:search]
       @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-    else  
+    #show all works
+    elsif (params[:works] == 'show')
+      @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    #hide incomplete works
+    elsif params[:works] == 'hide' || (@collection.hide_completed)
+      #find ids of completed translation works
+      translation_ids = @collection.works.incomplete_translation.pluck(:id)
+      #find ids of completed transcription works
+      transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
+      #combine ids anduse to get works that aren't complete
+      ids = translation_ids + transcription_ids
+      @works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+    else
       @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
     end
   end
@@ -126,6 +138,7 @@ class CollectionController < ApplicationController
   end
 
   def edit
+    @text_languages = ISO_639::ISO_639_2.map {|lang| [lang[3], lang[0]]}
     @ssl = Rails.env.production? ? Rails.application.config.force_ssl : true
     #array of languages
     array = Collection::LANGUAGE_ARRAY
