@@ -13,7 +13,7 @@
         th =f.label(:is_public, "Public")
         td =f.check_box :is_public, {checked: true}
       tr
-        td(colspan="2" *language_attrs(@collection))
+        td(colspan="2")
           =f.label :description, 'Description', class: 'above'
           =f.text_area :description, rows: 6
     .toolbar
