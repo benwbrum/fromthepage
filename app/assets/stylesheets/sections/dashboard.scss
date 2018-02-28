@@ -204,12 +204,14 @@
 //--------------------------------
 // LANDING PAGE
 //--------------------------------
-.owl-carousel.carousel {
-  width: 75%;
-  margin: 0 auto;
-}
+
 .carousel {
+  width: 100%;
+  margin: 0 auto;
+  visibility: hidden;
   &_image {
+    width: 150px;
+    height: 150px;
     display: table-cell;
     vertical-align: top;
     padding-right: $gapSize;
@@ -222,8 +224,19 @@
   }
 }
 
-.project_list {
-  
+.project-list {
+  &_user {
+    width: 100%;
+    display: table;
+    margin: $gapSize 0;
+    &_image {
+      text-align: center;
+      display: table-cell;
+      vertical-align: top;
+      padding-right: $gapSize * 2;
+      .userpic { font-size: 80px; }
+    }
+  }
 }
 
 
