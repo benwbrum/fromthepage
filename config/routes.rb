@@ -71,6 +71,9 @@ Fromthepage::Application.routes.draw do
   resources :document_sets, except: [:show, :create, :edit]
 
   scope ':user_slug' do
+    get 'user/update_profile', path: '/update_profile', to: 'user#update_profile', as: :update_profile
+
+
     resources :collection, path: '', only: [:show] do
       get 'statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
       get 'document_sets/settings', path: '/settings', as: :settings, to: 'document_sets#settings'

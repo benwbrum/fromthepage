@@ -1,0 +1,40 @@
+Hi <%=@user.display_name%> --
+
+We just wanted to let you know that there's been activity in a collection that you worked on.
+
+<%unless @added_works.blank?%>
+  New Works
+  <% @added_works.each do |work|%>
+    <%=work.owner.display_name%> added <%=work.title%> to the collection <%=work.collection.title%>.  
+    To view <%=work.collection.title%>: <%=work.title%>, visit the following URL: <%=collection_read_work_path(work.collection.owner, work.collection, work, only_path: false)%>
+  <%end%>
+<%end%>
+
+<%unless @active_pages.blank?%>
+  Edited Pages
+  <%@active_pages.each do |page|%>
+    Page <%=page.title%> from work <%=page.work.title%> in the collection <%=page.collection.title%> has been edited since you worked on it.
+    To view the page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)%>
+  <%end%>
+<%end%>
+
+<%unless @translation_pages.blank?%>
+  Edited Translations
+  <%@translation_pages.each do |page|%>
+    Page <%=page.title%> from work <%=page.work.title%> in the collection <%=page.collection.title%> has been edited since you worked on it.
+    To view the page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_translate_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)%>
+  <%end%>
+<%end%>
+
+<%unless @active_note_pages.blank?%>
+  New Notes
+  <%@active_note_pages.each do |page|%>
+    A note has been added to a page you worked on in work <%=page.work.title%>, in the collection <%=page.collection.title%>.
+    To view the note on page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)%>
+  <%end%>
+<%end%>
+
+Thanks, 
+FromThePage
+
+Turn off this notification at the URL: <%=update_profile_path(@user, only_path: false)%>

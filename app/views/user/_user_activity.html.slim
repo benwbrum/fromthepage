@@ -1,0 +1,30 @@
+-unless @added_works.blank?
+  h3(style="margin-bottom:0") New Works
+  -@added_works.each do |work|
+    |#{work.owner.display_name} added #{work.title} to the collection #{work.collection.title}.  
+    span =link_to "Click here", collection_read_work_path(work.collection.owner, work.collection, work, only_path: false)
+    |&nbsp; to view #{work.collection.title}: #{work.title}.
+    p
+-unless @active_pages.blank?
+  p
+  h3(style="margin-bottom:0") Edited Pages
+  -@active_pages.each do |page|
+    =link_to "Click here", collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
+    |&nbsp; to view page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been edited since you worked on it.
+    p
+
+-unless @active_translations.blank?
+  p
+  h3(style="margin-bottom:0") Edited Translations
+  -@active_translations.each do |page|
+    =link_to "Click here", collection_translate_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
+    |&nbsp; to view translation page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been edited since you worked on it.
+    p
+
+-unless @active_note_pages.blank?
+  p
+  h3(style="margin-bottom:0") New Notes
+  -@active_note_pages.each do |page|
+    =link_to "Click here", collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
+    |&nbsp; to view the note on page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been added since you worked on it.
+    p
