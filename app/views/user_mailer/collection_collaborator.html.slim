@@ -1,0 +1,13 @@
+p Hi #{@user.display_name} --
+
+p We just wanted to let you know that #{@collection.owner.display_name} added you as a collaborator on #{@collection.title}.
+
+span =link_to "Click here", collection_path(@collection.owner, @collection, only_path: false)
+|&nbsp; to view #{@collection.title}.
+
+p Thanks, 
+|FromThePage
+
+p
+span =link_to "Click here", update_profile_path(@user, only_path: false)
+|&nbsp; to turn off this notification.

@@ -677,7 +677,7 @@ private
     service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED)
     service["pageStatus"] << "markedBlank" if page.status == Page::STATUS_BLANK
     service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED
-    service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.translation.status == Page::STATUS_TRANSLATED
+    service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.translation_status == Page::STATUS_TRANSLATED
     service["pageStatus"] << "hasSubjectTags" if page.status == Page::STATUS_INDEXED
     service
   end

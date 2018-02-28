@@ -1,0 +1,12 @@
+p Hi #{@user.display_name} --
+
+p We just wanted to let you know that there's been activity in a collection that you worked on.
+
+=render 'user/user_activity'
+
+p Thanks, 
+|FromThePage
+
+p
+span =link_to "Click here", update_profile_path(@user, only_path: false)
+|&nbsp; to turn off this notification.

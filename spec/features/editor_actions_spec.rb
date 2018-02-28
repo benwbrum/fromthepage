@@ -6,31 +6,61 @@ describe "editor actions" , :order => :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
+    @rest_user = User.find_by(login: REST_USER)
     collection_ids = Deed.where(user_id: @user.id).distinct.pluck(:collection_id)
     @collections = Collection.where(id: collection_ids)
     @collection = @collections.first
     @work = @collection.works.first
     @page = @work.pages.first
-    @auth = TranscribeAuthorization.find_by(user_id: @user.id)
+    @auth_work = Collection.last.works.second
+    #set up the restricted user not to be emailed
+    notification = Notification.find_by(user_id: @rest_user.id)
+    notification.add_as_collaborator = false
+    notification.save!
   end
 
   before :each do
     login_as(@user, :scope => :user)
-  end    
-
-  it "checks that an editor with permissions can see a restricted work" do
-    visit "/display/read_work?work_id=#{@auth.work_id}"
-    page.find('.work-page_title', text: @work.pages.first.title).click_link
-    expect(page.find('.tabs')).to have_content("Transcribe")
   end
 
   it "checks that a restricted editor can't see a work" do
     logout(:user)
-    @rest_user = User.find_by(login: REST_USER)
     login_as(@rest_user, :scope => :user)
-    visit "/display/read_work?work_id=#{@auth.work_id}"
+    visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
     page.find('.work-page_title', text: @work.pages.first.title).click_link
     expect(page.find('.tabs')).not_to have_content("Transcribe")
+  end
+
+  it "adds a user to a restricted work" do
+    ActionMailer::Base.deliveries.clear
+    logout(:user)
+    login_as(@owner, :scope => :user)
+    visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
+    #this user should not get an email
+    select(@rest_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).to be_empty
+    #this user should get an email
+    select(@user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).not_to be_empty
+    expect(ActionMailer::Base.deliveries.first.to).to include @user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@auth_work.title}"
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
+  end
+
+  it "checks that an editor with permissions can see a restricted work" do
+    visit collection_read_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
+    page.find('.work-page_title', text: @work.pages.first.title).click_link
+    expect(page.find('.tabs')).to have_content("Transcribe")
+  end
+
+  it "removes a collaborator from a restricted work" do
+    logout(:user)
+    login_as(@owner, :scope => :user)
+    visit edit_collection_work_path(@auth_work.owner, @auth_work.collection, @auth_work)
+    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
+    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
   it "looks at a collection" do
@@ -51,7 +81,6 @@ describe "editor actions" , :order => :defined do
     expect(page.find('.tabs')).not_to have_content("Settings")
     expect(page.find('.tabs')).not_to have_content("Export")
     expect(page.find('.tabs')).not_to have_content("Collaborators")
-
   end
 
   it "looks at a work" do

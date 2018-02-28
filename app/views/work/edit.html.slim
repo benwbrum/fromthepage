@@ -131,7 +131,7 @@
             .userpic
               =gravatar_image_tag user.email, :alt => user.display_name
             .username
-              =link_to user.display_name, user_profile_path(user)
+              =link_to user.name_with_identifier, user_profile_path(user)
               small =user.email
               =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work }, class: 'remove', title: 'Remove'
 

@@ -1,5 +1,7 @@
 class CreateGuestUser < ActiveRecord::Migration
-  def change
+
+#this functionality has been moved to a rake task
+=begin  def change
     user = User.find_by(login: "guest_user")
 
     if !user
@@ -13,4 +15,5 @@ class CreateGuestUser < ActiveRecord::Migration
       guest_user.save!
     end
   end
+=end
 end
