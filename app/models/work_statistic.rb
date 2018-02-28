@@ -70,7 +70,6 @@ class WorkStatistic < ActiveRecord::Base
     else
       (pct_transcribed + pct_annotated).round(2)
     end
-    raw.round
   end
 
   def pct_translation_completed
