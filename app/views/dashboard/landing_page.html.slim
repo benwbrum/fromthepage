@@ -19,12 +19,10 @@
           .headline
             h4.headline_title
               =owner.display_name
-          -if owner.location.present?
-            p(data-prefix='Location:') =owner.location
-            -if owner.website.present?
-              p(data-prefix='Website:') =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
-            -if owner.about.present?
-              p(data-prefix='About:') =owner.about
+          -if owner.website.present?
+            p(data-prefix='Website:') =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
+          -if owner.about.present?
+            p(data-prefix='About:') =owner.about
 
       -projects = owner_projects(owner)
       -projects.each do |project|
