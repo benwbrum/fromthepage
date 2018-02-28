@@ -26,7 +26,7 @@
         tbody
           -@works.each do |work|
             tr
-              td[*language_attrs(@collection)]
+              td
                 =work.title
                 -if work.supports_translation
                   span 

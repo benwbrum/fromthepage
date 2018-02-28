@@ -17,7 +17,7 @@ ul
         th Privacy
         th Actions
         th
-    tbody#sets[*language_attrs(@collection)]
+    tbody#sets
       -@collection.document_sets.each do |document_set|
         tr
           td
@@ -45,7 +45,7 @@ br
             th
               =document_set.title
               /! consider making this header vertical or rotate 45 degrees via css so that long document set titles do not mess up the display
-      tbody[*language_attrs(@collection)]
+      tbody
         -@works.each do |work|
           tr
             td
