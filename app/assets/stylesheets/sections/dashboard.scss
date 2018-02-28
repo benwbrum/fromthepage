@@ -207,24 +207,32 @@
 
 .carousel {
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto $gapSize;
   visibility: hidden;
   &_image {
     width: 150px;
     height: 150px;
+    overflow: hidden;
+    //float: left;
     display: table-cell;
     vertical-align: top;
     padding-right: $gapSize;
+    background: #FFF;
+    border: 1px solid rgba(#000, 0.06);
     img {
-      padding: 5px;
-      background: #FFF;
-      background-clip: padding-box;
-      border: 1px solid rgba(#000, 0.06);
+      display: block;
+      margin: 0 auto 0;
+      vertical-align: middle;
     }
   }
 }
 
 .project-list {
+  margin: $gapSize * 2;
+}
+
+.projects {
+  margin-bottom: $gapSize;
   &_user {
     width: 100%;
     display: table;

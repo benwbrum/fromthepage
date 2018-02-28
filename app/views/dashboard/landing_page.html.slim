@@ -3,40 +3,42 @@
   button.next &raquo;
   ul
     -@collections.each do |c|
-      li.nomargin(style="overflow:hidden float:left")
+      li.carousel_image
         -link_work = find_link_work(c)
-        =link_to(image_tag(c.picture_url(:thumb), class: 'carousel_image'), collection_path(c.owner, c))
-.columns
+        =link_to(image_tag(c.picture_url(:thumb)), collection_path(c.owner, c))
+.columns.project-list
   article.maincol
-    .project_list
     h2 Project List
     -@owners.each do |owner|
-
-      .project-list
-        .project-list_user_image
+      .projects
+        .projects_user_image
           .userpic =gravatar_image_tag owner.email, :alt => owner.display_name
         .user-profile_details
           .headline
-            h4.headline_title
-              =owner.display_name
+            h4.collection_title
+              =link_to owner.display_name, user_profile_path(owner)
           -if owner.website.present?
             p(data-prefix='Website:') =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
           -if owner.about.present?
             p(data-prefix='About:') =owner.about
 
-      -projects = owner_projects(owner)
-      -projects.each do |project|
-        p =project.title
+          -projects = owner_projects(owner)
+          -projects.each do |project|
+            p =project.title
 
   aside.sidecol
-    p Search for collections/projects
+    =form_tag({:dashboard => 'collection', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =search_field_tag :search, params[:search], placeholder: 'Search for collections...'
+      =button_tag 'Search'
+      =label_tag 'search', "Search for collections", class: 'hidden'
 
 -content_for :javascript
   javascript:
     $(function(){
       $('.carousel').jCarouselLite({
         btnNext: ".next",
-        btnPrev: ".prev"
+        btnPrev: ".prev",
+        visible: 5
       });
     });
 
