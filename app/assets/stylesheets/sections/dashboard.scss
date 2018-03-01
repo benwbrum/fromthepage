@@ -233,16 +233,47 @@
 
 .projects {
   margin-bottom: $gapSize;
-  &_user {
-    width: 100%;
-    display: table;
-    margin: $gapSize 0;
-    &_image {
-      text-align: center;
-      display: table-cell;
-      vertical-align: top;
-      padding-right: $gapSize * 2;
-      .userpic { font-size: 80px; }
+  padding-bottom: $gapSize;
+  border-bottom: 1px dotted $borderColor;
+  &_details {
+    margin: ($gapSize/2) ($gapSize * 1.5);
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
+  &_snippet {
+    margin: 0.4em 0 0 0;
+    font-size: $fontSizeSmall;
+  }
+  &_image {
+    float: left;
+    padding: 5px;
+    background: #FFF;
+    margin-right: $gapSize;
+    background-clip: padding-box;
+    border: 1px solid rgba(#000, 0.06);
+  }
+}
+
+.projects-owner {
+  width: 100%;
+  display: table;
+  margin: $gapSize 0;
+  &_image {
+    text-align: center;
+    display: table-cell;
+    vertical-align: top;
+    padding-right: $gapSize * 2;
+    .userpic { font-size: 80px; }
+  }
+  &_title {
+    margin: 0;
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
     }
   }
 }
