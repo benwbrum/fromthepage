@@ -196,8 +196,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(search)
-    where("display_name LIKE ?", "%#{search}%")
-    where("login LIKE ?", "%#{search}%")
+    where("display_name LIKE ? OR login LIKE ?", "%#{search}%", "%#{search}%")
   end
 
   def create_notifications

@@ -124,6 +124,10 @@ class Collection < ActiveRecord::Base
     self.works.where("title LIKE ?", "%#{search}%")
   end
 
+  def self.search(search)
+    where("title LIKE ? OR slug LIKE ?", "%#{search}%", "%#{search}%")
+  end
+
   def sections
     Section.where(work_id: self.works.ids)
   end

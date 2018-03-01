@@ -107,4 +107,9 @@ class DocumentSet < ActiveRecord::Base
   def search_collection_works(search)
     self.collection.works.where("title LIKE ?", "%#{search}%")
   end
+
+  def self.search(search)
+    where("title LIKE ? OR slug LIKE ?", "%#{search}%", "%#{search}%")
+  end
+
 end

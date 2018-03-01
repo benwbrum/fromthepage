@@ -37,15 +37,8 @@
           -unless @filtered.blank? || @filtered == 0
             .projects_link =link_to "See #{@filtered} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
 
-
-
-
-
-
-
-
   aside.sidecol
-    =form_tag({:dashboard => 'collection', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+    =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       =search_field_tag :search, params[:search], placeholder: 'Search for collections...'
       =button_tag 'Search'
       =label_tag 'search', "Search for collections", class: 'hidden'
