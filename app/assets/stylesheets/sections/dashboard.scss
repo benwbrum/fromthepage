@@ -237,7 +237,7 @@
   margin: 0 0 ($gapSize/2) ($gapSize * 4);
   &_details {
     overflow: hidden;
-    margin: $gapSize/2 0 0 0;
+    margin: 0;
     &_image {
       float: left;
       padding: 5px;
@@ -253,6 +253,8 @@
     }
   }
   &_collection {
+    margin: 0 0 $gapSize/2 0;
+    h5 { margin: 0; }
     a {
       text-decoration: none;
       color: darken($fgLink, 10%);
@@ -303,7 +305,7 @@
 }
 
 .description {
-  margin: 0.3em 0 0.3em 0;
+  margin: 0.3em 0 0.5em 0;
   font-size: $fontSizeSmall;
 }
 
