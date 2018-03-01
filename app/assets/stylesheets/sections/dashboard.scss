@@ -213,7 +213,6 @@
     width: 150px;
     height: 150px;
     overflow: hidden;
-    //float: left;
     display: table-cell;
     vertical-align: top;
     padding-right: $gapSize;
@@ -229,14 +228,15 @@
 
 .project-list {
   margin: $gapSize * 2;
+  &_projects {
+    border-bottom: 1px dotted $borderColor;
+  }
 }
 
 .projects {
-  margin-bottom: $gapSize;
-  padding-bottom: $gapSize;
-  border-bottom: 1px dotted $borderColor;
+  margin: 0 0 ($gapSize/2) ($gapSize * 5);
   &_details {
-    margin: ($gapSize/2) ($gapSize * 1.5);
+    margin: 0;
     a {
       text-decoration: none;
       color: darken($fgLink, 10%);
@@ -249,6 +249,7 @@
   }
   &_image {
     float: left;
+    overflow: hidden;
     padding: 5px;
     background: #FFF;
     margin-right: $gapSize;
@@ -268,13 +269,13 @@
 .projects-owner {
   width: 100%;
   display: table;
-  margin: $gapSize 0;
+  margin: $gapSize/2 0 0;
   &_image {
     text-align: center;
     display: table-cell;
     vertical-align: top;
-    padding-right: $gapSize * 2;
-    .userpic { font-size: 80px; }
+    padding-right: $gapSize;
+    .userpic { font-size: 60px; }
   }
   &_details {
     width: 100%;
@@ -295,7 +296,7 @@
 }
 
 .description {
-  margin: 0.4em 0 0 0;
+  margin: 0.3em 0 0.3em 0;
   font-size: $fontSizeSmall;
 }
 

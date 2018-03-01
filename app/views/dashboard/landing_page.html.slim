@@ -10,29 +10,29 @@
   article.maincol
     h2 Project List
     -@owners.each do |owner|
-      .projects
-        .projects-owner_image
-          .userpic =gravatar_image_tag owner.email, :alt => owner.display_name
-        .projects-owner_details
-          .headline
-            h4.projects-owner_title
-              =link_to owner.display_name, user_profile_path(owner)
-          -if owner.about.present?
-            .description
-              =owner.about
-          -if owner.website.present?
-            .description =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
-
+      .project-list_projects
+        .projects-owner
+          .projects-owner_image
+            .userpic =gravatar_image_tag owner.email, :alt => owner.display_name
+          .projects-owner_details
+            .headline
+              h4.projects-owner_title
+                =link_to owner.display_name, user_profile_path(owner)
+            -if owner.about.present?
+              .description
+                =owner.about
+        .projects
           -projects = owner_projects(owner)
           -projects.each do |project|
             -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
-            -unless project.picture.blank?
-              .projects_image
-                =image_tag(project.picture_url(:thumb), alt: project.title)
-            h5.projects_details
-              =link_to project.title, collection_path(project.owner, project)
-              -unless snippet.empty?
-                p.projects_snippet =snippet
+            div.projects_details
+              -unless project.picture.blank?
+                .projects_image
+                  =image_tag(project.picture_url(:thumb), alt: project.title)
+              h5
+                =link_to project.title, collection_path(project.owner, project)
+                -unless snippet.empty?
+                  .projects_snippet =snippet
           -unless @filtered.blank? || @filtered == 0
             .projects_link =link_to "See #{@filtered} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
 
