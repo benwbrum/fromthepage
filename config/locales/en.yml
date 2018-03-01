@@ -78,3 +78,7 @@ en:
     user:
       update:
         success: "User has been updated"
+    update:
+      create:
+        success: "Document has been uploaded and will be processed shortly."
+        error: "An error occurred in uploading the file, try later."
