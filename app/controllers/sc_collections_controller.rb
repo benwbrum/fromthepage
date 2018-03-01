@@ -10,6 +10,18 @@ class ScCollectionsController < ApplicationController
     respond_with(@sc_collections)
   end
 
+  def import_cdm
+    cdm_url = params[:cdm_url]
+    begin
+      at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
+      flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
+      redirect_to :action => :import, :at_id => at_id      
+    rescue => e
+      flash[:error] = e.message
+      redirect_to :back
+    end
+  end
+
   def search_pontiiif
     search_param = params[:search_param]
     at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)

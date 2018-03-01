@@ -180,6 +180,19 @@ module ContentdmTranslator
     at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '')
   end
 
+  def self.cdm_url_to_iiif(url)
+    matches = url.match(/https?:\/\/(cdm\d+).*collection\/(\w+)\/id\/(\d+)/)
+    if matches
+      server = matches[1]
+      collection = matches[2]
+      record = matches[3]
+      
+      "https://#{server}.contentdm.oclc.org/digital/iiif-info/#{collection}/#{record}/manifest.json"
+    else
+      raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
+    end
+  end
+
   def self.sample_manifest(collection)
     imported_work = collection.works.joins(:sc_manifest).last
 
