@@ -13,14 +13,14 @@
       .projects
         .projects-owner_image
           .userpic =gravatar_image_tag owner.email, :alt => owner.display_name
-        .user-profile_details
+        .projects-owner_details
           .headline
             h4.projects-owner_title
               =link_to owner.display_name, user_profile_path(owner)
           -if owner.about.present?
-            p =owner.about
+            .snipppet =owner.about
           -if owner.website.present?
-            p =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
+            .snippet =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
 
           -projects = owner_projects(owner)
           -projects.each do |project|

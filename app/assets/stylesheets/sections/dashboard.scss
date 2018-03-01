@@ -268,6 +268,19 @@
     padding-right: $gapSize * 2;
     .userpic { font-size: 80px; }
   }
+  &_details {
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    .headline {
+      margin: 0;
+    }
+    .snippet {
+    margin: 0.4em 0 0 0;
+    font-size: $fontSizeSmall;
+  }
+
+  }  
   &_title {
     margin: 0;
     a {
