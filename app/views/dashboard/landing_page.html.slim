@@ -18,9 +18,10 @@
             h4.projects-owner_title
               =link_to owner.display_name, user_profile_path(owner)
           -if owner.about.present?
-            .snipppet =owner.about
+            .description
+              =owner.about
           -if owner.website.present?
-            .snippet =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
+            .description =link_to owner.website, owner.website, target: '_blank', rel: 'nofollow'
 
           -projects = owner_projects(owner)
           -projects.each do |project|
@@ -33,7 +34,7 @@
               -unless snippet.empty?
                 p.projects_snippet =snippet
           -unless @filtered.blank? || @filtered == 0
-            =link_to "See #{@filtered} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
+            .projects_link =link_to "See #{@filtered} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
 
 
 

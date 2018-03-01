@@ -255,6 +255,14 @@
     background-clip: padding-box;
     border: 1px solid rgba(#000, 0.06);
   }
+  &_link {
+    text-align: right;
+    font-style: italic;
+    a {
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
 }
 
 .projects-owner {
@@ -275,11 +283,6 @@
     .headline {
       margin: 0;
     }
-    .snippet {
-    margin: 0.4em 0 0 0;
-    font-size: $fontSizeSmall;
-  }
-
   }  
   &_title {
     margin: 0;
@@ -289,6 +292,11 @@
       &:hover { color: $fgLink; }
     }
   }
+}
+
+.description {
+  margin: 0.4em 0 0 0;
+  font-size: $fontSizeSmall;
 }
 
 
