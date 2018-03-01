@@ -234,27 +234,34 @@
 }
 
 .projects {
-  margin: 0 0 ($gapSize/2) ($gapSize * 5);
+  margin: 0 0 ($gapSize/2) ($gapSize * 4);
   &_details {
-    margin: 0;
+    overflow: hidden;
+    margin: $gapSize/2 0 0 0;
+    &_image {
+      float: left;
+      padding: 5px;
+      height: 125px;
+      width: 125px;
+      margin-right: $gapSize/2;
+      img {
+        max-width: 125px;
+        max-height: 125px;
+        vertical-align: middle;
+        margin: auto;
+      }
+    }
+  }
+  &_collection {
     a {
       text-decoration: none;
       color: darken($fgLink, 10%);
       &:hover { color: $fgLink; }
     }
-  }
-  &_snippet {
-    margin: 0.4em 0 0 0;
-    font-size: $fontSizeSmall;
-  }
-  &_image {
-    float: left;
-    overflow: hidden;
-    padding: 5px;
-    background: #FFF;
-    margin-right: $gapSize;
-    background-clip: padding-box;
-    border: 1px solid rgba(#000, 0.06);
+    &_snippet {
+      margin: 0.4em 0 0 0;
+      font-size: $fontSizeSmall;
+    }
   }
   &_link {
     text-align: right;
