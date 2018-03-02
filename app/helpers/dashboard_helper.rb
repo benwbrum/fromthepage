@@ -5,15 +5,20 @@ module DashboardHelper
     @works = collection.works.order(:title).limit(15)
   end
 
+  def find_owner(id)
+    owner = User.find_by(id: id)
+    return owner
+  end
+
   def owner_projects(owner)
     if params[:search]
       col_ids = @search_results.map {|col| col.id if col.owner_user_id == owner.id}
     end
 
-    all_projects = owner.all_owner_collections.unrestricted 
-    projects = owner.all_owner_collections.unrestricted.joins(:works).merge(Work.incomplete_transcription).distinct.sample(3)
-    @filtered = all_projects.count - projects.count
-    return projects
+    #all_projects = owner.all_owner_collections.unrestricted 
+    #projects = owner.all_owner_collections.unrestricted.joins(:works).merge(Work.order_by_completed).distinct
+    #@filtered = all_projects.count - projects.count
+    #return projects
   end
 
 end

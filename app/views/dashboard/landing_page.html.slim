@@ -1,4 +1,4 @@
-.carousel
+//.carousel
   button.prev &laquo;
   button.next &raquo;
   ul
@@ -8,7 +8,8 @@
 .columns.project-list
   article.maincol
     h2 Project List
-    -@owners.each do |owner|
+    -@collections.each do |id, projects|
+      -owner = find_owner(id)
       .project-list_projects
         .projects-owner
           .projects-owner_image
@@ -21,7 +22,7 @@
               .description
                 =owner.about
         .projects
-          -projects = owner_projects(owner)
+          //-projects = owner_projects(owner)
           -projects.each do |project|
             -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
             div.projects_details
@@ -33,7 +34,7 @@
                   =link_to project.title, collection_path(project.owner, project)
                 -unless snippet.empty?
                   .projects_collection_snippet =snippet
-          -unless @filtered.blank? || @filtered == 0
+          //-unless @filtered.blank? || @filtered == 0
             .projects_link =link_to "See #{@filtered} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
 
   aside.sidecol

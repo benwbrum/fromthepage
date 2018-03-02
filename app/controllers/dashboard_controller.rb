@@ -107,7 +107,8 @@ class DashboardController < ApplicationController
       @owners = User.where(id: search_ids).where.not(account_type: nil)
     else
       #this is the list of owners
-      @owners = User.where.not(account_type: nil).order(:display_name)
+      @owners = User.where.not(account_type: nil)
+      @collections = Collection.unrestricted.where(owner_user_id: @owners.ids).includes(:owner).order('users.display_name').group_by(&:owner_user_id)
     end
     #these are for the carousel
     @works = Work.incomplete_transcription.includes(:collection).merge(Collection.unrestricted).where.not(collections: {picture: nil}).group('collections.owner_user_id')
