@@ -27,7 +27,7 @@ es:
   api:
     default:
       ok: "La operación se realizó exitosamente"
-      error: "Error del servidor, contáctese con el administrador"
+      error: "Error del servidor, inténtelo más tarde."
     session:
       not_allowed: "Para acceder a este contenido debes iniciar sesión"
     login:
@@ -78,3 +78,7 @@ es:
     user:
       update:
         success: "El usuario ha sido modificado"
+    upload:
+      create:
+        success: "El documento ha sido subido y se procesará en breve."
+        error: "Ocurrió un error en la subida del archivo, inténtelo más tarde."

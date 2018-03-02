@@ -71,6 +71,10 @@ class Api::CollectionController < Api::ApiController
     response_serialized_object @works
   end
   
+  def list_own 
+    @collections = current_user.all_owner_collections
+    response_serialized_object @collections
+  end
   
   ### Filter Methods ###
   

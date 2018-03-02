@@ -72,6 +72,7 @@ Fromthepage::Application.routes.draw do
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
     patch '/api/user', :to=>'user#update'
+    get 'collection/list_own', :to=>'collection#list_own'
     resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
       get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
     end
@@ -90,6 +91,7 @@ Fromthepage::Application.routes.draw do
     end  
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
+    resources :upload, path: 'upload', only: [:create]
     match '*unmatched_route', :to => "api#preflight_request", via: :options
   end
 
