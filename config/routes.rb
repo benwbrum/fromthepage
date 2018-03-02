@@ -62,6 +62,13 @@ Fromthepage::Application.routes.draw do
       put 'registration' => 'registration#update'
     end
     
+    get 'dashboard' => 'dashboard#index'
+    get 'dashboard/guest' => 'dashboard#guest'
+    get 'dashboard/owner' => 'dashboard#ownerResponse'
+    get 'dashboard/owner/collections' => 'dashboard#collectionsOfOwner'
+    get 'dashboard/recent_work' => 'dashboard#recent_work'
+    get 'deeds/:id' => 'deed#list'
+    
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
     patch '/api/user', :to=>'user#update'
