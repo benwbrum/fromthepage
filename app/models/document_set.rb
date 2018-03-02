@@ -13,6 +13,8 @@ class DocumentSet < ActiveRecord::Base
   
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
+  scope :unrestricted, -> { where(is_public: true)}
+
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
   end

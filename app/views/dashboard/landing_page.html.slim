@@ -2,10 +2,9 @@
   button.prev &laquo;
   button.next &raquo;
   ul
-    -@collections.each do |c|
+    -@works.each do |w|
       li.carousel_image
-        -link_work = find_link_work(c)
-        =link_to(image_tag(c.picture_url(:thumb), alt: c.title), link_work)
+        =link_to(image_tag(w.collection.picture_url(:thumb), alt: w.collection.title), collection_read_work_path(w.collection.owner, w.collection, w))
 .columns.project-list
   article.maincol
     h2 Project List
