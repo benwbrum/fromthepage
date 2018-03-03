@@ -23,7 +23,7 @@ class Api::ApiController < ApplicationController
   end
   
   def render_serialized(object)
-    render json: object
+    render json: object, :include => get_fields(params[:fields]) 
   end
   
   def response_serialized_object(object)
@@ -37,5 +37,12 @@ class Api::ApiController < ApplicationController
   private
     def _not_signed_error
       return ResponseWS.simple_error('api.session.not_allowed')
+    end
+    
+    def get_fields(fields_s)
+      fields = []
+      if(params[:fields] != nil)
+        fields = fields_s.split(',').map &:to_sym
+      end
     end
 end
