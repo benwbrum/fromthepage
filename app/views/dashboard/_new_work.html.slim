@@ -25,7 +25,7 @@
           td
             .input-file
               =text_field_tag :at_id
-              =button_tag 'Import'
+              =button_tag 'Import', :id => 'iiif_import'
     
     h5 Explore IIIF Collections
     =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => ScCollection::UNIVERSE}, class: 'button'
@@ -56,7 +56,7 @@
           td
             .input-file
               =text_field_tag :cdm_url
-              =button_tag 'Import'
+              =button_tag 'Import', :id => 'cdm_import'
     
   aside.sidecol
     h4 Page Image Guidelines
