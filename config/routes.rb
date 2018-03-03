@@ -77,6 +77,7 @@ Fromthepage::Application.routes.draw do
       get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
     end
     resources :work, path: 'work', only: [:create, :update, :destroy, :show] do
+      get ':work_id', path: 'pages', as: :pages, to: 'work#show_pages'
     end
     resources :page, path: 'page', only: [:create, :update, :destroy, :show] do
       get '', path: 'marks', as: :show_marks, to: 'mark#list_by_page'

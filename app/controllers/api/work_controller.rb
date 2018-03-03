@@ -19,7 +19,7 @@ class Api::WorkController < Api::ApiController
   # layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
 
   def public_actions
-    return [:show]
+    return [:show,:show_pages]
   end
 
   def destroy
@@ -126,6 +126,11 @@ class Api::WorkController < Api::ApiController
       end
       work.save!
     end
+  end
+  
+  def show_pages
+    @pages = @work.pages
+    response_serialized_object @pages
   end
 
   # def revert
