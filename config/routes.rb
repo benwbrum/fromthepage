@@ -73,6 +73,8 @@ Fromthepage::Application.routes.draw do
     post 'login', :to=>'login#login'
     patch '/api/user', :to=>'user#update'
     get 'collection/list_own', :to=>'collection#list_own'
+
+    get 'collection/list', :to=>'collection#collections_list'
     resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
       get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
     end

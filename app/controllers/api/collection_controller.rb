@@ -88,6 +88,13 @@ class Api::CollectionController < Api::ApiController
     @collaborators = @collection.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
   end
+
+
+  def collections_list
+    puts "collll"
+    @collections = Collection.order_by_recent_activity.unrestricted.distinct
+    response_serialized_object @collections
+   end
   
   private
     def set_collection
