@@ -7,5 +7,6 @@ FactoryGirl.define do
  	description "a work for test"
  	slug ""
  	owner_user_id 22
+ 	collection_id 42
   end
 end

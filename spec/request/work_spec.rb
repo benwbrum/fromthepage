@@ -26,7 +26,7 @@ RSpec.describe "WorkController", type: :request do
 
 	it 'updates a work' do
 	    puts "----------------UPDATE--------------------"
-	  	patch '/api/work/'+@work.id.to_s+'?auth_token=test&locale=es',{"work":{"collecrion":{"id":@collection.id.to_s,transcription_conventions:""},"title":"update","slug":"otro test"}}   
+	  	patch '/api/work/'+@work.id.to_s+'?auth_token=test&locale=es',{"work":{"collection":{"id":@collection.id.to_s},"title":"update","slug":"otro test"}}   
 	  	json = JSON.parse(response.body)
 	  	puts json['message']
 	    expect(json['status']).to eq("OK")
