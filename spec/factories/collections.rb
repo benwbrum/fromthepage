@@ -3,9 +3,9 @@ FactoryGirl.define do
 
   #A simple collection
   factory :collection do
-  	id  Random.new(42)
-    title ["un titulo","titulo dos","titulo tres"].sample
-   
+  	id  42
+    title ["collection test"]
+    transcription_conventions ""
   end
 
 
