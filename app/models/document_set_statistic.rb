@@ -53,9 +53,7 @@ module DocumentSetStatistic
 
   def pct_completed
    unless work_count == 0
-      complete = self.works.where(supports_translation: false).joins(:work_statistic).sum(:complete)
-      complete = complete + self.works.where(supports_translation: true).joins(:work_statistic).sum(:translation_complete)
-      pct = complete/work_count
+      pct = (self.works.map(&:complete).sum)/work_count
     else
       pct = 0
     end

@@ -164,7 +164,14 @@ class Work < ActiveRecord::Base
       Dir.glob(File.join(new_dir_name, "*")){|f| File.delete(f)}
       Dir.rmdir(new_dir_name)
     end
+  end
 
+  def complete
+    if self.supports_translation == true
+      self.work_statistic.translation_complete
+    else
+      self.work_statistic.complete
+    end
   end
 
   def thumbnail
