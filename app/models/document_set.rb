@@ -83,6 +83,14 @@ class DocumentSet < ActiveRecord::Base
     self.collection.field_based
   end
 
+  def picture
+    self.collection.picture
+  end
+
+  def picture_url(thumb)
+    self.collection.picture_url(:thumb)
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
