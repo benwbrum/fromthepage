@@ -91,8 +91,7 @@ class Api::CollectionController < Api::ApiController
 
 
   def collections_list
-    puts "collll"
-    @collections = Collection.order_by_recent_activity.unrestricted.distinct
+    @collections = Collection.all
     response_serialized_object @collections
    end
   
