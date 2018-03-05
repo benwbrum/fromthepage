@@ -100,11 +100,16 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    @owners = User.where.not(account_type: nil).order('display_name')
-
-
+    if params[:search]
+      search_owners = User.search(params[:search])
+      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+      search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
+      @owners = User.where(id: search_ids).where.not(account_type: nil)      
+    else
+      @owners = User.where.not(account_type: nil).order('display_name')
+    end
     #these are for the carousel
-    @works = Work.incomplete_transcription.includes(:collection).merge(Collection.unrestricted).where.not(collections: {picture: nil}).group('collections.owner_user_id')
+    @works = Work.incomplete_transcription.includes(:collection).merge(Collection.unrestricted).where.not(collections: {picture: nil}).where.not(collections: {intro_block: [nil, '']}).group('collections.owner_user_id')
   end
 
 =begin

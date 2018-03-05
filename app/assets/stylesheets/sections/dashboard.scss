@@ -211,13 +211,13 @@
   visibility: hidden;
   &_image {
     width: 150px;
-    height: 150px;
+    height: 200px;
     overflow: hidden;
     display: table-cell;
     vertical-align: top;
     padding-right: $gapSize;
-    background: #FFF;
-    border: 1px solid rgba(#000, 0.06);
+    //background: #FFF;
+    //border: 1px solid rgba(#000, 0.06);
     img {
       display: block;
       margin: 0 auto 0;

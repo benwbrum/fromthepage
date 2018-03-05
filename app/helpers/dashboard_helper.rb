@@ -12,8 +12,11 @@ module DashboardHelper
 
   def owner_projects(owner)
     if params[:search]
-      col_ids = @search_results.map {|col| col.id if col.owner_user_id == owner.id}
+      results = @search_results.map {|col| col if col.owner_user_id == owner.id}
     end
+    return results
   end
+
+
 
 end
