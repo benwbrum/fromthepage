@@ -6,8 +6,6 @@
 section.user-profile
   .user-profile_image
     .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
-    //-if @user.owner?
-      .user-profile_badge: span owner
   .user-profile_details
     .headline
       h1.headline_title

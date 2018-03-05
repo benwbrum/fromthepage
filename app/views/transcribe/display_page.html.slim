@@ -79,7 +79,7 @@
           -unless @collection.subjects_disabled
             =>button_tag 'Autolink', :name => 'autolink'
         -if @preview_xml
-          .page-preview ==xml_to_html(@preview_xml)
+          .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
         .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
           -if @work.scribes_can_edit_titles

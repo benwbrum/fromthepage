@@ -14,8 +14,26 @@ class Note < ActiveRecord::Base
   belongs_to :collection
   has_one :deed, :dependent => :destroy
 
+  after_save :email_users
+
   validates :body, presence: true
 
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
+
+  def email_users
+    if SMTP_ENABLED
+      previous_users = User.joins(:notes).where(notes: {id: self.page.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
+      previous_users.each do |user|
+        #send email regarding previous note, if it isn't the same user
+        if (user.id != self.user_id)
+          begin
+            UserMailer.added_note(user, self).deliver!
+          rescue StandardError => e
+            print "SMTP Failed: Exception: #{e.message}"
+          end
+        end
+      end
+    end
+  end
 
 end
