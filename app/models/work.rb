@@ -166,7 +166,7 @@ class Work < ActiveRecord::Base
     end
   end
 
-  def complete
+  def completed
     if self.supports_translation == true
       self.work_statistic.translation_complete
     else

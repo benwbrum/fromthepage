@@ -161,6 +161,10 @@ class User < ActiveRecord::Base
     (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
   end
 
+  def incomplete_projects
+    (unrestricted_collections + unrestricted_document_sets).sort_by(&:pct_completed)
+  end
+
   def slug_candidates
     if self.slug
       [:slug]

@@ -53,7 +53,7 @@ module DocumentSetStatistic
 
   def pct_completed
    unless work_count == 0
-      pct = (self.works.map(&:complete).sum)/work_count
+      pct = (self.works.includes(:work_statistic).map(&:completed).sum)/work_count
     else
       pct = 0
     end

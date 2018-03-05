@@ -14,11 +14,6 @@ module DashboardHelper
     if params[:search]
       col_ids = @search_results.map {|col| col.id if col.owner_user_id == owner.id}
     end
-
-    #all_projects = owner.all_owner_collections.unrestricted 
-    #projects = owner.all_owner_collections.unrestricted.joins(:works).merge(Work.order_by_completed).distinct
-    #@filtered = all_projects.count - projects.count
-    #return projects
   end
 
 end
