@@ -31,7 +31,7 @@ class Collection < ActiveRecord::Base
 
   scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
   scope :unrestricted, -> { where(restricted: false)}
-
+  scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
 
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|

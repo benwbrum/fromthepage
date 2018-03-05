@@ -105,10 +105,13 @@ class DashboardController < ApplicationController
       @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
       search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
       @owners = User.where(id: search_ids).where.not(account_type: nil)
+      @collections = @search_results.group_by(&:owner_user_id)
     else
       #this is the list of owners
       @owners = User.where.not(account_type: nil)
-      @collections = Collection.unrestricted.where(owner_user_id: @owners.ids).includes(:owner).order('users.display_name').group_by(&:owner_user_id)
+      collections = Collection.unrestricted.where(owner_user_id: @owners.ids).includes(:owner).order('users.display_name')
+      sets = DocumentSet.unrestricted.where(owner_user_id: @owners.ids).includes(:owner).order('users.display_name')
+      @collections = (collections + sets).group_by(&:owner_user_id)
     end
     #these are for the carousel
     @works = Work.incomplete_transcription.includes(:collection).merge(Collection.unrestricted).where.not(collections: {picture: nil}).group('collections.owner_user_id')

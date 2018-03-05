@@ -1,4 +1,4 @@
-//.carousel
+.carousel
   button.prev &laquo;
   button.next &raquo;
   ul
@@ -22,8 +22,7 @@
               .description
                 =owner.about
         .projects
-          //-projects = owner_projects(owner)
-          -projects.each do |project|
+          -projects.sort_by(&:pct_completed).first(3).each do |project|
             -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
             div.projects_details
               -unless project.picture.blank?
