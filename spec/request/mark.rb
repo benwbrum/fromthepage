@@ -7,7 +7,7 @@ RSpec.describe "MarkController", type: :request do
     @collection = FactoryGirl.create(:collection)
     @work = FactoryGirl.create(:work)
     @page = FactoryGirl.create(:page)
-    @mark = FactoryGirl.create(:mark)
+
   end
   it 'creates a Mark' do
 	   	puts "-----------------CREATE-------------------"
@@ -16,15 +16,6 @@ RSpec.describe "MarkController", type: :request do
       puts json['message'];
       expect(json['status']).to eq("OK")
 	end
-
-    it 'delete a Mark' do
-      puts "-----------------DELETE-------------------"
-      delete '/api/mark/'+@mark.id.to_s+'?auth_token=test&locale=es',{"text":"mark test","coordinates":{"x":23,"y":34},"shape_type":"polyline","text_type":"body","page_id":42}
-      json = JSON.parse(response.body)
-      puts json['message'];
-      expect(json['status']).to eq("OK")
-  end
-
 
 
 end
