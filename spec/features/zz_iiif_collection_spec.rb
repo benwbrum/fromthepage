@@ -26,7 +26,7 @@ describe "uploads data for collections", :order => :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.fill_in 'at_id', with: @at_id
-    click_button('Import')
+    find_button('iiif_import').click
     expect(page).to have_content(@at_id)
     expect(page).to have_content("Manifests")
     select("Create Collection", :from => 'manifest_import')
