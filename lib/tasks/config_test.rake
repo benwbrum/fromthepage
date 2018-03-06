@@ -49,8 +49,8 @@ namespace :fromthepage do
     unless system "pdfcrop -version > /dev/null"
       raise "pdfcrop is not installed, so LaTeX mark-up will not render until pdfcrop is installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install texlive-latex-base"
     end
-    unless system "pdf2svg -version > /dev/null"
-      raise "pdf2 is not installed, so LaTeX mark-up will not rende.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install pdf2svg"
+    unless system "man pdf2svg > /dev/null"
+      raise "pdf2svg is not installed, so LaTeX mark-up will not rende.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install pdf2svg"
     end
     unless defined? TEX_PATH
       rails "The path for xelatex must be defined in config/environments/#{Rails.env}.rb\nin order for LaTeX mark-up to work. \nFind the path by typing 'which xelatex' and entering the directory it is located in.\n"
