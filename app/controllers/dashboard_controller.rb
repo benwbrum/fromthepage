@@ -104,7 +104,7 @@ class DashboardController < ApplicationController
       search_owners = User.search(params[:search])
       @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
       search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
-      @owners = User.where(id: search_ids).where.not(account_type: nil)      
+      @owners = User.where(id: search_ids).where.not(account_type: nil)
     else
       @owners = User.where.not(account_type: nil).order('display_name')
     end

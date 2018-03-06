@@ -76,7 +76,6 @@ class User < ActiveRecord::Base
     Collection.where(query.where_values.inject(:or)).uniq.order(:title)
   end
 
-
   def most_recently_managed_collection_id
     last_work = self.owner_works.order(:created_on).last
     if last_work && last_work.collection
@@ -159,10 +158,6 @@ class User < ActiveRecord::Base
 
   def owned_collection_and_document_sets
     (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
-  end
-
-  def projects_by_incomplete
-    (unrestricted_collections + unrestricted_document_sets).sort_by(&:pct_completed)
   end
 
   def slug_candidates

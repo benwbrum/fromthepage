@@ -1,4 +1,4 @@
-.carousel
+//.carousel
   button.prev &laquo;
   button.next &raquo;
   ul
@@ -23,12 +23,8 @@
             -if owner.about.present?
               .description
                 =owner.about
+        -projects = owner_projects(owner)
         .projects
-          -if params[:search]
-            -projects = owner_projects(owner)
-          -else
-            -projects = owner.projects_by_incomplete.first(3)
-
           -projects.each do |project|
             -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
             div.projects_details
@@ -40,11 +36,7 @@
                   =link_to project.title, collection_path(project.owner, project)
                 -unless snippet.empty?
                   .projects_collection_snippet =snippet
-          -filtered = owner.projects_by_incomplete.count
-          -if filtered > 3
-            .projects_link =link_to "See #{filtered - 3} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
-          -else
-            .projects_link =link_to "More information...", user_profile_path(owner)
+          .projects_link =link_to "More information...", user_profile_path(owner)
 
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
