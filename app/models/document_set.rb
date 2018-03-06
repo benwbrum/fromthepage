@@ -4,7 +4,7 @@ class DocumentSet < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
   
-  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug
+  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection

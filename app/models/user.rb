@@ -161,7 +161,7 @@ class User < ActiveRecord::Base
     (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
   end
 
-  def incomplete_projects
+  def projects_by_incomplete
     (unrestricted_collections + unrestricted_document_sets).sort_by(&:pct_completed)
   end
 

@@ -27,7 +27,7 @@
           -if params[:search]
             -projects = owner_projects(owner)
           -else
-            -projects = owner.incomplete_projects.first(3)
+            -projects = owner.projects_by_incomplete.first(3)
 
           -projects.each do |project|
             -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
@@ -40,7 +40,7 @@
                   =link_to project.title, collection_path(project.owner, project)
                 -unless snippet.empty?
                   .projects_collection_snippet =snippet
-          -filtered = owner.incomplete_projects.count
+          -filtered = owner.projects_by_incomplete.count
           -if filtered > 3
             .projects_link =link_to "See #{filtered - 3} more #{'project'.pluralize(@filtered)}...", user_profile_path(owner)
           -else
