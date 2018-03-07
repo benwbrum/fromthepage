@@ -207,23 +207,32 @@
 
 .carousel {
   width: 100%;
-  margin: 0 auto $gapSize;
+  height: 30vw;
+  margin: 0 auto 0;
   visibility: hidden;
-  &_image {
-    width: 150px;
-    height: 200px;
-    overflow: hidden;
-    display: table-cell;
-    vertical-align: top;
-    padding-right: $gapSize;
+  position: relative;
+  li {
     //background: #FFF;
-    //border: 1px solid rgba(#000, 0.06);
-    img {
-      display: block;
-      margin: 0 auto 0;
-      vertical-align: middle;
-    }
+    //border: 1px dotted $borderColor;
+    height: 25vw;
+    width: 60%;
   }
+  img {
+    float: left;
+    margin-right: $gapSize;
+    display: block;
+    height: 100%;
+    max-width: 70%;
+    overflow: hidden;
+  }
+  h3 { 
+    margin: .5em 0 .5em 0;
+      a {
+        text-decoration: none;
+        color: darken($fgLink, 10%);
+        &:hover { color: $fgLink; }
+      }
+    }
 }
 
 .project-list {

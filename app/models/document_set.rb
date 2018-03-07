@@ -87,7 +87,7 @@ class DocumentSet < ActiveRecord::Base
     self.collection.picture
   end
 
-  def picture_url(thumb)
+  def picture_url(thumb=nil)
     self.collection.picture_url(:thumb)
   end
 
