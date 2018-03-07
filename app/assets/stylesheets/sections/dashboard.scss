@@ -212,10 +212,10 @@
   visibility: hidden;
   position: relative;
   li {
-    //background: #FFF;
-    //border: 1px dotted $borderColor;
-    height: 25vw;
+    height: 30vw;
     width: 60%;
+    padding: 0 50px 0;
+
   }
   img {
     float: left;
@@ -227,12 +227,22 @@
   }
   h3 { 
     margin: .5em 0 .5em 0;
-      a {
-        text-decoration: none;
-        color: darken($fgLink, 10%);
-        &:hover { color: $fgLink; }
-      }
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
     }
+  }
+  .prev {
+    position: absolute;
+    left: 0;
+    top: 50%;
+  }
+  .next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+  }
 }
 
 .project-list {
