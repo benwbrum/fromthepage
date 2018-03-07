@@ -107,6 +107,7 @@ class ScManifest < ActiveRecord::Base
     sc_canvas.sc_service_id =           canvas.images.first.resource.service['@id']
     sc_canvas.sc_resource_id =          canvas.images.first.resource['@id']
     sc_canvas.sc_service_context = canvas.images.first.resource.service['@context']
+    sc_canvas.sc_canvas_label =         canvas.label
 
     sc_canvas.save!      
     sc_canvas  

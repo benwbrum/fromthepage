@@ -1,0 +1,11 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">Upload Suceeded</h2>
+<p>
+  The collection synchronization to CONTENTdm has finished for collection <%= @collection.title %>.  Please review the log below and rebuild your index in CONTENTdm.
+</p>
+
+<p>
+Log of server responses:
+</p>
+<pre>
+  <%=@log_contents %>
+</pre>

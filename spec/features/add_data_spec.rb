@@ -37,7 +37,7 @@ describe "uploads data for collections", :order => :defined do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
-    click_button('Import')
+    find_button('iiif_import').click
     expect(page).to have_content("Metadata")
     expect(page).to have_content("Manifest")
     select(@collection.title, :from => 'sc_manifest_collection_id')
@@ -48,7 +48,7 @@ describe "uploads data for collections", :order => :defined do
     page.find('.tabs').click_link("Start A Project")
     #this manifest has a very long title
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
-    click_button('Import')
+    find_button('iiif_import').click
     expect(page).to have_content("Metadata")
     expect(page).to have_content("Manifest")
     select(@collection.title, :from => 'sc_manifest_collection_id')

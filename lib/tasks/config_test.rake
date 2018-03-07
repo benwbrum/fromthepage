@@ -43,11 +43,17 @@ namespace :fromthepage do
     unless File.writable?(File.join(Rails.root, 'public', 'images', 'working'))
       raise "Directory #{File.join(Rails.root, 'public', 'images', 'working')} is not writable\n"
     end
-    unless system "pdflatex -version > /dev/null"
-      raise "pdflatex is not installed, so LaTeX mark-up will not render until pdflatex and pdfcrop are installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install texlive-latex-base"    
+    unless system "xelatex -version > /dev/null"
+      raise "xelatex is not installed, so LaTeX mark-up will not render until xelatex and pdfcrop are installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install sudo apt-get install texlive-xetex"    
     end
     unless system "pdfcrop -version > /dev/null"
-      raise "pdfcrop is not installed, so LaTeX mark-up will not render until pdflatex and pdfcrop are installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install texlive-latex-base"
+      raise "pdfcrop is not installed, so LaTeX mark-up will not render until pdfcrop is installed.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install texlive-latex-base"
+    end
+    unless system "man pdf2svg > /dev/null"
+      raise "pdf2svg is not installed, so LaTeX mark-up will not rende.\n\tOn Debian and Ubuntu this can be accomplished by running:\n\tsudo apt-get install pdf2svg"
+    end
+    unless defined? TEX_PATH
+      rails "The path for xelatex must be defined in config/environments/#{Rails.env}.rb\nin order for LaTeX mark-up to work. \nFind the path by typing 'which xelatex' and entering the directory it is located in.\n"
     end
     print "Configuration check completed successfully.  Consider running rake fromthepage:check_email_config next."
   end

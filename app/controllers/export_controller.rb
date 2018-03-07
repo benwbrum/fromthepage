@@ -1,6 +1,10 @@
+require 'contentdm_translator'
 class ExportController < ApplicationController
   require 'zip'
   include CollectionHelper
+
+  # no layout if xhr request
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
 
   def index
     @collection = Collection.friendly.find(params[:collection_id])
@@ -141,7 +145,43 @@ class ExportController < ApplicationController
   def work_plaintext_searchable
     render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
   end
+  
+  
+  def edit_contentdm_credentials
+    # display the edit form
+  end
+  
+  def update_contentdm_credentials
+    # test credentials
+    license_key = params[:collection][:license_key]
+    contentdm_user_name = params[:contentdm_user_name]
+    contentdm_password = params[:contentdm_password]
+    
+    error_message, fts_field = ContentdmTranslator.fst_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
 
+    # persist license key so the user doesn't have to retype it    
+    if error_message.blank? || !error_message.match(/license.*invalid/)
+      @collection.license_key = license_key
+      @collection.save!
+    end
+    
+    # redirect to or render edit screen with error
+    if error_message
+      flash[:error] = error_message
+      render :action => :edit_contentdm_credentials, :collection_id => @collection.id
+      return
+    end
+
+    # pass credentials, FTS field, and search to background job
+    log_file = ContentdmTranslator.log_file(@collection)
+    cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file} 2>&1 &"
+    logger.info(cmd)
+    system({'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key}, cmd)
+
+    # display results somehow
+    flash[:notice] = "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."
+    ajax_redirect_to :action => :index, :collection_id => @collection.id
+  end
 private
 
   def get_headings(collection, ids)
@@ -149,6 +189,9 @@ private
     cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
+
+    @page_metadata_headings = collection.page_metadata_fields
+    @headings += @page_metadata_headings
 
     #get headings from field-based
     field_headings.each do |raw_heading|
@@ -198,6 +241,7 @@ private
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
         page_cells = [work.title, work.identifier, page.title, page.position, page_url]
+        page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
 
         if page.sections.blank?
@@ -212,7 +256,7 @@ private
               section_cells = ["", "", ""]
             end
             # write the record to the CSV and start a new record
-            csv << (page_cells + section_cells + data_cells)
+            csv << (page_cells + page_metadata_cells + section_cells + data_cells)
             #create a new array for the next row
             data_cells = Array.new(@headings.count, "")
           end
@@ -229,7 +273,7 @@ private
               #get the cell data and add it to the array
               cell_data(cell_array, @raw_headings, data_cells)
               # write the record to the CSV and start a new record
-              csv << (page_cells + section_cells + data_cells)
+              csv << (page_cells + page_metadata_cells + section_cells + data_cells)
               #create a new array for the next row
               data_cells = Array.new(@headings.count, "")
             end
@@ -240,7 +284,14 @@ private
     return csv
   end
 
-
+  def page_metadata_cells(page)
+    metadata_cells = []
+    @page_metadata_headings.each do |key|
+      metadata_cells << page.metadata[key]
+    end
+    
+    metadata_cells
+  end
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|

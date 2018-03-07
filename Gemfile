@@ -8,14 +8,14 @@ gem 'pry-byebug'
 gem 'will_paginate'
 #gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'rmagick'
-gem 'nokogiri'
+gem 'nokogiri', '~> 1.8.1'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.4.0'
 gem 'capistrano-rails', '= 1.1.3'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
-
+gem 'savon', '~> 2.12.0'
 gem 'mysql2','0.3.16'
 
 gem 'recaptcha', '0.3.6'

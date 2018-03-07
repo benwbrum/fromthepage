@@ -17,10 +17,17 @@ class TexFigure < ActiveRecord::Base
   # save knows whether it's dirty.  Save can blank the artifact
   # when the rake task runs, the only records with existing files will be clean
   
-  
   def self.process_artifacts(page)
+    puts "TexFigure.process_artifacts(page_id = #{page.id})"
+    puts "PATH="
+    puts ENV['PATH']
+    puts "Modifying path"
+    ENV['PATH'] = ENV["PATH"].split(":").push(TEX_PATH).join(":")
+
     page.tex_figures.each do |figure|
+      puts "TexFigure.process_artifacts considering figure #{figure.id} source #{figure.source}"
       if figure.needs_artifact?
+	puts "figure needs artifact.  creating"
         figure.create_artifact
       end
     end
@@ -43,18 +50,24 @@ class TexFigure < ActiveRecord::Base
   # LaTeX stuff
   ###################
   def create_artifact
+    puts "TexFigure.create_artifact conditionally creating directory"
     # make sure we have a full directory 
     FileUtils.mkdir_p(TexFigure.artifact_dir_name(self.page_id))
     
+    puts "TexFigure.create_artifact conditionally creating directory"
     ## actual code to run latex, etc
     write_source_file
 
+    puts "TexFigure.create_artifact preprocessing latex"
     # latex
     preprocess_latex
 
+    puts "TexFigure.create_artifact running latex"
     if run_latex
+    puts "TexFigure.create_artifact postprocessing latex"
       postprocess_latex
     else
+      puts "TexFigure.create_artifact processing errors"
       postprocess_errors
     end
   end
@@ -66,21 +79,30 @@ class TexFigure < ActiveRecord::Base
     File.unlink(cropped_pdf_file_path) if File.exist?(cropped_pdf_file_path) 
   end
 
+#  XELATEX='/usr/local/texlive/2017/bin/x86_64-linux/xelatex'
+  XELATEX='xelatex'
+  PDFCROP='pdfcrop'
+  PDF2SVG='pdf2svg'
+
   def run_latex
-    latex_command = "xelatex -interaction batchmode -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
+    latex_command = "#{XELATEX} -interaction batchmode -output-directory #{TexFigure.artifact_dir_name(self.page_id)} #{source_file_path}"
     logger.info(latex_command)    
-    system(latex_command)
+    puts latex_command
+    puts `#{latex_command} 2>&1`
+    $? # return the error code from running the command, not the return from puts
   end
   
   def postprocess_latex
-    crop_command = "pdfcrop --clip #{raw_pdf_file_path} #{cropped_pdf_file_path}"
+    crop_command = "#{PDFCROP} --clip #{raw_pdf_file_path} #{cropped_pdf_file_path}"
     logger.info(crop_command)
-    system(crop_command)
+    puts crop_command
+    puts `#{crop_command}  2>&1`
 
     #convert_command = "convert -density 300 #{cropped_pdf_file_path} #{artifact_file_path}"
-    convert_command = "pdf2svg #{cropped_pdf_file_path} #{artifact_file_path}"
+    convert_command = "#{PDF2SVG} #{cropped_pdf_file_path} #{artifact_file_path}"
     logger.info(convert_command)
-    system(convert_command)
+    puts convert_command
+    puts `#{convert_command} 2>&1`
   end
 
   LATEX_ERROR = /^!(.*?\n(\w*.(\S*)).*?\n.*?\n)/m
@@ -118,9 +140,15 @@ EOF
       \\documentclass{article}
       \\usepackage{amsmath}
       \\usepackage{amsfonts}
-      \\usepackage{egpeirce}
-      \\usepackage{xymtex}
-      \\usepackage{chemfig}
+      \\IfFileExists{epeirce.sty}{
+        \\usepackage{egpeirce}
+      }
+      \\IfFileExists{xymtex.sty}{
+        \\usepackage{xymtex}
+      }
+      \\IfFileExists{chemfig.sty}{
+        \\usepackage{chemfig}
+      }
       \\begin{document}
       \\thispagestyle{empty}
       #{self.source}
@@ -134,8 +162,10 @@ EOF
   ARTIFACT_EXTENSION = "svg"
   
   def text_to_png(infile,outfile)
+    puts "TexFiture.text_to_png(#{infile},#{outfile})"
     command = "convert -size 1000x2000 xc:white -pointsize 12 -fill red -annotate +15+15 \"@#{infile}\" -trim -bordercolor \"#FFF\" -border 10 +repage #{outfile}"
-    system(command)
+    puts command
+    puts `#{command}`
   end
   
   def needs_artifact?

@@ -97,5 +97,7 @@ Rails.application.configure do
     # http://pontiiif.brumfieldlabs.com/api/v0.0/search/Irish
   config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 
+  #TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'  
+
 
 end
