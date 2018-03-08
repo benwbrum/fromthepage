@@ -7,6 +7,7 @@ describe "guest user actions" do
     @collection = @collections.last
     @work = @collection.works.last
     @page = @work.pages.last
+    @owner = User.find_by(login: OWNER)
   end
 
   it "tests guest account creation and migration" do
@@ -23,7 +24,6 @@ describe "guest user actions" do
     expect(page).to have_link("Sign Up")
     click_link("Sign Up")
     expect(page.current_path).to eq new_user_registration_path
-
  end
 
   it "tests guest account transcription" do
@@ -63,7 +63,28 @@ describe "guest user actions" do
     page.find('.tabs').click_link("Versions")
     expect(page).to have_link("Martha")
     expect(page.find('.diff-list')).not_to have_content("Guest")
-    
+  end
+
+  it "looks at the landing page" do 
+    visit landing_page_path
+    expect(page).to have_selector('.carousel')
+    expect(page).to have_content("Project List")
+    expect(page).to have_content(@owner.display_name)
+    expect(page.find('.project-list')).to have_link(@owner.collections.first.title)
+    page.find('.project-list').click_link(@owner.collections.first.title)
+    expect(page).not_to have_selector('.carousel')
+    expect(page.find('h1')).to have_content @owner.collections.first.title
+    expect(page.current_path).to eq collection_path(@owner, @owner.collections.first)
+  end
+
+  it "searches the landing page" do
+    visit landing_page_path
+    page.fill_in 'search', with: 'Import'
+    click_button('Search')
+    expect(page).not_to have_selector('.carousel')
+    expect(page.find('.project-list')).to have_content @owner.display_name
+    expect(page.find('.project-list')).to have_content @collections.second.title
+    expect(page.find('.project-list')).not_to have_content @collections.first.title
   end
 
 end
