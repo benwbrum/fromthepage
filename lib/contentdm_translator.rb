@@ -173,7 +173,7 @@ module ContentdmTranslator
   end
 
   def self.cdm_collection(at_id)
-    at_id.sub(/.*digital\/iiif-info\//,'').sub(/\/.*/, '')
+    at_id.sub(/.*digital\/iiif(-info)?\//,'').sub(/\/.*/, '')
   end
 
   def self.cdm_record(at_id)
