@@ -82,3 +82,6 @@ gem 'ahoy_matey'
 
 # Use figaro to set env vars
 gem "figaro"
+
+# Use font awesome icons
+gem "font-awesome-rails"

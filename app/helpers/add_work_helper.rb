@@ -27,8 +27,14 @@ module AddWorkHelper
 
     if @document_upload.save
       # record activity on gamification services 
-      GamificationHelper.createWorkEvent(current_user.email)
-      GamificationHelper.uploadWorkEvent(current_user.email)
+      notifications=[]
+      if GamificationHelper.createWorkEvent(current_user.email)
+        notifications << {'title':'New Badge Obtained!','message':'First Work created!'}
+      end
+      if GamificationHelper.uploadWorkEvent(current_user.email)
+        notifications << {'title':'New Badge Obtained!','message':'First Upload!'}
+      end
+      flash[:notification] = notifications
 
       if SMTP_ENABLED
         begin
@@ -62,7 +68,9 @@ module AddWorkHelper
 
     if @work.save
       # record activity on gamification services 
-      GamificationHelper.createWorkEvent(current_user.email)
+      if GamificationHelper.createWorkEvent(current_user.email)
+        flash[:notification] = {'title':'New Badge Obtained!','message':'First Work created!'}
+      end
       
       flash[:notice] = 'Work created successfully'
       record_deed
