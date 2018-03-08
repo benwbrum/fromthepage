@@ -1,6 +1,6 @@
 ADMIN_EMAILS = 'saracarl@gmail.com, benwbrum@gmail.com'
 SENDING_EMAIL_ADDRESS = 'support@fromthepage.com'
-SMTP_ENABLED = false
+SMTP_ENABLED = true
 USE_PNG_LOGO = false
 GUEST_DEED_COUNT = 3
 FACEBOOK_PIXEL_ID = ''
