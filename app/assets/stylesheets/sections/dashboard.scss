@@ -269,18 +269,13 @@
   margin: 0 0 ($gapSize/2) ($gapSize * 4);
   &_details {
     overflow: hidden;
-    margin: 0;
+    margin: 0 0 .5em 0;
     &_image {
       float: left;
-      padding: 5px;
-      height: 125px;
-      width: 125px;
       margin-right: $gapSize/2;
       img {
-        max-width: 125px;
-        max-height: 125px;
-        vertical-align: middle;
-        margin: auto;
+        max-width: 100px;
+        max-height: 100px;
       }
     }
   }

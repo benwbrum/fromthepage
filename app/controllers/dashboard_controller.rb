@@ -106,10 +106,11 @@ class DashboardController < ApplicationController
       search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
       @owners = User.where(id: search_ids).where.not(account_type: nil)
     else
-      @owners = User.where.not(account_type: nil).order('display_name')
+      id_list = User.where.not(account_type: nil).pluck(:id)
+      @owners = User.joins(:collections).where(collections: {restricted: false}).where(collections: {owner_user_id: id_list}).distinct.order('display_name')
     end
     #these are for the carousel
-    @collections = Collection.unrestricted.where.not(pct_completed: 100).where.not(picture: nil).where.not(intro_block: [nil, '']).group('collections.owner_user_id')
+    @collections = Collection.where.not(pct_completed: 90..100).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).group('collections.owner_user_id')
   end
 
 end
