@@ -109,8 +109,7 @@ class DashboardController < ApplicationController
       @owners = User.where.not(account_type: nil).order('display_name')
     end
     #these are for the carousel
-    @collections = Collection.where.not(pct_completed: 100).where.not(picture: nil).where.not(intro_block: [nil, '']).group('collections.owner_user_id')
-    #@works = Work.incomplete_transcription.includes(:collection).merge(Collection.unrestricted).where.not(collections: {picture: nil}).where.not(collections: {intro_block: [nil, '']}).group('collections.owner_user_id')
+    @collections = Collection.unrestricted.where.not(pct_completed: 100).where.not(picture: nil).where.not(intro_block: [nil, '']).group('collections.owner_user_id')
   end
 
 end

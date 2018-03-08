@@ -180,6 +180,20 @@
                 if(options.auto) {
                     setupAutoScroll();
                 }
+
+                if(options.pause && options.auto){
+                    $(options.pause).on('click', function(){
+                        clearTimeout(autoTimeout);
+                        stopAutoScroll();
+                        return go(calculatedTo);
+                    });
+                }
+            }
+
+            function stopAutoScroll() {
+                $(options.pause).off('click');
+                options.auto = null;
+                options.pause = null;
             }
 
             function setupAutoScroll() {
@@ -275,7 +289,8 @@
         scroll: 1,                  // Set to a numeric value to specify how many items to scroll for one scroll event
 
         beforeStart: null,          // Set to a function to receive a callback before every scroll start
-        afterEnd: null              // Set to a function to receive a callback after every scroll end
+        afterEnd: null,              // Set to a function to receive a callback after every scroll end
+        pause: null                 //CSS selector for pause on click
     };
 
 })(jQuery);

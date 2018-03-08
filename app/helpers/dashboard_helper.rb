@@ -14,14 +14,10 @@ module DashboardHelper
     if params[:search]
       projects = @search_results.map {|col| col if col.owner_user_id == owner.id}.compact
     else
-      sets = DocumentSet.unrestricted.where(owner_user_id: owner.id)
-      collections = Collection.unrestricted.where(owner_user_id: owner.id)
-      projects = (sets + collections).sort_by(&:pct_completed).first(3)
-      #count = projects.count
-      #unless count == 3
-      #  projects = projects + owner.owned_collection_and_document_sets.sample(3-count)
-      #end
-      #@filtered = (projects.count - 3)
+      sets = DocumentSet.unrestricted.where(owner_user_id: owner.id).where.not(pct_completed: 100)
+      collections = Collection.unrestricted.where(owner_user_id: owner.id).where.not(pct_completed: 100)
+      projects = (sets + collections).sample(3)
+      #projects = (sets + collections).sort_by(&:pct_completed).first(3)
     end
     return projects
   end
