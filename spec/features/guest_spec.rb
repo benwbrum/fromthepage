@@ -69,12 +69,12 @@ describe "guest user actions" do
     visit landing_page_path
     expect(page).to have_selector('.carousel')
     expect(page).to have_content("Project List")
-    expect(page).to have_content(@owner.display_name)
-    expect(page.find('.project-list')).to have_link(@owner.collections.first.title)
-    page.find('.project-list').click_link(@owner.collections.first.title)
+    expect(page.find('.project-list')).to have_link(@owner.display_name)
+    page.find('.project-list').click_link(@owner.display_name)
     expect(page).not_to have_selector('.carousel')
-    expect(page.find('h1')).to have_content @owner.collections.first.title
-    expect(page.current_path).to eq collection_path(@owner, @owner.collections.first)
+    expect(page.find('h1')).to have_content @owner.display_name
+    expect(page).to have_content("Collections")
+    expect(page.current_path).to eq user_profile_path(@owner)
   end
 
   it "searches the landing page" do
