@@ -1,0 +1,84 @@
+# Spanish i18n Messages
+
+es:
+  hello: "Hello world"
+  will_paginate:
+    previous_label: "&#8592;"
+    next_label: "&#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No records"
+        one:   "1 record"
+        other: "All %{count} records"
+      single_page_html:
+        zero:  "No records"
+        one:   "<b>1</b> record"
+        other: "All <b>%{count}</b> records"
+      multi_page: "Records %{from} - %{to} of %{count}"
+      multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
+
+  datetime:
+    distance_in_words:
+      x_days:
+        one: 24 hours
+        other: "%{count} days"
+        
+  api:
+    default:
+      ok: "La operación se realizó exitosamente"
+      error: "Error del servidor, inténtelo más tarde."
+    session:
+      not_allowed: "Para acceder a este contenido debes iniciar sesión"
+    login:
+      success: "¡Bienvenido a Transcriptor!"
+      fail: "Usuario o contraseña no válidos, vuelva a intentarlo."
+    collection:
+      create:
+        success: "La Colección ha sido creada"
+      update:
+        success: "La Colección ha sido actualizada"
+      destroy:
+        success: "La Colección ha sido borrada"
+    work:
+      create:
+        success: "El Trabajo ha sido creada"
+      update:
+        success: "El Trabajo ha sido actualizada"
+      destroy:
+        success: "El Trabajo ha sido borrada"
+    mark:
+      create:
+        success: "La Marca ha sido creada"
+      update:
+        success: "La Marca ha sido actualizada"
+      destroy:
+        success: "La Marca ha sido borrada"
+    transcription:
+      save:
+        success: "La Transcripción ha sido guardada"
+        success_guest: "La Transcripción ha sido guardada, recuerde que puede guardar hasta tres transcripciones como usuario invitado."
+        error:
+          parse: "Hubo un error al analizar la sintaxis de su transcripción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja abierta una etiqueta HTML. Compruebe cualquier instancia de los símbolos < o > en su texto."
+          guest_limit: "Para continuar la transcripción debe iniciar sesión."
+    translation:
+      save:
+        success: "La Traducción ha sido guardada"
+        success_guest: "La Traducción ha sido guardada, recuerde que puede guardar hasta tres traducciones como usuario invitado."
+        error:
+          parse: "Hubo un error al analizar la sintaxis de su traducción. Este tipo de error a menudo ocurre si falta un corchete angular o si se deja abierta una etiqueta HTML. Compruebe cualquier instancia de los símbolos < o > en su texto."
+          guest_limit: "Para continuar transcribiendo debe iniciar sesión."
+    registration:
+      create:
+        success: "El Usuario ha sido creado"
+      update:
+        success: "El Usuario ha sido modificado"
+      destroy:
+        success: "El Usuario ha sido borrado"
+    user:
+      update:
+        success: "El usuario ha sido modificado"
+    upload:
+      create:
+        success: "El documento ha sido subido y se procesará en breve."
+        error: "Ocurrió un error en la subida del archivo, inténtelo más tarde."

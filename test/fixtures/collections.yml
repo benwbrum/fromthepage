@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 4
+  title: test
+
+two:
+  id: 2
+  title: test2
+
+
+

@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.9'
 
+gem 'rails-api' 
+
 gem 'pry'
 gem 'pry-byebug'
 
@@ -40,6 +42,7 @@ group :assets do
 end
 
 group :test do
+  gem 'faker'       # Gem to generate mock data
   gem 'database_cleaner'
   gem 'capybara'
   gem 'shoulda'
@@ -82,6 +85,10 @@ gem 'ahoy_matey'
 
 # Use figaro to set env vars
 gem "figaro"
+
+gem 'devise-token_authenticatable', '~> 0.3'
+
+gem 'factory_girl_rails'
 
 # Use font awesome icons
 gem "font-awesome-rails"

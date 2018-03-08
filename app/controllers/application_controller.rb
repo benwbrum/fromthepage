@@ -214,7 +214,7 @@ class ApplicationController < ActionController::Base
     if current_user.sign_in_count == 2
       flash[:notification] = {'title':'New Badge Obtained!','message':'Welcome Back!'}
     end
-    
+
     if current_user.admin
       admin_path
     elsif current_user.owner
