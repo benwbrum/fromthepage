@@ -45,6 +45,9 @@
                   .projects_collection_snippet =snippet
           .projects_link =link_to "See more information...", user_profile_path(owner)
 
+    .project-list_link
+      =link_to "See all collections", dashboard_path
+
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       =search_field_tag :search, params[:search], placeholder: 'Search for collections or owners...'

@@ -263,6 +263,16 @@
   &_projects {
     border-bottom: 1px dotted $borderColor;
   }
+  &_link {
+    margin-top: $gapSize;
+    font-size: $fontSizeBig;
+    text-align: right;
+    font-style: italic;
+    a {
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
 }
 
 .projects {
