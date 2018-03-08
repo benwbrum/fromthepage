@@ -22,7 +22,10 @@
       =hidden_field_tag :at_id, @sc_manifest.at_id
       -new_collection = @collection ? @collection.id : nil
     	=f.select(:collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), {prompt: '- Select a collection to import into -'}, {required: true, 'aria-label' => 'Select a collection to import into'})
-    	=f.button 'Import Manifest'
+      =f.button 'Import Manifest'
+      -if ContentdmTranslator.iiif_manifest_is_cdm?(@sc_manifest.at_id)
+            =label_tag :contentdm_ocr, 'Import OCR text from CONTENTdm'
+            =check_box_tag :contentdm_ocr
 
 		-unless @sc_manifest.service.sequences.empty?
 			h5 Canvases:

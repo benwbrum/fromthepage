@@ -33,6 +33,15 @@ class Collection < ActiveRecord::Base
   scope :unrestricted, -> { where(restricted: false)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
 
+  def page_metadata_fields
+    page_fields = []
+    works.each do |w| 
+      page_fields += w.pages.first.metadata.keys if w.pages.first && w.pages.first.metadata
+    end
+     
+    page_fields.uniq
+  end
+
   def export_subjects_as_csv
     csv_string = CSV.generate(:force_quotes => true) do |csv|
       csv << %w{ Work_Title Identifier Page_Title Page_Position Page_URL Subject Text Category Category Category }
