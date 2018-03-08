@@ -156,9 +156,13 @@ class ScCollectionsController < ApplicationController
     end
     if ContentdmTranslator.iiif_manifest_is_cdm? at_id
       ocr = !params[:contentdm_ocr].blank?
+      #make sure import folder exists
+      unless Dir.exist?("#{Rails.root}/public/imports")
+        Dir.mkdir("#{Rails.root}/public/imports")
+      end
 
       log_file = "#{Rails.root}/public/imports/work_#{work.id}_cdm.log"
-      rake_call = "#{RAKE} fromthepage:cdm_work_update[#{work.id},#{ocr}] --trace >> #{log_file} &"
+      rake_call = "#{RAKE} fromthepage:cdm_work_update[#{work.id},#{ocr}] --trace >> #{log_file} 2>&1 &"
       logger.info rake_call
       system(rake_call)
       #flash notice about the rake task
