@@ -160,6 +160,10 @@ class User < ActiveRecord::Base
     (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
   end
 
+  def rand_incomplete_collection
+    Collection.where(owner_user_id: self.id).where.not(pct_completed: 90..100).where.not(picture: nil).where.not(intro_block: [nil, '']).unrestricted.sample(1)
+  end
+
   def slug_candidates
     if self.slug
       [:slug]

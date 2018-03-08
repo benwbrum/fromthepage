@@ -9,7 +9,6 @@ module DashboardHelper
     page = Page.joins(:work).where(works: {collection_id: collection.id}).where(works: {restrict_scribes: false}).where(status: nil).sample(1).first
   end
 
-
   def owner_projects(owner)
     if params[:search]
       projects = @search_results.map {|col| col if col.owner_user_id == owner.id}.compact
