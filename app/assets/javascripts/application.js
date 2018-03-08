@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
+//= require iziToast/iziToast
 
 
 ;(function($, window, document, undefined) {
@@ -281,4 +282,29 @@ function hideWorks(param){
     $(work).show();
   };
   work.removeClass("hidden")
+}
+
+// showNotification('Insignia Obtenida','Bienvenido a Transcriptor!','fa fa-trophy')
+function showNotification(title,message,icon = null){
+  iziToast.show({
+        id: 'gameNotification',
+        theme: 'dark',
+        icon: icon,
+        title: title,
+        message: message,
+        position: 'bottomCenter',
+        transitionIn: 'flipInX',
+        transitionOut: 'flipOutX',
+        progressBarColor: 'rgb(0, 255, 184)',
+        image: '/images/icon.jpg',
+        imageWidth: 70,
+        layout: 2,
+        onClosing: function(){
+            //console.info('onClosing');
+        },
+        onClosed: function(instance, toast, closedBy){
+            //console.info('Closed | closedBy: ' + closedBy);
+        },
+        iconColor: 'rgb(0, 255, 184)'
+    });
 }

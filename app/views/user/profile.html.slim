@@ -33,6 +33,10 @@ section.user-profile
         p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
       -if @user.about.present?
         p.big(data-prefix='About:') =@user.about
+    -if @user == current_user
+      =link_to({ :controller => 'badge', :action => 'list'}, class: 'button outline')
+        =svg_symbol '#icon-check-sign', class: 'icon'
+        span My Badges
 
 -if @user.owner?
   .columns

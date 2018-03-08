@@ -127,7 +127,10 @@ class TranscribeController  < ApplicationController
             end
           else
             # record activity on gamification services 
-            GamificationHelper.editTranscriptionEvent(current_user.email)
+            got_badge=GamificationHelper.editTranscriptionEvent(current_user.email)
+            if got_badge
+              flash[:notification] = {'title':'New Badge Obtained!','message':'First Transcription Upgrade!'}
+            end
           end
           
           redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection

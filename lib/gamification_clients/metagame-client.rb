@@ -51,6 +51,16 @@ class MetagameClient < HttpClient
         do_delete("/badges/#{id}")
     end
 
+    #### Issues Methods ####
+    
+    def add_issue(email,badge_id)
+        do_post("/issues",{email:email,badge_id:badge_id})
+    end
+    
+    def delete_issue(email,badge_id)
+        do_delete("/issues",{email:email,badge_id:badge_id})
+    end
+
     #### Records Methods ####
 
     def list_records(filters = {})

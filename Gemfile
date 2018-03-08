@@ -89,3 +89,6 @@ gem "figaro"
 gem 'devise-token_authenticatable', '~> 0.3'
 
 gem 'factory_girl_rails'
+
+# Use font awesome icons
+gem "font-awesome-rails"

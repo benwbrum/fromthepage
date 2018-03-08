@@ -1,3 +1,5 @@
+require 'gamification_helper'
+
 class ApplicationController < ActionController::Base
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
@@ -207,8 +209,12 @@ class ApplicationController < ActionController::Base
 
   # Redirect to admin or owner dashboard after sign in
   def after_sign_in_path_for(resource)
-    #GamificationHelper.loginEvent(current_user.email)
-    # call GamificationHelper
+    # Record login event
+    GamificationHelper.loginEvent(current_user.email)
+    if current_user.sign_in_count == 2
+      flash[:notification] = {'title':'New Badge Obtained!','message':'Welcome Back!'}
+    end
+
     if current_user.admin
       admin_path
     elsif current_user.owner

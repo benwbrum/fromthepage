@@ -110,7 +110,10 @@ class WorkController < ApplicationController
 
     if @work.save
       # record activity on gamification services 
-      GamificationHelper.createWorkEvent(current_user.email)
+      got_badge=GamificationHelper.createWorkEvent(current_user.email)
+      if got_badge
+        flash[:notification] = {'title':'New Badge Obtained!','message':'First Work created!'}
+      end
       
       record_deed(@work)
       flash[:notice] = 'Work created successfully'

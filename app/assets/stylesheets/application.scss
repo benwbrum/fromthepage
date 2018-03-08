@@ -87,6 +87,8 @@ $gapSize:                   20px;
 @import "base/global";
 @import "base/helpers";
 
+@import "flexboxgrid/flexboxgrid";
+
 @import "components/forms";
 @import "components/buttons";
 @import "components/dropdown";
@@ -108,6 +110,9 @@ $gapSize:                   20px;
 @import "sections/ia-import";
 @import "sections/omeka";
 @import "sections/iiif-import";
+@import "sections/badge";
+
+@import "font-awesome";
 
 @import "plugins/select2/core";
 @import "plugins/zoomer";
@@ -132,3 +137,4 @@ $gapSize:                   20px;
 }
 
 @import "datepicker/datepicker";
+@import "iziToast/iziToast";

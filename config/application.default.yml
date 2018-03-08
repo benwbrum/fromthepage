@@ -2,4 +2,9 @@
 
 DATABASE_HOST: "127.0.0.1"
 DATABASE_USERNAME: "root"
-DATABASE_PASSWORD: "myrootpassword"
+DATABASE_PASSWORD: "mypassword"
+
+#Configuration of metagame\
+METAGAME_PROJECT_NAME: "projectname"
+METAGAME_URL: "metagameBaseUrl"
+METAGAME_TOKEN: "metagameToken"
