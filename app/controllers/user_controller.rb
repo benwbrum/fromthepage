@@ -1,11 +1,18 @@
 class UserController < ApplicationController
-
+  before_action :remove_col_id
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile]
 
   def demo
     session[:demo_mode] = true;
     redirect_to dashboard_path
+  end
+
+  def remove_col_id
+    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    if session[:col_id]
+      session[:col_id] = nil
+    end
   end
 
   def update_profile
@@ -48,6 +55,11 @@ class UserController < ApplicationController
   end
 
   def profile
+    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    if session[:col_id]
+      session[:col_id] = nil
+    end
+    #find the user if it isn't already set
     unless @user
       @user = User.friendly.find(params[:id])
     end
