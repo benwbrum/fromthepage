@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180217191002) do
+ActiveRecord::Schema.define(version: 20180308035119) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -124,6 +124,17 @@ ActiveRecord::Schema.define(version: 20180217191002) do
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
   add_index "collections", ["slug"], name: "index_collections_on_slug", unique: true, using: :btree
+
+  create_table "contributions", force: :cascade do |t|
+    t.string   "type",                  limit: 255
+    t.string   "text",                  limit: 255
+    t.integer  "mark_id",               limit: 4
+    t.integer  "cached_weighted_score", limit: 4,   default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contributions", ["mark_id"], name: "index_contributions_on_mark_id", using: :btree
 
   create_table "deeds", force: :cascade do |t|
     t.string   "deed_type",     limit: 10
@@ -240,11 +251,12 @@ ActiveRecord::Schema.define(version: 20180217191002) do
   end
 
   create_table "marks", force: :cascade do |t|
-    t.integer "page_id",     limit: 4
-    t.text    "text",        limit: 65535
-    t.string  "text_type",   limit: 255
-    t.text    "coordinates", limit: 65535
-    t.string  "shape_type",  limit: 255
+    t.integer "page_id",          limit: 4
+    t.integer "transcription_id", limit: 4
+    t.integer "translation_id",   limit: 4
+    t.string  "text_type",        limit: 255
+    t.text    "coordinates",      limit: 65535
+    t.string  "shape_type",       limit: 255
   end
 
   add_index "marks", ["page_id"], name: "index_marks_on_page_id", using: :btree
@@ -565,6 +577,21 @@ ActiveRecord::Schema.define(version: 20180217191002) do
 
   add_index "visits", ["user_id"], name: "index_visits_on_user_id", using: :btree
   add_index "visits", ["visit_token"], name: "index_visits_on_visit_token", unique: true, using: :btree
+
+  create_table "votes", force: :cascade do |t|
+    t.integer  "votable_id",   limit: 4
+    t.string   "votable_type", limit: 255
+    t.integer  "voter_id",     limit: 4
+    t.string   "voter_type",   limit: 255
+    t.boolean  "vote_flag"
+    t.string   "vote_scope",   limit: 255
+    t.integer  "vote_weight",  limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "votes", ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope", using: :btree
+  add_index "votes", ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope", using: :btree
 
   create_table "work_statistics", force: :cascade do |t|
     t.integer  "work_id",              limit: 4

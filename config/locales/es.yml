@@ -82,3 +82,20 @@ es:
       create:
         success: "El documento ha sido subido y se procesará en breve."
         error: "Ocurrió un error en la subida del archivo, inténtelo más tarde."
+    contribution:
+      transcription:
+        create:
+          success: "La Transcripción ha sido creada"
+        update:
+          success: "La Transcripción ha sido actualizada"
+        destroy:
+          success: "La Transcripción ha sido borrada"
+        like: "¡Has votado por una Transcripción!"
+      translation:
+        create:
+          success: "La Traducción ha sido creada"
+        update:
+          success: "La Traducción ha sido actualizada"
+        destroy:
+          success: "La Traducción ha sido borrada"
+        like: "¡Has votado por una Traducción!"

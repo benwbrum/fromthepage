@@ -47,7 +47,7 @@ class Api::MarkController < Api::ApiController
   private
     
     def mark_params
-      params.permit(:text, :coordinates, :text_type, :shape_type, :page_id)
+      params.permit(:text, :coordinates, :text_type, :shape_type, :page_id, :transcription_text, :translation_text)
     end
     
     def set_mark
