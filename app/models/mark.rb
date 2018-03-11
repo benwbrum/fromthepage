@@ -7,17 +7,17 @@ class Mark < ActiveRecord::Base
   
   validates :coordinates, presence: true
 
-  def initialize(args={})
+  def initialize(args={}, user)
     super(args)
-    puts "lalalalalaljeje"
-    puts args.inspect
     if(args[:transcription_text])
       self.transcription = Transcription.new({text: args[:transcription_text]})
       self.transcription.mark = self
+      self.transcription.user = user
     end
     if(args[:translation_text])
       self.translation = Translation.new({text: args[:translation_text]})
       self.translation.mark = self
+      self.translation.user = user
     end
   end
 

@@ -129,12 +129,14 @@ ActiveRecord::Schema.define(version: 20180308035119) do
     t.string   "type",                  limit: 255
     t.string   "text",                  limit: 255
     t.integer  "mark_id",               limit: 4
+    t.integer  "user_id",               limit: 4
     t.integer  "cached_weighted_score", limit: 4,   default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "contributions", ["mark_id"], name: "index_contributions_on_mark_id", using: :btree
+  add_index "contributions", ["user_id"], name: "index_contributions_on_user_id", using: :btree
 
   create_table "deeds", force: :cascade do |t|
     t.string   "deed_type",     limit: 10

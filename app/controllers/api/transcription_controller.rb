@@ -19,8 +19,9 @@ class Api::TranscriptionController < Api::ApiController
   def create
     @transcription = Transcription.new(transcription_params)
     if @mark
-      @transcription.mark=@mark
+      @transcription.mark = @mark
     end
+    @transcription.user = current_user
 
     if @transcription.save
       render_serialized ResponseWS.ok("api.contribution.transcription.create.success", @transcription)

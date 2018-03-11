@@ -2,6 +2,7 @@ class Contribution < ActiveRecord::Base
   attr_accessible :text, :cached_weighted_score, :mark_id
   
   belongs_to :mark
+  belongs_to :user
   
   validates :text, presence: true
   

@@ -22,7 +22,7 @@ class Api::MarkController < Api::ApiController
   end
 
   def create
-    @mark = Mark.new(mark_params)
+    @mark = Mark.new(mark_params, current_user)
     if @page
       @mark.page=@page
     end

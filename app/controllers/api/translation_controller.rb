@@ -19,8 +19,9 @@ class Api::TranslationController < Api::ApiController
   def create
     @translation = Translation.new(translation_params)
     if @mark
-      @translation.mark=@mark
+      @translation.mark = @mark
     end
+    @translation.user = current_user
 
     if @translation.save
       render_serialized ResponseWS.ok("api.translation.create.success", @translation)
