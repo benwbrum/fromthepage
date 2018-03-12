@@ -193,6 +193,7 @@ class ApplicationController < ActionController::Base
     # skip irrelevant cases
     return unless @collection
     return unless @collection.restricted
+    return if (params[:controller] == 'iiif')
 
     unless @collection.show_to?(current_user)
       redirect_to dashboard_path
