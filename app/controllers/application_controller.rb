@@ -210,7 +210,7 @@ class ApplicationController < ActionController::Base
     if current_user.admin
       admin_path
     elsif current_user.owner
-      dashboard_owner_path      
+      session[:user_return_to] || dashboard_owner_path      
     else
     session[:user_return_to] || dashboard_watchlist_path
     end
