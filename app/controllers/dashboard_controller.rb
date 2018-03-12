@@ -106,7 +106,7 @@ class DashboardController < ApplicationController
       search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
       @owners = User.where(id: search_ids).where.not(account_type: nil)
     else
-      id_list = User.where.not(account_type: nil).pluck(:id)
+      id_list = User.where.not(account_type: [nil, 'Trial Owner']).pluck(:id)
       #merging on collections with those user ids filters out owners without collections
       @owners = User.joins(:collections).where(collections: {restricted: false}).where(collections: {owner_user_id: id_list}).distinct.order(:display_name)
     end

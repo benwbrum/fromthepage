@@ -25,7 +25,7 @@
             span This user is an Owner
       tr
         th =f.label :account_type
-        td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution']))
+        td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution', 'Trial Owner']))
 
       tr
         th =f.label :paid_date, 'Acct Expiration'
