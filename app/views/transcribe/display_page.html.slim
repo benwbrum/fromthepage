@@ -79,7 +79,7 @@
             =>button_tag 'Preview', :name => 'preview'
           -else
             =>button_tag 'Edit', :name => 'edit'
-          -unless @collection.subjects_disabled
+          -unless @collection.subjects_disabled || @collection.field_based
             =>button_tag 'Autolink', :name => 'autolink'
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
