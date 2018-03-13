@@ -11,6 +11,7 @@ table.admin-grid.datagrid.striped
       th(colspan="2") Owner Login
       th.w100 Name &amp; Location
       th Acct Type
+      th Start Date
       th Last Sign In
       th Page Count
       th Acct Expiration
@@ -31,9 +32,10 @@ table.admin-grid.datagrid.striped
           -if o.location
             small(data-prefix='From ') =o.location
         td.nowrap =o.account_type
-        td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
-        td.nowrap =o.page_count
+        td.nowrap =o.start_date.strftime('%b %d, %Y') if o.start_date
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
+        td.nowrap =o.page_count
+        td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td.nowrap
           .instack
             =link_to 'Login As', user_masquerade_path(o)

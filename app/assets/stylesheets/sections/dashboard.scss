@@ -175,6 +175,12 @@
   }
 }
 
+.owner-info{
+  padding: 0 30px 15px;
+  color: $bgSelected;
+  //margin: 0 0 0 $gapSize;
+}
+
 .omeka-sites {
   padding: 0;
   list-style: none;
@@ -200,7 +206,6 @@
     padding-right: 6px;
   }
 }
-
 
 // ---------------------------
 // EDITOR SECTION
