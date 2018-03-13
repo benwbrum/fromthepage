@@ -21,6 +21,10 @@
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save', onclick: 'unsavedNotes(event);'
 
+  -if @page.translation_status == 'review'
+    .page-review
+      |This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
+
   .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
       -if correction_mode?
