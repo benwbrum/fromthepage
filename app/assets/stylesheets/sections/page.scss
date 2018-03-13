@@ -207,7 +207,7 @@
     box-shadow: none;
   }
   textarea, div.editarea {
-    height: 100%;
+    height: calc(100% - 50px);
     margin-top: 45px;
     resize: none;
     padding: $gapSize / 2;
@@ -258,12 +258,10 @@ div.editarea {
   }
   label {
     box-sizing: border-box;
-    //width: 100px;
     text-align: left;
     vertical-align: middle;
     margin-left: 5px;
     overflow: hidden;
-    //padding-right: 10px;
   }
 }
 
