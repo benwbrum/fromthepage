@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
 
   before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject, :summary]
   before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work, :summary]
+  before_action :remove_col_id
 
   def authorized?
     unless user_signed_in? && current_user.owner
@@ -33,6 +34,13 @@ class DashboardController < ApplicationController
     @document_sets = current_user.document_sets
 
     logger.debug("DEBUG: #{current_user.inspect}")
+  end
+
+  def remove_col_id
+    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    if session[:col_id]
+      session[:col_id] = nil
+    end
   end
 
   #Public Dashboard - list of all collections
