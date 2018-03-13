@@ -77,6 +77,7 @@ describe "collection settings js tasks", :order => :defined do
     work = @collection.works.first
     field_page = work.pages.first
     visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)
+    expect(page).not_to have_content("Autolink")
     expect(page).to have_content("First field")
     expect(page).to have_content("Second field")
     expect(page).to have_content("Third field")
