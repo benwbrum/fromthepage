@@ -74,6 +74,7 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')
     click_button('Save Changes')
+    expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     expect(page).to have_content("Review Text")
     expect(page).to have_content("Transcription")
