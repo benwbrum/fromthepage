@@ -65,7 +65,7 @@ module ContributorHelper
 
   def show_email_stats(hours)
     @hours = hours
-    @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours).where.not("email LIKE '%guest%'")
+    @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
     @recent_collections = Collection.where("created_on > ?", Time.now - hours.to_i.hours)
     @collections = Collection.all
   end
