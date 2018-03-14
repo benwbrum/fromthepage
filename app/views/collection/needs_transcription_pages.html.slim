@@ -1,1 +1,11 @@
-h1 Needs Transcription
+div
+  h1 =@collection.title
+.columns
+  article.maincol
+
+    =render 'display/pages_view'
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+
+  aside.sidecol
+  h1 Test

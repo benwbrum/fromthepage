@@ -274,25 +274,26 @@ class CollectionController < ApplicationController
   end
 
   def needs_transcription_pages
+    @pages = Page.joins(:work).where(works: {collection_id: @collection.id}).merge(Work.unrestricted).needs_transcription.paginate(page: params[:page], per_page: 10)
   end
 
   def needs_review_pages
-
+    @pages = Page.joins(:work).where(works: {collection_id: @collection.id}).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
   end
 
   def start_transcribing
     #find works with deeds in the last 48 hours
     active_works = @collection.works.joins(:deeds).where('deeds.created_at >= ?', 48.hours.ago).distinct.pluck(:id)
     #get work ids for the rest of the works
-    inactive_works = @collection.works.pluck(:id) - active_works
+    inactive_works = @collection.works.unrestricted.pluck(:id) - active_works
     #find pages in those works that aren't transcribed
-    pages = Page.where(work_id: inactive_works).where(status: nil)
+    pages = Page.where(work_id: inactive_works).needs_transcription
     if pages.blank?
       flash[:notice] = "Sorry, but there are no qualifying pages in this collection."
       redirect_to collection_path(@collection.owner, @collection)
     else
-      page = pages.first
-      redirect_to collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page)
+      @page = pages.first
+      redirect_to collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page)
     end
   end
 
