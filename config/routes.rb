@@ -85,6 +85,9 @@ Fromthepage::Application.routes.draw do
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'
       get 'works_list', path: 'works_list', as: :works_list, to: 'collection#works_list'
+      get 'needs_transcription_pages', path: '/needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
+      get 'needs_review_pages', path: '/needs_review', as: :needs_review, to: 'collection#needs_review_pages'
+      get 'start_transcribing', path: '/start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
  
       #work related routes
       #have to use match because it must be both get and post

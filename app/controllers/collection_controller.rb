@@ -10,7 +10,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -273,6 +273,28 @@ class CollectionController < ApplicationController
     end
   end
 
+  def needs_transcription_pages
+  end
+
+  def needs_review_pages
+
+  end
+
+  def start_transcribing
+    #find works with deeds in the last 48 hours
+    active_works = @collection.works.joins(:deeds).where('deeds.created_at >= ?', 48.hours.ago).distinct.pluck(:id)
+    #get work ids for the rest of the works
+    inactive_works = @collection.works.pluck(:id) - active_works
+    #find pages in those works that aren't transcribed
+    pages = Page.where(work_id: inactive_works).where(status: nil)
+    if pages.blank?
+      flash[:notice] = "Sorry, but there are no qualifying pages in this collection."
+      redirect_to collection_path(@collection.owner, @collection)
+    else
+      page = pages.first
+      redirect_to collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page)
+    end
+  end
 
 private
   def set_collection
