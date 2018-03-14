@@ -39,6 +39,13 @@ class ApplicationController < ActionController::Base
     user
   end
 
+  def remove_col_id
+    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    if session[:col_id]
+      session[:col_id] = nil
+    end
+  end
+
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'

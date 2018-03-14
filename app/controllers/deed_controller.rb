@@ -4,9 +4,8 @@ class DeedController < ApplicationController
 
   def list
     #get rid of col_id if no breadcrumbs
-    if session[:col_id]
-      session[:col_id] = nil
-    end
+    remove_col_id
+    
     condition = []
 
     if @collection
