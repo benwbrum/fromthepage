@@ -8,13 +8,6 @@ class UserController < ApplicationController
     redirect_to dashboard_path
   end
 
-  def remove_col_id
-    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
-    if session[:col_id]
-      session[:col_id] = nil
-    end
-  end
-
   def update_profile
   end
 

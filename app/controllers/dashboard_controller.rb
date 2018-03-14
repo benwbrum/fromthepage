@@ -36,13 +36,6 @@ class DashboardController < ApplicationController
     logger.debug("DEBUG: #{current_user.inspect}")
   end
 
-  def remove_col_id
-    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
-    if session[:col_id]
-      session[:col_id] = nil
-    end
-  end
-
   #Public Dashboard - list of all collections
   def index
     collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
