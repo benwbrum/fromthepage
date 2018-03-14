@@ -8,19 +8,18 @@
 table.admin-grid.datagrid.striped
   thead
     tr
-      th(colspan="2") Owner Login
+      th(colspan="2") =link_to "Owner Login", {:controller => 'admin', :action => 'owner_list', :sort => 'login', :dir => 'asc'}
       th.w100 Name &amp; Location
-      th Acct Type
-      th Start Date
-      th Last Sign In
+      th =link_to "Acct Type", {:controller => 'admin', :action => 'owner_list', :sort => 'account_type', :dir => 'desc'}
+      th =link_to "Start Date", {:controller => 'admin', :action => 'owner_list', :sort => 'start_date', :dir => 'desc'}
+      th =link_to "Acct Expiration", {:controller => 'admin', :action => 'owner_list', :sort => 'paid_date', :dir => 'desc'}
       th Page Count
-      th Acct Expiration
+      th Last Sign In
       th Action
 
   tbody
     -@owners.each do |o|
       tr
-
         td
           =link_to(user_profile_path(o), class: 'userpic userpic-small')
             =gravatar_image_tag o.email, :alt => o.display_name

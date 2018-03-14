@@ -175,10 +175,10 @@
   }
 }
 
-.owner-info{
-  padding: 0 30px 15px;
+.owner-info {
+  padding: 0 30px 15px 0;
   color: $bgSelected;
-  //margin: 0 0 0 $gapSize;
+  font-style: italic;
 }
 
 .omeka-sites {

@@ -31,6 +31,11 @@
       dd
         -unless current_user.all_owner_collections.empty?
         =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
+
+-if !(current_user.account_type == nil)
+  .owner-info
+    |#{current_user.account_type} account since #{current_user.start_date.strftime('%b %d, %Y')}. Current subscription expires #{current_user.paid_date.strftime('%b %d, %Y')}. Total pages: #{current_user.page_count}
+
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
   .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
@@ -38,10 +43,6 @@ section.owner-counters
   -unless @document_sets.empty?
     .counter(data-prefix="#{number_with_delimiter @document_sets.length}") #{'Document Set'.pluralize(@document_sets.length)}
 
--if !(current_user.account_type == nil)
-  .owner-info
-    h5 #{current_user.account_type} account since #{current_user.start_date.strftime('%b %d, %Y')}. Current subscription expires #{current_user.paid_date.strftime('%b %d, %Y')}. Total pages: #{current_user.page_count}
-    
 .tabs
   -for tab in tabs
     =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
