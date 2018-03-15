@@ -86,9 +86,12 @@ Fromthepage::Application.routes.draw do
     end
     resources :mark, path: 'mark', only: [:index, :create, :update, :destroy, :show] do
       get '', path: 'transcriptions', as: :show_transcriptions, to: 'transcription#list_by_mark'
+      get '', path: 'votes',  to: 'transcription#list_likes_by_user'
+     
     end
     resources :transcription, path: 'transcription', only: [:index, :create, :update, :destroy, :show] do
       get ':transcription_id', path: 'like', as: :like_transcription, to: 'transcription#like'
+      get '', path: 'vote',  to: 'transcription#transcription_like_by_user'
     end
     resources :translation, path: 'translation', only: [:index, :create, :update, :destroy, :show]
     resources :registration, path: 'registration', only: [:create] do
