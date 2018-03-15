@@ -91,6 +91,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.picture_url(:thumb)
   end
 
+  def transcription_fields
+    self.collection.transcription_fields
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
