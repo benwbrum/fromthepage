@@ -1,6 +1,6 @@
 class Api::TranscriptionController < Api::ApiController
   
-  before_action :set_transcription, only: [:update, :destroy, :like]
+  before_action :set_transcription, only: [:show, :update, :destroy]
 
   def public_actions
     return [:index]
@@ -41,6 +41,7 @@ class Api::TranscriptionController < Api::ApiController
   end
   
   def like
+    @transcription = Transcription.find(params[:transcription_id])
     @transcription.liked_by current_user
     @mark=@transcription.mark
     if(@transcription.better_than? @mark.transcription)
@@ -50,6 +51,10 @@ class Api::TranscriptionController < Api::ApiController
     render_serialized ResponseWS.ok("api.contribution.transcription.like", @transcription)
   end
   
+  def show
+    response_serialized_object @transcription
+  end
+  
   private
     
     def transcription_params
@@ -57,7 +62,7 @@ class Api::TranscriptionController < Api::ApiController
     end
     
     def set_transcription
-      @transcription = Transcription.find(params[:transcription_id])
+      @transcription = Transcription.find(params[:id])
       raise ActiveRecord::RecordNotFound unless @transcription
     end
     
