@@ -3,6 +3,9 @@ class DeedController < ApplicationController
   PAGES_PER_SCREEN = 50
 
   def list
+    #get rid of col_id if no breadcrumbs
+    remove_col_id
+    
     condition = []
 
     if @collection
