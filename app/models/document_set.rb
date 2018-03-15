@@ -81,6 +81,10 @@ class DocumentSet < ActiveRecord::Base
     self.collection.field_based
   end
 
+  def transcription_fields
+    self.collection.transcription_fields
+  end
+
   def slug_candidates
     if self.slug
       [:slug]
