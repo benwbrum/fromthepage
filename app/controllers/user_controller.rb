@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-
+  before_action :remove_col_id, :only => [:profile, :update_profile]
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile]
 
@@ -48,6 +48,7 @@ class UserController < ApplicationController
   end
 
   def profile
+    #find the user if it isn't already set
     unless @user
       @user = User.friendly.find(params[:id])
     end
