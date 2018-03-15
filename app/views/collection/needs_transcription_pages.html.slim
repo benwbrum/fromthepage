@@ -2,10 +2,10 @@ div
   h1 =@collection.title
 .columns
   article.maincol
-
+    h3 Pages That Need Transcription
     =render 'display/pages_view'
 
     =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
 
   aside.sidecol
-  h1 Test
+    =link_to "Return to #{@collection.title} Collection", collection_path(@collection.owner, @collection), class: 'button'

@@ -52,6 +52,7 @@
         p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection, anchor: "category-#{c.id}" } }.join(', ')
 
   aside.sidecol
+
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
@@ -63,6 +64,10 @@
       =search_field_tag :search, params[:search], placeholder: 'Search for works...'
       =button_tag 'Search'
       =label_tag 'search', "Search for works", class: 'hidden'
+
+    =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+
+    =link_to "Pages That Need Review", collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     .user-label
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
