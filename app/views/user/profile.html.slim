@@ -1,5 +1,4 @@
 -user_name = @user.display_name.presence || @user.login
-
 -content_for :page_title, user_name
 -content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
 
@@ -54,8 +53,9 @@ section.user-profile
         -note_text = truncate(strip_tags(note.body), :length => 200)
         tr
           td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
-          td.overflow =link_to note.page.title, { :controller => 'display', :action => 'display_page', :page_id => note.page_id }
-          td =link_to note_text, { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "note-#{note.id}" }
+          td.overflow =link_to note.page.title, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page)
+          td =link_to note_text, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page, anchor: "note-#{note.id}")
+
     br
 
   -if @page_versions.present?
@@ -71,10 +71,10 @@ section.user-profile
           td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
           td.overflow
             -if version.page.work.present?
-              =link_to version.page.work.title, { :controller => 'display', :action => 'read_work', :work_id => version.page.work.id }
+              =link_to version.page.work.title, collection_read_work_path(version.page.collection.owner, version.page.collection, version.page.work)
             -else
               span.a50 No work
-          td =link_to version.page.title, { :controller => 'display', :action => 'display_page', :page_id => version.page.id }
+          td =link_to version.page.title, collection_display_page_path(version.page.collection.owner, version.page.collection, version.page.work, version.page)
           td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
     br
 
