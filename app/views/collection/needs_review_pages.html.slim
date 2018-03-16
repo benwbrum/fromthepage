@@ -8,7 +8,7 @@ div
     =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
 
   aside.sidecol
-    .user-label
+    .user-label.owner
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
