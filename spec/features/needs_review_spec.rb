@@ -138,6 +138,20 @@ describe "needs review", :order => :defined do
     expect(page.find('.pagination_info')).to have_content(@work.pages.translation_review.count)
   end
 
+  it "views collection pages that need review" do
+    login_as(@user, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    expect(page).to have_content("About")
+    expect(page).to have_content("Works")
+    page.click_link("Pages That Need Review")
+    expect(page).to have_selector('h3', text: "Pages That Need Review")
+    #make sure a page exists; don't specify which one
+    expect(page).to have_selector('.work-page')
+    click_link("Return to #{@collection.title} Collection")
+    expect(page).to have_content("About")
+    expect(page).to have_content("Works")
+  end
+
   it "checks collection overview stats view" do
     visit collection_path(@collection.owner, @collection)
     #show all works before checking for stats
