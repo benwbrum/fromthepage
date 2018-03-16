@@ -108,6 +108,10 @@
   visibility: hidden;
 }
 
+.user-label.owner {
+  margin: $gapSize 0 $gapSize;
+}
+
 // Collection users
 
 .collection-users {

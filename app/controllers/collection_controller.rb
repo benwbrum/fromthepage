@@ -2,6 +2,7 @@
 class CollectionController < ApplicationController
   include ContributorHelper
   include AddWorkHelper
+  include CollectionHelper
 
   public :render_to_string
 
@@ -284,12 +285,7 @@ class CollectionController < ApplicationController
   end
 
   def start_transcribing
-    #find works with deeds in the last 48 hours
-    active_works = @collection.works.joins(:deeds).where('deeds.created_at >= ?', 48.hours.ago).distinct.pluck(:id)
-    #get work ids for the rest of the works
-    inactive_works = @collection.works.unrestricted.pluck(:id) - active_works
-    #find pages in those works that aren't transcribed
-    pages = Page.where(work_id: inactive_works).needs_transcription
+    pages = find_transcribe_pages
     if pages.blank?
       flash[:notice] = "Sorry, but there are no qualifying pages in this collection."
       redirect_to collection_path(@collection.owner, @collection)
