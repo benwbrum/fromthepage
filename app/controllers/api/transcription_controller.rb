@@ -12,41 +12,29 @@ class Api::TranscriptionController < Api::ApiController
   end
   
   def list_by_mark
-    transcriptions = Transcription.where(mark_id: params[:mark_id]).all
-    transcriptions.each do |d|
-      puts current_user.voted_for? d
-      end
+    transcriptions = Transcription.where(mark_id: params[:mark_id]).order(cached_weighted_score: :desc).all
     render_serialized ResponseWS.default_ok(transcriptions)
   end
 
-
   def list_likes_by_user
-
-    #transcriptions = Transcription.joins('votes on votes.votable_id = transcription.id and votes.voter_id = '+ current_user.id.to_s).where('transcription.mark.id = ' + params[:mark_id].to_s)
     @list = Array.new()
     transcriptions = Transcription.where(mark_id: params[:mark_id]).all
     transcriptions.each do |transcription|
       element = Hash.new()
       element['id']=transcription.id
       element['vote']= current_user.voted_for? transcription
-      puts current_user.voted_for? transcription
       @list.push(element)
       end
     render_serialized ResponseWS.default_ok(@list)
   end
 
-
-
   def transcription_like_by_user
-
-    #transcriptions = Transcription.joins('votes on votes.votable_id = transcription.id and votes.voter_id = '+ current_user.id.to_s).where('transcription.mark.id = ' + params[:mark_id].to_s)
     @list = Array.new()
     transcriptions = Transcription.where(id: params[:transcription_id]).all
     transcriptions.each do |transcription|
       element = Hash.new()
       element['id']=transcription.id
       element['vote']= current_user.voted_for? transcription
-      puts current_user.voted_for? transcription
       @list.push(element)
       end
     render_serialized ResponseWS.default_ok(@list)
