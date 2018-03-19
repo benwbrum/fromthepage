@@ -38,9 +38,15 @@ class DashboardController < ApplicationController
 
   #Public Dashboard - list of all collections
   def index
-    collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
-    @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
-    @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
+    unless (Collection.all.count > 100)
+      collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+      @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+      @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
+    else
+      collections = Collection.includes(:owner).distinct
+      @document_sets = DocumentSet.includes(:owner).distinct
+      @collections = (collections + @document_sets).sort { |a,b| a.title <=> b.title }
+    end
   end
 
   #Owner Dashboard - start project
