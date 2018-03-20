@@ -17,18 +17,14 @@
 
 .columns.project-list
   article.maincol
-    h2 Project List
     -@owners.each do |owner|
       .project-list_projects
         .projects-owner
-          .projects-owner_image
-          .projects-owner_details
-            .headline
-              h3.projects-owner_title
-                =link_to owner.display_name, user_profile_path(owner)
-            -if owner.about.present?
-              .description
-                =owner.about
+          h3.projects-owner_title
+            =link_to owner.display_name, user_profile_path(owner)
+          -if owner.about.present?
+            .description
+              =owner.about
         -projects = owner_projects(owner)
         .projects
           -projects.each do |project|
@@ -42,10 +38,10 @@
                   =link_to project.title, collection_path(project.owner, project)
                 -unless snippet.empty?
                   .projects_collection_snippet =snippet
-          .projects_link =link_to "See more information...", user_profile_path(owner)
+          .projects_link =link_to "More...", user_profile_path(owner)
 
     .project-list_link
-      =link_to "See all collections", dashboard_path
+      =link_to "All Collections", dashboard_path
 
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do

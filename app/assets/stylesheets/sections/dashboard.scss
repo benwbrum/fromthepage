@@ -265,7 +265,7 @@
   }
   &_link {
     margin-top: $gapSize;
-    font-size: $fontSizeBig;
+    font-size: $fontSizeH5;
     text-align: right;
     font-style: italic;
     a {
@@ -276,7 +276,7 @@
 }
 
 .projects {
-  margin: 0 0 ($gapSize/2) ($gapSize * 4);
+  margin: 0 0 ($gapSize/2) 0;
   &_details {
     overflow: hidden;
     margin: 0 0 .5em 0;
@@ -303,7 +303,6 @@
     }
   }
   &_link {
-    text-align: right;
     font-style: italic;
     a {
       color: darken($fgLink, 10%);
@@ -315,14 +314,7 @@
 .projects-owner {
   width: 100%;
   display: table;
-  margin: $gapSize/2 0 0;
-  &_image {
-    text-align: center;
-    display: table-cell;
-    vertical-align: top;
-    padding-right: $gapSize;
-    .userpic { font-size: 60px; }
-  }
+  margin: $gapSize/2 0 $gapSize/2;
   &_details {
     width: 100%;
     display: table-cell;
