@@ -13,8 +13,8 @@ module DashboardHelper
     if params[:search]
       projects = @search_results.map {|col| col if col.owner_user_id == owner.id}.compact
     else
-      sets = DocumentSet.unrestricted.where(owner_user_id: owner.id).where.not(pct_completed: 90..100)
-      collections = Collection.unrestricted.where(owner_user_id: owner.id).where.not(pct_completed: 90..100)
+      sets = DocumentSet.unrestricted.where(owner_user_id: owner.id).where.not(pct_completed: 90..100).where.not(description: [nil, ''])
+      collections = Collection.unrestricted.where(owner_user_id: owner.id).where.not(pct_completed: 90..100).where.not(intro_block: [nil, ''])
       projects = (sets + collections).sample(3)
     end
     return projects

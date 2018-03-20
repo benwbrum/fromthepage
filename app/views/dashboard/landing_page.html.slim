@@ -18,27 +18,28 @@
 .columns.project-list
   article.maincol
     -@owners.each do |owner|
-      .project-list_projects
-        .projects-owner
-          h3.projects-owner_title
-            =link_to owner.display_name, user_profile_path(owner)
-          -if owner.about.present?
-            .description
-              =owner.about
-        -projects = owner_projects(owner)
-        .projects
-          -projects.each do |project|
-            -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
-            div.projects_details
-              -unless project.picture.blank?
-                .projects_details_image
-                  =image_tag(project.picture_url(:thumb), alt: project.title)
-              .projects_collection
-                h5
-                  =link_to project.title, collection_path(project.owner, project)
-                -unless snippet.empty?
-                  .projects_collection_snippet =snippet
-          .projects_link =link_to "More...", user_profile_path(owner)
+      -projects = owner_projects(owner)
+      -unless projects.blank?
+        .project-list_projects
+          .projects-owner
+            h3.projects-owner_title
+              =link_to owner.display_name, user_profile_path(owner)
+            -if owner.about.present?
+              .description
+                =owner.about
+          .projects
+            -projects.each do |project|
+              -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
+              div.projects_details
+                -unless project.picture.blank?
+                  .projects_details_image
+                    =image_tag(project.picture_url(:thumb), alt: project.title)
+                .projects_collection
+                  h5
+                    =link_to project.title, collection_path(project.owner, project)
+                  -unless snippet.empty?
+                    .projects_collection_snippet =snippet
+            .projects_link =link_to "More...", user_profile_path(owner)
 
     .project-list_link
       =link_to "All Collections", dashboard_path
@@ -48,6 +49,9 @@
       =search_field_tag :search, params[:search], placeholder: 'Search for collections or owners...'
       =button_tag 'Search'
       =label_tag 'search', "Search for collections", class: 'hidden'
+
+    h2 Recent Activity
+    =deeds_for()
 
 -content_for :javascript
   javascript:

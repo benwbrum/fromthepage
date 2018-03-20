@@ -265,7 +265,7 @@
   }
   &_link {
     margin-top: $gapSize;
-    font-size: $fontSizeH5;
+    font-size: $fontSizeStrong;
     text-align: right;
     font-style: italic;
     a {
@@ -314,7 +314,7 @@
 .projects-owner {
   width: 100%;
   display: table;
-  margin: $gapSize/2 0 $gapSize/2;
+  margin: $gapSize/2 0 $gapSize;
   &_details {
     width: 100%;
     display: table-cell;
