@@ -39,4 +39,9 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.nightly_user_activity(user)
   end
 
+  def monthly_owner_wrapup
+    user = User.find_by(login: 'admintest')
+    UserMailer.monthly_owner_wrapup(user)
+  end
+
 end

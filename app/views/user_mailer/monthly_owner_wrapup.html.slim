@@ -1,0 +1,16 @@
+p Hello #{@owner.display_name},
+
+-@collections.each do |c|
+
+  h3 #{c.title}
+  p Another month has passed on #{c.title}.  Give your collaborators some love and encourage them to come back by sending a monthly status email.  The email could include:
+  ul
+    li What they've accomplished this month
+    li What you'll be using the transcribed material for
+    li A call to action - "Know anyone else who would be intersted in working on #{c.title}?  Invite them to join in on the fun."
+  p Here are the stats for you:
+      //??What stats here?
+  -all_transcribers = collection_transcribers(c)
+  p Here are the email addresses of all collaborators on the collection:
+    "#{all_transcribers}"
+  p You can find a full set of stats on your dashboard.

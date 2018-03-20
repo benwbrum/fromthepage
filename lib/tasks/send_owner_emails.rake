@@ -18,4 +18,33 @@ namespace :fromthepage do
     end
   end
 
+  desc "monthly owner email wrap ups"
+  task :monthly_owner_wrapup => :environment do
+    owners = User.where(owner: true).where.not(account_type: [nil, 'Trial Owner'])
+    if SMTP_ENABLED
+      owners.each do |owner|
+        puts owner.display_name
+        begin
+          UserMailer.monthly_owner_wrapup(owner).deliver!
+        rescue StandardError => e
+          print "SMTP Failed: Exception: #{e.message} \n"
+        end
+      end
+    end
+  end
+
+  desc "project is 100 percent transcribed"
+  task :project_complete_email, [:project] => :environment do |t, args|
+    project = args.project
+    if SMTP_ENABLED
+      begin
+        UserMailer.project_complete(project).deliver!
+      rescue StandardError => e
+        print "SMTP Failed: Exception: #{e.message} \n"
+      end
+    end
+
+  end
+
+
 end

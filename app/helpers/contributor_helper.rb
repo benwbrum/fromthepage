@@ -54,6 +54,16 @@ module ContributorHelper
 
     #compare older to recent list to get new transcribers
     @new_transcribers = recent_users - older_users
+#    all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
+#    @all_collaborators = all_transcribers.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+    @all_collaborators = collection_transcribers(@collection)
+  end
+
+  def collection_transcribers(collection)
+    unless @collection
+      @collection = Collection.find_by(id: collection.id)
+    end
+
     all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
     @all_collaborators = all_transcribers.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
   end

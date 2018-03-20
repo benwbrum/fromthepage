@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
   include UserHelper
+  helper ContributorHelper
 
   default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
@@ -52,6 +53,23 @@ class UserMailer < ActionMailer::Base
     if @active_user
       mail to: @user.email, subject: "New FromThePage Activity"
     end
+  end
+
+  def monthly_owner_wrapup(owner)
+    @owner = owner
+    #find all collections with activity in the last month and/or not 100% transcribed?  Those aren't totally related things.
+    @collections = owner.all_owner_collections.where.not(pct_completed: 100)
+    unless @collections.blank?
+      mail to: @owner.email, subject: "FromThePage Monthly Wrapup"
+    end
+  end
+
+  def project_complete(project)
+    #set the collection - are document sets relevant?
+    @collection = Collection.find_by(slug: project.slug)
+    @owner = @collection.owner
+
+    mail to: @owner.email, subject "#{@collection.title} Project Is 100\% Transcribed!"
   end
 
   private

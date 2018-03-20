@@ -1,0 +1,23 @@
+p Hello #{@owner.display_name}
+
+p Wow! Your project is 100% transcribed!  What's next?
+ul
+  li Send a wrap up email to all of your collaborators announcing they did it! Remind them of the purpose of the project, thank them for their work, and direct them on to your next project or a colleague's project.
+
+    p Here are some states you might want to include:
+      //what stats?
+    -all_transcribers = collection_transcribers(c)
+    p Here are the email addresses of all of your collaborators:
+      "#{all_transcribers}"
+
+  li Export your transcriptions if you'd like.
+    p You can export your transcriptions in a variety of formats to use for other purposes, 
+    span =link_to "here:", collection_export_path(@owner, @collection, only_path: false)
+    span. Or you can use the IIIF API.  If you need custom integration services to pull them into a downstream system, we can help - send us an email at 
+    span =mail_to 'support@fromthepage.com'
+    span.
+    p You can also leave your project up on FromThePage - it has great Google SEO. Our perspective is that a transcription is never done - someone may read something years from now and be able to correct a confusing point or add more context to your project.
+
+  li How'd your project go?  We'd love to hear about the hardest part, the easiest part, and one (or more!) things we can improve in FromThePage.
+
+  li Start a new project!
