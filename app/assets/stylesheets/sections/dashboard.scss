@@ -212,6 +212,7 @@
     visibility: hidden;
     position: relative;
     li {
+      position: relative;
       height: 30vw;
       max-height: 30vw;
       width: 60%;
@@ -228,7 +229,15 @@
       overflow: hidden;
     }
     h3 { 
-      margin: .5em 0 .5em 0;
+      margin: .5em 0 .25em 0;
+      a {
+        text-decoration: none;
+        color: darken($fgLink, 10%);
+        &:hover { color: $fgLink; }
+      }
+    }
+    .owner-link {
+      margin: 0 0 .5em;
       a {
         text-decoration: none;
         color: darken($fgLink, 10%);
