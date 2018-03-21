@@ -12,10 +12,11 @@
 
     div.collection-work-list
       h2 Works
+      -pages = find_transcribe_pages
 
-      .transcribed
-        -link
-        =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type), class: 'button'
+      .start_link
+        -unless pages.blank?
+          =link_to "Start Transcribing", collection_start_transcribing_path(@collection.owner, @collection), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
@@ -41,6 +42,8 @@
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
+    -link
+    p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       -if @collection.is_a?(Collection)
@@ -71,10 +74,6 @@
       =search_field_tag :search, params[:search], placeholder: 'Search for works...'
       =button_tag 'Search'
       =label_tag 'search', "Search for works", class: 'hidden'
-
-    -pages = find_transcribe_pages
-    -unless pages.blank?
-      =link_to "Start Transcribing", collection_start_transcribing_path(@collection.owner, @collection), class: 'button review-button'
 
     =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 

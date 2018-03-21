@@ -2,17 +2,17 @@ module CollectionHelper
 
   def link
     if params[:works] == 'show'
-      @link_title = "Hide Fully Transcribed Works"
+      @link_title = "Incomplete Works"
       @link_type = "hide"
     elsif params[:works] == 'hide'
-      @link_title = "Show Fully Transcribed Works"
+      @link_title = "Show All"
       @link_type = "show"
     else
       if @collection.hide_completed
-        @link_title = "Show Fully Transcribed Works"
+        @link_title = "Show All"
         @link_type = "show"
       else
-        @link_title = "Hide Fully Transcribed Works"
+        @link_title = "Incomplete Works"
         @link_type = "hide"
       end
     end
