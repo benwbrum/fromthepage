@@ -169,7 +169,7 @@ describe "editor actions" , :order => :defined do
 
   it "tries to log in as another user" do
     visit "/users/masquerade/#{@owner.id}"
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
     expect(page.find('.dropdown')).not_to have_content @owner.display_name
     expect(page).to have_content @user.display_name
     expect(page).not_to have_selector('a', text: 'Undo Login As')

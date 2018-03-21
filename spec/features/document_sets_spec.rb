@@ -105,15 +105,15 @@ describe "document sets", :order => :defined do
     page.find('.collection-work_title', text: @set.works.first.title).click_link
     expect(page).to have_content(@set.works.first.title)
     page.find('.work-page_title').click_link(@set.works.first.pages.first.title)
-    expect(page.current_path).not_to eq dashboard_path
+    expect(page.current_path).not_to eq collections_list_path
     expect(page.find('h1')).to have_content(@set.works.first.pages.first.title)
     #can a restricted user access a private doc set through a link
     visit collection_path(@owner, @test_set)
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
     expect(page.find('h1')).not_to have_content(@test_set.title)
     #can a restricted user see a work from a private collection through a link
     visit collection_read_work_path(@owner, @collection, @collection.works.last)
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
     expect(page.find('h1')).not_to have_content(@collection.works.last.title)
   end
 
@@ -167,7 +167,7 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content(@test_set.works.first.title)
     #check that the collaborator can't access other private doc set
     visit collection_read_work_path(@owner, DocumentSet.second, DocumentSet.second.works.first)
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
   end
 
