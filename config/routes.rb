@@ -21,6 +21,7 @@ Fromthepage::Application.routes.draw do
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'
   get   'landing_page', to: 'dashboard#landing_page', path: '/findaproject'
+  get   'collections_list', to: 'dashboard#collections_list', path: '/collections'
   
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/:id/layer/:type', :to => 'iiif#layer'

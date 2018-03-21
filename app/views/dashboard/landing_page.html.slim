@@ -48,7 +48,7 @@
             .projects_link =link_to "More...", user_profile_path(owner)
 
     .project-list_link
-      =link_to "All Collections", dashboard_path
+      =link_to "All Collections", collections_list_path
 
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do

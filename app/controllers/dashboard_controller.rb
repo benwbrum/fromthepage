@@ -39,6 +39,14 @@ class DashboardController < ApplicationController
   #Public Dashboard - list of all collections
   def index
     unless (Collection.all.count > 100)
+      redirect_to collections_list_path
+    else
+      redirect_to landing_page_path
+    end
+  end
+
+  def collections_list
+    unless (Collection.all.count > 100)
       collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
       @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
       @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
