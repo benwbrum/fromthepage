@@ -161,7 +161,7 @@ describe "collection settings js tasks", :order => :defined do
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
     #click button to show all works
-    page.click_link("All Works")
+    page.click_link("Show All")
     expect(page.find('.maincol')).to have_content(hidden_work.title)
     #click button to hide completed works
     page.click_link("Incomplete Works")
@@ -197,7 +197,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_selector('h3', text: "Pages That Need Transcription")
     #make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
-    click_link("Return to #{@collection.title} Collection")
+    click_link("Return to collection")
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
   end

@@ -461,14 +461,14 @@ a.field_icons {
   }
   .start_link {
     float: right;
-    padding: 6px 15px 0 0;
+    margin: 0 0 .5em 0;
     label {
       display: inline;
     }
   }
 }
 
-.transcribed {
+p.transcribed {
   text-align: right;
   margin: 0;
   font-style: italic;

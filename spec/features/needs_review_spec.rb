@@ -147,7 +147,7 @@ describe "needs review", :order => :defined do
     expect(page).to have_selector('h3', text: "Pages That Need Review")
     #make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
-    click_link("Return to #{@collection.title} Collection")
+    click_link("Return to collection")
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
   end
@@ -155,7 +155,7 @@ describe "needs review", :order => :defined do
   it "checks collection overview stats view" do
     visit collection_path(@collection.owner, @collection)
     #show all works before checking for stats
-    page.click_link("All Works")
+    page.click_link("Show All")
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"

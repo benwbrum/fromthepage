@@ -42,8 +42,9 @@
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
-    -link
-    p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
+    -if (@collection.pct_completed > 0)
+      -link
+      p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       -if @collection.is_a?(Collection)
