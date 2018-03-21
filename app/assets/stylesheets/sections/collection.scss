@@ -108,6 +108,10 @@
   visibility: hidden;
 }
 
+.user-label.owner {
+  margin: $gapSize 0 $gapSize;
+}
+
 // Collection users
 
 .collection-users {
@@ -455,13 +459,19 @@ a.field_icons {
     width: 30%;
     float: left;
   }
-  .transcribed {
+  .start_link {
     float: right;
     padding: 6px 15px 0 0;
     label {
       display: inline;
     }
   }
+}
+
+.transcribed {
+  text-align: right;
+  margin: 0;
+  font-style: italic;
 }
 
 // Collection footer

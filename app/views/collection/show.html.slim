@@ -12,10 +12,11 @@
 
     div.collection-work-list
       h2 Works
+      -pages = find_transcribe_pages
 
-      .transcribed
-        -link
-        =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type), class: 'button'
+      .start_link
+        -unless pages.blank?
+          =link_to "Start Transcribing", collection_start_transcribing_path(@collection.owner, @collection), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
@@ -41,6 +42,8 @@
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
+    -link
+    p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       -if @collection.is_a?(Collection)
@@ -52,6 +55,14 @@
         p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection, anchor: "category-#{c.id}" } }.join(', ')
 
   aside.sidecol
+
+    .user-label.owner
+      =link_to(user_profile_path(@collection.owner), class: 'userpic')
+        =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
+      .username
+        small Owned by
+        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
+
     =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
@@ -64,12 +75,9 @@
       =button_tag 'Search'
       =label_tag 'search', "Search for works", class: 'hidden'
 
-    .user-label
-      =link_to(user_profile_path(@collection.owner), class: 'userpic')
-        =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
-      .username
-        small Owned by
-        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
+    =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+
+    =link_to "Pages That Need Review", collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     h3 Recent Notes
     -@collection.notes.active.limit(10).each do |note|

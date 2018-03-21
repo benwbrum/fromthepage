@@ -49,10 +49,10 @@ describe "uploads data for collections", :order => :defined do
     end
     visit collection_path(col.owner, col)
     expect(page).to have_content("All works are fully transcribed")
-    page.click_link("Show Fully Transcribed Works")
+    page.click_link("All Works")
     expect(page).not_to have_content("All works are fully transcribed")
     expect(page).to have_content(works.first.title)
-    page.click_link("Hide Fully Transcribed Works")
+    page.click_link("Incomplete Works")
     expect(page).to have_content("All works are fully transcribed")
     expect(page).not_to have_content(works.first.title)
   end

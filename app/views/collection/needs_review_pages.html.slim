@@ -1,0 +1,18 @@
+div
+  h1 =@collection.title
+.columns
+  article.maincol
+    h3 Pages That Need Review
+    =render 'display/pages_view'
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
+
+  aside.sidecol
+    .user-label.owner
+      =link_to(user_profile_path(@collection.owner), class: 'userpic')
+        =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
+      .username
+        small Owned by
+        =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
+
+    =link_to "Return to collection", collection_path(@collection.owner, @collection), class: 'button'
