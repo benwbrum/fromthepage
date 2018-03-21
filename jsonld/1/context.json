@@ -26,16 +26,20 @@
       "hasSubjectTags": {
         "@id": "fromthepage:pageHasSubjectTags"
       },
-      "pctHasTranscript": {
-        "@id": "fromthepage:pctHasTranscript",
+      "pctComplete": {
+        "@id": "fromthepage:pctComplete",
         "@type": "xsd:decimal"
       },
-      "pctHasTranslation": {
-        "@id": "fromthepage:pctHasTranscript",
+      "pctTranscribed": {
+        "@id": "fromthepage:pctTranscribed",
         "@type": "xsd:decimal"
       },
-      "pctHasSubjectTags": {
-        "@id": "fromthepage:pctHasSubjectTags",
+      "pctOcrCorrected": {
+        "@id": "fromthepage:pctOcrCorrected",
+        "@type": "xsd:decimal"
+      },
+      "pctIndexed": {
+        "@id": "fromthepage:pctIndexed",
         "@type": "xsd:decimal"
       },
       "pctMarkedBlank": {
@@ -46,24 +50,24 @@
         "@id": "fromthepage:pctNeedsReview",
         "@type": "xsd:decimal"
       },
-      "pctOcrCorrected": {
-        "@id": "fromthepage:pctOcrCorrected",
+      "pctTranslationComplete": {
+        "@id": "fromthepage:pctTranslationComplete",
         "@type": "xsd:decimal"
       },
-      "pctHasTranscriptOrMarkedBlank": {
-        "@id": "fromthepage:pctHasTranscriptOrMarkedBlank",
+      "pctTranslated": {
+        "@id": "fromthepage:pctTranslated",
         "@type": "xsd:decimal"
       },
-      "pctHasTranslationOrMarkedBlank": {
-        "@id": "fromthepage:pctHasTranscriptOrMarkedBlank",
+      "pctTranslationNeedsReview": {
+        "@id": "fromthepage:pctTranslationNeedsReview",
         "@type": "xsd:decimal"
       },
-      "pctHasTranscriptOrMarkedBlankNotNeedsReview": {
-        "@id": "fromthepage:pctHasTranscriptOrMarkedBlankNotNeedsReview",
+      "pctTranslationIndexed": {
+        "@id": "fromthepage:pctTranslationIndexed",
         "@type": "xsd:decimal"
       },
-      "pctHasTranslationOrMarkedBlankNotNeedsReview": {
-        "@id": "fromthepage:pctHasTranscriptOrMarkedBlankNotNeedsReview",
+      "pctTranslationMarkedBlank": {
+        "@id": "fromthepage:pctTranslationMarkedBlank",
         "@type": "xsd:decimal"
       }
     }
