@@ -161,10 +161,10 @@ describe "collection settings js tasks", :order => :defined do
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
     #click button to show all works
-    page.click_link("Show Fully Transcribed Works")
+    page.click_link("All Works")
     expect(page.find('.maincol')).to have_content(hidden_work.title)
     #click button to hide completed works
-    page.click_link("Hide Fully Transcribed Works")
+    page.click_link("Incomplete Works")
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
 

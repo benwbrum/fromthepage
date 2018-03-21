@@ -15,4 +15,4 @@ div
         small Owned by
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    =link_to "Return to #{@collection.title} Collection", collection_path(@collection.owner, @collection), class: 'button'
+    =link_to "Return to collection", collection_path(@collection.owner, @collection), class: 'button'

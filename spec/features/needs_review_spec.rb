@@ -155,7 +155,7 @@ describe "needs review", :order => :defined do
   it "checks collection overview stats view" do
     visit collection_path(@collection.owner, @collection)
     #show all works before checking for stats
-    page.click_link("Show Fully Transcribed Works")
+    page.click_link("All Works")
     @collection.works.each do |w|
       if w.supports_translation
         wording = "translated"
