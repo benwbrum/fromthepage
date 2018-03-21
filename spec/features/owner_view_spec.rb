@@ -19,8 +19,7 @@ describe "owner view - collection" do
     #look at owner stats in dashboard
     expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
     expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count
-    expect(page.find('.owner-counters .counter[3]')['data-prefix'].to_i).to eq @owner.notes.count
-    expect(page.find('.owner-counters .counter[4]')['data-prefix'].to_i).to eq @owner.document_sets.count
+    expect(page.find('.owner-counters .counter[3]')['data-prefix'].to_i).to eq @owner.document_sets.count
 
     #look at tabs
     page.find('.tabs').click_link("Start A Project")
