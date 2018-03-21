@@ -127,7 +127,7 @@ class DashboardController < ApplicationController
     end
 
     #these are for the carousel
-    @collections = @owners.map {|user| user.rand_incomplete_collection }.compact.flatten.sample(8)
+    @collections = @owners.order("RAND()").first(10).map {|user| Collection.carousel.where(owner_user_id: user.id).first }.compact
   end
 
 end
