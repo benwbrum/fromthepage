@@ -4,7 +4,7 @@ class DocumentSet < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
   
-  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug
+  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
@@ -12,6 +12,8 @@ class DocumentSet < ActiveRecord::Base
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+
+  scope :unrestricted, -> { where(is_public: true)}
 
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
@@ -81,6 +83,14 @@ class DocumentSet < ActiveRecord::Base
     self.collection.field_based
   end
 
+  def picture
+    self.collection.picture
+  end
+
+  def picture_url(thumb=nil)
+    self.collection.picture_url(:thumb)
+  end
+
   def transcription_fields
     self.collection.transcription_fields
   end
@@ -111,4 +121,9 @@ class DocumentSet < ActiveRecord::Base
   def search_collection_works(search)
     self.collection.works.where("title LIKE ?", "%#{search}%")
   end
+
+  def self.search(search)
+    where("title LIKE ? OR slug LIKE ?", "%#{search}%", "%#{search}%")
+  end
+
 end

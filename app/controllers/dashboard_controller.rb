@@ -38,9 +38,23 @@ class DashboardController < ApplicationController
 
   #Public Dashboard - list of all collections
   def index
-    collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
-    @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
-    @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
+    unless (Collection.all.count > 100)
+      redirect_to collections_list_path
+    else
+      redirect_to landing_page_path
+    end
+  end
+
+  def collections_list
+    unless (Collection.all.count > 100)
+      collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+      @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
+      @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
+    else
+      collections = Collection.includes(:owner).distinct
+      @document_sets = DocumentSet.includes(:owner).distinct
+      @collections = (collections + @document_sets).sort { |a,b| a.title <=> b.title }
+    end
   end
 
   #Owner Dashboard - start project
@@ -90,7 +104,6 @@ class DashboardController < ApplicationController
     end
   end
 
-
   #Collaborator Dashboard - activity
   def editor
     @user = current_user
@@ -100,4 +113,21 @@ class DashboardController < ApplicationController
   def guest
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
+
+  def landing_page
+    if params[:search]
+      search_owners = User.search(params[:search])
+      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+      search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
+      @owners = User.where(id: search_ids).where.not(account_type: nil)
+    else
+      id_list = User.where.not(account_type: [nil, 'Trial Owner']).pluck(:id)
+      #merging on collections with those user ids filters out owners without collections
+      @owners = User.joins(:collections).where(collections: {restricted: false}).where(collections: {owner_user_id: id_list}).distinct.order(:display_name)
+    end
+
+    #these are for the carousel
+    @collections = @owners.order("RAND()").first(10).map {|user| Collection.carousel.where(owner_user_id: user.id).first }.compact
+  end
+
 end

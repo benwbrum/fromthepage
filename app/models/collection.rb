@@ -17,7 +17,7 @@ class Collection < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow, :hide_completed, :help, :link_help, :voice_recognition, :language, :text_language
+  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow, :hide_completed, :help, :link_help, :voice_recognition, :language, :text_language, :pct_completed
 #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -31,7 +31,8 @@ class Collection < ActiveRecord::Base
 
   scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
   scope :unrestricted, -> { where(restricted: false)}
-
+  scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
+  scope :carousel, -> {where.not(pct_completed: 90..100).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).order("RAND()")}
 
   def page_metadata_fields
     page_fields = []
@@ -131,6 +132,10 @@ class Collection < ActiveRecord::Base
 
   def search_works(search)
     self.works.where("title LIKE ?", "%#{search}%")
+  end
+
+  def self.search(search)
+    where("title LIKE ? OR slug LIKE ?", "%#{search}%", "%#{search}%")
   end
 
   def sections
