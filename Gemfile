@@ -94,3 +94,5 @@ gem 'factory_girl_rails'
 gem "font-awesome-rails"
 
 gem 'acts_as_votable'
+
+gem 'rack-cors'

@@ -103,7 +103,6 @@ Fromthepage::Application.routes.draw do
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
     resources :upload, path: 'upload', only: [:create]
-    match '*unmatched_route', :to => "api#preflight_request", via: :options
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
