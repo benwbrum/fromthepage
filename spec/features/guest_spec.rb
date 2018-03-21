@@ -68,9 +68,9 @@ describe "guest user actions" do
   it "looks at the landing page" do 
     visit landing_page_path
     expect(page).to have_selector('.carousel')
-    expect(page).to have_content("Project List")
-    expect(page.find('.project-list')).to have_link(@owner.display_name)
-    page.find('.project-list').click_link(@owner.display_name)
+    expect(page.find('.maincol')).to have_link(@owner.display_name)
+    page.find('.maincol').click_link(@owner.display_name)
+    expect(page).to have_content("Recent Activity")
     expect(page).not_to have_selector('.carousel')
     expect(page.find('h1')).to have_content @owner.display_name
     expect(page).to have_content("Collections")
@@ -82,9 +82,9 @@ describe "guest user actions" do
     page.fill_in 'search', with: 'Import'
     click_button('Search')
     expect(page).not_to have_selector('.carousel')
-    expect(page.find('.project-list')).to have_content @owner.display_name
-    expect(page.find('.project-list')).to have_content @collections.second.title
-    expect(page.find('.project-list')).not_to have_content @collections.first.title
+    expect(page.find('.maincol')).to have_content @owner.display_name
+    expect(page.find('.maincol')).to have_content @collections.second.title
+    expect(page.find('.maincol')).not_to have_content @collections.first.title
   end
 
 end
