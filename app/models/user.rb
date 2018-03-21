@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
-
+  acts_as_voter
   attr_accessor :login_id
 
   has_many(:owner_works,

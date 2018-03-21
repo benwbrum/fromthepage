@@ -92,3 +92,7 @@ gem 'factory_girl_rails'
 
 # Use font awesome icons
 gem "font-awesome-rails"
+
+gem 'acts_as_votable'
+
+gem 'rack-cors'

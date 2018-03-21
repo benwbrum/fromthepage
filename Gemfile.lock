@@ -57,6 +57,7 @@ GEM
       activerecord (>= 3.0)
     acts_as_tree (2.6.1)
       activerecord (>= 3.0.0)
+    acts_as_votable (0.11.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     ahoy_matey (1.6.0)
@@ -204,6 +205,7 @@ GEM
       rack
     rack-contrib (1.6.0)
       rack (~> 1.4)
+    rack-cors (1.0.2)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.9)
@@ -337,6 +339,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_list
   acts_as_tree
+  acts_as_votable
   ahoy_matey
   autoprefixer-rails
   capistrano (~> 3.4.0)
@@ -368,6 +371,7 @@ DEPENDENCIES
   protected_attributes
   pry
   pry-byebug
+  rack-cors
   rails (= 4.2.9)
   rails-api
   recaptcha (= 0.3.6)

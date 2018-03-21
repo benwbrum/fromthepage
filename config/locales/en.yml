@@ -82,3 +82,21 @@ en:
       create:
         success: "Document has been uploaded and will be processed shortly."
         error: "An error occurred in uploading the file, try later."
+    contribution:
+      transcription:
+        create:
+          success: "Transcription has been created"
+        update:
+          success: "Transcription has been updated"
+        destroy:
+          success: "Transcription has been deleted"
+        like: "You voted for one Transcription"
+      translation:
+        create:
+          success: "Translation has been created"
+        update:
+          success: "Translation has been updated"
+        destroy:
+          success: "Translation has been deleted"
+        like: "You voted for one Translation"
+      
