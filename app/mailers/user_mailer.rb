@@ -69,7 +69,7 @@ class UserMailer < ActionMailer::Base
     @collection = Collection.find_by(slug: project.slug)
     @owner = @collection.owner
 
-    mail to: @owner.email, subject "#{@collection.title} Project Is 100\% Transcribed!"
+    mail to: @owner.email, subject: "#{@collection.title} Project Is 100\% Transcribed!"
   end
 
   private
