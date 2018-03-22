@@ -32,7 +32,7 @@ class Collection < ActiveRecord::Base
   scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
   scope :unrestricted, -> { where(restricted: false)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
-  scope :carousel, -> {where.not(pct_completed: 90..100).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).order("RAND()")}
+  scope :carousel, -> {where(pct_completed: [nil, 1..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder("RAND()")}
 
   def page_metadata_fields
     page_fields = []

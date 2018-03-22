@@ -121,13 +121,13 @@ class DashboardController < ApplicationController
       search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
       @owners = User.where(id: search_ids).where.not(account_type: nil)
     else
-      id_list = User.where.not(account_type: [nil, 'Trial Owner']).pluck(:id)
+      id_list = User.where.not(account_type: [nil, 'Trial']).pluck(:id)
       #merging on collections with those user ids filters out owners without collections
       @owners = User.joins(:collections).where(collections: {restricted: false}).where(collections: {owner_user_id: id_list}).distinct.order(:display_name)
     end
 
     #these are for the carousel
-    @collections = @owners.order("RAND()").first(10).map {|user| Collection.carousel.where(owner_user_id: user.id).first }.compact
+    @collections = @owners.map {|user| Collection.carousel.where(owner_user_id: user.id).first }.compact.sample(8)
   end
 
 end
