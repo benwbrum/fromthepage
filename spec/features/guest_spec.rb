@@ -8,6 +8,7 @@ describe "guest user actions" do
     @work = @collection.works.last
     @page = @work.pages.last
     @owner = User.find_by(login: OWNER)
+    @admin = User.find_by(login: ADMIN)
   end
 
   it "tests guest account creation and migration" do
@@ -71,9 +72,8 @@ describe "guest user actions" do
     expect(page.find('.maincol')).to have_link(@owner.display_name)
     page.find('.maincol').click_link(@owner.display_name)
     expect(page).to have_content("Recent Activity")
-    expect(page).not_to have_selector('.carousel')
+    expect(page.find('.maincol')).not_to have_content(@admin.display_name)
     expect(page.find('h1')).to have_content @owner.display_name
-    expect(page).to have_content("Collections")
     expect(page.current_path).to eq user_profile_path(@owner)
   end
 
