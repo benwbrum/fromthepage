@@ -2,7 +2,7 @@
 
 section.user-profile
   .user-profile_details
-    .headline
+    .headline.centered
       h1.headline_title
         =user_name
       -if @user == current_user
@@ -14,14 +14,15 @@ section.user-profile
           =link_to(edit_user_registration_path, class: 'button outline')
             =svg_symbol '#icon-user', class: 'icon'
             span Login &amp; Password
-    -if @user.website.present?
-      =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
-      -if @user.location.present?
-      |&nbsp;&nbsp;--&nbsp;&nbsp;
-      =@user.location
-      -if @user.about.present?
-      |&nbsp;&nbsp;--&nbsp;&nbsp;
-      =@user.about
+    .owner-details
+      -if @user.website.present?
+        =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
+        -if @user.location.present?
+          |&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+          =@user.location
+        -if @user.about.present?
+          |&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+          =@user.about
 
 -unless @carousel_collections.blank?
   .carousel
