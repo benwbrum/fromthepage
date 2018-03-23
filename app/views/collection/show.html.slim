@@ -42,7 +42,7 @@
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
-    -if (@collection.pct_completed > 0)
+    -unless (@collection.works.incomplete_transcription.count == @collection.works.count)
       -link
       p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
