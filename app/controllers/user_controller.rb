@@ -64,7 +64,9 @@ class UserController < ApplicationController
       redirect_to dashboard_path
     end
     if @user.owner?
-      @carousel_collections = @user.all_owner_collections.carousel.sample(8)
+      collections = @user.all_owner_collections.carousel
+      sets = @user.document_sets.carousel
+      @carousel_collections = (collections + sets).sample(8)
     end
   end
 

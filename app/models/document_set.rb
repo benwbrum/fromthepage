@@ -14,6 +14,7 @@ class DocumentSet < ActiveRecord::Base
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
   scope :unrestricted, -> { where(is_public: true)}
+  scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder("RAND()")}
 
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
