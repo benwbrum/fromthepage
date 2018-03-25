@@ -1,3 +1,3 @@
-<% unless @collection.subjects_disabled %>
+<% unless @collection.subjects_disabled || @collection.field_based%>
 &quot;Autolink&quot; will suggest subjects certain words could be linked to or you can use double braces to link subjects. <code>[[Jane Doe]]</code> will link the text &quot;Jane Doe&quot; to the subject Jane Doe, while <code>[[Jane Doe|Jane]]</code> will link the text &quot;Jane&quot; to the subject Jane Doe. We recommend that linking be left to an editor after the initial transcription is made.</p>
 <% end %>
