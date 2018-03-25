@@ -74,6 +74,7 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')
     click_button('Save Changes')
+    expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     expect(page).to have_content("Review Text")
     expect(page).to have_content("Transcription")
@@ -96,6 +97,7 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_translation', with: "Review Translate Text"
     page.check('page_needs_review')
     click_button('Save Changes')
+    expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     page.click_link('Show Translation')
     expect(page).to have_content("Review Translate Text")
@@ -212,6 +214,7 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_text', with: "Change Review Text"
     page.uncheck('page_needs_review')
     click_button('Save Changes')
+    expect(page).not_to have_content("This page has been marked as \"needs review\"")
     expect(page).to have_content("Change Review Text")
     expect(page).to have_content("Transcription")
     expect(Page.find_by(id: @page4.id).status).to eq ('transcribed')
@@ -226,6 +229,7 @@ describe "needs review", :order => :defined do
     page.fill_in 'page_source_translation', with: "Change Review Translate Text"
     page.uncheck('page_needs_review')
     click_button('Save Changes')
+    expect(page).not_to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     page.click_link('Show Translation')
     expect(page).to have_content("Change Review Translate Text")
