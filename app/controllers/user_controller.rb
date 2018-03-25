@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-
+  before_action :remove_col_id, :only => [:profile, :update_profile]
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile]
 
@@ -19,14 +19,19 @@ class UserController < ApplicationController
       @user.destroy!
       redirect_to dashboard_path
     else 
-      params[:user].delete_if { |k,v| v == NOTOWNER }
-      if params[:user][:slug] == ""
-        @user.update(params[:user].except(:slug))
+      params_hash = params[:user].except(:notifications)
+      notifications_hash = params[:user][:notifications]
+      params_hash.delete_if { |k,v| v == NOTOWNER }
+
+      if params_hash[:slug] == ""
+        @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
         @user.update(slug: login)
       else
-        @user.update(params[:user])
+        @user.update(params_hash)
       end
+        @user.notification.update(notifications_hash)
+
       if @user.save!
         flash[:notice] = "User profile has been updated"
         ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
@@ -36,7 +41,14 @@ class UserController < ApplicationController
     end
   end
 
+  def update_profile
+    unless @user
+      @user = User.friendly.find(params[:user_slug])
+    end
+  end
+
   def profile
+    #find the user if it isn't already set
     unless @user
       @user = User.friendly.find(params[:id])
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180124144052) do
+ActiveRecord::Schema.define(version: 20180214184133) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -123,6 +123,8 @@ ActiveRecord::Schema.define(version: 20180124144052) do
     t.boolean  "field_based",                                default: false
     t.boolean  "voice_recognition",                          default: false
     t.string   "language"
+    t.string   "license_key"
+    t.string   "text_language"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -270,6 +272,17 @@ ActiveRecord::Schema.define(version: 20180124144052) do
 
   add_index "notes", ["page_id"], name: "index_notes_on_page_id", using: :btree
 
+  create_table "notifications", force: true do |t|
+    t.boolean  "add_as_owner",        default: true
+    t.boolean  "add_as_collaborator", default: true
+    t.boolean  "note_added",          default: true
+    t.boolean  "owner_stats",         default: false
+    t.boolean  "user_activity",       default: true
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "oai_repositories", force: true do |t|
     t.string   "url"
     t.datetime "created_at"
@@ -393,6 +406,7 @@ ActiveRecord::Schema.define(version: 20180124144052) do
     t.text     "xml_translation"
     t.text     "search_text"
     t.string   "translation_status"
+    t.text     "metadata"
   end
 
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
@@ -548,6 +562,8 @@ ActiveRecord::Schema.define(version: 20180124144052) do
     t.boolean  "guest"
     t.string   "slug"
     t.boolean  "deleted",                   default: false
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", using: :btree

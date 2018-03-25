@@ -86,6 +86,15 @@ class WorkController < ApplicationController
 
   def add_scribe
     @work.scribes << @user
+    if @user.notification.add_as_collaborator
+      if SMTP_ENABLED
+        begin
+          UserMailer.work_collaborator(@user, @work).deliver!
+        rescue StandardError => e
+          print "SMTP Failed: Exception: #{e.message}"
+        end
+      end
+    end
     redirect_to :action => 'edit', :work_id => @work
   end
 

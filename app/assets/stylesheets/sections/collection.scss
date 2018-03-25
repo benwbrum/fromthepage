@@ -34,6 +34,7 @@
 .collection-intro {
   width: 100%;
   display: table;
+  margin-bottom: $gapSize/2;
   &_image {
     display: table-cell;
     vertical-align: top;
@@ -387,9 +388,12 @@
 .collection-settings {
   td input[type="checkbox"] {
     margin-right: 5px;
+    margin-top: 10px;
+  }
+  td select {
+    margin-top: 10px;
   }
   .collection-label {
-    margin-left: 18px;
     margin-right: 10px;
   }
 }

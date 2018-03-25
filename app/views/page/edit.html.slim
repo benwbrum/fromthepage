@@ -3,7 +3,8 @@
 .page-settings.columns
   .maincol
     =form_for :page, url: { :action => 'update', :id => @page.id }, :html => { :multipart => true } do |f|
-      table.form
+      -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
+      table.form lang="#{@collection.text_language}" dir=direction class=direction
         tr.big
           th =f.label :title, 'Page Title'
           td.w100 =f.text_field :title, value: @page.title

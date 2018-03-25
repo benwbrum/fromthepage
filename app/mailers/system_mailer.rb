@@ -38,6 +38,14 @@ class SystemMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Upload succeeded - #{document_upload.name}"
   end
 
+  def cdm_sync_finished(collection)
+    @collection = collection
+    @log_contents = ContentdmTranslator.log_contents(collection)
+    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "CONTENTdm Sync Finished for  #{collection.title}"
+    mail from: SENDING_EMAIL_ADDRESS, to: owner_emails(collection), subject: "CONTENTdm Sync Finished for  #{collection.title}"
+  end
+
+
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
@@ -61,6 +69,11 @@ class SystemMailer < ActionMailer::Base
   
   def add_inline_attachments!
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
+  end
+
+  def owner_emails(collection)
+    emails = collection.owners.map{|o| o.email } << collection.owner.email
+    emails.uniq.join(",")
   end
 
 end

@@ -1,0 +1,12 @@
+Hi <%=@user.display_name%> --
+
+We just wanted to let you know that the following note has been added to a page you worked on in work <%=@page.work.title%>, in the collection <%=@page.collection.title%>.
+
+"<%=@note.body%>"
+
+You can view the note in <%=@page.collection.title%>: <%=@page.work.title%> at the URL: <%= collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page, only_path: false)%>.
+
+Thanks, 
+FromThePage
+
+Turn off this notification at the URL: <%=update_profile_path(@user, only_path: false)%>

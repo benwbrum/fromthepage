@@ -39,6 +39,13 @@ class ApplicationController < ActionController::Base
     user
   end
 
+  def remove_col_id
+    #if there's a col_id set, needs to be removed to prevent breadcrumb issues
+    if session[:col_id]
+      session[:col_id] = nil
+    end
+  end
+
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
@@ -193,6 +200,7 @@ class ApplicationController < ActionController::Base
     # skip irrelevant cases
     return unless @collection
     return unless @collection.restricted
+    return if (params[:controller] == 'iiif')
 
     unless @collection.show_to?(current_user)
       redirect_to dashboard_path
@@ -210,9 +218,9 @@ class ApplicationController < ActionController::Base
     if current_user.admin
       admin_path
     elsif current_user.owner
-      dashboard_owner_path      
+      session[:user_return_to] || dashboard_owner_path      
     else
-      dashboard_watchlist_path
+    session[:user_return_to] || dashboard_watchlist_path
     end
   end
 
@@ -232,7 +240,6 @@ class ApplicationController < ActionController::Base
       redirect_to options, response_status
     end
   end
-
 
 end
 

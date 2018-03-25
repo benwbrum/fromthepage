@@ -1,0 +1,10 @@
+Hi <%=@user.display_name%> --
+
+We just wanted to let you know that <%=@collection.owner.display_name%> added you as a collaborator on <%=@collection.title%>.
+
+To view <%=@collection.title%>, visit the following URL: <%=collection_path(@collection.owner, @collection, only_path: false)%>
+
+Thanks, 
+FromThePage
+
+Turn off this notification at the URL: <%=update_profile_path(@user, only_path: false)%>

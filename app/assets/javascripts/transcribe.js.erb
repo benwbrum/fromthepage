@@ -84,13 +84,34 @@ function startDictation(target){
 
 //Check for unsaved notes before save
 function unsavedNotes(e){
-  var noteText = $('.user-bubble_form #note_body:last').val();
-  if (noteText != ''){
-    e.preventDefault();
-    alert("You have unsaved notes. Please save or discard notes before saving transcription.");
-  } else {
-    return;
-  }
+  var notes = $('textarea#note_body');
+  var msg = "You have unsaved notes. Please save or discard notes before saving transcription."
+  checkForUnsaved(notes, msg, e);
+}
 
+//check for unsaved transcriptions before changing page
+function unsavedTranscription(e){
+  var msg = "You have unsaved changes. Please save or discard your work before going to the next page.";
+  var inputs = $('textarea').add($('.field-input'));
+  checkForUnsaved(inputs, msg, e);
+}
 
+//actual function to check for unsaved changes
+function checkForUnsaved(inputs, msg, e){
+  inputs.each(function(){
+    if (this.type == 'select-one'){
+      if(!(this.options[this.selectedIndex].defaultSelected) && (this.value != this.options[0].value)){
+        e.preventDefault();
+        alert(msg);
+        return false;
+      }
+    }
+    else {
+      if (this.value != this.defaultValue){
+        e.preventDefault();
+        alert(msg);
+        return false;
+      };
+    };
+  });
 }

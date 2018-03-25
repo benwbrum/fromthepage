@@ -14,25 +14,15 @@
       h2 Works
 
       .transcribed
-        -if @collection.hide_completed
-          =label_tag :hide_completed, "Show Fully Transcribed Works"
-          |&nbsp; 
-          =check_box_tag :hide_completed
-        -else
-          =label_tag :hide_completed, "Show Fully Transcribed Works"
-          |&nbsp; 
-          =check_box_tag(:hide_completed, 0, checked: true)
+        -link
+        =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type), class: 'button'
 
-    -if @collection.hide_completed && @collection.pct_completed == 100
-      h5.collection-work#complete
+    -if all_complete
+      h5.collection-work.acenter
         |All works are fully transcribed.
-        |&nbsp;&nbsp;
-        =link_to "Click to show transcribed works", '#'
-        br
-    -else
 
     -@works.each do |work|
-      .collection-work.hidden
+      .collection-work
         .collection-work_image
           -unless work.thumbnail.nil? 
             =image_tag(work.thumbnail, alt: work.title)
@@ -48,7 +38,6 @@
               span(style="width:#{@progress_completed - @progress_annotated}%")
               -unless @progress_review == 0
                 span(style="width:#{@progress_review}%")
-        span.completed(style="display: none;") #{@completed}
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
@@ -99,36 +88,3 @@
 
 =render({ :partial => '/shared/collection_footer' })
 
-
--content_for :javascript
-  javascript:
-    $(function() {
-      var hideCompleted = #{@collection.hide_completed};
-      $(hideWorks(hideCompleted));
-    });
-
-    $(function(){
-      var showCheckbox = $('#hide_completed')
-      $(function(){
-        $(showCheckbox).click(function(e){
-          var hide;
-          if (this.checked){
-            hide = false;
-          } else {
-            hide = true;
-          };
-          hideWorks(hide);
-          if(hide == false){
-            $('#complete').hide();
-          }
-        });
-      });
-    });
-
-    $(function(){
-      $('#complete').click(function(){
-        $('#hide_completed').prop('checked', true);
-        hideWorks(false);
-        $(this).hide();
-      });
-    });

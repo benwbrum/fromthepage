@@ -265,25 +265,6 @@ $(function() {
   });
 });
 
-//Hide or show completed works in a collection
-function hideWorks(param){
-  var showOrHide = param
-  var work = $('.collection-work');
-  if (showOrHide){
-    work.each(function(i){
-      var completed = $(this).find('.completed').text();
-      if (completed == "Completed"){
-        $(this).hide();
-      } else {
-        $(this).show();
-      };
-    });
-  } else {
-    $(work).show();
-  };
-  work.removeClass("hidden")
-}
-
 //Enable and disable select options for field-based transcription
 function addOptions(selector){
   var parentTr = selector.parentElement.parentElement;

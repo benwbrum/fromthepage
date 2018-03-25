@@ -7,7 +7,21 @@ namespace :fromthepage do
 
     #permanent "Guest User" to migrate orphaned data
     @guest_user = User.find_by(login: "guest_user")
- 
+    
+    if !@guest_user
+      password = Devise.friendly_token.first(8)
+      guest_user = User.new
+      guest_user.login = "guest_user"
+      guest_user.email = "guest_user@fromthepage.com"
+      guest_user.display_name = "Guest User"
+      guest_user.password = password
+      guest_user.password_confirmation = password
+      guest_user.save!
+      notification = Notification.find_by(user_id: guest_user.id)
+      notification.update(work_added: false, add_as_owner: false, add_as_collaborator: false, page_edited: false, note_added: false)
+      @guest_user = guest_user
+    end
+
     #find all guest users that are over a week old
     guests = User.where("guest = ? AND created_at < ?", true, num.days.ago)
     #for each user, find associated items and migrate to "Guest User"

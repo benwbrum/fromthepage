@@ -24,6 +24,10 @@
       h4 Manifests: 
 
       =form_tag({action: 'import_collection'}) do
+        -if @sc_collection.service.manifests.size > 0 || ContentdmTranslator.iiif_manifest_is_cdm?(@sc_collection.service.manifests.first['@id'])
+          =label_tag :contentdm_ocr, 'Import OCR text from CONTENTdm'
+          =check_box_tag :contentdm_ocr
+        br
         =hidden_field_tag :sc_collection_id, @sc_collection.id
         -new_collection = @collection ? @collection.id : nil
         .iiif-select-form
@@ -38,9 +42,10 @@
           -@sc_collection.service.manifests.each_with_index do |json_manifest, index|
             li
               -at_id = json_manifest["@id"]
+              -label_name = json_manifest['label'].blank? ?  'no label' : json_manifest['label']
               =check_box_tag("manifest_id[#{index}]", 1, true, class: "manifest_checks")
               =label_tag "manifest_id[#{index}]", class: 'manifest_labels' do
-                =link_to(json_manifest['label'], { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
+                =link_to(label_name, { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
         br
 
     -content_for :javascript

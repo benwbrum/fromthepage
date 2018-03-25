@@ -11,6 +11,9 @@ p This is the activity from the last #{@hours} hours.
     |     
     =u.email
     <br>
+    -u.deeds.each do |d|
+      =render(:partial => 'deed/deed', :locals => {:deed => d, :mailer => true} )
+      | <br>
 
 
 -unless @recent_collections.empty?

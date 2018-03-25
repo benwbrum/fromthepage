@@ -1,7 +1,7 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 3, :work_id => @work }})
 
 .columns
-  article.mailcol
+  article.maincol
     h3 =@work.title
     -if @work.description.present?
       h5 Description
