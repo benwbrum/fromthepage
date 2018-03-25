@@ -291,7 +291,11 @@ class CollectionController < ApplicationController
       redirect_to collection_path(@collection.owner, @collection)
     else
       @page = pages.first
-      redirect_to collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+      if !user_signed_in?
+        redirect_to collection_guest_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+      else
+        redirect_to collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+      end
     end
   end
 

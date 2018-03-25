@@ -63,7 +63,12 @@ describe "guest user actions" do
     page.find('.tabs').click_link("Versions")
     expect(page).to have_link("Martha")
     expect(page.find('.diff-list')).not_to have_content("Guest")
-    
+  end
+
+  it "checks guest start transcribing path" do
+    visit collection_start_transcribing_path(@collection.owner, @collection)
+    expect(page.current_path).not_to eq dashboard_path
+    expect(page).to have_button("Transcribe as guest")
   end
 
 end
