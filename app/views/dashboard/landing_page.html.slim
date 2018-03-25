@@ -18,8 +18,10 @@
           =snippet
           br
           -unless link_page.blank?
-            =link_to "Transcribe a page", collection_transcribe_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
-            
+            -if user_signed_in?
+              =link_to "Transcribe a page", collection_transcribe_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
+            -else
+              =link_to "Transcribe a page", collection_guest_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
 
 .columns.project-list
   article.maincol
