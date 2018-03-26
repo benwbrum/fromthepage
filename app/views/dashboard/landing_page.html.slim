@@ -1,0 +1,78 @@
+-unless params[:search]
+  .carousel
+    button.prev
+      =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous image'
+    button.next
+      =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next image'
+
+    ul
+      -@collections.each do |c|
+        -link_page = find_page(c)
+        -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+        li
+          =link_to(image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c))
+          h3
+            =link_to c.title, collection_path(c.owner, c)
+          h5.owner-link
+              =link_to c.owner.display_name, user_profile_path(c.owner)
+          =snippet
+          br
+          -unless link_page.blank?
+            -if user_signed_in?
+              =link_to "Transcribe a page", collection_transcribe_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
+            -else
+              =link_to "Transcribe a page", collection_guest_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
+
+.columns.project-list
+  article.maincol
+    -@owners.each do |owner|
+      -projects = owner_projects(owner)
+      -unless projects.blank?
+        .project-list_projects
+          .projects-owner
+            h3.projects-owner_title
+              =link_to owner.display_name, user_profile_path(owner)
+            -if owner.about.present?
+              .description
+                =owner.about
+          .projects
+            -projects.each do |project|
+              -snippet = truncate(strip_tags(project.intro_block), length: 300, separator: ' ') || ''
+              div.projects_details
+                -unless project.picture.blank?
+                  .projects_details_image
+                    =image_tag(project.picture_url(:thumb), alt: project.title)
+                .projects_collection
+                  h5
+                    =link_to project.title, collection_path(project.owner, project)
+                  -unless snippet.empty?
+                    .projects_collection_snippet =snippet
+            .projects_link =link_to "More...", user_profile_path(owner)
+
+    .project-list_link
+      =link_to "All Collections", collections_list_path
+
+  aside.sidecol
+    =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+      =search_field_tag :search, params[:search], placeholder: 'Search for collections or owners...'
+      =button_tag 'Search'
+      =label_tag 'search', "Search for collections", class: 'hidden'
+
+    h2 Recent Activity
+    =deeds_for()
+
+-content_for :javascript
+  javascript:
+    $(function(){
+      $('.carousel').jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev",
+        visible: 1,
+        speed: 1000,
+        auto: 8000,
+        pause: '.carousel li'
+      });
+    });
+
+
+

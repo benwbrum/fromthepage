@@ -7,7 +7,6 @@
 
 .collection-search {
   position: relative;
-  //margin-bottom: 2em;
   padding-right: 75px;
   input[type=search] {
     height: 34px;
@@ -106,6 +105,10 @@
 
 .hidden {
   visibility: hidden;
+}
+
+.user-label.owner {
+  margin: $gapSize 0 $gapSize;
 }
 
 // Collection users
@@ -455,13 +458,19 @@ a.field_icons {
     width: 30%;
     float: left;
   }
-  .transcribed {
+  .start_link {
     float: right;
-    padding: 6px 15px 0 0;
+    margin: 0 0 .5em 0;
     label {
       display: inline;
     }
   }
+}
+
+p.transcribed {
+  text-align: right;
+  margin: 0;
+  font-style: italic;
 }
 
 // Collection footer

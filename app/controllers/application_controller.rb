@@ -218,9 +218,9 @@ class ApplicationController < ActionController::Base
     if current_user.admin
       admin_path
     elsif current_user.owner
-      dashboard_owner_path      
+      session[:user_return_to] || dashboard_owner_path      
     else
-      dashboard_watchlist_path
+    session[:user_return_to] || dashboard_watchlist_path
     end
   end
 
@@ -240,7 +240,6 @@ class ApplicationController < ActionController::Base
       redirect_to options, response_status
     end
   end
-
 
 end
 

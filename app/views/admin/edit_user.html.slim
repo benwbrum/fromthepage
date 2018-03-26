@@ -26,7 +26,6 @@
       tr
         th =f.label :account_type
         td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution', 'Trial']))
-
       tr
         th =f.label :paid_date, 'Acct Expiration'
         td =f.text_field :paid_date, placeholder: 'YYYY-MM-DD'

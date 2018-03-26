@@ -2,45 +2,33 @@
 -content_for :page_title, user_name
 -content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
 
-section.user-profile
-  .user-profile_image
-    .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
-  .user-profile_details
-    .headline
-      h1.headline_title
-        =user_name
-      -if @user == current_user
-        .headline_aside
-          =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
-            =svg_symbol '#icon-edit', class: 'icon'
-            span Edit Profile
-          |&nbsp;&nbsp;
-          =link_to(edit_user_registration_path, class: 'button outline')
-            =svg_symbol '#icon-user', class: 'icon'
-            span Login &amp; Password
-    .user-profile_stats
-      span ="#{number_with_delimiter(@user.deeds.count)} #{'contribution'.pluralize(@user.deeds.count)}"
-      span ="User since #{@user.created_at.strftime("%b %d, %Y")}"
-      -if @user.last_sign_in_at.present?
-        span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
-    -if @user.location.present?
-      p.big(data-prefix='Location:') =@user.location
-    -if @user.owner
-      -if @user.website.present?
-        p.big(data-prefix='Website:') =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
-      -if @user.about.present?
-        p.big(data-prefix='About:') =@user.about
-
 -if @user.owner?
-  .columns
-    article.maincol
-      h2 Collections
-      =render '/dashboard/collection_index'
-    aside.sidecol
-      h2 Recent Activity
-      =deeds_for({:owner => @user, :limit => 10})
+  =render 'owner_profile'
+-else
+  section.user-profile
+    .user-profile_image
+      .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
+    .user-profile_details
+      .headline
+        h1.headline_title
+          =user_name
+        -if @user == current_user
+          .headline_aside
+            =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+              =svg_symbol '#icon-edit', class: 'icon'
+              span Edit Profile
+            |&nbsp;&nbsp;
+            =link_to(edit_user_registration_path, class: 'button outline')
+              =svg_symbol '#icon-user', class: 'icon'
+              span Login &amp; Password
+      .user-profile_stats
+        span ="#{number_with_delimiter(@user.deeds.count)} #{'contribution'.pluralize(@user.deeds.count)}"
+        span ="User since #{@user.created_at.strftime("%b %d, %Y")}"
+        -if @user.last_sign_in_at.present?
+          span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
+      -if @user.location.present?
+        p.big(data-prefix='Location:') =@user.location
 
--unless @user.owner?
   h2 Recent Activity by #{@user.display_name}
   -if @notes.present?
     h3 Recent Notes

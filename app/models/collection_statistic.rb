@@ -43,15 +43,14 @@ module CollectionStatistic
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
   end
 
-  def pct_completed
+  def calculate_complete
+    #note: need to compact mapped array so it doesn't fail on a nil value
     unless work_count == 0
-      complete = self.works.where(supports_translation: false).joins(:work_statistic).sum(:complete)
-      complete = complete + self.works.where(supports_translation: true).joins(:work_statistic).sum(:translation_complete)
-      pct = complete/work_count
+      pct = (self.works.includes(:work_statistic).map(&:completed).compact.sum)/work_count
     else
       pct = 0
     end
-    return pct
+    self.update(pct_completed: pct)
   end
 
   def timeframe_clause(last_days, column = "created_at")
