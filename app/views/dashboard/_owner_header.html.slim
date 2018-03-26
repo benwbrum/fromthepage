@@ -34,7 +34,12 @@
 
 -if !(current_user.account_type == nil)
   .owner-info
-    |#{current_user.account_type} account since #{current_user.start_date.strftime('%b %d, %Y')}. Current subscription expires #{current_user.paid_date.strftime('%b %d, %Y')}. Total pages: #{current_user.page_count}
+    |#{current_user.account_type} account
+    -unless (current_user.start_date == nil)
+      span &nbsp;since #{current_user.start_date.strftime('%b %d, %Y')}
+    -unless (current_user.paid_date == nil)
+      span &nbsp;&middot;&nbsp;Current subscription expires #{current_user.paid_date.strftime('%b %d, %Y')}
+    span &nbsp;&middot;&nbsp;Total pages: #{current_user.page_count}
 
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
