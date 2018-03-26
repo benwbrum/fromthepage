@@ -1,8 +1,10 @@
 -user_name = @user.display_name.presence || @user.login
 
 section.user-profile
+  .user-profile_image
+    .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
   .user-profile_details
-    .headline.centered
+    .headline
       h1.headline_title
         =user_name
       -if @user == current_user
@@ -14,15 +16,11 @@ section.user-profile
           =link_to(edit_user_registration_path, class: 'button outline')
             =svg_symbol '#icon-user', class: 'icon'
             span Login &amp; Password
-    .owner-details
+    .user-profile_stats
       -if @user.website.present?
-        =link_to @user.website, @user.website, target: '_blank', rel: 'nofollow'
-        -if @user.location.present?
-          |&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-          =@user.location
-        -if @user.about.present?
-          |&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-          =@user.about
+        =link_to "Website", @user.website, target: '_blank', rel: 'nofollow'
+      -if @user.about.present?
+        p.big =@user.about
 
 -unless @carousel_collections.blank?
   .carousel
