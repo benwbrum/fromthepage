@@ -39,7 +39,6 @@
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
   .counter(data-prefix="#{number_with_delimiter @works.length}") #{'Work'.pluralize(@works.length)}
-  .counter(data-prefix="#{number_with_delimiter @notes.length}") #{'Note'.pluralize(@notes.length)}
   -unless @document_sets.empty?
     .counter(data-prefix="#{number_with_delimiter @document_sets.length}") #{'Document Set'.pluralize(@document_sets.length)}
 
