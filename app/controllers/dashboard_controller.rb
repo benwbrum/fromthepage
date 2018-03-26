@@ -4,6 +4,7 @@ class DashboardController < ApplicationController
 
   before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject, :summary]
   before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work, :summary]
+  before_action :remove_col_id
 
   def authorized?
     unless user_signed_in? && current_user.owner

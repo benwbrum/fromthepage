@@ -34,7 +34,10 @@ describe "collection settings js tasks", :order => :defined do
     page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'Second field')
     page.find('#new-fields tr[3]').select('textarea', from: 'transcription_fields__input_type')
     page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Third field')
+    page.find('#new-fields tr[3]').select('select', from: 'transcription_fields__input_type')
     click_button 'Save'
+    expect(page).to have_content("Select fields must have an options list.")
+    expect(TranscriptionField.last.input_type).to eq "text"
     expect(TranscriptionField.all.count).to eq 3
     expect(TranscriptionField.first.percentage).to eq 20
   end
@@ -51,8 +54,6 @@ describe "collection settings js tasks", :order => :defined do
     #check field width for second field (not set)
     expect(page.find('div.editarea span[2]')[:style]).not_to eq "width:19%"
   end
-
-  #note - would like to do select field, but trouble with the js
 
   it "adds fields for transcription", :js => true do
     visit collection_path(@collection.owner, @collection)
@@ -77,6 +78,7 @@ describe "collection settings js tasks", :order => :defined do
     work = @collection.works.first
     field_page = work.pages.first
     visit collection_transcribe_page_path(@collection.owner, @collection, work, field_page)
+    expect(page).not_to have_content("Autolink")
     expect(page).to have_content("First field")
     expect(page).to have_content("Second field")
     expect(page).to have_content("Third field")
@@ -104,6 +106,26 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Edit Fields")
     page.find('#new-fields tr[2]').click_link('Delete field')
     expect(TranscriptionField.all.count).to be < count
+  end
+
+  it "uses page arrows with unsaved transcription", :js => true do
+    test_page = @collection.works.first.pages.second
+    #next page arrow
+    visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
+    page.fill_in('fields_1_First_field', with: "Field one")
+    message = accept_alert do
+      page.click_link("Next page")
+    end
+    sleep(3)
+    expect(message).to have_content("You have unsaved changes.")
+    visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
+    #previous page arrow - make sure it also works with notes
+    fill_in('Write a new note...', with: "Test two")
+    message = accept_alert do
+      page.click_link("Previous page")
+    end
+    sleep(3)
+    expect(message).to have_content("You have unsaved changes.")
   end
 
   #note: these are hidden unless there is table data

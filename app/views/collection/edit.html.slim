@@ -13,7 +13,7 @@
         tr
           th.hidden URL
           td
-            |The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+            p.nomargin.settings The current URL for this collection is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
         tr
           td(colspan="2")
             =f.label :intro_block, 'Description', class: "above"
@@ -36,23 +36,24 @@
             =f.text_area :link_help, rows: 10, value: @collection.link_help
         tr
           td(colspan="2")
-            p
             =f.check_box :subjects_disabled, value: @collection.subjects_disabled
             =f.label :subjects_disabled, "Disable subject indexing"
         tr
           td(colspan="2")
-            p
             =f.check_box :review_workflow, value: @collection.review_workflow
             =f.label :review_workflow, "All initial transcriptions need review"
         tr
           td(colspan="2")
-            p
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, "Hide completed works by default"
+        tr
+          td(colspan="2")
+            =f.label :text_language, "Select the language of the transcription text", class: 'collection-label'
+            =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
+
         -if @ssl && !@collection.field_based
           tr
             td(colspan="2")
-              p
               =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, "Speech to text available for transcribing"
           tr  
@@ -101,8 +102,8 @@
       p.fglight Collaborators may transcribe and edit private collections.
       =form_tag({ :action => 'add_collaborator' }, class: 'user-select-form') do
         =hidden_field_tag :collection_id, @collection.id
-        =select_tag 'collaborator_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
-        =button_tag 'Add', disabled: 'true'
+        =select_tag 'collaborator_id', options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier'), include_blank: true
+        =button_tag 'Add'
         =label_tag 'collaborator_id', "Add Collaborator", class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
@@ -110,7 +111,7 @@
           .userpic
             =gravatar_image_tag user.email, :alt => user.display_name
           .username
-            =link_to user.display_name, user_profile_path(user)
+            =link_to user.name_with_identifier, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
             =link_to 'Remove', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
@@ -119,8 +120,8 @@
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
       =hidden_field_tag :collection_id, @collection.id
-      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'display_name'), include_blank: true, prompt: 'Add new owner...'
-      =button_tag 'Add', disabled: 'true'
+      =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'name_with_identifier'), include_blank: true
+      =button_tag 'Add'
       =label_tag 'user_id', "Add Owner", class: 'hidden'
     -@owners.each do |user|
       -contributions = user.deeds.count :conditions => "collection_id = #{@collection.id}"
@@ -128,7 +129,7 @@
         .userpic
           =gravatar_image_tag user.email, :alt => user.display_name
         .username
-          =link_to user.display_name, user_profile_path(user)
+          =link_to user.name_with_identifier, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove owner'
@@ -168,12 +169,16 @@
     var initialDialect;
 
     $(function() {
-      $('.user-select-form select').select2({
-      }).on('select2:select', function() {
-        $(this).siblings(':submit').prop('disabled', false);
-      }).on('select2:unselect', function() {
-        $(this).siblings(':submit').prop('disabled', true);
+      $('#collaborator_id').select2({
+        placeholder: 'Add new collaborator...',
       });
+
+      $('#user_id').select2({
+        placeholder: 'Add new owner...',
+      });
+
+      $('#collection_text_language').select2(
+        );
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
@@ -181,6 +186,8 @@
 
       initialLang = "#{@lang_index}";
       initialDialect = "#{@dialect_index}"
-      findDefault(initialLang, initialDialect);
 
+      if ($('#language').length == 1){
+        findDefault(initialLang, initialDialect);
+      };
     });

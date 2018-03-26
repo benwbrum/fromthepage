@@ -3,7 +3,7 @@
 .columns
   article.maincol
     =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
-      table.form
+      table.form.settings
         tr.big
           th =f.label :title, 'Work title'
           td.w100 =f.text_field :title, value: @work.title
@@ -21,19 +21,20 @@
           td =f.text_field :slug, value: @work.slug
         tr
           th.hidden Current URL
-          td 
-            |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+          td
+            p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
  
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
         tr
           th.hidden Identifier Help
-          td Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
+          td
+            p.nomargin.settings Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
         tr
           th.hidden Pages are meaningful
           td
-            p <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
+            p.settings <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
             =f.label :pages_are_meaningful
@@ -41,7 +42,7 @@
         tr
           th.hidden Supports Translation
           td
-            p <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
+            p.settings <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
             =f.check_box :supports_translation, value: @work.supports_translation
             |&nbsp;
             =f.label :supports_translation
@@ -120,8 +121,8 @@
       h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
         =hidden_field_tag :work_id, @work
-        =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'display_name'), include_blank: true
-        =button_tag 'Add', disabled: 'true'
+        =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
+        =button_tag 'Add'
       -if @scribes.empty?
         p.fglight No allowed collaborators selected
       -else
@@ -130,7 +131,7 @@
             .userpic
               =gravatar_image_tag user.email, :alt => user.display_name
             .username
-              =link_to user.display_name, user_profile_path(user)
+              =link_to user.name_with_identifier, user_profile_path(user)
               small =user.email
               =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work }, class: 'remove', title: 'Remove'
 
@@ -139,24 +140,16 @@
     $(function() {
       $('.user-select-form select').select2({
         placeholder: 'Add new collaborator...',
-      }).on('select2:select', function() {
-        $(this).siblings(':submit').prop('disabled', false);
-      }).on('select2:unselect', function() {
-        $(this).siblings(':submit').prop('disabled', true);
       });
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
-    });
-
-    $(function(){
+    
       $('#work_transcription_conventions').keyup(function(){
         $('#revert').prop('disabled', false);
       });
-    });
-
-    $(function(){
+    
       $('#revert').click(function(e){
         e.preventDefault();
         $.ajax({
@@ -169,9 +162,7 @@
 
         });
       });
-    });
-
-    $(function(){
+    
       $("#update").on('submit', function(){
         var new_id = $("#work_collection_id").val();
         var collection_id = "#{@work.collection.id}"

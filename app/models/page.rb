@@ -25,19 +25,22 @@ class Page < ActiveRecord::Base
   has_one :sc_canvas, :dependent => :destroy
   has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
+  has_many :deeds, :dependent => :destroy
 
   after_save :create_version
   after_save :update_sections_and_tables
   after_save :update_tex_figures
   after_initialize :defaults
   after_destroy :update_work_stats
-  after_destroy :delete_deeds
+#  after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   attr_accessible :title
   attr_accessible :source_text
   attr_accessible :source_translation
   attr_accessible :status
+  attr_accessible :metadata
+  serialize :metadata, Hash
 
   scope :unrestricted, -> { where(restricted: false)}
   scope :review, -> { where(status: 'review')}

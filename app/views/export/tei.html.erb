@@ -120,7 +120,14 @@ xml:id="export">
     </encodingDesc>
   <% end %>
 
+
   <profileDesc>
+    <%unless @work.collection.text_language.blank?%>
+      <%code = @work.collection.text_language%>
+      <langUsage>
+        <language ident="<%=code%>"><%=ISO_639.find_by_code(code).english_name%></language>
+      </langUsage>
+    <%end%>
   </profileDesc>
 
   <revisionDesc>

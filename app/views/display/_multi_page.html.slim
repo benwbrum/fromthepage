@@ -15,7 +15,7 @@
         -if !@work && work_title != old_work_title
           h3 =work_title
 
-        .work-page
+        .work-page 
           .work-page_thumbnail
             -if page.ia_leaf
               =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page) )

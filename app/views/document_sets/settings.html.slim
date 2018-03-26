@@ -64,8 +64,8 @@
       p.fglight Collaborators may transcribe and edit private document sets.
       =form_tag({ :action => 'add_set_collaborator' }, class: 'user-select-form') do
         =hidden_field_tag :collection_id, @collection.slug
-        =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'display_name'), include_blank: true, prompt: 'Add new collaborator...'
-        =button_tag 'Add', disabled: 'true'
+        =select_tag 'user_id', options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier'), include_blank: true
+        =button_tag 'Add'
         =label_tag 'user_id', "Add Collaborator", class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.count :conditions => "collection_id = #{@collection.slug}"
@@ -73,7 +73,7 @@
           .userpic
             =gravatar_image_tag user.email, :alt => user.display_name
           .username
-            =link_to user.display_name, user_profile_path(user)
+            =link_to user.name_with_identifier, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
             =link_to '', { :action => 'remove_set_collaborator', :user_id => user.id, :collection_id => @collection }, class: 'remove', title: 'Remove'
@@ -82,9 +82,6 @@
   javascript:
     $(function() {
       $('.user-select-form select').select2({
-      }).on('select2:select', function() {
-        $(this).siblings(':submit').prop('disabled', false);
-      }).on('select2:unselect', function() {
-        $(this).siblings(':submit').prop('disabled', true);
+        placeholder: 'Add new collaborator...',
       });
     });

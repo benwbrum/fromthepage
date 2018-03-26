@@ -29,5 +29,25 @@
       tr
         th =f.label :location
         td =f.text_field :location, :placeholder => 'Where are you from?'
+
+    p.email_notifications Select which of the following notifications you want to receive:
+    table.form.email_notifications
+      tr
+        td =f.check_box("notifications[user_activity]", {checked: @user.notification.user_activity})
+        th =f.label :user_activity, "Nightly email with activity in collections you've worked on"
+      -if @user.owner
+        tr
+          td =f.check_box("notifications[owner_stats]", {checked: @user.notification.owner_stats})
+          th =f.label :owner_stats, "Nightly emails with owned collection activity"
+      tr
+        td =f.check_box("notifications[add_as_collaborator]", {checked: @user.notification.add_as_collaborator})
+        th =f.label :add_as_collaborator, "Added to private work as a collaborator"
+      tr
+        td =f.check_box("notifications[add_as_owner]", {checked: @user.notification.add_as_owner})
+        th =f.label :add_as_owner, "Added to private work as an owner"
+      tr
+        td =f.check_box("notifications[note_added]", {checked: @user.notification.note_added})
+        th =f.label :page_edited, "Note added in response to a comment you made"
+
     .toolbar
       .toolbar_group.aright =f.button 'Update Profile'

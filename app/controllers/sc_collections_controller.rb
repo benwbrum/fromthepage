@@ -1,3 +1,4 @@
+require 'contentdm_translator'
 class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: [:show, :edit, :update, :destroy, :explore_manifest, :import_manifest]
 
@@ -7,6 +8,18 @@ class ScCollectionsController < ApplicationController
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
     respond_with(@sc_collections)
+  end
+
+  def import_cdm
+    cdm_url = params[:cdm_url]
+    begin
+      at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
+      flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
+      redirect_to :action => :import, :at_id => at_id      
+    rescue => e
+      flash[:error] = e.message
+      redirect_to :back
+    end
   end
 
   def search_pontiiif
@@ -28,7 +41,7 @@ class ScCollectionsController < ApplicationController
     elsif service["@type"] == "sc:Manifest"
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
       find_parent = @sc_manifest.service["within"]
-      if find_parent.nil?
+      if find_parent.nil? || !find_parent.is_a?(Hash)
         @sc_collection = nil
       else
         parent_at_id = @sc_manifest.service["within"]["@id"]
@@ -85,6 +98,7 @@ class ScCollectionsController < ApplicationController
   def import_collection
     sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
     collection_id = params[:collection_id]
+    cdm_ocr = !params[:contentdm_ocr].blank?
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
     unless collection_id == 'sc_collection'    
@@ -107,7 +121,7 @@ class ScCollectionsController < ApplicationController
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id}] --trace >> #{log_file} &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
@@ -139,6 +153,20 @@ class ScCollectionsController < ApplicationController
       else
         work = @sc_manifest.convert_with_no_collection(current_user) 
       end
+    end
+    if ContentdmTranslator.iiif_manifest_is_cdm? at_id
+      ocr = !params[:contentdm_ocr].blank?
+      #make sure import folder exists
+      unless Dir.exist?("#{Rails.root}/public/imports")
+        Dir.mkdir("#{Rails.root}/public/imports")
+      end
+
+      log_file = "#{Rails.root}/public/imports/work_#{work.id}_cdm.log"
+      rake_call = "#{RAKE} fromthepage:cdm_work_update[#{work.id},#{ocr}] --trace >> #{log_file} 2>&1 &"
+      logger.info rake_call
+      system(rake_call)
+      #flash notice about the rake task
+      flash[:notice] = "Metadata #{ocr ? 'and OCR text ' : ''} is being imported from CONTENTdm and should appear shortly."
     end
     redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id 
   end

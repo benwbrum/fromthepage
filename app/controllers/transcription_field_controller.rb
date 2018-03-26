@@ -1,4 +1,5 @@
 class TranscriptionFieldController < ApplicationController
+  include ActiveModel::Validations
   before_filter :authorized?, :only => [:new, :edit_fields, :add_field]
 
   #no layout if xhr request
@@ -19,6 +20,7 @@ class TranscriptionFieldController < ApplicationController
   def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
     new_fields = params[:transcription_fields]
+
     new_fields.each_with_index do |fields, index|
       if fields[:line_number] == "new"
         fields[:line_number] = new_fields[index-1][:line_number]
@@ -27,6 +29,10 @@ class TranscriptionFieldController < ApplicationController
       unless fields[:line_number].blank? || fields[:label].blank?
         if fields[:options].blank?
           fields[:options] = nil
+          if fields[:input_type] == "select"
+            fields[:input_type] = "text"
+            errors.add(:base, "Select fields must have an options list.  Please add options to any select fields and resave.")
+          end
         else
           fields[:options].gsub!(/;\s/, ';')
         end
@@ -43,6 +49,9 @@ class TranscriptionFieldController < ApplicationController
           transcription_field.update_attributes(fields)
         end
       end
+    end
+    if errors[:base].any?
+      flash[:error] = errors[:base].uniq.join(" ")
     end
     if params[:done].nil?
       redirect_to collection_edit_fields_path(@collection.owner, @collection)

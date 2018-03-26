@@ -10,10 +10,16 @@ describe "collection settings js tasks", :order => :defined do
     @collection = @collections.second
     @work = @collection.works.second
     @rest_user = User.find_by(login: REST_USER)
+    #add a user to be emailed
+    @notify_user = User.find_by(login: ADMIN)
+    #set up the restricted user not to be emailed
+    notification = Notification.find_by(user_id: @rest_user.id)
+    notification.add_as_collaborator = false
+    notification.add_as_owner = false
+    notification.save!
     @page = @work.pages.first
     @wording = "Click microphone to dictate"
     @article = @collection.articles.first
-
   end
 
   it "sets collection to private" do
@@ -35,8 +41,21 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "adds collaborators to a private collection" do
-    #hack because of the problems with the select2 code
-    @collection.collaborators << @rest_user
+    ActionMailer::Base.deliveries.clear
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    #this user should not get an email (notifications turned off)
+    select(@rest_user.name_with_identifier, from: 'collaborator_id')
+    page.find('#collaborator_id+button').click
+    expect(ActionMailer::Base.deliveries).to be_empty
+    #this user should get an email
+    select(@notify_user.name_with_identifier, from: 'collaborator_id')
+    page.find('#collaborator_id+button').click
+    expect(ActionMailer::Base.deliveries).not_to be_empty
+    expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
   it "checks that an added user can edit a work in the collection" do
@@ -60,8 +79,12 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "removes collaborators from a private collection" do
-    #hack because of problems with select2
-    @collection.collaborators.delete(@rest_user)
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
+    page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
   it "checks that the removed user can't view the collection" do
@@ -72,9 +95,21 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "adds owners to a private collection" do
-    @rest_user.owner = true
-    @rest_user.save!
-    @collection.owners << @rest_user
+    ActionMailer::Base.deliveries.clear
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    #this user should not get an email (notifications turned off)
+    select(@rest_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).to be_empty
+    #this user should get an email
+    select(@notify_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).not_to be_empty
+    expect(ActionMailer::Base.deliveries.first.to).to include @notify_user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@collection.title}"
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
   it "checks added owner permissions" do
@@ -90,11 +125,16 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "removes owner from a private collection" do
-    @collection.owners.delete(@rest_user)
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
+    page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
   it "checks removed owner permissions" do
-   login_as(@rest_user, :scope => :user)
+    login_as(@rest_user, :scope => :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
     expect(page).not_to have_content(@collection.title)
@@ -107,7 +147,7 @@ describe "collection settings js tasks", :order => :defined do
     page.click_link("Make Collection Public")
   end
 
-  it "views completed works" , :js => true do
+  it "views completed works" do
     #first need to set a work as complete
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
@@ -119,13 +159,14 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
-    #check checkbox to show all works    
-    page.check('hide_completed')
+    #click button to show all works
+    page.click_link("Show Fully Transcribed Works")
     expect(page.find('.maincol')).to have_content(hidden_work.title)
-    #check checkbox to hide completed works
-    page.uncheck('hide_completed')
+    #click button to hide completed works
+    page.click_link("Hide Fully Transcribed Works")
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
+
 
   it "sorts works in works list", :js => true do
     login_as(@owner, :scope => :user)

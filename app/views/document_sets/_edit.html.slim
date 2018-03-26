@@ -3,7 +3,7 @@
   =form_for(@document_set, url: document_set_path(@document_set)) do |f|
     =validation_summary @document_set.errors
     =f.hidden_field :collection_id
-    table.form
+    table.form.settings
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title
@@ -13,7 +13,7 @@
       tr
         th.hidden URL
         td 
-          |The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@document_set.owner.slug}/#{@document_set.slug}</b>.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words.
+          p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@document_set.owner.slug}/#{@document_set.slug}</b>.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words.
       tr
         td(colspan="2")
           =f.label :description, 'Description', class: 'above'

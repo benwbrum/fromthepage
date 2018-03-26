@@ -25,7 +25,7 @@
           td
             .input-file
               =text_field_tag :at_id
-              =button_tag 'Import'
+              =button_tag 'Import', :id => 'iiif_import'
     
     h5 Explore IIIF Collections
     =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => ScCollection::UNIVERSE}, class: 'button'
@@ -34,7 +34,7 @@
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
     h3 Import from Omeka
     -if @omeka_sites.blank?
-      p.fgfaded You didn't connect any Omeka sites. Use the button below to create a new Omeka connection.
+      p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
     -else
       p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
       ul.omeka-sites
@@ -49,6 +49,15 @@
                 hr
                 =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
     =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button outline'
+    h3 Import from CONTENTdm URL
+    p.fgfaded Paste in the URL of a compound object on your CONTENTdm site.
+    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+      table.form
+          td
+            .input-file
+              =text_field_tag :cdm_url
+              =button_tag 'Import', :id => 'cdm_import'
+    
   aside.sidecol
     h4 Page Image Guidelines
     .fglight

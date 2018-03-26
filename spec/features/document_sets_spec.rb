@@ -5,13 +5,28 @@ describe "document sets", :order => :defined do
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
+    @rest_user = User.find_by(login: REST_USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.last
+    #set up the restricted user not to be emailed
+    notification = Notification.find_by(user_id: @rest_user.id)
+    notification.add_as_collaborator = false
+    notification.save!
   end
 
   before :each do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     @set = DocumentSet.first
+  end
+
+  it "sets up works for doc set tests" do
+    #turns off hiding worksso it doesn't mess up doc sets test (it isn't relevant)
+    @collection.hide_completed = false
+    @collection.save
+    #change work restrictions temporarily so they don't interfere with doc set permissions
+    work = Work.find_by(id: @set.works.first.id)
+    work.restrict_scribes = false
+    work.save!
   end
 
   it "edits a document set (start at collection level)" do
@@ -103,9 +118,22 @@ describe "document sets", :order => :defined do
   end
 
   it "adds a collaborator" do
+    ActionMailer::Base.deliveries.clear
     @test_set = DocumentSet.last
-    #hack because of select 2 dropdown box
-    @test_set.collaborators << @user
+    login_as(@owner, :scope => :user)
+    visit collection_path(@test_set.owner, @test_set)
+    page.find('.tabs').click_link("Settings")
+    #this user should not receive an email (notifications off)
+    select(@rest_user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).to be_empty
+    #this user should receive an email
+    select(@user.name_with_identifier, from: 'user_id')
+    page.find('#user_id+button').click
+    expect(ActionMailer::Base.deliveries).not_to be_empty
+    expect(ActionMailer::Base.deliveries.first.to).to include @user.email
+    expect(ActionMailer::Base.deliveries.first.subject).to eq "You've been added to #{@test_set.title}"
+    expect(ActionMailer::Base.deliveries.first.body.encoded).to match("added you as a collaborator")
   end
 
   it "tests a collaborator" do
@@ -144,9 +172,9 @@ describe "document sets", :order => :defined do
   end
 
   it "checks notes on a public doc set/private collection" do
-    login_as(@user)
+    login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
-    fill_in 'note_body', with: "Test private note"
+    fill_in 'Write a new note...', with: "Test private note"
     click_button('Submit')
     expect(page).to have_content "Note has been created"
     note = Note.last
@@ -169,10 +197,7 @@ describe "document sets", :order => :defined do
       end
     end
     expect(DocumentSet.all.ids).not_to include @test_set.id
-    #delete the note in case of conflicts
-#    Note.find_by(body: "Test private note").delete
   end
-
 
   it "looks at document sets owner tabs" do
     login_as(@owner, :scope => :user)
@@ -416,6 +441,16 @@ describe "document sets", :order => :defined do
     docset = DocumentSet.find_by(id: @set.id)
     #note - the document set title was changed so the slug is slightly different
     expect(docset.slug).to eq docset.title.parameterize
+  end
+
+  it "resets work settings" do
+    #resets hiding completed works
+    @collection.hide_completed = true
+    @collection.save
+    #resets work restrictions
+    work = Work.find_by(id: @set.works.first.id)
+    work.restrict_scribes = true
+    work.save!
   end
 
 end
