@@ -64,7 +64,7 @@ module OwnerStatistic
   def date_clause(start_date, end_date, column = "created_at")
     clause = ""
     if start_date
-      clause = "#{column} >= ? AND #{column} <= ?, #{start_date}, #{end_date}"
+      clause = "'#{column} >= ? AND #{column} <= ?', #{start_date}, #{end_date}"
     end
   end
 

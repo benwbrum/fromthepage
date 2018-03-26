@@ -69,8 +69,8 @@ class DashboardController < ApplicationController
       start_date = 1.week.ago
       end_date = DateTime.now.utc
     end
-    start_date = start_date.to_datetime.beginning_of_day
-    end_date = end_date.to_datetime.end_of_day
+    @start_date = start_date.to_datetime.beginning_of_day
+    @end_date = end_date.to_datetime.end_of_day
 
     @start_deed = start_date.strftime("%b %d, %Y")
     @end_deed = end_date.strftime("%b %d, %Y")
