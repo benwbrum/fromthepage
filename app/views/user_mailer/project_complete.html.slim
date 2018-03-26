@@ -4,11 +4,7 @@ p Wow! Your project is 100% transcribed!  What's next?
 ul
   li Send a wrap up email to all of your collaborators announcing they did it! Remind them of the purpose of the project, thank them for their work, and direct them on to your next project or a colleague's project.
 
-    p Here are some states you might want to include:
-      //what stats?
-    -all_transcribers = collection_transcribers(c)
-    p Here are the email addresses of all of your collaborators:
-      "#{all_transcribers}"
+  =render(:partial => 'collection/contributors_body', :locals => {:mailer => true})
 
   li Export your transcriptions if you'd like.
     p You can export your transcriptions in a variety of formats to use for other purposes, 

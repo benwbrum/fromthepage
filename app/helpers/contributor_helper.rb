@@ -60,7 +60,7 @@ module ContributorHelper
   end
 
   def collection_transcribers(collection)
-    unless @collection
+     unless @collection
       @collection = Collection.find_by(id: collection.id)
     end
 

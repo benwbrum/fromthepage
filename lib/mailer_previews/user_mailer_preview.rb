@@ -44,4 +44,9 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.monthly_owner_wrapup(user)
   end
 
+  def project_complete
+    project = Collection.last
+    UserMailer.project_complete(project)
+  end
+
 end
