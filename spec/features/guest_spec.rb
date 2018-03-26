@@ -87,4 +87,10 @@ describe "guest user actions" do
     expect(page.find('.maincol')).not_to have_content @collections.first.title
   end
 
+  it "checks guest start transcribing path" do
+    visit collection_start_transcribing_path(@collection.owner, @collection)
+    expect(page.current_path).not_to eq dashboard_path
+    expect(page).to have_button("Transcribe as guest")
+  end
+
 end

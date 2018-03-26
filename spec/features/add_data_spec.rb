@@ -56,7 +56,7 @@ describe "uploads data for collections", :order => :defined do
     expect(page).to have_content(@collection.title)
     expect((@collection.works.last.title).length).to be < 255
     new_works = Work.all.count
-    expect(new_works).to eq (works_count + 1)
+    expect(new_works).to be > works_count
   
   end
 

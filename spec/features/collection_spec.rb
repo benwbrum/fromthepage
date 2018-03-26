@@ -6,6 +6,7 @@ describe "collection settings js tasks", :order => :defined do
   before :all do
     Capybara.javascript_driver = :webkit
     @owner = User.find_by(login: OWNER)
+    @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
     @collection = @collections.second
     @work = @collection.works.second
@@ -160,13 +161,12 @@ describe "collection settings js tasks", :order => :defined do
     #completed work shouldn't be visible at first
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
     #click button to show all works
-    page.click_link("Show Fully Transcribed Works")
+    page.click_link("Show All")
     expect(page.find('.maincol')).to have_content(hidden_work.title)
     #click button to hide completed works
-    page.click_link("Hide Fully Transcribed Works")
+    page.click_link("Incomplete Works")
     expect(page.find('.maincol')).not_to have_content(hidden_work.title)
   end
-
 
   it "sorts works in works list", :js => true do
     login_as(@owner, :scope => :user)
@@ -186,6 +186,20 @@ describe "collection settings js tasks", :order => :defined do
     page.select('Recent Activity', from: 'sort_by')
     expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.first.title
     expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
+  end
+
+  it "views pages that need transcription" do
+    login_as(@user, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    expect(page).to have_content("About")
+    expect(page).to have_content("Works")
+    page.click_link("Pages That Need Transcription")
+    expect(page).to have_selector('h3', text: "Pages That Need Transcription")
+    #make sure a page exists; don't specify which one
+    expect(page).to have_selector('.work-page')
+    click_link("Return to collection")
+    expect(page).to have_content("About")
+    expect(page).to have_content("Works")
   end
 
 end
