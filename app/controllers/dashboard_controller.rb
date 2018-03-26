@@ -61,9 +61,22 @@ class DashboardController < ApplicationController
 
   #Owner Summary Statistics - statistics for all owned collections
   def summary
+    #Get the start and end date params from date picker, if none, set defaults
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+    
+    if start_date == nil
+      start_date = 1.week.ago
+      end_date = DateTime.now.utc
+    end
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    @start_deed = start_date.strftime("%b %d, %Y")
+    @end_deed = end_date.strftime("%b %d, %Y")
+
     @statistics_object = current_user
     @all_collaborators = current_user.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
-
   end
 
   #Collaborator Dashboard - watchlist

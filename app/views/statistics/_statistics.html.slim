@@ -1,3 +1,6 @@
+-start_date = local_assigns[:start_date] ? local_assigns[:start_date] : nil
+-end_date = local_assigns[:end_date] ? local_assigns[:end_date] : nil
+
 -unless @works.empty?
 
   section.collection-stats
@@ -16,17 +19,3 @@
         .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count}") #{'Page'.pluralize(@statistics_object.index_count)} indexed
       .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count}") #{'Page'.pluralize(@statistics_object.translation_count)} translated
       .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count}") OCR #{'Correction'.pluralize(@statistics_object.ocr_count)}
-
-  h4.legend.fglight Last 7 Days Statistics
-  section.collection-stats_recent
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count(7)}") #{'Collaborator'.pluralize(@statistics_object.contributor_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(7)}") #{'Page'.pluralize(@statistics_object.transcription_count(7))} transcribed
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(7)}") Page #{'edit'.pluralize(@statistics_object.edit_count(7))}
-    -unless @statistics_object.subjects_disabled
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(7)}") #{'Page'.pluralize(@statistics_object.index_count(7))} indexed
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count(7)}") #{'Reference'.pluralize(@statistics_object.mention_count(7))}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count(7)}") New #{'subject'.pluralize(@statistics_object.subject_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count(7)}") #{'Note'.pluralize(@statistics_object.comment_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(7)}") #{'Page'.pluralize(@statistics_object.translation_count(7))} translated
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(7)}") OCR #{'Correction'.pluralize(@statistics_object.ocr_count(7))}
-

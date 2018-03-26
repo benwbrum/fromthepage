@@ -72,7 +72,7 @@ Fromthepage::Application.routes.draw do
 
   scope ':user_slug' do
     get 'user/update_profile', path: '/update_profile', to: 'user#update_profile', as: :update_profile
-
+    get 'dashboard/summary', path: '/summary', to: 'dashboard#summary', as: :summary
 
     resources :collection, path: '', only: [:show] do
       get 'statistics/collection', path: '/statistics', as: :statistics, to: 'statistics#collection'
