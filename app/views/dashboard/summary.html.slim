@@ -15,7 +15,7 @@ h4.normargin Select a new date range
   =submit_tag("Update")
 br/
 
-=render ({partial: 'statistics/statistics', :locals => {start_date: @start_date, end_date: @end_date}})
+=render ({partial: 'statistics/owner_statistics', :locals => {start_date: @start_date, end_date: @end_date}})
 
 h3 All Collaborator Emails
 p#collaborators

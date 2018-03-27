@@ -1,0 +1,21 @@
+-start_date = local_assigns[:start_date] ? local_assigns[:start_date] : nil
+-end_date = local_assigns[:end_date] ? local_assigns[:end_date] : nil
+
+-unless @works.empty?
+
+  section.collection-stats
+    .collection-stats_counters
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.work_count}") #{'Work'.pluralize(@statistics_object.work_count)}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.page_count}") #{'Page'.pluralize(@statistics_object.page_count)}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count(start_date, end_date)}") #{'Note'.pluralize(@statistics_object.comment_count(start_date, end_date))}
+      -unless @statistics_object.subjects_disabled
+        .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count(start_date, end_date)}") #{'Subject'.pluralize(@statistics_object.subject_count(start_date, end_date))}
+        .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count(start_date, end_date)}") #{'Reference'.pluralize(@statistics_object.mention_count(start_date, end_date))}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count(start_date, end_date)}") #{'Collaborator'.pluralize(@statistics_object.contributor_count(start_date, end_date))}
+    .collection-stats_counters
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(start_date, end_date)}") #{'Page'.pluralize(@statistics_object.transcription_count(start_date, end_date))} transcribed
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(start_date, end_date)}") Page edits
+      -unless @statistics_object.subjects_disabled
+        .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(start_date, end_date)}") #{'Page'.pluralize(@statistics_object.index_count(start_date, end_date))} indexed
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(start_date, end_date)}") #{'Page'.pluralize(@statistics_object.translation_count(start_date, end_date))} translated
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(start_date, end_date)}") OCR #{'Correction'.pluralize(@statistics_object.ocr_count(start_date, end_date))}
