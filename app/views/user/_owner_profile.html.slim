@@ -1,0 +1,59 @@
+-user_name = @user.display_name.presence || @user.login
+
+section.user-profile
+  .user-profile_image
+    .userpic =gravatar_image_tag @user.email, :alt => user_name, :gravatar => { :size => 256 }
+  .user-profile_details
+    .headline
+      h1.headline_title
+        =user_name
+      -if @user == current_user
+        .headline_aside
+          =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+            =svg_symbol '#icon-edit', class: 'icon'
+            span Edit Profile
+          |&nbsp;&nbsp;
+          =link_to(edit_user_registration_path, class: 'button outline')
+            =svg_symbol '#icon-user', class: 'icon'
+            span Login &amp; Password
+    .user-profile_stats
+      -if @user.website.present?
+        =link_to "Website", @user.website, target: '_blank', rel: 'nofollow'
+      -if @user.about.present?
+        p.big =@user.about
+
+-unless @carousel_collections.blank?
+  .carousel
+    button.prev
+      =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous image'
+    button.next
+      =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next image'
+    ul
+      -@carousel_collections.each do |c|
+        -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+        li
+          =link_to(image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c))
+          h3
+            =link_to c.title, collection_path(c.owner, c)
+          =snippet
+          br
+            
+.columns.list
+  article.maincol
+    =render '/dashboard/collection_index'
+  aside.sidecol
+    h2 Recent Activity
+    =deeds_for({:owner => @user, :limit => 10})
+
+-content_for :javascript
+  javascript:
+    $(function(){
+      $('.carousel').jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev",
+        visible: 1,
+        speed: 1000,
+        auto: 8000,
+        pause: '.carousel li'
+      });
+    });

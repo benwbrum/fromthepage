@@ -203,7 +203,6 @@ describe "owner actions", :order => :defined do
     page.find('a', text: 'Your Profile').click
     expect(page).to have_content(@owner.display_name)
     expect(page).to have_selector('.columns')
-    expect(page.find('.maincol')).to have_content("Collections")
     expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
     @collections.each do |c|
         expect(page).to have_content(c.title)

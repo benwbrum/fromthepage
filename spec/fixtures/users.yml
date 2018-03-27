@@ -36,6 +36,7 @@ user_4:
   email: margaret@test.com
   owner: true
   admin: false
+  account_type: Individual Researcher
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_5:

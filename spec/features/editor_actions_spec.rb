@@ -169,7 +169,7 @@ describe "editor actions" , :order => :defined do
 
   it "tries to log in as another user" do
     visit "/users/masquerade/#{@owner.id}"
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
     expect(page.find('.dropdown')).not_to have_content @owner.display_name
     expect(page).to have_content @user.display_name
     expect(page).not_to have_selector('a', text: 'Undo Login As')
@@ -297,7 +297,20 @@ describe "editor actions" , :order => :defined do
     expect(page.find('.pagination_info')).to have_content(@work.pages.count)
   end
 
-
-
+  it "finds a page to transcribe" do
+    visit collection_path(@collection.owner, @collection)
+    expect(page).to have_selector('h1', text: @collection.title)
+    expect(page).to have_content("About")
+    expect(page).to have_content("Works")
+    expect(page).not_to have_selector('a', text: "Start Transcribing")
+    col = Collection.third
+    visit collection_path(col.owner, col)
+    expect(page).to have_selector('h1', text: col.title)
+    expect(page).to have_content("About")
+    expect(page).to have_content("Works")
+    expect(page).to have_selector('a', text: "Start Transcribing")
+    click_link("Start Transcribing")
+    expect(page).to have_selector("#page_source_text")
+  end
 
 end

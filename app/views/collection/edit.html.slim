@@ -85,6 +85,9 @@
           =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
     p.fglight A picture to be used to illustrate the collection description.
 
+    h3 Collection Link
+    p This link will send transcribers directly to a page needing transcription:  <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/start_transcribing</b>
+
     h3 Collection Privacy
     -if @collection.restricted
       p The collection can only be viewed by the owners listed below. You may make the collection publicly readable.

@@ -45,8 +45,11 @@ html lang="en-US"
             -else
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
+          -if !(Collection.all.count > 1000)
+            =link_to 'Collections', dashboard_path, class: 'header_link'
+          -else
+            =link_to 'Find A Project', landing_page_path, class: 'header_link'
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
-          =link_to 'Collections', dashboard_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
             =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
