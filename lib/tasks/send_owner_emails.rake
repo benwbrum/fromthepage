@@ -20,7 +20,7 @@ namespace :fromthepage do
 
   desc "monthly owner email wrap ups"
   task :monthly_owner_wrapup => :environment do
-    owners = User.where(owner: true).where.not(account_type: [nil, 'Trial Owner'])
+    owners = User.where(owner: true).where.not(account_type: [nil, 'Trial'])
     if SMTP_ENABLED
       owners.each do |owner|
         puts owner.display_name
