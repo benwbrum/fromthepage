@@ -239,4 +239,19 @@ describe "owner actions", :order => :defined do
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
+  it "changes statistics date" do
+    visit summary_path(@owner)
+    start = 1.week.ago.to_datetime.end_of_day.strftime("%b %d, %Y")
+    new_date = 1.month.ago.to_datetime.end_of_day.strftime("%b %d, %Y")
+    expect(page).to have_field('start_date')
+    expect(page.find_field('start_date').value).to eq start
+    expect(page).to have_field('end_date')
+    expect(page).to have_selector('.collection-stats_counters')
+    page.fill_in "start_date", with: "#{1.month.ago}"
+    page.click_button("Update")
+    expect(page).to have_field('start_date')
+    expect(page.find_field('start_date').value).not_to eq start
+    expect(page.find_field('start_date').value).to eq new_date
+  end
+
 end

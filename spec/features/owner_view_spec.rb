@@ -32,8 +32,9 @@ describe "owner view - collection" do
   it "looks at statistics tab" do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Summary")
+    expect(page).to have_field('start_date')
+    expect(page).to have_field('end_date')
     expect(page).to have_selector('.collection-stats_counters')
-    expect(page).to have_content("Last 7 Days Statistics")
     expect(page).to have_content("All Collaborator Emails")
     expect(page.find('.collection-stats_counters[1] .counter[1]')['data-prefix'].to_i).to eq @works.count
     expect(page.find('#collaborators')).to have_content(@owner.all_collaborators.first.display_name)
