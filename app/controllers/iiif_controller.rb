@@ -624,21 +624,21 @@ private
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
       annotation_list['label'] = "Transcription"
-      annotation_list["sc:forCanvas"] = page.sc_canvas.sc_canvas_id
+      annotation_list["sc:forCanvas"] = canvas_id_from_page(page)
     end
   when 'translation'
     unless page.source_translation.blank?
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
       annotation_list['label'] = "Translation"
-      annotation_list["sc:forCanvas"] = page.sc_canvas.sc_canvas_id
+      annotation_list["sc:forCanvas"] = canvas_id_from_page(page)
     end
   when 'notes'
     unless page.notes.blank?   #no comments
       annotation_list = IIIF::Presentation::AnnotationList.new
       annotation_list['@id'] = url_for({:controller => 'iiif', :action => 'list', :page_id => page.id, :annotation_type => type, :only_path => false})
       annotation_list['label'] = "Notes"
-      annotation_list["sc:forCanvas"] = page.sc_canvas.sc_canvas_id
+      annotation_list["sc:forCanvas"] = canvas_id_from_page(page)
     end
   end
     annotation_list
