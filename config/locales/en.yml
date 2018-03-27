@@ -1,23 +1,4 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
+# English i18n Messages
 
 en:
   hello: "Hello world"
@@ -42,3 +23,80 @@ en:
       x_days:
         one: 24 hours
         other: "%{count} days"
+        
+  api:
+    default:
+      ok: "The operation was successfully completed"
+      error: "Server error, Contact the administrator"
+    session:
+      not_allowed: "To access this content you must log in to this site"
+    login:
+      success: "Welcome to Transcriptor!"
+      fail: "Username or password not valid, try again."
+    collection:
+      create:
+        success: "Collection has been created"
+      update:
+        success: "Collection has been updated"
+      destroy:
+        success: "Collection has been deleted"
+    work:
+      create:
+        success: "Work has been created"
+      update:
+        success: "Work has been updated"
+      destroy:
+        success: "Work has been deleted"
+    mark:
+      create:
+        success: "Mark has been created"
+      update:
+        success: "Mark has been updated"
+      destroy:
+        success: "Mark has been deleted"
+    transcription:
+      save:
+        success: "Transcription has been saved"
+        success_guest: "Transcription has been saved, remember you may save up to three transcriptions as a guest."
+        error:
+          parse: "There was an error parsing the mark-up in your transcript. This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open. Check any instances of < or > symbols in your text."
+          guest_limit: "To continue transcribing, you must be signed in."
+    translation:
+      save:
+        success: "Translation has been saved"
+        success_guest: "Translation has been saved, remember you may save up to three translations as a guest."
+        error:
+          parse: "There was an error parsing the mark-up in your translation. This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open. Check any instances of < or > symbols in your text."
+          guest_limit: "To continue transcribing, you must be signed in."
+    registration:
+      create:
+        success: "User has been created"
+      update:
+        success: "User has been updated"
+      destroy:
+        success: "User has been deleted"
+    user:
+      update:
+        success: "User has been updated"
+    update:
+      create:
+        success: "Document has been uploaded and will be processed shortly."
+        error: "An error occurred in uploading the file, try later."
+    contribution:
+      transcription:
+        create:
+          success: "Transcription has been created"
+        update:
+          success: "Transcription has been updated"
+        destroy:
+          success: "Transcription has been deleted"
+        like: "You voted for one Transcription"
+      translation:
+        create:
+          success: "Translation has been created"
+        update:
+          success: "Translation has been updated"
+        destroy:
+          success: "Translation has been deleted"
+        like: "You voted for one Translation"
+      

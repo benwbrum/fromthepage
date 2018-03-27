@@ -1,0 +1,45 @@
+Steps
+
+
+-create bd diary_test
+
+- insertar usuario para pruebas
+
+	INSERT INTO diary_development.users
+(id, login, display_name, print_name, email, owner, admin, encrypted_password, password_salt, created_at, updated_at, remember_token, remember_token_expires_at, location, website, about, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, account_type, paid_date, guest, slug, authentication_token, authentication_token_created_at)
+VALUES(3, 'trasncriptorTest', 'User transcriptor', NULL, 'lucastest@live.com.ar', 1, 0, 'd65ce1330fde51ca5f80d738f9e1aa49d970f3cb', 'FQBrZCxtpyTYs9Hrof1Z', '2018-02-24 23:46:33.000', '2018-03-01 23:21:34.000', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 61, '2018-03-01 23:21:34.000', '2018-03-01 23:21:34.000', '127.0.0.1', '127.0.0.1', NULL, NULL, NULL, 'test', 'DgfrKz5dstSkpJzXjEMS', NULL);
+
+
+
+
+list controllers
+-login ->ok
+-registration ->ok
+-user -> ok
+-collection -> OK
+-work -> falta el update
+-page ->ok
+
+
+
+
+	INSERT INTO diary_development.users
+(id, login, display_name, print_name, email, owner, admin, encrypted_password, password_salt, created_at, updated_at, remember_token, remember_token_expires_at, location, website, about, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, account_type, paid_date, guest, slug, authentication_token, authentication_token_created_at)
+
+{"id":46, "title":"trabajo test", "description":"", "created_on":"2018-03-04T02:09:52.331Z", "owner_user_id":1, "restrict_scribes":false, "transcription_version":0, "physical_description":nil, "document_history":nil, "permission_description":nil, "location_of_composition":nil, "author":nil, "transcription_conventions":nil, "collection_id":42, "scribes_can_edit_titles":false, "supports_translation":false, "translation_instructions":nil, "pages_are_meaningful":true, "ocr_correction":nil, "slug":"trabajo-test", "picture":{"url":nil, "thumb":{"url":nil}, "scaled":{"url":nil}}, "featured_page":nil, "identifier":nil}
+
+
+
+{
+	"id":5,
+	"text":"lalalalaUpdated",
+	"coordinates": {
+		"x":23,
+		"y":34
+	},
+	"shape_type":"polyline",
+	"text_type":"body",
+	"page_id":2
+}
+
+marks

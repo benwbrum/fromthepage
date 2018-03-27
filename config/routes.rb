@@ -3,6 +3,8 @@ Fromthepage::Application.routes.draw do
   root :to => 'static#splash'
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations"}
+ 
+
 
   iiif_for 'riiif/image', at: '/image-service'
   
@@ -52,6 +54,56 @@ Fromthepage::Application.routes.draw do
 
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
+  
+  namespace :api do
+    devise_for :user,controllers:{masquerades: "masquerades", registrations: "registrations"}
+    devise_scope :user do
+      post 'registration' => 'registration#create'
+      put 'registration' => 'registration#update'
+    end
+    
+    get 'dashboard' => 'dashboard#index'
+    get 'dashboard/guest' => 'dashboard#guest'
+    get 'dashboard/owner' => 'dashboard#ownerResponse'
+    get 'dashboard/owner/collections' => 'dashboard#collectionsOfOwner'
+    get 'dashboard/recent_work' => 'dashboard#recent_work'
+    get 'deeds/:id' => 'deed#list'
+    
+    resources :test, path: 'test', only: [:index]
+    post 'login', :to=>'login#login'
+    patch '/api/user', :to=>'user#update'
+    get 'collection/list_own', :to=>'collection#list_own'
+
+    get 'collection/list', :to=>'collection#collections_list'
+    resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
+      get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
+    end
+    resources :work, path: 'work', only: [:create, :update, :destroy, :show] do
+      get ':work_id', path: 'pages', as: :pages, to: 'work#show_pages'
+    end
+    resources :page, path: 'page', only: [:create, :update, :destroy, :show] do
+      get '', path: 'marks', as: :show_marks, to: 'mark#list_by_page'
+    end
+    resources :mark, path: 'mark', only: [:index, :create, :update, :destroy, :show] do
+      get '', path: 'transcriptions', as: :show_transcriptions, to: 'transcription#list_by_mark'
+      get '', path: 'votes',  to: 'transcription#list_likes_by_user'
+     
+    end
+    resources :transcription, path: 'transcription', only: [:index, :create, :update, :destroy, :show] do
+      get ':transcription_id', path: 'like', as: :like_transcription, to: 'transcription#like'
+      get '', path: 'vote',  to: 'transcription#transcription_like_by_user'
+    end
+    resources :translation, path: 'translation', only: [:index, :create, :update, :destroy, :show]
+    resources :registration, path: 'registration', only: [:create] do
+    end
+    resources :page, path: 'transcribe', only: [] do
+      post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
+      post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
+    end  
+    resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
+    end
+    resources :upload, path: 'upload', only: [:create]
+  end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
