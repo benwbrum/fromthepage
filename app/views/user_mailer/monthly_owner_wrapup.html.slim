@@ -1,17 +1,31 @@
-h1 Hello #{@owner.display_name},
+p Hello #{@owner.display_name},
 
 p Another month has passed.  Give your collaborators some love and encourage them to come back by sending a monthly status email.  The email could include:
 ul
   li What they've accomplished this month
   li What you'll be using the transcribed material for
   li call to action - "Know anyone else who would be interested in working on this collection?  Invite them to join in on the fun."
-p Here's an example of a monthly email: http://content.fromthepage.com/crowdsourcing-project-newsletter
-p Here are those stats for your collections:
+  li Here's an example of a monthly email: 
+  span =link_to "http://content.fromthepage.com/crowdsourcing-project-newsletter", 'http://content.fromthepage.com/crowdsourcing-project-newsletter', target: '_blank', rel: 'nofollow'
+p Here are the stats for all of your collections in the past month:
 
--@user_collections.each do |c|
-  =c.title
-  p Stats:
-  p Here are the email addresses of all the collaborators (for all time) on this collection:
-  p Collaborator Names
+h3(style="text-align: center") #{'Work'.pluralize(@owner.work_count)}: #{number_with_delimiter @owner.work_count} 
+h3(style="text-align: center") #{'Page'.pluralize(@owner.page_count)}: #{number_with_delimiter @owner.page_count} 
+h3(style="text-align: center") #{'Note'.pluralize(@owner.comment_count(@start_date, @end_date))}: #{number_with_delimiter @owner.comment_count(@start_date, @end_date)} 
+-unless @owner.subjects_disabled
+  h3(style="text-align: center") #{'Subject'.pluralize(@owner.subject_count(@start_date, @end_date))}: #{number_with_delimiter @owner.subject_count(@start_date, @end_date)} 
+  h3(style="text-align: center") #{'Reference'.pluralize(@owner.mention_count(@start_date, @end_date))}: #{number_with_delimiter @owner.mention_count(@start_date, @end_date)} 
+h3(style="text-align: center") #{'Collaborator'.pluralize(@owner.contributor_count(@start_date, @end_date))}: #{number_with_delimiter @owner.contributor_count(@start_date, @end_date)} 
+h3(style="text-align: center") #{'Page'.pluralize(@owner.transcription_count(@start_date, @end_date))} transcribed: #{number_with_delimiter @owner.transcription_count(@start_date, @end_date)} 
+h3(style="text-align: center") #{'Page'.pluralize(@owner.edit_count(@start_date, @end_date))} edited: #{number_with_delimiter @owner.edit_count(@start_date, @end_date)}
+-unless @owner.subjects_disabled
+  h3(style="text-align: center") #{'Page'.pluralize(@owner.index_count(@start_date, @end_date))} indexed: #{number_with_delimiter @owner.index_count(@start_date, @end_date)} 
+h3(style="text-align: center") #{'Page'.pluralize(@owner.translation_count(@start_date, @end_date))} translated: #{number_with_delimiter @owner.translation_count(@start_date, @end_date)} 
+h3(style="text-align: center") OCR #{'Correction'.pluralize(@owner.ocr_count(@start_date, @end_date))}: #{number_with_delimiter @owner.ocr_count(@start_date, @end_date)} 
 
-p You can find a full set of stats on the collaborator dashboard.
+
+
+p Here are the email addresses of all the collaborators (for all time) on this collection:
+p =@all_collaborators
+
+p You can see your overall statistics in the summary tab of your owner dashboard.  You can see each collection's statistics on the collection collaborator tab.

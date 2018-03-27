@@ -57,7 +57,9 @@ class UserMailer < ActionMailer::Base
 
   def monthly_owner_wrapup(user)
     @owner = user
-    @user_collections = @owner.all_owner_collections.where(pct_completed: [nil, 1..99])
+    @all_collaborators = @owner.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+    @start_date = 1.month.ago.utc
+    @end_date = Time.now.utc
     mail to: @owner.email, subject: "FromThePage Monthly Wrapup"
   end
 

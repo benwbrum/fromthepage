@@ -2,7 +2,7 @@
 h2.nomargin ="Contributions Between #{@start_deed} and #{@end_deed}"
 h4.normargin Select a new date range
 
-=form_tag(summary_path(@statistics_object), method: "get") do
+=form_tag(summary_path(@owner), method: "get") do
   =hidden_field_tag(:collection_id, @collection)
   =label_tag(:start_date, "Start date")
   |  
