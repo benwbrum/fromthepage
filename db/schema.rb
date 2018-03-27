@@ -125,7 +125,10 @@ ActiveRecord::Schema.define(version: 20180313154459) do
     t.string   "language"
     t.string   "text_language"
     t.integer  "pct_completed"
+<<<<<<< HEAD
     t.string   "license_key"
+=======
+>>>>>>> ui-design
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree

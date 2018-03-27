@@ -44,7 +44,7 @@ describe "URL tests" do
     login_as(@user, :scope => :user)
     #look at the owner profile
     visit "/#{@owner.slug}"
-    expect(page).to have_content("Collections")
+    expect(page).to have_selector('.carousel')
     @owner.all_owner_collections.each do |c|
       expect(page).to have_content(c.title)
     end
@@ -52,6 +52,7 @@ describe "URL tests" do
     #look at a user profile
     visit "/#{@user.slug}"
     expect(page).to have_content(@user.display_name)
+    expect(page).not_to have_selector('.carousel')
     expect(page).to have_content("Recent Activity by #{@user.display_name}")
     #make sure links go to user profile
     visit dashboard_watchlist_path
@@ -145,25 +146,21 @@ describe "URL tests" do
     #check original path
     expect(page.current_path).to eq "/#{@owner.slug}"
     expect(page).to have_content(@owner.display_name)
-    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     page.find('a', text: 'Edit Profile').click
     expect(page).to have_content("Update User Profile")
     expect(page).to have_field('user[slug]', with: @owner.slug)
     page.fill_in 'user_slug', with: "new-#{@owner.slug}"
     click_button('Update Profile')
     expect(page).to have_content(@owner.display_name)
-    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     expect(User.find_by(id: @owner.id).slug).to eq ("#{slug}")
     #test new path
     visit "/#{slug}"
     expect(page).to have_content(@owner.display_name)
-    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     #test old path
     #this variable is stored at the beginning of the test, so it's the original
     visit dashboard_path
     visit "/#{@user.slug}"
     expect(page).to have_content(@user.display_name)
-    expect(page).to have_content("User since #{@owner.created_at.strftime("%b %d, %Y")}")
     #blank out user slug
     visit dashboard_watchlist_path
     page.find('a', text: 'Your Profile').click

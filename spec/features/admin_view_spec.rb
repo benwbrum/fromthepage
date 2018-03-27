@@ -83,7 +83,7 @@ describe "admin actions" do
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
     visit admin_path
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
 
     #un-masquerade and make sure the user is the admin again
     click_link('Undo Login As')
