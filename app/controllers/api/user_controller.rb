@@ -9,6 +9,7 @@ class Api::UserController < Api::ApiController
   def update
     puts "-------------------------"
     puts "update"
+    puts "alojaaaaaaaaaaaa"
     # spam check
     @user = current_user
     @user = User.friendly.find(params[:id])
@@ -20,16 +21,20 @@ class Api::UserController < Api::ApiController
     else 
       params[:user].delete_if { |k,v| v == NOTOWNER }
       if params[:user][:slug] == ""
+       
         @user.update(params[:user].except(:slug))
         login = @user.login.parameterize
         @user.update(slug: login)
       else
+       
         @user.update(params[:user])
       end
       if @user.save!
+       
         render_serialized ResponseWS.ok('api.user.update.success',@user)
       else
-       render_serialized ResponseWS.default_error
+        
+        render_serialized ResponseWS.default_error
       end
     end
   end

@@ -56,7 +56,7 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
   
   namespace :api do
-    devise_for controllers:{registration:"/api/registration"}
+    devise_for :user,controllers:{masquerades: "masquerades", registrations: "registrations"}
     devise_scope :user do
       post 'registration' => 'registration#create'
       put 'registration' => 'registration#update'

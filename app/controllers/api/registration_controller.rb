@@ -31,11 +31,8 @@ class Api::RegistrationController < Api::ApiDeviceRegistrationController
       @user.update_attributes(sign_up_params)
       @user.guest = false
     else
-      puts "else"
-      puts params[:user]
-      @user = build_resource(params[:user])
+       @user = build_resource(params[:user])
     end
-    puts @user
     resource_saved = @user.save
     yield resource if block_given?
     if resource_saved
@@ -53,10 +50,15 @@ class Api::RegistrationController < Api::ApiDeviceRegistrationController
       render_serialized ResponseWS.error(resource.errors.full_messages.to_sentence,nil)
     end
   end
+  def after_sign_in_path_for(resource)
+  
+  end
 
-#redefino la salida del edit profile de Devise
+#redefino la salida del edit profile de Devise (o eso deberia :S )
+
   def update
-     yield resource if block_given?
+    
+     @user.update(params[:user])
      if @user.save!
        render_serialized ResponseWS.ok('api.registration.update.success',@user)
      else
