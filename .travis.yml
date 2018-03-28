@@ -50,5 +50,6 @@ branches:
   only:
     - master
     - ui-design
+    - development
     - fromthepage.com
     - indianapolis
