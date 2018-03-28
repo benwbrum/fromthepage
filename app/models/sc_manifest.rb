@@ -84,6 +84,7 @@ class ScManifest < ActiveRecord::Base
   end
 
   def cleanup_label(label)
+    label = flatten_element(label)
     new_label = label.truncate(255, separator: ' ', omission: '')
     new_label.gsub!("&quot;", "'")
     new_label.gsub!("&amp;", "&")
@@ -92,10 +93,17 @@ class ScManifest < ActiveRecord::Base
     new_label
   end
 
+  def flatten_element(element)
+    if element.kind_of? Hash
+      element = element['@value'] || element['value']       
+    end    
+    element
+  end
+
 
   def sc_canvas_to_page(sc_canvas)
     page = Page.new
-    page.title = sc_canvas.sc_canvas_label    
+    page.title = flatten_element(sc_canvas.sc_canvas_label)    
     
     page
   end
@@ -116,7 +124,7 @@ class ScManifest < ActiveRecord::Base
   def html_description
     description=""
     unless self.service.description.blank?
-      description += self.service.description + "\n<br /><br />\n"
+      description += flatten_element(self.service.description) + "\n<br /><br />\n"
     end
     description += "\n<br /><br />\nMetadata:" + self.html_metadata
     
