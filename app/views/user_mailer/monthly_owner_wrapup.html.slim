@@ -9,20 +9,33 @@ ul
   span =link_to "http://content.fromthepage.com/crowdsourcing-project-newsletter", 'http://content.fromthepage.com/crowdsourcing-project-newsletter', target: '_blank', rel: 'nofollow'
 p Here are the stats for all of your collections in the past month:
 
-h3(style="text-align: center") #{'Work'.pluralize(@owner.work_count)}: #{number_with_delimiter @owner.work_count} 
-h3(style="text-align: center") #{'Page'.pluralize(@owner.page_count)}: #{number_with_delimiter @owner.page_count} 
-h3(style="text-align: center") #{'Note'.pluralize(@owner.comment_count(@start_date, @end_date))}: #{number_with_delimiter @owner.comment_count(@start_date, @end_date)} 
--unless @owner.subjects_disabled
-  h3(style="text-align: center") #{'Subject'.pluralize(@owner.subject_count(@start_date, @end_date))}: #{number_with_delimiter @owner.subject_count(@start_date, @end_date)} 
-  h3(style="text-align: center") #{'Reference'.pluralize(@owner.mention_count(@start_date, @end_date))}: #{number_with_delimiter @owner.mention_count(@start_date, @end_date)} 
-h3(style="text-align: center") #{'Collaborator'.pluralize(@owner.contributor_count(@start_date, @end_date))}: #{number_with_delimiter @owner.contributor_count(@start_date, @end_date)} 
-h3(style="text-align: center") #{'Page'.pluralize(@owner.transcription_count(@start_date, @end_date))} transcribed: #{number_with_delimiter @owner.transcription_count(@start_date, @end_date)} 
-h3(style="text-align: center") #{'Page'.pluralize(@owner.edit_count(@start_date, @end_date))} edited: #{number_with_delimiter @owner.edit_count(@start_date, @end_date)}
--unless @owner.subjects_disabled
-  h3(style="text-align: center") #{'Page'.pluralize(@owner.index_count(@start_date, @end_date))} indexed: #{number_with_delimiter @owner.index_count(@start_date, @end_date)} 
-h3(style="text-align: center") #{'Page'.pluralize(@owner.translation_count(@start_date, @end_date))} translated: #{number_with_delimiter @owner.translation_count(@start_date, @end_date)} 
-h3(style="text-align: center") OCR #{'Correction'.pluralize(@owner.ocr_count(@start_date, @end_date))}: #{number_with_delimiter @owner.ocr_count(@start_date, @end_date)} 
+table
+  tr
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Work'.pluralize(@owner.work_count)}: #{number_with_delimiter @owner.work_count} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Page'.pluralize(@owner.page_count)}: #{number_with_delimiter @owner.page_count} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Note'.pluralize(@owner.comment_count(@start_date, @end_date))}: #{number_with_delimiter @owner.comment_count(@start_date, @end_date)} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Collaborator'.pluralize(@owner.contributor_count(@start_date, @end_date))}: #{number_with_delimiter @owner.contributor_count(@start_date, @end_date)} 
+  tr
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Page'.pluralize(@owner.transcription_count(@start_date, @end_date))} transcribed: #{number_with_delimiter @owner.transcription_count(@start_date, @end_date)}
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Page'.pluralize(@owner.edit_count(@start_date, @end_date))} edited: #{number_with_delimiter @owner.edit_count(@start_date, @end_date)}
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Page'.pluralize(@owner.translation_count(@start_date, @end_date))} translated: #{number_with_delimiter @owner.translation_count(@start_date, @end_date)} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 OCR #{'Correction'.pluralize(@owner.ocr_count(@start_date, @end_date))}: #{number_with_delimiter @owner.ocr_count(@start_date, @end_date)} 
 
+  -unless @owner.subjects_disabled
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Subject'.pluralize(@owner.subject_count(@start_date, @end_date))}: #{number_with_delimiter @owner.subject_count(@start_date, @end_date)} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Reference'.pluralize(@owner.mention_count(@start_date, @end_date))}: #{number_with_delimiter @owner.mention_count(@start_date, @end_date)} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{'Page'.pluralize(@owner.index_count(@start_date, @end_date))} indexed: #{number_with_delimiter @owner.index_count(@start_date, @end_date)} 
 
 
 p Here are the email addresses of all the collaborators (for all time) on this collection:

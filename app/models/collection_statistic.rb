@@ -45,10 +45,17 @@ module CollectionStatistic
 
   def calculate_complete
     #note: need to compact mapped array so it doesn't fail on a nil value
+    current = self[:pct_completed]
     unless work_count == 0
       pct = (self.works.includes(:work_statistic).map(&:completed).compact.sum)/work_count
     else
       pct = 0
+    end
+    if ((pct == 100) && !(current == pct))
+      logger.info "#{self.title} is complete"
+      rake_call = "#{RAKE} fromthepage:project_complete[#{self.id}] --trace  2>&1 &"
+      logger.info rake_call
+      system(rake_call)
     end
     self.update(pct_completed: pct)
   end

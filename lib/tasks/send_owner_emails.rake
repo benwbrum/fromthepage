@@ -34,8 +34,10 @@ namespace :fromthepage do
   end
 
   desc "project is 100 percent transcribed"
-  task :project_complete_email, [:project] => :environment do |t, args|
-    project = args.project
+  task :project_complete, [:collection_id] => :environment do |t, args|
+    id = args.collection_id
+    project = Collection.find_by(id: id)
+    puts "INFO: #{project.title} is complete"
     if SMTP_ENABLED
       begin
         UserMailer.project_complete(project).deliver!

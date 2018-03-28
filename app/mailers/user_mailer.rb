@@ -67,8 +67,7 @@ class UserMailer < ActionMailer::Base
     #set the collection - are document sets relevant?
     @collection = Collection.find_by(slug: project.slug)
     @owner = @collection.owner
-
-    new_contributors(@collection.id, @collection.created_on, Time.now)
+    @all_collaborators = collection_transcribers(@collection)
 
     mail to: @owner.email, subject: "#{@collection.title} Project Is 100\% Transcribed!"
   end
