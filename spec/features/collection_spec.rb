@@ -123,6 +123,9 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('.tabs')).to have_selector('a', text: 'Export')
     expect(page.find('.tabs')).to have_selector('a', text: 'Collaborators')
     expect(page.find('.tabs')).to have_selector('a', text: 'Add Work')
+    visit dashboard_owner_path
+    expect(page).to have_content("Owner Dashboard")
+    expect(page).not_to have_selector('.owner-info')
   end
 
   it "removes owner from a private collection" do

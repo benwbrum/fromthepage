@@ -16,6 +16,8 @@ describe "owner view - collection" do
 
   it "looks at owner tabs" do
     visit dashboard_owner_path
+    expect(page).to have_selector('.owner-info')
+    expect(page).to have_content("#{@owner.account_type} account since #{@owner.start_date.strftime('%b %d, %Y')}")
     #look at owner stats in dashboard
     expect(page.find('.owner-counters .counter[1]')['data-prefix'].to_i).to eq @owner.all_owner_collections.count
     expect(page.find('.owner-counters .counter[2]')['data-prefix'].to_i).to eq @works.count

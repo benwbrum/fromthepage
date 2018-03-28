@@ -175,6 +175,12 @@
   }
 }
 
+.owner-info {
+  padding: 0 30px 15px 0;
+  color: $bgSelected;
+  font-style: italic;
+}
+
 .omeka-sites {
   padding: 0;
   list-style: none;
@@ -346,9 +352,6 @@
   margin: 0.3em 0 0.5em 0;
   font-size: $fontSizeSmall;
 }
-
-
-
 
 // ---------------------------
 // EDITOR SECTION
