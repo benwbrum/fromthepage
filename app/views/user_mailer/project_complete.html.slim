@@ -5,13 +5,15 @@ ul
   li Send a wrap up email to all of your collaborators announcing they did it! Remind them of the purpose of the project, thank them for their work, and direct them on to your next project or a colleague's project.
   br
   li 
-    'Export your transcriptions if you'd like. You can export your transcriptions in a variety of formats to use for other purposes, 
-    =link_to "here", collection_export_path(@collection.owner, @collection, only_path: false)
-    |. Or you can use the IIIF API.  If you need custom integration services to pull them into a downstream system, we can help - send us an email at 
+    'Export your transcriptions if you'd like. You can export your transcriptions in a variety of formats, 
+    =link_to "here", collection_export_path(@collection.owner, @collection, only_path: false), target: '_blank', rel: 'nofollow'
+    |. Or you can use the 
+    =link_to "IIIF API", "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations", target: '_blank', rel: 'nofollow'
+    |.  If you need custom integration services to pull them into a downstream system, we can help - send us an email at 
     =mail_to 'support@fromthepage.com'
     |.
   br
-  li You can also leave your project up on FromThePage - it has great Google SEO. Our perspective is that a transcription is never done - someone may read something years from now and be able to correct a confusing point or add more context to your project.
+  li You can also leave your project up on FromThePage - it has great Google SEO. Our perspective is that a transcription is never done. Someone may read something years from now and be able to correct a confusing point or add more context to your project.
   br
   li How'd your project go?  We'd love to hear about the hardest part, the easiest part, and one (or more!) things we can improve in FromThePage.
   br
@@ -20,13 +22,13 @@ p Here are the statistics on your project:
 table
   tr
     td(style="text-align: center; width: 25%; padding: 0 10px 0;")
-      h3 #{number_with_delimiter @collection.work_count}  #{'Work'.pluralize(@collection.work_count)} 
+      h3 #{number_with_delimiter @collection.work_count} #{'Work'.pluralize(@collection.work_count)} 
     td(style="text-align: center; width: 25%; padding: 0 10px 0;")
-      h3 #{number_with_delimiter @collection.page_count}  #{'Page'.pluralize(@collection.page_count)} 
+      h3 #{number_with_delimiter @collection.page_count} #{'Page'.pluralize(@collection.page_count)} 
     td(style="text-align: center; width: 25%; padding: 0 10px 0;")
-      h3 #{number_with_delimiter @collection.comment_count}  #{'Note'.pluralize(@collection.comment_count)}
+      h3 #{number_with_delimiter @collection.comment_count} #{'Note'.pluralize(@collection.comment_count)}
     td(style="text-align: center; width: 25%; padding: 0 10px 0;")
-      h3 #{number_with_delimiter @collection.contributor_count}  #{'Collaborator'.pluralize(@collection.contributor_count)} 
+      h3 #{number_with_delimiter @collection.contributor_count} #{'Collaborator'.pluralize(@collection.contributor_count)} 
   tr
     td(style="text-align: center; width: 25%; padding: 10px;")
       h3 #{number_with_delimiter @collection.transcription_count} #{'Page'.pluralize(@collection.transcription_count)} transcribed 
@@ -49,3 +51,6 @@ table
 
 p Here's a list of all your collaborator emails:
 p =@all_collaborators
+
+p Sincerely,
+p The FromThePage Team

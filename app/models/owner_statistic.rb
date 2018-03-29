@@ -3,6 +3,10 @@ module OwnerStatistic
     self.owner_works.count
   end
 
+  def completed_work_count
+    self.owner_works.joins(:work_statistic).where(work_statistics: {complete: 100}).count
+  end
+
   def page_count
     count = Page.where(work_id: self.owner_works.ids).count
   end
