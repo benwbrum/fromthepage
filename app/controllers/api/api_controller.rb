@@ -3,7 +3,7 @@ class Api::ApiController < ApplicationController
   include I18nHelper
   
   before_action :set_locale
-  before_action :authorized?, except: [:preflight_request]
+  before_action :authorized?
   
   def authorized?
     unless public_actions.include? action_name.to_sym
@@ -28,10 +28,6 @@ class Api::ApiController < ApplicationController
   
   def response_serialized_object(object)
     render_serialized ResponseWS.default_ok(object)
-  end
-  
-  def preflight_request
-    render_serialized ResponseWS.default_ok("ok")
   end
   
   private
