@@ -78,8 +78,11 @@ module ExportHelper
     #paras_string = ""
 
     my_display_html = ""
+    doc.elements.each_with_index("//table") do |table|
+      transform_table(table)
+    end
     doc.elements.each_with_index("//p") do |e,i|
-      transform_links(e)
+      transform_tags(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
       my_display_html << e.to_s
@@ -88,12 +91,25 @@ module ExportHelper
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
 
+  def transform_table(table)
+    clean = REXML::Element.new('table')
+    table.elements.each('tbody/tr') do |tr|
+      row = REXML::Element.new('row')
+      tr.elements.each('td') do |td|
+        cell = REXML::Element.new('cell')
+        td.children.each { |c| cell.add(c) }
+        row.add(cell)
+      end
+      clean.add(row)
+    end
+    table.replace_with(clean)
+  end
   # def titles_to_divs(xml_text, context)
     # logger.debug("FOO #{context.div_stack.count}\n")
     # xml_text.scan(/entryHeading title=\".s*\" depth=\"(\d)\"")
   # end
 
-  def transform_links(p_element)
+  def transform_tags(p_element)
     p_element.elements.each('//link') do |link|
       rs = REXML::Element.new("rs")
 
