@@ -225,7 +225,7 @@ private
         csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
         col_sections = false
       else
-        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
+        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)', 'Entry number' ] + @headings)
         col_sections = true
       end
       works.each do |w|
@@ -246,6 +246,7 @@ private
 
         if page.sections.blank?
           #get cell data for a page with only one table
+          index = 1
           page.table_cells.group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
             cell_data(cell_array, @raw_headings, data_cells)
@@ -253,35 +254,51 @@ private
             if !col_sections
               section_cells = []
             else
-              section_cells = ["", "", ""]
+              section_cells = ["", "", "", index]
             end
             # write the record to the CSV and start a new record
             csv << (page_cells + page_metadata_cells + section_cells + data_cells)
             #create a new array for the next row
             data_cells = Array.new(@headings.count, "")
+            index += 1
           end
 
         else
           #get the table sections/headers and iterate cells within the sections
-          page.sections.each do |section|
+          page.sections.each_with_index do |section|
             section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
             section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
             section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
             section_cells = [section_title_text, section_title_subjects, section_title_categories]
             #group the table cells per section into rows
+            index = 1
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
               cell_data(cell_array, @raw_headings, data_cells)
               # write the record to the CSV and start a new record
-              csv << (page_cells + page_metadata_cells + section_cells + data_cells)
+              add_entry(csv, page_cells + page_metadata_cells + section_cells + [index], data_cells)
               #create a new array for the next row
               data_cells = Array.new(@headings.count, "")
+              index += 1
             end
           end
         end
       end
     end
     return csv
+  end
+
+  def add_entry(csv, section_cells, data_cells)
+    multi_line_index = data_cells.index{ |cell| cell.match "\n" }
+    if multi_line_index
+      data_cells[multi_line_index].split("\n").each do |subject|
+        new_cells = data_cells.dup
+        new_cells[multi_line_index] = subject
+        csv << section_cells + new_cells          
+      end    
+    else
+      csv << section_cells + data_cells
+    end
   end
 
   def page_metadata_cells(page)
