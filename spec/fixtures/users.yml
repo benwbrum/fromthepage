@@ -36,6 +36,9 @@ user_4:
   email: margaret@test.com
   owner: true
   admin: false
+  account_type: Individual Researcher
+  paid_date: <%= 1.month.from_now.to_s :db %>
+  start_date: <%= 1.month.ago.to_s :db %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
 user_5:
@@ -46,6 +49,9 @@ user_5:
   email: julia@test.com
   owner: true
   admin: true
+  account_type: Small Organization
+  paid_date: <%= 2.weeks.from_now.to_s :db %>
+  start_date: <%= 1.week.ago.to_s :db %>
   encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
   password_salt: R2-cytow2JEPt3jD3Ts1
 user_6:

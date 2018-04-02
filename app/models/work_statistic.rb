@@ -111,6 +111,13 @@ class WorkStatistic < ActiveRecord::Base
     self[:complete] = self.pct_completed
     self[:translation_complete] = self.pct_translation_completed
     save!
+    #save completed information for collections/document sets
+    self.work.collection.calculate_complete if !self.work.collection.nil?
+    if !self.work.document_sets.empty?
+      self.work.document_sets.each do |set|
+        set.calculate_complete
+      end
+    end
   end
 
 end

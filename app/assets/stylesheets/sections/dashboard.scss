@@ -175,6 +175,12 @@
   }
 }
 
+.owner-info {
+  padding: 0 30px 15px 0;
+  color: $bgSelected;
+  font-style: italic;
+}
+
 .omeka-sites {
   padding: 0;
   list-style: none;
@@ -201,6 +207,151 @@
   }
 }
 
+//--------------------------------
+// LANDING PAGE
+//--------------------------------
+@media screen and (min-width: $widthMin) {
+  .carousel {
+    width: 100%;
+    height: 30vw;
+    margin: 0 auto 0;
+    visibility: hidden;
+    position: relative;
+    li {
+      position: relative;
+      height: 30vw;
+      max-height: 30vw;
+      width: 60%;
+      max-width: 60%;
+      padding: 0 60px 0;
+
+    }
+    img {
+      float: left;
+      margin-right: $gapSize;
+      display: block;
+      height: 100%;
+      max-width: 70%;
+      overflow: hidden;
+    }
+    h3 { 
+      margin: .5em 0 .25em 0;
+      a {
+        text-decoration: none;
+        color: darken($fgLink, 10%);
+        &:hover { color: $fgLink; }
+      }
+    }
+    .owner-link {
+      margin: 0 0 .5em;
+      a {
+        text-decoration: none;
+        color: darken($fgLink, 10%);
+        &:hover { color: $fgLink; }
+      }
+    }
+    .prev {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      z-index: 10;
+    }
+    .next {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      z-index: 10;
+    }
+  }
+}
+
+@media screen and (max-width: $widthMin){
+  .carousel {
+    height: 5px;
+    display: none;
+  }
+  
+}
+
+.project-list {
+  margin: $gapSize * 2;
+  &_projects {
+    border-bottom: 1px dotted $borderColor;
+  }
+  &_link {
+    margin-top: $gapSize;
+    font-size: $fontSizeStrong;
+    text-align: right;
+    font-style: italic;
+    a {
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
+}
+
+.projects {
+  margin: 0 0 ($gapSize/2) 0;
+  &_details {
+    overflow: hidden;
+    margin: 0 0 .5em 0;
+    &_image {
+      float: left;
+      margin-right: $gapSize/2;
+      img {
+        max-width: 100px;
+        max-height: 100px;
+      }
+    }
+  }
+  &_collection {
+    margin: 0 0 $gapSize/2 0;
+    h5 { margin: 0; }
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+    &_snippet {
+      margin: 0.4em 0 0 0;
+      font-size: $fontSizeSmall;
+    }
+  }
+  &_link {
+    font-style: italic;
+    a {
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
+}
+
+.projects-owner {
+  width: 100%;
+  display: table;
+  margin: $gapSize/2 0 $gapSize;
+  &_details {
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    .headline {
+      margin: 0;
+    }
+  }  
+  &_title {
+    margin: 0;
+    a {
+      text-decoration: none;
+      color: darken($fgLink, 10%);
+      &:hover { color: $fgLink; }
+    }
+  }
+}
+
+.description {
+  margin: 0.3em 0 0.5em 0;
+  font-size: $fontSizeSmall;
+}
 
 // ---------------------------
 // EDITOR SECTION

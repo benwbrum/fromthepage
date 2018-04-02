@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -72,10 +72,9 @@ class User < ActiveRecord::Base
   end
 
   def all_owner_collections
-    query = Collection.where("owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
+    query = Collection.where("collections.owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
     Collection.where(query.where_values.inject(:or)).uniq.order(:title)
   end
-
 
   def most_recently_managed_collection_id
     last_work = self.owner_works.order(:created_on).last
@@ -196,8 +195,7 @@ class User < ActiveRecord::Base
   end
 
   def self.search(search)
-    where("display_name LIKE ?", "%#{search}%")
-    where("login LIKE ?", "%#{search}%")
+    where("display_name LIKE ? OR login LIKE ?", "%#{search}%", "%#{search}%")
   end
 
   def create_notifications
