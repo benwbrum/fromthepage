@@ -90,11 +90,13 @@ module ExportHelper
 
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
+  
 
   def transform_table(table)
     clean = REXML::Element.new('table')
     table.elements.each('tbody/tr') do |tr|
       row = REXML::Element.new('row')
+#      row.add_attribute('ana', "#bk_entry")
       tr.elements.each('td') do |td|
         cell = REXML::Element.new('cell')
         td.children.each { |c| cell.add(c) }
@@ -130,7 +132,7 @@ module ExportHelper
       gap = REXML::Element.new("head")
 
       gap.add_attribute("depth", entryHeading.attributes["depth"])
-      gap.add_text(entryHeading.attributes["title"])
+      entryHeading.children.each { |c| gap.add(c) }
       entryHeading.replace_with(gap)
     end
     p_element.elements.each('//a') do |a|
