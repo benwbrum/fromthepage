@@ -90,16 +90,87 @@ module ExportHelper
 
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
   end
-  
+
+  def add_bk_attributes(cell, source)
+    index = source.xpath.match(/\[(\d+)\]$/)[1].to_i
+    if index == 1
+      cell.add_attribute('ana', '#bk_when')
+    elsif index == 2
+      cell.add_attribute('ana', '#bk_what')
+      parse_commodity_cell(cell)
+    elsif index >= 3
+      cell.add_attribute('ana', '#bk_amount')
+      if index == 3
+        text_to_measure(cell, cell.text, 'pounds', 'currency')
+      elsif index == 4
+        text_to_measure(cell, cell.text, 'shillings', 'currency')
+      elsif index == 5
+        text_to_measure(cell, cell.text, 'pence', 'currency')
+      end        
+    end
+  end  
+
+  def parse_commodity_cell(cell)
+    measures = []
+    cell.elements.each do |link|
+      prefix = link.previous_sibling.to_s
+      suffix = link.next_sibling.to_s
+      if prefix.match(/(\S+)\s*(\S+)\s*$/)
+        quantity = $1
+        unit = $2
+        if unit.match(/^\d+$/)
+          # probably no actual unit
+          quantity = unit
+          unit = nil
+        end
+      end      
+      if suffix.match(/\s*(\S+)/)
+        price = $1       
+      end
+      commodity = link.attribute('target_title').value
+      
+      measure=REXML::Element.new("measure")
+      measure.add_attribute('quantity', quantity)
+      measure.add_attribute('unit',unit) if unit
+      measure.add_attribute('commodity', commodity)
+      # TODO use original in closing capture group
+      measure.add_text(quantity)
+      measure.add_text(' ')
+      measure.add_text(unit)
+      measure.add(link)
+      measure.add_text(price)
+      
+      measures << measure
+    end
+    cell.children.each do |child|
+      child.remove
+    end
+    measures.each do |measure|
+      cell.add(measure)
+    end
+  end
+
+  def text_to_measure(cell, quantity, unit, commodity, price=nil)
+    measure=REXML::Element.new("measure")
+    cell.children.each { |c| measure.add(c) }
+    measure.add_attribute('quantity', quantity)
+    measure.add_attribute('unit',unit)
+    measure.add_attribute('commodity', commodity)
+#    measure.add_attribute('#bk_price', price) if price
+#    cell.children.each
+    cell.add(measure)
+        
+  end
 
   def transform_table(table)
     clean = REXML::Element.new('table')
     table.elements.each('tbody/tr') do |tr|
       row = REXML::Element.new('row')
-#      row.add_attribute('ana', "#bk_entry")
+      row.add_attribute('ana', "#bk_entry")
       tr.elements.each('td') do |td|
         cell = REXML::Element.new('cell')
         td.children.each { |c| cell.add(c) }
+        add_bk_attributes(cell, td)
         row.add(cell)
       end
       clean.add(row)
@@ -132,6 +203,7 @@ module ExportHelper
       gap = REXML::Element.new("head")
 
       gap.add_attribute("depth", entryHeading.attributes["depth"])
+      gap.add_attribute('ana', '#bk_party #bk_from #bk_account')
       entryHeading.children.each { |c| gap.add(c) }
       entryHeading.replace_with(gap)
     end
