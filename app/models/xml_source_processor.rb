@@ -308,6 +308,7 @@ module XmlSourceProcessor
   # transformations converting source mode transcription to xml
   def process_line_breaks(text)
     text="<p>#{text}</p>"
+    text = text.gsub("<br>", "<br />")
     text = text.gsub(/\n\s*\n/, "</p><p>")
     text = text.gsub(/-\r\n/, '<lb break="no" />')
     text = text.gsub(/\r\n/, "<lb/>")
