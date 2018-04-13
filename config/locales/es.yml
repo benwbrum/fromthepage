@@ -91,6 +91,7 @@ es:
         destroy:
           success: "La Transcripción ha sido borrada"
         like: "¡Has votado por una Transcripción!"
+        dislike: "¡Has quitado tu voto de una Transcripción!"
       translation:
         create:
           success: "La Traducción ha sido creada"
@@ -99,3 +100,4 @@ es:
         destroy:
           success: "La Traducción ha sido borrada"
         like: "¡Has votado por una Traducción!"
+        dislike: "¡Has quitado tu voto de una Traducción!"

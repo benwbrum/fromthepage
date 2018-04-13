@@ -91,6 +91,7 @@ en:
         destroy:
           success: "Transcription has been deleted"
         like: "You voted for one Transcription"
+        dislike: "You unvoted for one Transcription"
       translation:
         create:
           success: "Translation has been created"
@@ -99,4 +100,5 @@ en:
         destroy:
           success: "Translation has been deleted"
         like: "You voted for one Translation"
+        dislike: "You unvoted for one Translation"
       

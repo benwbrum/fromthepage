@@ -22,7 +22,10 @@ class Api::TranscriptionController < Api::ApiController
     transcriptions.each do |transcription|
       element = Hash.new()
       element['id']=transcription.id
-      element['vote']= current_user.voted_for? transcription
+      #element['vote']= current_user.voted_for? transcription
+      element['vote']= current_user.voted_as_when_voted_for(transcription)
+      element['isVote']= current_user.voted_as_when_voted_for(transcription)
+      
       @list.push(element)
       end
     render_serialized ResponseWS.default_ok(@list)
@@ -34,7 +37,8 @@ class Api::TranscriptionController < Api::ApiController
     transcriptions.each do |transcription|
       element = Hash.new()
       element['id']=transcription.id
-      element['vote']= current_user.voted_for? transcription
+      element['vote']= current_user.voted_as_when_voted_for(transcription)
+      element['isVote']= current_user.voted_as_when_voted_for(transcription)
       @list.push(element)
       end
     render_serialized ResponseWS.default_ok(@list)
@@ -67,18 +71,51 @@ class Api::TranscriptionController < Api::ApiController
   def like
     @transcription = Transcription.find(params[:transcription_id])
     @transcription.liked_by current_user
+    
+
     @mark=@transcription.mark
     if(@transcription.better_than? @mark.transcription)
       @mark.transcription=@transcription
       @mark.save
+      
     end
+    record_deed(@transcription)
     render_serialized ResponseWS.ok("api.contribution.transcription.like", @transcription)
+  end
+
+
+    def dislike
+    @transcription = Transcription.find(params[:transcription_id])
+    @transcription.downvote_from current_user
+    @mark=@transcription.mark
+    if(@transcription.better_than? @mark.transcription)
+      @mark.transcription=@transcription
+      @mark.save
+     end
+  
+    render_serialized ResponseWS.ok("api.contribution.transcription.dislike", @transcription)
   end
   
   def show
     response_serialized_object @transcription
   end
+
+  def record_deed(transcription)
+    deed = stub_deed(transcription)
+    deed.deed_type = Deed::TRASNCRIPTION_LIKE
+    deed.save!
+  end
   
+
+def stub_deed(transcription)
+    deed = Deed.new
+    deed.page = @transcription.mark.page
+    deed.work = @transcription.mark.page.work
+    deed.collection = @transcription.mark.page.work.collection
+    deed.user = current_user
+    deed
+  end
+
   private
     
     def transcription_params
@@ -93,5 +130,7 @@ class Api::TranscriptionController < Api::ApiController
     def set_mark
       @mark = Mark.find(params[:mark_id])
     end
+
+
   
 end

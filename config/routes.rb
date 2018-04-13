@@ -59,8 +59,11 @@ Fromthepage::Application.routes.draw do
     devise_for :user,controllers:{masquerades: "masquerades", registrations: "registrations"}
     devise_scope :user do
       post 'registration' => 'registration#create'
+    
       put 'registration' => 'registration#update'
     end
+  
+    post 'users/passwords' => 'password#create'
     
     get 'dashboard' => 'dashboard#index'
     get 'dashboard/guest' => 'dashboard#guest'
@@ -92,6 +95,7 @@ Fromthepage::Application.routes.draw do
     resources :transcription, path: 'transcription', only: [:index, :create, :update, :destroy, :show] do
       get ':transcription_id', path: 'like', as: :like_transcription, to: 'transcription#like'
       get '', path: 'vote',  to: 'transcription#transcription_like_by_user'
+      get ':transcription_id', path: 'dislike', as: :dislike_transcription, to: 'transcription#dislike'
     end
     resources :translation, path: 'translation', only: [:index, :create, :update, :destroy, :show]
     resources :registration, path: 'registration', only: [:create] do
