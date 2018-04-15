@@ -72,6 +72,19 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/recent_work' => 'dashboard#recent_work'
     get 'deeds/:id' => 'deed#list'
     
+   
+    #post 'foro', :to=>'foro#create'
+   # get 'foro', :to=>'foro#show'
+    #put 'foro', :to=>'foro#update'
+    #delete 'foro', :to=>'foro#destroy'
+
+    #post 'publication', :to=>'publication#create'
+    #get 'publication', :to=>'publication#show'
+    #put 'publication', :to=>'publication#update'
+    #delete 'publication', :to=>'publication#destroy'
+    #get 'publication/list', :to=>'publication#list'
+   
+
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
     patch '/api/user', :to=>'user#update'
