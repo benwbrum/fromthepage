@@ -33,6 +33,12 @@ en:
     login:
       success: "Welcome to Transcriptor!"
       fail: "Username or password not valid, try again."
+    reset_password:
+      request:
+        success: "You will receive an email with instructions on how to reset your password in a few minutes."
+        error: "The email entered does not correspond to any registered user"
+      confirm:
+        success: "Your password was changed successfully. You are now signed in."
     collection:
       create:
         success: "Collection has been created"

@@ -33,6 +33,12 @@ es:
     login:
       success: "¡Bienvenido a Transcriptor!"
       fail: "Usuario o contraseña no válidos, vuelva a intentarlo."
+    reset_password:
+      request:
+        success: "Recibirás un email con instrucciones para cambiar tu contraseña en unos minutos."
+        error: "El email ingresado no corresponde con ningún usuario registrado"
+      confirm:
+        success: "Tu contraseña fue modificada correctamente. Has iniciado sesión."
     collection:
       create:
         success: "La Colección ha sido creada"

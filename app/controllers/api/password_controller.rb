@@ -9,9 +9,9 @@ class Api::PasswordController < Api::ApiController
     if @user
       @user.created_at_was
       @user.send_reset_password_instructions
-      render_serialized ResponseWS.simple_ok('api.reset_password.success')
+      render_serialized ResponseWS.simple_ok('api.reset_password.request.success')
     else
-      render_serialized ResponseWS.simple_error('api.reset_password.fail')
+      render_serialized ResponseWS.simple_error('api.reset_password.request.error')
     end
   end
 
