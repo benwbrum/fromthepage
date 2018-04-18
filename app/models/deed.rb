@@ -12,6 +12,7 @@ class Deed < ActiveRecord::Base
   TRANSLATION_REVIEW = 'xlat_rev'
   TRANSLATION_INDEXED = 'xlat_index'
   WORK_ADDED = 'work_add'
+  TRASNCRIPTION_LIKE = 'trans_like'
 
   # associations
   belongs_to :article
@@ -21,7 +22,7 @@ class Deed < ActiveRecord::Base
   belongs_to :user
   belongs_to :work
 
-  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW, TRANSLATION_INDEXED, WORK_ADDED ]
+  validates_inclusion_of :deed_type, :in => [ PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_INDEXED, ARTICLE_EDIT, NOTE_ADDED, PAGE_TRANSLATED, PAGE_TRANSLATION_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW, TRANSLATION_INDEXED, WORK_ADDED,TRASNCRIPTION_LIKE ]
   scope :order_by_recent_activity, -> { order('created_at DESC') }
 
   visitable # ahoy integration
@@ -52,6 +53,8 @@ class Deed < ActiveRecord::Base
       'Translation Page Indexed'
     when WORK_ADDED
       'Work Added'
+    when TRASNCRIPTION_LIKE
+      'Trasncription voted'
     end
   end
 
