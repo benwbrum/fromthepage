@@ -23,7 +23,17 @@ en:
       x_days:
         one: 24 hours
         other: "%{count} days"
-        
+  
+  mail:
+    reset_password_instructions: "<h2>Hello %{user_mail}!</h2>
+    <p>Someone has requested a link to change your password. You can do this through the link below:</p>
+    <p class='center-align'><a class='btn' href='%{edit_password_url}'>Change my password</a></p>
+    <p>If you didn't request this, please ignore this email.</p>
+    <p>Your password won't change until you access the link above and create a new one.</p>"
+    footer:
+      sended_from: "Sended from"
+      powered_by: "A Project of"
+    
   api:
     default:
       ok: "The operation was successfully completed"
@@ -33,6 +43,12 @@ en:
     login:
       success: "Welcome to Transcriptor!"
       fail: "Username or password not valid, try again."
+    reset_password:
+      request:
+        success: "You will receive an email with instructions on how to reset your password in a few minutes."
+        error: "The email entered does not correspond to any registered user"
+      confirm:
+        success: "Your password was changed successfully. You are now signed in."
     collection:
       create:
         success: "Collection has been created"

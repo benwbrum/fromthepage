@@ -63,7 +63,8 @@ Fromthepage::Application.routes.draw do
       put 'registration' => 'registration#update'
     end
   
-    post 'users/passwords' => 'password#create'
+    post 'users/password' => 'password#create'
+    post 'users/password/confirm' => 'password#confirm'
     
     get 'dashboard' => 'dashboard#index'
     get 'dashboard/guest' => 'dashboard#guest'
