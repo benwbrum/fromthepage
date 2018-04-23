@@ -1,4 +1,5 @@
 require 'gamification_helper'
+
 class Api::RegistrationController < Api::ApiDeviceRegistrationController
  layout false
   def new
@@ -37,9 +38,9 @@ class Api::RegistrationController < Api::ApiDeviceRegistrationController
     yield resource if block_given?
     if resource_saved
       # call GamificationHelper
-     # GamificationHelper.registerEvent(@user.email)
+      alert = GamificationHelper.registerEvent(@user.email)
 
-      render_serialized ResponseWS.ok('api.registration.create.success',@user)
+      render_serialized ResponseWS.ok('api.registration.create.success',@user,alert)
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
