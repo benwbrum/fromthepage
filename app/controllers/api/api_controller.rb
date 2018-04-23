@@ -1,3 +1,5 @@
+require 'gamification_helper'
+
 class Api::ApiController < ApplicationController
   
   include I18nHelper

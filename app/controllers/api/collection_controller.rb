@@ -18,7 +18,7 @@ class Api::CollectionController < Api::ApiController
     if @collection.save
       
       # record activity on gamification services 
-      # GamificationHelper.createCollectionEvent(current_user.email)
+      alert = GamificationHelper.createCollectionEvent(current_user.email)
       
       # flash[:notice] = 'Collection has been created'
       # if request.referrer.include?('sc_collections')
@@ -27,7 +27,7 @@ class Api::CollectionController < Api::ApiController
       # else
         # ajax_redirect_to({ controller: 'dashboard', action: 'startproject', collection_id: @collection.id })
       # end
-      render_serialized ResponseWS.ok('api.collection.create.success',@collection)
+      render_serialized ResponseWS.ok('api.collection.create.success',@collection,alert)
     else
       # render action: 'new'
       render_serialized ResponseWS.default_error

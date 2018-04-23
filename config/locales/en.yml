@@ -1,7 +1,6 @@
 # English i18n Messages
 
 en:
-  hello: "Hello world"
   will_paginate:
     previous_label: "&#8592;"
     next_label: "&#8594;"
@@ -33,6 +32,32 @@ en:
     footer:
       sended_from: "Sended from"
       powered_by: "A Project of"
+  
+  badges:
+    i-was-here:
+      notification:
+        title: "New Badge Obtained!"
+        message: "I Was Here!"
+    welcome-back:
+      notification:
+        title: "New Badge Obtained!"
+        message: "Welcome Back!"
+    first-collection:
+      notification:
+        title: "New Badge Obtained!"
+        message: "First Collection"
+    first-work:
+      notification:
+        title: "New Badge Obtained!"
+        message: "First Work"
+    first-upload:
+      notification:
+        title: "New Badge Obtained!"
+        message: "First Upload"
+    first-transcription-upgrade:
+      notification:
+        title: "New Badge Obtained!"
+        message: "First Transcription Upgrade"
     
   api:
     default:

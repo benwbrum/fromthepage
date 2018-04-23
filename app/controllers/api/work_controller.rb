@@ -59,13 +59,13 @@ class Api::WorkController < Api::ApiController
 
     if @work.save
       # record activity on gamification services 
-      # GamificationHelper.createWorkEvent(current_user.email)
+      alert = GamificationHelper.createWorkEvent(current_user.email)
       
       record_deed(@work)
       # flash[:notice] = 'Work created successfully'
       # ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
 
-      render_serialized ResponseWS.ok('api.work.create.success',@work)
+      render_serialized ResponseWS.ok('api.work.create.success',@work,alert)
     else
       render_serialized ResponseWS.default_error
     end
