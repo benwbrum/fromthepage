@@ -5,7 +5,9 @@ class Api::UploadController < Api::ApiController
     @document_upload.user = current_user
 
     if @document_upload.save
-
+      
+      alert = GamificationHelper.uploadWorkEvent(current_user.email)
+      
       if SMTP_ENABLED
         begin
           # SystemMailer.new_upload(@document_upload).deliver!
@@ -16,7 +18,7 @@ class Api::UploadController < Api::ApiController
       end
       # ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
       @document_upload.submit_process
-      render_serialized ResponseWS.simple_ok('api.upload.create.success')
+      render_serialized ResponseWS.simple_ok('api.upload.create.success',alert)
     else
       # render action: 'upload'
       render_serialized ResponseWS.simple_error('api.upload.create.error')

@@ -1,7 +1,6 @@
 # Spanish i18n Messages
 
 es:
-  hello: "Hello world"
   will_paginate:
     previous_label: "&#8592;"
     next_label: "&#8594;"
@@ -33,6 +32,32 @@ es:
     footer:
       sended_from: "Enviado desde"
       powered_by: "Un proyecto de"
+  
+  badges:
+    i-was-here:
+      notification:
+        title: "¡Nueva Insignia Obtenida!"
+        message: "¡Yo estuve aqui!"
+    welcome-back:
+      notification:
+        title: "¡Nueva Insignia Obtenida!"
+        message: "¡Bienvenido de nuevo!"
+    first-collection:
+      notification:
+        title: "¡Nueva Insignia Obtenida!"
+        message: "Primera Colección"
+    first-work:
+      notification:
+        title: "¡Nueva Insignia Obtenida!"
+        message: "Primer Trabajo"
+    first-upload:
+      notification:
+        title: "¡Nueva Insignia Obtenida!"
+        message: "Primer Trabajo Subido"
+    first-transcription-upgrade:
+      notification:
+        title: "¡Nueva Insignia Obtenida!"
+        message: "Primer mejora de Transcripción"
       
   api:
     default:

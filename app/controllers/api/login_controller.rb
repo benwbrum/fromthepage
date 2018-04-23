@@ -9,7 +9,9 @@ class Api::LoginController < Api::ApiController
     password = params[:password]
     user = User.find_for_authentication(:login => username)
     if (user != nil && user.valid_password?(password))
-      render_serialized ResponseWS.ok('api.login.success',user)
+      # Record login event
+      alert = GamificationHelper.loginEvent(user.email)
+      render_serialized ResponseWS.ok('api.login.success',user,alert)
     else
       render_serialized ResponseWS.simple_error('api.login.fail')
     end

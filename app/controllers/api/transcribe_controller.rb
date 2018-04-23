@@ -73,6 +73,7 @@ class Api::TranscribeController  < Api::ApiController
     needs_review
 
     if params['save']
+      alert = nil
       message = log_transcript_attempt
       #leave the status alone if it's needs review, but otherwise set it to transcribed
       unless @page.status == Page::STATUS_NEEDS_REVIEW
@@ -119,12 +120,12 @@ class Api::TranscribeController  < Api::ApiController
             end
           else
             # record activity on gamification services 
-            # GamificationHelper.editTranscriptionEvent(current_user.email)
+            alert = GamificationHelper.editTranscriptionEvent(current_user.email)
           end
           
           # Analize this...
           # redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
-          render_serialized ResponseWS.ok('api.transcription.save.success',@page)
+          render_serialized ResponseWS.ok('api.transcription.save.success',@page,alert)
         else
           log_transcript_error(message)
           # render :action => 'display_page'

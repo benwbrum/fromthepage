@@ -8,10 +8,10 @@ class GamificationHelper
     #### login diario ####
     def self.loginEvent(email)
         puts("login event")
-        has_badge=self._user_has_badge(email,"welcome-back")
         activity={"email":email,"project":@@project,"event":"login","count":1}
         @@metagameClient.make_activity(activity)
-        return !has_badge
+        response=self._user_has_badge(email,"welcome-back") ? nil : self._badge_notification("welcome-back")
+        return response
     end
 
     #### Creacion de cuenta ####
@@ -19,7 +19,7 @@ class GamificationHelper
         puts("register event")
         activity={"email":email,"project":@@project,"event":"login","count":1}
         @@metagameClient.make_activity(activity)
-        return true
+        return self._badge_notification("i-was-here")
     end
 
     ##### creacion de proyecto ####
@@ -70,9 +70,9 @@ class GamificationHelper
         badge=self._get_badge(badge_name)
         response=@@metagameClient.add_issue(email,badge.id)
         if response.respond_to?("ok")
-            return true
+            return self._badge_notification(badge_name)
         end
-        return false
+        return nil
     end
     
     private
@@ -83,5 +83,10 @@ class GamificationHelper
         else
             return false
         end
+    end
+    
+    private
+    def self._badge_notification(badge_name)
+      return Alert.new("badges.#{badge_name}.notification.title","badges.#{badge_name}.notification.message")
     end
 end
