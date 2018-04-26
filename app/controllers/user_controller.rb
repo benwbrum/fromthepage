@@ -63,6 +63,11 @@ class UserController < ApplicationController
       flash[:notice] = "User profile has been deleted"
       redirect_to dashboard_path
     end
+    if @user.owner?
+      collections = @user.all_owner_collections.carousel
+      sets = @user.document_sets.carousel
+      @carousel_collections = (collections + sets).sample(8)
+    end
   end
 
   def record_deed

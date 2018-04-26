@@ -2,6 +2,7 @@
 class CollectionController < ApplicationController
   include ContributorHelper
   include AddWorkHelper
+  include CollectionHelper
 
   public :render_to_string
 
@@ -10,7 +11,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_filter :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
-  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list]
+  before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_filter :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
@@ -273,6 +274,30 @@ class CollectionController < ApplicationController
     end
   end
 
+  def needs_transcription_pages
+    work_ids = @collection.works.pluck(:id)
+    @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_transcription.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
+  end
+
+  def needs_review_pages
+    work_ids = @collection.works.pluck(:id)
+    @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
+  end
+
+  def start_transcribing
+    pages = find_transcribe_pages
+    if pages.blank?
+      flash[:notice] = "Sorry, but there are no qualifying pages in this collection."
+      redirect_to collection_path(@collection.owner, @collection)
+    else
+      @page = pages.first
+      if !user_signed_in?
+        redirect_to collection_guest_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+      else
+        redirect_to collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+      end
+    end
+  end
 
 private
   def set_collection

@@ -42,7 +42,6 @@ class Page < ActiveRecord::Base
   attr_accessible :metadata
   serialize :metadata, Hash
 
-  scope :unrestricted, -> { where(restricted: false)}
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
   scope :needs_transcription, -> { where(status: nil)}

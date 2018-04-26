@@ -141,7 +141,9 @@ describe "owner actions", :order => :defined do
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
-    expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+    work = Work.find_by(title: @title)
+    expect(Deed.last.work_id).to eq(work.id)
+    expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
 
@@ -203,7 +205,6 @@ describe "owner actions", :order => :defined do
     page.find('a', text: 'Your Profile').click
     expect(page).to have_content(@owner.display_name)
     expect(page).to have_selector('.columns')
-    expect(page.find('.maincol')).to have_content("Collections")
     expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
     @collections.each do |c|
         expect(page).to have_content(c.title)

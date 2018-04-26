@@ -83,7 +83,7 @@ describe "admin actions" do
     expect(page).to have_selector('a', text: 'Owner Dashboard')
     expect(page).not_to have_selector('a', text: 'Admin Dashboard')
     visit admin_path
-    expect(page.current_path).to eq dashboard_path
+    expect(page.current_path).to eq collections_list_path
 
     #un-masquerade and make sure the user is the admin again
     click_link('Undo Login As')
@@ -92,6 +92,18 @@ describe "admin actions" do
     expect(page).to have_selector('a', text: 'Admin Dashboard')
     page.find('a', text: 'Admin Dashboard').click
     expect(page).to have_content("Administration")
+  end
+
+  it "sorts owner list" do
+    visit admin_path
+    page.find('.tabs').click_link("Owners")
+    expect(page).to have_content("Owner Login")
+    click_link('Acct Type')
+    expect(page.find('.admin-grid tbody tr[1]')).to have_content(@admin.login)
+    click_link('Acct Expiration')
+    expect(page.find('.admin-grid tbody tr[1]')).to have_content(@owner.login)
+    click_link('Start Date')
+    expect(page.find('.admin-grid tbody tr[1]')).to have_content(@admin.login)
   end
 
 end

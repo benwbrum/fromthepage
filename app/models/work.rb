@@ -120,6 +120,10 @@ class Work < ActiveRecord::Base
     Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
+  def update_deed_collection
+    deeds.where.not(:collection_id => collection_id).update_all(:collection_id => collection_id)
+  end
+
   # TODO make not awful
   def reviews
     my_reviews = []
@@ -164,7 +168,14 @@ class Work < ActiveRecord::Base
       Dir.glob(File.join(new_dir_name, "*")){|f| File.delete(f)}
       Dir.rmdir(new_dir_name)
     end
+  end
 
+  def completed
+    if self.supports_translation == true
+      self.work_statistic.translation_complete
+    else
+      self.work_statistic.complete
+    end
   end
 
   def thumbnail
