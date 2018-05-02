@@ -118,6 +118,7 @@ Fromthepage::Application.routes.draw do
       post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
       post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
     end  
+    match '/user/badges', as: :user_badges, to: 'badge#list', via: [:get,:post]
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
     resources :upload, path: 'upload', only: [:create]
