@@ -1,6 +1,7 @@
 .litebox-embed(style="width:550px")
   h1 Update User Profile
-  p Your name is the only required field here, but we would appreciate if you tell the FromThePage community a little bit more about yourself.
+  -if @user.owner
+    p Your name is the only required field.
 
   =form_for(@user, { :url => { :action => 'update' }}) do |f|
     =hidden_field_tag :user_id, @user.id
