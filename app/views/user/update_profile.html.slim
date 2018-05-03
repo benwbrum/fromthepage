@@ -23,12 +23,12 @@
           td(colspan="2")
             =f.label :about, 'About you', class: 'above'
             =f.text_area :about, rows: 4
+        tr
+          th =f.label :location
+          td =f.text_field :location, :placeholder => 'Where are you from?'
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"
-      tr
-        th =f.label :location
-        td =f.text_field :location, :placeholder => 'Where are you from?'
 
     p.email_notifications Select which of the following notifications you want to receive:
     table.form.email_notifications
