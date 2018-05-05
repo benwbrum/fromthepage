@@ -11,7 +11,10 @@
         =t.email
         | <br>
 
-  =render(:partial => 'collection/contributor_activity', :locals => { :mailer => mailer })
+  h4.legend.fglight Collaborator Stats #{@start_deed} through #{@end_deed}
+  =render({ :partial => 'statistics/recent_statistics', 
+            :locals => { :stats => @stats, :subjects_disabled => @collection.subjects_disabled }})
+
 
 -else
   h3 No activity in this time frame
