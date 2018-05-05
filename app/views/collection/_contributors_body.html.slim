@@ -14,7 +14,7 @@
   h4.legend.fglight Collaborator Stats #{@start_deed} through #{@end_deed}
   =render({ :partial => 'statistics/recent_statistics', 
             :locals => { :stats => @stats, :subjects_disabled => @collection.subjects_disabled }})
-
+  =link_to 'Details', { :controller => 'deed', :action => 'list', :start_date => @start_deed, :end_date => @end_deed }
 
 -else
   h3 No activity in this time frame
