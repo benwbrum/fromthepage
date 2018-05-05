@@ -1,0 +1,11 @@
+section.collection-stats_recent
+    .counter(data-prefix="#{number_with_delimiter stats.contributor_count(7)}") #{'Collaborator'.pluralize(stats.contributor_count(7))}
+    .counter(data-prefix="#{number_with_delimiter stats.transcription_count(7)}") #{'Page'.pluralize(stats.transcription_count(7))} transcribed
+    .counter(data-prefix="#{number_with_delimiter stats.edit_count(7)}") Page #{'edit'.pluralize(stats.edit_count(7))}
+    -unless subjects_disabled
+      .counter(data-prefix="#{number_with_delimiter stats.index_count(7)}") #{'Page'.pluralize(stats.index_count(7))} indexed
+      .counter(data-prefix="#{number_with_delimiter stats.mention_count(7)}") #{'Reference'.pluralize(stats.mention_count(7))}
+      .counter(data-prefix="#{number_with_delimiter stats.subject_count(7)}") New #{'subject'.pluralize(stats.subject_count(7))}
+    .counter(data-prefix="#{number_with_delimiter stats.comment_count(7)}") #{'Note'.pluralize(stats.comment_count(7))}
+    .counter(data-prefix="#{number_with_delimiter stats.translation_count(7)}") #{'Page'.pluralize(stats.translation_count(7))} translated
+    .counter(data-prefix="#{number_with_delimiter stats.ocr_count(7)}") OCR #{'Correction'.pluralize(stats.ocr_count(7))}
