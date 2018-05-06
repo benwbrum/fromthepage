@@ -21,7 +21,9 @@ class Api::PublicationController < Api::ApiController
     @publicacion.user=current_user
     @publicacion.text=params[:text]
     if  @publicacion.save
-      render_serialized ResponseWS.ok("api.mark.create.success", @publicacion)
+      params[:fields]="user"
+      puts ResponseWS.ok("api.publication.create.success", @publicacion).data
+      render_serialized ResponseWS.ok("api.publication.create.success", @publicacion)
     else
       render_serialized ResponseWS.default_error
     end
@@ -30,12 +32,12 @@ class Api::PublicationController < Api::ApiController
 
   def update
     @publicacion.update_attributes(publication_params)
-    render_serialized ResponseWS.ok("api.contribution.transcription.update.success", @publicacion)
+    render_serialized ResponseWS.ok("api.publication.update.success", @publicacion)
   end
   
   def destroy
     @publicacion.destroy
-    render_serialized ResponseWS.ok("api.contribution.transcription.destroy.success", @publicacion)
+    render_serialized ResponseWS.ok("api.publication.destroy.success", @publicacion)
   end
   
   def show
@@ -44,8 +46,13 @@ class Api::PublicationController < Api::ApiController
   
 
   def list
-    @publications = Publication.where(foro_id: params[:id])
+    @publications = Publication.where("parent_id IS NULL AND foro_id = ? ",params[:id])
     response_serialized_object @publications
+  end
+
+  def listByPublication
+      @publications = Publication.where("parent_id = ? ",params[:publication_id])
+      render_serialized ResponseWS.ok("api.publication.list.success", @publications)
   end
 
 

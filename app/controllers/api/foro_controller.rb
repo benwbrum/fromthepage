@@ -14,7 +14,8 @@ class Api::ForoController < Api::ApiController
     #@transcription=Transcription.find(params[:element][:transcription][:id])
     @foro.element=@transcription
     if  @foro.save
-        render_serialized ResponseWS.ok("api.mark.create.success", @foro)
+
+        render_serialized ResponseWS.ok("api.forum.create.success", @foro.element)
     else
       render_serialized ResponseWS.default_error
     end
@@ -22,12 +23,17 @@ class Api::ForoController < Api::ApiController
 
   def update
     @foro.update_attributes(foro_params)
-    render_serialized ResponseWS.ok("api.contribution.transcription.update.success", @foro)
+    render_serialized ResponseWS.ok("api.forum.update.success", @foro)
   end
   
   def destroy
     @foro.destroy
-    render_serialized ResponseWS.ok("api.contribution.transcription.destroy.success", @foro)
+    render_serialized ResponseWS.ok("api.forum.destroy.success", @foro)
+  end
+
+  def getByClass
+      @foro = Foro.where("element_id = ? AND element_type = ?",params[:element_id],params[:className]).first
+      response_serialized_object @foro
   end
   
   def show

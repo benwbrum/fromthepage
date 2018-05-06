@@ -101,4 +101,21 @@ en:
           success: "Translation has been deleted"
         like: "You voted for one Translation"
         dislike: "You unvoted for one Translation"
+    publication:
+      create:
+        success: "Publication has been created"
+      update:
+        success: "Publication has been updated"
+      destroy:
+        success: "Publication has been deleted"
+      list:
+        success: "Publication has been listed"
+    forum:
+      create:
+        success: "Forum has been created"
+      update:
+        success: "Forum has been updated"
+      destroy:
+        success: "Forum has been deleted"
+        
       

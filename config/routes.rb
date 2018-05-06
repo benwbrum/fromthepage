@@ -72,27 +72,23 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/recent_work' => 'dashboard#recent_work'
     get 'deeds/:id' => 'deed#list'
     
-    post 'foro', :to=>'foro#create'
-    get 'foro', :to=>'foro#show'
-    put 'foro', :to=>'foro#update'
-    delete 'foro', :to=>'foro#destroy'
+   
+#    post 'foro', :to=>'foro#create'
+#    get 'foro', :to=>'foro#show'
+#    put 'foro', :to=>'foro#update'
+#    delete 'foro', :to=>'foro#destroy'
 
+
+    get 'foro/get', :to=>'foro#getByClass'
+    resources :foro, path: 'foro', only: [:create, :update, :destroy, :show,]
+
+
+    get 'publication/lists/', :to=> 'publication#listByPublication'
     post 'publication', :to=>'publication#create'
     get 'publication', :to=>'publication#show'
     put 'publication', :to=>'publication#update'
     delete 'publication', :to=>'publication#destroy'
     get 'publication/list', :to=>'publication#list'
-
-    #post 'foro', :to=>'foro#create'
-   # get 'foro', :to=>'foro#show'
-    #put 'foro', :to=>'foro#update'
-    #delete 'foro', :to=>'foro#destroy'
-
-    #post 'publication', :to=>'publication#create'
-    #get 'publication', :to=>'publication#show'
-    #put 'publication', :to=>'publication#update'
-    #delete 'publication', :to=>'publication#destroy'
-    #get 'publication/list', :to=>'publication#list'
    
 
     resources :test, path: 'test', only: [:index]

@@ -101,3 +101,20 @@ es:
           success: "La Traducción ha sido borrada"
         like: "¡Has votado por una Traducción!"
         dislike: "¡Has quitado tu voto de una Traducción!"
+    publication:
+      create:
+        success: "La Publicación ha sido creada"
+      update:
+        success: "La Publicación ha sido actualizada"
+      destroy:
+        success: "La Publicación ha sido borrada"
+      list:
+        success: "Se han listado las publicationes"
+    forum:
+      create:
+        success: "El Foro ha sido creado"
+      update:
+        success: "El Foro ha sido actualizado"
+      destroy:
+        success: "El Foro ha sido borrado"
+      
