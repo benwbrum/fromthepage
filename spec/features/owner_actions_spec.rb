@@ -141,7 +141,9 @@ describe "owner actions", :order => :defined do
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
-    expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+    work = Work.find_by(title: @title)
+    expect(Deed.last.work_id).to eq(work.id)
+    expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
 

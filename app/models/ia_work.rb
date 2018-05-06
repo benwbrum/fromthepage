@@ -4,6 +4,12 @@ class IaWork < ActiveRecord::Base
   belongs_to :user
   belongs_to :work
   has_many :ia_leaves
+  
+  before_create :truncate_title
+
+  def truncate_title
+    self.title = self.title.truncate(255, :omission => "...")
+  end
 
   def display_page
     # blank status of raw ocr before displaying -- if the user hits save, status will become default
