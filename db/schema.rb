@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308035119) do
+ActiveRecord::Schema.define(version: 20180412032317) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -198,6 +198,14 @@ ActiveRecord::Schema.define(version: 20180308035119) do
 
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
   add_index "document_uploads", ["user_id"], name: "index_document_uploads_on_user_id", using: :btree
+
+  create_table "foros", force: :cascade do |t|
+    t.integer  "user_id",      limit: 4
+    t.integer  "element_id",   limit: 4
+    t.string   "element_type", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",           limit: 255, null: false
@@ -413,6 +421,15 @@ ActiveRecord::Schema.define(version: 20180308035119) do
 
   add_index "pages_sections", ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id", using: :btree
   add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
+
+  create_table "publications", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "foro_id",    limit: 4
+    t.integer  "parent_id",  limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "text",       limit: 255
+  end
 
   create_table "sc_canvases", force: :cascade do |t|
     t.string   "sc_id",              limit: 255

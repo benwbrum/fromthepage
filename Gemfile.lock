@@ -180,7 +180,7 @@ GEM
     mini_portile2 (2.2.0)
     minitest (5.10.3)
     multipart-post (2.0.0)
-    mysql2 (0.4.9)
+    mysql2 (0.4.10)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -363,7 +363,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   meta_request
-  mysql2 (= 0.4.9)
+  mysql2 (= 0.4.10)
   newrelic_rpm
   nokogiri
   oai!
