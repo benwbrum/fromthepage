@@ -4,6 +4,10 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def new_trial
+    new
+  end
+
   def destroy
     resource.soft_delete
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
@@ -22,7 +26,6 @@ class RegistrationsController < Devise::RegistrationsController
     else
       @user = build_resource(sign_up_params)
     end
-
     resource_saved = @user.save
     #this is the default Devise code
     yield resource if block_given?
@@ -54,7 +57,11 @@ class RegistrationsController < Devise::RegistrationsController
 
   #redirect new sign up back to starting page
   def after_sign_up_path_for(resource)
-    session[:user_return_to] || root_path
+    unless @user.owner
+      session[:user_return_to] || root_path
+    else
+      dashboard_owner_path
+    end
   end
 
 end
