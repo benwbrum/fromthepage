@@ -255,9 +255,9 @@ class CollectionController < ApplicationController
     @start_deed = start_date.strftime("%b %d, %Y")
     @end_deed = end_date.strftime("%b %d, %Y")
 
-    @stats = @collection.get_stats_hash(start_date, end_date)
-
+    
     new_contributors(@collection, start_date, end_date)
+    @stats = @collection.get_stats_hash(start_date, end_date)
   end
 
   def blank_collection
