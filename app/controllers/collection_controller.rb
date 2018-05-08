@@ -302,7 +302,7 @@ class CollectionController < ApplicationController
       end
     end
 
-    send_data csv, filename: "#{start_date.to_s(:db)}-#{end_date.to_s(:db)}-collection_#{@collection.id}.csv"
+    send_data csv, filename: "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}.csv"
   end
 
   def blank_collection
