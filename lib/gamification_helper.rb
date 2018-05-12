@@ -7,19 +7,29 @@ class GamificationHelper
 
     #### login diario ####
     def self.loginEvent(email)
-        puts("login event")
+      puts("login event")
+      begin  
         activity={"email":email,"project":@@project,"event":"login","count":1}
         @@metagameClient.make_activity(activity)
         response=self._user_has_badge(email,"welcome-back") ? nil : self._badge_notification("welcome-back")
         return response
+      rescue Exception => e
+        puts e.message
+        return nil
+      end  
     end
 
     #### Creacion de cuenta ####
     def self.registerEvent(email)
-        puts("register event")
+      puts("register event")
+      begin  
         activity={"email":email,"project":@@project,"event":"login","count":1}
         @@metagameClient.make_activity(activity)
         return self._badge_notification("i-was-here")
+      rescue Exception => e
+        puts e.message
+        return nil
+      end  
     end
 
     ##### creacion de proyecto ####
@@ -67,12 +77,17 @@ class GamificationHelper
     #### intenta asignar la insignia al usuario respondiendo si pudo ####
     private
     def self._try_assign_badge(email,badge_name)
+      begin  
         badge=self._get_badge(badge_name)
         response=@@metagameClient.add_issue(email,badge.id)
         if response.respond_to?("ok")
             return self._badge_notification(badge_name)
         end
         return nil
+      rescue Exception => e
+        puts e.message
+        return nil
+      end
     end
     
     private
