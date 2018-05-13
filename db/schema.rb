@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412032317) do
+ActiveRecord::Schema.define(version: 20180513121818) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -409,6 +409,7 @@ ActiveRecord::Schema.define(version: 20180412032317) do
     t.text     "xml_translation",    limit: 65535
     t.text     "search_text",        limit: 65535
     t.string   "translation_status", limit: 255
+    t.text     "source_template",    limit: 65535
   end
 
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
