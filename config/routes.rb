@@ -4,10 +4,6 @@ Fromthepage::Application.routes.draw do
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
 
-  devise_scope :user do
-    get "users/new_trial" => "registrations#new_trial"
-  end
-
   iiif_for 'riiif/image', at: '/image-service'
   
   get   '/omeka_sites/items' => 'omeka_sites#items'
