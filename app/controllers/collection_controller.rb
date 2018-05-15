@@ -260,6 +260,58 @@ class CollectionController < ApplicationController
     @stats = @collection.get_stats_hash(start_date, end_date)
   end
 
+  def contributors_download
+    id = @collection.id
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    new_contributors(@collection, start_date, end_date)
+
+    headers = [
+      :name, 
+      :email,
+      :user_total_minutes,
+      :user_proportional_minutes,
+    ]
+
+    stats = @active_transcribers.map do |user|
+      time_total = 0
+      time_proportional = 0
+    
+      if @user_time[user.id]
+        time_total = (@user_time[user.id] / 60 + 1).floor
+      end
+
+      if @user_time_proportional[user.id]
+        time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
+      end
+
+      [
+        user.display_name,
+        user.email,
+        time_total,
+        time_proportional,
+      ]
+    end
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      stats.each do |user|
+          records << user
+      end
+    end
+
+    send_data( csv, 
+      :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}.csv",
+      :type => "application/csv")
+
+    cookies['download_finished'] = 'true'
+      
+  end
+
   def blank_collection
     collection = Collection.find_by(id: params[:collection_id])
     collection.blank_out_collection
