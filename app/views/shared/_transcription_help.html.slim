@@ -1,0 +1,6 @@
+.columns
+  article.maincol
+    =@collection.help.html_safe
+
+    -unless @collection.subjects_disabled
+      =@collection.link_help.html_safe

@@ -1,8 +1,3 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 9, :work_id => @work.id }})
 
-.columns
-  article.maincol
-    =@collection.help.html_safe
-
-    -unless @collection.subjects_disabled
-      =@collection.link_help.html_safe
+=render partial: 'shared/transcription_help'
