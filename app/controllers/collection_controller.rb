@@ -302,7 +302,12 @@ class CollectionController < ApplicationController
       end
     end
 
-    send_data csv, filename: "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}.csv"
+    send_data( csv, 
+      :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}.csv",
+      :type => "application/csv")
+
+    cookies['download_finished'] = 'true'
+      
   end
 
   def blank_collection
