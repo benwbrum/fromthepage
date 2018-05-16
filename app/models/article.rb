@@ -69,6 +69,10 @@ class Article < ActiveRecord::Base
   def related_article_ranks
 
   end
+  
+  def gis_enabled?
+    self.categories.any? { |c| c.gis_enabled }
+  end
 
   #######################
   # De-Dup Support
