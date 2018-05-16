@@ -39,5 +39,14 @@ class CategoryController < ApplicationController
     flash[:notice] = "Category has been deleted"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
-
+  def enable_gis
+    @category.update_attribute(:gis_enabled, true)
+    flash[:notice] = "GIS Enabled for #{@category.title}"
+    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+  end
+  def disable_gis
+    @category.update_attribute(:gis_enabled, false)
+    flash[:notice] = "GIS Disabled for #{@category.title}"
+    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+  end
 end
