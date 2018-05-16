@@ -49,13 +49,12 @@ class ArticleController < ApplicationController
         end
         record_deed
         flash[:notice] = "Subject has been successfully updated"
-        redirect_to :action => 'edit', :article_id => @article.id
       end
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
       flash[:notice] = "Subjects auto linking process completed"
-      render :action => 'edit'
     end
+    render :action => 'edit'
   end
 
   def article_category
