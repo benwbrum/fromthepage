@@ -26,8 +26,6 @@
         span ="User since #{@user.created_at.strftime("%b %d, %Y")}"
         -if @user.last_sign_in_at.present?
           span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
-      -if @user.location.present?
-        p.big(data-prefix='Location:') =@user.location
 
   h2 Recent Activity by #{@user.display_name}
   -if @notes.present?
