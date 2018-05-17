@@ -31,7 +31,7 @@
                       span Actions
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd
-                      =link_to 'Rename Category', { :controller => 'category', :action => 'edit', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
+                      =link_to 'Edit Category', { :controller => 'category', :action => 'edit', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       =link_to 'Add Child Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
                       =link_to 'Add Root Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox' => ''
                       -if category.gis_enabled
