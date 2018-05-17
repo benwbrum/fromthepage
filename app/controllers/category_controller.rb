@@ -39,16 +39,21 @@ class CategoryController < ApplicationController
   def delete
     anchor = @category.parent_id.present? ? "#category-#{@category.parent_id}" : nil
     @category.destroy #_but_attach_children_to_parent
+    
     flash[:notice] = "Category has been deleted"
     redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
   end
   def enable_gis
     @category.update_attribute(:gis_enabled, true)
+    @category.descendants.each {|d| d.update_attribute(:gis_enabled, true)}
+    
     flash[:notice] = "GIS Enabled for #{@category.title}"
     ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end
   def disable_gis
     @category.update_attribute(:gis_enabled, false)
+    @category.descendants.each {|d| d.update_attribute(:gis_enabled, false)}
+    
     flash[:notice] = "GIS Disabled for #{@category.title}"
     ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
   end
