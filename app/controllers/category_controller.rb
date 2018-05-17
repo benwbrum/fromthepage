@@ -19,7 +19,10 @@ class CategoryController < ApplicationController
 
   def add_new
     @new_category = Category.new({ :collection_id => @collection.id })
-    @new_category.parent = @category if @category.present?
+    if @category.present?
+      @new_category.parent = @category 
+      @new_category.gis_enabled = @category.gis_enabled
+    end
   end
 
   def create
