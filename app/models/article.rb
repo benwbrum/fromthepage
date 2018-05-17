@@ -37,7 +37,7 @@ class Article < ActiveRecord::Base
 
   after_save :create_version
 
-  attr_accessible :title, :latitude, :longitude
+  attr_accessible :title, :latitude, :longitude, :uri
   attr_accessible :source_text
 
   def link_list
