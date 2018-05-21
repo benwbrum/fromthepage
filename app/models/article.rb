@@ -71,7 +71,7 @@ class Article < ActiveRecord::Base
   end
   
   def gis_enabled?
-    self.categories.any? { |c| c.gis_enabled }
+    self.categories.where(:gis_enabled => true).present?
   end
 
   #######################
