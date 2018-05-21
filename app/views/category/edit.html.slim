@@ -3,6 +3,8 @@
 
   =form_for(@category, :url => { :action => 'update' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
+    =hidden_field_tag(:collection_id, @collection.id)
+    =f.hidden_field(:collection_id)
     =validation_summary @category.errors
     table.form
       tr.big

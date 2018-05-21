@@ -11,7 +11,7 @@ class CategoryController < ApplicationController
   def update
     if @category.update_attributes(params[:category])
       flash[:notice] = "Category has been updated"
-      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+      ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
     else
       render :action => 'edit'
     end
@@ -30,31 +30,31 @@ class CategoryController < ApplicationController
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
       flash[:notice] = "Category has been created"
-      ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@new_category.id}"
+      ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@new_category.id }"})
     else
       render :action => 'add_new'
     end
   end
 
   def delete
-    anchor = @category.parent_id.present? ? "#category-#{@category.parent_id}" : nil
+    anchor = @category.parent_id.present? ? "category-#{@category.parent_id}" : nil
     @category.destroy #_but_attach_children_to_parent
     
     flash[:notice] = "Category has been deleted"
-    redirect_to "#{request.env['HTTP_REFERER']}#{anchor}"
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => anchor})
   end
   def enable_gis
     @category.update_attribute(:gis_enabled, true)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, true)}
     
     flash[:notice] = "GIS Enabled for #{@category.title}"
-    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
   def disable_gis
     @category.update_attribute(:gis_enabled, false)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, false)}
     
     flash[:notice] = "GIS Disabled for #{@category.title}"
-    ajax_redirect_to "#{request.env['HTTP_REFERER']}#category-#{@category.id}"
+    ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
 end
