@@ -47,14 +47,24 @@ class CategoryController < ApplicationController
     @category.update_attribute(:gis_enabled, true)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, true)}
     
-    flash[:notice] = "GIS Enabled for #{@category.title}"
+    notice = "GIS Enabled for #{@category.title}"
+    if @category.descendants.count > 0
+      notice << " and #{@category.descendants.count} child categories"
+    end
+    
+    flash[:notice] = notice
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
   def disable_gis
     @category.update_attribute(:gis_enabled, false)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, false)}
     
-    flash[:notice] = "GIS Disabled for #{@category.title}"
+    notice = "GIS Disabled for #{@category.title}"
+    if @category.descendants.count > 0
+      notice << " and #{@category.descendants.count} child categories"
+    end
+    
+    flash[:notice] = notice
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
 end
