@@ -47,9 +47,10 @@ class CategoryController < ApplicationController
     @category.update_attribute(:gis_enabled, true)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, true)}
     
-    notice = "GIS Enabled for #{@category.title}"
-    if @category.descendants.count > 0
-      notice << " and #{@category.descendants.count} child categories"
+    notice = "GIS enabled for #{@category.title}"
+    count = @category.descendants.count
+    if count > 0
+      notice << " and #{count} child " << "category".pluralize(count)
     end
     
     flash[:notice] = notice
@@ -59,9 +60,10 @@ class CategoryController < ApplicationController
     @category.update_attribute(:gis_enabled, false)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, false)}
     
-    notice = "GIS Disabled for #{@category.title}"
-    if @category.descendants.count > 0
-      notice << " and #{@category.descendants.count} child categories"
+    notice = "GIS disabled for #{@category.title}"
+    count = @category.descendants.count
+    if count > 0
+      notice << " and #{count} child " << "category".pluralize(count)
     end
     
     flash[:notice] = notice
