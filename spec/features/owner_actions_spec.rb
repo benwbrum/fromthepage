@@ -122,10 +122,13 @@ describe "owner actions", :order => :defined do
   end
 
   it "enables GIS for subject category" do
-    cat = @collection.categories.find_by(title: "Places")
+    category = @collection.categories.find_by(title: "Places")
+    category.gis_enabled = false
+    category.save
+
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
-    @name = "#category-" + "#{cat.id}"
+    @name = "#category-" + "#{category.id}"
     page.find(@name).find('a', text: 'Enable GIS').click
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places")
     page.find(@name).find('a', text: 'Add Child Category').click
