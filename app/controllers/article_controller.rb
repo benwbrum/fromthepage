@@ -256,8 +256,11 @@ end
 def gis_truncated?(params, dec)
   unless params[:latitude] || params[:longitude] then return false end
 
-  lat_dec = params[:latitude].split('.').last.length
-  long_dec = params[:longitude].split('.').last.length
+  lat = params[:latitude].split('.')
+  lon = params[:longitude].split('.')
 
-  if lat_dec > dec || long_dec > dec then return true else return false end
+  if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
+  if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
+
+  if lat_dec > dec || lon_dec > dec then return true else return false end
 end
