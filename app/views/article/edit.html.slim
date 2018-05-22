@@ -29,8 +29,8 @@
             th =f.label :latitude
             th =f.label :longitude
           tr
-            td.w50 =f.text_field :latitude
-            td.w50 =f.text_field :longitude
+            td.w50 =f.text_field :latitude, :value => (number_with_precision(f.object.latitude, :precision => 5))
+            td.w50 =f.text_field :longitude, :value => (number_with_precision(f.object.longitude, :precision => 5))
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
