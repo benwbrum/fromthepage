@@ -129,6 +129,10 @@ code {
   box-shadow: inset 0 0 0 1px rgba(#000, 0.08);
 }
 
+mark {
+  font-weight: bold;
+  text-decoration: underline;
+}
 
 .tabular {
   table {
