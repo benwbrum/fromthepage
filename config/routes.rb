@@ -36,8 +36,8 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
   get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
   get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
-  get   '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', :to => 'iiif#contributions'
-  get   '/iiif/contributions/:domain/:terminus_a_quo', :to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
   get   '/iiif/contributions/:domain', :to => 'iiif#contributions'
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
