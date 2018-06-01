@@ -17,23 +17,23 @@ class Api::UserController < Api::ApiController
     if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
       logger.error("Possible spam: deleting user #{@user.email}")
       @user.destroy!
-      
-    else 
+
+    else
       params[:user].delete_if { |k,v| v == NOTOWNER }
       if params[:user][:slug] == ""
-       
+
         @user.update(params[:user].except(:slug))
         login = @user.login.parameterize
         @user.update(slug: login)
       else
-       
+
         @user.update(params[:user])
       end
       if @user.save!
-       
+
         render_serialized ResponseWS.ok('api.user.update.success',@user)
       else
-        
+
         render_serialized ResponseWS.default_error
       end
     end
@@ -60,6 +60,11 @@ class Api::UserController < Api::ApiController
     deed.deed_type = Deed::NOTE_ADDED
     deed.user = current_user
     deed.save!
+  end
+
+  def user_metagame_info
+    @response = GamificationHelper.getPlayerInfoEvent(current_user.email)
+    response_serialized_object @response.player.rank
   end
 
 end

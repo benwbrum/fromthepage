@@ -3,11 +3,11 @@ Fromthepage::Application.routes.draw do
   root :to => 'static#splash'
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations"}
- 
+
 
 
   iiif_for 'riiif/image', at: '/image-service'
-  
+
   get   '/omeka_sites/items' => 'omeka_sites#items'
 
   resources :omeka_sites
@@ -22,17 +22,17 @@ Fromthepage::Application.routes.draw do
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'
-  
+
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
   get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
-  get   '/iiif/:page_id/notes', :to => 'iiif#notes'  
+  get   '/iiif/:page_id/notes', :to => 'iiif#notes'
   get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
-  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
+  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
-  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
-  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence' 
+  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
+  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
   get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ }
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
@@ -41,7 +41,7 @@ Fromthepage::Application.routes.draw do
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get   'YaquinaLights' => 'collection#show', :collection_id => 58
-  
+
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
@@ -54,26 +54,26 @@ Fromthepage::Application.routes.draw do
 
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
-  
+
   namespace :api do
     devise_for :user,controllers:{masquerades: "masquerades", registrations: "registrations"}
     devise_scope :user do
       post 'registration' => 'registration#create'
-    
+
       put 'registration' => 'registration#update'
     end
-  
+
     post 'users/password' => 'password#create'
     post 'users/password/confirm' => 'password#confirm'
-    
+
     get 'dashboard' => 'dashboard#index'
     get 'dashboard/guest' => 'dashboard#guest'
     get 'dashboard/owner' => 'dashboard#ownerResponse'
     get 'dashboard/owner/collections' => 'dashboard#collectionsOfOwner'
     get 'dashboard/recent_work' => 'dashboard#recent_work'
     get 'deeds/:id' => 'deed#list'
-    
-   
+
+
 #    post 'foro', :to=>'foro#create'
 #    get 'foro', :to=>'foro#show'
 #    put 'foro', :to=>'foro#update'
@@ -90,7 +90,7 @@ Fromthepage::Application.routes.draw do
     put 'publication', :to=>'publication#update'
     delete 'publication', :to=>'publication#destroy'
     get 'publication/list', :to=>'publication#list'
-   
+
 
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'
@@ -110,7 +110,7 @@ Fromthepage::Application.routes.draw do
     resources :mark, path: 'mark', only: [:index, :create, :update, :destroy, :show] do
       get '', path: 'transcriptions', as: :show_transcriptions, to: 'transcription#list_by_mark'
       get '', path: 'votes',  to: 'transcription#list_likes_by_user'
-     
+
     end
     resources :transcription, path: 'transcription', only: [:index, :create, :update, :destroy, :show] do
       get ':transcription_id', path: 'like', as: :like_transcription, to: 'transcription#like'
@@ -123,8 +123,10 @@ Fromthepage::Application.routes.draw do
     resources :page, path: 'transcribe', only: [] do
       post ':page_id', path: 'transcribe', as: :save_transcription, to: 'transcribe#save_transcription'
       post ':page_id', path: 'translate', as: :save_translation, to: 'transcribe#save_translation'
-    end  
+    end
     match '/user/badges', as: :user_badges, to: 'badge#list', via: [:get,:post]
+    match '/user/metagame/info', as: :user_metagame_info, to: 'user#user_metagame_info', via: [:get,:post]
+
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
     resources :upload, path: 'upload', only: [:create]
@@ -147,7 +149,7 @@ Fromthepage::Application.routes.draw do
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'
- 
+
       #work related routes
       #have to use match because it must be both get and post
       match 'display/read_work', path: '/:work_id', as: :read_work, to: 'display#read_work', via: [:get, :post]
@@ -163,7 +165,7 @@ Fromthepage::Application.routes.draw do
       get 'work/show', path: ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get 'display/list_pages', path: ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get 'static/transcribe_help', path: ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
-      
+
       #page related routes
       get 'display/display_page', path: ':work_id/display/:page_id/', as: 'display_page', to: 'display#display_page'
       get 'transcribe/display_page', path: ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
