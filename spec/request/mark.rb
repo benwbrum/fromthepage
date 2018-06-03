@@ -11,7 +11,7 @@ RSpec.describe "MarkController", type: :request do
   end
   it 'creates a Mark' do
 	   	puts "-----------------CREATE-------------------"
-	    post '/api/mark?auth_token=test&locale=es',{"text":"mark test","coordinates":{"x":23,"y":34},"shape_type":"polyline","text_type":"body","page_id":42}
+	    post '/api/mark?auth_token='+@user.authentication_token.to_s+'&locale=es',{"text":"mark test","coordinates":{"x":23,"y":34},"shape_type":"polyline","text_type":"body","page_id":42}
 	    json = JSON.parse(response.body)
       puts json['message'];
       expect(json['status']).to eq("OK")
@@ -19,4 +19,3 @@ RSpec.describe "MarkController", type: :request do
 
 
 end
-

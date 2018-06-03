@@ -3,14 +3,15 @@ require 'json'
 
 RSpec.describe "WorkController", type: :request do
 	before do
+		@user = FactoryGirl.create(:user)
 		@collection = FactoryGirl.create(:collection)
 		@work = FactoryGirl.create(:work)
 	end
-	
-	
+
+
 	it 'create a work succes' do
 		puts "-----------------Create a Work-------------------"
-	    post '/api/work?auth_token=test&locale=en', {"work":{"collection_id": @collection.id.to_s,"title":"trabajo test","description":""},"button":""}
+	    post '/api/work?auth_token='+@user.authentication_token.to_s+'&locale=en', {"work":{"collection_id": @collection.id.to_s,"title":"trabajo test","description":""},"button":""}
 	    json = JSON.parse(response.body)
 	  	puts json['message']
 	  	puts json['data']
@@ -18,7 +19,7 @@ RSpec.describe "WorkController", type: :request do
 	end
 	it 'show a work' do
 	  	puts "----------------SHOW--------------------"
-	  	get '/api/work/'+@work.id.to_s+'?auth_token=test&locale=es' 
+	  	get '/api/work/'+@work.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'
 	  	json = JSON.parse(response.body)
 	  	puts json['message']
 	  	expect(json['status']).to eq("OK")
@@ -26,7 +27,7 @@ RSpec.describe "WorkController", type: :request do
 
 	it 'updates a work' do
 	    puts "----------------UPDATE--------------------"
-	  	patch '/api/work/'+@work.id.to_s+'?auth_token=test&locale=es',{"work":{"collection":{"id":@collection.id.to_s},"title":"update","slug":"otro test"}}   
+	  	patch '/api/work/'+@work.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es',{"work":{"collection":{"id":@collection.id.to_s},"title":"update","slug":"otro test"}}
 	  	json = JSON.parse(response.body)
 	  	puts json['message']
 	    expect(json['status']).to eq("OK")
@@ -35,7 +36,7 @@ RSpec.describe "WorkController", type: :request do
 
 	it 'deletes a work' do
 	  	puts "--------------DELETE----------------------"
-	  	delete '/api/work/'+@work.id.to_s+'?auth_token=test&locale=es'   
+	  	delete '/api/work/'+@work.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'   
 	  	json = JSON.parse(response.body)
 	  	puts json['message']
 	    expect(json['status']).to eq("OK")

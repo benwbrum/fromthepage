@@ -6,12 +6,9 @@ FactoryGirl.define do
 	id 22
   	login 'testuser'
     display_name 'Test'
-	email 'testuser@transcriptor.com'
+	  email 'testuser@transcriptor.com'
    	password 'abc12356'
    	password_confirmation 'abc12356'
-   #	token 'test'
+  
   end
 end
-
-
-   

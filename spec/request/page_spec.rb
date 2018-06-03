@@ -11,7 +11,7 @@ RSpec.describe "PageController", type: :request do
 #controllar que se reciba el acces token
 	it 'create a page succes' do
 	  	puts "-----------------Create a Page-------------------"
-	    post '/api/page?auth_token=test&locale=es', {"work_id":@work.id.to_s,"page":{"title":"Page 1"},"subaction":"save_and_new"}
+	    post '/api/page?auth_token='+@user.authentication_token.to_s+'&locale=es', {"work_id":@work.id.to_s,"page":{"title":"Page 1"},"subaction":"save_and_new"}
 	    json = JSON.parse(response.body)
 	  	puts json['message'];
 	  	expect(json['status']).to eq("OK")
@@ -19,7 +19,7 @@ RSpec.describe "PageController", type: :request do
 
 	it 'show a page' do
 	  	puts "----------------SHOW--------------------"
-	  	get '/api/page/'+@page.id.to_s+'?auth_token=test&locale=es' 
+	  	get '/api/page/'+@page.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'
 	  	json = JSON.parse(response.body)
 	  	puts json['message'];
 	  	expect(json['status']).to eq("OK")
@@ -27,7 +27,7 @@ RSpec.describe "PageController", type: :request do
 
 	it 'updates a collection' do
 	    puts "----------------UPDATE--------------------"
-	  	patch '/api/page/'+@page.id.to_s+'?auth_token=test&locale=es',{"page":{"title":"update"},"work_id":@page.work_id.to_s}   
+	  	patch '/api/page/'+@page.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es',{"page":{"title":"update"},"work_id":@page.work_id.to_s}
 	  	json = JSON.parse(response.body)
 	  	puts json['message']
 	    expect(json['status']).to eq("OK")
@@ -36,7 +36,7 @@ RSpec.describe "PageController", type: :request do
 
 	it 'deletes a collection' do
 	  	puts "--------------DELETE----------------------"
-	  	delete '/api/page/'+@page.id.to_s+'?auth_token=test&locale=es'   
+	  	delete '/api/page/'+@page.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'   
 	  	json = JSON.parse(response.body)
 	  	puts json['message']
 	    expect(json['status']).to eq("OK")

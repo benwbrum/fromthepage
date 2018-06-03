@@ -2,7 +2,7 @@ require "rails_helper"
 require 'json'
 
 RSpec.describe "CollectionController", type: :request do
-	 
+
   before do
     @user = FactoryGirl.create(:user)
     @collection = FactoryGirl.create(:collection)
@@ -11,7 +11,7 @@ RSpec.describe "CollectionController", type: :request do
 	it 'creates a Collection' do
 		puts "-----------------CREATE-------------------"
 	    #previous_length = Collection.count
-	    post '/api/collection?auth_token=test&locale=es',{collection:{title:"Collection  create test"}}
+	    post '/api/collection?auth_token='+@user.authentication_token.to_s+'&locale=es',{collection:{title:"Collection  create test"}}
 	    json = JSON.parse(response.body)
 	  	puts json['message'];
       expect(json['status']).to eq("OK")
@@ -20,14 +20,14 @@ RSpec.describe "CollectionController", type: :request do
 
   it 'show a collection' do
   	puts "----------------SHOW--------------------"
-  	get '/api/collection/'+@collection.id.to_s+'?auth_token=test&locale=es' 
+  	get '/api/collection/'+@collection.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'
   	json = JSON.parse(response.body)
   	expect(json['status']).to eq("OK")
   end
 
   it 'updates a collection' do
     puts "----------------UPDATE--------------------"
-  	patch '/api/collection/'+@collection.id.to_s+'?auth_token=test&locale=es',{collection:{title:"update"}}   
+  	patch '/api/collection/'+@collection.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es',{collection:{title:"update"}}
   	json = JSON.parse(response.body)
   	puts json['message']
     expect(json['status']).to eq("OK")
@@ -36,7 +36,7 @@ RSpec.describe "CollectionController", type: :request do
 
   it 'deletes a collection' do
   	puts "--------------DELETE----------------------"
-  	delete '/api/collection/'+@collection.id.to_s+'?auth_token=test&locale=es'   
+  	delete '/api/collection/'+@collection.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'
   	json = JSON.parse(response.body)
   	puts json['message']
     expect(json['status']).to eq("OK")
