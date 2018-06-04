@@ -1,0 +1,11 @@
+section.collection-stats_recent
+    .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{'Collaborator'.pluralize(stats[:contributors])}
+    .counter(data-prefix="#{number_with_delimiter stats[Deed::PAGE_TRANSCRIPTION]}") #{'Page'.pluralize(stats[Deed::PAGE_TRANSCRIPTION])} transcribed
+    .counter(data-prefix="#{number_with_delimiter stats[Deed::PAGE_EDIT]}") Page #{'edit'.pluralize(stats[Deed::PAGE_EDIT])}
+    -unless subjects_disabled
+      .counter(data-prefix="#{number_with_delimiter stats[Deed::PAGE_INDEXED]}") #{'Page'.pluralize(stats[Deed::PAGE_INDEXED])} indexed
+      .counter(data-prefix="#{number_with_delimiter stats[:mentions]}") #{'Reference'.pluralize(stats[:mentions])}
+      .counter(data-prefix="#{number_with_delimiter stats[:subjects]}") New #{'subject'.pluralize(stats[:subjects])}
+    .counter(data-prefix="#{number_with_delimiter stats[Deed::NOTE_ADDED]}") #{'Note'.pluralize(stats[Deed::NOTE_ADDED])}
+    .counter(data-prefix="#{number_with_delimiter stats[Deed::PAGE_TRANSLATED]}") #{'Page'.pluralize(stats[Deed::PAGE_TRANSLATED])} translated
+    .counter(data-prefix="#{number_with_delimiter stats[Deed::OCR_CORRECTED]}") OCR #{'Correction'.pluralize(stats[Deed::OCR_CORRECTED])}

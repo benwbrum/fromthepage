@@ -36,14 +36,36 @@ module ContributorHelper
     @recent_xlat_index = @collection_deeds.where(deed_type: translate_index)
     @recent_xlat_review = @collection_deeds.where(deed_type: translate_review)
     @recent_work_add = @collection_deeds.where(deed_type: work_add)
+    
     #get distinct user ids per deed and create list of users
     user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
     @active_transcribers = User.where(id: user_deeds)
+    
+    # All deeds by active transcribers in range
+    user_deeds_by_date = Deed.where(user_id: @active_transcribers).where(condition, start_date, end_date)
+    
+    # Deed counts in date range by User
+    user_deeds_total = user_deeds_by_date.group('user_id').count
+    user_deeds_collection = @collection.deeds.where(condition, start_date, end_date).group('user_id').count
+
+    # All distinct visits with deeds in date range affecting @collection 
     deed_visits = Visit.where("id in (?)", @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:visit_id))
+
+    # Sum the time between the beginning of the visit and the last ahoy event for the session per user
     @user_time = {}
     deed_visits.each do |visit|
       @user_time[visit.user_id] = 0 unless @user_time[visit.user_id]
       @user_time[visit.user_id] += visit.ahoy_events.last.time - visit.started_at
+    end
+
+    @user_time_proportional = {}
+    @user_time.each do |user_id, total_time|
+        if user_deeds_collection.has_key?(user_id) && user_deeds_total.has_key?(user_id)
+          collection_weight = user_deeds_collection[user_id].to_f / user_deeds_total[user_id]
+          @user_time_proportional[user_id] = (@user_time[user_id] * collection_weight)
+        else
+          @user_time_proportional[user_id] = "No user #{user_id}"
+        end
     end
 
     #find recent transcription deeds by user, then older deeds by user
