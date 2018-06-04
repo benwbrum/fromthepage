@@ -275,6 +275,9 @@ GEM
     ruby-saml (1.6.1)
       nokogiri (>= 1.5.10)
     rubyzip (1.2.1)
+    rvm1-capistrano3 (1.4.0)
+      capistrano (~> 3.0)
+      sshkit (>= 1.2)
     safely_block (0.2.1)
       errbase
     sass (3.5.5)
@@ -385,6 +388,7 @@ DEPENDENCIES
   rspec-rails
   rtl
   rubyzip
+  rvm1-capistrano3
   sass-rails (~> 5.0.0)
   savon (~> 2.12.0)
   shoulda
@@ -392,3 +396,6 @@ DEPENDENCIES
   therubyracer
   uglifier
   will_paginate
+
+BUNDLED WITH
+   1.12.5
