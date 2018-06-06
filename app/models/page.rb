@@ -2,9 +2,11 @@ require 'search_translator'
 class Page < ActiveRecord::Base
 
   include XmlSourceProcessor
+  include TemplateSourceProcessor
   include ApplicationHelper
 
   before_update :process_source
+  before_update :generate_template
   before_update :populate_search
   validate :validate_source, :validate_source_translation
 
@@ -38,6 +40,7 @@ class Page < ActiveRecord::Base
   attr_accessible :source_text
   attr_accessible :source_translation
   attr_accessible :status
+  attr_accessible :source_template
 
   scope :unrestricted, -> { where(restricted: false)}
   scope :review, -> { where(status: 'review')}

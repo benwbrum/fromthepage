@@ -1,7 +1,7 @@
 class Api::MarkController < Api::ApiController
   
   before_action :serialize_coordinates, only: [:create, :update]
-  before_action :set_mark, only: [:update, :destroy]
+  before_action :set_mark, only: [:update, :destroy, :show]
 
   def public_actions
     return [:index]
@@ -42,6 +42,10 @@ class Api::MarkController < Api::ApiController
   def destroy
     @mark.destroy
     render_serialized ResponseWS.ok("api.mark.destroy.success", @mark.valueObject)
+  end
+  
+  def show
+    response_serialized_object(@mark)
   end
   
   private
