@@ -7,9 +7,7 @@ class Api::UserController < Api::ApiController
 
   NOTOWNER = "NOTOWNER"
   def update
-    puts "-------------------------"
-    puts "update"
-    puts "alojaaaaaaaaaaaa"
+
     # spam check
     @user = current_user
     @user = User.friendly.find(params[:id])
@@ -64,7 +62,12 @@ class Api::UserController < Api::ApiController
 
   def user_metagame_info
     @response = GamificationHelper.getPlayerInfoEvent(current_user.email)
-    response_serialized_object @response.player.rank
+
+
+    @user = User.friendly.find(current_user.id)
+    @user.rank=@response.player.rank
+    @user.save
+    response_serialized_object @user.rank
   end
 
 end
