@@ -80,6 +80,7 @@ class IaWork < ActiveRecord::Base
     if self.use_ocr
       work.ocr_correction = true
     end
+    work.slug=self.book_id
     work.save!
 
     self.ia_leaves.each do |leaf|
