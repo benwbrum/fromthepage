@@ -14,6 +14,10 @@ class Article < ActiveRecord::Base
 
   validates_presence_of :title
 
+  validates :latitude, allow_blank: true, numericality: { less_than_or_equal_to: 90, greater_than_or_equal_to: -90}
+  validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
+
+
   has_and_belongs_to_many :categories, -> { uniq }
   belongs_to :collection
   has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink'})
@@ -33,7 +37,7 @@ class Article < ActiveRecord::Base
 
   after_save :create_version
 
-  attr_accessible :title
+  attr_accessible :title, :latitude, :longitude, :uri
   attr_accessible :source_text
 
   def link_list
@@ -64,6 +68,10 @@ class Article < ActiveRecord::Base
   #######################
   def related_article_ranks
 
+  end
+  
+  def gis_enabled?
+    self.categories.where(:gis_enabled => true).present?
   end
 
   #######################
