@@ -44,6 +44,23 @@ describe "subject linking" do
     expect(page).to have_content("This is the text about my article.")
   end
 
+  it "conditionally displays GIS fields on subject" do 
+    article = Article.first
+    category = article.categories.first
+    category_hash = "#category-" + "#{category.id}"
+    
+    visit "/article/show?article_id=#{article.id}"
+    page.find('.tabs').click_link('Settings')
+    expect(page).not_to have_content("Latitude")
+    
+    category.gis_enabled = true
+    category.save
+
+    visit "/article/show?article_id=#{article.id}"
+    page.find('.tabs').click_link('Settings')
+    expect(page).to have_content("Latitude")
+  end
+
   it "deletes a subject" do
     logout(:user)
     login_as(@owner, :scope => :user)
