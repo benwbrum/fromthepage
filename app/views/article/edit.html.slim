@@ -9,6 +9,9 @@
         tr.big
           th =f.label :title
           td.w100 =f.text_field :title
+        tr.big
+          th =f.label :uri, "URI"
+          td.w100 =f.text_field :uri
         tr
           td.voice-div(colspan="2")
             =f.label :source_text, 'Description', class: 'above'
@@ -18,6 +21,16 @@
                 span.voice-info.article-voice
                 
               =f.text_area :source_text, rows: 15
+        
+
+      -if @article.gis_enabled?
+        table.form
+          tr
+            th =f.label :latitude
+            th =f.label :longitude
+          tr
+            td.w50 =f.text_field :latitude, :value => (number_with_precision(f.object.latitude, :precision => 5))
+            td.w50 =f.text_field :longitude, :value => (number_with_precision(f.object.longitude, :precision => 5))
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
