@@ -23,7 +23,7 @@ Install Ruby, RubyGems, Bundler, ImageMagick, MySQL and Git
 
 Clone the repository
 
-    git clone git://github.com/benwbrum/fromthepage.git
+    git clone https://github.com/cientopolis/transcriptor-backend.git
 
 Install required gems
 
@@ -33,17 +33,21 @@ Install Graphviz
 
     apt-get install graphviz (or see the graphviz documentation at http://www.graphviz.org/)
 
-Configure MySQL
+Create a database and user account for Transcriptor-Backend to use.
 
-Create a database and user account for FromThePage to use.
-
-Then update the config/database.yml file to point to the MySQL user account and database you created above.
+Then update the config/application.yml file to point to the MySQL user account and database you created above.
 
 Run
+
     rake db:migrate
 to load the schema definition into the database account.
+    
+    rake db:seed
+  
+to load init data.
 
-Modify the configuration parameters in config/initializers/01fromthepage.rb.
+
+Modify the configuration parameters in config/initializers/01fromthepage.rb for connect with metagame-api.
 
 Modify the config/environments/production.rb (or development.rb) file to configure your mailer.  (Search for "action_mailer".)
 
@@ -55,4 +59,12 @@ sudo apt-get install texlive-latex-base texlive-extra-utils
 Finally, start the application
 
     rails server
+    
+    
+## Testing
+
+The API contains a folder inside spec/ which has unit tests.
+To run all tests, move to the main folder of the project and execute:
+```
+$ rspec
 
