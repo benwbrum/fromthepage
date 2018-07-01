@@ -1,0 +1,160 @@
+# Spanish i18n Messages
+
+pt:
+  will_paginate:
+    previous_label: "&#8592;"
+    next_label: "&#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No records"
+        one:   "1 record"
+        other: "All %{count} records"
+      single_page_html:
+        zero:  "No records"
+        one:   "<b>1</b> record"
+        other: "All <b>%{count}</b> records"
+      multi_page: "Records %{from} - %{to} of %{count}"
+      multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
+
+  datetime:
+    distance_in_words:
+      x_days:
+        one: 24 hours
+        other: "%{count} days"
+
+  mail:
+    reset_password_instructions: "<h2>Olá %{user_mail}!</h2>
+    <p>Alguém solicitou um link para alterar sua senha. Você pode fazer isso através do seguinte:</p>
+    <p class='center-align'><a class='btn' href='%{edit_password_url}'>Alterar minha senha</a></p>
+    <p>Se você não solicitou, ignore este e-mail.</p>
+    <p>Sua senha não será alterada até que você acesse o link acima e crie uma nova.</p>"
+    footer:
+      sended_from: "enviado a partir de"
+      powered_by: "Um projeto de"
+
+  badges:
+    i-was-here:
+      notification:
+        title: "Novo logotipo obtido!"
+        message: "Ero qui!"
+    welcome-back:
+      notification:
+        title: "Novo logotipo obtido!"
+        message: "Bem vindo de novo!"
+    first-collection:
+      notification:
+        title: "Novo logotipo obtido!"
+        message: "Primeira colecção"
+    first-work:
+      notification:
+        title: "Novo logotipo obtido!"
+        message: "Primeiro trabalho"
+    first-upload:
+      notification:
+        title: "Novo logotipo obtido!"
+        message: "Primeiro trabalho enviado"
+    first-transcription-upgrade:
+      notification:
+        title: "Novo logotipo obtido!"
+        message: "Melhoria na primeira transcrição"
+
+  api:
+    default:
+      ok: "A operação foi realizada com sucesso"
+      error: "Erro do servidor, tente novamente mais tarde."
+    session:
+      not_allowed: "Para acessar este conteúdo você deve fazer o login"
+    login:
+      success: "Bem-vindo ao Transcriptor!"
+      fail: "Nome de usuário ou senha inválidos, tente novamente."
+    reset_password:
+      request:
+        success: "Você receberá um e-mail com instruções para alterar sua senha em alguns minutos."
+        error: "O e-mail inserido não corresponde a nenhum usuário registrado"
+      confirm:
+        success: "Sua senha foi modificada corretamente. Você está logado"
+    collection:
+      create:
+        success: "A coleção foi criada"
+      update:
+        success: "A coleção foi atualizada"
+      destroy:
+        success: "A coleção foi excluída"
+    work:
+      create:
+        success: "O trabalho foi criado"
+      update:
+        success: "O trabalho foi atualizado"
+      destroy:
+        success: "O trabalho foi apagado"
+    mark:
+      create:
+        success: "A marca foi criada"
+      update:
+        success: "A marca foi atualizada"
+      destroy:
+        success: "A marca foi eliminada"
+    transcription:
+      save:
+        success: "A transcrição foi salva"
+        success_guest: "A Transcrição foi salva, lembre-se de que você pode salvar até três transcrições como usuário convidado."
+        error:
+          parse: "Houve um erro ao analisar a sintaxe de sua transcrição. Esse tipo de erro geralmente ocorre se um colchete angular estiver faltando ou se uma tag HTML for deixada aberta. Verifique qualquer instância dos símbolos < ou > no seu texto."
+          guest_limit: "Para continuar a transcrição, você deve fazer o login."
+    translation:
+      save:
+        success: "A tradução foi salva"
+        success_guest: "A tradução foi salva, Lembre-se de que você pode salvar até três traduções como usuário convidado."
+        error:
+          parse: "Houve um erro ao analisar a sintaxe da sua tradução. Esse tipo de erro geralmente ocorre se um colchete angular estiver faltando ou se uma tag HTML for deixada aberta. Verifique qualquer instância dos símbolos < ou > no seu texto."
+          guest_limit: "Para continuar a transcrição, você deve fazer o login."
+    registration:
+      create:
+        success: "O usuário foi criado"
+      update:
+        success: "O usuário foi modificado"
+      destroy:
+        success: "O usuário foi excluído"
+    user:
+      update:
+        success: "O usuário foi modificado"
+    upload:
+      create:
+        success: "O documento foi enviado e será processado em breve."
+        error: "Ocorreu um erro ao carregar o arquivo, tente mais tarde."
+    contribution:
+      transcription:
+        create:
+          success: "A Transcrição foi criada"
+        update:
+          success: "A Transcrição foi atualizada"
+        destroy:
+          success: "A Transcrição foi eliminada"
+        like: "Você votou em uma transcrição!"
+        dislike: "Você removeu seu voto de uma Transcrição!"
+      translation:
+        create:
+          success: "Tradução foi criada"
+        update:
+          success: "A tradução foi atualizada"
+        destroy:
+          success: "A tradução foi eliminada"
+        like: "Você votou em uma tradução!"
+        dislike: "Você tirou seu voto de Tradução!"
+    publication:
+      create:
+        success: "A publicação foi criada"
+      update:
+        success: "A publicação foi atualizada"
+      destroy:
+        success: "A publicação foi eliminada"
+      list:
+        success: "As publicações foram listadas"
+    forum:
+      create:
+        success: "O fórum foi criado"
+      update:
+        success: "O Fórum foi atualizado"
+      destroy:
+        success: "O fórum foi excluído"

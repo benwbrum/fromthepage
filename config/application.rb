@@ -19,11 +19,11 @@ module Fromthepage
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-    config.i18n.available_locales = [:en, :es]
+    config.i18n.available_locales = [:en, :es, :it, :pt,:fr]
 
     config.neato = '/usr/bin/env neato'
     config.encoding = 'utf-8'
-    
+
     config.active_record.raise_in_transactional_callbacks = true
 
     config.api_only = false
@@ -36,7 +36,7 @@ module Fromthepage
     #   'Access-Control-Request-Method' => "*",
     #   'Access-Control-Allow-Headers' => "*"
     # }
-    
+
     #CORS requests
     config.middleware.use Rack::Cors do
      allow do

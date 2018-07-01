@@ -1,0 +1,160 @@
+# Italian i18n Messages
+
+it:
+  will_paginate:
+    previous_label: "&#8592;"
+    next_label: "&#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No records"
+        one:   "1 record"
+        other: "All %{count} records"
+      single_page_html:
+        zero:  "No records"
+        one:   "<b>1</b> record"
+        other: "All <b>%{count}</b> records"
+      multi_page: "Records %{from} - %{to} of %{count}"
+      multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
+
+  datetime:
+    distance_in_words:
+      x_days:
+        one: 24 hours
+        other: "%{count} days"
+
+  mail:
+    reset_password_instructions: "<h2>Ciao %{user_mail}!</h2>
+    <p>Qualcuno ha richiesto un link per cambiare la password. Puoi farlo attraverso il seguente:</p>
+    <p class='center-align'><a class='btn' href='%{edit_password_url}'>Cambia la mia password</a></p>
+    <p>Se non lo hai richiesto, ignora questa email.</p>
+    <p>La tua password non cambierà fino a quando non accedi al link sopra e ne crei uno nuovo.</p>"
+    footer:
+      sended_from: "Iniziare da"
+      powered_by: "Un progetto di"
+
+  badges:
+    i-was-here:
+      notification:
+        title: "Nuovo logo ottenuto!"
+        message: "Ero qui!"
+    welcome-back:
+      notification:
+        title: "Nuovo logo ottenuto!"
+        message: "Benvenuto di nuovo!"
+    first-collection:
+      notification:
+        title: "Nuovo logo ottenuto!"
+        message: "Prima collezione"
+    first-work:
+      notification:
+        title: "Nuovo logo ottenuto!"
+        message: "Primo lavoro"
+    first-upload:
+      notification:
+        title: "Nuovo logo ottenuto!"
+        message: "Primo lavoro caricato"
+    first-transcription-upgrade:
+      notification:
+        title: "Nuovo logo ottenuto!"
+        message: "Primo miglioramento del Transcript"
+
+  api:
+    default:
+      ok: "L'operazione è stata eseguita con successo"
+      error: "Errore del server, riprova più tardi."
+    session:
+      not_allowed: "Per accedere a questo contenuto è necessario accedere"
+    login:
+      success: "Benvenuto su Transcriptor!"
+      fail: "Nome utente o password non validi, riprova."
+    reset_password:
+      request:
+        success: "Riceverai un'email con le istruzioni per cambiare la password in pochi minuti."
+        error: "L'email inserita non corrisponde ad alcun utente registrato"
+      confirm:
+        success: "La tua password è stata modificata correttamente. Hai effettuato l'accesso"
+    collection:
+      create:
+        success: "La collezione è stata creata"
+      update:
+        success: "La collezione è stata aggiornata"
+      destroy:
+        success: "La raccolta è stata cancellata"
+    work:
+      create:
+        success: "Il lavoro è stato creato"
+      update:
+        success: "Il lavoro è stato aggiornato"
+      destroy:
+        success: "Il lavoro è stato cancellato"
+    mark:
+      create:
+        success: "Il marchio è stato creato"
+      update:
+        success: "Il marchio è stato aggiornato"
+      destroy:
+        success: "Il segno è stato cancellato"
+    transcription:
+      save:
+        success: "La trascrizione è stata salvata"
+        success_guest: "La trascrizione è stata salvata, ricorda che puoi salvare fino a tre trascrizioni come utente ospite."
+        error:
+          parse: "Si è verificato un errore nell'analisi della sintassi della sua trascrizione. Questo tipo di errore si verifica spesso se manca una parentesi angolare o se un tag HTML viene lasciato aperto. Controlla qualsiasi istanza dei simboli < o > nel tuo testo."
+          guest_limit: "Para continuar la transcripción debe iniciar sesión."
+    translation:
+      save:
+        success: "La traduzione è stata salvata"
+        success_guest: "La traduzione è stata salvata, ricorda che puoi salvare fino a tre traduzioni come utente ospite."
+        error:
+          parse: "Si è verificato un errore nell'analisi della sintassi della traduzione. Questo tipo di errore si verifica spesso se manca una parentesi angolare o se un tag HTML viene lasciato aperto. Controlla qualsiasi istanza dei simboli <o> nel tuo testo."
+          guest_limit: "Per continuare a trascrivere devi effettuare il login."
+    registration:
+      create:
+        success: "L'utente è stato creato"
+      update:
+        success: "L'utente è stato modificato"
+      destroy:
+        success: "L'utente è stato cancellato"
+    user:
+      update:
+        success: "L'utente è stato modificato"
+    upload:
+      create:
+        success: "Il documento è stato caricato e verrà elaborato a breve."
+        error: "Si è verificato un errore nel caricamento del file, prova più tardi."
+    contribution:
+      transcription:
+        create:
+          success: "Il Transcript è stato creato"
+        update:
+          success: "Il Transcript è stato aggiornato"
+        destroy:
+          success: "Il trascritto è stato cancellato"
+        like: "Hai votato per una trascrizione!"
+        dislike: "Hai rimosso il tuo voto da una trascrizione!"
+      translation:
+        create:
+          success: "La traduzione è stata creata"
+        update:
+          success: "La traduzione è stata aggiornata"
+        destroy:
+          success: "La traduzione è stata cancellata"
+        like: "Hai votato per una traduzione!"
+        dislike: "Hai portato via il tuo voto di una traduzione!"
+    publication:
+      create:
+        success: "La pubblicazione è stata creata"
+      update:
+        success: "La pubblicazione è stata aggiornata"
+      destroy:
+        success: "La pubblicazione è stata cancellata"
+      list:
+        success: "Le pubblicazioni sono state elencate"
+    forum:
+      create:
+        success: "Il forum è stato creato"
+      update:
+        success: "Il forum è stato aggiornato"
+      destroy:
+        success: "Il forum è stato cancellato"

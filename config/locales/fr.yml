@@ -1,0 +1,160 @@
+# French i18n Messages
+
+fr:
+  will_paginate:
+    previous_label: "&#8592;"
+    next_label: "&#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No records"
+        one:   "1 record"
+        other: "All %{count} records"
+      single_page_html:
+        zero:  "No records"
+        one:   "<b>1</b> record"
+        other: "All <b>%{count}</b> records"
+      multi_page: "Records %{from} - %{to} of %{count}"
+      multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
+
+  datetime:
+    distance_in_words:
+      x_days:
+        one: 24 hours
+        other: "%{count} days"
+
+  mail:
+    reset_password_instructions: "<h2>Salut %{user_mail}!</h2>
+    <p>Quelqu'un a demandé un lien pour changer son mot de passe. Vous pouvez le faire à travers ce qui suit:</p>
+    <p class='center-align'><a class='btn' href='%{edit_password_url}'>Changer mon mot de passe</a></p>
+    <p>Si vous ne l'avez pas demandé, ignorez cet e-mail.</p>
+    <p>Votre mot de passe ne changera pas tant que vous n'aurez pas accédé au lien ci-dessus et en avoir créé un nouveau.</p>"
+    footer:
+      sended_from: "Envoyé à partir"
+      powered_by: "Un projet de"
+
+  badges:
+    i-was-here:
+      notification:
+        title: "Nouveau logo obtenu!"
+        message: "J'étais ici!"
+    welcome-back:
+      notification:
+        title: "Nouveau logo obtenu!"
+        message: "Bienvenue à nouveau!"
+    first-collection:
+      notification:
+        title: "Nouveau logo obtenu!"
+        message: "Première collection"
+    first-work:
+      notification:
+        title: "Nouveau logo obtenu!"
+        message: "Premier travail"
+    first-upload:
+      notification:
+        title: "Nouveau logo obtenu!"
+        message: "Premier travail téléchargé"
+    first-transcription-upgrade:
+      notification:
+        title: "Nouveau logo obtenu!"
+        message: "Amélioration du premier relevé de notes"
+
+  api:
+    default:
+      ok: "L'opération a été réalisée avec succès"
+      error: "Erreur de serveur, réessayez plus tard."
+    session:
+      not_allowed: "Pour accéder à ce contenu, vous devez vous connecter"
+    login:
+      success: "Bienvenue sur Transcriptor!"
+      fail: "Nom d'utilisateur ou mot de passe incorrect, réessayez."
+    reset_password:
+      request:
+        success: "Vous recevrez un email avec des instructions pour changer votre mot de passe dans quelques minutes."
+        error: "L'e-mail entré ne correspond à aucun utilisateur enregistré"
+      confirm:
+        success: "Votre mot de passe a été modifié correctement. Vous vous êtes connecté"
+    collection:
+      create:
+        success: "La collection a été créée"
+      update:
+        success: "La collection a été mise à jour"
+      destroy:
+        success: "La collection a été supprimée"
+    work:
+      create:
+        success: "L'œuvre a été créée"
+      update:
+        success: "Le travail a été mis à jour"
+      destroy:
+        success: "Le travail a été effacé"
+    mark:
+      create:
+        success: "La marque a été créée"
+      update:
+        success: "La marque a été mise à jour"
+      destroy:
+        success: "La marque a été supprimée"
+    transcription:
+      save:
+        success: "La transcription a été enregistrée"
+        success_guest: "La transcription a été enregistrée, rappelez-vous que vous pouvez enregistrer jusqu'à trois transcriptions en tant qu'utilisateur invité."
+        error:
+          parse: "Il y avait une erreur dans l'analyse de la syntaxe de sa transcription. Ce type d'erreur se produit souvent si un crochet angulaire est manquant ou si une balise HTML est laissée ouverte. Vérifiez toute instance des symboles < ou > dans votre texte."
+          guest_limit: "Pour continuer la transcription, vous devez vous connecter."
+    translation:
+      save:
+        success: "La traduction a été enregistrée"
+        success_guest: "La traduction a été enregistrée. N'oubliez pas que vous pouvez enregistrer jusqu'à trois traductions en tant qu'utilisateur invité."
+        error:
+          parse: "Une erreur s'est produite lors de l'analyse de la syntaxe de votre traduction. Ce type d'erreur se produit souvent si un crochet angulaire est manquant ou si une balise HTML est laissée ouverte. Vérifiez toute instance des symboles <ou> dans votre texte."
+          guest_limit: "Pour continuer à transcrire, vous devez vous connecter."
+    registration:
+      create:
+        success: "L'utilisateur a été créé"
+      update:
+        success: "L'utilisateur a été modifié"
+      destroy:
+        success: "L'utilisateur a été supprimé"
+    user:
+      update:
+        success: "L'utilisateur a été modifié"
+    upload:
+      create:
+        success: "Le document a été téléchargé et sera traité sous peu."
+        error: "Une erreur s'est produite lors du chargement du fichier, essayez plus tard."
+    contribution:
+      transcription:
+        create:
+          success: "La transcription a été créée"
+        update:
+          success: "La transcription a été mise à jour"
+        destroy:
+          success: "La transcription a été supprimée"
+        like: "Vous avez voté pour une transcription!"
+        dislike: "Vous avez retiré votre vote d'une transcription!"
+      translation:
+        create:
+          success: "La traduction a été créée"
+        update:
+          success: "La traduction a été mise à jour"
+        destroy:
+          success: "La traduction a été supprimée"
+        like: "Vous avez voté pour une traduction!"
+        dislike: "Vous avez enlevé votre voeu d'une traduction!"
+    publication:
+      create:
+        success: "La publication a été créée"
+      update:
+        success: "La publication a été mise à jour"
+      destroy:
+        success: "La publication a été supprimée"
+      list:
+        success: "Les publications ont été répertoriées"
+    forum:
+      create:
+        success: "Le forum a été créé"
+      update:
+        success: "Le forum a été mis à jour"
+      destroy:
+        success: "Le forum a été supprimé"
