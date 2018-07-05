@@ -112,7 +112,7 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "uses page arrows with unsaved transcription", :js => true do
-    test_page = @collection.works.first.pages.second
+    test_page = @collection.works.first.pages.first
     #next page arrow
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
     page.fill_in('fields_1_First_field', with: "Field one")
