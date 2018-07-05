@@ -4,7 +4,7 @@ div.editarea
     div
       -field_layout(array)
       -@field_array.each do |field, cell|
-        -if @page && (field.page_number == @page.position || field.page_number == nil )
+        -if (@page && (field.page_number == @page.position || field.page_number == nil )) || (current_page?(action: 'edit_fields'))
           -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
           span(style="width:#{span_width}%")
             =label_tag field.label
