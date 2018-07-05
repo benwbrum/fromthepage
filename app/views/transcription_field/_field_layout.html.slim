@@ -15,5 +15,7 @@ div.editarea
             -elsif field.input_type == "select"
               -options = field.options.split(";") unless field.options.nil?
               =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
+            -elsif field.input_type == "label"
+              =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
             -else
               =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
