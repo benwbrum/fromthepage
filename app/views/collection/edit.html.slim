@@ -22,14 +22,17 @@
           td(colspan="2")
             =f.label :footer_block, 'Footer', class: "above"
             =f.text_area :footer_block, rows: 5, value: @collection.footer_block
+            p.nomargin.settings =link_to "Learn more about configuring the footer.", "https://content.fromthepage.com/project-owner-documentation/footer/", target: :_blank
         tr
           td(colspan="2")
             =f.label :transcription_conventions, 'Transcription Conventions', class: "above"
             =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
+            p.nomargin.settings =link_to "Suggestions for your transcription conventions.", "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
         tr
           td(colspan="2")
             =f.label :help, 'Basic Help Text', class: "above"
             =f.text_area :help, rows: 8, value: @collection.help
+            p.nomargin.settings =link_to "Suggestions for your help tab.", "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
         tr
           td(colspan="2")
             =f.label :link_help, 'Subject Linking Help Text (not displayed if subjects are disabled)', class: "above"
