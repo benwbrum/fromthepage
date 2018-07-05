@@ -31,13 +31,10 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Edit Fields")
     page.find('#new-fields tr[2]').fill_in('transcription_fields__label', with: 'First field')
     page.find('#new-fields tr[2]').fill_in('transcription_fields__percentage', with: 20)
-    page.find('#new-fields tr[2]').fill_in('transcription_fields__page_number', with: 1)
     page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'Second field')
     page.find('#new-fields tr[3]').select('textarea', from: 'transcription_fields__input_type')
-    page.find('#new-fields tr[3]').fill_in('transcription_fields__page_number', with: 1)
     page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Third field')
     page.find('#new-fields tr[4]').select('select', from: 'transcription_fields__input_type')
-    page.find('#new-fields tr[4]').fill_in('transcription_fields__page_number', with: 1)
     click_button 'Save'
     expect(page).to have_content("Select fields must have an options list.")
     expect(TranscriptionField.last.input_type).to eq "text"
@@ -112,7 +109,7 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "uses page arrows with unsaved transcription", :js => true do
-    test_page = @collection.works.first.pages.first
+    test_page = @collection.works.first.pages.second
     #next page arrow
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
     page.fill_in('fields_1_First_field', with: "Field one")
