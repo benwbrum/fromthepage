@@ -37,7 +37,16 @@ describe "uploads data for collections", :order => :defined do
     expect(Collection.last.title).to have_content("TextGrid")
     expect(Collection.last.works.count).not_to be_nil
   end
-
+  
+  it "checks to allow '.' in IIIF domain URL parameter" do
+    visit "/iiif/contributions/textgridlab.org"
+    expect(page).to have_content("textgridlab")
+    visit "/iiif/contributions/textgridlab.org/2018-01-01"
+    expect(page).to have_content("textgridlab")
+    visit "/iiif/contributions/textgridlab.org/2018-01-01/2018-12-31"
+    expect(page).to have_content("textgridlab")
+  end
+  
   it "tests for transcribed works" do
     col = Collection.second
     works = col.works
