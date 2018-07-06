@@ -4,15 +4,16 @@ div.editarea
     div
       -field_layout(array)
       -@field_array.each do |field, cell|
-        -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
-        span(style="width:#{span_width}%")
-          =label_tag field.label
-          <br>
-          -content = cell.nil? ? nil : cell.content
-          -if field.input_type == "text"
-            =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
-          -elsif field.input_type == "select"
-            -options = field.options.split(";") unless field.options.nil?
-            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
-          -else
-            =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+        -if (@page && (field.page_number == @page.position || field.page_number == nil )) || (current_page?(action: 'edit_fields'))
+          -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
+          span(style="width:#{span_width}%")
+            =label_tag field.label
+            <br>
+            -content = cell.nil? ? nil : cell.content
+            -if field.input_type == "text"
+              =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+            -elsif field.input_type == "select"
+              -options = field.options.split(";") unless field.options.nil?
+              =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
+            -else
+              =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
