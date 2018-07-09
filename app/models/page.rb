@@ -284,12 +284,14 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
         tc.work = self.work
         tc.page = self
         tc.transcription_field_id = id.to_i
+        input_type = TranscriptionField.find(tc.transcription_field_id).input_type
 
         cell_data.each do |key, value|
           #tc = TableCell.new(row: 1, header: key, content: value)
           tc.header = key
           tc.content = value
-          string << key + ": " + value + "\n\n"
+          key = (input_type == "label") ? (key + " ") : (key + ": ")
+          string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
         end
 
         tc.save!
