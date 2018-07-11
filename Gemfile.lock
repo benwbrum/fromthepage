@@ -172,7 +172,7 @@ GEM
     minitest (5.11.3)
     multi_json (1.13.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.16)
+    mysql2 (0.3.21)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -372,7 +372,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   meta_request
-  mysql2 (= 0.3.16)
+  mysql2 (~> 0.3.0)
   nokogiri (~> 1.8.1)
   oai!
   omeka_client!
@@ -398,4 +398,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.12.5
+   1.16.2
