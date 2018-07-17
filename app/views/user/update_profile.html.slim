@@ -10,6 +10,9 @@
       tr.big
         th =f.label :display_name, 'Name'
         td.w100 =f.text_field :display_name
+      tr
+        th =f.label :orcid, "ORCID ID"
+        td =f.text_field :orcid, :placeholder => 'Your ORCID ID'
       -if @user.owner
         tr
           th URL: 
