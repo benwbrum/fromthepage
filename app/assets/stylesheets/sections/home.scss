@@ -8,6 +8,12 @@ a.button.big.learn-more {
   font-size: 24px;
 }
 
+@mixin highlightBox {
+  background-color: $highlightBoxBg;
+  border: 1px solid $borderColor;
+  padding: 30px;
+}
+
 .intro {
   box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.1);
   background: $footerBg image-url('static/header.jpg') no-repeat center bottom;
@@ -86,9 +92,7 @@ a.button.big.learn-more {
 }
 
 .advantages {
-  background-color: $highlightBoxBg;
-  border: 1px solid $borderColor;
-  padding: 30px;
+  @include highlightBox;
 
   .justified_box {
     width: 30%;
@@ -212,5 +216,23 @@ a.button.big.learn-more {
 
   @media screen and (max-width: $widthM) {
     .justified_box { width: 100%; }
+  }
+}
+
+#transcription_count {
+  @include highlightBox;
+  text-align: center;
+  padding: 30px 0;
+  margin-bottom: $gapSize * 2;
+
+  #count {
+    font-size: 60px;
+    color: #d0021b;
+    font-family: $fontFamilyHead;
+  }
+
+  p {
+    font-size: $fontSizeH4;
+    font-family: $fontFamilyHead;
   }
 }
