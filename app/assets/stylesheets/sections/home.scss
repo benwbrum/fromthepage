@@ -203,25 +203,36 @@ a.button.big.learn-more {
       color: $bodyFgDark;
     }
   }
-  &_quote {
+}
+
+#quotes {
+  padding-top: 55px;
+  ol {
+    list-style: none;
+  }
+  .justified_box {
+    width: 30%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 0 $gapSize 0;
+  }
+  h2 {
+    font-size: $fontSizeH1;
+    text-align: center;
+    margin-bottom: $gapSize * 2;
+  }
+  blockquote {
     margin: 0;
-    &_text {
+    p {
+      min-height: 130px;
+      color: $bodyFg;
       margin: 0 0 20px 0;
       padding: $gapSize;
       border-radius: 5px;
+      font-size: $fontSizeBig;
       font-style: italic;
-      padding-left: 60px;
       position: relative;
       background: mix(#000, $bodyBg, 5);
-      &:before {
-        top: 0;
-        left: 15px;
-        content: '“';
-        font-size: 90px;
-        font-style: normal;
-        position: absolute;
-        color: rgba($bodyFgLight, 0.5);
-      }
       &:after {
         top: 100%;
         left: 20px;
@@ -232,16 +243,18 @@ a.button.big.learn-more {
         border-top-color: mix(#000, $bodyBg, 5);
       }
     }
-    &_cite {
-      line-height: 2;
-      font-style: normal;
-      color: $bodyFgFaded;
-      small {
-        display: block;
-        max-width: 200px;
-        line-height: 1.2;
-        color: $bodyFgLight;
-      }
+  }
+  cite {
+    line-height: 2;
+    font-style: normal;
+    color: $bodyFgFaded;
+    margin-top: $gapSize;
+    display: inline-block;
+    small {
+      display: block;
+      max-width: 200px;
+      line-height: 1.2;
+      color: $bodyFgLight;
     }
   }
 }
