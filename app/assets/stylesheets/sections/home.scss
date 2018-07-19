@@ -72,21 +72,13 @@
   }
 }
 
-.start {
-  margin-bottom: $gapSize * 2;
-  .justified_box {
-    width: 22%;
-    color: $bodyFgFaded;
-    padding: $gapSize 0;
-  }
-  &_icon {
-    width: 80px;
-    height: 80px;
-  }
-  &_text { margin: 0; }
+#description {
+  text-align: center;
+  padding: 10px 0 40px 0;
 
-  @media screen and (max-width: $widthM) {
-    .justified_box { width: 47%; }
+  h2 {
+    font-size: 24px;
+    color: $staticFg;
   }
 }
 
@@ -163,40 +155,6 @@
     margin: 0.5em 0;
     color: $bodyFgLight;
     font-size: $fontSizeBig;
-  }
-}
-
-.main-quote {
-  max-width: 750px;
-  font-style: normal;
-  text-align: center;
-  margin: $gapSize * 2 auto;
-  &_text {
-    margin: 0.4em 0;
-    font-size: $fontSizeH3;
-    font-family: $fontFamilyHead;
-  }
-  &_cite {
-    line-height: 2;
-    font-style: normal;
-    color: $bodyFgFaded;
-    font-size: $fontSizeH5;
-    small {
-      display: block;
-      line-height: 1.2;
-      color: $bodyFgLight;
-      font-size: $fontSize;
-    }
-  }
-}
-
-.start-project {
-  margin: $gapSize * 3 0;
-  &:before { left: -1em; }
-  &:after { left: 1em; }
-  .button {
-    font-size: $fontSizeH4;
-    font-family: $fontFamilyHead;
   }
 }
 
