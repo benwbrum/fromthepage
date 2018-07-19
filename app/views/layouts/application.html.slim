@@ -87,13 +87,18 @@ html lang="en-US"
 
     footer.footer
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
+
       .footer_nav
-        =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
-        =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
-        =link_to 'About', about_path
+        =link_to 'Contact Us', '/contact'
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
         =link_to 'Privacy Policy', privacy_path
-        =mail_to 'support@fromthepage.com', 'Contact Us'
+      .footer_nav
+        = link_to 'Sign In', new_user_session_path
+        = link_to 'Projects', dashboard_path
+        = link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
+      .footer_nav
+        = link_to 'Software', about_path
+        = link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
 
     .page-busy-overlay
 
