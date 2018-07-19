@@ -85,82 +85,6 @@ a.button.big.learn-more {
   }
 }
 
-.whouses {
-  margin-bottom: $gapSize * 3;
-  .justified {
-    margin: 0 -$gapSize / 4;
-  }
-  .justified_box {
-    width: 33.33%;
-    padding: 0 $gapSize / 4 $gapSize / 2 $gapSize / 4;
-  }
-  .cover {
-    width: 100%;
-    background: #FFF;
-    background-clip: padding-box;
-    border-spacing: $gapSize * 0.75;
-    border: 1px solid rgba(#000, 0.1);
-    &_image {
-      width: 100px;
-      height: 100px;
-    }
-  }
-
-  @media screen and (max-width: $widthM) {
-    .justified_box { width: 100%; }
-  }
-}
-
-.spotlight {
-  margin-bottom: $gapSize;
-  .justified_box {
-    width: 48%;
-    color: $bodyFgFaded;
-    padding-bottom: $gapSize * 2;
-  }
-  .cover {
-    &_image {
-      width: 150px;
-      height: 150px;
-    }
-    &_caption {
-      padding-left: $gapSize;
-    }
-  }
-
-  @media screen and (max-width: $widthM) {
-    .justified_box { width: 100%; }
-  }
-}
-
-.features {
-  counter-reset: index;
-  margin-bottom: $gapSize;
-  .justified_box {
-    width: 48%;
-    position: relative;
-    box-sizing: border-box;
-    padding: 0 0 $gapSize 60px;
-    &:before {
-      top: 0;
-      left: 0;
-      opacity: 0.1;
-      line-height: 1;
-      font-size: 500%;
-      font-weight: bold;
-      position: absolute;
-      content: counter(index);
-      counter-increment: index;
-    }
-  }
-  &_title { margin: 0; }
-  &_text {
-    margin: 0.5em 0;
-    color: $bodyFgLight;
-    font-size: $fontSizeBig;
-  }
-}
-
 .advantages {
   background-color: $highlightBoxBg;
   border: 1px solid $borderColor;
@@ -256,5 +180,37 @@ a.button.big.learn-more {
       line-height: 1.2;
       color: $bodyFgLight;
     }
+  }
+  .simplify {
+    text-align: center;
+    padding: $gapSize;
+    margin-bottom: $gapSize * 2;
+
+    h4 {
+      color: $bodyFgDark;
+      margin-bottom: $gapSize;
+    }
+  }
+}
+
+.spotlight {
+  margin-bottom: $gapSize;
+  .justified_box {
+    width: 48%;
+    color: $bodyFgFaded;
+    padding-bottom: $gapSize * 2;
+  }
+  .cover {
+    &_image {
+      width: 150px;
+      height: 150px;
+    }
+    &_caption {
+      padding-left: $gapSize;
+    }
+  }
+
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 100%; }
   }
 }
