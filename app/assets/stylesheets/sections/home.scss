@@ -7,8 +7,10 @@
   background: $footerBg image-url('static/header.jpg') no-repeat center bottom;
   background-size: cover;
   .wrapper {
-    height: 517px;
-    text-align: right;
+    position: relative;
+    min-height: 517px;
+    padding: 0;
+
     &:after {
       width: 0;
       content: '';
@@ -18,26 +20,40 @@
     }
   }
   &_box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     color: #FFF;
     text-align: left;
-    max-width: 600px;
+    max-width: $widthMax;
     line-height: normal;
     display: inline-block;
     vertical-align: middle;
     background: rgba(#100, 0.5);
-    padding: $gapSize $gapSize * 1.2;
+    margin: 0 auto;
+    padding: 60px;
+
     &_title {
       margin: 0;
       color: inherit;
-      font-size: 240%;
-      &:first-letter {
-        margin-left: -0.4em;
-      }
+      font-size: 38px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      margin-bottom: 17px;
     }
     &_text {
       font-size: 125%;
       max-width: 600px;
       margin: 0.5em 0 0 0;
+    }
+    a.button.big {
+      margin-top: 41px;
+      width: 246px;
+      height: 53px;
+      font-size: 24px;
     }
   }
 
