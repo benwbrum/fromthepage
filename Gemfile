@@ -83,3 +83,6 @@ gem 'friendly_id'
 #support right to left languages
 gem 'rtl'
 gem 'iso-639'
+
+# Quiet asset lines in log files
+gem 'quiet_assets', '~> 1.1.0', group: :development
