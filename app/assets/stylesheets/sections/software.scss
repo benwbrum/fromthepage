@@ -82,9 +82,8 @@
     clear: both;
     margin-top: $gapSize * 3;
 
-    h2 {
-      margin-bottom: $gapSize * 2;
-    }
+    h2 { margin-bottom: $gapSize * 2; }
+    h3 { text-align: center; }
 
     ul.pricing_features {
       list-style: none;
@@ -100,6 +99,20 @@
       font-size: $fontSize;
       width: 100%;
       margin: 13px 0 $gapSize 0;
+    }
+  }
+
+  #integrations {
+    section {
+      width: 33%;
+      float: left;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    hr {
+      clear: both;
+      visibility: hidden;
     }
   }
 }
