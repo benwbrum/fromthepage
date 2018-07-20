@@ -64,9 +64,7 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
-
-  get '/about', to: 'static#about', as: :about
-  get '/static/about', to: redirect('/about', status: 301)
+  get '/software', to: 'static#software', as: :about
   get '/faq', to: 'static#faq', as: :faq
   get '/static/faq', to: redirect('/faq', status: 301)
   get '/privacy', to: 'static#privacy', as: :privacy
