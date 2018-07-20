@@ -94,14 +94,36 @@
           .pricing_grid_cell
             .pricing_price
               span.pricing_price_request Contact Us
-              .pricing_price_billing Pricing based on institution-specific requirements. Please contact us for a custom quote.
+              .pricing_price_billing=="Pricing based on institution-specific requirements. Please #{ link_to 'contact us', '#' } for a custom quote."
 
         .pricing_grid_row
           .pricing_grid_cell
-            = link_to 'Start Free Trial', 'mailto://benwbrum@gmail.com', class: 'button big'
+            = link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
           .pricing_grid_cell
-            = link_to 'Start Free Trial', 'mailto://benwbrum@gmail.com', class: 'button big'
+            = link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
           .pricing_grid_cell
-            = link_to 'Start Free Trial', 'mailto://benwbrum@gmail.com', class: 'button big'
+            = link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+
+    h3=="Ready to get started? #{link_to 'Contact us.', '#'}"
+
+  #integrations
+    h2 Integrations
+
+    section
+      h3 International Image Interoperability Framework (IIIF)
+      p FromThePage enables you to import documents to transcribe from any system that supports IIIF and share your transcribed documents with IIIF systems.
+
+    section
+      h3 OCLC's CONTENTdm
+      p FromThePage supports single-click import and export with OCLC's CONTENTdm including metadata and OCR text.
+
+    section
+      h3 Internet Archive & Omeka
+      p FromThePage integrates with Omeka and Internet Archive directly, so no upload is necessary if your documents are hosted on those platforms.
+
+    hr
+
+javascript:  mixpanel.track("Contact Us");
+
 
 
