@@ -86,3 +86,6 @@ gem 'iso-639'
 
 # Quiet asset lines in log files
 gem 'quiet_assets', '~> 1.1.0', group: :development
+
+# Environment variable configuration
+gem 'dotenv-rails', '~> 2.5.0'

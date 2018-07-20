@@ -6,7 +6,7 @@
     p Want more information about FromThePage? Let us know how we can help.
 
 
-    =form_tag('/contact/send') do |f|
+    =form_tag(send_contact_email_path) do |f|
       .signon_field
         =label_tag :first_name
         =text_field_tag :first_name, nil, autofocus: true

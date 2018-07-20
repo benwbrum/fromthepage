@@ -69,7 +69,9 @@ Fromthepage::Application.routes.draw do
   get '/static/faq', to: redirect('/faq', status: 301)
   get '/privacy', to: 'static#privacy', as: :privacy
   get '/static/privacy', to: redirect('/privacy', status: 301)
+  post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
+
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
