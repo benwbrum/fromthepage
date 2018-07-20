@@ -82,6 +82,10 @@
     clear: both;
     margin-top: $gapSize * 3;
 
+    h2 {
+      margin-bottom: $gapSize * 2;
+    }
+
     ul.pricing_features {
       list-style: none;
       margin-left: 0;
@@ -89,6 +93,13 @@
       li strong {
         font-weight: bold;
       }
+    }
+
+    .pricing_grid_cell .pricing_price .pricing_price_billing {
+      display: block;
+      font-size: $fontSize;
+      width: 100%;
+      margin: 13px 0 $gapSize 0;
     }
   }
 }
