@@ -360,7 +360,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   ahoy_matey
-  autoprefixer-rails (= 8.6.5)
+  autoprefixer-rails (<= 8.6.5)
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (= 1.1.3)
