@@ -66,7 +66,7 @@ end
 gem 'sass-rails', '~> 5.0.0'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails', '8.1.0'
+gem 'autoprefixer-rails', '8.6.5'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'
