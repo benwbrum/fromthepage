@@ -62,24 +62,22 @@
   height: $footerHeight;
   box-sizing: border-box;
   &_copyright {
-    float: left;
+    position: absolute;
+    bottom: $gapSize;
+    left: $gapSize;
   }
   &_nav {
+    width: 200px;
     float: right;
     a {
-      margin-left: 1em;
-      padding-left: 1em;
-      display: inline-block;
-      border-left: 1px solid rgba($footerFg, 0.5);
-      &:first-child {
-        border: 0;
-        margin: 0;
-        padding: 0;
-      }
+      display: block;
+      font-size: $fontSizeBig;
+      line-height: 30px;
     }
   }
   a {
     color: inherit;
+    text-decoration: none;
     &:hover { color: lighten($footerFg, 20); }
   }
 }

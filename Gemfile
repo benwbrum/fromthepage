@@ -66,7 +66,7 @@ end
 gem 'sass-rails', '~> 5.0.0'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails'
+gem 'autoprefixer-rails', '<= 8.6.5'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'
@@ -83,3 +83,9 @@ gem 'friendly_id'
 #support right to left languages
 gem 'rtl'
 gem 'iso-639'
+
+# Quiet asset lines in log files
+gem 'quiet_assets', '~> 1.1.0', group: :development
+
+# Environment variable configuration
+gem 'dotenv-rails', '~> 2.5.0'
