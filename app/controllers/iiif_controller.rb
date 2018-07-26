@@ -135,12 +135,12 @@ class IiifController < ApplicationController
       {
         "format" => "text/html",
         "label" => "Read #{work.title}",
-        "@id" => collection_read_work_path(work.collection.owner, work.collection, work)
+        "@id" => collection_read_work_path(work.collection.owner, work.collection, work, :only_path => false)
       },
       {
         "format" => "text/html",
         "label" => "Table of Contents for #{work.title}",
-        "@id" => collection_work_contents_path(work.collection.owner, work.collection, work)
+        "@id" => collection_work_contents_path(work.collection.owner, work.collection, work, :only_path => false)
       }
     ]
     
