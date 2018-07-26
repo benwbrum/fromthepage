@@ -76,7 +76,7 @@ GEM
       gyoku (>= 0.4.0)
       nokogiri
     arel (5.0.1.20140414130214)
-    autoprefixer-rails (8.0.0)
+    autoprefixer-rails (8.6.5)
       execjs
     bcrypt (3.1.11)
     browser (2.5.2)
@@ -172,7 +172,7 @@ GEM
     minitest (5.11.3)
     multi_json (1.13.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.16)
+    mysql2 (0.3.21)
     net-http-persistent (2.9.4)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -354,7 +354,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   ahoy_matey
-  autoprefixer-rails
+  autoprefixer-rails (~> 8)
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (= 1.1.3)
@@ -372,7 +372,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   meta_request
-  mysql2 (= 0.3.16)
+  mysql2 (= 0.3.21)
   nokogiri (~> 1.8.1)
   oai!
   omeka_client!
@@ -398,4 +398,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.12.5
+   1.16.2
