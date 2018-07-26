@@ -2,7 +2,7 @@ class DocumentUpload < ActiveRecord::Base
   belongs_to :user
   belongs_to :collection
 
-  attr_accessible :file, :collection_id, :status
+  attr_accessible :file, :collection_id, :status, :preserve_titles
 
   validates :collection_id, :file, :presence => true
 
