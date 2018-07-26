@@ -7,7 +7,7 @@ class ContactMailer < ActionMailer::Base
     @more = more
 
     mail from:    email,
-         to:      ENV['CONTACT_EMAIL_RECIPIENT'],
+         to:      ADMIN_EMAILS,
          subject: 'New contact us form submission'
   end
 end
