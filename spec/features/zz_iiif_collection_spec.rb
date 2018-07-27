@@ -5,7 +5,7 @@ describe "uploads data for collections", :order => :defined do
 
   before :all do
     @owner = User.find_by(login: OWNER)
-    @at_id = "https://textgridlab.org/1.0/iiif/manifests/collection/published.json"
+    @at_id = "https://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f205"
   end
 
   before :each do
@@ -34,17 +34,18 @@ describe "uploads data for collections", :order => :defined do
     expect(page.find('.flash_message')).to have_content("IIIF collection import is processing")
     expect(page).to have_content("Works")
     sleep(15)
-    expect(Collection.last.title).to have_content("TextGrid")
+    expect(Collection.last.title).to have_content("Library")
     expect(Collection.last.works.count).not_to be_nil
   end
   
   it "checks to allow '.' in IIIF domain URL parameter" do
-    visit "/iiif/contributions/textgridlab.org"
-    expect(page).to have_content("textgridlab")
-    visit "/iiif/contributions/textgridlab.org/2018-01-01"
-    expect(page).to have_content("textgridlab")
-    visit "/iiif/contributions/textgridlab.org/2018-01-01/2018-12-31"
-    expect(page).to have_content("textgridlab")
+    visit "iiif/contributions/ac.uk"
+    binding.pry
+    expect(page).to have_content("Responce")
+    visit "/iiif/contributions/ac.uk/2018-01-01"
+    expect(page).to have_content("ac.uk")
+    visit "/iiif/contributions/ac.uk/2018-01-01/2019-12-31"
+    expect(page).to have_content("ac.uk")
   end
   
   it "tests for transcribed works" do
