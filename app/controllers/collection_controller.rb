@@ -176,9 +176,6 @@ class CollectionController < ApplicationController
   end
 
   def update
-    if params[:dialect]
-      @collection.language = params[:dialect]
-    end
     if params[:collection][:slug] == ""
       @collection.update(params[:collection].except(:slug))
       title = @collection.title.parameterize
