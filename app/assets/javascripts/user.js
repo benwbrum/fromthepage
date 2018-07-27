@@ -103,39 +103,22 @@ var langs =
  ['हिन्दी',             ['hi-IN']],
  ['ภาษาไทย',         ['th-TH']]];
 
-$(function(){
-  if ($('div.collection_settings').length && ($('#language').length == 1)){
-    for (var i = 0; i < langs.length; i++) {
-      language.options[i] = new Option(langs[i][0], i);
-    }
-  }
-});
+
 // Set default language / dialect.
 function findDefault(lang, defaultDialect) {
-language.selectedIndex = lang;
-updateCountry();
-dialect.selectedIndex = defaultDialect; 
+  console.log(dictation_language)
+  dictation_language.selectedIndex = lang;
+  updateCountry();
+  dialect.selectedIndex = defaultDialect; 
 }
 //update with dialects select
 function updateCountry() {
   for (var i = dialect.options.length - 1; i >= 0; i--) {
     dialect.remove(i);
   }
-  var list = langs[language.selectedIndex];
+  var list = langs[dictation_language.selectedIndex];
   for (var i = 1; i < list.length; i++) {
     dialect.options.add(new Option(list[i][1], list[i][0]));
   }
-  if (collection_voice_recognition.checked){
-    dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
-  }
-}
-
-function showLang(e){
-  if (e.target.checked == true){
-    $('#lang_opts').removeClass('hidden');
-    findDefault(initialLang, initialDialect);
-  } else {
-    $('#lang_opts').addClass('hidden');
-    dialect.style.visibility = 'hidden';
-  }
+  dialect.style.visibility = list[1].length == 1 ? 'hidden' : 'visible';
 }
