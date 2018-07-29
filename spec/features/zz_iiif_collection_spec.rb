@@ -40,8 +40,7 @@ describe "uploads data for collections", :order => :defined do
   
   it "checks to allow '.' in IIIF domain URL parameter" do
     visit "iiif/contributions/ac.uk"
-    binding.pry
-    expect(page).to have_content("Responce")
+    expect(page).to have_content("resources")
     visit "/iiif/contributions/ac.uk/2018-01-01"
     expect(page).to have_content("ac.uk")
     visit "/iiif/contributions/ac.uk/2018-01-01/2019-12-31"
@@ -49,7 +48,8 @@ describe "uploads data for collections", :order => :defined do
   end
   
   it "tests for transcribed works" do
-    col = Collection.second
+    col = Collection.where(:title => 'Cosin\'s Library').first
+    sleep(30)
     works = col.works
     works.each do |w|
       w.pages.update_all(status: Page::STATUS_TRANSCRIBED, translation_status: Page::STATUS_TRANSLATED)
