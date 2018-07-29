@@ -2,7 +2,7 @@ dist: trusty
 sudo: false
 language: ruby
 
-rvm: 2.2.10
+rvm: 2.3.7
 
 jobs:
   include:

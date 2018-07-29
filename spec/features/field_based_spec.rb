@@ -34,7 +34,7 @@ describe "collection settings js tasks", :order => :defined do
     page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'Second field')
     page.find('#new-fields tr[3]').select('textarea', from: 'transcription_fields__input_type')
     page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Third field')
-    page.find('#new-fields tr[3]').select('select', from: 'transcription_fields__input_type')
+    page.find('#new-fields tr[4]').select('select', from: 'transcription_fields__input_type')
     click_button 'Save'
     expect(page).to have_content("Select fields must have an options list.")
     expect(TranscriptionField.last.input_type).to eq "text"
