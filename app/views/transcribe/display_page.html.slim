@@ -113,7 +113,7 @@ h2.legend Page Notes
 -content_for :javascript
   javascript:
     //set language for voice to text
-    var lang = "#{@collection.language}";
+    var lang = "#{current_user.dictation_language || @collection.language}";
 
     $(function() {
       $('[data-fullscreen-toggle]').on('click', function() {
