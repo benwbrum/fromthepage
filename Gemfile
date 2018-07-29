@@ -31,6 +31,7 @@ gem 'carrierwave'
 gem 'rubyzip'
 
 gem 'ahoy_matey'
+gem 'pry'
 
 
 gem 'riiif'
@@ -54,7 +55,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
   gem 'capybara-webkit'
-  gem 'pry'
   gem 'pry-byebug'
 
   # Supporting gem for RailsPanel
