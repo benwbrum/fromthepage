@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.1.2'
 
-gem 'pry'
-gem 'pry-byebug'
 
 gem 'will_paginate'
 #gem 'rmagick', '2.13.2', require: "RMagick"
@@ -56,6 +54,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'pry'
+  gem 'pry-byebug'
 
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
