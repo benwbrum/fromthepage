@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/benwbrum/omeka_client
-  revision: ff34cc375a1ebd946956bcad43e0df647dc09b02
+  revision: f930e4a32ff5f235760f0ba64804ce7beeca9546
   specs:
     omeka_client (1.0.0.a)
       net-http-persistent (~> 2.9.4)
@@ -331,7 +331,7 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.16)
+    uglifier (4.1.17)
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
