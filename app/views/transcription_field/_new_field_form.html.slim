@@ -4,12 +4,14 @@
 -label_value = !field.blank? ? field.label : nil
 -options_value = !field.blank? ? field.options : nil
 -percentage_value = !field.blank? ? field.percentage : nil
+-page_number = !field.blank? ? field.page_number : nil
 tr
   td.first =text_field_tag "transcription_fields[][line_number]", "#{line_number_value}", 'aria-label' => 'Line number', class: 'first hidden'
   td =text_field_tag "transcription_fields[][label]", "#{label_value}", 'aria-label' => 'Field label'
   td =select_tag("transcription_fields[][input_type]", options_for_select(TranscriptionField::INPUTS, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type third')
   td =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => 'Field options', class: 'field-options fourth', disabled: true
   td =text_field_tag "transcription_fields[][percentage]", "#{percentage_value}", 'aria-label' => 'Width Percentage', class: 'percent'
+  td =text_field_tag "transcription_fields[][page_number]", "#{page_number}", 'aria-label' => 'Page Number', class: 'page_number'
   
   -unless field.blank?
     td 
