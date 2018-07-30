@@ -33,6 +33,14 @@
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"
+      tr  
+        td(colspan="2")
+          =label_tag :dictation_language, "Default dictation langauge: ", class: 'collection-label'
+      tr  
+        td(colspan="2")
+          =select_tag :dictation_language, {}, {onchange:'updateCountry()', class: 'w30'}
+          |&nbsp;
+          =select_tag :dialect, {}, {class: 'w40'}
 
     p.email_notifications Select which of the following notifications you want to receive:
     table.form.email_notifications
@@ -55,3 +63,17 @@
 
     .toolbar
       .toolbar_group.aright =f.button 'Update Profile'
+
+javascript:
+  $(function(){
+    var initialLang = "#{@lang_index}";
+    var initialDialect = "#{@dialect_index}";
+    
+    console.log("Init Lang: ", initialLang, " Initial Dialect: ", initialDialect)
+    
+    for (var i = 0; i < langs.length; i++) {
+      dictation_language.options[i] = new Option(langs[i][0], i);
+    }
+    
+    findDefault(initialLang, initialDialect);
+  });
