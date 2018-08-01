@@ -266,6 +266,28 @@ div.editarea {
     margin-left: 5px;
     overflow: hidden;
   }
+  .field-instructions{
+    padding: 2rem;
+    padding-top: 4rem;
+    background-color: #c8d6e5;
+    color: #143e6d;
+    border-radius: 5px;
+    position: relative;
+
+    span {
+      position: absolute;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 1.35rem;
+      top: 0.5rem;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 0.25rem;
+      font-family: sans-serif;
+      color: #395e88;
+    }
+  }
 }
 
 .page-imagescan {

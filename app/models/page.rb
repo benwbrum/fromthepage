@@ -290,7 +290,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           #tc = TableCell.new(row: 1, header: key, content: value)
           tc.header = key
           tc.content = value
-          key = (input_type == "label") ? (key + " ") : (key + ": ")
+          key = (input_type == "description") ? (key + " ") : (key + ": ")
           string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
         end
 
