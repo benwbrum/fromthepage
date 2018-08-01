@@ -185,7 +185,7 @@ class ExportController < ApplicationController
 private
 
   def get_headings(collection, ids)
-    field_headings = collection.transcription_fields.order(:position).pluck(:label)
+    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:label)
     cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
