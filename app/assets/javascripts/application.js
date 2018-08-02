@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require_tree ./plugins
 //= require transcribe.js.erb
-//= require collection.js
+//= require user.js
 
 ;(function($, window, document, undefined) {
 

@@ -27,6 +27,8 @@ class UserController < ApplicationController
         @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
         @user.update(slug: login)
+      elsif params[:dialect]
+        @user.dictation_language = params[:dialect]
       else
         @user.update(params_hash)
       end
@@ -45,6 +47,19 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:user_slug])
     end
+    
+    # Set dictation language to default (en-US) if it doesn't exist
+    lang = !@user.dictation_language.blank? ? @user.dictation_language : "en-US"
+    # Find the language portion of the language/dialect or set to nil
+    part = lang.split('-').first
+    # Find the index of the language in the array (transform to integer)
+    @lang_index = Collection::LANGUAGE_ARRAY.size.times
+      .select {|i| Collection::LANGUAGE_ARRAY[i].include?(part)}[0]
+    # Then find the index of the nested dialect within the language array
+    int = Collection::LANGUAGE_ARRAY[@lang_index].size.times
+      .select {|i| Collection::LANGUAGE_ARRAY[@lang_index][i].include?(lang)}[0]
+    # Transform to integer and subtract 2 because of how the array is nested
+    @dialect_index = !int.nil? ? int-2 : nil
   end
 
   def profile

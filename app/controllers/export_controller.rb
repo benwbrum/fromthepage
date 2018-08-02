@@ -295,7 +295,9 @@ private
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
-      target = (raw_headings.index(cell.header))*2
+      index = (raw_headings.index(cell.header))
+      index = (raw_headings.index(cell.header.strip)) unless index      
+      target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
     end
