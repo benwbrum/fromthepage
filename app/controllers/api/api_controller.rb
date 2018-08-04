@@ -25,7 +25,7 @@ class Api::ApiController < ApplicationController
   end
   
   def render_serialized(object)
-    render json: object, :include => get_fields(params[:fields]) 
+    render json: object, :include => get_fields(params[:fields]), :methods => get_methods(params[:fields])
   end
   
   def response_serialized_object(object)
@@ -40,7 +40,14 @@ class Api::ApiController < ApplicationController
     def get_fields(fields_s)
       fields = []
       if(params[:fields] != nil)
-        fields = fields_s.split(',').map &:to_sym
+        fields = fields_s.split(',').grep(/^[^:]/).map &:to_sym
+      end
+    end
+    
+    def get_methods(fields_s)
+      methods = []
+      if(params[:fields] != nil)
+        methods = fields_s.split(',').grep(/^:/).map { |method| method.sub(":","").to_sym }
       end
     end
 end

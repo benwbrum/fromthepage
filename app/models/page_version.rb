@@ -9,5 +9,9 @@ class PageVersion < ActiveRecord::Base
   def prev
     page.page_versions.where("id < ?", id).first
   end
+  
+  def username
+    user.display_name
+  end
 
 end

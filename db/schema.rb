@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180513121818) do
+ActiveRecord::Schema.define(version: 20180607215199) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -559,6 +559,7 @@ ActiveRecord::Schema.define(version: 20180513121818) do
     t.string   "slug",                            limit: 255
     t.string   "authentication_token",            limit: 255
     t.datetime "authentication_token_created_at"
+    t.string   "rank",                            limit: 255
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
