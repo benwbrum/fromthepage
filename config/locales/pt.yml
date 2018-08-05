@@ -151,6 +151,8 @@ pt:
         success: "A publicação foi eliminada"
       list:
         success: "As publicações foram listadas"
+      like: "Você votou em uma publicação!"
+      dislike: "Você tirou seu voto de publicação!"
     forum:
       create:
         success: "O fórum foi criado"

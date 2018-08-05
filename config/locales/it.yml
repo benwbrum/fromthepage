@@ -151,6 +151,9 @@ it:
         success: "La pubblicazione è stata cancellata"
       list:
         success: "Le pubblicazioni sono state elencate"
+      like: "Hai votato per una pubblicazione!"
+      dislike: "Hai portato via il tuo voto di una pubblicazione!"
+
     forum:
       create:
         success: "Il forum è stato creato"

@@ -22,7 +22,7 @@ es:
       x_days:
         one: 24 hours
         other: "%{count} days"
-  
+
   mail:
     reset_password_instructions: "<h2>Hola %{user_mail}!</h2>
     <p>Alguien ha solicitado un enlace para cambiar su contraseña. Puede hacerlo a través del siguiente:</p>
@@ -32,7 +32,7 @@ es:
     footer:
       sended_from: "Enviado desde"
       powered_by: "Un proyecto de"
-  
+
   badges:
     i-was-here:
       notification:
@@ -58,7 +58,7 @@ es:
       notification:
         title: "¡Nueva Insignia Obtenida!"
         message: "Primer mejora de Transcripción"
-      
+
   api:
     default:
       ok: "La operación se realizó exitosamente"
@@ -151,6 +151,8 @@ es:
         success: "La Publicación ha sido borrada"
       list:
         success: "Se han listado las publicationes"
+      like: "¡Has votado por una publicación!"
+      dislike: "¡Has quitado tu voto de una publicación!"
     forum:
       create:
         success: "El Foro ha sido creado"
@@ -158,4 +160,3 @@ es:
         success: "El Foro ha sido actualizado"
       destroy:
         success: "El Foro ha sido borrado"
-      

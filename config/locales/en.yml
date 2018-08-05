@@ -22,7 +22,7 @@ en:
       x_days:
         one: 24 hours
         other: "%{count} days"
-  
+
   mail:
     reset_password_instructions: "<h2>Hello %{user_mail}!</h2>
     <p>Someone has requested a link to change your password. You can do this through the link below:</p>
@@ -32,7 +32,7 @@ en:
     footer:
       sended_from: "Sended from"
       powered_by: "A Project of"
-  
+
   badges:
     i-was-here:
       notification:
@@ -58,7 +58,7 @@ en:
       notification:
         title: "New Badge Obtained!"
         message: "First Transcription Upgrade"
-    
+
   api:
     default:
       ok: "The operation was successfully completed"
@@ -151,6 +151,8 @@ en:
         success: "Publication has been deleted"
       list:
         success: "Publication has been listed"
+      like: "You voted for one Publication"
+      dislike: "You unvoted for one Publication"
     forum:
       create:
         success: "Forum has been created"
@@ -158,5 +160,3 @@ en:
         success: "Forum has been updated"
       destroy:
         success: "Forum has been deleted"
-        
-      
