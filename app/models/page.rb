@@ -13,6 +13,7 @@ class Page < ActiveRecord::Base
   belongs_to :work
   acts_as_list :scope => :work
 
+  has_many :marks
   has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
   has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy

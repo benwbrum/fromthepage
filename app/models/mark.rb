@@ -5,6 +5,8 @@ class Mark < ActiveRecord::Base
   belongs_to :transcription
   belongs_to :translation
   
+  has_many :contributions
+  
   validates :coordinates, presence: true
 
   def initialize(args={}, user)
