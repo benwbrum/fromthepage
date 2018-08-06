@@ -15,7 +15,7 @@ class Api::ForoController < Api::ApiController
     @foro.element=@transcription
     if  @foro.save
 
-        render_serialized ResponseWS.ok("api.forum.create.success", @foro.element)
+        render_serialized ResponseWS.ok("api.forum.create.success", @foro)
     else
       render_serialized ResponseWS.default_error
     end

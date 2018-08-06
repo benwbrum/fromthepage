@@ -90,7 +90,8 @@ Fromthepage::Application.routes.draw do
     put 'publication', :to=>'publication#update'
     delete 'publication', :to=>'publication#destroy'
     get 'publication/list', :to=>'publication#list'
-
+    get 'publication/like', :to=>'publication#like'
+    get 'publication/dislike', :to=>'publication#dislike'
 
     resources :test, path: 'test', only: [:index]
     post 'login', :to=>'login#login'

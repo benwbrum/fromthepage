@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180607215199) do
+ActiveRecord::Schema.define(version: 20180802172899) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -424,12 +424,13 @@ ActiveRecord::Schema.define(version: 20180607215199) do
   add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
 
   create_table "publications", force: :cascade do |t|
-    t.integer  "user_id",    limit: 4
-    t.integer  "foro_id",    limit: 4
-    t.integer  "parent_id",  limit: 4
+    t.integer  "user_id",               limit: 4
+    t.integer  "foro_id",               limit: 4
+    t.integer  "parent_id",             limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "text",       limit: 255
+    t.string   "text",                  limit: 255
+    t.integer  "cached_weighted_score", limit: 4,   default: 0
   end
 
   create_table "sc_canvases", force: :cascade do |t|

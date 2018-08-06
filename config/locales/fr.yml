@@ -151,6 +151,8 @@ fr:
         success: "La publication a été supprimée"
       list:
         success: "Les publications ont été répertoriées"
+      like: "Vous avez voté pour une publication!"
+      dislike: "Vous avez enlevé votre voeu d'une publication!"
     forum:
       create:
         success: "Le forum a été créé"
