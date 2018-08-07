@@ -8,18 +8,20 @@
 
 p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
 
--@page.articles.distinct.each do |article|
-  -if article.categories.length == 0
-    -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
-    .page-uncategorized
-      h4.page-uncategorized_subject(data-prefix="Subject: " *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
-      
+-@unassigned_articles.each do |article|
+  -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
+  .page-uncategorized
+    h4.page-uncategorized_subject(data-prefix="Subject: " *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
+    
+    -if @translation
+      pre== subject_context(@page.source_translation, article.title, 3)
+    -else
       pre== subject_context(@page.source_text, article.title, 3)
 
-      select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)
-        -@collection.categories.walk_tree do |c, level|
-          -selected = true if article.categories.include?(c)
-          option(data-level=level value=c.id selected=selected aria-label="options" *language_attrs(@collection)) =c.title
+    select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)
+      -@collection.categories.walk_tree do |c, level|
+        -selected = true if article.categories.include?(c)
+        option(data-level=level value=c.id selected=selected aria-label="options" *language_attrs(@collection)) =c.title
 
 span.legend
   -if @translation
