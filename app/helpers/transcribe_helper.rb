@@ -12,7 +12,7 @@ module TranscribeHelper
       pivot, end_index = match.offset(0)
 
       # Generate a list of \n indexes
-      linebreaks = [0]
+      linebreaks = [0, text.length]
       text.to_enum(:scan,/\n/).each {|m,| linebreaks.push $`.size}
 
       ## Sensible index defaults
@@ -20,7 +20,7 @@ module TranscribeHelper
       post = text.length - 1
 
       # Separate the \n before and after the main match (ignore \n in the title)
-      left, right = linebreaks.reject{|idx| idx > pivot && idx < end_index }
+      left, right = linebreaks.uniq.reject{|idx| idx > pivot && idx < end_index }
         .partition {|idx| idx < pivot }
 
       # Set new pre/post indexes based on line radius
