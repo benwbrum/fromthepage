@@ -13,10 +13,10 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
   .page-uncategorized
     h4.page-uncategorized_subject(data-prefix="Subject: " *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
     
-    -if @translation
-      pre== subject_context(@page.source_translation, article.title, 3)
+    -if @text_type == 'translation'
+      pre== subject_context(@page.source_translation, article.title)
     -else
-      pre== subject_context(@page.source_text, article.title, 3)
+      pre== subject_context(@page.source_text, article.title)
 
     select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)
       -@collection.categories.walk_tree do |c, level|
@@ -24,7 +24,7 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
         option(data-level=level value=c.id selected=selected aria-label="options" *language_attrs(@collection)) =c.title
 
 span.legend
-  -if @translation
+  -if @text_type == 'translation'
     -next_path = collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
   -else
     -next_path =collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
