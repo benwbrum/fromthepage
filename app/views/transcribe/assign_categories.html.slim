@@ -13,10 +13,7 @@ p.big You have uncategorized subjects mentioned in the page transcription. Pleas
   .page-uncategorized
     h4.page-uncategorized_subject(data-prefix="Subject: " *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
     
-    -if @text_type == 'translation'
-      pre== subject_context(@page.source_translation, article.title)
-    -else
-      pre== subject_context(@page.source_text, article.title)
+    pre== excerpt_subject(@page, article.title, {:text_type => @text_type})
 
     select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)
       -@collection.categories.walk_tree do |c, level|
