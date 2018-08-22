@@ -186,8 +186,8 @@ private
 
   def get_headings(collection, ids)
     field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction')
-    cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
-    @raw_headings = (field_headings.pluck('label') + cell_headings).uniq
+    
+    @raw_headings = (field_headings.pluck('label')).uniq
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
@@ -197,11 +197,6 @@ private
     field_headings.each_with_index do |raw_heading, index|
       @headings << "#{raw_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
       @headings << "#{raw_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
-    end
-    #get headings from non-field-based
-    cell_headings.each_with_index do |raw_heading, index|
-      @headings << "#{raw_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
-      @headings << "#{raw_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
     end
 
     @headings.uniq!
