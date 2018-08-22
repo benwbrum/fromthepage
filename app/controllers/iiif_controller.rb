@@ -135,12 +135,12 @@ class IiifController < ApplicationController
       {
         "format" => "text/html",
         "label" => "Read #{work.title}",
-        "@id" => collection_read_work_path(work.collection.owner, work.collection, work)
+        "@id" => collection_read_work_path(work.collection.owner, work.collection, work, :only_path => false)
       },
       {
         "format" => "text/html",
         "label" => "Table of Contents for #{work.title}",
-        "@id" => collection_work_contents_path(work.collection.owner, work.collection, work)
+        "@id" => collection_work_contents_path(work.collection.owner, work.collection, work, :only_path => false)
       }
     ]
     
@@ -335,7 +335,7 @@ class IiifController < ApplicationController
 
 private
   def iiif_page_note(page, noteid)
-    note = IIIF::Presentation::Annotation.new
+    note = IIIF::Presentation::Annotation.new({'motivation' => 'oa:commenting'})
     #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
     note['on'] = region_from_page(@page)
     note.resource = IIIF::Presentation::Resource.new({'@id' => "note_#{noteid}_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
