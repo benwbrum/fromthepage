@@ -40,16 +40,21 @@ module AbstractXmlHelper
     doc.elements.delete_all("//table//lb")
     # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e|
+      lb = REXML::Element.new('span')
+      lb.add_text("")
+      lb.add_attribute('class', 'line-break')
+
       if preserve_lb
-        e.replace_with(REXML::Element.new('br'))
+        if e.attributes['break'] == "no"
+          lb.add_text('-')
+        end
+        lb.add_element(REXML::Element.new('br'))
       else
-        lb = REXML::Element.new('span')
         unless e.attributes['break']=="no"
           lb.add_text(' ')
         end
-        lb.add_attribute('class', 'line-break')
-        e.replace_with(lb)
       end
+      e.replace_with(lb)
     end
 
     doc.elements.each("//entryHeading") do |e|

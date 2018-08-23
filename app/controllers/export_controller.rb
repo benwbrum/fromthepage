@@ -185,18 +185,25 @@ class ExportController < ApplicationController
 private
 
   def get_headings(collection, ids)
+
     field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction')
-    
-    @raw_headings = (field_headings.pluck('label')).uniq
+    cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
+
+    @raw_headings = (field_headings.pluck('label') + cell_headings).uniq
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
     @headings += @page_metadata_headings
 
     #get headings from field-based
-    field_headings.each_with_index do |raw_heading, index|
-      @headings << "#{raw_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
-      @headings << "#{raw_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
+    field_headings.each_with_index do |field_heading, index|
+      @headings << "#{field_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
+      @headings << "#{field_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
+    end
+    #get headings from non-field-based
+    cell_headings.each_with_index do |cell_heading, index|
+      @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
+      @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
     end
 
     @headings.uniq!
@@ -293,7 +300,9 @@ private
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
-      target = (raw_headings.index(cell.header))*2
+      index = (raw_headings.index(cell.header))
+      index = (raw_headings.index(cell.header.strip)) unless index      
+      target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
     end

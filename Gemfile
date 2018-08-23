@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.1.2'
 
-gem 'pry'
-gem 'pry-byebug'
 
 gem 'will_paginate'
 #gem 'rmagick', '2.13.2', require: "RMagick"
@@ -16,7 +14,7 @@ gem 'capistrano-bundler', '~> 1.1.2'
 gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
 gem 'savon', '~> 2.12.0'
-gem 'mysql2','0.3.16'
+gem 'mysql2','0.3.21'
 
 gem 'recaptcha', '0.3.6'
 
@@ -33,6 +31,7 @@ gem 'carrierwave'
 gem 'rubyzip'
 
 gem 'ahoy_matey'
+gem 'pry'
 
 
 gem 'riiif'
@@ -56,6 +55,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
   gem 'capybara-webkit'
+  gem 'pry-byebug'
 
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
@@ -66,7 +66,7 @@ end
 gem 'sass-rails', '~> 5.0.0'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails'
+gem 'autoprefixer-rails', '~>8'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'
