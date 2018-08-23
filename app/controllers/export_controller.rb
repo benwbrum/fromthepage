@@ -200,10 +200,13 @@ private
       @headings << "#{field_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
       @headings << "#{field_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
     end
-    #get headings from non-field-based
-    cell_headings.each_with_index do |cell_heading, index|
-      @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
-      @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
+
+    if(!field_headings)
+      #get headings from non-field-based
+      cell_headings.each_with_index do |cell_heading, index|
+        @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
+        @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
+      end
     end
 
     @headings.uniq!
