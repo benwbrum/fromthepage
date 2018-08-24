@@ -186,30 +186,40 @@ private
 
   def get_headings(collection, ids)
 
-    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction')
+    fields = collection.transcription_fields.order(:position).where.not(input_type: 'instruction')
     cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
 
-    @raw_headings = (field_headings.pluck('label') + cell_headings).uniq
+    unqiueIdentifiers = get_unique_identifiers(fields)
+
+    @raw_headings = (fields.pluck('label') + cell_headings).uniq
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
     @headings += @page_metadata_headings
 
     #get headings from field-based
-    field_headings.each_with_index do |field_heading, index|
-      @headings << "#{field_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
-      @headings << "#{field_heading.label} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
+    fields.each_with_index do |field, index|
+      @headings << "#{field.label} #{unqiueIdentifiers[index]} (text)"
+      @headings << "#{field.label} #{unqiueIdentifiers[index]} (subject)"
     end
 
-    if(!field_headings)
-      #get headings from non-field-based
-      cell_headings.each_with_index do |cell_heading, index|
-        @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (text)"
-        @headings << "#{cell_heading} #{field_headings[index].line_number}.#{field_headings[index].position} (subject)"
-      end
+    #get headings from non-field-based
+    cell_headings.each_with_index do |cell_heading, index|
+      @headings << "#{cell_heading} #{unqiueIdentifiers[index]} (text)"
+      @headings << "#{cell_heading} #{unqiueIdentifiers[index]} (subject)"
     end
 
     @headings.uniq!
+  end
+
+  def get_unique_identifiers(fields)
+    uniqueIdentifiers = Array.new(fields.length)
+
+    for i in 0..(fields.length - 1) do
+      uniqueIdentifiers[i] = "#{fields[i].line_number}.#{fields[i].position}"
+    end
+
+    uniqueIdentifiers
   end
 
   def export_tables_as_csv(table_obj)
