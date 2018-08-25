@@ -40,15 +40,10 @@ FactoryBot.define do
 end
 
 FactoryBot.define do
-  factory :article do
-    sequence(:title) { |n| "Article #{n}" }
-    categories { build_stubbed_list :category, 4 }
-  end
+  factory :article
 end
 
 FactoryBot.define do
-  factory :category do
-    sequence(:title) { |n| "Category #{n}" }
-  end
+  factory :category
 end
 
