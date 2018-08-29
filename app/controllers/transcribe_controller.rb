@@ -173,25 +173,33 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
-    @translation = params[:translation]
+    @text_type = params[:text_type]
     #no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
-      # look for uncategorized articles
-      for article in @page.articles
-        if article.categories.length == 0
-          render :action => 'assign_categories'
-          return
-        end
+      @unassigned_articles = []
+      
+      # Separate translationa and transcription links
+      left, right = @page.page_article_links.partition{|x| x.text_type == 'translation' }
+
+      if @text_type == 'translation'
+        unassigned_links = left.select{|link| link.article.categories.empty? }
+      else
+        unassigned_links = right.select{|link| link.article.categories.empty? }
+      end
+      unless unassigned_links.empty?
+        @unassigned_articles = unassigned_links.map{|link| link.article }.uniq
+        render :action => 'assign_categories'
+        return
       end
     end
     # no uncategorized articles found, skip to display
-    if @translation
+    if @text_type == 'translation'
       redirect_to collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
     else
       redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     end
   end
-
+  
   def translate
     session[:col_id] = @collection.slug
   end
@@ -243,7 +251,7 @@ class TranscribeController  < ApplicationController
             end
           end
           
-          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :translation => true
+          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :text_type => 'translation'
         else
           log_translation_error(message)
           render :action => 'translate'
