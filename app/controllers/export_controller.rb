@@ -261,10 +261,10 @@ private
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
         page_notes = page.notes
-          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub(/\s+/, ' ')
+          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
         page_contributors = all_deeds
           .select{ |d| d.deed_type = 'page_edit' }
-          .map{ |d| "#{d.user.display_name}<#{d.user.email}>" }
+          .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
           .uniq.join('|')
 
         page_cells = [
