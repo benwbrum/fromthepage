@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'subject_exporter'
 
 RSpec.describe SubjectExporter do
   describe 'sections export' do
@@ -19,7 +20,7 @@ RSpec.describe SubjectExporter do
 
     let(:collection) { FactoryBot.build_stubbed(:collection, works: [work_1, work_2]) }
     it 'exports headers for a blank collection' do
-      subjects = SubjectExporter.new(collection)
+      subjects = SubjectExporter::Exporter.new(collection)
       expect(subjects.export).to include('Work_Title')
       expect(subjects.export).to include('Identifier')
       expect(subjects.export).to include('Page_Title')

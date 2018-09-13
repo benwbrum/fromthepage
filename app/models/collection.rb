@@ -1,4 +1,5 @@
 require 'csv'
+require 'subject_exporter'
 
 class Collection < ActiveRecord::Base
   include CollectionStatistic
@@ -44,7 +45,7 @@ class Collection < ActiveRecord::Base
   end
 
   def export_subjects_as_csv
-    subject_link = SubjectExporter.new(self)
+    subject_link = SubjectExporter::Exporter.new(self)
 
     subject_link.export
   end
