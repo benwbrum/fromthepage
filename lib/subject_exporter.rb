@@ -35,6 +35,7 @@ module SubjectExporter
                 page_url,
                 link.article.title,
                 display_text,
+                article.uri,
                 categories.first(3).join('|')
               ]
             end
