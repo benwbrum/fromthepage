@@ -1,21 +1,23 @@
 require 'nokogiri'
 
 module SubjectExporter
-
   class Exporter
     def initialize(collection)
       @works = collection.works
-      @headers = %w[Work_Title Identifier Section Page_Title Page_Position Page_URL Subject Text Category Category Category]
+      @headers = %w[Work_Title Identifier Section Page_Title Page_Position Page_URL Subject Text Subject_URI Category]
     end
 
     def export
       csv_string = CSV.generate(force_quotes: true) do |csv|
         csv << @headers
         @works.each do |work|
-          section_array = ['']
+          transcription_sections  = ['']
+          translation_sections    = ['']
+
           work.pages.each do |page|
-            sections_by_link = {}
-            sections_by_link, section_depth = links_by_section(page.xml_text, sections_by_link, section_array)
+            sections_by_link, transcription_sections = links_by_section(page.xml_text, {}, transcription_sections)
+            sections_by_link, translation_sections = links_by_section(page.xml_translation, sections_by_link, translation_sections)
+
             page_url = "http://#{Rails.application.routes.default_url_options[:host]}/display/display_page?page_id=#{page.id}"
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
@@ -33,7 +35,7 @@ module SubjectExporter
                 page.title,
                 page.position,
                 page_url,
-                link.article.title,
+                article.title,
                 display_text,
                 article.uri,
                 categories.first(3).join('|')
