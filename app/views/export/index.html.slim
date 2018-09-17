@@ -87,6 +87,11 @@ table.datagrid
 
 =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
+h2 API
+p
+  'We also have an API for programmatically exporting transcripts for your collections. Learn more
+  =link_to('here', 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')
+  '.
 
 =render({ :partial => '/shared/collection_footer' })
 
