@@ -1,16 +1,7 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
 
--unless @collection.subjects_disabled
-  h2.nomargin Export Subject Index
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button btnExport', id: 'btnCsvExport')
-        =svg_symbol '#icon-export', class: 'icon'
-        span Export Subjects as CSV
-    span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
-
-h2 Export All Works
 p.big 
+h2.nomargin Export All Works
   span.fright(style="margin-left: 30px")
 
     =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button btnExport', id: 'btnExportAll')
@@ -19,14 +10,6 @@ p.big
   
   span Click the button to export all works from the collection into a zip file containing each work as an XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.
 
--unless @table_export.blank?
-  h2 Export All Tables
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to({ :controller => 'export', :action => 'export_all_tables', :collection_id => @collection.id }, class: 'button btnExport', id: 'btnExportTables')
-        =svg_symbol '#icon-export', class: 'icon'
-        span Export All Table Data as CSV
-    span Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
 
 -if ContentdmTranslator.collection_is_cdm? @collection
   h2 Export to CONTENTdm
@@ -87,6 +70,23 @@ table.datagrid
 
 =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
+-unless @collection.subjects_disabled
+  h2 Export Subject Index
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to({ :controller => 'export', :action => 'subject_csv', :collection_id => @collection.id }, class: 'button btnExport', id: 'btnCsvExport')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export Subjects as CSV
+    span Click the button to export subject indexes from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+
+-unless @table_export.blank?
+  h2 Export All Tables
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to({ :controller => 'export', :action => 'export_all_tables', :collection_id => @collection.id }, class: 'button btnExport', id: 'btnExportTables')
+        =svg_symbol '#icon-export', class: 'icon'
+        span Export All Table Data as CSV
+    span Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
 
 =render({ :partial => '/shared/collection_footer' })
 
