@@ -160,6 +160,10 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def indexed?
+    status == STATUS_INDEXED
+  end
+
   # tested
   def create_version
     version = PageVersion.new

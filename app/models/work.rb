@@ -224,4 +224,14 @@ class Work < ActiveRecord::Base
     self.collection.field_based
   end
 
+  def needs_indexing?
+    collection.supports_document_sets && !indexing_complete?
+  end
+
+  private
+
+  def indexing_complete?
+    pages.all? { |page| page.indexed? }
+  end
+
 end
