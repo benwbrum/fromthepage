@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :page do
     work { association(:work) }
-    page_version { association(:page_version) }
+    # page_version { association(:page_version) }
 
     sequence(:title) { |n| "title_#{n}" }
     sequence(:source_text) { |n| "source_text_#{n}" }
