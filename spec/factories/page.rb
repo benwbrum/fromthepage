@@ -14,7 +14,7 @@ FactoryBot.define do
     sequence(:lock_version) { |n| "lock_version_#{n}" }
     sequence(:xml_text) { |n| "xml_text_#{n}" }
     sequence(:status) { |n| "status_#{n}" }
-    status { Page::STATUS_INDEXED }
+    # status { Page::STATUS_INDEXED }
     sequence(:source_translation) { |n| "source_translation_#{n}" }
     sequence(:xml_translation) { "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p/>\n      </page>\n" }
     sequence(:search_text) { |n| "search_text_#{n}" }
