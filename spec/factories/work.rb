@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :work do
     # owner_user { association(:owner_user) }
-    # collection { association(:collection) }
+    collection { association(:collection) }
 
     sequence(:title) { |n| "title_#{n}" }
     sequence(:description) { |n| "description_#{n}" }
@@ -13,8 +13,8 @@ FactoryBot.define do
     sequence(:location_of_composition) { |n| "location_of_composition_#{n}" }
     sequence(:author) { |n| "author_#{n}" }
     sequence(:transcription_conventions) { |n| "transcription_conventions_#{n}" }
-    sequence(:scribes_can_edit_titles) { true }
-    sequence(:supports_translation) { true }
+    sequence(:scribes_can_edit_titles) { false }
+    sequence(:supports_translation) { false }
     sequence(:translation_instructions) { |n| "translation_instructions_#{n}" }
     sequence(:pages_are_meaningful) { true }
     sequence(:ocr_correction) { true }
