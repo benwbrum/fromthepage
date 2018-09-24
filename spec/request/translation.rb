@@ -4,13 +4,13 @@ require 'json'
 RSpec.describe "TranscriptionController", type: :request do
 
   before do
-    @user = FactoryGirl.create(:user)
-    @translation = FactoryGirl.create(:translation)
+    @user = FactoryBot.create(:user)
+    @translation = FactoryBot.create(:translation)
 
   end
 
   it 'creates a translation' do
-    puts "-----------------CREATE-------------------"
+    puts "-------------------CREATE-------------------"
       #previous_length = Collection.count
       post '/api/translation?auth_token='+@user.authentication_token.to_s+'&locale=es',{"text":"text"}
       json = JSON.parse(response.body)
@@ -22,7 +22,7 @@ RSpec.describe "TranscriptionController", type: :request do
 
 
   it 'updates a translation' do
-    puts "----------------UPDATE--------------------"
+    puts "-------------------UPDATE--------------------"
   	patch '/api/translation/'+@translation.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es',{"text":"text"}
   	json = JSON.parse(response.body)
   	puts json['message']
@@ -31,7 +31,7 @@ RSpec.describe "TranscriptionController", type: :request do
 
 
   it 'deletes a translation' do
-  	puts "--------------DELETE----------------------"
+  	puts "-------------------DELETE-------------------"
   	delete '/api/translation/'+@translation.id.to_s+'?auth_token='+@user.authentication_token.to_s+'&locale=es'
   	json = JSON.parse(response.body)
   	puts json['message']

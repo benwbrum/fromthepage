@@ -1,8 +1,8 @@
 require 'faker'
-FactoryGirl.define do
+FactoryBot.define do
   before do
-    @user = FactoryGirl.create(:user)
-    @transcription = FactoryGirl.create(:transcription)
+    @user = FactoryBot.create(:user)
+    @transcription = FactoryBot.create(:transcription)
 
   end
   #A simple forum

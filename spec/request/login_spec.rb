@@ -3,14 +3,12 @@ require 'json'
 
 RSpec.describe "LoginController", type: :request do
 	before do
-		@user = FactoryGirl.create(:user)
-
+		@user = FactoryBot.create(:user)
 	end
 
 #controllar que se reciba el acces token
 	it 'attemp login succes' do
-  		puts "-----------------Login Success Test-------------------"
-
+  		puts "-------------------Login Success Test-------------------"
 	    post '/api/login?locale=es',{"username":"testuser","password":"abc12356"}
 	    json = JSON.parse(response.body)
       puts json['message'];
@@ -19,7 +17,7 @@ RSpec.describe "LoginController", type: :request do
 
 #falla el login si le erras de password
   it 'attemp login fail' do
-      puts "-----------------Login Fail-------------------"
+      puts "-------------------Login Fail-------------------"
       post '/api/login?locale=es',{"username":"failtest","password":"pedro1234"}
       json = JSON.parse(response.body)
       puts json['message'];

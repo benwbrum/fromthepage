@@ -4,7 +4,7 @@ require 'factory_girl_rails'
 describe User do
 
   before(:each) do
-    @user = FactoryGirl.create(:user1)
+    @user = FactoryBot.create(:user1)
   end
 
   subject { @user }

@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '4.2.9'
 
-gem 'rails-api' 
+gem 'rails-api'
 
 gem 'pry'
 gem 'pry-byebug'
@@ -88,7 +88,8 @@ gem "figaro"
 
 gem 'devise-token_authenticatable', '~> 0.3'
 
-gem 'factory_girl_rails'
+
+
 
 # Use font awesome icons
 gem "font-awesome-rails"
@@ -96,3 +97,8 @@ gem "font-awesome-rails"
 gem 'acts_as_votable'
 
 gem 'rack-cors'
+
+
+group :development, :test do
+  gem "factory_bot_rails"
+end

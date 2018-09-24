@@ -1,10 +1,10 @@
 require 'faker'
-FactoryGirl.define do
+FactoryBot.define do
 
 
   before do
-    @user = FactoryGirl.create(:user)
-    @forum = FactoryGirl.create(:foro)
+    @user = FactoryBot.create(:user)
+    @forum = FactoryBot.create(:foro)
   end
   #A simple collection
   factory :publication do
