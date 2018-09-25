@@ -128,6 +128,11 @@ GEM
     errbase (0.1.0)
     erubis (2.7.0)
     execjs (2.7.0)
+    factory_bot (4.10.0)
+      activesupport (>= 3.0.0)
+    factory_bot_rails (4.10.0)
+      factory_bot (~> 4.10.0)
+      railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.12.2)
@@ -367,6 +372,7 @@ DEPENDENCIES
   devise (= 3.4.1)
   devise-encryptable
   devise_masquerade
+  factory_bot_rails
   friendly_id
   gravatar_image_tag
   iiif-presentation!

@@ -56,7 +56,7 @@ group :development, :test do
   gem 'launchy'
   gem 'capybara-webkit'
   gem 'pry-byebug'
-
+  gem 'factory_bot_rails'
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
   gem 'meta_request'

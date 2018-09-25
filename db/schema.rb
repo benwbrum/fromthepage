@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180717215604) do
+ActiveRecord::Schema.define(version: 20180826214652) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -52,12 +52,12 @@ ActiveRecord::Schema.define(version: 20180717215604) do
     t.string   "title"
     t.text     "source_text"
     t.datetime "created_on"
-    t.integer  "lock_version",                          default: 0
-    t.text     "xml_text"
+    t.integer  "lock_version",                                           default: 0
+    t.text     "xml_text",      limit: 16777215
     t.string   "graph_image"
     t.integer  "collection_id"
-    t.decimal  "latitude",      precision: 7, scale: 5
-    t.decimal  "longitude",     precision: 8, scale: 5
+    t.decimal  "latitude",                       precision: 7, scale: 5
+    t.decimal  "longitude",                      precision: 8, scale: 5
     t.string   "uri"
   end
 
@@ -127,13 +127,27 @@ ActiveRecord::Schema.define(version: 20180717215604) do
     t.boolean  "field_based",                            default: false
     t.boolean  "voice_recognition",                      default: false
     t.string   "language"
-    t.string   "license_key"
     t.string   "text_language"
+    t.string   "license_key"
     t.integer  "pct_completed"
+    t.string   "default_orientation"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
   add_index "collections", ["slug"], name: "index_collections_on_slug", unique: true, using: :btree
+
+  create_table "comments", force: true do |t|
+    t.integer  "parent_id"
+    t.integer  "user_id"
+    t.datetime "created_at",                                               null: false
+    t.integer  "commentable_id",                    default: 0,            null: false
+    t.string   "commentable_type",                  default: "",           null: false
+    t.integer  "depth"
+    t.string   "title"
+    t.text     "body",             limit: 16777215
+    t.string   "comment_type",     limit: 10,       default: "annotation"
+    t.string   "comment_status",   limit: 10
+  end
 
   create_table "deeds", force: true do |t|
     t.string   "deed_type",     limit: 10
@@ -172,6 +186,7 @@ ActiveRecord::Schema.define(version: 20180717215604) do
     t.datetime "updated_at"
     t.string   "slug"
     t.integer  "pct_completed"
+    t.string   "default_orientation"
   end
 
   add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
@@ -413,6 +428,11 @@ ActiveRecord::Schema.define(version: 20180717215604) do
   add_index "pages_sections", ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id", using: :btree
   add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
 
+  create_table "plugin_schema_info", id: false, force: true do |t|
+    t.string  "plugin_name"
+    t.integer "version"
+  end
+
   create_table "sc_canvases", force: true do |t|
     t.string   "sc_id"
     t.integer  "sc_manifest_id"
@@ -471,8 +491,8 @@ ActiveRecord::Schema.define(version: 20180717215604) do
   add_index "sections", ["work_id"], name: "index_sections_on_work_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.string   "session_id", null: false
-    t.text     "data"
+    t.string   "session_id",                  default: "", null: false
+    t.text     "data",       limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -529,8 +549,8 @@ ActiveRecord::Schema.define(version: 20180717215604) do
     t.string   "email"
     t.boolean  "owner",                     default: false
     t.boolean  "admin",                     default: false
-    t.string   "encrypted_password",        default: "",    null: false
-    t.string   "password_salt",             default: "",    null: false
+    t.string   "encrypted_password",        default: "",      null: false
+    t.string   "password_salt",             default: "",      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
@@ -541,7 +561,7 @@ ActiveRecord::Schema.define(version: 20180717215604) do
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",             default: 0,     null: false
+    t.integer  "sign_in_count",             default: 0,       null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -555,6 +575,7 @@ ActiveRecord::Schema.define(version: 20180717215604) do
     t.string   "uid"
     t.datetime "start_date"
     t.string   "orcid"
+    t.string   "dictation_language",        default: "en-US"
   end
 
   add_index "users", ["login"], name: "index_users_on_login", using: :btree
@@ -614,7 +635,7 @@ ActiveRecord::Schema.define(version: 20180717215604) do
 
   create_table "works", force: true do |t|
     t.string   "title"
-    t.string   "description",               limit: 4000
+    t.text     "description",               limit: 16777215
     t.datetime "created_on"
     t.integer  "owner_user_id"
     t.boolean  "restrict_scribes",                       default: false
