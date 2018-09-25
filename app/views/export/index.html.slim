@@ -6,6 +6,7 @@ p.big
     =link_to({ :controller => 'export', :action => 'export_all_works', :collection_id => @collection.id, format: :zip }, class: 'button btnExport', id: 'btnExportAll')
       =svg_symbol '#icon-export', class: 'icon'
       span Export All Works
+
   span Click the button to export all works from the collection into a zip file containing each work as an XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.
 
 
@@ -85,6 +86,12 @@ table.datagrid
         =svg_symbol '#icon-export', class: 'icon'
         span Export All Table Data as CSV
     span Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
+
+h2 API
+p
+  'We also have an API for programmatically exporting transcripts for your collections. Learn more
+  =link_to('here', 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')
+  '.
 
 =render({ :partial => '/shared/collection_footer' })
 
