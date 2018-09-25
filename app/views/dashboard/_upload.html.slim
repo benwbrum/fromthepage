@@ -2,7 +2,7 @@
     p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
     =form_for :document_upload, url: { action: 'new_upload' } do |f|
       =validation_summary @document_upload.errors
-      table.form
+      table.form.collection-settings
         tr
           =f.label :collection_id, class: "hidden"
           td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), {prompt: '- Select a collection -'}
@@ -12,6 +12,10 @@
               =f.file_field(:file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed', title: 'Upload file')
               input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse files" readonly)
               button(type="button") Browse
+        tr
+          td
+            =f.check_box :preserve_titles
+            =f.label :preserve_titles, ' Use image filenames as page titles.'
 
       ul
         li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
