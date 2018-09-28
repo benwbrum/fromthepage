@@ -351,7 +351,7 @@ private
     when 'transcription'
       annotation['on'] = region_from_page(@page)
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "plaintext_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
-      annotation.resource["format"] =  "text/plain"
+      annotation.resource["format"] =  "text/html"
 
       doc = Nokogiri::XML(@page.xml_text.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
       no_tags = doc.text
@@ -363,7 +363,7 @@ private
         #page = Page.find page_id
         annotation['on'] = region_from_page(@page)
         annotation.resource = IIIF::Presentation::Resource.new({'@id' => "translation_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
-        annotation.resource["format"] =  "text/plain"
+        annotation.resource["format"] =  "text/html"
 
         doc = Nokogiri::XML(@page.xml_translation.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
         no_tags = doc.text
