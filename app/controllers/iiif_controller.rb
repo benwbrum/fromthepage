@@ -352,11 +352,6 @@ private
       annotation['on'] = region_from_page(@page)
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "plaintext_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
       annotation.resource["format"] =  "text/html"
-
-      doc = Nokogiri::XML(@page.xml_text.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
-      no_tags = doc.text
-
-      annotation.resource["chars"] = no_tags
     when 'translation'
       unless page.source_translation.blank?
         #annotation = IIIF::Presentation::Annotation.new
@@ -364,11 +359,6 @@ private
         annotation['on'] = region_from_page(@page)
         annotation.resource = IIIF::Presentation::Resource.new({'@id' => "translation_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
         annotation.resource["format"] =  "text/html"
-
-        doc = Nokogiri::XML(@page.xml_translation.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
-        no_tags = doc.text
-
-        annotation.resource["chars"] = no_tags
       end
     when 'facsimile'
       #annotation = IIIF::Presentation::Annotation.new
