@@ -263,7 +263,7 @@ private
         page_notes = page.notes
           .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
         page_contributors = all_deeds
-          .select{ |d| d.page_id == page.id && d.deed_type == 'page_edit'}
+          .select{ |d| d.page_id == page.id}
           .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
           .uniq.join('|')
 
