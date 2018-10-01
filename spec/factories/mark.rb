@@ -3,9 +3,8 @@ FactoryBot.define do
   #A simple work
 	#coordinates = { :x=>23 , :y=>23}
   before do
-    #@user = FactoryBot.create(:user)
-    @transcription = FactoryBot.create(:transcription)
-    @user = @transcription.user
+  #@transcription = FactoryBot.create(:transcription)
+  #@user = FactoryBot.create(:user)
   end
 
   factory :mark do
@@ -13,9 +12,11 @@ FactoryBot.define do
     page_id 42
     coordinates "{ :x=>23 , :y=>23}"
     shape_type "polyline"
-    transcription @transcription
-	end
+  #  transcription 2
+  #  user 33
+    #transcription { Transcription.first || association(:transcription) }
+    #user { User.first || association(:user) }
+  end
 
-  initialize_with { Mark.new( {:transcription_text => "transcription"} ,@user) }
 
 end

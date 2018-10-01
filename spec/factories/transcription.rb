@@ -2,7 +2,7 @@ require 'faker'
 FactoryBot.define do
 
   before do
-    @user = FactoryBot.create(:user)
+  #  @user = FactoryBot.create(:user)
 
   end
   #A simple collection
@@ -10,7 +10,8 @@ FactoryBot.define do
   	id  2
     text "test"
     type Transcription
-    user @user
+    user_id 33
+  #  user @user
 
   end
 
