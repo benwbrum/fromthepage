@@ -221,26 +221,62 @@ private
     get_headings(collection, ids)
 
     csv_string = CSV.generate(:force_quotes => true) do |csv|
+
+      page_cells = [
+        'Work Title',
+        'Work Identifier',
+        'Page Title',
+        'Page Position',
+        'Page URL',
+        'Page Contributors',
+        'Page Notes'
+      ]
+
+      section_cells = [
+        'Section (text)',
+        'Section (subjects)',
+        'Section (subject categories)'
+      ]
+
       if table_obj.sections.blank?
-        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
+        csv << (page_cells + @headings)
         col_sections = false
       else
-        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
+        csv << (page_cells + section_cells + @headings)
         col_sections = true
       end
+
       works.each do |w|
         csv = generate_csv(w, csv, col_sections)
       end
+
     end
     cookies['download_finished'] = 'true'
     csv_string
   end
 
   def generate_csv(work, csv, col_sections)
+    all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-        page_cells = [work.title, work.identifier, page.title, page.position, page_url]
+        page_notes = page.notes
+          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
+        page_contributors = all_deeds
+          .select{ |d| d.page_id == page.id}
+          .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+          .uniq.join('|')
+
+        page_cells = [
+          work.title,
+          work.identifier,
+          page.title,
+          page.position,
+          page_url,
+          page_contributors,
+          page_notes
+        ]
+
         page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
 
