@@ -1,3 +1,3 @@
 FactoryBot.define do
-  factory :page 
+  factory :page
 end
