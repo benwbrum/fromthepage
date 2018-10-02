@@ -184,6 +184,13 @@ describe "editor actions" , :order => :defined do
     expect(page).to have_content('Saved')
   end
 
+  it "Allows owner to delete note", skip_before: true do
+    login_as(@owner, :scope => :user)
+    visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+    expect(page).to have_content "Test note"
+    expect(page).to have_selector('.user-bubble_actions > a[title="Delete"]')
+  end
+
   it "tries to save transcription with unsaved note", :js => true do
     col = Collection.second
     test_page = col.works.first.pages.first
