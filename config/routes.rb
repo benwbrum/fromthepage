@@ -72,6 +72,7 @@ Fromthepage::Application.routes.draw do
     get 'dashboard/owner/collections' => 'dashboard#collectionsOfOwner'
     get 'dashboard/recent_work' => 'dashboard#recent_work'
     get 'deeds/:id' => 'deed#list'
+    get 'dashboard/work/:work_id' => 'dashboard#workActivity'
 
 
 #    post 'foro', :to=>'foro#create'

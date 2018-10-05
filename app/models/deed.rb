@@ -58,4 +58,23 @@ class Deed < ActiveRecord::Base
     end
   end
 
+  def getDTO
+    DeedDTO.new(self)
+  end
+
+  class DeedDTO
+    attr_accessor :collection,:work,:user
+    def initialize(deed)
+      @id = deed.id
+      @created_at = deed.created_at
+      @updated_at = deed.updated_at
+      @user_id = deed.user.id
+      @user = deed.user
+      @collection = deed.collection
+      @work = deed.work
+      @deed_type = deed.deed_type
+      @deed_type_name = deed.deed_type_name
+    end
+  end
+
 end

@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :token_authenticatable, :registerable, :masqueradable, 
+  devise :database_authenticatable, :token_authenticatable, :registerable, :masqueradable,
          :recoverable, :rememberable, :trackable, :validatable,
          :encryptable, :encryptor => :restful_authentication_sha1
 
@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
-  
+
   after_destroy :clean_up_orphans
 
   def all_owner_collections
@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
       if obj.collection
         return self == obj.collection.owner || obj.collection.owners.include?(self)
       else
-        self == obj.owner      
+        self == obj.owner
       end
     end
     if DocumentSet == obj.class
@@ -127,7 +127,7 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
-  
+
   def unrestricted_collections
     collections = self.all_owner_collections.unrestricted
   end
@@ -172,6 +172,19 @@ class User < ActiveRecord::Base
   def self.search(search)
     where("display_name LIKE ?", "%#{search}%")
     where("login LIKE ?", "%#{search}%")
+  end
+
+  def all_owner_deeds_work(work_id)
+    @deedsDto =Array.new
+    @deeds=Deed.includes(:work).where(:works => {:id => work_id})
+    @deeds.each do |d|
+      deedDTO = d.getDTO()
+      @deedsDto.push deedDTO
+    end
+
+
+    #query = Deed.where("user_id = ? or work_id = (?)", self.id, work_id)
+    #Deed.where(query.where_values.inject(:or)).uniq.order(:id)
   end
 
 end

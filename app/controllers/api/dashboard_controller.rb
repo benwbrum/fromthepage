@@ -23,7 +23,6 @@ class Api::DashboardController < Api::ApiController
   #Public Dashboard - list of all collections
   def index
     @deeds = Array.new
-   
     collections = Collection.includes(:owner, :works).joins(:deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
     @document_sets = DocumentSet.includes(:owner, :works).joins(works: :deeds).where(deeds: {created_at: (1.year.ago..Time.now)}).distinct
     @collections = (collections + @document_sets).sort{|a,b| a.title <=> b.title }
@@ -33,7 +32,7 @@ class Api::DashboardController < Api::ApiController
         deedDTO = DeedDTO.new(d)
         @deeds.push deedDTO
       end
-  
+
     end
 
     response_serialized_object (@deeds)
@@ -107,7 +106,7 @@ class Api::DashboardController < Api::ApiController
       @hash.push @response
       @deeds=Array.new
     end
- 
+
     response_serialized_object @hash
   end
 
@@ -116,22 +115,15 @@ class Api::DashboardController < Api::ApiController
 
   def ownerResponse
     @deeds = Array.new
-   # @hash = Array.new
+
     @collections = current_user.all_owner_collections.includes(:works)
     @collections.each do |c|
-    #@dashboard_data = CollectionDashboard.new(c)
-      c.deeds.includes(:user, :page, :work).limit(5).each do |d|
+        c.deeds.includes(:user, :page, :work).limit(5).each do |d|
         deedDTO = DeedDTO.new(d)
         @deeds.push deedDTO
       end
-      #@response=DashboardResponse.new
-      #@response.collection=c.title
-      #@response.description=c.intro_block
-      #@response.deeds=@deeds.sort! { |a, b|  a.created_at <=> b.created_at }.reverse
-      #@hash.push @response
-     # @deeds=Array.new
     end
-      
+
       #@hash.push @response
       #@deeds=Array.new
     response_serialized_object @deeds.sort! { |a, b|  a.created_at <=> b.created_at }.reverse
@@ -157,10 +149,16 @@ class Api::DashboardController < Api::ApiController
     response_serialized_object @hash
   end
 
-          
+  def workActivity
+    puts "work Activity"
+    @deedsDto =Array.new
+    @deeds = current_user.all_owner_deeds_work(params[:work_id])
+    @deeds.each do |d|
+      deedDTO = d.getDTO()
+      @deedsDto.push deedDTO
+    end
+    response_serialized_object @deedsDto
+  end
 
 
 end
-
-
-
