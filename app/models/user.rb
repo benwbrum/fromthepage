@@ -176,7 +176,7 @@ class User < ActiveRecord::Base
 
   def all_owner_deeds_work(work_id)
     @deedsDto =Array.new
-    @deeds=Deed.includes(:work).where(:works => {:id => work_id})
+    @deeds=Deed.includes(:work).where(:works => {:id => work_id}).order(created_at: :desc).limit(5)
     @deeds.each do |d|
       deedDTO = d.getDTO()
       @deedsDto.push deedDTO
