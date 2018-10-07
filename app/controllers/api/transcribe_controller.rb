@@ -20,14 +20,14 @@ class Api::TranscribeController  < Api::ApiController
       @page.save
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       # redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
-      response_serialized_object @page
+      # response_serialized_object @page
     elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       # redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
-      response_serialized_object @page
+      # response_serialized_object @page
     else
       return true
     end
@@ -61,17 +61,25 @@ class Api::TranscribeController  < Api::ApiController
       end
     end
   end
+  
+  def update_status
+    if params[:page]['needs_review'] == '1'
+      @page.status = Page::STATUS_NEEDS_REVIEW
+    end
+    if params[:page]['mark_blank'] == '1'
+      @page.status = Page::STATUS_BLANK
+    end
+  end
 
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
-      mark_page_blank or return
+      mark_page_blank #or return
     end
     #check to see if the page needs to be marked as needing review
     needs_review
-
     if params['save']
       alert = nil
       message = log_transcript_attempt
@@ -79,6 +87,7 @@ class Api::TranscribeController  < Api::ApiController
       unless @page.status == Page::STATUS_NEEDS_REVIEW
         @page.status = Page::STATUS_TRANSCRIBED
       end
+      update_status
       begin
         if @page.save
           log_transcript_success
