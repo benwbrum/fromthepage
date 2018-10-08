@@ -4,7 +4,7 @@ module SubjectExporter
   class Exporter
     def initialize(collection)
       @works = collection.works
-      @headers = %w[Work_Title Identifier Section Page_Title Page_Position Page_URL Subject Text Subject_URI Category]
+      @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text External_URI Category Subject_URI]
     end
 
     def export
@@ -15,8 +15,8 @@ module SubjectExporter
           translation_sections    = ['']
 
           work.pages.each do |page|
-            sections_by_link, transcription_sections = links_by_section(page.xml_text, {}, transcription_sections)
-            sections_by_link, translation_sections = links_by_section(page.xml_translation, sections_by_link, translation_sections)
+            sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
+            sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
             page_url = "http://#{Rails.application.routes.default_url_options[:host]}/display/display_page?page_id=#{page.id}"
             page.page_article_links.each do |link|
@@ -25,20 +25,23 @@ module SubjectExporter
               categories = []
 
               article.categories.each { |category| categories << category.title }
+              article_link = Rails.application.routes.url_helpers.collection_article_show_path(article.collection.owner, article.collection, article.id, :only_path => false)
 
               categories.sort!
-
+              section_header = sections_by_link[link.id] 
               csv << [
                 work.title,
                 work.identifier,
-                sections_by_link[link.id],
+                section_header,
+                section_to_subjects[section_header],
                 page.title,
                 page.position,
                 page_url,
                 article.title,
                 display_text,
                 article.uri,
-                categories.first(3).join('|')
+                categories.first(3).join('|'),
+                article_link
               ]
             end
           end
@@ -47,7 +50,7 @@ module SubjectExporter
       csv_string
     end
 
-    def links_by_section(xml, links_hash, section_array)
+    def links_by_section(xml, links_hash, section_array, section_to_subjects={})
       page = Nokogiri::XML(xml)
 
       page.search('*').each do |e|
@@ -60,7 +63,12 @@ module SubjectExporter
           pop_depth = e['depth'].to_i - section_array.length
 
           section_title = e['title']
-
+          link_for_section = ""
+          links = e.xpath('link')
+          if links.count > 0
+            section_to_subjects[section_title] = links.map{|link| link['target_title']}.join('||') 
+          end
+          
           if pop_depth > 0
             section_array << section_title
           elsif pop_depth == 0
@@ -74,7 +82,7 @@ module SubjectExporter
         end
       end
 
-      [links_hash, section_array]
+      [links_hash, section_array, section_to_subjects]
     end
   end
 end
