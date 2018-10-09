@@ -22,11 +22,15 @@ describe "guest user actions" do
     expect(page).to have_button("Save Changes")
     @guest = User.last
     expect(@guest.guest).to be true
-    expect(page).to have_link("Sign In")
-    first(:link, 'Sign In').click
-    expect(page).to have_link("Sign Up Now")
-    click_link("Sign Up Now")
+    
+    # Guests get to save n many changes before an account is required:
+    GUEST_DEED_COUNT.times do
+      click_button("Save Changes")
+      sleep(3)
+    end
     expect(page.current_path).to eq new_user_registration_path
+    find_link("Sign in existing account", href: "/users/sign_in").click
+    expect(page.current_path).to eq new_user_session_path
  end
 
   it "tests guest account transcription" do
