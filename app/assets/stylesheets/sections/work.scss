@@ -64,6 +64,13 @@
     color: darken($fgLink, 10%);
     &:hover { color: $fgLink; }
   }
+  &_text {
+    background-color: #f3ead7;
+    padding-top: 0.10em;
+    padding-right: 0.5em;
+    padding-bottom: 0.10em;
+    padding-left: 0.5em;
+  }
   &_text p {
     margin: 0.3em 0;
   }
@@ -80,6 +87,9 @@
   }
   .nodata_text {
     margin: 1em 0;
+  }
+  .field__label {
+    color: #86634d;
   }
 }
 

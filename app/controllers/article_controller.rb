@@ -191,12 +191,14 @@ class ArticleController < ApplicationController
     for link in @article.page_article_links
       source_text = link.page.source_text
       link.page.rename_article_links(old_name, new_name)
+      link.page.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
     end
     # walk through all articles referring to this
     for link in @article.target_article_links
       source_text = link.article.source_text
       link.article.rename_article_links(old_name, new_name)
+      link.article.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
     end
   end
@@ -221,12 +223,14 @@ class ArticleController < ApplicationController
     for link in from_article.page_article_links
       source_text = link.page.source_text
       link.page.rename_article_links(old_from_title, to_article.title)
+      link.page.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
     end
     # walk through all articles referring to this
     for link in from_article.target_article_links
       source_text = link.article.source_text
       link.article.rename_article_links(old_from_title, to_article.title)
+      link.article.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
     end
 

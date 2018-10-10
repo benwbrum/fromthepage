@@ -253,7 +253,13 @@ namespace :fromthepage do
     ls.each_with_index do |image_fn,i|
       page = Page.new
       print "\t\tconvert_to_work created new page\n"
-      page.title = "#{i+1}"
+      
+      if document_upload.preserve_titles
+        page.title = File.basename(image_fn, ".*")
+      else
+        page.title = "#{i+1}"
+      end
+
       page.base_image = image_fn
       print "\t\tconvert_to_work before Magick call \n"
       image = Magick::ImageList.new(image_fn)

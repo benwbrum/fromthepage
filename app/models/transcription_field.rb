@@ -10,6 +10,6 @@ attr_accessible :label, :collection_id, :input_type, :options, :line_number, :po
 validates :percentage, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 100 }
 validates :page_number, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 1000 }
 
-INPUTS = ["text", "select", "textarea"]
+INPUTS = ["text", "select", "textarea", "description", "instruction"]
 
 end

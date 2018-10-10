@@ -19,8 +19,7 @@ class TranscribeController  < ApplicationController
   def display_page
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
-    default = @collection.field_based ? 'ttb' : 'ltr'
-    @layout_mode = cookies[:transcribe_layout_mode] || default;
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
   end
 
@@ -158,6 +157,7 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
+      @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page.source_text, "transcription")
       display_page
 #      @preview_xml = @page.generate_preview("transcription")
@@ -275,6 +275,7 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
+      @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page.source_translation, "translation")
       translate
       render :action => 'translate'
