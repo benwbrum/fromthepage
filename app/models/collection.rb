@@ -1,4 +1,5 @@
 require 'csv'
+require 'subject_exporter'
 
 class Collection < ActiveRecord::Base
   include CollectionStatistic
@@ -44,24 +45,9 @@ class Collection < ActiveRecord::Base
   end
 
   def export_subjects_as_csv
-    csv_string = CSV.generate(:force_quotes => true) do |csv|
-      csv << %w{ Work_Title Identifier Page_Title Page_Position Page_URL Subject Text Category Category Category }
-      self.works.each do |work|
-        work.pages.includes(:page_article_links, articles: [:categories]).each do |page|
-          page_url="http://#{Rails.application.routes.default_url_options[:host]}/display/display_page?page_id=#{page.id}"
-          page.page_article_links.each do |link|
-            display_text = link.display_text.gsub("<lb/>", ' ').gsub("\n", "")
-            article = link.article
-            category_array = []
-            article.categories.each do |category|
-              category_array << category.title
-            end
-            csv << [work.title, work.identifier, page.title, page.position, page_url, link.article.title, display_text, category_array.sort].flatten
-          end
-        end
-      end
-    end
-    csv_string
+    subject_link = SubjectExporter::Exporter.new(self)
+
+    subject_link.export
   end
 
   def show_to?(user)

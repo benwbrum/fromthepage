@@ -1,7 +1,7 @@
 require 'contentdm_translator'
 class ExportController < ApplicationController
   require 'zip'
-  include CollectionHelper
+  include CollectionHelper,ExportHelper
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
@@ -54,14 +54,19 @@ class ExportController < ApplicationController
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-    render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
+    
+    ### Catch the rendered Work for post-processing
+    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
+
+    # Render the post-processed
+    render :text => post_process_xml(xml, @work), :content_type => "application/xml"
   end
 
   def subject_csv
     send_data(@collection.export_subjects_as_csv,
               :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
-    # cookies['download_finished'] = 'true'
+    cookies['download_finished'] = 'true'
   end
   
   def table_csv
@@ -221,26 +226,62 @@ private
     get_headings(collection, ids)
 
     csv_string = CSV.generate(:force_quotes => true) do |csv|
+
+      page_cells = [
+        'Work Title',
+        'Work Identifier',
+        'Page Title',
+        'Page Position',
+        'Page URL',
+        'Page Contributors',
+        'Page Notes'
+      ]
+
+      section_cells = [
+        'Section (text)',
+        'Section (subjects)',
+        'Section (subject categories)'
+      ]
+
       if table_obj.sections.blank?
-        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL' ] + @headings)
+        csv << (page_cells + @headings)
         col_sections = false
       else
-        csv << (['Work Title', 'Work Identifier', 'Page Title', 'Page Position', 'Page URL', 'Section (text)', 'Section (subjects)', 'Section (subject categories)' ] + @headings)
+        csv << (page_cells + section_cells + @headings)
         col_sections = true
       end
+
       works.each do |w|
         csv = generate_csv(w, csv, col_sections)
       end
+
     end
     cookies['download_finished'] = 'true'
     csv_string
   end
 
   def generate_csv(work, csv, col_sections)
+    all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-        page_cells = [work.title, work.identifier, page.title, page.position, page_url]
+        page_notes = page.notes
+          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
+        page_contributors = all_deeds
+          .select{ |d| d.page_id == page.id}
+          .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
+          .uniq.join('|')
+
+        page_cells = [
+          work.title,
+          work.identifier,
+          page.title,
+          page.position,
+          page_url,
+          page_contributors,
+          page_notes
+        ]
+
         page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
 
@@ -302,6 +343,5 @@ private
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
     end
   end
-
 
 end

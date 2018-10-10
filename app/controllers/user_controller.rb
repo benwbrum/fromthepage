@@ -22,13 +22,12 @@ class UserController < ApplicationController
       params_hash = params[:user].except(:notifications)
       notifications_hash = params[:user][:notifications]
       params_hash.delete_if { |k,v| v == NOTOWNER }
-
+      params_hash[:dictation_language] = params[:dialect]
+      
       if params_hash[:slug] == ""
         @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
         @user.update(slug: login)
-      elsif params[:dialect]
-        @user.dictation_language = params[:dialect]
       else
         @user.update(params_hash)
       end
