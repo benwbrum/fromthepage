@@ -157,40 +157,21 @@ mark {
 
 }
 
-.depth2 {
-  span {
-    font-weight: bolder;
-    font-size: 1200%;
-  }
+.depth2{
+  font-weight: bold;
+  text-decoration: underline;
+  font-size: 1.1em;
 }
-
 .depth3 {
-  span {
-    font-weight: bolder;
-    font-size: 160%;
-  }
+  font-weight: bold;
 }
-
 .depth4 {
-  span {
-    font-weight: bolder;
-    font-size: 200%;
-  }
+  text-decoration: underline;
 }
-
 .depth5 {
-  span {
-    font-weight: bolder;
-    font-size: 250%;
-  }
+  font-style: italic;
 }
-
-.depth6 {
-  span {
-    font-weight: bolder;
-    font-size: 300%;
-  }
-}
+.depth6 {}
 
 .rtl {
   p {text-align: right;}

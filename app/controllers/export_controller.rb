@@ -1,7 +1,7 @@
 require 'contentdm_translator'
 class ExportController < ApplicationController
   require 'zip'
-  include CollectionHelper
+  include CollectionHelper,ExportHelper
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
@@ -54,14 +54,19 @@ class ExportController < ApplicationController
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-    render :layout => false, :content_type => "application/xml", :template => "export/tei.html.erb"
+    
+    ### Catch the rendered Work for post-processing
+    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
+
+    # Render the post-processed
+    render :text => post_process_xml(xml, @work), :content_type => "application/xml"
   end
 
   def subject_csv
     send_data(@collection.export_subjects_as_csv,
               :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
-    # cookies['download_finished'] = 'true'
+    cookies['download_finished'] = 'true'
   end
   
   def table_csv
@@ -338,6 +343,5 @@ private
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
     end
   end
-
 
 end
