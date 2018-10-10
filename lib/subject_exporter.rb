@@ -22,7 +22,6 @@ module SubjectExporter
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
               article = link.article
-              binding.pry if article.nil? || article.collection.nil?
               if article.nil?
                 Rails.logger.warn("WARNING: Export could not find article for link #{link.display_text} on page #{page.title}")
               else
