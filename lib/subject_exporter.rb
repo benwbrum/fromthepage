@@ -4,7 +4,7 @@ module SubjectExporter
   class Exporter
     def initialize(collection)
       @works = collection.works
-      @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text External_URI Category Subject_URI]
+      @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI]
     end
 
     def export
@@ -22,27 +22,32 @@ module SubjectExporter
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
               article = link.article
-              categories = []
-
-              article.categories.each { |category| categories << category.title }
-              article_link = Rails.application.routes.url_helpers.collection_article_show_path(article.collection.owner, article.collection, article.id, :only_path => false)
-
-              categories.sort!
-              section_header = sections_by_link[link.id] 
-              csv << [
-                work.title,
-                work.identifier,
-                section_header,
-                section_to_subjects[section_header],
-                page.title,
-                page.position,
-                page_url,
-                article.title,
-                display_text,
-                article.uri,
-                categories.first(3).join('|'),
-                article_link
-              ]
+              binding.pry if article.nil? || article.collection.nil?
+              if article.nil?
+                Rails.logger.warn("WARNING: Export could not find article for link #{link.display_text} on page #{page.title}")
+              else
+                categories = []
+                article.categories.each { |category| categories << category.title }
+                article_link = Rails.application.routes.url_helpers.collection_article_show_path(article.collection.owner, article.collection, article.id, :only_path => false)
+  
+                categories.sort!
+                section_header = sections_by_link[link.id] 
+                csv << [
+                  work.title,
+                  work.identifier,
+                  section_header,
+                  section_to_subjects[section_header],
+                  page.title,
+                  page.position,
+                  page_url,
+                  article.title,
+                  display_text,
+                  link.text_type,
+                  article.uri,
+                  categories.first(3).join('|'),
+                  article_link
+                ]
+              end
             end
           end
         end

@@ -47,3 +47,7 @@ FactoryBot.define do
   factory :category
 end
 
+FactoryBot.define do
+  factory :user
+end
+
