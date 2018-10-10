@@ -210,7 +210,7 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name) }
     devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
-
+    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:login, :email, :password, :current_password, :password_confirmation) }
   end
 
   # Redirect to admin or owner dashboard after sign in
