@@ -50,8 +50,6 @@ class Work < ActiveRecord::Base
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
 
-  delegate :supports_document_sets, to: :collection
-
   module TitleStyle
     REPLACE = 'REPLACE'
     
@@ -224,5 +222,9 @@ class Work < ActiveRecord::Base
 
   def field_based
     self.collection.field_based
+  end
+
+  def supports_indexing?
+    collection.subjects_disabled == false
   end
 end
