@@ -5,45 +5,36 @@ describe "Pages need indexing" do
   REVIEW_BUTTON_TEXT = 'Pages That Need Review'
 
   scenario "when a collection has indexing disabled" do
-    visit "/collections"
-    expect(page).to have_text("Collections")
+    collection = create(:collection, :with_pages, subjects_disabled: true)
 
-    collection = Collection.first
-    original_subject_state = collection.subjects_disabled
+    visit "/#{collection.owner.login}/#{collection.slug}"
+    expect(page).to have_text(collection.title)
 
-    # Disable Subject Indexing
-    collection.subjects_disabled = true
-    collection.save
-
-    find('.maincol').find_link(collection.title).click
     find('.maincol').find_link(collection.works.first.title).click
-
     expect(page).to have_button(REVIEW_BUTTON_TEXT)
     expect(page).to_not have_button(INDEXING_BUTTON_TEXT)
 
-    # Reset Modified Fixtures
-    collection.subjects_disabled = original_subject_state
-    collection.save
+    # Remove Factories
+    user_id = collection.owner.id
+    collection_id = collection.id
+    Collection.destroy(collection_id)
+    User.destroy(user_id)
   end
 
   scenario "when a collection has indexing enabled" do
-    visit "/collections"
-    expect(page).to have_text("Collections")
+    collection = create(:collection, :with_pages, subjects_disabled: false)
 
-    collection = Collection.first
-    original_subject_state = collection.subjects_disabled
+    visit "/#{collection.owner.login}/#{collection.slug}"
+    expect(page).to have_text(collection.title)
 
-    # Enable Subject Indexing
-    collection.subjects_disabled = false
-    collection.save
-
-    find('.maincol').find_link(collection.title).click
     find('.maincol').find_link(collection.works.first.title).click
-
+    expect(page).to have_button(REVIEW_BUTTON_TEXT)
     expect(page).to have_button(INDEXING_BUTTON_TEXT)
 
-    # Reset Modified Fixtures
-    collection.subjects_disabled = original_subject_state
-    collection.save
+    # Remove Factories
+    user_id = collection.owner.id
+    collection_id = collection.id
+    Collection.destroy(collection_id)
+    User.destroy(user_id)
   end
 end
