@@ -53,6 +53,11 @@
           td(colspan="2")
             =f.label :text_language, "Select the language of the transcription text", class: 'collection-label'
             =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
+        
+        tr
+          td(colspan="2")
+            =f.label :default_orientation, "Select the default page transcription orientation"
+            =f.select :default_orientation, options_for_select([['Page on the Left','ltr'],['Page on the Right','rtl'],['Page on the Top','ttb'],['Page on the Bottom','btt']], @collection.default_orientation), {}, {class: 'w50'}
 
         -if @ssl && !@collection.field_based
           tr
