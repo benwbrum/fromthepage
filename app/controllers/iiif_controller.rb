@@ -1,5 +1,6 @@
 require 'iiif/presentation'
 class IiifController < ApplicationController
+  include AbstractXmlHelper
   before_action :set_cors_headers
   
   def collections
@@ -352,6 +353,7 @@ private
       annotation['on'] = region_from_page(@page)
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_transcription_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
       annotation.resource["format"] =  "text/html"
+      annotation.resource["chars"] = xml_to_html @page.xml_text
     when 'translation'
       unless page.source_translation.blank?
         #annotation = IIIF::Presentation::Annotation.new
@@ -359,6 +361,7 @@ private
         annotation['on'] = region_from_page(@page)
         annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_translation_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
         annotation.resource["format"] =  "text/html"
+        annotation.resource["chars"] = xml_to_html @page.xml_translation
       end
     when 'facsimile'
       #annotation = IIIF::Presentation::Annotation.new
