@@ -15,8 +15,12 @@
     .centered
       .centered_content
         -unless @page.work.restrict_scribes
-          p.big You may save up to three transcriptions <br> as a guest or sign up now.
-          p =button_to "Transcribe as guest", { :controller => 'application', :action => 'guest_transcription', :page_id => @page.id}
+          =form_tag ({ :controller => 'application', :action => 'guest_transcription', :page_id => @page.id})
+            -if RECAPTCHA_ENABLED
+              p =recaptcha_tags
+            p.big You may save up to three transcriptions <br> as a guest or sign up now.
+            p 
+              button Transcribe as guest
           p =button_to "Sign Up Now", new_user_registration_path, :method => 'get'
         -else
           p.nodata_text =="Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
