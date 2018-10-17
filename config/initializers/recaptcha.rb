@@ -1,7 +1,10 @@
-Recaptcha.configure do |config|
-  config.public_key  = ENV['PUBLIC_RECAPTCHA_KEY']
-  config.private_key = ENV['PRIVATE_RECAPTCHA_KEY']
-  config.proxy = 'http://myproxy.com.au:8080'
-end
 
+if RECAPTCHA_ENABLED
+  Recaptcha.configure do |config|
+    config.site_key  = RECAPTCHA_SITE_KEY
+    config.secret_key = RECAPTCHA_SECRET_KEY
+    # Uncomment the following line if you are using a proxy server:
+    # config.proxy = 'http://myproxy.com.au:8080'
+  end
+end
 
