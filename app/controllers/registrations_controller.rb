@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-
+  
   def new
     super
   end
@@ -18,16 +18,15 @@ class RegistrationsController < Devise::RegistrationsController
       @user = current_user
       @user.update_attributes(sign_up_params)
       @user.guest = false
-
+      
     else
       @user = build_resource(sign_up_params)
     end
-
-    resource_saved = @user.save
+    
     #this is the default Devise code
     yield resource if block_given?
-    
-    if resource_saved
+      
+    if check_recaptcha(model: @user) && @user.save
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -60,4 +59,10 @@ class RegistrationsController < Devise::RegistrationsController
   def after_update_path_for(resource)
     edit_registration_path(resource)
   end
+
+  def check_recaptcha(options)
+    return verify_recaptcha(options) if RECAPTCHA_ENABLED
+    true
+  end
+
 end
