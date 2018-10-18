@@ -1,3 +1,7 @@
+# A Deed is a scholarly contribution made by a user to a page. It's kind
+# of like "doing a good deed." There are several types of deeds (which live in
+# the DeedType model). Ex: "transcribed", "marked as blank"
+
 class Deed < ActiveRecord::Base
   belongs_to :article
   belongs_to :collection

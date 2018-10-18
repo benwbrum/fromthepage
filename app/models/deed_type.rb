@@ -1,4 +1,9 @@
+# A DeedType describes the kind of Deed a user has contributed to a page. This may
+# be a transcription, translation, page edit, etc.
+
 class DeedType
+  # These constants are called individually in several parts of the app for specific
+  # deed types. Their values are stored as identifiers in the deeds.deed_type table field.
   PAGE_TRANSCRIPTION = 'page_trans'
   PAGE_EDIT = 'page_edit'
   PAGE_INDEXED = 'page_index'
@@ -13,6 +18,9 @@ class DeedType
   TRANSLATION_INDEXED = 'xlat_index'
   WORK_ADDED = 'work_add'
 
+  # The TYPES hash houses all of the deed types and makes is easier to access
+  # groups of deed types and also their human-readable names. Any new deed type
+  # constant should also be added here.
   TYPES = {
     "#{PAGE_TRANSCRIPTION}" => 'Page Transcribed',
     "#{PAGE_EDIT}" => 'Page Edited',
@@ -29,6 +37,8 @@ class DeedType
     "#{WORK_ADDED}" => 'Work Added'
   }
 
+  # This `class << self` inherited group replaces the need to call `self.` on
+  # all of the class methods inside. Ex: `def all_types` vs `def self.all_types`
   class << self
     def all_types
       TYPES.keys
