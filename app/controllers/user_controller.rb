@@ -90,7 +90,7 @@ class UserController < ApplicationController
     deed.page = @page
     deed.work = @work
     deed.collection = @collection
-    deed.deed_type = Deed::NOTE_ADDED
+    deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
     deed.save!
   end

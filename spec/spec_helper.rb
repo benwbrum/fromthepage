@@ -75,6 +75,13 @@ Capybara.configure do |config|
   config.asset_host = "http://localhost:3000"
 end
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 INACTIVE = "ron"
 REST_USER = "george"
 USER = "eleanor"

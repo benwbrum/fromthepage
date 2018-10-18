@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :collection do
+    sequence(:title) { |n| "collection title #{n}"}
 
     trait :with_links do
       works { build_stubbed_list :work_with_links, 2 }
@@ -48,6 +49,16 @@ FactoryBot.define do
 end
 
 FactoryBot.define do
-  factory :user
+  # You will need to declare a `deed_type` within the spec
+  factory :deed
 end
 
+FactoryBot.define do
+  factory :user do
+    sequence(:display_name) { |n| "User #{n} Display Name" }
+    sequence(:login) { |n| "user_#{n}_login" }
+    sequence(:email) { |n| "user_#{n}@sample.com" }
+    password { 'password' }
+    password_confirmation { 'password' }
+  end
+end
