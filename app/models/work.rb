@@ -224,4 +224,7 @@ class Work < ActiveRecord::Base
     self.collection.field_based
   end
 
+  def supports_indexing?
+    collection.subjects_disabled == false
+  end
 end
