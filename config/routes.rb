@@ -126,6 +126,10 @@ Fromthepage::Application.routes.draw do
       get 'export/page_plaintext_emended', path: ':work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
       get 'export/page_plaintext_translation_emended', path: ':work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
 
+      # Page Annotations
+      get 'annotation/page_transcription_html', path: ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html'
+      get 'annotation/page_translation_html', path: ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html'
+
       #article related routes
       match 'article/show', path: '/article/:article_id', to: 'article#show', via: [:get, :post]
       get 'article/edit', path: 'article/:article_id/edit', to: 'article#edit'
