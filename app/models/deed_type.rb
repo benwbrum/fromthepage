@@ -22,19 +22,19 @@ class DeedType
   # groups of deed types and also their human-readable names. Any new deed type
   # constant should also be added here.
   TYPES = {
-    "#{PAGE_TRANSCRIPTION}" => 'Page Transcribed',
-    "#{PAGE_EDIT}" => 'Page Edited',
-    "#{PAGE_INDEXED}" => 'Page Indexed',
-    "#{PAGE_MARKED_BLANK}" => 'Page Marked Blank',
-    "#{ARTICLE_EDIT}" => 'Article Edited',
-    "#{NOTE_ADDED}" => 'Note Added',
-    "#{PAGE_TRANSLATED}" => 'Page Translated',
-    "#{PAGE_TRANSLATION_EDIT}" => 'Translation Page Edited',
-    "#{OCR_CORRECTED}" => 'Page OCR Corrected',
-    "#{NEEDS_REVIEW}" => 'Page Needs Review',
-    "#{TRANSLATION_REVIEW}" => 'Translation Page Needs Review',
-    "#{TRANSLATION_INDEXED}" => 'Translation Page Indexed',
-    "#{WORK_ADDED}" => 'Work Added'
+    PAGE_TRANSCRIPTION => 'Page Transcribed',
+    PAGE_EDIT => 'Page Edited',
+    PAGE_INDEXED => 'Page Indexed',
+    PAGE_MARKED_BLANK => 'Page Marked Blank',
+    ARTICLE_EDIT => 'Article Edited',
+    NOTE_ADDED => 'Note Added',
+    PAGE_TRANSLATED => 'Page Translated',
+    PAGE_TRANSLATION_EDIT => 'Translation Page Edited',
+    OCR_CORRECTED => 'Page OCR Corrected',
+    NEEDS_REVIEW => 'Page Needs Review',
+    TRANSLATION_REVIEW => 'Translation Page Needs Review',
+    TRANSLATION_INDEXED => 'Translation Page Indexed',
+    WORK_ADDED => 'Work Added'
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
@@ -49,11 +49,24 @@ class DeedType
     end
 
     def collection_edits
-      [PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_MARKED_BLANK, ARTICLE_EDIT, OCR_CORRECTED, NEEDS_REVIEW, TRANSLATION_REVIEW]
+      [
+        PAGE_TRANSCRIPTION,
+        PAGE_EDIT,
+        PAGE_MARKED_BLANK,
+        ARTICLE_EDIT,
+        OCR_CORRECTED,
+        NEEDS_REVIEW,
+        TRANSLATION_REVIEW
+      ]
     end
 
     def document_set_edits
-      [PAGE_TRANSCRIPTION, PAGE_EDIT, PAGE_MARKED_BLANK, ARTICLE_EDIT]
+      [
+        PAGE_TRANSCRIPTION,
+        PAGE_EDIT,
+        PAGE_MARKED_BLANK,
+        ARTICLE_EDIT
+      ]
     end
 
     def name(deed_type)
