@@ -2,7 +2,7 @@ namespace :fromthepage do
   desc "nightly collection activity sent to users"
   task :nightly_user_activity => :environment do
     #find collections where works have been added
-    collections = Collection.joins(:deeds).where(deeds: {deed_type: 'work_add'}).merge(Deed.past_day).distinct
+    collections = Collection.joins(:deeds).where(deeds: {deed_type: DeedType::WORK_ADDED}).merge(Deed.past_day).distinct
     #find edited pages
     active_pages = Page.joins(:deeds).merge(Deed.past_day).distinct
     #find users with edited pages or added works
