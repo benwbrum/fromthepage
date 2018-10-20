@@ -4,17 +4,6 @@ module ContributorHelper
     unless @collection
       @collection = Collection.find_by(id: collection_id)
     end
-    #set deed type variables
-    trans_type = ["page_trans", "page_edit"]
-    ocr_type = "ocr_corr"
-    note_type = "note_add"
-    article_type = "art_edit"
-    index_type = 'page_index'
-    review_type = "review"
-    translate_index = "xlat_index"
-    translate_review = "xlat_rev"
-    translate_type = ["pg_xlat", "pg_xlat_ed"]
-    work_add = "work_add"
     condition = "created_at >= ? AND created_at <= ?"
 
     #get the start and end date params from date picker, if none, set defaults
@@ -24,31 +13,31 @@ module ContributorHelper
     #check to see if there are any deeds in the collection
     @collection_deeds = @collection.deeds.where(condition, start_date, end_date).includes(:page, :work, :user)
 
-    transcription_deeds = @collection.deeds.where(deed_type: trans_type)
+    transcription_deeds = @collection.deeds.where(deed_type: DeedType.transcriptions)
 
-    @recent_notes = @collection_deeds.where(deed_type: note_type)
-    @recent_transcriptions = @collection_deeds.where(deed_type: trans_type)
-    @recent_articles = @collection_deeds.where(deed_type: article_type)
-    @recent_translations = @collection_deeds.where(deed_type: translate_type)
-    @recent_ocr = @collection_deeds.where(deed_type: ocr_type)
-    @recent_index = @collection_deeds.where(deed_type: index_type)
-    @recent_review = @collection_deeds.where(deed_type: review_type)
-    @recent_xlat_index = @collection_deeds.where(deed_type: translate_index)
-    @recent_xlat_review = @collection_deeds.where(deed_type: translate_review)
-    @recent_work_add = @collection_deeds.where(deed_type: work_add)
-    
+    @recent_notes = @collection_deeds.where(deed_type: DeedType::NOTE_ADDED)
+    @recent_transcriptions = @collection_deeds.where(deed_type: DeedType.transcriptions)
+    @recent_articles = @collection_deeds.where(deed_type: DeedType::ARTICLE_EDIT)
+    @recent_translations = @collection_deeds.where(deed_type: [DeedType::PAGE_TRANSLATED, DeedType::PAGE_TRANSLATION_EDIT])
+    @recent_ocr = @collection_deeds.where(deed_type: DeedType::OCR_CORRECTED)
+    @recent_index = @collection_deeds.where(deed_type: DeedType::PAGE_INDEXED)
+    @recent_review = @collection_deeds.where(deed_type: DeedType::NEEDS_REVIEW)
+    @recent_xlat_index = @collection_deeds.where(deed_type: DeedType::TRANSLATION_INDEXED)
+    @recent_xlat_review = @collection_deeds.where(deed_type: DeedType::TRANSLATION_REVIEW)
+    @recent_work_add = @collection_deeds.where(deed_type: DeedType::WORK_ADDED)
+
     #get distinct user ids per deed and create list of users
     user_deeds = @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:user_id)
     @active_transcribers = User.where(id: user_deeds)
-    
+
     # All deeds by active transcribers in range
     user_deeds_by_date = Deed.where(user_id: @active_transcribers).where(condition, start_date, end_date)
-    
+
     # Deed counts in date range by User
     user_deeds_total = user_deeds_by_date.group('user_id').count
     user_deeds_collection = @collection.deeds.where(condition, start_date, end_date).group('user_id').count
 
-    # All distinct visits with deeds in date range affecting @collection 
+    # All distinct visits with deeds in date range affecting @collection
     deed_visits = Visit.where("id in (?)", @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:visit_id))
 
     # Sum the time between the beginning of the visit and the last ahoy event for the session per user

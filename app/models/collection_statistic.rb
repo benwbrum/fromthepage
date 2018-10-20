@@ -44,21 +44,7 @@ module CollectionStatistic
   end
 
   def get_stats_hash(start_date=nil, end_date=nil)
-    deeds = {
-      DeedType::ARTICLE_EDIT => 0,
-      DeedType::PAGE_TRANSCRIPTION => 0,
-      DeedType::PAGE_EDIT => 0,
-      DeedType::PAGE_INDEXED => 0,
-      DeedType::PAGE_MARKED_BLANK => 0,
-      DeedType::NOTE_ADDED => 0,
-      DeedType::PAGE_TRANSLATED => 0,
-      DeedType::PAGE_TRANSLATION_EDIT => 0,
-      DeedType::OCR_CORRECTED => 0,
-      DeedType::NEEDS_REVIEW => 0,
-      DeedType::TRANSLATION_REVIEW => 0,
-      DeedType::TRANSLATION_INDEXED => 0,
-      DeedType::WORK_ADDED => 0,
-    }
+    deeds = DeedType.generate_zero_counts_hash
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
 
     stats =
