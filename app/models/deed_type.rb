@@ -78,27 +78,22 @@ class DeedType
       ]
     end
 
-    def edited_pages
+    def edited_and_transcribed_pages
       [
         PAGE_EDIT,
         NEEDS_REVIEW,
-        OCR_CORRECTED
+        OCR_CORRECTED,
+        PAGE_MARKED_BLANK,
+        PAGE_TRANSCRIPTION
       ]
     end
 
-    def newly_edited_pages
-      edited_pages << PAGE_TRANSCRIPTION
-    end
-
-    def edited_translations
+    def new_and_edited_translations
       [
         PAGE_TRANSLATION_EDIT,
-        TRANSLATION_REVIEW
+        TRANSLATION_REVIEW,
+        PAGE_TRANSLATED
       ]
-    end
-
-    def newly_edited_translations
-      edited_translations << PAGE_TRANSLATED
     end
 
     def name(deed_type)
