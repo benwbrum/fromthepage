@@ -88,7 +88,7 @@ class UserMailer < ActionMailer::Base
             active_pages: active_pages,
             active_translations: active_translations,
             active_note_pages: active_note_pages,
-            has_activity: active_items.blank? ? false : true
+            has_activity: active_items.any?
           }
         )
       end
