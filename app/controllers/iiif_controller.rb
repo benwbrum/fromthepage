@@ -1,5 +1,6 @@
 require 'iiif/presentation'
 class IiifController < ApplicationController
+  include AbstractXmlHelper
   before_action :set_cors_headers
   
   def collections
@@ -350,25 +351,17 @@ private
     case type
     when 'transcription'
       annotation['on'] = region_from_page(@page)
-      annotation.resource = IIIF::Presentation::Resource.new({'@id' => "plaintext_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
-      annotation.resource["format"] =  "text/plain"
-
-      doc = Nokogiri::XML(@page.xml_text.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
-      no_tags = doc.text
-
-      annotation.resource["chars"] = no_tags
+      annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_transcription_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
+      annotation.resource["format"] =  "text/html"
+      annotation.resource["chars"] = xml_to_html @page.xml_text
     when 'translation'
       unless page.source_translation.blank?
         #annotation = IIIF::Presentation::Annotation.new
         #page = Page.find page_id
         annotation['on'] = region_from_page(@page)
-        annotation.resource = IIIF::Presentation::Resource.new({'@id' => "translation_export_for_#{@page.id}", '@type' => "cnt:ContentAsText"})
-        annotation.resource["format"] =  "text/plain"
-
-        doc = Nokogiri::XML(@page.xml_translation.gsub(/<\/p>/, "</p>\n\n").gsub("<lb/>", "\n"))
-        no_tags = doc.text
-
-        annotation.resource["chars"] = no_tags
+        annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_translation_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
+        annotation.resource["format"] =  "text/html"
+        annotation.resource["chars"] = xml_to_html @page.xml_translation
       end
     when 'facsimile'
       #annotation = IIIF::Presentation::Annotation.new
@@ -627,9 +620,15 @@ private
   def add_seeAlso_to_canvas(canvas,page)
     canvas.seeAlso = [] unless canvas.seeAlso
     canvas.seeAlso << 
+      { "label" => "HTML Transcription", 
+        "format" => "text/html", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
+        "@id" => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page, :only_path => false)
+    }
+    canvas.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription", 
         "@id" => collection_page_export_plaintext_searchable_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
     }
     canvas.seeAlso << 
@@ -644,7 +643,13 @@ private
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1", 
       "@id" => collection_page_export_plaintext_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
     }
-    if page.work.supports_translation?
+    if page.work.supports_translation? && !page.source_translation.blank?
+      canvas.seeAlso << 
+        { "label" => "HTML Translation", 
+          "format" => "text/html", 
+          "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-translation", 
+          "@id" => collection_annotation_page_translation_html_url(page.work.owner, page.work.collection, page.work, page, :only_path => false)
+      }
       canvas.seeAlso << 
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 

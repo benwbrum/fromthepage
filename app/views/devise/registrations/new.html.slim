@@ -22,6 +22,9 @@ section.signon
     .signon_field
       =f.label :display_name
       =f.text_field :display_name
+    -if RECAPTCHA_ENABLED
+      .signon_field
+        =recaptcha_tags
     =f.button 'Create Account', class: 'big'
   hr
   =render 'devise/shared/links'
