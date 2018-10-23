@@ -1,8 +1,13 @@
--content_for :page_title, "Sign Up"
+-content_for :page_title, "Sign Up for a Trial"
 
 section.signon
-  h1 Sign Up
-  p Please fill in the following information to create a new FromThePage account. 
+  h1 Sign Up for a Trial
+  p
+    'Please fill in the following information and
+    a href='https://calendly.com/fromthepage/30-minute-meeting/' schedule a kickoff call
+    ' with us to create a two hundred page trial FromThePage project owner account.
+
+
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
@@ -20,11 +25,14 @@ section.signon
     .signon_field
       =f.label :display_name
       =f.text_field :display_name
-    -if RECAPTCHA_ENABLED
-      .signon_field
-        =recaptcha_tags
+    .signon_field
+      =f.hidden_field :owner, value: true
+      =f.hidden_field :paid_date, value: 2.weeks.from_now
+
+    <br>
     =f.button 'Create Account', class: 'big'
-  hr
-  =render 'devise/shared/links'
--unless MIXPANEL_ID.blank?
+
   javascript:  mixpanel.track("Sign Up");
+
+  <script type="text/javascript" src="https://calendly.com/assets/external/widget.js"></script>
+

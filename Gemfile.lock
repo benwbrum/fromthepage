@@ -215,6 +215,8 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     public_suffix (3.0.2)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rack (1.5.5)
     rack-attack (5.4.0)
       rack (>= 1.0, < 3)
@@ -360,7 +362,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   ahoy_matey
-  autoprefixer-rails (~> 8)
+  autoprefixer-rails (<= 8.6.5)
   capistrano (~> 3.4.0)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (= 1.1.3)
@@ -388,6 +390,7 @@ DEPENDENCIES
   protected_attributes
   pry
   pry-byebug
+  quiet_assets (~> 1.1.0)
   rails (= 4.1.2)
   recaptcha
   riiif

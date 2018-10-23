@@ -22,8 +22,10 @@ describe "guest user actions" do
     expect(page).to have_button("Save Changes")
     @guest = User.last
     expect(@guest.guest).to be true
-    expect(page).to have_link("Sign Up")
-    click_link("Sign Up")
+    expect(page).to have_link("Sign In")
+    first(:link, 'Sign In').click
+    expect(page).to have_link("Sign Up Now")
+    click_link("Sign Up Now")
     expect(page.current_path).to eq new_user_registration_path
  end
 
@@ -58,7 +60,7 @@ describe "guest user actions" do
     fill_in 'Display name', with: 'Martha'
     click_button('Create Account')
     @user = User.last
-    expect(@user.login).to eq('martha') 
+    expect(@user.login).to eq('martha')
     expect(@guest.id).to eq(@user.id)
     expect(page.current_path). to eq collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     page.find('.tabs').click_link("Versions")
@@ -66,7 +68,7 @@ describe "guest user actions" do
     expect(page.find('.diff-list')).not_to have_content("Guest")
   end
 
-  it "looks at the landing page" do 
+  it "looks at the landing page" do
     visit landing_page_path
     expect(page).to have_selector('.carousel')
     expect(page.find('.maincol')).to have_link(@owner.display_name)
