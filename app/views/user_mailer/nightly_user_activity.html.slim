@@ -2,7 +2,7 @@ p Hi #{@user.display_name} --
 
 p We just wanted to let you know that there's been activity in a collection that you worked on.
 
-=render 'user/user_activity', locals: user_activity: @user_activity
+=render partial: 'user/user_activity', locals: {user_activity: @user_activity}
 
 p Thanks, 
 |FromThePage
