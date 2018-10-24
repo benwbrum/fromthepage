@@ -33,6 +33,7 @@ mongo.log
 
 config/database.yml
 config/environments/development.rb
+db/schema.rb
 
 # Ignore RVM-related files
 # .rvmrc
