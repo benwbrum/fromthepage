@@ -232,7 +232,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   if ENABLE_GOOGLEOAUTH then
-    config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {}
+    config.omniauth :google_oauth2, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, {}
   end
   
   if ENABLE_SAML then
@@ -240,7 +240,7 @@ Devise.setup do |config|
       config.omniauth :saml,
         #idp_cert_fingerprint: 'B2:82:F9:21:7B:CF:D1:D0:9A:E8:4A:72:EC:54:43:9D:2A:D5:88:15:55:42:11:FD:3D:B0:79:C7:C9:CC:86:A3',
         idp_cert: IDP_CERT,
-        idp_sso_target_url: 'https://capriza.github.io/samling/samling.html'
+        idp_sso_target_url: IDP_SSO_TARGET_URL
     end
   end
 
