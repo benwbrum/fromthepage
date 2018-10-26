@@ -66,6 +66,18 @@ module OwnerStatistic
     User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
   end
 
+  ## Helper functions for Owner Stats partial. TODO: Order by number of Deeds, scoped to this owner
+  def all_editors
+    editors = User.joins(:deeds).where(deeds: {collection_id: collection_ids, deed_type: Deed::PAGE_EDIT}).distinct
+  end
+
+  def all_transcribers
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids, deed_type: Deed::PAGE_TRANSCRIPTION}).distinct
+  end
+
+  def all_indexers
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids, deed_type: Deed::PAGE_INDEXED}).distinct
+  end
 
   #this is to prevent an error in the statistics view
   def subjects_disabled
