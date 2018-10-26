@@ -70,9 +70,6 @@ class DashboardController < ApplicationController
   #Owner Summary Statistics - statistics for all owned collections
   def summary
     @statistics_object = current_user
-    @all_transcribers = current_user.all_transcribers
-    @all_editors = current_user.all_editors
-    @all_indexers = current_user.all_indexers
   end
 
   #Collaborator Dashboard - watchlist

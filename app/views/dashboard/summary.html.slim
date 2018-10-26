@@ -3,7 +3,7 @@
 =render partial: 'statistics/statistics'
 
 =render({ :partial => 'statistics/collaborators',
-  :locals =>  { :transcribers   => @all_transcribers,
-                :indexers       => @all_indexers, 
-                :editors        => @all_editors, 
+  :locals =>  { :transcribers   => @statistics_object.transcribers_with_count,
+                :indexers       => @statistics_object.indexers_with_count, 
+                :editors        => @statistics_object.editors_with_count, 
                 :subjects_disabled => false } })
