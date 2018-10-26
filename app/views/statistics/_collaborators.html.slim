@@ -1,0 +1,39 @@
+h2 Collaborators
+
+.collection-users.justified
+  .justified_box>
+    -unless transcribers.empty?
+      h3 Transcribing
+      -transcribers.each do |user, count|
+        .collection-user(data-prefix="#{count}")
+          =link_to(user_profile_path(user), class: 'collection-user_link')
+            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span.vmiddle =user.display_name
+    -else
+      h3 Transcribing
+      p.a50 No transcribers
+
+  .justified_box>
+    -unless editors.empty?
+      h3 Editing
+      -editors.each do |user, count|
+        .collection-user(data-prefix="#{count}")
+          =link_to(user_profile_path(user), class: 'collection-user_link')
+            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span.vmiddle =user.display_name
+    -else
+      h3 Editing
+      p.a50 No editors
+      
+  -unless subjects_disabled
+    .justified_box>
+      -unless indexers.empty?
+        h3 Indexing
+        -indexers.each do |user, count|
+          .collection-user(data-prefix="#{count}")
+            =link_to(user_profile_path(user), class: 'collection-user_link')
+              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span.vmiddle =user.display_name
+      -else
+        h3 Indexing
+        p.a50 No indexers
