@@ -16,7 +16,7 @@ gem 'jquery-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2','0.3.21'
 
-gem 'recaptcha', '0.3.6'
+gem "recaptcha", require: "recaptcha/rails"
 
 gem 'omeka_client', git: 'https://github.com/benwbrum/omeka_client'
 
@@ -69,7 +69,7 @@ end
 gem 'sass-rails', '~> 5.0.0'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails', '~>8'
+gem 'autoprefixer-rails', '<= 8.6.5'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'
@@ -86,3 +86,6 @@ gem 'friendly_id'
 #support right to left languages
 gem 'rtl'
 gem 'iso-639'
+
+# Quiet asset lines in log files
+gem 'quiet_assets', '~> 1.1.0', group: :development

@@ -227,6 +227,8 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     public_suffix (3.0.2)
+    quiet_assets (1.1.0)
+      railties (>= 3.1, < 5.0)
     rack (1.5.5)
     rack-attack (5.4.0)
       rack (>= 1.0, < 3)
@@ -253,7 +255,8 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    recaptcha (0.3.6)
+    recaptcha (4.12.0)
+      json
     recursive-open-struct (0.4.5)
     ref (2.0.0)
     referer-parser (0.3.0)
@@ -371,7 +374,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_tree
   ahoy_matey
-  autoprefixer-rails (~> 8)
+  autoprefixer-rails (<= 8.6.5)
   better_errors
   binding_of_caller
   capistrano (~> 3.4.0)
@@ -402,8 +405,9 @@ DEPENDENCIES
   pry
   pry-awesome_print
   pry-byebug
+  quiet_assets (~> 1.1.0)
   rails (= 4.1.2)
-  recaptcha (= 0.3.6)
+  recaptcha
   riiif
   rmagick
   rspec-rails
