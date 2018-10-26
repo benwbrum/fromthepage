@@ -44,7 +44,7 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "You've been added to #{@work.title}"
   end
 
-  def nightly_user_activity(user_activity:)
+  def nightly_user_activity(user_activity)
     @user_activity = user_activity
 
     if @user_activity.has_contributions?
