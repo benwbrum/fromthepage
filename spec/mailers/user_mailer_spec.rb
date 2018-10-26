@@ -8,7 +8,7 @@ RSpec.describe UserMailer, type: :mailer do
         user = build_stubbed(:user)
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
-        mail = UserMailer.nightly_user_activity(user_activity: user_activity).deliver
+        mail = UserMailer.nightly_user_activity(user_activity).deliver
 
         expect(mail.subject).to eq('New FromThePage Activity')
       end
@@ -18,7 +18,7 @@ RSpec.describe UserMailer, type: :mailer do
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
 
-        mail = UserMailer.nightly_user_activity(user_activity: user_activity).deliver
+        mail = UserMailer.nightly_user_activity(user_activity).deliver
 
         expect(mail.to).to eq([user.email])
       end
@@ -28,7 +28,7 @@ RSpec.describe UserMailer, type: :mailer do
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
 
-        mail = UserMailer.nightly_user_activity(user_activity: user_activity).deliver
+        mail = UserMailer.nightly_user_activity(user_activity).deliver
 
         expect(mail.from).to eq(['support@fromthepage.com'])
       end
@@ -38,7 +38,7 @@ RSpec.describe UserMailer, type: :mailer do
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
 
-        mail = UserMailer.nightly_user_activity(user_activity: user_activity).deliver
+        mail = UserMailer.nightly_user_activity(user_activity).deliver
 
         expect(mail.body.encoded).to match(user.display_name)
       end
@@ -54,7 +54,7 @@ RSpec.describe UserMailer, type: :mailer do
         allow(user_activity).to receive(:has_contributions?).and_return(true)
         allow(user_activity).to receive(:active_pages).and_return([page])
 
-        mail = UserMailer.nightly_user_activity(user_activity: user_activity).deliver
+        mail = UserMailer.nightly_user_activity(user_activity).deliver
 
         expect(mail.body.encoded).to match(edited_page_heading)
         expect(mail.body.encoded).to match(page.title)
