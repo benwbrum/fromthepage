@@ -70,6 +70,7 @@ class DashboardController < ApplicationController
   #Owner Summary Statistics - statistics for all owned collections
   def summary
     @statistics_object = current_user
+    @subjects_disabled = @statistics_object.collections.all? { |c| c.subjects_disabled }
   end
 
   #Collaborator Dashboard - watchlist

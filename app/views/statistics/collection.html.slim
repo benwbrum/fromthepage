@@ -12,6 +12,6 @@
   :locals =>  { :transcribers   => @all_transcribers,
                 :indexers       => @all_indexers, 
                 :editors        => @all_editors, 
-                :subjects_disabled => false } })
+                :subjects_disabled => @collection.subjects_disabled } })
 
 =render({ :partial => '/shared/collection_footer' })
