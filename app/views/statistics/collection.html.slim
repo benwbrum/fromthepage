@@ -8,44 +8,10 @@
   =render({ :partial => 'recent_statistics', 
             :locals => { :stats => @recent_stats, :subjects_disabled => @collection.subjects_disabled }})
 
-h2 Collaborators
-
-.collection-users.justified
-  .justified_box>
-    -unless @all_transcribers.empty?
-      h3 Transcribing
-      -@all_transcribers.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to(user_profile_path(user), class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-            span.vmiddle =user.display_name
-    -else
-      h3 Transcribing
-      p.a50 No transcribers
-
-  .justified_box>
-    -unless @all_editors.empty?
-      h3 Editing
-      -@all_editors.each do |user, count|
-        .collection-user(data-prefix="#{count}")
-          =link_to(user_profile_path(user), class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-            span.vmiddle =user.display_name
-    -else
-      h3 Editing
-      p.a50 No editors
-      
-  -unless @collection.subjects_disabled
-    .justified_box>
-      -unless @all_indexers.empty?
-        h3 Indexing
-        -@all_indexers.each do |user, count|
-          .collection-user(data-prefix="#{count}")
-            =link_to(user_profile_path(user), class: 'collection-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
-              span.vmiddle =user.display_name
-      -else
-        h3 Indexing
-        p.a50 No indexers
+=render({ :partial => 'statistics/collaborators',
+  :locals =>  { :transcribers   => @all_transcribers,
+                :indexers       => @all_indexers, 
+                :editors        => @all_editors, 
+                :subjects_disabled => false } })
 
 =render({ :partial => '/shared/collection_footer' })
