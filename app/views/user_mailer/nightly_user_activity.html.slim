@@ -1,4 +1,4 @@
-p Hi #{@user.display_name} --
+p Hi #{@user_activity.user.display_name} --
 
 p We just wanted to let you know that there's been activity in a collection that you worked on.
 
@@ -8,5 +8,5 @@ p Thanks,
 |FromThePage
 
 p
-span =link_to "Click here", update_profile_path(@user, only_path: false)
+span =link_to "Click here", update_profile_url(@user_activity.user)
 |&nbsp; to turn off this notification.

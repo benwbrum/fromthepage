@@ -44,12 +44,11 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "You've been added to #{@work.title}"
   end
 
-  def nightly_user_activity(user)
-    @user = user
-    @user_activity = Activity.build(user)
+  def nightly_user_activity(user_activity:)
+    @user_activity = user_activity
 
-    if @user_activity.has_activity
-      mail to: @user.email, subject: "New FromThePage Activity"
+    if @user_activity.has_contributions?
+      mail to: @user_activity.user.email, subject: "New FromThePage Activity"
     end
   end
 
@@ -59,16 +58,15 @@ class UserMailer < ActionMailer::Base
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
   end
 
-
   class Activity
-    attr_accessor :added_works, :active_pages, :active_translations, :active_note_pages, :has_activity
+    attr_accessor :user, :added_works, :active_pages, :active_translations, :active_note_pages
 
-    def initialize(added_works:, active_pages:, active_translations:, active_note_pages:, has_activity:)
+    def initialize(user:, added_works:, active_pages:, active_translations:, active_note_pages:)
+      @user = user
       @added_works = added_works
       @active_pages = active_pages
       @active_translations = active_translations
       @active_note_pages = active_note_pages
-      @has_activity = has_activity
     end
 
     class << self
@@ -76,19 +74,13 @@ class UserMailer < ActionMailer::Base
         #find which pages the user has worked on
         user_page_ids ||= user.deeds.pluck(:page_id).uniq.compact
 
-        active_pages = user_pages_edited_in_past_day(user, user_page_ids)
-        active_translations = user_pages_translated_in_past_day(user, user_page_ids)
-        active_note_pages = user_pages_with_notes_added_in_past_day(user, user_page_ids)
-
-        active_items = (active_pages + active_translations + active_note_pages)
-
         Activity.new(
           {
-            added_works: user_works_added_in_past_day(user),
-            active_pages: active_pages,
-            active_translations: active_translations,
-            active_note_pages: active_note_pages,
-            has_activity: active_items.any?
+            user: user,
+            added_works: works_added_to_users_collection_in_past_day(user),
+            active_pages: user_pages_edited_in_past_day(user, user_page_ids),
+            active_translations: user_pages_translated_in_past_day(user, user_page_ids),
+            active_note_pages: user_pages_with_notes_added_in_past_day(user, user_page_ids)
           }
         )
       end
@@ -113,12 +105,21 @@ class UserMailer < ActionMailer::Base
         pages_with_recent_notes.where(id: user_page_ids).select {|page| page if page.deeds.where(deed_type: DeedType::NOTE_ADDED).last.user_id != user.id}
       end
 
-      def user_works_added_in_past_day(user)
+      def works_added_to_users_collection_in_past_day(user)
         # collections the user has worked in
         user_collection_ids = user.deeds.pluck(:collection_id).uniq
         # works that have been added to those collections by someone other than the user in the past day
         Work.where(collection_id: user_collection_ids).joins(:deeds).where(deeds: {deed_type: DeedType::WORK_ADDED}).merge(Deed.past_day).where.not(deeds: {user_id: user.id}).distinct
       end
     end #end class << self
+
+    def has_contributions?
+      (
+        @added_works +
+        @active_pages +
+        @active_translations +
+        @active_note_pages
+      ).any?
+    end
   end #end Activity
 end

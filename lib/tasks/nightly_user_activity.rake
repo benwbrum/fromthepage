@@ -14,7 +14,7 @@ namespace :fromthepage do
       all_users.each do |user|
         puts "There was activity on #{user.display_name}\'s previous work in the past 24 hours"
         begin
-          UserMailer.nightly_user_activity(user).deliver!
+          UserMailer.nightly_user_activity(user_activity: UserMailer::Activity.build(user)).deliver!
         rescue StandardError => e
           print "SMTP Failed: Exception: #{e.message} \n"
         end
