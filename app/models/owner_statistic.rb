@@ -66,17 +66,18 @@ module OwnerStatistic
     User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
   end
 
+
   ## Helper functions for Owner Stats partial. TODO: Order by number of Deeds, scoped to this owner
-  def all_editors
-    editors = User.joins(:deeds).where(deeds: {collection_id: collection_ids, deed_type: Deed::PAGE_EDIT}).distinct
+  def editors_with_count
+    contributor_deeds_by_type(Deed::PAGE_EDIT, self.all_collaborators, self.collection_ids)
   end
 
-  def all_transcribers
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids, deed_type: Deed::PAGE_TRANSCRIPTION}).distinct
+  def transcribers_with_count
+    contributor_deeds_by_type(Deed::PAGE_TRANSCRIPTION, self.all_collaborators, self.collection_ids)
   end
 
-  def all_indexers
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids, deed_type: Deed::PAGE_INDEXED}).distinct
+  def indexers_with_count
+    contributor_deeds_by_type(Deed::PAGE_INDEXED, self.all_collaborators, self.collection_ids)
   end
 
   #this is to prevent an error in the statistics view
@@ -84,4 +85,12 @@ module OwnerStatistic
     false
   end
 
+  private
+  def contributor_deeds_by_type(deed_type, contributors, collections)
+    user_array = []
+    deeds_by_user = Deed.group('user_id').where(collection_id: collections).where(deed_type: deed_type).order('count_id desc').count('id')
+    deeds_by_user.each { |user_id, count| user_array << [ contributors.find { |u| u.id == user_id }, count ] }
+
+    return user_array
+  end
 end
