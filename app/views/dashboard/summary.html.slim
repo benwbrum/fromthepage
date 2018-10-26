@@ -1,9 +1,10 @@
 =render({ :partial => 'owner_header', :locals => { :selected => 3 } })
 
-=render partial: 'statistics/statistics'
+=render({ partial: 'statistics/statistics',
+          locals:   { subjects_disabled: @subjects_disabled }})
 
-=render({ :partial => 'statistics/collaborators',
+=render({ partial: 'statistics/collaborators',
   :locals =>  { :transcribers   => @statistics_object.transcribers_with_count,
                 :indexers       => @statistics_object.indexers_with_count, 
                 :editors        => @statistics_object.editors_with_count, 
-                :subjects_disabled => false } })
+                :subjects_disabled => @subjects_disabled } })
