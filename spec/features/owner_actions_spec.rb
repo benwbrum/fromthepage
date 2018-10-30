@@ -94,7 +94,7 @@ describe "owner actions", :order => :defined do
     Collection.last.destroy
   end
 
-  it "creates a subject" do
+  it "creates a subject category" do
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "People")
     visit collection_path(@collection.owner, @collection)
@@ -108,7 +108,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("New Test Category")
   end
 
-  it "deletes a subject" do
+  it "deletes a subject category" do
     @count = @collection.categories.count
     cat = @collection.categories.find_by(title: "New Test Category")
     visit collection_path(@collection.owner, @collection)
@@ -119,6 +119,28 @@ describe "owner actions", :order => :defined do
     expect(@count - 1).to eq (@collection.categories.count)
     visit "/article/list?collection_id=#{@collection.id}"
     expect(page).not_to have_content("New Test Category")
+  end
+
+  it "enables GIS for subject category" do
+    category = @collection.categories.find_by(title: "Places")
+    category.gis_enabled = false
+    category.save
+
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Subjects")
+    @name = "#category-" + "#{category.id}"
+    page.find(@name).find('a', text: 'Enable GIS').click
+    expect(page.find('.flash_message')).to have_content("GIS enabled for Places")
+    page.find(@name).find('a', text: 'Add Child Category').click
+    fill_in 'category_title', with: 'Child GIS'
+    click_button('Create Category')
+    page.find(@name).find('a', text: 'Disable GIS').click
+    expect(page.find('.flash_message')).to have_content("GIS disabled for Places and 1 child category")
+    page.find(@name).find('a', text: 'Add Child Category').click
+    fill_in 'category_title', with: 'Child GIS-2'
+    click_button('Create Category')
+    page.find(@name).find('a', text: 'Enable GIS').click
+    expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
   end
 
   it "fails to create an empty work" do
@@ -141,7 +163,9 @@ describe "owner actions", :order => :defined do
     select(@collection.title, :from => 'work_collection_id')
     click_button('Save Changes')
     expect(page).to have_content("Work updated successfully")
-    expect(Deed.last.work_id).to eq (Work.find_by(title: @title).id)
+    work = Work.find_by(title: @title)
+    expect(Deed.last.work_id).to eq(work.id)
+    expect(work.deeds.where.not(:collection_id => work.collection_id).count).to eq(0)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collection.title)
   end
 

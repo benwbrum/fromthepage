@@ -1,6 +1,7 @@
 .litebox-embed(style="width:550px")
   h1 Update User Profile
-  p Your name is the only required field here, but we would appreciate if you tell the FromThePage community a little bit more about yourself.
+  -if @user.owner
+    p Your name is the only required field.
 
   =form_for(@user, { :url => { :action => 'update' }}) do |f|
     =hidden_field_tag :user_id, @user.id
@@ -9,6 +10,9 @@
       tr.big
         th =f.label :display_name, 'Name'
         td.w100 =f.text_field :display_name
+      tr
+        th =f.label :orcid, "ORCID ID"
+        td =f.text_field :orcid, :placeholder => 'Your ORCID ID'
       -if @user.owner
         tr
           th URL: 
@@ -20,15 +24,23 @@
           th =f.label :website
           td =f.text_field :website, :placeholder => 'Your blog or homepage'
         tr
+          th =f.label :location
+          td =f.text_field :location, :placeholder => 'Where are you from?'
+        tr
           td(colspan="2")
             =f.label :about, 'About you', class: 'above'
             =f.text_area :about, rows: 4
       -else
         =f.hidden_field :website, value: "NOTOWNER"
         =f.hidden_field :about, value: "NOTOWNER"
-      tr
-        th =f.label :location
-        td =f.text_field :location, :placeholder => 'Where are you from?'
+      tr  
+        td(colspan="2")
+          =label_tag :dictation_language, "Default dictation language: ", class: 'collection-label'
+      tr  
+        td(colspan="2")
+          =select_tag :dictation_language, {}, {onchange:'updateCountry()', class: 'w30'}
+          |&nbsp;
+          =select_tag :dialect, {}, {class: 'w40'}
 
     p.email_notifications Select which of the following notifications you want to receive:
     table.form.email_notifications
@@ -51,3 +63,17 @@
 
     .toolbar
       .toolbar_group.aright =f.button 'Update Profile'
+
+javascript:
+  $(function(){
+    var initialLang = "#{@lang_index}";
+    var initialDialect = "#{@dialect_index}";
+    
+    console.log("Init Lang: ", initialLang, " Initial Dialect: ", initialDialect)
+    
+    for (var i = 0; i < langs.length; i++) {
+      dictation_language.options[i] = new Option(langs[i][0], i);
+    }
+    
+    findDefault(initialLang, initialDialect);
+  });

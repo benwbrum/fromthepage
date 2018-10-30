@@ -3,5 +3,6 @@ tr
   th#line_num #{@line}
   th =label_tag :label
   th =label_tag :input_type
-  th =label_tag :options, "Field options (separate with semicolons)"
-  th =label_tag :percentage, "Width %"
+  th =label_tag :options, "Field options (separate with semicolons)", :title => 'Options for select fields.'
+  th =label_tag :percentage, "Width %", :title => 'Percentage of the line width to use for this field.'
+  th =label_tag :page_number, "Page", :title => 'For multi-page forms, which page should this field appear on?  (Leave blank to display on each page.)'

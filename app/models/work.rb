@@ -120,6 +120,10 @@ class Work < ActiveRecord::Base
     Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
   end
 
+  def update_deed_collection
+    deeds.where.not(:collection_id => collection_id).update_all(:collection_id => collection_id)
+  end
+
   # TODO make not awful
   def reviews
     my_reviews = []
@@ -220,4 +224,7 @@ class Work < ActiveRecord::Base
     self.collection.field_based
   end
 
+  def supports_indexing?
+    collection.subjects_disabled == false
+  end
 end

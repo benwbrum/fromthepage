@@ -176,9 +176,6 @@ class CollectionController < ApplicationController
   end
 
   def update
-    if params[:dialect]
-      @collection.language = params[:dialect]
-    end
     if params[:collection][:slug] == ""
       @collection.update(params[:collection].except(:slug))
       title = @collection.title.parameterize
@@ -255,7 +252,74 @@ class CollectionController < ApplicationController
     @start_deed = start_date.strftime("%b %d, %Y")
     @end_deed = end_date.strftime("%b %d, %Y")
 
+    
     new_contributors(@collection, start_date, end_date)
+    @stats = @collection.get_stats_hash(start_date, end_date)
+  end
+
+  def contributors_download
+    id = @collection.id
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    new_contributors(@collection, start_date, end_date)
+
+    headers = [
+      :name, 
+      :email,
+      :user_total_minutes,
+      :user_proportional_minutes,
+      :pages_transcribed, 
+      :page_edits, 
+      :pages_translated, 
+      :ocr_corrections,
+      :notes, 
+    ]
+
+    stats = @active_transcribers.map do |user|
+      time_total = 0
+      time_proportional = 0
+    
+      if @user_time[user.id]
+        time_total = (@user_time[user.id] / 60 + 1).floor
+      end
+
+      if @user_time_proportional[user.id]
+        time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
+      end
+
+      id_data = [user.display_name, user.email]
+      time_data = [time_total, time_proportional]
+      
+      user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
+
+      user_stats = [
+        user_deeds.count { |d| d.deed_type == 'page_trans' },
+        user_deeds.count { |d| d.deed_type == 'page_edit' },
+        user_deeds.count { |d| d.deed_type == 'pg_xlat' },
+        user_deeds.count { |d| d.deed_type == 'ocr_corr' },
+        user_deeds.count { |d| d.deed_type == 'note_add' }
+      ]
+
+      id_data + time_data + user_stats
+    end
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      stats.each do |user|
+          records << user
+      end
+    end
+
+    send_data( csv, 
+      :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}.csv",
+      :type => "application/csv")
+
+    cookies['download_finished'] = 'true'
+      
   end
 
   def blank_collection

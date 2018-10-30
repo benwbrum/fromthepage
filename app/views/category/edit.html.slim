@@ -1,13 +1,17 @@
 .litebox-embed(style="width:450px")
-  h1 Rename Category
+  h1 Edit Category
 
   =form_for(@category, :url => { :action => 'update' }) do |f|
     =hidden_field_tag(:category_id, @category.id)
+    =hidden_field_tag(:collection_id, @collection.id)
+    =f.hidden_field(:collection_id)
     =validation_summary @category.errors
     table.form
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title
-
+      tr
+        th =f.label :gis_enabled, "Enable GIS"
+        td =f.check_box :gis_enabled
     .toolbar
       .toolbar_group.aright =f.button 'Save Changes'

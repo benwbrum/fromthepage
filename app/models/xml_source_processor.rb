@@ -306,13 +306,13 @@ module XmlSourceProcessor
   # transformations converting source mode transcription to xml
   def process_line_breaks(text)
     text="<p>#{text}</p>"
-    text = text.gsub(/\n\s*\n/, "</p><p>")
-    text = text.gsub(/-\r\n/, '<lb break="no" />')
-    text = text.gsub(/\r\n/, "<lb/>")
-    text = text.gsub(/-\n/, '<lb break="no" />')
-    text = text.gsub(/\n/, "<lb/>")
-    text = text.gsub(/-\r/, '<lb break="no" />')
-    text = text.gsub(/\r/, "<lb/>")
+    text = text.gsub(/\s*\n\s*\n\s*/, "</p><p>")
+    text = text.gsub(/-\r\n\s*/, '<lb break="no" />')
+    text = text.gsub(/\r\n\s*/, "<lb/>")
+    text = text.gsub(/-\n\s*/, '<lb break="no" />')
+    text = text.gsub(/\n\s*/, "<lb/>")
+    text = text.gsub(/-\r\s*/, '<lb break="no" />')
+    text = text.gsub(/\r\s*/, "<lb/>")
     return text
   end
 
@@ -424,11 +424,23 @@ EOF
   # taken place within the article table in the DB
   ##############################################
   def rename_article_links(old_title, new_title)
+    title_regex = old_title.gsub(/\s+/, '\s+')
+
+    self.source_text = rename_link_in_text(source_text, title_regex, new_title)
+
+    # Articles don't have translations, but we still need to update pages.source_translation
+    if has_attribute?(:source_translation) && !source_translation.nil?
+      self.source_translation = rename_link_in_text(source_translation, title_regex, new_title)
+    end
+  end
+
+  def rename_link_in_text(text, title_regex, new_title)
     # handle links of the format [[Old Title|Display Text]]
-    self.source_text=self.source_text.gsub(/\[\[#{old_title}\|/, "[[#{new_title}|")
+    text = text.gsub(/\[\[#{title_regex}\|/, "[[#{new_title}|")
     # handle links of the format [[Old Title]]
-    self.source_text=self.source_text.gsub(/\[\[#{old_title}\]\]/, "[[#{new_title}|#{old_title}]]")
-    self.save!
+    text = text.gsub(/\[\[(#{title_regex})\]\]/, "[[#{new_title}|\\1]]")
+
+    text
   end
 
   def debug(msg)

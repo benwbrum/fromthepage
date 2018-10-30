@@ -4,8 +4,12 @@ Fromthepage::Application.routes.draw do
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
 
+  devise_scope :user do
+    get "users/new_trial" => "registrations#new_trial"
+  end
+
   iiif_for 'riiif/image', at: '/image-service'
-  
+
   get   '/omeka_sites/items' => 'omeka_sites#items'
 
   resources :omeka_sites
@@ -22,23 +26,23 @@ Fromthepage::Application.routes.draw do
   get   'guest_dashboard' => 'dashboard#guest'
   get   'landing_page', to: 'dashboard#landing_page', path: '/findaproject'
   get   'collections_list', to: 'dashboard#collections_list', path: '/collections'
-  
+
   get   '/iiif/:id/manifest', :to => 'iiif#manifest'
   get   '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
   get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
-  get   '/iiif/:page_id/notes', :to => 'iiif#notes'  
+  get   '/iiif/:page_id/notes', :to => 'iiif#notes'
   get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
-  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas' 
-  get   '/iiif/:work_id/status', :to => 'iiif#manifest_status' 
-  get   '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status' 
+  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
+  get   '/iiif/:work_id/status', :to => 'iiif#manifest_status'
+  get   '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
-  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation' 
+  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
   get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
   get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
-  get   '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', :to => 'iiif#contributions'
-  get   '/iiif/contributions/:domain/:terminus_a_quo', :to => 'iiif#contributions'
-  get   '/iiif/contributions/:domain', :to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
+  get   '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
 
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
@@ -46,7 +50,7 @@ Fromthepage::Application.routes.draw do
   get   'ZenasMatthews' => 'collection#show', :collection_id => 7
   get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get   'YaquinaLights' => 'collection#show', :collection_id => 58
-  
+
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
@@ -59,6 +63,15 @@ Fromthepage::Application.routes.draw do
 
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
+
+  get '/software', to: 'static#software', as: :about
+  get '/faq', to: 'static#faq', as: :faq
+  get '/static/faq', to: redirect('/faq', status: 301)
+  get '/privacy', to: 'static#privacy', as: :privacy
+  get '/static/privacy', to: redirect('/privacy', status: 301)
+  post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
+  get '/contact', to: 'contact#form', as: 'contact'
+
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
@@ -82,7 +95,7 @@ Fromthepage::Application.routes.draw do
       get 'article/list/:collection_id', path: '/subjects', as: :subjects, to: 'article#list'
       get 'export/index', path: '/export', as: :export, to: 'export#index'
       get 'transcription_field/edit_fields', path: '/edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
-      
+
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'contributors', on: :member, path: '/collaborators'
@@ -90,7 +103,7 @@ Fromthepage::Application.routes.draw do
       get 'needs_transcription_pages', path: '/needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review_pages', path: '/needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'start_transcribing', path: '/start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
- 
+
       #work related routes
       #have to use match because it must be both get and post
       match 'display/read_work', path: '/:work_id', as: :read_work, to: 'display#read_work', via: [:get, :post]
@@ -111,12 +124,13 @@ Fromthepage::Application.routes.draw do
       get 'export/work_plaintext_emended', path: ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
       get 'export/work_plaintext_translation_verbatim', path: ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
       get 'export/work_plaintext_translation_emended', path: ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
-      
+
       #page related routes
       get 'display/display_page', path: ':work_id/display/:page_id/', as: 'display_page', to: 'display#display_page'
       get 'transcribe/display_page', path: ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
       get 'transcribe/guest', path: ':work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
       get 'transcribe/translate', path: ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
+      get 'transcribe/help', path: ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
       get 'page/edit', path: ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
       get 'export/page_plaintext_searchable', path: ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
@@ -124,6 +138,10 @@ Fromthepage::Application.routes.draw do
       get 'export/page_plaintext_translation_verbatim', path: ':work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
       get 'export/page_plaintext_emended', path: ':work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
       get 'export/page_plaintext_translation_emended', path: ':work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
+
+      # Page Annotations
+      get 'annotation/page_transcription_html', path: ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html'
+      get 'annotation/page_translation_html', path: ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html'
 
       #article related routes
       match 'article/show', path: '/article/:article_id', to: 'article#show', via: [:get, :post]
@@ -137,9 +155,4 @@ Fromthepage::Application.routes.draw do
   get '/:user', path: '/:user_id', to: 'user#profile', as: :user_profile
 
   get 'collection/update/:id', to: 'collection#update', as: :update_collection
-
-  get 'static/faq', to: 'static#faq', as: :faq
-  get 'static/about', to: 'static#about', as: :about
-  get 'static/privacy', to: 'static#privacy', as: :privacy
-
 end

@@ -28,8 +28,16 @@ class ApplicationController < ActionController::Base
 
   #when the user chooses to transcribe as guest, find guest user id or create new guest user
   def guest_transcription
-    User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
-    redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    if check_recaptcha(model: @page, :attribute => :errors)
+      User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
+      redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
+    else
+      # TODO: Get some kind of flash notification on failure
+      flash[:error] = "ReCAPTCHA validation failed"
+      flash.keep
+      redirect_to :controller => 'transcribe', :action => 'guest', :page_id => @page.id
+    end
+
   end
 
   def create_guest_user
@@ -208,9 +216,9 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date) }
     devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
-
+    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:login, :email, :password, :current_password, :password_confirmation) }
   end
 
   # Redirect to admin or owner dashboard after sign in
@@ -274,7 +282,10 @@ private
   def store_current_location
     store_location_for(:user, request.url)
   end
-
+  def check_recaptcha(options)
+    return verify_recaptcha(options) if RECAPTCHA_ENABLED
+    true
+  end
 # class ApplicationController < ActionController::Base
 #   protect_from_forgery
 # end

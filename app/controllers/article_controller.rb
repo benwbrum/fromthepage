@@ -4,6 +4,7 @@ class ArticleController < ApplicationController
   include AbstractXmlController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
+  GIS_DECIMAL_PRECISION = 5
 
   def authorized?
     unless user_signed_in?
@@ -40,6 +41,8 @@ class ArticleController < ApplicationController
 
   def update
     old_title = @article.title
+    gis_truncated = gis_truncated?(params[:article], GIS_DECIMAL_PRECISION)
+
     @article.attributes = params[:article]
     if params['save']
       #process_source_for_article
@@ -49,12 +52,17 @@ class ArticleController < ApplicationController
         end
         record_deed
         flash[:notice] = "Subject has been successfully updated"
+        if gis_truncated 
+          flash[:notice] << " (GIS coordinates truncated to #{GIS_DECIMAL_PRECISION} decimal " << "place".pluralize(GIS_DECIMAL_PRECISION) <<")"
+        end
         redirect_to :action => 'edit', :article_id => @article.id
+      else
+        render :action => 'edit'
       end
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
       flash[:notice] = "Subjects auto linking process completed"
-      render :action => 'edit'
+      redirect_to :action => 'edit', :article_id => @article.id
     end
   end
 
@@ -183,12 +191,14 @@ class ArticleController < ApplicationController
     for link in @article.page_article_links
       source_text = link.page.source_text
       link.page.rename_article_links(old_name, new_name)
+      link.page.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
     end
     # walk through all articles referring to this
     for link in @article.target_article_links
       source_text = link.article.source_text
       link.article.rename_article_links(old_name, new_name)
+      link.article.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
     end
   end
@@ -213,12 +223,14 @@ class ArticleController < ApplicationController
     for link in from_article.page_article_links
       source_text = link.page.source_text
       link.page.rename_article_links(old_from_title, to_article.title)
+      link.page.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.page.source_text}\n")
     end
     # walk through all articles referring to this
     for link in from_article.target_article_links
       source_text = link.article.source_text
       link.article.rename_article_links(old_from_title, to_article.title)
+      link.article.save!
       logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
     end
 
@@ -243,4 +255,16 @@ class ArticleController < ApplicationController
     from_article.destroy
   end
 
+end
+
+def gis_truncated?(params, dec)
+  unless params[:latitude] || params[:longitude] then return false end
+
+  lat = params[:latitude].split('.')
+  lon = params[:longitude].split('.')
+
+  if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
+  if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
+
+  if lat_dec > dec || lon_dec > dec then return true else return false end
 end
