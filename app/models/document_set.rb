@@ -126,5 +126,14 @@ class DocumentSet < ActiveRecord::Base
   def self.search(search)
     where("title LIKE ? OR slug LIKE ?", "%#{search}%", "%#{search}%")
   end
-
+  
+  def default_orientation
+    if !self[:default_orientation].nil?
+      self[:default_orientation]
+    elsif self[:field_based]
+      'ttb'
+    else
+      'ltr'
+    end
+  end
 end

@@ -57,4 +57,7 @@ class RegistrationsController < Devise::RegistrationsController
     session[:user_return_to] || root_path
   end
 
+  def after_update_path_for(resource)
+    edit_registration_path(resource)
+  end
 end
