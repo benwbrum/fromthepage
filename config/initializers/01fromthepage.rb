@@ -1,5 +1,6 @@
 ADMIN_EMAILS = 'saracarl@gmail.com, benwbrum@gmail.com'
 SENDING_EMAIL_ADDRESS = 'support@fromthepage.com'
+IIIF_API_WIKI_LINK = 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations'
 SMTP_ENABLED = false
 USE_PNG_LOGO = false
 GUEST_DEED_COUNT = 3

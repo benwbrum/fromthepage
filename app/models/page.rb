@@ -48,7 +48,8 @@ class Page < ActiveRecord::Base
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
-  
+  scope :completed, -> {where(status: [STATUS_BLANK, STATUS_TRANSCRIBED])}
+
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
     TRANSLATION = 'translation'
@@ -59,6 +60,10 @@ class Page < ActiveRecord::Base
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_INDEXED = 'indexed'
   STATUS_TRANSLATED = 'translated'
+  
+  def completed?
+    status == STATUS_BLANK || status == STATUS_TRANSCRIBED
+  end
 
   # tested
   def collection

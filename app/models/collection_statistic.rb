@@ -1,45 +1,45 @@
 module CollectionStatistic
   def work_count
-    self.works.count
+    works.count
   end
 
   def page_count
-    Collection.count_by_sql("SELECT COUNT(*) FROM pages p INNER JOIN works w ON p.work_id = w.id WHERE w.collection_id = #{self.id}")
+    Page.count_by_sql("SELECT COUNT(*) FROM pages p INNER JOIN works w ON p.work_id = w.id WHERE w.collection_id = #{self.id}")
   end
 
-  def subject_count(last_days=nil)
-    self.articles.where("#{timeframe_clause(last_days, 'created_on')}").count
+  def subject_count(last_days=nil, *)
+    self.articles.where("#{last_days_ago_clause(last_days, 'created_on')}").count
   end
 
-  def mention_count(last_days=nil)
+  def mention_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM page_article_links pal INNER JOIN articles a ON pal.article_id = a.id WHERE a.collection_id = #{self.id}  #{last_days_clause(last_days, 'pal.created_on')}")
   end
 
-  def contributor_count(last_days=nil)
+  def contributor_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(DISTINCT user_id) FROM deeds WHERE collection_id = #{self.id} #{last_days_clause(last_days)}")
   end
 
-  def comment_count(last_days=nil)
+  def comment_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::NOTE_ADDED}\" #{last_days_clause(last_days)}")
   end
 
-  def transcription_count(last_days=nil)
+  def transcription_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_TRANSCRIPTION}\" #{last_days_clause(last_days)}")
   end
 
-  def edit_count(last_days=nil)
+  def edit_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_EDIT}\" #{last_days_clause(last_days)}")
   end
 
-  def index_count(last_days=nil)
+  def index_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_INDEXED}\" #{last_days_clause(last_days)}")
   end
 
-  def translation_count(last_days=nil)
+  def translation_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_TRANSLATED}\" #{last_days_clause(last_days)}")
   end
 
-  def ocr_count(last_days=nil)
+  def ocr_count(last_days=nil, *)
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
   end
 
@@ -71,39 +71,27 @@ module CollectionStatistic
     
     stats.merge(deeds)
   end
-  
-  def timeframe(start_date, end_date, column='created_at')
-    timeframe_clause = ""
-    if start_date && end_date
-      timeframe_clause = "#{column} BETWEEN '#{start_date.to_s(:db)}' AND '#{end_date.to_s(:db)}'"
-    elsif start_date
-      timeframe_clause = "#{column} >= '#{start_date.to_s(:db)}'"
-    elsif end_date
-      timeframe_clause = "#{column} <= '#{end_date.to_s(:db)}'"
-    else
-    end
 
-    timeframe_clause
-  end
-  
   def calculate_complete
     #note: need to compact mapped array so it doesn't fail on a nil value
-    current = self[:pct_completed]
-    unless work_count == 0
-      pct = (self.works.includes(:work_statistic).map(&:completed).compact.sum)/work_count
+    if works.any?
+      newly_calculated_percentage = (self.works.includes(:work_statistic).map(&:completed).compact.sum)/work_count
     else
-      pct = 0
+      newly_calculated_percentage = 0
     end
-    if ((pct == 100) && !(current == pct))
+
+    if newly_completed?(newly_calculated_percentage)
+      wrapup_info = UserMailer::StatisticWrapup.build(object: self)
+      UserMailer.project_wrapup(wrapup_info).deliver!
       logger.info "#{self.title} is complete"
-      rake_call = "#{RAKE} fromthepage:project_complete[#{self.id}] --trace  2>&1 &"
-      logger.info rake_call
-      system(rake_call)
     end
-    self.update(pct_completed: pct)
+    self.update(pct_completed: newly_calculated_percentage)
   end
 
-  def timeframe_clause(last_days, column = "created_at")
+
+  private
+
+  def last_days_ago_clause(last_days, column = "created_at")
     clause = ""
     if last_days
       timeframe = last_days.days.ago
@@ -114,11 +102,26 @@ module CollectionStatistic
 
   def last_days_clause(last_days, column = "created_at")
     clause = ""
-
     if last_days
       clause = " AND #{column} > DATE_ADD(CURDATE(), INTERVAL -#{last_days} DAY)"
     end
-
     clause
+  end
+
+  def timeframe(start_date, end_date, column='created_at')
+    clause = ""
+    if start_date && end_date
+      clause = "#{column} BETWEEN '#{start_date.to_s(:db)}' AND '#{end_date.to_s(:db)}'"
+    elsif start_date
+      clause = "#{column} >= '#{start_date.to_s(:db)}'"
+    elsif end_date
+      clause = "#{column} <= '#{end_date.to_s(:db)}'"
+    else
+    end
+    clause
+  end
+
+  def newly_completed?(newly_calculated_percentage)
+    (newly_calculated_percentage == 100) && (newly_calculated_percentage != pct_completed)
   end
 end

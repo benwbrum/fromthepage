@@ -55,26 +55,100 @@ class UserMailer < ActionMailer::Base
     end
   end
 
-  def monthly_owner_wrapup(user)
-    @owner = user
-    @all_collaborators = @owner.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
-    @start_date = 1.month.ago.utc
-    @end_date = Time.now.utc
-    mail to: @owner.email, subject: "FromThePage Monthly Wrapup"
+  def monthly_owner_wrapup(wrapup_info)
+    @wrapup = wrapup_info
+    mail to: @wrapup.owner.email, subject: "FromThePage Monthly Wrapup"
   end
 
-  def project_complete(project)
+  def project_wrapup(wrapup_info)
     #set the collection - are document sets relevant?
-    @collection = Collection.find_by(slug: project.slug)
-    @owner = @collection.owner
-    @all_collaborators = collection_transcribers(@collection)
-
-    mail to: @owner.email, subject: "#{@collection.title} Project Is 100\% Transcribed!"
+    @wrapup = wrapup_info
+    mail to: @wrapup.owner.email, subject: "#{@wrapup.title} is 100\% Transcribed!"
   end
 
   private
   def add_inline_attachments!
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
+  end
+
+  class StatisticWrapup
+    attr_accessor :owner, :collection, :title, :contributor_emails, :work_count, :completed_work_count, :page_count, :comment_count, :contributor_count, :transcription_count, :edit_count, :translation_count, :ocr_count, :subject_count, :mention_count, :index_count
+
+    def initialize(owner:, collection:, title:, contributor_emails:, work_count:, completed_work_count:, page_count:, comment_count:, contributor_count:, transcription_count:, edit_count:, translation_count:, ocr_count:, subject_count:, mention_count:, index_count: )
+      @owner = owner
+      @collection = collection
+      @title = title
+      @contributor_emails = contributor_emails
+      @contributor_count = contributor_count
+      @work_count = work_count
+      @completed_work_count = completed_work_count
+      @page_count = page_count
+      @comment_count = comment_count
+      @transcription_count = transcription_count
+      @edit_count = edit_count
+      @translation_count = translation_count
+      @ocr_count = ocr_count
+      @subject_count = subject_count
+      @mention_count = mention_count
+      @index_count = index_count
+    end
+
+    class << self
+      def build(object:, start_date: nil, end_date: nil)
+        StatisticWrapup.new(
+          owner: set_owner(object),
+          collection: set_collection(object),
+          title: set_title(object),
+          contributor_emails: contributor_email_list(object),
+          contributor_count: object.contributor_count(start_date, end_date),
+          work_count: object.work_count,
+          completed_work_count: set_completed_work_count(object),
+          page_count: object.page_count,
+          comment_count: object.comment_count,
+          transcription_count: object.transcription_count(start_date, end_date),
+          edit_count: object.edit_count(start_date, end_date),
+          translation_count: object.translation_count(start_date, end_date),
+          ocr_count: object.ocr_count(start_date, end_date),
+          subject_count: object.subject_count(start_date, end_date),
+          mention_count: object.mention_count(start_date, end_date),
+          index_count: object.index_count(start_date, end_date)
+        )
+      end
+
+      private
+
+      def contributor_email_list(object)
+        object.contributors.map { |contributor| "#{contributor.display_name} <#{contributor.email}>"}.join(', ')
+      end
+
+      def set_owner(object)
+        object.class == User ? object : object.owner
+      end
+
+      def set_collection(object)
+        object.class == Collection ? object : nil
+      end
+
+      def set_title(object)
+        object.class == Collection ? object.title : nil
+      end
+
+      def set_completed_work_count(object)
+        object.class == User ? object.completed_work_count : nil
+      end
+    end
+
+    def translations?
+      translation_count != 0
+    end
+
+    def ocr_corrections?
+      ocr_count != 0
+    end
+
+    def subjects_enabled?
+      !owner.subjects_disabled
+    end
   end
 
 end

@@ -22,31 +22,21 @@ namespace :fromthepage do
   task :monthly_owner_wrapup => :environment do
     owners = User.where(owner: true).where.not(account_type: [nil, 'Trial'])
     if SMTP_ENABLED
+      puts "Sending Monthly Wrapup Email to:"
       owners.each do |owner|
         puts owner.display_name
+        wrapup_info = UserMailer::StatisticWrapup.build(
+          object: owner,
+          start_date: 1.month.ago.utc,
+          end_date: Time.now.utc
+        )
         begin
-          UserMailer.monthly_owner_wrapup(owner).deliver!
+          UserMailer.monthly_owner_wrapup(wrapup_info).deliver!
         rescue StandardError => e
           print "SMTP Failed: Exception: #{e.message} \n"
         end
       end
-    end
-  end
-
-  desc "project is 100 percent transcribed"
-  task :project_complete, [:collection_id] => :environment do |t, args|
-    id = args.collection_id
-    project = Collection.find_by(id: id)
-    puts "INFO: #{project.title} is complete"
-    if SMTP_ENABLED
-      begin
-        UserMailer.project_complete(project).deliver!
-      rescue StandardError => e
-        print "SMTP Failed: Exception: #{e.message} \n"
-      end
-    end
-
-  end
-
+    end # SMTP
+  end # task
 
 end

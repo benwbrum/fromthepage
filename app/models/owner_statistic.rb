@@ -48,12 +48,27 @@ module OwnerStatistic
   end
 
   def translation_count(start_date=nil, end_date=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_pg_xlat').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
+    Deed.where(collection_id: collection_ids).where(deed_type: Deed::PAGE_TRANSLATED).where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
   def ocr_count(start_date=nil, end_date=nil)
     Deed.where(collection_id: collection_ids).where(deed_type: 'ocr_corr').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
+
+  def contributors
+    all_collaborators
+  end
+
+  def all_collaborators
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
+  end
+
+  #this is to prevent an error in the statistics view
+  def subjects_disabled
+    false
+  end
+
+  private
 
   def start_clause(start_date, column = "created_at")
     clause = ""
@@ -70,14 +85,4 @@ module OwnerStatistic
     end
     return clause
   end
-
-  def all_collaborators
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
-  end
-
-  #this is to prevent an error in the statistics view
-  def subjects_disabled
-    false
-  end
-
 end

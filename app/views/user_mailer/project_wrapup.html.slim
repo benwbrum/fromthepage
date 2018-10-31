@@ -1,0 +1,56 @@
+p Hello #{@wrapup.owner.display_name},
+
+p Wow! #{@wrapup.title} project is 100% transcribed! What's next?
+ul
+  li Send a wrap up email to all of your collaborators announcing they did it! Remind them of the purpose of the project, thank them for their work, and direct them on to your next project or a colleague's project.
+  br
+  li 
+    'Export your transcriptions if you'd like. You can export your transcriptions in a variety of formats, 
+    =link_to "here", collection_export_url(@wrapup.owner, @wrapup.collection, only_path: false), target: '_blank'
+    |. Or you can use the 
+    =link_to "IIIF API", IIIF_API_WIKI_LINK, target: '_blank', rel: 'nofollow'
+    |. If you need custom integration services to pull them into a downstream system, we can help - send us an email at 
+    =mail_to SENDING_EMAIL_ADDRESS
+    |.
+  br
+  li You can also leave your project up on FromThePage - it has great Google SEO. Our perspective is that a transcription is never done. Someone may read something years from now and be able to correct a confusing point or add more context to your project.
+  br
+  li How'd your project go?  We'd love to hear about the hardest part, the easiest part, and one (or more!) things we can improve in FromThePage.
+  br
+  li Start a new project!
+p Here are the statistics on your project:
+table
+  tr
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{number_with_delimiter @wrapup.work_count} #{'Work'.pluralize(@wrapup.work_count)} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{number_with_delimiter @wrapup.page_count} #{'Page'.pluralize(@wrapup.page_count)} 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{number_with_delimiter @wrapup.comment_count} #{'Note'.pluralize(@wrapup.comment_count)}
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{number_with_delimiter @wrapup.contributor_count} #{'Contributor'.pluralize(@wrapup.contributor_count)} 
+  tr
+    td(style="text-align: center; width: 25%; padding: 10px;")
+      h3 #{number_with_delimiter @wrapup.transcription_count} #{'Page'.pluralize(@wrapup.transcription_count)} Transcribed 
+    td(style="text-align: center; width: 25%; padding: 10px;")
+      h3 #{number_with_delimiter @wrapup.edit_count} #{'Page'.pluralize(@wrapup.edit_count)} Edited 
+    td(style="text-align: center; width: 25%; padding: 10px;")
+      h3 #{number_with_delimiter @wrapup.translation_count} #{'Page'.pluralize(@wrapup.translation_count)} Translated 
+    td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+      h3 #{number_with_delimiter @wrapup.ocr_count} OCR #{'Correction'.pluralize(@wrapup.ocr_count)} 
+
+  -if @wrapup.subjects_enabled?
+    tr
+      td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+        h3 #{number_with_delimiter @wrapup.index_count} #{'Page'.pluralize(@wrapup.index_count)} Indexed 
+      td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+        h3 #{number_with_delimiter @wrapup.subject_count} #{'Subject'.pluralize(@wrapup.subject_count)} 
+      td(style="text-align: center; width: 25%; padding: 0 10px 0;")
+        h3 #{number_with_delimiter @wrapup.mention_count} #{'Reference'.pluralize(@wrapup.mention_count)} 
+
+
+p Here's a list of all your collaborator emails:
+p =@wrapup.contributor_emails
+
+p Sincerely,
+p The FromThePage Team
