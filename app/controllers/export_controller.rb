@@ -204,27 +204,32 @@ private
 
     #get headings from field-based
     fields.each_with_index do |field, index|
-      @headings << "#{field.label} #{unqiueIdentifiers[index]} (text)"
-      @headings << "#{field.label} #{unqiueIdentifiers[index]} (subject)"
+#      if fields.map{ |f| f.label }.count(field.label) > 1
+        @headings << "#{field.label} #{unqiueIdentifiers[index]} (text)"
+        @headings << "#{field.label} #{unqiueIdentifiers[index]} (subject)"
+#      else
+ #       @headings << "#{field.label} (text)"
+ #       @headings << "#{field.label} (subject)"
+#      end        
     end
 
     #get headings from non-field-based
     cell_headings.each_with_index do |cell_heading, index|
-      @headings << "#{cell_heading} #{unqiueIdentifiers[index]} (text)"
-      @headings << "#{cell_heading} #{unqiueIdentifiers[index]} (subject)"
+      @headings << "#{cell_heading} (text)"
+      @headings << "#{cell_heading} (subject)"
     end
 
     @headings.uniq!
   end
 
   def get_unique_identifiers(fields)
-    uniqueIdentifiers = Array.new(fields.length)
+    unique_identifiers = Array.new(fields.length)
 
     for i in 0..(fields.length - 1) do
-      uniqueIdentifiers[i] = "#{fields[i].line_number}.#{fields[i].position}"
+      unique_identifiers[i] = "#{fields[i].line_number}.#{fields[i].position}"
     end
 
-    uniqueIdentifiers
+    unique_identifiers
   end
 
   def export_tables_as_csv(table_obj)
@@ -353,9 +358,14 @@ private
   end
 
   def cell_data(array, raw_headings, data_cells)
+    overflow = raw_headings.size 
     array.each do |cell|
       index = (raw_headings.index(cell.header))
       index = (raw_headings.index(cell.header.strip)) unless index      
+      unless index
+        logger.warn("Could not find heading #{cell.header} in #{raw_headings.join("|")}")
+        index = (overflow += 1)
+      end
       target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
