@@ -138,6 +138,10 @@ class Collection < ActiveRecord::Base
     end
   end
 
+  def is_public
+    !restricted
+  end
+
   #constant
   LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
  ['አማርኛ', 'am', ['am-ET']],
