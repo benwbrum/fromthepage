@@ -178,7 +178,7 @@ describe "editor actions" , :order => :defined do
   it "adds a note" do
     visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
     fill_in 'Write a new note...', with: "Test note"
-    click_button('Submit')
+    find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     click_button('Save Changes')
     expect(page).to have_content('Saved')
@@ -207,7 +207,7 @@ describe "editor actions" , :order => :defined do
     #because of the note, page.source_text should not have changed
     expect(new_text).to eq text
     #save the note
-    click_button('Submit')
+    find('#save_note_button').click
     expect(test_page.notes.count).not_to be nil
   end
 

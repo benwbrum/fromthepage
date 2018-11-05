@@ -175,7 +175,7 @@ describe "document sets", :order => :defined do
     login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     fill_in 'Write a new note...', with: "Test private note"
-    click_button('Submit')
+    find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     note = Note.last
     visit collection_path(@set.owner, @set)
