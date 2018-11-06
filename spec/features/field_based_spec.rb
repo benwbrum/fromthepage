@@ -85,7 +85,7 @@ describe "collection settings js tasks", :order => :defined do
     page.fill_in('fields_1_First_field', with: "Field one")
     page.fill_in('fields_2_Second_field', with: "Field two")
     page.fill_in('fields_3_Third_field', with: "Field three")
-    click_button 'Save Changes'
+    find('#save_button_top').click
     click_button 'Preview'
     expect(page.find('.page-preview')).to have_content("First field: Field one")
     click_button 'Edit'

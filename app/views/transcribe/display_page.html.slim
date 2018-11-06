@@ -42,7 +42,7 @@
           =f.check_box('needs_review', {checked: false})
 
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save_button_top', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        =button_tag 'Save Changes', :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == 'review'
     .page-review
@@ -94,8 +94,7 @@
             =f.label :source_text, 'Edit transcription', class: 'hidden'
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
-
-=button_tag 'Save Changes', :name => 'save_button_bottom', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+  =button_tag 'Save Changes', :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
 
 .fgfaded ==@work.set_transcription_conventions
 

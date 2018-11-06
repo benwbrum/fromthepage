@@ -75,7 +75,7 @@ describe "subject linking" do
     page.find('.work-page_title').find('a').click
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: ""
-    click_button('Save Changes')
+    find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Facsimile")
     click_link(collection.title)
@@ -93,7 +93,7 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
@@ -102,7 +102,7 @@ describe "subject linking" do
     #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Texas")
     links = PageArticleLink.where("page_id = ? AND text_type = ?", test_page.id, "transcription").count
@@ -121,11 +121,11 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Texas"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Wrong number of closing braces")
     page.fill_in 'page_source_text', with: ""
     page.fill_in 'page_source_text', with: "[[Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
@@ -137,18 +137,18 @@ describe "subject linking" do
     page.find('.tabs').click_link("Transcribe")
     #no text in the link
     page.fill_in 'page_source_text', with: "[[ ]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank tag")
     #no text in the category
     page.fill_in 'page_source_text', with: "[[|Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank subject")
     #no text in the subject
     page.fill_in 'page_source_text', with: "[[Texas| ]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank text")
     page.fill_in 'page_source_text', with: "[[Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
@@ -159,11 +159,11 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Texas[?]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Unclosed bracket")
     page.fill_in 'page_source_text', with: ""
     page.fill_in 'page_source_text', with: "[[Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
   end
@@ -173,11 +173,11 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[[Texas]]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Tags should be created using 2 brackets, not 3")
     page.fill_in 'page_source_text', with: ""
     page.fill_in 'page_source_text', with: "[[Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
   end
@@ -187,7 +187,7 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[\"Houston\"]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Houston")
   end
 
@@ -255,7 +255,7 @@ describe "subject linking" do
     link_page = @work.pages.last
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, link_page)
     page.fill_in 'page_source_text', with: "[[Ada Lovelace]] [[Ada Lovelace]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")
     expect(page).to have_content("Ada Lovelace")
