@@ -20,19 +20,19 @@ describe "User deletion" do
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
     # leave a note
     fill_in 'note_body', with: "Test private note"
-    click_button('Submit')
+    find('#save_note_button').click
 
      # transcribe a page
     visit "/display/display_page?page_id=#{@page1.id}"
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "[[Places|Texas]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
 
     @article = Article.first
     visit "/article/show?article_id=#{@article.id}"
     click_link("Settings")
     page.fill_in 'article_source_text', with: "This is more text about my article."
-    click_button('Save Changes')
+    find('#save_button_top').click
 
     @admin = User.where(:admin => true).first
     login_as(@admin, :scope => :user)
