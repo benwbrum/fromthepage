@@ -32,15 +32,15 @@ describe "guest user actions" do
   it "tests guest account transcription" do
     visit collection_display_page_path(@collection.owner, @collection, @work, @page.id)
 
-    # Transcribe Tab
+    # Transcribe Tab: Becoming a 'guest'
     page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("Sign In")
     click_button("Transcribe as guest")
     expect(page).to have_content("Signed In As")
-    find('#save_button_top').click
-
-    # Contribution
     @guest = User.last
     expect(@guest.guest).to be true
+
+    # Contribution 1
     page.fill_in 'page_source_text', with: "Guest Transcription 1"
     find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
@@ -50,13 +50,13 @@ describe "guest user actions" do
     expect(page).to have_content("revisions")
     expect(page).to have_link("Guest")
 
-    # Translate Tab
+    # Translate Tab: Contribution 2
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "Guest Translation"
     find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
 
-    # Transcribe Tab
+    # Transcribe Tab: Contribution 3
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Third Guest Deed"
     find('#save_button_top').click
@@ -77,7 +77,6 @@ describe "guest user actions" do
     # Versions Tab
     page.find('.tabs').click_link("Versions")
     expect(page).to have_link("Martha")
-    expect(page.find('.diff-list')).not_to have_content("Guest")
   end
 
   it "looks at the landing page" do

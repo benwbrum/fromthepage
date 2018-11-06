@@ -32,7 +32,7 @@ describe "User deletion" do
     visit "/article/show?article_id=#{@article.id}"
     click_link("Settings")
     page.fill_in 'article_source_text', with: "This is more text about my article."
-    find('#save_button_top').click
+    click_button('Save Changes')
 
     @admin = User.where(:admin => true).first
     login_as(@admin, :scope => :user)
