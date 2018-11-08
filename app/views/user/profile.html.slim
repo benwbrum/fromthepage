@@ -3,7 +3,7 @@
 -content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
 
 -if @user.owner?
-  =render 'owner_profile'
+  =render partial: 'owner_profile', locals: { user: @user, carousel_collections: @carousel_collections, collections_and_document_sets: @collections_and_document_sets }
 -else
   section.user-profile
     .user-profile_image
