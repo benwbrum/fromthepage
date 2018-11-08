@@ -190,8 +190,9 @@ class ExportController < ApplicationController
 private
 
   def get_headings(collection, ids)
-    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:label)
-    cell_headings = TableCell.where(work_id: ids).pluck('DISTINCT header')
+    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
+    cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck('DISTINCT header')
+
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
 
@@ -199,7 +200,10 @@ private
     @headings += @page_metadata_headings
 
     #get headings from field-based
-    field_headings.each do |raw_heading|
+    field_headings.each do |field_id|
+      field = TranscriptionField.where(:id => field_id).first
+      binding.pry unless field
+      raw_heading = field ? field.label : field_id
       @headings << "#{raw_heading} (text)"
       @headings << "#{raw_heading} (subject)"
     end
@@ -208,7 +212,8 @@ private
       @headings << "#{raw_heading} (text)"
       @headings << "#{raw_heading} (subject)"
     end
-    @headings.uniq!
+    binding.pry
+    @headings
   end
 
   def export_tables_as_csv(table_obj)
@@ -334,10 +339,22 @@ private
     metadata_cells
   end
 
+
+  def index_for_cell(cell)
+      if cell.transcription_field_id
+        index = (@raw_headings.index(cell.transcription_field_id))        
+      end
+      index = (@raw_headings.index(cell.header)) unless index
+      index = (@raw_headings.index(cell.header.strip)) unless index      
+      binding.pry unless index
+
+      index
+  end
+    
+
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
-      index = (raw_headings.index(cell.header))
-      index = (raw_headings.index(cell.header.strip)) unless index      
+      index = index_for_cell(cell)      
       target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
