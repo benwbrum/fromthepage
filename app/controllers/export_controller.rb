@@ -202,7 +202,6 @@ private
     #get headings from field-based
     field_headings.each do |field_id|
       field = TranscriptionField.where(:id => field_id).first
-      binding.pry unless field
       raw_heading = field ? field.label : field_id
       @headings << "#{raw_heading} (text)"
       @headings << "#{raw_heading} (subject)"
@@ -212,7 +211,6 @@ private
       @headings << "#{raw_heading} (text)"
       @headings << "#{raw_heading} (subject)"
     end
-    binding.pry
     @headings
   end
 
@@ -346,7 +344,6 @@ private
       end
       index = (@raw_headings.index(cell.header)) unless index
       index = (@raw_headings.index(cell.header.strip)) unless index      
-      binding.pry unless index
 
       index
   end
