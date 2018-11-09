@@ -54,6 +54,13 @@ html lang="en-US"
             =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
+            - if !(Collection.all.count > 30)
+              = link_to 'Projects', dashboard_path, class: 'header_link'
+            - else
+              = link_to 'Find A Project', landing_page_path, class: 'header_link'
+
+            = link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
+
             dl.dropdown.right
               dt.header_link.header_user
                 span
@@ -69,6 +76,13 @@ html lang="en-US"
                 hr
                 =link_to 'Sign Out', destroy_user_session_path, method: :delete
           -else
+            = link_to 'Software', about_path, class: 'header_link'
+            = link_to 'Blog', 'https://content.fromthepage.com/', class: 'header_link'
+            - if !(Collection.all.count > 30)
+              = link_to 'Projects', dashboard_path, class: 'header_link'
+            - else
+              = link_to 'Find A Project', landing_page_path, class: 'header_link'
+
             =link_to new_user_session_path, class: 'header_link header_user'
               span Sign In
               =svg_symbol '#header-user', class: 'icon'
