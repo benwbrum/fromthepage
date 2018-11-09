@@ -47,7 +47,7 @@ html lang="en-US"
         .toolbar_group
 
           -if user_signed_in?
-            - if !(Collection.all.count > 1000)
+            - if !(Collection.all.count > 30)
               = link_to 'Projects', dashboard_path, class: 'header_link'
             - else
               = link_to 'Find A Project', landing_page_path, class: 'header_link'
@@ -74,7 +74,7 @@ html lang="en-US"
           -else
             = link_to 'Software', about_path, class: 'header_link'
             = link_to 'Blog', 'https://content.fromthepage.com/', class: 'header_link'
-            - if !(Collection.all.count > 1000)
+            - if !(Collection.all.count > 30)
               = link_to 'Projects', dashboard_path, class: 'header_link'
             - else
               = link_to 'Find A Project', landing_page_path, class: 'header_link'
