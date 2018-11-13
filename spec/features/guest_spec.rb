@@ -69,6 +69,7 @@ describe "guest user actions" do
   end
 
   it "looks at the landing page" do
+    CollectionStatistic.update_recent_statistics
     visit landing_page_path
     expect(page).to have_selector('.carousel')
     expect(page.find('.maincol')).to have_link(@owner.display_name)
