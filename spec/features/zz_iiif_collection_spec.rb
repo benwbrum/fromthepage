@@ -55,6 +55,8 @@ describe "uploads data for collections", :order => :defined do
       w.pages.update_all(status: Page::STATUS_TRANSCRIBED, translation_status: Page::STATUS_TRANSLATED)
       w.work_statistic.recalculate
     end
+    col.calculate_complete
+    col = Collection.where(:title => 'Cosin\'s Library').first
     visit collection_path(col.owner, col)
     expect(page).to have_content("All works are fully transcribed")
     page.click_link("Show All")
