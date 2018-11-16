@@ -40,6 +40,7 @@ class Deed < ActiveRecord::Base
   scope :order_by_recent_activity, -> { order('created_at DESC') }
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
   scope :past_day, -> {where('created_at >= ?', 1.day.ago)}
+  scope :past_month, -> {where('created_at >= ?', 1.month.ago)}
 
   visitable # ahoy integration
 

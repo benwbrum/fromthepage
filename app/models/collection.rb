@@ -34,6 +34,21 @@ class Collection < ActiveRecord::Base
   scope :unrestricted, -> { where(restricted: false)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 1..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder("RAND()")}
+  scope :past_month, -> { joins(:deeds).merge(Deed.past_month) }
+
+  def self.completed
+    all.select { |c| c.completed? }.uniq
+  end
+
+  def completed?
+    pages == pages.completed
+  end
+
+  def contributors
+    contributed_deeds = Deed.where(collection_id: id).where.not(user_id: owner.id)
+    contributer_ids = contributed_deeds.map { |deed| deed.user_id  }.uniq.compact
+    User.where(id: contributer_ids)
+  end
 
   def page_metadata_fields
     page_fields = []

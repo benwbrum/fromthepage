@@ -29,6 +29,13 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
+  ## Config for MailCatcher ##
+  # Install mailcatcher locally on your machine 'gem install mailcatcher'
+  # Run 'mailcatcher' in the terminal to start the server
+  # Open 'http://localhost:1080/' in your browser to see mail sent
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

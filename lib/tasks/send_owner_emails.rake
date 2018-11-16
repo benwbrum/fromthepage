@@ -18,4 +18,25 @@ namespace :fromthepage do
     end
   end
 
+  desc "monthly owner email wrap ups"
+  task :monthly_owner_wrapup => :environment do
+    owners = User.where(owner: true).where.not(account_type: [nil, 'Trial'])
+    if SMTP_ENABLED
+      puts "Sending Monthly Wrapup Email to:"
+      owners.each do |owner|
+        puts owner.display_name
+        wrapup_info = UserMailer::StatisticWrapup.build(
+          object: owner,
+          start_date: 1.month.ago.utc,
+          end_date: Time.now.utc
+        )
+        begin
+          UserMailer.monthly_owner_wrapup(wrapup_info).deliver!
+        rescue StandardError => e
+          print "SMTP Failed: Exception: #{e.message} \n"
+        end
+      end
+    end # SMTP
+  end # task
+
 end

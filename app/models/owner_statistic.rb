@@ -1,7 +1,10 @@
 module OwnerStatistic
-
   def work_count
     self.owner_works.count
+  end
+
+  def completed_work_count
+    self.owner_works.joins(:work_statistic).where(work_statistics: {complete: 100}).count
   end
 
   def page_count
@@ -16,60 +19,70 @@ module OwnerStatistic
     [self.all_owner_collections.ids]
   end
 
-  def subject_count(last_days=nil)
-    owner_subjects.where("#{last_days_clause(last_days, 'created_on')}").count
+  def subject_count(start_date=nil, end_date=nil)
+    owner_subjects.where("#{start_clause(start_date, 'created_on')}").where("#{end_clause(end_date, 'created_on')}").count
   end
 
-  def mention_count(last_days=nil)
-    PageArticleLink.where(article_id: owner_subjects.ids).where("#{last_days_clause(last_days, 'created_on')}").count
+  def mention_count(start_date=nil, end_date=nil)
+    PageArticleLink.where(article_id: owner_subjects.ids).where("#{start_clause(start_date, 'created_on')}").where("#{end_clause(end_date, 'created_on')}").count
   end
 
-  def contributor_count(last_days=nil)
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).where("#{last_days_clause(last_days, 'deeds.created_at')}").distinct.count
+  def contributor_count(start_date=nil, end_date=nil)
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).where("#{start_clause(start_date, 'deeds.created_at')}").where("#{end_clause(end_date, 'deeds.created_at')}").distinct.count
   end
 
-  def comment_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'note_add').where("#{last_days_clause(last_days)}").count
-   
+  def comment_count(start_date=nil, end_date=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: 'note_add').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
-  def transcription_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_trans').where("#{last_days_clause(last_days)}").count
+  def transcription_count(start_date=nil, end_date=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: 'page_trans').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
-  def edit_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_edit').where("#{last_days_clause(last_days)}").count
+  def edit_count(start_date=nil, end_date=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: 'page_edit').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
-  def index_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_index').where("#{last_days_clause(last_days)}").count
+  def index_count(start_date=nil, end_date=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: 'page_index').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
-  def translation_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_pg_xlat').where("#{last_days_clause(last_days)}").count
+  def translation_count(start_date=nil, end_date=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: Deed::PAGE_TRANSLATED).where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
-  def ocr_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'ocr_corr').where("#{last_days_clause(last_days)}").count
+  def ocr_count(start_date=nil, end_date=nil)
+    Deed.where(collection_id: collection_ids).where(deed_type: 'ocr_corr').where("#{start_clause(start_date)}").where("#{end_clause(end_date)}").count
   end
 
-  def last_days_clause(last_days, column = "created_at")
-    clause = ""
-    if last_days
-      timeframe = last_days.days.ago
-      clause = "#{column} >= '#{timeframe}'"
-    end
-    return clause
+  def contributors
+    all_collaborators
   end
 
   def all_collaborators
     User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
   end
 
-
   #this is to prevent an error in the statistics view
   def subjects_disabled
     false
   end
 
+  private
+
+  def start_clause(start_date, column = "created_at")
+    clause = ""
+    if start_date
+      clause = "#{column} >= '#{start_date}'"
+    end
+    return clause
+  end
+
+  def end_clause(end_date, column = "created_at")
+    clause = ""
+    if end_date
+      clause = "#{column} <= '#{end_date}'"
+    end
+    return clause
+  end
 end

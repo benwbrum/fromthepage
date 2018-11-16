@@ -39,4 +39,20 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.nightly_user_activity(user)
   end
 
+  def monthly_owner_wrapup
+    user = User.find_by(login: 'admin')
+    wrapup_info = UserMailer::StatisticWrapup.build(
+      object: user,
+      start_date: 1.month.ago.utc,
+      end_date: Time.now.utc
+    )
+    UserMailer.monthly_owner_wrapup(wrapup_info)
+  end
+
+  def project_wrapup
+    project = Collection.last
+    wrapup_info = UserMailer::StatisticWrapup.build(object: project)
+    UserMailer.project_wrapup(wrapup_info)
+  end
+
 end

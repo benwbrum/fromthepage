@@ -14,16 +14,18 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def iiif_collection_import_failed
+    id = User.find_by(login: 'admin').id
     manifests = ScManifest.last(5)
     errors = {}
     manifests.each do |m|
       errors.store(m.at_id, m.label)
     end
-    AdminMailer.iiif_collection_import_failed(916, 168, errors)
+    AdminMailer.iiif_collection_import_failed(id, 168, errors)
   end
 
   def iiif_collection_import_succeeded
-    AdminMailer.iiif_collection_import_succeeded(916, 168)
+    id = User.find_by(login: 'admin').id
+    AdminMailer.iiif_collection_import_succeeded(id, 168)
   end
   
 end
