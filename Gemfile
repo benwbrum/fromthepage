@@ -32,7 +32,7 @@ gem 'rubyzip'
 
 gem 'ahoy_matey'
 gem 'pry'
-
+gem 'oink'
 
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
