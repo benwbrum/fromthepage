@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
   include UserHelper
+  include ContributorHelper
 
   default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
@@ -52,6 +53,23 @@ class UserMailer < ActionMailer::Base
     if @active_user
       mail to: @user.email, subject: "New FromThePage Activity"
     end
+  end
+
+  def monthly_owner_wrapup(user)
+    @owner = user
+    @all_collaborators = @owner.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+    @start_date = 1.month.ago.utc
+    @end_date = Time.now.utc
+    mail to: @owner.email, subject: "FromThePage Monthly Wrapup"
+  end
+
+  def project_complete(project)
+    #set the collection - are document sets relevant?
+    @collection = Collection.find_by(slug: project.slug)
+    @owner = @collection.owner
+    @all_collaborators = collection_transcribers(@collection)
+
+    mail to: @owner.email, subject: "#{@collection.title} Project Is 100\% Transcribed!"
   end
 
   private

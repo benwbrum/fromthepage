@@ -20,7 +20,6 @@ class AdminMailer < ActionMailer::Base
   end
 
   def email_stats(hours)
-    
     #call method from contributors helper
     show_email_stats(hours)
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
