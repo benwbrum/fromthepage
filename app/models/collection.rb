@@ -38,11 +38,9 @@ class Collection < ActiveRecord::Base
   def self.access_controlled(user)
     if user.nil?
       Collection.unrestricted
-    elsif user.admin
-      Collection.all
     else
       owned_collections          = user.all_owner_collections.pluck(:id)
-      collaborator_collections   = user.all_owner_collections.pluck(:id)
+      collaborator_collections   = user.collection_collaborations.pluck(:id)
       public_collections         = Collection.unrestricted.pluck(:id)
 
       Collection.where(:id => owned_collections + collaborator_collections + public_collections)
