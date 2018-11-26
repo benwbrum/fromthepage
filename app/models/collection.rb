@@ -35,6 +35,20 @@ class Collection < ActiveRecord::Base
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   scope :carousel, -> {where(pct_completed: [nil, 1..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder("RAND()")}
 
+  def self.access_controlled(user)
+    if user.nil?
+      Collection.unrestricted
+    elsif user.admin
+      Collection.all
+    else
+      owned_collections          = user.all_owner_collections.pluck(:id)
+      collaborator_collections   = user.all_owner_collections.pluck(:id)
+      public_collections         = Collection.unrestricted.pluck(:id)
+
+      Collection.where(:id => owned_collections + collaborator_collections + public_collections)
+    end
+  end
+
   def page_metadata_fields
     page_fields = []
     works.each do |w| 
