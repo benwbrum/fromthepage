@@ -180,11 +180,11 @@ describe "collection settings js tasks", :order => :defined do
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.first.title
-    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.last.title
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.pluck(:title).first
+    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.pluck(:title).last
     #sort by percent complete
     page.select('Percent Complete', from: 'sort_by')
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_completed.first.title
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
     expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
     #sort by recent activity
     page.select('Recent Activity', from: 'sort_by')
