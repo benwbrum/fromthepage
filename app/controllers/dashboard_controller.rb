@@ -38,6 +38,7 @@ class DashboardController < ApplicationController
 
   #Public Dashboard - list of all collections
   def index
+    binding.pry
     unless (Collection.all.count > 1000)
       redirect_to collections_list_path
     else

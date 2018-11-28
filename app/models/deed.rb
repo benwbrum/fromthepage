@@ -1,4 +1,6 @@
 class Deed < ActiveRecord::Base
+  include RenderAnywhere
+
   # constants
   PAGE_TRANSCRIPTION = 'page_trans'
   PAGE_EDIT = 'page_edit'
@@ -42,6 +44,8 @@ class Deed < ActiveRecord::Base
   scope :past_day, -> {where('created_at >= ?', 1.day.ago)}
 
   visitable # ahoy integration
+  
+  before_save :calculate_prerender
 
   def deed_type_name
     return case self.deed_type
@@ -70,6 +74,10 @@ class Deed < ActiveRecord::Base
     when WORK_ADDED
       'Work Added'
     end
+  end
+
+  def calculate_prerender
+    self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
   end
 
 end

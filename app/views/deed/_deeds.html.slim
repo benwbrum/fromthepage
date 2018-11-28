@@ -5,7 +5,12 @@
     =time_tag(d.created_at, class: 'legend legend-left')
       ="#{time_ago_in_words d.created_at} ago"
     span.deed-short_content
-      =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view })
+      -if d.prerender
+        ="p"
+        =raw(d.prerender)
+      else
+        ="r"
+        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view })
 
 small.legend
   =link_to 'Show More',

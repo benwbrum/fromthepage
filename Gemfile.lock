@@ -246,6 +246,8 @@ GEM
     recursive-open-struct (0.4.5)
     ref (2.0.0)
     referer-parser (0.3.0)
+    render_anywhere (0.0.12)
+      rails (>= 3.0.7)
     request_store (1.4.1)
       rack (>= 1.4)
     responders (1.1.2)
@@ -390,6 +392,7 @@ DEPENDENCIES
   pry-byebug
   rails (= 4.1.2)
   recaptcha
+  render_anywhere
   riiif
   rmagick
   rspec-rails
@@ -405,4 +408,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.16.5
+   1.17.1

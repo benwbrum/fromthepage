@@ -1,16 +1,17 @@
 -long_view = false if local_assigns[:long_view].nil?
 -mailer = local_assigns[:mailer] ? true : false
+-prerender = local_assigns[:prerender] ? true : false
 
--unless mailer
+-unless mailer || prerender
   -user_name = user_signed_in? && deed.user.id == current_user.id ? 'You' : deed.user.display_name
 -else
   -user_name = deed.user.display_name if deed.user.id
 
--user = link_to user_name, user_profile_path(deed.user), only_path: false 
--page = deed.page.nil? ? '' : link_to(deed.page.title, collection_transcribe_page_path(deed.page.collection.owner, deed.page.collection, deed.page.work, deed.page), only_path: false)
--article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_path(deed.article.collection.owner, deed.article.collection, deed.article), only_path: false)
+-user = link_to user_name, user_profile_path(deed.user), only_path: !mailer
+-page = deed.page.nil? ? '' : link_to(deed.page.title, collection_transcribe_page_path(deed.page.collection.owner, deed.page.collection, deed.page.work, deed.page), only_path: !mailer)
+-article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_path(deed.article.collection.owner, deed.article.collection, deed.article), only_path: !mailer)
 -if(!deed.work.nil?)
-  -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: false)
+  -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: !mailer)
 
 -output = "#{user} "
 
@@ -53,13 +54,13 @@
 
 -if(long_view && !deed.work.nil?)
   -if deed.work.collection
-    -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: false )
+    -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: !mailer )
   -else
     -work = deed.work.title      
   -output += " in the work #{work}"
 
 -if(@collection.nil? && !deed.collection.nil?)
-  -collection = link_to(deed.collection.title, collection_path(deed.collection.owner, deed.collection), only_path: false )
+  -collection = link_to(deed.collection.title, collection_path(deed.collection.owner, deed.collection), only_path: !mailer )
   -output += " in #{collection} collection"
 
 -if(long_view && deed.deed_type == 'note_add' && !deed.note.nil?)
