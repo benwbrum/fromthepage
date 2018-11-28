@@ -1,8 +1,9 @@
 # A Deed is a scholarly contribution made by a user to a page. It's kind
 # of like "doing a good deed." There are several types of deeds (which live in
 # the DeedType model). Ex: "transcribed", "marked as blank"
-
 class Deed < ActiveRecord::Base
+  include RenderAnywhere
+
   belongs_to :article
   belongs_to :collection
   belongs_to :note
@@ -16,8 +17,15 @@ class Deed < ActiveRecord::Base
   scope :past_day, -> {where('created_at >= ?', 1.day.ago)}
 
   visitable # ahoy integration
+  
+  before_save :calculate_prerender
 
   def deed_type_name
     DeedType.name(self.deed_type)
   end
+
+  def calculate_prerender
+    self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+  end
+
 end
