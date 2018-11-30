@@ -42,14 +42,17 @@ Create a database and user account for Transcriptor backend to use.
 Then update the config/application.yml(when repo merge with master braccou) file to point to the MySQL user account and database you created above.
 
 Run
-    rake db:migrate
-to load the schema definition into the database account.
 
-  rake db:seed
+    rake db:migrate
+
+to load the schema definition into the database account.
+    
+    rake db:seed
+
 to load init data .
 
 
-bundle exec rspec spec/request/
+    bundle exec rspec spec/request/
 
 Modify the configuration parameters in config/initializers/01fromthepage.rb.
 
@@ -57,9 +60,10 @@ Modify the config/environments/production.rb (or development.rb) file to configu
 
 If you wish to use latex formulas in your transcriptions, you'll need to install "pdflatex" and "pdfcrop".
 You can usually install them by typing:
-sudo apt-get install texlive-latex-base texlive-extra-utils
+
+    sudo apt-get install texlive-latex-base texlive-extra-utils
 
 
 Finally, start the application
-
- rails server
+        
+    rails server
