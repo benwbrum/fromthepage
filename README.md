@@ -1,5 +1,3 @@
-<div style="text-align:center"><img src="https://github.com/cientopolis/transcriptor-web/blob/master/src/assets/img/logo.png?raw=true" heigth="100"></img></div>
-
 # Transcriptor-backend
 Transcriptor backend is an open-source API REST  that extends from FromThePage, which allows volunteers to collaborate to transcribe handwritten documents.
 
