@@ -39,7 +39,7 @@ Configure MySQL
 
 Create a database and user account for Transcriptor backend to use.
 
-Then update the config/application.yml(when repo merge with master braccou) file to point to the MySQL user account and database you created above.
+Then update the config/application.yml file to point to the MySQL user account and database you created above.
 
 Run
 
