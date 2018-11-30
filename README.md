@@ -1,4 +1,6 @@
-FromThePage is an open-source tool that allows volunteers to collaborate to transcribe handwritten documents.
+# Transcriptor-web
+Transcriptor backend is an open-source API REST  that extends from FromThePage, which allows volunteers to collaborate to transcribe handwritten documents.
+
 
 ### Features
 
@@ -11,11 +13,11 @@ FromThePage is an open-source tool that allows volunteers to collaborate to tran
 
 ### License
 
-FromThePage is currently issued under the Affero GPL. This license remains controversial, however, so we are trying to preserve the option to dual-license the code.
+Transcriptor backend is currently issued under the Affero GPL. This license remains controversial, however, so we are trying to preserve the option to dual-license the code.
 
 ### Platform
 
-FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
+Transcriptor backend has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
 
 ### Installation
 
@@ -33,21 +35,23 @@ Install Graphviz
 
     apt-get install graphviz (or see the graphviz documentation at http://www.graphviz.org/)
 
-Create a database and user account for Transcriptor-Backend to use.
+Configure MySQL
 
-Then update the config/application.yml file to point to the MySQL user account and database you created above.
+Create a database and user account for Transcriptor backend to use.
+
+Then update the config/application.yml(when repo merge with master braccou) file to point to the MySQL user account and database you created above.
 
 Run
-
     rake db:migrate
 to load the schema definition into the database account.
-    
-    rake db:seed
-  
-to load init data.
+
+  rake db:seed
+to load init data .
 
 
-Modify the configuration parameters in config/initializers/01fromthepage.rb for connect with metagame-api.
+bundle exec rspec spec/request/
+
+Modify the configuration parameters in config/initializers/01fromthepage.rb.
 
 Modify the config/environments/production.rb (or development.rb) file to configure your mailer.  (Search for "action_mailer".)
 
@@ -58,13 +62,4 @@ sudo apt-get install texlive-latex-base texlive-extra-utils
 
 Finally, start the application
 
-    rails server
-    
-    
-## Testing
-
-The API contains a folder inside spec/ which has unit tests.
-To run all tests, move to the main folder of the project and execute:
-```
-$ rspec
-
+ rails server
