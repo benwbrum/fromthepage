@@ -1,4 +1,4 @@
-# Transcriptor-web
+# Transcriptor-backend
 Transcriptor backend is an open-source API REST  that extends from FromThePage, which allows volunteers to collaborate to transcribe handwritten documents.
 
 
