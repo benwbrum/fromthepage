@@ -10,7 +10,7 @@
 -user = link_to user_name, user_profile_path(deed.user), only_path: !mailer
 -page = deed.page.nil? ? '' : link_to(deed.page.title, collection_transcribe_page_path(deed.page.collection.owner, deed.page.collection, deed.page.work, deed.page), only_path: !mailer)
 -article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_path(deed.article.collection.owner, deed.article.collection, deed.article), only_path: !mailer)
--if(!deed.work.nil?)
+-if(!deed.work.nil? && !deed.work.collection.nil? )
   -work = link_to(deed.work.title, collection_read_work_path(deed.work.collection.owner, deed.work.collection, deed.work), only_path: !mailer)
 
 -output = "#{user} "
