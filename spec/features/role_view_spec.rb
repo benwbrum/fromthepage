@@ -28,6 +28,23 @@ describe "different user role logins" do
     expect(new_user_count).to eq (user_count + 1)
   end
 
+  it "tests guest dashboard" do
+    visit root_path
+    click_link(I18n.t('dashboard.plain'))
+    expect(page.current_path).to eq guest_dashboard_path
+    expect(page).to have_content("Sign In")
+    expect(page).not_to have_content("Signed In As")
+    click_link('Collections')
+    @collections.each do |c|
+      expect(page).to have_content(c.title)
+    end
+    page.find('h4', text: @collection.title).click_link(@collection.title)
+    page.find('a', text: 'Show All').click
+    @collection.works.each do |w|
+      expect(page).to have_content(w.title)
+    end
+  end
+
   it "signs in an editor with no activity" do
       visit new_user_session_path
       fill_in 'Login', with: INACTIVE
