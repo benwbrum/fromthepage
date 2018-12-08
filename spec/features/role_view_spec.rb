@@ -39,6 +39,7 @@ describe "different user role logins" do
       expect(page).to have_content(c.title)
     end
     page.find('h4', text: @collection.title).click_link(@collection.title)
+    page.find('a', text: 'Show All').click
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end

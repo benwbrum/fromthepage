@@ -2,10 +2,7 @@
 -mailer = local_assigns[:mailer] ? true : false
 -prerender = local_assigns[:prerender] ? true : false
 
--unless mailer || prerender
-  -user_name = user_signed_in? && deed.user.id == current_user.id ? 'You' : deed.user.display_name
--else
-  -user_name = deed.user.display_name if deed.user.id
+-user_name = deed.user.display_name if deed.user.id
 
 -user = link_to user_name, user_profile_path(deed.user), only_path: !mailer
 -page = deed.page.nil? ? '' : link_to(deed.page.title, collection_transcribe_page_path(deed.page.collection.owner, deed.page.collection, deed.page.work, deed.page), only_path: !mailer)

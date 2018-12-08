@@ -7,7 +7,7 @@
     span.deed-short_content
       -if d.prerender
         =raw(d.prerender)
-      else
+      -else
         =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => long_view })
 
 small.legend
