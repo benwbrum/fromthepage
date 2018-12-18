@@ -102,3 +102,5 @@ gem 'rack-cors'
 group :development, :test do
   gem "factory_bot_rails"
 end
+
+gem 'rake'

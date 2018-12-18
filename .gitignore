@@ -47,3 +47,6 @@ env_vars
 tags
 
 /**/svg-source
+
+/vendor/cache
+/vendor/bundle
