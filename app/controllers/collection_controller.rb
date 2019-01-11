@@ -293,7 +293,7 @@ class CollectionController < ApplicationController
 
       id_data = [user.display_name, user.email]
       time_data = [time_total, time_proportional]
-      
+
       user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
 
       user_stats = [

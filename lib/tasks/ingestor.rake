@@ -269,25 +269,25 @@ namespace :fromthepage do
       page.base_width = image.columns
       image = nil
       GC.start
-      work.pages << page      
+      work.pages << page
        print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
     end
     work.save!
     record_deed(work)
-    
+
     document_sets.each do |ds|
       print "\t\tconvert_to-work adding #{work.title} to document set #{ds.title}"
       ds.works << work
-      ds.save!      
+      ds.save!
     end
-    
+
     print "convert_to_work succeeded for #{work.title}\n"
   end
 
   def record_deed(work)
     deed = Deed.new
     deed.work = work
-    deed.deed_type = Deed::WORK_ADDED
+    deed.deed_type = DeedType::WORK_ADDED
     deed.collection = work.collection
     deed.user = work.owner
     deed.save!

@@ -70,22 +70,23 @@ module DocumentSetStatistic
   end
   def get_stats_hash(start_date=nil, end_date=nil)
     deeds = {
-      Deed::ARTICLE_EDIT => 0,
-      Deed::PAGE_TRANSCRIPTION => 0,
-      Deed::PAGE_EDIT => 0,
-      Deed::PAGE_INDEXED => 0,
-      Deed::NOTE_ADDED => 0,
-      Deed::PAGE_TRANSLATED => 0,
-      Deed::PAGE_TRANSLATION_EDIT => 0,
-      Deed::OCR_CORRECTED => 0,
-      Deed::NEEDS_REVIEW => 0,
-      Deed::TRANSLATION_REVIEW => 0,
-      Deed::TRANSLATION_INDEXED => 0,
-      Deed::WORK_ADDED => 0,
+      DeedType::ARTICLE_EDIT => 0,
+      DeedType::PAGE_TRANSCRIPTION => 0,
+      DeedType::PAGE_EDIT => 0,
+      DeedType::PAGE_INDEXED => 0,
+      DeedType::PAGE_MARKED_BLANK => 0,
+      DeedType::NOTE_ADDED => 0,
+      DeedType::PAGE_TRANSLATED => 0,
+      DeedType::PAGE_TRANSLATION_EDIT => 0,
+      DeedType::OCR_CORRECTED => 0,
+      DeedType::NEEDS_REVIEW => 0,
+      DeedType::TRANSLATION_REVIEW => 0,
+      DeedType::TRANSLATION_INDEXED => 0,
+      DeedType::WORK_ADDED => 0,
     }
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
-    
-    stats = 
+
+    stats =
     {
       :works        => self.works.count,
       :pages        => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,

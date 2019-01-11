@@ -15,40 +15,43 @@
 -output = "#{user} "
 
 -case deed.deed_type
--when 'page_trans'
+-when DeedType::PAGE_TRANSCRIPTION
   -output += "transcribed page #{page}"
 
--when 'page_edit'
+-when DeedType::PAGE_EDIT
   -output += "edited page #{page}"
 
--when 'page_index'
+-when DeedType::PAGE_INDEXED
   -output += "indexed page #{page}"
+  
+-when DeedType::PAGE_MARKED_BLANK
+  -output += "marked page #{page} as blank"
 
--when 'art_edit'
+-when DeedType::ARTICLE_EDIT
   -output += "edited #{article} article"
 
--when 'note_add'
+-when DeedType::NOTE_ADDED
   -output += "added a note to page #{page}"
 
--when 'pg_xlat'
+-when DeedType::PAGE_TRANSLATED
   -output += "translated page #{page}"
 
--when 'pg_xlat_ed'
+-when DeedType::PAGE_TRANSLATION_EDIT
   -output += "edited the translation of page #{page}"
 
--when 'ocr_corr'
+-when DeedType::OCR_CORRECTED
   -output += "corrected page #{page}"
 
--when 'review'
+-when DeedType::NEEDS_REVIEW
   -output += "marked page #{page} as needing review"
 
--when 'xlat_index'
+-when DeedType::TRANSLATION_INDEXED
   -output += "indexed the translation of page #{page}"
 
--when 'xlat_rev'
+-when DeedType::TRANSLATION_REVIEW
   -output += "marked translation page #{page} as needing review"
 
--when 'work_add'
+-when DeedType::WORK_ADDED
   -output += "added #{work}"
 
 -if(long_view && !deed.work.nil?)
@@ -62,7 +65,7 @@
   -collection = link_to(deed.collection.title, collection_path(deed.collection.owner, deed.collection), only_path: false )
   -output += " in #{collection} collection"
 
--if(long_view && deed.deed_type == 'note_add' && !deed.note.nil?)
+-if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
   -output += ", saying &ldquo;#{deed.note.title}&rdquo;"
 
 ==output

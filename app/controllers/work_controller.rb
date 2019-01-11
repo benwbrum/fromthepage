@@ -239,7 +239,7 @@ class WorkController < ApplicationController
   def record_deed(work)
     deed = Deed.new
     deed.work = work
-    deed.deed_type = Deed::WORK_ADDED
+    deed.deed_type = DeedType::WORK_ADDED
     deed.collection = work.collection
     deed.user = work.owner
     deed.save!
