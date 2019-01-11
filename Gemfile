@@ -16,7 +16,7 @@ gem 'jquery-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2','0.3.21'
 
-gem 'recaptcha', '0.3.6'
+gem "recaptcha", require: "recaptcha/rails"
 
 gem 'omeka_client', git: 'https://github.com/benwbrum/omeka_client'
 

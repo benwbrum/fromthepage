@@ -75,4 +75,17 @@ module CollectionHelper
     return pages
   end
 
+  def any_public_collections_with_document_sets?(collections_and_doc_sets)
+    collections = collections_and_doc_sets.select { |c_or_ds| c_or_ds.class == Collection}
+    collections.any? { |c| c.is_public && c.supports_document_sets }
+  end
+
+  def is_a_public_collection?(collection_or_document_set)
+    collection_or_document_set.class == Collection && collection_or_document_set.is_public
+  end
+
+  def is_a_private_document_set?(collection_or_document_set)
+    collection_or_document_set.class == DocumentSet && !collection_or_document_set.is_public
+  end
+
 end

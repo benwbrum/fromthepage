@@ -67,8 +67,8 @@ class UserController < ApplicationController
       @user = User.friendly.find(params[:id])
     end
     unless @user.deleted
-      @collections = @user.owned_collection_and_document_sets
-      @collection_ids = @collections.map {|collection| collection.id}
+      @collections_and_document_sets = @user.owned_collection_and_document_sets
+      @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
       @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
       @notes = @user.notes.limit(10)
       @page_versions = @user.page_versions.includes(page: :work).limit(10)

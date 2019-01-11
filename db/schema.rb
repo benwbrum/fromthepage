@@ -52,12 +52,12 @@ ActiveRecord::Schema.define(version: 20180826214652) do
     t.string   "title"
     t.text     "source_text"
     t.datetime "created_on"
-    t.integer  "lock_version",                                           default: 0
-    t.text     "xml_text",      limit: 16777215
+    t.integer  "lock_version",                          default: 0
+    t.text     "xml_text"
     t.string   "graph_image"
     t.integer  "collection_id"
-    t.decimal  "latitude",                       precision: 7, scale: 5
-    t.decimal  "longitude",                      precision: 8, scale: 5
+    t.decimal  "latitude",      precision: 7, scale: 5
+    t.decimal  "longitude",     precision: 8, scale: 5
     t.string   "uri"
   end
 
@@ -127,27 +127,14 @@ ActiveRecord::Schema.define(version: 20180826214652) do
     t.boolean  "field_based",                            default: false
     t.boolean  "voice_recognition",                      default: false
     t.string   "language"
-    t.string   "text_language"
     t.string   "license_key"
+    t.string   "text_language"
     t.integer  "pct_completed"
     t.string   "default_orientation"
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
   add_index "collections", ["slug"], name: "index_collections_on_slug", unique: true, using: :btree
-
-  create_table "comments", force: true do |t|
-    t.integer  "parent_id"
-    t.integer  "user_id"
-    t.datetime "created_at",                                               null: false
-    t.integer  "commentable_id",                    default: 0,            null: false
-    t.string   "commentable_type",                  default: "",           null: false
-    t.integer  "depth"
-    t.string   "title"
-    t.text     "body",             limit: 16777215
-    t.string   "comment_type",     limit: 10,       default: "annotation"
-    t.string   "comment_status",   limit: 10
-  end
 
   create_table "deeds", force: true do |t|
     t.string   "deed_type",     limit: 10
@@ -206,7 +193,8 @@ ActiveRecord::Schema.define(version: 20180826214652) do
     t.string   "file"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",        default: "new"
+    t.string   "status",          default: "new"
+    t.boolean  "preserve_titles", default: false
   end
 
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
@@ -428,11 +416,6 @@ ActiveRecord::Schema.define(version: 20180826214652) do
   add_index "pages_sections", ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id", using: :btree
   add_index "pages_sections", ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id", using: :btree
 
-  create_table "plugin_schema_info", id: false, force: true do |t|
-    t.string  "plugin_name"
-    t.integer "version"
-  end
-
   create_table "sc_canvases", force: true do |t|
     t.string   "sc_id"
     t.integer  "sc_manifest_id"
@@ -491,8 +474,8 @@ ActiveRecord::Schema.define(version: 20180826214652) do
   add_index "sections", ["work_id"], name: "index_sections_on_work_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.string   "session_id",                  default: "", null: false
-    t.text     "data",       limit: 16777215
+    t.string   "session_id", null: false
+    t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -635,7 +618,7 @@ ActiveRecord::Schema.define(version: 20180826214652) do
 
   create_table "works", force: true do |t|
     t.string   "title"
-    t.text     "description",               limit: 16777215
+    t.string   "description",               limit: 4000
     t.datetime "created_on"
     t.integer  "owner_user_id"
     t.boolean  "restrict_scribes",                       default: false
