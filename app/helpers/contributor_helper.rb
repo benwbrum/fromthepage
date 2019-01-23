@@ -49,7 +49,7 @@ module ContributorHelper
     user_deeds_collection = @collection.deeds.where(condition, start_date, end_date).group('user_id').count
 
     # All distinct visits with deeds in date range affecting @collection 
-    deed_visits = Visit.where("id in (?)", @collection.deeds.where(condition, start_date, end_date).distinct.pluck(:visit_id))
+    deed_visits = Visit.where("user_id in (?) and started_at between ? and ?", user_deeds, start_date, end_date)
 
     # Sum the time between the beginning of the visit and the last ahoy event for the session per user
     @user_time = {}
