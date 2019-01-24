@@ -2,8 +2,10 @@
 # be a transcription, translation, page edit, etc.
 
 class DeedType
-  # These constants are called individually in several parts of the app for specific
-  # deed types. Their values are stored as identifiers in the deeds.deed_type table field.
+  # These constants are called individually in several parts of the app for
+  # specific deed types. Their values are stored as identifiers in the deeds.deed_type
+  # table field. Ex: deed.deed_type = 'page_trans' Changing these values will
+  # result in broken Deed queries.
   PAGE_TRANSCRIPTION = 'page_trans'
   PAGE_EDIT = 'page_edit'
   PAGE_INDEXED = 'page_index'
@@ -69,8 +71,37 @@ class DeedType
       ]
     end
 
+    def transcriptions
+      [
+        PAGE_TRANSCRIPTION,
+        PAGE_EDIT
+      ]
+    end
+
+    def edited_and_transcribed_pages
+      [
+        PAGE_EDIT,
+        NEEDS_REVIEW,
+        OCR_CORRECTED,
+        PAGE_MARKED_BLANK,
+        PAGE_TRANSCRIPTION
+      ]
+    end
+
+    def new_and_edited_translations
+      [
+        PAGE_TRANSLATION_EDIT,
+        TRANSLATION_REVIEW,
+        PAGE_TRANSLATED
+      ]
+    end
+
     def name(deed_type)
       TYPES[deed_type]
+    end
+
+    def generate_zero_counts_hash
+      DeedType::TYPES.each_with_object({}) { |(k, v), returned_hash| returned_hash[k] = 0 }
     end
   end
 end
