@@ -69,15 +69,15 @@ module OwnerStatistic
 
   ## Helper functions for Owner Stats partial. TODO: Order by number of Deeds, scoped to this owner
   def editors_with_count
-    contributor_deeds_by_type(Deed::PAGE_EDIT, self.all_collaborators, self.collection_ids)
+    contributor_deeds_by_type(DeedType::PAGE_EDIT, self.all_collaborators, self.collection_ids)
   end
 
   def transcribers_with_count
-    contributor_deeds_by_type(Deed::PAGE_TRANSCRIPTION, self.all_collaborators, self.collection_ids)
+    contributor_deeds_by_type(DeedType::PAGE_TRANSCRIPTION, self.all_collaborators, self.collection_ids)
   end
 
   def indexers_with_count
-    contributor_deeds_by_type(Deed::PAGE_INDEXED, self.all_collaborators, self.collection_ids)
+    contributor_deeds_by_type(DeedType::PAGE_INDEXED, self.all_collaborators, self.collection_ids)
   end
 
   #this is to prevent an error in the statistics view
