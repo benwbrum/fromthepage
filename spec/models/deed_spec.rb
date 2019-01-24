@@ -71,13 +71,10 @@ RSpec.describe Deed, type: :model do
     let(:deed_type) { DeedType.all_types.first }
 
     it 'returns the human-readable name for the deed type' do
-      deed = create(:deed, deed_type: deed_type)
+      deed = build(:deed, deed_type: deed_type)
       human_readable_name = DeedType::TYPES[deed_type]
 
       expect(deed.deed_type_name).to eq(human_readable_name)
-
-      # Tear down factories
-      Deed.destroy(deed.id)
     end
   end
 end
