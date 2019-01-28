@@ -730,6 +730,7 @@ private
     service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED || page.status == Page::STATUS_INDEXED
     service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.translation_status == Page::STATUS_TRANSLATED
     service["pageStatus"] << "hasSubjectTags" if page.status == Page::STATUS_INDEXED
+    service["pageStatus"] << 'translationNeedsReview' if page.translation_status == Page::STATUS_NEEDS_REVIEW
     service
   end
 
