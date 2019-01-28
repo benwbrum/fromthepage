@@ -23,6 +23,9 @@
       "hasTranslation": {
         "@id": "fromthepage:pageHasTranslation"
       },
+      "translationNeedsReview": {
+        "@id": "fromthepage:pageTranslationNeedsReview"
+      },
       "hasSubjectTags": {
         "@id": "fromthepage:pageHasSubjectTags"
       },
