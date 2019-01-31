@@ -72,20 +72,20 @@ class IiifController < ApplicationController
     if sc_canvas = ScCanvas.where(:sc_canvas_id => at_id).last
       redirect_to :controller => 'iiif', :action => 'canvas', :page_id => sc_canvas.page_id
       return
-    end    
+    end
 
-    if at_id.match(/http/)   
+    if at_id.match(/http/)
       render :status => 404, :text => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
     else
       collection_for_domain(at_id)
     end
   end
-  
+
   def collection_for_domain(domain, terminus_a_quo = nil, terminus_ad_quem = nil)
     if terminus_a_quo && terminus_ad_quem
-      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => Deed::CONTRIBUTOR_DEED_TYPES}).distinct
+      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct
     elsif terminus_a_quo
-      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{Deed::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct      
+      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct
     else
       works = Work.joins(:sc_manifest).where("at_id LIKE ?", "%#{domain}%")
     end
@@ -727,9 +727,10 @@ private
     service["pageStatus"] << "needsReview" if page.status == Page::STATUS_NEEDS_REVIEW
     service["pageStatus"] << "ocrCorrected" if page.work.ocr_correction && (page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED)
     service["pageStatus"] << "markedBlank" if page.status == Page::STATUS_BLANK
-    service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED
+    service["pageStatus"] << "hasTranscript" if page.status == Page::STATUS_NEEDS_REVIEW || page.status == Page::STATUS_TRANSCRIBED || page.status == Page::STATUS_INDEXED
     service["pageStatus"] << "hasTranslation" if page.translation_status == Page::STATUS_NEEDS_REVIEW || page.translation_status == Page::STATUS_TRANSLATED
     service["pageStatus"] << "hasSubjectTags" if page.status == Page::STATUS_INDEXED
+    service["pageStatus"] << 'translationNeedsReview' if page.translation_status == Page::STATUS_NEEDS_REVIEW
     service
   end
 

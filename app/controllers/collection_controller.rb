@@ -293,15 +293,15 @@ class CollectionController < ApplicationController
 
       id_data = [user.display_name, user.email]
       time_data = [time_total, time_proportional]
-      
+
       user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
 
       user_stats = [
-        user_deeds.count { |d| d.deed_type == 'page_trans' },
-        user_deeds.count { |d| d.deed_type == 'page_edit' },
-        user_deeds.count { |d| d.deed_type == 'pg_xlat' },
-        user_deeds.count { |d| d.deed_type == 'ocr_corr' },
-        user_deeds.count { |d| d.deed_type == 'note_add' }
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSCRIPTION },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_EDIT },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSLATED },
+        user_deeds.count { |d| d.deed_type == DeedType::OCR_CORRECTED },
+        user_deeds.count { |d| d.deed_type == DeedType::NOTE_ADDED }
       ]
 
       id_data + time_data + user_stats
