@@ -45,15 +45,15 @@ html lang="en-US"
             -else
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
+          -if !(Collection.all.count > 30)
+            =link_to 'Projects', dashboard_path, class: 'header_link'
+          -else
+            =link_to 'Find A Project', landing_page_path, class: 'header_link'
+          =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
+          -if (user_signed_in? && current_user.guest) || !user_signed_in?
+            =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
-            - if !(Collection.all.count > 30)
-              = link_to 'Projects', dashboard_path, class: 'header_link'
-            - else
-              = link_to 'Find A Project', landing_page_path, class: 'header_link'
-
-            = link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
-
             dl.dropdown.right
               dt.header_link.header_user
                 span
@@ -72,13 +72,6 @@ html lang="en-US"
                 hr
                 =link_to 'Sign Out', destroy_user_session_path, method: :delete
           -else
-            = link_to 'Software', about_path, class: 'header_link'
-            = link_to 'Blog', 'https://content.fromthepage.com/', class: 'header_link'
-            - if !(Collection.all.count > 30)
-              = link_to 'Projects', dashboard_path, class: 'header_link'
-            - else
-              = link_to 'Find A Project', landing_page_path, class: 'header_link'
-
             =link_to new_user_session_path, class: 'header_link header_user'
               span Sign In
               =svg_symbol '#header-user', class: 'icon'
@@ -98,17 +91,13 @@ html lang="en-US"
 
     footer.footer
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
-
       .footer_nav
-        =link_to 'Contact Us', '/contact'
+        =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
+        =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
+        =link_to 'About', about_path
         =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
         =link_to 'Privacy Policy', privacy_path
-      .footer_nav
-        = link_to 'Projects', dashboard_path
-        = link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
-      .footer_nav
-        = link_to 'Software', about_path
-        = link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
+        =mail_to 'support@fromthepage.com', 'Contact Us'
 
     .page-busy-overlay
 

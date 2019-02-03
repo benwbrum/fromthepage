@@ -67,7 +67,7 @@ module CollectionHelper
 
   def find_transcribe_pages
    #find works with deeds in the last 48 hours (not including add the work)
-   active_works = Deed.where.not(deed_type: 'work_add').where('created_at >= ?', 48.hours.ago).where(collection_id: @collection.id).distinct.pluck(:work_id)
+   active_works = Deed.where.not(deed_type: DeedType::WORK_ADDED).where('created_at >= ?', 48.hours.ago).where(collection_id: @collection.id).distinct.pluck(:work_id)
     #get work ids for the rest of the works
     inactive_works = @collection.works.unrestricted.pluck(:id) - active_works
     #find pages in those works that aren't transcribed
