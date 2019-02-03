@@ -172,6 +172,7 @@ describe "URL tests" do
   end
 
   it "checks for weird breadcrumbs/clear the col_id" do
+#    binding.pry
     login_as(@user, :scope => :user)
     diff_collection = Collection.third
     new_page = Collection.first.works.first.pages.second

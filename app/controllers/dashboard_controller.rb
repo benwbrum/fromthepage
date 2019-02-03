@@ -47,8 +47,8 @@ class DashboardController < ApplicationController
 
   def collections_list
     collections = Collection.includes(:owner).distinct
-    @document_sets = DocumentSet.includes(:owner).distinct
-    @collections = (collections + @document_sets).sort { |a,b| a.title <=> b.title }
+    document_sets = DocumentSet.includes(:owner).distinct
+    @collections_and_document_sets = (collections + document_sets).sort { |a,b| a.title <=> b.title }
   end
 
   #Owner Dashboard - start project
@@ -70,8 +70,7 @@ class DashboardController < ApplicationController
   #Owner Summary Statistics - statistics for all owned collections
   def summary
     @statistics_object = current_user
-    @all_collaborators = current_user.all_collaborators.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
-
+    @subjects_disabled = @statistics_object.collections.all? { |c| c.subjects_disabled }
   end
 
   #Collaborator Dashboard - watchlist

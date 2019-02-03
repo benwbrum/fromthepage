@@ -2,7 +2,7 @@ namespace :fromthepage do
   desc "nightly collection activity sent to users"
   task :nightly_user_activity => :environment do
     #find collections where works have been added
-    collections = Collection.joins(:deeds).where(deeds: {deed_type: 'work_add'}).merge(Deed.past_day).distinct
+    collections = Collection.joins(:deeds).where(deeds: {deed_type: DeedType::WORK_ADDED}).merge(Deed.past_day).distinct
     #find edited pages
     active_pages = Page.joins(:deeds).merge(Deed.past_day).distinct
     #find users with edited pages or added works
@@ -14,12 +14,12 @@ namespace :fromthepage do
       all_users.each do |user|
         puts "There was activity on #{user.display_name}\'s previous work in the past 24 hours"
         begin
-          UserMailer.nightly_user_activity(user).deliver!
+          UserMailer.nightly_user_activity(UserMailer::Activity.build(user)).deliver!
         rescue StandardError => e
           print "SMTP Failed: Exception: #{e.message} \n"
         end
       end
-    end
+    end # end SMTP
   end
 
 end

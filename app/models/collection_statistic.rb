@@ -20,47 +20,34 @@ module CollectionStatistic
   end
 
   def comment_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::NOTE_ADDED}\" #{last_days_clause(last_days)}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::NOTE_ADDED}\" #{last_days_clause(last_days)}")
   end
 
   def transcription_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_TRANSCRIPTION}\" #{last_days_clause(last_days)}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::PAGE_TRANSCRIPTION}\" #{last_days_clause(last_days)}")
   end
 
   def edit_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_EDIT}\" #{last_days_clause(last_days)}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::PAGE_EDIT}\" #{last_days_clause(last_days)}")
   end
 
   def index_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_INDEXED}\" #{last_days_clause(last_days)}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::PAGE_INDEXED}\" #{last_days_clause(last_days)}")
   end
 
   def translation_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::PAGE_TRANSLATED}\" #{last_days_clause(last_days)}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::PAGE_TRANSLATED}\" #{last_days_clause(last_days)}")
   end
 
   def ocr_count(last_days=nil)
-    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{Deed::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
+    Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
   end
 
   def get_stats_hash(start_date=nil, end_date=nil)
-    deeds = {
-      Deed::ARTICLE_EDIT => 0,
-      Deed::PAGE_TRANSCRIPTION => 0,
-      Deed::PAGE_EDIT => 0,
-      Deed::PAGE_INDEXED => 0,
-      Deed::NOTE_ADDED => 0,
-      Deed::PAGE_TRANSLATED => 0,
-      Deed::PAGE_TRANSLATION_EDIT => 0,
-      Deed::OCR_CORRECTED => 0,
-      Deed::NEEDS_REVIEW => 0,
-      Deed::TRANSLATION_REVIEW => 0,
-      Deed::TRANSLATION_INDEXED => 0,
-      Deed::WORK_ADDED => 0,
-    }
+    deeds = DeedType.generate_zero_counts_hash
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
-    
-    stats = 
+
+    stats =
     {
       :works        => self.works.count,
       :pages        => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,
@@ -114,4 +101,40 @@ module CollectionStatistic
 
     clause
   end
+  
+  ##### background processing code
+  def self.terminus_a_quo
+    DocumentSet.maximum(:updated_at) # once we add the updated_at timestamp column to Collection, we should use the max of either
+  end
+  
+  def self.update_recent_statistics
+    from_time = terminus_a_quo
+    work_ids = Deed.where("updated_at > ?", from_time).pluck(:work_id)
+    work_ids.delete(nil)
+    work_ids.sort!.uniq!
+    completed_collection_ids = []
+    completed_set_ids = []
+    
+    work_ids.each do |work_id|
+      work = Work.where(:id => work_id).first
+      if work # handle deleted works
+        collection_id = work.collection_id
+        unless completed_collection_ids.include? collection_id
+          Collection.find(collection_id).calculate_complete # calculate the stats for this collection
+          completed_collection_ids << collection_id # add to the list of collections we've dealt with
+        end
+        
+        work.document_sets.each do |set|
+          unless completed_set_ids.include? set.id
+            set.calculate_complete
+            set.touch # force update the timestamp 
+            completed_set_ids << set.id
+          end
+        end
+      end
+    end
+  end
+
+  
+  
 end

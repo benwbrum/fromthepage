@@ -31,9 +31,10 @@ class TranscribeController  < ApplicationController
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
+      record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
-    elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
+    elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
@@ -48,21 +49,21 @@ class TranscribeController  < ApplicationController
     if params[:type] == 'translation'
       if @page.work.collection.review_workflow == true && @page.translation_status == nil
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
-        record_translation_review_deed
+        record_deed(DeedType::TRANSLATION_REVIEW)
       elsif params[:page]['needs_review'] == '1'
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
-        record_translation_review_deed
+        record_deed(DeedType::TRANSLATION_REVIEW)
       else
         @page.translation_status = nil
         return
       end
     elsif @page.work.collection.review_workflow == true && @page.status == nil
       @page.status = Page::STATUS_NEEDS_REVIEW
-      record_review_deed
+      record_deed(DeedType::NEEDS_REVIEW)
     else
       if params[:page]['needs_review'] == '1'
         @page.status = Page::STATUS_NEEDS_REVIEW
-        record_review_deed
+        record_deed(DeedType::NEEDS_REVIEW)
         if @page.translation_status == 'blank'
           @page.translation_status = nil
         end
@@ -101,9 +102,9 @@ class TranscribeController  < ApplicationController
           log_transcript_success
           flash[:notice] = "Saved"
           if @page.work.ocr_correction
-            record_correction_deed
+            record_deed(DeedType::OCR_CORRECTED)
           else
-            record_deed
+            record_transcription_deed
           end
           #don't reset subjects if they're disabled
           unless @page.collection.subjects_disabled || (@page.source_text.include?("[[") == false)
@@ -113,7 +114,7 @@ class TranscribeController  < ApplicationController
             new_link_count = @page.page_article_links.where(text_type: 'transcription').count
             logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
             if old_link_count == 0 && new_link_count > 0
-              record_index_deed
+              record_deed(DeedType::PAGE_INDEXED)
             end
             if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
               @page.update_columns(status: Page::STATUS_INDEXED)
@@ -229,13 +230,13 @@ class TranscribeController  < ApplicationController
             new_link_count = @page.page_article_links.where(text_type: 'translation').count
             logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
             if old_link_count == 0 && new_link_count > 0
-              record_translation_index_deed
+              record_deed(DeedType::TRANSLATION_INDEXED)
             end
             if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
               @page.update_columns(translation_status: Page::STATUS_INDEXED)
             end
           end
-          
+
           @work.work_statistic.recalculate({type: @page.translation_status}) if @work.work_statistic
           @page.submit_background_processes("translation")
 
@@ -374,13 +375,13 @@ protected
     end
   end
 
-  def record_deed
+  def record_transcription_deed
     deed = stub_deed
     current_version = @page.page_versions[0]
     if current_version.page_version > 1
-      deed.deed_type = Deed::PAGE_EDIT
+      deed.deed_type = DeedType::PAGE_EDIT
     else
-      deed.deed_type = Deed::PAGE_TRANSCRIPTION
+      deed.deed_type = DeedType::PAGE_TRANSCRIPTION
     end
     deed.save!
   end
@@ -400,46 +401,19 @@ protected
     deed
   end
 
-  def record_correction_deed
+  def record_deed(type)
     deed = stub_deed
-    deed.deed_type = Deed::OCR_CORRECTED
-    deed.save!
-  end
-
-  def record_index_deed
-    deed = stub_deed
-    deed.deed_type = Deed::PAGE_INDEXED
-    deed.save!
-  end
-
-  def record_review_deed
-    deed = stub_deed
-    deed.deed_type = Deed::NEEDS_REVIEW
+    deed.deed_type = type
     deed.save!
   end
 
   def record_translation_deed
     deed = stub_deed
     if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank?
-      deed.deed_type = Deed::PAGE_TRANSLATED
+      deed.deed_type = DeedType::PAGE_TRANSLATED
     else
-      deed.deed_type = Deed::PAGE_TRANSLATION_EDIT
+      deed.deed_type = DeedType::PAGE_TRANSLATION_EDIT
     end
     deed.save!
   end
-
-  def record_translation_review_deed
-    deed = stub_deed
-    deed.deed_type = Deed::TRANSLATION_REVIEW
-    deed.save!
-  end
-
-  def record_translation_index_deed
-    deed = stub_deed
-    deed.deed_type = Deed::TRANSLATION_INDEXED
-    deed.save!
-  end
-
-
-
 end

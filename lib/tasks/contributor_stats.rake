@@ -1,5 +1,5 @@
 namespace :fromthepage do
-  desc "transcription stats from the previous 24 hours"
+  desc "DEPRACATED -- use collection_stats_by_owner instead"
   task :contributor_stats, [:collection_id, :email] => :environment do |t,args|
       collection_id = args.collection_id
       email = []
