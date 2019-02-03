@@ -29,28 +29,28 @@ module OwnerStatistic
   end
 
   def comment_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'note_add').where("#{last_days_clause(last_days)}").count
-   
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::NOTE_ADDED).where("#{last_days_clause(last_days)}").count
+
   end
 
   def transcription_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_trans').where("#{last_days_clause(last_days)}").count
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSCRIPTION).where("#{last_days_clause(last_days)}").count
   end
 
   def edit_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_edit').where("#{last_days_clause(last_days)}").count
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_EDIT).where("#{last_days_clause(last_days)}").count
   end
 
   def index_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_index').where("#{last_days_clause(last_days)}").count
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_INDEXED).where("#{last_days_clause(last_days)}").count
   end
 
   def translation_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'page_pg_xlat').where("#{last_days_clause(last_days)}").count
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::PAGE_TRANSLATED).where("#{last_days_clause(last_days)}").count
   end
 
   def ocr_count(last_days=nil)
-    Deed.where(collection_id: collection_ids).where(deed_type: 'ocr_corr').where("#{last_days_clause(last_days)}").count
+    Deed.where(collection_id: collection_ids).where(deed_type: DeedType::OCR_CORRECTED).where("#{last_days_clause(last_days)}").count
   end
 
   def last_days_clause(last_days, column = "created_at")
@@ -67,9 +67,30 @@ module OwnerStatistic
   end
 
 
+  ## Helper functions for Owner Stats partial. TODO: Order by number of Deeds, scoped to this owner
+  def editors_with_count
+    contributor_deeds_by_type(DeedType::PAGE_EDIT, self.all_collaborators, self.collection_ids)
+  end
+
+  def transcribers_with_count
+    contributor_deeds_by_type(DeedType::PAGE_TRANSCRIPTION, self.all_collaborators, self.collection_ids)
+  end
+
+  def indexers_with_count
+    contributor_deeds_by_type(DeedType::PAGE_INDEXED, self.all_collaborators, self.collection_ids)
+  end
+
   #this is to prevent an error in the statistics view
   def subjects_disabled
     false
   end
 
+  private
+  def contributor_deeds_by_type(deed_type, contributors, collections)
+    user_array = []
+    deeds_by_user = Deed.group('user_id').where(collection_id: collections).where(deed_type: deed_type).order('count_id desc').count('id')
+    deeds_by_user.each { |user_id, count| user_array << [ contributors.find { |u| u.id == user_id }, count ] }
+
+    return user_array
+  end
 end

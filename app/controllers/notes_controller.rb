@@ -70,7 +70,7 @@ class NotesController < ApplicationController
       deed.collection = @collection.collection
     end
 
-    deed.deed_type = Deed::NOTE_ADDED
+    deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
     deed.save!
   end

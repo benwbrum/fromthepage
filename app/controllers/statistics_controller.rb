@@ -7,9 +7,9 @@ class StatisticsController < ApplicationController
   #  @works.sort { |w1, w2| w2.work_statistic.pct_transcribed <=> w1.work_statistic.pct_transcribed }
 
     @users = User.all
-    @all_transcribers = build_user_array(Deed::PAGE_TRANSCRIPTION)
-    @all_editors      = build_user_array(Deed::PAGE_EDIT)
-    @all_indexers     = build_user_array(Deed::PAGE_INDEXED)
+    @all_transcribers = build_user_array(DeedType::PAGE_TRANSCRIPTION)
+    @all_editors      = build_user_array(DeedType::PAGE_EDIT)
+    @all_indexers     = build_user_array(DeedType::PAGE_INDEXED)
   end
 
   private

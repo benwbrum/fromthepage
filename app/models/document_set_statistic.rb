@@ -28,27 +28,27 @@ module DocumentSetStatistic
   end
 
   def comment_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'note_add').where("#{last_days_clause(last_days)}").count
+    Deed.where(work_id: works.ids).where(deed_type: DeedType::NOTE_ADDED).where("#{last_days_clause(last_days)}").count
   end
 
   def transcription_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_trans').where("#{last_days_clause(last_days)}").count
+    Deed.where(work_id: works.ids).where(deed_type: DeedType::PAGE_TRANSCRIPTION).where("#{last_days_clause(last_days)}").count
   end
 
   def edit_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_edit').where("#{last_days_clause(last_days)}").count
+    Deed.where(work_id: works.ids).where(deed_type: DeedType::PAGE_EDIT).where("#{last_days_clause(last_days)}").count
   end
 
   def index_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_index').where("#{last_days_clause(last_days)}").count
+    Deed.where(work_id: works.ids).where(deed_type: DeedType::PAGE_INDEXED).where("#{last_days_clause(last_days)}").count
   end
 
   def translation_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'page_pg_xlat').where("#{last_days_clause(last_days)}").count
+    Deed.where(work_id: works.ids).where(deed_type: DeedType::PAGE_TRANSLATED).where("#{last_days_clause(last_days)}").count
   end
 
   def ocr_count(last_days=nil)
-    Deed.where(work_id: works.ids).where(deed_type: 'ocr_corr').where("#{last_days_clause(last_days)}").count
+    Deed.where(work_id: works.ids).where(deed_type: DeedType::OCR_CORRECTED).where("#{last_days_clause(last_days)}").count
   end
 
   def calculate_complete
@@ -69,23 +69,10 @@ module DocumentSetStatistic
     return clause
   end
   def get_stats_hash(start_date=nil, end_date=nil)
-    deeds = {
-      Deed::ARTICLE_EDIT => 0,
-      Deed::PAGE_TRANSCRIPTION => 0,
-      Deed::PAGE_EDIT => 0,
-      Deed::PAGE_INDEXED => 0,
-      Deed::NOTE_ADDED => 0,
-      Deed::PAGE_TRANSLATED => 0,
-      Deed::PAGE_TRANSLATION_EDIT => 0,
-      Deed::OCR_CORRECTED => 0,
-      Deed::NEEDS_REVIEW => 0,
-      Deed::TRANSLATION_REVIEW => 0,
-      Deed::TRANSLATION_INDEXED => 0,
-      Deed::WORK_ADDED => 0,
-    }
+    deeds = DeedType.generate_zero_counts_hash
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
-    
-    stats = 
+
+    stats =
     {
       :works        => self.works.count,
       :pages        => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,

@@ -84,15 +84,15 @@ module ApplicationHelper
 
 
     if options[:collection]
-      deeds = @collection.deeds.active.includes(:page, :user).where(condition).order('deeds.created_at DESC').limit(limit)
+      deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
     else
       #restricting to visible collections first speeds up the query
       limited = Deed.joins(:collection).where('collections.restricted = 0')
       if options[:owner]
         owner = User.friendly.find(options[:owner])
-        deeds = limited.active.includes(:page, :user, collection: [:works]).where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
+        deeds = limited.active.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
       else
-        deeds = limited.active.includes(:page, :user, collection: [:works]).where(condition).order('deeds.created_at DESC').limit(limit)
+        deeds = limited.active.where(condition).order('deeds.created_at DESC').limit(limit)
       end
     end
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
