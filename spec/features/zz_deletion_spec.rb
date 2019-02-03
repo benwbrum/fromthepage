@@ -101,6 +101,7 @@ describe "testing deletions" do
     expect(doc_sets).to be > 0
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
+    page.find('a', text: 'Show All').click
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end

@@ -69,7 +69,7 @@ describe "needs review", :order => :defined do
     expect(@page4.status).to be_nil
     expect(@page5.status).to be_nil
     expect(page).to have_content(@collection.title)
-    click_link @work.title
+    page.find('.maincol').click_link @work.title
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')

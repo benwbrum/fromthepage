@@ -1,5 +1,5 @@
 namespace :fromthepage do
-  desc "transcription stats for all owners and collections"
+  desc "send the same view as the contributors tab to all owners for their collections"
   task :collection_stats_by_owner => :environment do
 
     OWNER_EMAIL_BLACKLIST = []

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180826214652) do
+ActiveRecord::Schema.define(version: 20181125150539) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 20180826214652) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "visit_id"
+    t.string   "prerender",     limit: 2047
   end
 
   add_index "deeds", ["article_id"], name: "index_deeds_on_article_id", using: :btree
