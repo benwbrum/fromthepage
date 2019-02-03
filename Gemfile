@@ -29,6 +29,7 @@ gem 'devise-encryptable'
 gem 'protected_attributes'
 gem 'carrierwave'
 gem 'rubyzip'
+gem 'render_anywhere'
 
 gem 'ahoy_matey'
 gem 'pry'
@@ -57,6 +58,9 @@ group :development, :test do
   gem 'capybara-webkit'
   gem 'pry-byebug'
   gem 'factory_bot_rails'
+  gem 'pry-awesome_print' # makes console output easy to read
+  gem 'better_errors' # creates console in browser for errors
+  gem 'binding_of_caller' # goes with better_errors
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
   gem 'meta_request'

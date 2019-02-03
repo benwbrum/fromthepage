@@ -19,7 +19,7 @@
   $color: #B30;
   $opacity: 0.4;
   $rotate: 0deg;
-  @each $type in page_edit, page_trans, page_index, art_edit, note_add, pg_xlat, pg_xlat_ed {
+  @each $type in <%= DeedType.all_types %> {
     &-#{$type} { background: rgba(adjust-hue($color, $rotate), $opacity); }
     $rotate: $rotate - 30deg;
   }

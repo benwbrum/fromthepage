@@ -206,7 +206,7 @@ class ArticleController < ApplicationController
   def record_deed
     deed = Deed.new
     deed.article = @article
-    deed.deed_type = Deed::ARTICLE_EDIT
+    deed.deed_type = DeedType::ARTICLE_EDIT
     deed.collection = @article.collection
     deed.user = current_user
     deed.save!
