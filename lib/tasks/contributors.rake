@@ -3,7 +3,7 @@ namespace :fromthepage do
   desc "Display all transcriber names and emails"
   task :all_transcribers, [:collection_id] => :environment do |t, args|
     collection_id = args.collection_id
-    trans_deeds = ["page_trans", "page_edit"]
+    trans_deeds = DeedType.transcriptions
 
     collection = Collection.find_by(id: collection_id)
     transcription_deeds = collection.deeds.where(deed_type: trans_deeds)
@@ -19,12 +19,12 @@ namespace :fromthepage do
   desc "Display all recent activity for a collection"
   task :recent_activity, [:collection_id] => :environment do |t, args|
     collection_id = args.collection_id
-        trans_deeds = ["page_trans", "page_edit"]
+        trans_deeds = DeedType.transcriptions
 
     collection = Collection.find_by(id: collection_id)
     transcription_deeds = collection.deeds.where(deed_type: trans_deeds)
-    note_deeds = collection.deeds.where(deed_type: "note_add")
-    
+    note_deeds = collection.deeds.where(deed_type: DeedType::NOTE_ADDED)
+
     # notes and transcriptions created during the time frame
     recent_notes = note_deeds.where("created_at >= ?", 1.day.ago)
     recent_transcriptions = transcription_deeds.where("created_at >= ?", 1.day.ago)
