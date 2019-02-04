@@ -1,0 +1,23 @@
+#contact {
+  label {
+    padding-bottom: 5px;
+  }
+
+  .signon_field {
+    padding-bottom: 15px;
+
+    &:last-of-type {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  textarea {
+    height: 193px;
+  }
+
+  button {
+    width: 144px;
+    margin-bottom: $gapSize * 3;
+  }
+}
