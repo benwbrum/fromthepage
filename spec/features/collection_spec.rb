@@ -172,6 +172,7 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "sorts works in works list", :js => true do
+    Capybara.javascript_driver = :webkit
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Works List")
@@ -179,15 +180,15 @@ describe "collection settings js tasks", :order => :defined do
     @collection.works.each do |w|
       expect(page).to have_content(w.title)
     end
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.first.title
-    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.last.title
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.pluck(:title).first
+    expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.pluck(:title).last
     #sort by percent complete
     page.select('Percent Complete', from: 'sort_by')
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_completed.first.title
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_completed.pluck(:title).first
     expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_completed.pluck(:title).last
     #sort by recent activity
     page.select('Recent Activity', from: 'sort_by')
-    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.first.title
+    expect(page.find('.collection-work-stats').find('li:nth-child(2)')).to have_content @collection.works.order_by_recent_activity.pluck(:title).first
     expect(page.find('.collection-work-stats').find('li:last-child')).to have_content @collection.works.order_by_recent_activity.pluck(:title).last
   end
 
