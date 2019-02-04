@@ -38,7 +38,7 @@ describe "needs review", :order => :defined do
     expect(page).to have_content(@work.title)
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
     page.check('page_mark_blank')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("This page is blank")
     expect(Page.find_by(id: @page1.id).status).to eq ('blank')
     expect(Page.find_by(id: @page1.id).translation_status).to eq ('blank')
@@ -73,7 +73,7 @@ describe "needs review", :order => :defined do
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     expect(page).to have_content("Review Text")
@@ -84,7 +84,7 @@ describe "needs review", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Review Text 2"
     page.check('page_needs_review')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Review Text 2")
     expect(page).to have_content("Transcription")
     expect(Page.find_by(id: @page5.id).status).to eq ('review')
@@ -96,7 +96,7 @@ describe "needs review", :order => :defined do
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "Review Translate Text"
     page.check('page_needs_review')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     page.click_link('Show Translation')
@@ -227,7 +227,7 @@ describe "needs review", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Change Review Text"
     page.uncheck('page_needs_review')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).not_to have_content("This page has been marked as \"needs review\"")
     expect(page).to have_content("Change Review Text")
     expect(page).to have_content("Transcription")
@@ -242,7 +242,7 @@ describe "needs review", :order => :defined do
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "Change Review Translate Text"
     page.uncheck('page_needs_review')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).not_to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     page.click_link('Show Translation')
@@ -261,7 +261,7 @@ describe "needs review", :order => :defined do
     expect(page).to have_content("This page is blank")
     page.find('.tabs').click_link("Transcribe")
     page.uncheck('page_mark_blank')
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).not_to have_content("This page is blank")
     expect(Page.find_by(id: @page1.id).status).to be_nil
     expect(Page.find_by(id: @page1.id).translation_status).to be_nil
@@ -287,18 +287,20 @@ describe "needs review", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.check('collection_review_workflow')
-    click_button('Save Changes')
+    find('#collection_settings_save').click
     review_page = @work.pages.first
     expect(review_page.status).to be_nil
     expect(review_page.translation_status).to be_nil
+
     visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
     page.fill_in 'page_source_text', with: "Needs Review Workflow Text"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Needs Review Workflow Text")
     expect(Page.find_by(id: review_page.id).status).to eq ('review')
+
     visit collection_translate_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
     page.fill_in 'page_source_translation', with: "Translation Needs Review Workflow Text"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Translation Needs Review Workflow Text")
     expect(Page.find_by(id: review_page.id).translation_status).to eq ('review')
   end

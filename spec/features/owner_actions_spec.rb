@@ -173,10 +173,12 @@ describe "owner actions", :order => :defined do
     col = Collection.second
     work = col.works.second
     test_page = work.pages.first
+
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
     page.fill_in 'page_source_text', with: "[[Switzerland]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page.find('.flash_message')).to have_content("Saved")
+
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)
@@ -193,11 +195,13 @@ describe "owner actions", :order => :defined do
     col = Collection.second
     work = col.works.second
     test_page = work.pages.first
+
     #note: this is probably redundant, but it prevents failure from other tests
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
     page.fill_in 'page_source_text', with: "[[Switzerland]]"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page.find('.flash_message')).to have_content("Saved")
+
     visit edit_collection_work_path(col.owner, col, work)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: col.title)

@@ -175,7 +175,7 @@ describe "document sets", :order => :defined do
     login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     fill_in 'Write a new note...', with: "Test private note"
-    click_button('Submit')
+    find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     note = Note.last
     visit collection_path(@set.owner, @set)
@@ -253,7 +253,7 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     click_button 'Autolink'
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    click_button 'Save Changes'
+    click_button('Save Changes')
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("Versions")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
@@ -296,7 +296,7 @@ describe "document sets", :order => :defined do
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     if expect(page).to have_content("This page is not transcribed")
       page.find('.tabs').click_link("Transcribe")
-      click_button('Save Changes')
+      find('#save_button_top').click
       page.click_link("Overview")
     end
     page.find('a', text: @article.title).click
@@ -343,44 +343,58 @@ describe "document sets", :order => :defined do
     login_as(@user, :scope => :user)
     work = @set.works.first
     @page = work.pages.first
+
     #make sure it's right if you click on the page from the work
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.work-page_title', text: @page.title).click_link
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+
     #so that it doesn't matter if the page has been transcribed, go directly to overview
     visit "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+
+    # Transcribe Tab
     page.find('.tabs').click_link("Transcribe")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     page.fill_in 'page_source_text', with: "Document set breadcrumbs"
-    click_button('Save Changes')
+    find('#save_button_top').click
+
+    # Overview Tab
     page.click_link("Overview")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     expect(page).to have_content("Transcription")
+
+    # Translate Tab
     page.find('.tabs').click_link("Translate")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/translate/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     page.fill_in 'page_source_translation', with: "Document set breadcrumbs - translation"
-    click_button('Save Changes')
+    find('#save_button_top').click
+
+    # Overview Tab
     page.click_link("Overview")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/display/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
     expect(page).to have_content("Translation")
+
+    # Versions Tab
     page.find('.tabs').click_link("Versions")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/versions/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
+
     click_link(work.title)
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}"
+
     click_link @set.title
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}"
   end
