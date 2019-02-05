@@ -96,6 +96,8 @@ $gapSize:                   20px;
 @import "components/layout";
 
 @import "sections/home";
+@import "sections/software";
+@import "sections/contact";
 @import "sections/project";
 @import "sections/signon";
 @import "sections/deed";
@@ -129,6 +131,10 @@ $gapSize:                   20px;
       background-color: mix($bodyBg, #322, 30%);
     }
   }
+}
+
+.mt-10 {
+  margin-top: 10px;
 }
 
 @import "datepicker/datepicker";

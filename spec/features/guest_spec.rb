@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe "guest user actions" do
+  GUEST_NAV_HEADING = 'Create An Account'
 
   before :all do
     @collections = Collection.all
@@ -11,45 +12,70 @@ describe "guest user actions" do
     @admin = User.find_by(login: ADMIN)
   end
 
-  it "tests guest account creation and migration" do
+  it "can create an account during transcription before #{GUEST_DEED_COUNT} contributions" do
     visit "/display/display_page?page_id=#{@page.id}"
     page.find('.tabs').click_link("Transcribe")
-    expect(page).to have_content("Sign In")
-    expect(page).not_to have_content("Signed In As")
+
+    # Navbar displays generic sign-in
+    expect(page.html).to include('<span>Sign In</span>')
+    expect(page.html).to_not include('<big>Signed In As</big>')
+    expect(page.html).to_not include("<big>#{GUEST_NAV_HEADING}</big>")
+
+    # Transcription section shows button
     expect(page).to have_button("Transcribe as guest")
     click_button("Transcribe as guest")
-    expect(page).to have_content("Signed In As")
+
+    # Button permits Guest to save contributions
     expect(page).to have_button("Save Changes")
+
+    # Navbar displays Guest as user and gives link to create account
+    expect(page.html).to include('<small>Guest</small>')
+    expect(page.html).to include("<big>#{GUEST_NAV_HEADING}</big>")
+    expect(page).to have_link(GUEST_NAV_HEADING)
+
+    # The user is stored as a guest
     @guest = User.last
     expect(@guest.guest).to be true
-    expect(page).to have_link("Sign Up")
-    click_link("Sign Up")
-    expect(page.current_path).to eq new_user_registration_path
+
+    # The user can click a link to arrive at the Sign Up form
+    first(:link, GUEST_NAV_HEADING).click
+    expect(page).to have_content("Sign Up")
  end
 
   it "tests guest account transcription" do
     visit collection_display_page_path(@collection.owner, @collection, @work, @page.id)
+
+    # Transcribe Tab: Becoming a 'guest'
     page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_content("Sign In")
     click_button("Transcribe as guest")
-    expect(page).to have_content("Signed In As")
+    expect(page).to have_content(GUEST_NAV_HEADING)
     expect(page).to have_button("Save Changes")
     @guest = User.last
     expect(@guest.guest).to be true
+
+    # Contribution 1
     page.fill_in 'page_source_text', with: "Guest Transcription 1"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
-    #check to see what the page versions say
+
+    # Versions Tab: check to see what the page versions say
     page.find('.tabs').click_link("Versions")
     expect(page).to have_content("revisions")
     expect(page).to have_link("Guest")
+
+    # Translate Tab: Contribution 2
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "Guest Translation"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
+
+    # Transcribe Tab: Contribution 3
     page.find('.tabs').click_link("Transcribe")
     page.fill_in 'page_source_text', with: "Third Guest Deed"
-    click_button('Save Changes')
-    #after 3 transcriptions, the user should be forced to sign up
+    find('#save_button_top').click
+
+    # Convert Account: after 3 transcriptions, the user should be forced to sign up
     expect(page.current_path).to eq new_user_registration_path
     fill_in 'Login', with: 'martha'
     fill_in 'Email address', with: 'martha@test.com'
@@ -58,12 +84,13 @@ describe "guest user actions" do
     fill_in 'Display name', with: 'Martha'
     click_button('Create Account')
     @user = User.last
-    expect(@user.login).to eq('martha') 
+    expect(@user.login).to eq('martha')
     expect(@guest.id).to eq(@user.id)
     expect(page.current_path). to eq collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
+
+    # Versions Tab
     page.find('.tabs').click_link("Versions")
     expect(page).to have_link("Martha")
-    expect(page.find('.diff-list')).not_to have_content("Guest")
   end
 
   it "looks at the landing page" do

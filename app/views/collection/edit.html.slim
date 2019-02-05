@@ -70,7 +70,7 @@
           =link_to({ :controller => 'collection', :action => 'delete', :collection_id => @collection.id }, data: { :confirm => 'Are you sure you want to delete this collection? After deleting you won\'t be able to recover it!' }, class: 'button')
             span Delete Collection
         .toolbar_group
-          =f.button 'Save Changes', class: 'big'
+          =f.button 'Save Changes', class: 'big', id: 'collection_settings_save'
 
     h3 Add a new work
     -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => @collection.id }

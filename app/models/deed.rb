@@ -28,4 +28,8 @@ class Deed < ActiveRecord::Base
     self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
   end
 
+  def calculate_prerender
+    self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+  end
+
 end

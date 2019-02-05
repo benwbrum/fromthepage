@@ -58,7 +58,7 @@ describe "URL tests" do
     visit dashboard_watchlist_path
     click_link(@owner.display_name, match: :first)
     expect(page.current_path).to eq "/#{@owner.slug}"
-    expect(page).to have_content("Collections")
+    expect(page).to have_content("Projects")
     @owner.all_owner_collections.each do |c|
       expect(page).to have_content(c.title)
     end
@@ -178,7 +178,7 @@ describe "URL tests" do
     new_page = Collection.first.works.first.pages.second
     visit collection_transcribe_page_path(new_page.collection.owner, new_page.collection, new_page.work, new_page)
     page.fill_in 'page_source_text', with: "Significs and Logic"
-    page.click_button "Save Changes"
+    find('#save_button_top').click
     visit collection_read_work_path(diff_collection.owner, diff_collection, diff_collection.works.first)
     visit dashboard_path
     page.find('.deed-short_content', text: "edited page #{new_page.title} in #{new_page.collection.title} collection").find('a', text: new_page.title).click

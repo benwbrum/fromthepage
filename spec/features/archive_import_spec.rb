@@ -64,7 +64,7 @@ describe "IA import actions", :order => :defined do
     expect(page).to have_content("This page is not corrected, please help correct this page")
     page.find('.work-page_title', text: @ocr_page.title).click_link
     page.fill_in 'page_source_text', with: "Test OCR Correction"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content("Test OCR Correction")
     expect(page.find('.tabs')).to have_content("Correct")
     @ocr_page = @ocr_work.pages.first
