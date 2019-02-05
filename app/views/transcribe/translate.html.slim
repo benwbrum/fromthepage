@@ -19,7 +19,7 @@
         -else
           =f.check_box('needs_review', {checked: false})
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save', onclick: 'unsavedNotes(event);'
+        =button_tag 'Save Changes', :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.translation_status == 'review'
     .page-review

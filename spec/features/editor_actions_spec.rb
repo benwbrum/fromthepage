@@ -136,7 +136,7 @@ describe "editor actions" , :order => :defined do
     click_button('Edit')
     expect(page).to have_content('Preview')
     page.fill_in 'page_source_text', with: "Test Transcription"
-    click_button('Save Changes')
+    find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Test Transcription")
     expect(page).to have_content("Facsimile")
@@ -178,9 +178,9 @@ describe "editor actions" , :order => :defined do
   it "adds a note" do
     visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
     fill_in 'Write a new note...', with: "Test note"
-    click_button('Submit')
+    find('#save_note_button').click
     expect(page).to have_content "Note has been created"
-    click_button('Save Changes')
+    find('#save_button_top').click
     expect(page).to have_content('Saved')
   end
 
@@ -199,7 +199,7 @@ describe "editor actions" , :order => :defined do
     fill_in('Write a new note...', with: "Test two")
     fill_in 'page_source_text', with: "Attempt to save"
     message = accept_alert do
-      click_button('Save Changes')
+      find('#save_button_top').click
     end
     sleep(2)
     expect(message).to have_content("You have unsaved notes.")
@@ -207,7 +207,7 @@ describe "editor actions" , :order => :defined do
     #because of the note, page.source_text should not have changed
     expect(new_text).to eq text
     #save the note
-    click_button('Submit')
+    find('#save_note_button').click
     expect(test_page.notes.count).not_to be nil
   end
 

@@ -21,7 +21,7 @@
         -if @collection.voice_recognition
           span.voice-info.voice
           =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_note', onclick: 'startButton(event);'
-        =f.button 'Submit'
+        =f.button 'Save Note', id: 'save_note_button'
 
   -content_for :javascript
     javascript:
