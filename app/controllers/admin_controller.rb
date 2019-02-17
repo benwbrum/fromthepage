@@ -15,14 +15,18 @@ class AdminController < ApplicationController
   end
 
   def index
-    @collections = Collection.all
-    @articles = Article.all
-    @works = Work.all
-    @ia_works = IaWork.all
-    @pages = Page.all
-
     @users = User.all
-    @owners = @users.select {|i| i.owner == true}
+    @owners = User.where(owner: true)
+
+    # Count stats for dashboard
+    @collections_count  = Collection.all.count
+    @articles_count     = Article.all.count
+    @works_count        = Work.all.count
+    @ia_works_count     = IaWork.all.count
+    @pages_count        = Page.all.count
+    @users_count        = User.all.count
+    @owners_count       = User.where(owner: true).count
+
     @version = ActiveRecord::Migrator.current_version
 =begin
     sql_online =
