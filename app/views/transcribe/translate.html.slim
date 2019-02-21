@@ -39,7 +39,7 @@
         -help_word = 'help transcribe'
         -text_type = 'transcribed'
 
-      .page-preview
+      .page-preview(*language_attrs(@collection))
         -if @page.status == Page::STATUS_BLANK
           .centered
             .centered_content
