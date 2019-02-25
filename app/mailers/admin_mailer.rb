@@ -26,10 +26,10 @@ class AdminMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
   end
 
-  def collection_stats_by_owner(owner, start_date, end_date)
-    @collections = owner.all_owner_collections.joins(:deeds).where(deeds: {created_at: start_date..end_date})
-    @start_date = start_date
-    @end_date = end_date
+  def collection_stats_by_owner(owner, collaborators, comments)
+    @owner = owner
+    @collaborators = collaborators
+    @comments = comments
 
     mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity"
   end

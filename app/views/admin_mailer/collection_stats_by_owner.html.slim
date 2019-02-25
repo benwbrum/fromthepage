@@ -1,12 +1,36 @@
--@collections.each do |c|
-  -new_contributors(c, @start_date, @end_date)
-  h2.nomargin ="#{c.title}"
 
-  -time = distance_of_time_in_words(@start_date, @end_date)
+h2 Recent activity on your Fromthepage project
+- unless @collaborators.blank?
+  h3 Yay! You have new collaborators!
+  p You should send them a short note welcoming them to your project. The note should include:
+  ol 
+    li What the project is.
+    li What the transcribed material will be used for.
+    li Any training materials you have (like the project help tab and transcription conventions).
+    li How to contact you.
+  p 
+    a href="#" title='How to write a welcome email' Here's an example of a welcome email. 
+    / (link to blog post) (don't have one yet).
 
-  h2.nomargin ="Contributions for the past #{time}"
+  p If you'd like to contact your new collaborators, here are their email addresses:
 
-  =render(:partial => 'collection/contributors_body', :locals => {:mailer => true})
+  - @collaborators.each do |user|
+    dt #{user.login}
+    dd 
+      a href="mailto:#{user.email}" #{user.email}
 
-<br>
-i = "If you would prefer not to receive these emails, please contact support@fromthepage.com to opt out."
+- unless @comments.blank?
+  h3 Your collaborators are making comments!
+  p 
+    i You should respond to the comments &mdash; paying attention is a way your collaborators feel appreciated.
+  
+  - @comments.each do |comment|
+    -user = link_to comment.user.display_name, { :controller => 'user', :action => 'profile', :user_id => comment.user.id }
+    -comment_url = link_to 'Go to Page', { :controller => 'display', :action => 'display_page', :page_id => comment.page_id, :anchor => "comment_#{comment.id}" }
+    p #{user} wrote #{comment.body} [#{comment_url}]
+
+h3 How's your project going? 
+p 
+  i What's easy? What's hard? What can we do to improve FromThePage? We'd love to hear from you &mdash; just respond to this email.
+p
+  i If you would prefer not to receive these emails, please contact support@fromthepage.com to opt out.
