@@ -3,7 +3,7 @@
 -content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
 
 -if @user.owner?
-  =render 'owner_profile'
+  =render partial: 'owner_profile', locals: { user: @user, carousel_collections: @carousel_collections, collections_and_document_sets: @collections_and_document_sets }
 -else
   section.user-profile
     .user-profile_image
@@ -26,8 +26,6 @@
         span ="User since #{@user.created_at.strftime("%b %d, %Y")}"
         -if @user.last_sign_in_at.present?
           span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
-      -if @user.location.present?
-        p.big(data-prefix='Location:') =@user.location
 
   h2 Recent Activity by #{@user.display_name}
   -if @notes.present?

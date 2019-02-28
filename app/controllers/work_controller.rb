@@ -160,7 +160,6 @@ class WorkController < ApplicationController
 
   def change_collection
     work = Work.find_by(id: params[:id])
-
     record_deed(work)
     unless work.articles.blank?
       #delete page_article_links for this work
@@ -179,6 +178,8 @@ class WorkController < ApplicationController
       end
       work.save!
     end
+    work.update_deed_collection
+    
   end
 
   def revert
@@ -238,7 +239,7 @@ class WorkController < ApplicationController
   def record_deed(work)
     deed = Deed.new
     deed.work = work
-    deed.deed_type = Deed::WORK_ADDED
+    deed.deed_type = DeedType::WORK_ADDED
     deed.collection = work.collection
     deed.user = work.owner
     deed.save!

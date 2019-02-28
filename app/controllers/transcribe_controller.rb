@@ -5,7 +5,7 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_filter :authorized?, :except => [:zoom, :guest]
+  before_filter :authorized?, :except => [:zoom, :guest, :help]
   protect_from_forgery :except => [:zoom, :unzoom]
   #this prevents failed redirects after sign up
   skip_before_action :store_current_location
@@ -19,8 +19,7 @@ class TranscribeController  < ApplicationController
   def display_page
     @collection = page.collection unless @collection
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
-    default = @collection.field_based ? 'ttb' : 'ltr'
-    @layout_mode = cookies[:transcribe_layout_mode] || default;
+    @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
   end
 
@@ -32,9 +31,10 @@ class TranscribeController  < ApplicationController
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
+      record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
       redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
-    elsif @page.status == 'blank' && params[:page]['mark_blank'] == '0'
+    elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
@@ -49,21 +49,21 @@ class TranscribeController  < ApplicationController
     if params[:type] == 'translation'
       if @page.work.collection.review_workflow == true && @page.translation_status == nil
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
-        record_translation_review_deed
+        record_deed(DeedType::TRANSLATION_REVIEW)
       elsif params[:page]['needs_review'] == '1'
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
-        record_translation_review_deed
+        record_deed(DeedType::TRANSLATION_REVIEW)
       else
         @page.translation_status = nil
         return
       end
     elsif @page.work.collection.review_workflow == true && @page.status == nil
       @page.status = Page::STATUS_NEEDS_REVIEW
-      record_review_deed
+      record_deed(DeedType::NEEDS_REVIEW)
     else
       if params[:page]['needs_review'] == '1'
         @page.status = Page::STATUS_NEEDS_REVIEW
-        record_review_deed
+        record_deed(DeedType::NEEDS_REVIEW)
         if @page.translation_status == 'blank'
           @page.translation_status = nil
         end
@@ -102,9 +102,9 @@ class TranscribeController  < ApplicationController
           log_transcript_success
           flash[:notice] = "Saved"
           if @page.work.ocr_correction
-            record_correction_deed
+            record_deed(DeedType::OCR_CORRECTED)
           else
-            record_deed
+            record_transcription_deed
           end
           #don't reset subjects if they're disabled
           unless @page.collection.subjects_disabled || (@page.source_text.include?("[[") == false)
@@ -114,7 +114,7 @@ class TranscribeController  < ApplicationController
             new_link_count = @page.page_article_links.where(text_type: 'transcription').count
             logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
             if old_link_count == 0 && new_link_count > 0
-              record_index_deed
+              record_deed(DeedType::PAGE_INDEXED)
             end
             if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
               @page.update_columns(status: Page::STATUS_INDEXED)
@@ -158,6 +158,7 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
+      @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page.source_text, "transcription")
       display_page
 #      @preview_xml = @page.generate_preview("transcription")
@@ -173,25 +174,33 @@ class TranscribeController  < ApplicationController
   end
 
   def assign_categories
-    @translation = params[:translation]
+    @text_type = params[:text_type]
     #no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
-      # look for uncategorized articles
-      for article in @page.articles
-        if article.categories.length == 0
-          render :action => 'assign_categories'
-          return
-        end
+      @unassigned_articles = []
+      
+      # Separate translationa and transcription links
+      left, right = @page.page_article_links.partition{|x| x.text_type == 'translation' }
+
+      if @text_type == 'translation'
+        unassigned_links = left.select{|link| link.article.categories.empty? }
+      else
+        unassigned_links = right.select{|link| link.article.categories.empty? }
+      end
+      unless unassigned_links.empty?
+        @unassigned_articles = unassigned_links.map{|link| link.article }.uniq
+        render :action => 'assign_categories'
+        return
       end
     end
     # no uncategorized articles found, skip to display
-    if @translation
+    if @text_type == 'translation'
       redirect_to collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
     else
       redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     end
   end
-
+  
   def translate
     session[:col_id] = @collection.slug
   end
@@ -221,13 +230,13 @@ class TranscribeController  < ApplicationController
             new_link_count = @page.page_article_links.where(text_type: 'translation').count
             logger.debug("DEBUG old_link_count=#{old_link_count}, new_link_count=#{new_link_count}")
             if old_link_count == 0 && new_link_count > 0
-              record_translation_index_deed
+              record_deed(DeedType::TRANSLATION_INDEXED)
             end
             if new_link_count > 0 && @page.translation_status != Page::STATUS_NEEDS_REVIEW
               @page.update_columns(translation_status: Page::STATUS_INDEXED)
             end
           end
-          
+
           @work.work_statistic.recalculate({type: @page.translation_status}) if @work.work_statistic
           @page.submit_background_processes("translation")
 
@@ -243,7 +252,7 @@ class TranscribeController  < ApplicationController
             end
           end
           
-          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :translation => true
+          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :text_type => 'translation'
         else
           log_translation_error(message)
           render :action => 'translate'
@@ -267,6 +276,7 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
+      @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page.source_translation, "translation")
       translate
       render :action => 'translate'
@@ -365,13 +375,13 @@ protected
     end
   end
 
-  def record_deed
+  def record_transcription_deed
     deed = stub_deed
     current_version = @page.page_versions[0]
     if current_version.page_version > 1
-      deed.deed_type = Deed::PAGE_EDIT
+      deed.deed_type = DeedType::PAGE_EDIT
     else
-      deed.deed_type = Deed::PAGE_TRANSCRIPTION
+      deed.deed_type = DeedType::PAGE_TRANSCRIPTION
     end
     deed.save!
   end
@@ -391,46 +401,19 @@ protected
     deed
   end
 
-  def record_correction_deed
+  def record_deed(type)
     deed = stub_deed
-    deed.deed_type = Deed::OCR_CORRECTED
-    deed.save!
-  end
-
-  def record_index_deed
-    deed = stub_deed
-    deed.deed_type = Deed::PAGE_INDEXED
-    deed.save!
-  end
-
-  def record_review_deed
-    deed = stub_deed
-    deed.deed_type = Deed::NEEDS_REVIEW
+    deed.deed_type = type
     deed.save!
   end
 
   def record_translation_deed
     deed = stub_deed
     if @page.page_versions.size < 2 || @page.page_versions.second.source_translation.blank?
-      deed.deed_type = Deed::PAGE_TRANSLATED
+      deed.deed_type = DeedType::PAGE_TRANSLATED
     else
-      deed.deed_type = Deed::PAGE_TRANSLATION_EDIT
+      deed.deed_type = DeedType::PAGE_TRANSLATION_EDIT
     end
     deed.save!
   end
-
-  def record_translation_review_deed
-    deed = stub_deed
-    deed.deed_type = Deed::TRANSLATION_REVIEW
-    deed.save!
-  end
-
-  def record_translation_index_deed
-    deed = stub_deed
-    deed.deed_type = Deed::TRANSLATION_INDEXED
-    deed.save!
-  end
-
-
-
 end

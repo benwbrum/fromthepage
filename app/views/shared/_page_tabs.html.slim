@@ -39,6 +39,12 @@
   :path => "#{collection_page_version_path(@collection.owner, @collection, @work, @page.id)}",
 }]
 
+-tabs += [{\
+  :name => 'Help',
+  :selected => 9,
+  :path => "#{collection_help_page_path(@collection.owner, @collection, @work, @page.id)}",
+}]
+
 -if user_signed_in? && current_user.like_owner?(@work)
   -tabs += [{\
     :name => 'Settings',
@@ -53,25 +59,28 @@
 -content_for :page_title, selected == 1 ? "#{page_title}" : "#{selected_tab} - #{page_title}"
 -content_for :meta_description, "#{page_title} - #{tab_title}. #{strip_tags(description).truncate(150, separator: ' ')}"
 
+-@display_context ||= ''
+
 .headline
   h1.headline_title =@page.title
   .headline_aside
-    nav.page-nav
-      -if @page != @work.pages.first
-        -higher_item = @page.higher_item
-        =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
-          =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
-      -else
-        span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
+    -unless @display_context == 'preview'
+      nav.page-nav
+        -if @page != @work.pages.first
+          -higher_item = @page.higher_item
+          =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+            =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
+        -else
+          span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
 
-      span.page-nav_info ="Page #{@page.position} of #{@work.pages.size}"
+        span.page-nav_info ="Page #{@page.position} of #{@work.pages.size}"
 
-      -if !@page.last?
-        -lower_item = @page.lower_item
-        =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
-          =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
-      -else
-        span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
+        -if !@page.last?
+          -lower_item = @page.lower_item
+          =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+        -else
+          span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
 
 .tabs
   -for tab in tabs

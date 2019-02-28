@@ -19,8 +19,7 @@ h1 Manage Archive.org Import
               =link_to 'Conceal preceding pages', { :action => 'mark_beginning', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
               =link_to 'Conceal following pages', { :action => 'mark_end', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
           h5.legend.legend-left
-              span Page #{page_index} of #{pages_total}
-              =leaf.page_number
+              span Page #{page_index} of #{pages_total} (#{leaf.page_number})
 
         .ia-import_page
           .ia-import_image =image_tag(leaf.small_url)

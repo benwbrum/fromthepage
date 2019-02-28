@@ -22,7 +22,8 @@ class UserController < ApplicationController
       params_hash = params[:user].except(:notifications)
       notifications_hash = params[:user][:notifications]
       params_hash.delete_if { |k,v| v == NOTOWNER }
-
+      params_hash[:dictation_language] = params[:dialect]
+      
       if params_hash[:slug] == ""
         @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
@@ -45,6 +46,19 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:user_slug])
     end
+    
+    # Set dictation language to default (en-US) if it doesn't exist
+    lang = !@user.dictation_language.blank? ? @user.dictation_language : "en-US"
+    # Find the language portion of the language/dialect or set to nil
+    part = lang.split('-').first
+    # Find the index of the language in the array (transform to integer)
+    @lang_index = Collection::LANGUAGE_ARRAY.size.times
+      .select {|i| Collection::LANGUAGE_ARRAY[i].include?(part)}[0]
+    # Then find the index of the nested dialect within the language array
+    int = Collection::LANGUAGE_ARRAY[@lang_index].size.times
+      .select {|i| Collection::LANGUAGE_ARRAY[@lang_index][i].include?(lang)}[0]
+    # Transform to integer and subtract 2 because of how the array is nested
+    @dialect_index = !int.nil? ? int-2 : nil
   end
 
   def profile
@@ -53,8 +67,8 @@ class UserController < ApplicationController
       @user = User.friendly.find(params[:id])
     end
     unless @user.deleted
-      @collections = @user.owned_collection_and_document_sets
-      @collection_ids = @collections.map {|collection| collection.id}
+      @collections_and_document_sets = @user.owned_collection_and_document_sets
+      @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
       @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
       @notes = @user.notes.limit(10)
       @page_versions = @user.page_versions.includes(page: :work).limit(10)
@@ -76,7 +90,7 @@ class UserController < ApplicationController
     deed.page = @page
     deed.work = @work
     deed.collection = @collection
-    deed.deed_type = Deed::NOTE_ADDED
+    deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
     deed.save!
   end

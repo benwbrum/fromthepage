@@ -10,6 +10,9 @@
       tr.big
         th =f.label :title
         td.w100 =f.text_field :title
+      tr
+        th =f.label :gis_enabled, "Enable GIS"
+        td =f.check_box :gis_enabled
 
     .toolbar
       .toolbar_group.aright =f.button 'Create Category'

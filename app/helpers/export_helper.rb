@@ -254,6 +254,55 @@ module ExportHelper
     end
   end
 
+  def post_process_xml(xml, work)
+    if work.pages_are_meaningful?
+      return xml
+    else
+      doc = REXML::Document.new(xml)
+      doc_body = doc.get_elements('//body').first
+      
+      # Process Sections
+      current_depth = 1
+      sections = []
+      
+      doc_body.children.each {|e|
+      
+        if(e.node_type != :text && e.get_elements('head').length > 0)
+          header = e.get_elements('head').first
+          
+          # Create the new section
+          section = REXML::Element.new('section')
+          section.add_attribute('depth', header.attributes['depth']) 
 
+          # Handle where to put the new section
+          if sections.empty?
+            # Inserts the new section into the doc before the current element
+            e.parent.insert_before(e, section)
+            sections.push(section)
+            # section.add(e)
+          # elsif current_depth < header.attributes['depth'].to_i
+          #   sections.first.add(section)
+          #   # section.add(e)
+          # elsif current_depth == header.attributes['depth'].to_i
+          #   sections.pop()
+          #   sections.first.add(section)
+          #   # section.add(e)
+          else
+            ## This still isn't working right
 
+          end
+
+          # Update the accumulator
+          sections.push(section)
+          current_depth = section.attributes['depth'].to_i
+        end
+
+        # Adds the current element to the new section at the right location
+        sections.first.add(e) unless sections.empty?
+      
+      }
+      
+      return doc
+    end
+  end
 end
