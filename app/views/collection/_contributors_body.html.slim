@@ -14,28 +14,36 @@
   h4.legend.fglight Collaborator Stats #{@start_deed} through #{@end_deed}
   =render({ :partial => 'statistics/recent_statistics', 
             :locals => { :stats => @stats, :subjects_disabled => @collection.subjects_disabled }})
-  =link_to 'Details', { :controller => 'deed', :action => 'list',
-    :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed }
-
+  
+  =link_to('View Activity ', { :controller => 'deed', :action => 'list',
+    :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed },  :class => 'button btnExport')
+  | &nbsp;
+  =link_to({:controller => 'collection', :action => 'activity_download',
+          :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed}, :class => 'button btnExport')
+          =svg_symbol '#icon-export', class: 'icon'
+          span Export Activity as CSV
+    
 -else
   h3 No activity in this time frame
 
 .contributor-users
     h3 Active Collaborators
+    
     -unless @active_transcribers.empty?
+      p
       -@active_transcribers.each do |user|
-        p
           =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
           =" (Collection: #{(@user_time_proportional[user.id] / 60 + 1).floor} minutes | Total: #{(@user_time[user.id] / 60 + 1).floor} minutes)" if @user_time[user.id]  
-
+          | <br>
       p
         -total_minutes = (@user_time.values.sum / 60).floor + 1
         ="Total time: #{(total_minutes / 60)} hours, #{(total_minutes % 60)} minutes."
-      p
+        | <br />
+        
         =link_to({:controller => 'collection', :action => 'contributors_download',
-          :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed,},  class: 'button btnExport')
-          =svg_symbol '#icon-export', class: 'icon'
-          span Export as CSV
+            :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed,})
+            =svg_symbol '#icon-export', class: 'icon'
+            span 'Export as CSV
     -else
       h3 Collaborators
       p No Collaborators
