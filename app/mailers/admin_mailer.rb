@@ -26,10 +26,10 @@ class AdminMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
   end
 
-  def collection_stats_by_owner(owner, collaborators, comments)
+  def collection_stats_by_owner(owner, collaborators, activity)
     @owner = owner
     @collaborators = collaborators
-    @comments = comments
+    @comments, @deeds = activity.partition { |d| d.deed_type == DeedType::NOTE_ADDED }
 
     mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity"
   end
