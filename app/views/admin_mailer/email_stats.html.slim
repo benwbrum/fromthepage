@@ -12,10 +12,10 @@ p This is the activity from the last #{@hours} hours.
     =u.email
     <br>
     -u.deeds.each do |deed|
-      -if deed.prerender
+      -if deed.prerender_mailer
         =raw(deed.prerender_mailer)
       -else
-        =render(:partial => 'deed/mailer_deed.html', :locals => { :deed => deed })
+        =render(:partial => 'deed/deed.html', :locals => { :locals => { :deed => comment, :long_view => true, :mailer => true }})
       | <br>
 
 

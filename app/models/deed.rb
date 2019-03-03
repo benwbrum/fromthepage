@@ -29,6 +29,6 @@ class Deed < ActiveRecord::Base
   end
 
   def calculate_prerender_mailer
-    self.prerender_mailer = render(:partial => 'deed/mailer_deed', :locals => { :deed => self })
+    self.prerender_mailer = render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
   end
 end

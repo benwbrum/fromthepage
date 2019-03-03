@@ -26,7 +26,7 @@ h2.nomargin Recent activity on your Fromthepage project
       -if comment.prerender_mailer
         =raw(comment.prerender_mailer)
       -else
-        =render(:partial => 'deed/mailer_deed.html', :locals => { :deed => comment })
+        =render(:partial => 'deed/deed.html', :locals => { :deed => comment, :long_view => true, :mailer => true })
       | <br>
 
 / Raw Activity stream (without notes)
@@ -39,7 +39,7 @@ h2.nomargin Recent activity on your Fromthepage project
         -if deed.prerender
           =raw(deed.prerender_mailer)
         -else
-          =render(:partial => 'deed/mailer_deed.html', :locals => { :deed => deed })
+          =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true, :mailer => true })
         | <br>
       
 
