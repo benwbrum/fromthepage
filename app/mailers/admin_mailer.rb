@@ -26,12 +26,10 @@ class AdminMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage activity in the last #{hours} hours."
   end
 
-  def collection_stats_by_owner(owner, collaborators, activity)
-    @owner = owner
-    @collaborators = collaborators
-    @comments, @deeds = activity.partition { |d| d.deed_type == DeedType::NOTE_ADDED }
-
-    mail from: SENDING_EMAIL_ADDRESS, to: owner.email, subject: "FromThePage collection activity"
+  def collection_stats_by_owner(activity)
+    @activity = activity
+    # @comments, @deeds = activity.partition { |d| d.deed_type == DeedType::NOTE_ADDED }
+    mail from: SENDING_EMAIL_ADDRESS, to: @activity.owner.email, subject: "Recent Activity in Your Collections"
   end
 
   def iiif_collection_import_failed(user_id, collection_id, errors)
@@ -47,7 +45,25 @@ class AdminMailer < ActionMailer::Base
     mail to: user_email, subject: "#{@collection.title} - Import Complete"
   end
 
-
+  class OwnerCollectionActivity
+    attr_accessor :owner, :collections, :collaborators, :since, :comments
+    
+    def initialize(owner, activity_since)
+      @owner = owner
+      @since = activity_since
+      @collections = owner.all_owner_collections_updated_since(activity_since)
+      @collaborators = owner.new_collaborators_since(activity_since)
+      @comments = Deed.where(collection: @collections)
+        .where('created_at > ?', activity_since)
+        .where(deed_type: DeedType::NOTE_ADDED)
+    end
+    
+    class << self
+      def build(owner, activity_since=1.day.ago)
+        AdminMailer::OwnerCollectionActivity.new(owner, activity_since)
+      end
+    end
+  end
   private
   def admin_emails
     User.where(:admin => true).to_a.map { |u| u.email }
@@ -56,5 +72,4 @@ class AdminMailer < ActionMailer::Base
   def add_inline_attachments!
     attachments.inline["logo.png"] = File.read("#{Rails.root}/app/assets/images/logo.png")
   end
-
 end
