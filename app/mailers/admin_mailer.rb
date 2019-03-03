@@ -28,7 +28,6 @@ class AdminMailer < ActionMailer::Base
 
   def collection_stats_by_owner(activity)
     @activity = activity
-    # @comments, @deeds = activity.partition { |d| d.deed_type == DeedType::NOTE_ADDED }
     mail from: SENDING_EMAIL_ADDRESS, to: @activity.owner.email, subject: "Recent Activity in Your Collections"
   end
 
@@ -46,16 +45,22 @@ class AdminMailer < ActionMailer::Base
   end
 
   class OwnerCollectionActivity
-    attr_accessor :owner, :collections, :collaborators, :since, :comments
+    attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity
     
     def initialize(owner, activity_since)
       @owner = owner
       @since = activity_since
       @collections = owner.all_owner_collections_updated_since(activity_since)
       @collaborators = owner.new_collaborators_since(activity_since)
-      @comments = Deed.where(collection: @collections)
+      @comments = Deed
+        .where(collection: @collections)
         .where('created_at > ?', activity_since)
         .where(deed_type: DeedType::NOTE_ADDED)
+      @activity = Deed.includes(:collection)
+        .where(collection: @collections)
+        .where('created_at > ?', activity_since)
+        .where.not(deed_type: DeedType::NOTE_ADDED)
+        .group_by{ |d| d.collection.title }
     end
     
     class << self
