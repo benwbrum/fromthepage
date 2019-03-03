@@ -1,12 +1,12 @@
 
 h2.nomargin Recent activity on your Fromthepage project
 
-p Download recent activity as CSV
+/ p Download recent activity as CSV
 
 / New Collaborators
-- unless @collaborators.blank?
+- unless @activity.collaborators.blank?
   h3 You have new collaborators!
-  - @collaborators.each do |user|
+  - @activity.collaborators.each do |user|
     a href="mailto:#{user.email}" #{user.email}<br />
   p 
     | You may consider sending them 
@@ -18,21 +18,24 @@ p Download recent activity as CSV
         li Any training materials you have (like the project help tab and transcription conventions).
         li How to contact you.
 
-New Notes and Comments
-- unless @comments.blank?
-  h3 Comments from your collaborators:
+/ New Notes and Comments
+- unless @activity.comments.blank?
+  h3 Comments from Your Collaborators:
   p
-    - @comments.each do |comment|
-      =render(:partial => 'deed/deed', :locals => {:deed => comment, :mailer => true} )
+    - @activity.comments.each do |comment|
+      =render(:partial => 'deed/mailer_deed', :locals => {:deed => comment, :mailer => true} )
       | <br>
 
-Raw Activity stream (without notes)
-- unless @deeds.blank?
-  h3 Other Recent from your collaborators:
-  p
-    - @deeds.each do |comment|
-      =render(:partial => 'deed/deed', :locals => {:deed => comment, :mailer => true} )
+/ Raw Activity stream (without notes)
+- unless @activity.collections.blank?
+  h3 Other Recent Activity in Your Collections:
+  - @activity.collections.each do |collection|
+    h4 #{collection.title}
+    p 
+    - collection.activity_since(@activity.since).select{|d| d.deed_type != DeedType::NOTE_ADDED }.each do |deed|
+      =render(:partial => 'deed/mailer_deed', :locals => {:deed => deed, :mailer => true} )
       | <br>
+      
 
 h3 How's your project going? 
 p 
