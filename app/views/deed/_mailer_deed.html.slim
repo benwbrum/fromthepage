@@ -6,7 +6,8 @@
 -user     = link_to user_name, user_profile_url(deed.user)
 -page     = deed.page.nil? ? '' : link_to(deed.page.title, collection_transcribe_page_url(deed.page.collection.owner, deed.page.collection, deed.page.work, deed.page))
 -article  = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article))
--work     = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work))
+-if(!deed.work.nil? && !deed.work.collection.nil? )
+  -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work))
 
 -output = "#{user} "
 
@@ -53,7 +54,7 @@
 -output += " in the work #{work}"
 
 -if(@collection.nil? && !deed.collection.nil?)
-  -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection), only_path: !mailer )
+  -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection))
   -output += " in #{collection}"
 
 -if(deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
