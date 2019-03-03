@@ -23,18 +23,24 @@ h2.nomargin Recent activity on your Fromthepage project
   h3 Comments from Your Collaborators:
   p
     - @activity.comments.each do |comment|
-      =render(:partial => 'deed/mailer_deed', :locals => {:deed => comment, :mailer => true} )
+      -if comment.prerender_mailer
+        =raw(comment.prerender_mailer)
+      -else
+        =render(:partial => 'deed/mailer_deed.html', :locals => { :deed => comment })
       | <br>
 
 / Raw Activity stream (without notes)
 - unless @activity.collections.blank?
   h3 Other Recent Activity in Your Collections:
-  - @activity.collections.each do |collection|
-    h4 #{collection.title}
+  - @activity.activity.each do |collection_title,deeds|
+    h4 #{collection_title}
     p 
-    - collection.activity_since(@activity.since).select{|d| d.deed_type != DeedType::NOTE_ADDED }.each do |deed|
-      =render(:partial => 'deed/mailer_deed', :locals => {:deed => deed, :mailer => true} )
-      | <br>
+      - deeds.each do |deed|
+        -if deed.prerender
+          =raw(deed.prerender_mailer)
+        -else
+          =render(:partial => 'deed/mailer_deed.html', :locals => { :deed => deed })
+        | <br>
       
 
 h3 How's your project going? 
