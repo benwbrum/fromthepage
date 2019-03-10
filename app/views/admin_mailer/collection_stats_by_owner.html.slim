@@ -1,8 +1,6 @@
 
 h2.nomargin Recent activity on your Fromthepage project
 
-/ p Download recent activity as CSV
-
 / New Collaborators
 - unless @activity.collaborators.blank?
   h3 You have new collaborators!
@@ -10,13 +8,7 @@ h2.nomargin Recent activity on your Fromthepage project
     a href="mailto:#{user.email}" #{user.email}<br />
   p 
     | You may consider sending them 
-    a href="#" title='How to write a welcome email' a short note welcoming them to your project
-    ' . The note should include:
-    ol 
-        li What the project is.
-        li What the transcribed material will be used for.
-        li Any training materials you have (like the project help tab and transcription conventions).
-        li How to contact you.
+    a href="https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/" title='How to write a welcome email' a short note welcoming them to your project.
 
 / New Notes and Comments
 - unless @activity.comments.blank?
