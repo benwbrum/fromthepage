@@ -98,6 +98,21 @@ RSpec.describe AdminMailer, type: :mailer do
         expect(mail.body.encoded).to match(@old_collaborator.display_name)
         @new_deed.destroy
       end
+      it "doesn't show other activity if there isn't any" do
+        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        mail = AdminMailer.collection_stats_by_owner(activity).deliver
+        expect(mail.body.encoded).not_to match("Other Recent Activity in Your Collections")
+      end
+      it "doesn't show other activity if is only comments" do
+        @new_comment = create(:deed, {
+          deed_type: DeedType::NOTE_ADDED,
+          collection_id: @collection.id,
+          user_id: @old_collaborator.id
+        })
+        activity = AdminMailer::OwnerCollectionActivity.build(@owner)
+        mail = AdminMailer.collection_stats_by_owner(activity).deliver
+        expect(mail.body.encoded).not_to match("Other Recent Activity in Your Collections")
+      end
     end
   end
 end
