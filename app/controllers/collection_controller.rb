@@ -329,7 +329,7 @@ class CollectionController < ApplicationController
     start_date = start_date.to_datetime.beginning_of_day
     end_date = end_date.to_datetime.end_of_day
 
-    recent_activity = @collection.deeds.where({created_at: start_date..end_date})
+    recent_activity = @collection.deeds.where({created_at: start_date...end_date})
 
     headers = [
       :date,
@@ -339,10 +339,15 @@ class CollectionController < ApplicationController
       :page_title,
       :page_url,
       :work_title,
-      :work_url
+      :work_url,
+      :comment
     ]
 
     rows = recent_activity.map {|d|
+    
+    note = ''
+    note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
+      
       [
         d.created_at,
         d.user.display_name,
@@ -351,7 +356,8 @@ class CollectionController < ApplicationController
         d.page.title,
         collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
         d.work.title,
-        collection_read_work_url(d.work.collection.owner, d.work.collection, d.work)
+        collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+        note
       ]
     }
 
