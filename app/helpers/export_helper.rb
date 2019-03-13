@@ -28,6 +28,7 @@ module ExportHelper
     tei << "<category xml:id=\"C#{category.id}\">\n"
     tei << "<catDesc>#{category.title}</catDesc>\n"
     category.articles.where("id in (?)", subjects.map {|s| s.id}).each do |subject|
+      binding.pry if subject.title.match /&/
       has_content = true
       if seen_subjects.include?(subject)
         tei << seen_subject_to_tei(subject, category)
@@ -48,7 +49,7 @@ module ExportHelper
   def subject_to_tei(subject)
     tei = "<category xml:id=\"S#{subject.id}\">\n"
     tei << "<catDesc>\n"
-    tei << "<term>#{subject.title}</term>\n"
+    tei << "<term>#{REXML::Text.new(subject.title,true,nil,false).to_s}</term>\n"
     tei << "<gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
     tei << "</catDesc>\n"
     tei << "</category>\n"
@@ -60,7 +61,7 @@ module ExportHelper
   def seen_subject_to_tei(subject, parent_category)
     tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
     tei << "<catDesc>\n"
-    tei << "<term><rs ref=\"S#{subject.id}\">#{subject.title}</rs></term>\n"
+    tei << "<term><rs ref=\"S#{subject.id}\">#{REXML::Text.new(subject.title,true,nil,false).to_s}</rs></term>\n"
     tei << "</catDesc>\n"
     tei << "</category>\n"
 
