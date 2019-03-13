@@ -2,27 +2,13 @@
 // HOME PAGE
 // ---------------------------
 
-a.button.big.learn-more {
-  width: 246px;
-  height: 53px;
-  font-size: 24px;
-}
-
-@mixin highlightBox {
-  background-color: $highlightBoxBg;
-  border: 1px solid $borderColor;
-  padding: 30px;
-}
-
 .intro {
   box-shadow: inset 0 1px 0 rgba(#000, 0.3), inset 0 -1px 0 rgba(#000, 0.1);
-  background: $footerBg image-url('static/home/header.jpg') no-repeat center bottom;
+  background: $footerBg image-url('intro.jpg') no-repeat center bottom;
   background-size: cover;
   .wrapper {
-    position: relative;
-    min-height: 517px;
-    padding: 0;
-
+    height: 500px;
+    text-align: right;
     &:after {
       width: 0;
       content: '';
@@ -32,37 +18,26 @@ a.button.big.learn-more {
     }
   }
   &_box {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     color: #FFF;
     text-align: left;
-    max-width: $widthMax;
+    max-width: 600px;
     line-height: normal;
     display: inline-block;
     vertical-align: middle;
     background: rgba(#100, 0.5);
-    margin: 0 auto;
-    padding: 60px;
-
+    padding: $gapSize $gapSize * 1.2;
     &_title {
       margin: 0;
       color: inherit;
-      font-size: 38px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: normal;
-      margin-bottom: 17px;
+      font-size: 240%;
+      &:first-letter {
+        margin-left: -0.4em;
+      }
     }
     &_text {
       font-size: 125%;
       max-width: 600px;
       margin: 0.5em 0 0 0;
-    }
-    a.learn-more {
-      margin-top: 41px;
     }
   }
 
@@ -81,148 +56,52 @@ a.button.big.learn-more {
   }
 }
 
-#description {
-  text-align: center;
-  padding: 10px 0 40px 0;
-
-  h2 {
-    font-size: 24px;
-    color: $bodyFgDark;
-  }
-}
-
-.advantages {
-  @include highlightBox;
-
-  .justified_box {
-    width: 30%;
-    position: relative;
-    box-sizing: border-box;
-    padding: 0 0 $gapSize 0;
-  }
-  &_title {
-    color: $bodyFgDark;
-    font-size: $fontSizeH4;
-    border-bottom: 1px solid #d5d0c8;
-    padding-bottom: 12px;
-  }
-  &_text {
-    margin: 0.5em 0;
-    color: $bodyFg;
-    font-size: $fontSizeStrong;
-  }
-  ul {
-    list-style: none;
-    font-size: $fontSizeBig;
-    margin-top: 24px;
-    margin-left: 0;
-    li {
-      padding-top: 10px;
-    }
-  }
-  .start {
-    border-top: 1px solid $borderColor;
-    text-align: center;
-    padding-top: 22px;
-    padding-bottom: 10px;
-
-    h4 {
-      margin-bottom: 20px;
-      color: $bodyFgDark;
-    }
-  }
-}
-
-#quotes {
-  padding-top: 55px;
-  ol {
-    list-style: none;
-  }
-  .justified_box {
-    width: 30%;
-    position: relative;
-    box-sizing: border-box;
-    padding: 0 0 $gapSize 0;
-  }
-  h2 {
-    font-size: $fontSizeH1;
-    text-align: center;
-    margin-bottom: $gapSize * 2;
-  }
-  blockquote {
-    margin: 0;
-    p {
-      min-height: 130px;
-      color: $bodyFg;
-      margin: 0 0 20px 0;
-      padding: $gapSize;
-      border-radius: 5px;
-      font-size: $fontSizeBig;
-      font-style: italic;
-      position: relative;
-      background: mix(#000, $bodyBg, 5);
-      &:after {
-        top: 100%;
-        left: 20px;
-        content: '';
-        position: absolute;
-        border: 0 solid transparent;
-        border-width: 20px 20px 0 0;
-        border-top-color: mix(#000, $bodyBg, 5);
-      }
-    }
-  }
-  cite {
-    line-height: 2;
-    font-style: normal;
-    color: $bodyFgFaded;
-    margin-top: $gapSize;
-    display: inline-block;
-    small {
-      display: block;
-      max-width: 200px;
-      line-height: 1.2;
-      color: $bodyFgLight;
-    }
-  }
-  .simplify {
-    text-align: center;
-    padding: $gapSize;
-    margin-bottom: $gapSize * 2;
-
-    h4 {
-      color: $bodyFgDark;
-      margin-bottom: $gapSize;
-    }
-  }
-}
-
-#transcription_count {
-  @include highlightBox;
-  text-align: center;
-  padding: 30px 0;
+.start {
   margin-bottom: $gapSize * 2;
+  .justified_box {
+    width: 22%;
+    color: $bodyFgFaded;
+    padding: $gapSize 0;
+  }
+  &_icon {
+    width: 80px;
+    height: 80px;
+  }
+  &_text { margin: 0; }
 
-  #count {
-    font-size: 60px;
-    color: #d0021b;
-    font-family: $fontFamilyHead;
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 47%; }
+  }
+}
+
+.whouses {
+  margin-bottom: $gapSize * 3;
+  .justified {
+    margin: 0 -$gapSize / 4;
+  }
+  .justified_box {
+    width: 33.33%;
+    padding: 0 $gapSize / 4 $gapSize / 2 $gapSize / 4;
+  }
+  .cover {
+    width: 100%;
+    background: #FFF;
+    background-clip: padding-box;
+    border-spacing: $gapSize * 0.75;
+    border: 1px solid rgba(#000, 0.1);
+    &_image {
+      width: 100px;
+      height: 100px;
+    }
   }
 
-  p {
-    font-size: $fontSizeH4;
-    font-family: $fontFamilyHead;
+  @media screen and (max-width: $widthM) {
+    .justified_box { width: 100%; }
   }
 }
 
 .spotlight {
   margin-bottom: $gapSize;
-  h3 {
-    font-size: $fontSizeH1;
-    text-align: center;
-    margin-top: $gapSize * 2;
-    margin-bottom: $gapSize * 2;
-  }
   .justified_box {
     width: 48%;
     color: $bodyFgFaded;
@@ -237,13 +116,126 @@ a.button.big.learn-more {
       padding-left: $gapSize;
     }
   }
-  p {
-    margin-top: 0;
-  }
-  a {
-    font-weight: bold;
-  }
+
   @media screen and (max-width: $widthM) {
     .justified_box { width: 100%; }
+  }
+}
+
+.features {
+  counter-reset: index;
+  margin-bottom: $gapSize;
+  .justified_box {
+    width: 48%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 0 $gapSize 60px;
+    &:before {
+      top: 0;
+      left: 0;
+      opacity: 0.1;
+      line-height: 1;
+      font-size: 500%;
+      font-weight: bold;
+      position: absolute;
+      content: counter(index);
+      counter-increment: index;
+    }
+  }
+  &_title { margin: 0; }
+  &_text {
+    margin: 0.5em 0;
+    color: $bodyFgLight;
+    font-size: $fontSizeBig;
+  }
+}
+
+.main-quote {
+  max-width: 750px;
+  font-style: normal;
+  text-align: center;
+  margin: $gapSize * 2 auto;
+  &_text {
+    margin: 0.4em 0;
+    font-size: $fontSizeH3;
+    font-family: $fontFamilyHead;
+  }
+  &_cite {
+    line-height: 2;
+    font-style: normal;
+    color: $bodyFgFaded;
+    font-size: $fontSizeH5;
+    small {
+      display: block;
+      line-height: 1.2;
+      color: $bodyFgLight;
+      font-size: $fontSize;
+    }
+  }
+}
+
+.start-project {
+  margin: $gapSize * 3 0;
+  &:before { left: -1em; }
+  &:after { left: 1em; }
+  .button {
+    font-size: $fontSizeH4;
+    font-family: $fontFamilyHead;
+  }
+}
+
+.advantages {
+  margin-bottom: $gapSize * 2;
+  .justified_box {
+    width: 30%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 0 $gapSize 0;
+  }
+  &_text {
+    margin: 0.5em 0;
+    color: $bodyFgLight;
+    font-size: $fontSizeBig;
+  }
+  &_quote {
+    margin: 0;
+    &_text {
+      margin: 0 0 20px 0;
+      padding: $gapSize;
+      border-radius: 5px;
+      font-style: italic;
+      padding-left: 60px;
+      position: relative;
+      background: mix(#000, $bodyBg, 5);
+      &:before {
+        top: 0;
+        left: 15px;
+        content: '“';
+        font-size: 90px;
+        font-style: normal;
+        position: absolute;
+        color: rgba($bodyFgLight, 0.5);
+      }
+      &:after {
+        top: 100%;
+        left: 20px;
+        content: '';
+        position: absolute;
+        border: 0 solid transparent;
+        border-width: 20px 20px 0 0;
+        border-top-color: mix(#000, $bodyBg, 5);
+      }
+    }
+    &_cite {
+      line-height: 2;
+      font-style: normal;
+      color: $bodyFgFaded;
+      small {
+        display: block;
+        max-width: 200px;
+        line-height: 1.2;
+        color: $bodyFgLight;
+      }
+    }
   }
 }

@@ -4,10 +4,6 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  def new_trial
-    new
-  end
-
   def destroy
     resource.soft_delete
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
@@ -57,11 +53,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   #redirect new sign up back to starting page
   def after_sign_up_path_for(resource)
-    if @user.owner
-      "#{dashboard_owner_path}#freetrial"
-    else
-      session[:user_return_to] || root_path
-    end
+    session[:user_return_to] || root_path
   end
 
   def after_update_path_for(resource)
