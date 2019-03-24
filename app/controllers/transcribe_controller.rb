@@ -6,6 +6,8 @@ class TranscribeController  < ApplicationController
   require 'rexml/document'
   include Magick
   before_filter :authorized?, :except => [:zoom, :guest, :help]
+  before_filter :active?
+  
   protect_from_forgery :except => [:zoom, :unzoom]
   #this prevents failed redirects after sign up
   skip_before_action :store_current_location
@@ -13,6 +15,12 @@ class TranscribeController  < ApplicationController
   def authorized?
     unless user_signed_in? && current_user.can_transcribe?(@work)
       redirect_to new_user_session_path
+    end
+  end
+
+  def active?
+    unless @collection.active?
+      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
     end
   end
 
