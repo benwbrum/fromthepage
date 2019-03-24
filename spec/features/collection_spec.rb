@@ -151,6 +151,14 @@ describe "collection settings js tasks", :order => :defined do
     page.click_link("Make Collection Public")
   end
 
+  it "toggles collection active/inactive status" do
+    login_as(@owner, :scope => :user)
+    visit collection_path(@collection.owner, @collection)
+    page.find('.tabs').click_link("Settings")
+    page.click_link("Make Collection Inactive")
+    page.click_link("Make Collection Active")
+  end
+
   it "views completed works" do
     #first need to set a work as complete
     hidden_work = @collection.works.last

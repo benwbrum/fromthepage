@@ -127,6 +127,12 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
+  def toggle_collection_active
+    @collection.is_active = !@collection.active?
+    @collection.save!
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
   def restrict_collection
     @collection.restricted = true
     @collection.save!
