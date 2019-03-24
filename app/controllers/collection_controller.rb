@@ -134,7 +134,7 @@ class CollectionController < ApplicationController
     # Register New Deed for In/Active
     deed = Deed.new
     deed.collection = @collection
-    deed.user = @user
+    deed.user = current_user
     if @collection.active?
       deed.deed_type = DeedType::COLLECTION_ACTIVE
     else
