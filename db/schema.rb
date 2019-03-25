@@ -151,7 +151,7 @@ ActiveRecord::Schema.define(version: 20190324171318) do
   end
 
   create_table "deeds", force: true do |t|
-    t.string   "deed_type",        limit: 10
+    t.string   "deed_type",     limit: 10
     t.integer  "page_id"
     t.integer  "work_id"
     t.integer  "collection_id"
@@ -161,8 +161,7 @@ ActiveRecord::Schema.define(version: 20190324171318) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "visit_id"
-    t.string   "prerender",        limit: 2047
-    t.string   "prerender_mailer", limit: 2047
+    t.string   "prerender",     limit: 2047
   end
 
   add_index "deeds", ["article_id"], name: "index_deeds_on_article_id", using: :btree
