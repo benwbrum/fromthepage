@@ -35,7 +35,7 @@ class UserMailerPreview < ActionMailer::Preview
   end
 
   def nightly_user_activity
-    user = User.find_by(login: 'admin')
+    user = User.find_by(login: 'saracarl')
     UserMailer.nightly_user_activity(UserMailer::Activity.build(user))
   end
 
