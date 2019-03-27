@@ -6,13 +6,12 @@ namespace :fromthepage do
 
     #set variables
     owners = User.where(owner: true).joins(:notification).where(notifications: {owner_stats: true})
-    start_date = 1.day.ago
-    end_date = DateTime.now.utc
+
     owners.each do |owner|
       unless OWNER_EMAIL_BLACKLIST.include?(owner.email)
-        collections = owner.all_owner_collections.joins(:deeds).where(deeds: {created_at: start_date..end_date})
-        unless collections.blank?
-          AdminMailer.collection_stats_by_owner(owner, start_date, end_date).deliver!
+        activity = AdminMailer::OwnerCollectionActivity.build(owner)
+        unless activity.collections.blank?
+          AdminMailer.collection_stats_by_owner(activity).deliver!
         end
       end
     end
