@@ -65,7 +65,18 @@ module OwnerStatistic
   def all_collaborators
     User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
   end
-
+  def all_owner_collections_updated_since(date_time_since)
+    recently_changed = Collection.joins(:deeds)
+      .includes(:deeds)
+      .where("deeds.created_at > ?", date_time_since).distinct
+    self.all_owner_collections & recently_changed
+  end
+  def new_collaborators_since(date_time_since)
+    old_collaborators = User.joins(:deeds)
+      .where(deeds: {collection_id: collection_ids})
+      .where("deeds.created_at < ?", date_time_since).distinct
+    self.all_collaborators - old_collaborators
+  end
 
   ## Helper functions for Owner Stats partial. TODO: Order by number of Deeds, scoped to this owner
   def editors_with_count

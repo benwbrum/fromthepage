@@ -43,6 +43,10 @@ module CollectionStatistic
     Collection.count_by_sql("SELECT COUNT(*) FROM deeds WHERE collection_id = #{self.id} AND deed_type = \"#{DeedType::OCR_CORRECTED}\" #{last_days_clause(last_days)}")
   end
 
+  def activity_since(activity_since)
+    self.deeds.includes(:user, :page, :work, :collection).where('created_at > ?', activity_since)
+  end
+
   def get_stats_hash(start_date=nil, end_date=nil)
     deeds = DeedType.generate_zero_counts_hash
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
