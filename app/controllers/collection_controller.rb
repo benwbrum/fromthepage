@@ -330,6 +330,7 @@ class CollectionController < ApplicationController
     end_date = end_date.to_datetime.end_of_day
 
     recent_activity = @collection.deeds.where({created_at: start_date...end_date})
+        .where(deed_type: DeedType.contributor_types)
 
     headers = [
       :date,
@@ -344,7 +345,7 @@ class CollectionController < ApplicationController
     ]
 
     rows = recent_activity.map {|d|
-    
+
     note = ''
     note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
       
