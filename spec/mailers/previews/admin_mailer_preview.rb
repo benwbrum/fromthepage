@@ -9,8 +9,9 @@ class AdminMailerPreview < ActionMailer::Preview
   end
   
   def collection_stats_by_owner
-    owner = User.find_by(login: 'admin')
-    AdminMailer.collection_stats_by_owner(owner, 1.day.ago, DateTime.now.utc)
+    owner = User.find_by(login: 'yaquinalights')
+    activity = AdminMailer::OwnerCollectionActivity.build(owner, 1.days.ago)
+    AdminMailer.collection_stats_by_owner(activity)
   end
 
   def iiif_collection_import_failed
