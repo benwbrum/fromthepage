@@ -13,7 +13,8 @@ table.admin-grid.datagrid.striped
       th =link_to "Acct Type", {:controller => 'admin', :action => 'owner_list', :sort => 'account_type', :dir => 'desc'}
       th =link_to "Start Date", {:controller => 'admin', :action => 'owner_list', :sort => 'start_date', :dir => 'desc'}
       th =link_to "Acct Expiration", {:controller => 'admin', :action => 'owner_list', :sort => 'paid_date', :dir => 'desc'}
-      th Page Count
+      th Active Pages
+      th Total Pages
       th Last Sign In
       th Action
 
@@ -33,6 +34,7 @@ table.admin-grid.datagrid.striped
         td.nowrap =o.account_type
         td.nowrap =o.start_date.strftime('%b %d, %Y') if o.start_date
         td.nowrap =o.paid_date.strftime('%b %d, %Y') if o.paid_date
+        td.nowrap =o.active_page_count
         td.nowrap =o.page_count
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td.nowrap

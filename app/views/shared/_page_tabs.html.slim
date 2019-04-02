@@ -3,34 +3,34 @@
   :selected => 1,
   :path => "#{collection_display_page_path(@collection.owner, @collection, @work, @page.id)}",
 }]
+-if @collection.active? # Inactive Collections shouldn't displa this stuff
+  -if user_signed_in? && current_user.can_transcribe?(@work)
+    -if correction_mode?
+      -tabs += [{\
+        :name => 'Correct',
+        :selected => 3,
+        :path => "#{collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)}",
+      }]
+    -else
+      -tabs += [{\
+        :name => 'Transcribe',
+        :selected => 3,
+        :path => "#{collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)}",
+      }]
 
--if user_signed_in? && current_user.can_transcribe?(@work)
-  -if correction_mode?
-    -tabs += [{\
-      :name => 'Correct',
-      :selected => 3,
-      :path => "#{collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)}",
-    }]
-  -else
+    -if @work.supports_translation
+      -tabs += [{\
+        :name => 'Translate',
+        :selected => 6,
+        :path => "#{collection_translate_page_path(@collection.owner, @collection, @work, @page.id)}",
+      }]
+
+  -if !current_user && !@work.restrict_scribes
     -tabs += [{\
       :name => 'Transcribe',
       :selected => 3,
-      :path => "#{collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)}",
+      :path => "#{collection_guest_page_path(@collection.owner, @collection, @work, @page.id)}",
     }]
-
-  -if @work.supports_translation
-    -tabs += [{\
-      :name => 'Translate',
-      :selected => 6,
-      :path => "#{collection_translate_page_path(@collection.owner, @collection, @work, @page.id)}",
-    }]
-
--if !current_user && !@work.restrict_scribes
-  -tabs += [{\
-    :name => 'Transcribe',
-    :selected => 3,
-    :path => "#{collection_guest_page_path(@collection.owner, @collection, @work, @page.id)}",
-  }]
 
 
 -tabs += [{\

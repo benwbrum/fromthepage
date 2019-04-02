@@ -127,6 +127,24 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
+  def toggle_collection_active
+    @collection.is_active = !@collection.active?
+    @collection.save!
+
+    # Register New Deed for In/Active
+    deed = Deed.new
+    deed.collection = @collection
+    deed.user = current_user
+    if @collection.active?
+      deed.deed_type = DeedType::COLLECTION_ACTIVE
+    else
+      deed.deed_type = DeedType::COLLECTION_INACTIVE
+    end
+    deed.save!
+
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
   def restrict_collection
     @collection.restricted = true
     @collection.save!

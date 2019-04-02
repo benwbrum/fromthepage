@@ -3,7 +3,8 @@
   section.collection-stats
     .collection-stats_counters
       .counter(data-prefix="#{number_with_delimiter @statistics_object.work_count}") #{'Work'.pluralize(@statistics_object.work_count)}
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.page_count}") #{'Page'.pluralize(@statistics_object.page_count)}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.page_count}") Total #{'Page'.pluralize(@statistics_object.page_count)}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.active_page_count}") Active #{'Page'.pluralize(@statistics_object.active_page_count)}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count}") #{'Note'.pluralize(@statistics_object.comment_count)}
       -unless subjects_disabled
         .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count}") #{'Subject'.pluralize(@statistics_object.subject_count)}

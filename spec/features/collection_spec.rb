@@ -150,6 +150,47 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     page.click_link("Make Collection Public")
   end
+  
+  context "inactive collection" do
+
+    # Current Deed Counts for comparison
+    active_count    = Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count
+    inactive_count  = Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count
+
+    it "transcribing works for active collections" do
+      visit collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      expect(page).to have_link('Transcribe')
+    end
+
+    it "toggles collection inactive" do
+      login_as(@owner, :scope => :user)
+      visit collection_path(@collection.owner, @collection)
+      page.find('.tabs').click_link("Settings")
+      page.click_link("Make Collection Inactive")
+    end
+
+    it "logs a deed when marked inactive" do
+      deeds = Deed.where(deed_type: DeedType::COLLECTION_INACTIVE).count
+      expect(deeds).to eq inactive_count + 1
+    end
+
+    it "transcribing doesn't work for inactive collections" do
+      visit collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      expect(page).not_to have_link('Transcribe')
+    end
+
+    it "toggles collection active" do
+      login_as(@owner, :scope => :user)
+      visit collection_path(@collection.owner, @collection)
+      page.find('.tabs').click_link("Settings")
+      page.click_link("Make Collection Active")
+    end
+
+    it "logs a deed when marked active" do
+      deeds = Deed.where(deed_type: DeedType::COLLECTION_ACTIVE).count
+      expect(deeds).to eq active_count + 1
+    end
+  end
 
   it "views completed works" do
     #first need to set a work as complete

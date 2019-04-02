@@ -1,12 +1,42 @@
--@collections.each do |c|
-  -new_contributors(c, @start_date, @end_date)
-  h2.nomargin ="#{c.title}"
 
-  -time = distance_of_time_in_words(@start_date, @end_date)
+h2.nomargin Recent activity on your Fromthepage project
 
-  h2.nomargin ="Contributions for the past #{time}"
+/ New Collaborators
+- unless @activity.collaborators.blank?
+  h3 You have new collaborators!
+  - @activity.collaborators.each do |user|
+    a href="mailto:#{user.email}" #{user.email}<br />
+  p 
+    | You may consider sending them 
+    a href="https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/" title='How to write a welcome email' a short note welcoming them to your project.
 
-  =render(:partial => 'collection/contributors_body', :locals => {:mailer => true})
+/ New Notes and Comments
+- unless @activity.comments.blank?
+  h3 Comments from Your Collaborators:
+  p
+    - @activity.comments.each do |comment|
+      -if comment.prerender_mailer
+        =raw(comment.prerender_mailer)
+      -else
+        =render(:partial => 'deed/deed.html', :locals => { :deed => comment, :long_view => true, :mailer => true })
+      | <br>
 
-<br>
-i = "If you would prefer not to receive these emails, please contact support@fromthepage.com to opt out."
+/ Raw Activity stream (without notes)
+- unless @activity.activity.blank?
+  h3 Other Recent Activity in Your Collections:
+  - @activity.activity.each do |collection_title,deeds|
+    h4 #{collection_title}
+    p 
+      - deeds.each do |deed|
+        -if deed.prerender
+          =raw(deed.prerender_mailer)
+        -else
+          =render(:partial => 'deed/deed.html', :locals => { :deed => deed, :long_view => true, :mailer => true })
+        | <br>
+      
+
+h3 How's your project going? 
+p 
+  i What's easy? What's hard? What can we do to improve FromThePage? We'd love to hear from you &mdash; just respond to this email.
+p
+  i If you would prefer not to receive these emails, please contact support@fromthepage.com to opt out.

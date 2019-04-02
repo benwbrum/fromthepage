@@ -154,6 +154,10 @@ class Collection < ActiveRecord::Base
     !restricted
   end
 
+  def active?
+    self.is_active
+  end
+
   #constant
   LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
  ['አማርኛ', 'am', ['am-ET']],

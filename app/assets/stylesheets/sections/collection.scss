@@ -306,12 +306,14 @@
     margin-bottom: $gapSize;
     padding-bottom: $gapSize;
     border-bottom: 1px solid rgba(#000, 0.1);
+    display: flex;
+    justify-content: center;
     &:last-child {
       border: 0;
       padding: 0;
     }
     .counter {
-      width: 16.3%;
+      min-width: 12%;
       line-height: 1.2;
       font-size: 2.344vw;
       vertical-align: top;

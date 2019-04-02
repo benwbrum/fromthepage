@@ -19,6 +19,8 @@ class DeedType
   TRANSLATION_REVIEW = 'xlat_rev'
   TRANSLATION_INDEXED = 'xlat_index'
   WORK_ADDED = 'work_add'
+  COLLECTION_ACTIVE = 'coll_act'
+  COLLECTION_INACTIVE = 'coll_inact'
 
   # The TYPES hash houses all of the deed types and makes is easier to access
   # groups of deed types and also their human-readable names. Any new deed type
@@ -36,7 +38,9 @@ class DeedType
     NEEDS_REVIEW => 'Page Needs Review',
     TRANSLATION_REVIEW => 'Translation Page Needs Review',
     TRANSLATION_INDEXED => 'Translation Page Indexed',
-    WORK_ADDED => 'Work Added'
+    WORK_ADDED => 'Work Added',
+    COLLECTION_ACTIVE => 'coll_act',
+    COLLECTION_INACTIVE => 'coll_inact'
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
@@ -47,7 +51,7 @@ class DeedType
     end
 
     def contributor_types
-      TYPES.clone.except!(WORK_ADDED).keys
+      TYPES.clone.except!(WORK_ADDED, COLLECTION_ACTIVE, COLLECTION_INACTIVE).keys
     end
 
     def collection_edits
@@ -58,7 +62,9 @@ class DeedType
         ARTICLE_EDIT,
         OCR_CORRECTED,
         NEEDS_REVIEW,
-        TRANSLATION_REVIEW
+        TRANSLATION_REVIEW,
+        COLLECTION_ACTIVE,
+        COLLECTION_INACTIVE
       ]
     end
 
