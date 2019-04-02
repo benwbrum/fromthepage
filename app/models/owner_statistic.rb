@@ -8,6 +8,13 @@ module OwnerStatistic
     count = Page.where(work_id: self.owner_works.ids).count
   end
 
+  def active_page_count
+    inactive = Collection.where(is_active: false).pluck(:id)
+    Page.joins(:work => :collection)
+      .where(work_id: self.owner_works.ids)
+      .where(:'collections.is_active' => true).count
+  end
+
   def owner_subjects
    Article.where(collection_id: self.all_owner_collections.ids)
   end
@@ -65,7 +72,18 @@ module OwnerStatistic
   def all_collaborators
     User.joins(:deeds).where(deeds: {collection_id: collection_ids}).distinct
   end
-
+  def all_owner_collections_updated_since(date_time_since)
+    recently_changed = Collection.joins(:deeds)
+      .includes(:deeds)
+      .where("deeds.created_at > ?", date_time_since).distinct
+    self.all_owner_collections & recently_changed
+  end
+  def new_collaborators_since(date_time_since)
+    old_collaborators = User.joins(:deeds)
+      .where(deeds: {collection_id: collection_ids})
+      .where("deeds.created_at < ?", date_time_since).distinct
+    self.all_collaborators - old_collaborators
+  end
 
   ## Helper functions for Owner Stats partial. TODO: Order by number of Deeds, scoped to this owner
   def editors_with_count

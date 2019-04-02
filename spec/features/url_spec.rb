@@ -170,20 +170,4 @@ describe "URL tests" do
     click_button('Update Profile')
     expect(User.find_by(id: @owner.id).slug).to eq @owner.slug
   end
-
-  it "checks for weird breadcrumbs/clear the col_id" do
-#    binding.pry
-    login_as(@user, :scope => :user)
-    diff_collection = Collection.third
-    new_page = Collection.first.works.first.pages.second
-    visit collection_transcribe_page_path(new_page.collection.owner, new_page.collection, new_page.work, new_page)
-    page.fill_in 'page_source_text', with: "Significs and Logic"
-    find('#save_button_top').click
-    visit collection_read_work_path(diff_collection.owner, diff_collection, diff_collection.works.first)
-    visit dashboard_path
-    page.find('.deed-short_content', text: "edited page #{new_page.title} in #{new_page.collection.title} collection").find('a', text: new_page.title).click
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: Collection.first.title)
-    expect(page.find('.breadcrumbs')).not_to have_selector('a', text: diff_collection.title)
-  end
-
 end

@@ -18,14 +18,19 @@ class Deed < ActiveRecord::Base
 
   visitable # ahoy integration
   
-  before_save :calculate_prerender
+  before_save :calculate_prerender, :calculate_prerender_mailer
 
   def deed_type_name
     DeedType.name(self.deed_type)
   end
 
   def calculate_prerender
-    self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+    unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
+      self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+    end
   end
 
+  def calculate_prerender_mailer
+    self.prerender_mailer = render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
+  end
 end
