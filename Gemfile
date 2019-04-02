@@ -33,7 +33,7 @@ gem 'render_anywhere'
 
 gem 'ahoy_matey'
 gem 'pry'
-gem 'oink'
+
 
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
@@ -70,7 +70,7 @@ end
 gem 'sass-rails', '~> 5.0.0'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails', '<= 8.6.5'
+gem 'autoprefixer-rails', '~>8'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'
@@ -87,6 +87,3 @@ gem 'friendly_id'
 #support right to left languages
 gem 'rtl'
 gem 'iso-639'
-
-# Quiet asset lines in log files
-gem 'quiet_assets', '~> 1.1.0', group: :development
