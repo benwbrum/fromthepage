@@ -25,7 +25,9 @@ class Deed < ActiveRecord::Base
   end
 
   def calculate_prerender
-    self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+    unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
+      self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+    end
   end
 
   def calculate_prerender_mailer

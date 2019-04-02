@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190303184638) do
+ActiveRecord::Schema.define(version: 20190324171318) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20190303184638) do
     t.string   "license_key"
     t.integer  "pct_completed"
     t.string   "default_orientation"
+    t.boolean  "is_active",                                  default: true
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree

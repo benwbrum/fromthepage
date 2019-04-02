@@ -56,6 +56,10 @@ class DocumentSet < ActiveRecord::Base
     !self.is_public
   end
 
+  def active?
+    self.collection.active?
+  end
+  
   def footer_block
     self.collection.footer_block
   end

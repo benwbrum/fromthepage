@@ -8,6 +8,13 @@ module OwnerStatistic
     count = Page.where(work_id: self.owner_works.ids).count
   end
 
+  def active_page_count
+    inactive = Collection.where(is_active: false).pluck(:id)
+    Page.joins(:work => :collection)
+      .where(work_id: self.owner_works.ids)
+      .where(:'collections.is_active' => true).count
+  end
+
   def owner_subjects
    Article.where(collection_id: self.all_owner_collections.ids)
   end

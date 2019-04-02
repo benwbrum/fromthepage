@@ -101,6 +101,18 @@
         =svg_symbol '#icon-lock', class: 'icon'
         span Make Collection Private
 
+    h3 Collection Status
+    -if @collection.active?
+      p This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
+      =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
+        =svg_symbol '#icon-lock', class: 'icon'
+        span Make Collection Inactive
+    -else
+      p This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
+      =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
+        =svg_symbol '#icon-unlock', class: 'icon'
+        span Make Collection Active
+
     -if @collection.restricted
       h3 Collection Collaborators
       p.fglight Collaborators may transcribe and edit private collections.
