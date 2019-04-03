@@ -12,10 +12,8 @@ describe "different user role logins" do
   it "creates a new user account" do
     user_count = User.all.count
     visit root_path
-    expect(page).to have_link("Sign In")
-    first(:link, 'Sign In').click
-    expect(page).to have_link("Sign Up Now")
-    click_link("Sign Up Now")
+    expect(page).to have_content("Sign Up")
+    page.find('a', text: 'Sign Up').click
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
     expect(page).to have_content('4 errors prohibited this user from being saved')
@@ -36,7 +34,7 @@ describe "different user role logins" do
     expect(page.current_path).to eq guest_dashboard_path
     expect(page).to have_content("Sign In")
     expect(page).not_to have_content("Signed In As")
-    click_link('Projects')
+    click_link('Collections')
     @collections.each do |c|
       expect(page).to have_content(c.title)
     end
@@ -124,7 +122,7 @@ describe "different user role logins" do
   end
 
   it "signs an admin in" do
-    #check sign in with admin permissions
+    #check sign in with admin permissions  
     visit new_user_session_path
     fill_in 'Login', with: ADMIN
     fill_in 'Password', with: @password
@@ -132,7 +130,7 @@ describe "different user role logins" do
     expect(page.current_path).to eq admin_path
     expect(page).to have_content("Administration")
     visit root_path
-    click_link('Owner Dashboard')
+    click_link(I18n.t('dashboard.plain'))
     expect(page.current_path).to eq dashboard_owner_path
     expect(page).to have_selector('a', text: 'Admin Dashboard')
   end

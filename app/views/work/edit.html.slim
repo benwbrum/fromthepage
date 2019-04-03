@@ -1,4 +1,4 @@
-=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work }})
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work.id }})
 
 .columns
   article.maincol
@@ -97,7 +97,7 @@
 
     h4 Work Image
     =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work), html: { multipart: true, class: 'image-form' }) do |f|
-      =hidden_field_tag(:work_id, @work)
+      =hidden_field_tag(:work_id, @work.id)
       label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image")
         =f.file_field :picture, tabindex: '-1', accept: 'image/*'
         -unless @work.picture.blank?
@@ -106,7 +106,7 @@
 
     hr
     =form_for(@work, url: update_collection_work_path(@collection.owner, @collection, @work)) do |f|
-      =hidden_field_tag(:work_id, @work)
+      =hidden_field_tag(:work_id, @work.id)
       p
         =f.check_box :scribes_can_edit_titles
         |&nbsp;
@@ -120,7 +120,7 @@
     -if @work.restrict_scribes
       h3 Allowed Collaborators
       =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
-        =hidden_field_tag :work_id, @work
+        =hidden_field_tag :work_id, @work.id
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
         =button_tag 'Add'
       -if @scribes.empty?
@@ -133,7 +133,7 @@
             .username
               =link_to user.name_with_identifier, user_profile_path(user)
               small =user.email
-              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work }, class: 'remove', title: 'Remove'
+              =link_to '', { :action => 'remove_scribe', :user_id => user.id, :work_id => @work.id }, class: 'remove', title: 'Remove'
 
 -content_for :javascript
   javascript:
