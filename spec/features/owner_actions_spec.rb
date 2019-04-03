@@ -267,4 +267,14 @@ describe "owner actions", :order => :defined do
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
+
+  it "edits a work from the owner dashboard" do 
+    visit dashboard_owner_path
+    page.find('.maincol').click_link(@works[0].title)
+    check 'Restrict collaborators'
+    click_button 'Apply'
+    select 'Eleanor', from: 'user_id'
+    click_button 'Add'
+  end
+
 end
