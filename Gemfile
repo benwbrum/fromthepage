@@ -41,6 +41,8 @@ gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: '
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
 
+gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
+
 group :assets do
   gem 'therubyracer'
   gem 'uglifier'
