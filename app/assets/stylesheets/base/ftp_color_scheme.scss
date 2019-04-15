@@ -45,14 +45,18 @@ $bodyFg:                    #200;
 $bodyBg:                    mix(#FFF, $themeLight, 70);
 $bodyFgFaded:               mix($bodyFg, $bodyBg, 60);
 $bodyFgLight:               mix($bodyFg, $bodyBg, 50);
+$bodyFgDark:                #342b2b;
 $borderColor:               mix(#000, $bodyBg, 15);
 
 $headerHeight:              80px;
 $headerFg:                  $themeDark;
 $headerBg:                  $themeLight;
 
-$footerHeight:              80px;
+$footerHeight:              172px;
 $footerFg:                  mix(#FFF, $themeDark, 50);
 $footerBg:                  $themeDark;
+
+// Highlight box background color
+$highlightBoxBg: mix(#FFF, $bodyBg, 50);
 
 @import "base/customer_color_scheme";
