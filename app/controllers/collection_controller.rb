@@ -340,6 +340,77 @@ class CollectionController < ApplicationController
       
   end
 
+  def activity_download
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
+    recent_activity = @collection.deeds.where({created_at: start_date...end_date})
+        .where(deed_type: DeedType.contributor_types)
+
+    headers = [
+      :date,
+      :user,
+      :user_email,
+      :deed_type,
+      :page_title,
+      :page_url,
+      :work_title,
+      :work_url,
+      :comment,
+      :subject_title,
+      :subject_url
+    ]
+
+    rows = recent_activity.map {|d|
+
+    note = ''
+    note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
+      
+      record = [
+        d.created_at,
+        d.user.display_name,
+        d.user.email,
+        d.deed_type
+      ]
+
+      if d.deed_type == DeedType::ARTICLE_EDIT
+        record += ['','','','','',]
+        record += [
+          d.article.title, 
+          collection_article_show_url(d.collection.owner, d.collection, d.article)
+        ]
+      else
+        pagedeeds = [
+          d.page.title,
+          collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
+          d.work.title,
+          collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+          note,
+        ] 
+        record += pagedeeds
+        record += ['','']
+      end
+      record
+    }
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      rows.each do |row|
+          records << row
+      end
+    end
+
+    send_data( csv, 
+      :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}_activity.csv",
+      :type => "application/csv")
+
+    cookies['download_finished'] = 'true'
+
+  end
+
   def blank_collection
     collection = Collection.find_by(id: params[:collection_id])
     collection.blank_out_collection
