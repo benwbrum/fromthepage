@@ -57,6 +57,9 @@ class CollectionController < ApplicationController
 
     if params[:search]
       @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    elsif (params[:works] == 'untranscribed')
+      ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
+      @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
     #show all works
     elsif (params[:works] == 'show')
       @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
