@@ -1,6 +1,7 @@
 Fromthepage::Application.routes.draw do
 
   root :to => 'static#splash'
+  get '/blog' => redirect("https://fromthepage.com/blog/")
 
   devise_for :users, controllers: { masquerades: "masquerades", registrations: "registrations", omniauth_callbacks: 'users/omniauth_callbacks' }
 
