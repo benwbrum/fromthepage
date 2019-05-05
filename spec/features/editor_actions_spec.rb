@@ -317,7 +317,7 @@ describe "editor actions" , :order => :defined do
     expect(page).to have_content("Works")
     expect(page).to have_selector('a', text: "Find Untranscribed Works")
     click_link("Find Untranscribed Works")
-    expect(page).to have_selector("#page_source_text")
+    expect(page).to have_selector(".collection-work-list")
   end
 
 end
