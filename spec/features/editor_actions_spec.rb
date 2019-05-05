@@ -309,14 +309,14 @@ describe "editor actions" , :order => :defined do
     expect(page).to have_selector('h1', text: @collection.title)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
-    expect(page).not_to have_selector('a', text: "Start Transcribing")
+    expect(page).not_to have_selector('a', text: "Find Untranscribed Works")
     col = Collection.third
     visit collection_path(col.owner, col)
     expect(page).to have_selector('h1', text: col.title)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
-    expect(page).to have_selector('a', text: "Start Transcribing")
-    click_link("Start Transcribing")
+    expect(page).to have_selector('a', text: "Find Untranscribed Works")
+    click_link("Find Untranscribed Works")
     expect(page).to have_selector("#page_source_text")
   end
 
