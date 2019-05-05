@@ -72,6 +72,8 @@ Fromthepage::Application.routes.draw do
   get '/static/privacy', to: redirect('/privacy', status: 301)
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
+  get '/at', to: 'static#at', as: :at
+  get '/AT', to: 'static#at', as: :at_caps
 
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
