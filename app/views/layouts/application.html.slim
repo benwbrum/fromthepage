@@ -46,7 +46,7 @@ html lang="en-US"
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
           -if !(Collection.all.count > 30)
-            =link_to 'Projects', dashboard_path, class: 'header_link'
+            =link_to 'Collections', dashboard_path, class: 'header_link'
           -else
             =link_to 'Find A Project', landing_page_path, class: 'header_link'
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
@@ -57,13 +57,10 @@ html lang="en-US"
             dl.dropdown.right
               dt.header_link.header_user
                 span
-                  big =current_user.guest ? "Create An Account" : "Signed In As"
+                  big Signed In As
                   small =current_user.display_name
                 =svg_symbol '#header-user', class: 'icon'
               dd
-                -if current_user.guest
-                  =link_to 'Create An Account', new_user_registration_path
-                  hr
                 =link_to 'Admin Dashboard', admin_path if current_user.admin
                 =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
                 =link_to 'Collaborator Dashboard', dashboard_watchlist_path

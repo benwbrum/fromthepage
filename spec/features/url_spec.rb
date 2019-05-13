@@ -58,7 +58,7 @@ describe "URL tests" do
     visit dashboard_watchlist_path
     click_link(@owner.display_name, match: :first)
     expect(page.current_path).to eq "/#{@owner.slug}"
-    expect(page).to have_content("Projects")
+    expect(page).to have_content("Collections")
     @owner.all_owner_collections.each do |c|
       expect(page).to have_content(c.title)
     end

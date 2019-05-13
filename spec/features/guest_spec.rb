@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe "guest user actions" do
-  GUEST_NAV_HEADING = 'Create An Account'
 
   before :all do
     @collections = Collection.all
@@ -34,31 +33,17 @@ describe "guest user actions" do
   it "tests guest account creation and migration", :guest_enabled do
     visit "/display/display_page?page_id=#{@page.id}"
     page.find('.tabs').click_link("Transcribe")
-
-    # Navbar displays generic sign-in
-    expect(page.html).to include('<span>Sign In</span>')
-    expect(page.html).to_not include('<big>Signed In As</big>')
-    expect(page.html).to_not include("<big>#{GUEST_NAV_HEADING}</big>")
-
-    # Transcription section shows button
+    expect(page).to have_content("Sign In")
+    expect(page).not_to have_content("Signed In As")
     expect(page).to have_button("Transcribe as guest")
     click_button("Transcribe as guest")
-
-    # Button permits Guest to save contributions
-    expect(page).to have_button("Save Changes")
-
-    # Navbar displays Guest as user and gives link to create account
-    expect(page.html).to include('<small>Guest</small>')
-    expect(page.html).to include("<big>#{GUEST_NAV_HEADING}</big>")
-    expect(page).to have_link(GUEST_NAV_HEADING)
-
-    # The user is stored as a guest
+    expect(page).to have_content("Signed In As")
+    find('#save_button_top').click
     @guest = User.last
     expect(@guest.guest).to be true
-
-    # The user can click a link to arrive at the Sign Up form
-    first(:link, GUEST_NAV_HEADING).click
-    expect(page).to have_content("Sign Up")
+    expect(page).to have_link("Sign Up")
+    click_link("Sign Up")
+    expect(page.current_path).to eq new_user_registration_path
  end
 
   it "tests guest account transcription", :guest_enabled do
@@ -68,8 +53,7 @@ describe "guest user actions" do
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_content("Sign In")
     click_button("Transcribe as guest")
-    expect(page).to have_content(GUEST_NAV_HEADING)
-    expect(page).to have_button("Save Changes")
+    expect(page).to have_content("Signed In As")
     @guest = User.last
     expect(@guest.guest).to be true
 
@@ -103,7 +87,7 @@ describe "guest user actions" do
     fill_in 'Display name', with: 'Martha'
     click_button('Create Account')
     @user = User.last
-    expect(@user.login).to eq('martha')
+    expect(@user.login).to eq('martha') 
     expect(@guest.id).to eq(@user.id)
     expect(page.current_path). to eq collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
 
