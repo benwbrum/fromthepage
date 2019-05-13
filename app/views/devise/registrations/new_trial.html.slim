@@ -28,7 +28,12 @@ section.signon
     .signon_field
       =f.hidden_field :owner, value: true
       =f.hidden_field :paid_date, value: 2.weeks.from_now
-
+    -if RECAPTCHA_ENABLED
+      .signon_field
+        =recaptcha_tags
+    .signon_field
+      =f.check_box :activity_email, checked: true
+      =f.label :receive_activity_emails
     <br>
     =f.button 'Create Account', class: 'big'
 

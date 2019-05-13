@@ -205,6 +205,9 @@ class User < ActiveRecord::Base
       self.notification.add_as_collaborator = self.activity_email
       self.notification.note_added = self.activity_email
       self.notification.user_activity = self.activity_email
+      if self.owner
+        self.notification.owner_stats = self.activity_email
+      end
       self.notification.save
     end
   end
