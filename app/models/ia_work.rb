@@ -124,7 +124,6 @@ class IaWork < ActiveRecord::Base
     else
       self[:description] = loc_doc.search('abstract').text.truncate(limit) #description
     end
-    self[:subject] = loc_doc.search('subject').text         #description
     self[:notes] = loc_doc.search('notes').text             #physical description
     self[:image_count] = loc_doc.search('imagecount').text
 
