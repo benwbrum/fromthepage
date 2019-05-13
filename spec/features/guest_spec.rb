@@ -12,7 +12,26 @@ describe "guest user actions" do
     @admin = User.find_by(login: ADMIN)
   end
 
-  it "can create an account during transcription before #{GUEST_DEED_COUNT} contributions" do
+  before :each do |test|
+    if test.metadata[:guest_enabled]
+      # Guest Transcription is no longer the default and is enabled via
+      # a global flag in an initializer. To test guest processes,
+      # we must enable the flag for those (old) tests. New tests are not
+      # be affected.
+      silence_warnings do
+        GUEST_TRANSCRIPTION_ENABLED = true 
+      end
+    end
+  end
+  
+  it "disallows guest transcription by default" do
+    visit "/display/display_page?page_id=#{@page.id}"
+    page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_button("Sign Up Now")
+    expect(page).not_to have_button("Transcribe as guest")
+  end
+
+  it "tests guest account creation and migration", :guest_enabled do
     visit "/display/display_page?page_id=#{@page.id}"
     page.find('.tabs').click_link("Transcribe")
 
@@ -42,7 +61,7 @@ describe "guest user actions" do
     expect(page).to have_content("Sign Up")
  end
 
-  it "tests guest account transcription" do
+  it "tests guest account transcription", :guest_enabled do
     visit collection_display_page_path(@collection.owner, @collection, @work, @page.id)
 
     # Transcribe Tab: Becoming a 'guest'
@@ -93,7 +112,7 @@ describe "guest user actions" do
     expect(page).to have_link("Martha")
   end
 
-  it "looks at the landing page" do
+  it "looks at the landing page", :guest_enabled do
     CollectionStatistic.update_recent_statistics
     visit landing_page_path
     expect(page).to have_selector('.carousel')
@@ -105,7 +124,7 @@ describe "guest user actions" do
     expect(page.current_path).to eq user_profile_path(@owner)
   end
 
-  it "searches the landing page" do
+  it "searches the landing page", :guest_enabled do
     visit landing_page_path
     page.fill_in 'search', with: 'Import'
     click_button('Search')
@@ -115,7 +134,7 @@ describe "guest user actions" do
     expect(page.find('.maincol')).not_to have_content @collections.first.title
   end
 
-  it "checks guest start transcribing path" do
+  it "checks guest start transcribing path", :guest_enabled do
     visit collection_start_transcribing_path(@collection.owner, @collection)
     expect(page.current_path).not_to eq dashboard_path
     expect(page).to have_button("Transcribe as guest")
