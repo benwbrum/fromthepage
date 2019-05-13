@@ -6,6 +6,7 @@ user_1:
   email: george@test.com
   owner: false
   admin: false
+  activity_email: true
   encrypted_password: 0fdd259ea9c350ec3636a44b5a7e873be28af4a4
   password_salt: F-UbHG9zbD_sFTFk8sPR
 user_2:
@@ -16,6 +17,7 @@ user_2:
   email: eleanor@test.com
   owner: false
   admin: false
+  activity_email: true
   encrypted_password: 1a0435009eca53a2569e0dd2dc1f7d43d457e506
   password_salt: 29r2xsH4NSB1oVsSaoMB
 user_3:
@@ -26,6 +28,7 @@ user_3:
   email: harry@test.com
   owner: false
   admin: false
+  activity_email: true
   encrypted_password: 116aabb7c4e44f7f549335eb5d94365a3799c5e1
   password_salt: QrxBNkgZCWCUsJJr6o8c
 user_4:
@@ -36,6 +39,7 @@ user_4:
   email: margaret@test.com
   owner: true
   admin: false
+  activity_email: true
   account_type: Individual Researcher
   paid_date: <%= 1.month.from_now.to_s :db %>
   start_date: <%= 1.month.ago.to_s :db %>
@@ -49,6 +53,7 @@ user_5:
   email: julia@test.com
   owner: true
   admin: true
+  activity_email: true
   account_type: Small Organization
   paid_date: <%= 2.weeks.from_now.to_s :db %>
   start_date: <%= 1.week.ago.to_s :db %>
@@ -62,5 +67,6 @@ user_6:
   email: ron@test.com
   owner: false
   admin: false
+  activity_email: true
   encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
   password_salt: R2-cytow2JEPt3jD3Ts1
