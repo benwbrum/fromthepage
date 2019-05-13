@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -201,6 +201,11 @@ class User < ActiveRecord::Base
   def create_notifications
     unless self.notification
       self.notification = Notification.new
+      self.notification.add_as_owner = self.activity_email
+      self.notification.add_as_collaborator = self.activity_email
+      self.notification.note_added = self.activity_email
+      self.notification.user_activity = self.activity_email
+      self.notification.save
     end
   end
 
