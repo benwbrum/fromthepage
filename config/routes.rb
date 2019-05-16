@@ -75,7 +75,7 @@ Fromthepage::Application.routes.draw do
   get '/at', to: 'static#at', as: :at
   get '/AT', to: 'static#at', as: :at_caps
   get '/NatsStory', to: 'static#natsstory', as: :natsstory
-  get '/natsstory', to: 'static#natsstory', as: :natsstory
+  get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
 
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
