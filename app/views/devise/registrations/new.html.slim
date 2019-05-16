@@ -25,6 +25,9 @@ section.signon
     -if RECAPTCHA_ENABLED
       .signon_field
         =recaptcha_tags
+    .signon_field
+      =f.check_box :activity_email, checked: true
+      =f.label :receive_activity_emails
     =f.button 'Create Account', class: 'big'
   hr
   =render 'devise/shared/links'
