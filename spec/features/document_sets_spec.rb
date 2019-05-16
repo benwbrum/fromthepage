@@ -45,7 +45,17 @@ describe "document sets", :order => :defined do
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq "Edited Test Document Set 1"
     expect(page.find('h1')).to have_content(@document_sets.first.title)
   end
+  
+  it "inherits the collection image"
 
+  it "can upload a document set image" do
+    login_as(@owner, :scope => :user)
+    visit document_sets_path(:collection_id => @collection)
+    page.find('.tabs').click_link("Settings")
+    attach_file('document_set_picture', './test_data/uploads/document_set_image.jpg')
+    click_button('Save & Add Next Page')
+  end
+  
   it "makes a document set private" do
     login_as(@owner, :scope => :user)
     #create an additional document set to make private
