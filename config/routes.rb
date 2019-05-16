@@ -74,6 +74,8 @@ Fromthepage::Application.routes.draw do
   get '/contact', to: 'contact#form', as: 'contact'
   get '/at', to: 'static#at', as: :at
   get '/AT', to: 'static#at', as: :at_caps
+  get '/NatsStory', to: 'static#natsstory', as: :natsstory
+  get '/natsstory', to: 'static#natsstory', as: :natsstory
 
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
