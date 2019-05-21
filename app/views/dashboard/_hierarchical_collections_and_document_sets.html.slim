@@ -13,9 +13,9 @@
                 h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
                 -unless snippet.empty?
                   p.collection_snippet =snippet
-                p.aright
-                  -if cds.has_untranscribed_pages?
-                      =link_to "Find Untranscribed Works", collection_start_transcribing_path(cds.owner, cds), class: 'button'
+                -if cds.has_untranscribed_pages?
+                  p
+                    =link_to "Find Untranscribed Works", collection_start_transcribing_path(cds.owner, cds), class: 'button'
                 .collection_summary
                   span =="Owned by #{owner_link}"
                 ul
