@@ -75,6 +75,25 @@ module CollectionHelper
     return pages
   end
 
+  def find_untranscribed_page
+    # Get first untranscribed work
+    untranscribed_works = Work.where({collection_id: @collection.id})
+        .joins(:work_statistic).where(work_statistics: {complete: 0})
+    
+    if untranscribed_works.any?{|w| w.untranscribed?}
+      work_ids = untranscribed_works.select{|w| w.untranscribed?}
+    else
+      work_ids = Work.where({collection_id: @collection.id})
+                      .incomplete_transcription
+                      .order_by_recent_inactivity
+                      .pluck(:id)
+    end
+    Page.where({work_id: work_ids})
+      .needs_transcription
+      .reorder('position ASC')
+      .first
+  end
+
   def any_public_collections_with_document_sets?(collections_and_doc_sets)
     collections = collections_and_doc_sets.select { |c_or_ds| c_or_ds.class == Collection}
     collections.any? { |c| c.is_public && c.supports_document_sets }
