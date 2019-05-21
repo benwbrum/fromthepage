@@ -12,10 +12,9 @@
 
     div.collection-work-list
       h2 Works
-      -pages = find_transcribe_pages
 
       .start_link
-        -unless pages.blank?
+        -if @collection.has_untranscribed_pages?
           =link_to "Find Untranscribed Works", collection_start_transcribing_path(@collection.owner, @collection), class: 'button'
 
     -if all_complete

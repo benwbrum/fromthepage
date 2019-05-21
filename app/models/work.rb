@@ -233,4 +233,8 @@ class Work < ActiveRecord::Base
   def supports_indexing?
     collection.subjects_disabled == false
   end
+
+  def has_untranscribed_pages?
+    self.pages.any? { |p| p.status.nil? }
+  end
 end
