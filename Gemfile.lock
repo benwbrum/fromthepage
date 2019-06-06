@@ -264,7 +264,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    recaptcha (4.13.1)
+    recaptcha (5.0.0)
       json
     recursive-open-struct (0.4.5)
     ref (2.0.0)
