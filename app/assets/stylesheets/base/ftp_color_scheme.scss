@@ -43,8 +43,8 @@ $themeDark:                 #433;
 
 $bodyFg:                    #200;
 $bodyBg:                    mix(#FFF, $themeLight, 70);
-$bodyFgFaded:               mix($bodyFg, $bodyBg, 60);
-$bodyFgLight:               mix($bodyFg, $bodyBg, 50);
+$bodyFgFaded:               mix($bodyFg, $bodyBg, 80);
+$bodyFgLight:               mix($bodyFg, $bodyBg, 70);
 $bodyFgDark:                #342b2b;
 $borderColor:               mix(#000, $bodyBg, 15);
 
