@@ -125,7 +125,7 @@ code {
   border-radius: 3px;
   line-height: 1.8333;
   display: inline-block;
-  background: rgba(#000, 0.03);
+  background: mix(#000, $bodyBg, 3);
   box-shadow: inset 0 0 0 1px rgba(#000, 0.08);
 }
 
