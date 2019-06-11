@@ -157,7 +157,51 @@ describe "editor actions" , :order => :defined do
     click_button('Save Changes')
     expect(page).to have_content("Test Translation")
   end
+  
+  it "translation displays transcription text by default", :js => true do
+    @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+    visit "/display/display_page?page_id=#{@work.pages.first.id}"
+    page.find('.tabs').click_link("Translate")
+    expect(page).to_not have_selector('.page-imagescan')
+    expect(page).to have_selector('.page-preview')
+  end
+  it "translation toggles image display", :js => true do
+    @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+    visit "/display/display_page?page_id=#{@work.pages.first.id}"
+    page.find('.tabs').click_link("Translate")
 
+    page.click_button("Show Image")
+    expect(page).to have_content('Show Transcription')
+    expect(page).to have_selector('.page-imagescan')
+    expect(page).to_not have_selector('.page-preview')
+  end
+  
+  it "translation source persists", :js => true do
+    @work = Work.where("supports_translation = ? && restrict_scribes = ?", true, false).first
+    visit "/display/display_page?page_id=#{@work.pages.first.id}"
+    page.find('.tabs').click_link("Translate")
+
+    page.click_button("Show Image")
+    expect(page).to have_content('Show Transcription')
+
+    visit "/display/display_page?page_id=#{@work.pages.first.id}"
+    page.find('.tabs').click_link("Translate")
+    expect(page).to have_content('Show Transcription')
+    expect(page).to have_selector('.page-imagescan')
+    expect(page).to_not have_selector('.page-preview')
+
+    page.click_button("Show Transcription")
+    expect(page).to have_content('Show Image')
+    expect(page).to have_selector('.page-preview')
+    expect(page).to_not have_selector('.page-imagescan')
+
+    visit "/display/display_page?page_id=#{@work.pages.first.id}"
+    page.find('.tabs').click_link("Translate")
+
+    expect(page).to have_content('Show Image')
+    expect(page).to have_selector('.page-preview')
+    expect(page).to_not have_selector('.page-imagescan')
+  end
   it "checks a plain user profile" do
     login_as(@user, :scope => :user)
     visit dashboard_path

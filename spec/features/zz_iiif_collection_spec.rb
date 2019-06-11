@@ -5,7 +5,7 @@ describe "uploads data for collections", :order => :defined do
 
   before :all do
     @owner = User.find_by(login: OWNER)
-    @at_id = "https://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f205"
+    @at_id = "https://cudl.lib.cam.ac.uk/iiif/collection/hebrew"
   end
 
   before :each do
@@ -13,29 +13,32 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "imports explores IIIF universe" do
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find('a', text: 'Explore').click
-    expect(page).to have_content("Collection: IIIF Universe")
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content("Manifests")
+    VCR.use_cassette('iiif/iiif-universe') do
+      visit dashboard_owner_path
+      page.find('.tabs').click_link("Start A Project")
+      page.find('a', text: 'Explore').click
+      expect(page).to have_content("Collection: IIIF Universe")
+      expect(page).to have_content("Collections")
+      expect(page).not_to have_content("Manifests")
+    end
   end
 
   it "imports an IIIF collection", :js => true do
-    #test import of collection
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.fill_in 'at_id', with: @at_id
-    find_button('iiif_import').click
-    expect(page).to have_content(@at_id)
-    expect(page).to have_content("Manifests")
-    select("Create Collection", :from => 'manifest_import')
-    click_button('Import Checked Manifests')
-    expect(page.find('.flash_message')).to have_content("IIIF collection import is processing")
-    expect(page).to have_content("Works")
-    sleep(15)
-    expect(Collection.last.title).to have_content("Library")
-    expect(Collection.last.works.count).not_to be_nil
+    VCR.use_cassette('iiif/cambridge_hebrew_mss') do
+      page.find('.tabs').click_link("Start A Project")
+      page.fill_in 'at_id', with: @at_id
+      find_button('iiif_import').click
+      expect(page).to have_content(@at_id)
+      expect(page).to have_content("Manifests")
+      select("Create Collection", :from => 'manifest_import')
+      click_button('Import Checked Manifests')
+      expect(page.find('.flash_message')).to have_content("IIIF collection import is processing")
+      sleep(15)
+      expect(page).to have_content("Works")
+      expect(Collection.last.title).to have_content("Hebrew")
+      expect(Collection.last.works.count).not_to be_nil
+    end
   end
   
   it "checks to allow '.' in IIIF domain URL parameter" do
@@ -48,15 +51,14 @@ describe "uploads data for collections", :order => :defined do
   end
   
   it "tests for transcribed works" do
-    col = Collection.where(:title => 'Cosin\'s Library').first
-    sleep(30)
+    col = Collection.where(:title => 'Hebrew Manuscripts').first
     works = col.works
     works.each do |w|
       w.pages.update_all(status: Page::STATUS_TRANSCRIBED, translation_status: Page::STATUS_TRANSLATED)
       w.work_statistic.recalculate
     end
     col.calculate_complete
-    col = Collection.where(:title => 'Cosin\'s Library').first
+    col = Collection.where(:title => 'Hebrew Manuscripts').first
     visit collection_path(col.owner, col)
     expect(page).to have_content("All works are fully transcribed")
     page.click_link("Show All")

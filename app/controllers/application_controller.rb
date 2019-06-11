@@ -28,6 +28,9 @@ class ApplicationController < ActionController::Base
 
   #when the user chooses to transcribe as guest, find guest user id or create new guest user
   def guest_transcription
+
+    return head(:forbidden) unless GUEST_TRANSCRIPTION_ENABLED
+    
     if check_recaptcha(model: @page, :attribute => :errors)
       User.find(session[:guest_user_id].nil? ? session[:guest_user_id] = create_guest_user.id : session[:guest_user_id])
       redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id

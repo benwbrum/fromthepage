@@ -24,11 +24,22 @@ describe "guest user actions" do
     end
   end
   
-  it "disallows guest transcription by default" do
+  it "guest transcription route returns 403 by default" do
+    page.driver.post("/application/guest_transcription?page_id=#{@page.id}")
+    expect(page.status_code).to eq(403)
+  end
+
+  it "does not show `transcribe as guest` by default" do
     visit "/display/display_page?page_id=#{@page.id}"
     page.find('.tabs').click_link("Transcribe")
     expect(page).to have_button("Sign Up Now")
     expect(page).not_to have_button("Transcribe as guest")
+  end
+
+  it "shows `transcribe as guest` when enabled", :guest_enabled do
+    visit "/display/display_page?page_id=#{@page.id}"
+    page.find('.tabs').click_link("Transcribe")
+    expect(page).to have_button("Transcribe as guest")
   end
 
   it "tests guest account creation and migration", :guest_enabled do
