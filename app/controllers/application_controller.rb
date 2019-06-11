@@ -216,7 +216,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date, :activity_email) }
     devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login_id, :login, :email, :password, :remember_me) }
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:login, :email, :password, :current_password, :password_confirmation) }
   end
@@ -265,7 +265,6 @@ end
 
 
   def track_action
-    ahoy.track_visit
     extras = {}
     extras[:collection_id] = @collection.id if @collection
     extras[:collection_title] = @collection.title if @collection
