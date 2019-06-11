@@ -50,6 +50,8 @@ group :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'shoulda'
+  gem 'webmock', require: false
+  gem 'vcr'
 end
 
 group :development, :test do

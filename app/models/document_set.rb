@@ -6,6 +6,8 @@ class DocumentSet < ActiveRecord::Base
   
   attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed
 
+  mount_uploader :picture, PictureUploader
+
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
   has_and_belongs_to_many :works
@@ -88,12 +90,12 @@ class DocumentSet < ActiveRecord::Base
     self.collection.field_based
   end
 
-  def picture
-    self.collection.picture
-  end
-
   def picture_url(thumb=nil)
-    self.collection.picture_url(:thumb)
+    if self.picture.blank?
+      self.collection.picture.url(:thumb)
+    else
+      self.picture.url(:thumb)
+    end
   end
 
   def transcription_fields

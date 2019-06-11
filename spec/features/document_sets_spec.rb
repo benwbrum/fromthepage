@@ -45,7 +45,7 @@ describe "document sets", :order => :defined do
     expect(DocumentSet.find_by(id: @document_sets.first.id).title).to eq "Edited Test Document Set 1"
     expect(page.find('h1')).to have_content(@document_sets.first.title)
   end
-
+  
   it "makes a document set private" do
     login_as(@owner, :scope => :user)
     #create an additional document set to make private

@@ -1,0 +1,215 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cudl.lib.cam.ac.uk/iiif/collection/hebrew
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 06 Jun 2019 19:01:19 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Type:
+      - application/json;charset=UTF-8
+      Access-Control-Allow-Origin:
+      - "*"
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+         "@type": "sc:Collection",
+         "manifests": [
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00431",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00431"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00433",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00433"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00470-00001",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00470-00001"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00492-00001",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00492-00001"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00628",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00628"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00652",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00652"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00662",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00662"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-01846",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-01846"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-DD-00010-00068",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-DD-00010-00068"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-OR-00233",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-OR-00233"
+          }
+         ],
+         "description": "Manuscripts and printed books from Cambridge University Library's Hebrew collections",
+         "@id": "https://cudl.lib.cam.ac.uk/iiif/collection/hebrew",
+         "label": "Hebrew Manuscripts",
+         "@context": "http://iiif.io/api/presentation/2/context.json"
+        }
+    http_version: 
+  recorded_at: Thu, 06 Jun 2019 19:01:19 GMT
+- request:
+    method: get
+    uri: https://cudl.lib.cam.ac.uk/iiif/collection/hebrew
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 06 Jun 2019 19:01:20 GMT
+      Server:
+      - Apache/2.4.7 (Ubuntu)
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - '0'
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Type:
+      - application/json;charset=UTF-8
+      Access-Control-Allow-Origin:
+      - "*"
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+         "@type": "sc:Collection",
+         "manifests": [
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00431",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00431"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00433",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00433"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00470-00001",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00470-00001"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00492-00001",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00492-00001"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00628",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00628"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00652",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00652"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-00662",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-00662"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-ADD-01846",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-ADD-01846"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-DD-00010-00068",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-DD-00010-00068"
+          },
+          {
+           "@type": "sc:Manifest",
+           "label": "MS-OR-00233",
+           "@id": "https://cudl.lib.cam.ac.uk/iiif/MS-OR-00233"
+          }
+         ],
+         "description": "Manuscripts and printed books from Cambridge University Library's Hebrew collections",
+         "@id": "https://cudl.lib.cam.ac.uk/iiif/collection/hebrew",
+         "label": "Hebrew Manuscripts",
+         "@context": "http://iiif.io/api/presentation/2/context.json"
+        }
+    http_version: 
+  recorded_at: Thu, 06 Jun 2019 19:01:20 GMT
+recorded_with: VCR 5.0.0

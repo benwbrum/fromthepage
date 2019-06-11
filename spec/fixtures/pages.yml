@@ -2,7 +2,7 @@ page_1:
   id: 1
   title: '1'
   source_text: '[[John Samuel Smith]]  Mrs. Davis'
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_001.jpg')%>
+  base_image: <%=Rails.root.join('public/images/uploaded/10/page_0001.jpg')%>
   base_width: 1649
   base_height: 2860
   shrink_factor: 
@@ -19,7 +19,7 @@ page_2:
   id: 2
   title: '2'
   source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_002.jpg')%>
+  base_image: <%=Rails.root.join('public/images/uploaded/10/page_0002.jpg')%>
   base_width: 1653
   base_height: 2860
   shrink_factor: 
@@ -36,7 +36,7 @@ page_3:
   id: 3
   title: '3'
   source_text: 
-  base_image: <%=Rails.root.join('public/images/uploaded/1/R0844_003.jpg')%>
+  base_image: <%=Rails.root.join('public/images/uploaded/10/page_0003.jpg')%>
   base_width: 1643
   base_height: 2860
   shrink_factor: 
