@@ -56,7 +56,7 @@ class AdminController < ApplicationController
 
   def visit_actions
     @visit = Visit.find(params[:visit_id])
-    @actions = @visit.ahoy_events.order(time: :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @actions = @visit.ahoy_events.order(time: :asc).paginate :page => params[:page], :per_page => 500
   end
 
   def visit_deeds
