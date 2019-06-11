@@ -1,0 +1,175 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/ryanfb/iiif-universe/gh-pages/iiif-universe.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Etag:
+      - '"9f9d1c11b4018bfc9598b572dd64e7812cde5797"'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Cache-Control:
+      - max-age=300
+      X-Geo-Block-List:
+      - ''
+      X-Github-Request-Id:
+      - 45EE:0254:10C826:1392EF:5CF961D9
+      Content-Length:
+      - '879'
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Thu, 06 Jun 2019 19:01:18 GMT
+      Via:
+      - 1.1 varnish
+      Connection:
+      - keep-alive
+      X-Served-By:
+      - cache-dfw18651-DFW
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Timer:
+      - S1559847679.951870,VS0,VE0
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - c42182258717d6313d0af836414081abf52cd2de
+      Expires:
+      - Thu, 06 Jun 2019 19:06:18 GMT
+      Source-Age:
+      - '289'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+          "@context": "http://iiif.io/api/presentation/2/context.json",
+          "@id": "http://ryanfb.github.io/iiif-universe/iiif-universe.json",
+          "@type": "sc:Collection",
+          "label": "IIIF Universe",
+          "collections": [
+            {
+              "@id": "http://manifests.ydc2.yale.edu/manifest",
+              "@type": "sc:Collection",
+              "label": "Yale"
+            },
+            {
+              "@id": "http://manifests.britishart.yale.edu/collection/top",
+              "@type": "sc:Collection",
+              "label": "Yale Center for British Art"
+            },
+            {
+              "@id": "https://graph.global/static/data/universes/iiif/stanford.json",
+              "@type": "sc:Collection",
+              "label": "Stanford"
+            },
+            {
+              "@id": "http://www.e-codices.unifr.ch/metadata/iiif/collection.json",
+              "@type": "sc:Collection",
+              "label": "e-codices"
+            },
+            {
+              "@id": "http://showcase.iiif.io/shims/chroniclingamerica/prezi/top.json",
+              "@type": "sc:Collection",
+              "label": "Chronicling America Newspapers by State"
+            },
+            {
+              "@id": "http://scta.info/iiif/scta/collection",
+              "@type": "sc:Collection",
+              "label": "Sentences Commentary Text Archive"
+            },
+            {
+              "@id": "http://digital.library.villanova.edu/Collection/vudl:3/IIIF",
+              "@type": "sc:Collection",
+              "label": "Digital Library @ Villanova University"
+            },
+            {
+              "@id": "http://wellcomelibrary.org/service/collections/",
+              "@type": "sc:Collection",
+              "label": "Wellcome Library"
+            },
+            {
+              "@id": "https://iiif.archivelab.org/iiif/collection.json",
+              "@type": "sc:Collection",
+              "label": "The Internet Archive Universal Collection"
+            },
+            {
+              "@id": "https://iiif.bodleian.ox.ac.uk/iiif/collection/top",
+              "@type": "sc:Collection",
+              "label": "Bodleian Library, Oxford",
+              "description": "Top-level collection of IIIF manifests from the Bodleian Library and Oxford Colleges"
+            },
+            {
+              "@id": "http://biblissima.fr/iiif/collection/top",
+              "@type": "sc:Collection",
+              "label": "Biblissima IIIF Collections",
+              "description": "Collections of IIIF Manifests from Biblissima's image repositories"
+            },
+            {
+              "@id": "https://labs2.artstor.org/iiif/ssc/manifest.json",
+              "@type": "sc:Collection",
+              "label": "Shared Shelf Commons",
+              "description": "IIIF Manifests showcasing collections from Shared Shelf Commons"
+            },
+            {
+              "@id": "https://iiif.durham.ac.uk/manifests/trifle/collection/index",
+              "@type": "sc:Collection",
+              "label": "Durham University IIIF Collections"
+            },
+            {
+              "@id": "https://view.nls.uk/collections/top.json",
+              "@type": "sc:Collection",
+              "label": "National Library of Scotland"
+            },
+            {
+              "@id": "https://textgridlab.org/1.0/iiif/manifests/collection.json",
+              "@type": "sc:Collection",
+              "label": "TextGrid"
+            },
+            {
+              "@id": "https://iiif.harvardartmuseums.org/collections/top",
+              "@type": "sc:Collection",
+              "label": "Harvard Art Museums"
+            },
+            {
+              "@id": "http://jubilees.stmarytx.edu/iiifp/collection/JubPalProj.json",
+              "@type": "sc:Collection",
+              "label": "Jubilees Palimpsest Project"
+            },
+            {
+              "@id": "https://cudl.lib.cam.ac.uk/iiif/collection/all",
+              "@type": "sc:Collection",
+              "label": "Cambridge University Library IIIF Collections"
+            }
+          ]
+        }
+    http_version: 
+  recorded_at: Thu, 06 Jun 2019 19:01:18 GMT
+recorded_with: VCR 5.0.0
