@@ -6,6 +6,8 @@
   
   .page-toolbar
     .toolbar
+      .toolbar_group
+          button#toggleImage.button.outline type="button" Show Image
       .toolbar_group.w100.aright
         =f.label 'mark_blank', 'Mark as blank'
         -if @page.status == 'blank'
@@ -55,7 +57,15 @@
               p.nodata_text
                 =="Please #{help_link} this page"
                 =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
-
+      .page-imagescan style="display:none;"
+        -if @page.ia_leaf
+          =render :partial => '/ia/ia_bookreader_div'
+        -elsif @page.sc_canvas
+          =render :partial => '/shared/iiif_div'
+        -elsif @page.omeka_file
+          =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
+        -else
+          =render :partial => '/shared/zoom_div'
     .page-column
       -if @collection.voice_recognition
         .page-column_voice
@@ -92,6 +102,9 @@ h2.legend Page Notes
     var lang = "#{@collection.language}";
 
     $(function(){
+      var fromImage = JSON.parse("#{@fromImage}") || false;
+      updateDisplay(fromImage);
+      
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
       });
@@ -100,4 +113,19 @@ h2.legend Page Notes
         $('#page_needs_review').prop('checked', false);
       });
 
+      $('#toggleImage').click(function(){
+        fromImage = !fromImage;
+        
+        updateDisplay(fromImage)
+        Cookies.set('fromImage', fromImage, { expires: 365, path: '/' });
+      });
+
+      function updateDisplay(){
+        $('.page-imagescan').toggle(fromImage);
+        $('.page-preview').toggle(!fromImage);
+        
+        var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
+        $('#toggleImage').html(buttonText);
+      }
     });
+
