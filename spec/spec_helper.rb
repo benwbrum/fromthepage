@@ -94,6 +94,8 @@ OWNER = "margaret"
 NEW_OWNER = "harry"
 ADMIN = "julia"
 
-#set this for mailer tests
-SMTP_ENABLED = true
+# Set this for mailer tests
+silence_warnings do
+  SMTP_ENABLED = true
+end
 ActionMailer::Base.perform_deliveries = true

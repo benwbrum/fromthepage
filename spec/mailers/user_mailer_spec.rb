@@ -43,8 +43,28 @@ RSpec.describe UserMailer, type: :mailer do
         expect(mail.body.encoded).to match(user.display_name)
       end
 
-      it 'displays Edited Pages in email' do
-        edited_page_heading = "Edited Pages"
+      it 'displays New Works in email' do
+        new_works_heading = "New Works"
+        user = create(:user)
+        collection = create(:collection, owner_user_id: user.id)
+        work = create(:work, collection_id: collection.id, owner_user_id: user.id)
+
+        user_activity = UserMailer::Activity.build(user)
+        allow(user_activity).to receive(:has_contributions?).and_return(true)
+        allow(user_activity).to receive(:added_works).and_return([work])
+
+        mail = UserMailer.nightly_user_activity(user_activity).deliver
+
+        expect(mail.body.encoded).to match(new_works_heading)
+        expect(mail.body.encoded).to match(work.title)
+
+        # Tear down factory data
+        work.destroy
+        collection.destroy
+        user.destroy
+      end
+      it 'displays New Notes in email' do
+        new_notes_heading = "New Notes"
         user = create(:user)
         collection = create(:collection, owner_user_id: user.id)
         work = create(:work, collection_id: collection.id)
@@ -52,11 +72,11 @@ RSpec.describe UserMailer, type: :mailer do
 
         user_activity = UserMailer::Activity.build(user)
         allow(user_activity).to receive(:has_contributions?).and_return(true)
-        allow(user_activity).to receive(:active_pages).and_return([page])
+        allow(user_activity).to receive(:active_note_pages).and_return([page])
 
         mail = UserMailer.nightly_user_activity(user_activity).deliver
 
-        expect(mail.body.encoded).to match(edited_page_heading)
+        expect(mail.body.encoded).to match(new_notes_heading)
         expect(mail.body.encoded).to match(page.title)
 
         # Tear down factory data
