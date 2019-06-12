@@ -12,7 +12,7 @@
               h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
               -if cds.has_untranscribed_pages?
                 p
-                  =link_to "Find Untranscribed Works", collection_start_transcribing_path(cds.owner, cds), class: 'button'
+                  =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
               -unless snippet.empty?
                 p.collection_snippet =snippet
               .collection_summary

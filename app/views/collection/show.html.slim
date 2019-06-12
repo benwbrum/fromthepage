@@ -15,7 +15,7 @@
 
       .start_link
         -if @collection.has_untranscribed_pages?
-          =link_to "Find Untranscribed Works", collection_start_transcribing_path(@collection.owner, @collection), class: 'button'
+          =link_to "Start Transcribing", collection_start_transcribing_path(@collection.owner, @collection), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
