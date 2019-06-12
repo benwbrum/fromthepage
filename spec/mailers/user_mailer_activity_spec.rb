@@ -60,30 +60,6 @@ RSpec.describe UserMailer::Activity do
       activity = UserMailer::Activity.build(@author)
       expect(activity.active_note_pages).to include(@page)
     end
-
-    it 'stores active pages as an attribute' do
-      @contributor_deed = create(:deed, {
-        deed_type: DeedType::PAGE_EDIT,
-        page_id: @page.id,
-        work_id: @work.id,
-        collection_id: @collection.id,
-        user_id: @contributor.id
-      })
-      activity = UserMailer::Activity.build(@author)
-      expect(activity.active_pages).to include(@page)
-    end
-
-    it 'stores pages with recent translations as an attribute' do
-      @contributor_deed = create(:deed, {
-        deed_type: DeedType::PAGE_TRANSLATED,
-        page_id: @page.id,
-        work_id: @work.id,
-        collection_id: @collection.id,
-        user_id: @contributor.id
-      })
-      activity = UserMailer::Activity.build(@author)
-      expect(activity.active_translations).to include(@page)
-    end
   end
 
 
@@ -120,34 +96,6 @@ RSpec.describe UserMailer::Activity do
       it 'returns true' do
         @contributor_deed = create(:deed, {
           deed_type: DeedType::WORK_ADDED,
-          page_id: @page.id,
-          work_id: @work.id,
-          collection_id: @collection.id,
-          user_id: @contributor.id
-        })
-        activity = UserMailer::Activity.build(@author)
-        expect(activity.has_contributions?).to be true
-      end
-    end
-
-    context 'when it has active_pages' do
-      it 'returns true' do
-        @contributor_deed = create(:deed, {
-          deed_type: DeedType::PAGE_EDIT,
-          page_id: @page.id,
-          work_id: @work.id,
-          collection_id: @collection.id,
-          user_id: @contributor.id
-        })
-        activity = UserMailer::Activity.build(@author)
-        expect(activity.has_contributions?).to be true
-      end
-    end
-
-    context 'when it has active_translations' do
-      it 'returns true' do
-        @contributor_deed = create(:deed, {
-          deed_type: DeedType::PAGE_TRANSLATED,
           page_id: @page.id,
           work_id: @work.id,
           collection_id: @collection.id,

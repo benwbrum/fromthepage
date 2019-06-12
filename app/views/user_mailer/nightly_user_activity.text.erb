@@ -10,22 +10,6 @@ We just wanted to let you know that there's been activity in a collection that y
   <%end%>
 <%end%>
 
-<% unless @user_activity.active_pages.blank? %>
-  Edited Pages
-  <% @user_activity.active_pages.each do |page| %>
-    Page <%=page.title%> from work <%=page.work.title%> in the collection <%=page.collection.title%> has been edited since you worked on it.
-    To view the page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)%>
-  <%end%>
-<%end%>
-
-<% unless @user_activity.active_translations.blank? %>
-  Edited Translations
-  <% @user_activity.active_translations.each do |page| %>
-    Page <%=page.title%> from work <%=page.work.title%> in the collection <%=page.collection.title%> has been edited since you worked on it.
-    To view the page <%=page.work.title%>: <%=page.title%>, visit the following URL: <%=collection_translate_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)%>
-  <%end%>
-<%end%>
-
 <% unless @user_activity.active_note_pages.blank? %>
   New Notes
   <% @user_activity.active_note_pages.each do |page| %>
