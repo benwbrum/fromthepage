@@ -549,7 +549,7 @@ button, .button, .dropdown dd a {
   line-height: 1.25;
   border-collapse: separate;
   border-bottom: 1px solid rgba(#000, 0.08);
-  th {
+  th, thead td {
     font-weight: bold;
     padding: 15px 10px;
     //white-space: nowrap;
