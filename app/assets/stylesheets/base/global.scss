@@ -98,7 +98,6 @@ a {
   text-decoration: underline;
   transition: color 0.15s, background-color 0.15s;
   &:hover { color: $fgHover; }
-  &:focus { outline: none; }
 }
 
 hr {
