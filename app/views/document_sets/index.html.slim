@@ -56,7 +56,7 @@ br
             -ids = work.document_sets.ids
             -@collection.document_sets.each do |document_set|
               td
-                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", ids.include?(document_set.id))
+                =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", ids.include?(document_set.id), {"title"=>"Toggle #{work.title} in Document Set #{document_set.title}"})
     br
     =submit_tag "Save"
 
