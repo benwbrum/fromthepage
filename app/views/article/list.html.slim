@@ -27,7 +27,7 @@
               -if user_signed_in? && current_user.like_owner?(@collection)
                 .headline_aside
                   dl.dropdown.right
-                    dt.h5
+                    dt.h5 tabindex=0
                       span Actions
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd

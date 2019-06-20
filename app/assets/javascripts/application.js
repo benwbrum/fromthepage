@@ -77,6 +77,7 @@ $.fn.dropdown = function(s) {
     $trigger.on('mousedown.DropDown', function() {
       $element.toggleClass(cfg.openclass);
     });
+    //Open on focus
     $trigger.on('focusin.DropDown', function() {
       $element.addClass(cfg.openclass);
     });
