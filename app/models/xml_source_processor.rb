@@ -91,15 +91,15 @@ module XmlSourceProcessor
     end
   end
 
-  def wiki_to_xml(wiki, text_type)
+  def wiki_to_xml(wiki, text_type, subjects_disabled=false)
     xml_string = String.new(wiki || "")
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
-    xml_string = process_square_braces(xml_string)
+    xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
-    xml_string = update_links_and_xml(xml_string, false, text_type)
+    xml_string = update_links_and_xml(xml_string, false, text_type) 
     postprocess_sections
     xml_string    
   end

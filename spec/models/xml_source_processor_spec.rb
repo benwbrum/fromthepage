@@ -1,26 +1,71 @@
 require 'spec_helper'
 
-RSpec.describe TranscribeHelper, type: :model do
-  let(:page_full_link) do
-    FactoryBot.build_stubbed(
-      :page, source_text: '[[Old Title|old title verbatim]]',
-             source_translation: '[[Old Translation|old translation verbatim]]'
-    )
-  end
-  let(:page_short_link) do
-    FactoryBot.build_stubbed(:page, source_text: '[[Old Title]]')
+SOURCE_TEXT = "With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]"
+EXPECTED_XML = <<EOF
+<?xml version='1.0' encoding='UTF-8'?>    
+      <page>
+        <p>With an <link link_id='1' target_id='1' target_title='Old Subject'>old subject</link> and a short <link link_id='2' target_id='1' target_title='Old Subject'>Old Subject</link>. With a <link link_id='3' target_id='2' target_title='New Text Link'>new links</link> and a <link link_id='4' target_id='3' target_title='New Short Text Link'>New Short Text Link</link></p>
+      </page>
+EOF
+
+EXPECTED_XML_DISABLED = <<EOF
+<?xml version='1.0' encoding='UTF-8'?>    
+      <page>
+        <p>With an [[Old Subject|old subject]] and a short [[Old Subject]]. With a [[New Text Link|new links]] and a [[New Short Text Link]]</p>
+      </page>
+EOF
+
+RSpec.describe XmlSourceProcessor, type: :model do
+  describe '#wiki_to_xml' do
+  
+  before :each do
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  let(:page_full_link_newline) do
-    FactoryBot.build_stubbed(:page, source_text: "[[Old\nTitle|old title\nverbatim]]")
-  end
-  let(:page_short_link_newline) do
-    FactoryBot.build_stubbed(:page, source_text: "[[Old\nTitle]]")
-  end
-  let(:page_multilink) do
-    FactoryBot.build_stubbed(:page, source_text: "[[Old Title]][[Unchanged]]")
+  let(:collection){ build_stubbed(:collection ) }
+  let(:work)      { build_stubbed(:work, collection: collection) }
+  let(:page)      { build_stubbed(:page, work: work)}
+  let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection ) }
+    
+    context 'subject linking not disabled (default)' do
+      it 'builds the xml document' do
+        expect(work.collection).to eq(collection)
+        xml = page.wiki_to_xml(SOURCE_TEXT, Page::TEXT_TYPE::TRANSCRIPTION)
+        expect(Article.all.count).to eq(3)
+        expect(PageArticleLink.all.count).to eq(4)
+        expect(xml).to eq(EXPECTED_XML)
+      end
+    end
+    context 'subject linking disabled' do
+      it 'builds the xml document' do
+        expect(work.collection).to eq(collection)
+        xml = page.wiki_to_xml(SOURCE_TEXT, Page::TEXT_TYPE::TRANSCRIPTION, true)
+        expect(xml).to eq(EXPECTED_XML_DISABLED)
+        expect(Article.all.count).to eq(0)
+        expect(PageArticleLink.all.count).to eq(0)
+      end
+    end
   end
   describe '#rename_article_links' do
+    let(:page_full_link) do
+      build_stubbed(
+        :page, source_text: '[[Old Title|old title verbatim]]',
+              source_translation: '[[Old Translation|old translation verbatim]]'
+      )
+    end
+    let(:page_short_link) do
+      build_stubbed(:page, source_text: '[[Old Title]]')
+    end
+
+    let(:page_full_link_newline) do
+      build_stubbed(:page, source_text: "[[Old\nTitle|old title\nverbatim]]")
+    end
+    let(:page_short_link_newline) do
+      build_stubbed(:page, source_text: "[[Old\nTitle]]")
+    end
+    let(:page_multilink) do
+      build_stubbed(:page, source_text: "[[Old Title]][[Unchanged]]")
+    end
     it 'should rename links in the format [[Title|verbatim]]' do
       expected = '[[New Title|old title verbatim]]'
       page_full_link.rename_article_links('Old Title', 'New Title')
