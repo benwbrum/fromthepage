@@ -24,13 +24,13 @@ RSpec.describe XmlSourceProcessor, type: :model do
 
   let(:collection){ build_stubbed(:collection ) }
   let(:work)      { build_stubbed(:work, collection: collection) }
-  let(:page)      { build_stubbed(:page, work: work)}
+  let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT)}
   let(:old_link)  { build_stubbed(:article, title: 'Old Subject', collection: collection ) }
     
     context 'subject linking not disabled (default)' do
       it 'builds the xml document' do
         expect(work.collection).to eq(collection)
-        xml = page.wiki_to_xml(SOURCE_TEXT, Page::TEXT_TYPE::TRANSCRIPTION)
+        xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
         expect(Article.all.count).to eq(3)
         expect(PageArticleLink.all.count).to eq(4)
         expect(xml).to eq(EXPECTED_XML)
@@ -38,8 +38,9 @@ RSpec.describe XmlSourceProcessor, type: :model do
     end
     context 'subject linking disabled' do
       it 'builds the xml document' do
-        expect(work.collection).to eq(collection)
-        xml = page.wiki_to_xml(SOURCE_TEXT, Page::TEXT_TYPE::TRANSCRIPTION, true)
+        collection.subjects_disabled = true
+
+        xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
         expect(xml).to eq(EXPECTED_XML_DISABLED)
         expect(Article.all.count).to eq(0)
         expect(PageArticleLink.all.count).to eq(0)
