@@ -4,6 +4,9 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :transaction
 
 WebMock.allow_net_connect!
 
