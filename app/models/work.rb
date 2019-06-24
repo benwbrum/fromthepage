@@ -45,7 +45,9 @@ class Work < ActiveRecord::Base
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
   scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
+  scope :order_by_recent_inactivity, -> { joins(:deeds).reorder('deeds.created_at ASC').distinct }
   scope :order_by_completed, -> { joins(:work_statistic).reorder('work_statistics.complete DESC')}
+  scope :order_by_incomplete, -> { joins(:work_statistic).reorder('work_statistics.complete ASC')}
   scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
@@ -178,6 +180,10 @@ class Work < ActiveRecord::Base
     end
   end
 
+  def untranscribed?
+    self.work_statistic.pct_transcribed == 0
+  end
+
   def thumbnail
     if !self.picture.blank?
       self.picture_url(:thumb)
@@ -226,5 +232,9 @@ class Work < ActiveRecord::Base
 
   def supports_indexing?
     collection.subjects_disabled == false
+  end
+
+  def has_untranscribed_pages?
+    self.pages.any? { |p| p.status.nil? }
   end
 end
