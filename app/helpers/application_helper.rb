@@ -134,11 +134,7 @@ module ApplicationHelper
     language = ISO_639.find_by_code(collection.text_language)
     language = ISO_639.find_by_code('en') if language.nil?
 
-    display_language = if language.alpha2.empty?
-      language.alpha3
-    else
-      language.alpha2
-    end
+    display_language = language.alpha2
 
     attrs = {
       'lang'=>"#{display_language}", 
