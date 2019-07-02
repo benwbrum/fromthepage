@@ -12,6 +12,6 @@
             span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
             span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
             span =w.restrict_scribes  ? 'Restricted' : 'Unrestricted'
-            span =check_box_tag "work[#{w.id}]"
+            span =check_box_tag("work[#{w.id}]", "work[#{w.id}]", false,{"title"=>"Remove #{w.title} from Document Set"})
       br
       .aright =button_tag 'Remove works'

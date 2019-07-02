@@ -38,7 +38,7 @@
                 i
                   =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
               td.document_set
-                =check_box_tag("work[#{work.id}]")
+                =check_box_tag("work[#{work.id}]", "work[#{work.id}]", false, {"title"=>"Add #{work.title} to Document Set"})
       br
       .aright
         =submit_tag "Save"
@@ -50,9 +50,8 @@
     =form_for  @document_set, url: document_set_path(@document_set), html: { multipart: true, class: 'image-form' } do |f|
       =hidden_field_tag(:collection_id, @document_set.id)
       label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image" title="Upload Image")
-        =f.file_field :picture, tabindex: '-1', accept: 'image/*'
-        -unless @document_set.picture_url.nil?
-          =image_tag(@document_set.picture_url(:thumb), alt: @document_set.title)
+        =f.file_field :picture, accept: 'image/*'
+        =image_tag(@document_set.picture_url(:thumb), alt: @document_set.title)
     p.fglight A picture to be used to illustrate the document set description.
 
     h3 Document Set Privacy

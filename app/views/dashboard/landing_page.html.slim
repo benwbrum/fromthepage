@@ -1,8 +1,8 @@
 -unless params[:search]
   .carousel
-    button.prev
+    button.prev aria-label="Previous image"
       =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous image'
-    button.next
+    button.next aria-label="Next image"
       =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next image'
 
     ul

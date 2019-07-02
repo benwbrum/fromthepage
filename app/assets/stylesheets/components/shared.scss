@@ -466,7 +466,7 @@ button, .button, .dropdown dd a {
     text-decoration: none;
     font-size: $fontSizeBig;
     border-radius: 3px 3px 0 0;
-    color: rgba($textColor, 0.5);
+    color: rgba($textColor, 0.65);
     border: 1px solid transparent;
     border-width: 1px 1px 0 1px;
     &:hover { color: $textColor; }
@@ -549,7 +549,7 @@ button, .button, .dropdown dd a {
   line-height: 1.25;
   border-collapse: separate;
   border-bottom: 1px solid rgba(#000, 0.08);
-  th {
+  th, thead td {
     font-weight: bold;
     padding: 15px 10px;
     //white-space: nowrap;
