@@ -158,6 +158,10 @@ class Collection < ActiveRecord::Base
     self.is_active
   end
 
+  def has_untranscribed_pages?
+    self.works.any? { |w| w.has_untranscribed_pages? }
+  end
+
   #constant
   LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
  ['አማርኛ', 'am', ['am-ET']],
