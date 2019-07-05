@@ -17,7 +17,7 @@
     border-radius: 1.2em;
     text-decoration: none;
     font-size: $fontSizeSmall;
-    background: rgba(#FFF, 0.35);
+    background: mix(#FFF, $bodyBg, 25);
     background-clip: padding-box;
     border: 1px solid $borderColor;
   }
@@ -40,7 +40,7 @@
     color: inherit;
     &:hover {
       color: $bodyFg;
-      background-color: #FFF;
+      background-color: mix(#FFF, $bodyBg, 80);
     }
     &:active { @include button-state(active); }
   }
@@ -159,14 +159,14 @@
     right: 6px;
     position: absolute;
     button, .button {
-      border: 0;
+      border-color: mix(#fff, $bodyFgLight, 50);
       box-shadow: none;
-      color: rgba(#FFF, 0.8);
+      color: $bodyFg;
       font-size: $fontSizeSmall;
-      background: rgba(#433, 0.35);
+      background: mix( white, $bodyFgLight, 95);
       &:hover, &:active {
-        color: #FFF;
-        background: rgba(#433, 0.5);
+        color: $bodyFg;
+        background: mix( white, $bodyFgLight, 85);
       }
     }
   }

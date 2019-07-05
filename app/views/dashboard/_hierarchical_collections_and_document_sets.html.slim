@@ -13,8 +13,11 @@
                 h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
                 -unless snippet.empty?
                   p.collection_snippet =snippet
+                -if cds.has_untranscribed_pages?
+                  p
+                    =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
                 .collection_summary
-                  span =="Owned by #{owner_link}"  
+                  span =="Owned by #{owner_link}"
                 ul
                 -cds.document_sets.each do |doc_set|
                   -if doc_set.is_public

@@ -63,7 +63,6 @@ describe "disable subject linking", :order => :defined do
     page.find('.tabs').click_link("Contents")
     expect(page).to have_content("Actions")
     expect(page).not_to have_content("Annotate")
-
   end
 
   it "checks page level subject items" do
@@ -71,14 +70,21 @@ describe "disable subject linking", :order => :defined do
     page.find('.work-page_title', text: @title).click_link(@title)
     expect(page).not_to have_content("Autolink")
     expect(page).to have_content("A single newline")
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    page.fill_in 'page_source_text', with: "[[Canonical Subject|display subject]] [[Short Subject]]"
     find('#save_button_top').click
-    expect(page).to have_content("Texas")
+    expect(page).to have_content("[[Canonical Subject|display subject]] [[Short Subject]]")
     expect(page).to have_content("Transcription")
-    expect(page).not_to have_selector('a', text: 'Texas')
+    expect(page).not_to have_selector('a', text: 'display subject')
+    expect(page).not_to have_selector('a', text: 'Short Subject')
     page.find('.tabs').click_link("Translate")
     expect(page).not_to have_content("Autolink")
+  end
 
+  it "checks export formatting" do
+    visit "/export/show?work_id=#{@work.id}"
+    expect(page).to have_content("[[Canonical Subject|display subject]] [[Short Subject]]")
+    expect(page).not_to have_selector('a', text: 'display subject')
+    expect(page).not_to have_selector('a', text: 'Short Subject')
   end
 
   it "enables subject indexing" do
@@ -97,9 +103,23 @@ describe "disable subject linking", :order => :defined do
     expect(page).to have_content(@collection.title)
     expect(page).to have_content(@work.title)
     page.find('.work-page_title', text: @title).click_link(@title)
-    expect(page).to have_content("Transcription")
-    expect(page).to have_selector('a', text: 'Texas')
-    
-  end
+    page.find('.tabs').click_link("Transcribe")
+    find('#save_button_top').click
 
+    # Categories
+    expect(page).to have_content("Canonical Subject")
+    expect(page).to have_content("Short Subject")
+    click_link("Continue")
+
+    # Return to read page
+    page.find('.tabs').click_link("Overview")
+    expect(page).to have_selector('a', text: 'display subject')
+    expect(page).to have_selector('a', text: 'Short Subject')
+    expect(page).not_to have_content('Canonical Subject')
+  end
+  it "checks export formatting" do
+    visit "/export/show?work_id=#{@work.id}"
+    expect(page).to have_selector('a', text: 'display subject')
+    expect(page).to have_selector('a', text: 'Short Subject')
+  end
 end

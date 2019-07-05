@@ -27,7 +27,7 @@
               -if user_signed_in? && current_user.like_owner?(@collection)
                 .headline_aside
                   dl.dropdown.right
-                    dt.h5
+                    dt.h5 tabindex=0
                       span Actions
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd
@@ -52,7 +52,8 @@
           dt: h3 Uncategorized subjects
           dd
             -@uncategorized_articles.each do |article|
-              =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+              p[*language_attrs(@collection)]
+                =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
 -else
   -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.slug }, 'data-litebox' => ''
   .nodata

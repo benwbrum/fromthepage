@@ -48,9 +48,10 @@
                 =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
                 hr
                 =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
-    =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button outline'
+    =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
     h3 Import from CONTENTdm URL
-    p.fgfaded Paste in the URL of a compound object on your CONTENTdm site.
+    p
+    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
     =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
       table.form
           td

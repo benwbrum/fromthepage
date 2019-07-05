@@ -101,6 +101,10 @@ class DocumentSet < ActiveRecord::Base
   def transcription_fields
     self.collection.transcription_fields
   end
+  
+  def has_untranscribed_pages?
+    self.works.any? { |w| w.has_untranscribed_pages? }
+  end
 
   def slug_candidates
     if self.slug

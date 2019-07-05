@@ -83,31 +83,37 @@ module XmlSourceProcessor
   ##############################################
   def process_source
     if @text_dirty
-      self.xml_text = wiki_to_xml(self.source_text, Page::TEXT_TYPE::TRANSCRIPTION)
+      self.xml_text = wiki_to_xml(self, Page::TEXT_TYPE::TRANSCRIPTION)
     end
 
     if @translation_dirty
-      self.xml_translation = wiki_to_xml(self.source_translation, Page::TEXT_TYPE::TRANSLATION)      
+      self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)      
     end
   end
 
-  def wiki_to_xml(wiki, text_type)
-    xml_string = String.new(wiki || "")
+  def wiki_to_xml(page, text_type)
+
+    subjects_disabled = page.collection.subjects_disabled
+    
+    source_text = case text_type
+    when Page::TEXT_TYPE::TRANSCRIPTION
+      page.source_text
+    when Page::TEXT_TYPE::TRANSLATION
+      page.source_translation
+    else
+      ""
+    end
+
+    xml_string = String.new(source_text)
     xml_string = process_latex_snippets(xml_string)
     xml_string = clean_bad_braces(xml_string)
-    xml_string = process_square_braces(xml_string)
+    xml_string = process_square_braces(xml_string) unless subjects_disabled
     xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
-    xml_string = update_links_and_xml(xml_string, false, text_type)
+    xml_string = update_links_and_xml(xml_string, false, text_type) 
     postprocess_sections
     xml_string    
-  end
-
-  def generate_preview(text_type)
-    xml_string = wiki_to_xml(self.source_text, text_type)
-    xml_string = update_links_and_xml(xml_string, true, text_type)
-    return xml_string
   end
 
   BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/
