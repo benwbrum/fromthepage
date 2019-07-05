@@ -107,10 +107,10 @@ button, .button, input[type="submit"], input[type="reset"], input[type="button"]
     box-shadow: none;
     color: $bodyFgFaded;
     background-image: none;
-    background-color: rgba(#FFF, 0.35);
+    background-color: mix(#FFF, $bodyBg, 25);
     &:hover, &:focus {
       color: $bodyFg;
-      background-color: #FFF;
+      background-color: mix(#FFF, $bodyBg, 80);
       border-color: rgba(#000, 0.25);
     }
     &:active, &.pressed { @include button-state(active); }

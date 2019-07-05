@@ -57,6 +57,9 @@ class CollectionController < ApplicationController
 
     if params[:search]
       @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    elsif (params[:works] == 'untranscribed')
+      ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
+      @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
     #show all works
     elsif (params[:works] == 'show')
       @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
@@ -438,16 +441,15 @@ class CollectionController < ApplicationController
   end
 
   def start_transcribing
-    pages = find_transcribe_pages
-    if pages.blank?
+    page = find_untranscribed_page
+    if page.nil?
       flash[:notice] = "Sorry, but there are no qualifying pages in this collection."
       redirect_to collection_path(@collection.owner, @collection)
     else
-      @page = pages.first
       if !user_signed_in?
-        redirect_to collection_guest_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+        redirect_to collection_guest_page_path(page.collection.owner, page.collection, page.work, page)
       else
-        redirect_to collection_transcribe_page_path(@page.collection.owner, @page.collection, @page.work, @page)
+        redirect_to collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page)
       end
     end
   end

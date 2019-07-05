@@ -52,9 +52,8 @@ $bodyFg:                    #200;
 
 //the background color of the app
 $bodyBg:                    mix(#FFF, $themeLight, 70);
-
-$bodyFgFaded:               mix($bodyFg, $bodyBg, 60);
-$bodyFgLight:               mix($bodyFg, $bodyBg, 50);
+$bodyFgFaded:               mix($bodyFg, $bodyBg, 80);
+$bodyFgLight:               mix($bodyFg, $bodyBg, 70);
 $borderColor:               mix(#000, $bodyBg, 15);
 
 //HEADER INFO
@@ -68,10 +67,10 @@ $headerFg:                  $themeDark;
 $headerBg:                  $themeLight;
 
 //FOOTER INFO
-$footerHeight:              80px;
+$footerHeight:              220px;
 
 //the color of lettering on the footer
-$footerFg:                  mix(#FFF, $themeDark, 50);
+$footerFg:                  mix(#FFF, $themeDark, 75);
 
 //footer background color
 $footerBg:                  $themeDark;

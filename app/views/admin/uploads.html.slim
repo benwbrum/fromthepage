@@ -30,7 +30,7 @@ table.admin-grid.datagrid.striped
           small.label(class="upload-status-#{document.status}") =document.status.titleize
         td.nowrap
           dl.dropdown.right
-            dt
+            dt tabindex=0
               span Actions
               =svg_symbol '#icon-list', class: 'icon'
             dd

@@ -74,8 +74,12 @@ $.fn.dropdown = function(s) {
     var $trigger = $(cfg.trigger, this);
 
     // Open/close when clicked on the trigger
-    $trigger.on('click.DropDown', function() {
+    $trigger.on('mousedown.DropDown', function() {
       $element.toggleClass(cfg.openclass);
+    });
+    //Open on focus
+    $trigger.on('focusin.DropDown', function() {
+      $element.addClass(cfg.openclass);
     });
 
     // Close when clicked on an item
@@ -88,6 +92,12 @@ $.fn.dropdown = function(s) {
 
     // Close if clicked outside
     $(document).on('click.DropDown', function(e) {
+      if($(e.target).closest($element).length === 0) {
+        $element.removeClass(cfg.openclass);
+      }
+    });
+    // Close if focus leaves
+    $(document).on('focusin.DropDown', function(e) {
       if($(e.target).closest($element).length === 0) {
         $element.removeClass(cfg.openclass);
       }

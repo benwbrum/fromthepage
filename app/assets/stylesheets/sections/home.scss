@@ -24,8 +24,9 @@
     line-height: normal;
     display: inline-block;
     vertical-align: middle;
-    background: rgba(#100, 0.5);
-    padding: $gapSize $gapSize * 1.2;
+    background: rgba(#100, 0.6);
+    margin: 0 auto;
+    padding: 60px;
     &_title {
       margin: 0;
       color: inherit;

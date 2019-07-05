@@ -130,8 +130,17 @@ module ApplicationHelper
 
   def language_attrs(collection)
     direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
-    language = !collection.text_language.nil? ? collection.text_language : nil
-    attrs = {'lang'=>"#{language}", 'dir'=>"#{direction}", 'class'=>"#{direction}"}
+    
+    language = ISO_639.find_by_code(collection.text_language)
+    language = ISO_639.find_by_code('en') if language.nil?
+
+    display_language = language.alpha2
+
+    attrs = {
+      'lang'=>"#{display_language}", 
+      'dir'=>"#{direction}", 
+      'class'=>"#{direction}"
+    }
     return attrs
   end
 

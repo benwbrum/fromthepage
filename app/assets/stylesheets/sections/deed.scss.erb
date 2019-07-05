@@ -17,10 +17,10 @@
 
 .deed-type {
   $color: #B30;
-  $opacity: 0.4;
+  $opacity: 0.1;
   $rotate: 0deg;
   @each $type in <%= DeedType.all_types %> {
-    &-#{$type} { background: rgba(adjust-hue($color, $rotate), $opacity); }
+    &-#{$type} { background: rgba(adjust-hue($color, $rotate), $opacity); color: $bodyFgLight;}
     $rotate: $rotate - 30deg;
   }
 }
