@@ -99,6 +99,7 @@ namespace :fromthepage do
         end
       end
     end
+    FileUtils.chmod_R "u=rwx,go=r", temp_dir
   end
   
   def unpdf_tree(temp_dir)
