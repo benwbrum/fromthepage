@@ -179,6 +179,10 @@ class User < ActiveRecord::Base
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def expunge
+    self
+  end
+
   def soft_delete
     if self.deeds.blank?
       self.destroy
