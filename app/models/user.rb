@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
   end
 
   def expunge
-    self
+    self.notes.each { |note| note.destroy }
   end
 
   def soft_delete
