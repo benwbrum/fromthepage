@@ -34,7 +34,7 @@ describe "export tasks" do
   it "exports a work as xhtml" do
     visit "/export?collection_id=#{@collection.id}"
     expect(page).to have_content("Export Individual Works")
-    page.find('tr', text: @work.title).click_link("XHTML")
+    page.find('tr', text: @work.title).click_link("HTML")
     expect(page.current_path).to eq ("/export/show")
     expect(page).to have_content(@work.title)
     expect(page).to have_content("Page Transcripts")
