@@ -91,6 +91,12 @@ class AdminController < ApplicationController
     redirect_to :action => 'user_list'
   end
 
+  def expunge_user
+    @user.expunge
+    flash[:notice] = "User has been expunged"
+    redirect_to :action => 'user_list'
+  end
+
   def tail_logfile
     @lines = params[:lines].to_i
     development_logfile = "#{Rails.root}/log/development.log"
