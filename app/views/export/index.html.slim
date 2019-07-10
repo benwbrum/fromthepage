@@ -58,6 +58,10 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span XHTML
       td.nowrap
+        =link_to({ :controller => 'export', :action => 'work_plaintext_verbatim', :work_id => work.id })
+          =svg_symbol '#icon-export', class: 'icon'
+          span Plain text
+      td.nowrap
         =link_to({ :controller => 'export', :action => 'tei', :work_id => work.id })
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
