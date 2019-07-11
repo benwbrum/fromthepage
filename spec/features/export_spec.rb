@@ -34,11 +34,20 @@ describe "export tasks" do
   it "exports a work as xhtml" do
     visit "/export?collection_id=#{@collection.id}"
     expect(page).to have_content("Export Individual Works")
-    page.find('tr', text: @work.title).click_link("XHTML")
+    page.find('tr', text: @work.title).click_link("HTML")
     expect(page.current_path).to eq ("/export/show")
     expect(page).to have_content(@work.title)
     expect(page).to have_content("Page Transcripts")
     expect(page).to have_content(@page.title)
+  end
+
+  it "exports a work as plain text" do
+    visit "/export?collection_id=#{@collection.id}"
+    expect(page).to have_content("Export Individual Works")
+    page.find('tr', text: @work.title).click_link("Plain text")
+    expect(page.current_path).to eq ("/export/work_plaintext_verbatim")
+    expect(page.all('pre', text: @work.title))
+    expect(page.all('pre', text: @page.title))
   end
 
   it "exports a work as tei" do
