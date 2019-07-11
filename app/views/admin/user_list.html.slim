@@ -34,6 +34,6 @@ table.admin-grid.datagrid.striped
           .instack
             =link_to 'Visits', { :controller => 'admin', :action => 'user_visits', :user_id => u.id }
             =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }, :data => { litebox: { hash: "" }}
-            =link_to 'Expunge', { :controller => 'admin', :action => 'expunge_user', :user_id => u.id }, data: { confirm: 'This deletes the user and all of that user\'s content. Are you sure you want to expunge the user?' }
+            =link_to 'Expunge', { :controller => 'admin', :action => 'expunge_confirmation', :user_id => u.id}, :data => { litebox: { hash: "" }}
 
 =render(:partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true })

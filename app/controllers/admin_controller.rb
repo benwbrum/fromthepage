@@ -6,7 +6,7 @@ class AdminController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner, :expunge_confirmation, :expunge_user]
 
   def authorized?
     unless user_signed_in? && current_user.admin
@@ -91,10 +91,13 @@ class AdminController < ApplicationController
     redirect_to :action => 'user_list'
   end
 
+  def expunge_confirmation
+  end
+
   def expunge_user
     @user.expunge
-    flash[:notice] = "User has been expunged"
-    redirect_to :action => 'user_list'
+    flash[:notice] = "User #{@user.display_name} has been expunged"
+    ajax_redirect_to :action => 'user_list'
   end
 
   def tail_logfile
