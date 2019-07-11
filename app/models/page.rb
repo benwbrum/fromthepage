@@ -4,6 +4,7 @@ class Page < ActiveRecord::Base
   include XmlSourceProcessor
   include ApplicationHelper
 
+  before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
   validate :validate_source, :validate_source_translation
@@ -345,6 +346,18 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     self.save!
   end
 
+  def validate_blank_page
+    unless self.status == Page::STATUS_BLANK
+      self.status = nil if self.source_text.blank?
+    end
+  end
+
+  def update_work_stats
+    if self.work
+      self.work.work_statistic.recalculate
+    end
+  end
+
 private
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
@@ -376,12 +389,6 @@ private
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil
-  end
-
-  def update_work_stats
-    if self.work
-      self.work.work_statistic.recalculate
-    end
   end
 
   def delete_deeds

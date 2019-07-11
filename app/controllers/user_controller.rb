@@ -66,7 +66,7 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:id])
     end
-    unless @user.deleted
+    if !@user.deleted || current_user.admin 
       @collections_and_document_sets = @user.owned_collection_and_document_sets
       @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
       @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)

@@ -56,6 +56,8 @@ Fromthepage::Application.routes.draw do
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
+  get   'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
+  patch 'admin/expunge_user', :to => 'admin#expunge_user'
 
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
