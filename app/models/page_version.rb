@@ -30,6 +30,13 @@ class PageVersion < ActiveRecord::Base
     		:source_translation => previous_version.source_translation,
     		:xml_translation => previous_version.xml_translation
 		)
+		if previous_version.page_version == 0
+			# reset the page and work status
+	    	page.update_columns(:status => nil)
+	    	page.update_work_stats
+	    end
+
+
   	else
   	#   renumber subsequent versions
   		this_version = self

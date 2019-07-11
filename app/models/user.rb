@@ -183,6 +183,8 @@ class User < ActiveRecord::Base
     self.notes.each { |note| note.destroy }
     self.page_versions.each { |version| version.expunge }
     self.article_versions.each { |version| version.expunge }
+    self.deeds.each { |deed| deed.destroy }
+    self.soft_delete
   end
 
   def soft_delete

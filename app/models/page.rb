@@ -345,11 +345,19 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     self.status = 'translated'
     self.save!
   end
+
   def validate_blank_page
     unless self.status == Page::STATUS_BLANK
       self.status = nil if self.source_text.blank?
     end
   end
+
+  def update_work_stats
+    if self.work
+      self.work.work_statistic.recalculate
+    end
+  end
+
 private
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
@@ -381,12 +389,6 @@ private
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil
-  end
-
-  def update_work_stats
-    if self.work
-      self.work.work_statistic.recalculate
-    end
   end
 
   def delete_deeds
