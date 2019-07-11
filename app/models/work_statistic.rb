@@ -111,6 +111,8 @@ class WorkStatistic < ActiveRecord::Base
     self[:complete] = self.pct_completed
     self[:translation_complete] = self.pct_translation_completed
     save!
+
+    recalculate_parent_statistics
   end
 
 
