@@ -181,6 +181,7 @@ class User < ActiveRecord::Base
 
   def expunge
     self.notes.each { |note| note.destroy }
+    self.page_versions.each { |version| version.expunge }
   end
 
   def soft_delete
