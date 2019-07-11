@@ -184,7 +184,8 @@ class User < ActiveRecord::Base
     self.page_versions.each { |version| version.expunge }
     self.article_versions.each { |version| version.expunge }
     self.deeds.each { |deed| deed.destroy }
-    self.soft_delete
+    self.destroy!  #need to decide whether to truly delete users or not
+
   end
 
   def soft_delete
