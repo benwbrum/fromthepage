@@ -197,6 +197,7 @@ describe "collection settings js tasks", :order => :defined do
     hidden_work = @collection.works.last
     hidden_work.pages.each do |p|
       p.status = "transcribed"
+      p.source_text = "Transcription"
       p.save!
     end
     #check to see if the work is visible
@@ -247,4 +248,46 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Works")
   end
 
+end
+
+describe "collection spec (isolated)" do
+  before :all do
+    @factory_owner = create(:user, owner: true)
+  end
+
+  it 'updates collection statistics', :js => true do
+      login_as(@factory_owner, :scope => :user)
+      visit dashboard_owner_path(@factory_owner)
+      expect(page).to have_content('Start A Project')
+      page.find('.tabs').click_link('Start A Project')
+
+      select('Add New Collection', :from => 'work_collection_id')
+      page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
+      click_button('Create Collection')
+      expect(page).to have_content('Collection has been created')
+
+      fill_in('work_title', with: 'Stats Test Work')
+      click_button('Create Work')
+      page.find('#new_page')
+      click_button('Save & New Work')
+
+      visit dashboard_owner_path
+
+      page.find('.collections').click_link('Stats Test Work')
+      page.find('.tabs').click_link('Read')
+      page.find('.maincol h4').click_link('Page 1')
+      fill_in('page_source_text', with: 'Transcription')
+      page.find('#save_button_top').click
+      expect(page).to have_content('Saved')
+
+      page.find('.breadcrumbs').click_link('Stats Test Collection')
+      expect(page).to have_content("All works are fully transcribed.")
+  end
+
+  after :all do
+    @factory_owner.collections.each do |c|
+        c.destroy
+    end
+    @factory_owner.destroy
+  end
 end
