@@ -1,0 +1,39 @@
+=render(:partial => 'header', :locals => { :selected => 7 })
+
+p These activities have been flagged as possible abusive content.
+
+table.admin-grid.datagrid.striped
+  thead
+    tr
+      th User
+      th Item/Date
+      th.Flagged Content
+      th Actions
+  tbody
+    -@flags.each do |flag|
+      tr
+        td.nowrap.toleft
+          div =link_to flag.author_user.display_name, user_profile_path(flag.author_user)
+          small =flag.author_user.email
+        td
+          div
+            -if flag.page_version
+              =link_to flag.page_version.title, {:controller => 'page_version', :action => 'show', :page_version_id => flag.page_version_id}
+            -elsif flag.article_version
+              =link_to flag.article_version.title, {:controller => 'article_version', :action => 'show', :article_version_id => flag.article_version_id}
+            -elsif flag.note
+              =link_to flag.note.page.title, {:controller => 'display', :action => 'show', :page_id => flag.note.page_id }
+            -else
+              i content removed          
+          div
+            small =flag.content_at.localtime.strftime('%b %d, %Y')
+          div
+            small =flag.content_at.localtime.strftime('%H:%M')
+        td =flag.snippet
+        td.nowrap
+          .instack
+            =link_to 'OK'
+            =link_to 'Remove', { :controller => 'admin', :action => 'revert_flag', :flag_id => flag.id, :page => params[:page] }, { :alt => 'Delete the abusive content, leaving other contributions by the user untouched.'}
+            =link_to 'Expunge User', { :controller => 'admin', :action => 'expunge_confirmation', :user_id => flag.author_user_id}, :data => { litebox: { hash: "" }}, :alt => 'Delete the user and remove all of their contributions.'
+
+=render(:partial => 'shared/pagination', :locals => { :model => @flags, :entries_info => true })

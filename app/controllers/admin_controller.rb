@@ -97,8 +97,23 @@ class AdminController < ApplicationController
   def expunge_user
     @user.expunge
     flash[:notice] = "User #{@user.display_name} has been expunged"
-    ajax_redirect_to :action => 'user_list'
+    ajax_redirect_to :action => 'user_list'  # what if we came from the flag list?  TODO
   end
+
+
+  def flag_list
+    @flags = Flag.where(:status => Flag::Status::UNCONFIRMED).order(:created_at => :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def revert_flag
+    # find the flag
+    flag = Flag.find(params[:flag_id])
+    # revert the content
+    flag.revert_content
+    # redirect to flag list at the appropriate page
+    redirect_to :action => 'flag_list', :page => params[:page]
+  end
+
 
   def tail_logfile
     @lines = params[:lines].to_i
