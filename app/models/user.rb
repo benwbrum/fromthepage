@@ -179,6 +179,15 @@ class User < ActiveRecord::Base
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def expunge
+    self.notes.each { |note| note.destroy }
+    self.page_versions.each { |version| version.expunge }
+    self.article_versions.each { |version| version.expunge }
+    self.deeds.each { |deed| deed.destroy }
+    self.destroy!  #need to decide whether to truly delete users or not
+
+  end
+
   def soft_delete
     if self.deeds.blank?
       self.destroy
