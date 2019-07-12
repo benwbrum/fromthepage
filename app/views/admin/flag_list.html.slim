@@ -25,7 +25,7 @@ table.admin-grid.datagrid.striped
             -elsif flag.article_version
               =link_to flag.article_version.title, {:controller => 'article_version', :action => 'show', :article_version_id => flag.article_version_id}
             -elsif flag.note
-              =link_to flag.note.page.title, {:controller => 'display', :action => 'show', :page_id => flag.note.page_id }
+              =link_to flag.note.page.title, {:controller => 'display', :action => 'display_page', :page_id => flag.note.page_id }
             -else
               i content removed          
           div
