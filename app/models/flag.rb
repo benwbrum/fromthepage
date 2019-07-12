@@ -55,7 +55,13 @@ class Flag < ActiveRecord::Base
     end
   end
 
-  def revert_content
+  def mark_ok!
+  	self.auditor_user = User.current_user
+  	self.status = Status::FALSE_POSITIVE
+  	self.save!
+  end
+
+  def revert_content!
   	page_version.expunge if page_version
   	article_version.expunge if article_version
   	note.destroy if note

@@ -109,11 +109,19 @@ class AdminController < ApplicationController
     # find the flag
     flag = Flag.find(params[:flag_id])
     # revert the content
-    flag.revert_content
+    flag.revert_content!
     # redirect to flag list at the appropriate page
     redirect_to :action => 'flag_list', :page => params[:page]
   end
 
+  def ok_flag
+    # find the flag
+    flag = Flag.find(params[:flag_id])
+    # revert the content
+    flag.mark_ok!
+    # redirect to flag list at the appropriate page
+    redirect_to :action => 'flag_list', :page => params[:page]
+  end
 
   def tail_logfile
     @lines = params[:lines].to_i
