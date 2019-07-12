@@ -37,6 +37,6 @@ table.admin-grid.datagrid.striped
           .instack
             =link_to 'OK', { :controller => 'admin', :action => 'ok_flag', :flag_id => flag.id, :page => params[:page] }, { :alt => 'Mark this content as not abusive.'}
             =link_to 'Remove', { :controller => 'admin', :action => 'revert_flag', :flag_id => flag.id, :page => params[:page] }, { :alt => 'Delete the abusive content, leaving other contributions by the user untouched.'}
-            =link_to 'Expunge User', { :controller => 'admin', :action => 'expunge_confirmation', :user_id => flag.author_user_id}, :page => params[:page], :source => :flag_list, :data => { litebox: { hash: "" }}, :alt => 'Delete the user and remove all of their contributions.'
+            =link_to 'Expunge User', { :controller => 'admin', :action => 'expunge_confirmation', :user_id => flag.author_user_id, :flag_id => flag.id }, :data => { litebox: { hash: "" }}, :alt => 'Delete the user and remove all of their contributions.'
 
 =render(:partial => 'shared/pagination', :locals => { :model => @flags, :entries_info => true })

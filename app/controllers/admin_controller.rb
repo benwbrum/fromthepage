@@ -97,7 +97,11 @@ class AdminController < ApplicationController
   def expunge_user
     @user.expunge
     flash[:notice] = "User #{@user.display_name} has been expunged"
-    ajax_redirect_to :action => 'user_list'  # what if we came from the flag list?  TODO
+    if params[:flag_id]
+      ajax_redirect_to :action => 'revert_flag', :flag_id => params[:flag_id]
+    else
+      ajax_redirect_to :action => 'user_list'  # what if we came from the flag list?  TODO
+    end
   end
 
 
