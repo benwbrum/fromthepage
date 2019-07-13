@@ -399,7 +399,7 @@ private
       elsif page.ia_leaf
         sequence.canvases << canvas_from_ia_page(page)        
       else
-        sequence.canvases << canvas_from_page(page)
+        sequence.canvases << canvas_from_page(page) unless canvas_from_page(page).nil?
       end
     end
     sequence
@@ -562,23 +562,25 @@ private
   end
 
   def canvas_from_page(page)
-    canvas = IIIF::Presentation::Canvas.new
-    canvas.label = page.title
-    canvas.width = page.base_width
-    canvas.height = page.base_height
-    canvas['@id'] = canvas_id_from_page(page)
+    unless page.base_width.nil? || page.base_height.nil?
+      canvas = IIIF::Presentation::Canvas.new
+      canvas.label = page.title
+      canvas.width = page.base_width
+      canvas.height = page.base_height
+      canvas['@id'] = canvas_id_from_page(page)
 
-    annotation = IIIF::Presentation::Annotation.new
-    annotation.resource = iiif_create_image_resource(page)
-    annotation['on'] = canvas['@id']
-    annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
-    canvas.images << annotation
+      annotation = IIIF::Presentation::Annotation.new
+      annotation.resource = iiif_create_image_resource(page)
+      annotation['on'] = canvas['@id']
+      annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
+      canvas.images << annotation
 
-    add_related_to_canvas(canvas, page)
-    add_seeAlso_to_canvas(canvas, page)
-    add_services_to_canvas(canvas, page)
+      add_related_to_canvas(canvas, page)
+      add_seeAlso_to_canvas(canvas, page)
+      add_services_to_canvas(canvas, page)
 
-    canvas     
+      canvas
+    end
   end
 
   def add_annotations_to_canvas(canvas,page)
