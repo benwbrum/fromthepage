@@ -4,7 +4,6 @@ class Flagger
   def self.initialize_blacklist
     if @@blacklist.nil?
       pb = PageBlock.find_by(:controller => 'admin', :view => 'flag_blacklist')
-      binding.pry
       @@blacklist = PageBlock.find_by(:controller => 'admin', :view => 'flag_blacklist').html.split("\n").map { |badness| badness.gsub(".", "\\.") }
     end
   end
