@@ -7,8 +7,12 @@
       table.form
         tr
           td(colspan="2")
-            =f.label :welcome_text, "Edit owner welcome email", class: 'above'
+            =f.label :welcome_text, "Project owner welcome email text:", class: 'above'
             =f.text_area :welcome_text, rows: 12, value: @email_text
+        tr
+          td(colspan="2")
+            =f.label :welcome_text, "Terms to flag as potential abusive content:", class: 'above'
+            =f.text_area :welcome_text, rows: 12, value: @flag_blacklist
 
       .toolbar
         .toolbar_group.aright

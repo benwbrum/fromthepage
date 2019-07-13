@@ -106,7 +106,7 @@ class AdminController < ApplicationController
 
 
   def flag_list
-    @flags = Flag.where(:status => Flag::Status::UNCONFIRMED).order(:created_at => :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    @flags = Flag.where(:status => Flag::Status::UNCONFIRMED).order(:content_at => :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
   def revert_flag
@@ -133,6 +133,16 @@ class AdminController < ApplicationController
     production_logfile = "#{Rails.root}/log/production.log"
     @dev_tail = `tail -#{@lines} #{development_logfile}`
     @prod_tail = `tail -#{@lines} #{production_logfile}`
+  end
+
+  def autoflag
+    flash[:notice] = "Looking for additional content to flag.  Revisit this page in a few minutes."
+
+    cmd = "rake fromthepage:flag_abuse &"
+    logger.info(cmd)
+    system(cmd)
+
+    redirect_to :action => 'flag_list', :page => params[:page]
   end
 
   def uploads
@@ -173,11 +183,11 @@ class AdminController < ApplicationController
 
   def page_list
     @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
-
   end
 
   def settings
     @email_text = PageBlock.find_by(view: "new_owner").html
+    @flag_blacklist = PageBlock.find_by(view: "flag_blacklist").html
   end
 
   def update
@@ -185,6 +195,12 @@ class AdminController < ApplicationController
     block = PageBlock.find_by(view: "new_owner")
     if params[:admin][:welcome_text] != block.html
       block.html = params[:admin][:welcome_text]
+      block.save!
+    end
+
+    block = PageBlock.find_by(view: "flag_blacklist")
+    if params[:admin][:flag_blacklist] != block.html
+      block.html = params[:admin][:flag_blacklist]
       block.save!
     end
 

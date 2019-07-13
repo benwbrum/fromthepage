@@ -1,6 +1,10 @@
 =render(:partial => 'header', :locals => { :selected => 7 })
 
-p These activities have been flagged as possible abusive content.
+=form_tag({:controller => 'admin', :action => 'autoflag'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+  span These activities have been flagged as possible abusive content.  OK marks items as valid content, Remove will delete the abusive content item, and Expunge User will remove the user who created the content and all their contributions.  Flag will use the list of terms in the Settings to automatically flag content.
+  =button_tag 'Flag', :name => nil
+  =label_tag :search, "Find potential abusive content", class: "hidden"
+
 
 table.admin-grid.datagrid.striped
   thead
