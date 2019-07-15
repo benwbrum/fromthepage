@@ -1,3 +1,5 @@
+require 'flagger'
+
 class Flag < ActiveRecord::Base
   belongs_to :author_user, :class_name => User
   belongs_to :page_version
