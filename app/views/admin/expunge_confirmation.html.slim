@@ -3,6 +3,8 @@
   p This will delete the user and all their contributions.  
   =form_for(@user, :url => { :action => 'expunge_user' }) do |f|
     =hidden_field_tag :user_id, @user.id
+    -if params[:flag_id]
+      =hidden_field_tag :flag_id, params[:flag_id]
 
     .toolbar
       .toolbar_group.aright 

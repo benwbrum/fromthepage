@@ -1,6 +1,13 @@
 class PageVersion < ActiveRecord::Base
   belongs_to :page
   belongs_to :user
+  has_many :flags
+
+  after_create :check_content
+
+  def check_content
+    Flag.check_page(self)
+  end
 
   def display
     self.created_on.strftime("%b %d, %Y") + " - " + self.user.display_name

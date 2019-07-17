@@ -19,6 +19,8 @@ describe "admin actions" do
     expect(page.current_path).to eq '/admin/user_list'
     expect(page).to have_content("User Login")
     expect(page).to have_content user.login
+    page.find('.tabs').click_link("Abuse")
+    expect(page.current_path).to eq '/admin/flag_list'
     page.find('.tabs').click_link("Owners")
     expect(page.current_path).to eq '/admin/owner_list'
     expect(page).to have_content("Owner Login")
@@ -30,7 +32,7 @@ describe "admin actions" do
     page.find('.tabs').click_link("Logfile")
     expect(page.current_path).to eq '/admin/tail_logfile'
     page.find('.tabs').click_link("Settings")
-    expect(page).to have_content("Edit owner welcome email")
+    expect(page).to have_content("welcome email text")
     page.find('.tabs').click_link("Summary")
     expect(page.current_path).to eq admin_path
     expect(page).to have_selector(".counter")
