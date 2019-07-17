@@ -112,7 +112,7 @@ class IiifController < ApplicationController
 
   def manifest
     work_id =  params[:id]
-    work = Work.find work_id
+    work = Work.where(id: work_id).first
     seed = {
               '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}),
               'label' => work.title
