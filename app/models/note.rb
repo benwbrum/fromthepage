@@ -13,12 +13,19 @@ class Note < ActiveRecord::Base
   belongs_to :work
   belongs_to :collection
   has_one :deed, :dependent => :destroy
+  has_many :flags
 
   after_save :email_users
 
   validates :body, presence: true
 
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
+
+  after_create :check_content
+
+  def check_content
+    Flag.check_note(self)
+  end
 
   def email_users
     if SMTP_ENABLED
