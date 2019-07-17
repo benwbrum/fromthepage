@@ -1,6 +1,13 @@
 class ArticleVersion < ActiveRecord::Base
   belongs_to :article
   belongs_to :user
+  has_many :flags
+
+  after_create :check_content
+
+  def check_content
+    Flag.check_article(self)
+  end
 
   def prev
     article.article_versions.where("id < ?", id).first

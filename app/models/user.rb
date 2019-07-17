@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :ia_works
   has_many :omeka_sites
   has_many :visits
+  has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
   has_and_belongs_to_many(:scribe_works,
@@ -185,7 +186,7 @@ class User < ActiveRecord::Base
     self.article_versions.each { |version| version.expunge }
     self.deeds.each { |deed| deed.destroy }
     self.destroy!  #need to decide whether to truly delete users or not
-
+    self.flags.each { |flag| flag.revert_content! }
   end
 
   def soft_delete

@@ -142,9 +142,9 @@ class Article < ActiveRecord::Base
   # tested
   def create_version
 
-  unless self.title_changed? || self.source_text_changed?
-    return
-  end
+    unless self.title_changed? || self.source_text_changed?
+      return
+    end
 
     version = ArticleVersion.new
     # copy article data
