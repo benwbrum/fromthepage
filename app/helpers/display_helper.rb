@@ -32,34 +32,34 @@ module DisplayHelper
       else
         @wording = 'Transcribe'
       end
-    elsif page.status == 'blank'
+    elsif page.status == Page::STATUS_BLANK
       @wording = 'Blank page'
       @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
-    elsif page.status == 'review'
+    elsif page.status == Page::STATUS_NEEDS_REVIEW
       @wording = 'Review'
     elsif page.work.supports_translation?
       @path = collection_translate_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
       if page.translation_status.nil?
         @wording = 'Translate'
-      elsif page.translation_status == 'review'
+      elsif page.translation_status == Page::STATUS_NEEDS_REVIEW
         @wording = 'Review'
-      elsif page.translation_status == 'translated'
+      elsif page.translation_status == Page::STATUS_TRANSLATED
         unless @collection.subjects_disabled
           @wording = 'Index'
         else
           @wording = 'Completed'
         end
-      elsif page.translation_status == 'indexed'
+      elsif page.translation_status == Page::STATUS_INDEXED
         @wording = 'Completed'
         @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
       end
-    elsif page.status == 'transcribed'
+    elsif page.status == Page::STATUS_TRANSCRIBED
       unless @collection.subjects_disabled
         @wording = 'Index'
       else
         @wording = 'Completed'
       end
-    elsif page.status == 'indexed'
+    elsif page.status == Page::STATUS_INDEXED
       @wording = 'Completed'
       @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
     else
