@@ -27,7 +27,6 @@ class PageVersion < ActiveRecord::Base
 
   def expunge
   	# if we are we the current version
-    binding.pry
   	if self.current_version?
 	  	#   copy the previous version's contents into the page and save without callbacks
 	  	previous_version = self.prev
