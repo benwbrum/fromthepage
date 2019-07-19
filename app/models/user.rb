@@ -181,6 +181,8 @@ class User < ActiveRecord::Base
   end
 
   def expunge
+    self.owner_works.each { |work| work.destroy }
+    self.collections.each { |collection| collection.destroy }
     self.notes.each { |note| note.destroy }
     self.page_versions.each { |version| version.expunge }
     self.article_versions.each { |version| version.expunge }
