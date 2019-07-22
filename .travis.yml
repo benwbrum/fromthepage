@@ -14,8 +14,12 @@ jobs:
       before_script: skip
       script: echo No pry found
     - stage: test
+      services:
+      - mysql
       env: DB=mysql
       gemfile: Gemfile
+      before_install:
+      - mysql -e 'CREATE DATABASE test;'
     - env: DB=mysql57
       gemfile: Gemfile
     - addons:
@@ -47,7 +51,3 @@ branches:
     - development
     - fromthepage.com
     - indianapolis
-
-services:
-  - mysql
-  - redis
