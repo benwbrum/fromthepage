@@ -47,3 +47,7 @@ branches:
     - development
     - fromthepage.com
     - indianapolis
+
+services:
+  - mysql
+  - redis
