@@ -18,10 +18,10 @@ jobs:
       - mysql
       env: DB=mysql
       gemfile: Gemfile
-    - env: DB=mysql57
-      gemfile: Gemfile
     - addons:
       - mariadb: '10.0'
+      services:
+      - mariadb
       env: DB=mariadb
       gemfile: Gemfile
 
