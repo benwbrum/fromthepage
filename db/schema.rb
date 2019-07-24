@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190513184238) do
+ActiveRecord::Schema.define(version: 20190713144825) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -202,6 +202,29 @@ ActiveRecord::Schema.define(version: 20190513184238) do
 
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree
   add_index "document_uploads", ["user_id"], name: "index_document_uploads_on_user_id", using: :btree
+
+  create_table "flags", force: true do |t|
+    t.integer  "author_user_id"
+    t.integer  "page_version_id"
+    t.integer  "article_version_id"
+    t.integer  "note_id"
+    t.string   "provenance"
+    t.string   "status",             default: "unconfirmed"
+    t.text     "snippet"
+    t.text     "comment"
+    t.integer  "reporter_user_id"
+    t.integer  "auditor_user_id"
+    t.datetime "content_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "flags", ["article_version_id"], name: "index_flags_on_article_version_id", using: :btree
+  add_index "flags", ["auditor_user_id"], name: "index_flags_on_auditor_user_id", using: :btree
+  add_index "flags", ["author_user_id"], name: "index_flags_on_author_user_id", using: :btree
+  add_index "flags", ["note_id"], name: "index_flags_on_note_id", using: :btree
+  add_index "flags", ["page_version_id"], name: "index_flags_on_page_version_id", using: :btree
+  add_index "flags", ["reporter_user_id"], name: "index_flags_on_reporter_user_id", using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false

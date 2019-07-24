@@ -1,0 +1,24 @@
+.litebox-embed(style="width:90%")
+  h1 Expunge User
+  p This will delete the user and all their contributions.  
+  =form_for(@user, :url => { :action => 'expunge_user' }) do |f|
+    =hidden_field_tag :user_id, @user.id
+    -if params[:flag_id]
+      =hidden_field_tag :flag_id, params[:flag_id]
+
+    .toolbar
+      .toolbar_group.aright 
+        =f.button "Expunge #{@user.display_name}", class: 'big', tabindex: '1', autofocus: true
+
+  h2 User contributions to be deleted
+  table.datagrid.striped
+    -@user.deeds.each do |d|
+      tr
+        td.w100.toleft
+          =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+        td
+          small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
+        td.nowrap
+          =time_tag(d.created_at, class: 'small fglight')
+            ="#{time_ago_in_words d.created_at} ago"
+

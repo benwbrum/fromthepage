@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 sudo: false
 language: ruby
 
@@ -14,12 +14,12 @@ jobs:
       before_script: skip
       script: echo No pry found
     - stage: test
+      services:
+      - mysql
       env: DB=mysql
       gemfile: Gemfile
-    - env: DB=mysql57
-      gemfile: Gemfile
     - addons:
-        mariadb: '10.0'
+        mariadb: '10.2'
       env: DB=mariadb
       gemfile: Gemfile
 
@@ -27,10 +27,10 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install ghostscript
   - sudo apt-get install graphviz
-  - sudo apt-get install libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+  - sudo apt-get install g++ qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
   - qtchooser -qt=qt5
-  - bash travis/.travis_setup.sh
+  - mysql -e 'CREATE DATABASE test;'
 
 before_script:
   - bundle exec rake db:create

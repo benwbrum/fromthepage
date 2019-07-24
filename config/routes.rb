@@ -28,9 +28,9 @@ Fromthepage::Application.routes.draw do
   get   'landing_page', to: 'dashboard#landing_page', path: '/findaproject'
   get   'collections_list', to: 'dashboard#collections_list', path: '/collections'
 
-  get   '/iiif/:id/manifest', :to => 'iiif#manifest'
+  get   '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get   '/iiif/:id/layer/:type', :to => 'iiif#layer'
-  get   '/iiif/collection/:collection_id', :to => 'iiif#collection'
+  get   '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
   get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
   get   '/iiif/:page_id/notes', :to => 'iiif#notes'
   get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
@@ -61,6 +61,8 @@ Fromthepage::Application.routes.draw do
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
+  get   'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
+  patch 'admin/expunge_user', :to => 'admin#expunge_user'
 
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"

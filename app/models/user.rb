@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_many :ia_works
   has_many :omeka_sites
   has_many :visits
+  has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
   has_and_belongs_to_many(:scribe_works,
@@ -177,6 +178,15 @@ class User < ActiveRecord::Base
 
   def normalize_friendly_id(string)
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
+  end
+
+  def expunge
+    self.notes.each { |note| note.destroy }
+    self.page_versions.each { |version| version.expunge }
+    self.article_versions.each { |version| version.expunge }
+    self.deeds.each { |deed| deed.destroy }
+    self.destroy!  #need to decide whether to truly delete users or not
+    self.flags.each { |flag| flag.revert_content! }
   end
 
   def soft_delete

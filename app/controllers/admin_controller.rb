@@ -6,7 +6,7 @@ class AdminController < ApplicationController
   PAGES_PER_SCREEN = 20
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:edit_user, :update_user, :new_owner, :expunge_confirmation, :expunge_user]
 
   def authorized?
     unless user_signed_in? && current_user.admin
@@ -91,12 +91,58 @@ class AdminController < ApplicationController
     redirect_to :action => 'user_list'
   end
 
+  def expunge_confirmation
+  end
+
+  def expunge_user
+    @user.expunge
+    flash[:notice] = "User #{@user.display_name} has been expunged"
+    if params[:flag_id]
+      ajax_redirect_to :action => 'revert_flag', :flag_id => params[:flag_id]
+    else
+      ajax_redirect_to :action => 'user_list'  # what if we came from the flag list?  TODO
+    end
+  end
+
+
+  def flag_list
+    @flags = Flag.where(:status => Flag::Status::UNCONFIRMED).order(:content_at => :desc).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+  end
+
+  def revert_flag
+    # find the flag
+    flag = Flag.find(params[:flag_id])
+    # revert the content
+    flag.revert_content!
+    # redirect to flag list at the appropriate page
+    redirect_to :action => 'flag_list', :page => params[:page]
+  end
+
+  def ok_flag
+    # find the flag
+    flag = Flag.find(params[:flag_id])
+    # revert the content
+    flag.mark_ok!
+    # redirect to flag list at the appropriate page
+    redirect_to :action => 'flag_list', :page => params[:page]
+  end
+
   def tail_logfile
     @lines = params[:lines].to_i
     development_logfile = "#{Rails.root}/log/development.log"
     production_logfile = "#{Rails.root}/log/production.log"
     @dev_tail = `tail -#{@lines} #{development_logfile}`
     @prod_tail = `tail -#{@lines} #{production_logfile}`
+  end
+
+  def autoflag
+    flash[:notice] = "Looking for additional content to flag.  Revisit this page in a few minutes."
+
+    cmd = "rake fromthepage:flag_abuse &"
+    logger.info(cmd)
+    system(cmd)
+
+    redirect_to :action => 'flag_list', :page => params[:page]
   end
 
   def uploads
@@ -137,11 +183,11 @@ class AdminController < ApplicationController
 
   def page_list
     @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
-
   end
 
   def settings
     @email_text = PageBlock.find_by(view: "new_owner").html
+    @flag_blacklist = PageBlock.find_by(view: "flag_blacklist").html
   end
 
   def update
@@ -149,6 +195,12 @@ class AdminController < ApplicationController
     block = PageBlock.find_by(view: "new_owner")
     if params[:admin][:welcome_text] != block.html
       block.html = params[:admin][:welcome_text]
+      block.save!
+    end
+
+    block = PageBlock.find_by(view: "flag_blacklist")
+    if params[:admin][:flag_blacklist] != block.html
+      block.html = params[:admin][:flag_blacklist]
       block.save!
     end
 
