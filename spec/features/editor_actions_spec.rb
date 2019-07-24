@@ -398,5 +398,32 @@ describe "editor actions" , :order => :defined do
       click_link("Start Transcribing")
       expect(page).to have_selector("#page_source_text")
     end
+
+
+    it "adds an abusive note" do
+      flag_count = Flag.count
+      visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+      fill_in 'Write a new note...', with: "Visit <a href=\"www.spam.com\">our store!</a>"
+      find('#save_note_button').click
+      expect(page).to have_content "Note has been created"
+      expect(Flag.count).to eq(flag_count + 1)
+    end
+
+    it "adds an abusive transcript" do
+      flag_count = Flag.count
+      visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
+      page.fill_in 'page_source_text', with: "Visit <a href=\"www.spam.com\">our store!</a>"
+      find('#save_button_top').click
+      expect(Flag.count).to eq(flag_count + 1)
+    end
+
+    it "adds an abusive translation" do
+      flag_count = Flag.count
+      visit collection_translate_page_path(@collection.owner, @collection, @page.work, @page)
+      page.fill_in 'page_source_translation', with: "Visit <a href=\"www.spam.com\">our store!</a>"
+      find('#save_button_top').click
+      expect(Flag.count).to eq(flag_count + 1)
+    end
+
   end
 end

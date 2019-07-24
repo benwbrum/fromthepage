@@ -31,8 +31,8 @@
                 -action = page_params(page)
               -else
                 -action = page_params(page)
-              
-              -if page.status == 'blank'
+
+              -if page.status == Page::STATUS_BLANK
                 p.nodata_text =="This page is blank"
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
@@ -66,4 +66,3 @@
                 -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
                 =="Last edit #{edit_time} ago by #{user_link}"
-      

@@ -29,14 +29,14 @@
 
       .toolbar_group.w100.aright
         =f.label 'mark_blank', 'Mark as blank'
-        -if @page.status == 'blank'
+        -if @page.status == Page::STATUS_BLANK
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
 
       .toolbar_group.w100.aright
         =f.label 'needs_review', 'Needs Review'
-        -if @page.status == 'review'
+        -if @page.status == Page::STATUS_NEEDS_REVIEW
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
@@ -44,7 +44,7 @@
       .toolbar_group.w100.aright
         =button_tag 'Save Changes', :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
-  -if @page.status == 'review'
+  -if @page.status == Page::STATUS_NEEDS_REVIEW
     .page-review
       |This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
 
@@ -59,9 +59,9 @@
           =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
         -else
           =render :partial => '/shared/zoom_div'
-          
+
     div class=(!@collection.field_based ? 'page-column' : 'page-column fieldarea')
-      -if @page.status == 'blank'
+      -if @page.status == Page::STATUS_BLANK
         .centered
           .centered_content
             p.nodata_text=="This page is marked blank"
@@ -94,7 +94,7 @@
             =f.label :source_text, 'Edit transcription', class: 'hidden'
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
-  
+
   .page-toolbar.mt-10
     .toolbar.aright
       =button_tag 'Save Changes', :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
