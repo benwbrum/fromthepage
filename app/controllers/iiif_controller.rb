@@ -354,6 +354,7 @@ private
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_transcription_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
       annotation.resource["format"] =  "text/html"
       annotation.resource["chars"] = xml_to_html @page.xml_text
+      annotation.resource["annotatedBy"] = @page.contributors(page_id)
     when 'translation'
       unless page.source_translation.blank?
         #annotation = IIIF::Presentation::Annotation.new
