@@ -21,7 +21,7 @@ class DocumentSet < ActiveRecord::Base
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
   end
-  
+
   def intro_block
     self.description
   end
