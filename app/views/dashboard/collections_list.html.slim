@@ -4,7 +4,7 @@
 h1 Collections
 .columns
   article.maincol
-    =render partial: 'alphabetical_collections_and_document_sets', locals: { collections_and_document_sets: @collections_and_document_sets }
+    =render partial: 'alphabetical_collections_and_document_sets', collection: @collections, as: :collection
   aside.sidecol
     h2 Recent Activity
     =deeds_for()

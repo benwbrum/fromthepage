@@ -46,9 +46,7 @@ class DashboardController < ApplicationController
   end
 
   def collections_list
-    collections = Collection.includes(:owner).distinct
-    document_sets = DocumentSet.includes(:owner).distinct
-    @collections_and_document_sets = (collections + document_sets).sort { |a,b| a.title <=> b.title }
+    @collections = Collection.all
   end
 
   #Owner Dashboard - start project
