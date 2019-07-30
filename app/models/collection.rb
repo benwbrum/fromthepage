@@ -162,6 +162,19 @@ class Collection < ActiveRecord::Base
     self.works.joins(:work_statistic).where('work_statistics.total_pages > work_statistics.transcribed_pages').exists?
   end
 
+  def enable_ocr
+    self.works.each do |w| 
+      w.ocr_correction = true
+      w.save!
+    end
+  end
+  def disable_ocr
+    self.works.each do |w| 
+      w.ocr_correction = false
+      w.save!
+    end
+  end
+
   #constant
   LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
  ['አማርኛ', 'am', ['am-ET']],
