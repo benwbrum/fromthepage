@@ -37,7 +37,7 @@
             p.settings <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
-            =f.label :pages_are_meaningful
+            =f.label :pages_are_meaningful, 'Pages Are Meaningful'
         
         tr
           th.hidden Supports Translation
@@ -45,7 +45,14 @@
             p.settings <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
             =f.check_box :supports_translation, value: @work.supports_translation
             |&nbsp;
-            =f.label :supports_translation
+            =f.label :supports_translation, "Support Translation"
+        tr
+          th.hidden OCR Correction Enabled
+          td
+            p.settings <b>OCR Correction Enabled</b>: A work may begin with OCR text that needs to be corrected.  When checked, the Transcribe tab will be replaced by a Correct tab.
+            =f.check_box :ocr_correction, value: @work.ocr_correction
+            |&nbsp;
+            =f.label :ocr_correction, 'Enable OCR Correction'
         tr
           td(colspan="2")
             =f.label :description, class: 'above'
