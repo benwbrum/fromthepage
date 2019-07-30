@@ -284,6 +284,41 @@ describe "collection spec (isolated)" do
       expect(page).to have_content("All works are fully transcribed.")
   end
 
+  context 'Collection Settings' do
+    before :all do
+      @owner = User.find_by(login: OWNER)
+    end
+    before :each do
+      login_as(@owner, :scope => :user)
+      DatabaseCleaner.start
+    end
+    after :each do
+      DatabaseCleaner.clean
+    end
+
+    let(:work_ocr){ create(:work, ocr_correction: true) }
+    let(:work_no_ocr){ create(:work, ocr_correction: false) }
+    let(:collection_ocr){ create(:collection, owner: @owner, works: [work_ocr, work_no_ocr]) }
+
+    it 'shows OCR section' do
+      visit edit_collection_path(@owner, collection_ocr)
+      expect(page).to have_content(collection_ocr.title)
+      expect(page).to have_content("OCR Correction")
+    end
+    it 'enables ocr' do
+      visit edit_collection_path(@owner, collection_ocr)
+      expect(page).to have_content(collection_ocr.title)
+      click_link('Enable OCR')
+      expect(page).to have_content("OCR correction has been enabled for all works.")
+    end
+    it 'disables ocr' do
+      visit edit_collection_path(@owner, collection_ocr)
+      expect(page).to have_content(collection_ocr.title)
+      click_link('Disable OCR')
+      expect(page).to have_content("OCR correction has been disabled for all works.")
+    end
+  end
+
   after :all do
     @factory_owner.collections.each do |c|
         c.destroy
