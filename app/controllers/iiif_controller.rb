@@ -578,6 +578,7 @@ private
     add_related_to_canvas(canvas, page)
     add_seeAlso_to_canvas(canvas, page)
     add_services_to_canvas(canvas, page)
+    add_annotations_to_canvas(canvas, page)
 
     canvas     
   end
