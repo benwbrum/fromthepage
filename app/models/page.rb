@@ -358,10 +358,10 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     end
   end
 
-  def contributors(page_id)
+  def contributors
     users = []
 
-    page = Page.find(page_id)
+    page = self
 
     page.page_versions.each do |page|
       user = { name: page.user.display_name }
