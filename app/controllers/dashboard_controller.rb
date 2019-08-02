@@ -49,7 +49,7 @@ class DashboardController < ApplicationController
     if user_signed_in?
       @collections = Collection.by_user(current_user) + DocumentSet.by_user(current_user)
     else
-      @collections = Collection.where(restricted: false) + DocumentSet.where(restricted: false)
+      @collections = Collection.where(restricted: false) + DocumentSet.where(is_public: true)
     end
   end
 
