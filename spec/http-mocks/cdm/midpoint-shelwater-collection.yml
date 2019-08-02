@@ -1,0 +1,631 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 02 Aug 2019 16:05:50 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Last-Modified:
+      - Tue, 02 Jul 2019 10:02:29 GMT
+      Etag:
+      - '"c4eb-58cafd7b71c4c-gzip"'
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Fri, 02 Aug 2019 16:05:50 GMT
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '2409'
+      Content-Type:
+      - application/json
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection","manifests":[{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/5/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/14/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter,  1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/20/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/31/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/36/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1942 November 23,"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/39/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1942 Nov"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/46/manifest.json","label":"Letter
+        with envelope from, Virginia Shewalter to John and Mabel Shewalter and F"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/49/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1942 November 30"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/60/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/65/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1942 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/70/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/80/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/87/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/89/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1942 December 31"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/97/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/101/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 January 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/107/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/112/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/115/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/120/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 January 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/126/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/131/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/140/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/147/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/152/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/155/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/161/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/165/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/169/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/173/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/176/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 April 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/180/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/182/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 May 7"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/188/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/192/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/197/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/200/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 June 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/206/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/210/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/213/manifest.json","label":"Postcard
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 July 5"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/221/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/226/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/230/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/234/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/238/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/244/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/249/manifest.json","label":"Postcard
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 August 24"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/251/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1943 Sep"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/254/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/260/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/268/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/271/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/279/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/282/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John Shewalter, 1943 October 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/287/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/290/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/293/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/299/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/302/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/305/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/308/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/311/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/314/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/317/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 November 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/319/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 November 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/322/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/325/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/328/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/331/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/334/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/337/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John Shewalter, 1943 December 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/341/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/343/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 December 3"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/346/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/349/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/352/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/356/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/359/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/364/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/367/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/370/manifest.json","label":"Letter
+        Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/373/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/378/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/382/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/385/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/388/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/391/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/395/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 January 23"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/398/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/401/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/409/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/413/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/417/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/445/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/448/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/452/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/455/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/457/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 March 9"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/461/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/470/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/474/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/477/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Gr"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/483/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Aunt Laura and all,  1944 April"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/491/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 April 18"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/499/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/503/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/506/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/513/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 May"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/520/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/523/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 Jun"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/526/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John Shewalter, 1944 July 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/529/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/532/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/536/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/549/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 Jul"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/551/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 July 27"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/563/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/570/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 Aug"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/576/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 August 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/580/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/584/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/589/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1944 September 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/597/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/601/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/604/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 October 26"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/613/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/617/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/620/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/623/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/630/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/634/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/641/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/645/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/650/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/654/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 January 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/657/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1945 February 7"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/662/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1945 February 12"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/665/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 February 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/667/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 March 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/672/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/677/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/686/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 May 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/689/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 May 13"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/693/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1945 May 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/696/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 May 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/700/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John Shewalter, 1945 June 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/704/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 June 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/708/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 June 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/712/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 June 29"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/715/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Gr"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/720/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/725/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/733/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter and Grandma, 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/737/manifest.json","label":"Letter
+        from Virginia Shewalter to John Shewalter, 1945 August 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/745/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/750/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/758/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter and Folks, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/760/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, July 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/766/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/769/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/772/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/775/manifest.json","label":"Postcard
+        from Virginia Shewalter to Roberta Shewalter, 1942 November 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/785/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1942 Novembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/789/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1942 Novembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/796/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1942 Decembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/800/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/804/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/808/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/812/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/816/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/822/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 March 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/827/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 March 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/833/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1943 May 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/836/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Septemb"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/838/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1943 October 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/843/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/852/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/855/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/857/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1943 November 18"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/859/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1943 November 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/862/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Decembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/864/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1944 February 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/868/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/871/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 March 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/874/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 March 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/877/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 April 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/879/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1944 April 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/887/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 June 12"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/890/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 June 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/896/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 July 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/898/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 July 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/902/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 Septemb"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/905/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 October 6"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/909/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 Novembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/916/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 November 15"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/923/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/928/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/930/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 February 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/934/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 February 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/941/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 March 29"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/944/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 May 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/947/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 May 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/950/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 May 30"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/952/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 5"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/955/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/958/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 15"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/960/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/962/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 30"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/964/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 July 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/968/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/972/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 7"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/976/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 21"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/978/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 July 23"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/983/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 31"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/986/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 August 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/990/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 August 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/993/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/996/manifest.json","label":"Postcard
+        from Virginia Shewalter to Roberta Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/999/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 July 21"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1005/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1942 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1009/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 September"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1012/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 October 9"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1015/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 October 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1019/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 October 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1022/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1024/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1943 November 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1026/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1943 November 13"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1029/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1033/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1036/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1038/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1943 December 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1042/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1045/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1048/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1053/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 February"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1057/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 February"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1063/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 March 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1065/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1944 March 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1070/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 April 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1074/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 April 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1077/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1080/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 May 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1084/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 June 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1092/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 July 3"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1095/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 July 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1098/manifest.json","label":"Letter
+        from Virginia Shewalter to Betty Shewalter, 1944 July 29"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1115/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 August 24"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1121/manifest.json","label":"Letter
+        with envelope Virginia Shewalter to Betty Shewalter, 1944 September 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1130/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1135/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1139/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 June 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1144/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 June 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1148/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 July 27"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1154/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 September"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1159/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mary Roudebush, 1942 December 9"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1163/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Mary Roudebush, 1944 February 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1168/manifest.json","label":"V-mail
+        from Virginia Shewalter to Mary Roudebush, 1944 December 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1173/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mary Roudebush, 1945 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1181/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1185/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1190/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 April 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1197/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 May"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1200/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1944 May 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1204/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1212/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 March 5"}],"total":266}'
+    http_version: 
+  recorded_at: Fri, 02 Aug 2019 16:05:50 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 02 Aug 2019 16:05:50 GMT
+      Server:
+      - Apache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Last-Modified:
+      - Tue, 02 Jul 2019 10:02:29 GMT
+      Etag:
+      - '"c4eb-58cafd7b71c4c-gzip"'
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Fri, 02 Aug 2019 16:05:50 GMT
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '2409'
+      Content-Type:
+      - application/json
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection","manifests":[{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/5/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/14/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter,  1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/20/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/31/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/36/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1942 November 23,"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/39/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1942 Nov"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/46/manifest.json","label":"Letter
+        with envelope from, Virginia Shewalter to John and Mabel Shewalter and F"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/49/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1942 November 30"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/60/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/65/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1942 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/70/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/80/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/87/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/89/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1942 December 31"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/97/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/101/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 January 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/107/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/112/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/115/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/120/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 January 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/126/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/131/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/140/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/147/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/152/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/155/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/161/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/165/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/169/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/173/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/176/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 April 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/180/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/182/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 May 7"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/188/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/192/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/197/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/200/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 June 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/206/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/210/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/213/manifest.json","label":"Postcard
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 July 5"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/221/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/226/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/230/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/234/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/238/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/244/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/249/manifest.json","label":"Postcard
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 August 24"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/251/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1943 Sep"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/254/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/260/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/268/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/271/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/279/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/282/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John Shewalter, 1943 October 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/287/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/290/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/293/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/299/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/302/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/305/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/308/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/311/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/314/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/317/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 November 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/319/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 November 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/322/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/325/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/328/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/331/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/334/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/337/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John Shewalter, 1943 December 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/341/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1943 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/343/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1943 December 3"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/346/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/349/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/352/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/356/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/359/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/364/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/367/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/370/manifest.json","label":"Letter
+        Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/373/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1943"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/378/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/382/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/385/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/388/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/391/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/395/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 January 23"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/398/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/401/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/409/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/413/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/417/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/445/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/448/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/452/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/455/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/457/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 March 9"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/461/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/470/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/474/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/477/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Gr"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/483/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Aunt Laura and all,  1944 April"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/491/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 April 18"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/499/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/503/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/506/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/513/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 May"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/520/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/523/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 Jun"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/526/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John Shewalter, 1944 July 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/529/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/532/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/536/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/549/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 Jul"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/551/manifest.json","label":"V-mail
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 July 27"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/563/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/570/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 Aug"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/576/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 August 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/580/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/584/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/589/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1944 September 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/597/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/601/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/604/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1944 October 26"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/613/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/617/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/620/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/623/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/630/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1944"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/634/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/641/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/645/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/650/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/654/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 January 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/657/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1945 February 7"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/662/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1945 February 12"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/665/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 February 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/667/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 March 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/672/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/677/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/686/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 May 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/689/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 May 13"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/693/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, 1945 May 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/696/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 May 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/700/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John Shewalter, 1945 June 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/704/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 June 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/708/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 June 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/712/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1945 June 29"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/715/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Gr"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/720/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/725/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/733/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter and Grandma, 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/737/manifest.json","label":"Letter
+        from Virginia Shewalter to John Shewalter, 1945 August 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/745/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/750/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/758/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter and Folks, 1945"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/760/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter, July 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/766/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/769/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/772/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/775/manifest.json","label":"Postcard
+        from Virginia Shewalter to Roberta Shewalter, 1942 November 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/785/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1942 Novembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/789/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1942 Novembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/796/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1942 Decembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/800/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/804/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/808/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/812/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/816/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/822/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 March 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/827/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 March 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/833/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1943 May 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/836/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Septemb"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/838/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1943 October 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/843/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/852/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/855/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/857/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1943 November 18"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/859/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1943 November 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/862/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 Decembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/864/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1944 February 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/868/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/871/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 March 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/874/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 March 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/877/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 April 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/879/manifest.json","label":"V-mail
+        from Virginia Shewalter to Roberta Shewalter, 1944 April 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/887/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 June 12"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/890/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 June 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/896/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 July 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/898/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 July 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/902/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 Septemb"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/905/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 October 6"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/909/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1944 Novembe"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/916/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 November 15"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/923/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 January"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/928/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 Februar"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/930/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 February 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/934/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 February 28"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/941/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 March 29"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/944/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 May 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/947/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 May 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/950/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 May 30"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/952/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 5"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/955/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 14"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/958/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 15"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/960/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/962/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 June 30"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/964/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 July 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/968/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 4"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/972/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 7"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/976/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 21"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/978/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 July 23"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/983/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1945 July 31"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/986/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 August 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/990/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1945 August 20"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/993/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/996/manifest.json","label":"Postcard
+        from Virginia Shewalter to Roberta Shewalter"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/999/manifest.json","label":"Letter
+        from Virginia Shewalter to Roberta Shewalter, 1944 July 21"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1005/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1942 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1009/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 September"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1012/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 October 9"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1015/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 October 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1019/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 October 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1022/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1024/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1943 November 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1026/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1943 November 13"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1029/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1033/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1036/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1038/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1943 December 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1042/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1045/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1943 December"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1048/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 January 1"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1053/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 February"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1057/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 February"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1063/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 March 11"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1065/manifest.json","label":"V-mail
+        from Virginia Shewalter to Betty Shewalter, 1944 March 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1070/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 April 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1074/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 April 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1077/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1080/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 May 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1084/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 June 25"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1092/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 July 3"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1095/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 July 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1098/manifest.json","label":"Letter
+        from Virginia Shewalter to Betty Shewalter, 1944 July 29"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1115/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 August 24"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1121/manifest.json","label":"Letter
+        with envelope Virginia Shewalter to Betty Shewalter, 1944 September 10"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1130/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 November"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1135/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1139/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 June 2"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1144/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 June 19"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1148/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1945 July 27"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1154/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 September"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1159/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mary Roudebush, 1942 December 9"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1163/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Mary Roudebush, 1944 February 8"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1168/manifest.json","label":"V-mail
+        from Virginia Shewalter to Mary Roudebush, 1944 December 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1173/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mary Roudebush, 1945 April 22"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1181/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1185/manifest.json","label":"V-mail
+        with envelope from Virginia Shewalter to Roberta Shewalter, 1943 October"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1190/manifest.json","label":"Letter
+        from Virginia Shewalter to Mabel Shewalter, 1945 April 17"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1197/manifest.json","label":"Letter
+        from Virginia Shewalter to John and Mabel Shewalter and Family, 1944 May"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1200/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Mabel Shewalter, 1944 May 16"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1204/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter and Fa"},{"@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1212/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to Betty Shewalter, 1944 March 5"}],"total":266}'
+    http_version: 
+  recorded_at: Fri, 02 Aug 2019 16:05:50 GMT
+recorded_with: VCR 5.0.0
