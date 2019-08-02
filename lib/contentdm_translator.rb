@@ -181,13 +181,18 @@ module ContentdmTranslator
   end
 
   def self.cdm_url_to_iiif(url)
-    matches = url.match(/https?:\/\/(cdm\d+).*collection\/(\w+)\/id\/(\d+)/)
-    if matches
-      server = matches[1]
-      collection = matches[2]
-      record = matches[3]
-      
-      "https://#{server}.contentdm.oclc.org/digital/iiif-info/#{collection}/#{record}/manifest.json"
+    matches = url.match(/https?:\/\/(cdm\d+)(?:.*collection\/(\w+)(?:\/id\/(\d+))?)?/)
+    
+    server = matches[1]
+    collection = matches[2]
+    record = matches[3]
+    
+    if server && collection && record
+      "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
+    elsif server && collection
+      "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
+    elsif server
+      "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
     else
       raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
     end
