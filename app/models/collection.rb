@@ -66,6 +66,10 @@ class Collection < ActiveRecord::Base
     (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
+  def self.by_user(user)
+    Collection.includes(:owners).where(owner_user_id: user.id).joins(:collaborators)
+  end
+
   def create_categories
     #create two default categories
     category1 = Category.new(collection_id: self.id, title: "People")

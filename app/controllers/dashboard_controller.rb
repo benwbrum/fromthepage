@@ -46,7 +46,11 @@ class DashboardController < ApplicationController
   end
 
   def collections_list
-    @collections = Collection.all
+    if user_signed_in?
+      @collections = Collection.by_user(current_user) + DocumentSet.by_user(current_user)
+    else
+      @collections = Collection.where(restricted: false)
+    end
   end
 
   #Owner Dashboard - start project

@@ -21,6 +21,10 @@ class DocumentSet < ActiveRecord::Base
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
   end
+
+  def self.by_user(user)
+    DocumentSet.includes(:owner).where(owner_user_id: user.id).joins(:collaborators)
+  end
   
   def intro_block
     self.description
