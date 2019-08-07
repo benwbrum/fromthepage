@@ -61,7 +61,10 @@
 
 -if(@collection.nil? && !deed.collection.nil?)
   -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection), only_path: !mailer )
-  -output += " in #{collection} collection"
+  -if(deed.deed_type == DeedType::COLLECTION_JOINED)
+    -output += "joined #{collection}"
+  -else
+    -output += " in #{collection} collection"
 
 -if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
   -output += ", saying &ldquo;#{deed.note.title}&rdquo;"

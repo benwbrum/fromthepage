@@ -21,6 +21,7 @@ class DeedType
   WORK_ADDED = 'work_add'
   COLLECTION_ACTIVE = 'coll_act'
   COLLECTION_INACTIVE = 'coll_inact'
+  COLLECTION_JOINED = 'coll_join'
 
   # The TYPES hash houses all of the deed types and makes is easier to access
   # groups of deed types and also their human-readable names. Any new deed type
@@ -39,8 +40,9 @@ class DeedType
     TRANSLATION_REVIEW => 'Translation Page Needs Review',
     TRANSLATION_INDEXED => 'Translation Page Indexed',
     WORK_ADDED => 'Work Added',
-    COLLECTION_ACTIVE => 'coll_act',
-    COLLECTION_INACTIVE => 'coll_inact'
+    COLLECTION_ACTIVE => 'Collection Active',
+    COLLECTION_INACTIVE => 'Collection Inactive',
+    COLLECTION_JOINED => 'Collection Joined'
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
