@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'Ahoy' do
+
   before :each do
     DatabaseCleaner.start
   end
@@ -9,7 +10,7 @@ describe 'Ahoy' do
   end
 
   it 'logs a visit' do
-    visit count = Visit.count
+    count = Visit.count
     visit root_path
     expect(Visit.count).to eq(count + 1)
   end
