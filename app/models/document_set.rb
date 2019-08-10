@@ -21,7 +21,7 @@ class DocumentSet < ActiveRecord::Base
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
   end
-  
+
   def intro_block
     self.description
   end
@@ -103,7 +103,7 @@ class DocumentSet < ActiveRecord::Base
   end
   
   def has_untranscribed_pages?
-    self.works.any? { |w| w.has_untranscribed_pages? }
+    self.works.joins(:work_statistic).where('work_statistics.total_pages > work_statistics.transcribed_pages').exists?
   end
 
   def slug_candidates

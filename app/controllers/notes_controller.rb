@@ -1,5 +1,5 @@
 class NotesController < ApplicationController
-
+  include ActionView::Helpers::TextHelper
   def create
     @note = Note.new(params[:note])
     # truncate the body for the title
@@ -32,7 +32,9 @@ class NotesController < ApplicationController
     @note = Note.find(params[:id])
     respond_to do |format|
       if @note.update_attributes(params[:note])
-        format.json { head :no_content }
+        note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
+        
+        format.json { render json: { html: simple_format(note_body) }, status: :ok }
         format.html { redirect_to :back, notice: "Note has been updated" }
       else
         format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }

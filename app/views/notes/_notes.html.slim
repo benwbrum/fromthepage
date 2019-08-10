@@ -45,11 +45,11 @@
             $(content).hide().insertBefore($container).fadeIn();
             $('[data-note-empty]').hide();
             this.reset();
-          } else if(xhr.status === 204) {
+          } else if(xhr.status === 200) {
             // Note updated
-            var content = $('textarea', this).val();
+            var content = xhr.responseJSON.html;
             $container.removeClass('edit');
-            $('.user-bubble_content > p', $container).text(content);
+            $('.user-bubble_note', $container).html(content);
           } else {
             // Error occurred
             var message = xhr.responseJSON.join('. ');
