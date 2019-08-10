@@ -3,14 +3,14 @@
 =form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors
-  
+
   .page-toolbar
     .toolbar
       .toolbar_group
           button#toggleImage.button.outline type="button" Show Image
       .toolbar_group.w100.aright
         =f.label 'mark_blank', 'Mark as blank'
-        -if @page.status == 'blank'
+        -if @page.status == Page::STATUS_BLANK
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
@@ -104,7 +104,7 @@ h2.legend Page Notes
     $(function(){
       var fromImage = JSON.parse("#{@fromImage}") || false;
       updateDisplay(fromImage);
-      
+
       $('#page_needs_review').click(function(){
         $('#page_mark_blank').prop('checked', false);
       });
@@ -115,7 +115,7 @@ h2.legend Page Notes
 
       $('#toggleImage').click(function(){
         fromImage = !fromImage;
-        
+
         updateDisplay(fromImage)
         Cookies.set('fromImage', fromImage, { expires: 365, path: '/' });
       });
@@ -123,9 +123,8 @@ h2.legend Page Notes
       function updateDisplay(){
         $('.page-imagescan').toggle(fromImage);
         $('.page-preview').toggle(!fromImage);
-        
+
         var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
         $('#toggleImage').html(buttonText);
       }
     });
-
