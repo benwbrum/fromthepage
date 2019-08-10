@@ -48,8 +48,8 @@ class DashboardController < ApplicationController
   def collections_list
     collections_and_document_sets = []
 
-    collections = Collection.includes(:owner).distinct
-    document_sets = DocumentSet.includes(:owner).distinct
+    collections = Collection.includes(:owner).preload(:owner).distinct
+    document_sets = DocumentSet.includes(:owner).preload(:owner).distinct
 
     if user_signed_in?
       (collections + document_sets).each do |collection|
@@ -58,7 +58,7 @@ class DashboardController < ApplicationController
         collections_and_document_sets << collection if current_user.collaborator?(collection)
       end
     else
-      collections_and_document_sets = Collection.where(restricted: false) + DocumentSet.where(is_public: true)
+      collections_and_document_sets = Collection.joins(:owner).preload(:owner).where(restricted: false) + DocumentSet.joins(:owner).preload(:owner).where(is_public: true)
     end
 
     @collections_and_document_sets = collections_and_document_sets.sort { |a,b| a.title <=> b.title }
