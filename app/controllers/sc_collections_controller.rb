@@ -15,7 +15,7 @@ class ScCollectionsController < ApplicationController
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
       flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
-      redirect_to :action => :import, :at_id => at_id      
+      redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
     rescue => e
       flash[:error] = e.message
       redirect_to :back
@@ -62,7 +62,12 @@ class ScCollectionsController < ApplicationController
       render 'explore_manifest', at_id: at_id
     end
     rescue => e
-      flash[:error] = "Please enter a valid IIIF manifest URL."
+      case params[:source]
+      when 'contentdm'
+        flash[:error] = "No IIIF manifest exists for CONTETNdm item #{params[:source_url]}"
+      else
+        flash[:error] = "Please enter a valid IIIF manifest URL."
+      end
       redirect_to :back
     end
 

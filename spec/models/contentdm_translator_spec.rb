@@ -9,7 +9,7 @@ RSpec.describe ContentdmTranslator do
         let(:repository_url){ 'https://cdm123.contentdm.oclc.org/' }
 
         it "returns a message for a bad URL" do
-            expect { ContentdmTranslator.cdm_url_to_iiif('BadUrl') }.to raise_error
+            expect { ContentdmTranslator.cdm_url_to_iiif('BadUrl') }.to raise_error StandardError
         end
         it "returns an good iiif url for an item" do
             url = ContentdmTranslator.cdm_url_to_iiif(item_url)
