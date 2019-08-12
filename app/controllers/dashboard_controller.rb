@@ -53,9 +53,13 @@ class DashboardController < ApplicationController
 
     if user_signed_in?
       (collections + document_sets).each do |collection|
-        collections_and_document_sets << collection if !collection.restricted && collection.works.present?
-        collections_and_document_sets << collection if current_user.like_owner?(collection)
-        collections_and_document_sets << collection if current_user.collaborator?(collection)
+        if !collection.restricted && collection.works.present?
+          collections_and_document_sets << collection
+        elsif current_user.collaborator?(collection)
+          collections_and_document_sets << collection
+        elsif current_user.like_owner?(collection)
+          collections_and_document_sets << collection
+        end 
       end
     else
       collections_and_document_sets = Collection.joins(:owner).preload(:owner).where(restricted: false) + DocumentSet.joins(:owner).preload(:owner).where(is_public: true)
