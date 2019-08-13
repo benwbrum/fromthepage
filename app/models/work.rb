@@ -29,6 +29,7 @@ class Work < ActiveRecord::Base
                   :location_of_composition,
                   :transcription_conventions,
                   :supports_translation,
+                  :ocr_correction,
                   :translation_instructions,
                   :scribes_can_edit_titles,
                   :restrict_scribes,
