@@ -30,7 +30,7 @@ table.datagrid
     th #{@header}
     th Review
     th.w100 Progress
-    th(colspan="3") Export As
+    th(colspan="4") Export As
 
   -for work in @works
     -work_stats(work)
@@ -66,6 +66,10 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span TEI
       td.nowrap
+        =link_to iiif_manifest_path(work.id)
+          =svg_symbol '#icon-export', class: 'icon'
+          span IIIF
+      td.nowrap
         -unless work.table_cells.blank?
           =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
             =svg_symbol '#icon-export', class: 'icon'
@@ -93,9 +97,14 @@ table.datagrid
 
 h2 API
 p
-  'We also have an API for programmatically exporting transcripts for your collections. Learn more
+  'We also have a IIIF-based API for programmatically exporting transcripts from your collections. Learn more
   =link_to('here', 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')
   '.
+
+p
+  'IIIF Collection API Endpoint:
+  =link_to iiif_collection_path(@collection.id, only_path: false)
+  '
 
 =render({ :partial => '/shared/collection_footer' })
 

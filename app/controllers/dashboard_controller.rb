@@ -46,9 +46,26 @@ class DashboardController < ApplicationController
   end
 
   def collections_list
-    collections = Collection.includes(:owner).distinct
-    document_sets = DocumentSet.includes(:owner).distinct
-    @collections_and_document_sets = (collections + document_sets).sort { |a,b| a.title <=> b.title }
+    collections_and_document_sets = []
+
+    collections = Collection.includes(:owner).preload(:owner).distinct
+    document_sets = DocumentSet.includes(:owner).preload(:owner).distinct
+
+    if user_signed_in?
+      (collections + document_sets).each do |collection|
+        if !collection.restricted && collection.works.present?
+          collections_and_document_sets << collection
+        elsif current_user.collaborator?(collection)
+          collections_and_document_sets << collection
+        elsif current_user.like_owner?(collection)
+          collections_and_document_sets << collection
+        end 
+      end
+    else
+      collections_and_document_sets = Collection.joins(:owner).preload(:owner).where(restricted: false) + DocumentSet.joins(:owner).preload(:owner).where(is_public: true)
+    end
+
+    @collections_and_document_sets = collections_and_document_sets.sort { |a,b| a.title <=> b.title }
   end
 
   #Owner Dashboard - start project

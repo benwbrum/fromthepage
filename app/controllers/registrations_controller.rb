@@ -53,7 +53,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   #redirect new sign up back to starting page
   def after_sign_up_path_for(resource)
-    session[:user_return_to] || root_path
+    if @user.owner
+      # Always send new owners to their dashboard for analytics purposes
+      "#{dashboard_owner_path}#freetrial" 
+    else
+      # New users should be returned to where they were or to their dashboard/watchlist
+      session[:user_return_to] || dashboard_watchlist_path
+    end
   end
 
   def after_update_path_for(resource)

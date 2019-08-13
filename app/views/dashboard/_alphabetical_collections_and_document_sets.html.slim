@@ -1,19 +1,17 @@
 
     .collections
-      -collections_and_document_sets.each do |cds|
-        -if cds.show_to?(current_user)
-          -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
-          -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner)
-          .collection
-            -unless cds.picture.blank?
-              .collection_image
-                =image_tag(cds.picture_url(:thumb), alt: cds.title)
-            .collection_details
-              h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
-              -if cds.has_untranscribed_pages?
-                p
-                  =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
-              -unless snippet.empty?
-                p.collection_snippet =snippet
-              .collection_summary
-                span =="Owned by #{owner_link}"
+      -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
+      -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner) unless cds.owner.nil?
+      .collection
+        -unless cds.picture.blank?
+          .collection_image
+            =image_tag(cds.picture_url(:thumb), alt: cds.title)
+        .collection_details
+          h4.collection_title =link_to cds.title, collection_path(cds.owner, cds) unless cds.owner.nil?
+          -if cds.has_untranscribed_pages?
+            p
+              =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
+          -unless snippet.empty?
+            p.collection_snippet =snippet
+          .collection_summary
+            span =="Owned by #{owner_link}"

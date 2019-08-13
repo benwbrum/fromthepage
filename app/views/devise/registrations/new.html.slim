@@ -22,6 +22,9 @@ section.signon
     .signon_field
       =f.label :display_name
       =f.text_field :display_name
+    .signon_field
+      =f.hidden_field :owner
+      =f.hidden_field :paid_date
     -if RECAPTCHA_ENABLED
       .signon_field
         =recaptcha_tags

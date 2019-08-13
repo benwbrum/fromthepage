@@ -43,7 +43,7 @@ section.user-profile
     -if any_public_collections_with_document_sets?(collections_and_document_sets)
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', locals: {collections_and_document_sets: collections_and_document_sets}
     -else
-      =render partial: '/dashboard/alphabetical_collections_and_document_sets', locals: {collections_and_document_sets: collections_and_document_sets}
+      =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     
   aside.sidecol
     h2 Recent Activity

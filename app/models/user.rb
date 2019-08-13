@@ -96,7 +96,11 @@ class User < ActiveRecord::Base
   end
 
   def collaborator?(obj)
-    obj.collaborators.include?(self)
+    if obj.is_a? DocumentSet
+      obj.collection.collaborators.include?(self) || obj.collaborators.include?(self)
+    else
+      obj.collaborators.include?(self)
+    end
   end
 
   def like_owner?(obj)

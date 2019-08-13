@@ -112,7 +112,7 @@ class IiifController < ApplicationController
 
   def manifest
     work_id =  params[:id]
-    work = Work.find work_id
+    work = Work.where(id: work_id).first
     seed = {
               '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}),
               'label' => work.title
@@ -354,6 +354,7 @@ private
       annotation.resource = IIIF::Presentation::Resource.new({'@id' => "#{collection_annotation_page_transcription_html_url(@work.owner, @collection, @work, @page)}", '@type' => "cnt:ContentAsText"})
       annotation.resource["format"] =  "text/html"
       annotation.resource["chars"] = xml_to_html @page.xml_text
+      annotation.resource["annotatedBy"] = @page.contributors
     when 'translation'
       unless page.source_translation.blank?
         #annotation = IIIF::Presentation::Annotation.new
@@ -399,7 +400,7 @@ private
       elsif page.ia_leaf
         sequence.canvases << canvas_from_ia_page(page)        
       else
-        sequence.canvases << canvas_from_page(page)
+        sequence.canvases << canvas_from_page(page) unless canvas_from_page(page).nil?
       end
     end
     sequence
@@ -562,23 +563,26 @@ private
   end
 
   def canvas_from_page(page)
-    canvas = IIIF::Presentation::Canvas.new
-    canvas.label = page.title
-    canvas.width = page.base_width
-    canvas.height = page.base_height
-    canvas['@id'] = canvas_id_from_page(page)
+    unless page.base_width.nil? || page.base_height.nil?
+      canvas = IIIF::Presentation::Canvas.new
+      canvas.label = page.title
+      canvas.width = page.base_width
+      canvas.height = page.base_height
+      canvas['@id'] = canvas_id_from_page(page)
 
-    annotation = IIIF::Presentation::Annotation.new
-    annotation.resource = iiif_create_image_resource(page)
-    annotation['on'] = canvas['@id']
-    annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
-    canvas.images << annotation
+      annotation = IIIF::Presentation::Annotation.new
+      annotation.resource = iiif_create_image_resource(page)
+      annotation['on'] = canvas['@id']
+      annotation['@id'] = "#{url_for(:root)}image-service/#{page.id}"
+      canvas.images << annotation
 
-    add_related_to_canvas(canvas, page)
-    add_seeAlso_to_canvas(canvas, page)
-    add_services_to_canvas(canvas, page)
+      add_related_to_canvas(canvas, page)
+      add_seeAlso_to_canvas(canvas, page)
+      add_services_to_canvas(canvas, page)
+      add_annotations_to_canvas(canvas, page)
 
-    canvas     
+      canvas
+    end
   end
 
   def add_annotations_to_canvas(canvas,page)
