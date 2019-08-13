@@ -268,7 +268,6 @@ end
 
 
   def track_action
-    ahoy.track_visit
     extras = {}
     extras[:collection_id] = @collection.id if @collection
     extras[:collection_title] = @collection.title if @collection
