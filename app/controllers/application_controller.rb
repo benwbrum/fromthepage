@@ -143,6 +143,8 @@ class ApplicationController < ActionController::Base
 
     if @collection
       redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
+    else
+      redirect_to "/404"
     end
 
     return
