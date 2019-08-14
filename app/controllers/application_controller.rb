@@ -140,11 +140,11 @@ class ApplicationController < ActionController::Base
 
   def bad_record_id
     logger.error("Bad record ID exception for params=#{params.inspect}")
-    if @collection 
+
+    if @collection
       redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
-    else
-      redirect_to :controller => 'dashboard', :action => 'index'
     end
+
     return
   end
 
