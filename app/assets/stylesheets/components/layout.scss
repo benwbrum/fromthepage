@@ -49,38 +49,35 @@
 }
 
 .footer {
-  left: 0;
+  display: flex;
+  box-sizing: border-box;
+  position: absolute;
   bottom: 0;
   width: 100%;
   color: $footerFg;
-  text-align: left;
   padding: $gapSize;
-  position: absolute;
-  vertical-align: top;
-  display: inline-block;
   background: $footerBg;
-  height: $footerHeight;
-  box-sizing: border-box;
-  &_copyright {
-    position: absolute;
-    bottom: $gapSize;
-    left: $gapSize;
-  }
-  &_nav {
-    width: 200px;
-    float: right;
-    a {
-      text-decoration: none !important;
-      display: block;
-      font-size: $fontSizeBig;
-      line-height: 30px;
-    }
-  }
-  a {
-    color: inherit;
-    text-decoration: underline;
-    &:hover { color: lighten($footerFg, 20); }
-  }
+}
+
+.footer ul {
+  margin: 0;
+  padding: 0;
+}
+
+.footer_nav li {
+  margin-right: 0.4em;
+  display: inline;
+}
+
+.footer_copyright {
+  flex: auto;
+  text-align: right;
+}
+
+.footer_nav li a, .footer_copyright a {
+  color: inherit;
+  text-decoration: underline;
+  &:hover { color: lighten($footerFg, 20); }
 }
 
 .wrapper {
