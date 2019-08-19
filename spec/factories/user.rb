@@ -5,5 +5,13 @@ FactoryBot.define do
     sequence(:email) { |n| "user_#{n}@sample.com" }
     password { 'password' }
     password_confirmation { 'password' }
+  
+    factory :owner do
+      owner { true }
+    end
+
+    factory :admin do
+      admin { true }
+    end
   end
 end

@@ -51,29 +51,33 @@ class CollectionController < ApplicationController
   end
 
   def show
-    if @collection.restricted
-      ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
-    end
+    unless @collection.nil?
+      if @collection.restricted
+        ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
+      end
 
-    if params[:search]
-      @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-    elsif (params[:works] == 'untranscribed')
-      ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
-      @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
-    #show all works
-    elsif (params[:works] == 'show')
-      @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-    #hide incomplete works
-    elsif params[:works] == 'hide' || (@collection.hide_completed)
-      #find ids of completed translation works
-      translation_ids = @collection.works.incomplete_translation.pluck(:id)
-      #find ids of completed transcription works
-      transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
-      #combine ids anduse to get works that aren't complete
-      ids = translation_ids + transcription_ids
-      @works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+      if params[:search]
+        @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+      elsif (params[:works] == 'untranscribed')
+        ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
+        @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
+        #show all works
+      elsif (params[:works] == 'show')
+        @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+        #hide incomplete works
+      elsif params[:works] == 'hide' || (@collection.hide_completed)
+        #find ids of completed translation works
+        translation_ids = @collection.works.incomplete_translation.pluck(:id)
+        #find ids of completed transcription works
+        transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
+        #combine ids anduse to get works that aren't complete
+        ids = translation_ids + transcription_ids
+        @works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+      else
+        @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+      end
     else
-      @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+      redirect_to "/404"
     end
   end
 

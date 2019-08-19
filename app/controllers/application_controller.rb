@@ -140,11 +140,13 @@ class ApplicationController < ActionController::Base
 
   def bad_record_id
     logger.error("Bad record ID exception for params=#{params.inspect}")
-    if @collection 
+
+    if @collection
       redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
     else
-      redirect_to :controller => 'dashboard', :action => 'index'
+      redirect_to "/404"
     end
+
     return
   end
 
@@ -225,17 +227,23 @@ class ApplicationController < ActionController::Base
   end
 
   # Redirect to admin or owner dashboard after sign in
+    # Always send admins to admin dashboard
+    # Everyone else should go back to where they came from if their previous page is set
+    # Otherwise owners should go to their dashboards
+    # And everyone else should go to user dashboard/watchlist
   def after_sign_in_path_for(resource)
     if current_user.admin
       admin_path
+    elsif !session[:user_return_to].blank?
+      session[:user_return_to]
     elsif current_user.owner
-      session[:user_return_to] || dashboard_owner_path      
+      dashboard_owner_path
     else
-    session[:user_return_to] || dashboard_watchlist_path
+      dashboard_watchlist_path
     end
   end
 
-#destroy guest user session if a user signs out, then redirect to root path
+  # destroy guest user session if a user signs out, then redirect to root path
   def after_sign_out_path_for(resource)
     if session[:guest_user_id]
       session[:guest_user_id] = nil
@@ -268,7 +276,6 @@ end
 
 
   def track_action
-    ahoy.track_visit
     extras = {}
     extras[:collection_id] = @collection.id if @collection
     extras[:collection_title] = @collection.title if @collection
