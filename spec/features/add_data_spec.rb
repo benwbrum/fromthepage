@@ -30,6 +30,7 @@ describe "uploads data for collections", :order => :defined do
     title = find('h1').text
     expect(title).to eq @collection.title
     expect(page).to have_content("Document has been uploaded")
+    sleep(10)
   end
 
   it "imports IIIF manifests" do
