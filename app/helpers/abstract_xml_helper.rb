@@ -10,6 +10,11 @@ module AbstractXmlHelper
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
+
+    if preserve_lb
+      xml_text.gsub!("<lb break='no'/> ", "-<br />")
+    end
+
     doc = REXML::Document.new(xml_text)
     #unless subject linking is disabled, do this
     unless @collection.subjects_disabled
@@ -38,6 +43,7 @@ module AbstractXmlHelper
     end
     # get rid of line breaks within other html mark-up
     doc.elements.delete_all("//table//lb")
+
     # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e|
       lb = REXML::Element.new('span')
@@ -45,16 +51,22 @@ module AbstractXmlHelper
       lb.add_attribute('class', 'line-break')
 
       if preserve_lb
-        if e.attributes['break'] == "no"
-          lb.add_text('-')
-        end
-        lb.add_element(REXML::Element.new('br'))
+        e.replace_with(REXML::Element.new('br'))
       else
-        unless e.attributes['break']=="no"
-          lb.add_text(' ')
+        if params[:action] == "read_work"
+          if e.attributes['break'] == "no"
+            lb.add_text('')
+          end
+        else
+          if e.attributes['break'] == "no"
+            lb.add_text('-')
+          end
         end
+
+        lb.add_element(REXML::Element.new('br'))
       end
-      e.replace_with(lb)
+
+      e.replace_with(lb) unless preserve_lb
     end
 
     doc.elements.each("//entryHeading") do |e|
@@ -87,7 +99,6 @@ module AbstractXmlHelper
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
-    my_display_html.gsub!("<br/></p>", "</p>")
     my_display_html.gsub!("</p>", "</p>\n\n")
     my_display_html.gsub!("<br/>","<br/>\n")
 
