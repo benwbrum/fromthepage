@@ -9,6 +9,8 @@
 -article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article), only_path: !mailer)
 -if(!deed.work.nil? && !deed.work.collection.nil? )
   -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work), only_path: !mailer)
+-unless(deed.collection.nil?)
+  -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection), only_path: !mailer )
 
 -output = "#{user} "
 
@@ -52,19 +54,22 @@
 -when DeedType::WORK_ADDED
   -output += "added #{work}"
 
+-when DeedType::COLLECTION_JOINED
+    -output += "joined "
+    
+    -if deed.collection.nil?
+      -output += "this collection"
+    -else
+      -output += collection
+
 -if(long_view && !deed.work.nil?)
   -if deed.work.collection
     -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work), only_path: !mailer )
   -else
     -work = deed.work.title      
   -output += " in the work #{work}"
-
--if(@collection.nil? && !deed.collection.nil?)
-  -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection), only_path: !mailer )
-  -if(deed.deed_type == DeedType::COLLECTION_JOINED)
-    -output += "joined #{collection}"
-  -else
-    -output += " in #{collection} collection"
+-if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED)
+  -output += " in #{collection} collection"
 
 -if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
   -output += ", saying &ldquo;#{deed.note.title}&rdquo;"
