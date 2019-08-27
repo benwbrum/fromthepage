@@ -303,9 +303,8 @@ class TranscribeController  < ApplicationController
   end
 
   def still_editing
-    @page.edit_started_at = Time.now
-    @page.edit_started_by_user_id = current_user.id
-    @page.save
+    @page.update_column("edit_started_at", Time.now)
+    @page.update_column("edit_started_by_user_id", current_user.id)
     render nothing: true
   end
 
