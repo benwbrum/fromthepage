@@ -1,0 +1,121 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 02 Aug 2019 16:12:29 GMT
+      Server:
+      - Apache
+      Last-Modified:
+      - Tue, 30 Jul 2019 10:54:35 GMT
+      Etag:
+      - '"a22-58ee3d58c8ff1-gzip"'
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Fri, 02 Aug 2019 16:12:29 GMT
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '574'
+      Content-Type:
+      - application/json
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
+        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
+        G. Warner Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll4/manifest.json","@type":"sc:Collection","label":"City
+        of Middletown Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Crout/manifest.json","@type":"sc:Collection","label":"George
+        C. Crout"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
+        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
+        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll14/manifest.json","@type":"sc:Collection","label":"Harold
+        and Carolyn Kramer Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
+        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll11/manifest.json","@type":"sc:Collection","label":"Christian
+        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
+        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
+        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
+        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
+        Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll6/manifest.json","@type":"sc:Collection","label":"Middletown
+        in Black and White"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
+        Library System Art Collection"}]}'
+    http_version: 
+  recorded_at: Fri, 02 Aug 2019 16:12:29 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 02 Aug 2019 16:12:30 GMT
+      Server:
+      - Apache
+      Last-Modified:
+      - Tue, 30 Jul 2019 10:54:35 GMT
+      Etag:
+      - '"a22-58ee3d58c8ff1-gzip"'
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Fri, 02 Aug 2019 16:12:30 GMT
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '574'
+      Content-Type:
+      - application/json
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll22/manifest.json","@type":"sc:Collection","label":"The
+        Doris L. Page Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll13/manifest.json","@type":"sc:Collection","label":"Marion
+        G. Warner Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll4/manifest.json","@type":"sc:Collection","label":"City
+        of Middletown Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Crout/manifest.json","@type":"sc:Collection","label":"George
+        C. Crout"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Midpoint01/manifest.json","@type":"sc:Collection","label":"The
+        Optimist - Middletown City School District High School Yearbooks"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll5/manifest.json","@type":"sc:Collection","label":"Historical
+        Butler County Atlases and Maps"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll14/manifest.json","@type":"sc:Collection","label":"Harold
+        and Carolyn Kramer Photograph Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll15/manifest.json","@type":"sc:Collection","label":"Armco
+        Ambulance Corps Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/manifest.json","@type":"sc:Collection","label":"The
+        Virginia Shewalter Letters Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll11/manifest.json","@type":"sc:Collection","label":"Christian
+        Augspurger Estate Packet of 1848"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p15512coll1/manifest.json","@type":"sc:Collection","label":"Roger
+        L. Miller"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Historical/manifest.json","@type":"sc:Collection","label":"Middletown
+        Historical Project"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll3/manifest.json","@type":"sc:Collection","label":"Veterans
+        of West Chester and Liberty Township Photography Archive"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p15512coll2/manifest.json","@type":"sc:Collection","label":"Faith
+        Church"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/p16488coll6/manifest.json","@type":"sc:Collection","label":"Middletown
+        in Black and White"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/info/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
+        Library System Art Collection"}]}'
+    http_version: 
+  recorded_at: Fri, 02 Aug 2019 16:12:30 GMT
+recorded_with: VCR 5.0.0
