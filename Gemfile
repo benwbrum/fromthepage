@@ -68,6 +68,8 @@ group :development, :test do
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
   gem 'meta_request'
+  gem 'bullet'
+  gem 'rack-mini-profiler'
 end
 
 # Use SASS for stylesheets
