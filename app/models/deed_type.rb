@@ -66,7 +66,8 @@ class DeedType
         NEEDS_REVIEW,
         TRANSLATION_REVIEW,
         COLLECTION_ACTIVE,
-        COLLECTION_INACTIVE
+        COLLECTION_INACTIVE,
+        COLLECTION_JOINED
       ]
     end
 
