@@ -63,6 +63,8 @@ describe "Devise" do
       click_button('Create Account')
       
       expect(page.current_path).to eq coll_path
+      expect(page).to have_content("#{user.display_name} joined #{collection.title}")
+      
       visit dashboard_watchlist_path
       expect(page).to have_content("#{user.display_name} joined #{collection.title}")
     end
