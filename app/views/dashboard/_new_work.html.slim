@@ -4,18 +4,24 @@
 
     a name = "create-work"
 
-    =render 'dashboard/empty'
-
     h3 Import from an IIIF Repository
     -if pontiiif_server
-      h5 
-        =label_tag :search_param, "Search for IIIF Content"
       =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
         table.form
             td
               .input-file
                 =text_field_tag :search_param
                 =button_tag 'Search'
+
+    h3 Import from CONTENTdm URL
+    p
+    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
+    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+      table.form
+          td
+            .input-file
+              =text_field_tag :cdm_url
+              =button_tag 'Import', :id => 'cdm_import'
 
     h5 
       =label_tag :at_id, "Import an IIIF Manifest or Collection"
@@ -26,13 +32,10 @@
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import', :id => 'iiif_import'
-    
-    h5 Explore IIIF Collections
-    =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => ScCollection::UNIVERSE}, class: 'button'
 
     h3 Import from the Internet Archive
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
-    h3 Import from Omeka
+    h3 Import from Omeka Classic
     -if @omeka_sites.blank?
       p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
     -else
@@ -49,16 +52,9 @@
                 hr
                 =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
     =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
-    h3 Import from CONTENTdm URL
-    p
-    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
-    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
-      table.form
-          td
-            .input-file
-              =text_field_tag :cdm_url
-              =button_tag 'Import', :id => 'cdm_import'
-    
+
+    =render 'dashboard/empty'
+
   aside.sidecol
     h4 Page Image Guidelines
     .fglight

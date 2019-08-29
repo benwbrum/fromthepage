@@ -12,17 +12,6 @@ describe "uploads data for collections", :order => :defined do
     login_as(@owner, :scope => :user)
   end
 
-  it "imports explores IIIF universe" do
-    VCR.use_cassette('iiif/iiif-universe') do
-      visit dashboard_owner_path
-      page.find('.tabs').click_link("Start A Project")
-      page.find('a', text: 'Explore').click
-      expect(page).to have_content("Collection: IIIF Universe")
-      expect(page).to have_content("Collections")
-      expect(page).not_to have_content("Manifests")
-    end
-  end
-
   it "imports an IIIF collection", :js => true do
     visit dashboard_owner_path
     VCR.use_cassette('iiif/cambridge_hebrew_mss') do
