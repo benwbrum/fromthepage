@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
   end
   
   def unrestricted_collections
-    collections = self.all_owner_collections.unrestricted
+    self.all_owner_collections.unrestricted
   end
 
   def unrestricted_document_sets
@@ -161,8 +161,12 @@ class User < ActiveRecord::Base
     DocumentSet.where(owner_user_id: self.id)
   end
 
-  def owned_collection_and_document_sets
-    (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
+  def collections_and_document_sets
+    (collections + document_sets).sort_by {|obj| obj.title}
+  end
+
+  def visible_collections_and_document_sets(user)
+    collections_and_document_sets.select {|cds| cds.show_to?(user) }
   end
 
   def slug_candidates
