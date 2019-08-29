@@ -229,5 +229,11 @@ class User < ActiveRecord::Base
       self.notification.save
     end
   end
-
+  def join_collection(collection_id)
+      deed = Deed.new
+      deed.collection = Collection.find(collection_id)
+      deed.deed_type = DeedType::COLLECTION_JOINED
+      deed.user = self
+      deed.save!
+  end
 end

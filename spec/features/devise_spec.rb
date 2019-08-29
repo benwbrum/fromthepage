@@ -15,6 +15,8 @@ describe "Devise" do
 
     let(:user)  { build(:user) }
     let(:owner) { build(:owner) }
+    let(:collection) { create(:collection) }
+    let(:coll_path){ collection_path(collection.owner, collection) }
 
     it "creates a new user account" do 
       visit new_user_registration_path
@@ -47,6 +49,24 @@ describe "Devise" do
       page.fill_in 'Display name', with: user.display_name
       click_button('Create Account')
       expect(page.current_path).to eq old_path
+    end
+    it "logs a `joined` deed if landing page was a collection" do
+      # This is the Landing Page
+      visit coll_path
+      # Complete user registration 
+      visit new_user_registration_path
+      page.fill_in 'Login', with: user.login
+      page.fill_in 'Email address', with: user.email
+      page.fill_in 'Password', with: user.password
+      page.fill_in 'Password confirmation', with: user.password
+      page.fill_in 'Display name', with: user.display_name
+      click_button('Create Account')
+      
+      expect(page.current_path).to eq coll_path
+      expect(page).to have_content("#{user.display_name} joined #{collection.title}")
+      
+      visit dashboard_watchlist_path
+      expect(page).to have_content("#{user.display_name} joined #{collection.title}")
     end
     it "creates a new trial owner account" do
       visit users_new_trial_path
