@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :collection do
     sequence(:title) { |n| "Collection Title #{n}" }
+    sequence(:slug)  { |n| "collection-title-#{n}" }
     owner_user_id { association(:user).id }
 
     trait :with_links do
