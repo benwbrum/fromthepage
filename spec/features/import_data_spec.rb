@@ -51,7 +51,7 @@ describe "import data" do
                 page.fill_in 'cdm_url', with: bad_item_url
                 page.find('#cdm_import').click
             end
-            flash_message = "No IIIF manifest exists for CONTETNdm item #{bad_item_url}"
+            flash_message = "No IIIF manifest exists for CONTENTdm item #{bad_item_url}"
             expect(page).to have_content(flash_message)
         end
     end

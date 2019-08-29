@@ -64,7 +64,7 @@ class ScCollectionsController < ApplicationController
     rescue => e
       case params[:source]
       when 'contentdm'
-        flash[:error] = "No IIIF manifest exists for CONTETNdm item #{params[:source_url]}"
+        flash[:error] = "No IIIF manifest exists for CONTENTdm item #{params[:source_url]}"
       else
         flash[:error] = "Please enter a valid IIIF manifest URL."
       end
