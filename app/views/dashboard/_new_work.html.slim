@@ -4,15 +4,6 @@
 
     a name = "create-work"
 
-    h3 Import from an IIIF Repository
-    -if pontiiif_server
-      =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
-        table.form
-            td
-              .input-file
-                =text_field_tag :search_param
-                =button_tag 'Search'
-
     h3 Import from CONTENTdm URL
     p
     =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
