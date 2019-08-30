@@ -82,7 +82,7 @@ class WorkStatistic < ActiveRecord::Base
     when 'transcribed'
       self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
     when 'corrected'
-      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
+      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count
     when 'translated'
       self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
     when 'blank'
@@ -92,14 +92,14 @@ class WorkStatistic < ActiveRecord::Base
       self[:annotated_pages] = work.pages.where("status = '#{Page::STATUS_INDEXED}'").count
       self[:translated_annotated] = work.pages.where("translation_status = '#{Page::STATUS_INDEXED}'").count
       self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
-      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
+      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count
       self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
     when 'review'
       self[:needs_review] = work.pages.where("status = '#{Page::STATUS_NEEDS_REVIEW}'").count
       self[:translated_review] = work.pages.where("translation_status = '#{Page::STATUS_NEEDS_REVIEW}'").count
     else
       self[:transcribed_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count 
-      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count unless !self.work.ocr_correction
+      self[:corrected_pages] = work.pages.where("status = '#{Page::STATUS_TRANSCRIBED}'").count
       self[:translated_pages] = work.pages.where("translation_status = '#{Page::STATUS_TRANSLATED}'").count
       self[:blank_pages] = work.pages.where("status = '#{Page::STATUS_BLANK}'").count
       self[:translated_blank] = work.pages.where("translation_status = '#{Page::STATUS_BLANK}'").count
