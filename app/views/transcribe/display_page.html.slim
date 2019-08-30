@@ -113,18 +113,19 @@ h2.legend Page Notes
 
 =render({ :partial => '/shared/collection_footer' })
 
--unless current_user.slug.nil?
-  -content_for :javascript
-    javascript:
-      setInterval("transcribe_periodic_timer()", 60000);
+-unless @current_user_alerted
+  -unless current_user.slug.nil?
+    -content_for :javascript
+      javascript:
+        setInterval("transcribe_periodic_timer()", 60000);
 
-      function transcribe_periodic_timer() {
-        $.ajax({
-          url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
-        });
-      }
+        function transcribe_periodic_timer() {
+          $.ajax({
+            url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
+          });
+        }
 
-      transcribe_periodic_timer();
+        transcribe_periodic_timer();
 
 -content_for :javascript
   javascript:
