@@ -4,16 +4,6 @@
 
     a name = "create-work"
 
-    h3 Import from CONTENTdm URL
-    p
-    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
-    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
-      table.form
-          td
-            .input-file
-              =text_field_tag :cdm_url
-              =button_tag 'Import', :id => 'cdm_import'
-
     h5 
       =label_tag :at_id, "Import an IIIF Manifest or Collection"
 
@@ -23,6 +13,16 @@
             .input-file
               =text_field_tag :at_id
               =button_tag 'Import', :id => 'iiif_import'
+
+    h3 Import from CONTENTdm URL
+    p
+    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
+    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+      table.form
+          td
+            .input-file
+              =text_field_tag :cdm_url
+              =button_tag 'Import', :id => 'cdm_import'
 
     h3 Import from the Internet Archive
     =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
