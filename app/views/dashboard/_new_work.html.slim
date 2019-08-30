@@ -4,8 +4,7 @@
 
     a name = "create-work"
 
-    h5 
-      =label_tag :at_id, "Import an IIIF Manifest or Collection"
+    h3 Import an IIIF Manifest or Collection
 
     =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
       table.form
@@ -14,7 +13,7 @@
               =text_field_tag :at_id
               =button_tag 'Import', :id => 'iiif_import'
 
-    h3 Import from CONTENTdm URL
+    h3 Import from CONTENTdm
     p
     =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
     =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
