@@ -76,28 +76,35 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def recalculate(_options = {})
-    self[:total_pages] = work.pages.count
+    stats = {
+      transcription: work.pages.group(:status).count,
+      translation: work.pages.group(:translation_status).count,
+      total: work.pages.count
+    }
 
-    transcription_stats = work.pages.group(:status).count
-
-    self[:transcribed_pages]  = transcription_stats[Page::STATUS_TRANSCRIBED] || 0
-    self[:corrected_pages]    = transcription_stats[Page::STATUS_TRANSCRIBED] || 0
-    self[:blank_pages]        = transcription_stats[Page::STATUS_BLANK] || 0
-    self[:annotated_pages]    = transcription_stats[Page::STATUS_INDEXED] || 0
-    self[:needs_review]       = transcription_stats[Page::STATUS_NEEDS_REVIEW] || 0
-
-    translation_stats = work.pages.group(:translation_status).count
-
-    self[:translated_pages]     = translation_stats[Page::STATUS_TRANSLATED] || 0
-    self[:translated_blank]     = translation_stats[Page::STATUS_BLANK] || 0
-    self[:translated_annotated] = translation_stats[Page::STATUS_INDEXED] || 0
-    self[:translated_review]    = translation_stats[Page::STATUS_NEEDS_REVIEW] || 0
-
-    self[:complete] = pct_completed
-    self[:translation_complete] = pct_translation_completed
-    save!
+    recalculate_from_hash(stats)
 
     recalculate_parent_statistics
+  end
+
+  def recalculate_from_hash(stats = {})
+    self[:total_pages] = stats[:total]
+
+    self[:transcribed_pages]  = stats[:transcription][Page::STATUS_TRANSCRIBED] || 0
+    self[:corrected_pages]    = stats[:transcription][Page::STATUS_TRANSCRIBED] || 0
+    self[:blank_pages]        = stats[:transcription][Page::STATUS_BLANK] || 0
+    self[:annotated_pages]    = stats[:transcription][Page::STATUS_INDEXED] || 0
+    self[:needs_review]       = stats[:transcription][Page::STATUS_NEEDS_REVIEW] || 0
+
+    self[:translated_pages]     = stats[:translation][Page::STATUS_TRANSLATED] || 0
+    self[:translated_blank]     = stats[:translation][Page::STATUS_BLANK] || 0
+    self[:translated_annotated] = stats[:translation][Page::STATUS_INDEXED] || 0
+    self[:translated_review]    = stats[:translation][Page::STATUS_NEEDS_REVIEW] || 0
+
+    self[:complete]             = pct_completed
+    self[:translation_complete] = pct_translation_completed
+    
+    save!
   end
 
   private
