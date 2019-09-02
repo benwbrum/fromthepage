@@ -172,11 +172,11 @@
     
     h3 OCR Correction
     p Enable or disable OCR correction for all works in this collection.
-    -if @collection.works.any? { |w| w.ocr_correction.blank? } 
+    -if @collection.works.ocr_disabled.any?
       =link_to({ :action => 'enable_ocr', :collection_id => @collection.id }, class: 'button')
         span Enable OCR
     ' 
-    -if @collection.works.any? { |w| !w.ocr_correction.blank? }
+    -if @collection.works.ocr_enabled.any?
       =link_to({ :action => 'disable_ocr', :collection_id => @collection.id }, class: 'button')
         span Disable OCR
 
