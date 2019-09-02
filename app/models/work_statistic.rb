@@ -76,11 +76,7 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def recalculate(_options = {})
-    stats = {
-      transcription: work.pages.group(:status).count,
-      translation: work.pages.group(:translation_status).count,
-      total: work.pages.count
-    }
+    stats = get_stats_hash
 
     recalculate_from_hash(stats)
 
@@ -107,6 +103,13 @@ class WorkStatistic < ActiveRecord::Base
     save!
   end
 
+  def get_stats_hash
+    {
+      transcription: work.pages.group(:status).count,
+      translation: work.pages.group(:translation_status).count,
+      total: work.pages.count
+    }
+  end
   private
 
   # current logic to recalculate statistics for parent document set and parent collection
