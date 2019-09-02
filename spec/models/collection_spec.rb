@@ -29,7 +29,7 @@ RSpec.describe Collection, type: :model do
     let(:work_no_ocr) { create(:work) }
     let(:work_ocr)    { create(:work) }
 
-    let(:collection) { build_stubbed(:collection, works: [work_no_ocr, work_ocr]) }
+    let(:collection) { create(:collection, works: [work_no_ocr, work_ocr]) }
     describe '#enable_ocr' do
       it 'Enables OCR for all works' do
         collection.enable_ocr

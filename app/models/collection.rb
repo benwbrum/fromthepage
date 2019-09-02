@@ -162,17 +162,52 @@ class Collection < ActiveRecord::Base
     self.works.joins(:work_statistic).where('work_statistics.total_pages > work_statistics.transcribed_pages').exists?
   end
 
-  def enable_ocr
-    self.works.each do |w| 
-      w.ocr_correction = true
-      w.save!
+  def update_works_stats
+    works = self.works.includes(:work_statistic)
+    works_stats = get_works_stats_hash
+    works.each do |w|
+      w.work_statistic.recalculate_from_hash(works_stats[w.id]) if works_stats.key?(w.id)
     end
+    calculate_complete
   end
+
+  def enable_ocr
+    works.update_all(ocr_correction: true)
+    update_works_stats
+  end
+
   def disable_ocr
-    self.works.each do |w| 
-      w.ocr_correction = false
-      w.save!
+    works.update_all(ocr_correction: false)
+    update_works_stats
+  end
+
+  def get_works_stats_hash
+    stats = {}
+    work_prototype = {
+      transcription: {},
+      translation: {},
+      total: 0
+    }
+    work_ids = works.ids
+    transcription = Page.where(work_id: work_ids).group(:work_id, :status).count
+    translation = Page.where(work_id: work_ids).group(:work_id, :translation_status).count
+    totals = Page.where(work_id: work_ids).group(:work_id).count
+    
+    transcription.each do |(id, status), value|
+      stats[id] = work_prototype unless stats.has_key?(id)
+      stats[id][:transcription][status] = value
     end
+
+    translation.each do |(id, status), value|
+      stats[id] = work_prototype unless stats.has_key?(id)
+      stats[id][:translation][status] = value
+    end
+
+    totals.each do |id, value|
+      stats[id] = work_prototype unless stats.has_key?(id)
+      stats[id][:total] = value
+    end
+    stats
   end
 
   #constant
