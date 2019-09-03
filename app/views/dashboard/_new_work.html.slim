@@ -1,3 +1,9 @@
+-content_for :javascript
+  javascript:
+    $('h3').click(function(){
+      $(this).next().toggle();
+    });
+
 .columns
   article.maincol
     =render 'dashboard/upload'
@@ -5,43 +11,47 @@
     a name = "create-work"
 
     h3 Import an IIIF Manifest or Collection
-
-    =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
-      table.form
-          td
-            .input-file
-              =text_field_tag :at_id
-              =button_tag 'Import', :id => 'iiif_import'
+    section
+      =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
+        table.form
+            td
+              .input-file
+                =text_field_tag :at_id
+                =button_tag 'Import', :id => 'iiif_import'
 
     h3 Import from CONTENTdm
-    p
-    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
-    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
-      table.form
-          td
-            .input-file
-              =text_field_tag :cdm_url
-              =button_tag 'Import', :id => 'cdm_import'
+    section
+      p
+      =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
+      =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+        table.form
+            td
+              .input-file
+                =text_field_tag :cdm_url
+                =button_tag 'Import', :id => 'cdm_import'
 
     h3 Import from the Internet Archive
-    =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
+    section
+      =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
+
     h3 Import from Omeka Classic
-    -if @omeka_sites.blank?
-      p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
-    -else
-      p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
-      ul.omeka-sites
-        -@omeka_sites.each do |omeka_site|
-          li.omeka-site
-            h5.omeka-site_title =link_to omeka_site.title, omeka_site
-            small.omeka-site_url =omeka_site.api_url
-            dl.dropdown.right
-              dt =svg_symbol '#icon-list', class: 'icon'
-              dd
-                =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
-                hr
-                =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
-    =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
+    section
+      -if @omeka_sites.blank?
+        p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
+      -else
+        p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
+        ul.omeka-sites
+          -@omeka_sites.each do |omeka_site|
+            li.omeka-site
+              h5.omeka-site_title =link_to omeka_site.title, omeka_site
+              small.omeka-site_url =omeka_site.api_url
+              dl.dropdown.right
+                dt =svg_symbol '#icon-list', class: 'icon'
+                dd
+                  =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
+                  hr
+                  =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
+      =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
 
     =render 'dashboard/empty'
 
