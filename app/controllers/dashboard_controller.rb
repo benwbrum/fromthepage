@@ -127,18 +127,24 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
+    
     if params[:search]
-      search_owners = User.search(params[:search])
-      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
-      search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
-      @owners = User.where(id: search_ids).where.not(account_type: nil)
+      # Get matching Collections and Docsets
+      @search_results =  Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+      
+      # Get user_ids from the resulting search
+      search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
+      
+      # Get matching users and users from Collections and DocSets search
+      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
     else
-      id_list = User.where.not(account_type: [nil, 'Trial']).pluck(:id)
-      # merging on collections with those user ids filters out owners without collections
-      @owners = User.joins(:collections).where(collections: { restricted: false }).where(collections: { owner_user_id: id_list }).distinct.order(:display_name)
+      # Get random Collections and DocSets from paying users
+      @owners = User.paid_owners.includes(:random_collections, :random_document_sets).order(:display_name)
+      
+      # Sampled Randomly down to 8 items for Carousel
+      docsets = DocumentSet.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      colls = Collection.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      @collections = (docsets + colls).sample(8)
     end
-
-    # these are for the carousel
-    @collections = @owners.map { |user| Collection.carousel.where(owner_user_id: user.id).first }.compact.sample(8)
   end
 end

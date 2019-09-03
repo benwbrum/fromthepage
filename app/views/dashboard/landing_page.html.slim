@@ -7,7 +7,7 @@
 
     ul
       -@collections.each do |c|
-        -link_page = find_page(c)
+        -link_page = c.pages.includes(:work).needs_transcription.first
         -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
         li
           =link_to(image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c))
@@ -19,14 +19,17 @@
           br
           -unless link_page.blank?
             -if user_signed_in?
-              =link_to "Transcribe a page", collection_transcribe_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
+              =link_to "Transcribe a page", collection_transcribe_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
             -else
-              =link_to "Transcribe a page", collection_guest_page_path(link_page.work.collection.owner, link_page.work.collection, link_page.work, link_page), class: 'projects_link'
+              =link_to "Transcribe a page", collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
 
 .columns.project-list
   article.maincol
     -@owners.each do |owner|
-      -projects = owner_projects(owner)
+      -if params[:search]
+        -projects = @search_results.select{ |p| p.owner_user_id == owner.id}
+      -else
+        -projects = (owner.random_collections + owner.random_document_sets).sample(3)
       -unless projects.blank?
         .project-list_projects
           .projects-owner
@@ -44,7 +47,7 @@
                     =image_tag(project.picture_url(:thumb), alt: project.title)
                 .projects_collection
                   h5
-                    =link_to project.title, collection_path(project.owner, project)
+                    =link_to project.title, collection_path(owner, project)
                   -unless snippet.empty?
                     .projects_collection_snippet =snippet
             .projects_link =link_to "More...", user_profile_path(owner)
