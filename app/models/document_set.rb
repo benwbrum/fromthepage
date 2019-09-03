@@ -10,6 +10,9 @@ class DocumentSet < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
+
+  has_many :pages, through: :works
+
   has_and_belongs_to_many :works
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
@@ -17,6 +20,12 @@ class DocumentSet < ActiveRecord::Base
 
   scope :unrestricted, -> { where(is_public: true)}
   scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder("RAND()")}
+
+  scope :sample, -> (sample_size = 5) do
+    carousel
+    reorder("RAND()") unless sample_size > 1
+    limit(sample_size).reorder("RAND()")
+  end
 
   def show_to?(user)
     self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
