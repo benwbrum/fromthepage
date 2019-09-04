@@ -122,6 +122,10 @@ class ScCollectionsController < ApplicationController
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
     rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
+    
+    # Nice-up the rake call if we have the appropriate settings
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
+    
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
