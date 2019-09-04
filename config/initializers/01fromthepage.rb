@@ -22,6 +22,6 @@ IDP_CERT = ENV['IDP_CERT']
 RECAPTCHA_SITE_KEY = ENV['RECAPTCHA_SITE_KEY']
 RECAPTCHA_SECRET_KEY = ENV['RECAPTCHA_SECRET_KEY']
 
-# Nice Levels for Rake Import
+# Nice Levels for Rake Import. See `nice_rake.rb`
 NICE_RAKE_ENABLED = false
-NICE_RAKE_LEVEL = 13
+NICE_RAKE_LEVEL = 10 # Values values -20 to 19 (only root can set less than 0)
