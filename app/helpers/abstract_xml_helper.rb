@@ -62,8 +62,6 @@ module AbstractXmlHelper
             lb.add_text('-')
           end
         end
-
-        lb.add_element(REXML::Element.new('br'))
       end
 
       e.replace_with(lb) unless preserve_lb
