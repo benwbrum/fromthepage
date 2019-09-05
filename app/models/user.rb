@@ -54,10 +54,11 @@ class User < ActiveRecord::Base
   has_many :random_document_sets, -> { unrestricted.sample }, 
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
-  scope :owners,         -> { where(owner: true) }
-  scope :trial_owners,   -> { owners.where(account_type: 'Trial') }
-  scope :paid_owners,    -> { owners.where('paid_date > ?', Time.now) }
-  scope :expired_owners, -> { owners.where('paid_date <= ?', Time.now) }
+  scope :owners,           -> { where(owner: true) }
+  scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
+  scope :non_trial_owners, -> { owners.where.not(account_type: [nil, 'Trial']) }
+  scope :paid_owners,      -> { owners.where('paid_date > ?', Time.now) }
+  scope :expired_owners,   -> { owners.where('paid_date <= ?', Time.now) }
 
   validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
