@@ -46,26 +46,18 @@ class DashboardController < ApplicationController
   end
 
   def collections_list
-    collections_and_document_sets = []
+    public_collections   = Collection.unrestricted.includes(:owner, next_untranscribed_page: :work)
+    public_document_sets = DocumentSet.unrestricted.includes(:owner, next_untranscribed_page: :work)
 
-    collections = Collection.includes(:owner).preload(:owner).distinct
-    document_sets = DocumentSet.includes(:owner).preload(:owner).distinct
-
+    cds = public_collections + public_document_sets
     if user_signed_in?
-      (collections + document_sets).each do |collection|
-        if !collection.restricted && collection.works.present?
-          collections_and_document_sets << collection
-        elsif current_user.collaborator?(collection)
-          collections_and_document_sets << collection
-        elsif current_user.like_owner?(collection)
-          collections_and_document_sets << collection
-        end 
-      end
-    else
-      collections_and_document_sets = Collection.joins(:owner).preload(:owner).where(restricted: false) + DocumentSet.joins(:owner).preload(:owner).where(is_public: true)
-    end
+      cds |= current_user.all_owner_collections.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.document_sets.includes(:owner, next_untranscribed_page: :work)
 
-    @collections_and_document_sets = collections_and_document_sets.sort { |a,b| a.title <=> b.title }
+      cds |= current_user.collection_collaborations.includes(:owner, next_untranscribed_page: :work)
+      cds |= current_user.document_set_collaborations.includes(:owner, next_untranscribed_page: :work)
+    end
+    @collections_and_document_sets = cds.sort { |a,b| a.slug <=> b.slug }
   end
 
   #Owner Dashboard - start project
