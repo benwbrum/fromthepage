@@ -10,6 +10,8 @@ class DocumentSet < ActiveRecord::Base
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  
   has_and_belongs_to_many :works
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
@@ -102,8 +104,16 @@ class DocumentSet < ActiveRecord::Base
     self.collection.transcription_fields
   end
   
+  def set_next_untranscribed_page
+    first_work = works.order_by_incomplete.first
+    first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
+    page_id = first_page.nil? ? nil : first_page.id
+    
+    update_columns(next_untranscribed_page_id: page_id)
+  end
+
   def has_untranscribed_pages?
-    self.works.joins(:work_statistic).where('work_statistics.total_pages > work_statistics.transcribed_pages').exists?
+    !!next_untranscribed_page
   end
 
   def slug_candidates

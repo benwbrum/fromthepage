@@ -5,6 +5,10 @@ class Work < ActiveRecord::Base
   has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
+  
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  has_many :untranscribed_pages, -> { needs_transcription }, class_name: "Page"
+
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :ia_work, :dependent => :destroy
   has_one :omeka_item, :dependent => :destroy
@@ -235,7 +239,13 @@ class Work < ActiveRecord::Base
     collection.subjects_disabled == false
   end
 
+  def set_next_untranscribed_page
+    next_page = untranscribed_pages.order("position ASC").first
+    page_id = next_page.nil? ? nil : next_page.id
+    update_columns(next_untranscribed_page_id: page_id)
+  end
+
   def has_untranscribed_pages?
-    self.pages.any? { |p| p.status.nil? }
+    !!next_untranscribed_page
   end
 end
