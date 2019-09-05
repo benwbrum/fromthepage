@@ -50,6 +50,9 @@
             var content = xhr.responseJSON.html;
             $container.removeClass('edit');
             $('.user-bubble_note', $container).html(content);
+          } else if(xhr.status === 500) {
+            var message = xhr.statusText;
+            $error.text('Error: ' + message);
           } else {
             // Error occurred
             var message = xhr.responseJSON.join('. ');
