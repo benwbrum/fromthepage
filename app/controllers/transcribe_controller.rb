@@ -29,6 +29,13 @@ class TranscribeController  < ApplicationController
     @auto_fullscreen = cookies[:auto_fullscreen] || 'no';
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
+    @current_user_alerted = false
+
+    if @page.edit_started_by_user_id != current_user.id &&
+       @page.edit_started_at > Time.now - 1.minute
+      flash.now[:alert] = "This page is being edited by another user!"
+      @current_user_alerted = true
+    end unless @page.edit_started_at.nil?
   end
 
   def guest
@@ -297,6 +304,12 @@ class TranscribeController  < ApplicationController
       render :action => 'translate'
 
     end
+  end
+
+  def still_editing
+    @page.update_column("edit_started_at", Time.now)
+    @page.update_column("edit_started_by_user_id", current_user.id)
+    render nothing: true
   end
 
 protected
