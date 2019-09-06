@@ -9,7 +9,10 @@
       h4.collection_title =link_to cds.title, collection_path(cds.owner, cds) unless cds.owner.nil?
       -if cds.has_untranscribed_pages?
         p
-          =link_to "Start Transcribing", collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+          -if user_signed_in?
+            =link_to "Start Transcribing", collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+          -else
+            =link_to "Start Transcribing", collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
       -unless snippet.empty?
         p.collection_snippet =snippet
       .collection_summary
