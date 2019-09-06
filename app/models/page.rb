@@ -358,6 +358,20 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     end
   end
 
+  def contributors
+    users = []
+
+    page = self
+
+    page.page_versions.each do |page|
+      user = { name: page.user.display_name }
+      user[:orcid] = page.user.orcid unless page.user.orcid.blank?
+      users << user unless users.include?(user)
+    end
+
+    users
+  end
+
 private
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)

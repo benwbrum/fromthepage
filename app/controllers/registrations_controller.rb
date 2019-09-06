@@ -1,5 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
-  
+
   def new
     super
   end
@@ -26,7 +26,7 @@ class RegistrationsController < Devise::RegistrationsController
     else
       @user = build_resource(sign_up_params)
     end
-    
+
     #this is the default Devise code
     yield resource if block_given?
       
@@ -44,7 +44,11 @@ class RegistrationsController < Devise::RegistrationsController
       if session[:guest_user_id]
         session[:guest_user_id] = nil
       end
-
+      
+      # Record the `joined` deed based on Ahoy Visit
+      join_collection = joined_from_collection(current_visit.id)
+      @user.join_collection(join_collection) unless join_collection.nil?
+    
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
@@ -58,9 +62,11 @@ class RegistrationsController < Devise::RegistrationsController
   #redirect new sign up back to starting page
   def after_sign_up_path_for(resource)
     if @user.owner
-      "#{dashboard_owner_path}#freetrial"
+      # Always send new owners to their dashboard for analytics purposes
+      "#{dashboard_owner_path}#freetrial" 
     else
-      session[:user_return_to] || root_path
+      # New users should be returned to where they were or to their dashboard/watchlist
+      session[:user_return_to] || dashboard_watchlist_path
     end
   end
 
@@ -73,4 +79,11 @@ class RegistrationsController < Devise::RegistrationsController
     true
   end
 
+  private
+
+  def joined_from_collection(visit_id)
+    first_event = Ahoy::Event.where(visit_id: visit_id).first
+    collection = first_event.properties["collection_id"] || nil
+    return collection
+  end
 end
