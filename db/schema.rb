@@ -427,7 +427,7 @@ ActiveRecord::Schema.define(version: 20190906201041) do
 
   create_table "pages", force: true do |t|
     t.string   "title"
-    t.text     "source_text",        limit: 16777215
+    t.text     "source_text",             limit: 16777215
     t.string   "base_image"
     t.integer  "base_width"
     t.integer  "base_height"
@@ -435,8 +435,8 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.integer  "work_id"
     t.datetime "created_on"
     t.integer  "position"
-    t.integer  "lock_version",                        default: 0
-    t.text     "xml_text",           limit: 16777215
+    t.integer  "lock_version",                             default: 0
+    t.text     "xml_text",                limit: 16777215
     t.integer  "page_version_id"
     t.string   "status"
     t.text     "source_translation"
@@ -444,8 +444,11 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.text     "search_text"
     t.string   "translation_status"
     t.text     "metadata"
+    t.datetime "edit_started_at"
+    t.integer  "edit_started_by_user_id"
   end
 
+  add_index "pages", ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id", using: :btree
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
 

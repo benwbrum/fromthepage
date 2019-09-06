@@ -161,7 +161,7 @@ class User < ActiveRecord::Base
   end
   
   def unrestricted_collections
-    collections = self.all_owner_collections.unrestricted
+    self.all_owner_collections.unrestricted
   end
 
   def unrestricted_document_sets
@@ -172,8 +172,12 @@ class User < ActiveRecord::Base
     DocumentSet.where(owner_user_id: self.id)
   end
 
-  def owned_collection_and_document_sets
-    (unrestricted_collections + unrestricted_document_sets).sort_by {|obj| obj.title}
+  def collections_and_document_sets
+    (collections + document_sets).sort_by {|obj| obj.title}
+  end
+
+  def visible_collections_and_document_sets(user)
+    collections_and_document_sets.select {|cds| cds.show_to?(user) }
   end
 
   def slug_candidates
@@ -236,5 +240,11 @@ class User < ActiveRecord::Base
       self.notification.save
     end
   end
-
+  def join_collection(collection_id)
+      deed = Deed.new
+      deed.collection = Collection.find(collection_id)
+      deed.deed_type = DeedType::COLLECTION_JOINED
+      deed.user = self
+      deed.save!
+  end
 end

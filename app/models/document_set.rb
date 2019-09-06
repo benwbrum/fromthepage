@@ -33,7 +33,7 @@ class DocumentSet < ActiveRecord::Base
   end
 
   def show_to?(user)
-    self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
+    self.is_public? || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
   def intro_block
