@@ -12,11 +12,19 @@ class ScCollectionsController < ApplicationController
 
   def import_cdm
     cdm_url = params[:cdm_url]
+
+    if cdm_url.blank?
+      flash[:error] = "Please enter a URL for a CONTENTdm object."
+      redirect_to :back
+      return
+    end
+
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
       flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
       redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
     rescue => e
+      logger.error "Bad CONTENTdm URL: #{cdm_url} ERROR: #{e.message}"
       flash[:error] = e.message
       redirect_to :back
     end
