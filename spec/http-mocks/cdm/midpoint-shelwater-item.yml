@@ -1,0 +1,161 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 02 Aug 2019 16:03:34 GMT
+      Server:
+      - Jetty(9.2.19.v20160908)
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Oclc-Requestid:
+      - XURe1lPBoOAIUlYCs910-gAAAAA
+      X-Oclc-Selfid:
+      - f3ce81de-50cc-4e18-89f3-dc9e9ceb56e4
+      X-Application-Context:
+      - application:prod:8080
+      Content-Type:
+      - application/json;charset=UTF-8
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Vary:
+      - Accept-Encoding,User-Agent
+      Etag:
+      - '"048633d53826ba95af085022ea961d81b--gzip"'
+      Set-Cookie:
+      - JSESSIONID=5b080842-53cb-4405-b239-e34f8abf33bc;Path=/digital/;HttpOnly
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/digital/iiif-info/MPD01/2/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","metadata":[{"label":"Title","value":"Letter with envelope from Virginia
+        Shewalter to John and Mabel Shewalter, 1942 November 8"},{"label":"Creator","value":"Shewalter,
+        Virginia 1916-1978."},{"label":"Date","value":"1942-11-08"},{"label":"Description","value":"This
+        letter from Virginia Shewalter to her folks details her experiences on a train
+        trip, with stops in Lafayette and Chicago. She was unable to obtain a reservation
+        on a train to Des Moines."},{"label":"Extent","value":"1 Page, Envelope"},{"label":"Type","value":"Text"},{"label":"Format","value":"Correspondence;
+        Letters (correspondence); Image/TIFF"},{"label":"Language","value":"English"},{"label":"Subject","value":"Shewalter,
+        Virginia 1916-1978; Shewalter, John 1884-1967; Shewalter, Mabel 1887-1964;
+        World War, 1939-1945; United States -- Army -- Women''s Army Auxiliary Corps."},{"label":"Source","value":"The
+        Virginia Shewalter Letters Collection"},{"label":"Physical Access","value":"To
+        view the physical collection, please contact the MidPointe Library System."},{"label":"Standardized
+        Rights Statement","value":"http://rightsstatements.org/vocab/InC-EDU/1.0/"},{"label":"Rights","value":"No
+        permission is required from the rights-holder(s) for non-commercial, non-derivative
+        uses. For other uses you need to obtain permission from the rightsholder(s)."},{"label":"Identifier","value":"Box
+        1, Folder 001"},{"label":"Finding Aid","value":"http://rave.ohiolink.edu/archives/ead/OMid0001"},{"label":"Repository","value":"MidPointe
+        Digital Archives"},{"label":"Source","value":"<span>From: <a href=\"http://cdm16488.contentdm.oclc.org/digital/collection/MPD01\">The
+        Virginia Shewalter Letters Collection</a></span>"}],"attribution":["","http://rightsstatements.org/vocab/InC-EDU/1.0/"],"sequences":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/2/sequence/s0","@type":"sc:Sequence","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","canvases":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/canvas/c0","@type":"sc:Canvas","label":"Page
+        1","images":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/annotation/a0","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0","width":1468,"height":2372,"tiles":[{"width":1468,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":1468,"height":2372},"on":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/canvas/c0"}],"width":1468,"height":2372},{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/canvas/c1","@type":"sc:Canvas","label":"Page
+        2","images":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1","width":2371,"height":1466,"tiles":[{"width":2371,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2371,"height":1466},"on":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/canvas/c1"}],"width":2371,"height":1466}]}],"structures":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/2/range/r0","@type":"sc:Range","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","canvases":["https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/canvas/c0","https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/canvas/c1"]}]}'
+    http_version: 
+  recorded_at: Fri, 02 Aug 2019 16:03:34 GMT
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/2/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 02 Aug 2019 16:03:34 GMT
+      Server:
+      - Jetty(9.2.19.v20160908)
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Oclc-Requestid:
+      - XURe1gaAYWAuSI4CTDig6QAAAAU
+      X-Oclc-Selfid:
+      - 2073abed-9c60-4e57-9f8e-db8a49cb98ec
+      X-Application-Context:
+      - application:prod:8080
+      Content-Type:
+      - application/json;charset=UTF-8
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Vary:
+      - Accept-Encoding,User-Agent
+      Etag:
+      - '"048633d53826ba95af085022ea961d81b--gzip"'
+      Set-Cookie:
+      - JSESSIONID=91d30df0-3f5e-4247-9235-040b0dc43d0e;Path=/digital/;HttpOnly
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@type":"sc:Manifest","@id":"https://cdm16488.contentdm.oclc.org/digital/iiif-info/MPD01/2/manifest.json","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","metadata":[{"label":"Title","value":"Letter with envelope from Virginia
+        Shewalter to John and Mabel Shewalter, 1942 November 8"},{"label":"Creator","value":"Shewalter,
+        Virginia 1916-1978."},{"label":"Date","value":"1942-11-08"},{"label":"Description","value":"This
+        letter from Virginia Shewalter to her folks details her experiences on a train
+        trip, with stops in Lafayette and Chicago. She was unable to obtain a reservation
+        on a train to Des Moines."},{"label":"Extent","value":"1 Page, Envelope"},{"label":"Type","value":"Text"},{"label":"Format","value":"Correspondence;
+        Letters (correspondence); Image/TIFF"},{"label":"Language","value":"English"},{"label":"Subject","value":"Shewalter,
+        Virginia 1916-1978; Shewalter, John 1884-1967; Shewalter, Mabel 1887-1964;
+        World War, 1939-1945; United States -- Army -- Women''s Army Auxiliary Corps."},{"label":"Source","value":"The
+        Virginia Shewalter Letters Collection"},{"label":"Physical Access","value":"To
+        view the physical collection, please contact the MidPointe Library System."},{"label":"Standardized
+        Rights Statement","value":"http://rightsstatements.org/vocab/InC-EDU/1.0/"},{"label":"Rights","value":"No
+        permission is required from the rights-holder(s) for non-commercial, non-derivative
+        uses. For other uses you need to obtain permission from the rightsholder(s)."},{"label":"Identifier","value":"Box
+        1, Folder 001"},{"label":"Finding Aid","value":"http://rave.ohiolink.edu/archives/ead/OMid0001"},{"label":"Repository","value":"MidPointe
+        Digital Archives"},{"label":"Source","value":"<span>From: <a href=\"http://cdm16488.contentdm.oclc.org/digital/collection/MPD01\">The
+        Virginia Shewalter Letters Collection</a></span>"}],"attribution":["","http://rightsstatements.org/vocab/InC-EDU/1.0/"],"sequences":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/2/sequence/s0","@type":"sc:Sequence","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","canvases":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/canvas/c0","@type":"sc:Canvas","label":"Page
+        1","images":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/annotation/a0","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0","width":1468,"height":2372,"tiles":[{"width":1468,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":1468,"height":2372},"on":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/canvas/c0"}],"width":1468,"height":2372},{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/canvas/c1","@type":"sc:Canvas","label":"Page
+        2","images":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/annotation/a1","@type":"oa:Annotation","motivation":"sc:painting","resource":{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/full/full/0/default.jpg","@type":"dctypes:Image","service":{"@context":"http://iiif.io/api/image/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1","width":2371,"height":1466,"tiles":[{"width":2371,"scaleFactors":[1,2,4,8,16]}],"profile":"http://iiif.io/api/image/2/level1.json","protocol":"http://iiif.io/api/image"},"format":"image/jpeg","width":2371,"height":1466},"on":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/canvas/c1"}],"width":2371,"height":1466}]}],"structures":[{"@id":"https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/2/range/r0","@type":"sc:Range","label":"Letter
+        with envelope from Virginia Shewalter to John and Mabel Shewalter, 1942 November
+        8","canvases":["https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/0/canvas/c0","https://cdm16488.contentdm.oclc.org/digital/iiif/MPD01/1/canvas/c1"]}]}'
+    http_version: 
+  recorded_at: Fri, 02 Aug 2019 16:03:34 GMT
+recorded_with: VCR 5.0.0
