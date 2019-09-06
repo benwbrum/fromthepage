@@ -243,10 +243,13 @@ class Work < ActiveRecord::Base
   def update_next_untranscribed_pages
     set_next_untranscribed_page
     collection.set_next_untranscribed_page
+
+    unless document_sets.empty?
+      collection.set_next_untranscribed_page
+    end
   end
 
   def set_next_untranscribed_page
-    logger.info "__WORK::LOGGER__"
     next_page = untranscribed_pages.order("position ASC").first
     page_id = next_page.nil? ? nil : next_page.id
     update_columns(next_untranscribed_page_id: page_id)

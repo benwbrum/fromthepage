@@ -161,8 +161,7 @@ class Collection < ActiveRecord::Base
   end
 
   def set_next_untranscribed_page
-    logger.info "__COLLECTION::LOGGER__"
-    first_work = works.order_by_incomplete.first
+    first_work = works.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
     first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
     page_id = first_page.nil? ? nil : first_page.id
     
