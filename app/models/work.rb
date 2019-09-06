@@ -21,6 +21,7 @@ class Work < ActiveRecord::Base
   has_and_belongs_to_many :document_sets
 
   after_save :update_statistic
+
   after_destroy :cleanup_images
 
   attr_accessible :title,
@@ -239,7 +240,13 @@ class Work < ActiveRecord::Base
     collection.subjects_disabled == false
   end
 
+  def update_next_untranscribed_pages
+    set_next_untranscribed_page
+    collection.set_next_untranscribed_page
+  end
+
   def set_next_untranscribed_page
+    logger.info "__WORK::LOGGER__"
     next_page = untranscribed_pages.order("position ASC").first
     page_id = next_page.nil? ? nil : next_page.id
     update_columns(next_untranscribed_page_id: page_id)
