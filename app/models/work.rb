@@ -21,6 +21,7 @@ class Work < ActiveRecord::Base
   has_and_belongs_to_many :document_sets
 
   after_save :update_statistic
+  after_save :update_next_untranscribed_pages
 
   after_destroy :cleanup_images
 
