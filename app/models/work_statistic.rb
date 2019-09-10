@@ -76,14 +76,13 @@ class WorkStatistic < ActiveRecord::Base
   end
 
   def recalculate(_options = {})
-    stats = get_stats_hash
-
-    recalculate_from_hash(stats)
-
+    recalculate_from_hash
     recalculate_parent_statistics
   end
 
-  def recalculate_from_hash(stats = {})
+  def recalculate_from_hash(stats=nil)
+    stats = get_stats_hash if stats.nil?
+
     self[:total_pages] = stats[:total]
 
     self[:transcribed_pages]  = stats[:transcription][Page::STATUS_TRANSCRIBED] || 0
@@ -115,7 +114,7 @@ class WorkStatistic < ActiveRecord::Base
   # current logic to recalculate statistics for parent document set and parent collection
   def recalculate_parent_statistics
     # save completed information for collections/document sets
-    work.collection&.calculate_complete
+    work.collection.calculate_complete
     unless work.document_sets.empty?
       work.document_sets.each(&:calculate_complete)
     end

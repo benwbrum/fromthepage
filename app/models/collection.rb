@@ -164,9 +164,9 @@ class Collection < ActiveRecord::Base
 
   def update_works_stats
     works = self.works.includes(:work_statistic)
-    works_stats = get_works_stats_hash
+    works_stats = get_works_stats_hash(works.ids)
     works.each do |w|
-      w.work_statistic.recalculate_from_hash(works_stats[w.id]) if works_stats.key?(w.id)
+      w.work_statistic.recalculate_from_hash(works_stats[w.id])
     end
     calculate_complete
   end
@@ -181,30 +181,30 @@ class Collection < ActiveRecord::Base
     update_works_stats
   end
 
-  def get_works_stats_hash
+  def get_works_stats_hash(work_ids)
     stats = {}
     work_prototype = {
       transcription: {},
       translation: {},
       total: 0
     }
-    work_ids = works.ids
+
     transcription = Page.where(work_id: work_ids).group(:work_id, :status).count
     translation = Page.where(work_id: work_ids).group(:work_id, :translation_status).count
     totals = Page.where(work_id: work_ids).group(:work_id).count
-    
+
     transcription.each do |(id, status), value|
-      stats[id] = work_prototype unless stats.has_key?(id)
+      stats[id] = work_prototype if stats[id].nil?
       stats[id][:transcription][status] = value
     end
 
     translation.each do |(id, status), value|
-      stats[id] = work_prototype unless stats.has_key?(id)
+      stats[id] = work_prototype if stats[id].nil?
       stats[id][:translation][status] = value
     end
 
     totals.each do |id, value|
-      stats[id] = work_prototype unless stats.has_key?(id)
+      stats[id] = work_prototype if stats[id].nil?
       stats[id][:total] = value
     end
     stats
