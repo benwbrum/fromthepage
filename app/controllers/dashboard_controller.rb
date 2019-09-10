@@ -127,23 +127,22 @@ class DashboardController < ApplicationController
   end
 
   def landing_page
-    
     if params[:search]
       # Get matching Collections and Docsets
-      @search_results =  Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
-      
+      @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
+
       # Get user_ids from the resulting search
       search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
-      
+
       # Get matching users and users from Collections and DocSets search
       @owners = User.where(id: search_user_ids).where.not(account_type: nil)
     else
       # Get random Collections and DocSets from paying users
-      @owners = User.paid_owners.includes(:random_collections, :random_document_sets).order(:display_name)
-      
+      @owners = User.non_trial_owners.includes(:random_collections, :random_document_sets).order(:display_name)
+
       # Sampled Randomly down to 8 items for Carousel
-      docsets = DocumentSet.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
-      colls = Collection.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
       @collections = (docsets + colls).sample(8)
     end
   end

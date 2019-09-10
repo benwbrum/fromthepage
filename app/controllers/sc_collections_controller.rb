@@ -12,11 +12,19 @@ class ScCollectionsController < ApplicationController
 
   def import_cdm
     cdm_url = params[:cdm_url]
+
+    if cdm_url.blank?
+      flash[:error] = "Please enter a URL for a CONTENTdm object."
+      redirect_to :back
+      return
+    end
+
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
       flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
-      redirect_to :action => :import, :at_id => at_id      
+      redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
     rescue => e
+      logger.error "Bad CONTENTdm URL: #{cdm_url} ERROR: #{e.message}"
       flash[:error] = e.message
       redirect_to :back
     end
@@ -62,7 +70,12 @@ class ScCollectionsController < ApplicationController
       render 'explore_manifest', at_id: at_id
     end
     rescue => e
-      flash[:error] = "Please enter a valid IIIF manifest URL."
+      case params[:source]
+      when 'contentdm'
+        flash[:error] = "No IIIF manifest exists for CONTENTdm item #{params[:source_url]}"
+      else
+        flash[:error] = "Please enter a valid IIIF manifest URL."
+      end
       redirect_to :back
     end
 
@@ -122,6 +135,10 @@ class ScCollectionsController < ApplicationController
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
     rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
+    
+    # Nice-up the rake call if we have the appropriate settings
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
+    
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
