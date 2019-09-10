@@ -245,10 +245,12 @@ class Work < ActiveRecord::Base
 
   def update_next_untranscribed_pages
     set_next_untranscribed_page
-    collection.set_next_untranscribed_page
+    collection&.set_next_untranscribed_page
 
     unless document_sets.empty?
-      collection.set_next_untranscribed_page
+      document_sets.each do |ds|
+        ds.set_next_untranscribed_page
+      end
     end
   end
 
