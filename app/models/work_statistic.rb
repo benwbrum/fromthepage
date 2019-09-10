@@ -114,7 +114,7 @@ class WorkStatistic < ActiveRecord::Base
   # current logic to recalculate statistics for parent document set and parent collection
   def recalculate_parent_statistics
     # save completed information for collections/document sets
-    work.collection.calculate_complete
+    work.collection&.calculate_complete
     unless work.document_sets.empty?
       work.document_sets.each(&:calculate_complete)
     end
