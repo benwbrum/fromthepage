@@ -4,22 +4,36 @@ class DocumentSet < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
   
-  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed
+  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed, :works_count
 
   mount_uploader :picture, PictureUploader
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
   belongs_to :collection
-  has_and_belongs_to_many :works
+
+  has_many :pages, through: :works
+
+  has_many :document_set_works
+  has_many :works, through: :document_set_works
+
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
   scope :unrestricted, -> { where(is_public: true)}
   scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder("RAND()")}
+  scope :has_intro_block, -> { where.not(description: [nil, '']) }
+  scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
+  scope :not_empty, -> { where.not(works_count: [0, nil]) }
+  
+  scope :sample, -> (sample_size = 5) do
+    carousel
+    reorder("RAND()") unless sample_size > 1
+    limit(sample_size).reorder("RAND()")
+  end
 
   def show_to?(user)
-    self.is_public? || (user && user.collaborator?(self)) || self.collection.show_to?(user)
+    self.is_public? || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
   end
 
   def intro_block

@@ -4,7 +4,7 @@ class Work < ActiveRecord::Base
 
   has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
-  belongs_to :collection
+  belongs_to :collection, counter_cache: :works_count
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :ia_work, :dependent => :destroy
   has_one :omeka_item, :dependent => :destroy
@@ -14,7 +14,9 @@ class Work < ActiveRecord::Base
   has_many :table_cells, :dependent => :destroy
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
-  has_and_belongs_to_many :document_sets
+  
+  has_many :document_set_works
+  has_many :document_sets, through: :document_set_works
 
   after_save :update_statistic
   after_destroy :cleanup_images
