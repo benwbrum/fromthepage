@@ -112,27 +112,27 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.string   "title"
     t.integer  "owner_user_id"
     t.datetime "created_on"
-    t.text     "intro_block",                limit: 16777215
-    t.text     "footer_block",               limit: 16777215
-    t.boolean  "restricted",                                  default: false
+    t.text     "intro_block",               limit: 16777215
+    t.text     "footer_block",              limit: 16777215
+    t.boolean  "restricted",                                 default: false
     t.string   "picture"
-    t.boolean  "supports_document_sets",                      default: false
-    t.boolean  "subjects_disabled",                           default: false
+    t.boolean  "supports_document_sets",                     default: false
+    t.boolean  "subjects_disabled",                          default: false
     t.text     "transcription_conventions"
     t.string   "slug"
-    t.boolean  "review_workflow",                             default: false
-    t.boolean  "hide_completed",                              default: true
+    t.boolean  "review_workflow",                            default: false
+    t.boolean  "hide_completed",                             default: true
     t.text     "help"
     t.text     "link_help"
-    t.boolean  "field_based",                                 default: false
-    t.boolean  "voice_recognition",                           default: false
+    t.boolean  "field_based",                                default: false
+    t.boolean  "voice_recognition",                          default: false
     t.string   "language"
     t.string   "text_language"
     t.string   "license_key"
     t.integer  "pct_completed"
     t.string   "default_orientation"
-    t.boolean  "is_active",                                   default: true
-    t.integer  "next_untranscribed_page_id"
+    t.boolean  "is_active",                                  default: true
+    t.integer  "works_count",                                default: 0
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.string   "slug"
     t.integer  "pct_completed"
     t.string   "default_orientation"
-    t.integer  "next_untranscribed_page_id"
+    t.integer  "works_count",         default: 0
   end
 
   add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
@@ -427,7 +427,7 @@ ActiveRecord::Schema.define(version: 20190906201041) do
 
   create_table "pages", force: true do |t|
     t.string   "title"
-    t.text     "source_text",        limit: 16777215
+    t.text     "source_text",             limit: 16777215
     t.string   "base_image"
     t.integer  "base_width"
     t.integer  "base_height"
@@ -435,8 +435,8 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.integer  "work_id"
     t.datetime "created_on"
     t.integer  "position"
-    t.integer  "lock_version",                        default: 0
-    t.text     "xml_text",           limit: 16777215
+    t.integer  "lock_version",                             default: 0
+    t.text     "xml_text",                limit: 16777215
     t.integer  "page_version_id"
     t.string   "status"
     t.text     "source_translation"
@@ -668,28 +668,27 @@ ActiveRecord::Schema.define(version: 20190906201041) do
 
   create_table "works", force: true do |t|
     t.string   "title"
-    t.text     "description",                limit: 16777215
+    t.text     "description",               limit: 16777215
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                            default: false
-    t.integer  "transcription_version",                       default: 0
-    t.text     "physical_description",       limit: 16777215
-    t.text     "document_history",           limit: 16777215
-    t.text     "permission_description",     limit: 16777215
+    t.boolean  "restrict_scribes",                           default: false
+    t.integer  "transcription_version",                      default: 0
+    t.text     "physical_description",      limit: 16777215
+    t.text     "document_history",          limit: 16777215
+    t.text     "permission_description",    limit: 16777215
     t.string   "location_of_composition"
     t.string   "author"
-    t.text     "transcription_conventions",  limit: 16777215
+    t.text     "transcription_conventions", limit: 16777215
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",                     default: false
-    t.boolean  "supports_translation",                        default: false
+    t.boolean  "scribes_can_edit_titles",                    default: false
+    t.boolean  "supports_translation",                       default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                        default: true
-    t.boolean  "ocr_correction"
+    t.boolean  "pages_are_meaningful",                       default: true
+    t.boolean  "ocr_correction",                             default: false
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
     t.string   "identifier"
-    t.integer  "next_untranscribed_page_id"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree
