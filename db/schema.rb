@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190905173428) do
+ActiveRecord::Schema.define(version: 20190906201041) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -444,8 +444,11 @@ ActiveRecord::Schema.define(version: 20190905173428) do
     t.text     "search_text"
     t.string   "translation_status"
     t.text     "metadata"
+    t.datetime "edit_started_at"
+    t.integer  "edit_started_by_user_id"
   end
 
+  add_index "pages", ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id", using: :btree
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
 
