@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190902182932) do
+ActiveRecord::Schema.define(version: 20190906201041) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20190902182932) do
     t.integer  "pct_completed"
     t.string   "default_orientation"
     t.boolean  "is_active",                                  default: true
+    t.integer  "works_count",                                default: 0
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -190,6 +191,7 @@ ActiveRecord::Schema.define(version: 20190902182932) do
     t.string   "slug"
     t.integer  "pct_completed"
     t.string   "default_orientation"
+    t.integer  "works_count",         default: 0
   end
 
   add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
@@ -679,7 +681,7 @@ ActiveRecord::Schema.define(version: 20190902182932) do
     t.boolean  "supports_translation",                       default: false
     t.text     "translation_instructions"
     t.boolean  "pages_are_meaningful",                       default: true
-    t.boolean  "ocr_correction",                             default: false
+    t.boolean  "ocr_correction"
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
