@@ -56,6 +56,9 @@ module AbstractXmlHelper
         if params[:action] == "read_work"
           if e.attributes['break'] == "no"
             lb.add_text('')
+          else
+            lb.add_text(' ')
+            lb.add_attribute('class', 'line-break')
           end
         else
           if e.attributes['break'] == "no"
