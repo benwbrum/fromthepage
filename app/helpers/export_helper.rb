@@ -215,8 +215,4 @@ module ExportHelper
       return doc
     end
   end
-
-  def fromthepage_version
-    Fromthepage::Application::Version
-  end
 end
