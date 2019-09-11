@@ -87,14 +87,14 @@ html lang="en-US"
     =(yield :content_below).force_encoding 'UTF-8'
 
     footer.footer
+      ul.footer_nav
+        li =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
+        li =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
+        li =link_to 'About', about_path
+        li =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
+        li =link_to 'Privacy Policy', privacy_path
+        li =mail_to 'support@fromthepage.com', 'Contact Us'
       .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
-      .footer_nav
-        =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
-        =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
-        =link_to 'About', about_path
-        =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
-        =link_to 'Privacy Policy', privacy_path
-        =mail_to 'support@fromthepage.com', 'Contact Us'
 
     .page-busy-overlay
 

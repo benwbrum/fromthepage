@@ -19,6 +19,10 @@ class DocumentUpload < ActiveRecord::Base
     self.status = Status::QUEUED
     self.save
     rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
+    
+    # Nice-up the rake call if settings are present
+    rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
+    
     logger.info rake_call
     system(rake_call)
   end

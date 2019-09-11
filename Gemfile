@@ -6,7 +6,7 @@ gem 'rails', '4.1.2'
 gem 'will_paginate'
 #gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'rmagick'
-gem 'nokogiri', '~> 1.8.1'
+gem 'nokogiri'
 gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
 gem 'capistrano', '~> 3.4.0'
 gem 'capistrano-rails', '= 1.1.3'
@@ -41,6 +41,8 @@ gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: '
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
 
+gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
+
 group :assets do
   gem 'therubyracer'
   gem 'uglifier'
@@ -52,6 +54,7 @@ group :test do
   gem 'shoulda'
   gem 'webmock', require: false
   gem 'vcr'
+  gem 'coveralls', require: false
 end
 
 group :development, :test do
@@ -65,7 +68,7 @@ group :development, :test do
   gem 'binding_of_caller' # goes with better_errors
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
-  gem 'meta_request'
+  gem 'bullet'
 end
 
 # Use SASS for stylesheets
@@ -89,3 +92,13 @@ gem 'friendly_id'
 #support right to left languages
 gem 'rtl'
 gem 'iso-639'
+
+# Quiet asset lines in log files
+gem 'quiet_assets', '~> 1.1.0', group: :development
+
+# Profiling for use in prod
+gem 'flamegraph'
+gem 'memory_profiler'
+gem 'meta_request'
+gem 'rack-mini-profiler'
+gem 'stackprof'

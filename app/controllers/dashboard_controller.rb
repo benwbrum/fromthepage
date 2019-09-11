@@ -1,9 +1,15 @@
-class DashboardController < ApplicationController
+# frozen_string_literal: true
 
+class DashboardController < ApplicationController
   include AddWorkHelper
 
-  before_filter :authorized?, :only => [:owner, :staging, :omeka, :startproject, :summary]
-  before_filter :get_data, :only => [:owner, :staging, :omeka, :upload, :new_upload, :startproject, :empty_work, :create_work, :summary]
+  before_filter :authorized?,
+    only: [:owner, :staging, :omeka, :startproject, :summary]
+
+  before_filter :get_data,
+    only: [:owner, :staging, :omeka, :upload, :new_upload,
+           :startproject, :empty_work, :create_work, :summary]
+
   before_action :remove_col_id
 
   def authorized?
@@ -32,16 +38,14 @@ class DashboardController < ApplicationController
     @works = current_user.owner_works
     @ia_works = current_user.ia_works
     @document_sets = current_user.document_sets
-
-    logger.debug("DEBUG: #{current_user.inspect}")
   end
 
-  #Public Dashboard - list of all collections
+  # Public Dashboard - list of all collections
   def index
-    unless (Collection.all.count > 1000)
-      redirect_to collections_list_path
-    else
+    if Collection.all.count > 1000
       redirect_to landing_page_path
+    else
+      redirect_to collections_list_path
     end
   end
 
@@ -59,85 +63,87 @@ class DashboardController < ApplicationController
           collections_and_document_sets << collection
         elsif current_user.like_owner?(collection)
           collections_and_document_sets << collection
-        end 
+        end
       end
     else
       collections_and_document_sets = Collection.joins(:owner).preload(:owner).where(restricted: false) + DocumentSet.joins(:owner).preload(:owner).where(is_public: true)
     end
 
-    @collections_and_document_sets = collections_and_document_sets.sort { |a,b| a.title <=> b.title }
+    @collections_and_document_sets = collections_and_document_sets.sort { |a, b| a.title <=> b.title }
   end
 
-  #Owner Dashboard - start project
-  #other methods in AddWorkHelper
+  # Owner Dashboard - start project
+  # other methods in AddWorkHelper
   def startproject
     @work = Work.new
     @work.collection = @collection
     @document_upload = DocumentUpload.new
-    @document_upload.collection=@collection
+    @document_upload.collection = @collection
     @omeka_items = OmekaItem.all
     @omeka_sites = current_user.omeka_sites
     @sc_collections = ScCollection.all
   end
 
-  #Owner Dashboard - list of works
+  # Owner Dashboard - list of works
   def owner
   end
 
-  #Owner Summary Statistics - statistics for all owned collections
+  # Owner Summary Statistics - statistics for all owned collections
   def summary
     @statistics_object = current_user
-    @subjects_disabled = @statistics_object.collections.all? { |c| c.subjects_disabled }
+    @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
   end
 
-  #Collaborator Dashboard - watchlist
+  # Collaborator Dashboard - watchlist
   def watchlist
-    works = Work.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct
-    collections = Collection.joins(:deeds).where(deeds: {user_id: current_user.id}).distinct.order_by_recent_activity.limit(5)
-    document_sets = DocumentSet.joins(works: :deeds).where(works: {id: works.ids}).order('deeds.created_at DESC').distinct.limit(5)
-    @collections = (collections + document_sets).sort{|a,b| a.title <=> b.title }.take(5)
+    works = Work.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct
+    collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct.order_by_recent_activity.limit(5)
+    document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
+    @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)
     @page = recent_work
   end
 
-  #Collaborator Dashboard - user with no activity watchlist
+  # Collaborator Dashboard - user with no activity watchlist
   def recent_work
     recent_deed_ids = Deed.joins(:collection, :work).merge(Collection.unrestricted).merge(Work.unrestricted)
-                  .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
-    @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: {status: nil})
+      .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
+    @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: { status: nil })
 
-#find the first blank page in the most recently accessed work (as long as the works list isn't blank)
-    unless @works.empty?
-      recent_work = @works.first.pages.where(status: nil).first
-    #if the works list is blank, return nil
-    else
-      recent_work = nil
+    # find the first blank page in the most recently accessed work (as long as the works list isn't blank)
+    recent_work = unless @works.empty?
+      @works.first.pages.where(status: nil).first
+      # if the works list is blank, return nil
     end
   end
 
-  #Collaborator Dashboard - activity
+  # Collaborator Dashboard - activity
   def editor
     @user = current_user
   end
 
-  #Guest Dashboard - activity
+  # Guest Dashboard - activity
   def guest
     @collections = Collection.order_by_recent_activity.unrestricted.distinct.limit(5)
   end
 
   def landing_page
     if params[:search]
-      search_owners = User.search(params[:search])
+      # Get matching Collections and Docsets
       @search_results = Collection.search(params[:search]).unrestricted + DocumentSet.search(params[:search]).unrestricted
-      search_ids = @search_results.map(&:owner_user_id) + search_owners.pluck(:id)
-      @owners = User.where(id: search_ids).where.not(account_type: nil)
+
+      # Get user_ids from the resulting search
+      search_user_ids = User.search(params[:search]).pluck(:id) + @search_results.map(&:owner_user_id)
+
+      # Get matching users and users from Collections and DocSets search
+      @owners = User.where(id: search_user_ids).where.not(account_type: nil)
     else
-      id_list = User.where.not(account_type: [nil, 'Trial']).pluck(:id)
-      #merging on collections with those user ids filters out owners without collections
-      @owners = User.joins(:collections).where(collections: {restricted: false}).where(collections: {owner_user_id: id_list}).distinct.order(:display_name)
+      # Get random Collections and DocSets from paying users
+      @owners = User.non_trial_owners.includes(:random_collections, :random_document_sets).order(:display_name)
+
+      # Sampled Randomly down to 8 items for Carousel
+      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      @collections = (docsets + colls).sample(8)
     end
-
-    #these are for the carousel
-    @collections = @owners.map {|user| Collection.carousel.where(owner_user_id: user.id).first }.compact.sample(8)
   end
-
 end

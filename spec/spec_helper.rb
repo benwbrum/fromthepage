@@ -5,6 +5,8 @@ require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
+require 'coveralls'
+Coveralls.wear!
 
 DatabaseCleaner.strategy = :transaction
 
@@ -42,6 +44,16 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
+    
+    puts "Setting Collection Work Counts..."
+    Collection.all.each do |c|
+      Collection.reset_counters c.id, :works
+    end
+
+    puts "Setting DocumentSet Work Counts..."
+    DocumentSet.all.each do |ds|
+      DocumentSet.reset_counters ds.id, :document_set_works
+    end
   end
 
   config.include FactoryBot::Syntax::Methods
