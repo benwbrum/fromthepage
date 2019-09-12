@@ -55,6 +55,7 @@ group :test do
   gem 'shoulda'
   gem 'webmock', require: false
   gem 'vcr'
+  gem 'coveralls', require: false
 end
 
 group :development, :test do
