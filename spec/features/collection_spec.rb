@@ -284,6 +284,63 @@ describe "collection spec (isolated)" do
       expect(page).to have_content("All works are fully transcribed.")
   end
 
+  context 'Collection Settings' do
+    before :all do
+      @owner = User.find_by(login: OWNER)
+    end
+    before :each do
+      login_as(@owner, :scope => :user)
+      DatabaseCleaner.start
+    end
+    after :each do
+      DatabaseCleaner.clean
+    end
+
+    let(:work_ocr){ create(:work, ocr_correction: true) }
+    let(:work_no_ocr){ create(:work, ocr_correction: false) }
+    let(:work_ocr_true){ create(:work, ocr_correction: true) }
+    let(:work_ocr_false){ create(:work, ocr_correction: false) }
+    let(:collection_ocr_mixed){ create(:collection, owner: @owner, works: [work_ocr, work_no_ocr]) }
+    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [work_ocr_true]) }
+    let(:collection_ocr_false){ create(:collection, owner: @owner, works: [work_ocr_false]) }
+
+    it 'shows OCR section' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      expect(page).to have_content("OCR Correction")
+    end
+    it 'shows mixed OCR section buttons' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      expect(page).to have_content("Enable OCR")
+      expect(page).to have_content("Disable OCR")
+    end
+    it 'only shows enable OCR section buttons when all disabled' do
+      visit edit_collection_path(@owner, collection_ocr_false)
+      expect(page).to have_content(collection_ocr_false.title)
+      expect(page).to have_content("Enable OCR")
+      expect(page).not_to have_content("Disable OCR")
+    end
+    it 'only shows disable OCR section buttons when all disabled' do
+      visit edit_collection_path(@owner, collection_ocr_true)
+      expect(page).to have_content(collection_ocr_true.title)
+      expect(page).to have_content("Disable OCR")
+      expect(page).not_to have_content("Enable OCR")
+    end
+    it 'enables ocr' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      click_link('Enable OCR')
+      expect(page).to have_content("OCR correction has been enabled for all works.")
+    end
+    it 'disables ocr' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      click_link('Disable OCR')
+      expect(page).to have_content("OCR correction has been disabled for all works.")
+    end
+  end
+
   after :all do
     @factory_owner.collections.each do |c|
         c.destroy

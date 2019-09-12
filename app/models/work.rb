@@ -55,6 +55,9 @@ class Work < ActiveRecord::Base
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
 
+  scope :ocr_enabled, -> { where(ocr_correction: true) }
+  scope :ocr_disabled, -> { where(ocr_correction: false) }
+
   module TitleStyle
     REPLACE = 'REPLACE'
     

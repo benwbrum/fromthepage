@@ -683,8 +683,8 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.boolean  "scribes_can_edit_titles",                    default: false
     t.boolean  "supports_translation",                       default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                       default: true
-    t.boolean  "ocr_correction"
+    t.boolean  "pages_are_meaningful",                   default: true
+    t.boolean  "ocr_correction",                         default: false
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"

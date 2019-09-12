@@ -176,6 +176,54 @@ class Collection < ActiveRecord::Base
     self.works.joins(:work_statistic).where('work_statistics.total_pages > work_statistics.transcribed_pages').exists?
   end
 
+  def update_works_stats
+    works = self.works.includes(:work_statistic)
+    works_stats = get_works_stats_hash(works.ids)
+    works.each do |w|
+      w.work_statistic.recalculate_from_hash(works_stats[w.id])
+    end
+    calculate_complete
+  end
+
+  def enable_ocr
+    works.update_all(ocr_correction: true)
+    update_works_stats
+  end
+
+  def disable_ocr
+    works.update_all(ocr_correction: false)
+    update_works_stats
+  end
+
+  def get_works_stats_hash(work_ids)
+    stats = {}
+    work_prototype = {
+      transcription: {},
+      translation: {},
+      total: 0
+    }
+
+    transcription = Page.where(work_id: work_ids).group(:work_id, :status).count
+    translation = Page.where(work_id: work_ids).group(:work_id, :translation_status).count
+    totals = Page.where(work_id: work_ids).group(:work_id).count
+
+    transcription.each do |(id, status), value|
+      stats[id] = work_prototype if stats[id].nil?
+      stats[id][:transcription][status] = value
+    end
+
+    translation.each do |(id, status), value|
+      stats[id] = work_prototype if stats[id].nil?
+      stats[id][:translation][status] = value
+    end
+
+    totals.each do |id, value|
+      stats[id] = work_prototype if stats[id].nil?
+      stats[id][:total] = value
+    end
+    stats
+  end
+
   #constant
   LANGUAGE_ARRAY = [['Afrikaans', 'af', ['af-ZA']],
  ['አማርኛ', 'am', ['am-ET']],
