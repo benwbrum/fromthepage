@@ -183,7 +183,7 @@ class Collection < ActiveRecord::Base
   end
 
   def has_untranscribed_pages?
-    !!next_untranscribed_page
+    next_untranscribed_page.present?
   end
 
   def update_works_stats
