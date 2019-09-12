@@ -1,30 +1,32 @@
     h3 Upload PDF or ZIP File
-    p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
-    =form_for :document_upload, url: { action: 'new_upload' } do |f|
-      =validation_summary @document_upload.errors
-      table.form.collection-settings
-        tr
-          =f.label :collection_id, class: "hidden"
-          td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), {prompt: '- Select a collection -'}
-        tr
-          td
-            .input-file
-              =f.file_field(:file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed', title: 'Upload file')
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse files" readonly)
-              button(type="button") Browse
-        tr
-          td
-            =f.check_box :preserve_titles
-            =f.label :preserve_titles, ' Use image filenames as page titles.'
 
-      ul
-        li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
-        li Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
-        li Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
-        li For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.
-        li To specify metadata along with images, include a #{link_to('metadata.yml', :controller => 'static', :action => 'metadata')} file in each folder specifying fields for the work.
-      p.aright
-        =f.button 'Upload File', class: 'big'
+    section
+      p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
+      =form_for :document_upload, url: { action: 'new_upload' } do |f|
+        =validation_summary @document_upload.errors
+        table.form.collection-settings
+          tr
+            =f.label :collection_id, class: "hidden"
+            td =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @document_upload.collection_id), {prompt: '- Select a collection -'}
+          tr
+            td
+              .input-file
+                =f.file_field(:file, tabindex: '-1', accept: 'application/pdf,application/zip,application/x-zip,application/x-zip-compressed', title: 'Upload file')
+                input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse files" readonly)
+                button(type="button") Browse
+          tr
+            td
+              =f.check_box :preserve_titles
+              =f.label :preserve_titles, ' Use image filenames as page titles.'
+
+        ul
+          li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
+          li Each folder will be treated as a different document, so do not mix pages from different documents in the same folder.
+          li Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF.
+          li For example a ZIP file with 3 images, 2 PDFs, and 1 folder containing 5 more images would create 4 works: the top level images in one, each PDF in their own work, and a last work containing the 5 images from the folder.
+          li To specify metadata along with images, include a #{link_to('metadata.yml', :controller => 'static', :action => 'metadata')} file in each folder specifying fields for the work.
+        p.aright
+          =f.button 'Upload File', class: 'big'
 
     -content_for :javascript
       javascript:
