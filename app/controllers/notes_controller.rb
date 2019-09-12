@@ -4,7 +4,7 @@ class NotesController < ApplicationController
     @note = Note.new(params[:note])
     # truncate the body for the title
     @note.title = @note.body
-    @note.title = truncate(@note.title, length: 255)
+    @note.title = truncate(@note.title, length: 250)
     # add param-loaded associations
     @note.page = @page
     @note.work = @work
