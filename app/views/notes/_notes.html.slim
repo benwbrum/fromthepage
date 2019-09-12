@@ -39,6 +39,13 @@
         $(document).on('ajax:complete', 'form.user-bubble_form', function(e, xhr) {
           var $container = $(this).parent();
           var $error = $('.user-bubble_form_error', $container).empty();
+
+          if (e.response === undefined && xhr.responseText.includes("Sign In")) {
+            var message = "You need to be logged in to create this note."
+            $error.text('Error: ' + message);
+            return false;
+          }
+
           if(xhr.status === 201) {
             // Note created
             var content = xhr.responseJSON.html;

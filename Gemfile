@@ -43,6 +43,7 @@ gem 'omniauth-google-oauth2'
 
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
 
+
 group :assets do
   gem 'therubyracer'
   gem 'uglifier'
@@ -67,7 +68,7 @@ group :development, :test do
   gem 'binding_of_caller' # goes with better_errors
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
-  gem 'meta_request'
+  gem 'bullet'
 end
 
 # Use SASS for stylesheets
@@ -94,3 +95,10 @@ gem 'iso-639'
 
 # Quiet asset lines in log files
 gem 'quiet_assets', '~> 1.1.0', group: :development
+
+# Profiling for use in prod
+gem 'flamegraph'
+gem 'memory_profiler'
+gem 'meta_request'
+gem 'rack-mini-profiler'
+gem 'stackprof'

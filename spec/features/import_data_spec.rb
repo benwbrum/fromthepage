@@ -15,6 +15,7 @@ describe "import data" do
         let(:item_url)      { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/2' }
         let(:collection_url){ 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01' }
         let(:repository_url){ 'https://cdm16488.contentdm.oclc.org/' }
+        let(:bad_item_url)  { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/1' }
 
         it "browses a single record" do 
             visit dashboard_owner_path
@@ -42,6 +43,16 @@ describe "import data" do
                 page.find('#cdm_import').click
             end
             expect(page).to have_content("Collections:")
+        end
+        it "Gives an error for a well-formed Cdm URL with a bad/empty IIIF manifest" do
+            visit dashboard_owner_path
+            click_link("Start A Project")
+            VCR.use_cassette('cdm/bad_iiif_manifest') do
+                page.fill_in 'cdm_url', with: bad_item_url
+                page.find('#cdm_import').click
+            end
+            flash_message = "No IIIF manifest exists for CONTENTdm item #{bad_item_url}"
+            expect(page).to have_content(flash_message)
         end
     end
 end
