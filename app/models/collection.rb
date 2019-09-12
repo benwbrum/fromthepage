@@ -15,6 +15,7 @@ class Collection < ActiveRecord::Base
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, :dependent => :destroy
 
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
   has_many :pages, through: :works
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
@@ -29,6 +30,7 @@ class Collection < ActiveRecord::Base
   before_create :set_help
   before_create :set_link_help
   after_save :create_categories
+  after_save :set_next_untranscribed_page
 
   mount_uploader :picture, PictureUploader
 
@@ -172,8 +174,16 @@ class Collection < ActiveRecord::Base
     self.is_active
   end
 
+  def set_next_untranscribed_page
+    first_work = works.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
+    first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
+    page_id = first_page.nil? ? nil : first_page.id
+    
+    update_columns(next_untranscribed_page_id: page_id)
+  end
+
   def has_untranscribed_pages?
-    self.works.joins(:work_statistic).where('work_statistics.total_pages > work_statistics.transcribed_pages').exists?
+    next_untranscribed_page.present?
   end
 
   def update_works_stats

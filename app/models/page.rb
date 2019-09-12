@@ -31,6 +31,10 @@ class Page < ActiveRecord::Base
   after_save :create_version
   after_save :update_sections_and_tables
   after_save :update_tex_figures
+  after_save do
+    work.update_next_untranscribed_pages if self == work.next_untranscribed_page
+  end
+
   after_initialize :defaults
   after_destroy :update_work_stats
 #  after_destroy :delete_deeds
