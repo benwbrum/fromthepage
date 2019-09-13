@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 RSpec.describe AbstractXmlHelper, type: :helper do
-  include DeviseHelper
-
   fixtures :all
+  let(:user_signed_in?) { true }
 
   before do
     @collection = Collection.first
