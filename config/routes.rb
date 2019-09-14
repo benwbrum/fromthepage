@@ -128,6 +128,7 @@ Fromthepage::Application.routes.draw do
       get 'export/page_plaintext_translation_verbatim', path: ':work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
       get 'export/page_plaintext_emended', path: ':work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
       get 'export/page_plaintext_translation_emended', path: ':work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
+      get 'export/version'
 
       # Page Annotations
       get 'annotation/page_transcription_html', path: ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html'

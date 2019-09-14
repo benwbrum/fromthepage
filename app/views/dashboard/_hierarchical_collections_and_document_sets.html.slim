@@ -12,7 +12,10 @@
           p.collection_snippet =snippet
         -if cds.has_untranscribed_pages?
           p
-            =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
+          -if user_signed_in?
+            =link_to "Start Transcribing", collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+          -else
+            =link_to "Start Transcribing", collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
         .collection_summary
           span =="Owned by #{owner_link}"
         ul
