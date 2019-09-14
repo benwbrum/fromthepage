@@ -144,4 +144,8 @@ module ApplicationHelper
     return attrs
   end
 
+  def fromthepage_version
+    Fromthepage::Application::Version
+  end
+
 end
