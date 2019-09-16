@@ -68,44 +68,6 @@ describe "Devise" do
       visit dashboard_watchlist_path
       expect(page).to have_content("#{user.display_name} joined #{collection.title}")
     end
-    it "creates a new trial owner account" do
-      visit users_new_trial_path
-      page.fill_in 'Login', with: owner.login
-      page.fill_in 'Email address', with: owner.email
-      page.fill_in 'Password', with: owner.password
-      page.fill_in 'Password confirmation', with: owner.password
-      page.fill_in 'Display name', with: owner.display_name
-      click_button('Create Account')
-      expect(page).to have_content("Signed In As#{owner.display_name}")
-    end
-    it "redirects owner to dashboard/owner#freetrial after signup" do 
-      visit users_new_trial_path
-      page.fill_in 'Login', with: owner.login
-      page.fill_in 'Email address', with: owner.email
-      page.fill_in 'Password', with: owner.password
-      page.fill_in 'Password confirmation', with: owner.password
-      page.fill_in 'Display name', with: owner.display_name
-      click_button('Create Account')
-      # This is the closest I can get to testing this path.
-      # Ideally we would also test that the path includes `#freetrial`
-      # but this seems to be a limitation of Capybara-Webkit
-      expect(page.current_path).to eq dashboard_owner_path
-    end
-    it "does not redirect owner to previous page after signup" do
-      # Previous page
-      visit old_path
-      visit users_new_trial_path
-      page.fill_in 'Login', with: owner.login
-      page.fill_in 'Email address', with: owner.email
-      page.fill_in 'Password', with: owner.password
-      page.fill_in 'Password confirmation', with: owner.password
-      page.fill_in 'Display name', with: owner.display_name
-      click_button('Create Account')
-      # This is the closest I can get to testing this path.
-      # Ideally we would also test that the path includes `#freetrial`
-      # but this seems to be a limitation of Capybara-Webkit
-      expect(page.current_path).to eq dashboard_owner_path
-    end
   end
 
   context "user login" do
