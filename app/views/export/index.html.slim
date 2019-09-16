@@ -103,7 +103,8 @@ p
 
 p
   'IIIF Collection API Endpoint:
-  =link_to iiif_collection_path(@collection.id, only_path: false)
+  =link_to iiif_collection_path(@collection.id, only_path: false),
+           iiif_collection_path(@collection.id, only_path: false)
   '
 
 =render({ :partial => '/shared/collection_footer' })
