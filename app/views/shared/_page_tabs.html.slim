@@ -80,7 +80,7 @@
           =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -else
-          =link_to(collection_next_untranscribed_page_path, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+          =link_to(collection_next_untranscribed_page_path(@collection, @collection.owner, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
 
 .tabs
