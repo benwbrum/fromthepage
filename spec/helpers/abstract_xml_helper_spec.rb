@@ -18,4 +18,13 @@ RSpec.describe AbstractXmlHelper, type: :helper do
     xml_text = "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>guide the reader <lb/>to the correct pron<lb break='no'/>ounciation [sic].</p><p>I am Dear Sir<lb/>Yours Faithfully<lb/>Samuel Gason</p>\n      </page>\n"
     expect(xml_to_html(xml_text, false, true)).to include("pron<span class='line-break'>-</span>ounciation")
   end
+
+  context "with params" do
+    let(:params) { { action: "read_work" } }
+
+    it "adds a whitespace after a hard break with preserve_lb=false" do
+      xml_text = "<?xml version='1.0' encoding='UTF-8'?>    \n      <page>\n        <p>guide the reader <lb/>to the correct pron<lb break='no'/>ounciation [sic].</p><p>I am Dear Sir<lb/>Yours Faithfully<lb/>Samuel Gason</p>\n      </page>\n"
+      expect(xml_to_html(xml_text, false, true)).to include("guide the reader <span class='line-break'> </span>to")
+    end
+  end
 end
