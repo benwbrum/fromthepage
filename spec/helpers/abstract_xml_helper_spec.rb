@@ -25,7 +25,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
   context "with params" do
     let(:params) { { action: "read_work" } }
 
-    it "adds a whitespace after a hard break with preserve_lb=false" do
+    it "returns a whitespace after a hard break with preserve_lb=false" do
       expect(xml_to_html(@xml_text, false, true)).to include("guide the reader <span class='line-break'> </span>to")
     end
   end
