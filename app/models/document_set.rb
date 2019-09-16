@@ -19,6 +19,8 @@ class DocumentSet < ActiveRecord::Base
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
+  after_save :set_next_untranscribed_page
+
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
   scope :unrestricted, -> { where(is_public: true)}
