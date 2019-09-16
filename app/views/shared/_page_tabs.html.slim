@@ -80,7 +80,8 @@
           =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -else
-          span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
+          =link_to(collection_next_untranscribed_page_path, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
 
 .tabs
   -for tab in tabs

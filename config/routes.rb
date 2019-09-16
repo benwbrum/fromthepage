@@ -135,6 +135,8 @@ Fromthepage::Application.routes.draw do
       get 'transcribe/translate', path: ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get 'transcribe/help', path: ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
       get 'transcribe/still_editing', path: ':work_id/still_editing/:page_id'
+      get 'transcribe/next_untranscribed_page', path: ':work_id/next_untranscribed_page', as: 'next_untranscribed_page', to: 'transcribe#goto_next_untranscribed_page'
+      
       get 'page/edit', path: ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get 'page_version/list', path: ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
       get 'export/page_plaintext_searchable', path: ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
