@@ -187,6 +187,15 @@ class ExportController < ApplicationController
     flash[:notice] = "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."
     ajax_redirect_to :action => :index, :collection_id => @collection.id
   end
+
+  def version
+    version = Fromthepage::Application::Version
+    database = ActiveRecord::Migrator.current_version
+
+    render json: { software: version,
+                   database: database }
+  end
+
 private
 
   def get_headings(collection, ids)

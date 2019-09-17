@@ -458,6 +458,18 @@ class CollectionController < ApplicationController
     end
   end
 
+  def enable_ocr
+    @collection.enable_ocr
+    flash[:notice] = "OCR correction has been enabled for all works."
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+  
+  def disable_ocr
+    @collection.disable_ocr
+    flash[:notice] = "OCR correction has been disabled for all works."
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
 private
   def set_collection
     unless @collection

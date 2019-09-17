@@ -4,6 +4,10 @@ class Work < ActiveRecord::Base
 
   has_many :pages, -> { order 'position' }, :dependent => :destroy
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
+
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  has_many :untranscribed_pages, -> { needs_transcription }, class_name: "Page"
+
   belongs_to :collection, counter_cache: :works_count
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :ia_work, :dependent => :destroy
@@ -19,6 +23,8 @@ class Work < ActiveRecord::Base
   has_many :document_sets, through: :document_set_works
 
   after_save :update_statistic
+  after_save :update_next_untranscribed_pages
+
   after_destroy :cleanup_images
 
   attr_accessible :title,
@@ -54,6 +60,9 @@ class Work < ActiveRecord::Base
   scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
+
+  scope :ocr_enabled, -> { where(ocr_correction: true) }
+  scope :ocr_disabled, -> { where(ocr_correction: false) }
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -237,7 +246,24 @@ class Work < ActiveRecord::Base
     collection.subjects_disabled == false
   end
 
+  def update_next_untranscribed_pages
+    set_next_untranscribed_page
+    collection&.set_next_untranscribed_page
+
+    unless document_sets.empty?
+      document_sets.each do |ds|
+        ds.set_next_untranscribed_page
+      end
+    end
+  end
+
+  def set_next_untranscribed_page
+    next_page = untranscribed_pages.order("position ASC").first
+    page_id = next_page.nil? ? nil : next_page.id
+    update_columns(next_untranscribed_page_id: page_id)
+  end
+
   def has_untranscribed_pages?
-    self.pages.any? { |p| p.status.nil? }
+    next_untranscribed_page.present?
   end
 end

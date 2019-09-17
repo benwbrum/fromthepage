@@ -5,6 +5,8 @@ require 'rspec/rails'
 require 'factory_bot'
 require 'webmock/rspec'
 require 'database_cleaner'
+require 'coveralls'
+Coveralls.wear!
 
 DatabaseCleaner.strategy = :transaction
 

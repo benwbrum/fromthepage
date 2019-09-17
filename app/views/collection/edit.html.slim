@@ -169,6 +169,16 @@
     -else
       =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
         span Disable Document Sets
+    
+    h3 OCR Correction
+    p Enable or disable OCR correction for all works in this collection.
+    -if @collection.works.ocr_disabled.any?
+      =link_to({ :action => 'enable_ocr', :collection_id => @collection.id }, class: 'button')
+        span Enable OCR
+    ' 
+    -if @collection.works.ocr_enabled.any?
+      =link_to({ :action => 'disable_ocr', :collection_id => @collection.id }, class: 'button')
+        span Disable OCR
 
     h3 Blank Collection
     p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
