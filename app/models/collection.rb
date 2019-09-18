@@ -149,7 +149,7 @@ class Collection < ActiveRecord::Base
   end
 
   def self.search(search)
-    where("title LIKE ? OR slug LIKE ?", "%#{search}%", "%#{search}%")
+    where("title like ? OR slug LIKE ? OR owner_user_id in (select id from users where owner=1 and display_name like ?)", "%#{search}%", "%#{search}%", "%#{search}%")
   end
 
   def sections

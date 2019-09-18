@@ -25,6 +25,9 @@
 
 .columns.project-list
   article.maincol
+    -if @search_results
+      -@search_results.each do |sr|
+        =link_to sr.title, collection_path(current_user.slug, sr.id) unless current_user.nil?
     -@owners.each do |owner|
       -if params[:search]
         -projects = @search_results.select{ |p| p.owner_user_id == owner.id}
