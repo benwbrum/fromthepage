@@ -7,6 +7,10 @@ FactoryBot.define do
       page_article_links { build_stubbed_list :page_article_link, 2 }
     end
 
+    trait :transcribed do
+      status { Page::STATUS_TRANSCRIBED }
+    end
+    factory :transcribed_page, :traits => [:transcribed]
     factory :page_with_links, :traits => [:with_links]
   end
 end

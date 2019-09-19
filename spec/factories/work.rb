@@ -11,6 +11,10 @@ FactoryBot.define do
       pages { build_list :page, 2 }
     end
 
+    trait :transcribed do
+      pages { build_list :transcribed_page, 2 }
+    end
+
     factory :work_with_links, :traits => [:with_links]
     factory :work_with_pages, :traits => [:with_pages]
   end
