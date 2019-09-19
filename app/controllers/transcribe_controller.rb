@@ -316,15 +316,19 @@ class TranscribeController  < ApplicationController
     if @work.next_untranscribed_page
       # GOTO Page
       flash[:notice] = "Here's another page in this work, if you'd like to continue."
-      next_page = collection_transcribe_page_path(@work.owner, @work.collection, @work, @work.next_untranscribed_page)
-    elsif @collection.class == DocumentSet && @collection.next_untranscribed_page
-      # GOTO Next UP in Docset
-      flash[:notice] = "There are no more pages to transcribe, here's another page in this document set if you'd like to continue."
-      next_page = collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page)
+      next_page = collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, @work.next_untranscribed_page)
     elsif @collection.next_untranscribed_page
-      # GOTO Next UP in Collection
-      flash[:notice] = "There are no more pages to transcribe in this work, here's another page in this collection set if you'd like to continue."
-      next_page = collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page)
+      if @collection.class == DocumentSet
+        flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this document set if you'd like to continue."
+        next_page = collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page)
+      else # is a true Collection
+        flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection if you'd like to continue."
+        next_page = collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page)
+      end
+    elsif @collection.class == DocumentSet && @collection.collection.next_untranscribed_page
+      docset = @collection
+      flash[:notice] = "There are no more pages to transcribe in this document set. Here's another page in this collection if you'd like to continue."
+      next_page = collection_transcribe_page_path(docset.collection.owner, docset.collection, docset.collection.next_untranscribed_page.work, docset.collection.next_untranscribed_page)
     else
       # GOTO Find A Project
       flash[:notice] = "There are no more pages to transcribe in this collection! Check out some of our other projects."
