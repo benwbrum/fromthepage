@@ -19,7 +19,7 @@ describe "Next untranscribed page logic" do
   #   let(:collection) { create(:collection) }
   let(:new_work) { create(:work, :with_pages) }
   let(:completed_work) { create(:work, :transcribed) }
-  let(:complete_collection) { create(:collection) }
+
   it "doesn't show the next button on reading page" do
     collection = create(:collection, works: [new_work])
     visit collection_display_page_path(collection.owner, collection, new_work, new_work.pages.last)
