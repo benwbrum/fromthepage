@@ -36,7 +36,7 @@ namespace :fromthepage do
 
           if user_activity.has_contributions?
             puts "There was activity on #{user.display_name}\'s previous work in the past 24 hours"
-            UserMailer.nightly_user_activity(user_activity).deliver!
+            UserMailer.nightly_user_activity(user_activity).deliver! if user.notification.user_activity
           end
         rescue StandardError => e
           print "SMTP Failed: Exception: #{e.message} \n"
