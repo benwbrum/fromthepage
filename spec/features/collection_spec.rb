@@ -261,10 +261,14 @@ describe "collection spec (isolated)" do
       expect(page).to have_content('Start A Project')
       page.find('.tabs').click_link('Start A Project')
 
+      page.find(:css, '#create-empty-work').click
+
       select('Add New Collection', :from => 'work_collection_id')
       page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
       click_button('Create Collection')
       expect(page).to have_content('Collection has been created')
+
+      page.find(:css, '#create-empty-work').click
 
       fill_in('work_title', with: 'Stats Test Work')
       click_button('Create Work')

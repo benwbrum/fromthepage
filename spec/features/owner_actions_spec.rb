@@ -79,6 +79,7 @@ describe "owner actions", :order => :defined do
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, '#document-upload').click
     page.select 'Add New Collection', from: 'document_upload_collection_id' 
 
     within(page.find('.litebox-embed')) do
@@ -86,6 +87,7 @@ describe "owner actions", :order => :defined do
       fill_in 'collection_title', with: col_title
       find_button('Create Collection').trigger(:click)
     end
+    page.find(:css, '#document-upload').click
     page.find('#document_upload_collection_id')
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
     sleep(2)

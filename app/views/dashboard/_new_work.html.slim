@@ -1,5 +1,7 @@
 -content_for :javascript
   javascript:
+    $('section').hide();
+
     $('.title').click(function(){
       $(this).parent().next().toggle();
     });
@@ -11,7 +13,7 @@
     a name = "create-work"
 
     h3
-      a(href="#" class="title" onClick="return false;") Import a IIIF Manifest or Collection
+      a(href="#" class="title" onClick="return false;" id="import-iiif-manifest") Import a IIIF Manifest or Collection
     section
       =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
         table.form
