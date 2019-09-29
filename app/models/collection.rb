@@ -182,6 +182,24 @@ class Collection < ActiveRecord::Base
     update_columns(next_untranscribed_page_id: page_id)
   end
 
+  def find_next_untranscribed_page_for_user(user)
+    return nil unless has_untranscribed_pages?
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+
+    public = works
+      .where.not(next_untranscribed_page_id: nil)
+      .unrestricted
+      .order_by_incomplete
+
+    return public.first unless public.empty?
+
+    works
+      .where.not(next_untranscribed_page_id: nil)
+      .restricted
+      .order_by_incomplete
+      .find{ |w| user.can_transcribe?(w) }
+  end
+
   def has_untranscribed_pages?
     next_untranscribed_page.present?
   end
