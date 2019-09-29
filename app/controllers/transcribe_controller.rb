@@ -337,7 +337,7 @@ class TranscribeController  < ApplicationController
       next_page = @collection.find_next_untranscribed_page_for_user(current_user)
       unless next_page.nil?
         flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection if you'd like to continue."
-        next_page_path = collection_transcribe_page_path(next_page.work.collection.owner, next_page.work.collection, next_page.work, next_page)
+        next_page_path = collection_transcribe_page_path(@collection.owner, @collection, next_page.work, next_page)
       end
     end
     redirect_to next_page_path

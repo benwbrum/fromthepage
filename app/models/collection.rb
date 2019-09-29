@@ -191,13 +191,16 @@ class Collection < ActiveRecord::Base
       .unrestricted
       .order_by_incomplete
 
-    return public.first unless public.empty?
+    return public.first.next_untranscribed_page unless public.empty?
 
-    works
+    private = works
       .where.not(next_untranscribed_page_id: nil)
       .restricted
       .order_by_incomplete
-      .find{ |w| user.can_transcribe?(w) }
+      
+    wk = private.find{ |w| user.can_transcribe?(w) }
+
+    wk.nil? ? nil : wk.next_untranscribed_page
   end
 
   def has_untranscribed_pages?

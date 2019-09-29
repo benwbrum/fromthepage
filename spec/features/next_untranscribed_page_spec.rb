@@ -16,9 +16,9 @@ describe "Next untranscribed page logic" do
   let(:user)  { create(:user) }
   let(:owner) { create(:owner) }
 
-  #   let(:collection) { create(:collection) }
   let(:new_work) { create(:work, :with_pages) }
   let(:completed_work) { create(:work, :transcribed) }
+  let(:restricted_work) { create(:work, :restricted, :with_pages) }
 
   it "doesn't show the next button on reading page" do
     collection = create(:collection, works: [new_work])
@@ -95,7 +95,31 @@ describe "Next untranscribed page logic" do
       expect(page).to(have_content("There are no more pages to transcribe in this collection!"))
       expect(page.current_path).to(eq(landing_page_path))
     end
-    it "handles when user lacks permissions to view page in work"
-    it "handles when user lacks permissions to view page in collection"
+    it "handles when user lacks permissions to view page in a work in a docset" do
+      collection = create(:collection, works: [restricted_work, completed_work, new_work])
+      docset = create(:document_set, :public, collection_id: collection.id, works: [restricted_work, completed_work, new_work])
+
+      visit collection_transcribe_page_path(docset.owner, docset.slug, completed_work, completed_work.pages.last)
+      expect(page).to(have_content(docset.title))
+
+      expect(page).to(have_content(completed_work.pages.last.title))
+      page.find("a.page-nav_next").click
+
+      expect(page).to(have_content("Here's another page in this document set"))
+      expect(page).to(have_content(new_work.pages.first.title))
+    end
+    it "handles when user lacks permissions to view page in collection" do
+      collection = create(:collection, works: [restricted_work, completed_work, new_work])
+      docset = create(:document_set, :public, collection_id: collection.id, works: [restricted_work, completed_work])
+
+      visit collection_transcribe_page_path(docset.owner, docset.slug, completed_work, completed_work.pages.last)
+      expect(page).to(have_content(docset.title))
+
+      expect(page).to(have_content(completed_work.pages.last.title))
+      page.find("a.page-nav_next").click
+
+      expect(page).to(have_content("Here's another page in this collection"))
+      expect(page).to(have_content(new_work.pages.first.title))
+    end
   end
 end

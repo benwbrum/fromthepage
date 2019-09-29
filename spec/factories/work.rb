@@ -15,6 +15,10 @@ FactoryBot.define do
       pages { build_list :transcribed_page, 2 }
     end
 
+    trait :restricted do
+      restrict_scribes { true }
+    end
+
     factory :work_with_links, :traits => [:with_links]
     factory :work_with_pages, :traits => [:with_pages]
   end
