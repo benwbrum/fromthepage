@@ -39,14 +39,14 @@ describe "needs review", :order => :defined do
     page.find('.work-page_title', text: @page1.title).click_link(@page1.title)
     page.check('page_mark_blank')
     find('#save_button_top').click
-    expect(page).to have_content("This page is blank")
+    expect(page).to have_content("This page is marked blank")
     expect(Page.find_by(id: @page1.id).status).to eq ('blank')
     expect(Page.find_by(id: @page1.id).translation_status).to eq ('blank')
     page.find('.page-nav_next').click
+    page.find('.tabs').click_link("Overview")
     expect(page).to have_content(@page2.title)
     expect(page).to have_content("This page is not transcribed")
     page.find('a', text: 'mark the page blank').click
-    expect(page).to have_content("This page is blank")
     expect(page).to have_content("This page is blank")
     expect(Page.find_by(id: @page2.id).status).to eq ('blank')
     expect(Page.find_by(id: @page2.id).translation_status).to eq ('blank')
