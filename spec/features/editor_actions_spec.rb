@@ -25,8 +25,6 @@ describe "editor actions" , :order => :defined do
       page.find('.tabs').click_link("Transcribe")
       page.find('#page_mark_blank').set(true)
       page.find('#save_button_top').click
-
-      page.find('.tabs').click_link("Transcribe")
       expect(page).to have_checked_field('page_mark_blank')
     end
     it "resets page status to nil if empty and not marked BLANK" do
