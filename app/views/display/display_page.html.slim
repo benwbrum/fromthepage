@@ -19,10 +19,8 @@
         =render :partial => '/ia/ia_bookreader_div'
       -elsif @page.sc_canvas
         =render :partial => '/shared/iiif_div'
-      -elsif @page.omeka_file
-        =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
       -else
-        =render :partial => '/shared/zoom_div'
+        =render :partial => '/shared/image_div'
 
   .page-column
     .page-preview[*language_attrs(@collection)]
