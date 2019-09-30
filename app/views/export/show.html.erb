@@ -11,9 +11,14 @@
       <% unless @work.identifier.blank? %>
         <p>Identifier: <%=@work.identifier%></p>
       <% end %>
-      <p>
+      <p version="<%= fromthepage_version %>">
         FromThePage version: <%= fromthepage_version %>
       </p>
+      <% if @work.ia_work %>
+        <p>
+          Internet Archive URL: <a href="<%= @work.ia_work.detail_url %>" id="ia_url"><%= @work.ia_work.detail_url %></a>
+        </p>
+      <% end %>
     </div>
 
     <hr />
@@ -21,7 +26,13 @@
 
     <div class="pages">
       <% @work.pages.each do |page| %>
-      <div id="page-<%=page.id%>">
+      <% 
+        leaf_attr = ''
+        if page.ia_leaf
+          leaf_attr="ia_leaf_number=\"#{page.ia_leaf.leaf_number}\""
+        end 
+      %>
+      <div id="page-<%=page.id%>" <%=raw(leaf_attr)%>>
         <h3><%= page.title %></h3>
         <div class="page-content">
           <%= raw(xml_to_html(page.xml_text, true, true)) %>
