@@ -48,13 +48,13 @@ class TranscribeController  < ApplicationController
       @page.save
       record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
+      redirect_to collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page.id) and return
     else
       return true
     end
