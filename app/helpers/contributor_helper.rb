@@ -43,8 +43,10 @@ module ContributorHelper
     # Sum the time between the beginning of the visit and the last ahoy event for the session per user
     @user_time = {}
     deed_visits.each do |visit|
-      @user_time[visit.user_id] = 0 unless @user_time[visit.user_id]
-      @user_time[visit.user_id] += visit.ahoy_events.last.time - visit.started_at
+      if visit.ahoy_events.last
+        @user_time[visit.user_id] = 0 unless @user_time[visit.user_id]
+        @user_time[visit.user_id] += visit.ahoy_events.last.time - visit.started_at
+      end
     end
 
     @user_time_proportional = {}
