@@ -48,7 +48,10 @@ class RegistrationsController < Devise::RegistrationsController
       # Record the `joined` deed based on Ahoy Visit
       join_collection = joined_from_collection(current_visit.id)
       @user.join_collection(join_collection) unless join_collection.nil?
-    
+      if @user.owner
+        @user.account_type="Trial"
+        @user.save
+      end
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
