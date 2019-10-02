@@ -58,7 +58,7 @@ describe "Next untranscribed page logic" do
       expect(page).to(have_content(completed_work.pages.last.title))
       page.find("a.page-nav_next").click
 
-      expect(page).to(have_content("Here's another page in this document set"))
+      expect(page).to(have_content("Here's another page in this collection"))
       expect(page).to(have_content(new_work.pages.first.title))
     end
 
@@ -85,15 +85,15 @@ describe "Next untranscribed page logic" do
       expect(page).to(have_content("Here's another page in this collection"))
       expect(page).to(have_content(new_work.pages.first.title))
     end
-    it "takes user to Find A Project when collection is complete" do
+    it "takes user to owner profile page when collection is complete" do
       collection = create(:collection, works: [completed_work])
       visit collection_transcribe_page_path(collection.owner, collection, completed_work, completed_work.pages.last)
 
       expect(page).to(have_content(completed_work.pages.last.title))
       page.find("a.page-nav_next").click
 
-      expect(page).to(have_content("There are no more pages to transcribe in this collection!"))
-      expect(page.current_path).to(eq(landing_page_path))
+      expect(page).to(have_content("There are no more pages to transcribe in this collection"))
+      expect(page.current_path).to(eq(user_profile_path(collection.owner)))
     end
     it "handles when user lacks permissions to view page in a work in a docset" do
       collection = create(:collection, works: [restricted_work, completed_work, new_work])
@@ -105,7 +105,7 @@ describe "Next untranscribed page logic" do
       expect(page).to(have_content(completed_work.pages.last.title))
       page.find("a.page-nav_next").click
 
-      expect(page).to(have_content("Here's another page in this document set"))
+      expect(page).to(have_content("Here's another page in this collection"))
       expect(page).to(have_content(new_work.pages.first.title))
     end
     it "handles when user lacks permissions to view page in collection" do
