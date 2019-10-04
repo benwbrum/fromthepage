@@ -53,6 +53,7 @@ class Work < ActiveRecord::Base
   mount_uploader :picture, PictureUploader
 
   scope :unrestricted, -> { where(restrict_scribes: false)}
+  scope :restricted, -> { where(restrict_scribes: true)}
   scope :order_by_recent_activity, -> { joins(:deeds).reorder('deeds.created_at DESC').distinct }
   scope :order_by_recent_inactivity, -> { joins(:deeds).reorder('deeds.created_at ASC').distinct }
   scope :order_by_completed, -> { joins(:work_statistic).reorder('work_statistics.complete DESC')}
