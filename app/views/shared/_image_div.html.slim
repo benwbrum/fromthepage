@@ -5,7 +5,7 @@
 -content_for :javascript
   javascript:
     $(function() {
-      OpenSeadragon({
+      viewer = OpenSeadragon({
         id: "image_container",
         prefixUrl: "",
         showRotationControl: true,
@@ -72,5 +72,16 @@
           type: 'image',
           url: '#{file_to_url(@page.canonical_facsimile_url)}'
         }
+      });
+
+      $(window).on('beforeunload', function() {
+        var bounds = JSON.stringify(viewer.viewport.getBounds());
+        localStorage['bounds'] = bounds;
+      });
+
+      viewer.addHandler('open', function() {
+        bounds = JSON.parse(localStorage['bounds']);
+        var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.height, bounds.width);
+        viewer.viewport.fitBounds(rect, true);
       });
     });
