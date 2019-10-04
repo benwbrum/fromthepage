@@ -75,8 +75,8 @@
       });
 
       $(window).on('beforeunload', function() {
-        var bounds = JSON.stringify(viewer.viewport.getBounds());
-        localStorage['bounds'] = bounds;
+        var bounds = viewer.viewport.getBounds();
+        localStorage['bounds'] = JSON.stringify(bounds);
       });
 
       viewer.addHandler('open', function() {
