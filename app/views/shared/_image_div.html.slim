@@ -80,8 +80,12 @@
       });
 
       viewer.addHandler('open', function() {
-        bounds = JSON.parse(localStorage['bounds']);
-        var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.height, bounds.width);
-        viewer.viewport.fitBounds(rect, true);
+        bounds = localStorage['bounds'];
+
+        if (bounds) {
+          jbounds = JSON.parse(bounds);
+          var rect = new OpenSeadragon.Rect(jbounds.x, jbounds.y, jbounds.height, jbounds.width);
+          viewer.viewport.fitBounds(rect, true);
+        }
       });
     });
