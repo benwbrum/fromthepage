@@ -1,6 +1,7 @@
 =javascript_include_tag "openseadragon.js"
 
-.image-container(id="image_container" style="width:100%;height:100%;border:1px solid black;color:#333;background-color: black;")
+.image-container(id="image_container"
+                 style="width: 100%; height: 100%; border: 1px solid black; color: #333; background-color: black;")
 
 -content_for :javascript
   javascript:
@@ -62,11 +63,11 @@
             DOWN: "#{asset_path('osd/next_pressed.png')}"
           }
         },
-        maxZoomPixelRatio:  10,
-        visibilityRatio:    1,
-        fitBounds:          true,
-        preserveViewport:   true,
-        sequenceMode:       false, //we want fromthepage to handle pages sequentially, rather than openseadragon
+        maxZoomPixelRatio: 10,
+        visibilityRatio: 1,
+        fitBounds: true,
+        preserveViewport: true,
+        sequenceMode: false, //we want fromthepage to handle pages sequentially, rather than openseadragon
       });
 
       $(window).on('beforeunload', function() {
