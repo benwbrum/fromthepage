@@ -97,3 +97,7 @@
       $(function() {
         viewer.open({type: 'image', url: '#{file_to_url(@page.canonical_facsimile_url)}'});
       });
+
+noscript
+  p OpenSeadragon is not available unless JavaScript is enabled.
+  img(src="/example-images/highsmith/01967v.jpg" height="600")
