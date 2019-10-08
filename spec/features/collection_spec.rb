@@ -132,8 +132,8 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
-    page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    page.find('.user-label', text: @rest_user.display_name).find('a.remove').click
+    page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
