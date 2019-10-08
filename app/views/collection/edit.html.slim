@@ -126,7 +126,7 @@
           .userpic
             =gravatar_image_tag user.email, :alt => user.display_name
           .username
-            =link_to user.name_with_identifier, user_profile_path(user)
+            =link_to user.display_name, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
             =link_to 'Remove', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
