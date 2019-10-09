@@ -1,7 +1,9 @@
 -content_for :javascript
   javascript:
-    $('.title').click(function(){
-      $(this).parent().next().toggle();
+    $(document).ready(function() {
+      $('.title').click(function(){
+        $(this).parent().next().toggle();
+      });
     });
 
 .columns
