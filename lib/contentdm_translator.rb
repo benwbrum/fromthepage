@@ -180,12 +180,33 @@ module ContentdmTranslator
     at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '')
   end
 
+  def self.get_cdm_host_from_url(host)
+    matches = host.match(/https?:\/\/(cdm\d+)/)
+    return matches[1] if matches
+
+    res = open("#{host}/iiif/info/manifest.json").read
+    res_json = JSON.parse(res)
+    url = res_json['@id'] || nil
+
+    if url
+      matches = url.match(/https?:\/\/(cdm\d+)/)
+      return matches[1] if matches
+    end
+    nil
+  end
+
   def self.cdm_url_to_iiif(url)
-    matches = url.match(/https?:\/\/(cdm\d+)(?:.*collection\/(\w+)(?:\/id\/(\d+))?)?/)
+    uri = URI(url)
+
+    server = get_cdm_host_from_url("#{uri.scheme}://#{uri.host}")
+    raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..." if server.nil?
+
+    matches = uri.path.match(/.*collection\/(\w+)(?:\/id\/(\d+))?/)
     
-    server = matches[1]
-    collection = matches[2]
-    record = matches[3]
+    if matches
+      collection = matches[1]
+      record = matches[2]
+    end
     
     if server && collection && record
       "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"

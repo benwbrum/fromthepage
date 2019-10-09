@@ -19,9 +19,12 @@ class DocumentSet < ActiveRecord::Base
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
   
+  after_save :set_next_untranscribed_page
+
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
   scope :unrestricted, -> { where(is_public: true)}
+  scope :restricted, -> { where(is_public: false)}
   scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder("RAND()")}
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
@@ -123,6 +126,27 @@ class DocumentSet < ActiveRecord::Base
     page_id = first_page.nil? ? nil : first_page.id
     
     update_columns(next_untranscribed_page_id: page_id)
+  end
+
+  def find_next_untranscribed_page_for_user(user)
+    return nil unless has_untranscribed_pages?
+    return next_untranscribed_page if user.can_transcribe?(next_untranscribed_page.work)
+
+    public = works
+      .where.not(next_untranscribed_page_id: nil)
+      .unrestricted
+      .order_by_incomplete
+
+    return public.first.next_untranscribed_page unless public.empty?
+
+    private = works
+      .where.not(next_untranscribed_page_id: nil)
+      .restricted
+      .order_by_incomplete
+    
+    wk = private.find{ |w| user.can_transcribe?(w) }
+  
+    wk.nil? ? nil : wk.next_untranscribed_page
   end
 
   def has_untranscribed_pages?
