@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :collection do
     sequence(:title) { |n| "Collection Title #{n}" }
@@ -10,7 +12,7 @@ FactoryBot.define do
     trait :with_pages do
       works { build_list :work_with_pages, 2 }
     end
-    trait :private do 
+    trait :private do
       restricted { true }
     end
     trait :docset_enabled do

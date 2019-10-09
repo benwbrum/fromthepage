@@ -41,20 +41,31 @@ class TranscribeController  < ApplicationController
   def guest
   end
 
-  def mark_page_blank
+  def mark_page_blank(options = { redirect: 'display' })
+    redirect_path = case options[:redirect]
+      when 'transcribe'
+        collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page.id)
+      else
+        collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
+      end
+
     if params[:page]['mark_blank'] == '1'
       @page.status = Page::STATUS_BLANK
       @page.translation_status = Page::STATUS_BLANK
       @page.save
       record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
+      flash[:notice] = "Saved"
+      redirect_to redirect_path 
+      return false
     elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
       @page.status = nil
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
-      redirect_to collection_display_page_path(@collection.owner, @collection, @page.work, @page.id) and return
+      flash[:notice] = "Saved"
+      redirect_to redirect_path
+      return false
     else
       return true
     end
@@ -100,7 +111,7 @@ class TranscribeController  < ApplicationController
     @page.attributes = params[:page]
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
-      mark_page_blank or return
+      mark_page_blank(redirect: 'transcribe') or return
     end
     #check to see if the page needs to be marked as needing review
     needs_review
@@ -310,6 +321,37 @@ class TranscribeController  < ApplicationController
     @page.update_column("edit_started_at", Time.now)
     @page.update_column("edit_started_by_user_id", current_user.id)
     render nothing: true
+  end
+
+  def goto_next_untranscribed_page
+    
+    next_page_path = user_profile_path(@work.collection.owner)
+    flash[:notice] = "There are no more pages to transcribe in this collection."
+
+    if @work.next_untranscribed_page
+      flash[:notice] = "Here's another page in this work."
+      next_page_path = collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, @work.next_untranscribed_page)
+    elsif @collection.class == DocumentSet
+      docset = @collection
+      next_page = docset.find_next_untranscribed_page_for_user(current_user)
+      if !next_page.nil?
+        flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection."
+        next_page_path = collection_transcribe_page_path(docset.owner, docset, next_page.work, next_page)
+      else # Docset has no more Untranscribed works, bump up to collection level
+        next_page = docset.collection.find_next_untranscribed_page_for_user(current_user)
+        unless next_page.nil?
+          flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection."
+          next_page_path = collection_transcribe_page_path(docset.collection.owner, docset.collection, next_page.work, next_page)
+        end
+      end
+    else
+      next_page = @collection.find_next_untranscribed_page_for_user(current_user)
+      unless next_page.nil?
+        flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection."
+        next_page_path = collection_transcribe_page_path(@collection.owner, @collection, next_page.work, next_page)
+      end
+    end
+    redirect_to next_page_path
   end
 
 protected
