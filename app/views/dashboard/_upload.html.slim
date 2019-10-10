@@ -1,7 +1,7 @@
     h3
       a(href="#" class="title" onclick="return false;" id="document-upload") Upload PDF or ZIP File
 
-    section style="display: none"
+    section(style=("display: none" unless @document_upload.errors.any?))
       p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
       =form_for :document_upload, url: { action: 'new_upload' } do |f|
         =validation_summary @document_upload.errors
