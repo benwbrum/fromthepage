@@ -3,11 +3,11 @@ require 'spec_helper'
 describe "import data" do
     let(:owner){ create(:user, owner: true) }
     before :each do
-        DatabaseCleaner.start
+        #DatabaseCleaner.start
         login_as(owner, :scope => :user)
     end
     after :each do
-        DatabaseCleaner.clean
+        #DatabaseCleaner.clean
     end
 
     context "CONTENTdm" do
