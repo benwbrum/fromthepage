@@ -80,7 +80,7 @@
 
         if (json_bounds) {
           bounds = JSON.parse(json_bounds);
-          var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.height, bounds.width);
+          var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.width, bounds.height);
           viewer.viewport.fitBounds(rect, true);
         }
       });
