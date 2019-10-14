@@ -70,7 +70,7 @@
         sequenceMode: false, //we want fromthepage to handle pages sequentially, rather than openseadragon
       });
 
-      $(window).on('beforeunload', function() {
+      viewer.addHandler('viewport-change', function() {
         var bounds = viewer.viewport.getBounds();
         localStorage['json_bounds'] = JSON.stringify(bounds);
       });
