@@ -4,7 +4,6 @@ describe "import data" do
     let(:owner){ create(:user, owner: true) }
     before :each do
         DatabaseCleaner.start
-        login_as(owner, :scope => :user)
     end
     after :each do
         DatabaseCleaner.clean
@@ -18,6 +17,8 @@ describe "import data" do
         let(:bad_item_url)  { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/1' }
 
         it "browses a single record", :js => true do 
+            owner = User.first
+            login_as(owner, :scope => :user)
             visit dashboard_owner_path
             page.find('.tabs').click_link("Start A Project")
             page.find(:css, "#import-contentdm").click
@@ -28,6 +29,8 @@ describe "import data" do
             expect(page).to have_content("Manifest: Letter with envelope from Virginia Shewalter")
         end
         it "browses records from a collection", :js => true do
+            owner = User.first
+            login_as(owner, :scope => :user)
             visit dashboard_owner_path
             page.find('.tabs').click_link("Start A Project")
             page.find(:css, "#import-contentdm").click
@@ -38,6 +41,8 @@ describe "import data" do
             expect(page).to have_content("Collection: The Virginia Shewalter Letters Collection")
         end
         it "browses collections from a repository", :js => true do
+            owner = User.first
+            login_as(owner, :scope => :user)
             visit dashboard_owner_path
             page.find('.tabs').click_link("Start A Project")
             page.find(:css, "#import-contentdm").click
@@ -48,6 +53,8 @@ describe "import data" do
             expect(page).to have_content("Collections:")
         end
         it "Gives an error for a well-formed Cdm URL with a bad/empty IIIF manifest", :js => true do
+            owner = User.first
+            login_as(owner, :scope => :user)
             visit dashboard_owner_path
             page.find('.tabs').click_link("Start A Project")
             page.find(:css, "#import-contentdm").click
