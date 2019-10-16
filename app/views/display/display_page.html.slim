@@ -18,9 +18,9 @@
       -if @page.ia_leaf
         =render :partial => '/ia/ia_bookreader_div'
       -elsif @page.sc_canvas
-        =render :partial => '/shared/image_div'
+        =render :partial => '/shared/osd_div'
       -else
-        =render :partial => '/shared/image_div'
+        =render :partial => '/shared/osd_div'
 
   .page-column
     .page-preview[*language_attrs(@collection)]
