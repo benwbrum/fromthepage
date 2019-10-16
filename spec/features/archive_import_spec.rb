@@ -15,11 +15,12 @@ describe "IA import actions", :order => :defined do
     login_as(@owner, :scope => :user)
   end    
 
-  it "imports a work from IA" do
+  it "imports a work from IA", :js => true do
     ia_work_count = IaWork.all.count
     ia_link = "https://archive.org/details/lettertosamuelma00estl"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#import-internet-archive").click
     click_link("Import From Archive.org")
     fill_in 'detail_url', with: ia_link
     click_button('Import Work')
@@ -33,11 +34,12 @@ describe "IA import actions", :order => :defined do
     expect(ia_work_count + 1).to eq IaWork.all.count
   end
 
-  it "uses OCR when importing a work from IA" do
+  it "uses OCR when importing a work from IA", :js => true do
     ia_work_count = IaWork.all.count
     ia_link = "https://archive.org/details/lettertodeargarr00mays"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#import-internet-archive").click
     click_link("Import From Archive.org")
     fill_in 'detail_url', with: ia_link
     click_button('Import Work')
@@ -49,6 +51,7 @@ describe "IA import actions", :order => :defined do
     page.check('use_ocr')
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
+    sleep(2)
     new_work = Work.find_by(title: @title)
     first_page = new_work.pages.first
     expect(new_work.ocr_correction).to be 
