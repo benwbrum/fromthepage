@@ -68,6 +68,7 @@
         fitBounds: true,
         preserveViewport: true,
         sequenceMode: false, //we want fromthepage to handle pages sequentially, rather than openseadragon
+        tileSources: #{raw(osd_source(@page))}
       });
 
       viewer.addHandler('viewport-change', function() {
@@ -84,12 +85,6 @@
           viewer.viewport.fitBounds(rect, true);
         }
       });
-    });
-
--content_for :javascript
-  javascript:
-    $(function() {
-      viewer.open(#{raw(osd_source(@page))});
     });
 
 noscript
