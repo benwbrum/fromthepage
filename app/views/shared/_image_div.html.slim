@@ -86,18 +86,11 @@
       });
     });
 
--if @page.sc_canvas
-  -content_for :javascript
-    javascript:
-      $(function() {
-        viewer.open(["#{@page.sc_canvas.sc_service_id}/info.json"]);
-      });
--else
-  -content_for :javascript
-    javascript:
-      $(function() {
-        viewer.open({type: 'image', url: '#{file_to_url(@page.canonical_facsimile_url)}'});
-      });
+-content_for :javascript
+  javascript:
+    $(function() {
+      viewer.open(#{raw(osd_source(@page))});
+    });
 
 noscript
   p OpenSeadragon is not available unless JavaScript is enabled.
