@@ -106,6 +106,8 @@ html lang="en-US"
 
     -if user_signed_in? && current_user.owner?
       =render :partial => '/shared/intercom_customer'
+    -elsif controller_name=='static'
+      =render :partial => '/shared/intercom'
 
     -unless GA_ACCOUNT.blank?
       =render :partial => '/layouts/ga'
