@@ -72,7 +72,7 @@ group :development, :test do
   gem 'bullet'
 end
 
-# Use SASS for stylesheets
+# Use SassC for stylesheets
 gem 'sassc-rails'
 
 # Use Autoprefixer for vendor prefixes
