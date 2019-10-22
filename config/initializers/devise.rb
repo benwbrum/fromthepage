@@ -8,7 +8,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'ec3b2cea057e46311579169c16ef81d4e3378d2c0c4b7ad060ea6dfe35fc4af1fc6a6b8b13b1e7ac0ae1e041cb6cdd537c31327f937ad2d3c2b03b9508770655'
+  config.secret_key = 'cba9d1f2e2f6690b06c01a5a325d4508dde18fca6952cf0a401f1ca1309879b755707e70e16b4d51d56a4cc92f7cd504dfc84296986e2a892abd1b9805a1abdf'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -111,10 +111,13 @@ Devise.setup do |config|
   # a value less than 10 in other environments. Note that, for bcrypt (the default
   # algorithm), the cost increases exponentially with the number of stretches (e.g.
   # a value of 20 is already extremely slow: approx. 60 seconds for 1 calculation).
-  config.stretches = Rails.env.test? ? 1 : 11
+#  config.stretches = Rails.env.test? ? 1 : 11
+  config.stretches = 1
 
   # Set up a pepper to generate the hashed password.
   # config.pepper = 'b0564e7f7af0f749de25a955f9a8a9361c5da8b74aa0648b849835c87ca7406b96e3376dc049a27eaa5b0c0342b5ad2ff3c221d3918b219c4187dfb8b7a0ccd6'
+  config.pepper = "" # This needs to be externalized and fixed.
+
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
