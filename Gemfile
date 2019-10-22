@@ -73,7 +73,7 @@ group :development, :test do
 end
 
 # Use SASS for stylesheets
-gem 'sass-rails', '~> 5.0.0'
+gem 'sassc-rails'
 
 # Use Autoprefixer for vendor prefixes
 gem 'autoprefixer-rails', '<= 8.6.5'
