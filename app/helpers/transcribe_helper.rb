@@ -53,4 +53,12 @@ module TranscribeHelper
 
     output
   end
+
+  def osd_source(page)
+    if page.sc_canvas
+      ["#{@page.sc_canvas.sc_service_id}/info.json"]
+    else
+      {type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json
+    end
+  end
 end

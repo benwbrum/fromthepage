@@ -1,39 +1,43 @@
-    .collections
-      -collections_and_document_sets.each do |cds|
-        -if cds.show_to?(current_user)
-
-          -if is_a_public_collection?(cds)
-            -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
-            -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner)
-            .collection
-              -unless cds.picture.blank?
-                .collection_image
-                  =image_tag(cds.picture_url(:thumb), alt: cds.title)
-              .collection_details
-                h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
-                -unless snippet.empty?
-                  p.collection_snippet =snippet
-                -if cds.has_untranscribed_pages?
-                  p
-                    =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
-                .collection_summary
-                  span =="Owned by #{owner_link}"
-                ul
-                -cds.document_sets.each do |doc_set|
-                  -if doc_set.is_public
-                    li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
-          -elsif is_a_private_document_set?(cds)
-            -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
-            -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner)
-            .collection
-              -unless cds.picture.blank?
-                .collection_image
-                  =image_tag(cds.picture_url(:thumb), alt: cds.title)
-              .collection_details
-                h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
-                -unless snippet.empty?
-                  p.collection_snippet =snippet
-                .collection_summary
-                  span =="Owned by #{owner_link}"
-          
-        
+.collections
+  -if cds.class == Collection
+    -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
+    -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner)
+    .collection
+      -unless cds.picture.blank?
+        .collection_image
+          =image_tag(cds.picture_url(:thumb), alt: cds.title)
+      .collection_details
+        h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
+        -unless snippet.empty?
+          p.collection_snippet =snippet
+        -if cds.has_untranscribed_pages?
+          p
+          -if user_signed_in?
+            =link_to "Start Transcribing", collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+          -else
+            =link_to "Start Transcribing", collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+        .collection_summary
+          span =="Owned by #{owner_link}"
+        ul
+        -cds.document_sets.each do |doc_set|
+          -if doc_set.is_public
+            li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
+  -elsif cds.class == DocumentSet
+    -unless @collections_and_document_sets.include? cds.collection
+      -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
+      -owner_link = link_to cds.owner.display_name, user_profile_path(cds.owner)
+      .collection
+        -unless cds.picture.blank?
+          .collection_image
+            =image_tag(cds.picture_url(:thumb), alt: cds.title)
+        .collection_details
+          h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
+          -unless snippet.empty?
+            p.collection_snippet =snippet
+          -if cds.has_untranscribed_pages?
+          p
+            =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
+          .collection_summary
+            span =="Owned by #{owner_link}"
+  
+    

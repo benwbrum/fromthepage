@@ -1,5 +1,5 @@
 class DocumentSetsController < ApplicationController
-  before_filter :authorized?, :except => [:index]
+  before_filter :authorized?
   before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -8,14 +8,10 @@ class DocumentSetsController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
 
   def authorized?
-    unless user_signed_in?
-      ajax_redirect_to dashboard_path
-    end
-    if @document_set && !current_user.like_owner?(@document_set)
+    unless user_signed_in? && @collection && current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
   end
-
 
   def index
     @works = @collection.works.order(:title).paginate(page: params[:page], per_page: 20)

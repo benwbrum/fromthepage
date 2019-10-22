@@ -1,5 +1,4 @@
 -user_name = user.display_name.presence || user.login
-
 section.user-profile
   .user-profile_image
     .userpic =gravatar_image_tag user.email, :alt => user_name, :gravatar => { :size => 256 }
@@ -39,9 +38,9 @@ section.user-profile
           br
             
 .columns.list
-  article.maincol  
-    -if any_public_collections_with_document_sets?(collections_and_document_sets)
-      =render partial: '/dashboard/hierarchical_collections_and_document_sets', locals: {collections_and_document_sets: collections_and_document_sets}
+  article.maincol 
+    -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
+      =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     

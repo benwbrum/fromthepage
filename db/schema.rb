@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190713144825) do
+ActiveRecord::Schema.define(version: 20190906201041) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -113,25 +113,27 @@ ActiveRecord::Schema.define(version: 20190713144825) do
     t.integer  "owner_user_id"
     t.datetime "created_on"
     t.text     "intro_block"
-    t.string   "footer_block",              limit: 2000
-    t.boolean  "restricted",                             default: false
+    t.string   "footer_block",               limit: 2000
+    t.boolean  "restricted",                              default: false
     t.string   "picture"
-    t.boolean  "supports_document_sets",                 default: false
-    t.boolean  "subjects_disabled",                      default: false
+    t.boolean  "supports_document_sets",                  default: false
+    t.boolean  "subjects_disabled",                       default: false
     t.text     "transcription_conventions"
     t.string   "slug"
-    t.boolean  "review_workflow",                        default: false
-    t.boolean  "hide_completed",                         default: true
+    t.boolean  "review_workflow",                         default: false
+    t.boolean  "hide_completed",                          default: true
     t.text     "help"
     t.text     "link_help"
-    t.boolean  "field_based",                            default: false
-    t.boolean  "voice_recognition",                      default: false
+    t.boolean  "field_based",                             default: false
+    t.boolean  "voice_recognition",                       default: false
     t.string   "language"
     t.string   "license_key"
     t.string   "text_language"
     t.integer  "pct_completed"
     t.string   "default_orientation"
-    t.boolean  "is_active",                              default: true
+    t.boolean  "is_active",                               default: true
+    t.integer  "next_untranscribed_page_id"
+    t.integer  "works_count",                             default: 0
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -177,6 +179,8 @@ ActiveRecord::Schema.define(version: 20190713144825) do
     t.string   "slug"
     t.integer  "pct_completed"
     t.string   "default_orientation"
+    t.integer  "next_untranscribed_page_id"
+    t.integer  "works_count",                default: 0
   end
 
   add_index "document_sets", ["collection_id"], name: "index_document_sets_on_collection_id", using: :btree
@@ -420,7 +424,7 @@ ActiveRecord::Schema.define(version: 20190713144825) do
     t.integer  "work_id"
     t.datetime "created_on"
     t.integer  "position"
-    t.integer  "lock_version",       default: 0
+    t.integer  "lock_version",            default: 0
     t.text     "xml_text"
     t.integer  "page_version_id"
     t.string   "status"
@@ -429,8 +433,11 @@ ActiveRecord::Schema.define(version: 20190713144825) do
     t.text     "search_text"
     t.string   "translation_status"
     t.text     "metadata"
+    t.datetime "edit_started_at"
+    t.integer  "edit_started_by_user_id"
   end
 
+  add_index "pages", ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id", using: :btree
   add_index "pages", ["search_text"], name: "pages_search_text_index", type: :fulltext
   add_index "pages", ["work_id"], name: "index_pages_on_work_id", using: :btree
 
@@ -645,11 +652,11 @@ ActiveRecord::Schema.define(version: 20190713144825) do
 
   create_table "works", force: true do |t|
     t.string   "title"
-    t.string   "description",               limit: 4000
+    t.string   "description",                limit: 4000
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                       default: false
-    t.integer  "transcription_version",                  default: 0
+    t.boolean  "restrict_scribes",                        default: false
+    t.integer  "transcription_version",                   default: 0
     t.text     "physical_description"
     t.text     "document_history"
     t.text     "permission_description"
@@ -657,15 +664,16 @@ ActiveRecord::Schema.define(version: 20190713144825) do
     t.string   "author"
     t.text     "transcription_conventions"
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",                default: false
-    t.boolean  "supports_translation",                   default: false
+    t.boolean  "scribes_can_edit_titles",                 default: false
+    t.boolean  "supports_translation",                    default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                   default: true
-    t.boolean  "ocr_correction"
+    t.boolean  "pages_are_meaningful",                    default: true
+    t.boolean  "ocr_correction",                          default: false
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
     t.string   "identifier"
+    t.integer  "next_untranscribed_page_id"
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

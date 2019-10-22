@@ -1,4 +1,11 @@
 class ApplicationController < ActionController::Base
+  
+  before_action do
+    if current_user && current_user.admin
+      Rack::MiniProfiler.authorize_request
+    end
+  end
+
   before_filter :load_objects_from_params
   before_filter :update_ia_work_server
   before_filter :update_omeka_urls

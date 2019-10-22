@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe DeedType, type: :model do
-  types_count = 15
+  types_count = 16
 
   describe 'TYPES' do
     it "has all #{types_count} DeedTypes" do

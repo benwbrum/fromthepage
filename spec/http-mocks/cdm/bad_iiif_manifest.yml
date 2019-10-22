@@ -1,0 +1,54 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cdm16488.contentdm.oclc.org/iiif/info/MPD01/1/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Date:
+      - Mon, 12 Aug 2019 21:12:41 GMT
+      Server:
+      - Jetty(9.2.19.v20160908)
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Oclc-Requestid:
+      - XVHWSdGt-UKLyJmXTGN8BwAAAAA
+      X-Oclc-Selfid:
+      - 5931a3bf-80d1-4c4b-a4bc-408fe75754dd
+      X-Application-Context:
+      - application:prod:8080
+      Content-Type:
+      - application/json;charset=UTF-8
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Content-Length:
+      - '0'
+      Set-Cookie:
+      - JSESSIONID=fec19dea-f586-41d6-b064-bab7d7532ab7;Path=/digital/;HttpOnly
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Mon, 12 Aug 2019 21:12:47 GMT
+recorded_with: VCR 5.0.0

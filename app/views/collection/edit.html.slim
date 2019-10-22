@@ -126,7 +126,7 @@
           .userpic
             =gravatar_image_tag user.email, :alt => user.display_name
           .username
-            =link_to user.name_with_identifier, user_profile_path(user)
+            =link_to user.display_name, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
             =link_to 'Remove', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
@@ -144,7 +144,7 @@
         .userpic
           =gravatar_image_tag user.email, :alt => user.display_name
         .username
-          =link_to user.name_with_identifier, user_profile_path(user)
+          =link_to user.display_name, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
           =link_to '', { :action => 'remove_owner', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove owner'
@@ -169,6 +169,16 @@
     -else
       =link_to({ :action => 'disable_document_sets', :collection_id => @collection.id }, class: 'button')
         span Disable Document Sets
+    
+    h3 OCR Correction
+    p Enable or disable OCR correction for all works in this collection.
+    -if @collection.works.ocr_disabled.any?
+      =link_to({ :action => 'enable_ocr', :collection_id => @collection.id }, class: 'button')
+        span Enable OCR
+    ' 
+    -if @collection.works.ocr_enabled.any?
+      =link_to({ :action => 'disable_ocr', :collection_id => @collection.id }, class: 'button')
+        span Disable OCR
 
     h3 Blank Collection
     p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.

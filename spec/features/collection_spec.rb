@@ -83,8 +83,8 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
-    page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    page.find('.user-label', text: @rest_user.display_name).find('a.remove').click
+    page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
@@ -132,8 +132,8 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.name_with_identifier).find('a.remove').click
-    page.find('.user-label', text: @notify_user.name_with_identifier).find('a.remove').click
+    page.find('.user-label', text: @rest_user.display_name).find('a.remove').click
+    page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
@@ -261,10 +261,14 @@ describe "collection spec (isolated)" do
       expect(page).to have_content('Start A Project')
       page.find('.tabs').click_link('Start A Project')
 
+      page.find(:css, '#create-empty-work').click
+
       select('Add New Collection', :from => 'work_collection_id')
       page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
       click_button('Create Collection')
       expect(page).to have_content('Collection has been created')
+
+      page.find(:css, '#create-empty-work').click
 
       fill_in('work_title', with: 'Stats Test Work')
       click_button('Create Work')
@@ -282,6 +286,63 @@ describe "collection spec (isolated)" do
 
       page.find('.breadcrumbs').click_link('Stats Test Collection')
       expect(page).to have_content("All works are fully transcribed.")
+  end
+
+  context 'Collection Settings' do
+    before :all do
+      @owner = User.find_by(login: OWNER)
+    end
+    before :each do
+      login_as(@owner, :scope => :user)
+      DatabaseCleaner.start
+    end
+    after :each do
+      DatabaseCleaner.clean
+    end
+
+    let(:work_ocr){ create(:work, ocr_correction: true) }
+    let(:work_no_ocr){ create(:work, ocr_correction: false) }
+    let(:work_ocr_true){ create(:work, ocr_correction: true) }
+    let(:work_ocr_false){ create(:work, ocr_correction: false) }
+    let(:collection_ocr_mixed){ create(:collection, owner: @owner, works: [work_ocr, work_no_ocr]) }
+    let(:collection_ocr_true) { create(:collection, owner: @owner, works: [work_ocr_true]) }
+    let(:collection_ocr_false){ create(:collection, owner: @owner, works: [work_ocr_false]) }
+
+    it 'shows OCR section' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      expect(page).to have_content("OCR Correction")
+    end
+    it 'shows mixed OCR section buttons' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      expect(page).to have_content("Enable OCR")
+      expect(page).to have_content("Disable OCR")
+    end
+    it 'only shows enable OCR section buttons when all disabled' do
+      visit edit_collection_path(@owner, collection_ocr_false)
+      expect(page).to have_content(collection_ocr_false.title)
+      expect(page).to have_content("Enable OCR")
+      expect(page).not_to have_content("Disable OCR")
+    end
+    it 'only shows disable OCR section buttons when all disabled' do
+      visit edit_collection_path(@owner, collection_ocr_true)
+      expect(page).to have_content(collection_ocr_true.title)
+      expect(page).to have_content("Disable OCR")
+      expect(page).not_to have_content("Enable OCR")
+    end
+    it 'enables ocr' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      click_link('Enable OCR')
+      expect(page).to have_content("OCR correction has been enabled for all works.")
+    end
+    it 'disables ocr' do
+      visit edit_collection_path(@owner, collection_ocr_mixed)
+      expect(page).to have_content(collection_ocr_mixed.title)
+      click_link('Disable OCR')
+      expect(page).to have_content("OCR correction has been disabled for all works.")
+    end
   end
 
   after :all do

@@ -41,7 +41,7 @@ module Fromthepage
     }
 
     if config.respond_to?(:sass)
-      require File.expand_path('../../lib/sass_functions.rb', __FILE__)
+      require File.expand_path('../../lib/sassc_functions.rb', __FILE__)
     end
   end
 end

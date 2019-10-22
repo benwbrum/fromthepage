@@ -1,64 +1,66 @@
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $('.title').click(function(){
+        $(this).parent().next().toggle();
+      });
+    });
+
 .columns
   article.maincol
     =render 'dashboard/upload'
 
     a name = "create-work"
 
-    =render 'dashboard/empty'
-
-    h3 Import from an IIIF Repository
-    -if pontiiif_server
-      h5 
-        =label_tag :search_param, "Search for IIIF Content"
-      =form_tag({ controller: 'sc_collections', action: 'search_pontiiif' }) do |f|
+    h3
+      a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") Import a IIIF Manifest or Collection
+    section style="display: none"
+      =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
         table.form
             td
               .input-file
-                =text_field_tag :search_param
-                =button_tag 'Search'
+                =text_field_tag :at_id
+                =button_tag 'Import', :id => 'iiif_import'
 
-    h5 
-      =label_tag :at_id, "Import an IIIF Manifest or Collection"
+    h3
+      a(href="#" class="title" onclick="return false;" id="import-contentdm") Import from CONTENTdm
+    section style="display: none"
+      p
+      =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
+      =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+        table.form
+            td
+              .input-file
+                =text_field_tag :cdm_url
+                =button_tag 'Import', :id => 'cdm_import'
 
-    =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
-      table.form
-          td
-            .input-file
-              =text_field_tag :at_id
-              =button_tag 'Import', :id => 'iiif_import'
-    
-    h5 Explore IIIF Collections
-    =link_to "Explore", {:controller => 'sc_collections', :action => 'explore_collection', :at_id => ScCollection::UNIVERSE}, class: 'button'
+    h3
+      a(href="#" class="title" onclick="return false;" id="import-internet-archive") Import from the Internet Archive
+    section style="display: none"
+      =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
 
-    h3 Import from the Internet Archive
-    =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
-    h3 Import from Omeka
-    -if @omeka_sites.blank?
-      p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
-    -else
-      p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
-      ul.omeka-sites
-        -@omeka_sites.each do |omeka_site|
-          li.omeka-site
-            h5.omeka-site_title =link_to omeka_site.title, omeka_site
-            small.omeka-site_url =omeka_site.api_url
-            dl.dropdown.right
-              dt =svg_symbol '#icon-list', class: 'icon'
-              dd
-                =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
-                hr
-                =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
-    =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
-    h3 Import from CONTENTdm URL
-    p
-    =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
-    =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
-      table.form
-          td
-            .input-file
-              =text_field_tag :cdm_url
-              =button_tag 'Import', :id => 'cdm_import'
-    
+    h3
+      a(href="#" class="title" onclick="return false;") Import from Omeka Classic
+    section style="display: none"
+      -if @omeka_sites.blank?
+        p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
+      -else
+        p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
+        ul.omeka-sites
+          -@omeka_sites.each do |omeka_site|
+            li.omeka-site
+              h5.omeka-site_title =link_to omeka_site.title, omeka_site
+              small.omeka-site_url =omeka_site.api_url
+              dl.dropdown.right
+                dt =svg_symbol '#icon-list', class: 'icon'
+                dd
+                  =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
+                  hr
+                  =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
+      =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
+
+    =render 'dashboard/empty'
+
   aside.sidecol
     h4 Page Image Guidelines
     .fglight

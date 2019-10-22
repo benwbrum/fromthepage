@@ -54,11 +54,9 @@
         -if @page.ia_leaf
           =render :partial => '/ia/ia_bookreader_div'
         -elsif @page.sc_canvas
-          =render :partial => '/shared/iiif_div'
-        -elsif @page.omeka_file
-          =render :partial => '/shared/zoom_div', :locals => { :fullsize_url => @page.omeka_file.fullsize_url }
+          =render :partial => '/shared/osd_div'
         -else
-          =render :partial => '/shared/zoom_div'
+          =render :partial => '/shared/osd_div'
 
     div class=(!@collection.field_based ? 'page-column' : 'page-column fieldarea')
       -if @page.status == Page::STATUS_BLANK
@@ -113,6 +111,19 @@ h2.legend Page Notes
 
 =render({ :partial => '/shared/collection_footer' })
 
+-unless @current_user_alerted
+  -unless current_user.slug.nil?
+    -content_for :javascript
+      javascript:
+        setInterval("transcribe_periodic_timer()", 60000);
+
+        function transcribe_periodic_timer() {
+          $.ajax({
+            url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
+          });
+        }
+
+        transcribe_periodic_timer();
 
 -content_for :javascript
   javascript:
@@ -124,13 +135,11 @@ h2.legend Page Notes
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
-        $('.zoomer-container').zoomer('resize');
       });
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
-        $('.zoomer-container').zoomer('resize');
       });
       $('#auto-fullscreen').on('change', function() {
         var checked = this.checked ? 'yes' : 'no';

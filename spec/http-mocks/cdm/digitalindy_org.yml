@@ -1,0 +1,120 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://www.digitalindy.org/iiif/info/manifest.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Mon, 30 Sep 2019 15:58:33 GMT
+      Server:
+      - Apache
+      Last-Modified:
+      - Fri, 27 Sep 2019 06:49:07 GMT
+      Etag:
+      - '"27ec-59383485c1156-gzip"'
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - max-age=0
+      Expires:
+      - Mon, 30 Sep 2019 15:58:33 GMT
+      Vary:
+      - Accept-Encoding
+      Content-Length:
+      - '1388'
+      Content-Type:
+      - application/json
+    body:
+      encoding: ASCII-8BIT
+      string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm17308.contentdm.oclc.org/iiif/info/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/apa/manifest.json","@type":"sc:Collection","label":"American
+        Pianists Association"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ahs/manifest.json","@type":"sc:Collection","label":"Arlington
+        High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/aths/manifest.json","@type":"sc:Collection","label":"Arsenal
+        Technical High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/indyarts/manifest.json","@type":"sc:Collection","label":"Arts
+        Council of Indianapolis"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/afl/manifest.json","@type":"sc:Collection","label":"Arts
+        for Learning Indiana"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/apo/manifest.json","@type":"sc:Collection","label":"Athenaeum
+        Pops Orchestra"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/at/manifest.json","@type":"sc:Collection","label":"Avondale
+        Playhouse"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/bghs/manifest.json","@type":"sc:Collection","label":"Beech
+        Grove High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/bdhs/manifest.json","@type":"sc:Collection","label":"Ben
+        Davis High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/bhih/manifest.json","@type":"sc:Collection","label":"Black
+        History, Indianapolis History"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/brhs/manifest.json","@type":"sc:Collection","label":"Broad
+        Ripple High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/baci/manifest.json","@type":"sc:Collection","label":"Burmese
+        American Community Institute"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/cijwj/manifest.json","@type":"sc:Collection","label":"Central
+        Indiana Jobs With Justice"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/cana/manifest.json","@type":"sc:Collection","label":"Chatham
+        Arch Neighborhood"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/tcm/manifest.json","@type":"sc:Collection","label":"The
+        Children''s Museum of Indianapolis"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/cmi/manifest.json","@type":"sc:Collection","label":"Classical
+        Music Indy"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/cahs/manifest.json","@type":"sc:Collection","label":"Crispus
+        Attucks High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/dk/manifest.json","@type":"sc:Collection","label":"Dance
+        Kaleidoscope"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/dchs/manifest.json","@type":"sc:Collection","label":"Decatur
+        Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/dth/manifest.json","@type":"sc:Collection","label":"Decatur
+        Township History"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/eit/manifest.json","@type":"sc:Collection","label":"Eiteljorg
+        Museum of American Indians and Western Art"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/emhs/manifest.json","@type":"sc:Collection","label":"Emmerich
+        Manual High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/eoh/manifest.json","@type":"sc:Collection","label":"English''s
+        Opera House"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/fchs/manifest.json","@type":"sc:Collection","label":"Franklin
+        Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/fsb/manifest.json","@type":"sc:Collection","label":"Free
+        Soil Banner"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/gfc/manifest.json","@type":"sc:Collection","label":"Gennesaret
+        Free Clinics"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/gwhs/manifest.json","@type":"sc:Collection","label":"George
+        Washington High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/hewhs/manifest.json","@type":"sc:Collection","label":"Harry
+        E. Wood High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/htmp/manifest.json","@type":"sc:Collection","label":"Heartland
+        Film"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/hkcl/manifest.json","@type":"sc:Collection","label":"Highland-Kessler
+        Civic League"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ewl/manifest.json","@type":"sc:Collection","label":"Indiana
+        Woman"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/icc/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Chamber of Commerce"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ico/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Chamber Orchestra"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/icchoir/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Children''s Choir"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/IH/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        History"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/impd/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Metropolitan Police Department"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/io/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Opera"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/postcard/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Postcard Collection"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/downey/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Public Library"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/aah/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Public Library African American History Committee"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/fou/manifest.json","@type":"sc:Collection","label":"The
+        Indianapolis Public Library Foundation"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ips/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Public Schools"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/isb/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        School of Ballet"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/sc/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Scientech Club"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/isc/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Symphonic Choir"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/iwc/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Water Company"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/zoo/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Zoo"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ijf/manifest.json","@type":"sc:Collection","label":"Indy
+        Jazz Fest"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ipr/manifest.json","@type":"sc:Collection","label":"Indy
+        Parks and Rec"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ic/manifest.json","@type":"sc:Collection","label":"International
+        Center"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ivci/manifest.json","@type":"sc:Collection","label":"International
+        Violin Competition of Indianapolis"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ioh/manifest.json","@type":"sc:Collection","label":"Irvington
+        Oral Histories"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/iuoc/manifest.json","@type":"sc:Collection","label":"Irvington
+        Union of Clubs"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/riley/manifest.json","@type":"sc:Collection","label":"James
+        Whitcomb Riley"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/jmhs/manifest.json","@type":"sc:Collection","label":"John
+        Marshall High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/lchs/manifest.json","@type":"sc:Collection","label":"Lawrence
+        Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/lnhs/manifest.json","@type":"sc:Collection","label":"Lawrence
+        North High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/mws/manifest.json","@type":"sc:Collection","label":"May
+        Wright Sewall Papers"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/mkn/manifest.json","@type":"sc:Collection","label":"Meridian-Kessler
+        Neighborhood"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nesco/manifest.json","@type":"sc:Collection","label":"Near
+        East Side Community Organization"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nchs/manifest.json","@type":"sc:Collection","label":"North
+        Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nhs/manifest.json","@type":"sc:Collection","label":"Northwest
+        High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/pmhs/manifest.json","@type":"sc:Collection","label":"Perry
+        Meridian High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/poi/manifest.json","@type":"sc:Collection","label":"Philharmonic
+        Orchestra of Indianapolis"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/pc/manifest.json","@type":"sc:Collection","label":"Portfolio
+        Club"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/shs/manifest.json","@type":"sc:Collection","label":"Shortridge
+        High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/snh/manifest.json","@type":"sc:Collection","label":"Slovenian
+        National Home"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/shspt/manifest.json","@type":"sc:Collection","label":"Southport
+        High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/sm/manifest.json","@type":"sc:Collection","label":"Starlight
+        Musicals"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/tchhs/manifest.json","@type":"sc:Collection","label":"Thomas
+        Carr Howe High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/utn/manifest.json","@type":"sc:Collection","label":"Urban
+        Times Newsmagazine"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/thevoice/manifest.json","@type":"sc:Collection","label":"The
+        Voice"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/wchs/manifest.json","@type":"sc:Collection","label":"Warren
+        Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/twv/manifest.json","@type":"sc:Collection","label":"The
+        Weekly View"}]}'
+    http_version: 
+  recorded_at: Mon, 30 Sep 2019 15:58:33 GMT
+recorded_with: VCR 5.0.0
