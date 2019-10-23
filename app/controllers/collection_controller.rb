@@ -10,9 +10,9 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_filter :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_filter :load_settings, :only => [:edit, :update, :upload]
+  before_action :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]

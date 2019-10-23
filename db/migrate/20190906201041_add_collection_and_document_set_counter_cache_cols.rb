@@ -1,4 +1,4 @@
-class AddCollectionAndDocumentSetCounterCacheCols < ActiveRecord::Migration
+class AddCollectionAndDocumentSetCounterCacheCols < ActiveRecord::Migration[5.2]
   def up
     add_column :collections, :works_count, :integer, default: 0
     add_column :document_sets, :works_count, :integer, default: 0

@@ -1,4 +1,4 @@
-class AddTextTypeToPageArticleLinks < ActiveRecord::Migration
+class AddTextTypeToPageArticleLinks < ActiveRecord::Migration[5.2]
   def change
     
     PageArticleLink.reset_column_information

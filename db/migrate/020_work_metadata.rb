@@ -1,4 +1,4 @@
-class WorkMetadata < ActiveRecord::Migration
+class WorkMetadata < ActiveRecord::Migration[5.2]
   def self.up
     add_column :works, :physical_description, :text
     add_column :works, :document_history, :text

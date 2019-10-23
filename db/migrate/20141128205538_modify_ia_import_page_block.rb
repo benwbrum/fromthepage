@@ -1,4 +1,4 @@
-class ModifyIaImportPageBlock < ActiveRecord::Migration
+class ModifyIaImportPageBlock < ActiveRecord::Migration[5.2]
   def change
     pb = PageBlock.where(:controller => 'ia', :view => 'manage').first
     pb.html=STATIC_HELP_RIGHT

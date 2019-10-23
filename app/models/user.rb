@@ -49,9 +49,9 @@ class User < ActiveRecord::Base
   has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.sample }, 
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   scope :owners,           -> { where(owner: true) }
@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
 
   def all_owner_collections
     query = Collection.where("collections.owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
-    Collection.where(query.where_values.inject(:or)).uniq.order(:title)
+    Collection.where(query.where_values_hash.inject(:or)).order(:title)
   end
 
   def most_recently_managed_collection_id
@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
   end
 
   def owner_works
-    works = Work.where(collection_id: self.all_owner_collections.ids)
+    works = Work.where(collection_id: all_owner_collections.ids)
     return works
   end
 

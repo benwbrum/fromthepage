@@ -1,4 +1,4 @@
-class RemediatePosition < ActiveRecord::Migration
+class RemediatePosition < ActiveRecord::Migration[5.2]
   def change
     Work.all.each do |work| 
       if !work.pages.empty? && work.pages.first.base_image.include?("uploaded") && work.pages.first.id != work.pages.sort{ |x,y| x.base_image <=> y.base_image }.first.id

@@ -1,4 +1,4 @@
-class InteractionTable < ActiveRecord::Migration
+class InteractionTable < ActiveRecord::Migration[5.2]
   def self.up
     create_table :interactions do |t|
       # application information

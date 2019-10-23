@@ -1,4 +1,4 @@
-class BlacklistPageblock < ActiveRecord::Migration
+class BlacklistPageblock < ActiveRecord::Migration[5.2]
   BLACKLIST = [
     'href',
     '.info',

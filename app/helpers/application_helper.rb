@@ -89,7 +89,7 @@ module ApplicationHelper
       #restricting to visible collections first speeds up the query
       limited = Deed.joins(:collection).where('collections.restricted = 0')
       if options[:owner]
-        owner = User.friendly.find(options[:owner])
+        owner = User.friendly.find(params[:user_id])
         deeds = limited.active.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
       else
         deeds = limited.active.where(condition).order('deeds.created_at DESC').limit(limit)

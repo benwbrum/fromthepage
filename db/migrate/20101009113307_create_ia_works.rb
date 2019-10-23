@@ -1,4 +1,4 @@
-class CreateIaWorks < ActiveRecord::Migration
+class CreateIaWorks < ActiveRecord::Migration[5.2]
   def self.up
     create_table :ia_works do |t|
       # known beforehand

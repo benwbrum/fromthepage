@@ -1,4 +1,4 @@
-class CreateScCollections < ActiveRecord::Migration
+class CreateScCollections < ActiveRecord::Migration[5.2]
   def change
     create_table :sc_collections do |t|
       t.references :collection, index: true

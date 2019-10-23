@@ -1,4 +1,4 @@
-class CreateTranscribeAuthorizations < ActiveRecord::Migration
+class CreateTranscribeAuthorizations < ActiveRecord::Migration[5.2]
   def self.up
     create_table :transcribe_authorizations, :id => false  do |t|
       # t.column :name, :string

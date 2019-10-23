@@ -1,4 +1,4 @@
-class AddSearchTextToPage < ActiveRecord::Migration
+class AddSearchTextToPage < ActiveRecord::Migration[5.2]
   def self.up
     add_column :pages, :search_text, :text unless Page.column_names.include? 'search_text'
 

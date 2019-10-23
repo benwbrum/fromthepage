@@ -1,4 +1,4 @@
-class CreatePageBlocks < ActiveRecord::Migration
+class CreatePageBlocks < ActiveRecord::Migration[5.2]
   def self.up
     create_table :page_blocks do |t|
       t.string  :controller

@@ -1,4 +1,4 @@
-class AddXmlToArticle < ActiveRecord::Migration
+class AddXmlToArticle < ActiveRecord::Migration[5.2]
   def self.up
     add_column :articles, :xml_text, :text
   end

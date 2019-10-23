@@ -1,4 +1,4 @@
-class AddKeysToOmeka < ActiveRecord::Migration
+class AddKeysToOmeka < ActiveRecord::Migration[5.2]
   def self.up
     add_column :omeka_files, :page_id, :integer unless column_exists? :omeka_files, :page_id
 

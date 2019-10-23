@@ -3,7 +3,7 @@ class Category < ActiveRecord::Base
 
   acts_as_tree :order => 'title'
   belongs_to :collection
-  has_and_belongs_to_many :articles, -> { order('title').uniq }
+  has_and_belongs_to_many :articles, -> { order('title').distinct }
   attr_accessible :collection_id, :title, :gis_enabled
 
   validates :title, presence: true, uniqueness: { scope: [:collection_id, :parent_id] }

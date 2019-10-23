@@ -1,4 +1,4 @@
-class CreateOmekaFiles < ActiveRecord::Migration
+class CreateOmekaFiles < ActiveRecord::Migration[5.2]
   def change
     unless ActiveRecord::Base.connection.tables.include? "omeka_files"
       create_table :omeka_files do |t|

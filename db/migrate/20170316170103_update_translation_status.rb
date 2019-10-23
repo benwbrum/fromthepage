@@ -1,4 +1,4 @@
-class UpdateTranslationStatus < ActiveRecord::Migration
+class UpdateTranslationStatus < ActiveRecord::Migration[5.2]
 def change
     pages = Page.where.not(source_translation: nil)
     blank = Page.where(status: 'blank')

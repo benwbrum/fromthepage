@@ -1,4 +1,4 @@
-class AddContactToCollection < ActiveRecord::Migration
+class AddContactToCollection < ActiveRecord::Migration[5.2]
   def self.up
     add_column :collections, :intro_block, :text
     add_column :collections, :footer_block, :string, :limit => 2000

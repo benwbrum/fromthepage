@@ -1,4 +1,4 @@
-class AddCollectionHelp < ActiveRecord::Migration
+class AddCollectionHelp < ActiveRecord::Migration[5.2]
   def up
     add_column :collections, :help, :text
     add_column :collections, :link_help, :text

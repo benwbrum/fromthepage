@@ -1,4 +1,4 @@
-class ImageSetOwner < ActiveRecord::Migration
+class ImageSetOwner < ActiveRecord::Migration[5.2]
   def self.up
 #    add_column :image_sets, :owner_user_id, :integer
   end

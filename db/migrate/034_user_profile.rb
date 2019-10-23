@@ -1,4 +1,4 @@
-class UserProfile < ActiveRecord::Migration
+class UserProfile < ActiveRecord::Migration[5.2]
   def self.up
     add_column :users, :location, :string
     add_column :users, :website, :string

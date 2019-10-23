@@ -1,5 +1,5 @@
 class DocumentSetsController < ApplicationController
-  before_filter :authorized?
+  before_action :authorized?
   before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html

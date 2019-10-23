@@ -1,4 +1,4 @@
-class CurrentVersionOnPage < ActiveRecord::Migration
+class CurrentVersionOnPage < ActiveRecord::Migration[5.2]
   def self.up
     add_column :pages, :page_version_id, :integer
 

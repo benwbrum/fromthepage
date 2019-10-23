@@ -1,4 +1,4 @@
-class AddStatusInformation < ActiveRecord::Migration
+class AddStatusInformation < ActiveRecord::Migration[5.2]
   def change
     #add needs review to work statistics
     add_column :work_statistics, :needs_review, :integer

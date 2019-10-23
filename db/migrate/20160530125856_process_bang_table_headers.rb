@@ -1,4 +1,4 @@
-class ProcessBangTableHeaders < ActiveRecord::Migration
+class ProcessBangTableHeaders < ActiveRecord::Migration[5.2]
   def change
     Page.where("id in (select page_id from table_cells)").each do |page|
       page.update_column(:xml_text, page.wiki_to_xml(page.source_text, Page::TEXT_TYPE::TRANSCRIPTION)) 

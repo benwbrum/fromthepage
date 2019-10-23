@@ -1,4 +1,4 @@
-class CreateTableCells < ActiveRecord::Migration
+class CreateTableCells < ActiveRecord::Migration[5.2]
   def change
     create_table :table_cells do |t|
       t.references :work, index: true

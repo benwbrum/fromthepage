@@ -1,4 +1,4 @@
-class AddOrientationToImageSet < ActiveRecord::Migration
+class AddOrientationToImageSet < ActiveRecord::Migration[5.2]
   def self.up
 =begin    add_column :image_sets, :orientation, :integer, :null => true
     add_column :image_sets, :original_width, :integer, :null => true

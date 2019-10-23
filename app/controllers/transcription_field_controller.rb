@@ -1,6 +1,6 @@
 class TranscriptionFieldController < ApplicationController
   include ActiveModel::Validations
-  before_filter :authorized?, :only => [:new, :edit_fields, :add_field]
+  before_action :authorized?, :only => [:new, :edit_fields, :add_field]
 
   #no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil}

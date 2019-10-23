@@ -1,4 +1,5 @@
 class ScCanvas < ActiveRecord::Base
+  self.table_name = "sc_canvases"
   belongs_to :sc_manifest
   belongs_to :page
   

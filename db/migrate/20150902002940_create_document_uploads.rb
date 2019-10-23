@@ -1,4 +1,4 @@
-class CreateDocumentUploads < ActiveRecord::Migration
+class CreateDocumentUploads < ActiveRecord::Migration[5.2]
   def change
     create_table :document_uploads do |t|
       t.references :user, index: true

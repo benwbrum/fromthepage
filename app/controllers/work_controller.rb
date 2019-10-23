@@ -12,7 +12,7 @@ class WorkController < ApplicationController
                                    :set_work_author,
                                    :set_work_transcription_conventions]
   # tested
-  before_filter :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
+  before_action :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]

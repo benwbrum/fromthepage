@@ -1,4 +1,4 @@
-class CreateWorks < ActiveRecord::Migration
+class CreateWorks < ActiveRecord::Migration[5.2]
   def self.up
     create_table :works do |t|
       t.column :title, :string, :limit => 255

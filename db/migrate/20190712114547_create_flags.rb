@@ -1,4 +1,4 @@
-class CreateFlags < ActiveRecord::Migration
+class CreateFlags < ActiveRecord::Migration[5.2]
   def change
     create_table :flags do |t|
       t.references :author_user, index: true

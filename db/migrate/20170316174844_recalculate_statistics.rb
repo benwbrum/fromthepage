@@ -1,4 +1,4 @@
-class RecalculateStatistics < ActiveRecord::Migration
+class RecalculateStatistics < ActiveRecord::Migration[5.2]
 =begin
   def change
   #Recalculate statistics for all works

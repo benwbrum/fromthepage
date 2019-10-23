@@ -1,12 +1,12 @@
 require 'flagger'
 
 class Flag < ActiveRecord::Base
-  belongs_to :author_user, :class_name => User
+  belongs_to :author_user, :class_name => 'User'
   belongs_to :page_version
   belongs_to :article_version
   belongs_to :note
-  belongs_to :reporter_user, :class_name => User
-  belongs_to :auditor_user, :class_name => User
+  belongs_to :reporter_user, :class_name => 'User'
+  belongs_to :auditor_user, :class_name => 'User'
 
 
   module Status

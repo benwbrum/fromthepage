@@ -1,4 +1,4 @@
-class CreateImageSets < ActiveRecord::Migration
+class CreateImageSets < ActiveRecord::Migration[5.2]
   def self.up
 =begin    create_table :image_sets do |t|
       # the path where the images live

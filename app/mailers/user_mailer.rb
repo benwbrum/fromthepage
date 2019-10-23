@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
 
-  before_filter :add_inline_attachments!
+  before_action :add_inline_attachments!
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:

@@ -4,7 +4,7 @@ class SystemMailer < ActionMailer::Base
   default from: "FromThePage <support@fromthepage.com>"
   layout "mailer"
 
-  before_filter :add_inline_attachments!
+  before_action :add_inline_attachments!
 
   def config_test(target_email)
     mail from: SENDING_EMAIL_ADDRESS, to: target_email, subject: "Mail config test for FromThePage"

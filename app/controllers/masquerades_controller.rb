@@ -1,5 +1,5 @@
 class MasqueradesController < Devise::MasqueradesController
-  before_filter :authorized?
+  before_action :authorized?
 
   def authorized?
     admin_id = session[session_key]

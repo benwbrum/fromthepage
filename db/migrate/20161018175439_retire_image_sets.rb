@@ -1,4 +1,4 @@
-class RetireImageSets < ActiveRecord::Migration
+class RetireImageSets < ActiveRecord::Migration[5.2]
   def change
     if table_exists?(:image_sets)
       drop_table(:image_sets)

@@ -7,7 +7,7 @@
         -current_user.all_owner_collections.includes(:works).each do |c|
           .collection
             h4.collection_title
-              =link_to c.title, collection_path(c.owner, c)
+              =link_to c.title, collection_path(c.owner, c) unless c.owner.nil?
               -collection_list(c)
             ol.collection_works
             -unless @works.empty?

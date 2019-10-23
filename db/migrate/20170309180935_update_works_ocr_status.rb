@@ -1,4 +1,4 @@
-class UpdateWorksOcrStatus < ActiveRecord::Migration
+class UpdateWorksOcrStatus < ActiveRecord::Migration[5.2]
   def change
     #find the work ids of current ocr correction works, then set those works as ocr correction works
     work_ids = Page.where("status = ? OR status = ?", 'raw_ocr', 'part_ocr').distinct.pluck(:work_id)

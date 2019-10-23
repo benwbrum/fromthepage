@@ -1,4 +1,4 @@
-class CreateDocumentSets < ActiveRecord::Migration
+class CreateDocumentSets < ActiveRecord::Migration[5.2]
   def change
     create_table :document_sets do |t|
       t.boolean :is_public

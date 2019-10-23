@@ -1,4 +1,4 @@
-class UpdateNotifications < ActiveRecord::Migration
+class UpdateNotifications < ActiveRecord::Migration[5.2]
   def change
     # 2019-05-14 BWB Moved to incompatibilities script
     #

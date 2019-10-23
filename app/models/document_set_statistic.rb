@@ -3,10 +3,6 @@ module DocumentSetStatistic
     self.works.count
   end
 
-  def works
-    self.works
-  end
-
   def pages
     Page.where(work_id: works.ids)
   end

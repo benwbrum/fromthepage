@@ -1,4 +1,4 @@
-class SaveCallbacks < ActiveRecord::Migration
+class SaveCallbacks < ActiveRecord::Migration[5.2]
   def change
     # # initialize the new column before recalculations happen
     # WorkStatistic.update_all(:complete => 0, :translation_complete => 0)

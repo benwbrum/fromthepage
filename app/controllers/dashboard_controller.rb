@@ -3,10 +3,10 @@
 class DashboardController < ApplicationController
   include AddWorkHelper
 
-  before_filter :authorized?,
+  before_action :authorized?,
     only: [:owner, :staging, :omeka, :startproject, :summary]
 
-  before_filter :get_data,
+  before_action :get_data,
     only: [:owner, :staging, :omeka, :upload, :new_upload,
            :startproject, :empty_work, :create_work, :summary]
 

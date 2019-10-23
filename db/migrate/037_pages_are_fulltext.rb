@@ -1,4 +1,4 @@
-class PagesAreFulltext < ActiveRecord::Migration
+class PagesAreFulltext < ActiveRecord::Migration[5.2]
   def self.up
     # change the table type
     execute "ALTER TABLE pages ENGINE = MyISAM;"

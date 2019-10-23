@@ -1,4 +1,4 @@
-class AddIndexesToEverything < ActiveRecord::Migration
+class AddIndexesToEverything < ActiveRecord::Migration[5.2]
   def self.up
     #| article_article_links       |
     add_index :article_article_links, :source_article_id
