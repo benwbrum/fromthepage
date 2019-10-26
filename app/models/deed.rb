@@ -16,7 +16,7 @@ class Deed < ActiveRecord::Base
   scope :active, -> { joins(:user).where(users: {deleted: false}) }
   scope :past_day, -> {where('created_at >= ?', 1.day.ago)}
 
-  visitable # ahoy integration
+  visitable class_name: "Visit" # ahoy integration
   
   before_save :calculate_prerender, :calculate_prerender_mailer
 
