@@ -3,7 +3,7 @@ class IaWork < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :work
-  has_many :ia_leaves
+  has_many :ia_leaves, class_name: "IaLeaf"
   
   before_create :truncate_title
 

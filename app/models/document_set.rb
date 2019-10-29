@@ -25,7 +25,7 @@ class DocumentSet < ActiveRecord::Base
 
   scope :unrestricted, -> { where(is_public: true)}
   scope :restricted, -> { where(is_public: false)}
-  scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder("RAND()")}
+  scope :carousel, -> {where(pct_completed: [nil, 1..90]).joins(:collection).where.not(collections: {picture: nil}).where.not(description: [nil, '']).where(is_public: true).reorder(Arel.sql("RAND()"))}
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }

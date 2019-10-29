@@ -38,7 +38,7 @@ class Collection < ActiveRecord::Base
   scope :unrestricted, -> { where(restricted: false)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
   
-  scope :carousel, -> {where(pct_completed: [nil, 1..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder("RAND()")}
+  scope :carousel, -> {where(pct_completed: [nil, 1..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
   
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }

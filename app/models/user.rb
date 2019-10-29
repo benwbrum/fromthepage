@@ -84,8 +84,7 @@ class User < ActiveRecord::Base
   end
 
   def all_owner_collections
-    query = Collection.where("collections.owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
-    Collection.where(query.where_values_hash.inject(:or)).order(:title)
+    Collection.where(owner_user_id: self.id).or(Collection.where(id: self.owned_collections.ids)).distinct.order(:title)
   end
 
   def most_recently_managed_collection_id
@@ -98,7 +97,7 @@ class User < ActiveRecord::Base
   end
 
   def owner_works
-    works = Work.where(collection_id: all_owner_collections.ids)
+    works = Work.where(collection_id: self.all_owner_collections.ids)
     return works
   end
 
