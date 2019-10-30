@@ -24,7 +24,6 @@ gem 'acts_as_tree'
 gem 'devise'
 gem 'devise-encryptable'
 
-gem 'protected_attributes_continued'
 gem 'carrierwave'
 gem 'rubyzip'
 gem 'render_anywhere'
