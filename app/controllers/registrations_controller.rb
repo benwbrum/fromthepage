@@ -51,6 +51,7 @@ class RegistrationsController < Devise::RegistrationsController
       if @user.owner
         @user.account_type="Trial"
         @user.save
+        #alert intercom
       end
     else
       clean_up_passwords resource
