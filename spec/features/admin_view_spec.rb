@@ -41,7 +41,7 @@ describe "admin actions" do
   it "changes email content" do
     visit admin_path
     page.find('.tabs').click_link("Settings")
-    expect(page.find('#admin_welcome_text')).to have_content(PageBlock.find_by(view: 'new_owner').html)
+    expect(page.find('#admin_welcome_text')).to have_content("Congratulations! You're now a project owner in FromThePage!")
     page.fill_in 'admin_welcome_text', with: 'New email text'
     click_button('Save Changes')
     expect(page.find('.flash_message')).to have_content("Admin settings have been updated")
