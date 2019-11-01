@@ -29,6 +29,10 @@ gem 'rubyzip'
 gem 'render_anywhere'
 
 gem 'ahoy_matey'
+
+gem "browser", "~> 2.0"
+gem "user_agent_parser"
+
 gem 'pry'
 gem 'oink'
 

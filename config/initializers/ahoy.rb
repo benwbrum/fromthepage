@@ -3,3 +3,5 @@ class Ahoy::Store < Ahoy::DatabaseStore
     Visit
   end
 end
+
+Ahoy.user_agent_parser = :legacy

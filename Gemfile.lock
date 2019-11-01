@@ -98,6 +98,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
+    browser (2.6.1)
     builder (3.2.3)
     bullet (6.0.2)
       activesupport (>= 3.0.0)
@@ -432,6 +433,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.6)
     uniform_notifier (1.13.0)
+    user_agent_parser (2.5.1)
     vcr (5.0.0)
     warden (1.2.8)
       rack (>= 2.0.6)
@@ -460,6 +462,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootsnap
+  browser (~> 2.0)
   bullet
   capistrano (~> 3.10)
   capistrano-bundler (~> 1.6)
@@ -512,6 +515,7 @@ DEPENDENCIES
   slim
   stackprof
   uglifier
+  user_agent_parser
   vcr
   webmock
   will_paginate
