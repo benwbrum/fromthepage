@@ -8,7 +8,7 @@ namespace :fromthepage do
     manifest_indices = args.manifest_ids
     collection_id = args.collection_id
     user_id = args.user_id
-    import_ocr = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.import_ocr)
+    import_ocr = ActiveRecord::Type::Boolean.new.cast(args.import_ocr)
     collection = Collection.find_by(id: collection_id)
     user = User.find_by(id: user_id)
     manifest_array = manifest_indices.split(" ")
