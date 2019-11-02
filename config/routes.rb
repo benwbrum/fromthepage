@@ -11,57 +11,57 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  get   '/omeka_sites/items' => 'omeka_sites#items'
+  get '/omeka_sites/items' => 'omeka_sites#items'
 
   resources :omeka_sites
   resources :omeka_items
 
   resources :notes
 
-  get   '/admin' => 'admin#index'
+  get '/admin' => 'admin#index'
 
-  get   '/dashboard' => 'dashboard#index'
-  get   '/dashboard/owner' => 'dashboard#owner'
-  get   '/dashboard/watchlist' => 'dashboard#watchlist'
-  get   'dashboard_role' => 'dashboard#dashboard_role'
-  get   'guest_dashboard' => 'dashboard#guest'
-  get   'findaproject', to: 'dashboard#landing_page', as: :landing_page
-  get   'collections', to: 'dashboard#collections_list', as: :collections_list
+  get '/dashboard' => 'dashboard#index'
+  get '/dashboard/owner' => 'dashboard#owner'
+  get '/dashboard/watchlist' => 'dashboard#watchlist'
+  get 'dashboard_role' => 'dashboard#dashboard_role'
+  get 'guest_dashboard' => 'dashboard#guest'
+  get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
+  get 'collections', to: 'dashboard#collections_list', as: :collections_list
 
-  get   '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
-  get   '/iiif/:id/layer/:type', :to => 'iiif#layer'
-  get   '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
-  get   '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
-  get   '/iiif/:page_id/notes', :to => 'iiif#notes'
-  get   '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
-  get   '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
-  get   '/iiif/:work_id/status', :to => 'iiif#manifest_status'
-  get   '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
+  get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
+  get '/iiif/:id/layer/:type', :to => 'iiif#layer'
+  get '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
+  get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
+  get '/iiif/:page_id/notes', :to => 'iiif#notes'
+  get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
+  get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
+  get '/iiif/:work_id/status', :to => 'iiif#manifest_status'
+  get '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
 #  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
-  get   '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
-  get   '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
-  get   '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
-  get   '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
-  get   '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
-  get   '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
+  get '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
+  get '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
+  get '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
+  get '/iiif/contributions/:domain/:terminus_a_quo/:terminus_ad_quem', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
+  get '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
+  get '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
 
-  get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
-  get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+  get '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
+  get '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
-  get   'ZenasMatthews' => 'collection#show', :collection_id => 7
-  get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
-  get   'YaquinaLights' => 'collection#show', :collection_id => 58
+  get 'ZenasMatthews' => 'collection#show', :collection_id => 7
+  get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  get 'YaquinaLights' => 'collection#show', :collection_id => 58
 
   patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
-  put   'article/article_category', :to => 'article#article_category'
+  put 'article/article_category', :to => 'article#article_category'
   patch 'category/update', :to => 'category#update'
   patch 'user/update', :to => 'user#update'
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'
-  get   'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
+  get 'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
   patch 'admin/expunge_user', :to => 'admin#expunge_user'
 
   get '/rails/mailers' => "rails/mailers#index"
@@ -78,10 +78,10 @@ Fromthepage::Application.routes.draw do
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
-  get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
+  get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
   get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
-  post   'document_set/assign_works', :to => 'document_sets#assign_works'
+  post 'document_set/assign_works', :to => 'document_sets#assign_works'
   #get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
   post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
   get 'transcription_field/line_form', to: 'transcription_field#line_form'
@@ -155,7 +155,6 @@ Fromthepage::Application.routes.draw do
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/:article_id', to: 'article#update', as: 'article_update'
-
     end
   end
 
