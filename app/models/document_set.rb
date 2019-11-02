@@ -32,8 +32,8 @@ class DocumentSet < ActiveRecord::Base
   
   scope :random_sample, -> (sample_size = 5) do
     carousel
-    reorder("RAND()") unless sample_size > 1
-    limit(sample_size).reorder("RAND()")
+    reorder(Arel.sql("RAND()")) unless sample_size > 1
+    limit(sample_size).reorder(Arel.sql("RAND()"))
   end
 
   def show_to?(user)
