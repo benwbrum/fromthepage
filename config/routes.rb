@@ -94,7 +94,7 @@ Fromthepage::Application.routes.draw do
 
     resources :collection, path: '', only: [:show] do
       get 'statistics', as: :statistics, to: 'statistics#collection'
-      get 'document_sets/settings', as: :settings, to: 'document_sets#settings'
+      get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'export/index', as: :export, to: 'export#index'
       get 'transcription_field/edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
@@ -109,19 +109,19 @@ Fromthepage::Application.routes.draw do
 
       #work related routes
       #have to use match because it must be both get and post
-      match 'display/read_work/:work_id', as: :read_work, to: 'display#read_work', via: [:get, :post], as: :read_work
+      match ':work_id', as: :read_work, to: 'display#read_work', via: [:get, :post], as: :read_work
       #get 'display/read_all_works', as: :read_all_works, to: 'display#read_all_works'
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'versions', on: :member
         get 'print', on: :member
-        get 'pages_tab', on: :member, as: :pages
+        get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
         get 'remove_scribe', on: :member
       end
-      get 'work/show/:work_id/about', param: :work_id, as: :work_about, to: 'work#show'
-      get 'display/list_pages/:work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
-      get 'static/transcribe_help/:work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
+      get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
+      get ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
+      get ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
       get 'export/work_plaintext_searchable/:work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
       get 'export/work_plaintext_verbatim/:work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
       get 'export/work_plaintext_emended/:work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
@@ -129,16 +129,16 @@ Fromthepage::Application.routes.draw do
       get 'export/work_plaintext_translation_emended/:work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
 
       #page related routes
-      get 'display/display_page/:work_id/display/:page_id/', as: 'display_page', to: 'display#display_page'
-      get 'transcribe/display_page/:work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
-      get 'transcribe/guest/:work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
-      get 'transcribe/translate/:work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
-      get 'transcribe/help/:work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
-      get 'transcribe/still_editing/:work_id/still_editing/:page_id', to: 'transcribe#still_editing', as: 'transcribe_still_editing'
+      get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
+      get ':work_id/transcribe/:page_id', as: 'transcribe_page', to: 'transcribe#display_page'
+      get ':work_id/guest/:page_id', as: 'guest_page', to: 'transcribe#guest'
+      get ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
+      get ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
+      get ':work_id/still_editing/:page_id', to: 'transcribe#still_editing', as: 'transcribe_still_editing'
       get 'transcribe/next_untranscribed_page/:work_id/next_untranscribed_page', as: 'next_untranscribed_page', to: 'transcribe#goto_next_untranscribed_page'
-      
-      get 'page/edit/:work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
-      get 'page_version/list/:work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
+
+      get ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
+      get ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
       get 'export/page_plaintext_searchable/:work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
       get 'export/page_plaintext_verbatim/:work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'
       get 'export/page_plaintext_translation_verbatim/:work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
