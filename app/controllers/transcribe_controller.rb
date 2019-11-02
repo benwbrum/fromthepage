@@ -320,7 +320,6 @@ class TranscribeController  < ApplicationController
   def still_editing
     @page.update_column("edit_started_at", Time.now)
     @page.update_column("edit_started_by_user_id", current_user.id)
-    render nothing: true
   end
 
   def goto_next_untranscribed_page
