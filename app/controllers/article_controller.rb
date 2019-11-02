@@ -159,7 +159,7 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_path = "#{Rails.root}/app/views/article/graph.dot"
+    dot_path = "#{Rails.root}/app/views/article/graph.dot.erb"
 
     dot_source =
       render_to_string({:file => dot_path,
