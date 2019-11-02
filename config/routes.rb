@@ -89,22 +89,22 @@ Fromthepage::Application.routes.draw do
   resources :document_sets, except: [:show, :create, :edit]
 
   scope ':user_slug' do
-    get 'user/update_profile', to: 'user#update_profile', as: :update_profile
+    get 'update_profile', to: 'user#update_profile', as: :update_profile
 
 
     resources :collection, path: '', only: [:show] do
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
-      get 'export/index', as: :export, to: 'export#index'
-      get 'transcription_field/edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'export', as: :export, to: 'export#index'
+      get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
 
       get 'edit', on: :member
       get 'new_work', on: :member
       get 'collaborators', on: :member, to: 'collection#contributors', as: :contributors
       get 'works_list', as: :works_list, to: 'collection#works_list'
-      get 'needs_transcription_pages', as: :needs_transcription, to: 'collection#needs_transcription_pages'
-      get 'needs_review_pages', as: :needs_review, to: 'collection#needs_review_pages'
+      get 'needs_transcription', as: :needs_transcription, to: 'collection#needs_transcription_pages'
+      get 'needs_review', as: :needs_review, to: 'collection#needs_review_pages'
       get 'start_transcribing', as: :start_transcribing, to: 'collection#start_transcribing'
 
       #work related routes
