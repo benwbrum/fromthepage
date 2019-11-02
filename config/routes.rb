@@ -101,7 +101,7 @@ Fromthepage::Application.routes.draw do
 
       get 'edit', on: :member
       get 'new_work', on: :member
-      get 'contributors', on: :member
+      get 'collaborators', on: :member, to: 'collection#contributors', as: :contributors
       get 'works_list', as: :works_list, to: 'collection#works_list'
       get 'needs_transcription_pages', as: :needs_transcription, to: 'collection#needs_transcription_pages'
       get 'needs_review_pages', as: :needs_review, to: 'collection#needs_review_pages'
