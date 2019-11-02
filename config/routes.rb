@@ -151,9 +151,9 @@ Fromthepage::Application.routes.draw do
       get 'annotation/page_translation_html/:work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html'
 
       #article related routes
-      match 'article/show/article/:article_id', to: 'article#show', via: [:get, :post], as: 'article_show'
-      get 'article/edit/article/:article_id/edit', to: 'article#edit'
-      get 'article_version/list/article_version/:article_id', to: 'article_version#list', as: 'article_version'
+      match 'article/:article_id', to: 'article#show', via: [:get, :post], as: 'article_show'
+      get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
+      get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/article/update/:article_id', to: 'article#update'
 
     end
