@@ -93,7 +93,7 @@ Fromthepage::Application.routes.draw do
 
 
     resources :collection, path: '', only: [:show] do
-      get 'statistics/collection', as: :statistics, to: 'statistics#collection'
+      get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'document_sets/settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'export/index', as: :export, to: 'export#index'
