@@ -123,7 +123,7 @@ class Article < ActiveRecord::Base
   # tested
   def clear_links(type='does_not_apply')
     # clear out the existing links to this page
-    ArticleArticleLink.delete_all("source_article_id = #{self.id}")
+    ArticleArticleLink.where("source_article_id = #{self.id}").delete_all
   end
 
   # tested
