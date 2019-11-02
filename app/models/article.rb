@@ -18,7 +18,7 @@ class Article < ActiveRecord::Base
   validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
 
 
-  has_and_belongs_to_many :categories, -> { uniq }
+  has_and_belongs_to_many :categories, -> { distinct }
   belongs_to :collection
   has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink'})
   scope :target_article_links, -> { include 'source_article' }
