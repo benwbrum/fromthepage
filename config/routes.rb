@@ -122,11 +122,11 @@ Fromthepage::Application.routes.draw do
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
-      get 'export/work_plaintext_searchable/:work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
-      get 'export/work_plaintext_verbatim/:work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
-      get 'export/work_plaintext_emended/:work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
-      get 'export/work_plaintext_translation_verbatim/:work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
-      get 'export/work_plaintext_translation_emended/:work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
+      get ':work_id/export/plaintext/searchable', as: 'work_export_plaintext_searchable', to: 'export#work_plaintext_searchable'
+      get ':work_id/export/plaintext/verbatim', as: 'work_export_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
+      get ':work_id/export/plaintext/emended', as: 'work_export_plaintext_emended', to: 'export#work_plaintext_emended'
+      get ':work_id/export/plaintext/translation/verbatim', as: 'work_export_plaintext_translation_verbatim', to: 'export#work_plaintext_translation_verbatim'
+      get ':work_id/export/plaintext/translation/emended', as: 'work_export_plaintext_translation_emended', to: 'export#work_plaintext_translation_emended'
 
       #page related routes
       get ':work_id/display/:page_id', as: 'display_page', to: 'display#display_page'
@@ -135,26 +135,26 @@ Fromthepage::Application.routes.draw do
       get ':work_id/translate/:page_id', as: 'translate_page', to: 'transcribe#translate'
       get ':work_id/help/:page_id', as: 'help_page', to: 'transcribe#help'
       get ':work_id/still_editing/:page_id', to: 'transcribe#still_editing', as: 'transcribe_still_editing'
-      get 'transcribe/next_untranscribed_page/:work_id/next_untranscribed_page', as: 'next_untranscribed_page', to: 'transcribe#goto_next_untranscribed_page'
+      get ':work_id/next_untranscribed_page', as: 'next_untranscribed_page', to: 'transcribe#goto_next_untranscribed_page'
 
       get ':work_id/edit/:page_id', as: 'edit_page', to: 'page#edit'
       get ':work_id/versions/:page_id', as: 'page_version', to: 'page_version#list'
-      get 'export/page_plaintext_searchable/:work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
-      get 'export/page_plaintext_verbatim/:work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'
-      get 'export/page_plaintext_translation_verbatim/:work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
-      get 'export/page_plaintext_emended/:work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
-      get 'export/page_plaintext_translation_emended/:work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
+      get ':work_id/export/:page_id/plaintext/searchable', as: 'page_export_plaintext_searchable', to: 'export#page_plaintext_searchable'
+      get ':work_id/export/:page_id/plaintext/verbatim', as: 'page_export_plaintext_verbatim', to: 'export#page_plaintext_verbatim'
+      get ':work_id/export/:page_id/plaintext/translation/verbatim', as: 'page_export_plaintext_translation_verbatim', to: 'export#page_plaintext_translation_verbatim'
+      get ':work_id/export/:page_id/plaintext/emended', as: 'page_export_plaintext_emended', to: 'export#page_plaintext_emended'
+      get ':work_id/export/:page_id/plaintext/translation/emended', as: 'page_export_plaintext_translation_emended', to: 'export#page_plaintext_translation_emended'
       get 'export/version'
 
       # Page Annotations
-      get 'annotation/page_transcription_html/:work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html'
-      get 'annotation/page_translation_html/:work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html'
+      get ':work_id/annotation/:page_id/html/transcription', to: 'annotation#page_transcription_html', as: 'annotation_page_transcription_html'
+      get ':work_id/annotation/:page_id/html/translation', to: 'annotation#page_translation_html', as: 'annotation_page_translation_html'
 
       #article related routes
       match 'article/:article_id', to: 'article#show', via: [:get, :post], as: 'article_show'
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
-      patch 'article/update/article/update/:article_id', to: 'article#update'
+      patch 'article/update/:article_id', to: 'article#update', as: 'article_update'
 
     end
   end
