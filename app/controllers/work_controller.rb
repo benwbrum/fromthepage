@@ -189,7 +189,7 @@ class WorkController < ApplicationController
 
   def update_featured_page
     @work.update(featured_page: params[:page_id])
-    redirect_to :back
+    redirect_back fallback_location: @work
   end
 
   private

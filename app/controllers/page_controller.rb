@@ -32,7 +32,7 @@ class PageController < ApplicationController
       rotate_file(@page.scaled_image(i), orientation)
     end
     set_dimensions(@page)
-    redirect_to :back
+    redirect_back fallback_location: @page
   end
 
 
