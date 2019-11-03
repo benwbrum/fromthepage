@@ -179,7 +179,6 @@ class WorkController < ApplicationController
       work.save!
     end
     work.update_deed_collection
-    
   end
 
   def revert
