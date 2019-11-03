@@ -113,9 +113,5 @@ class OmekaSitesController < ApplicationController
   end
 
   def review
-    
   end
-
-
-
 end
