@@ -15,7 +15,7 @@ class ScCollectionsController < ApplicationController
 
     if cdm_url.blank?
       flash[:error] = "Please enter a URL for a CONTENTdm object."
-      redirect_to :back
+      redirect_back fallback_location: { action: 'import' }
       return
     end
 
@@ -26,7 +26,7 @@ class ScCollectionsController < ApplicationController
     rescue => e
       logger.error "Bad CONTENTdm URL: #{cdm_url} ERROR: #{e.message}"
       flash[:error] = e.message
-      redirect_to :back
+      redirect_back fallback_location: { action: 'import' }
     end
   end
 
@@ -76,7 +76,7 @@ class ScCollectionsController < ApplicationController
       else
         flash[:error] = "Please enter a valid IIIF manifest URL."
       end
-      redirect_to :back
+      redirect_back fallback_location: { action: 'import' }
     end
 
   end
