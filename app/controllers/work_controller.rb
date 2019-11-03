@@ -154,7 +154,7 @@ class WorkController < ApplicationController
       redirect_to edit_collection_work_path(col.owner, col, work)
     else
       flash[:notice] = 'Work updated successfully'
-      redirect_to :back
+      redirect_back fallback_location: root_path
     end
   end
 
