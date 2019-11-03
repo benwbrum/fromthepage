@@ -84,7 +84,7 @@ class PageController < ApplicationController
       process_uploaded_file(page, page.base_image)
     end
 
-    redirect_to :back
+    redirect_back fallback_location: page
   end
 
 

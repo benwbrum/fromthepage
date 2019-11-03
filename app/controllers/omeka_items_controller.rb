@@ -95,7 +95,7 @@ class OmekaItemsController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = "Omeka item was successfully deleted"
-        redirect_to :back
+        redirect_back fallback_location: omeka_items_path
       }
       format.json { head :no_content }
     end
