@@ -51,7 +51,7 @@ class DisplayController < ApplicationController
     if @article
       # restrict to pages that include that subject
       @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
-      @pages.uniq!
+      @pages.distinct!
     else
       @pages = Page.paginate :all, :page => params[:page],
                                         :order => 'work_id, position',
