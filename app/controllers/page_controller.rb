@@ -55,12 +55,12 @@ class PageController < ApplicationController
 
   def create
     @page = Page.new(params[:page])
-    @page.work = @work
     subaction = params[:subaction]
+    @work.pages << @page
 
     if @page.save
       flash[:notice] = 'Page created successfully'
-
+  
       if params[:page][:base_image]
         process_uploaded_file(@page, @page.base_image)
       end

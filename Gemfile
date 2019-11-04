@@ -58,6 +58,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'webmock', require: false
   gem 'vcr'

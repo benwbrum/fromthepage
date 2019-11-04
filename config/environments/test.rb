@@ -46,5 +46,10 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
+
+  Capybara.register_driver :selenium do |app|
+    Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  end
+
   RAKE = '/usr/bin/env rake'
 end

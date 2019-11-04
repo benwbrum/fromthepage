@@ -2,7 +2,7 @@ class Work < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
-  has_many :pages, -> { order 'position' }, :dependent => :destroy
+  has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
@@ -162,7 +162,7 @@ class Work < ActiveRecord::Base
     return my_annotations[0..9]
   end
 
-  def update_statistic
+  def update_statistic(changed_page=nil) #association callbacks pass the page being added/removed, but we don't care
     unless self.work_statistic
       self.work_statistic = WorkStatistic.new
     end

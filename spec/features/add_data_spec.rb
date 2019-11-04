@@ -96,6 +96,8 @@ describe "uploads data for collections", :order => :defined do
     click_button('Save & New Work')
     count = work.pages.count
     expect(count).to eq 2
+    work = Work.find(work.id)
+    expect(work.work_statistic[:total_pages]).to eq 2
     expect(page).to have_content("Create Empty Work")
     #testing the cancel button involves ajax
   end
