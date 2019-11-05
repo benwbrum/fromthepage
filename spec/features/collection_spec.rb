@@ -200,6 +200,7 @@ describe "collection settings js tasks", :order => :defined do
       p.source_text = "Transcription"
       p.save!
     end
+    hidden_work.work_statistic.recalculate
     #check to see if the work is visible
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
