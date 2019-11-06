@@ -42,7 +42,7 @@ class MasqueradesController < Devise::MasqueradesController
   end
 
   protected
-  
+
   def after_back_masquerade_path_for(resource)
     admin_path
   end
