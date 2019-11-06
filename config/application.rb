@@ -20,5 +20,9 @@ module Fromthepage
     config.active_record.belongs_to_required_by_default = false
 
     config.neato = '/usr/bin/env neato'
+
+    if config.respond_to?(:sass)
+      require File.expand_path('../../lib/sassc_functions.rb', __FILE__)
+    end
   end
 end
