@@ -6,8 +6,8 @@
 #      # automated stuff
 #      t.column :created_on, :datetime
 class PageArticleLink < ActiveRecord::Base
-  belongs_to :page
-  belongs_to :article
+  belongs_to :page, optional: true
+  belongs_to :article, optional: true
 
   # there were mass assignment errors in test
   attr_accessible :display_text, :page, :article

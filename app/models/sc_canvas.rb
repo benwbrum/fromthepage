@@ -1,7 +1,7 @@
 class ScCanvas < ActiveRecord::Base
   self.table_name = "sc_canvases"
-  belongs_to :sc_manifest
-  belongs_to :page
+  belongs_to :sc_manifest, optional: true
+  belongs_to :page, optional: true
   
   
   def thumbnail_url

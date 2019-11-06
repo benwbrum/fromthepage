@@ -9,14 +9,14 @@ class Page < ActiveRecord::Base
   before_update :populate_search
   validate :validate_source, :validate_source_translation
 
-  belongs_to :work
+  belongs_to :work, optional: true
   acts_as_list :scope => :work
 
   has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
   has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
 
-  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id'
+  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id', optional: true
 
   has_and_belongs_to_many :sections
 

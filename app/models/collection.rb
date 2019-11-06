@@ -15,10 +15,10 @@ class Collection < ActiveRecord::Base
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, :dependent => :destroy
 
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, through: :works
 
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
+  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
   attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow, :hide_completed, :help, :link_help, :voice_recognition, :language, :text_language, :pct_completed, :default_orientation

@@ -8,9 +8,9 @@ class DocumentSet < ActiveRecord::Base
 
   mount_uploader :picture, PictureUploader
 
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
-  belongs_to :collection
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
+  belongs_to :collection, optional: true
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
 
   has_many :pages, through: :works
 

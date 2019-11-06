@@ -1,6 +1,6 @@
 class PageVersion < ActiveRecord::Base
-  belongs_to :page
-  belongs_to :user
+  belongs_to :page, optional: true
+  belongs_to :user, optional: true
   has_many :flags
 
   after_create :check_content

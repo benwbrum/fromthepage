@@ -1,7 +1,7 @@
 class IaLeaf < ActiveRecord::Base
   self.table_name = "ia_leaves"
-  belongs_to :ia_work
-  belongs_to :page
+  belongs_to :ia_work, optional: true
+  belongs_to :page, optional: true
 
   def thumb_url
     "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_thumb.jpg"

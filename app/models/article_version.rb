@@ -1,6 +1,6 @@
 class ArticleVersion < ActiveRecord::Base
-  belongs_to :article
-  belongs_to :user
+  belongs_to :article, optional: true
+  belongs_to :user, optional: true
   has_many :flags
 
   after_create :check_content

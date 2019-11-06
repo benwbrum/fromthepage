@@ -1,6 +1,6 @@
 class DocumentUpload < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :collection
+  belongs_to :user, optional: true
+  belongs_to :collection, optional: true
 
   attr_accessible :file, :collection_id, :status, :preserve_titles
 

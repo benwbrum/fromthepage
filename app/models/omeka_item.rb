@@ -1,8 +1,8 @@
 class OmekaItem < ActiveRecord::Base
   attr_accessible :coverage, :creator, :description, :format, :omeka_collection_id, :omeka_id, :omeka_url, :rights, :subject, :title
-  belongs_to :user
-  belongs_to :omeka_site
-  belongs_to :work
+  belongs_to :user, optional: true
+  belongs_to :omeka_site, optional: true
+  belongs_to :work, optional: true
   has_many :omeka_files
 
   def client_files

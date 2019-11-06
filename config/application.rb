@@ -16,9 +16,6 @@ module Fromthepage
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    # TODO: remove this later and fix the code instead
-    config.active_record.belongs_to_required_by_default = false
-
     config.neato = '/usr/bin/env neato'
 
     if config.respond_to?(:sass)

@@ -3,12 +3,12 @@ class Work < ActiveRecord::Base
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
+  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
 
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :untranscribed_pages, -> { needs_transcription }, class_name: "Page"
 
-  belongs_to :collection, counter_cache: :works_count
+  belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :ia_work, :dependent => :destroy
   has_one :omeka_item, :dependent => :destroy

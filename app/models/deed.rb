@@ -4,12 +4,12 @@
 class Deed < ActiveRecord::Base
   include RenderAnywhere
 
-  belongs_to :article
-  belongs_to :collection
-  belongs_to :note
-  belongs_to :page
-  belongs_to :user
-  belongs_to :work
+  belongs_to :article, optional: true
+  belongs_to :collection, optional: true
+  belongs_to :note, optional: true
+  belongs_to :page, optional: true
+  belongs_to :user, optional: true
+  belongs_to :work, optional: true
 
   validates_inclusion_of :deed_type, in: DeedType.all_types
   scope :order_by_recent_activity, -> { order('created_at DESC') }

@@ -1,5 +1,5 @@
 class ScCollection < ActiveRecord::Base
-  belongs_to :collection
+  belongs_to :collection, optional: true
   has_many :sc_manifests
   
   attr_accessor :service

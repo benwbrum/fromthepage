@@ -1,5 +1,5 @@
 class WorkStatistic < ActiveRecord::Base
-  belongs_to :work
+  belongs_to :work, optional: true
 
   def pct_transcribed
     raw = self[:transcribed_pages].to_f / self[:total_pages] * 100

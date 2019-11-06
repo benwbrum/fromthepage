@@ -1,7 +1,7 @@
 class ScManifest < ActiveRecord::Base
-  belongs_to :work
-  belongs_to :sc_collection
-  belongs_to :collection
+  belongs_to :work, optional: true
+  belongs_to :sc_collection, optional: true
+  belongs_to :collection, optional: true
 
   has_many :sc_canvases
   

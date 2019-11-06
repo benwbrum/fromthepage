@@ -1,6 +1,6 @@
 class TranscriptionField < ActiveRecord::Base
 
-belongs_to :collection
+belongs_to :collection, optional: true
 acts_as_list :scope => :collection
 has_many :table_cells
 validates :options, presence: true, if: Proc.new {|field| field.input_type == 'select'}, on: [:create, :update]
