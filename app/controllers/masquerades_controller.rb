@@ -29,11 +29,11 @@ class MasqueradesController < Devise::MasqueradesController
     end
 
     if Devise.masquerade_routes_back && Rails::VERSION::MAJOR == 5
-      redirect_back(fallback_location: "#{after_masquerade_param_for(self.resource)}?#{after_masquerade_param_for(resource)}")
+      redirect_back(fallback_location: "#{after_masquerade_path_for(self.resource)}?#{after_masquerade_path_for(resource)}")
     elsif Devise.masquerade_routes_back && request.env['HTTP_REFERER'].present?
       redirect_back fallback_location: root_path
     else
-      redirect_to("#{after_masquerade_path_for(self.resource)}?#{after_masquerade_param_for(resource)}")
+      redirect_to("#{after_masquerade_path_for(self.resource)}?#{after_masquerade_path_for(resource)}")
     end
   end
 
