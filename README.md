@@ -15,7 +15,7 @@ FromThePage is currently issued under the Affero GPL. This license remains contr
 
 ### Platform
 
-FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 4.1.1 and the RMagick, hpricot, will_paginate, and OAI gems.
+FromThePage has been run successfully under both Linux and Windows. It currently requires Ruby on Rails version 5.2.3 and the RMagick, hpricot, will_paginate, and OAI gems.
 
 ### Installation
 
