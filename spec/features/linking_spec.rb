@@ -42,6 +42,7 @@ describe "subject linking" do
     page.fill_in 'article_source_text', with: "This is the text about my article."
     click_button('Save Changes')
     expect(page).to have_content("This is the text about my article.")
+    expect(article.article_versions.count).to be >= 1
   end
 
   it "conditionally displays GIS fields on subject" do 
