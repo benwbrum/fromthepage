@@ -1,7 +1,7 @@
 require 'csv'
 require 'subject_exporter'
 
-class Collection < ActiveRecord::Base
+class Collection < ApplicationRecord
   include CollectionStatistic
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]

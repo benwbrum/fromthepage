@@ -5,7 +5,7 @@
 #      t.column :display_text, :string
 #      # automated stuff
 #      t.column :created_on, :datetime
-class PageArticleLink < ActiveRecord::Base
+class PageArticleLink < ApplicationRecord
   belongs_to :page, optional: true
   belongs_to :article, optional: true
 

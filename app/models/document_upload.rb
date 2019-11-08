@@ -1,4 +1,4 @@
-class DocumentUpload < ActiveRecord::Base
+class DocumentUpload < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :collection, optional: true
 

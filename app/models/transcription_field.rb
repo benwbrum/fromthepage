@@ -1,4 +1,4 @@
-class TranscriptionField < ActiveRecord::Base
+class TranscriptionField < ApplicationRecord
 
 belongs_to :collection, optional: true
 acts_as_list :scope => :collection

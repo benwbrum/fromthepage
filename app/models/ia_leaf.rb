@@ -1,4 +1,4 @@
-class IaLeaf < ActiveRecord::Base
+class IaLeaf < ApplicationRecord
   self.table_name = "ia_leaves"
   belongs_to :ia_work, optional: true
   belongs_to :page, optional: true

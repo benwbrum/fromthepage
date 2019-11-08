@@ -1,4 +1,4 @@
-class WorkStatistic < ActiveRecord::Base
+class WorkStatistic < ApplicationRecord
   belongs_to :work, optional: true
 
   def pct_transcribed

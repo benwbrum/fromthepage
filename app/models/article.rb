@@ -6,7 +6,7 @@
 #      t.column :created_on, :datetime
 #      t.column :lock_version, :integer, :default => 0
 #    end
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   include XmlSourceProcessor
   #include ActiveModel::Dirty
 

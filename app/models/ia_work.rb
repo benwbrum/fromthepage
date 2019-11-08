@@ -1,4 +1,4 @@
-class IaWork < ActiveRecord::Base
+class IaWork < ApplicationRecord
   require 'open-uri'
 
   belongs_to :user, optional: true

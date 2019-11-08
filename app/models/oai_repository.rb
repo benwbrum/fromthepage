@@ -1,2 +1,2 @@
-class OaiRepository < ActiveRecord::Base
+class OaiRepository < ApplicationRecord
 end

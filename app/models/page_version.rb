@@ -1,4 +1,4 @@
-class PageVersion < ActiveRecord::Base
+class PageVersion < ApplicationRecord
   belongs_to :page, optional: true
   belongs_to :user, optional: true
   has_many :flags

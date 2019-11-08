@@ -1,4 +1,4 @@
-class ScCanvas < ActiveRecord::Base
+class ScCanvas < ApplicationRecord
   self.table_name = "sc_canvases"
   belongs_to :sc_manifest, optional: true
   belongs_to :page, optional: true

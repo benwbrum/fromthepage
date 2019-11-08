@@ -1,4 +1,4 @@
-class TexFigure < ActiveRecord::Base
+class TexFigure < ApplicationRecord
   belongs_to :page, optional: true
   acts_as_list :scope => :page
   

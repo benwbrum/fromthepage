@@ -1,4 +1,4 @@
-class TableCell < ActiveRecord::Base
+class TableCell < ApplicationRecord
   belongs_to :work, optional: true
   belongs_to :page, optional: true
   belongs_to :section, optional: true

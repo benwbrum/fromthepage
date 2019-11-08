@@ -1,4 +1,4 @@
-class DocumentSet < ActiveRecord::Base
+class DocumentSet < ApplicationRecord
   include DocumentSetStatistic
 
   extend FriendlyId

@@ -1,4 +1,4 @@
-class OmekaSite < ActiveRecord::Base
+class OmekaSite < ApplicationRecord
   attr_accessible :api_key, :api_url, :title
   belongs_to :user, optional: true
   has_many :omeka_collections

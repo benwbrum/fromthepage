@@ -1,4 +1,4 @@
-class ScCollection < ActiveRecord::Base
+class ScCollection < ApplicationRecord
   belongs_to :collection, optional: true
   has_many :sc_manifests
   

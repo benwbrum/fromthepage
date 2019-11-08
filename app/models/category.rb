@@ -1,4 +1,4 @@
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
   extend ActsAsTree::TreeWalker
 
   acts_as_tree :order => 'title'

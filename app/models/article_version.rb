@@ -1,4 +1,4 @@
-class ArticleVersion < ActiveRecord::Base
+class ArticleVersion < ApplicationRecord
   belongs_to :article, optional: true
   belongs_to :user, optional: true
   has_many :flags

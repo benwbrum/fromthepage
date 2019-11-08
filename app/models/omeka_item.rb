@@ -1,4 +1,4 @@
-class OmekaItem < ActiveRecord::Base
+class OmekaItem < ApplicationRecord
   attr_accessible :coverage, :creator, :description, :format, :omeka_collection_id, :omeka_id, :omeka_url, :rights, :subject, :title
   belongs_to :user, optional: true
   belongs_to :omeka_site, optional: true

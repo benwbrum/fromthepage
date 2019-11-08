@@ -1,4 +1,4 @@
-class ScManifest < ActiveRecord::Base
+class ScManifest < ApplicationRecord
   belongs_to :work, optional: true
   belongs_to :sc_collection, optional: true
   belongs_to :collection, optional: true

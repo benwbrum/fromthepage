@@ -1,5 +1,5 @@
 require 'search_translator'
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
 
   include XmlSourceProcessor
   include ApplicationHelper

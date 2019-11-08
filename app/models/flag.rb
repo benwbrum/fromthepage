@@ -1,6 +1,6 @@
 require 'flagger'
 
-class Flag < ActiveRecord::Base
+class Flag < ApplicationRecord
   belongs_to :author_user, :class_name => 'User', optional: true
   belongs_to :page_version, optional: true
   belongs_to :article_version, optional: true

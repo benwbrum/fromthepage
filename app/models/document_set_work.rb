@@ -1,4 +1,4 @@
-class DocumentSetWork < ActiveRecord::Base
+class DocumentSetWork < ApplicationRecord
   
   self.table_name = "document_sets_works"
   
