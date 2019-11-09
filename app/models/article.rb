@@ -142,7 +142,7 @@ class Article < ApplicationRecord
   # tested
   def create_version
 
-    unless self.title_changed? || self.source_text_changed?
+    unless self.saved_change_to_title? || self.saved_change_to_source_text?
       return
     end
 
