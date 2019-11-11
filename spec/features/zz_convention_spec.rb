@@ -23,7 +23,7 @@ describe "convention related tasks", :order => :defined do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
+  end
 
   it "checks for collection level transcription conventions" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
