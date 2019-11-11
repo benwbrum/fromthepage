@@ -51,7 +51,7 @@ class IiifController < ApplicationController
       return      
     end
     contributions = collection_for_domain(domain, terminus_a_quo, terminus_ad_quem)
-    render :text => contributions.to_json(pretty: true), :content_type => "application/json"
+    render :plain => contributions.to_json(pretty: true), :content_type => "application/json"
   end
 
   def for
