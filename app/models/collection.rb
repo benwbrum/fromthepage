@@ -25,7 +25,7 @@ class Collection < ApplicationRecord
 #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  
+
   before_create :set_transcription_conventions
   before_create :set_help
   before_create :set_link_help
@@ -37,9 +37,9 @@ class Collection < ApplicationRecord
   scope :order_by_recent_activity, -> { joins(:deeds).order('deeds.created_at DESC') }
   scope :unrestricted, -> { where(restricted: false)}
   scope :order_by_incomplete, -> { joins(works: :work_statistic).reorder('work_statistics.complete ASC')}
-  
+
   scope :carousel, -> {where(pct_completed: [nil, 1..90]).where.not(picture: nil).where.not(intro_block: [nil, '']).where(restricted: false).reorder(Arel.sql("RAND()"))}
-  
+
   scope :has_intro_block, -> { where.not(intro_block: [nil, '']) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
@@ -68,7 +68,7 @@ class Collection < ApplicationRecord
     works.each do |w| 
       page_fields += w.pages.first.metadata.keys if w.pages.first && w.pages.first.metadata
     end
-     
+
     page_fields.uniq
   end
 
@@ -180,7 +180,7 @@ class Collection < ApplicationRecord
     first_work = works.where.not(next_untranscribed_page_id: nil).order_by_incomplete.first
     first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
     page_id = first_page.nil? ? nil : first_page.id
-    
+
     update_columns(next_untranscribed_page_id: page_id)
   end
 
@@ -199,7 +199,7 @@ class Collection < ApplicationRecord
       .where.not(next_untranscribed_page_id: nil)
       .restricted
       .order_by_incomplete
-      
+
     wk = private.find{ |w| user.can_transcribe?(w) }
 
     wk.nil? ? nil : wk.next_untranscribed_page
