@@ -8,5 +8,4 @@ class TableCell < ApplicationRecord
 
   scope :page_order, -> { order 'section_id, row, header' }
   scope :work_order , -> { order 'page_id, row, header' }
-
 end

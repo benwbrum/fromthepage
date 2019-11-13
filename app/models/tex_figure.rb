@@ -27,7 +27,7 @@ class TexFigure < ApplicationRecord
     page.tex_figures.each do |figure|
       puts "TexFigure.process_artifacts considering figure #{figure.id} source #{figure.source}"
       if figure.needs_artifact?
-	puts "figure needs artifact.  creating"
+        puts "figure needs artifact.  creating"
         figure.create_artifact
       end
     end
@@ -44,11 +44,10 @@ class TexFigure < ApplicationRecord
     File.join(TexFigure.artifact_dir_name(page_id), "process.log")
   end
 
-
-
   ###################
   # LaTeX stuff
   ###################
+
   def create_artifact
     puts "TexFigure.create_artifact conditionally creating directory"
     # make sure we have a full directory
@@ -64,7 +63,7 @@ class TexFigure < ApplicationRecord
 
     puts "TexFigure.create_artifact running latex"
     if run_latex
-    puts "TexFigure.create_artifact postprocessing latex"
+      puts "TexFigure.create_artifact postprocessing latex"
       postprocess_latex
     else
       puts "TexFigure.create_artifact processing errors"
@@ -79,7 +78,7 @@ class TexFigure < ApplicationRecord
     File.unlink(cropped_pdf_file_path) if File.exist?(cropped_pdf_file_path)
   end
 
-#  XELATEX='/usr/local/texlive/2017/bin/x86_64-linux/xelatex'
+  #  XELATEX='/usr/local/texlive/2017/bin/x86_64-linux/xelatex'
   XELATEX='xelatex'
   PDFCROP='pdfcrop'
   PDF2SVG='pdf2svg'
@@ -114,13 +113,13 @@ class TexFigure < ApplicationRecord
       error_lines << text.sub(line_id, new_number.to_s)
     end
 
-      error_line_string = ""
-      y = 45
-      error_lines.each do |error|
-        error_line_string << "<tspan x=\"10\" y=\"#{y}\"> #{error} </tspan>"
-        y=y+10
-      end
-      svg_string= <<EOF
+    error_line_string = ""
+    y = 45
+    error_lines.each do |error|
+      error_line_string << "<tspan x=\"10\" y=\"#{y}\"> #{error} </tspan>"
+      y=y+10
+    end
+    svg_string= <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="90" viewBox="0 0 293 10" version="1.1">
       <text x="10" y="20" style="fill:red;">LaTex Processing Error:
@@ -172,7 +171,6 @@ EOF
     !File.exist? artifact_file_path
   end
 
-
   def clear_artifact
     logger.debug("Removing #{artifact_file_path}")
     File.unlink(artifact_file_path) if File.exist?(artifact_file_path)
@@ -215,7 +213,6 @@ EOF
   def self.artifact_dir_name(page_id)
     File.join(Rails.root, 'public', 'images', 'working', 'tex', page_id.to_s)
   end
-
 
   def artifact_file_only
     artifact_file_only(self.position)
