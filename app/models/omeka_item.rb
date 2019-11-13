@@ -66,10 +66,7 @@ class OmekaItem < ApplicationRecord
 
     self.work = work
     self.save!
-
   end
-
-
 
   def self.new_from_site_item_id(site, id)
     client_item = site.client.get_item(id)
@@ -84,7 +81,6 @@ class OmekaItem < ApplicationRecord
 
     new_item
   end
-
 
   def self.attrs_from_dublin_core(dc)
     {
@@ -121,8 +117,7 @@ class OmekaItem < ApplicationRecord
     end
   end
 
-
-protected
+  protected
 
   def create_mirror_collection(client_collection)
     omeka_collection = OmekaCollection.new
@@ -149,7 +144,6 @@ protected
     fromthepage_collection
   end
 
-
   def record_deed(work)
     deed = Deed.new
     deed.work = work
@@ -158,5 +152,4 @@ protected
     deed.user = work.owner
     deed.save!
   end
-
 end
