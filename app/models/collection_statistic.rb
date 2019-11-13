@@ -138,7 +138,4 @@ module CollectionStatistic
       end
     end
   end
-
-
-
 end
