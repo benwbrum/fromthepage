@@ -35,7 +35,7 @@ class DocumentUpload < ApplicationRecord
     File.basename(self.file.to_s)
   end
 
-private
+  private
   def upload_dir
     if self.file && self.file.path
       File.dirname(self.file.path)
