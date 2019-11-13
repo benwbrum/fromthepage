@@ -13,7 +13,7 @@ class Category < ApplicationRecord
       Article.joins(:pages).where(pages: {work_id: collection.works.ids}).joins(:categories).where(categories: {id: self.id}).distinct
     else
       self.articles
-    end  
+    end
   end
 
 #  def destroy_but_attach_children_to_parent

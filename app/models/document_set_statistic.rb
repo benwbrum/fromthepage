@@ -76,7 +76,7 @@ module DocumentSetStatistic
       :mentions     => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
       :contributors => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
     }
-    
+
     stats.merge(deeds)
   end
   def timeframe(start_date, end_date, column='created_at')

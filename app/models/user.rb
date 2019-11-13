@@ -1,9 +1,9 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :masqueradable, 
+  devise :database_authenticatable, :registerable, :masqueradable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :encryptable, :encryptor => :restful_authentication_sha1, 
+         :omniauthable, :encryptable, :encryptor => :restful_authentication_sha1,
          :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
@@ -63,7 +63,7 @@ class User < ApplicationRecord
   validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
-  
+
   after_save :create_notifications
   #before_destroy :clean_up_orphans
 
@@ -121,7 +121,7 @@ class User < ApplicationRecord
       if obj.collection
         return self == obj.collection.owner || obj.collection.owners.include?(self)
       else
-        self == obj.owner      
+        self == obj.owner
       end
     end
     if DocumentSet == obj.class
@@ -158,7 +158,7 @@ class User < ApplicationRecord
       where(conditions).first
     end
   end
-  
+
   def unrestricted_collections
     self.all_owner_collections.unrestricted
   end

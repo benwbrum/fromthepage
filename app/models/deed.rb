@@ -17,7 +17,7 @@ class Deed < ApplicationRecord
   scope :past_day, -> {where('created_at >= ?', 1.day.ago)}
 
   visitable class_name: "Visit" # ahoy integration
-  
+
   before_save :calculate_prerender, :calculate_prerender_mailer
 
   def deed_type_name

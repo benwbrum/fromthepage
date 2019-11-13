@@ -2,16 +2,16 @@ module XmlSourceProcessor
 
   @text_dirty = false
   @translation_dirty = false
-  #@fields = false  
+  #@fields = false
 
   def source_text=(text)
     @text_dirty = true
     super
   end
-  
+
   def source_translation=(translation)
     @translation_dirty = true
-    super    
+    super
   end
 
   def validate_source
@@ -20,7 +20,7 @@ module XmlSourceProcessor
     end
     validate_links(self.source_text)
   end
-    
+
   def validate_source_translation
     if self.source_translation.blank?
       return
@@ -87,14 +87,14 @@ module XmlSourceProcessor
     end
 
     if @translation_dirty
-      self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)      
+      self.xml_translation = wiki_to_xml(self, Page::TEXT_TYPE::TRANSLATION)
     end
   end
 
   def wiki_to_xml(page, text_type)
 
     subjects_disabled = page.collection.subjects_disabled
-    
+
     source_text = case text_type
     when Page::TEXT_TYPE::TRANSCRIPTION
       page.source_text
@@ -111,16 +111,16 @@ module XmlSourceProcessor
     xml_string = process_linewise_markup(xml_string)
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
-    xml_string = update_links_and_xml(xml_string, false, text_type) 
+    xml_string = update_links_and_xml(xml_string, false, text_type)
     postprocess_sections
-    xml_string    
+    xml_string
   end
 
   BAD_SHIFT_REGEX = /\[\[([[[:alpha:]][[:blank:]]|,\(\)\-[[:digit:]]]+)\}\}/
   def clean_bad_braces(text)
-    text.gsub BAD_SHIFT_REGEX, "[[\\1]]"  
+    text.gsub BAD_SHIFT_REGEX, "[[\\1]]"
   end
-  
+
   BRACE_REGEX = /\[\[.*?\]\]/m
   def process_square_braces(text)
     # find all the links
@@ -141,12 +141,12 @@ module XmlSourceProcessor
       end
 
       title = canonicalize_title(title)
-      
+
       replacement = "<link target_title=\"#{title}\">#{verbatim}</link>"
-      text.sub!(wikilink_contents, replacement)      
+      text.sub!(wikilink_contents, replacement)
 
     end
-    
+
     text
   end
 
@@ -171,23 +171,23 @@ module XmlSourceProcessor
     return text unless self.respond_to? :tex_figures
     replacements = {}
     figures = self.tex_figures.to_a
-    
+
     text.scan(LATEX_SNIPPET).each_with_index do |pair, i|
       with_tags = pair[0]
       contents = pair[1]
-      
-      replacements[with_tags] = "<texFigure position=\"#{i+1}\"/>" # position attribute in acts as list starts with 1 
-      
+
+      replacements[with_tags] = "<texFigure position=\"#{i+1}\"/>" # position attribute in acts as list starts with 1
+
       figure = figures[i] || TexFigure.new
-      figure.source = contents unless figure.source == contents        
+      figure.source = contents unless figure.source == contents
       figures[i] = figure
-    end          
+    end
 
     self.tex_figures = figures
     replacements.each_pair do |s,r|
       text.sub!(s,r)
     end
-    
+
     text
   end
 
@@ -210,7 +210,7 @@ module XmlSourceProcessor
           current_table = { :header => [], :rows => [], :section => @sections.last }
           # fill the header
           cells = line.split(/\s*\|\s*/)
-          cells.shift if line.match(/^\|/) # remove leading pipe 
+          cells.shift if line.match(/^\|/) # remove leading pipe
           current_table[:header] = cells.map{ |cell_title| cell_title.sub(/^!\s*/,'') }
           heading = cells.map do |cell|
             if cell.match(/^!/)
@@ -256,7 +256,7 @@ module XmlSourceProcessor
         end
       end
     end
-    
+
     if current_table
       # unclosed table
       @tables << current_table
@@ -294,7 +294,7 @@ module XmlSourceProcessor
       end
       section.title = XmlSourceProcessor.xml_to_cell(doc)
     end
-  end      
+  end
 
 
   def canonicalize_title(title)
@@ -379,11 +379,11 @@ EOF
 
   CELL_PREFIX = "<?xml version='1.0' encoding='UTF-8'?><cell>"
   CELL_SUFFIX = '</cell>'
-  
+
   def self.cell_to_xml(cell)
     REXML::Document.new(CELL_PREFIX + cell.gsub('&','&amp;') + CELL_SUFFIX)
   end
-  
+
   def self.xml_to_cell(doc)
     text = ""
     doc.write(text)

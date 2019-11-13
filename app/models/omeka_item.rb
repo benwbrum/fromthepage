@@ -21,7 +21,7 @@ class OmekaItem < ApplicationRecord
           omeka_collection = create_mirror_collection(client_item.collection)
         end
       end
-      # if the item was in an Omeka collection, there is now a mirror object  
+      # if the item was in an Omeka collection, there is now a mirror object
       if omeka_collection.collection
         fromthepage_collection = omeka_collection.collection
       else
@@ -104,7 +104,7 @@ class OmekaItem < ApplicationRecord
     # Then determine whether the expiration date is in the past
     omeka_files.first[:thumbnail_url].match(/Expires=(\d+)/) && $1.to_i < Time.now.to_i
   end
-  
+
   def refresh_urls
     client_item = omeka_site.client.get_item(omeka_id)
     fresh_files =  client_item.files.map { |e| [e.data.mime_type, e.data.id, e.data.file_urls.thumbnail, e.data.file_urls.original] }
@@ -131,7 +131,7 @@ protected
     omeka_collection.description = client_collection.dublin_core.description
     omeka_collection.omeka_site = omeka_site
     omeka_collection.save!
-    
+
     omeka_collection
   end
 
@@ -144,8 +144,8 @@ protected
     fromthepage_collection.save!
 
     omeka_collection.collection = fromthepage_collection
-    omeka_collection.save!    
-    
+    omeka_collection.save!
+
     fromthepage_collection
   end
 

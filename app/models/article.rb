@@ -69,7 +69,7 @@ class Article < ApplicationRecord
   def related_article_ranks
 
   end
-  
+
   def gis_enabled?
     self.categories.where(:gis_enabled => true).present?
   end

@@ -3,7 +3,7 @@ class DocumentSet < ApplicationRecord
 
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
-  
+
   attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed, :works_count
 
   mount_uploader :picture, PictureUploader
@@ -18,7 +18,7 @@ class DocumentSet < ApplicationRecord
   has_many :works, through: :document_set_works
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
-  
+
   after_save :set_next_untranscribed_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -29,7 +29,7 @@ class DocumentSet < ApplicationRecord
   scope :has_intro_block, -> { where.not(description: [nil, '']) }
   scope :not_near_complete, -> { where(pct_completed: [nil, 0..90]) }
   scope :not_empty, -> { where.not(works_count: [0, nil]) }
-  
+
   scope :random_sample, -> (sample_size = 5) do
     carousel
     reorder(Arel.sql("RAND()")) unless sample_size > 1
@@ -43,7 +43,7 @@ class DocumentSet < ApplicationRecord
   def intro_block
     self.description
   end
-  
+
   def hide_completed
     self.collection.hide_completed
   end
@@ -79,7 +79,7 @@ class DocumentSet < ApplicationRecord
   def active?
     self.collection.active?
   end
-  
+
   def footer_block
     self.collection.footer_block
   end
@@ -119,12 +119,12 @@ class DocumentSet < ApplicationRecord
   def transcription_fields
     self.collection.transcription_fields
   end
-  
+
   def set_next_untranscribed_page
     first_work = works.order_by_incomplete.first
     first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
     page_id = first_page.nil? ? nil : first_page.id
-    
+
     update_columns(next_untranscribed_page_id: page_id)
   end
 
@@ -143,9 +143,9 @@ class DocumentSet < ApplicationRecord
       .where.not(next_untranscribed_page_id: nil)
       .restricted
       .order_by_incomplete
-    
+
     wk = private.find{ |w| user.can_transcribe?(w) }
-  
+
     wk.nil? ? nil : wk.next_untranscribed_page
   end
 
@@ -185,7 +185,7 @@ class DocumentSet < ApplicationRecord
     users where owner=1 and display_name like ?)"
     where(sql, "%#{search}%", "%#{search}%", "%#{search}%")
   end
-  
+
   def default_orientation
     if !self[:default_orientation].nil?
       self[:default_orientation]

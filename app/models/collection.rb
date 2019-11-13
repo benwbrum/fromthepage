@@ -65,7 +65,7 @@ class Collection < ApplicationRecord
 
   def page_metadata_fields
     page_fields = []
-    works.each do |w| 
+    works.each do |w|
       page_fields += w.pages.first.metadata.keys if w.pages.first && w.pages.first.metadata
     end
 

@@ -18,7 +18,7 @@ class Work < ApplicationRecord
   has_many :table_cells, :dependent => :destroy
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
-  
+
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
 
@@ -67,25 +67,25 @@ class Work < ApplicationRecord
 
   module TitleStyle
     REPLACE = 'REPLACE'
-    
+
     PAGE_ARABIC = "Page #{REPLACE}"
     PAGE_ROMAN = "Page #{REPLACE}"
     ENVELOPE = "Envelope (#{REPLACE})"
     COVER = 'Cover (#{REPLACE})'
     ENCLOSURE = 'Enclosure REPLACE'
     DEFAULT = PAGE_ARABIC
-    
+
     def self.render(style, number)
       style.sub(REPLACE, number.to_s)
     end
-    
+
     def self.style_from_prior_title(title)
       PAGE_ARABIC
     end
     def self.number_from_prior_title(style, title)
       regex_string = style.sub('REPLACE', "(\\d+)")
       md = title.match(/#{regex_string}/)
-      
+
       if md
         md.captures.first
       else
@@ -93,7 +93,7 @@ class Work < ApplicationRecord
       end
     end
   end
-  
+
   def verbatim_transcription_plaintext
     self.pages.map { |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
   end
@@ -116,14 +116,14 @@ class Work < ApplicationRecord
 
   def suggest_next_page_title
     if self.pages.count == 0
-      TitleStyle::render(TitleStyle::DEFAULT, 1)    
+      TitleStyle::render(TitleStyle::DEFAULT, 1)
     else
       prior_title = self.pages.last.title
       style = TitleStyle::style_from_prior_title(prior_title)
-      number = TitleStyle::number_from_prior_title(style, prior_title)      
-      
+      number = TitleStyle::number_from_prior_title(style, prior_title)
+
       next_number = number ? number.to_i + 1 : self.pages.count + 1
-      
+
       TitleStyle::render(style, next_number)
     end
   end

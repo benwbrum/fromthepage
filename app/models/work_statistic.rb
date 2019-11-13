@@ -98,7 +98,7 @@ class WorkStatistic < ApplicationRecord
 
     self[:complete]             = pct_completed
     self[:translation_complete] = pct_translation_completed
-    
+
     save!
   end
 

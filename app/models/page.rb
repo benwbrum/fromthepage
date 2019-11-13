@@ -53,7 +53,7 @@ class Page < ApplicationRecord
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
-  
+
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
     TRANSLATION = 'translation'
@@ -113,7 +113,7 @@ class Page < ApplicationRecord
     if self.ia_leaf
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
-      self.sc_canvas.facsimile_url      
+      self.sc_canvas.facsimile_url
     else
       base_image
     end
@@ -194,13 +194,13 @@ class Page < ApplicationRecord
     if @sections
       self.sections.each { |s| s.delete }
       self.table_cells.each { |c| c.delete }
-      
+
       @sections.each do |section|
         section.pages << self
         section.work = self.work
         section.save!
       end
-      
+
       self.table_cells.each { |c| c.delete }
       @tables.each do |table|
         table[:rows].each_with_index do |row, rownum|
@@ -215,7 +215,7 @@ class Page < ApplicationRecord
           end
         end
       end
-      
+
     end
   end
 
@@ -230,7 +230,7 @@ class Page < ApplicationRecord
       TexFigure.submit_background_process(self.id)
     end
   end
-  
+
   def update_tex_figures
     self.tex_figures.each do |tex_figure|
       if tex_figure.changed?
@@ -262,7 +262,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
   end
-  
+
   def verbatim_transcription_plaintext
     formatted_plaintext(self.xml_text)
   end
@@ -379,7 +379,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 private
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//link").each { |n| n.replace(n['target_title'])}    
+    doc.xpath("//link").each { |n| n.replace(n['target_title'])}
     formatted_plaintext_doc(doc)
   end
 
@@ -390,7 +390,7 @@ private
   def formatted_plaintext_doc(doc)
     doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
     doc.xpath("//lb").each { |n| n.replace("\n")}
-    doc.text.sub(/^\s*/m, '')        
+    doc.text.sub(/^\s*/m, '')
   end
 
   def modernize_absolute(filename)

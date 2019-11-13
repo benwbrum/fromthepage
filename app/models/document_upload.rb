@@ -7,22 +7,22 @@ class DocumentUpload < ApplicationRecord
   validates :collection_id, :file, :presence => true
 
   mount_uploader :file, DocumentUploader
-  
-  module Status 
+
+  module Status
     NEW = 'new'
     QUEUED = 'queued'
     PROCESSING = 'processing'
     FINISHED = 'finished'
   end
-  
+
   def submit_process
     self.status = Status::QUEUED
     self.save
     rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
-    
+
     # Nice-up the rake call if settings are present
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
-    
+
     logger.info rake_call
     system(rake_call)
   end
@@ -43,5 +43,5 @@ private
       "/tmp/fromthepage_rake.log"
     end
   end
-  
+
 end

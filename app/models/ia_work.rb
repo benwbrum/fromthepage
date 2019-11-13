@@ -4,7 +4,7 @@ class IaWork < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :work, optional: true
   has_many :ia_leaves, class_name: "IaLeaf"
-  
+
   before_create :truncate_title
 
   def truncate_title
