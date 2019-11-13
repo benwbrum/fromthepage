@@ -1,8 +1,8 @@
 class ScCanvas < ApplicationRecord
   self.table_name = "sc_canvases"
+
   belongs_to :sc_manifest, optional: true
   belongs_to :page, optional: true
-
 
   def thumbnail_url
     if sc_service_context ==  "http://iiif.io/api/image/1/context.json"
