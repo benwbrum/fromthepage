@@ -28,7 +28,7 @@ module XmlSourceProcessor
     validate_links(self.source_translation)
   end
 
-#check the text for problems or typos with the subject links
+  #check the text for problems or typos with the subject links
   def validate_links(text)
     # split on all begin-braces
     tags = text.split('[[')
@@ -72,14 +72,12 @@ module XmlSourceProcessor
         end
       end
     end
-#    return errors.size > 0
+    #    return errors.size > 0
   end
 
   ##############################################
   # All code to convert transcriptions from source
   # format to canonical xml format belongs here.
-  #
-  #
   ##############################################
   def process_source
     if @text_dirty
@@ -96,13 +94,13 @@ module XmlSourceProcessor
     subjects_disabled = page.collection.subjects_disabled
 
     source_text = case text_type
-    when Page::TEXT_TYPE::TRANSCRIPTION
-      page.source_text
-    when Page::TEXT_TYPE::TRANSLATION
-      page.source_translation
-    else
-      ""
-    end
+                  when Page::TEXT_TYPE::TRANSCRIPTION
+                    page.source_text
+                  when Page::TEXT_TYPE::TRANSLATION
+                    page.source_translation
+                  else
+                    ""
+                  end
 
     xml_string = String.new(source_text)
     xml_string = process_latex_snippets(xml_string)
@@ -144,7 +142,6 @@ module XmlSourceProcessor
 
       replacement = "<link target_title=\"#{title}\">#{verbatim}</link>"
       text.sub!(wikilink_contents, replacement)
-
     end
 
     text
@@ -391,7 +388,7 @@ EOF
   end
 
   def self.cell_to_plaintext(cell)
-#    binding.pry if cell.content =~ /Brimstone/
+    #    binding.pry if cell.content =~ /Brimstone/
     doc = cell_to_xml(cell)
     doc.each_element('.//text()') { |e| p e.text }.join
   end
@@ -406,7 +403,6 @@ EOF
     end
     subjects
   end
-
 
   def self.cell_to_category(cell)
     doc = cell_to_xml(cell)
