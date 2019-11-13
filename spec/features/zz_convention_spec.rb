@@ -11,7 +11,7 @@ describe "convention related tasks", :order => :defined do
     @page = @work.pages.first
     @conventions = @collection.transcription_conventions
     @clean_conventions = ActionController::Base.helpers.strip_tags(@collection.transcription_conventions)
-    @clean_conventions.gsub!(/\n/, ' ')
+    @clean_conventions = @clean_conventions.split("\n")[1]
     @new_convention = "Collection level transcription convention"
     @work_convention = "Work level transcription conventions"
     if @work.ocr_correction == true
@@ -39,7 +39,7 @@ describe "convention related tasks", :order => :defined do
   it "changes work level transcription conventions" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
-    expect(page).to have_content @conventions
+    expect(page).to have_content @clean_conventions.split("\n")[1]
     expect(page).to have_button('Revert', disabled: true)
     page.fill_in 'work_transcription_conventions', with: @work_convention
     click_button 'Save Changes'
