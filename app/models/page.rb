@@ -1,4 +1,5 @@
 require 'search_translator'
+
 class Page < ApplicationRecord
 
   include XmlSourceProcessor
@@ -37,7 +38,7 @@ class Page < ApplicationRecord
 
   after_initialize :defaults
   after_destroy :update_work_stats
-#  after_destroy :delete_deeds
+  #after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   attr_accessible :title
@@ -206,8 +207,8 @@ class Page < ApplicationRecord
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
             tc = TableCell.new(:row => rownum,
-              :content => cell,
-              :header => table[:header][cell_index] )
+                               :content => cell,
+                               :header => table[:header][cell_index] )
             tc.work = self.work
             tc.page = self
             tc.section = table[:section]
@@ -244,8 +245,8 @@ class Page < ApplicationRecord
   # once to reset the previous links, once to reset new links
   def clear_article_graphs
     Article.where("id in (select article_id "+
-                       "       from page_article_links "+
-                       "       where page_id = #{self.id})").update_all(:graph_image=>nil)
+                  "       from page_article_links "+
+                  "       where page_id = #{self.id})").update_all(:graph_image=>nil)
   end
 =begin
 Here is the ActiveRecord call (with sql in it) in method clear_article_graphs:
@@ -303,7 +304,6 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
       end
     end
     self.source_text = string
-
   end
 
 
@@ -376,7 +376,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     users
   end
 
-private
+  private
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
     doc.xpath("//link").each { |n| n.replace(n['target_title'])}
@@ -414,7 +414,7 @@ private
   end
 
   def update_featured_page
-      self.work.update_columns(featured_page: nil)
+    self.work.update_columns(featured_page: nil)
   end
 
 end
