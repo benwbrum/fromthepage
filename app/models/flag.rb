@@ -8,16 +8,15 @@ class Flag < ApplicationRecord
   belongs_to :reporter_user, :class_name => 'User', optional: true
   belongs_to :auditor_user, :class_name => 'User', optional: true
 
-
   module Status
-  	UNCONFIRMED = "unconfirmed"
-  	CONFRIMED = "spam"
-  	FALSE_POSITIVE = "ham"
+    UNCONFIRMED = "unconfirmed"
+    CONFRIMED = "spam"
+    FALSE_POSITIVE = "ham"
   end
 
   module Provenance
-  	USER_REPORTED = "user"
-  	REGEX = "regex"
+    USER_REPORTED = "user"
+    REGEX = "regex"
   end
 
 
@@ -58,18 +57,18 @@ class Flag < ApplicationRecord
   end
 
   def mark_ok!
-  	self.auditor_user = User.current_user
-  	self.status = Status::FALSE_POSITIVE
-  	self.save!
+    self.auditor_user = User.current_user
+    self.status = Status::FALSE_POSITIVE
+    self.save!
   end
 
   def revert_content!
-  	page_version.expunge if page_version
-  	article_version.expunge if article_version
-  	note.destroy if note
+    page_version.expunge if page_version
+    article_version.expunge if article_version
+    note.destroy if note
 
-  	self.auditor_user = User.current_user
-  	self.status = Status::CONFRIMED
-  	self.save!
+    self.auditor_user = User.current_user
+    self.status = Status::CONFRIMED
+    self.save!
   end
 end
