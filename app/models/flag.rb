@@ -19,7 +19,6 @@ class Flag < ApplicationRecord
     REGEX = "regex"
   end
 
-
   def self.check_page(version)
     if snippet = Flagger.check(version.transcription)
       flag = Flag.new
