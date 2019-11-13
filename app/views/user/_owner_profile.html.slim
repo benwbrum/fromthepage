@@ -8,7 +8,7 @@ section.user-profile
         =user_name
       -if user == current_user
         .headline_aside
-          =link_to({ :action => 'update_profile', :user_id => user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+          =link_to(update_profile_path(user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
             =svg_symbol '#icon-edit', class: 'icon'
             span Edit Profile
           |&nbsp;&nbsp;
