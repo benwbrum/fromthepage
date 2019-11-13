@@ -37,7 +37,7 @@ class Page < ApplicationRecord
 
   after_initialize :defaults
   after_destroy :update_work_stats
-#  after_destroy :delete_deeds
+  #after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   attr_accessible :title
@@ -109,7 +109,6 @@ class Page < ApplicationRecord
   end
 
   def canonical_facsimile_url
-
     if self.ia_leaf
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
@@ -126,7 +125,6 @@ class Page < ApplicationRecord
   def shrink_factor
     self[:shrink_factor] || 0
   end
-
 
   def scaled_image(factor = 2)
     if 0 == factor
@@ -206,8 +204,8 @@ class Page < ApplicationRecord
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
             tc = TableCell.new(:row => rownum,
-              :content => cell,
-              :header => table[:header][cell_index] )
+                               :content => cell,
+                               :header => table[:header][cell_index] )
             tc.work = self.work
             tc.page = self
             tc.section = table[:section]
@@ -303,9 +301,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
       end
     end
     self.source_text = string
-
   end
-
 
   #######################
   # XML Source support
@@ -325,8 +321,6 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     link.save!
     return link.id
   end
-
-
 
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
@@ -376,7 +370,8 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     users
   end
 
-private
+  private
+
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
     doc.xpath("//link").each { |n| n.replace(n['target_title'])}
@@ -414,7 +409,7 @@ private
   end
 
   def update_featured_page
-      self.work.update_columns(featured_page: nil)
+    self.work.update_columns(featured_page: nil)
   end
 
 end
