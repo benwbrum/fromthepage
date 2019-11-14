@@ -29,6 +29,7 @@ Fromthepage::Application.routes.draw do
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'display_search', to: 'display#search', as: 'display_search'
   get 'deed_list/:collection_id', to: 'deed#list', as: 'deed_list'
+  get 'demo', to: 'demo#index', as: 'demo'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
