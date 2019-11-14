@@ -19,6 +19,10 @@ Fromthepage::Application.routes.draw do
   resources :notes
 
   get '/admin' => 'admin#index'
+  get '/admin/collection_list', to: 'admin#collection_list', as: 'admin_collection_list'
+  get '/admin/work_list', to: 'admin#work_list', as: 'admin_work_list'
+  get '/admin/owner_list', to: 'admin#owner_list', as: 'admin_owner_list'
+  get '/admin/user_list', to: 'admin#user_list', as: 'admin_user_list'
 
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
