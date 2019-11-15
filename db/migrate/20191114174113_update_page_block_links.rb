@@ -4,7 +4,7 @@ class UpdatePageBlockLinks < ActiveRecord::Migration[5.2]
 
     pages.each do |page|
       if page.html&.include?("partly transcribed")
-        page.html.gsub!(/(link_to\('partly transcribed'.+'\))/,
+        page.html.gsub!(/link_to\('partly transcribed'.+'\)/,
                         "link_to('partly transcribed', demo_path)")
         page.save
       elsif page.html&.include?("sign up")
