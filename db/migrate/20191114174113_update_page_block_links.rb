@@ -8,7 +8,7 @@ class UpdatePageBlockLinks < ActiveRecord::Migration[5.2]
                         "link_to('partly transcribed', demo_path)")
         page.save
       elsif page.html&.include?("sign up")
-        page.html.gsub!(/(link_to\(."sign up.+ \))/,
+        page.html.gsub!(/link_to\("sign up.+\)/m,
                         "link_to('sign up', new_user_registration_path)")
         page.save
       end
