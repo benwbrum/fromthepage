@@ -30,7 +30,7 @@
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
         -unless current_user.all_owner_collections.empty?
-        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
+        =link_to 'Create a Collection', collection_new_path, :data => { litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
   .owner-info
