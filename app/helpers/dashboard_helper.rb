@@ -4,7 +4,7 @@ module DashboardHelper
     @works = collection.works.order(:title).limit(15)
   end
 
-  def set_title
+  def dashboard_set_title
     case
     when is_active_link?(dashboard_startproject_path)
       content_for :page_title, "Start A Project - Owner Dashboard"
