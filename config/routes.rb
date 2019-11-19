@@ -23,6 +23,10 @@ Fromthepage::Application.routes.draw do
   get '/admin/work_list', to: 'admin#work_list', as: 'admin_work_list'
   get '/admin/owner_list', to: 'admin#owner_list', as: 'admin_owner_list'
   get '/admin/user_list', to: 'admin#user_list', as: 'admin_user_list'
+  get '/admin/flag_list', to: 'admin#flag_list', as: 'admin_flag_list'
+  get '/admin/uploads', to: 'admin#uploads', as: 'admin_uploads'
+  get '/admin/tail_logfile', to: 'admin#tail_logfile', as: 'admin_tail_logfile'
+  get '/admin/settings', to: 'admin#settings', as: 'admin_settings'
 
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
