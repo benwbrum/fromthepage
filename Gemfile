@@ -50,6 +50,8 @@ gem 'protected_attributes_continued'
 
 gem 'puma'
 
+gem 'active_link_to'
+
 group :assets do
   gem 'mini_racer'
   gem 'uglifier'
