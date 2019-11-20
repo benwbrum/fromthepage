@@ -89,6 +89,8 @@ Fromthepage::Application.routes.draw do
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
 
+  post '/dashboard/new_upload', to: 'dashboard#new_upload', as: 'dashboard_new_upload'
+
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
