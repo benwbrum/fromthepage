@@ -66,9 +66,8 @@ class RegistrationsController < Devise::RegistrationsController
   def alert_intercom()
     if INTERCOM_ACCESS_TOKEN
         intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
-        intercom.events.create(event_name: "first-upload", email: User.current_user.email, created_at: Time.now.to_i)
-        contact = intercom.contacts.create(email: current_user.email)
-        tag = intercom.tags.tag(name: 'trial', users: [{email: current_user.email}])
+        contact = intercom.users.create(email: current_user.email)
+        tag = intercom.tags.tag(name: 'trial', users: [{email: current_user.email}]) #fails on this line, but a lead is created
     end
   end
 
