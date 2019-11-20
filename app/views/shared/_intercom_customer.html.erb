@@ -1,0 +1,24 @@
+<script type="text/javascript">
+window.intercomSettings = {
+    app_id: "<%=INTERCOM_APP_ID%>",
+    name: "<%= current_user.display_name %>", // Full name
+    email: "<%= current_user.email %>", // Email address
+    created_at: "<%= current_user.created_at.to_i %>", // Signup date as a Unix timestamp
+    owner: true //this is a custom attribute
+  };
+
+<% if controller_name=="dashboard" && action_name=="owner" %>
+	var anchor_value;
+	var stripped_url = document.location.toString().split("#");
+	if (stripped_url.length > 1) {
+	  anchor_value = stripped_url[1]; 
+	  if (anchor_value == "freetrial") {
+	   Intercom('trackEvent', 'trial-signup');
+     }
+    }
+
+<% else %>
+  (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/kp250kj7';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+<% end %>
+
+</script>
