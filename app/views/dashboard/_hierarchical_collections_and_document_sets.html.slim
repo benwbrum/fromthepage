@@ -20,8 +20,7 @@
           span =="Owned by #{owner_link}"
         ul
         -cds.document_sets.each do |doc_set|
-          -if doc_set.is_public
-            li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
+          li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
   -elsif cds.class == DocumentSet
     -unless @collections_and_document_sets.include? cds.collection
       -snippet = truncate(strip_tags(cds.intro_block), length: 300, separator: ' ') || ''
