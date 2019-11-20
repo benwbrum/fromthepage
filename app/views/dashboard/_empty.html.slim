@@ -3,7 +3,7 @@
 
     section(style=("display: none" unless @work.errors.any?))
       p.big Use this option to create an empty work. You can then upload individual page images into the work.
-      =form_for(:work, { :url => { :action => 'create_work' }}) do |f|
+      =form_for(:work, { :url => dashboard_create_work_path }) do |f|
         =validation_summary @work.errors
         table.form
           tr
