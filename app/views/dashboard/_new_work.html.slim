@@ -37,7 +37,7 @@
     h3
       a(href="#" class="title" onclick="return false;" id="import-internet-archive") Import from the Internet Archive
     section style="display: none"
-      =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
+      =link_to 'Import From Archive.org', ia_book_form_path, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
 
     h3
       a(href="#" class="title" onclick="return false;") Import from Omeka Classic

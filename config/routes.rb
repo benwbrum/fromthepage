@@ -95,6 +95,8 @@ Fromthepage::Application.routes.draw do
 
   post '/sc_collections/import_cdm', to: 'sc_collections#import_cdm', as: 'sc_collections_import_cdm'
 
+  get '/ia/ia_book_form', to: 'ia#ia_book_form', as: 'ia_book_form'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
