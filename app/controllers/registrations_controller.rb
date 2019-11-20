@@ -67,7 +67,7 @@ class RegistrationsController < Devise::RegistrationsController
     if INTERCOM_ACCESS_TOKEN
         intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
         contact = intercom.users.create(email: current_user.email)
-        tag = intercom.tags.tag(name: 'trial', users: [{email: current_user.email}]) #fails on this line, but a lead is created
+        tag = intercom.tags.tag(name: 'trial', users: [{email: current_user.email}])
     end
   end
 
