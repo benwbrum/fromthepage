@@ -93,6 +93,7 @@ Fromthepage::Application.routes.draw do
 
   post '/sc_collections/import', to: 'sc_collections#import', as: 'sc_collections_import'
 
+  post '/sc_collections/import_cdm', to: 'sc_collections#import_cdm', as: 'sc_collections_import_cdm'
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 

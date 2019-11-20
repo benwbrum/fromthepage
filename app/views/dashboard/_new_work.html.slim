@@ -27,7 +27,7 @@
     section style="display: none"
       p
       =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
-      =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+      =form_tag(sc_collections_import_cdm_path) do |f|
         table.form
             td
               .input-file
