@@ -1,6 +1,7 @@
-    h3 Create Empty Work
+    h3
+      a(href="#" class="title" onclick="return false;" id="create-empty-work") Create Empty Work
 
-    section
+    section(style=("display: none" unless @work.errors.any?))
       p.big Use this option to create an empty work. You can then upload individual page images into the work.
       =form_for(:work, { :url => { :action => 'create_work' }}) do |f|
         =validation_summary @work.errors

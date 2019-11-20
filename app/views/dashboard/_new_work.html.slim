@@ -1,7 +1,9 @@
 -content_for :javascript
   javascript:
-    $('h3').click(function(){
-      $(this).next().toggle();
+    $(document).ready(function() {
+      $('.title').click(function(){
+        $(this).parent().next().toggle();
+      });
     });
 
 .columns
@@ -10,8 +12,9 @@
 
     a name = "create-work"
 
-    h3 Import an IIIF Manifest or Collection
-    section
+    h3
+      a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") Import a IIIF Manifest or Collection
+    section style="display: none"
       =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
         table.form
             td
@@ -19,8 +22,9 @@
                 =text_field_tag :at_id
                 =button_tag 'Import', :id => 'iiif_import'
 
-    h3 Import from CONTENTdm
-    section
+    h3
+      a(href="#" class="title" onclick="return false;" id="import-contentdm") Import from CONTENTdm
+    section style="display: none"
       p
       =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
       =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
@@ -30,12 +34,14 @@
                 =text_field_tag :cdm_url
                 =button_tag 'Import', :id => 'cdm_import'
 
-    h3 Import from the Internet Archive
-    section
+    h3
+      a(href="#" class="title" onclick="return false;" id="import-internet-archive") Import from the Internet Archive
+    section style="display: none"
       =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
 
-    h3 Import from Omeka Classic
-    section
+    h3
+      a(href="#" class="title" onclick="return false;") Import from Omeka Classic
+    section style="display: none"
       -if @omeka_sites.blank?
         p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
       -else
