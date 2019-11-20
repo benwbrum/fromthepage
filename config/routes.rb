@@ -38,8 +38,9 @@ Fromthepage::Application.routes.draw do
   get '/dashboard/startproject', to: 'dashboard#startproject', as: 'dashboard_startproject'
   get '/dashboard/summary', to: 'dashboard#summary', as: 'dashboard_summary'
   get 'display_search', to: 'display#search', as: 'display_search'
-  get 'deed_list/:collection_id', to: 'deed#list', as: 'deed_list'
+  get 'deed_list', to: 'deed#list', as: 'deed_list'
   get 'demo', to: 'demo#index', as: 'demo'
+  get '/static/metadata', to: 'static#metadata', as: 'static_metadata'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
