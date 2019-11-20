@@ -15,7 +15,7 @@
     h3
       a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") Import a IIIF Manifest or Collection
     section style="display: none"
-      =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
+      =form_tag(sc_collections_import_path) do |f|
         table.form
             td
               .input-file

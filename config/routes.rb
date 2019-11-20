@@ -91,6 +91,8 @@ Fromthepage::Application.routes.draw do
 
   post '/dashboard/new_upload', to: 'dashboard#new_upload', as: 'dashboard_new_upload'
 
+  post '/sc_collections/import', to: 'sc_collections#import', as: 'sc_collections_import'
+
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
