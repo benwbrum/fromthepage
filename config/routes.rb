@@ -116,7 +116,6 @@ Fromthepage::Application.routes.draw do
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 
-
     resources :collection, path: '', only: [:show] do
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
