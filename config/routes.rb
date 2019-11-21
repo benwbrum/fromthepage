@@ -111,6 +111,10 @@ Fromthepage::Application.routes.draw do
 
   post '/dashbaord/create_work', to: 'dashboard#create_work', as: 'dashboard_create_work'
 
+  get '/work/delete', to: 'work#delete', as: 'work_delete'
+
+  post '/work/update', to: 'work#update', as: 'work_update'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
