@@ -52,7 +52,7 @@
     -if user_signed_in? && current_user.like_owner?(@collection)
       -if @collection.is_a?(Collection)
         p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
-    
+
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
         h3 Subject Categories
