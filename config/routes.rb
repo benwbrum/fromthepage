@@ -27,6 +27,8 @@ Fromthepage::Application.routes.draw do
   get '/admin/uploads', to: 'admin#uploads', as: 'admin_uploads'
   get '/admin/tail_logfile', to: 'admin#tail_logfile', as: 'admin_tail_logfile'
   get '/admin/settings', to: 'admin#settings', as: 'admin_settings'
+  get '/admin/user_visits', to: 'admin#user_visits', as: 'admin_user_visits'
+  get '/admin/edit_user', to: 'admin#edit_user', as: 'admin_edit_user'
 
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'

@@ -1,6 +1,6 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
-=form_tag({:controller => 'admin', :action => 'user_list'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+=form_tag(admin_user_visits_path, method: :get, enforce_utf8: false, class: 'collection-search') do
   =search_field_tag :search, params[:search], placeholder: 'Search Users...'
   =button_tag 'Search', :name => nil
   =label_tag :search, "Search users", class: "hidden"
@@ -33,7 +33,7 @@ table.admin-grid.datagrid.striped
         td.nowrap
           .instack
             =link_to 'Visits', { :controller => 'admin', :action => 'user_visits', :user_id => u.id }
-            =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => u.id }, :data => { litebox: { hash: "" }}
+            =link_to 'Edit', admin_edit_user_path(:user_id => u.id), :data => { litebox: { hash: "" }}
             =link_to 'Expunge', { :controller => 'admin', :action => 'expunge_confirmation', :user_id => u.id}, :data => { litebox: { hash: "" }}
 
 =render(:partial => 'shared/pagination', :locals => { :model => @users, :entries_info => true })
