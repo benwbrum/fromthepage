@@ -133,6 +133,8 @@ Fromthepage::Application.routes.draw do
 
   get '/article/list', to: 'article#list', as: 'article_list'
 
+  get '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', as: 'sc_collections_convert_manifest'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
