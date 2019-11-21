@@ -135,6 +135,8 @@ Fromthepage::Application.routes.draw do
 
   get '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', as: 'sc_collections_convert_manifest'
 
+  get '/work/pages_tab', to: 'work#pages_tab', as: 'work_pages_tab'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
