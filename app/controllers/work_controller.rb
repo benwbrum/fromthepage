@@ -37,7 +37,7 @@ class WorkController < ApplicationController
 
     File.open(doc_tmp_path, "w") { |f| f.write(string) }
     if $?
-      render(:text => "file write failed")
+        render(:text => "file write failed")
       return
     end
 
@@ -235,6 +235,7 @@ class WorkController < ApplicationController
   end
 
   protected
+
   def record_deed(work)
     deed = Deed.new
     deed.work = work
