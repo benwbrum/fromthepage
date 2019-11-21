@@ -127,6 +127,10 @@ Fromthepage::Application.routes.draw do
 
   get '/page/edit', to: 'page#edit', as: 'page_edit'
 
+  get '/page/rotate', to: 'page#rotate', as: 'page_rotate'
+
+  get '/transcribe/mark_page_blank', to: 'transcribe#mark_page_blank', as: 'transcribe_mark_page_blank'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set

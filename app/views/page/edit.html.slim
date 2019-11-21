@@ -35,9 +35,9 @@
       span.fgfaded =="Dimensions: #{@page.base_width}&times;#{@page.base_height}"
     .headline_aside
       .button-stack
-        =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 90 }, class: 'button outline', title: 'Rotate Clockwise')
+        =link_to(page_rotate_path(:page_id => @page.id, :orientation => 90), class: 'button outline', title: 'Rotate Clockwise')
           =svg_symbol "#icon-rotate-cw", class: 'icon'
-        =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 270 }, class: 'button outline', title: 'Rotate Counterclockwise')
+        =link_to(page_rotate_path(:page_id => @page.id, :orientation => 270), class: 'button outline', title: 'Rotate Counterclockwise')
           =svg_symbol "#icon-rotate-ccw", class: 'icon'
 
   .page-image-preview =image_tag("#{file_to_url(@page.canonical_facsimile_url)}?#{Time.now.to_i}")

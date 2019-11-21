@@ -43,7 +43,7 @@
         -help_word = 'help transcribe'
         -text_type = 'transcribed'
 
-      -mark_blank = link_to('mark the page blank', { :controller => 'transcribe', :action => 'mark_page_blank', :page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} })
+      -mark_blank = link_to('mark the page blank', transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
 
       -if @page.status == Page::STATUS_BLANK
         .centered
