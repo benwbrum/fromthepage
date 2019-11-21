@@ -3,7 +3,7 @@
 -if @page_versions.empty?
   .nodata
     h4.nodata_title No pages found
-    p.nodata_text =="This work does not contain any pages yet, go to #{link_to('Pages tab', { controller: 'work', action: 'pages_tab', work_id: @work.id })} to create a new page"
+    p.nodata_text =="This work does not contain any pages yet, go to #{link_to('Pages tab', work_pages_tab_path(work_id: @work.id))} to create a new page"
 -else
   table.datagrid
     tr

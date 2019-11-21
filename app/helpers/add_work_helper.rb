@@ -43,7 +43,7 @@ module AddWorkHelper
       render action: 'upload'
     end
   end
-  
+
   def empty_work
     @work = Work.new
   end
@@ -59,7 +59,7 @@ module AddWorkHelper
     if @work.save
       flash[:notice] = 'Work created successfully'
       record_deed
-      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
       render action: 'empty_work'
     end

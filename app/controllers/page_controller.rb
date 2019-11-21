@@ -22,7 +22,7 @@ class PageController < ApplicationController
   def delete
     @page.destroy
     flash[:notice] = 'Page has been deleted'
-    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id
+    redirect_to work_pages_tab_path(:work_id => @work.id)
   end
 
   # image functions
@@ -43,7 +43,7 @@ class PageController < ApplicationController
     else
       @page.move_lower
     end
-    redirect_to :controller => 'work', :action => 'pages_tab', :work_id => @work.id
+    redirect_to work_pages_tab_path(:work_id => @work.id)
   end
 
   # new page functions
@@ -60,7 +60,7 @@ class PageController < ApplicationController
 
     if @page.save
       flash[:notice] = 'Page created successfully'
-  
+
       if params[:page][:base_image]
         process_uploaded_file(@page, @page.base_image)
       end
@@ -68,7 +68,7 @@ class PageController < ApplicationController
       if subaction == 'save_and_new'
         ajax_redirect_to({ :controller => 'dashboard', :action => 'startproject', :anchor => 'create-work' })
       else
-        ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+        ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
       end
     else
       render :new
