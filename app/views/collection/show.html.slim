@@ -56,7 +56,7 @@
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
         h3 Subject Categories
-        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection, anchor: "category-#{c.id}" } }.join(', ')
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, article_list_path(:collection_id => @collection, anchor: "category-#{c.id}") }.join(', ')
 
   aside.sidecol
 

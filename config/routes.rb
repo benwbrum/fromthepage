@@ -131,6 +131,8 @@ Fromthepage::Application.routes.draw do
 
   get '/transcribe/mark_page_blank', to: 'transcribe#mark_page_blank', as: 'transcribe_mark_page_blank'
 
+  get '/article/list', to: 'article#list', as: 'article_list'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
