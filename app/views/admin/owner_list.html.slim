@@ -8,11 +8,11 @@
 table.admin-grid.datagrid.striped
   thead
     tr
-      th(colspan="2") =link_to "Owner Login", {:controller => 'admin', :action => 'owner_list', :sort => 'login', :dir => 'asc'}
+      th(colspan="2") =link_to "Owner Login", admin_owner_list_path(:sort => 'login', :dir => 'asc')
       th.w100 Name &amp; Location
-      th =link_to "Acct Type", {:controller => 'admin', :action => 'owner_list', :sort => 'account_type', :dir => 'desc'}
-      th =link_to "Start Date", {:controller => 'admin', :action => 'owner_list', :sort => 'start_date', :dir => 'desc'}
-      th =link_to "Acct Expiration", {:controller => 'admin', :action => 'owner_list', :sort => 'paid_date', :dir => 'desc'}
+      th =link_to "Acct Type", admin_owner_list_path(:sort => 'account_type', :dir => 'desc')
+      th =link_to "Start Date", admin_owner_list_path(:sort => 'start_date', :dir => 'desc')
+      th =link_to "Acct Expiration", admin_owner_list_path(:sort => 'paid_date', :dir => 'desc')
       th Active Pages
       th Total Pages
       th Last Sign In
@@ -40,7 +40,7 @@ table.admin-grid.datagrid.striped
         td.nowrap
           .instack
             =link_to 'Login As', user_masquerade_path(o)
-            =link_to 'Edit', { :controller => 'admin', :action => 'edit_user', :user_id => o.id }, :data => { litebox: { hash: "" }}
-            =link_to 'Delete', { :action => 'delete_user', :user_id => o.id }, data: { confirm: 'Are you sure you want to delete user? After deleting you won\'t be able to recover it!' }
+            =link_to 'Edit', admin_edit_user_path(:user_id => o.id), :data => { litebox: { hash: "" }}
+            =link_to 'Delete', admin_delete_user_path(:user_id => o.id), data: { confirm: 'Are you sure you want to delete user? After deleting you won\'t be able to recover it!' }
 
 =render(:partial => 'shared/pagination', :locals => { :model => @owners, :entries_info => true })
