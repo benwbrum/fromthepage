@@ -1,4 +1,5 @@
 require 'contentdm_translator'
+
 class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: [:show, :edit, :update, :destroy, :explore_manifest, :import_manifest]
 
@@ -41,34 +42,34 @@ class ScCollectionsController < ApplicationController
     begin
       service = find_service(at_id)
 
-    if service["@type"] == "sc:Collection"
-      @sc_collection = ScCollection.collection_for_at_id(at_id)
-      @collection = set_collection
-      render 'explore_collection', at_id: at_id
+      if service["@type"] == "sc:Collection"
+        @sc_collection = ScCollection.collection_for_at_id(at_id)
+        @collection = set_collection
+        render 'explore_collection', at_id: at_id
 
-    elsif service["@type"] == "sc:Manifest"
-      @sc_manifest = ScManifest.manifest_for_at_id(at_id)
-      find_parent = @sc_manifest.service["within"]
-      if find_parent.nil? || !find_parent.is_a?(Hash)
-        @sc_collection = nil
-      else
-        parent_at_id = @sc_manifest.service["within"]["@id"]
-        unless parent_at_id.nil?
-          @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
-        else
+      elsif service["@type"] == "sc:Manifest"
+        @sc_manifest = ScManifest.manifest_for_at_id(at_id)
+        find_parent = @sc_manifest.service["within"]
+        if find_parent.nil? || !find_parent.is_a?(Hash)
           @sc_collection = nil
+        else
+          parent_at_id = @sc_manifest.service["within"]["@id"]
+          unless parent_at_id.nil?
+            @sc_collection = ScCollection.collection_for_at_id(parent_at_id)
+          else
+            @sc_collection = nil
+          end
         end
+        #this allows jquery to recover if there is no parent collection
+        if @sc_collection
+          @label = @sc_collection.label
+          @col = @sc_collection.collection
+        else
+          @label = nil
+          @col = nil
+        end
+        render 'explore_manifest', at_id: at_id
       end
-      #this allows jquery to recover if there is no parent collection
-      if @sc_collection
-        @label = @sc_collection.label
-        @col = @sc_collection.collection
-      else
-        @label = nil
-        @col = nil
-      end
-      render 'explore_manifest', at_id: at_id
-    end
     rescue => e
       case params[:source]
       when 'contentdm'
@@ -216,29 +217,30 @@ class ScCollectionsController < ApplicationController
   end
 
   private
-    def set_sc_collection
-      id = params[:sc_collection_id] || params[:id]
-#      @sc_collection = ScCollection.find(id)
-      @sc_collection = ScCollection.find_by id: id
-    end
 
-    def sc_collection_params
-      params.require(:sc_collection).permit(:collection_id, :context)
-    end
+  def set_sc_collection
+    id = params[:sc_collection_id] || params[:id]
+    #      @sc_collection = ScCollection.find(id)
+    @sc_collection = ScCollection.find_by id: id
+  end
 
-    def set_collection
-      #used to add new collections to select box on import
-      if session[:iiif_collection]
-        @collection = Collection.find_by(id: session[:iiif_collection])
-        session[:iiif_collection]=nil
-        return @collection
-      end
-    end
+  def sc_collection_params
+    params.require(:sc_collection).permit(:collection_id, :context)
+  end
 
-    def find_service(at_id)
-      connection = open(at_id)
-      manifest_json = connection.read
-      service = IIIF::Service.parse(manifest_json)
-      return service
+  def set_collection
+    #used to add new collections to select box on import
+    if session[:iiif_collection]
+      @collection = Collection.find_by(id: session[:iiif_collection])
+      session[:iiif_collection]=nil
+      return @collection
     end
+  end
+
+  def find_service(at_id)
+    connection = open(at_id)
+    manifest_json = connection.read
+    service = IIIF::Service.parse(manifest_json)
+    return service
+  end
 end
