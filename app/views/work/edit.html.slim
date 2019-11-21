@@ -23,7 +23,7 @@
           th.hidden Current URL
           td
             p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
- 
+
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
@@ -38,7 +38,7 @@
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
             =f.label :pages_are_meaningful, 'Pages Are Meaningful'
-        
+
         tr
           th.hidden Supports Translation
           td
@@ -152,11 +152,11 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
-    
+
       $('#work_transcription_conventions').keyup(function(){
         $('#revert').prop('disabled', false);
       });
-    
+
       $('#revert').click(function(e){
         e.preventDefault();
         $.ajax({
@@ -169,7 +169,7 @@
 
         });
       });
-    
+
       $("#update").on('submit', function(){
         var new_id = $("#work_collection_id").val();
         var collection_id = "#{@work.collection.id}"
