@@ -2,7 +2,7 @@
 
 .page-settings.columns
   .maincol
-    =form_for :page, url: { :action => 'update', :id => @page.id }, :html => { :multipart => true } do |f|
+    =form_for :page, url: page_update_path(:id => @page.id), :html => { :multipart => true } do |f|
       -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
       table.form lang="#{@collection.text_language}" dir=direction class=direction
         tr.big

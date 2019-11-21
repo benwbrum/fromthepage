@@ -115,6 +115,18 @@ Fromthepage::Application.routes.draw do
 
   post '/work/update', to: 'work#update', as: 'work_update'
 
+  get '/work/update_featured_page', to: 'work#update_featured_page', as: 'work_update_featured_page'
+
+  get '/page/new', to: 'page#new', as: 'page_new'
+
+  get '/page/delete', to: 'page#delete', as: 'page_delete'
+
+  get '/page/reorder_page', to: 'page#reorder_page', as: 'page_reorder_page'
+
+  post '/page/update', to: 'page#update', as: 'page_update'
+
+  get '/page/edit', to: 'page#edit', as: 'page_edit'
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
