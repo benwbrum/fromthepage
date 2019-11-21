@@ -15,7 +15,7 @@
 			'Id: 
 			=link_to @sc_manifest.at_id, @sc_manifest.at_id
 
-    =form_for(:sc_manifest, url: { action: 'convert_manifest' }, html: {class: 'iiif-select-form manifest-form'}) do |f|
+    =form_for(:sc_manifest, url: sc_collections_convert_manifest_path, html: {class: 'iiif-select-form manifest-form'}) do |f|
     	=validation_summary @sc_manifest.errors
       -unless @sc_collection.nil?
       	=hidden_field_tag :sc_collection_id, @sc_collection.id
