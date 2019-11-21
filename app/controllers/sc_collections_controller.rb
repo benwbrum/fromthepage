@@ -78,19 +78,18 @@ class ScCollectionsController < ApplicationController
       end
       redirect_back fallback_location: { action: 'import' }
     end
-
   end
 
 
   def explore_manifest
     at_id = params[:at_id]
-    
-    begin  
+
+    begin
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
     rescue ArgumentError
       redirect_to :action => 'explore_collection', :at_id => at_id
-      return    
-    end  
+      return
+    end
     @collection = set_collection
     if @sc_collection
       @label = @sc_collection.label
@@ -114,7 +113,7 @@ class ScCollectionsController < ApplicationController
     cdm_ocr = !params[:contentdm_ocr].blank?
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
-    unless collection_id == 'sc_collection'    
+    unless collection_id == 'sc_collection'
       collection = Collection.find_by(id: params[:collection_id])
     end
 
@@ -135,10 +134,10 @@ class ScCollectionsController < ApplicationController
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
     rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
-    
+
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
-    
+
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
@@ -166,7 +165,7 @@ class ScCollectionsController < ApplicationController
     else
       unless params[:sc_manifest][:collection_id].blank?
         @collection = Collection.find params[:sc_manifest][:collection_id]
-        work = @sc_manifest.convert_with_collection(current_user, @collection)              
+        work = @sc_manifest.convert_with_collection(current_user, @collection)
       else
         work = @sc_manifest.convert_with_no_collection(current_user) 
       end
@@ -185,9 +184,8 @@ class ScCollectionsController < ApplicationController
       #flash notice about the rake task
       flash[:notice] = "Metadata #{ocr ? 'and OCR text ' : ''} is being imported from CONTENTdm and should appear shortly."
     end
-    redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id 
+    redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id
   end
-
 
   def show
     respond_with(@sc_collection)
@@ -243,5 +241,4 @@ class ScCollectionsController < ApplicationController
       service = IIIF::Service.parse(manifest_json)
       return service
     end
-    
 end
