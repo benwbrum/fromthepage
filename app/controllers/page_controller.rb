@@ -88,7 +88,8 @@ class PageController < ApplicationController
   end
 
 
-private
+  private
+
   def process_uploaded_file(page, filename)
     if filename.blank?
       # create a new filename
