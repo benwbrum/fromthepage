@@ -124,6 +124,7 @@ Fromthepage::Application.routes.draw do
   resources :document_sets, except: [:show, :create, :edit]
 
   get '/collection/new', to: 'collection#new', as: 'collection_new'
+  post '/collection/create', to: 'collection#create', as: 'collection_create'
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
