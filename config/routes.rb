@@ -29,6 +29,9 @@ Fromthepage::Application.routes.draw do
   get '/admin/settings', to: 'admin#settings', as: 'admin_settings'
   get '/admin/user_visits', to: 'admin#user_visits', as: 'admin_user_visits'
   get '/admin/edit_user', to: 'admin#edit_user', as: 'admin_edit_user'
+  get '/admin/autoflag', to: 'admin#autoflag', as: 'admin_autoflag'
+  get '/admin/ok_flag', to: 'admin#ok_flag', as: 'admin_ok_flag'
+  get '/admin/revert_flag', to: 'admin#revert_flag', as: 'admin_revert_flag'
 
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
@@ -43,6 +46,9 @@ Fromthepage::Application.routes.draw do
   get 'deed_list', to: 'deed#list', as: 'deed_list'
   get 'demo', to: 'demo#index', as: 'demo'
   get '/static/metadata', to: 'static#metadata', as: 'static_metadata'
+  get '/page_version/show', to: 'page_version#show', as: 'page_version'
+  get '/article_version/show', to: 'article_version#show', as: 'article_version'
+  get '/display/display_page', to: 'display#display_page', as: 'display_page'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
