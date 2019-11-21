@@ -33,6 +33,8 @@ Fromthepage::Application.routes.draw do
   get '/admin/ok_flag', to: 'admin#ok_flag', as: 'admin_ok_flag'
   get '/admin/revert_flag', to: 'admin#revert_flag', as: 'admin_revert_flag'
   get '/admin/delete_user', to: 'admin#delete_user', as: 'admin_delete_user'
+  get '/admin/view_processing_log', to: 'admin#view_processing_log', as: 'admin_view_processing_log'
+  get '/admin/delete_upload', to: 'admin#delete_upload', as: 'admin_delete_upload'
 
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
