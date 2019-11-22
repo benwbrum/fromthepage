@@ -162,7 +162,7 @@ Fromthepage::Application.routes.draw do
   get '/collection/remove_collaborator', to: 'collection#remove_collaborator', as: 'collection_remove_collaborator'
   get '/collection/restrict_collection', to: 'collection#restrict_collection', as: 'collection_restrict_collection'
   post '/collection/add_owner', to: 'collection#add_owner', as: 'collection_add_owner'
-  post '/collection/update', to: 'collection#update', as: 'collection_update'
+  post '/collection/update/:id', to: 'collection#update', as: 'collection_update'
 
   get '/user/update_profile', to: 'user#update_profile', as: 'user_update_profile'
 

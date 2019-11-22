@@ -53,7 +53,7 @@
           td(colspan="2")
             =f.label :text_language, "Select the language of the transcription text", class: 'collection-label'
             =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
-        
+
         tr
           td(colspan="2")
             =f.label :default_orientation, "Select the default page transcription orientation"
@@ -78,7 +78,7 @@
 
   aside.sidecol
     h3 Collection Image
-    =form_for :collection, url: { action: 'update' }, html: { multipart: true, class: 'image-form' } do |f|
+    =form_for :collection, url: update_collection_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
       =hidden_field_tag(:collection_id, @collection.id)
       label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image" title="Upload Image")
         =f.file_field :picture, accept: 'image/*'
