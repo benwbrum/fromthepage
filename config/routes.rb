@@ -172,6 +172,7 @@ Fromthepage::Application.routes.draw do
   get '/export/subject_csv', to: 'export#subject_csv', as: 'export_subject_csv'
   get '/export/table_csv', to: 'export#table_csv', as: 'export_table_csv'
   get '/export/export_all_tables', to: 'export#export_all_tables', as: 'export_export_all_tables'
+  get '/export/edit_contentdm_credentials', to: 'export#edit_contentdm_credentials', as: 'export_edit_contentdm_credentials'
 
   get '/category/edit', to: 'category#edit', as: 'category_edit'
   get '/category/add_new', to: 'category#add_new', as: 'category_add_new'
@@ -191,8 +192,9 @@ Fromthepage::Application.routes.draw do
 
   get '/transcription_field/reorder_field', to: 'transcription_field#reorder_field', as: 'transcription_field_reorder_field'
   get '/transcription_field/delete', to: 'transcription_field#delete', as: 'transcription_field_delete'
+  get '/transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: 'transcription_field_edit_fields'
 
-  match '/:controller(/:action(/:id))', via: [:get, :post]
+  #match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
   get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
