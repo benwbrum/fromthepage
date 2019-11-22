@@ -46,6 +46,8 @@ Fromthepage::Application.routes.draw do
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get '/dashboard/startproject', to: 'dashboard#startproject', as: 'dashboard_startproject'
   get '/dashboard/summary', to: 'dashboard#summary', as: 'dashboard_summary'
+  post '/dashboard/new_upload', to: 'dashboard#new_upload', as: 'dashboard_new_upload'
+  post '/dashbaord/create_work', to: 'dashboard#create_work', as: 'dashboard_create_work'
   get 'display_search', to: 'display#search', as: 'display_search'
   get 'deed_list', to: 'deed#list', as: 'deed_list'
   get 'demo', to: 'demo#index', as: 'demo'
@@ -53,6 +55,15 @@ Fromthepage::Application.routes.draw do
   get '/page_version/show', to: 'page_version#show', as: 'page_version'
   get '/article_version/show', to: 'article_version#show', as: 'article_version'
   get '/display/display_page', to: 'display#display_page', as: 'display_page'
+  get '/ia/import_work', to: 'ia#import_work', as: 'ia_import_work'
+  get '/ia/ia_book_form', to: 'ia#ia_book_form', as: 'ia_book_form'
+  match '/ia/confirm_import', to: 'ia#confirm_import', as: 'ia_confirm_import', via: [:get, :post]
+  get '/ia/manage', to: 'ia#manage', as: 'ia_manage'
+  get '/ia/mark_beginning', to: 'ia#mark_beginning', as: 'ia_mark_beginning'
+  get '/ia/mark_end', to: 'ia#mark_end', as: 'ia_mark_end'
+  get '/ia/title_from_ocr_top', to: 'ia#title_from_ocr_top', as: 'ia_title_from_ocr_top'
+  get '/ia/title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom', as: 'ia_title_from_ocr_bottom'
+  post '/ia/convert', to: 'ia#convert', as: 'ia_convert'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
@@ -101,41 +112,82 @@ Fromthepage::Application.routes.draw do
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
 
-  post '/dashboard/new_upload', to: 'dashboard#new_upload', as: 'dashboard_new_upload'
-
   post '/sc_collections/import', to: 'sc_collections#import', as: 'sc_collections_import'
-
   post '/sc_collections/import_cdm', to: 'sc_collections#import_cdm', as: 'sc_collections_import_cdm'
-
-  get '/ia/ia_book_form', to: 'ia#ia_book_form', as: 'ia_book_form'
-
-  post '/dashbaord/create_work', to: 'dashboard#create_work', as: 'dashboard_create_work'
+  match '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', as: 'sc_collections_convert_manifest', via: [:get, :post]
 
   get '/work/delete', to: 'work#delete', as: 'work_delete'
-
   post '/work/update', to: 'work#update', as: 'work_update'
-
   get '/work/update_featured_page', to: 'work#update_featured_page', as: 'work_update_featured_page'
+  get '/work/pages_tab', to: 'work#pages_tab', as: 'work_pages_tab'
+  get '/work/edit', to: 'work#edit', as: 'work_edit'
 
   get '/page/new', to: 'page#new', as: 'page_new'
-
   get '/page/delete', to: 'page#delete', as: 'page_delete'
-
   get '/page/reorder_page', to: 'page#reorder_page', as: 'page_reorder_page'
-
   post '/page/update', to: 'page#update', as: 'page_update'
-
   get '/page/edit', to: 'page#edit', as: 'page_edit'
-
   get '/page/rotate', to: 'page#rotate', as: 'page_rotate'
+  post '/page/create', to: 'page#create', as: 'page_create'
 
   get '/transcribe/mark_page_blank', to: 'transcribe#mark_page_blank', as: 'transcribe_mark_page_blank'
+  get '/transcribe/display_page', to: 'transcribe#display_page', as: 'transcribe_display_page'
+  get '/transcribe/assign_categories', to: 'transcribe#assign_categories', as: 'transcribe_assign_categories'
+  get '/transcribe/guest', to: 'transcribe#guest', as: 'transcribe_guest'
 
   get '/article/list', to: 'article#list', as: 'article_list'
+  get '/article/tooltip', to: 'article#tooltip', as: 'article_tooltip'
+  get '/article/delete', to: 'article#delete', as: 'article_delete'
+  get '/article/show', to: 'article#show', as: 'article_show'
 
-  get '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', as: 'sc_collections_convert_manifest'
+  get '/display/read_work', to: 'display#read_work', as: 'display_read_work'
+  get '/display/read_all_works', to: 'display#read_all_works', as: 'display_read_all_works'
 
-  get '/work/pages_tab', to: 'work#pages_tab', as: 'work_pages_tab'
+  get '/collection/delete', to: 'collection#delete', as: 'collection_delete'
+  get '/collection/activity_download', to: 'collection#activity_download', as: 'collection_activity_download'
+  get '/collection/show', to: 'collection#show', as: 'collection_show'
+  get '/collection/toggle_collection_active', to: 'collection#toggle_collection_active', as: 'collection_toggle_collection_active'
+  get '/collection/contributors_download', to: 'collection#contributors_download', as: 'collection_contributors_download'
+  get '/collection/enable_fields', to: 'collection#enable_fields', as: 'collection_enable_fields'
+  get '/collection/enable_document_sets', to: 'collection#enable_document_sets', as: 'collection_enable_document_sets'
+  get '/collection/enable_ocr', to: 'collection#enable_ocr', as: 'collection_enable_ocr'
+  get '/collection/disable_ocr', to: 'collection#disable_ocr', as: 'collection_disable_ocr'
+  get '/collection/blank_collection', to: 'collection#blank_collection', as: 'collection_blank_collection'
+  get '/collection/edit', to: 'collection#edit', as: 'collection_edit'
+  get '/collection/remove_owner', to: 'collection#remove_owner', as: 'collection_remove_owner'
+  get '/collection/disable_document_sets', to: 'collection#disable_document_sets', as: 'collection_disable_document_sets'
+  get '/collection/disable_fields', to: 'collection#disable_fields', as: 'collection_disable_fields'
+  post '/collection/restrict_collection', to: 'collection#restrict_collection', as: 'collection_restrict_collection'
+  post '/collection/add_owner', to: 'collection#add_owner', as: 'collection_add_owner'
+  post '/collection/update', to: 'collection#update', as: 'collection_update'
+
+  get '/user/update_profile', to: 'user#update_profile', as: 'user_update_profile'
+
+  get '/export/export_all_works', to: 'export#export_all_works', as: 'export_export_all_works'
+  get '/export/show', to: 'export#show', as: 'export_show'
+  get '/export/tei', to: 'export#tei', as: 'export_tei'
+  get '/export/subject_csv', to: 'export#subject_csv', as: 'export_subject_csv'
+  get '/export/table_csv', to: 'export#table_csv', as: 'export_table_csv'
+  get '/export/export_all_tables', to: 'export#export_all_tables', as: 'export_export_all_tables'
+
+  get '/category/edit', to: 'category#edit', as: 'category_edit'
+  get '/category/add_new', to: 'category#add_new', as: 'category_add_new'
+  get '/category/enable_gis', to: 'category#enable_gis', as: 'category_enable_gis'
+  get '/category/disable_gis', to: 'category#disable_gis', as: 'category_disable_gis'
+  get '/category/delete', to: 'category#delete', as: 'category_delete'
+  post '/category/create', to: 'category#create', as: 'category_create'
+
+  post '/application/guest_transcription', to: 'application#guest_transcription', as: 'application_guest_transcription'
+
+  get '/document_sets/restrict_set', to: 'document_sets#restrict_set', as: 'document_sets_restrict_set'
+  get '/document_sets/destroy', to: 'document_sets#destroy', as: 'document_sets_destroy'
+  get '/document_sets/publish_set', to: 'document_sets#publish_set', as: 'document_sets_publish_set'
+  get '/document_sets/remove_set_collaborator', to: 'document_sets#remove_set_collaborator', as: 'document_sets_remove_set_collaborator'
+  post '/document_sets/assign_to_set', to: 'document_sets#assign_to_set', as: 'document_sets_assign_to_set'
+  post '/document_sets/add_set_collaborator', to: 'document_sets#add_set_collaborator', as: 'document_sets_add_set_collaborator'
+
+  get '/transcription_field/reorder_field', to: 'transcription_field#reorder_field', as: 'transcription_field_reorder_field'
+  get '/transcription_field/delete', to: 'transcription_field#delete', as: 'transcription_field_delete'
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
