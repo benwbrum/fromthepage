@@ -18,7 +18,7 @@ describe "import data" do
     let(:repository_url){ 'https://cdm16488.contentdm.oclc.org/' }
     let(:bad_item_url)  { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/1' }
 
-    it "browses a single record", :js => true do 
+    it "browses a single record", :js => true do
       owner = User.first
       login_as(owner, :scope => :user)
       visit dashboard_owner_path

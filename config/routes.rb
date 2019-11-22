@@ -112,9 +112,11 @@ Fromthepage::Application.routes.draw do
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
 
-  post '/sc_collections/import', to: 'sc_collections#import', as: 'sc_collections_import'
+  match '/sc_collections/import', to: 'sc_collections#import', as: 'sc_collections_import', via: [:get, :post]
   post '/sc_collections/import_cdm', to: 'sc_collections#import_cdm', as: 'sc_collections_import_cdm'
   match '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', as: 'sc_collections_convert_manifest', via: [:get, :post]
+  match '/sc_collections/import_collection', to: 'sc_collections#import_collection', as: 'sc_collections_import_collection', via: [:get, :post]
+  get '/sc_collections/explore_manifest', to: 'sc_collections#explore_manifest', as: 'sc_collections_explore_manifest'
 
   get '/work/delete', to: 'work#delete', as: 'work_delete'
   post '/work/update', to: 'work#update', as: 'work_update'
