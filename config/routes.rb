@@ -160,7 +160,7 @@ Fromthepage::Application.routes.draw do
   get '/collection/publish_collection', to: 'collection#publish_collection', as: 'collection_publish_collection'
   get '/collection/add_collaborator', to: 'collection#add_collaborator', as: 'collection_add_collaborator'
   get '/collection/remove_collaborator', to: 'collection#remove_collaborator', as: 'collection_remove_collaborator'
-  post '/collection/restrict_collection', to: 'collection#restrict_collection', as: 'collection_restrict_collection'
+  get '/collection/restrict_collection', to: 'collection#restrict_collection', as: 'collection_restrict_collection'
   post '/collection/add_owner', to: 'collection#add_owner', as: 'collection_add_owner'
   post '/collection/update', to: 'collection#update', as: 'collection_update'
 
