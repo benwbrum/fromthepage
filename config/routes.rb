@@ -49,7 +49,7 @@ Fromthepage::Application.routes.draw do
   post '/dashboard/new_upload', to: 'dashboard#new_upload', as: 'dashboard_new_upload'
   post '/dashbaord/create_work', to: 'dashboard#create_work', as: 'dashboard_create_work'
   get 'display_search', to: 'display#search', as: 'display_search'
-  get 'deed_list', to: 'deed#list', as: 'deed_list'
+  get '/deed/list', to: 'deed#list', as: 'deed_list'
   get 'demo', to: 'demo#index', as: 'demo'
   get '/static/metadata', to: 'static#metadata', as: 'static_metadata'
   get '/page_version/show', to: 'page_version#show', as: 'page_version'
