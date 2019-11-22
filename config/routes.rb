@@ -194,6 +194,8 @@ Fromthepage::Application.routes.draw do
   get '/transcription_field/delete', to: 'transcription_field#delete', as: 'transcription_field_delete'
   get '/transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: 'transcription_field_edit_fields'
 
+  get '/demo/index', to: 'demo#index', as: 'demo_index'
+
   #match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
