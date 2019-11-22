@@ -27,6 +27,8 @@ class Work < ActiveRecord::Base
 
   after_destroy :cleanup_images
 
+  after_create :alert_intercom
+
   attr_accessible :title,
                   :author,
                   :description,
@@ -267,4 +269,14 @@ class Work < ActiveRecord::Base
   def has_untranscribed_pages?
     next_untranscribed_page.present?
   end
+
+  def alert_intercom
+    if INTERCOM_ACCESS_TOKEN
+      if self.owner.owner_works.count == 1
+        intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
+        intercom.events.create(event_name: "first-upload", email: User.current_user.email, created_at: Time.now.to_i)
+      end
+    end
+  end
+
 end

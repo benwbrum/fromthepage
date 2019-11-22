@@ -48,7 +48,11 @@ class RegistrationsController < Devise::RegistrationsController
       # Record the `joined` deed based on Ahoy Visit
       join_collection = joined_from_collection(current_visit.id)
       @user.join_collection(join_collection) unless join_collection.nil?
-    
+      if @user.owner
+        @user.account_type="Trial"
+        @user.save
+        alert_intercom
+      end
     else
       clean_up_passwords resource
       @validatable = devise_mapping.validatable?
@@ -56,6 +60,14 @@ class RegistrationsController < Devise::RegistrationsController
         @minimum_password_length = resource_class.password_length.min
       end
       respond_with resource
+    end
+  end
+
+  def alert_intercom()
+    if INTERCOM_ACCESS_TOKEN
+        intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
+        contact = intercom.users.create(email: current_user.email)
+        tag = intercom.tags.tag(name: 'trial', users: [{email: current_user.email}])
     end
   end
 
