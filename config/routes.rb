@@ -117,6 +117,7 @@ Fromthepage::Application.routes.draw do
   match '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', as: 'sc_collections_convert_manifest', via: [:get, :post]
   match '/sc_collections/import_collection', to: 'sc_collections#import_collection', as: 'sc_collections_import_collection', via: [:get, :post]
   get '/sc_collections/explore_manifest', to: 'sc_collections#explore_manifest', as: 'sc_collections_explore_manifest'
+  get '/sc_collections/explore_collection', to: 'sc_collections#explore_collection', as: 'sc_collections_explore_collection'
 
   get '/work/delete', to: 'work#delete', as: 'work_delete'
   post '/work/update', to: 'work#update', as: 'work_update'
