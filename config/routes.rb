@@ -173,6 +173,8 @@ Fromthepage::Application.routes.draw do
   get '/export/table_csv', to: 'export#table_csv', as: 'export_table_csv'
   get '/export/export_all_tables', to: 'export#export_all_tables', as: 'export_export_all_tables'
   get '/export/edit_contentdm_credentials', to: 'export#edit_contentdm_credentials', as: 'export_edit_contentdm_credentials'
+  get '/export', to: 'export#index', as: 'export_index'
+  get '/export/work_plaintext_verbatim', to: 'export#work_plaintext_verbatim', as: 'export_work_plaintext_verbatim'
 
   get '/category/edit', to: 'category#edit', as: 'category_edit'
   get '/category/add_new', to: 'category#add_new', as: 'category_add_new'
