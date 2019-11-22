@@ -1,0 +1,92 @@
+=javascript_include_tag "openseadragon.js"
+
+.image-container(id="image_container"
+                 style="width: 100%; height: 100%; border: 1px solid #000; color: #333; background-color: #000;")
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      viewer = OpenSeadragon({
+        id: "image_container",
+        prefixUrl: "",
+        showRotationControl: true,
+        gestureSettingsTouch: {
+          pinchRotate: true
+        },
+        navImages: {
+          zoomIn: {
+            REST: "#{asset_path('osd/zoomin_rest.png')}",
+            GROUP: "#{asset_path('osd/zoomin_grouphover.png')}",
+            HOVER: "#{asset_path('osd/zoomin_hover.png')}",
+            DOWN: "#{asset_path('osd/zoomin_pressed.png')}"
+          },
+          zoomOut: {
+            REST: "#{asset_path('osd/zoomout_rest.png')}",
+            GROUP: "#{asset_path('osd/zoomout_grouphover.png')}",
+            HOVER: "#{asset_path('osd/zoomout_hover.png')}",
+            DOWN: "#{asset_path('osd/zoomout_pressed.png')}"
+          },
+          home: {
+            REST: "#{asset_path('osd/home_rest.png')}",
+            GROUP: "#{asset_path('osd/home_grouphover.png')}",
+            HOVER: "#{asset_path('osd/home_hover.png')}",
+            DOWN: "#{asset_path('osd/home_pressed.png')}"
+          },
+          fullpage: {
+            REST: "#{asset_path('osd/fullpage_rest.png')}",
+            GROUP: "#{asset_path('osd/fullpage_grouphover.png')}",
+            HOVER: "#{asset_path('osd/fullpage_hover.png')}",
+            DOWN: "#{asset_path('osd/fullpage_pressed.png')}"
+          },
+          rotateleft: {
+            REST: "#{asset_path('osd/rotateleft_rest.png')}",
+            GROUP: "#{asset_path('osd/rotateleft_grouphover.png')}",
+            HOVER: "#{asset_path('osd/rotateleft_hover.png')}",
+            DOWN: "#{asset_path('osd/rotateleft_pressed.png')}"
+          },
+          rotateright: {
+            REST: "#{asset_path('osd/rotateright_rest.png')}",
+            GROUP: "#{asset_path('osd/rotateright_grouphover.png')}",
+            HOVER: "#{asset_path('osd/rotateright_hover.png')}",
+            DOWN: "#{asset_path('osd/rotateright_pressed.png')}"
+          },
+          previous: {
+            REST: "#{asset_path('osd/previous_rest.png')}",
+            GROUP: "#{asset_path('osd/previous_grouphover.png')}",
+            HOVER: "#{asset_path('osd/previous_hover.png')}",
+            DOWN: "#{asset_path('osd/previous_pressed.png')}"
+          },
+          next: {
+            REST: "#{asset_path('osd/next_rest.png')}",
+            GROUP: "#{asset_path('osd/next_grouphover.png')}",
+            HOVER: "#{asset_path('osd/next_hover.png')}",
+            DOWN: "#{asset_path('osd/next_pressed.png')}"
+          }
+        },
+        maxZoomPixelRatio: 10,
+        visibilityRatio: 1,
+        fitBounds: true,
+        preserveViewport: true,
+        sequenceMode: false, //we want fromthepage to handle pages sequentially, rather than openseadragon
+        tileSources: #{raw(osd_source(@page))}
+      });
+
+      viewer.addHandler('viewport-change', function() {
+        var bounds = viewer.viewport.getBounds();
+        localStorage['json_bounds'] = JSON.stringify(bounds);
+      });
+
+      viewer.addHandler('open', function() {
+        json_bounds = localStorage['json_bounds'];
+
+        if (json_bounds) {
+          bounds = JSON.parse(json_bounds);
+          var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.width, bounds.height);
+          viewer.viewport.fitBounds(rect, true);
+        }
+      });
+    });
+
+noscript
+  p OpenSeadragon is not available unless JavaScript is enabled.
+  img(src="/example-images/highsmith/01967v.jpg" height="600")
