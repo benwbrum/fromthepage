@@ -158,7 +158,7 @@ Fromthepage::Application.routes.draw do
   get '/collection/disable_document_sets', to: 'collection#disable_document_sets', as: 'collection_disable_document_sets'
   get '/collection/disable_fields', to: 'collection#disable_fields', as: 'collection_disable_fields'
   get '/collection/publish_collection', to: 'collection#publish_collection', as: 'collection_publish_collection'
-  get '/collection/add_collaborator', to: 'collection#add_collaborator', as: 'collection_add_collaborator'
+  post '/collection/add_collaborator', to: 'collection#add_collaborator', as: 'collection_add_collaborator'
   get '/collection/remove_collaborator', to: 'collection#remove_collaborator', as: 'collection_remove_collaborator'
   get '/collection/restrict_collection', to: 'collection#restrict_collection', as: 'collection_restrict_collection'
   post '/collection/add_owner', to: 'collection#add_owner', as: 'collection_add_owner'
