@@ -184,7 +184,7 @@ class WorkController < ApplicationController
   def revert
     work = Work.find_by(id: params[:work_id])
     work.update_attribute(:transcription_conventions, nil)
-    render :text => work.collection.transcription_conventions
+    render :plain => work.collection.transcription_conventions
   end
 
   def update_featured_page

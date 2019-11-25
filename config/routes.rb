@@ -124,6 +124,7 @@ Fromthepage::Application.routes.draw do
   get '/work/update_featured_page', to: 'work#update_featured_page', as: 'work_update_featured_page'
   get '/work/pages_tab', to: 'work#pages_tab', as: 'work_pages_tab'
   get '/work/edit', to: 'work#edit', as: 'work_edit'
+  get '/work/revert', to: 'work#revert', as: 'work_revert'
 
   get '/page/new', to: 'page#new', as: 'page_new'
   get '/page/delete', to: 'page#delete', as: 'page_delete'
