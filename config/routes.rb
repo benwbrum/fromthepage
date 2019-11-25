@@ -202,8 +202,6 @@ Fromthepage::Application.routes.draw do
 
   get '/demo/index', to: 'demo#index', as: 'demo_index'
 
-  #match '/:controller(/:action(/:id))', via: [:get, :post]
-
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
   get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
