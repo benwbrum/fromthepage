@@ -142,7 +142,7 @@ Fromthepage::Application.routes.draw do
   get '/article/list', to: 'article#list', as: 'article_list'
   get '/article/tooltip', to: 'article#tooltip', as: 'article_tooltip'
   get '/article/delete', to: 'article#delete', as: 'article_delete'
-  get '/article/show', to: 'article#show', as: 'article_show'
+  get '/article/show', to: 'article#show', as: 'article'
 
   get '/display/read_work', to: 'display#read_work', as: 'display_read_work'
   get '/display/read_all_works', to: 'display#read_all_works', as: 'display_read_all_works'
