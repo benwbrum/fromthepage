@@ -235,7 +235,7 @@ Fromthepage::Application.routes.draw do
 
       #work related routes
       #have to use match because it must be both get and post
-      match ':work_id', as: :read_work, to: 'display#read_work', via: [:get, :post], as: :read_work
+      match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
       #get 'display/read_all_works', as: :read_all_works, to: 'display#read_all_works'
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'versions', on: :member
