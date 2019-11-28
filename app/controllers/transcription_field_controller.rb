@@ -19,7 +19,7 @@ class TranscriptionFieldController < ApplicationController
 
   def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
-    new_fields = params[:transcription_fields]
+    new_fields = transcription_field_params
 
     new_fields.each_with_index do |fields, index|
       if fields[:line_number] == "new"
@@ -100,4 +100,7 @@ class TranscriptionFieldController < ApplicationController
     end
   end
 
+  def transcription_field_params
+    params.require(:transcription_field).permit(:transcription_fields)
+  end
 end
