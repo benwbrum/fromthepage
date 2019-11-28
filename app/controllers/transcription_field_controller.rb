@@ -90,14 +90,14 @@ class TranscriptionFieldController < ApplicationController
 
   private
 
-    def authorized?
-      unless user_signed_in?
-        ajax_redirect_to dashboard_path
-      end
+  def authorized?
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+    end
 
-      if @collection &&  !current_user.like_owner?(@collection)
-        ajax_redirect_to dashboard_path
-      end
+    if @collection &&  !current_user.like_owner?(@collection)
+      ajax_redirect_to dashboard_path
+    end
   end
 
 end
