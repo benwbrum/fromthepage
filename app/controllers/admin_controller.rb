@@ -75,7 +75,7 @@ class AdminController < ApplicationController
             log_smtp_error(e, current_user)
           end
         end
-      end        
+      end
 
       flash[:notice] = "User profile has been updated"
       ajax_redirect_to :action => 'user_list'
