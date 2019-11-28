@@ -7,7 +7,7 @@ class TranscribeController  < ApplicationController
   include Magick
   before_action :authorized?, :except => [:zoom, :guest, :help]
   before_action :active?
-  
+
   protect_from_forgery :except => [:zoom, :unzoom]
   #this prevents failed redirects after sign up
   skip_before_action :store_current_location
@@ -115,7 +115,7 @@ class TranscribeController  < ApplicationController
     end
     #check to see if the page needs to be marked as needing review
     needs_review
-    
+
 
     if params['save']
       message = log_transcript_attempt
@@ -148,7 +148,7 @@ class TranscribeController  < ApplicationController
           end
           @work.work_statistic.recalculate({type: @page.status}) if @work.work_statistic
           @page.submit_background_processes("transcription")
-      
+
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
             deeds = Deed.where(user_id: current_user.id).count
@@ -203,7 +203,7 @@ class TranscribeController  < ApplicationController
     #no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
       @unassigned_articles = []
-      
+
       # Separate translationa and transcription links
       left, right = @page.page_article_links.partition{|x| x.text_type == 'translation' }
 
@@ -225,7 +225,7 @@ class TranscribeController  < ApplicationController
       redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     end
   end
-  
+
   def translate
     session[:col_id] = @collection.slug
     @fromImage = cookies[:fromImage] || false
@@ -237,10 +237,10 @@ class TranscribeController  < ApplicationController
 
     #check to see if the page is marked blank
     mark_page_blank or return
-  
+
     #check to see if the page needs review
     needs_review
-    
+
     if params['save']
       message = log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
@@ -277,7 +277,7 @@ class TranscribeController  < ApplicationController
               return
             end
           end
-          
+
           redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :text_type => 'translation'
         else
           log_translation_error(message)
@@ -323,7 +323,7 @@ class TranscribeController  < ApplicationController
   end
 
   def goto_next_untranscribed_page
-    
+
     next_page_path = user_profile_path(@work.collection.owner)
     flash[:notice] = "There are no more pages to transcribe in this collection."
 
