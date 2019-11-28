@@ -22,7 +22,7 @@ module AddWorkHelper
   end
 
   def new_upload
-    @document_upload = DocumentUpload.new(params[:document_upload])
+    @document_upload = DocumentUpload.new(document_upload_params)
     @document_upload.user = current_user
 
     if @document_upload.save

@@ -138,4 +138,10 @@ class DashboardController < ApplicationController
       @collections = (docsets + colls).sample(8)
     end
   end
+
+  private
+
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :collection_id)
+  end
 end
