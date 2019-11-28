@@ -54,14 +54,14 @@ class PageController < ApplicationController
   end
 
   def create
-    @page = Page.new(params[:page])
+    @page = Page.new(page_params)
     subaction = params[:subaction]
     @work.pages << @page
 
     if @page.save
       flash[:notice] = 'Page created successfully'
 
-      if params[:page][:base_image]
+      if page_params[:base_image]
         process_uploaded_file(@page, @page.base_image)
       end
 
@@ -122,6 +122,10 @@ class PageController < ApplicationController
     page.base_height = image.rows
     image = nil
     page.save!
+  end
+
+  def page_params
+    params.require(:page).permit(:page, :base_image)
   end
 
 end
