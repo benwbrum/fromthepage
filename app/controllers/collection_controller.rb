@@ -467,7 +467,8 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
-private
+  private
+
   def set_collection
     unless @collection
       if Collection.friendly.exists?(params[:id])
