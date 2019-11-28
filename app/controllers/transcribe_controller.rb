@@ -233,7 +233,7 @@ class TranscribeController  < ApplicationController
 
   def save_translation
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
-    @page.attributes=params[:page]
+    @page.attributes = page_params
 
     #check to see if the page is marked blank
     mark_page_blank or return
@@ -482,6 +482,6 @@ protected
   private
 
   def page_params
-    params.require(:page).permit(:source_text)
+    params.require(:page).permit(:source_text, :source_translation)
   end
 end
