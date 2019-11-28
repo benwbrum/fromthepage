@@ -186,6 +186,7 @@ class ArticleController < ApplicationController
   end
 
   protected
+
   def rename_article(old_name, new_name)
     # walk through all pages referring to this
     for link in @article.page_article_links
