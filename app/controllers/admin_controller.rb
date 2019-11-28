@@ -65,7 +65,7 @@ class AdminController < ApplicationController
 
   def update_user
     owner = @user.owner
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(user_params)
       if owner == false && @user.owner == true
         if SMTP_ENABLED
           begin
@@ -221,7 +221,11 @@ class AdminController < ApplicationController
     else
       @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     end
-
   end
 
+  private
+
+  def user_params
+    params.require(:user).permit(:user)
+  end
 end
