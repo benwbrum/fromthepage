@@ -108,7 +108,7 @@ class TranscribeController  < ApplicationController
       @page.process_fields(@field_cells)
     end
 
-    @page.attributes = params[:page]
+    @page.attributes = page_params
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
       mark_page_blank(redirect: 'transcribe') or return
@@ -477,5 +477,11 @@ protected
       deed.deed_type = DeedType::PAGE_TRANSLATION_EDIT
     end
     deed.save!
+  end
+
+  private
+
+  def page_params
+    params.require(:page).permit(:source_text)
   end
 end
