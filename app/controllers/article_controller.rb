@@ -43,7 +43,7 @@ class ArticleController < ApplicationController
     old_title = @article.title
     gis_truncated = gis_truncated?(params[:article], GIS_DECIMAL_PRECISION)
 
-    @article.attributes = params[:article]
+    @article.attributes = article_params
     if params['save']
       #process_source_for_article
       if @article.save
@@ -255,6 +255,11 @@ class ArticleController < ApplicationController
     from_article.destroy
   end
 
+  private
+
+  def article_params
+    params.require(:article).permit(:title, :url)
+  end
 end
 
 def gis_truncated?(params, dec)
