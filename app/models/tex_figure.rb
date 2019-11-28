@@ -2,7 +2,6 @@ class TexFigure < ApplicationRecord
   belongs_to :page, optional: true
   acts_as_list :scope => :page
 
-  attr_accessible :source
   before_save :review_artifact
 
   # TODO: add config test code to check for pdflatex

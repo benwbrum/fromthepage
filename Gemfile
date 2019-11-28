@@ -46,8 +46,6 @@ gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
 
 gem 'bootsnap', require: false
 
-gem 'protected_attributes_continued'
-
 gem 'puma'
 
 gem 'active_link_to'

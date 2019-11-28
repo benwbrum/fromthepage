@@ -2,8 +2,6 @@ class DocumentUpload < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :collection, optional: true
 
-  attr_accessible :file, :collection_id, :status, :preserve_titles
-
   validates :collection_id, :file, :presence => true
 
   mount_uploader :file, DocumentUploader

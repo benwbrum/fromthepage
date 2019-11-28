@@ -27,26 +27,6 @@ class Work < ApplicationRecord
 
   after_destroy :cleanup_images
 
-  attr_accessible :title,
-                  :author,
-                  :description,
-                  :collection_id,
-                  :physical_description,
-                  :document_history,
-                  :permission_description,
-                  :location_of_composition,
-                  :transcription_conventions,
-                  :supports_translation,
-                  :ocr_correction,
-                  :translation_instructions,
-                  :scribes_can_edit_titles,
-                  :restrict_scribes,
-                  :pages_are_meaningful,
-                  :slug,
-                  :picture,
-                  :featured_page,
-                  :identifier
-
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: true
 

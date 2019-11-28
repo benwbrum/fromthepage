@@ -40,11 +40,6 @@ class Page < ApplicationRecord
   #after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
-  attr_accessible :title
-  attr_accessible :source_text
-  attr_accessible :source_translation
-  attr_accessible :status
-  attr_accessible :metadata
   serialize :metadata, Hash
 
   scope :review, -> { where(status: 'review')}

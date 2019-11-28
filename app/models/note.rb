@@ -1,5 +1,4 @@
 class Note < ApplicationRecord
-  attr_accessible :body
   # Notes are comments on pages.  In the future they may
   # be comments on works, comments on image fragments,
   # comments on articles, or questions and answers

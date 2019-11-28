@@ -37,9 +37,6 @@ class Article < ApplicationRecord
 
   after_save :create_version
 
-  attr_accessible :title, :latitude, :longitude, :uri
-  attr_accessible :source_text
-
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
   end

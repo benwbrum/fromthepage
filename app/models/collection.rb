@@ -21,7 +21,6 @@ class Collection < ApplicationRecord
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  attr_accessible :title, :intro_block, :footer_block, :picture, :subjects_disabled, :transcription_conventions, :slug, :review_workflow, :hide_completed, :help, :link_help, :voice_recognition, :language, :text_language, :pct_completed, :default_orientation
   #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }

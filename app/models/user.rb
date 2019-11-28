@@ -10,9 +10,6 @@ class User < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
-
   # allows me to get at the user from other models
   cattr_accessor :current_user
 

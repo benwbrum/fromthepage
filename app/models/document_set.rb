@@ -4,8 +4,6 @@ class DocumentSet < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
-  attr_accessible :title, :description, :collection_id, :picture, :is_public, :slug, :pct_completed, :works_count
-
   mount_uploader :picture, PictureUploader
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
