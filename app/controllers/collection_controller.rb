@@ -205,7 +205,7 @@ class CollectionController < ApplicationController
       title = @collection.title.parameterize
       @collection.update(slug: title)
     else
-      @collection.update(params[:collection])
+      @collection.update(collection_params)
     end
 
     if @collection.save!
@@ -493,5 +493,9 @@ class CollectionController < ApplicationController
       article.collection = collection
       article.save!
     end
+  end
+
+  def collection_params
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition)
   end
 end
