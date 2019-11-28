@@ -137,7 +137,7 @@ class WorkController < ApplicationController
     if params_convention == collection_convention
       work.update_attributes(params[:work].except(:transcription_conventions))
     else
-      work.update_attributes(params[:work])
+      work.update_attributes(work_params)
     end
 
     #if the slug field param is blank, set slug to original candidate
@@ -248,6 +248,6 @@ class WorkController < ApplicationController
   private
 
   def work_params
-    params.require(:work).permit(:title, :description, :collection_id)
+    params.require(:work).permit(:title, :description, :collection_id, :supports_translation)
   end
 end
