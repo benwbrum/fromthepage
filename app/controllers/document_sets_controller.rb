@@ -85,7 +85,7 @@ class DocumentSetsController < ApplicationController
 
   def update
     if params[:document_set][:slug] == ""
-      @document_set.update(params[:document_set].except(:slug))
+      @document_set.update(document_set_params.except(:slug))
       title = @document_set.title.parameterize
       @document_set.update(slug: title)
     else
