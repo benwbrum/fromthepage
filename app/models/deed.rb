@@ -2,8 +2,6 @@
 # of like "doing a good deed." There are several types of deeds (which live in
 # the DeedType model). Ex: "transcribed", "marked as blank"
 class Deed < ApplicationRecord
-  include RenderAnywhere
-
   belongs_to :article, optional: true
   belongs_to :collection, optional: true
   belongs_to :note, optional: true
@@ -26,11 +24,11 @@ class Deed < ApplicationRecord
 
   def calculate_prerender
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
-      self.prerender = render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+      self.prerender = ApplicationController.renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
     end
   end
 
   def calculate_prerender_mailer
-    self.prerender_mailer = render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
+    self.prerender_mailer = ApplicationController.renderer.render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
   end
 end

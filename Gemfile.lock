@@ -345,8 +345,6 @@ GEM
       json
     recursive-open-struct (0.4.5)
     regexp_parser (1.6.0)
-    render_anywhere (0.0.12)
-      rails (>= 3.0.7)
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -518,7 +516,6 @@ DEPENDENCIES
   rack-reverse-proxy
   rails (= 6.0.1)
   recaptcha
-  render_anywhere
   riiif
   rmagick
   rspec-rails

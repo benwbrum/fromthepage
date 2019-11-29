@@ -26,7 +26,7 @@ gem 'devise-encryptable'
 
 gem 'carrierwave'
 gem 'rubyzip'
-gem 'render_anywhere'
+#gem 'render_anywhere'
 
 gem 'ahoy_matey'
 
