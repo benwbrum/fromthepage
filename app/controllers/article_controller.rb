@@ -259,7 +259,7 @@ class ArticleController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :url)
+    params.require(:article).permit(:title, :url, :source_text)
   end
 end
 
