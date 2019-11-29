@@ -248,6 +248,6 @@ class WorkController < ApplicationController
   private
 
   def work_params
-    params.require(:work).permit(:title, :description, :collection_id, :supports_translation, :slug)
+    params.require(:work).permit(:title, :description, :collection_id, :supports_translation, :slug, :ocr_correction)
   end
 end
