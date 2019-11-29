@@ -38,7 +38,7 @@ class TranscriptionFieldController < ApplicationController
         end
         if fields[:id].blank?
           #if the field doesn't exist, create a new one
-          transcription_field = TranscriptionField.new(fields)
+          transcription_field = TranscriptionField.new(fields.permit!)
           transcription_field.collection_id = params[:collection_id]
           transcription_field.save
         else
@@ -46,7 +46,7 @@ class TranscriptionFieldController < ApplicationController
           transcription_field = TranscriptionField.find_by(id: fields[:id])
           #remove ID from params before update
           fields.delete(:id)
-          transcription_field.update_attributes(fields)
+          transcription_field.update_attributes(fields.permit!)
         end
       end
     end
