@@ -148,18 +148,18 @@ class DocumentSetsController < ApplicationController
   def destroy
     @document_set.destroy
     redirect_to action: 'index', collection_id: @document_set.collection_id
-
   end
 
   private
-    def set_document_set
-      unless (defined? @document_set) && @document_set
-        id = params[:document_set_id] || params[:id]
-        @document_set = DocumentSet.friendly.find(id)
-      end
-    end
 
-    def document_set_params
-      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+  def set_document_set
+    unless (defined? @document_set) && @document_set
+      id = params[:document_set_id] || params[:id]
+      @document_set = DocumentSet.friendly.find(id)
     end
+  end
+
+  def document_set_params
+    params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+  end
 end
