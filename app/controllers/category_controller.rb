@@ -9,7 +9,7 @@ class CategoryController < ApplicationController
   end
 
   def update
-    if @category.update_attributes(params[:category])
+    if @category.update_attributes(category_params)
       flash[:notice] = "Category has been updated"
       ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
     else
@@ -26,7 +26,7 @@ class CategoryController < ApplicationController
   end
 
   def create
-    @new_category = Category.new(params[:category])
+    @new_category = Category.new(category_params)
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
       flash[:notice] = "Category has been created"
@@ -70,5 +70,11 @@ class CategoryController < ApplicationController
 
     flash[:notice] = notice
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
+  end
+
+  private
+
+  def category_params
+    params.require(:category).permit(:title, :gis_enabled, :collection_id, :parent_id)
   end
 end
