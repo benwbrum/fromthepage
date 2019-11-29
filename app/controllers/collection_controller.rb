@@ -201,7 +201,7 @@ class CollectionController < ApplicationController
 
   def update
     if params[:collection][:slug] == ""
-      @collection.update(params[:collection].except(:slug))
+      @collection.update(collection_params.except(:slug))
       title = @collection.title.parameterize
       @collection.update(slug: title)
     else
