@@ -19,8 +19,8 @@ class UserController < ApplicationController
       @user.destroy!
       redirect_to dashboard_path
     else 
-      params_hash = params[:user].except(:notifications)
-      notifications_hash = params[:user][:notifications]
+      params_hash = user_params.except(:notifications)
+      notifications_hash = user_params[:notifications]
       params_hash.delete_if { |k,v| v == NOTOWNER }
       params_hash[:dictation_language] = params[:dialect]
       
@@ -93,6 +93,12 @@ class UserController < ApplicationController
     deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
     deed.save!
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:display_name, :orcid, :slug, :website, :location, :about, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added])
   end
 
 end
