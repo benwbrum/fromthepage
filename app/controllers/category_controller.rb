@@ -43,6 +43,7 @@ class CategoryController < ApplicationController
     flash[:notice] = "Category has been deleted"
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => anchor})
   end
+
   def enable_gis
     @category.update_attribute(:gis_enabled, true)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, true)}
@@ -56,6 +57,7 @@ class CategoryController < ApplicationController
     flash[:notice] = notice
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
   end
+
   def disable_gis
     @category.update_attribute(:gis_enabled, false)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, false)}
