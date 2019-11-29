@@ -18,12 +18,12 @@ class UserController < ApplicationController
       logger.error("Possible spam: deleting user #{@user.email}")
       @user.destroy!
       redirect_to dashboard_path
-    else 
+    else
       params_hash = user_params.except(:notifications)
       notifications_hash = user_params[:notifications]
       params_hash.delete_if { |k,v| v == NOTOWNER }
       params_hash[:dictation_language] = params[:dialect]
-      
+
       if params_hash[:slug] == ""
         @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
@@ -46,7 +46,7 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:user_slug])
     end
-    
+
     # Set dictation language to default (en-US) if it doesn't exist
     lang = !@user.dictation_language.blank? ? @user.dictation_language : "en-US"
     # Find the language portion of the language/dialect or set to nil
@@ -66,7 +66,7 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:id])
     end
-    if !@user.deleted || current_user.admin 
+    if !@user.deleted || current_user.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
       @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
       @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
