@@ -15,5 +15,11 @@ module Fromthepage
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    config.neato = '/usr/bin/env neato'
+
+    if config.respond_to?(:sass)
+      require File.expand_path('../../lib/sassc_functions.rb', __FILE__)
+    end
   end
 end

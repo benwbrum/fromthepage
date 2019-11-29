@@ -59,4 +59,15 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+
+  config.action_mailer.default_url_options =  { host: 'localhost:3000' }
+
+  # location of system calls on this machine
+  NEATO = '/usr/bin/neato'
+  RAKE = '/usr/bin/env rake'
+  TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
+
+  config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
 end
