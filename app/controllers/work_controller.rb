@@ -104,7 +104,7 @@ class WorkController < ApplicationController
   end
 
   def update_work
-    @work.update_attributes(params[:work])
+    @work.update_attributes(work_params)
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
@@ -135,7 +135,7 @@ class WorkController < ApplicationController
     collection_convention = work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      work.update_attributes(params[:work].except(:transcription_conventions))
+      work.update_attributes(work_params.except(:transcription_conventions))
     else
       work.update_attributes(work_params)
     end
@@ -248,6 +248,6 @@ class WorkController < ApplicationController
   private
 
   def work_params
-    params.require(:work).permit(:title, :description, :collection_id, :supports_translation)
+    params.require(:work).permit(:title, :description, :collection_id, :supports_translation, :slug)
   end
 end
