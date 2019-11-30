@@ -65,7 +65,7 @@ class AdminController < ApplicationController
 
   def update_user
     owner = @user.owner
-    if @user.update_attributes(user_params)
+    if @user.update(user_params)
       if owner == false && @user.owner == true
         if SMTP_ENABLED
           begin
