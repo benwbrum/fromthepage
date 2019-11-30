@@ -135,9 +135,9 @@ class WorkController < ApplicationController
     collection_convention = work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      work.update_attributes(work_params.except(:transcription_conventions))
+      work.update(work_params.except(:transcription_conventions))
     else
-      work.update_attributes(work_params)
+      work.update(work_params)
     end
 
     #if the slug field param is blank, set slug to original candidate
