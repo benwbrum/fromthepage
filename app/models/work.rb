@@ -28,7 +28,7 @@ class Work < ApplicationRecord
   after_destroy :cleanup_images
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  validates :slug, uniqueness: true
+  validates :slug, uniqueness: { case_sensitive: true }
 
   mount_uploader :picture, PictureUploader
 
