@@ -82,10 +82,15 @@ a.button.big.learn-more {
 .advantages {
   @include highlightBox;
 
-  .justified_box {
-    width: 30%;
-    position: relative;
-    box-sizing: border-box;
+  &_list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+  }
+  &_list_item {
+    flex: 0 1 31%;
     padding: 0 0 $gapSize 0;
   }
   &_title {
@@ -97,15 +102,16 @@ a.button.big.learn-more {
   &_text {
     margin: 0.5em 0;
     color: $bodyFg;
+    line-height: 1.3;
+    min-height: 5.2em;
     font-size: $fontSizeStrong;
   }
   ul {
-    list-style: none;
+    list-style-type: disc;
     font-size: $fontSizeBig;
-    margin-top: 24px;
-    margin-left: 0;
+    margin: 15px 0 0 1em;
     li {
-      padding-top: 10px;
+      margin-top: 5px;
     }
   }
   .start {
