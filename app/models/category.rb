@@ -5,7 +5,7 @@ class Category < ApplicationRecord
   belongs_to :collection, optional: true
   has_and_belongs_to_many :articles, -> { order('title').distinct }
 
-  validates :title, presence: true, uniqueness: { scope: [:collection_id, :parent_id] }
+  validates :title, presence: true, uniqueness: { scope: [:collection_id, :parent_id], case_sensitive: true }
 
   def articles_list(collection)
     if collection.is_a?(DocumentSet)
