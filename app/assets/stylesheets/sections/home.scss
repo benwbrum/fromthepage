@@ -127,15 +127,20 @@ a.button.big.learn-more {
   }
 }
 
-#quotes {
+.quotes {
   padding-top: 55px;
-  ol {
+
+  &_list {
+    margin: 0;
+    padding: 0;
+    display: flex;
     list-style: none;
+    justify-content: space-between;
   }
-  .justified_box {
-    width: 30%;
-    position: relative;
-    box-sizing: border-box;
+  &_list_item {
+    flex: 0 1 31%;
+    display: flex;
+    flex-direction: column;
     padding: 0 0 $gapSize 0;
   }
   h2 {
@@ -145,8 +150,9 @@ a.button.big.learn-more {
   }
   blockquote {
     margin: 0;
+    display: flex;
+    flex: 1 1 auto;
     p {
-      min-height: 130px;
       color: $bodyFg;
       margin: 0 0 20px 0;
       padding: $gapSize;
@@ -168,9 +174,10 @@ a.button.big.learn-more {
   }
   cite {
     line-height: 2;
+    margin-top: 5px;
+    min-height: 48px;
     font-style: normal;
     color: $bodyFgFaded;
-    margin-top: $gapSize;
     display: inline-block;
     small {
       display: block;
