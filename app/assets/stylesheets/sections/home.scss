@@ -19,31 +19,18 @@ a.button.big.learn-more {
   background: $footerBg image-url('static/home/header.jpg') no-repeat center bottom;
   background-size: cover;
   .wrapper {
-    position: relative;
+    display: flex;
+    padding: 0 20px;
     min-height: 517px;
-    padding: 0;
-
-    &:after {
-      width: 0;
-      content: '';
-      height: 100%;
-      display: inline-block;
-      vertical-align: middle;
-    }
+    align-items: center;
+    justify-content: center;
   }
   &_box {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     color: #FFF;
+    padding: 60px;
     text-align: left;
     max-width: $widthMax;
-    line-height: normal;
-    display: inline-block;
-    vertical-align: middle;
     background: rgba(#100, 0.6);
-    margin: 0 auto;
-    padding: 60px;
 
     &_title {
       margin: 0;
@@ -59,6 +46,7 @@ a.button.big.learn-more {
     &_text {
       font-size: 125%;
       max-width: 600px;
+      line-height: normal;
       margin: 0.5em 0 0 0;
     }
     a.learn-more {
@@ -74,10 +62,7 @@ a.button.big.learn-more {
     .wrapper { height: 400px; }
   }
   @media screen and (max-width: $widthMin) {
-    .wrapper {
-      height: 350px;
-      text-align: center;
-    }
+    .wrapper { height: 350px; }
   }
 }
 
