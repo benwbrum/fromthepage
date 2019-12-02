@@ -77,7 +77,7 @@ class PageController < ApplicationController
 
   def update
     page = Page.find(params[:id])
-    page.update_attributes(page_params)
+    page.update(page_params)
     flash[:notice] = 'Page has been successfully updated'
 
     if params[:page][:base_image]
