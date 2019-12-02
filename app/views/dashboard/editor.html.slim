@@ -5,14 +5,14 @@
     h3 Your Recent Page Edits
     table.datagrid.striped.editor-activity
       -@user.page_versions.limit(10).each do |p|
-        -page_link = link_to p.page.title, { :controller => 'page_version', :action => 'list', :page_id => p.page.id }
-        -work_link = link_to p.page.work.title, { :controller => 'work', :action => 'versions', :work_id => p.page.work.id }
+        -page_link = link_to p.page.title, page_version_list_path(:page_id => p.page.id)
+        -work_link = link_to p.page.work.title, work_versions_path(:work_id => p.page.work.id)
         tr
           td.w100
             =="#{page_link} page in the #{work_link} work"
           td
             =link_to "Revision #{p.page_version}",
-              { :controller => 'page_version', :action => 'show', :page_version_id => p.id },
+              page_version_path(:page_version_id => p.id),
               class: 'label'
           td
             =time_tag p.created_on

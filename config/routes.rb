@@ -53,6 +53,7 @@ Fromthepage::Application.routes.draw do
   get 'demo', to: 'demo#index', as: 'demo'
   get '/static/metadata', to: 'static#metadata', as: 'static_metadata'
   get '/page_version/show', to: 'page_version#show', as: 'page_version'
+  get '/page_version/list', to: 'page_version#list', as: 'page_version_list'
   get '/article_version/show', to: 'article_version#show', as: 'article_version'
   get '/display/display_page', to: 'display#display_page', as: 'display_page'
   get '/ia/import_work', to: 'ia#import_work', as: 'ia_import_work'
@@ -125,6 +126,7 @@ Fromthepage::Application.routes.draw do
   get '/work/pages_tab', to: 'work#pages_tab', as: 'work_pages_tab'
   get '/work/edit', to: 'work#edit', as: 'work_edit'
   get '/work/revert', to: 'work#revert', as: 'work_revert'
+  get '/work/versions', to: 'work#versions', as: 'work_versions'
 
   get '/page/new', to: 'page#new', as: 'page_new'
   get '/page/delete', to: 'page#delete', as: 'page_delete'
