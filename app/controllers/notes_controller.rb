@@ -33,7 +33,7 @@ class NotesController < ApplicationController
   def update
     @note = Note.find(params[:id])
     respond_to do |format|
-      if @note.update_attributes(note_params)
+      if @note.update(note_params)
         note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
 
         format.json { render json: { html: simple_format(note_body) }, status: :ok }
