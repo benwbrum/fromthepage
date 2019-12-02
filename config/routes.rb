@@ -55,6 +55,7 @@ Fromthepage::Application.routes.draw do
   get '/page_version/show', to: 'page_version#show', as: 'page_version'
   get '/page_version/list', to: 'page_version#list', as: 'page_version_list'
   get '/article_version/show', to: 'article_version#show', as: 'article_version'
+  get '/article_version/list', to: 'article_version#list', as: 'article_version_list'
   get '/display/display_page', to: 'display#display_page', as: 'display_page'
   get '/ia/import_work', to: 'ia#import_work', as: 'ia_import_work'
   get '/ia/ia_book_form', to: 'ia#ia_book_form', as: 'ia_book_form'
