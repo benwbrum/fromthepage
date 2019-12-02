@@ -42,7 +42,7 @@
             =truncate strip_tags(n.title), :length => 150, separator: ' '
           td
             =link_to "View Page",
-              { :controller => 'display', :action => 'display_page', :page_id => n.page_id, :anchor => "comment_#{n.id}" },
+              display_page_path(:page_id => n.page_id, :anchor => "comment_#{n.id}"),
               class: 'label'
           td
             =time_tag n.created_at
