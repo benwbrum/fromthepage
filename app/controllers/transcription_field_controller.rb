@@ -46,7 +46,7 @@ class TranscriptionFieldController < ApplicationController
           transcription_field = TranscriptionField.find_by(id: fields[:id])
           #remove ID from params before update
           fields.delete(:id)
-          transcription_field.update_attributes(fields.permit!)
+          transcription_field.update(fields.permit!)
         end
       end
     end
