@@ -84,7 +84,7 @@ class OmekaSitesController < ApplicationController
     @omeka_site.user = current_user
 
     respond_to do |format|
-      if @omeka_site.update_attributes(params[:omeka_site])
+      if @omeka_site.update(params[:omeka_site])
         format.html {
           flash[:notice] = "Omeka site was successfully updated"
           ajax_redirect_to @omeka_site
