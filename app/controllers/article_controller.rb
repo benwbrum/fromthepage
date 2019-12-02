@@ -159,15 +159,13 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_path = "#{Rails.root}/app/views/article/graph.dot.erb"
-
     dot_source =
-      render_to_string({:file => dot_path,
-                        :layout => false,
-                        :locals => { :article_links => article_links,
-                                     :link_total => link_total,
-                                     :link_max => link_max,
-                                     :min_rank => min_rank }} )
+      render_to_string(:partial => "graph.dot",
+                       :layout => false,
+                       :locals => { :article_links => article_links,
+                                    :link_total => link_total,
+                                    :link_max => link_max,
+                                    :min_rank => min_rank })
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|
