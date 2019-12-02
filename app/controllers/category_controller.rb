@@ -9,7 +9,7 @@ class CategoryController < ApplicationController
   end
 
   def update
-    if @category.update_attributes(category_params)
+    if @category.update(category_params)
       flash[:notice] = "Category has been updated"
       ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
     else
