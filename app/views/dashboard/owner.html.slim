@@ -14,7 +14,7 @@
               -@works.each do |w|
                 li =link_to w.title, edit_collection_work_path(c.owner, c, w.id)
               -more_works = link_to 'See All Works...', collection_works_list_path(c.owner, c)
-              -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => c.id }
+              -start_project = link_to 'Start A Project', dashboard_startproject_path(:collection_id => c.id)
               p.nodata_text
                   i
                     |Total work count: #{@count}
@@ -24,7 +24,7 @@
               p.nodata_text
                 i You can add another work under #{start_project}
             -else
-              -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', :collection_id => c.id }
+              -start_project = link_to 'Start A Project', dashboard_startproject_path(:collection_id => c.id)
               .nodata
                 h5.nodata_title There are no works in this collection yet
                 p.nodata_text You can upload documents under #{start_project}
@@ -41,7 +41,7 @@
 
     -else
       -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
-      -start_project = link_to 'start a project', { :controller => 'dashboard', :action => 'startproject' }
+      -start_project = link_to 'start a project', dashboard_startproject_path
       .nodata
         h5.nodata_title You don't have any collections yet
         p.nodata_text You can #{new_collection}
