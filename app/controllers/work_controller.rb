@@ -104,7 +104,7 @@ class WorkController < ApplicationController
   end
 
   def update_work
-    @work.update_attributes(work_params)
+    @work.update(work_params)
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
