@@ -85,6 +85,14 @@ Fromthepage::Application.routes.draw do
     post 'create', to: 'page#create'
   end
 
+  scope 'article', as: 'article' do
+    get 'list', to: 'article#list'
+    get 'tooltip', to: 'article#tooltip'
+    get 'delete', to: 'article#delete'
+    get 'show', to: 'article#show'
+    get 'combine_duplicate', to: 'article#combine_duplicate'
+  end
+
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
   get '/dashboard/watchlist' => 'dashboard#watchlist'
@@ -174,11 +182,6 @@ Fromthepage::Application.routes.draw do
   get '/transcribe/assign_categories', to: 'transcribe#assign_categories', as: 'transcribe_assign_categories'
   get '/transcribe/guest', to: 'transcribe#guest', as: 'transcribe_guest'
 
-  get '/article/list', to: 'article#list', as: 'article_list'
-  get '/article/tooltip', to: 'article#tooltip', as: 'article_tooltip'
-  get '/article/delete', to: 'article#delete', as: 'article_delete'
-  get '/article/show', to: 'article#show', as: 'article_show'
-  get '/article/combine_duplicate', to: 'article#combine_duplicate', as: 'article_combine_duplicate'
 
   get '/display/read_work', to: 'display#read_work', as: 'display_read_work'
   get '/display/read_all_works', to: 'display#read_all_works', as: 'display_read_all_works'
