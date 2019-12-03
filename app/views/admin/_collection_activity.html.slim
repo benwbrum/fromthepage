@@ -2,9 +2,9 @@
 
   h3.collection_title
     'Collection:
-    =link_to @collection.title, { :controller => 'collection', :action => 'show', :collection_id => @collection.id, only_path: false}
+    =link_to @collection.title, collection_path(:collection_id => @collection.id, only_path: false)
     |&nbsp; Owner:
-    =link_to @collection.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => @collection.owner.id, only_path: false}
+    =link_to @collection.owner.display_name, user_profile_path(:user_id => @collection.owner.id, only_path: false)
 
   -unless @recent_iiif.empty?
     h4 New IIIF Works
@@ -21,7 +21,7 @@
   -unless @recent_works.empty?
     h4 New Uploaded Works
     -@recent_works.each do |w|
-      =link_to w.title, display_read_work_path(:controller => 'display', :action => 'read_work', :work_id => w.id, only_path: false)
+      =link_to w.title, display_read_work_path(:work_id => w.id, only_path: false)
       | <br>
 
   -unless @uploads.empty?

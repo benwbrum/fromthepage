@@ -7,15 +7,15 @@ h2 Works by Collection
         -@collections.each do |c|
           .collection
             h4.collection_title
-              =link_to(c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id })
+              =link_to(c.title, collection_path(:collection_id => c.id))
             ol.collection_works
             -unless c.works.empty?
               -(c.works.sort_by { |work| work.title }).each do |w|
-                li =link_to w.title, { :controller => 'display', :action => 'read_work', :work_id => w.id }
+                li =link_to w.title, display_read_work_path(:work_id => w.id)
 
     -else
-      -new_collection = link_to 'create a collection', { :controller => 'collection', :action => 'new' }
-      -start_project = link_to 'start a project', { :controller => 'dashboard', :action => 'startproject' }
+      -new_collection = link_to 'create a collection', collection_new_path
+      -start_project = link_to 'start a project', dashboard_startproject_path
       .nodata
         h5.nodata_title You don't have any works yet
         p.nodata_text You can #{new_collection}

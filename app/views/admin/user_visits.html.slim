@@ -1,7 +1,7 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
 h3 Site visits for #{@user.login}
-=link_to 'Other Users', { :controller => 'admin', :action => 'user_list' }
+=link_to 'Other Users', admin_user_list_path
 
 table.admin-grid.datagrid.striped
   thead
@@ -19,11 +19,11 @@ table.admin-grid.datagrid.striped
         td.nowrap =v.ahoy_events.count
         td.nowrap 
           -if v.deeds.count > 0
-            =link_to v.deeds.count, { :controller => 'admin', :action => 'visit_deeds', :user_id => @user.id, :visit_id => v.id }
+            =link_to v.deeds.count, admin_visit_deeds_path(:user_id => @user.id, :visit_id => v.id)
           -else
             =v.deeds.count
         td.nowrap
           .instack
-            =link_to 'Details', { :controller => 'admin', :action => 'visit_actions', :user_id => @user.id, :visit_id => v.id }
+            =link_to 'Details', admin_visit_actions_path(:user_id => @user.id, :visit_id => v.id)
 
 =render(:partial => 'shared/pagination', :locals => { :model => @visits, :entries_info => true })
