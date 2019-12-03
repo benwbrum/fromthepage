@@ -75,6 +75,16 @@ Fromthepage::Application.routes.draw do
     post 'create', to: 'work#create'
   end
 
+  scope 'page', as: 'page' do
+    get 'new', to: 'page#new'
+    get 'delete', to: 'page#delete'
+    get 'reorder_page', to: 'page#reorder_page'
+    get 'edit', to: 'page#edit'
+    get 'rotate', to: 'page#rotate'
+    post 'update', to: 'page#update'
+    post 'create', to: 'page#create'
+  end
+
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
   get '/dashboard/watchlist' => 'dashboard#watchlist'
@@ -158,14 +168,6 @@ Fromthepage::Application.routes.draw do
   match '/sc_collections/import_collection', to: 'sc_collections#import_collection', as: 'sc_collections_import_collection', via: [:get, :post]
   get '/sc_collections/explore_manifest', to: 'sc_collections#explore_manifest', as: 'sc_collections_explore_manifest'
   get '/sc_collections/explore_collection', to: 'sc_collections#explore_collection', as: 'sc_collections_explore_collection'
-
-  get '/page/new', to: 'page#new', as: 'page_new'
-  get '/page/delete', to: 'page#delete', as: 'page_delete'
-  get '/page/reorder_page', to: 'page#reorder_page', as: 'page_reorder_page'
-  post '/page/update', to: 'page#update', as: 'page_update'
-  get '/page/edit', to: 'page#edit', as: 'page_edit'
-  get '/page/rotate', to: 'page#rotate', as: 'page_rotate'
-  post '/page/create', to: 'page#create', as: 'page_create'
 
   get '/transcribe/mark_page_blank', to: 'transcribe#mark_page_blank', as: 'transcribe_mark_page_blank'
   get '/transcribe/display_page', to: 'transcribe#display_page', as: 'transcribe_display_page'
