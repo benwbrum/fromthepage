@@ -219,6 +219,8 @@ Fromthepage::Application.routes.draw do
   get '/collection/new', to: 'collection#new', as: 'collection_new'
   post '/collection/create', to: 'collection#create', as: 'collection_create'
 
+  get '/omeka_items/import', to: 'omeka_items#import', as: 'omeka_items_import'
+
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
 

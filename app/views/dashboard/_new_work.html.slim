@@ -57,7 +57,7 @@
                   =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
                   hr
                   =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
-      =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
+      =link_to 'Add Source', new_omeka_site_path, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
 
     =render 'dashboard/empty'
 
