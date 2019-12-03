@@ -14,7 +14,7 @@
           =user_name
         -if @user == current_user
           .headline_aside
-            =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+            =link_to(user_update_profile_path(:user_id => @user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
               =svg_symbol '#icon-edit', class: 'icon'
               span Edit Profile
             |&nbsp;&nbsp;
@@ -61,7 +61,7 @@
             -else
               span.a50 No work
           td =link_to version.page.title, collection_display_page_path(version.page.collection.owner, version.page.collection, version.page.work, version.page)
-          td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
+          td.nowrap =link_to "Revision #{version.page_version}", page_version_path(:page_version_id => version.id)
     br
 
   -if @article_versions.present?
@@ -78,7 +78,6 @@
             -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
             tr
               td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
-              td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
-              td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
-              td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
-      
+              td.overflow =link_to version.article.title, article_show_path(:article_id => version.article.id)
+              td ==version.article.categories.map { |c| link_to c.title, article_list_path(:collection_id => version.article.collection.id, anchor: "category-#{c.id}") }.join(', ')
+              td.nowrap =link_to "Revision #{version.version}", article_version_path(:article_version_id => version.id)
