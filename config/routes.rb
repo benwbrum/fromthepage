@@ -41,6 +41,17 @@ Fromthepage::Application.routes.draw do
     post 'update', to: 'admin#update'
   end
 
+  scope 'work', as: 'work' do
+    get 'delete', to: 'work#delete'
+    get 'update_featured_page', to: 'work#update_featured_page'
+    get 'pages_tab', to: 'work#pages_tab'
+    get 'edit', to: 'work#edit'
+    get 'revert', to: 'work#revert'
+    get 'versions', to: 'work#versions'
+    post 'update', to: 'work#update'
+    post 'create', to: 'work#create'
+  end
+
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
   get '/dashboard/watchlist' => 'dashboard#watchlist'
@@ -124,15 +135,6 @@ Fromthepage::Application.routes.draw do
   match '/sc_collections/import_collection', to: 'sc_collections#import_collection', as: 'sc_collections_import_collection', via: [:get, :post]
   get '/sc_collections/explore_manifest', to: 'sc_collections#explore_manifest', as: 'sc_collections_explore_manifest'
   get '/sc_collections/explore_collection', to: 'sc_collections#explore_collection', as: 'sc_collections_explore_collection'
-
-  get '/work/delete', to: 'work#delete', as: 'work_delete'
-  post '/work/update', to: 'work#update', as: 'work_update'
-  get '/work/update_featured_page', to: 'work#update_featured_page', as: 'work_update_featured_page'
-  get '/work/pages_tab', to: 'work#pages_tab', as: 'work_pages_tab'
-  get '/work/edit', to: 'work#edit', as: 'work_edit'
-  get '/work/revert', to: 'work#revert', as: 'work_revert'
-  get '/work/versions', to: 'work#versions', as: 'work_versions'
-  post '/work/create', to: 'work#create', as: 'work'
 
   get '/page/new', to: 'page#new', as: 'page_new'
   get '/page/delete', to: 'page#delete', as: 'page_delete'
