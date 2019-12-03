@@ -130,6 +130,7 @@ Fromthepage::Application.routes.draw do
   get '/work/edit', to: 'work#edit', as: 'work_edit'
   get '/work/revert', to: 'work#revert', as: 'work_revert'
   get '/work/versions', to: 'work#versions', as: 'work_versions'
+  post '/work/create', to: 'work#create', as: 'work'
 
   get '/page/new', to: 'page#new', as: 'page_new'
   get '/page/delete', to: 'page#delete', as: 'page_delete'
