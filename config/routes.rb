@@ -41,6 +41,29 @@ Fromthepage::Application.routes.draw do
     post 'update', to: 'admin#update'
   end
 
+  scope 'collection', as: 'collection' do
+    get 'delete', to: 'collection#delete'
+    get 'activity_download', to: 'collection#activity_download'
+    get 'show', to: 'collection#show', as: 'show'
+    get 'toggle_collection_active', to: 'collection#toggle_collection_active'
+    get 'contributors_download', to: 'collection#contributors_download'
+    get 'enable_fields', to: 'collection#enable_fields'
+    get 'enable_document_sets', to: 'collection#enable_document_sets'
+    get 'enable_ocr', to: 'collection#enable_ocr'
+    get 'disable_ocr', to: 'collection#disable_ocr'
+    get 'blank_collection', to: 'collection#blank_collection'
+    get 'edit', to: 'collection#edit'
+    get 'remove_owner', to: 'collection#remove_owner'
+    get 'disable_document_sets', to: 'collection#disable_document_sets'
+    get 'disable_fields', to: 'collection#disable_fields'
+    get 'publish_collection', to: 'collection#publish_collection'
+    get 'remove_collaborator', to: 'collection#remove_collaborator'
+    get 'restrict_collection', to: 'collection#restrict_collection'
+    post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'add_owner', to: 'collection#add_owner'
+    post 'update/:id', to: 'collection#update', as: 'update'
+  end
+
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
     get 'update_featured_page', to: 'work#update_featured_page'
@@ -157,27 +180,6 @@ Fromthepage::Application.routes.draw do
 
   get '/display/read_work', to: 'display#read_work', as: 'display_read_work'
   get '/display/read_all_works', to: 'display#read_all_works', as: 'display_read_all_works'
-
-  get '/collection/delete', to: 'collection#delete', as: 'collection_delete'
-  get '/collection/activity_download', to: 'collection#activity_download', as: 'collection_activity_download'
-  get '/collection/show', to: 'collection#show', as: 'collection_show'
-  get '/collection/toggle_collection_active', to: 'collection#toggle_collection_active', as: 'collection_toggle_collection_active'
-  get '/collection/contributors_download', to: 'collection#contributors_download', as: 'collection_contributors_download'
-  get '/collection/enable_fields', to: 'collection#enable_fields', as: 'collection_enable_fields'
-  get '/collection/enable_document_sets', to: 'collection#enable_document_sets', as: 'collection_enable_document_sets'
-  get '/collection/enable_ocr', to: 'collection#enable_ocr', as: 'collection_enable_ocr'
-  get '/collection/disable_ocr', to: 'collection#disable_ocr', as: 'collection_disable_ocr'
-  get '/collection/blank_collection', to: 'collection#blank_collection', as: 'collection_blank_collection'
-  get '/collection/edit', to: 'collection#edit', as: 'collection_edit'
-  get '/collection/remove_owner', to: 'collection#remove_owner', as: 'collection_remove_owner'
-  get '/collection/disable_document_sets', to: 'collection#disable_document_sets', as: 'collection_disable_document_sets'
-  get '/collection/disable_fields', to: 'collection#disable_fields', as: 'collection_disable_fields'
-  get '/collection/publish_collection', to: 'collection#publish_collection', as: 'collection_publish_collection'
-  post '/collection/add_collaborator', to: 'collection#add_collaborator', as: 'collection_add_collaborator'
-  get '/collection/remove_collaborator', to: 'collection#remove_collaborator', as: 'collection_remove_collaborator'
-  get '/collection/restrict_collection', to: 'collection#restrict_collection', as: 'collection_restrict_collection'
-  post '/collection/add_owner', to: 'collection#add_owner', as: 'collection_add_owner'
-  post '/collection/update/:id', to: 'collection#update', as: 'collection_update'
 
   get '/user/update_profile', to: 'user#update_profile', as: 'user_update_profile'
 
