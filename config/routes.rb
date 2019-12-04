@@ -73,6 +73,7 @@ Fromthepage::Application.routes.draw do
     get 'versions', to: 'work#versions'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
+    patch 'update_work', :to => 'work#update_work'
   end
 
   scope 'page', as: 'page' do
@@ -147,7 +148,6 @@ Fromthepage::Application.routes.draw do
   get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get 'YaquinaLights' => 'collection#show', :collection_id => 58
 
-  patch 'work/update_work', :to => 'work#update_work'
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
   put 'article/article_category', :to => 'article#article_category'
