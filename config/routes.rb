@@ -99,6 +99,18 @@ Fromthepage::Application.routes.draw do
     get 'combine_duplicate', to: 'article#combine_duplicate'
   end
 
+  scope 'export', as: 'export' do
+    get 'export_all_works', to: 'export#export_all_works'
+    get 'show', to: 'export#show'
+    get 'tei', to: 'export#tei'
+    get 'subject_csv', to: 'export#subject_csv'
+    get 'table_csv', to: 'export#table_csv'
+    get 'export_all_tables', to: 'export#export_all_tables'
+    get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
+    get '/', to: 'export#index'
+    get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
+  end
+
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
   get '/dashboard/watchlist' => 'dashboard#watchlist'
@@ -190,15 +202,6 @@ Fromthepage::Application.routes.draw do
 
   get '/user/update_profile', to: 'user#update_profile', as: 'user_update_profile'
 
-  get '/export/export_all_works', to: 'export#export_all_works', as: 'export_export_all_works'
-  get '/export/show', to: 'export#show', as: 'export_show'
-  get '/export/tei', to: 'export#tei', as: 'export_tei'
-  get '/export/subject_csv', to: 'export#subject_csv', as: 'export_subject_csv'
-  get '/export/table_csv', to: 'export#table_csv', as: 'export_table_csv'
-  get '/export/export_all_tables', to: 'export#export_all_tables', as: 'export_export_all_tables'
-  get '/export/edit_contentdm_credentials', to: 'export#edit_contentdm_credentials', as: 'export_edit_contentdm_credentials'
-  get '/export', to: 'export#index', as: 'export_index'
-  get '/export/work_plaintext_verbatim', to: 'export#work_plaintext_verbatim', as: 'export_work_plaintext_verbatim'
 
   get '/category/edit', to: 'category#edit', as: 'category_edit'
   get '/category/add_new', to: 'category#add_new', as: 'category_add_new'
