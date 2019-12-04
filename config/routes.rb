@@ -65,6 +65,8 @@ Fromthepage::Application.routes.draw do
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'update/:id', to: 'collection#update', as: 'update'
+    get 'new', to: 'collection#new'
+    post 'create', to: 'collection#create'
   end
 
   scope 'work', as: 'work' do
@@ -230,8 +232,6 @@ Fromthepage::Application.routes.draw do
 
   resources :document_sets, except: [:show, :create, :edit]
 
-  get '/collection/new', to: 'collection#new', as: 'collection_new'
-  post '/collection/create', to: 'collection#create', as: 'collection_create'
 
   get '/omeka_items/import', to: 'omeka_items#import', as: 'omeka_items_import'
 
