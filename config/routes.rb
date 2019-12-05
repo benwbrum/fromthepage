@@ -111,6 +111,18 @@ Fromthepage::Application.routes.draw do
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
   end
 
+  scope 'ia', as: 'ia' do
+    get 'import_work', to: 'ia#import_work'
+    get 'book_form', to: 'ia#ia_book_form'
+    match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
+    get 'manage', to: 'ia#manage'
+    get 'mark_beginning', to: 'ia#mark_beginning'
+    get 'mark_end', to: 'ia#mark_end'
+    get 'title_from_ocr_top', to: 'ia#title_from_ocr_top'
+    get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
+    post 'convert', to: 'ia#convert'
+  end
+
   get '/dashboard' => 'dashboard#index'
   get '/dashboard/owner' => 'dashboard#owner'
   get '/dashboard/watchlist' => 'dashboard#watchlist'
@@ -131,15 +143,6 @@ Fromthepage::Application.routes.draw do
   get '/article_version/show', to: 'article_version#show', as: 'article_version'
   get '/article_version/list', to: 'article_version#list', as: 'article_version_list'
   get '/display/display_page', to: 'display#display_page', as: 'display_page'
-  get '/ia/import_work', to: 'ia#import_work', as: 'ia_import_work'
-  get '/ia/ia_book_form', to: 'ia#ia_book_form', as: 'ia_book_form'
-  match '/ia/confirm_import', to: 'ia#confirm_import', as: 'ia_confirm_import', via: [:get, :post]
-  get '/ia/manage', to: 'ia#manage', as: 'ia_manage'
-  get '/ia/mark_beginning', to: 'ia#mark_beginning', as: 'ia_mark_beginning'
-  get '/ia/mark_end', to: 'ia#mark_end', as: 'ia_mark_end'
-  get '/ia/title_from_ocr_top', to: 'ia#title_from_ocr_top', as: 'ia_title_from_ocr_top'
-  get '/ia/title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom', as: 'ia_title_from_ocr_bottom'
-  post '/ia/convert', to: 'ia#convert', as: 'ia_convert'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
