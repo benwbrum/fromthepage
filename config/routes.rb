@@ -130,18 +130,18 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  get '/dashboard/startproject', to: 'dashboard#startproject', as: 'dashboard_startproject'
-  get '/dashboard/summary', to: 'dashboard#summary', as: 'dashboard_summary'
-  post '/dashboard/new_upload', to: 'dashboard#new_upload', as: 'dashboard_new_upload'
-  post '/dashbaord/create_work', to: 'dashboard#create_work', as: 'dashboard_create_work'
-  get 'display_search', to: 'display#search', as: 'display_search'
-  get '/deed/list', to: 'deed#list', as: 'deed_list'
+  get '/dashboard/startproject', to: 'dashboard#startproject'
+  get '/dashboard/summary', to: 'dashboard#summary'
+  post '/dashboard/new_upload', to: 'dashboard#new_upload'
+  post '/dashboard/create_work', to: 'dashboard#create_work'
+  get 'display_search', to: 'display#search'
+  get '/deed/list', to: 'deed#list'
   get 'demo', to: 'demo#index', as: 'demo'
-  get '/static/metadata', to: 'static#metadata', as: 'static_metadata'
+  get '/static/metadata', to: 'static#metadata'
   get '/page_version/show', to: 'page_version#show', as: 'page_version'
-  get '/page_version/list', to: 'page_version#list', as: 'page_version_list'
+  get '/page_version/list', to: 'page_version#list'
   get '/article_version/show', to: 'article_version#show', as: 'article_version'
-  get '/article_version/list', to: 'article_version#list', as: 'article_version_list'
+  get '/article_version/list', to: 'article_version#list'
   get '/display/display_page', to: 'display#display_page', as: 'display_page'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
