@@ -45,6 +45,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'collection', as: 'collection' do
+    get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
     get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
@@ -65,7 +66,6 @@ Fromthepage::Application.routes.draw do
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'update/:id', to: 'collection#update', as: 'update'
-    get 'new', to: 'collection#new'
     post 'create', to: 'collection#create'
   end
 
@@ -100,6 +100,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'export', as: 'export' do
+    get '/', to: 'export#index'
     get 'export_all_works', to: 'export#export_all_works'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
@@ -107,20 +108,19 @@ Fromthepage::Application.routes.draw do
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
-    get '/', to: 'export#index'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
   end
 
   scope 'ia', as: 'ia' do
     get 'import_work', to: 'ia#import_work'
     get 'book_form', to: 'ia#ia_book_form'
-    match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
     get 'manage', to: 'ia#manage'
     get 'mark_beginning', to: 'ia#mark_beginning'
     get 'mark_end', to: 'ia#mark_end'
     get 'title_from_ocr_top', to: 'ia#title_from_ocr_top'
     get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
     post 'convert', to: 'ia#convert'
+    match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
   get '/dashboard' => 'dashboard#index'
