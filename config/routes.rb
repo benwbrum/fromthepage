@@ -204,12 +204,12 @@ Fromthepage::Application.routes.draw do
 
   get '/user/update_profile', to: 'user#update_profile', as: 'user_update_profile'
 
-  get '/category/edit', to: 'category#edit', as: 'category_edit'
-  get '/category/add_new', to: 'category#add_new', as: 'category_add_new'
-  get '/category/enable_gis', to: 'category#enable_gis', as: 'category_enable_gis'
-  get '/category/disable_gis', to: 'category#disable_gis', as: 'category_disable_gis'
-  get '/category/delete', to: 'category#delete', as: 'category_delete'
-  post '/category/create', to: 'category#create', as: 'category_create'
+  get '/category/edit', to: 'category#edit'
+  get '/category/add_new', to: 'category#add_new'
+  get '/category/enable_gis', to: 'category#enable_gis'
+  get '/category/disable_gis', to: 'category#disable_gis'
+  get '/category/delete', to: 'category#delete'
+  post '/category/create', to: 'category#create'
 
   post '/application/guest_transcription', to: 'application#guest_transcription', as: 'application_guest_transcription'
 
