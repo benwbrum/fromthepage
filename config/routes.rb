@@ -196,12 +196,10 @@ Fromthepage::Application.routes.draw do
   get '/transcribe/assign_categories', to: 'transcribe#assign_categories', as: 'transcribe_assign_categories'
   get '/transcribe/guest', to: 'transcribe#guest', as: 'transcribe_guest'
 
-
   get '/display/read_work', to: 'display#read_work', as: 'display_read_work'
   get '/display/read_all_works', to: 'display#read_all_works', as: 'display_read_all_works'
 
   get '/user/update_profile', to: 'user#update_profile', as: 'user_update_profile'
-
 
   get '/category/edit', to: 'category#edit', as: 'category_edit'
   get '/category/add_new', to: 'category#add_new', as: 'category_add_new'
@@ -234,7 +232,6 @@ Fromthepage::Application.routes.draw do
   get 'transcription_field/line_form', to: 'transcription_field#line_form'
 
   resources :document_sets, except: [:show, :create, :edit]
-
 
   get '/omeka_items/import', to: 'omeka_items#import', as: 'omeka_items_import'
 
