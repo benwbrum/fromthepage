@@ -27,7 +27,7 @@ ul
           td
             =link_to 'Edit', collection_settings_path(@collection.owner, document_set)
           td
-            =link_to 'Delete',{ :controller => 'document_sets', :action => 'destroy', :document_set_id => document_set.id }, data: { :confirm => 'Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.' }
+            =link_to 'Delete', document_sets_destroy_path(:document_set_id => document_set.id), data: { :confirm => 'Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.' }
               
 
 br
