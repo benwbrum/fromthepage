@@ -11,7 +11,7 @@
     h2 Works
     -@document_set.works.each do |work|
       .collection-work
-        h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id, :document_set_id => @document_set.id }
+        h4.collection-work_title =link_to work.title, display_read_work_path(:work_id => work.id, :document_set_id => @document_set.id)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -progress_annotated = work.work_statistic.pct_annotated.round
@@ -50,7 +50,7 @@
         span.deed-short_content
           =="#{user} wrote #{text}"
     small.legend
-      =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
+      =link_to 'Show More', deed_list_path(:collection_id => @collection.id), class: 'button outline round'
 
     h3 Recent Edits
     =deeds_for({ :collection => true, :limit => 10, :types => DeedType.document_set_edits })
