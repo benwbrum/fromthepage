@@ -61,7 +61,7 @@
                 =="Please #{help_link} this page"
                 =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
               -elsif !current_user && !@page.work.restrict_scribes
-                -help_link = link_to(help_word, { :controller => 'transcribe', :action => 'guest', :page_id => @page.id })
+                -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
                 =="Please #{help_link} this page"
               -else
                 =="Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
@@ -73,4 +73,4 @@ h2.legend#notes Page Notes
 =render({ :partial => '/shared/collection_footer' })
 
 -unless MIXPANEL_ID.blank?
-  javascript:  mixpanel.track("Display Page");  
+  javascript:  mixpanel.track("Display Page");
