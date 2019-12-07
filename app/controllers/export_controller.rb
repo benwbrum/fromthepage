@@ -161,7 +161,7 @@ class ExportController < ApplicationController
     license_key = params[:collection][:license_key]
     contentdm_user_name = params[:contentdm_user_name]
     contentdm_password = params[:contentdm_password]
-    
+    binding.pry
     error_message, fts_field = ContentdmTranslator.fst_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
 
     # persist license key so the user doesn't have to retype it    
