@@ -334,6 +334,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.total_pages).to eq(0)
 
           create(:page, work: work)
+          ws.recalculate
           expect(ws.total_pages).to eq(1)
         end
         it 'updates transcribed_pages' do
@@ -341,6 +342,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.transcribed_pages).to eq(0)
 
           create(:page, work: work, status: Page::STATUS_TRANSCRIBED)
+          ws.recalculate
           expect(ws.transcribed_pages).to eq(1)
         end
         it 'updates blank_pages' do
@@ -348,6 +350,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.blank_pages).to eq(0)
 
           create(:page, work: work, status: Page::STATUS_BLANK)
+          ws.recalculate
           expect(ws.blank_pages).to eq(1)
         end
         it 'updates annotated_pages' do
@@ -355,6 +358,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.annotated_pages).to eq(0)
 
           create(:page, work: work, status: Page::STATUS_INDEXED)
+          ws.recalculate
           expect(ws.annotated_pages).to eq(1)
         end
         it 'updates needs_review' do
@@ -362,6 +366,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.needs_review).to eq(0)
 
           create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+          ws.recalculate
           expect(ws.needs_review).to eq(1)
         end
         context 'with OCR diabled (default)' do
@@ -373,6 +378,7 @@ RSpec.describe WorkStatistic, type: :model do
             create(:page, work: work, status: Page::STATUS_BLANK)
             create(:page, work: work, status: Page::STATUS_INDEXED)
             create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+            ws.recalculate
 
             # Corrected and Transcribed are synonymous and
             # should always equal the same value
@@ -397,6 +403,7 @@ RSpec.describe WorkStatistic, type: :model do
             create(:page, work: work, status: Page::STATUS_BLANK)
             create(:page, work: work, status: Page::STATUS_INDEXED)
             create(:page, work: work, status: Page::STATUS_NEEDS_REVIEW)
+            ws.recalculate
 
             # Corrected and Transcribed are synonymous and
             # should always equal the same value
@@ -412,6 +419,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.translated_pages).to eq(0)
 
           create(:page, work: work, translation_status: Page::STATUS_TRANSLATED)
+          ws.recalculate
           expect(ws.translated_pages).to eq(1)
         end
         it 'updates translated_blank' do
@@ -419,6 +427,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.translated_blank).to eq(0)
 
           create(:page, work: work, translation_status: Page::STATUS_BLANK)
+          ws.recalculate
           expect(ws.translated_blank).to eq(1)
         end
         it 'updates translated_annotated' do
@@ -426,6 +435,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.translated_annotated).to eq(0)
 
           create(:page, work: work, translation_status: Page::STATUS_INDEXED)
+          ws.recalculate
           expect(ws.translated_annotated).to eq(1)
         end
         it 'updates translated_review' do
@@ -433,6 +443,7 @@ RSpec.describe WorkStatistic, type: :model do
           expect(ws.translated_review).to eq(0)
 
           create(:page, work: work, translation_status: Page::STATUS_NEEDS_REVIEW)
+          ws.recalculate
           expect(ws.translated_review).to eq(1)
         end
         it 'updates translation_complete' do
@@ -443,6 +454,7 @@ RSpec.describe WorkStatistic, type: :model do
           create(:page, work: work, translation_status: Page::STATUS_BLANK)
           create(:page, work: work, translation_status: Page::STATUS_INDEXED)
           create(:page, work: work, translation_status: Page::STATUS_NEEDS_REVIEW)
+          ws.recalculate
 
           expect(ws.translation_complete).to eq(75)
         end
