@@ -70,4 +70,11 @@ Rails.application.configure do
   TEX_PATH='/usr/local/texlive/2017/bin/x86_64-linux/'
 
   config.pontiiif_server = 'http://pontiiif.brumfieldlabs.com/'
+
+  ## Config for MailCatcher ##
+  # Install mailcatcher locally on your machine 'gem install mailcatcher'
+  # Run 'mailcatcher' in the terminal to start the server
+  # Open 'http://localhost:1080/' in your browser to see mail sent
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
 end
