@@ -101,9 +101,6 @@ gem 'friendly_id'
 gem 'rtl'
 gem 'iso-639'
 
-# Quiet asset lines in log files
-#gem 'quiet_assets', '~> 1.1.0', group: :development
-
 # Profiling for use in prod
 gem 'flamegraph'
 gem 'memory_profiler'
