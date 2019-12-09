@@ -120,6 +120,10 @@ h2.legend Page Notes
         function transcribe_periodic_timer() {
           $.ajax({
             url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
+
+            complete: function () {
+              $(".page-busy-overlay").hide();
+            }
           });
         }
 
