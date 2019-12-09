@@ -199,6 +199,7 @@ Fromthepage::Application.routes.draw do
   get '/transcribe/assign_categories', to: 'transcribe#assign_categories'
   get '/transcribe/guest', to: 'transcribe#guest'
   get '/transcribe/edit_fields', to: 'transcribe#edit_fields'
+  get '/transcribe/translate', to: 'transcribe#translate'
 
   get '/display/read_work', to: 'display#read_work'
   get '/display/read_all_works', to: 'display#read_all_works'
