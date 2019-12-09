@@ -207,7 +207,7 @@ class IiifController < ApplicationController
       manifest["otherContent"]  << layer
     end
 
-    render :text => manifest.to_json(pretty: true), :content_type => "application/json"
+    render :plain => manifest.to_json(pretty: true), :content_type => "application/json"
   end
 
   def canvas
