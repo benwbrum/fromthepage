@@ -222,9 +222,8 @@ Fromthepage::Application.routes.draw do
     get 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
+    post 'add_fields', to: 'transcription_field#add_fields'
   end
-
-  post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
 
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'

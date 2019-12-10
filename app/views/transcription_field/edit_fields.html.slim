@@ -4,7 +4,7 @@ div.columns
 
     h2 Edit Transcription Fields
 
-    =form_tag add_fields_path
+    =form_tag transcription_field_add_fields_path
       =hidden_field_tag(:collection_id, @collection.id)
       table.field_form#new-fields
         -unless @current_fields.blank?
