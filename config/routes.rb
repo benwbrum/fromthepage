@@ -232,6 +232,10 @@ Fromthepage::Application.routes.draw do
     post 'add_fields', to: 'transcription_field#add_fields'
   end
 
+  scope 'omeka_items', as: 'omeka_items' do
+    get 'import', to: 'omeka_items#import'
+  end
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
@@ -270,8 +274,6 @@ Fromthepage::Application.routes.draw do
   get '/contact', to: 'contact#form', as: 'contact'
 
   resources :document_sets, except: [:show, :create, :edit]
-
-  get '/omeka_items/import', to: 'omeka_items#import', as: 'omeka_items_import'
 
   scope ':user_slug' do
     get 'update_profile', to: 'user#update_profile', as: :update_profile
