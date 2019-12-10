@@ -133,6 +133,16 @@ Fromthepage::Application.routes.draw do
     post 'create_work', to: 'dashboard#create_work'
   end
 
+  scope 'category', as: 'category' do
+    get 'edit', to: 'category#edit'
+    get 'add_new', to: 'category#add_new'
+    get 'enable_gis', to: 'category#enable_gis'
+    get 'disable_gis', to: 'category#disable_gis'
+    get 'delete', to: 'category#delete'
+    post 'create', to: 'category#create'
+    patch 'update', :to => 'category#update'
+  end
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
@@ -174,7 +184,6 @@ Fromthepage::Application.routes.draw do
   patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
   patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
   put 'article/article_category', :to => 'article#article_category'
-  patch 'category/update', :to => 'category#update'
   patch 'user/update', :to => 'user#update'
 
   patch 'page_block/update', :to => 'page_block#update'
@@ -208,13 +217,6 @@ Fromthepage::Application.routes.draw do
   get '/display/read_all_works', to: 'display#read_all_works'
 
   get '/user/update_profile', to: 'user#update_profile'
-
-  get '/category/edit', to: 'category#edit'
-  get '/category/add_new', to: 'category#add_new'
-  get '/category/enable_gis', to: 'category#enable_gis'
-  get '/category/disable_gis', to: 'category#disable_gis'
-  get '/category/delete', to: 'category#delete'
-  post '/category/create', to: 'category#create'
 
   post '/application/guest_transcription', to: 'application#guest_transcription'
 
