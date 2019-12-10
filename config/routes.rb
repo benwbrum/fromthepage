@@ -208,6 +208,13 @@ Fromthepage::Application.routes.draw do
     post 'guest_transcription', to: 'application#guest_transcription'
   end
 
+  scope 'document_set', as: 'document_set' do
+    get 'edit/:id', :to => 'document_sets#edit', as: 'edit'
+    get 'remove_from_set', to: 'document_sets#remove_from_set'
+    post 'create', :to => 'document_sets#create'
+    post 'assign_works', :to => 'document_sets#assign_works'
+  end
+
   scope 'document_sets', as: 'document_sets' do
     get 'restrict_set', to: 'document_sets#restrict_set'
     get 'destroy', to: 'document_sets#destroy'
@@ -261,11 +268,6 @@ Fromthepage::Application.routes.draw do
   get '/privacy', to: 'static#privacy', as: :privacy
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
-
-  get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
-  get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
-  post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
-  post 'document_set/assign_works', :to => 'document_sets#assign_works'
 
   resources :document_sets, except: [:show, :create, :edit]
 

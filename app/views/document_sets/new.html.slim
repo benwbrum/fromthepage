@@ -2,7 +2,7 @@
   h1 Create New Document Set
   p If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
 
-  =form_for(@document_set, url: create_document_set_path(:collection_id => @collection)) do |f|
+  =form_for(@document_set, url: document_set_create_path(:collection_id => @collection)) do |f|
     =validation_summary @document_set.errors
     =f.hidden_field :collection_id
     table.form
