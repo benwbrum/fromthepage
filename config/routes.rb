@@ -1,5 +1,4 @@
 Fromthepage::Application.routes.draw do
-
   root :to => 'static#splash'
   get '/blog' => redirect("https://fromthepage.com/blog/")
 
@@ -252,7 +251,7 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:work_id/canvas/:page_id', :to => 'iiif#canvas'
   get '/iiif/:work_id/status', :to => 'iiif#manifest_status'
   get '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
-#  {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
+  # {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'
   get '/iiif/:work_id/sequence/:sequence_name', :to => 'iiif#sequence'
   get '/iiif/for/:id', :to => 'iiif#for', :constraints => { :id => /.*/ } # redirector
@@ -296,7 +295,7 @@ Fromthepage::Application.routes.draw do
       #work related routes
       #have to use match because it must be both get and post
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
-      #get 'display/read_all_works', as: :read_all_works, to: 'display#read_all_works'
+
       resources :work, path: '', param: :work_id, only: [:edit] do
         get 'versions', on: :member
         get 'print', on: :member
@@ -305,6 +304,7 @@ Fromthepage::Application.routes.draw do
         post 'add_scribe', on: :member
         get 'remove_scribe', on: :member
       end
+
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
       get ':work_id/contents', param: :work_id, as: :work_contents, to: 'display#list_pages'
       get ':work_id/help', param: :work_id, as: :work_help, to: 'static#transcribe_help'
