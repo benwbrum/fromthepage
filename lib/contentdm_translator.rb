@@ -121,33 +121,40 @@ module ContentdmTranslator
       # no FTS
       error = "No full-text search (FTS) fields were configured on collection #{cdm_collection(at_id)}!"
     else
-    # good response
-      fts_field = doc.search("//field/type[text()='FTS']").first.parent.search('name').text
+      # good response
+      fts_field = doc.search("//field/type[text()='FTS']").first.parent.search('nickname').text
     end
 
     return error, fts_field
   end
 
   def self.export_work_to_cdm(work, username, password, license)
+    error, fieldname = fst_field_for_collection(work.collection, license, username, password)
+    if error
+      puts "Error retrieving Full-TextSearch field: #{error}\n"
+      exit
+    end
+
     soap_client = Savon.client(:wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
     work.pages.each do |page|
-      at_id = page.sc_canvas.sc_canvas_id
-      puts "\nUpdating #{cdm_collection(at_id)}\trecord #{cdm_record(at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title}.  CONTENTdm response:"
+      canvas_at_id = page.sc_canvas.sc_canvas_id
+      manifest_at_id = work.sc_manifest.at_id
+      puts "\nUpdating #{cdm_collection(manifest_at_id)}\trecord #{cdm_record(canvas_at_id)}\tfrom #{page.title}\t#{page.id}\t#{work.title}.  CONTENTdm response:"
       metadata_wrapper = {
         'metadataList' => {
           'metadata' => [
-            { :field => 'dmrecord', :value => cdm_record(at_id)},
-            { :field => "transc", :value => page.source_text}
+            { :field => 'dmrecord', :value => cdm_record(canvas_at_id)},
+            { :field => fieldname, :value => page.source_text}
           ]
         }
       }
 
       message = {
-        :cdmurl => "http://#{cdm_server(at_id)}:8888",
+        :cdmurl => "http://#{cdm_server(manifest_at_id)}:8888",
         :username => username,
         :password => password,
         :license => license,
-        :collection => cdm_collection(at_id),
+        :collection => cdm_collection(manifest_at_id),
         :metadata => metadata_wrapper,
         :action => 'edit'
       }
@@ -173,7 +180,7 @@ module ContentdmTranslator
   end
 
   def self.cdm_collection(at_id)
-    at_id.sub(/.*digital\/iiif(-info)?\//,'').sub(/\/.*/, '')
+    at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
   end
 
   def self.cdm_record(at_id)
