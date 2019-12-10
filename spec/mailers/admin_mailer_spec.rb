@@ -24,12 +24,12 @@ RSpec.describe AdminMailer, type: :mailer do
     end
 
     context "email metadata" do
-      it "mailer has correct subject" do 
+      it "mailer has correct subject" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
         expect(mail.subject).to eq('Recent Activity in Your Collections')
       end
-      it "mailer has correct recipient" do 
+      it "mailer has correct recipient" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
         expect(mail.to).to eq([@owner.email])
@@ -56,7 +56,7 @@ RSpec.describe AdminMailer, type: :mailer do
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
 
         expect(mail.body.encoded).to match("You have new collabora=\ntors!")
-        expect(mail.body.encoded).to match(@new_collaborator.email)        
+        expect(mail.body.encoded).to match(@new_collaborator.email)
         @new_collaborator_deed.destroy
       end
       it "shows new comments" do
