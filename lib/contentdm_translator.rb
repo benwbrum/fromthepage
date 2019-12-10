@@ -98,7 +98,7 @@ module ContentdmTranslator
     imported_work && iiif_manifest_is_cdm?(imported_work.sc_manifest.at_id)
   end
 
-  def self.fst_field_for_collection(collection, license_key, contentdm_user_name, contentdm_password)
+  def self.fts_field_for_collection(collection, license_key, contentdm_user_name, contentdm_password)
     error = nil
     fts_field = nil
     at_id = sample_manifest(collection).at_id
@@ -129,7 +129,7 @@ module ContentdmTranslator
   end
 
   def self.export_work_to_cdm(work, username, password, license)
-    error, fieldname = fst_field_for_collection(work.collection, license, username, password)
+    error, fieldname = fts_field_for_collection(work.collection, license, username, password)
     if error
       puts "Error retrieving Full-TextSearch field: #{error}\n"
       exit
