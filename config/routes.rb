@@ -155,19 +155,83 @@ Fromthepage::Application.routes.draw do
     patch 'save_translation', :to => 'transcribe#save_translation'
   end
 
+  scope 'deed', as: 'deed' do
+    get 'list', to: 'deed#list'
+  end
+
+  scope 'static', as: 'static' do
+    get 'metadata', to: 'static#metadata'
+    get 'faq', to: redirect('/faq', status: 301)
+    get 'privacy', to: redirect('/privacy', status: 301)
+  end
+
+  scope 'page_version', as: 'page_version' do
+    get 'list', to: 'page_version#list'
+  end
+
+  scope 'article_version', as: 'article_version' do
+    get 'list', to: 'article_version#list'
+  end
+
+  scope 'display', as: 'display' do
+    get 'read_work', to: 'display#read_work'
+    get 'read_all_works', to: 'display#read_all_works'
+  end
+
+  scope 'user', as: 'user' do
+    get 'update_profile', to: 'user#update_profile'
+    patch 'update', :to => 'user#update'
+  end
+
+  scope 'page_block', as: 'page_block' do
+    patch 'update', :to => 'page_block#update'
+  end
+
+  scope 'rails', as: 'rails' do
+    get 'mailers' => "rails/mailers#index"
+    get 'mailers/*path' => "rails/mailers#preview"
+  end
+
+  scope 'sc_collections', as: 'sc_collections' do
+    get 'explore_manifest', to: 'sc_collections#explore_manifest'
+    get 'explore_collection', to: 'sc_collections#explore_collection'
+    post 'import_cdm', to: 'sc_collections#import_cdm'
+    match 'import', to: 'sc_collections#import', via: [:get, :post]
+    match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]
+    match 'import_collection', to: 'sc_collections#import_collection', via: [:get, :post]
+  end
+
+  scope 'application', as: 'application' do
+    post 'guest_transcription', to: 'application#guest_transcription'
+  end
+
+  scope 'document_sets', as: 'document_sets' do
+    get 'restrict_set', to: 'document_sets#restrict_set'
+    get 'destroy', to: 'document_sets#destroy'
+    get 'publish_set', to: 'document_sets#publish_set'
+    get 'remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
+    post 'assign_to_set', to: 'document_sets#assign_to_set'
+    post 'add_set_collaborator', to: 'document_sets#add_set_collaborator'
+  end
+
+  scope 'transcription_field', as: 'transcription_field' do
+    get 'reorder_field', to: 'transcription_field#reorder_field'
+    get 'delete', to: 'transcription_field#delete'
+    get 'edit_fields', to: 'transcription_field#edit_fields'
+    get 'line_form', to: 'transcription_field#line_form'
+  end
+
+  get '/page_version/show', to: 'page_version#show', as: 'page_version'
+  get '/article_version/show', to: 'article_version#show', as: 'article_version'
+  get '/display/display_page', to: 'display#display_page', as: 'display_page'
+  post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   get 'display_search', to: 'display#search'
-  get '/deed/list', to: 'deed#list'
   get 'demo', to: 'demo#index'
-  get '/static/metadata', to: 'static#metadata'
-  get '/page_version/show', to: 'page_version#show', as: 'page_version'
-  get '/page_version/list', to: 'page_version#list'
-  get '/article_version/show', to: 'article_version#show', as: 'article_version'
-  get '/article_version/list', to: 'article_version#list'
-  get '/display/display_page', to: 'display#display_page', as: 'display_page'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
@@ -193,56 +257,16 @@ Fromthepage::Application.routes.draw do
   get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get 'YaquinaLights' => 'collection#show', :collection_id => 58
 
-  patch 'user/update', :to => 'user#update'
-
-  patch 'page_block/update', :to => 'page_block#update'
-
-  get '/rails/mailers' => "rails/mailers#index"
-  get '/rails/mailers/*path' => "rails/mailers#preview"
-
   get '/software', to: 'static#software', as: :about
   get '/faq', to: 'static#faq', as: :faq
-  get '/static/faq', to: redirect('/faq', status: 301)
   get '/privacy', to: 'static#privacy', as: :privacy
-  get '/static/privacy', to: redirect('/privacy', status: 301)
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
-
-  match '/sc_collections/import', to: 'sc_collections#import', via: [:get, :post]
-  post '/sc_collections/import_cdm', to: 'sc_collections#import_cdm'
-  match '/sc_collections/convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]
-  match '/sc_collections/import_collection', to: 'sc_collections#import_collection', via: [:get, :post]
-  get '/sc_collections/explore_manifest', to: 'sc_collections#explore_manifest'
-  get '/sc_collections/explore_collection', to: 'sc_collections#explore_collection'
-
-
-  get '/display/read_work', to: 'display#read_work'
-  get '/display/read_all_works', to: 'display#read_all_works'
-
-  get '/user/update_profile', to: 'user#update_profile'
-
-  post '/application/guest_transcription', to: 'application#guest_transcription'
-
-  get '/document_sets/restrict_set', to: 'document_sets#restrict_set'
-  get '/document_sets/destroy', to: 'document_sets#destroy'
-  get '/document_sets/publish_set', to: 'document_sets#publish_set'
-  get '/document_sets/remove_set_collaborator', to: 'document_sets#remove_set_collaborator'
-  post '/document_sets/assign_to_set', to: 'document_sets#assign_to_set'
-  post '/document_sets/add_set_collaborator', to: 'document_sets#add_set_collaborator'
-
-  get '/transcription_field/reorder_field', to: 'transcription_field#reorder_field'
-  get '/transcription_field/delete', to: 'transcription_field#delete'
-  get '/transcription_field/edit_fields', to: 'transcription_field#edit_fields'
-
-  get '/demo/index', to: 'demo#index'
 
   get 'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set
   get 'document_set/remove_from_set', to: 'document_sets#remove_from_set', as: :remove_from_set
   post 'document_set/create', :to => 'document_sets#create', as: :create_document_set
   post 'document_set/assign_works', :to => 'document_sets#assign_works'
-  #get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
-  post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
-  get 'transcription_field/line_form', to: 'transcription_field#line_form'
 
   resources :document_sets, except: [:show, :create, :edit]
 
