@@ -44,7 +44,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
-    
+
     puts "Setting Collection Work Counts..."
     Collection.all.each do |c|
       Collection.reset_counters c.id, :works
@@ -82,8 +82,6 @@ RSpec.configure do |config|
   config.include Capybara::DSL
 
   config.include Warden::Test::Helpers
-
-
 end
 
 Capybara::Webkit.configure do |config|
