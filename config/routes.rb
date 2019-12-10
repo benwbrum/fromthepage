@@ -123,17 +123,20 @@ Fromthepage::Application.routes.draw do
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
-  get '/dashboard' => 'dashboard#index'
-  get '/dashboard/owner' => 'dashboard#owner'
-  get '/dashboard/watchlist' => 'dashboard#watchlist'
+  scope 'dashboard', as: 'dashboard' do
+    get '/' => 'dashboard#index'
+    get 'owner' => 'dashboard#owner'
+    get 'watchlist' => 'dashboard#watchlist'
+    get 'startproject', to: 'dashboard#startproject'
+    get 'summary', to: 'dashboard#summary'
+    post 'new_upload', to: 'dashboard#new_upload'
+    post 'create_work', to: 'dashboard#create_work'
+  end
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  get '/dashboard/startproject', to: 'dashboard#startproject'
-  get '/dashboard/summary', to: 'dashboard#summary'
-  post '/dashboard/new_upload', to: 'dashboard#new_upload'
-  post '/dashboard/create_work', to: 'dashboard#create_work'
   get 'display_search', to: 'display#search'
   get '/deed/list', to: 'deed#list'
   get 'demo', to: 'demo#index'
