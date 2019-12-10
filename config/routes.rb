@@ -65,8 +65,8 @@ Fromthepage::Application.routes.draw do
     get 'restrict_collection', to: 'collection#restrict_collection'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
-    post 'update/:id', to: 'collection#update', as: 'update'
     post 'create', to: 'collection#create'
+    match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
   end
 
   scope 'work', as: 'work' do
@@ -345,6 +345,4 @@ Fromthepage::Application.routes.draw do
   end
 
   get '/:user_id', to: 'user#profile', as: :user_profile
-
-  get 'collection/update/:id', to: 'collection#update', as: :update_collection
 end
