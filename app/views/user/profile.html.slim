@@ -80,4 +80,4 @@
               td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
               td.overflow =link_to version.article.title, article_show_path(:article_id => version.article.id)
               td ==version.article.categories.map { |c| link_to c.title, article_list_path(:collection_id => version.article.collection.id, anchor: "category-#{c.id}") }.join(', ')
-              td.nowrap =link_to "Revision #{version.version}", article_version_path(:article_version_id => version.id)
+              td.nowrap =link_to "Revision #{version.version}", article_version_show_path(:article_version_id => version.id)

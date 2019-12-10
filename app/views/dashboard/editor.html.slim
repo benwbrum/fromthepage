@@ -28,7 +28,7 @@
             =="#{article_link} article in the #{collection_link} collection"
           td
             =link_to "Revision #{a.version}",
-              article_version_path(:article_version_id => a.id),
+              article_version_show_path(:article_version_id => a.id),
               class: 'label'
           td
             =time_tag a.created_on
