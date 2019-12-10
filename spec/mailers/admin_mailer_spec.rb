@@ -55,7 +55,7 @@ RSpec.describe AdminMailer, type: :mailer do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
 
-        expect(mail.body.encoded).to match("You have new collabor=\nators!")
+        expect(mail.body.encoded).to match("You have new collabora=\ntors!")
         expect(mail.body.encoded).to match(@new_collaborator.email)        
         @new_collaborator_deed.destroy
       end
@@ -68,13 +68,13 @@ RSpec.describe AdminMailer, type: :mailer do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
 
-        expect(mail.body.encoded).to match("Comments from Your Co=\nllaborators")
+        expect(mail.body.encoded).to match("Comments from Your Col=\nlaborators")
         @new_comment.destroy
       end
       it "doesn't show comments when there aren't any" do
         activity = AdminMailer::OwnerCollectionActivity.build(@owner)
         mail = AdminMailer.collection_stats_by_owner(activity).deliver
-        expect(mail.body.encoded).not_to match("Comments from Your Collaborators")
+        expect(mail.body.encoded).not_to match("Comments from Your Co=\nllaborators")
       end
       it "shows new activity collection title" do
         @new_deed = create(:deed, {
