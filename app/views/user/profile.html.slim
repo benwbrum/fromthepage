@@ -61,7 +61,7 @@
             -else
               span.a50 No work
           td =link_to version.page.title, collection_display_page_path(version.page.collection.owner, version.page.collection, version.page.work, version.page)
-          td.nowrap =link_to "Revision #{version.page_version}", page_version_path(:page_version_id => version.id)
+          td.nowrap =link_to "Revision #{version.page_version}", page_version_show_path(:page_version_id => version.id)
     br
 
   -if @article_versions.present?

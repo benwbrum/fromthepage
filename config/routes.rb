@@ -167,6 +167,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'page_version', as: 'page_version' do
     get 'list', to: 'page_version#list'
+    get 'show', to: 'page_version#show'
   end
 
   scope 'article_version', as: 'article_version' do
@@ -221,7 +222,6 @@ Fromthepage::Application.routes.draw do
     get 'line_form', to: 'transcription_field#line_form'
   end
 
-  get '/page_version/show', to: 'page_version#show', as: 'page_version'
   get '/article_version/show', to: 'article_version#show', as: 'article_version'
   get '/display/display_page', to: 'display#display_page', as: 'display_page'
   post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields

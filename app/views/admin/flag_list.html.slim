@@ -25,7 +25,7 @@ table.admin-grid.datagrid.striped
         td
           div
             -if flag.page_version
-              =link_to flag.page_version.title, page_version_path(:page_version_id => flag.page_version_id)
+              =link_to flag.page_version.title, page_version_show_path(:page_version_id => flag.page_version_id)
             -elsif flag.article_version
               =link_to flag.article_version.title, article_version_path(:article_version_id => flag.article_version_id)
             -elsif flag.note

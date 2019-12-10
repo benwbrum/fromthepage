@@ -12,7 +12,7 @@
             =="#{page_link} page in the #{work_link} work"
           td
             =link_to "Revision #{p.page_version}",
-              page_version_path(:page_version_id => p.id),
+              page_version_show_path(:page_version_id => p.id),
               class: 'label'
           td
             =time_tag p.created_on
