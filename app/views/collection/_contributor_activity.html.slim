@@ -50,7 +50,7 @@
   p
     -@recent_notes.each do |note|
       -user = link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
-      -text = link_to truncate(note.note.title, :length => 100), display_page_path(:page_id => note.page_id, :anchor => "comment_#{note.id}")
+      -text = link_to truncate(note.note.title, :length => 100), display_display_page_path(:page_id => note.page_id, :anchor => "comment_#{note.id}")
       .deed-short
         span.deed-short_content
         = "On #{note.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")}, "

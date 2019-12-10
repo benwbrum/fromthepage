@@ -178,6 +178,7 @@ Fromthepage::Application.routes.draw do
   scope 'display', as: 'display' do
     get 'read_work', to: 'display#read_work'
     get 'read_all_works', to: 'display#read_all_works'
+    get 'display_page', to: 'display#display_page'
   end
 
   scope 'user', as: 'user' do
@@ -223,7 +224,6 @@ Fromthepage::Application.routes.draw do
     get 'line_form', to: 'transcription_field#line_form'
   end
 
-  get '/display/display_page', to: 'display#display_page', as: 'display_page'
   post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
 
   get 'dashboard_role' => 'dashboard#dashboard_role'

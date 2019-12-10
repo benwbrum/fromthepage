@@ -29,7 +29,7 @@ table.admin-grid.datagrid.striped
             -elsif flag.article_version
               =link_to flag.article_version.title, article_version_show_path(:article_version_id => flag.article_version_id)
             -elsif flag.note
-              =link_to flag.note.page.title, display_page_path(:page_id => flag.note.page_id)
+              =link_to flag.note.page.title, display_display_page_path(:page_id => flag.note.page_id)
             -else
               i content removed
           div
