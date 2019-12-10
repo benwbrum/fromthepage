@@ -97,6 +97,7 @@ Fromthepage::Application.routes.draw do
     get 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
     get 'combine_duplicate', to: 'article#combine_duplicate'
+    put 'article_category', :to => 'article#article_category'
   end
 
   scope 'export', as: 'export' do
@@ -143,6 +144,17 @@ Fromthepage::Application.routes.draw do
     patch 'update', :to => 'category#update'
   end
 
+  scope 'transcribe', as: 'transcribe' do
+    get 'mark_page_blank', to: 'transcribe#mark_page_blank'
+    get 'display_page', to: 'transcribe#display_page'
+    get 'assign_categories', to: 'transcribe#assign_categories'
+    get 'guest', to: 'transcribe#guest'
+    get 'edit_fields', to: 'transcribe#edit_fields'
+    get 'translate', to: 'transcribe#translate'
+    patch 'save_transcription', :to => 'transcribe#save_transcription'
+    patch 'save_translation', :to => 'transcribe#save_translation'
+  end
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
@@ -181,9 +193,6 @@ Fromthepage::Application.routes.draw do
   get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
   get 'YaquinaLights' => 'collection#show', :collection_id => 58
 
-  patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
-  patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
-  put 'article/article_category', :to => 'article#article_category'
   patch 'user/update', :to => 'user#update'
 
   patch 'page_block/update', :to => 'page_block#update'
@@ -206,12 +215,6 @@ Fromthepage::Application.routes.draw do
   get '/sc_collections/explore_manifest', to: 'sc_collections#explore_manifest'
   get '/sc_collections/explore_collection', to: 'sc_collections#explore_collection'
 
-  get '/transcribe/mark_page_blank', to: 'transcribe#mark_page_blank'
-  get '/transcribe/display_page', to: 'transcribe#display_page'
-  get '/transcribe/assign_categories', to: 'transcribe#assign_categories'
-  get '/transcribe/guest', to: 'transcribe#guest'
-  get '/transcribe/edit_fields', to: 'transcribe#edit_fields'
-  get '/transcribe/translate', to: 'transcribe#translate'
 
   get '/display/read_work', to: 'display#read_work'
   get '/display/read_all_works', to: 'display#read_all_works'
