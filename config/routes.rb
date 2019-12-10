@@ -38,9 +38,9 @@ Fromthepage::Application.routes.draw do
     get 'delete_upload', to: 'admin#delete_upload'
     get 'visit_deeds', to: 'admin#visit_deeds'
     get 'visit_actions', to: 'admin#visit_actions'
+    get 'expunge_confirmation', :to => 'admin#expunge_confirmation'
     post 'update', to: 'admin#update'
     patch 'update_user', :to => 'admin#update_user'
-    get 'expunge_confirmation', :to => 'admin#expunge_confirmation'
     patch 'expunge_user', :to => 'admin#expunge_user'
   end
 
