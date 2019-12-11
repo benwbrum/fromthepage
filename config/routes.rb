@@ -108,6 +108,7 @@ Fromthepage::Application.routes.draw do
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
+    get 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
   end
 
