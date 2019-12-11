@@ -37,7 +37,7 @@ class WorkController < ApplicationController
 
     File.open(doc_tmp_path, "w") { |f| f.write(string) }
     if $?
-        render(:text => "file write failed")
+        render(:plain => "file write failed")
       return
     end
 
@@ -51,12 +51,12 @@ class WorkController < ApplicationController
     end
 
     if !File.exists?(pdf_tmp_path)
-      render(:text => "#{dp_cmd} did not generate #{pdf_tmp_path}")
+      render(:plain => "#{dp_cmd} did not generate #{pdf_tmp_path}")
       return
     end
 
     if !File.copy(pdf_tmp_path, pdf_pub_path)
-      render(:text => "could not copy pdf file to public/docs")
+      render(:plain => "could not copy pdf file to public/docs")
       return
     end
     @pdf_file = pdf_pub_path
@@ -231,7 +231,7 @@ class WorkController < ApplicationController
     File.new("#{tmp_path}/d2p.out").each { |l| msg+= l + "<br />"}
     msg += "<br />stderr:<br />"
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
-    render(:text => msg )
+    render(:plain => msg )
   end
 
   protected
