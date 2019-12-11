@@ -15,13 +15,13 @@ class IiifController < ApplicationController
       site_collection.collections << iiif_collection
     end
 
-    render :text => site_collection.to_json(pretty: true), :content_type => "application/json"
+    render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
   def collection
     iiif_collection = iiif_collection_from_collection(@collection,true)
 
-    render :text => iiif_collection.to_json(pretty: true), :content_type => "application/json"
+    render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
   def contributions
@@ -212,11 +212,11 @@ class IiifController < ApplicationController
 
   def canvas
     if @page.sc_canvas
-      render :text => canvas_from_iiif_page(@page).to_json(pretty: true), :content_type => "application/json"
+      render :plain => canvas_from_iiif_page(@page).to_json(pretty: true), :content_type => "application/json"
     elsif @page.ia_leaf
-      render :text => canvas_from_ia_page(@page).to_json(pretty: true), :content_type => "application/json"
+      render :plain => canvas_from_ia_page(@page).to_json(pretty: true), :content_type => "application/json"
     else
-      render :text => canvas_from_page(@page).to_json(pretty: true), :content_type => "application/json"
+      render :plain => canvas_from_page(@page).to_json(pretty: true), :content_type => "application/json"
     end
   end
 
@@ -231,7 +231,7 @@ class IiifController < ApplicationController
     annotation = iiif_annotation_by_type(@page.id,type)
 
     annotation_list.resources << annotation
-    render :text => annotation_list.to_json(pretty: true), :content_type => "application/json"
+    render :plain => annotation_list.to_json(pretty: true), :content_type => "application/json"
   end
 
   def layer
@@ -285,13 +285,13 @@ class IiifController < ApplicationController
       end
     end
 
-    render :text => layer.to_json(pretty: true), :content_type => "application/json"
+    render :plain => layer.to_json(pretty: true), :content_type => "application/json"
   end
 
   def sequence
     work_id = @work.id
     sequence = iiif_sequence_from_work_id(work_id)
-    render :text => sequence.to_json(pretty: true), :content_type => "application/json"
+    render :plain => sequence.to_json(pretty: true), :content_type => "application/json"
   end
 
   def annotation
@@ -299,7 +299,7 @@ class IiifController < ApplicationController
     type = params[:annotation_type]
     annotation = iiif_annotation_by_type(page_id,type)
     annotation['@id'] = url_for({:controller => 'iiif', :action => 'annotation', :page_id => @page.id, :annotation_type => type, :only_path => false})
-    render :text => annotation.to_json(pretty: true), :content_type => "application/json"
+    render :plain => annotation.to_json(pretty: true), :content_type => "application/json"
   end
 
   def notes
@@ -311,7 +311,7 @@ class IiifController < ApplicationController
       note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => i+1, :only_path => false})
       annotation_list.resources << note
     end
-    render :text => annotation_list.to_json(pretty: true), :content_type => "application/json"
+    render :plain => annotation_list.to_json(pretty: true), :content_type => "application/json"
   end
 
   def note
@@ -319,19 +319,19 @@ class IiifController < ApplicationController
     page = Page.find params[:page_id]
     note = iiif_page_note(@page,noteid)
     note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
-    render :text => note.to_json(pretty: true), :content_type => "application/json"
+    render :plain => note.to_json(pretty: true), :content_type => "application/json"
   end
 
   def canvas_status
     page = Page.find params[:page_id]
     service = status_service_for_page(page)
-    render :text => service.to_json(pretty: true), :content_type => "application/json"
+    render :plain => service.to_json(pretty: true), :content_type => "application/json"
   end
 
   def manifest_status
     work = Work.find params[:work_id]
     service = status_service_for_work(work)
-    render :text => service.to_json(pretty: true), :content_type => "application/json"
+    render :plain => service.to_json(pretty: true), :content_type => "application/json"
   end
 
 private
