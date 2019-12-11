@@ -9,6 +9,6 @@ class AnnotationController < ApplicationController
     end
     def render_xml_to_html(xml)
         annotation = xml_to_html(xml)
-        render  :layout => false, :content_type => "text/html", :text => annotation
+        render  :layout => false, :content_type => "text/html", :plain => annotation
     end
 end
