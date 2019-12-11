@@ -347,13 +347,13 @@ private
 
 
   def index_for_cell(cell)
-      if cell.transcription_field_id
-        index = (@raw_headings.index(cell.transcription_field_id))
-      end
-      index = (@raw_headings.index(cell.header)) unless index
-      index = (@raw_headings.index(cell.header.strip)) unless index
+    if cell.transcription_field_id
+      index = (@raw_headings.index(cell.transcription_field_id))
+    end
+    index = (@raw_headings.index(cell.header)) unless index
+    index = (@raw_headings.index(cell.header.strip)) unless index
 
-      index
+    index
   end
 
 
