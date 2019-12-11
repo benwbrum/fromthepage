@@ -123,7 +123,7 @@ h2.legend Page Notes
           $.ajax({
             url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
 
-            complete: function () {
+            complete: function() {
               $(".page-busy-overlay").hide();
             }
           });
