@@ -59,7 +59,7 @@ class ExportController < ApplicationController
     xml = render_to_string :layout => false, :template => "export/tei.html.erb"
 
     # Render the post-processed
-    render :text => post_process_xml(xml, @work), :content_type => "application/xml"
+    render :plain => post_process_xml(xml, @work), :content_type => "application/xml"
   end
 
   def subject_csv
