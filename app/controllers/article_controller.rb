@@ -73,7 +73,7 @@ class ArticleController < ApplicationController
     else
       @article.categories.delete(@category)
     end
-    render :text => "success"
+    render :plain => "success"
   end
 
   def combine_duplicate
