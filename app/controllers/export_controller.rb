@@ -132,7 +132,7 @@ class ExportController < ApplicationController
   end
 
   def work_plaintext_verbatim
-    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_transcription_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @work.verbatim_transcription_plaintext
   end
 
   def work_plaintext_translation_verbatim
