@@ -54,7 +54,7 @@ class ExportController < ApplicationController
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-    
+
     ### Catch the rendered Work for post-processing
     xml = render_to_string :layout => false, :template => "export/tei.html.erb"
 
@@ -68,13 +68,13 @@ class ExportController < ApplicationController
               :type => "application/csv")
     cookies['download_finished'] = 'true'
   end
-  
+
   def table_csv
     send_data(export_tables_as_csv(@work),
               :filename => "fromthepage_tables_export_#{@work.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
-    
+
   end
 
   def export_all_works
@@ -82,7 +82,7 @@ class ExportController < ApplicationController
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
     else
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
-    end      
+    end
 
 #create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
@@ -108,7 +108,7 @@ class ExportController < ApplicationController
               :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
-   
+
   end
 
   def page_plaintext_verbatim
@@ -150,12 +150,12 @@ class ExportController < ApplicationController
   def work_plaintext_searchable
     render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
   end
-  
-  
+
+
   def edit_contentdm_credentials
     # display the edit form
   end
-  
+
   def update_contentdm_credentials
     # test credentials
     license_key = params[:collection][:license_key]
@@ -163,12 +163,12 @@ class ExportController < ApplicationController
     contentdm_password = params[:contentdm_password]
     error_message, fts_field = ContentdmTranslator.fts_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
 
-    # persist license key so the user doesn't have to retype it    
+    # persist license key so the user doesn't have to retype it
     if error_message.blank? || !error_message.match(/license.*invalid/)
       @collection.license_key = license_key
       @collection.save!
     end
-    
+
     # redirect to or render edit screen with error
     if error_message
       flash[:error] = error_message
@@ -341,25 +341,25 @@ private
     @page_metadata_headings.each do |key|
       metadata_cells << page.metadata[key]
     end
-    
+
     metadata_cells
   end
 
 
   def index_for_cell(cell)
       if cell.transcription_field_id
-        index = (@raw_headings.index(cell.transcription_field_id))        
+        index = (@raw_headings.index(cell.transcription_field_id))
       end
       index = (@raw_headings.index(cell.header)) unless index
-      index = (@raw_headings.index(cell.header.strip)) unless index      
+      index = (@raw_headings.index(cell.header.strip)) unless index
 
       index
   end
-    
+
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
-      index = index_for_cell(cell)      
+      index = index_for_cell(cell)
       target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
