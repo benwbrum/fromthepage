@@ -34,20 +34,20 @@ class IiifController < ApplicationController
     # error processing -- return 400 Bad Request with explanatory text in HTML or JSON within a respond_to
     # see https://cloud.google.com/storage/docs/json_api/v1/status-codes
     if domain.blank?
-      render :status => 400, :text => "Usage: {url}/iiif/contributions/<b><i>domain</i></b>/<i>beginning of window</i>/<i>end of window</i><br />See <a href=\"https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations\">docs</a> for more help."
+      render :status => 400, :plain => "Usage: {url}/iiif/contributions/<b><i>domain</i></b>/<i>beginning of window</i>/<i>end of window</i><br />See <a href=\"https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations\">docs</a> for more help."
       return
     end
 
     begin
       terminus_a_quo = DateTime.parse(raw_terminus_a_quo) if raw_terminus_a_quo
     rescue
-      render :status => 400, :text => "Could not parse #{raw_terminus_a_quo} as a date. Try a format like #{DateTime.now.iso8601}"
+      render :status => 400, :plain => "Could not parse #{raw_terminus_a_quo} as a date. Try a format like #{DateTime.now.iso8601}"
       return
     end
     begin
       terminus_ad_quem =     DateTime.parse(raw_terminus_ad_quem) if raw_terminus_ad_quem
     rescue
-      render :status => 400, :text => "Could not parse #{raw_terminus_ad_quem} as a date. Try a format like #{DateTime.now.iso8601}"
+      render :status => 400, :plain => "Could not parse #{raw_terminus_ad_quem} as a date. Try a format like #{DateTime.now.iso8601}"
       return
     end
     contributions = collection_for_domain(domain, terminus_a_quo, terminus_ad_quem)
@@ -75,7 +75,7 @@ class IiifController < ApplicationController
     end
 
     if at_id.match(/http/)
-      render :status => 404, :text => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
+      render :status => 404, :plain => "No items that correspond to #{at_id} have been imported into the FromThePage server.  For a full list of public IIIF resources, see #{url_for(:controller => 'iiif', :action => 'collections')}"
     else
       collection_for_domain(at_id)
     end
