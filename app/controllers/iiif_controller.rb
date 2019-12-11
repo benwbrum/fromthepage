@@ -334,7 +334,8 @@ class IiifController < ApplicationController
     render :plain => service.to_json(pretty: true), :content_type => "application/json"
   end
 
-private
+  private
+
   def iiif_page_note(page, noteid)
     note = IIIF::Presentation::Annotation.new({'motivation' => 'oa:commenting'})
     #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
