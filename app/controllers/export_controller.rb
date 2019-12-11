@@ -1,4 +1,5 @@
 require 'contentdm_translator'
+
 class ExportController < ApplicationController
   require 'zip'
   include CollectionHelper,ExportHelper
