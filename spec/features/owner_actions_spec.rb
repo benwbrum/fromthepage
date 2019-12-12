@@ -272,5 +272,12 @@ describe "owner actions", :order => :defined do
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
-
+  it "exceeded account limit", :js => true do
+    class User; def page_count; 200; end; end
+    @owner.account_type = "Trial"
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#document-upload").click
+    expect(page).to have_content("Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.")
+  end
 end
