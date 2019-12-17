@@ -110,9 +110,9 @@ class ExportController < ApplicationController
             out.write page.emended_translation_plaintext
           end
 
-          work_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+          full_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
           out.put_next_entry("html/full.html")
-          out.write work_view
+          out.write full_view
 
           @work.pages.each do |page|
             page_view = render_to_string('display/display_page.html.slim', :locals => {:@work => @work, :@page => page}, :layout => false)
