@@ -77,6 +77,46 @@ class ExportController < ApplicationController
     
   end
 
+  def export_work
+    respond_to do |format|
+      format.zip do
+        buffer = Zip::OutputStream.write_buffer do |out|
+          out.put_next_entry("plaintext/verbatim_transcript.txt")
+          out.write @work.verbatim_transcription_plaintext
+
+          out.put_next_entry("plaintext/searchable_transcript.txt")
+          out.write @work.searchable_plaintext
+
+          out.put_next_entry("plaintext/emended_transcript.txt")
+          out.write @work.emended_transcription_plaintext
+
+          out.put_next_entry("plaintext/verbatim_translation.txt")
+          out.write @work.verbatim_translation_plaintext
+
+          out.put_next_entry("plaintext/emended_translation.txt")
+          out.write @work.emended_translation_plaintext
+
+          @work.pages.each do |page|
+            out.put_next_entry("plaintext/verbatim_transcript_pages/#{page.title}.txt")
+            out.write page.verbatim_transcription_plaintext
+
+            out.put_next_entry("plaintext/emended_transcript_pages/#{page.title}.txt")
+            out.write page.emended_transcription_plaintext
+
+            out.put_next_entry("plaintext/verbatim_translation_pages/#{page.title}.txt")
+            out.write page.verbatim_translation_plaintext
+
+            out.put_next_entry("plaintext/emended_translation_pages/#{page.title}.txt")
+            out.write page.emended_translation_plaintext
+          end
+        end
+
+        buffer.rewind
+        send_data buffer.read, filename: "#{@collection.title}-#{@work.title}.zip"
+      end
+    end
+  end
+
   def export_all_works
     unless @collection.subjects_disabled
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
