@@ -35,6 +35,11 @@ class ExportController < ApplicationController
     render :layout => false
   end
 
+  def translation
+    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
+    render :layout => false
+  end
+
   def tei
     params[:format] = 'xml'# if params[:format].blank?
 
@@ -131,6 +136,10 @@ class ExportController < ApplicationController
           transcript_view = render_to_string(:action => 'transcript', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
           out.put_next_entry("html/transcript.html")
           out.write transcript_view
+
+          translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+          out.put_next_entry("html/translation.html")
+          out.write translation_view
 
           @work.pages.each do |page|
             page_view = render_to_string('display/display_page.html.slim', :locals => {:@work => @work, :@page => page}, :layout => false)
