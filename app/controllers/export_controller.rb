@@ -92,59 +92,108 @@ class ExportController < ApplicationController
     
   end
 
+  def export_plaintext_transcript(name, dirname, out)
+    case name
+    when "verbatim"
+      out.put_next_entry("#{dirname}/plaintext/verbatim_transcript.txt")
+      out.write @work.verbatim_transcription_plaintext
+    when "emended"
+      out.put_next_entry("#{dirname}/plaintext/emended_transcript.txt")
+      out.write @work.emended_transcription_plaintext
+    when "searchable"
+      out.put_next_entry("#{dirname}/plaintext/searchable_transcript.txt")
+      out.write @work.searchable_plaintext
+    end
+  end
+
+  def export_plaintext_translation(name, dirname, out)
+    case name
+    when "verbatim"
+      out.put_next_entry("#{dirname}/plaintext/verbatim_translation.txt")
+      out.write @work.verbatim_translation_plaintext
+    when "emended"
+      out.put_next_entry("#{dirname}/plaintext/emended_translation.txt")
+      out.write @work.emended_translation_plaintext
+    end
+  end
+
+  def export_plaintext_transcript_pages(name, dirname, out, page)
+    case name
+    when "verbatim"
+      out.put_next_entry("#{dirname}/plaintext/verbatim_transcript_pages/#{page.title}.txt")
+      out.write page.verbatim_transcription_plaintext
+    when "emended"
+      out.put_next_entry("#{dirname}/plaintext/emended_transcript_pages/#{page.title}.txt")
+      out.write page.emended_transcription_plaintext
+    end
+  end
+
+  def export_plaintext_translation_pages(name, dirname, out, page)
+    case name
+    when "verbatim"
+      out.put_next_entry("#{dirname}/plaintext/verbatim_translation_pages/#{page.title}.txt")
+      out.write page.verbatim_translation_plaintext
+    when "emended"
+      out.put_next_entry("#{dirname}/plaintext/emended_translation_pages/#{page.title}.txt")
+      out.write page.emended_translation_plaintext
+    end
+  end
+
+  def export_view(name, dirname, out)
+    case name
+    when "full"
+      full_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry("#{dirname}/html/full.html")
+      out.write full_view
+    when "text"
+      text_view = render_to_string(:action => 'text', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry("#{dirname}/html/text.html")
+      out.write text_view
+    when "transcript"
+      transcript_view = render_to_string(:action => 'transcript', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry("#{dirname}/html/transcript.html")
+      out.write transcript_view
+    when "translation"
+      translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry("#{dirname}/html/translation.html")
+      out.write translation_view
+    end
+  end
+
+  def export_html_full_pages(dirname, out, page)
+    page_view = render_to_string('display/display_page.html.slim', :locals => {:@work => @work, :@page => page}, :layout => false)
+    out.put_next_entry("#{dirname}/html/full_pages/#{page.title}.html")
+    out.write page_view
+  end
+
   def export_work
+    dirname = @work.slug.truncate(200, omission: "")
+
     respond_to do |format|
       format.zip do
         buffer = Zip::OutputStream.write_buffer do |out|
-          out.put_next_entry("plaintext/verbatim_transcript.txt")
-          out.write @work.verbatim_transcription_plaintext
+          export_plaintext_transcript("verbatim", dirname, out)
+          export_plaintext_transcript("emended", dirname, out)
+          export_plaintext_transcript("searchable", dirname, out)
 
-          out.put_next_entry("plaintext/searchable_transcript.txt")
-          out.write @work.searchable_plaintext
-
-          out.put_next_entry("plaintext/emended_transcript.txt")
-          out.write @work.emended_transcription_plaintext
-
-          out.put_next_entry("plaintext/verbatim_translation.txt")
-          out.write @work.verbatim_translation_plaintext
-
-          out.put_next_entry("plaintext/emended_translation.txt")
-          out.write @work.emended_translation_plaintext
+          export_plaintext_translation("verbatim", dirname, out)
+          export_plaintext_translation("emended", dirname, out)
 
           @work.pages.each do |page|
-            out.put_next_entry("plaintext/verbatim_transcript_pages/#{page.title}.txt")
-            out.write page.verbatim_transcription_plaintext
+            export_plaintext_transcript_pages("verbatim", dirname, out, page)
+            export_plaintext_transcript_pages("emended", dirname, out, page)
 
-            out.put_next_entry("plaintext/emended_transcript_pages/#{page.title}.txt")
-            out.write page.emended_transcription_plaintext
-
-            out.put_next_entry("plaintext/verbatim_translation_pages/#{page.title}.txt")
-            out.write page.verbatim_translation_plaintext
-
-            out.put_next_entry("plaintext/emended_translation_pages/#{page.title}.txt")
-            out.write page.emended_translation_plaintext
+            export_plaintext_translation_pages("verbatim", dirname, out, page)
+            export_plaintext_translation_pages("emended", dirname, out, page)
           end
 
-          full_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-          out.put_next_entry("html/full.html")
-          out.write full_view
-
-          text_view = render_to_string(:action => 'text', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-          out.put_next_entry("html/text.html")
-          out.write text_view
-
-          transcript_view = render_to_string(:action => 'transcript', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-          out.put_next_entry("html/transcript.html")
-          out.write transcript_view
-
-          translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-          out.put_next_entry("html/translation.html")
-          out.write translation_view
+          export_view("full", dirname, out)
+          export_view("text", dirname, out)
+          export_view("transcript", dirname, out)
+          export_view("translation", dirname, out)
 
           @work.pages.each do |page|
-            page_view = render_to_string('display/display_page.html.slim', :locals => {:@work => @work, :@page => page}, :layout => false)
-            out.put_next_entry("html/full_pages/#{page.title}.html")
-            out.write page_view
+            export_html_full_pages(dirname, out, page)
           end
         end
 
@@ -159,22 +208,49 @@ class ExportController < ApplicationController
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
     else
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
-    end      
+    end
 
-#create a zip file which is automatically downloaded to the user's machine
+    # create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
       format.html
       format.zip do
-      compressed_filestream = Zip::OutputStream.write_buffer do |zos|
-        @works.each do |work|
-          @work = work
-          export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-          zos.put_next_entry "#{work.slug.truncate(200, omission: "")}.xhtml"
-          zos.print export_view
+        buffer = Zip::OutputStream.write_buffer do |out|
+          @works.each do |work|
+            @work = work
+            dirname = work.slug.truncate(200, omission: "")
+
+            export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
+            out.put_next_entry "#{dirname}/#{work.slug.truncate(200, omission: "")}.xhtml"
+            out.print export_view
+
+            export_plaintext_transcript("verbatim", dirname, out)
+            export_plaintext_transcript("emended", dirname, out)
+            export_plaintext_transcript("searchable", dirname, out)
+
+            export_plaintext_translation("verbatim", dirname, out)
+            export_plaintext_translation("emended", dirname, out)
+
+            @work.pages.each do |page|
+              export_plaintext_transcript_pages("verbatim", dirname, out, page)
+              export_plaintext_transcript_pages("emended", dirname, out, page)
+
+              export_plaintext_translation_pages("verbatim", dirname, out, page)
+              export_plaintext_translation_pages("emended", dirname, out, page)
+            end
+
+            export_view("full", dirname, out)
+            export_view("text", dirname, out)
+            export_view("transcript", dirname, out)
+            export_view("translation", dirname, out)
+
+            @work.pages.each do |page|
+              export_html_full_pages(dirname, out, page)
+            end
+          end
         end
-      end
-      compressed_filestream.rewind
-      send_data compressed_filestream.read, filename: "#{@collection.title}.zip"
+
+        buffer.rewind
+        send_data buffer.read, filename: "#{@collection.title}.zip"
       end
     end
     cookies['download_finished'] = 'true'
