@@ -92,77 +92,86 @@ class ExportController < ApplicationController
     
   end
 
-  def export_plaintext_transcript(name, dirname, out)
+  def export_plaintext_transcript(name:, dirname:, out:)
+    path = File.join dirname, 'plaintext', "#{name}_transcript.txt"
+
+    out.put_next_entry path
+
     case name
     when "verbatim"
-      out.put_next_entry("#{dirname}/plaintext/verbatim_transcript.txt")
       out.write @work.verbatim_transcription_plaintext
     when "emended"
-      out.put_next_entry("#{dirname}/plaintext/emended_transcript.txt")
       out.write @work.emended_transcription_plaintext
     when "searchable"
-      out.put_next_entry("#{dirname}/plaintext/searchable_transcript.txt")
       out.write @work.searchable_plaintext
     end
   end
 
-  def export_plaintext_translation(name, dirname, out)
+  def export_plaintext_translation(name:, dirname:, out:)
+    path = File.join dirname, 'plaintext', "#{name}_translation.txt"
+
+    out.put_next_entry path
+
     case name
     when "verbatim"
-      out.put_next_entry("#{dirname}/plaintext/verbatim_translation.txt")
       out.write @work.verbatim_translation_plaintext
     when "emended"
-      out.put_next_entry("#{dirname}/plaintext/emended_translation.txt")
       out.write @work.emended_translation_plaintext
     end
   end
 
-  def export_plaintext_transcript_pages(name, dirname, out, page)
+  def export_plaintext_transcript_pages(name:, dirname:, out:, page:)
+    path = File.join dirname, 'plaintext', "#{name}_transcript_pages", "#{page.title}.txt"
+
+    out.put_next_entry path
+
     case name
     when "verbatim"
-      out.put_next_entry("#{dirname}/plaintext/verbatim_transcript_pages/#{page.title}.txt")
       out.write page.verbatim_transcription_plaintext
     when "emended"
-      out.put_next_entry("#{dirname}/plaintext/emended_transcript_pages/#{page.title}.txt")
       out.write page.emended_transcription_plaintext
     end
   end
 
-  def export_plaintext_translation_pages(name, dirname, out, page)
+  def export_plaintext_translation_pages(name:, dirname:, out:, page:)
+    path = File.join dirname, 'plaintext', "#{name}_translation_pages", "#{page.title}.txt"
+
+    out.put_next_entry path
+
     case name
     when "verbatim"
-      out.put_next_entry("#{dirname}/plaintext/verbatim_translation_pages/#{page.title}.txt")
       out.write page.verbatim_translation_plaintext
     when "emended"
-      out.put_next_entry("#{dirname}/plaintext/emended_translation_pages/#{page.title}.txt")
       out.write page.emended_translation_plaintext
     end
   end
 
-  def export_view(name, dirname, out)
+  def export_view(name:, dirname:, out:)
+    path = File.join dirname, 'html', "#{name}.html"
+    out.put_next_entry path
+
     case name
     when "full"
       full_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-      out.put_next_entry("#{dirname}/html/full.html")
       out.write full_view
     when "text"
       text_view = render_to_string(:action => 'text', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-      out.put_next_entry("#{dirname}/html/text.html")
       out.write text_view
     when "transcript"
       transcript_view = render_to_string(:action => 'transcript', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-      out.put_next_entry("#{dirname}/html/transcript.html")
       out.write transcript_view
     when "translation"
       translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-      out.put_next_entry("#{dirname}/html/translation.html")
       out.write translation_view
     end
   end
 
-  def export_html_full_pages(dirname, out, page)
+  def export_html_full_pages(dirname:, out:, page:)
+    path = File.join dirname, 'html', 'full_pages', "#{page.title}.html"
+
+    out.put_next_entry path
+
     page_view = render_to_string('display/display_page.html.slim', :locals => {:@work => @work, :@page => page}, :layout => false)
-    out.put_next_entry("#{dirname}/html/full_pages/#{page.title}.html")
     out.write page_view
   end
 
@@ -172,28 +181,28 @@ class ExportController < ApplicationController
     respond_to do |format|
       format.zip do
         buffer = Zip::OutputStream.write_buffer do |out|
-          export_plaintext_transcript("verbatim", dirname, out)
-          export_plaintext_transcript("emended", dirname, out)
-          export_plaintext_transcript("searchable", dirname, out)
+          export_plaintext_transcript(name: "verbatim", dirname: dirname, out: out)
+          export_plaintext_transcript(name: "emended", dirname: dirname, out: out)
+          export_plaintext_transcript(name: "searchable", dirname: dirname, out: out)
 
-          export_plaintext_translation("verbatim", dirname, out)
-          export_plaintext_translation("emended", dirname, out)
+          export_plaintext_translation(name: "verbatim", dirname: dirname, out: out)
+          export_plaintext_translation(name: "emended", dirname: dirname, out: out)
 
           @work.pages.each do |page|
-            export_plaintext_transcript_pages("verbatim", dirname, out, page)
-            export_plaintext_transcript_pages("emended", dirname, out, page)
+            export_plaintext_transcript_pages(name: "verbatim", dirname: dirname, out: out, page: page)
+            export_plaintext_transcript_pages(name: "emended", dirname: dirname, out: out, page: page)
 
-            export_plaintext_translation_pages("verbatim", dirname, out, page)
-            export_plaintext_translation_pages("emended", dirname, out, page)
+            export_plaintext_translation_pages(name: "verbatim", dirname: dirname, out: out, page: page)
+            export_plaintext_translation_pages(name: "emended", dirname: dirname, out: out, page: page)
           end
 
-          export_view("full", dirname, out)
-          export_view("text", dirname, out)
-          export_view("transcript", dirname, out)
-          export_view("translation", dirname, out)
+          export_view(name: "full", dirname: dirname, out: out)
+          export_view(name: "text", dirname: dirname, out: out)
+          export_view(name: "transcript", dirname: dirname, out: out)
+          export_view(name: "translation", dirname: dirname, out: out)
 
           @work.pages.each do |page|
-            export_html_full_pages(dirname, out, page)
+            export_html_full_pages(dirname: dirname, out: out, page: page)
           end
         end
 
@@ -223,28 +232,28 @@ class ExportController < ApplicationController
             out.put_next_entry "#{dirname}/#{work.slug.truncate(200, omission: "")}.xhtml"
             out.print export_view
 
-            export_plaintext_transcript("verbatim", dirname, out)
-            export_plaintext_transcript("emended", dirname, out)
-            export_plaintext_transcript("searchable", dirname, out)
+            export_plaintext_transcript(name: "verbatim", dirname: dirname, out: out)
+            export_plaintext_transcript(name: "emended", dirname: dirname, out: out)
+            export_plaintext_transcript(name: "searchable", dirname: dirname, out: out)
 
-            export_plaintext_translation("verbatim", dirname, out)
-            export_plaintext_translation("emended", dirname, out)
+            export_plaintext_translation(name: "verbatim", dirname: dirname, out: out)
+            export_plaintext_translation(name: "emended", dirname: dirname, out: out)
 
             @work.pages.each do |page|
-              export_plaintext_transcript_pages("verbatim", dirname, out, page)
-              export_plaintext_transcript_pages("emended", dirname, out, page)
+              export_plaintext_transcript_pages(name: "verbatim", dirname: dirname, out: out, page: page)
+              export_plaintext_transcript_pages(name: "emended", dirname: dirname, out: out, page: page)
 
-              export_plaintext_translation_pages("verbatim", dirname, out, page)
-              export_plaintext_translation_pages("emended", dirname, out, page)
+              export_plaintext_translation_pages(name: "verbatim", dirname: dirname, out: out, page: page)
+              export_plaintext_translation_pages(name: "emended", dirname: dirname, out: out, page: page)
             end
 
-            export_view("full", dirname, out)
-            export_view("text", dirname, out)
-            export_view("transcript", dirname, out)
-            export_view("translation", dirname, out)
+            export_view(name: "full", dirname: dirname, out: out)
+            export_view(name: "text", dirname: dirname, out: out)
+            export_view(name: "transcript", dirname: dirname, out: out)
+            export_view(name: "translation", dirname: dirname, out: out)
 
             @work.pages.each do |page|
-              export_html_full_pages(dirname, out, page)
+              export_html_full_pages(dirname: dirname, out: out, page: page)
             end
           end
         end
