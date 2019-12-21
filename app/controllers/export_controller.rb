@@ -96,6 +96,7 @@ class ExportController < ApplicationController
 
   def desc_to_file(text:, dirname:, out:)
     README << text
+
     path = File.join dirname, 'README.txt'
     out.put_next_entry path
 
