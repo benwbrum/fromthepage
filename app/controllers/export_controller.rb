@@ -128,14 +128,8 @@ class ExportController < ApplicationController
 
     out.put_next_entry path
 
-    case name
-    when "verbatim"
-      out.write @work.verbatim_translation_plaintext
-      desc_to_file(text: "plaintext/verbatim_translation.txt - file containing the per-document verbatim plaintext export of the translation if it is present.\n", dirname: dirname, out: out)
-    when "emended"
-      out.write @work.emended_translation_plaintext
-      desc_to_file(text: "plaintext/emended_translation.txt - file containing the per-document emended plaintext export of the translation if it is present.\n", dirname: dirname, out: out)
-    end
+    out.write @work.public_send "#{name}_translation_plaintext"
+    desc_to_file(text: "plaintext/#{name}_translation.txt - file containing the per-document #{name} plaintext export of the translation if it is present.\n", dirname: dirname, out: out)
   end
 
   def export_plaintext_transcript_pages(name:, dirname:, out:, page:)
@@ -143,14 +137,8 @@ class ExportController < ApplicationController
 
     out.put_next_entry path
 
-    case name
-    when "verbatim"
-      out.write page.verbatim_transcription_plaintext
-      desc_to_file(text: "plaintext/verbatim_transcript_pages/#{page.title}.txt - files containing per-page verbatim plaintext export.\n", dirname: dirname, out: out)
-    when "emended"
-      out.write page.emended_transcription_plaintext
-      desc_to_file(text: "plaintext/emended_transcript_pages/#{page.title}.txt - files containing per-page verbatim plaintext export.\n", dirname: dirname, out: out)
-    end
+    out.write page.public_send "#{name}_transcription_plaintext"
+    desc_to_file(text: "plaintext/#{name}_transcript_pages/#{page.title}.txt - files containing per-page #{name} plaintext export.\n", dirname: dirname, out: out)
   end
 
   def export_plaintext_translation_pages(name:, dirname:, out:, page:)
@@ -158,14 +146,8 @@ class ExportController < ApplicationController
 
     out.put_next_entry path
 
-    case name
-    when "verbatim"
-      out.write page.verbatim_translation_plaintext
-      desc_to_file(text: "plaintext/verbatim_translation_pages/#{page.title}.txt - files containing per-page verbatim plaintext export.\n", dirname: dirname, out: out)
-    when "emended"
-      out.write page.emended_translation_plaintext
-      desc_to_file(text: "plaintext/emended_translation_pages/#{page.title}.txt - files containing per-page verbatim plaintext export.\n", dirname: dirname, out: out)
-    end
+    out.write page.public_send "#{name}_translation_plaintext"
+    desc_to_file(text: "plaintext/#{name}_translation_pages/#{page.title}.txt - files containing per-page #{name} plaintext export.\n", dirname: dirname, out: out)
   end
 
   def export_view(name:, dirname:, out:)
