@@ -185,25 +185,27 @@ class ExportController < ApplicationController
     respond_to do |format|
       format.zip do
         buffer = Zip::OutputStream.write_buffer do |out|
-          export_plaintext_transcript(name: "verbatim", dirname: dirname, out: out)
-          export_plaintext_transcript(name: "emended", dirname: dirname, out: out)
-          export_plaintext_transcript(name: "searchable", dirname: dirname, out: out)
-
-          export_plaintext_translation(name: "verbatim", dirname: dirname, out: out)
-          export_plaintext_translation(name: "emended", dirname: dirname, out: out)
-
-          @work.pages.each do |page|
-            export_plaintext_transcript_pages(name: "verbatim", dirname: dirname, out: out, page: page)
-            export_plaintext_transcript_pages(name: "emended", dirname: dirname, out: out, page: page)
-
-            export_plaintext_translation_pages(name: "verbatim", dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: "emended", dirname: dirname, out: out, page: page)
+          %w(verbatim emended searchable).each do |format|
+            export_plaintext_transcript(name: format, dirname: dirname, out: out)
           end
 
-          export_view(name: "full", dirname: dirname, out: out)
-          export_view(name: "text", dirname: dirname, out: out)
-          export_view(name: "transcript", dirname: dirname, out: out)
-          export_view(name: "translation", dirname: dirname, out: out)
+          %w(verbatim emended).each do |format|
+            export_plaintext_translation(name: format, dirname: dirname, out: out)
+          end
+
+          @work.pages.each do |page|
+            %w(verbatim emended).each do |format|
+              export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            end
+
+            %w(verbatim emended).each do |format|
+              export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+            end
+          end
+
+          %w(full text transcript translation).each do |format|
+            export_view(name: format, dirname: dirname, out: out)
+          end
 
           @work.pages.each do |page|
             export_html_full_pages(dirname: dirname, out: out, page: page)
@@ -236,25 +238,27 @@ class ExportController < ApplicationController
             out.put_next_entry "#{dirname}/#{work.slug.truncate(200, omission: "")}.xhtml"
             out.print export_view
 
-            export_plaintext_transcript(name: "verbatim", dirname: dirname, out: out)
-            export_plaintext_transcript(name: "emended", dirname: dirname, out: out)
-            export_plaintext_transcript(name: "searchable", dirname: dirname, out: out)
-
-            export_plaintext_translation(name: "verbatim", dirname: dirname, out: out)
-            export_plaintext_translation(name: "emended", dirname: dirname, out: out)
-
-            @work.pages.each do |page|
-              export_plaintext_transcript_pages(name: "verbatim", dirname: dirname, out: out, page: page)
-              export_plaintext_transcript_pages(name: "emended", dirname: dirname, out: out, page: page)
-
-              export_plaintext_translation_pages(name: "verbatim", dirname: dirname, out: out, page: page)
-              export_plaintext_translation_pages(name: "emended", dirname: dirname, out: out, page: page)
+            %w(verbatim emended searchable).each do |format|
+              export_plaintext_transcript(name: format, dirname: dirname, out: out)
             end
 
-            export_view(name: "full", dirname: dirname, out: out)
-            export_view(name: "text", dirname: dirname, out: out)
-            export_view(name: "transcript", dirname: dirname, out: out)
-            export_view(name: "translation", dirname: dirname, out: out)
+            %w(verbatim emended).each do |format|
+              export_plaintext_translation(name: format, dirname: dirname, out: out)
+            end
+
+            @work.pages.each do |page|
+              %w(verbatim emended).each do |format|
+                export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+              end
+
+              %w(verbatim emended).each do |format|
+                export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+              end
+            end
+
+            %w(full text transcript translation).each do |format|
+              export_view(name: format, dirname: dirname, out: out)
+            end
 
             @work.pages.each do |page|
               export_html_full_pages(dirname: dirname, out: out, page: page)
