@@ -223,6 +223,12 @@ class AdminController < ApplicationController
     end
   end
 
+  def downgrade
+    u = User.find(params[:user_id])
+    u.downgrade
+    redirect_back fallback_location: { action: 'user_list' }, notice: "User downgraded successfully"
+  end
+
   private
 
   def user_params

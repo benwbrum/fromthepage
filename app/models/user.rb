@@ -243,4 +243,15 @@ class User < ApplicationRecord
       deed.user = self
       deed.save!
   end
+
+  def downgrade
+    self.owner = false
+
+    self.collections.each do |c|
+      c.is_active = false
+      c.restricted = true
+    end
+
+    self.save
+  end
 end
