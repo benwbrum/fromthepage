@@ -101,11 +101,39 @@ describe "admin actions" do
     page.find('.tabs').click_link("Owners")
     expect(page).to have_content("Owner Login")
     click_link('Acct Type')
-    expect(page.find('.admin-grid tbody tr[1]')).to have_content(@admin.login)
+    expect(page.find('.admin-grid tbody tr[2]')).to have_content(@admin.login)
     click_link('Acct Expiration')
     expect(page.find('.admin-grid tbody tr[1]')).to have_content(@owner.login)
     click_link('Start Date')
     expect(page.find('.admin-grid tbody tr[1]')).to have_content(@admin.login)
   end
 
+  it "downgrades a user" do
+    visit admin_path
+    page.find('.tabs').click_link("Users")
+    visit "/admin/edit_user?user_id=7"
+    page.find('.aright').click_link('Downgrade')
+    expect(page).to have_content("User downgraded successfully")
+  end
+
+  it "can't access owner dashboard as a downgraded user" do
+    du = User.where(login: 'brian').first
+    login_as(du, :scope => :user)
+    visit "/dashboard/owner"
+    expect(page).not_to have_content("Owner Dashboard")
+  end
+
+  it "can't create a collection as a downgraded user" do
+    du = User.where(login: 'brian').first
+    login_as(du, :scope => :user)
+    visit "/dashboard/startproject"
+    expect(page).not_to have_link("Create a Collection")
+  end
+
+  it "can't access downgraded user's collections as a non-logged in user" do
+    logout
+    du = User.where(login: 'brian').first
+    visit du.slug
+    expect(page.body).not_to have_css('div.collections')
+  end
 end
