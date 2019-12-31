@@ -226,6 +226,6 @@ class AdminController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:user, :owner)
+    params.require(:user).permit(:display_name, :print_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)
   end
 end
