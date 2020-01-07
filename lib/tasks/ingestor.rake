@@ -133,6 +133,7 @@ namespace :fromthepage do
           print "Found tiff #{path}\n"
           #convert tiff to jpg
           destination = ImageHelper.convert_tiff(path)
+          GC.start
         end
       end
     end
