@@ -246,6 +246,7 @@ class User < ApplicationRecord
 
   def downgrade
     self.owner = false
+    self.account_type = nil
 
     self.collections.each do |c|
       c.is_active = false
