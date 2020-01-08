@@ -35,4 +35,7 @@
 
 
     .toolbar
-      .toolbar_group.aright =f.button 'Save Changes', class: 'big'
+      .toolbar_group.aright
+        =link_to 'Downgrade', admin_downgrade_path(:user_id => @user.id), class: 'button big' if @user.account_type == 'Trial' && @user.paid_date <= Time.now && @user.owner?
+        |&nbsp;
+        =f.button 'Save Changes', class: 'big'
