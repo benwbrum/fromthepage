@@ -40,6 +40,7 @@ describe "owner view - collection" do
     expect(page.find('.collection-users')).to have_content('Transcribing')
     expect(page.find('.collection-users')).to have_content('Editing')
     expect(page.find('.collection-users')).to have_content('Indexing')
+    binding.pry
     expect(page.find('.collection-users')).to have_content(@owner.all_collaborators.first.display_name)
   end
 
