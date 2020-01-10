@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190906201041) do
+ActiveRecord::Schema.define(version: 20200108141002) do
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 20190906201041) do
     t.datetime "updated_at"
     t.string   "status",          default: "new"
     t.boolean  "preserve_titles", default: false
+    t.boolean  "ocr",             default: false
   end
 
   add_index "document_uploads", ["collection_id"], name: "index_document_uploads_on_collection_id", using: :btree

@@ -135,7 +135,6 @@ describe "needs review", :order => :defined do
     expect(page.find('.maincol')).to have_selector('a', text: @page6.title)
     expect(page.find('.maincol')).not_to have_selector('a', text: @page3.title)
     expect(page.find('.maincol')).not_to have_selector('a', text: @page4.title)
-    expect(page.find('.maincol')).not_to have_selector('a', text: @page5.title)
     expect(page).to have_button('View All Pages')
     expect(page.find('.pagination_info')).to have_content(@work.pages.translation_review.count)
   end

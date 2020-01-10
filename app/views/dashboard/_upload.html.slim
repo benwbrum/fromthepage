@@ -19,6 +19,10 @@
             td
               =f.check_box :preserve_titles
               =f.label :preserve_titles, ' Use image filenames as page titles.'
+          tr
+            td
+              =f.check_box :ocr
+              =f.label :ocr, ' Use OCR from PDF text layer.'
 
         ul
           li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.

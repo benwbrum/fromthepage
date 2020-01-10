@@ -64,7 +64,7 @@ namespace :fromthepage do
     # unzip everything
     unzip_tree(temp_dir)
     # extract any pdfs
-    unpdf_tree(temp_dir)
+    unpdf_tree(temp_dir, document_upload.ocr)
     #convert tiffs to jpgs
     untiff_tree(temp_dir)
     # resize files
@@ -102,19 +102,19 @@ namespace :fromthepage do
     FileUtils.chmod_R "u=rwx,go=r", temp_dir
   end
   
-  def unpdf_tree(temp_dir)
+  def unpdf_tree(temp_dir, ocr)
     print "unpdf_tree(#{temp_dir})\n"
     ls = Dir.glob(File.join(temp_dir, "*"))
     ls.each do |path|
       print "\tunpdf_tree considering #{path})\n"
       if Dir.exist? path
         print "Found directory #{path}\n"
-        unpdf_tree(path) #recurse
+        unpdf_tree(path, ocr) #recurse
       else
         if File.extname(path) == '.PDF' || File.extname(path) == '.pdf'
           print "Found pdf #{path}\n"
           #extract 
-          destination = ImageHelper.extract_pdf(path)
+          destination = ImageHelper.extract_pdf(path, ocr)
         end
       end
     end
@@ -231,6 +231,10 @@ namespace :fromthepage do
     work.collection = document_upload.collection
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
+    if document_upload.ocr && Dir.glob(File.join(path, "page*.txt")).count > 0
+      work.ocr_correction = true
+    end
+
     work.save!
     
     new_dir_name = File.join(Rails.root,
@@ -243,8 +247,8 @@ namespace :fromthepage do
     FileUtils.mkdir_p(new_dir_name)
     IMAGE_FILE_EXTENSIONS.each do |ext|
 #      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
-    FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
-    Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+      FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
+      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
 #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
@@ -268,10 +272,17 @@ namespace :fromthepage do
       print "\t\tconvert_to_work calculating base and height \n"
       page.base_height = image.rows
       page.base_width = image.columns
+      if work.ocr_correction
+        ocr_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, "txt")))
+        if File.exist? ocr_fn
+          print "\t\tconvert_to_work reading raw OCR text from #{ocr_fn}\n"
+          page.source_text = File.read(ocr_fn).encode(:xml => :text).gsub(/\[+/, '[').gsub(/\]+/, ']')
+        end
+      end
       image = nil
       GC.start
       work.pages << page
-       print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
+      print "\t\tconvert_to_work added #{image_fn} to work as page #{page.title}, id=#{page.id}\n"
     end
     work.save!
     record_deed(work)
