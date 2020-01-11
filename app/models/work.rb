@@ -27,6 +27,8 @@ class Work < ApplicationRecord
 
   after_destroy :cleanup_images
 
+  after_create :alert_intercom
+
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }
 
@@ -247,4 +249,14 @@ class Work < ApplicationRecord
   def has_untranscribed_pages?
     next_untranscribed_page.present?
   end
+
+  def alert_intercom
+    if INTERCOM_ACCESS_TOKEN
+      if self.owner.owner_works.count == 1
+        intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
+        intercom.events.create(event_name: "first-upload", email: User.current_user.email, created_at: Time.now.to_i)
+      end
+    end
+  end
+
 end

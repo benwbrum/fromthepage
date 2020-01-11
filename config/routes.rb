@@ -273,6 +273,12 @@ Fromthepage::Application.routes.draw do
   get '/privacy', to: 'static#privacy', as: :privacy
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/contact', to: 'contact#form', as: 'contact'
+  get '/at', to: 'static#at', as: :at
+  get '/AT', to: 'static#at', as: :at_caps
+  get '/NatsStory', to: 'static#natsstory', as: :natsstory
+  get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
+  get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
+  get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
 
   resources :document_sets, except: [:show, :create, :edit]
 
