@@ -9,3 +9,5 @@ fi
 if [[ -n ${DB-} && x$DB =~ ^xmariadb ]]; then
   sudo bash travis/.travis_mariadb.sh
 fi
+
+sudo apt-get install xpdf
