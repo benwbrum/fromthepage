@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   include ErrorHelper
 
-  before_filter :authorized?
+  before_action :authorized?
 
   PAGES_PER_SCREEN = 20
 
@@ -65,7 +65,7 @@ class AdminController < ApplicationController
 
   def update_user
     owner = @user.owner
-    if @user.update_attributes(params[:user])
+    if @user.update(user_params)
       if owner == false && @user.owner == true
         if SMTP_ENABLED
           begin
@@ -75,7 +75,7 @@ class AdminController < ApplicationController
             log_smtp_error(e, current_user)
           end
         end
-      end        
+      end
 
       flash[:notice] = "User profile has been updated"
       ajax_redirect_to :action => 'user_list'
@@ -165,7 +165,7 @@ class AdminController < ApplicationController
 
   def view_processing_log
     @document_upload = DocumentUpload.find(params[:id])
-    render :content_type => 'text/plain', :text => `cat #{@document_upload.log_file}`, :layout => false
+    render :content_type => 'text/plain', :plain => `cat #{@document_upload.log_file}`, :layout => false
   end
 
   def collection_list
@@ -221,7 +221,17 @@ class AdminController < ApplicationController
     else
       @owners = User.where(owner: true).order(paid_date: :desc).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
     end
-
   end
 
+  def downgrade
+    u = User.find(params[:user_id])
+    u.downgrade
+    redirect_back fallback_location: { action: 'user_list' }, notice: "User downgraded successfully"
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:display_name, :print_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)
+  end
 end

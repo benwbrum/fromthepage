@@ -1,6 +1,6 @@
 =render(:partial => 'header', :locals => { :selected => 7 })
 
-=form_tag({:controller => 'admin', :action => 'autoflag'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+=form_tag(admin_autoflag_path, method: :get, enforce_utf8: false, class: 'collection-search') do
   span These activities have been flagged as possible abusive content.  OK marks items as valid content, Remove will delete the abusive content item, and Expunge User will remove the user who created the content and all their contributions.  Flag will use the list of terms in the Settings to automatically flag content.
   =button_tag 'Flag', :name => nil
   =label_tag :search, "Find potential abusive content", class: "hidden"
@@ -25,13 +25,13 @@ table.admin-grid.datagrid.striped
         td
           div
             -if flag.page_version
-              =link_to flag.page_version.title, {:controller => 'page_version', :action => 'show', :page_version_id => flag.page_version_id}
+              =link_to flag.page_version.title, page_version_show_path(:page_version_id => flag.page_version_id)
             -elsif flag.article_version
-              =link_to flag.article_version.title, {:controller => 'article_version', :action => 'show', :article_version_id => flag.article_version_id}
+              =link_to flag.article_version.title, article_version_show_path(:article_version_id => flag.article_version_id)
             -elsif flag.note
-              =link_to flag.note.page.title, {:controller => 'display', :action => 'display_page', :page_id => flag.note.page_id }
+              =link_to flag.note.page.title, display_display_page_path(:page_id => flag.note.page_id)
             -else
-              i content removed          
+              i content removed
           div
             small =flag.content_at.localtime.strftime('%b %d, %Y')
           div
@@ -39,8 +39,8 @@ table.admin-grid.datagrid.striped
         td =flag.snippet
         td.nowrap
           .instack
-            =link_to 'OK', { :controller => 'admin', :action => 'ok_flag', :flag_id => flag.id, :page => params[:page] }, { :alt => 'Mark this content as not abusive.'}
-            =link_to 'Remove', { :controller => 'admin', :action => 'revert_flag', :flag_id => flag.id, :page => params[:page] }, { :alt => 'Delete the abusive content, leaving other contributions by the user untouched.'}
-            =link_to 'Expunge User', { :controller => 'admin', :action => 'expunge_confirmation', :user_id => flag.author_user_id, :flag_id => flag.id }, :data => { litebox: { hash: "" }}, :alt => 'Delete the user and remove all of their contributions.'
+            =link_to 'OK', admin_ok_flag_path(:flag_id => flag.id, :page => params[:page]), { :alt => 'Mark this content as not abusive.'}
+            =link_to 'Remove', admin_revert_flag_path(:flag_id => flag.id, :page => params[:page]), { :alt => 'Delete the abusive content, leaving other contributions by the user untouched.'}
+            =link_to 'Expunge User', admin_expunge_confirmation_path(:user_id => flag.author_user_id, :flag_id => flag.id), :data => { litebox: { hash: "" }}, :alt => 'Delete the user and remove all of their contributions.'
 
 =render(:partial => 'shared/pagination', :locals => { :model => @flags, :entries_info => true })

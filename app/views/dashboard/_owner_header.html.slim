@@ -1,25 +1,4 @@
--tabs = [{\
-  :name => 'Start A Project',
-  :selected => 2,
-  :options => {\
-    :action => 'startproject',
-  },
-},{\
-  :name => 'Your Works',
-  :selected => 1,
-  :options => {\
-    :action => 'owner',
-  },
-},{\
-  :name => 'Summary',
-  :selected => 3,
-  :options => {\
-    :action => 'summary',
-  },
-}]
-
--selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Owner Dashboard"
+-dashboard_set_title
 
 .headline
   h1.headline_title Owner Dashboard
@@ -30,7 +9,7 @@
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
         -unless current_user.all_owner_collections.empty?
-        =link_to 'Create a Collection', { :controller => 'collection', :action => 'new' }, :data => { litebox: { hash: 'create-collection' } }
+        =link_to 'Create a Collection', collection_new_path, :data => { litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
   .owner-info
@@ -48,6 +27,6 @@ section.owner-counters
     .counter(data-prefix="#{number_with_delimiter @document_sets.length}") #{'Document Set'.pluralize(@document_sets.length)}
 
 .tabs
-  -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
-      a.active =tab[:name]
+  =active_link_to "Start A Project", dashboard_startproject_path
+  =active_link_to "Your Works", dashboard_owner_path
+  =active_link_to "Summary", dashboard_summary_path

@@ -25,7 +25,7 @@
             span This user is an Owner
       tr
         th =f.label :account_type
-        td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution', 'Trial']))
+        td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution', 'Trial', 'Legacy'], selected: @user.account_type))
       tr
         th =f.label :start_date, 'Start Date'
         td =f.text_field :start_date, placeholder: 'YYYY-MM-DD'
@@ -35,4 +35,7 @@
 
 
     .toolbar
-      .toolbar_group.aright =f.button 'Save Changes', class: 'big'
+      .toolbar_group.aright
+        =link_to 'Downgrade', admin_downgrade_path(:user_id => @user.id), class: 'button big' if @user.account_type == 'Trial' && @user.paid_date <= Time.now && @user.owner?
+        |&nbsp;
+        =f.button 'Save Changes', class: 'big'

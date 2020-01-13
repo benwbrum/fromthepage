@@ -1,6 +1,6 @@
 class PageVersionController < ApplicationController
 
-  before_filter :set_versions
+  before_action :set_versions
 
   def set_versions
     @selected_version = @page_version.present? ? @page_version : @page.page_versions.first

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SetNextPageForCollectionsAndWorks < ActiveRecord::Migration
+class SetNextPageForCollectionsAndWorks < ActiveRecord::Migration[5.2]
   def change
     @works = Work.all
     @collections = Collection.all

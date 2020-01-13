@@ -1,28 +1,26 @@
-class DocumentUpload < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :collection
-
-  attr_accessible :file, :collection_id, :status, :preserve_titles
+class DocumentUpload < ApplicationRecord
+  belongs_to :user, optional: true
+  belongs_to :collection, optional: true
 
   validates :collection_id, :file, :presence => true
 
   mount_uploader :file, DocumentUploader
-  
-  module Status 
+
+  module Status
     NEW = 'new'
     QUEUED = 'queued'
     PROCESSING = 'processing'
     FINISHED = 'finished'
   end
-  
+
   def submit_process
     self.status = Status::QUEUED
     self.save
     rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
-    
+
     # Nice-up the rake call if settings are present
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
-    
+
     logger.info rake_call
     system(rake_call)
   end
@@ -35,7 +33,7 @@ class DocumentUpload < ActiveRecord::Base
     File.basename(self.file.to_s)
   end
 
-private
+  private
   def upload_dir
     if self.file && self.file.path
       File.dirname(self.file.path)
@@ -43,5 +41,5 @@ private
       "/tmp/fromthepage_rake.log"
     end
   end
-  
+
 end

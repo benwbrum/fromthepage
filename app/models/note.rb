@@ -1,5 +1,4 @@
-class Note < ActiveRecord::Base
-  attr_accessible :body
+class Note < ApplicationRecord
   # Notes are comments on pages.  In the future they may
   # be comments on works, comments on image fragments,
   # comments on articles, or questions and answers
@@ -8,10 +7,10 @@ class Note < ActiveRecord::Base
   acts_as_tree
 
   # associations
-  belongs_to :user
-  belongs_to :page
-  belongs_to :work
-  belongs_to :collection
+  belongs_to :user, optional: true
+  belongs_to :page, optional: true
+  belongs_to :work, optional: true
+  belongs_to :collection, optional: true
   has_one :deed, :dependent => :destroy
   has_many :flags
 

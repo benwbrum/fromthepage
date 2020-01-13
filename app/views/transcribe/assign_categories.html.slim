@@ -4,15 +4,15 @@
   h2.headline_title Uncategorized Subjects
   -if user_signed_in? && current_user.like_owner?(@collection)
     .headline_aside
-      =link_to 'Manage Categories', { :controller => 'article', :action => 'list', :page_id => @page.id }, class: 'button'
+      =link_to 'Manage Categories', article_list_path(:page_id => @page.id), class: 'button'
 
 p.big You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them.
 
 -@unassigned_articles.each do |article|
-  -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => article.id })
+  -update_article_url = url_for(article_article_category_path(:article_id => article.id))
   .page-uncategorized
     h4.page-uncategorized_subject(data-prefix="Subject: " *language_attrs(@collection)) =="&ldquo;#{article.title}&rdquo;"
-    
+
     pre== excerpt_subject(@page, article.title, {:text_type => @text_type})
 
     select(data-assign-categories="#{update_article_url}" size="1" aria-label="Assign categories" multiple)

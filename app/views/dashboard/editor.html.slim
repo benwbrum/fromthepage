@@ -5,14 +5,14 @@
     h3 Your Recent Page Edits
     table.datagrid.striped.editor-activity
       -@user.page_versions.limit(10).each do |p|
-        -page_link = link_to p.page.title, { :controller => 'page_version', :action => 'list', :page_id => p.page.id }
-        -work_link = link_to p.page.work.title, { :controller => 'work', :action => 'versions', :work_id => p.page.work.id }
+        -page_link = link_to p.page.title, page_version_list_path(:page_id => p.page.id)
+        -work_link = link_to p.page.work.title, work_versions_path(:work_id => p.page.work.id)
         tr
           td.w100
             =="#{page_link} page in the #{work_link} work"
           td
             =link_to "Revision #{p.page_version}",
-              { :controller => 'page_version', :action => 'show', :page_version_id => p.id },
+              page_version_show_path(:page_version_id => p.id),
               class: 'label'
           td
             =time_tag p.created_on
@@ -21,14 +21,14 @@
     h3 Your Recent Article Edits
     table.datagrid.striped.editor-activity
       -@user.article_versions.limit(10).joins(:article).each do |a|
-        -article_link = link_to a.article.title, { :controller => 'article_version', :action => 'list', :article_id => a.article.id }
-        -collection_link = link_to a.article.collection.title, { :controller => 'article', :action => 'list', :collection_id => a.article.collection.id }
+        -article_link = link_to a.article.title, article_version_list_path(:article_id => a.article.id)
+        -collection_link = link_to a.article.collection.title, article_version_list_path(:collection_id => a.article.collection.id)
         tr
           td.w100
             =="#{article_link} article in the #{collection_link} collection"
           td
             =link_to "Revision #{a.version}",
-              { :controller => 'article_version', :action => 'show', :article_version_id => a.id },
+              article_version_show_path(:article_version_id => a.id),
               class: 'label'
           td
             =time_tag a.created_on
@@ -42,7 +42,7 @@
             =truncate strip_tags(n.title), :length => 150, separator: ' '
           td
             =link_to "View Page",
-              { :controller => 'display', :action => 'display_page', :page_id => n.page_id, :anchor => "comment_#{n.id}" },
+              display_display_page_path(:page_id => n.page_id, :anchor => "comment_#{n.id}"),
               class: 'label'
           td
             =time_tag n.created_at

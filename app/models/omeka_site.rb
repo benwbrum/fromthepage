@@ -1,6 +1,5 @@
-class OmekaSite < ActiveRecord::Base
-  attr_accessible :api_key, :api_url, :title
-  belongs_to :user
+class OmekaSite < ApplicationRecord
+  belongs_to :user, optional: true
   has_many :omeka_collections
 
   validate :site_is_accessible

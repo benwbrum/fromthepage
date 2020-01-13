@@ -3,7 +3,7 @@
 .columns
   article.maincol
 
-    =form_for :admin, url: {action: :update} do |f|
+    =form_for :admin, url: admin_update_path do |f|
       table.form
         tr
           td(colspan="2")

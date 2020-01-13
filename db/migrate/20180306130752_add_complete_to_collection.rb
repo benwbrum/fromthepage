@@ -1,4 +1,4 @@
-class AddCompleteToCollection < ActiveRecord::Migration
+class AddCompleteToCollection < ActiveRecord::Migration[5.2]
   #have to add to both collections and document sets
   def change
     add_column :collections, :pct_completed, :integer

@@ -1,15 +1,15 @@
 =render(:partial => 'header', :locals => { :selected => 1 })
 
 section.admin-counters
-  =link_to ({ :controller => 'admin', :action => 'collection_list' }) do
+  =link_to admin_collection_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @collections_count}") #{'Collection'.pluralize(@collections_count)}
-  =link_to ({ :controller => 'admin', :action => 'work_list'}) do
+  =link_to admin_work_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @works_count}") #{'Work'.pluralize(@works_count)}
   .counter(data-prefix="#{number_with_delimiter @articles_count}") #{'Article'.pluralize(@articles_count)}
   .counter(data-prefix="#{number_with_delimiter @pages_count}") #{'Page'.pluralize(@pages_count)}
-  =link_to ({ :controller => 'admin', :action => 'owner_list'}) do
+  =link_to admin_owner_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @owners_count}") #{'Owner'.pluralize(@owners_count)}
-  =link_to ({ :controller => 'admin', :action => 'user_list'}) do
+  =link_to admin_user_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @users_count}") #{'Registered user'.pluralize(@users_count)}
 
 -unless Deed.last.nil?

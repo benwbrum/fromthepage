@@ -8,7 +8,7 @@ section.user-profile
         =user_name
       -if user == current_user
         .headline_aside
-          =link_to({ :action => 'update_profile', :user_id => user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+          =link_to(update_profile_path(user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
             =svg_symbol '#icon-edit', class: 'icon'
             span Edit Profile
           |&nbsp;&nbsp;
@@ -36,14 +36,14 @@ section.user-profile
             =link_to c.title, collection_path(c.owner, c)
           =snippet
           br
-            
+
 .columns.list
   article.maincol 
     -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
-    
+
   aside.sidecol
     h2 Recent Activity
     =deeds_for({:owner => user, :limit => 10})

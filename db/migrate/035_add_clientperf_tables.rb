@@ -1,5 +1,5 @@
 
-class AddClientperfTables < ActiveRecord::Migration
+class AddClientperfTables < ActiveRecord::Migration[5.2]
   def self.up
     create_table :clientperf_uris do |t|
       t.string :uri

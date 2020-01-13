@@ -4,43 +4,40 @@
 
   -unless @new_transcribers.empty?
     h3.nomargin New Collaborators
-    p 
+    p
       - @new_transcribers.each do |t|
-        =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id, only_path: false}
-        |     
+        =link_to t.display_name, user_profile_path(:user_id => t.id, only_path: false)
+        |
         =t.email
         | <br>
 
   h4.legend.fglight Collaborator Stats #{@start_deed} through #{@end_deed}
-  =render({ :partial => 'statistics/recent_statistics', 
+  =render({ :partial => 'statistics/recent_statistics',
             :locals => { :stats => @stats, :subjects_disabled => @collection.subjects_disabled }})
-  
-  =link_to('View Activity ', { :controller => 'deed', :action => 'list',
-    :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed },  :class => 'button btnExport')
+
+  =link_to('View Activity ', deed_list_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed),  :class => 'button btnExport')
   | &nbsp;
-  =link_to({:controller => 'collection', :action => 'activity_download',
-          :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed}, :class => 'button btnExport')
+  =link_to(collection_activity_download_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed), :class => 'button btnExport')
           =svg_symbol '#icon-export', class: 'icon'
           span Export Activity as CSV
-    
+
 -else
   h3 No activity in this time frame
 
 .contributor-users
     h3 Active Collaborators
-    
+
     -unless @active_transcribers.empty?
       p
       -@active_transcribers.each do |user|
-          =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
-          =" (Collection: #{(@user_time_proportional[user.id] / 60 + 1).floor} minutes | Total: #{(@user_time[user.id] / 60 + 1).floor} minutes)" if @user_time[user.id]  
+          =link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false)
+          =" (Collection: #{(@user_time_proportional[user.id] / 60 + 1).floor} minutes | Total: #{(@user_time[user.id] / 60 + 1).floor} minutes)" if @user_time[user.id]
           | <br>
       p
         -total_minutes = (@user_time.values.sum / 60).floor + 1
         ="Total time: #{(total_minutes / 60)} hours, #{(total_minutes % 60)} minutes."
-      p  
-        =link_to({:controller => 'collection', :action => 'contributors_download',
-            :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed}, :class => 'button btnExport')
+      p
+        =link_to(collection_contributors_download_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed), :class => 'button btnExport')
             =svg_symbol '#icon-export', class: 'icon'
             span Export as CSV
     -else

@@ -1,4 +1,4 @@
-class AddTranscriptionFields < ActiveRecord::Migration
+class AddTranscriptionFields < ActiveRecord::Migration[5.2]
   def change
     add_column :collections, :field_based, :boolean, default: false
 

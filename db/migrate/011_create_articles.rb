@@ -1,4 +1,4 @@
-class CreateArticles < ActiveRecord::Migration
+class CreateArticles < ActiveRecord::Migration[5.2]
   def self.up
     create_table :articles do |t|
       # t.column :name, :string

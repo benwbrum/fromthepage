@@ -16,29 +16,18 @@
 #
 # This would use the information in config/locales/es.yml.
 #
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
 # To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
+# available at https://guides.rubyonrails.org/i18n.html.
 
 en:
   hello: "Hello world"
-  will_paginate:
-    previous_label: "&#8592;"
-    next_label: "&#8594;"
-    page_gap: "&hellip;"
-    page_entries_info:
-      single_page:
-        zero:  "No records"
-        one:   "1 record"
-        other: "All %{count} records"
-      single_page_html:
-        zero:  "No records"
-        one:   "<b>1</b> record"
-        other: "All <b>%{count}</b> records"
-      multi_page: "Records %{from} - %{to} of %{count}"
-      multi_page_html: "Records <b>%{from}</b>&nbsp;&ndash;&nbsp;<b>%{to}</b> of <b>%{count}</b>"
-
-  datetime:
-    distance_in_words:
-      x_days:
-        one: 24 hours
-        other: "%{count} days"

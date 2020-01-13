@@ -1,4 +1,4 @@
-class CreateOmekaCollections < ActiveRecord::Migration
+class CreateOmekaCollections < ActiveRecord::Migration[5.2]
   def change
     unless ActiveRecord::Base.connection.tables.include? "omeka_collections"
 

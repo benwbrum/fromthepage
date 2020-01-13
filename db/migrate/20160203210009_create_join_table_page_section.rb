@@ -1,4 +1,4 @@
-class CreateJoinTablePageSection < ActiveRecord::Migration
+class CreateJoinTablePageSection < ActiveRecord::Migration[5.2]
   def change
     create_join_table :pages, :sections do |t|
       t.index [:page_id, :section_id]

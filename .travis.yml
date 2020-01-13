@@ -2,12 +2,12 @@ dist: xenial
 sudo: false
 language: ruby
 
-rvm: 2.3.7
+rvm: 2.6.5
 
 jobs:
   include:
     - stage: test for pry
-      rvm: 2.4.1
+      rvm: 2.6.5
       before_install:
       - bash travis/.travis_pry.sh
       install: skip

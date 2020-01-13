@@ -84,7 +84,7 @@ class OmekaSitesController < ApplicationController
     @omeka_site.user = current_user
 
     respond_to do |format|
-      if @omeka_site.update_attributes(params[:omeka_site])
+      if @omeka_site.update(params[:omeka_site])
         format.html {
           flash[:notice] = "Omeka site was successfully updated"
           ajax_redirect_to @omeka_site
@@ -106,16 +106,12 @@ class OmekaSitesController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = "Omeka site was successfully deleted"
-        redirect_to :back
+        redirect_back fallback_location: omeka_items_path
       }
       format.json { head :no_content }
     end
   end
 
   def review
-    
   end
-
-
-
 end

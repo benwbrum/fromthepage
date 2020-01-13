@@ -1,59 +1,11 @@
--tabs = [{\
-  :name => 'Summary',
-  :selected => 1,
-  :options => {\
-    :controller => 'admin',
-  },
-},{\
-  :name => 'Users',
-  :selected => 2,
-  :options => {\
-    :controller => 'admin',
-    :action => 'user_list',
-  },
-},{\
-  :name => 'Abuse',
-  :selected => 7,
-  :options => {\
-    :controller => 'admin',
-    :action => 'flag_list',
-  },
-},{\
-  :name => 'Owners',
-  :selected => 3,
-  :options => {\
-    :controller => 'admin',
-    :action => 'owner_list',
-  },
-},{\
-  :name => 'Uploads',
-  :selected => 5,
-  :options => {\
-    :controller => 'admin',
-    :action => 'uploads',
-  },
-},{\
-  :name => 'Logfile',
-  :selected => 4,
-  :options => {\
-    :controller => 'admin',
-    :action => 'tail_logfile',
-    :lines => 500,
-  },
-},{\
-  :name => 'Settings',
-  :selected => 6,
-  :options => {\
-    :controller => 'admin',
-    :action => 'settings',
-  },
-}]
-
--selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Administration"
+-admin_set_title
 
 h1 Administration
 .tabs
-  -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
-      a.active =tab[:name]
+  =active_link_to "Summary", admin_path, active: :exclusive
+  =active_link_to "Users", admin_user_list_path
+  =active_link_to "Abuse", admin_flag_list_path
+  =active_link_to "Owners", admin_owner_list_path
+  =active_link_to "Uploads", admin_uploads_path
+  =active_link_to "Logfile", admin_tail_logfile_path
+  =active_link_to "Settings", admin_settings_path

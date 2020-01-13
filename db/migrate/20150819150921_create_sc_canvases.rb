@@ -1,4 +1,4 @@
-class CreateScCanvases < ActiveRecord::Migration
+class CreateScCanvases < ActiveRecord::Migration[5.2]
   def change
     create_table :sc_canvases do |t|
       t.string :sc_id

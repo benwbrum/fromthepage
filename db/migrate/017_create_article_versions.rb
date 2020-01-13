@@ -1,4 +1,4 @@
-class CreateArticleVersions < ActiveRecord::Migration
+class CreateArticleVersions < ActiveRecord::Migration[5.2]
   def self.up
     create_table :article_versions do |t|
       # state of the page at this version

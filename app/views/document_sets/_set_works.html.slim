@@ -1,4 +1,4 @@
-    =form_for :document_set, url: remove_from_set_path, method: :get do |f|
+    =form_for :document_set, url: document_set_remove_from_set_path, method: :get do |f|
       =hidden_field_tag :collection_id, @collection.slug
       ul.collection-work-stats
         li

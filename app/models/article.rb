@@ -6,7 +6,7 @@
 #      t.column :created_on, :datetime
 #      t.column :lock_version, :integer, :default => 0
 #    end
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   include XmlSourceProcessor
   #include ActiveModel::Dirty
 
@@ -18,8 +18,8 @@ class Article < ActiveRecord::Base
   validates :longitude, allow_blank: true, numericality: { less_than_or_equal_to: 180, greater_than_or_equal_to: -180}
 
 
-  has_and_belongs_to_many :categories, -> { uniq }
-  belongs_to :collection
+  has_and_belongs_to_many :categories, -> { distinct }
+  belongs_to :collection, optional: true
   has_many(:target_article_links, { :foreign_key => "target_article_id", :class_name => 'ArticleArticleLink'})
   scope :target_article_links, -> { include 'source_article' }
   scope :target_article_links, -> { order "articles.title ASC" }
@@ -36,9 +36,6 @@ class Article < ActiveRecord::Base
   has_many :article_versions, -> { order 'version DESC' }, dependent: :destroy
 
   after_save :create_version
-
-  attr_accessible :title, :latitude, :longitude, :uri
-  attr_accessible :source_text
 
   def link_list
     self.page_article_links.includes(:page).order("pages.work_id, pages.title")
@@ -69,7 +66,7 @@ class Article < ActiveRecord::Base
   def related_article_ranks
 
   end
-  
+
   def gis_enabled?
     self.categories.where(:gis_enabled => true).present?
   end
@@ -123,7 +120,7 @@ class Article < ActiveRecord::Base
   # tested
   def clear_links(type='does_not_apply')
     # clear out the existing links to this page
-    ArticleArticleLink.delete_all("source_article_id = #{self.id}")
+    ArticleArticleLink.where("source_article_id = #{self.id}").delete_all
   end
 
   # tested
@@ -142,7 +139,7 @@ class Article < ActiveRecord::Base
   # tested
   def create_version
 
-    unless self.title_changed? || self.source_text_changed?
+    unless self.saved_change_to_title? || self.saved_change_to_source_text?
       return
     end
 

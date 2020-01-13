@@ -73,7 +73,7 @@ class OmekaItemsController < ApplicationController
     @omeka_item = OmekaItem.find(params[:id])
 
     respond_to do |format|
-      if @omeka_item.update_attributes(params[:omeka_item])
+      if @omeka_item.update(params[:omeka_item])
         format.html {
           flash[:notice] = "Omeka item was successfully updated"
           ajax_redirect_to request.env['HTTP_REFERER'] #:back won't work here
@@ -95,7 +95,7 @@ class OmekaItemsController < ApplicationController
     respond_to do |format|
       format.html {
         flash[:notice] = "Omeka item was successfully deleted"
-        redirect_to :back
+        redirect_back fallback_location: omeka_items_path
       }
       format.json { head :no_content }
     end

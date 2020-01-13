@@ -1,4 +1,4 @@
-class CreateScManifests < ActiveRecord::Migration
+class CreateScManifests < ActiveRecord::Migration[5.2]
   def change
     create_table :sc_manifests do |t|
       t.references :work, index: true

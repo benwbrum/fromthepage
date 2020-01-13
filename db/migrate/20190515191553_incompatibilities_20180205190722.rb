@@ -1,4 +1,4 @@
-class Incompatibilities20180205190722 < ActiveRecord::Migration
+class Incompatibilities20180205190722 < ActiveRecord::Migration[5.2]
   def change
     #notifications are created on user save
     unless User.all.empty?

@@ -1,4 +1,4 @@
-class DropSharedCanvasAttributes < ActiveRecord::Migration
+class DropSharedCanvasAttributes < ActiveRecord::Migration[5.2]
   def self.up
 	remove_column :sc_canvases, :sc_canvas_width
 	remove_column :sc_canvases, :sc_canvas_height

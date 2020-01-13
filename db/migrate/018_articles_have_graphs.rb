@@ -1,4 +1,4 @@
-class ArticlesHaveGraphs < ActiveRecord::Migration
+class ArticlesHaveGraphs < ActiveRecord::Migration[5.2]
   def self.up
     add_column :articles, :graph_image, :string
   end

@@ -1,2 +1,2 @@
-class OaiSet < ActiveRecord::Base
+class OaiSet < ApplicationRecord
 end

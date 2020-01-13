@@ -11,7 +11,7 @@
     h2 Works
     -@document_set.works.each do |work|
       .collection-work
-        h4.collection-work_title =link_to work.title, { :controller => 'display', :action => 'read_work', :work_id => work.id, :document_set_id => @document_set.id }
+        h4.collection-work_title =link_to work.title, display_read_work_path(:work_id => work.id, :document_set_id => @document_set.id)
         p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
           -progress_annotated = work.work_statistic.pct_annotated.round
@@ -24,7 +24,7 @@
 
     -unless @document_set.collection.categories.empty?
       h3 Subject Categories
-      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection.id, anchor: "category-#{c.id}" } }.join(', ')
+      p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { article_list_path(:collection_id => @collection.id, anchor: "category-#{c.id}") } }.join(', ')
 
 
   aside.sidecol
@@ -43,14 +43,14 @@
     h3 Recent Notes
     -@collection.notes.limit(10).each do |note|
       -user = link_to note.user.display_name, (user_profile_path(note.user)
-      -text = link_to truncate(note.title, :length => 100), { :controller => 'display', :action => 'display_page', :page_id => note.page_id, :anchor => "comment_#{note.id}" }
+      -text = link_to truncate(note.title, :length => 100), display_display_page_path(:page_id => note.page_id, :anchor => "comment_#{note.id}")
       .deed-short.small
         =time_tag(note.created_at, class: 'legend legend-left')
           ="#{time_ago_in_words note.created_at} ago"
         span.deed-short_content
           =="#{user} wrote #{text}"
     small.legend
-      =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
+      =link_to 'Show More', deed_list_path(:collection_id => @collection.id), class: 'button outline round'
 
     h3 Recent Edits
     =deeds_for({ :collection => true, :limit => 10, :types => DeedType.document_set_edits })

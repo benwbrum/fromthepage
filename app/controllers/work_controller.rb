@@ -12,7 +12,7 @@ class WorkController < ApplicationController
                                    :set_work_author,
                                    :set_work_transcription_conventions]
   # tested
-  before_filter :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
+  before_action :authorized?, :only => [:edit, :pages_tab, :delete, :new, :create]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
@@ -37,7 +37,7 @@ class WorkController < ApplicationController
 
     File.open(doc_tmp_path, "w") { |f| f.write(string) }
     if $?
-      render(:text => "file write failed")
+        render(:plain => "file write failed")
       return
     end
 
@@ -51,12 +51,12 @@ class WorkController < ApplicationController
     end
 
     if !File.exists?(pdf_tmp_path)
-      render(:text => "#{dp_cmd} did not generate #{pdf_tmp_path}")
+      render(:plain => "#{dp_cmd} did not generate #{pdf_tmp_path}")
       return
     end
 
     if !File.copy(pdf_tmp_path, pdf_pub_path)
-      render(:text => "could not copy pdf file to public/docs")
+      render(:plain => "could not copy pdf file to public/docs")
       return
     end
     @pdf_file = pdf_pub_path
@@ -104,7 +104,7 @@ class WorkController < ApplicationController
   end
 
   def update_work
-    @work.update_attributes(params[:work])
+    @work.update(work_params)
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
@@ -120,7 +120,7 @@ class WorkController < ApplicationController
     if @work.save
       record_deed(@work)
       flash[:notice] = 'Work created successfully'
-      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
       render :new
     end
@@ -135,9 +135,9 @@ class WorkController < ApplicationController
     collection_convention = work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      work.update_attributes(params[:work].except(:transcription_conventions))
+      work.update(work_params.except(:transcription_conventions))
     else
-      work.update_attributes(params[:work])
+      work.update(work_params)
     end
 
     #if the slug field param is blank, set slug to original candidate
@@ -154,7 +154,7 @@ class WorkController < ApplicationController
       redirect_to edit_collection_work_path(col.owner, col, work)
     else
       flash[:notice] = 'Work updated successfully'
-      redirect_to :back
+      redirect_back fallback_location: root_path
     end
   end
 
@@ -179,18 +179,17 @@ class WorkController < ApplicationController
       work.save!
     end
     work.update_deed_collection
-    
   end
 
   def revert
     work = Work.find_by(id: params[:work_id])
     work.update_attribute(:transcription_conventions, nil)
-    render :text => work.collection.transcription_conventions
+    render :plain => work.collection.transcription_conventions
   end
 
   def update_featured_page
     @work.update(featured_page: params[:page_id])
-    redirect_to :back
+    redirect_back fallback_location: @work
   end
 
   private
@@ -232,10 +231,11 @@ class WorkController < ApplicationController
     File.new("#{tmp_path}/d2p.out").each { |l| msg+= l + "<br />"}
     msg += "<br />stderr:<br />"
     File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
-    render(:text => msg )
+    render(:plain => msg )
   end
 
   protected
+
   def record_deed(work)
     deed = Deed.new
     deed.work = work
@@ -243,5 +243,11 @@ class WorkController < ApplicationController
     deed.collection = work.collection
     deed.user = work.owner
     deed.save!
+  end
+
+  private
+
+  def work_params
+    params.require(:work).permit(:title, :description, :collection_id, :supports_translation, :slug, :ocr_correction, :transcription_conventions)
   end
 end

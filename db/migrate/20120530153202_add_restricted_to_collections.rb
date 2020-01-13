@@ -1,4 +1,4 @@
-class AddRestrictedToCollections < ActiveRecord::Migration
+class AddRestrictedToCollections < ActiveRecord::Migration[5.2]
   def self.up
     add_column :collections, :restricted, :boolean, :default => false
   end

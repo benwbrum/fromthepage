@@ -1,4 +1,4 @@
-class CreateTitledImages < ActiveRecord::Migration
+class CreateTitledImages < ActiveRecord::Migration[5.2]
   def self.up
 =begin    create_table :titled_images do |t|
       t.column :original_file,  :string, :limit => 255, :null => false

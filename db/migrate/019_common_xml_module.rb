@@ -1,4 +1,4 @@
-class CommonXmlModule < ActiveRecord::Migration
+class CommonXmlModule < ActiveRecord::Migration[5.2]
   def self.up
     rename_column :pages, :transcription, :source_text
     rename_column :pages, :xml_transcription, :xml_text

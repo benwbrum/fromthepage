@@ -19,9 +19,9 @@
               -if @collection.voice_recognition
                 =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
                 span.voice-info.article-voice
-                
+
               =f.text_area :source_text, rows: 15
-        
+
 
       -if @article.gis_enabled?
         table.form
@@ -51,7 +51,7 @@
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       br
-      =link_to({ :controller => 'article', :action => 'delete', :article_id => @article.id, :collection_id => @collection.slug}, data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"}, class: 'button')
+      =link_to(article_delete_path(:article_id => @article.id, :collection_id => @collection.slug), data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"}, class: 'button')
         =svg_symbol '#icon-remove-sign', class: 'icon'
         span Delete Subject
 

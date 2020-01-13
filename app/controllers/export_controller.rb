@@ -1,4 +1,5 @@
 require 'contentdm_translator'
+
 class ExportController < ApplicationController
   require 'zip'
   include CollectionHelper,ExportHelper
@@ -71,12 +72,12 @@ class ExportController < ApplicationController
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-    
+
     ### Catch the rendered Work for post-processing
     xml = render_to_string :layout => false, :template => "export/tei.html.erb"
 
     # Render the post-processed
-    render :text => post_process_xml(xml, @work), :content_type => "application/xml"
+    render :plain => post_process_xml(xml, @work), :content_type => "application/xml"
   end
 
   def subject_csv
@@ -85,13 +86,13 @@ class ExportController < ApplicationController
               :type => "application/csv")
     cookies['download_finished'] = 'true'
   end
-  
+
   def table_csv
     send_data(export_tables_as_csv(@work),
               :filename => "fromthepage_tables_export_#{@work.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
-    
+
   end
 
   def desc_to_file(text:, dirname:, out:)
@@ -278,54 +279,54 @@ class ExportController < ApplicationController
               :filename => "fromthepage_tables_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
-   
+
   end
 
   def page_plaintext_verbatim
-    render  :layout => false, :content_type => "text/plain", :text => @page.verbatim_transcription_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @page.verbatim_transcription_plaintext
   end
 
   def page_plaintext_translation_verbatim
-    render  :layout => false, :content_type => "text/plain", :text => @page.verbatim_translation_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @page.verbatim_translation_plaintext
   end
 
   def page_plaintext_emended
-    render  :layout => false, :content_type => "text/plain", :text => @page.emended_transcription_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @page.emended_transcription_plaintext
   end
 
   def page_plaintext_translation_emended
-    render  :layout => false, :content_type => "text/plain", :text => @page.emended_translation_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @page.emended_translation_plaintext
   end
 
   def page_plaintext_searchable
-    render  :layout => false, :content_type => "text/plain", :text => @page.search_text
+    render  :layout => false, :content_type => "text/plain", :plain => @page.search_text
   end
 
   def work_plaintext_verbatim
-    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_transcription_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @work.verbatim_transcription_plaintext
   end
 
   def work_plaintext_translation_verbatim
-    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_translation_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @work.verbatim_translation_plaintext
   end
 
   def work_plaintext_emended
-    render  :layout => false, :content_type => "text/plain", :text => @work.emended_transcription_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @work.emended_transcription_plaintext
   end
 
   def work_plaintext_translation_emended
-    render  :layout => false, :content_type => "text/plain", :text => @work.emended_translation_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @work.emended_translation_plaintext
   end
 
   def work_plaintext_searchable
-    render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
+    render  :layout => false, :content_type => "text/plain", :plain => @work.searchable_plaintext
   end
-  
-  
+
+
   def edit_contentdm_credentials
     # display the edit form
   end
-  
+
   def update_contentdm_credentials
     # test credentials
     license_key = params[:collection][:license_key]
@@ -333,12 +334,12 @@ class ExportController < ApplicationController
     contentdm_password = params[:contentdm_password]
     error_message, fts_field = ContentdmTranslator.fts_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
 
-    # persist license key so the user doesn't have to retype it    
+    # persist license key so the user doesn't have to retype it
     if error_message.blank? || !error_message.match(/license.*invalid/)
       @collection.license_key = license_key
       @collection.save!
     end
-    
+
     # redirect to or render edit screen with error
     if error_message
       flash[:error] = error_message
@@ -369,7 +370,7 @@ private
 
   def get_headings(collection, ids)
     field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
-    cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck('DISTINCT header')
+    cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
 
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
@@ -511,25 +512,25 @@ private
     @page_metadata_headings.each do |key|
       metadata_cells << page.metadata[key]
     end
-    
+
     metadata_cells
   end
 
 
   def index_for_cell(cell)
-      if cell.transcription_field_id
-        index = (@raw_headings.index(cell.transcription_field_id))        
-      end
-      index = (@raw_headings.index(cell.header)) unless index
-      index = (@raw_headings.index(cell.header.strip)) unless index      
+    if cell.transcription_field_id
+      index = (@raw_headings.index(cell.transcription_field_id))
+    end
+    index = (@raw_headings.index(cell.header)) unless index
+    index = (@raw_headings.index(cell.header.strip)) unless index
 
-      index
+    index
   end
-    
+
 
   def cell_data(array, raw_headings, data_cells)
     array.each do |cell|
-      index = index_for_cell(cell)      
+      index = index_for_cell(cell)
       target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)

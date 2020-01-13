@@ -70,3 +70,17 @@ user_6:
   activity_email: true
   encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
   password_salt: R2-cytow2JEPt3jD3Ts1
+user_7:
+  id: 7
+  login: brian
+  display_name: Brian
+  print_name: 
+  email: brian@test.com
+  owner: true
+  admin: false
+  activity_email: true
+  account_type: Trial
+  paid_date: <%= 1.month.ago.to_s :db %>
+  start_date: <%= 1.month.ago.to_s :db %>
+  encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
+  password_salt: y7iu5sLXusNg5yZYBNhc

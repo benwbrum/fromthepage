@@ -1,5 +1,5 @@
 class DocumentSetsController < ApplicationController
-  before_filter :authorized?
+  before_action :authorized?
   before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -85,7 +85,7 @@ class DocumentSetsController < ApplicationController
 
   def update
     if params[:document_set][:slug] == ""
-      @document_set.update(params[:document_set].except(:slug))
+      @document_set.update(document_set_params.except(:slug))
       title = @document_set.title.parameterize
       @document_set.update(slug: title)
     else
@@ -148,18 +148,18 @@ class DocumentSetsController < ApplicationController
   def destroy
     @document_set.destroy
     redirect_to action: 'index', collection_id: @document_set.collection_id
-
   end
 
   private
-    def set_document_set
-      unless (defined? @document_set) && @document_set
-        id = params[:document_set_id] || params[:id]
-        @document_set = DocumentSet.friendly.find(id)
-      end
-    end
 
-    def document_set_params
-      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+  def set_document_set
+    unless (defined? @document_set) && @document_set
+      id = params[:document_set_id] || params[:id]
+      @document_set = DocumentSet.friendly.find(id)
     end
+  end
+
+  def document_set_params
+    params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+  end
 end

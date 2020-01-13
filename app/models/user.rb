@@ -1,17 +1,14 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable, :masqueradable, 
+  devise :database_authenticatable, :registerable, :masqueradable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :encryptable, :encryptor => :restful_authentication_sha1, 
+         :omniauthable, :encryptable, :encryptor => :restful_authentication_sha1,
          :omniauth_providers => [:google_oauth2,:saml]
 
   include OwnerStatistic
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
-
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -49,9 +46,9 @@ class User < ActiveRecord::Base
   has_many :notes, -> { order 'created_at DESC' }
   has_many :deeds
 
-  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.sample },
+  has_many :random_collections,   -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
     class_name: "Collection",  :foreign_key => "owner_user_id"
-  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.sample }, 
+  has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
   scope :owners,           -> { where(owner: true) }
@@ -63,7 +60,7 @@ class User < ActiveRecord::Base
   validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
-  
+
   after_save :create_notifications
   #before_destroy :clean_up_orphans
 
@@ -84,8 +81,7 @@ class User < ActiveRecord::Base
   end
 
   def all_owner_collections
-    query = Collection.where("collections.owner_user_id = ? or collections.id in (?)", self.id, self.owned_collections.ids)
-    Collection.where(query.where_values.inject(:or)).uniq.order(:title)
+    Collection.where(owner_user_id: self.id).or(Collection.where(id: self.owned_collections.ids)).distinct.order(:title)
   end
 
   def most_recently_managed_collection_id
@@ -122,7 +118,7 @@ class User < ActiveRecord::Base
       if obj.collection
         return self == obj.collection.owner || obj.collection.owners.include?(self)
       else
-        self == obj.owner      
+        self == obj.owner
       end
     end
     if DocumentSet == obj.class
@@ -159,7 +155,7 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
-  
+
   def unrestricted_collections
     self.all_owner_collections.unrestricted
   end
@@ -246,5 +242,18 @@ class User < ActiveRecord::Base
       deed.deed_type = DeedType::COLLECTION_JOINED
       deed.user = self
       deed.save!
+  end
+
+  def downgrade
+    self.owner = false
+    self.account_type = nil
+
+    self.collections.each do |c|
+      c.is_active = false
+      c.restricted = true
+      c.save
+    end
+
+    self.save
   end
 end

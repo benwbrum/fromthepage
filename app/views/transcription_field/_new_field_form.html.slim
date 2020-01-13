@@ -12,23 +12,23 @@ tr
   td =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => 'Field options', class: 'field-options fourth', disabled: true
   td =text_field_tag "transcription_fields[][percentage]", "#{percentage_value}", 'aria-label' => 'Width Percentage', class: 'percent'
   td =text_field_tag "transcription_fields[][page_number]", "#{page_number}", 'aria-label' => 'Page Number', class: 'page_number'
-  
+
   -unless field.blank?
     td 
       =hidden_field_tag "transcription_fields[][id]", field.id
     td
       -unless field.first?
-        =link_to({ controller: 'transcription_field', action: 'reorder_field', direction: 'up', field_id: field.id, line_number: field.line_number, collection_id: @collection }, title: 'Move up', 'aria-label' => 'Move up', class: 'field_icons')
+        =link_to(transcription_field_reorder_field_path(direction: 'up', field_id: field.id, line_number: field.line_number, collection_id: @collection), title: 'Move up', 'aria-label' => 'Move up', class: 'field_icons')
           =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Move up'
       -else
         a.field_icons.hidden
           =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Hidden arrow'
 
       -unless field.last?
-        =link_to({ controller: 'transcription_field', action: 'reorder_field', direction: 'down', field_id: field.id, line_number: field.line_number, collection_id: @collection }, title: 'Move down', 'aria-label' => 'Move down', class: 'field_icons')
+        =link_to(transcription_field_reorder_field_path(direction: 'down', field_id: field.id, line_number: field.line_number, collection_id: @collection), title: 'Move down', 'aria-label' => 'Move down', class: 'field_icons')
           =svg_symbol '#icon-arrow-bottom', class: 'icon', title: 'Move down'
       -else
         a.field_icons.hidden
           =svg_symbol '#icon-arrow-top', class: 'icon', title: 'Hidden arrow'
-      =link_to({ :controller => 'transcription_field', action: 'delete', field_id: field.id, collection_id: @collection }, class: 'field_icons', title: 'Delete field', 'aria-label' => 'Delete field')
+      =link_to(transcription_field_delete_path(field_id: field.id, collection_id: @collection), class: 'field_icons', title: 'Delete field', 'aria-label' => 'Delete field')
           =svg_symbol '#icon-remove-sign', class: 'icon'

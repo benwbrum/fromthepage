@@ -2,7 +2,7 @@ class IaController < ApplicationController
   require 'open-uri'
   include ActiveModel::Validations
 
-  before_filter :load_ia_work_from_params
+  before_action :load_ia_work_from_params
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:ia_book_form, :confirm_import]

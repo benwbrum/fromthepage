@@ -23,7 +23,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration.maintain_test_schema!
+#ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -44,7 +44,7 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     %x[bundle exec rake assets:precompile]
-    
+
     puts "Setting Collection Work Counts..."
     Collection.all.each do |c|
       Collection.reset_counters c.id, :works
@@ -82,8 +82,6 @@ RSpec.configure do |config|
   config.include Capybara::DSL
 
   config.include Warden::Test::Helpers
-
-
 end
 
 Capybara::Webkit.configure do |config|

@@ -10,15 +10,14 @@ class CollectionController < ApplicationController
                                    :set_collection_intro_block,
                                    :set_collection_footer_block]
 
-  before_filter :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_filter :load_settings, :only => [:edit, :update, :upload]
+  before_action :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
 
   def authorized?
-    
     unless user_signed_in?
       ajax_redirect_to dashboard_path
     end
@@ -202,11 +201,11 @@ class CollectionController < ApplicationController
 
   def update
     if params[:collection][:slug] == ""
-      @collection.update(params[:collection].except(:slug))
+      @collection.update(collection_params.except(:slug))
       title = @collection.title.parameterize
       @collection.update(slug: title)
     else
-      @collection.update(params[:collection])
+      @collection.update(collection_params)
     end
 
     if @collection.save!
@@ -265,7 +264,7 @@ class CollectionController < ApplicationController
     #Get the start and end date params from date picker, if none, set defaults
     start_date = params[:start_date]
     end_date = params[:end_date]
-    
+
     if start_date == nil
       start_date = 1.week.ago
       end_date = DateTime.now.utc
@@ -277,7 +276,6 @@ class CollectionController < ApplicationController
     @start_deed = start_date.strftime("%b %d, %Y")
     @end_deed = end_date.strftime("%b %d, %Y")
 
-    
     new_contributors(@collection, start_date, end_date)
     @stats = @collection.get_stats_hash(start_date, end_date)
   end
@@ -307,7 +305,7 @@ class CollectionController < ApplicationController
     stats = @active_transcribers.map do |user|
       time_total = 0
       time_proportional = 0
-    
+
       if @user_time[user.id]
         time_total = (@user_time[user.id] / 60 + 1).floor
       end
@@ -344,7 +342,7 @@ class CollectionController < ApplicationController
       :type => "application/csv")
 
     cookies['download_finished'] = 'true'
-      
+
   end
 
   def activity_download
@@ -375,7 +373,7 @@ class CollectionController < ApplicationController
 
     note = ''
     note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
-      
+
       record = [
         d.created_at,
         d.user.display_name,
@@ -396,7 +394,7 @@ class CollectionController < ApplicationController
           d.work.title,
           collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
           note,
-        ] 
+        ]
         record += pagedeeds
         record += ['','']
       end
@@ -415,7 +413,6 @@ class CollectionController < ApplicationController
       :type => "application/csv")
 
     cookies['download_finished'] = 'true'
-
   end
 
   def blank_collection
@@ -463,14 +460,15 @@ class CollectionController < ApplicationController
     flash[:notice] = "OCR correction has been enabled for all works."
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
-  
+
   def disable_ocr
     @collection.disable_ocr
     flash[:notice] = "OCR correction has been disabled for all works."
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
-private
+  private
+
   def set_collection
     unless @collection
       if Collection.friendly.exists?(params[:id])
@@ -495,5 +493,9 @@ private
       article.collection = collection
       article.save!
     end
+  end
+
+  def collection_params
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition)
   end
 end

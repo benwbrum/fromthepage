@@ -1,4 +1,4 @@
-class CreatePageVersions < ActiveRecord::Migration
+class CreatePageVersions < ActiveRecord::Migration[5.2]
   def self.up
     # add a work version
     add_column :works, :transcription_version, :integer, :default => 0

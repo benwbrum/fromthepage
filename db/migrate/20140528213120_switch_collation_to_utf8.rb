@@ -1,4 +1,4 @@
-class SwitchCollationToUtf8 < ActiveRecord::Migration
+class SwitchCollationToUtf8 < ActiveRecord::Migration[5.2]
   def change
     ActiveRecord::Base.connection.tables.each do |table|
       puts "Converting #{table} to UTF-8"

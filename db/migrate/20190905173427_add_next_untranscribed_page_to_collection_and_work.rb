@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddNextUntranscribedPageToCollectionAndWork < ActiveRecord::Migration
+class AddNextUntranscribedPageToCollectionAndWork < ActiveRecord::Migration[5.2]
   def change
     add_column :collections, :next_untranscribed_page_id, :integer
     add_column :document_sets, :next_untranscribed_page_id, :integer

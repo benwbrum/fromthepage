@@ -52,11 +52,11 @@
     -if user_signed_in? && current_user.like_owner?(@collection)
       -if @collection.is_a?(Collection)
         p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
-    
+
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
         h3 Subject Categories
-        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => @collection, anchor: "category-#{c.id}" } }.join(', ')
+        p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, article_list_path(:collection_id => @collection, anchor: "category-#{c.id}") }.join(', ')
 
   aside.sidecol
 
@@ -67,7 +67,7 @@
         small Owned by
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
-    =form_tag({:controller => 'display', :action => 'search'}, :method => :get, class: 'collection-search') do
+    =form_tag(display_search_path, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
       =button_tag 'Search'
@@ -94,7 +94,7 @@
         span.deed-short_content
           =="#{user} wrote #{text}"
     small.legend
-      =link_to 'Show More', { :controller => 'deed', :action => 'list', :collection_id => @collection.id }, class: 'button outline round'
+      =link_to 'Show More', deed_list_path(@collection.id), class: 'button outline round'
 
     h3 Recent Edits
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })

@@ -1,4 +1,4 @@
-class InteractionTableHasStatusAndOrigin < ActiveRecord::Migration
+class InteractionTableHasStatusAndOrigin < ActiveRecord::Migration[5.2]
   def self.up
     add_column :interactions, :status, :string, :limit => 10
     add_column :interactions, :origin_link, :string, :limit => 20

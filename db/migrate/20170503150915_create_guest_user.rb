@@ -1,4 +1,4 @@
-class CreateGuestUser < ActiveRecord::Migration
+class CreateGuestUser < ActiveRecord::Migration[5.2]
 
 #this functionality has been moved to a rake task
 =begin  def change

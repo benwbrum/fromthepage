@@ -106,7 +106,7 @@ module ImageHelper
       if @logger
         @logger.debug("ImageHelper updating image #{image.id} with #{attributes.inspect}")
       end
-      image.update_attributes(attributes)
+      image.update(attributes)
       if @logger
         @logger.debug("ImageHelper updated  image #{image.id}")
       end

@@ -1,7 +1,7 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 3, :collection_id => @collection }})
 -if @categories.present?
   -if @page
-    -page_link = link_to('click here', { :controller => 'transcribe', :action => 'assign_categories', :page_id => @page.id })
+    -page_link = link_to('click here', transcribe_assign_categories_path(:page_id => @page.id))
     .category-back-message =="Once you finish editing categories, #{page_link} to return back to &ldquo;#{@page.title}&rdquo; page."
 
   .collection-categories
@@ -31,15 +31,15 @@
                       span Actions
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd
-                      =link_to 'Edit Category', { :controller => 'category', :action => 'edit', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      =link_to 'Add Child Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id, :category_id => category.id }, 'data-litebox' => ''
-                      =link_to 'Add Root Category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.id }, 'data-litebox' => ''
+                      =link_to 'Edit Category', category_edit_path(:collection_id => @collection.id, :category_id => category.id), 'data-litebox' => ''
+                      =link_to 'Add Child Category', category_add_new_path(:collection_id => @collection.id, :category_id => category.id), 'data-litebox' => ''
+                      =link_to 'Add Root Category', category_add_new_path(:collection_id => @collection.id), 'data-litebox' => ''
                       -if category.gis_enabled
-                        =link_to 'Disable GIS for Category', { :controller => 'category', :action => 'disable_gis', :collection_id => @collection.id, :category_id => category.id }
+                        =link_to 'Disable GIS for Category', category_disable_gis_path(:collection_id => @collection.id, :category_id => category.id)
                       -else
-                        =link_to 'Enable GIS for Category', { :controller => 'category', :action => 'enable_gis', :collection_id => @collection.id, :category_id => category.id }
+                        =link_to 'Enable GIS for Category', category_enable_gis_path(:collection_id => @collection.id, :category_id => category.id)
                       hr
-                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
+                      =link_to 'Delete Category', category_delete_path(:collection_id => @collection.id, :category_id => category.id), class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
           dd
             -if category.articles_list(@collection).empty?
               p.acenter.fglight There are no subjects for the category selected
@@ -55,7 +55,7 @@
               p[*language_attrs(@collection)]
                 =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
 -else
-  -add_category = link_to 'Create the first category', { :controller => 'category', :action => 'add_new', :collection_id => @collection.slug }, 'data-litebox' => ''
+  -add_category = link_to 'Create the first category', category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
   .nodata
     h4.nodata_title No Categories
     p.nodata_text

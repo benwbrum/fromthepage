@@ -1,4 +1,4 @@
-class AddCollectionCollaborators < ActiveRecord::Migration
+class AddCollectionCollaborators < ActiveRecord::Migration[5.2]
   def self.up
     create_table :collection_collaborators, :id => false  do |t|
       t.integer :user_id

@@ -1,4 +1,4 @@
-class AddPidToImageSets < ActiveRecord::Migration
+class AddPidToImageSets < ActiveRecord::Migration[5.2]
   def self.up
 =begin    add_column :image_sets, :rotate_pid, :integer
     add_column :image_sets, :shrink_pid, :integer

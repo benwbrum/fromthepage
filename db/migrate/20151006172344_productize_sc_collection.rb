@@ -1,4 +1,4 @@
-class ProductizeScCollection < ActiveRecord::Migration
+class ProductizeScCollection < ActiveRecord::Migration[5.2]
   def change
     add_column    :sc_collections, :at_id, :string
     add_column    :sc_collections, :parent_id, :integer

@@ -11,7 +11,7 @@ describe "export tasks" do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
+  end
 
   it "exports all works in a collection" do
     visit dashboard_owner_path

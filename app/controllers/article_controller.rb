@@ -1,5 +1,5 @@
 class ArticleController < ApplicationController
-  before_filter :authorized?, :except => [:list, :show, :tooltip, :graph]
+  before_action :authorized?, :except => [:list, :show, :tooltip, :graph]
 
   include AbstractXmlController
 
@@ -43,7 +43,7 @@ class ArticleController < ApplicationController
     old_title = @article.title
     gis_truncated = gis_truncated?(params[:article], GIS_DECIMAL_PRECISION)
 
-    @article.attributes = params[:article]
+    @article.attributes = article_params
     if params['save']
       #process_source_for_article
       if @article.save
@@ -73,7 +73,7 @@ class ArticleController < ApplicationController
     else
       @article.categories.delete(@category)
     end
-    render :text => "success"
+    render :plain => "success"
   end
 
   def combine_duplicate
@@ -159,15 +159,13 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_path = "#{Rails.root}/app/views/article/graph.dot"
-
     dot_source =
-      render_to_string({:file => dot_path,
-                        :layout => false,
-                        :locals => { :article_links => article_links,
-                                     :link_total => link_total,
-                                     :link_max => link_max,
-                                     :min_rank => min_rank }} )
+      render_to_string(:partial => "graph.dot",
+                       :layout => false,
+                       :locals => { :article_links => article_links,
+                                    :link_total => link_total,
+                                    :link_max => link_max,
+                                    :min_rank => min_rank })
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|
@@ -186,6 +184,7 @@ class ArticleController < ApplicationController
   end
 
   protected
+
   def rename_article(old_name, new_name)
     # walk through all pages referring to this
     for link in @article.page_article_links
@@ -255,6 +254,11 @@ class ArticleController < ApplicationController
     from_article.destroy
   end
 
+  private
+
+  def article_params
+    params.require(:article).permit(:title, :url, :source_text)
+  end
 end
 
 def gis_truncated?(params, dec)

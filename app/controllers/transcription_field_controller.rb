@@ -1,6 +1,6 @@
 class TranscriptionFieldController < ApplicationController
   include ActiveModel::Validations
-  before_filter :authorized?, :only => [:new, :edit_fields, :add_field]
+  before_action :authorized?, :only => [:new, :edit_fields, :add_field]
 
   #no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil}
@@ -38,7 +38,7 @@ class TranscriptionFieldController < ApplicationController
         end
         if fields[:id].blank?
           #if the field doesn't exist, create a new one
-          transcription_field = TranscriptionField.new(fields)
+          transcription_field = TranscriptionField.new(fields.permit!)
           transcription_field.collection_id = params[:collection_id]
           transcription_field.save
         else
@@ -46,7 +46,7 @@ class TranscriptionFieldController < ApplicationController
           transcription_field = TranscriptionField.find_by(id: fields[:id])
           #remove ID from params before update
           fields.delete(:id)
-          transcription_field.update_attributes(fields)
+          transcription_field.update(fields.permit!)
         end
       end
     end
@@ -90,14 +90,14 @@ class TranscriptionFieldController < ApplicationController
 
   private
 
-    def authorized?
-      unless user_signed_in?
-        ajax_redirect_to dashboard_path
-      end
+  def authorized?
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+    end
 
-      if @collection &&  !current_user.like_owner?(@collection)
-        ajax_redirect_to dashboard_path
-      end
+    if @collection &&  !current_user.like_owner?(@collection)
+      ajax_redirect_to dashboard_path
+    end
   end
 
 end

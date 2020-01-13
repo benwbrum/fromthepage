@@ -6,15 +6,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  before_filter :load_objects_from_params
-  before_filter :update_ia_work_server
-  before_filter :update_omeka_urls
+  before_action :load_objects_from_params
+  before_action :update_ia_work_server
+  before_action :update_omeka_urls
   before_action :store_current_location, :unless => :devise_controller?
-  before_filter :load_html_blocks
-  before_filter :authorize_collection
-  before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :set_current_user_in_model
-  before_filter :masquerade_user!
+  before_action :load_html_blocks
+  before_action :authorize_collection
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_current_user_in_model
+  before_action :masquerade_user!
   after_action :track_action
 
   # Set the current user in User

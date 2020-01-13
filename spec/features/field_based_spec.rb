@@ -12,7 +12,7 @@ describe "collection settings js tasks", :order => :defined do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
+  end
 
   it "sets collection to field based transcription" do
     visit collection_path(@collection.owner, @collection)

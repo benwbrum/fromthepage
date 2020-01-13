@@ -1,20 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.2'
-
+gem 'rails', '6.0.2.1'
 
 gem 'will_paginate'
-#gem 'rmagick', '2.13.2', require: "RMagick"
 gem 'rmagick'
 gem 'nokogiri'
-gem 'oai', git: 'https://github.com/mispy/ruby-oai.git'
-gem 'capistrano', '~> 3.4.0'
-gem 'capistrano-rails', '= 1.1.3'
-gem 'capistrano-bundler', '~> 1.1.2'
-gem 'rvm1-capistrano3', require: false
+gem 'oai'
+gem "capistrano", "~> 3.10", require: false
+gem "capistrano-rails", "~> 1.4", require: false
+gem 'capistrano-bundler', '~> 1.6'
+#gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
 gem 'savon', '~> 2.12.0'
-gem 'mysql2','0.3.21'
+gem 'mysql2'
 
 gem "recaptcha", require: "recaptcha/rails"
 
@@ -26,12 +24,14 @@ gem 'acts_as_tree'
 gem 'devise'
 gem 'devise-encryptable'
 
-gem 'protected_attributes'
 gem 'carrierwave'
 gem 'rubyzip'
-gem 'render_anywhere'
 
 gem 'ahoy_matey'
+
+gem "browser", "~> 2.0"
+gem "user_agent_parser"
+
 gem 'pry'
 gem 'oink'
 
@@ -43,15 +43,21 @@ gem 'omniauth-google-oauth2'
 
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
 
+gem 'bootsnap', require: false
+
+gem 'puma'
+
+gem 'active_link_to'
 
 group :assets do
-  gem 'therubyracer'
+  gem 'mini_racer'
   gem 'uglifier'
 end
 
 group :test do
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'webmock', require: false
   gem 'vcr'
@@ -61,7 +67,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
-  gem 'capybara-webkit'
+  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
   gem 'pry-byebug'
   gem 'factory_bot_rails'
   gem 'pry-awesome_print' # makes console output easy to read
@@ -70,16 +76,17 @@ group :development, :test do
   # Supporting gem for RailsPanel
   # https://github.com/dejan/rails_panel
   gem 'bullet'
+  gem 'listen'
 end
 
 # Use SassC for stylesheets
 gem 'sassc-rails'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails', '<= 8.6.5'
+gem 'autoprefixer-rails'
 
 # Use Slim for templates
-gem 'slim', '~> 3.0.0'
+gem 'slim'
 
 # Gravatar Image Tag
 gem 'gravatar_image_tag'
@@ -93,9 +100,6 @@ gem 'friendly_id'
 #support right to left languages
 gem 'rtl'
 gem 'iso-639'
-
-# Quiet asset lines in log files
-gem 'quiet_assets', '~> 1.1.0', group: :development
 
 # Profiling for use in prod
 gem 'flamegraph'

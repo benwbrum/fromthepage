@@ -1,4 +1,4 @@
-class UpdatePageStatus < ActiveRecord::Migration
+class UpdatePageStatus < ActiveRecord::Migration[5.2]
   def change
     ocr_ids = Work.where(ocr_correction: true).pluck(:id)
     #find pages with source text from non-ocr-corrected works

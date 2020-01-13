@@ -1,4 +1,4 @@
-class CreateWorkStatistics < ActiveRecord::Migration
+class CreateWorkStatistics < ActiveRecord::Migration[5.2]
   def self.up
     create_table :work_statistics do |t|
       t.integer     :work_id

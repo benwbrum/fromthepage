@@ -1,4 +1,4 @@
-class CreatePageArticleLinks < ActiveRecord::Migration
+class CreatePageArticleLinks < ActiveRecord::Migration[5.2]
   def self.up
     create_table :page_article_links do |t|
       # foreign keys

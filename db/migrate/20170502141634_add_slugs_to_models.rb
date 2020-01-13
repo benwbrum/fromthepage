@@ -1,4 +1,4 @@
-class AddSlugsToModels < ActiveRecord::Migration
+class AddSlugsToModels < ActiveRecord::Migration[5.2]
   def change
     #add slugs to collections
     add_column :collections, :slug, :string

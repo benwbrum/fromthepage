@@ -1,4 +1,4 @@
-class AddConventionsToCollection < ActiveRecord::Migration
+class AddConventionsToCollection < ActiveRecord::Migration[5.2]
   def self.up
     add_column :collections, :transcription_conventions, :text
 

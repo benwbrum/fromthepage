@@ -1,4 +1,4 @@
-class CreateArticlesCategories < ActiveRecord::Migration
+class CreateArticlesCategories < ActiveRecord::Migration[5.2]
   def self.up
 
     create_table :articles_categories, :id => false do |t|

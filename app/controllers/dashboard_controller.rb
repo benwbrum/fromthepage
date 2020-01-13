@@ -3,10 +3,10 @@
 class DashboardController < ApplicationController
   include AddWorkHelper
 
-  before_filter :authorized?,
+  before_action :authorized?,
     only: [:owner, :staging, :omeka, :startproject, :summary]
 
-  before_filter :get_data,
+  before_action :get_data,
     only: [:owner, :staging, :omeka, :upload, :new_upload,
            :startproject, :empty_work, :create_work, :summary]
 
@@ -137,5 +137,15 @@ class DashboardController < ApplicationController
       colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
       @collections = (docsets + colls).sample(8)
     end
+  end
+
+  private
+
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :collection_id)
+  end
+
+  def work_params
+    params.require(:work).permit(:title, :description, :collection_id)
   end
 end

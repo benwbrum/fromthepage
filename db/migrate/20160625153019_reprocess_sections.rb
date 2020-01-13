@@ -1,4 +1,4 @@
-class ReprocessSections < ActiveRecord::Migration
+class ReprocessSections < ActiveRecord::Migration[5.2]
   def change
     Section.all.each do |section|
       page = section.pages.first

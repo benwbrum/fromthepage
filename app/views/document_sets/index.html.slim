@@ -7,7 +7,7 @@ ul
   li Aggregating works into thematic exhibits
 
 -if @collection.document_sets.present?
-  h3 
+  h3
     | Document Sets for 
     =@collection.title
   table.datagrid
@@ -23,12 +23,12 @@ ul
           td
             =link_to document_set.title, collection_path(document_set.owner, document_set)
           td
-            =document_set.is_public ? 'Public' : 'Private'  
+            =document_set.is_public ? 'Public' : 'Private'
           td
             =link_to 'Edit', collection_settings_path(@collection.owner, document_set)
           td
-            =link_to 'Delete',{ :controller => 'document_sets', :action => 'destroy', :document_set_id => document_set.id }, data: { :confirm => 'Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.' }
-              
+            =link_to 'Delete', document_sets_destroy_path(:document_set_id => document_set.id), data: { :confirm => 'Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.' }
+
 
 br
 =link_to 'Create a Document Set', new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''

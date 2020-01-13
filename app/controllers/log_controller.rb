@@ -6,7 +6,7 @@ class LogController < ApplicationController
     debug(request.env['REMOTE_ADDR'])
     #debug(params[:message])
     params[:message].split('_').each { |message| debug(message) }
-    render :text => ''
+    render :plain => ''
   end
 
   def debug(message)

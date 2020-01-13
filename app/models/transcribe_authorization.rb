@@ -1,2 +1,2 @@
-class TranscribeAuthorization < ActiveRecord::Base
+class TranscribeAuthorization < ApplicationRecord
 end
