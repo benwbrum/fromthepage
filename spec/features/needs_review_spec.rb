@@ -7,13 +7,14 @@ describe "needs review", :order => :defined do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collection = Collection.second
-    @work = @collection.works.third
+    @work = Work.find(12)
     @page1 = @work.pages.first
     @page2 = @work.pages.second
     @page3 = @work.pages.third
     @page4 = @work.pages.fourth
     @page5 = @work.pages.fifth
     @page6 = @work.pages.last
+    @page_count = @work.pages.count
   end
 
   before :each do
@@ -50,7 +51,7 @@ describe "needs review", :order => :defined do
     expect(page).to have_content("This page is blank")
     expect(Page.find_by(id: @page2.id).status).to eq ('blank')
     expect(Page.find_by(id: @page2.id).translation_status).to eq ('blank')
-  end
+ end
 
   it "marks translated pages as blank" do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
