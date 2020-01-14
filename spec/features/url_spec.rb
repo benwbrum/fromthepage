@@ -14,9 +14,7 @@ describe "URL tests" do
     #check old paths for backwards compatibility
     visit "/collection/show?collection_id=#{@collection.id}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_selector('a', text: @collection.title)
     expect(page).to have_selector('h1', text: @work.title)
