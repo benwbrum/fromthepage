@@ -68,9 +68,7 @@ describe "URL tests" do
     slug = "new-#{@collection.slug}"
     visit "/#{@owner.slug}/#{@collection.slug}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     #edit the slug
     page.find('.tabs').click_link("Settings")
     expect(page).to have_field('collection[slug]', with: @collection.slug)
@@ -90,9 +88,7 @@ describe "URL tests" do
     visit dashboard_owner_path
     visit "/#{@owner.slug}/#{@collection.slug}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     #blank out the slug and make sure the original is there
     visit "/#{@owner.slug}/#{@collection.slug}"
     page.find('.tabs').click_link("Settings")
