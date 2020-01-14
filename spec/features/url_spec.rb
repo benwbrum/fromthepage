@@ -80,9 +80,7 @@ describe "URL tests" do
     #test new path
     visit "/#{@owner.slug}/#{slug}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     #test old path
     #this variable is stored at the beginning of the test, so it's the original
     visit dashboard_owner_path
