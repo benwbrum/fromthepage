@@ -14,9 +14,7 @@ describe "URL tests" do
     #check old paths for backwards compatibility
     visit "/collection/show?collection_id=#{@collection.id}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     visit "/display/read_work?work_id=#{@work.id}"
     expect(page).to have_selector('a', text: @collection.title)
     expect(page).to have_selector('h1', text: @work.title)
@@ -70,9 +68,7 @@ describe "URL tests" do
     slug = "new-#{@collection.slug}"
     visit "/#{@owner.slug}/#{@collection.slug}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     #edit the slug
     page.find('.tabs').click_link("Settings")
     expect(page).to have_field('collection[slug]', with: @collection.slug)
@@ -84,17 +80,13 @@ describe "URL tests" do
     #test new path
     visit "/#{@owner.slug}/#{slug}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     #test old path
     #this variable is stored at the beginning of the test, so it's the original
     visit dashboard_owner_path
     visit "/#{@owner.slug}/#{@collection.slug}"
     expect(page).to have_selector('h1', text: @collection.title)
-    @collection.works.each do |w|
-      expect(page).to have_content w.title
-    end
+    expect(page).to have_content @collection.works.first.title
     #blank out the slug and make sure the original is there
     visit "/#{@owner.slug}/#{@collection.slug}"
     page.find('.tabs').click_link("Settings")

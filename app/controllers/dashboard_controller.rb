@@ -138,4 +138,6 @@ class DashboardController < ApplicationController
       @collections = (docsets + colls).sample(8)
     end
   end
+
+
 end

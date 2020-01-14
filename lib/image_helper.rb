@@ -27,17 +27,27 @@ module ImageHelper
     
   end
   
-  def self.extract_pdf(filename)
+  def self.extract_pdf(filename, ocr=false)
     pattern = Regexp.new(File.extname(filename) + "$")
     destination = filename.gsub(pattern, '')
     FileUtils.mkdir(destination) unless File.exists?(destination)
     pattern = File.join(destination, "page_%04d.jpg")
     gs = "gs -r300x300 -dJPEGQ=30 -o '#{pattern}' -sDEVICE=jpeg '#{filename}'"
-    print gs
+    print "\t\t#{gs}\n"
     system(gs)
-    # convert = "convert -density 200 -quality 30 '#{filename}' '#{pattern}'"
-    # print("#{convert}\n")
-    # system(convert)
+
+    if ocr
+      # now extract OCR text
+      pattern = File.join(destination, "page_%04d.txt")
+      page_count = Dir.glob(File.join(destination, "*.jpg")).count
+      1.upto(page_count) do |page_num|
+        output_file = pattern % page_num
+        pdftotext = "pdftotext -f #{page_num} -l #{page_num} '#{filename}' #{output_file}"
+        print pdftotext
+        print "\t\t#{pdftotext}\n"
+        system(pdftotext)
+      end
+    end
     
     destination
   end
