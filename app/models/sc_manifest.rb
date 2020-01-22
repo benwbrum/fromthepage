@@ -85,9 +85,9 @@ class ScManifest < ApplicationRecord
   def cleanup_label(label)
     label = flatten_element(label)
     new_label = label.truncate(255, separator: ' ', omission: '')
-    new_label.dup.gsub!("&quot;", "'")
-    new_label.dup.gsub!("&amp;", "&")
-    new_label.dup.gsub!("&apos;", "'")
+    new_label.gsub!("&quot;", "'")
+    new_label.gsub!("&amp;", "&")
+    new_label.gsub!("&apos;", "'")
 
     new_label
   end
