@@ -78,4 +78,6 @@ Rails.application.configure do
   # Install mailcatcher locally on your machine 'gem install mailcatcher'
   # Run 'mailcatcher' in the terminal to start the server
   # Open 'http://localhost:1080/' in your browser to see mail sent
+
+  Ahoy.geocode = false
 end
