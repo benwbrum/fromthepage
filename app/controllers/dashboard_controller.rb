@@ -142,7 +142,7 @@ class DashboardController < ApplicationController
   private
 
   def document_upload_params
-    params.require(:document_upload).permit(:document_upload, :file, :collection_id)
+    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
   end
 
   def work_params

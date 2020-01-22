@@ -75,4 +75,12 @@ module AddWorkHelper
     deed.save!
   end
 
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :collection_id, :ocr, :preserve_titles)
+  end
+
+  def work_params
+    params.require(:work).permit(:title, :description, :collection_id)
+  end
+
 end

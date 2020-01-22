@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_29_190417) do
+ActiveRecord::Schema.define(version: 2020_01_08_141002) do
 
   create_table "ahoy_events", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "visit_id"
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 2019_11_29_190417) do
     t.datetime "updated_at", null: false
     t.string "status", default: "new"
     t.boolean "preserve_titles", default: false
+    t.boolean "ocr", default: false
     t.index ["collection_id"], name: "index_document_uploads_on_collection_id"
     t.index ["user_id"], name: "index_document_uploads_on_user_id"
   end
