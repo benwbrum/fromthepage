@@ -42,8 +42,7 @@ module ImageHelper
       page_count = Dir.glob(File.join(destination, "*.jpg")).count
       1.upto(page_count) do |page_num|
         output_file = pattern % page_num
-        pdftotext = "pdftotext -f #{page_num} -l #{page_num} '#{filename}' #{output_file}"
-        print pdftotext
+        pdftotext = "pdftotext -f #{page_num} -l #{page_num} '#{filename}' '#{output_file}'"
         print "\t\t#{pdftotext}\n"
         system(pdftotext)
       end
