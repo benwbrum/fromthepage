@@ -236,7 +236,7 @@ namespace :fromthepage do
       if Dir.glob(File.join(path, "page*.txt")).count > 0
         work.ocr_correction = true
       else
-        print "\tOCR correction specifiied but no files found in #{File.join(path, "page*.txt")}\n"
+        print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")}\n"
       end
     end
 
