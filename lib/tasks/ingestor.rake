@@ -232,8 +232,12 @@ namespace :fromthepage do
     work.collection = document_upload.collection
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
-    if document_upload.ocr && Dir.glob(File.join(path, "page*.txt")).count > 0
-      work.ocr_correction = true
+    if document_upload.ocr
+      if Dir.glob(File.join(path, "page*.txt")).count > 0
+        work.ocr_correction = true
+      else
+        print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")}\n"
+      end
     end
 
     work.save!
