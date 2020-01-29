@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/BrumfieldLabs/iiif-image-api.git
+  revision: 2026de46eb4c96fa7c19317b7b5ea21a7c568f19
+  specs:
+    iiif-image-api (0.1.0)
+      activesupport (~> 6.0)
+
+GIT
   remote: https://github.com/benwbrum/omeka_client
   revision: f930e4a32ff5f235760f0ba64804ce7beeca9546
   specs:
@@ -496,6 +503,7 @@ DEPENDENCIES
   flamegraph
   friendly_id
   gravatar_image_tag
+  iiif-image-api!
   iiif-presentation!
   intercom (~> 3.9.0)
   iso-639
