@@ -235,10 +235,6 @@ class ExportController < ApplicationController
             @work = work
             dirname = work.slug.truncate(200, omission: "")
 
-            export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-            out.put_next_entry "#{dirname}/#{work.slug.truncate(200, omission: "")}.xhtml"
-            out.print export_view
-
             %w(verbatim emended searchable).each do |format|
               export_plaintext_transcript(name: format, dirname: dirname, out: out)
             end
