@@ -7,8 +7,6 @@ class ExportController < ApplicationController
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
 
-  README = []
-
   def index
     @collection = Collection.friendly.find(params[:collection_id])
     #check if there are any translated works in the collection
@@ -95,17 +93,6 @@ class ExportController < ApplicationController
 
   end
 
-  def desc_to_file(text:, dirname:, out:)
-    README << text
-
-    path = File.join dirname, 'README.txt'
-    out.put_next_entry path
-
-    README.each do |desc|
-      out.write desc
-    end
-  end
-
   def export_plaintext_transcript(name:, dirname:, out:)
     path = File.join dirname, 'plaintext', "#{name}_transcript.txt"
 
@@ -114,13 +101,10 @@ class ExportController < ApplicationController
     case name
     when "verbatim"
       out.write @work.verbatim_transcription_plaintext
-      desc_to_file(text: "plaintext/verbatim_transcript.txt - file containing the per-document verbatim plaintext export of the transcript.\n", dirname: dirname, out: out)
     when "emended"
       out.write @work.emended_transcription_plaintext
-      desc_to_file(text: "plaintext/emended_transcript.txt - file containing the per-document emended plaintext export of the transcript.\n", dirname: dirname, out: out)
     when "searchable"
       out.write @work.searchable_plaintext
-      desc_to_file(text: "plaintext/searchable_transcript.txt - file containing the per-document searchable plaintext export of the transcript.\n", dirname: dirname, out: out)
     end
   end
 
@@ -130,7 +114,6 @@ class ExportController < ApplicationController
     out.put_next_entry path
 
     out.write @work.public_send "#{name}_translation_plaintext"
-    desc_to_file(text: "plaintext/#{name}_translation.txt - file containing the per-document #{name} plaintext export of the translation if it is present.\n", dirname: dirname, out: out)
   end
 
   def export_plaintext_transcript_pages(name:, dirname:, out:, page:)
@@ -139,7 +122,6 @@ class ExportController < ApplicationController
     out.put_next_entry path
 
     out.write page.public_send "#{name}_transcription_plaintext"
-    desc_to_file(text: "plaintext/#{name}_transcript_pages/#{page.title}.txt - files containing per-page #{name} plaintext export.\n", dirname: dirname, out: out)
   end
 
   def export_plaintext_translation_pages(name:, dirname:, out:, page:)
@@ -148,7 +130,6 @@ class ExportController < ApplicationController
     out.put_next_entry path
 
     out.write page.public_send "#{name}_translation_plaintext"
-    desc_to_file(text: "plaintext/#{name}_translation_pages/#{page.title}.txt - files containing per-page #{name} plaintext export.\n", dirname: dirname, out: out)
   end
 
   def export_view(name:, dirname:, out:)
