@@ -6,7 +6,7 @@ module ExportService
     when "verbatim"
       out.put_next_entry path
       out.write @work.verbatim_transcription_plaintext
-    when "emended"
+    when "expanded"
       if @work.collection.subjects_disabled
         out.put_next_entry path
         out.write @work.emended_transcription_plaintext
@@ -25,7 +25,7 @@ module ExportService
       when "verbatim"
         out.put_next_entry path
         out.write @work.verbatim_translation_plaintext
-      when "emended"
+      when "expanded"
         if @work.collection.subjects_disabled
           out.put_next_entry path
           out.write @work.emended_translation_plaintext
@@ -41,7 +41,7 @@ module ExportService
     when "verbatim"
       out.put_next_entry path
       out.write page.verbatim_transcription_plaintext
-    when "emended"
+    when "expanded"
       if page.collection.subjects_disabled
         out.put_next_entry path
         out.write page.emended_transcription_plaintext
@@ -57,7 +57,7 @@ module ExportService
       when "verbatim"
         out.put_next_entry path
         out.write page.verbatim_translation_plaintext
-      when "emended"
+      when "expanded"
         if page.collection.subjects_disabled
           out.put_next_entry path
           out.write page.emended_translation_plaintext

@@ -147,20 +147,20 @@ class ExportController < ApplicationController
             @work = work
             dirname = work.slug.truncate(200, omission: "")
 
-            %w(verbatim emended searchable).each do |format|
+            %w(verbatim expanded searchable).each do |format|
               export_plaintext_transcript(name: format, dirname: dirname, out: out)
             end
 
-            %w(verbatim emended).each do |format|
+            %w(verbatim expanded).each do |format|
               export_plaintext_translation(name: format, dirname: dirname, out: out)
             end
 
             @work.pages.each do |page|
-              %w(verbatim emended).each do |format|
+              %w(verbatim expanded).each do |format|
                 export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
               end
 
-              %w(verbatim emended).each do |format|
+              %w(verbatim expanded).each do |format|
                 export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
               end
             end
