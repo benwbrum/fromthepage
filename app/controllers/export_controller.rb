@@ -98,6 +98,8 @@ class ExportController < ApplicationController
     respond_to do |format|
       format.zip do
         buffer = Zip::OutputStream.write_buffer do |out|
+          add_readme_to_zip(dirname: dirname, out: out)
+
           %w(verbatim emended searchable).each do |format|
             export_plaintext_transcript(name: format, dirname: dirname, out: out)
           end
@@ -146,6 +148,7 @@ class ExportController < ApplicationController
           @works.each do |work|
             @work = work
             dirname = work.slug.truncate(200, omission: "")
+            add_readme_to_zip(dirname: dirname, out: out)
 
             %w(verbatim expanded searchable).each do |format|
               export_plaintext_transcript(name: format, dirname: dirname, out: out)

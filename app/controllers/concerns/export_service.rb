@@ -1,4 +1,12 @@
 module ExportService
+  def add_readme_to_zip(dirname:, out:)
+    readme = "#{Rails.root}/doc/zip/README"
+    file = File.open(readme, "r")
+    path = File.join dirname, 'README.txt'
+    out.put_next_entry path
+    out.write file.read
+  end
+
   def export_plaintext_transcript(name:, dirname:, out:)
     path = File.join dirname, 'plaintext', "#{name}_transcript.txt"
 
