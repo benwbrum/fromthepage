@@ -2,8 +2,7 @@ require 'contentdm_translator'
 
 class ExportController < ApplicationController
   require 'zip'
-  include CollectionHelper,ExportHelper
-  include ExportService
+  include CollectionHelper, ExportHelper, ExportService
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
