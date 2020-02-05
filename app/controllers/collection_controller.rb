@@ -88,7 +88,6 @@ class CollectionController < ApplicationController
 
   def add_owner
     @user.owner = true
-    @user.account_type = "Staff"
     @user.save!
     @collection.owners << @user
     @user.notification.owner_stats = true
