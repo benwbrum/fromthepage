@@ -157,12 +157,6 @@ class ApplicationController < ActionController::Base
     return
   end
 
-
-  def pontiiif_server
-    Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
-  end
-
-
   def update_omeka_urls
     if @work && @work.omeka_item && @work.omeka_item.needs_refresh?
       @work.omeka_item.refresh_urls
