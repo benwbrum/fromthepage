@@ -10,19 +10,19 @@ section.signon
   =form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :login, 'Your login'
+      =f.label :login, 'User Name'
       =f.text_field :login, autofocus: true
     .signon_field
-      =f.label :email, 'Email address'
+      =f.label :email, 'Email Address'
       =f.email_field :email
     .signon_field
-      =f.label :password, 'New password'
+      =f.label :password, 'New Password'
       =f.password_field :password, autocomplete: 'off'
     .signon_field
-      =f.label :password_confirmation
+      =f.label :password_confirmation, 'Confirm Password'
       =f.password_field :password_confirmation, autocomplete: 'off'
     .signon_field
-      =f.label :current_password
+      =f.label :current_password, 'Current Password'
       =f.password_field :current_password, autocomplete: 'off'
     .toolbar
       .toolbar_group
