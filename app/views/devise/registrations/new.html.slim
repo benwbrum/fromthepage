@@ -7,6 +7,8 @@ section.signon
     .signon_field
       =f.label :login, 'User Name'
       =f.text_field :login, autofocus: true
+      small
+        i You'll use this name to log in. It will be shown publicly.
     .signon_field
       =f.label :email, 'Email address'
       =f.email_field :email
@@ -19,6 +21,8 @@ section.signon
     .signon_field
       =f.label :display_name, 'Real Name'
       =f.text_field :display_name
+      small
+        i Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
     .signon_field
       =f.hidden_field :owner
       =f.hidden_field :paid_date
