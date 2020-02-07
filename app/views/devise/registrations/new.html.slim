@@ -5,7 +5,7 @@ section.signon
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :login
+      =f.label :login, 'User Name'
       =f.text_field :login, autofocus: true
     .signon_field
       =f.label :email, 'Email address'
@@ -14,10 +14,10 @@ section.signon
       =f.label :password
       =f.password_field :password, autocomplete: 'off'
     .signon_field
-      =f.label :password_confirmation
+      =f.label :password_confirmation, 'Confirm Password'
       =f.password_field :password_confirmation, autocomplete: 'off'
     .signon_field
-      =f.label :display_name
+      =f.label :display_name, 'Real Name'
       =f.text_field :display_name
     .signon_field
       =f.hidden_field :owner
