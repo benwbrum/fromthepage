@@ -24,6 +24,9 @@ section.signon
     .signon_field
       =f.label :current_password, 'Current Password'
       =f.password_field :current_password, autocomplete: 'off'
+    .signon_field
+      =f.label :real_name, 'Real Name'
+      =f.text_field :real_name
     .toolbar
       .toolbar_group
         =f.button 'Save Changes', class: 'big'
