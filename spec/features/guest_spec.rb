@@ -107,11 +107,11 @@ describe "guest user actions" do
 
     # Convert Account: after 3 transcriptions, the user should be forced to sign up
     expect(page.current_path).to eq new_user_registration_path
-    fill_in 'Login', with: 'martha'
+    fill_in 'User Name', with: 'martha'
     fill_in 'Email address', with: 'martha@test.com'
     fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    fill_in 'Display name', with: 'Martha'
+    fill_in 'Confirm Password', with: 'password'
+    fill_in 'Real Name', with: 'Martha'
     click_button('Create Account')
     @user = User.last
     expect(@user.login).to eq('martha')

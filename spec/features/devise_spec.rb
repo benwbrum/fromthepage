@@ -20,21 +20,21 @@ describe "Devise" do
 
     it "creates a new user account" do 
       visit new_user_registration_path
-      page.fill_in 'Login', with: user.login
+      page.fill_in 'User Name', with: user.login
       page.fill_in 'Email address', with: user.email
       page.fill_in 'Password', with: user.password
-      page.fill_in 'Password confirmation', with: user.password
-      page.fill_in 'Display name', with: user.display_name
+      page.fill_in 'Confirm Password', with: user.password
+      page.fill_in 'Real Name', with: user.display_name
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{user.display_name}")
     end
     it "redirects user to dashboard/watchlist after signup" do 
       visit new_user_registration_path
-      page.fill_in 'Login', with: user.login
+      page.fill_in 'User Name', with: user.login
       page.fill_in 'Email address', with: user.email
       page.fill_in 'Password', with: user.password
-      page.fill_in 'Password confirmation', with: user.password
-      page.fill_in 'Display name', with: user.display_name
+      page.fill_in 'Confirm Password', with: user.password
+      page.fill_in 'Real Name', with: user.display_name
       click_button('Create Account')
       expect(page.current_path).to eq dashboard_watchlist_path
     end
@@ -42,11 +42,11 @@ describe "Devise" do
       # Previous page
       visit old_path
       visit new_user_registration_path
-      page.fill_in 'Login', with: user.login
+      page.fill_in 'User Name', with: user.login
       page.fill_in 'Email address', with: user.email
       page.fill_in 'Password', with: user.password
-      page.fill_in 'Password confirmation', with: user.password
-      page.fill_in 'Display name', with: user.display_name
+      page.fill_in 'Confirm Password', with: user.password
+      page.fill_in 'Real Name', with: user.display_name
       click_button('Create Account')
       expect(page.current_path).to eq old_path
     end
@@ -55,11 +55,11 @@ describe "Devise" do
       visit coll_path
       # Complete user registration 
       visit new_user_registration_path
-      page.fill_in 'Login', with: user.login
+      page.fill_in 'User Name', with: user.login
       page.fill_in 'Email address', with: user.email
       page.fill_in 'Password', with: user.password
-      page.fill_in 'Password confirmation', with: user.password
-      page.fill_in 'Display name', with: user.display_name
+      page.fill_in 'Confirm Password', with: user.password
+      page.fill_in 'Real Name', with: user.display_name
       click_button('Create Account')
       
       expect(page.current_path).to eq coll_path
