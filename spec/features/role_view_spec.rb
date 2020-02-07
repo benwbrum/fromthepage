@@ -20,7 +20,7 @@ describe "different user role logins" do
     click_button('Create Account')
     expect(page).to have_content('4 errors prohibited this user from being saved')
     page.fill_in 'User Name', with: 'alexander'
-    page.fill_in 'Email address', with: 'alexander@test.com'
+    page.fill_in 'Email Address', with: 'alexander@test.com'
     page.fill_in 'Password', with: @password
     page.fill_in 'Confirm Password', with: @password
     page.fill_in 'Real Name', with: 'Alexander'

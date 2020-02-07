@@ -21,7 +21,7 @@ describe "Devise" do
     it "creates a new user account" do 
       visit new_user_registration_path
       page.fill_in 'User Name', with: user.login
-      page.fill_in 'Email address', with: user.email
+      page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
       page.fill_in 'Real Name', with: user.display_name
@@ -31,7 +31,7 @@ describe "Devise" do
     it "redirects user to dashboard/watchlist after signup" do 
       visit new_user_registration_path
       page.fill_in 'User Name', with: user.login
-      page.fill_in 'Email address', with: user.email
+      page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
       page.fill_in 'Real Name', with: user.display_name
@@ -43,7 +43,7 @@ describe "Devise" do
       visit old_path
       visit new_user_registration_path
       page.fill_in 'User Name', with: user.login
-      page.fill_in 'Email address', with: user.email
+      page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
       page.fill_in 'Real Name', with: user.display_name
@@ -56,7 +56,7 @@ describe "Devise" do
       # Complete user registration 
       visit new_user_registration_path
       page.fill_in 'User Name', with: user.login
-      page.fill_in 'Email address', with: user.email
+      page.fill_in 'Email Address', with: user.email
       page.fill_in 'Password', with: user.password
       page.fill_in 'Confirm Password', with: user.password
       page.fill_in 'Real Name', with: user.display_name
