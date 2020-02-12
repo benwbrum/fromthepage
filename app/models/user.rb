@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :real_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
            email: data['email'],
            password: Devise.friendly_token[0,20],
            display_name: data['name'],
-           print_name: data['name']
+           real_name: data['name']
         )
     end
     user
