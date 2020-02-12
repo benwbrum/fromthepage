@@ -61,6 +61,7 @@ module ExportService
     path = File.join dirname, 'plaintext', "#{name}_translation_pages", "#{page.title}.txt"
 
     if @work.supports_translation?
+      binding.pry
       case name
       when "verbatim"
         out.put_next_entry path
@@ -76,21 +77,26 @@ module ExportService
 
   def export_view(name:, dirname:, out:)
     path = File.join dirname, 'html', "#{name}.html"
-    out.put_next_entry path
 
     case name
     when "full"
       full_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry path
       out.write full_view
     when "text"
       text_view = render_to_string(:action => 'text', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry path
       out.write text_view
     when "transcript"
       transcript_view = render_to_string(:action => 'transcript', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      out.put_next_entry path
       out.write transcript_view
     when "translation"
-      translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
-      out.write translation_view
+      if @work.supports_translation?
+        translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+        out.put_next_entry path
+        out.write translation_view
+      end
     end
   end
 
