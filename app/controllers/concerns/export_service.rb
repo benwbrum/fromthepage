@@ -61,7 +61,6 @@ module ExportService
     path = File.join dirname, 'plaintext', "#{name}_translation_pages", "#{page.title}.txt"
 
     if @work.supports_translation?
-      binding.pry
       case name
       when "verbatim"
         out.put_next_entry path
