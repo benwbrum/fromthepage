@@ -1,6 +1,7 @@
-    h3 Upload PDF or ZIP File
+    h3
+      a(href="#" class="title" onclick="return false;" id="document-upload") Upload PDF or ZIP File
 
-    section
+    section(style=("display: none" unless @document_upload.errors.any?))
       p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
       =form_for :document_upload, url: { action: 'new_upload' } do |f|
         =validation_summary @document_upload.errors
@@ -18,6 +19,10 @@
             td
               =f.check_box :preserve_titles
               =f.label :preserve_titles, ' Use image filenames as page titles.'
+          tr
+            td
+              =f.check_box :ocr
+              =f.label :ocr, ' Use OCR from PDF text layer.'
 
         ul
           li ZIP files may contain folders containing images, PDFs, or folders containing pdfs.

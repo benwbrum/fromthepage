@@ -49,11 +49,11 @@ describe "Spam user safeguards" do
     visit "/"
     click_link("Sign Up")
     expect(page.current_path).to eq new_user_registration_path
-    fill_in 'Login', with: login
-    fill_in 'Email address', with: "#{login}@test.com"
+    fill_in 'User Name', with: login
+    fill_in 'Email Address', with: "#{login}@test.com"
     fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    fill_in 'Display name', with: 'Martha'
+    fill_in 'Confirm Password', with: 'password'
+    fill_in 'Real Name', with: 'Martha'
     click_button('Create Account')
     
     user = User.where(:login => login).first

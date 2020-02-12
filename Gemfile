@@ -23,7 +23,7 @@ gem 'omeka_client', git: 'https://github.com/benwbrum/omeka_client'
 gem 'acts_as_list'
 gem 'acts_as_tree'
 
-gem 'devise', '3.4.1'
+gem 'devise'
 gem 'devise-encryptable'
 
 gem 'protected_attributes'
@@ -71,8 +71,8 @@ group :development, :test do
   gem 'bullet'
 end
 
-# Use SASS for stylesheets
-gem 'sass-rails', '~> 5.0.0'
+# Use SassC for stylesheets
+gem 'sassc-rails'
 
 # Use Autoprefixer for vendor prefixes
 gem 'autoprefixer-rails', '~>8'
@@ -102,3 +102,5 @@ gem 'memory_profiler'
 gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
+
+gem 'intercom', '~> 3.9.0'

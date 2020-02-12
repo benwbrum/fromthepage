@@ -40,7 +40,7 @@ describe "owner view - collection" do
     expect(page.find('.collection-users')).to have_content('Transcribing')
     expect(page.find('.collection-users')).to have_content('Editing')
     expect(page.find('.collection-users')).to have_content('Indexing')
-    expect(page.find('.collection-users')).to have_content(@owner.all_collaborators.first.display_name)
+    expect(page.find('.collection-users')).to have_content(@owner.all_collaborators.last.display_name)
   end
 
   it "looks at subjects tab" do

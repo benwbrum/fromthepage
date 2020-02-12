@@ -22,7 +22,9 @@ module AddWorkHelper
   end
 
   def new_upload
-    @document_upload = DocumentUpload.new(params[:document_upload])
+    @document_upload = DocumentUpload.new(document_upload_params)
+    @document_upload.ocr = document_upload_params[:ocr]
+    @document_upload.preserve_titles = document_upload_params[:preserve_titles]
     @document_upload.user = current_user
 
     if @document_upload.save
@@ -73,6 +75,14 @@ module AddWorkHelper
     deed.collection = @work.collection
     deed.user = current_user
     deed.save!
+  end
+
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :collection_id, :ocr, :preserve_titles)
+  end
+
+  def work_params
+    params.require(:work).permit(:title, :description, :collection_id)
   end
 
 end

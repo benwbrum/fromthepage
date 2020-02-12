@@ -62,6 +62,7 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers' => "rails/mailers#index"
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
+
   match '/:controller(/:action(/:id))', via: [:get, :post]
 
   get   'document_set/edit/:id', :to => 'document_sets#edit', as: :edit_document_set

@@ -114,3 +114,9 @@ silence_warnings do
   SMTP_ENABLED = true
 end
 ActionMailer::Base.perform_deliveries = true
+
+def wait_for_upload_processing
+  while DocumentUpload.where.not(:status => 'finished').count > 0
+    sleep 2
+  end
+end

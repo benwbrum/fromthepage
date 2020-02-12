@@ -21,21 +21,52 @@ describe "uploads data for collections", :order => :defined do
     User.find_each(&:save)
   end
 
-  it "starts a new project from tab" do
+  it "starts a new project from tab", :js => true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#document-upload").click
     select(@collection.title, :from => 'document_upload_collection_id')
+
+    # workaround
+    script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
+    page.execute_script(script)
+
     attach_file('document_upload_file', './test_data/uploads/test.pdf')
     click_button('Upload File')
     title = find('h1').text
     expect(title).to eq @collection.title
     expect(page).to have_content("Document has been uploaded")
+    wait_for_upload_processing
+    sleep(10)
   end
 
-  it "imports IIIF manifests" do
+  it "starts an ocr project", :js => true do
+    visit dashboard_owner_path
+    page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#document-upload").click
+    select(@collection.title, :from => 'document_upload_collection_id')
+
+    # workaround
+    script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
+    page.execute_script(script)
+
+    attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
+    page.check('Use OCR from PDF text layer.')
+    click_button('Upload File')
+    title = find('h1').text
+    expect(title).to eq @collection.title
+    expect(page).to have_content("Document has been uploaded")
+    wait_for_upload_processing
+    uploaded_work = Work.last
+    expect(uploaded_work.ocr_correction).to eq true
+    expect(uploaded_work.pages.first.source_text).to match 'dagegen'
+  end
+
+  it "imports IIIF manifests", :js => true do
     #import a manifest for test data
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#import-iiif-manifest").click
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
     find_button('iiif_import').click
     expect(page).to have_content("Metadata")
@@ -46,6 +77,7 @@ describe "uploads data for collections", :order => :defined do
     visit dashboard_owner_path
     works_count = Work.all.count
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#import-iiif-manifest").click
     #this manifest has a very long title
     page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
     find_button('iiif_import').click
@@ -60,9 +92,10 @@ describe "uploads data for collections", :order => :defined do
   
   end
 
-  it "creates an empty work" do
+  it "creates an empty work", :js => true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#create-empty-work").click
     select(@collection.title, :from => 'work_collection_id')
     fill_in 'work_title', with: @title
     fill_in 'work_description', with: "This work contains no pages."

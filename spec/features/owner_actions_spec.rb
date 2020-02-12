@@ -17,9 +17,10 @@ describe "owner actions", :order => :defined do
     login_as(@owner, :scope => :user)
   end
 
-  it "fails to upload a document" do
+  it "fails to upload a document", :js => true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#document-upload").click
     select(@collections.first.title, :from => 'document_upload_collection_id')
     click_button('Upload File')
     expect(page).to have_content("prohibited the form from being saved")
@@ -38,7 +39,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_content("Upload PDF or ZIP File")
   end
 
-  it "creates an empty new work in a collection" do
+  it "creates an empty new work in a collection", :js => true do
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
     visit dashboard_owner_path
@@ -46,6 +47,7 @@ describe "owner actions", :order => :defined do
     click_link("Add a new work")
     expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Create Empty Work")
+    page.find(:css, "#create-empty-work").click
     fill_in 'work_title', with: work_title
     fill_in 'work_description', with: "This work contains no pages."
     click_button('Create Work')
@@ -79,6 +81,7 @@ describe "owner actions", :order => :defined do
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, '#document-upload').click
     page.select 'Add New Collection', from: 'document_upload_collection_id' 
 
     within(page.find('.litebox-embed')) do
@@ -86,6 +89,7 @@ describe "owner actions", :order => :defined do
       fill_in 'collection_title', with: col_title
       find_button('Create Collection').trigger(:click)
     end
+    page.find(:css, '#document-upload').click
     page.find('#document_upload_collection_id')
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
     sleep(2)
@@ -143,9 +147,10 @@ describe "owner actions", :order => :defined do
     expect(page.find('.flash_message')).to have_content("GIS enabled for Places and 2 child categories")
   end
 
-  it "fails to create an empty work" do
+  it "fails to create an empty work", :js => true do
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
+    page.find(:css, "#create-empty-work").click
     select(@collections.last.title, :from => 'work_collection_id')
     fill_in 'work_description', with: "This work should fail to create."
     click_button('Create Work')
