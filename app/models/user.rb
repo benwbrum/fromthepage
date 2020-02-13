@@ -74,7 +74,7 @@ class User < ApplicationRecord
            email: data['email'],
            password: Devise.friendly_token[0,20],
            display_name: data['name'],
-           print_name: data['name']
+           real_name: data['name']
         )
     end
     user

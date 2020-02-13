@@ -33,7 +33,7 @@ class ExportController < ApplicationController
 
     @user_contributions =
       User.find_by_sql("SELECT  user_id user_id,
-                                users.print_name print_name,
+                                users.real_name real_name,
                                 count(*) edit_count,
                                 min(page_versions.created_on) first_edit,
                                 max(page_versions.created_on) last_edit
