@@ -7,7 +7,7 @@ p.big
       =svg_symbol '#icon-export', class: 'icon'
       span Export All Works
 
-  span Click the button to export all works from the collection into a zip file containing each work as an XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages.
+  span Click the button to export all works from the collection into a zip file containing each work as HTML and plain text.
 
 
 -if ContentdmTranslator.collection_is_cdm? @collection
@@ -30,7 +30,7 @@ table.datagrid
     th #{@header}
     th Review
     th.w100 Progress
-    th(colspan="4") Export As
+    th(colspan="6") Export As
 
   -for work in @works
     -work_stats(work)
@@ -69,11 +69,15 @@ table.datagrid
         =link_to iiif_manifest_path(work.id)
           =svg_symbol '#icon-export', class: 'icon'
           span IIIF
-      td.nowrap
-        -unless work.table_cells.blank?
-          =link_to(export_table_csv_path(:work_id => work.id), class: 'btnCsvTblExport btnExport')
+      -unless work.table_cells.blank?
+        td.nowrap
+          =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
             =svg_symbol '#icon-export', class: 'icon'
             span Table CSV
+      td.nowrap
+        =link_to(:controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip)
+          =svg_symbol '#icon-export', class: 'icon'
+          span ZIP
 
 =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 

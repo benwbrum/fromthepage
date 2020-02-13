@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title> <%= @work.title %></title>
+  </head>
+
+  <body>
+    <h1 class="work-title"><%= @work.title %></h1>
+    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.
+      <% unless @work.identifier.blank? %>
+        <p>Identifier: <%=@work.identifier%></p>
+      <% end %>
+      <p>
+        FromThePage version: <%= fromthepage_version %>
+      </p>
+    </div>
+
+    <hr />
+    <% if @work.supports_translation %>
+      <hr />
+      <h2 class="divider">Page Translations</h2>
+
+      <div class="pages">
+        <% @work.pages.each do |page| %>
+        <div id="translation-<%=page.id%>">
+          <h3><%= page.title %></h3>
+          <div class="page-content">
+            <%= raw(xml_to_html(page.xml_translation, true, true)) %>
+          </div>
+        </div>
+        <br />
+        <% if page.notes.present? %>
+          <div class="page-notes">
+            <strong>Notes:</strong>
+            <% page.notes.each do |note| %>
+              <div>
+                <p><span class="page-note-username"><%=note.user.display_name%></span></p>
+                <p class="page-note-content"><%= sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href))%></p>
+
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </body>
+</html>
