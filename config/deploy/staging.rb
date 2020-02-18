@@ -5,8 +5,8 @@
 # property set.  Don't declare `role :all`, it's a meta role.
 
 role :app, %w{fromthepage@96.126.116.203}
+role :db, %w{fromthepage@96.126.116.203}
 #role :web, %w{deploy@example.com}
-#role :db,  %w{deploy@example.com}
 
 
 # Extended Server Syntax
@@ -46,5 +46,5 @@ server '96.126.116.203', user: 'fromthepage', roles: %{app}
 #   }
 
 
-set :branch, 'fromthepage.com'
-
+set :branch, 'rails6'
+set :rails_env, 'production'
