@@ -51,4 +51,5 @@
     h3 Your Activity
     =deeds_for({ :user_id => current_user.id, :limit => 10 })
 
-=render partial: 'shared/intercom'
+-unless INTERCOM_APP_ID.blank?
+  =render partial: 'shared/intercom'
