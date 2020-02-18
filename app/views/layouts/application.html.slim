@@ -101,9 +101,9 @@ html lang="en-US"
     =javascript_include_tag 'application'
     =yield :javascript
 
-    -if user_signed_in? && current_user.owner?
+    -if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank?
       =render :partial => '/shared/intercom_customer'
-    -elsif controller_name=='static'
+    -elsif controller_name=='static' && !INTERCOM_APP_ID.blank?
       =render :partial => '/shared/intercom'
 
     -unless GA_ACCOUNT.blank?
