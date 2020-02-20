@@ -60,9 +60,7 @@ class User < ActiveRecord::Base
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
 
-  before_create :set_display_name_to_login
-
-  validates :real_name, presence: true
+  validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
@@ -248,11 +246,5 @@ class User < ActiveRecord::Base
       deed.deed_type = DeedType::COLLECTION_JOINED
       deed.user = self
       deed.save!
-  end
-
-  private
-
-  def set_display_name_to_login
-    self.display_name = self.login
   end
 end
