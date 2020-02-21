@@ -286,7 +286,7 @@ end
     extras[:page_title] = @page.title if @page
     extras[:article_id] = @article.id if @article
     extras[:article_title] = @article.title if @article
-    ahoy.track("#{controller_name}##{action_name}", extras)
+    ahoy.track("#{controller_name}##{action_name}", extras) unless action_name == "still_editing"
   end
 
 private
