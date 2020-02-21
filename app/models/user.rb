@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   #before_destroy :clean_up_orphans
 
   def update_display_name
-    display_name = login
+    self.display_name = login
   end
 
   def self.from_omniauth(access_token)
