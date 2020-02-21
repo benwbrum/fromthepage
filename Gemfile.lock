@@ -394,6 +394,9 @@ GEM
     ruby-vips (2.0.17)
       ffi (~> 1.9)
     rubyzip (2.1.0)
+    rvm1-capistrano3 (1.4.0)
+      capistrano (~> 3.0)
+      sshkit (>= 1.2)
     safe_yaml (1.0.5)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
@@ -537,6 +540,7 @@ DEPENDENCIES
   rspec-rails
   rtl
   rubyzip
+  rvm1-capistrano3
   sassc-rails
   savon (~> 2.12.0)
   selenium-webdriver

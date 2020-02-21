@@ -48,3 +48,5 @@ server '96.126.116.203', user: 'fromthepage', roles: %{app}
 
 set :branch, 'rails6'
 set :rails_env, 'production'
+
+set :default_env, { rvm_bin_path: '/usr/share/rvm/bin' }
