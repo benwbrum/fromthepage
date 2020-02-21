@@ -64,7 +64,6 @@ class User < ActiveRecord::Base
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
   before_validation :update_display_name
-  #will this fail with SSO
 
   after_save :create_notifications
   #before_destroy :clean_up_orphans
