@@ -60,12 +60,17 @@ class User < ActiveRecord::Base
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
 
-  validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
+  before_validation :update_display_name
+
   after_save :create_notifications
   #before_destroy :clean_up_orphans
+
+  def update_display_name
+    self.display_name = login
+  end
 
   def self.from_omniauth(access_token)
     data = access_token.info

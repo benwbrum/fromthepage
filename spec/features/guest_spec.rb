@@ -104,7 +104,7 @@ describe "guest user actions" do
 
     # Versions Tab
     page.find('.tabs').click_link("Versions")
-    expect(page).to have_link("Martha")
+    expect(page).to have_link("martha")
   end
 
   it "looks at the landing page", :guest_enabled do
