@@ -1,8 +1,8 @@
 user_1:
   id: 1
   login: george
-  display_name: George
-  real_name: 
+  display_name: george
+  real_name: George
   email: george@test.com
   owner: false
   admin: false
@@ -12,7 +12,7 @@ user_1:
 user_2:
   id: 2
   login: eleanor
-  display_name: Eleanor
+  display_name: eleanor
   real_name: 
   email: eleanor@test.com
   owner: false
@@ -23,7 +23,7 @@ user_2:
 user_3:
   id: 3
   login: harry
-  display_name: Harry
+  display_name: harry
   real_name: 
   email: harry@test.com
   owner: false
@@ -34,8 +34,8 @@ user_3:
 user_4:
   id: 4
   login: margaret
-  display_name: Margaret
-  real_name: 
+  display_name: margaret
+  real_name: Margaret Reed
   email: margaret@test.com
   owner: true
   admin: false
@@ -48,7 +48,7 @@ user_4:
 user_5:
   id: 5
   login: julia
-  display_name: Julia
+  display_name: julia
   real_name: 
   email: julia@test.com
   owner: true
@@ -62,8 +62,8 @@ user_5:
 user_6:
   id: 6
   login: ron
-  display_name: Ron
-  real_name: 
+  display_name: ron
+  real_name: Ron Smith
   email: ron@test.com
   owner: false
   admin: false

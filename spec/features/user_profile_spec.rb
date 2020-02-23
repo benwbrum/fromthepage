@@ -7,7 +7,7 @@ describe 'User profile and settings actions' do
       password: 'password',
       password_confirmation: 'password',
       email: 'test@example.com',
-      display_name: 'Display Name'
+      display_name: 'user_login'
     )
     @user.save
   
@@ -36,13 +36,4 @@ describe 'User profile and settings actions' do
     expect(current_url).to eq(edit_user_path)
   end
 
-  it 'should update user Display Name' do
-    click_link('Your Profile')
-    expect(page.first('.headline_title').text).to eq 'Display Name'
-    click_link('Edit Profile')
-    expect(find_field('user[display_name]').value).to eq 'Display Name'
-    fill_in('user[display_name]', with: 'New Name')
-    click_button('Update Profile')
-    expect(page.first('.headline_title').text).to eq 'New Name'
-  end
 end
