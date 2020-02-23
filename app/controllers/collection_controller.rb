@@ -228,6 +228,7 @@ class CollectionController < ApplicationController
       current_user.collections.each do |c|
         if c.owner.account_type != "Staff"
           @collection.owner = c.owner
+          @collection.owners << current_user
         end
       end
     end
