@@ -88,7 +88,7 @@ user_8:
   id: 8
   login: wakanda
   display_name: Wakanda
-  print_name: 
+  real_name: 
   email: wakanda@example.org
   owner: true
   admin: true
@@ -102,7 +102,7 @@ user_9:
   id: 9
   login: shuri
   display_name: Shuri
-  print_name: 
+  real_name: 
   email: shuri@example.org
   owner: false
   admin: false
