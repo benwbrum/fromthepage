@@ -26,6 +26,8 @@ describe "collection owner/staff specs" do
     within(".user-select-form") do
       click_button "Add"
     end
+    expect(@user.owner).to be(true)
+    expect(@user.account_type).to eq "Staff"
     logout
   end
 
