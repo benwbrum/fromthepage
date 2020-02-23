@@ -28,10 +28,10 @@ describe "collection owner/staff specs" do
     end
     expect(@user.owner).to be(true)
     expect(@user.account_type).to eq "Staff"
-    logout
   end
 
   it "confirms that Shuri can read Wakanda's collection" do
+    logout
     login_as @user
     visit dashboard_owner_path
     expect(page).to have_content("Letters from America")
@@ -47,10 +47,10 @@ describe "collection owner/staff specs" do
     visit dashboard_owner_path
     expect(page).to have_content("Letters from America")
     expect(page).to have_content("Science Archives")
-    logout
   end
 
   it "confirms that Wakanda can read all collections" do
+    logout
     login_as @owner
     visit dashboard_owner_path
     expect(page).to have_content("Letters from America")
