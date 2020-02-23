@@ -4,7 +4,7 @@ describe "different user role logins" do
 
   before :all do
     @collections = Collection.all
-    @collection = @collections.last
+    @collection = @collections.find(3)
 
     @password = "password"
   end

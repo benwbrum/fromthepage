@@ -10,7 +10,7 @@ describe "owner actions", :order => :defined do
     @collection = @collections.first
     @works = @owner.owner_works
     @title = "This is an empty work"
-    @rtl_collection = Collection.last
+    @rtl_collection = Collection.find(3)
   end
 
   before :each do
@@ -252,7 +252,7 @@ describe "owner actions", :order => :defined do
     click_button 'Save Changes'
     #note: this is just to make sure it's on the settings page again
     expect(page).to have_content('Collection Owners')
-    expect(Collection.last.text_language).to eq 'ara'
+    expect(Collection.find(3).text_language).to eq 'ara'
   end
 
   it "checks rtl transcription page views" do
