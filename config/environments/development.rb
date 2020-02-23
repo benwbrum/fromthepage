@@ -36,6 +36,11 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  config.action_mailer.default_url_options =  { host: 'localhost:3000' }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
@@ -62,8 +67,6 @@ Rails.application.configure do
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
-  config.action_mailer.default_url_options =  { host: 'localhost:3000' }
-
   # location of system calls on this machine
   NEATO = '/usr/bin/neato'
   RAKE = '/usr/bin/env rake'
@@ -75,6 +78,6 @@ Rails.application.configure do
   # Install mailcatcher locally on your machine 'gem install mailcatcher'
   # Run 'mailcatcher' in the terminal to start the server
   # Open 'http://localhost:1080/' in your browser to see mail sent
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+
+  Ahoy.geocode = false
 end

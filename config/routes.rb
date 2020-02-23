@@ -102,6 +102,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'export', as: 'export' do
     get '/', to: 'export#index'
+    get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'

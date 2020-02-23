@@ -1,6 +1,6 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
-=form_tag(admin_user_visits_path, method: :get, enforce_utf8: false, class: 'collection-search') do
+=form_tag(admin_user_list_path, method: :get, enforce_utf8: false, class: 'collection-search') do
   =search_field_tag :search, params[:search], placeholder: 'Search Users...'
   =button_tag 'Search', :name => nil
   =label_tag :search, "Search users", class: "hidden"

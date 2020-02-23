@@ -48,7 +48,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -62,9 +62,23 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # action mailer config -- required for password resets and the bulk uploader
+  config.action_mailer.smtp_settings = {
+    :address   => "smtp.yourdomain.com",
+    :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
+    :enable_starttls_auto => true, # detects and uses STARTTLS
+    :user_name => "XXXXX",
+    :password  => "XXXXX",
+    :authentication => 'login',
+    :domain => 'yourdomain.com', # your domain to identify your server when connecting
+  }
+
+  config.action_mailer.default_url_options =  { host: 'hostname' } #change this to match your server URL, i.e. www.fromthepage.com
+  config.action_mailer.default_options
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -109,4 +123,6 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  Ahoy.geocode = false
 end
