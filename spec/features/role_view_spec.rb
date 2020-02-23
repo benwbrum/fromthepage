@@ -18,7 +18,7 @@ describe "different user role logins" do
     click_link("Sign Up Now")
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
-    expect(page).to have_content('4 errors prohibited this user from being saved')
+    expect(page).to have_content('3 errors prohibited this user from being saved')
     page.fill_in 'User Name', with: 'alexander'
     page.fill_in 'Email Address', with: 'alexander@test.com'
     page.fill_in 'Password', with: @password
