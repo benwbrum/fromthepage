@@ -237,7 +237,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_selector('.columns')
     expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
     @collections.each do |c|
-        expect(page).to have_content(c.title)
+      expect(page).to have_content(c.title)
     end
     @owner.unrestricted_document_sets.each do |d|
       expect(page).to have_content(d.title)
