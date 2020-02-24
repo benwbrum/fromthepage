@@ -4,7 +4,6 @@ describe "owner actions", :order => :defined do
   Capybara.javascript_driver = :webkit
 
   before :all do
-
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.first
@@ -330,7 +329,4 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Science Archives")
     end
   end
-
-
-
 end
