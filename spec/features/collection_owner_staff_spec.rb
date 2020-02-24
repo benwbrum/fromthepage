@@ -22,7 +22,7 @@ describe "collection owner/staff specs" do
     click_link "Letters from America", match: :first
     expect(page).to have_content("Settings")
     click_link "Settings"
-    select("Shuri - shuri@example.org", from: "user_id").select_option
+    select("shuri - shuri@example.org", from: "user_id").select_option
     within(".user-select-form") do
       click_button "Add"
     end
