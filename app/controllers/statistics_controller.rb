@@ -1,3 +1,5 @@
+require 'csv'
+
 class StatisticsController < ApplicationController
 
   def collection
@@ -10,6 +12,31 @@ class StatisticsController < ApplicationController
     @all_transcribers = build_user_array(DeedType::PAGE_TRANSCRIPTION)
     @all_editors      = build_user_array(DeedType::PAGE_EDIT)
     @all_indexers     = build_user_array(DeedType::PAGE_INDEXED)
+  end
+
+  def export_csv
+    header = ['User Login', 'User Name', 'Email', 'Opt-In']
+    owner = User.find 'ushmmarchives'
+    collection_ids = owner.collections.map { |c| c.id }.sort
+    deed_map = Deed.where(:collection_id => collection_ids).group(:user_id, :collection_id).count
+    user_ids = deed_map.keys.map {|e| e[0]}.uniq
+    Collection.where(:id => collection_ids).order(:id).each { |c| header << c.title }
+
+    rows = []
+
+    User.find(user_ids).each do |user|
+      rows << [user.login, user.display_name, user.email, user.activity_email]
+    end
+
+    csv_string = CSV.generate(headers: true) do |csv|
+      csv << header
+
+      rows.each do |row|
+        csv << row
+      end
+    end
+
+    send_data csv_string, filename: "ushmm_users.csv"
   end
 
   private
