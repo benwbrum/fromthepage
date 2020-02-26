@@ -17,7 +17,7 @@ class StatisticsController < ApplicationController
   def export_csv
     rows = []
     header = ['User Login', 'User Name', 'Email', 'Opt-In']
-    owner = User.find 'ushmmarchives'
+    owner = current_user
     collection_ids = owner.collections.map { |c| c.id }.sort
     deed_map = Deed.where(:collection_id => collection_ids).group(:user_id, :collection_id).count
     user_ids = deed_map.keys.map {|e| e[0]}.uniq
