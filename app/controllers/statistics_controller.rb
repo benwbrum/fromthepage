@@ -45,7 +45,8 @@ class StatisticsController < ApplicationController
       end
     end
 
-    send_data csv_string, filename: "fromthepage_user_emails.csv"
+    date_string = Time.now.strftime('%Y-%m-%d')
+    send_data csv_string, filename: "fromthepage_user_emails-#{date_string}.csv"
   end
 
   private
