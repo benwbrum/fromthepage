@@ -45,7 +45,7 @@ class StatisticsController < ApplicationController
       end
     end
 
-    send_data csv_string, filename: "ushmm_users.csv"
+    send_data csv_string, filename: "fromthepage_user_emails.csv"
   end
 
   private
