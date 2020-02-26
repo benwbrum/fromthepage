@@ -15,6 +15,7 @@ class StatisticsController < ApplicationController
   end
 
   def export_csv
+    rows = []
     header = ['User Login', 'User Name', 'Email', 'Opt-In']
     owner = User.find 'ushmmarchives'
     collection_ids = owner.collections.map { |c| c.id }.sort
@@ -22,10 +23,18 @@ class StatisticsController < ApplicationController
     user_ids = deed_map.keys.map {|e| e[0]}.uniq
     Collection.where(:id => collection_ids).order(:id).each { |c| header << c.title }
 
-    rows = []
-
     User.find(user_ids).each do |user|
-      rows << [user.login, user.display_name, user.email, user.activity_email]
+      row = []
+      row << user.login
+      row << user.display_name
+      row << user.email
+      row << user.activity_email
+
+      collection_ids.each do |collection_id|
+        row << deed_map[[user.id,collection_id]] || 0
+      end
+
+      rows << row
     end
 
     csv_string = CSV.generate(headers: true) do |csv|
