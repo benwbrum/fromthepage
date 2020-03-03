@@ -1,3 +1,9 @@
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $(".page-busy-overlay").hide();
+    });
+
 h2 Collaborators
 
 = link_to "Mailing List Export", :controller => 'statistics', :action => 'export_csv'
