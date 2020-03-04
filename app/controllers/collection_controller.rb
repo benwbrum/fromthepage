@@ -496,6 +496,6 @@ class CollectionController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture)
   end
 end
