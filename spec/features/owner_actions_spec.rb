@@ -57,6 +57,8 @@ describe "owner actions", :order => :defined do
 
   it "checks for subject in a new collection" do
     test_collection = Collection.find_by(title: 'New Test Collection')
+    test_collection.subjects_disabled = false
+    test_collection.save
     visit dashboard_owner_path
     page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Subjects")
