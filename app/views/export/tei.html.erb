@@ -21,17 +21,17 @@ xml:id="export">
       <edition>Edition created from new transcripts of this manuscript.</edition>
       <respStmt xml:id="AU<%= @work.owner.id%>">
         <resp>Initial upload of this work's facsimile images and metadata to FromThePage.com for editing</resp>
-        <persName><%= @work.owner.print_name%></persName>
+        <persName><%= @work.owner.real_name%></persName>
       </respStmt>
 
       <respStmt xml:id="OU<%= @collection.owner.id%>">
         <resp>Adminstrator of the <%=@collection.title%> transcription project on FromThePage.com</resp>
-        <persName><%= @collection.owner.print_name %></persName>
+        <persName><%= @collection.owner.real_name %></persName>
       </respStmt>
 
       <% @user_contributions.each do |user| %>
         <respStmt xml:id="U<%= user[:user_id]%>">
-          <persName><%= user[:print_name] %></persName>
+          <persName><%= user[:real_name] %></persName>
           <% if user[:edit_count] == 1 %>
             <resp>
               made one edit on
