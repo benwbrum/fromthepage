@@ -15,7 +15,7 @@ class CollectionController < ApplicationController
   before_action :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :upload_metadata]
 
   def authorized?
     unless user_signed_in?
