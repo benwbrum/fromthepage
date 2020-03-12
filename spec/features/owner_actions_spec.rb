@@ -34,6 +34,7 @@ describe "owner actions", :order => :defined do
     fill_in 'collection_title', with: 'New Test Collection'
     click_button('Create Collection')
     test_collection = Collection.find_by(title: 'New Test Collection')
+    expect(test_collection.subjects_disabled).to be true
     expect(collection_count + 1).to eq @owner.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Upload PDF or ZIP File")
