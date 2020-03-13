@@ -50,6 +50,12 @@ Rails.application.configure do
 
   Capybara.register_driver :selenium do |app|
     Capybara::Selenium::Driver.new(app, :browser => :chrome)
+
+    caps = Selenium::WebDriver::Remote::Capabilities.chrome(
+      'chromeOptions' => {
+        'window-size' => '1980,1080'
+      })
+
   end
 
   RAKE = '/usr/bin/env rake'
