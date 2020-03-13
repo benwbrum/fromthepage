@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "owner actions", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
 
     @owner = User.find_by(login: OWNER)

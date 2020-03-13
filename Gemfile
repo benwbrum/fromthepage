@@ -68,7 +68,6 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
-  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
   gem 'pry-byebug'
   gem 'factory_bot_rails'
   gem 'pry-awesome_print' # makes console output easy to read

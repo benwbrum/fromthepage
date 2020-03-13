@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "editor actions" , :order => :defined do
-  Capybara.javascript_driver = :webkit
-  
   context "Factory" do 
     before :all do
       @user = User.find_by(login: USER)

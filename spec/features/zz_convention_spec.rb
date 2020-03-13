@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "convention related tasks", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
