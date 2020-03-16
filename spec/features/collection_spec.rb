@@ -273,8 +273,13 @@ describe "collection spec (isolated)" do
 
       fill_in('work_title', with: 'Stats Test Work')
       click_button('Create Work')
+
+      old_count = Page.count
       page.find('#new_page')
       click_button('Save & New Work')
+      new_count = Page.count
+      print "\nTesting a page was actually created.\n"
+      new_count.should eq(old_count + 1)
 
       visit dashboard_owner_path
 
