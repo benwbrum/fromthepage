@@ -280,6 +280,9 @@ describe "collection spec (isolated)" do
 
       page.find('.collections').click_link('Stats Test Work')
       page.find('.tabs').click_link('Read')
+      print "\n\n=========\nDEBUG\n===========\n\n"
+      print page.text
+      print "\n\n=========\nDEBUG\n===========\n\n"
       page.find('.maincol h4').click_link('Page 1')
       fill_in('page_source_text', with: 'Transcription')
       page.find('#save_button_top').click
