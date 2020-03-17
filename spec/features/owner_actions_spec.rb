@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "owner actions", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -86,7 +84,7 @@ describe "owner actions", :order => :defined do
     within(page.find('.litebox-embed')) do
       expect(page).to have_content('Create New Collection')
       fill_in 'collection_title', with: col_title
-      find_button('Create Collection').trigger(:click)
+      page.execute_script("$('#create-collection').click()")
     end
     page.find(:css, '#document-upload').click
     page.find('#document_upload_collection_id')

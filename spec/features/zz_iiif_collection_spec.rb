@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "uploads data for collections", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @at_id = "https://cudl.lib.cam.ac.uk/iiif/collection/hebrew"
@@ -14,7 +12,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "imports an IIIF collection", :js => true do
     visit dashboard_owner_path
-    VCR.use_cassette('iiif/cambridge_hebrew_mss') do
+    VCR.use_cassette('iiif/cambridge_hebrew_mss', :record => :new_episodes) do
       page.find('.tabs').click_link("Start A Project")
       page.find(:css, '#import-iiif-manifest').click
       page.fill_in 'at_id', with: @at_id

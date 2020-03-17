@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "editor actions" , :order => :defined do
-  Capybara.javascript_driver = :webkit
-  
   context "Factory" do 
     before :all do
       @user = User.find_by(login: USER)
@@ -300,7 +298,9 @@ describe "editor actions" , :order => :defined do
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       title = test_page.notes.last.id
       page.find('.user-bubble_content', text: "Test two")
-      page.click_link('', :href => "/notes/#{title}")
+      accept_alert do
+        page.click_link('', :href => "/notes/#{title}")
+      end
       sleep(3)
       expect(Note.find_by(id: title)).to be_nil
     end
