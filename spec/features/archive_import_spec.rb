@@ -51,7 +51,6 @@ describe "IA import actions", :order => :defined do
     page.check('use_ocr')
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
-    sleep(2)
     new_work = Work.find_by(title: @title)
     first_page = new_work.pages.first
     expect(new_work.ocr_correction).to be 

@@ -123,6 +123,7 @@ Fromthepage::Application.routes.draw do
     get 'title_from_ocr_top', to: 'ia#title_from_ocr_top'
     get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
     post 'convert', to: 'ia#convert'
+    post 'import_work', to: 'ia#import_work'
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
