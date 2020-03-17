@@ -30,7 +30,6 @@ describe "IA import actions", :order => :defined do
     expect(page).to have_content("Manage Archive.org Import")
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
-    expect(page).to have_content("has been converted into a FromThePage work")
     expect(ia_work_count + 1).to eq IaWork.all.count
   end
 
@@ -55,7 +54,6 @@ describe "IA import actions", :order => :defined do
     new_work = Work.find_by(title: @title)
     first_page = new_work.pages.first
     expect(new_work.ocr_correction).to be 
-    expect(page).to have_content("has been converted into a FromThePage work")
     expect(page.find('h1')).to have_content(new_work.title)
     expect(first_page.source_text).not_to be_nil
   end

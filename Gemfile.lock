@@ -24,14 +24,6 @@ GIT
       faraday (>= 0.9)
       json
 
-GIT
-  remote: https://github.com/thoughtbot/capybara-webkit.git
-  revision: f429d668568ff7349f5e23a085df7fcf1c431fa7
-  specs:
-    capybara-webkit (1.15.1)
-      capybara (>= 2.3, < 4.0)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -230,7 +222,6 @@ GEM
     jwt (2.2.1)
     launchy (2.5.0)
       addressable (~> 2.7)
-    libv8 (7.3.492.27.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -253,8 +244,6 @@ GEM
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    mini_racer (0.2.9)
-      libv8 (>= 6.9.411)
     minitest (5.14.0)
     msgpack (1.3.3)
     multi_json (1.14.1)
@@ -499,7 +488,6 @@ DEPENDENCIES
   capistrano-bundler (~> 1.6)
   capistrano-rails (~> 1.4)
   capybara
-  capybara-webkit!
   carrierwave
   coveralls
   database_cleaner
@@ -519,7 +507,6 @@ DEPENDENCIES
   listen
   memory_profiler
   meta_request
-  mini_racer
   mysql2
   nokogiri
   oai
