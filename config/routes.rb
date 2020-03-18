@@ -239,6 +239,10 @@ Fromthepage::Application.routes.draw do
     get 'import', to: 'omeka_items#import'
   end
 
+  scope 'statistics', as: 'statistics' do
+    get 'export_csv', to: 'statistics#export_csv'
+  end
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
