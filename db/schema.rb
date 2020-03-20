@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181104231399) do
+ActiveRecord::Schema.define(version: 20200308163202) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -260,15 +260,27 @@ ActiveRecord::Schema.define(version: 20181104231399) do
     t.boolean  "use_ocr",                     default: false
   end
 
-  create_table "marks", force: :cascade do |t|
-    t.integer "page_id",          limit: 4
-    t.integer "transcription_id", limit: 4
-    t.integer "translation_id",   limit: 4
-    t.string  "text_type",        limit: 255
-    t.text    "coordinates",      limit: 65535
-    t.string  "shape_type",       limit: 255
+  create_table "layers", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.integer  "page_id",    limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
+  add_index "layers", ["page_id"], name: "index_layers_on_page_id", using: :btree
+
+  create_table "marks", force: :cascade do |t|
+    t.integer "page_id",                 limit: 4
+    t.integer "transcription_id",        limit: 4
+    t.integer "translation_id",          limit: 4
+    t.string  "text_type",               limit: 255
+    t.text    "coordinates",             limit: 65535
+    t.string  "shape_type",              limit: 255
+    t.integer "layer_id",                limit: 4
+    t.integer "semanticContribution_id", limit: 4
+  end
+
+  add_index "marks", ["layer_id"], name: "index_marks_on_layer_id", using: :btree
   add_index "marks", ["page_id"], name: "index_marks_on_page_id", using: :btree
 
   create_table "notes", force: :cascade do |t|
@@ -661,4 +673,5 @@ ActiveRecord::Schema.define(version: 20181104231399) do
   add_index "works", ["owner_user_id"], name: "index_works_on_owner_user_id", using: :btree
   add_index "works", ["slug"], name: "index_works_on_slug", unique: true, using: :btree
 
+  add_foreign_key "marks", "layers"
 end

@@ -1,9 +1,10 @@
 class Mark < ActiveRecord::Base
-  attr_accessible :coordinates, :text_type, :shape_type, :page_id
+  attr_accessible :coordinates, :text_type, :shape_type, :page_id, :layer_id
 
   belongs_to :page
   belongs_to :transcription
   belongs_to :translation
+  belongs_to :semanticContribution
   
   has_many :contributions
   
@@ -21,6 +22,11 @@ class Mark < ActiveRecord::Base
       self.translation.mark = self
       self.translation.user = user
     end
+    if(args[:semantic_text])
+      self.semanticContribution = SemanticContribution.new({text: args[:semantic_text]})
+      self.semanticContribution.mark = self
+      self.semanticContribution.user = user
+    end
   end
 
   def valueObject
@@ -30,8 +36,10 @@ class Mark < ActiveRecord::Base
       shape_type: self.shape_type,
       coordinates: JSON.parse(self.coordinates),
       page_id: self.page_id,
+      layer_id: self.layer_id,
       transcription: self.transcription,
-      translation: self.translation
-    } 
+      translation: self.translation,
+      semanticContribution: self.semanticContribution
+    }
   end
 end

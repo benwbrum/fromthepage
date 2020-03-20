@@ -15,7 +15,14 @@ class Api::MarkController < Api::ApiController
   end
   
   def list_by_page
-    marks = Mark.where(page_id: params[:page_id]).all
+    marks = Mark.where(page_id: params[:page_id], layer_id: nil).all
+    responseMarks=[]
+    marks.map{|mark| responseMarks.push(mark.valueObject) }
+    render_serialized ResponseWS.default_ok(responseMarks)
+  end
+
+  def list_by_layer
+    marks = Mark.where(layer_id: params[:layer_id]).all
     responseMarks=[]
     marks.map{|mark| responseMarks.push(mark.valueObject) }
     render_serialized ResponseWS.default_ok(responseMarks)
@@ -25,6 +32,9 @@ class Api::MarkController < Api::ApiController
     @mark = Mark.new(mark_params, current_user)
     if @page
       @mark.page=@page
+    end
+    if @layer
+      @mark.layer=@layer
     end
 
     if @mark.save
@@ -51,7 +61,7 @@ class Api::MarkController < Api::ApiController
   private
     
     def mark_params
-      params.permit(:text, :coordinates, :text_type, :shape_type, :page_id, :transcription_text, :translation_text)
+      params.permit(:text, :coordinates, :text_type, :shape_type, :page_id, :layer_id, :transcription_text, :translation_text, :semantic_text)
     end
     
     def set_mark
@@ -61,6 +71,10 @@ class Api::MarkController < Api::ApiController
     
     def set_page
       @page = Page.find(params[:page_id])
+    end
+
+    def set_layer
+      @layer = Layer.find(params[:layer_id])
     end
     
     def serialize_coordinates
