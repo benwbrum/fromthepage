@@ -108,6 +108,7 @@ Fromthepage::Application.routes.draw do
     end
     resources :page, path: 'page', only: [:create, :update, :destroy, :show] do
       get '', path: 'marks', as: :show_marks, to: 'mark#list_by_page'
+      get '', path: 'layers', as: :show_layers, to: 'layer#list_by_page'
     end
     resources :page, path: 'page-version', only: [:show] do
       get '', path: 'list', as: :list, to: 'page_version#list_by_page'
@@ -115,7 +116,9 @@ Fromthepage::Application.routes.draw do
     resources :mark, path: 'mark', only: [:index, :create, :update, :destroy, :show] do
       get '', path: 'transcriptions', as: :show_transcriptions, to: 'transcription#list_by_mark'
       get '', path: 'votes',  to: 'transcription#list_likes_by_user'
-
+    end
+    resources :layer, path: 'layer', only: [:index, :create, :update, :destroy, :show] do
+      get '', path: 'marks', as: :show_marks, to: 'mark#list_by_layer'
     end
     resources :transcription, path: 'transcription', only: [:index, :create, :update, :destroy, :show] do
       get ':transcription_id', path: 'like', as: :like_transcription, to: 'transcription#like'

@@ -95,6 +95,13 @@ es:
         success: "La Marca ha sido actualizada"
       destroy:
         success: "La Marca ha sido borrada"
+    layer:
+      create:
+        success: "La Capa ha sido creada"
+      update:
+        success: "La Capa ha sido actualizada"
+      destroy:
+        success: "La Capa ha sido borrada"
     transcription:
       save:
         success: "La Transcripción ha sido guardada"
