@@ -9,7 +9,7 @@ describe "Spam user safeguards" do
     click_link "Edit Profile"
     fill_in 'Name', with: 'Mary'
     click_button("Update Profile")
-    expect(page).to have_content("Mary")
+    expect(page).to have_content("martha1")
   end
 
   it "does not present problem fields to non-owners" do

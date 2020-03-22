@@ -271,10 +271,10 @@ class Work < ActiveRecord::Base
   end
 
   def alert_intercom
-    if INTERCOM_ACCESS_TOKEN
+    if (defined? INTERCOM_ACCESS_TOKEN) && INTERCOM_ACCESS_TOKEN
       if self.owner.owner_works.count == 1
         intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
-        intercom.events.create(event_name: "first-upload", email: User.current_user.email, created_at: Time.now.to_i)
+        intercom.events.create(event_name: "first-upload", email: self.owner.email, created_at: Time.now.to_i)
       end
     end
   end
