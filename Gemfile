@@ -35,7 +35,7 @@ gem "user_agent_parser"
 gem 'pry'
 gem 'oink'
 
-gem 'iiif-image-api', git: 'https://github.com/BrumfieldLabs/iiif-image-api.git'
+gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git'
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 
