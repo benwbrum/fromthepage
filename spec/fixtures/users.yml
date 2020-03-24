@@ -84,3 +84,31 @@ user_7:
   start_date: <%= 1.month.ago.to_s :db %>
   encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
   password_salt: y7iu5sLXusNg5yZYBNhc
+user_8:
+  id: 8
+  login: wakanda
+  display_name: Wakanda
+  real_name: 
+  email: wakanda@example.org
+  owner: true
+  admin: true
+  activity_email: true
+  account_type: 
+  paid_date: <%= 1.month.ago.to_s :db %>
+  start_date: <%= 1.month.ago.to_s :db %>
+  encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
+  password_salt: y7iu5sLXusNg5yZYBNhc
+user_9:
+  id: 9
+  login: shuri
+  display_name: Shuri
+  real_name: 
+  email: shuri@example.org
+  owner: false
+  admin: false
+  activity_email: true
+  account_type: 
+  paid_date: <%= 1.month.ago.to_s :db %>
+  start_date: <%= 1.month.ago.to_s :db %>
+  encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
+  password_salt: y7iu5sLXusNg5yZYBNhc

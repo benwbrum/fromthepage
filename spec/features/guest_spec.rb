@@ -5,7 +5,7 @@ describe "guest user actions" do
 
   before :all do
     @collections = Collection.all
-    @collection = @collections.last
+    @collection = @collections.find(3)
     @work = @collection.works.last
     @page = @work.pages.last
     @owner = User.find_by(login: OWNER)

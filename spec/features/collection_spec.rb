@@ -113,6 +113,9 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "checks added owner permissions" do
+    @rest_user.reload
+    @rest_user.account_type = nil
+    @rest_user.save
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
