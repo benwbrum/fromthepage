@@ -7,10 +7,7 @@ class Api::LoginController < Api::ApiController
   def login
     username = params[:username]
     password = params[:password]
-    user = User.find_for_authentication(:login => username)
-    if (!user)
-      user = User.find_for_authentication(:email => username)
-    end
+    user = User.find_for_authentication(["login = :value OR lower(email) = lower(:value)", { :value => username}])
     if (user != nil && user.valid_password?(password))
       # Record login event
       alert = GamificationHelper.loginEvent(user.email)
