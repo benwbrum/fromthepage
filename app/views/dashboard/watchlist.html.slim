@@ -27,6 +27,17 @@ h1 =t('dashboard.collaborator')
         =link_to "collections", dashboard_path
         ="."
 
+    -unless current_user.collection_collaborations.empty?
+      h3 Private Collections You Belong to
+      -current_user.collection_collaborations.each do |collection|
+        -owner_link = link_to collection.owner.display_name, user_profile_path(collection.owner) unless collection.owner.nil?
+        .collections
+          .collection
+            .collection_details
+              h4.collection_title =link_to collection.title, collection_path(collection.owner, collection) unless collection.owner.nil?
+            .collection_summary
+              span =="Owned by #{owner_link}"
+
     h3 Everyone's Activity
     =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
 
