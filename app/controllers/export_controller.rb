@@ -287,7 +287,7 @@ private
 
         page_cells = [
           work.title,
-          work_identifier,
+          work.identifier,
           page.title,
           page.position,
           page_url,
