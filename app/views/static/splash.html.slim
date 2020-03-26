@@ -7,15 +7,21 @@
     .wrapper: .intro_box
       h1.intro_box_title &ldquo;Simply the finest crowdsourcing manuscript transcription software on the planet.&rdquo;
       p.intro_box_text -Max Spiegel, Director of Philip K. Dick’s Exegesis at Penn State
-      =link_to 'Learn More', about_path, class: 'button big learn-more'
+      =link_to 'Start Free Trial', users_new_trial_path, class: 'button big learn-more' 
+      span &nbsp; 
+      =link_to 'Learn More', about_path, class: 'button big learn-more'  
 
 section#description
   h1 FromThePage is software for transcribing documents and collaborating on transcriptions with others.
   h2 Use FromThePage for everything from simple, plain-text transcription projects to bilingual digital scholarly editions with annotations.
 
+section#description
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/UcNXSY0q9uE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  h2 How fast can you get started?  Fast.
+
 section.advantages
-  ol.justified.vtop
-    li.justified_box
+  ol.advantages_list
+    li.advantages_list_item
       h2.advantages_title Transcribe
       p.advantages_text Transcribe documents from anywhere – upload PDFs and pictures, or directly import documents from a digital library.
       ul
@@ -25,14 +31,14 @@ section.advantages
         li Indexing
         li Translation
         li Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
-    li.justified_box
+    li.advantages_list_item
       h2.advantages_title Collaborate
       p.advantages_text Make your transcription project public or select authorized collaborators.
       ul
         li Version control
         li Automatic markup
         li In-document collaborator notes
-    li.justified_box
+    li.advantages_list_item
       h2.advantages_title Manage
       p.advantages_text Review the progress of your transcription project and the most recent activity in the transcriber community at a glance.
       ul
@@ -43,34 +49,38 @@ section.advantages
 
   .start
     h4 Start transcribing your documents.
+    =link_to 'Start Free Trial', users_new_trial_path, class: 'button big learn-more'
+    span &nbsp; 
     =link_to 'Learn More', about_path, class: 'button big learn-more'
 
-section#quotes
+section.quotes
   h2 What FromThePage Users Are Saying
-  ol.justified.vtop
-    li.justified_box
+  ol.quotes_list
+    li.quotes_list_item
       blockquote
         p The interface is flexible. The images are easy to manipulate, the transcription pane is very easy to use. […] It is extremely easy to deploy—I got my project up and running in about an hour.
       cite
         span Sue Perdue
         small Documentary Editor
-    li.justified_box
+    li.quotes_list_item
       blockquote
         p I love that the site works for a public library as well as an academic and we benefit from working alongside different institutions on a digital platform…
-      cite.advantages_quote_cite
+      cite
         span Victoria Duncan
         small Indianapolis Public Library
-    li.justified_box
+    li.quotes_list_item
       blockquote
         p We’re especially impressed with how FromThePage has recently extended IIIF support to include links to all relevant export formats at both the document and work level.
       cite
         span Stanford University Archives Team
   .simplify
     h4 Simplify your collaborative transcription.
+    =link_to 'Start Free Trial', users_new_trial_path, class: 'button big learn-more'
+    span &nbsp;  
     =link_to 'Learn More', about_path, class: 'button big learn-more'
 
 section#transcription_count
-  span#count #{Page.where.not(:status=>nil).count}
+  span#count #{number_with_delimiter Page.where.not(:status=>nil).count}
   p Pages Transcribed with FromThePage
 
 section.spotlight

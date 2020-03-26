@@ -27,6 +27,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a new collection" do
+    @owner.account_type = "Trial"
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
@@ -39,6 +40,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates an empty new work in a collection", :js => true do
+    @owner.account_type = "Trial"
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
     visit dashboard_owner_path
@@ -55,6 +57,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "checks for subject in a new collection" do
+    @owner.account_type = "Trial"
     test_collection = Collection.find_by(title: 'New Test Collection')
     visit dashboard_owner_path
     page.find('.maincol').click_link("#{test_collection.title}")
@@ -64,6 +67,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a collection" do
+    @owner.account_type = "Trial"
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
@@ -77,6 +81,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a collection from work dropdown", :js => true do
+    @owner.account_type = "Trial"
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
@@ -336,5 +341,20 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Letters from America")
       expect(page).to have_content("Science Archives")
     end
+
+  it "warns if account type is Individual Researcher" do
+    @owner.account_type = "Individual Researcher"
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    expect(@owner.collections.count).to be >= 1
+    expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
+  end
+
+  it "does not warn with another account type" do
+    @owner.account_type = "Trial"
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+
   end
 end

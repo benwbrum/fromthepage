@@ -1,18 +1,22 @@
 .litebox-embed(style="width:550px")
   h1 Create New Collection
-  p To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
 
-  =form_for(@collection, url: { :action => 'create' }) do |f|
-    =validation_summary @collection.errors
-    table.form
-      tr.big
-        th =f.label :title
-        td.w100 =f.text_field :title
-      tr
-        td(colspan="2")
-          =f.label :intro_block, 'Collection Description', class: 'above'
-          =f.text_area :intro_block, rows: 4
-    .toolbar
-      .toolbar_group.aright =f.button 'Create Collection'
+  -if current_user.account_type == "Individual Researcher" && current_user.collections.count >= 1
+    p(style="color: #FF0000") Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com.
+  -else
+    p To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection.
+
+    =form_for(@collection, url: { :action => 'create' }) do |f|
+      =validation_summary @collection.errors
+      table.form
+        tr.big
+          th =f.label :title
+          td.w100 =f.text_field :title
+        tr
+          td(colspan="2")
+            =f.label :intro_block, 'Collection Description', class: 'above'
+            =f.text_area :intro_block, rows: 4
+      .toolbar
+        .toolbar_group.aright =f.button 'Create Collection'
 
 
