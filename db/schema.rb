@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200308163202) do
+ActiveRecord::Schema.define(version: 20200327020015) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20200308163202) do
     t.integer  "cached_weighted_score", limit: 4,   default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "schema_type",           limit: 255
   end
 
   add_index "contributions", ["mark_id"], name: "index_contributions_on_mark_id", using: :btree

@@ -23,7 +23,7 @@ class Mark < ActiveRecord::Base
       self.translation.user = user
     end
     if(args[:semantic_text])
-      self.semanticContribution = SemanticContribution.new({text: args[:semantic_text]})
+      self.semanticContribution = SemanticContribution.new({text: args[:semantic_text], schema_type: args[:schema_type]})
       self.semanticContribution.mark = self
       self.semanticContribution.user = user
     end
