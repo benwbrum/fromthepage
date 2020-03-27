@@ -181,14 +181,14 @@
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span Disable OCR
 
+    h3 Metadata
+    =link_to(collection_upload_metadata_path, class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+      span Upload Metadata
+
     h3 Blank Collection
     p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
     =link_to(collection_blank_collection_path(:collection_id => @collection.id), class: 'button')
       span Blank Collection
-
-    h3 Metadata
-    =link_to(collection_upload_metadata_path, class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
-      span Upload Metadata
 
 =render({ :partial => '/shared/collection_footer' })
 
