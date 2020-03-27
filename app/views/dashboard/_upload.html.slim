@@ -6,7 +6,7 @@
         p Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.
       -else
         p.big Using this form you can import your page images into FromThePage. You should select a target collection to import into and attach a ZIP or PDF file containing page images to be used for your project.
-        =form_for :document_upload, url: { action: 'new_upload' } do |f|
+        =form_for :document_upload, url: dashboard_new_upload_path do |f|
           =validation_summary @document_upload.errors
           table.form.collection-settings
             tr
