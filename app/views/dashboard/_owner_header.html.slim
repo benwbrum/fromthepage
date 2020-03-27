@@ -40,6 +40,8 @@
     -unless (current_user.paid_date == nil)
       span &nbsp;&middot;&nbsp;Current subscription expires #{current_user.paid_date.strftime('%b %d, %Y')}
     span &nbsp;&middot;&nbsp;Total pages: #{current_user.page_count}
+    -unless (current_user.account_type != 'Trial') 
+      span &nbsp;&middot;&nbsp;To upgrade contact support@fromthepage.com
 
 section.owner-counters
   .counter(data-prefix="#{number_with_delimiter @collections.length}") #{'Collection'.pluralize(@collections.length)}
