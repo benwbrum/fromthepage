@@ -25,7 +25,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a new collection" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
@@ -39,7 +39,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates an empty new work in a collection", :js => true do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
     visit dashboard_owner_path
@@ -56,7 +56,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "checks for subject in a new collection" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     test_collection.subjects_disabled = false
     test_collection.save
@@ -68,7 +68,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a collection" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
@@ -82,7 +82,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a collection from work dropdown", :js => true do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
@@ -287,7 +287,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "does not warn with another account type" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
