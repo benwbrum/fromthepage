@@ -342,19 +342,19 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Science Archives")
     end
 
-  it "warns if account type is Individual Researcher" do
-    @owner.account_type = "Individual Researcher"
-    visit dashboard_owner_path
-    page.find('a', text: 'Create a Collection').click
-    expect(@owner.collections.count).to be >= 1
-    expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
-  end
+    it "warns if account type is Individual Researcher" do
+      @owner.account_type = "Individual Researcher"
+      visit dashboard_owner_path
+      page.find('a', text: 'Create a Collection').click
+      expect(@owner.collections.count).to be >= 1
+      expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
+    end
 
-  it "does not warn with another account type" do
-    @owner.account_type = "Trial"
-    visit dashboard_owner_path
-    page.find('a', text: 'Create a Collection').click
-    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
-
+    it "does not warn with another account type" do
+      @owner.account_type = "Trial"
+      visit dashboard_owner_path
+      page.find('a', text: 'Create a Collection').click
+      expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+    end
   end
 end
