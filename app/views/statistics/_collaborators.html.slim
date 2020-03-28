@@ -7,8 +7,9 @@
 h2 Collaborators
 
 - if user_signed_in?
-  - if @collection.owner == current_user || @collection.owners.include?(current_user)
-    = link_to "Mailing List Export", :controller => 'statistics', :action => 'export_csv'
+  - if @collection.is_a?(Collection)
+    - if @collection.owner == current_user || @collection.owners.include?(current_user)
+      = link_to "Mailing List Export", :controller => 'statistics', :action => 'export_csv'
 
 .collection-users.justified
   .justified_box>
