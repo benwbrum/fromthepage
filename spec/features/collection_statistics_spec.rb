@@ -52,4 +52,12 @@ describe "collection statistics", :order => :defined do
     visit collection_statistics_path(@user, c)
     expect(page).to have_content("Mailing List Export")
   end
+
+  it "does not have a Mailing List Export link for document sets" do
+    logout
+    login_as @owner
+    ds = DocumentSet.first
+    visit collection_statistics_path(@owner, ds)
+    expect(page).not_to have_content("Mailing List Export")
+  end
 end
