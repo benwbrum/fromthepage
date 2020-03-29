@@ -15,14 +15,14 @@ describe "collection statistics", :order => :defined do
     expect(page).to have_content("Historia del Paraguay")
   end
 
-  it "should have access to the Mailing List Export link" do
+  it "can view the Mailing List Export link as owner" do
     login_as @owner
     c = Collection.where(title: "Historia del Paraguay").first
     visit collection_statistics_path(@owner, c)
     expect(page).to have_content("Mailing List Export")
   end
 
-  it "should not have access to the Mailing List Export link" do
+  it "cannot view the owner's Mailing List Export link as user" do
     logout
     login_as @user
     c = Collection.where(title: "Historia del Paraguay").first
