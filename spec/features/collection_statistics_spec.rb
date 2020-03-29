@@ -29,4 +29,27 @@ describe "collection statistics", :order => :defined do
     visit collection_statistics_path(@owner, c)
     expect(page).not_to have_content("Mailing List Export")
   end
+
+  it "adds the user to the owners group" do
+    login_as @owner
+    visit dashboard_owner_path
+    expect(page).to have_content("Historia del Paraguay")
+    click_link "Historia del Paraguay", match: :first
+    expect(page).to have_content("Settings")
+    click_link "Settings"
+    select("jose - jose@example.org", from: "user_id").select_option
+    within(".user-select-form") do
+      click_button "Add"
+    end
+    @user.reload
+    expect(@user.owner).to be(true)
+  end
+
+  it "can view the Mailing List Export link as user" do
+    logout
+    login_as @user
+    c = Collection.where(title: "Historia del Paraguay").first
+    visit collection_statistics_path(@user, c)
+    expect(page).to have_content("Mailing List Export")
+  end
 end
