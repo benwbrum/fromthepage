@@ -19,9 +19,10 @@ h1 =t('dashboard.collaborator')
                 p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
     -else
       -unless @page.nil?
-        ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
-        =link_to @page.work.title, {:controller => 'transcribe', :action => 'display_page', :page_id => @page.id}
-        ="."
+        -if current_user.collection_collaborations.empty?
+          ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
+          =link_to @page.work.title, {:controller => 'transcribe', :action => 'display_page', :page_id => @page.id}
+          ="."
       -else
         ="You haven't participated in any projects yet.  Try transcribing a page from one of these "
         =link_to "collections", dashboard_path
