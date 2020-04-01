@@ -53,7 +53,7 @@ describe "editor actions" , :order => :defined do
       @collection = @collections.first
       @work = @collection.works.first
       @page = @work.pages.first
-      @auth_work = Collection.last.works.second
+      @auth_work = Collection.find(3).works.second
       #set up the restricted user not to be emailed
       notification = Notification.find_by(user_id: @rest_user.id)
       notification.add_as_collaborator = false
