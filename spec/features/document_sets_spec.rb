@@ -80,7 +80,7 @@ describe "document sets", :order => :defined do
       unless c.restricted
         expect(page).to have_content(c.title)
       else
-        expect(page).not_to have_content(c.title)
+        expect(page.find('.maincol')).not_to have_content(c.title)
       end
     end
     @document_sets.each do |set|
@@ -144,7 +144,7 @@ describe "document sets", :order => :defined do
       unless c.restricted
         expect(page).to have_content(c.title)
       else
-        expect(page).not_to have_content(c.title)
+        expect(page.find('.maincol')).not_to have_content(c.title)
       end
     end
     @document_sets.each do |set|
