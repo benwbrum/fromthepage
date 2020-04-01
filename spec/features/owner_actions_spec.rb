@@ -272,5 +272,42 @@ describe "owner actions", :order => :defined do
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
+  context "owner/collaborators related" do
+    before :each do
+      @owner = User.where(login: 'wakanda').first
+      @user = User.where(login: 'shuri').first
+    end
 
+    it "creates a collection as owner" do
+      login_as @owner
+      visit dashboard_owner_path
+      page.find('a', text: 'Create a Collection').click
+      fill_in 'collection_title', with: 'Letters from America'
+      click_button('Create Collection')
+      expect(page).to have_content("Letters from America")
+    end
+
+    it "adds a collaborator to a private collection" do
+      login_as @owner
+      visit dashboard_owner_path
+      expect(page).to have_content("Letters from America")
+      click_link "Letters from America", match: :first
+      expect(page).to have_content("Settings")
+      click_link "Settings"
+      expect(page).to have_content("Collection Privacy")
+      click_link("Make Collection Private")
+      expect(page).to have_content("Collection Collaborators")
+      select("Shuri - shuri@example.org", from: "collaborator_id").select_option
+      within(".user-select-form", match: :first) do
+        click_button "Add"
+      end
+    end
+
+    it "confirms that shuri can read the private collection" do
+      logout
+      login_as @user
+      visit dashboard_watchlist_path
+      expect(page).to have_content("Letters from America")
+    end
+  end
 end
