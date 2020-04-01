@@ -1,8 +1,8 @@
 user_1:
   id: 1
   login: george
-  display_name: George
-  print_name: 
+  display_name: george
+  real_name: George
   email: george@test.com
   owner: false
   admin: false
@@ -12,8 +12,8 @@ user_1:
 user_2:
   id: 2
   login: eleanor
-  display_name: Eleanor
-  print_name: 
+  display_name: eleanor
+  real_name: 
   email: eleanor@test.com
   owner: false
   admin: false
@@ -23,8 +23,8 @@ user_2:
 user_3:
   id: 3
   login: harry
-  display_name: Harry
-  print_name: 
+  display_name: harry
+  real_name: 
   email: harry@test.com
   owner: false
   admin: false
@@ -34,8 +34,8 @@ user_3:
 user_4:
   id: 4
   login: margaret
-  display_name: Margaret
-  print_name: 
+  display_name: margaret
+  real_name: Margaret Reed
   email: margaret@test.com
   owner: true
   admin: false
@@ -48,8 +48,8 @@ user_4:
 user_5:
   id: 5
   login: julia
-  display_name: Julia
-  print_name: 
+  display_name: julia
+  real_name: 
   email: julia@test.com
   owner: true
   admin: true
@@ -62,11 +62,39 @@ user_5:
 user_6:
   id: 6
   login: ron
-  display_name: Ron
-  print_name: 
+  display_name: ron
+  real_name: Ron Smith
   email: ron@test.com
   owner: false
   admin: false
   activity_email: true
   encrypted_password: 8d73474e08146841dc65db3fd94c55e78cde7410
   password_salt: R2-cytow2JEPt3jD3Ts1
+user_8:
+  id: 8
+  login: wakanda
+  display_name: Wakanda
+  real_name: 
+  email: wakanda@example.org
+  owner: true
+  admin: true
+  activity_email: true
+  account_type: 
+  paid_date: <%= 1.month.ago.to_s :db %>
+  start_date: <%= 1.month.ago.to_s :db %>
+  encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
+  password_salt: y7iu5sLXusNg5yZYBNhc
+user_9:
+  id: 9
+  login: shuri
+  display_name: Shuri
+  real_name: 
+  email: shuri@example.org
+  owner: false
+  admin: false
+  activity_email: true
+  account_type: 
+  paid_date: <%= 1.month.ago.to_s :db %>
+  start_date: <%= 1.month.ago.to_s :db %>
+  encrypted_password: d1e821c1470f974572d71053060fed5ba84f7c8d
+  password_salt: y7iu5sLXusNg5yZYBNhc

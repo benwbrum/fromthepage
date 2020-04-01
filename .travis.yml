@@ -7,7 +7,7 @@ rvm: 2.3.7
 jobs:
   include:
     - stage: test for pry
-      rvm: 2.4.1
+      rvm: 2.7.0
       before_install:
       - bash travis/.travis_pry.sh
       install: skip
@@ -26,6 +26,7 @@ jobs:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install ghostscript
+  - sudo apt-get install poppler-utils
   - sudo apt-get install graphviz
   - sudo apt-get install g++ qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake

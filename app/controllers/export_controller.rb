@@ -32,7 +32,7 @@ class ExportController < ApplicationController
 
     @user_contributions =
       User.find_by_sql("SELECT  user_id user_id,
-                                users.print_name print_name,
+                                users.real_name real_name,
                                 count(*) edit_count,
                                 min(page_versions.created_on) first_edit,
                                 max(page_versions.created_on) last_edit
@@ -199,7 +199,9 @@ private
 
   def get_headings(collection, ids)
     field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
-    cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck('DISTINCT header')
+    orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck('DISTINCT header')
+    markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck('DISTINCT header')
+    cell_headings = orphan_cell_headings + markdown_cell_headings
 
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []

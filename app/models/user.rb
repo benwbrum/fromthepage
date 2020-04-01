@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :print_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
+  attr_accessible :login, :email, :password, :password_confirmation, :remember_me, :owner, :display_name, :location, :website, :about, :real_name, :account_type, :paid_date, :slug, :start_date, :orcid, :dictation_language, :activity_email
 
   # allows me to get at the user from other models
   cattr_accessor :current_user
@@ -60,12 +60,21 @@ class User < ActiveRecord::Base
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
 
-  validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
   
+  before_validation :update_display_name
+
   after_save :create_notifications
   #before_destroy :clean_up_orphans
+
+  def update_display_name
+    if self.owner
+      self.display_name = self.real_name
+    else
+      self.display_name = login
+    end
+  end
 
   def self.from_omniauth(access_token)
     data = access_token.info
@@ -77,7 +86,7 @@ class User < ActiveRecord::Base
            email: data['email'],
            password: Devise.friendly_token[0,20],
            display_name: data['name'],
-           print_name: data['name']
+           real_name: data['name']
         )
     end
     user
