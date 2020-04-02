@@ -90,9 +90,9 @@ module ApplicationHelper
       limited = Deed.where(is_public: true)
       if options[:owner]
         owner = User.friendly.find(options[:owner])
-        deeds = limited.active.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
+        deeds = limited.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
       else
-        deeds = limited.active.where(condition).order('deeds.created_at DESC').limit(limit)
+        deeds = limited.where(condition).order('deeds.created_at DESC').limit(limit)
       end
     end
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
