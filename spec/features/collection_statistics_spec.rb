@@ -18,7 +18,7 @@ describe "collection statistics", :order => :defined do
   it "can view the Mailing List Export link as owner" do
     login_as @owner
     c = Collection.where(title: "Historia del Paraguay").first
-    visit collection_statistics_path(@owner, c)
+    visit dashboard_summary_path
     expect(page).to have_content("Mailing List Export")
   end
 
@@ -26,7 +26,7 @@ describe "collection statistics", :order => :defined do
     logout
     login_as @user
     c = Collection.where(title: "Historia del Paraguay").first
-    visit collection_statistics_path(@owner, c)
+    visit dashboard_summary_path
     expect(page).not_to have_content("Mailing List Export")
   end
 
@@ -49,15 +49,7 @@ describe "collection statistics", :order => :defined do
     logout
     login_as @user
     c = Collection.where(title: "Historia del Paraguay").first
-    visit collection_statistics_path(@user, c)
+    visit dashboard_summary_path
     expect(page).to have_content("Mailing List Export")
-  end
-
-  it "does not have a Mailing List Export link for document sets" do
-    logout
-    login_as @owner
-    ds = DocumentSet.first
-    visit collection_statistics_path(@owner, ds)
-    expect(page).not_to have_content("Mailing List Export")
   end
 end

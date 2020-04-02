@@ -23,6 +23,7 @@ Fromthepage::Application.routes.draw do
   get   '/dashboard' => 'dashboard#index'
   get   '/dashboard/owner' => 'dashboard#owner'
   get   '/dashboard/watchlist' => 'dashboard#watchlist'
+  get   '/dashboard/summary' => 'dashboard#summary'
   get   'dashboard_role' => 'dashboard#dashboard_role'
   get   'guest_dashboard' => 'dashboard#guest'
   get   'landing_page', to: 'dashboard#landing_page', path: '/findaproject'
