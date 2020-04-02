@@ -182,7 +182,7 @@
         span Disable OCR
 
     h3 Metadata
-    =link_to(collection_upload_metadata_path, class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+    =link_to(collection_upload_metadata_path(:collection_id => @collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
       span Upload Metadata
 
     h3 Blank Collection
@@ -210,4 +210,6 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
+
+      $(".page-busy-overlay").hide();
     });

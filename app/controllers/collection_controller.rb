@@ -467,6 +467,20 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
+  def example_metadata
+    @collection = Collection.find(params[:collection_id])
+
+    csv_string = CSV.generate(headers: true) do |csv|
+      csv << ['work_id', 'title', 'your metadata_field_one', 'your_metadata_field_two']
+
+      @collection.works.each do |work|
+        csv << [work.id, work.title]
+      end
+    end
+
+    send_data csv_string, filename: "example.csv"
+  end
+
   private
 
   def set_collection
