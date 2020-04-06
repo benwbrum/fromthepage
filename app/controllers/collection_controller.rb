@@ -17,6 +17,9 @@ class CollectionController < ApplicationController
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :upload_metadata]
 
+  ROWSET = []
+  ROWSET_ERRORS = []
+
   def authorized?
     unless user_signed_in?
       ajax_redirect_to dashboard_path
@@ -479,6 +482,61 @@ class CollectionController < ApplicationController
     end
 
     send_data csv_string, filename: "example.csv"
+  end
+
+  def save_metadata
+    metadata_file = params[:metadata]['file'].tempfile
+    rows = CSV.open(metadata_file)
+    rows.shift
+
+    collection = Collection.find(params[:metadata][:collection_id])
+
+    # push all rows to a rowset first.
+    rows.each do |row|
+      ROWSET << { work_id: row[0], title: row[1] }
+    end
+
+    # process the rowset.
+    ROWSET.each do |r|
+      new_metadata = []
+
+      r.each do |x|
+        new_metadata << { label: x[0],  value: x[1] }
+      end
+
+      begin
+        work = Work.find(r[:work_id].to_i)
+        work.original_metadata = new_metadata.to_json
+        work.save
+
+        unless collection.works.include?(work)
+          ROWSET_ERRORS << { error: "No work with ID #{r[:work_id]} is in collection #{collection.title}",
+                             work_id: r[:work_id],
+                             title: r[:title] }
+        end
+      rescue ActiveRecord::RecordNotFound
+        ROWSET_ERRORS << { error: "No work exists with ID #{r[:work_id]}",
+                           work_id: r[:work_id],
+                           title: r[:title] }
+      end
+    end
+
+    ajax_redirect_to edit_collection_path(collection.owner, collection, {csv_completed: true,
+                                                                         rowset_count: ROWSET.count,
+                                                                         rowset_error_count: ROWSET_ERRORS.count})
+  end
+
+  def metadata_csv_error
+    # write the error.csv
+    csv_string = CSV.generate(headers: true) do |csv|
+      csv << ['error', 'work_id', 'title']
+
+      ROWSET_ERRORS.each do |re|
+        csv << [re[:error], re[:work_id], re[:title]]
+      end
+    end
+
+    send_data csv_string, filename: "error.csv"
   end
 
   private

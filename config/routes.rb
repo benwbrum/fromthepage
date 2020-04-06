@@ -65,6 +65,8 @@ Fromthepage::Application.routes.draw do
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'upload_metadata', to: 'collection#upload_metadata'
     get 'example_metadata', to: 'collection#example_metadata'
+    get 'metadata_csv_error', to: 'collection#metadata_csv_error'
+    post 'save_metadata', to: 'collection#save_metadata'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'
