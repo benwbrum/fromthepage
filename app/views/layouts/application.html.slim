@@ -33,7 +33,7 @@ html lang="en-US"
       .flash(class='flash-#{type}')
         span.flash_message
           =svg_symbol flash_icon[type], class: 'icon'
-          span =message
+          span =message.html_safe
         a.flash_close &times;
 
     header.header

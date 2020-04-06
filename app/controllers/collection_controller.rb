@@ -521,9 +521,8 @@ class CollectionController < ApplicationController
       end
     end
 
-    ajax_redirect_to edit_collection_path(collection.owner, collection, {csv_completed: true,
-                                                                         rowset_count: ROWSET.count,
-                                                                         rowset_error_count: ROWSET_ERRORS.count})
+    flash[:alert] = "Your upload has finished processing. #{ROWSET.count} rows were updated successfully, #{ROWSET_ERRORS.count} rows encountered errors. Download the error file here: #{helpers.link_to 'link', collection_metadata_csv_error_path}"
+    ajax_redirect_to edit_collection_path(collection.owner, collection)
   end
 
   def metadata_csv_error

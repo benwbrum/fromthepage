@@ -1,6 +1,3 @@
--if params['csv_completed']
-  .p Your upload has finished processing. #{params[:rowset_count]} rows were updated successfully, #{params[:rowset_error_count]} rows encountered errors. Download the error file here: #{link_to 'link', collection_metadata_csv_error_path}
-
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 5, :collection_id => @collection }})
 .columns.collection_settings
   article.maincol
