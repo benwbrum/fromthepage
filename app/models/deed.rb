@@ -16,10 +16,19 @@ class Deed < ApplicationRecord
 
   visitable class_name: "Visit" # ahoy integration
 
-  before_save :calculate_prerender, :calculate_prerender_mailer
+  before_save :calculate_prerender, :calculate_prerender_mailer, :calculate_public
 
   def deed_type_name
     DeedType.name(self.deed_type)
+  end
+
+  def calculate_public
+    if self.collection
+      self.is_public = !self.collection.restricted
+    else
+      self.is_public = true # work_add might be called before the work has been added to a collection
+    end
+    return true # don't fail validation when is_public==false!
   end
 
   def calculate_prerender

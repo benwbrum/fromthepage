@@ -36,8 +36,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that a restricted user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "adds collaborators to a private collection" do
@@ -90,8 +89,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that the removed user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "adds owners to a private collection" do
@@ -142,8 +140,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks removed owner permissions" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "sets collection to public" do
