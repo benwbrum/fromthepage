@@ -1,11 +1,4 @@
 GIT
-  remote: https://github.com/BrumfieldLabs/iiif-image-api.git
-  revision: 2026de46eb4c96fa7c19317b7b5ea21a7c568f19
-  specs:
-    iiif-image-api (0.1.0)
-      activesupport (~> 6.0)
-
-GIT
   remote: https://github.com/benwbrum/omeka_client
   revision: f930e4a32ff5f235760f0ba64804ce7beeca9546
   specs:
@@ -23,6 +16,13 @@ GIT
       activesupport (>= 3.2.18)
       faraday (>= 0.9)
       json
+
+GIT
+  remote: https://github.com/samvera-labs/iiif-image-api.git
+  revision: 44d21e5ec39ae6b64b5c5643843db947104d81a2
+  specs:
+    iiif-image-api (0.1.0)
+      activesupport
 
 GEM
   remote: https://rubygems.org/

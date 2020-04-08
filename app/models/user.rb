@@ -66,7 +66,11 @@ class User < ApplicationRecord
   #before_destroy :clean_up_orphans
 
   def update_display_name
-    self.display_name = login
+    if self.owner
+      self.display_name = self.real_name
+    else
+      self.display_name = login
+    end
   end
 
   def self.from_omniauth(access_token)

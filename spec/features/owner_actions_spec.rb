@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe "owner actions", :order => :defined do
   before :all do
-
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
     @collection = @collections.first
     @works = @owner.owner_works
     @title = "This is an empty work"
-    @rtl_collection = Collection.last
+    @rtl_collection = Collection.find(3)
   end
 
   before :each do
@@ -26,18 +25,21 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a new collection" do
+    @owner.account_type = "Small Organization"
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     fill_in 'collection_title', with: 'New Test Collection'
     click_button('Create Collection')
     test_collection = Collection.find_by(title: 'New Test Collection')
+    expect(test_collection.subjects_disabled).to be true
     expect(collection_count + 1).to eq @owner.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Upload PDF or ZIP File")
   end
 
   it "creates an empty new work in a collection", :js => true do
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
     visit dashboard_owner_path
@@ -54,7 +56,10 @@ describe "owner actions", :order => :defined do
   end
 
   it "checks for subject in a new collection" do
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
+    test_collection.subjects_disabled = false
+    test_collection.save
     visit dashboard_owner_path
     page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Subjects")
@@ -63,6 +68,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a collection" do
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
@@ -76,6 +82,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a collection from work dropdown", :js => true do
+    @owner.account_type = "Small Organization"
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
@@ -87,7 +94,8 @@ describe "owner actions", :order => :defined do
       fill_in 'collection_title', with: col_title
       page.execute_script("$('#create-collection').click()")
     end
-    page.find(:css, '#document-upload').click
+    sleep(2)
+    page.execute_script("$('#document-upload').click()")
     page.find('#document_upload_collection_id')
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
     sleep(2)
@@ -236,7 +244,7 @@ describe "owner actions", :order => :defined do
     expect(page).to have_selector('.columns')
     expect(page).not_to have_content("Recent Activity by #{@owner.display_name}")
     @collections.each do |c|
-        expect(page).to have_content(c.title)
+      expect(page).to have_content(c.title)
     end
     @owner.unrestricted_document_sets.each do |d|
       expect(page).to have_content(d.title)
@@ -250,7 +258,7 @@ describe "owner actions", :order => :defined do
     click_button 'Save Changes'
     #note: this is just to make sure it's on the settings page again
     expect(page).to have_content('Collection Owners')
-    expect(Collection.last.text_language).to eq 'ara'
+    expect(Collection.find(3).text_language).to eq 'ara'
   end
 
   it "checks rtl transcription page views" do
@@ -270,5 +278,77 @@ describe "owner actions", :order => :defined do
     expect(rtl_collection.text_language).to eq 'eng'
   end
 
+  it "warns if account type is Individual Researcher" do
+    @owner.account_type = "Individual Researcher"
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    expect(@owner.collections.count).to be >= 1
+    expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
+  end
 
+  it "does not warn with another account type" do
+    @owner.account_type = "Small Organization"
+    visit dashboard_owner_path
+    page.find('a', text: 'Create a Collection').click
+    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+  end
+
+  context "owner/staff related" do
+    before :each do
+      @owner = User.where(login: 'wakanda').first
+      @user = User.where(login: 'shuri').first
+    end
+
+    it "creates a collection as owner" do
+      login_as @owner
+      visit dashboard_owner_path
+      page.find('a', text: 'Create a Collection').click
+      fill_in 'collection_title', with: 'Letters from America'
+      click_button('Create Collection')
+      expect(page).to have_content("Letters from America")
+    end
+
+    it "adds a new user as collection owner" do
+      login_as @owner
+      visit dashboard_owner_path
+      expect(page).to have_content("Letters from America")
+      click_link "Letters from America", match: :first
+      expect(page).to have_content("Settings")
+      click_link "Settings"
+      select("shuri - shuri@example.org", from: "user_id").select_option
+      within(".user-select-form") do
+        click_button "Add"
+      end
+      @user.reload
+      expect(@user.owner).to be(true)
+      expect(@user.account_type).to eq "Staff"
+    end
+
+    it "confirms that Shuri can read Wakanda's collection" do
+      logout
+      login_as @user
+      visit dashboard_owner_path
+      expect(page).to have_content("Letters from America")
+    end
+
+    it "creates a collection as Shuri" do
+      login_as @user
+      visit dashboard_owner_path
+      page.find('a', text: 'Create a Collection').click
+      fill_in 'collection_title', with: 'Science Archives'
+      click_button('Create Collection')
+      expect(page).to have_content("Science Archives")
+      visit dashboard_owner_path
+      expect(page).to have_content("Letters from America")
+      expect(page).to have_content("Science Archives")
+    end
+
+    it "confirms that Wakanda can read all collections" do
+      logout
+      login_as @owner
+      visit dashboard_owner_path
+      expect(page).to have_content("Letters from America")
+      expect(page).to have_content("Science Archives")
+    end
+  end
 end

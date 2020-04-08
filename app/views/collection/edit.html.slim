@@ -187,7 +187,7 @@
 
     h3 Blank Collection
     p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
-    =link_to(collection_blank_collection_path(:collection_id => @collection.id), class: 'button')
+    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
       span Blank Collection
 
 =render({ :partial => '/shared/collection_footer' })

@@ -91,6 +91,7 @@ class CollectionController < ApplicationController
 
   def add_owner
     @user.owner = true
+    @user.account_type = "Staff"
     @user.save!
     @collection.owners << @user
     @user.notification.owner_stats = true
@@ -224,7 +225,16 @@ class CollectionController < ApplicationController
     @collection = Collection.new
     @collection.title = params[:collection][:title]
     @collection.intro_block = params[:collection][:intro_block]
-    @collection.owner = current_user
+    if current_user.account_type != "Staff"
+      @collection.owner = current_user
+    else
+      current_user.collections.each do |c|
+        if c.owner.account_type != "Staff"
+          @collection.owner = c.owner
+          @collection.owners << current_user
+        end
+      end
+    end
     if @collection.save
       flash[:notice] = 'Collection has been created'
       if request.referrer.include?('sc_collections')

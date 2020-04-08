@@ -65,7 +65,7 @@ describe "subject linking" do
   it "deletes a subject" do
     logout(:user)
     login_as(@owner, :scope => :user)
-    collection = @collections.last
+    collection = @collections.find(3)
     visit collection_path(collection.owner, collection)
     page.find('.tabs').click_link("Subjects")
     page.find('a', text: "Testing").click

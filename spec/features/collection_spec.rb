@@ -36,8 +36,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that a restricted user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "adds collaborators to a private collection" do
@@ -90,8 +89,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that the removed user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "adds owners to a private collection" do
@@ -113,6 +111,9 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "checks added owner permissions" do
+    @rest_user.reload
+    @rest_user.account_type = nil
+    @rest_user.save
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
@@ -131,7 +132,7 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.display_name).find('a.remove').click
+    page.find('.user-label', text: @rest_user.real_name).find('a.remove').click
     page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
@@ -139,8 +140,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks removed owner permissions" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "sets collection to public" do
