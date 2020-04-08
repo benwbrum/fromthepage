@@ -507,27 +507,27 @@ class CollectionController < ApplicationController
     end
 
     # process the rowset.
-    ROWSET.each do |r|
+    ROWSET.each do |rs|
       new_metadata = []
 
-      r.each do |x|
-        new_metadata << { label: x[0],  value: x[1] }
+      rs.each do |r|
+        new_metadata << { label: r[0],  value: r[1] }
       end
 
       begin
-        work = Work.find(r[:work_id].to_i)
+        work = Work.find(rs[:work_id].to_i)
         work.original_metadata = new_metadata.to_json
         work.save
 
         unless collection.works.include?(work)
-          ROWSET_ERRORS << { error: "No work with ID #{r[:work_id]} is in collection #{collection.title}",
-                             work_id: r[:work_id],
-                             title: r[:title] }
+          ROWSET_ERRORS << { error: "No work with ID #{rs[:work_id]} is in collection #{collection.title}",
+                             work_id: rs[:work_id],
+                             title: rs[:title] }
         end
       rescue ActiveRecord::RecordNotFound
-        ROWSET_ERRORS << { error: "No work exists with ID #{r[:work_id]}",
-                           work_id: r[:work_id],
-                           title: r[:title] }
+        ROWSET_ERRORS << { error: "No work exists with ID #{rs[:work_id]}",
+                           work_id: rs[:work_id],
+                           title: rs[:title] }
       end
     end
 
