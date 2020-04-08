@@ -63,14 +63,17 @@ Fromthepage::Application.routes.draw do
     get 'publish_collection', to: 'collection#publish_collection'
     get 'remove_collaborator', to: 'collection#remove_collaborator'
     get 'restrict_collection', to: 'collection#restrict_collection'
-    get 'upload_metadata', to: 'collection#upload_metadata'
-    get 'example_metadata', to: 'collection#example_metadata'
-    get 'metadata_csv_error', to: 'collection#metadata_csv_error'
-    post 'save_metadata', to: 'collection#save_metadata'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
+
+    scope 'metadata', as: 'metadata' do
+      get ':id/example', to: 'metadata#example', as: :example
+      get ':id/upload', to: 'metadata#upload', as: :upload
+      get 'csv_error', to:'metadata#csv_error'
+      post 'create', to: 'metadata#create'
+    end
   end
 
   scope 'work', as: 'work' do

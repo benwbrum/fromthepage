@@ -182,7 +182,7 @@
         span Disable OCR
 
     h3 Metadata
-    =link_to(collection_upload_metadata_path(:collection_id => @collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+    =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
       span Upload Metadata
 
     h3 Blank Collection
