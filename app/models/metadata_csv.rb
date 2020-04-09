@@ -24,8 +24,7 @@ class MetadataCsv
 
       begin
         work = Work.find(rs[:work_id].to_i)
-        work.original_metadata = @new_metadata.to_json
-        work.save
+        work.update(original_metadata: @new_metadata.to_json)
 
         unless @collection.works.include?(work)
           @rowset_errors << { error: "No work with ID #{rs[:work_id]} is in collection #{@collection.title}",
