@@ -3,14 +3,14 @@ class MetadataController < ApplicationController
 
   def example
     collection = Collection.find(params[:id])
-    example = MetadataCsv.example(collection)
+    example = Metadata.create_example(collection)
     send_data example, filename: "example.csv"
   end
 
   def create
     metadata_file = params[:metadata]['file'].tempfile
     collection = Collection.find(params[:metadata][:collection_id])
-    metadata = MetadataCsv.new(metadata_file: metadata_file, collection: collection)
+    metadata = Metadata.new(metadata_file: metadata_file, collection: collection)
     rowset = metadata.process_csv
 
     flash[:alert] = "Your upload has finished processing. #{rowset[:content].count} rows were updated successfully, #{rowset[:errors].count} rows encountered errors. Download the error file here: #{helpers.link_to 'link', collection_metadata_csv_error_path}"
@@ -19,7 +19,7 @@ class MetadataController < ApplicationController
   end
 
   def csv_error
-    csv_string = MetadataCsv.process_error
+    csv_string = Metadata.retrieve_error
     send_data csv_string, filename: "error.csv"
   end
 end

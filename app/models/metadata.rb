@@ -1,4 +1,4 @@
-class MetadataCsv
+class Metadata
   def initialize(metadata_file:, collection:)
     @rowset = []
     @rowset_errors = []
@@ -54,7 +54,7 @@ class MetadataCsv
     end
   end
 
-  def self.process_error
+  def self.retrieve_error
     rows = CSV.parse(File.open('/tmp/error.csv'))
 
     # delete the file after we are done reading it.
@@ -71,7 +71,7 @@ class MetadataCsv
     csv_string
   end
 
-  def self.example(collection)
+  def self.create_example(collection)
     csv_string = CSV.generate(headers: true) do |csv|
       csv << ['work_id', 'title', 'your metadata_field_one', 'your_metadata_field_two']
 
