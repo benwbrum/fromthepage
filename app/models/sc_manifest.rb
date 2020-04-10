@@ -96,6 +96,8 @@ class ScManifest < ActiveRecord::Base
   def flatten_element(element)
     if element.kind_of? Hash
       element = element['@value'] || element['value']       
+    elsif element.kind_of? Array
+      element = element.first
     end    
     element
   end
