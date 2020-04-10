@@ -85,7 +85,13 @@ class ScManifest < ActiveRecord::Base
 
   def cleanup_label(label)
     label = flatten_element(label)
-    new_label = label.truncate(255, separator: ' ', omission: '')
+
+    if label.is_a?(String)
+      new_label = label.truncate(255, separator: ' ', omission: '')
+    else
+      new_label = label.first.truncate(255, separator: ' ', omission: '')
+    end
+
     new_label.gsub!("&quot;", "'")
     new_label.gsub!("&amp;", "&")
     new_label.gsub!("&apos;", "'")
@@ -124,7 +130,14 @@ class ScManifest < ActiveRecord::Base
   def html_description
     description=""
     unless self.service.description.blank?
-      description += flatten_element(self.service.description) + "\n<br /><br />\n"
+
+      if self.service.description.is_a?(String)
+        desc = self.service.description
+      else
+        desc = self.service.description.first
+      end
+
+      description += flatten_element(desc) + "\n<br /><br />\n"
     end
     description += "\n<br /><br />\nMetadata:" + self.html_metadata
     
