@@ -233,7 +233,7 @@ namespace :fromthepage do
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
 
-    work.uploaded_filename = document_upload['file']
+    work.uploaded_filename = File.basename(path)
 
     if document_upload.ocr
       if Dir.glob(File.join(path, "page*.txt")).count > 0
