@@ -48,7 +48,7 @@
   aside.sidecol
     h3 Document Set Image
     =form_for  @document_set, url: document_set_path(@document_set), html: { multipart: true, class: 'image-form' } do |f|
-      =hidden_field_tag(:collection_id, @document_set.id)
+      =hidden_field_tag(:document_set_id, @document_set.id)
       label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image" title="Upload Image")
         =f.file_field :picture, accept: 'image/*'
         =image_tag(@document_set.picture_url(:thumb), alt: @document_set.title)
