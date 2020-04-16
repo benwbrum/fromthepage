@@ -1,5 +1,6 @@
 class AnnotationController < ApplicationController
     include AbstractXmlHelper
+    before_action :check_api_access
     
     def page_transcription_html
         render_xml_to_html @page.xml_text
