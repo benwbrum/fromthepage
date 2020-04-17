@@ -13,24 +13,24 @@ class Metadata
     rows.shift
 
     # process rows.
-    rows.each do |rs|
-      rs.each do |r|
+    rows.each do |row|
+      row.each do |r|
         @new_metadata << { label: r[0],  value: r[1] }
       end
 
       begin
-        work = Work.find(rs['work_id'].to_i)
+        work = Work.find(row['work_id'].to_i)
         work.update(original_metadata: @new_metadata.to_json)
 
         unless @collection.works.include?(work)
-          @rowset_errors << { error: "No work with ID #{rs['work_id']} is in collection #{@collection.title}",
-                              work_id: rs['work_id'],
-                              title: rs['title'] }
+          @rowset_errors << { error: "No work with ID #{row['work_id']} is in collection #{@collection.title}",
+                              work_id: row['work_id'],
+                              title: row['title'] }
         end
       rescue ActiveRecord::RecordNotFound
-        @rowset_errors << { error: "No work exists with ID #{rs['work_id']}",
-                            work_id: rs['work_id'],
-                            title: rs['title'] }
+        @rowset_errors << { error: "No work exists with ID #{row['work_id']}",
+                            work_id: row['work_id'],
+                            title: row['title'] }
 
         # write the error.csv to the filesystem.
         output_file(@rowset_errors)
