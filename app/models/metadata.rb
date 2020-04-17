@@ -1,6 +1,5 @@
 class Metadata
   def initialize(metadata_file:, collection:)
-    @rowset = []
     @rowset_errors = []
     @new_metadata = []
     @metadata_file = metadata_file
@@ -8,40 +7,37 @@ class Metadata
   end
 
   def process_csv
-    rows = CSV.open(@metadata_file)
+    csv = CSV.open(@metadata_file)
+    headers = csv.shift
+    rows = CSV.parse(@metadata_file).map { |a| Hash[ headers.zip(a) ] }
     rows.shift
 
-    # push all rows to a rowset first.
-    rows.each do |row|
-      @rowset << { work_id: row[0], title: row[1] }
-    end
-
-    # process the rowset.
-    @rowset.each do |rs|
+    # process rows.
+    rows.each do |rs|
       rs.each do |r|
         @new_metadata << { label: r[0],  value: r[1] }
       end
 
       begin
-        work = Work.find(rs[:work_id].to_i)
+        work = Work.find(rs['work_id'].to_i)
         work.update(original_metadata: @new_metadata.to_json)
 
         unless @collection.works.include?(work)
-          @rowset_errors << { error: "No work with ID #{rs[:work_id]} is in collection #{@collection.title}",
-                              work_id: rs[:work_id],
-                              title: rs[:title] }
+          @rowset_errors << { error: "No work with ID #{rs['work_id']} is in collection #{@collection.title}",
+                              work_id: rs['work_id'],
+                              title: rs['title'] }
         end
       rescue ActiveRecord::RecordNotFound
-        @rowset_errors << { error: "No work exists with ID #{rs[:work_id]}",
-                            work_id: rs[:work_id],
-                            title: rs[:title] }
+        @rowset_errors << { error: "No work exists with ID #{rs['work_id']}",
+                            work_id: rs['work_id'],
+                            title: rs['title'] }
 
         # write the error.csv to the filesystem.
         output_file(@rowset_errors)
       end
     end
 
-    result = { content: @rowset, errors: @rowset_errors }
+    result = { content: rows, errors: @rowset_errors }
     result
   end
 
