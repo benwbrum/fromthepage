@@ -46,6 +46,19 @@ Fromthepage::Application.routes.draw do
   get   '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
   get   '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
 
+  get '/iiif/:work_id/export/plaintext/searchable', as: 'iiif_work_export_plaintext_searchable', to: 'iiif#export_work_plaintext_searchable'
+  get '/iiif/:work_id/export/plaintext/verbatim', as: 'iiif_work_export_plaintext_verbatim', to: 'iiif#export_work_plaintext_verbatim'
+  get '/iiif/:work_id/export/plaintext/emended', as: 'iiif_work_export_plaintext_emended', to: 'iiif#export_work_plaintext_emended'
+  get '/iiif/:work_id/export/plaintext/translation/verbatim', as: 'iiif_work_export_plaintext_translation_verbatim', to: 'iiif#export_work_plaintext_translation_verbatim'
+  get '/iiif/:work_id/export/plaintext/translation/emended', as: 'iiif_work_export_plaintext_translation_emended', to: 'iiif#export_work_plaintext_translation_emended'
+  get '/iiif/:work_id/export/:page_id/plaintext/searchable', as: 'iiif_page_export_plaintext_searchable', to: 'iiif#export_page_plaintext_searchable'
+  get '/iiif/:work_id/export/:page_id/plaintext/verbatim', as: 'iiif_page_export_plaintext_verbatim', to: 'iiif#export_page_plaintext_verbatim'
+  get '/iiif/:work_id/export/:page_id/plaintext/translation/verbatim', as: 'iiif_page_export_plaintext_translation_verbatim', to: 'iiif#export_page_plaintext_translation_verbatim'
+  get '/iiif/:work_id/export/:page_id/plaintext/emended', as: 'iiif_page_export_plaintext_emended', to: 'iiif#export_page_plaintext_emended'
+  get '/iiif/:work_id/export/:page_id/plaintext/translation/emended', as: 'iiif_page_export_plaintext_translation_emended', to: 'iiif#export_page_plaintext_translation_emended'
+
+
+
   get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
   get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 

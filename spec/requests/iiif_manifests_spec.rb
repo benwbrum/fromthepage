@@ -13,4 +13,5 @@ describe "IIIF Manifests API", :type => :request do
     json = JSON.parse(response.body)
     expect(json['within']['@id']).to eql("http://www.example.com/iiif/collection/1")
   end
+
 end
