@@ -7,6 +7,12 @@ module ExportService
     out.write file.read
   end
 
+  def export_tei(dirname:, out:)
+    path = File.join dirname, 'tei', "tei.xml"
+    out.put_next_entry path
+    out.write work_to_tei(@work)
+  end
+
   def export_plaintext_transcript(name:, dirname:, out:)
     path = File.join dirname, 'plaintext', "#{name}_transcript.txt"
 

@@ -42,40 +42,9 @@ class ExportController < ApplicationController
   end
 
   def tei
-    params[:format] = 'xml'# if params[:format].blank?
-
-    @context = ExportContext.new
-
-    @user_contributions =
-      User.find_by_sql("SELECT  user_id user_id,
-                                users.real_name real_name,
-                                count(*) edit_count,
-                                min(page_versions.created_on) first_edit,
-                                max(page_versions.created_on) last_edit
-                        FROM    page_versions
-                        INNER JOIN pages
-                            ON page_versions.page_id = pages.id
-                        INNER JOIN users
-                            ON page_versions.user_id = users.id
-                        WHERE pages.work_id = #{@work.id}
-                          AND page_versions.transcription IS NOT NULL
-                        GROUP BY user_id
-                        ORDER BY count(*) DESC")
-
-    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
-
-    @all_articles = @work.articles
-
-    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
-    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
-    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
-                      .where.not(categories: {title: 'Places'})
-
-    ### Catch the rendered Work for post-processing
-    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
-
+    tei_xml = work_to_tei(@work)
     # Render the post-processed
-    render :plain => post_process_xml(xml, @work), :content_type => "application/xml"
+    render :plain => tei_xml, :content_type => "application/xml"
   end
 
   def subject_csv
@@ -149,6 +118,8 @@ class ExportController < ApplicationController
             @work = work
             dirname = work.slug.truncate(200, omission: "")
             add_readme_to_zip(dirname: dirname, out: out)
+
+            export_tei(dirname: dirname, out:out)
 
             %w(verbatim expanded searchable).each do |format|
               export_plaintext_transcript(name: format, dirname: dirname, out: out)
@@ -449,5 +420,7 @@ private
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
     end
   end
+
+
 
 end
