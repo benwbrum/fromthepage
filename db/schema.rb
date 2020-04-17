@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200327020015) do
+ActiveRecord::Schema.define(version: 20200415171299) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -127,10 +127,10 @@ ActiveRecord::Schema.define(version: 20200327020015) do
 
   create_table "contributions", force: :cascade do |t|
     t.string   "type",                  limit: 255
-    t.string   "text",                  limit: 255
+    t.text     "text",                  limit: 65535
     t.integer  "mark_id",               limit: 4
     t.integer  "user_id",               limit: 4
-    t.integer  "cached_weighted_score", limit: 4,   default: 0
+    t.integer  "cached_weighted_score", limit: 4,     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "schema_type",           limit: 255
