@@ -3,6 +3,8 @@
 =render({ partial: 'statistics/statistics',
           locals:   { subjects_disabled: @subjects_disabled }})
 
+=render({ partial: 'statistics/collaborators_by_collection'})
+
 =render({ partial: 'statistics/collaborators',
   :locals =>  { :transcribers   => @statistics_object.transcribers_with_count,
                 :indexers       => @statistics_object.indexers_with_count, 
