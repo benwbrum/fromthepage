@@ -16,7 +16,7 @@ namespace :fromthepage do
     (1..days).each do |n|
       date = n.days.ago
 
-      print "\n---Ahoy Rollup #{date.strftime("%Y-%m-%d")}\n"
+      print "\n-- Ahoy Rollup #{date.strftime("%Y-%m-%d")} --\n"
 
       # Perform the rollup for the day
       rollup_transcribe_for_date(date)
@@ -34,7 +34,11 @@ namespace :fromthepage do
       # We make seperate queries for each user on each day to reduce
       # peak memory consumption, since this is a background job
       active_users.each do |user|
-        u = User.find_by(id: user) # just formore useful logging
+        
+        # Just for more useful logging
+        u = User.find_by(id: user) 
+        puts "\t#{u&.login || '[Deleted User]'}"
+
         # We Define transcribe events as any even on the transcribe controller
         # This could be expanded or resctricted
         events = Ahoy::Event
@@ -63,9 +67,9 @@ namespace :fromthepage do
                       minutes: minutes
                     })
                   rescue ActiveRecord::RecordNotUnique => e
-                    print e
+                    puts e
                   else
-                    print "#{u&.login || '[Deleted User]'} | Collection: #{activity.collection_id} | #{activity.minutes} minutes"
+                    puts "\t\t- Collection: #{activity.collection_id} \t#{activity.minutes} minutes\n"
                   end
                 end
             end
