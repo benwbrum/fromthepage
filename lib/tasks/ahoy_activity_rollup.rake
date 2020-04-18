@@ -1,14 +1,24 @@
 namespace :fromthepage do
-  desc "Rollup Ahoy Events into Transcribe minutes by Date, User, and Collection"
+  desc "Daily Task to Rollup Ahoy Events into Transcribe minutes by Date, User, and Collection"
   task ahoy_activity_rollup: :environment do
     rollup_transcribe_for_date()
   end
 
+  desc "An ad-hoc task to populate the ahoy rollup for historical data"
   task ahoy_rollup_crawl: :environment do
-    (1..100).each do |n|
+
+    ## Figure out how long we need to count back
+    first_ahoy_event = Date.new(2017, 10, 22).beginning_of_day
+    days = ( (Time.now.beginning_of_day - first_ahoy_event) / 60 / 60 / 24).to_i
+    
+    
+    # Count back from yesterday into the past
+    (1..days).each do |n|
       date = n.days.ago
 
       print "\n---Ahoy Rollup #{date.strftime("%Y-%m-%d")}\n"
+
+      # Perform the rollup for the day
       rollup_transcribe_for_date(date)
     end
   end
@@ -24,7 +34,7 @@ namespace :fromthepage do
       # We make seperate queries for each user on each day to reduce
       # peak memory consumption, since this is a background job
       active_users.each do |user|
-        
+        u = User.find_by(id: user) # just formore useful logging
         # We Define transcribe events as any even on the transcribe controller
         # This could be expanded or resctricted
         events = Ahoy::Event
@@ -43,7 +53,7 @@ namespace :fromthepage do
                 
                 minutes = UserCollectionTime.total_contiguous_seconds(timestamps) / 60
                 
-                if minutes > 0
+                unless minutes <= 0
                   begin 
                     activity = AhoyActivitySummary.create({
                       date: day.beginning_of_day,
@@ -53,12 +63,11 @@ namespace :fromthepage do
                       minutes: minutes
                     })
                   rescue ActiveRecord::RecordNotUnique => e
-                    puts e
+                    print e
                   else
-                    puts activity.to_s
+                    print "#{u&.login || '[Deleted User]'} | Collection: #{activity.collection_id} | #{activity.minutes} minutes"
                   end
                 end
-                
             end
           end
       end
