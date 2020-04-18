@@ -82,8 +82,28 @@ class DashboardController < ApplicationController
 
   # Owner Summary Statistics - statistics for all owned collections
   def summary
-    @statistics_object = current_user
+    
+    start_date = params[:start_date]
+    end_date = params[:end_date]
+    
+    if start_date == nil
+      start_date = 1.week.ago
+      end_date = DateTime.now.utc
+    end
+
+    start_date = start_date.to_datetime.beginning_of_day
+    end_date = end_date.to_datetime.end_of_day
+
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
+
+    # Stats
+    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    contributor_ids_for_dates = AhoyActivitySummary
+        .where(collection_id: owner_collections)
+        .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+
+    @contributors = User.where(id: contributor_ids_for_dates)               
+
   end
 
   # Collaborator Dashboard - watchlist
