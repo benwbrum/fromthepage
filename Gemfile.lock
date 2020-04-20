@@ -206,6 +206,7 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     netrc (0.11.0)
+    newrelic_rpm (6.10.0.364)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
@@ -439,6 +440,7 @@ DEPENDENCIES
   memory_profiler
   meta_request
   mysql2 (= 0.3.21)
+  newrelic_rpm
   nokogiri
   oai!
   oink
