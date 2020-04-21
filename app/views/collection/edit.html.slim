@@ -132,6 +132,18 @@
           -if user != @main_owner
             =link_to 'Remove', collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
 
+      h3 API Access
+      p.fglight Allow access to transcriptions via IIIF API
+      -if @collection.api_access
+        =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
+          =svg_symbol '#icon-lock', class: 'icon'
+          span Close API
+      -else
+        =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
+          =svg_symbol '#icon-unlock', class: 'icon'
+          span Open API
+
+
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag(collection_add_owner_path, class: 'user-select-form') do

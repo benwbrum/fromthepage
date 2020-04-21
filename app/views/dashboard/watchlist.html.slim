@@ -19,13 +19,25 @@ h1 =t('dashboard.collaborator')
                 p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
     -else
       -unless @page.nil?
-        ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
-        =link_to @page.work.title, transcribe_display_page_path(:page_id => @page.id)
-        ="."
+        -if current_user.collection_collaborations.empty?
+          ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
+          =link_to @page.work.title, {:controller => 'transcribe', :action => 'display_page', :page_id => @page.id}
+          ="."
       -else
         ="You haven't participated in any projects yet.  Try transcribing a page from one of these "
         =link_to "collections", dashboard_path
         ="."
+
+    -unless current_user.collection_collaborations.empty?
+      h3 Private Collections You Belong to
+      -current_user.collection_collaborations.each do |collection|
+        -owner_link = link_to collection.owner.display_name, user_profile_path(collection.owner) unless collection.owner.nil?
+        .collections
+          .collection
+            .collection_details
+              h4.collection_title =link_to collection.title, collection_path(collection.owner, collection) unless collection.owner.nil?
+            .collection_summary
+              span =="Owned by #{owner_link}"
 
     h3 Everyone's Activity
     =deeds_for({ :not_user_id => current_user.id, :limit => 15 })

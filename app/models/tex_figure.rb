@@ -138,15 +138,8 @@ EOF
       \\documentclass{article}
       \\usepackage{amsmath}
       \\usepackage{amsfonts}
-      \\IfFileExists{epeirce.sty}{
-        \\usepackage{egpeirce}
-      }
-      \\IfFileExists{xymtex.sty}{
-        \\usepackage{xymtex}
-      }
-      \\IfFileExists{chemfig.sty}{
-        \\usepackage{chemfig}
-      }
+      \\usepackage{xymtex}
+      \\usepackage{chemfig}
       \\begin{document}
       \\thispagestyle{empty}
       #{self.source}
