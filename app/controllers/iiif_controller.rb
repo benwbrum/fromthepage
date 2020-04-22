@@ -701,13 +701,13 @@ private
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1", 
-        "@id" => iiif_page_export_plaintext__translation_verbatim_path(page.work_id, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_translation_verbatim_path(page.work_id, page.id, :only_path => false)
       }
       canvas.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1", 
-        "@id" => iiif_page_export_plaintext__translation_translation_path(page.work_id, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_translation_emended_path(page.work_id, page.id, :only_path => false)
       }
     end
   end
