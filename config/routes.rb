@@ -50,6 +50,7 @@ Fromthepage::Application.routes.draw do
     get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
     get 'toggle_collection_active', to: 'collection#toggle_collection_active'
+    get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
     get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
