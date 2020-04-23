@@ -1,6 +1,6 @@
 .litebox-embed(style="width:550px")
   h1 Upload Metadata
-  p To update metadata for several works within this collection, upload a spreadsheet with one row per work. See #{link_to "link", collection_metadata_example_path(params[:id])} for an example. (Note that multi-line/description fields cannot be updated.
+  p To update metadata for several works within this collection, upload a spreadsheet with one row per work. See #{link_to "link", collection_metadata_example_path(params[:id])} for an example. (Note that multi-line/description fields cannot be updated.)
 
   =form_for(:metadata, url: collection_metadata_create_path) do |f|
     table.form
