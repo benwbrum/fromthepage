@@ -1,5 +1,5 @@
 class MetadataController < ApplicationController
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => :upload
+  layout false
 
   def example
     collection = Collection.find(params[:id])
