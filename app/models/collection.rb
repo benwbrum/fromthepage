@@ -72,10 +72,10 @@ class Collection < ActiveRecord::Base
     page_fields.uniq
   end
 
-  def export_subjects_as_csv(base_url:)
+  def export_subjects_as_csv
     subject_link = SubjectExporter::Exporter.new(self)
 
-    subject_link.export(base_url)
+    subject_link.export
   end
 
   def show_to?(user)

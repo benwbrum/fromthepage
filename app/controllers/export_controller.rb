@@ -63,7 +63,7 @@ class ExportController < ApplicationController
   end
 
   def subject_csv
-    send_data(@collection.export_subjects_as_csv(base_url: request.base_url),
+    send_data(@collection.export_subjects_as_csv,
               :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'

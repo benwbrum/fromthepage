@@ -7,7 +7,7 @@ module SubjectExporter
       @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI]
     end
 
-    def export(base_url)
+    def export
       csv_string = CSV.generate(force_quotes: true) do |csv|
         csv << @headers
         @works.each do |work|
@@ -18,7 +18,7 @@ module SubjectExporter
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
             sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
-            page_url = "#{base_url}/display/display_page?page_id=#{page.id}"
+            page_url = "http://#{Rails.application.routes.default_url_options[:host]}/display/display_page?page_id=#{page.id}"
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
               article = link.article
