@@ -71,7 +71,14 @@ class CollectionController < ApplicationController
         transcription_ids = @collection.works.incomplete_transcription.pluck(:id)
         #combine ids anduse to get works that aren't complete
         ids = translation_ids + transcription_ids
-        @works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+
+        works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
+
+        if works.empty?
+          @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+        else
+          @works = works
+        end
       else
         @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       end
