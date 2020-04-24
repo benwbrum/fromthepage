@@ -68,7 +68,11 @@ module ContentdmTranslator
   end
 
   def self.ocr_from_cdm_info(info)
-    transcript = info['transc']
+    # Hard-coding field names is an ugly hack, but the FTS configuration
+    # is only accessible from the SOAP API, not the REST API and we don't
+    # want to prompt for username/password/license key at this point in
+    # the work flow
+    transcript = info['transc'] || info['full']
     if transcript.kind_of? String
     transcript
     else
