@@ -131,6 +131,18 @@
           -if user != @main_owner
             =link_to 'Remove', { :action => 'remove_collaborator', :user_id => user.id, :collection_id => @collection.id }, class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
 
+      h3 API Access
+      p.fglight Allow access to transcriptions via IIIF API
+      -if @collection.api_access
+        =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
+          =svg_symbol '#icon-lock', class: 'icon'
+          span Close API
+      -else
+        =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
+          =svg_symbol '#icon-unlock', class: 'icon'
+          span Open API
+
+
     h3 Collection Owners
     p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
     =form_tag({ :action => 'add_owner' }, class: 'user-select-form') do
@@ -182,7 +194,7 @@
 
     h3 Blank Collection
     p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
-    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button')
+    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
       span Blank Collection
 
 =render({ :partial => '/shared/collection_footer' })

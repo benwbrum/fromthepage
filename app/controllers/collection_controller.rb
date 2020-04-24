@@ -89,6 +89,7 @@ class CollectionController < ApplicationController
 
   def add_owner
     @user.owner = true
+    @user.account_type = "Staff"
     @user.save!
     @collection.owners << @user
     @user.notification.owner_stats = true
@@ -149,6 +150,12 @@ class CollectionController < ApplicationController
     end
     deed.save!
 
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
+  def toggle_collection_api_access
+    @collection.api_access = !@collection.api_access
+    @collection.save!
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
@@ -222,7 +229,16 @@ class CollectionController < ApplicationController
     @collection = Collection.new
     @collection.title = params[:collection][:title]
     @collection.intro_block = params[:collection][:intro_block]
-    @collection.owner = current_user
+    if current_user.account_type != "Staff"
+      @collection.owner = current_user
+    else
+      current_user.collections.each do |c|
+        if c.owner.account_type != "Staff"
+          @collection.owner = c.owner
+          @collection.owners << current_user
+        end
+      end
+    end
     if @collection.save
       flash[:notice] = 'Collection has been created'
       if request.referrer.include?('sc_collections')
@@ -389,16 +405,18 @@ class CollectionController < ApplicationController
           d.article.title, 
           collection_article_show_url(d.collection.owner, d.collection, d.article)
         ]
-      else
-        pagedeeds = [
-          d.page.title,
-          collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
-          d.work.title,
-          collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
-          note,
-        ] 
-        record += pagedeeds
-        record += ['','']
+      else 
+        unless d.deed_type == DeedType::COLLECTION_JOINED
+          pagedeeds = [
+            d.page.title,
+            collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
+            d.work.title,
+            collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+            note,
+          ] 
+          record += pagedeeds
+          record += ['','']
+        end
       end
       record
     }
