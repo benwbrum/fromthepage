@@ -2,6 +2,8 @@ require 'nokogiri'
 
 module SubjectExporter
   class Exporter
+    include Rails.application.routes.url_helpers
+
     def initialize(collection)
       @works = collection.works
       @headers = %w[Work_Title Identifier Section Section_Subjects Page_Title Page_Position Page_URL Subject Text Text_Type External_URI Category Subject_URI]
@@ -18,7 +20,7 @@ module SubjectExporter
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
             sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
-            page_url = "http://#{Rails.application.routes.default_url_options[:host]}/display/display_page?page_id=#{page.id}"
+            page_url = url_for(display_display_page_path(page_id: page.id, only_path: false))
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
               article = link.article
