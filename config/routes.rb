@@ -192,6 +192,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'page_block', as: 'page_block' do
     patch 'update', :to => 'page_block#update'
+    get 'edit', to: 'page_block#edit'
   end
 
   scope 'rails', as: 'rails' do
