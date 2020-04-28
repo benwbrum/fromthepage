@@ -93,7 +93,10 @@ class ScManifest < ApplicationRecord
   end
 
   def flatten_element(element)
-    if element.kind_of? Hash
+    if element.is_a? Array
+      element = element.first
+    end
+    if element.is_a? Hash
       element = element['@value'] || element['value']
     end
     element
