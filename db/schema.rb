@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20200418194708) do
     t.datetime "updated_at"
   end
 
-  add_index "ahoy_activity_summaries", ["activity", "date", "collection_id", "user_id"], name: "ahoy_activity_day_user_collection", unique: true, using: :btree
+  add_index "ahoy_activity_summaries", ["date", "collection_id", "user_id", "activity"], name: "ahoy_activity_day_user_collection", unique: true, using: :btree
 
   create_table "ahoy_events", force: true do |t|
     t.integer  "visit_id"
