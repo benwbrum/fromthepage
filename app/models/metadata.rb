@@ -49,7 +49,7 @@ class Metadata
           @rowset_errors << { error: "No work exists with filename #{row['filename']}" }
           output_file(@rowset_errors)
         else
-          row.each do |k,v|
+          row.each do |k, v|
             encval = v.force_encoding('ISO-8859-1') unless v.nil?
             @new_metadata << { label: k, value: encval }
           end
