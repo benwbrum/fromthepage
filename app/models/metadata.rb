@@ -2,6 +2,7 @@ class Metadata
   def initialize(metadata_file:, collection:)
     @rowset_errors = []
     @new_metadata = []
+    @canonical_metadata = []
     @metadata_file = metadata_file
     @collection = collection
   end
@@ -28,6 +29,26 @@ class Metadata
         begin
           work = Work.find(row['work_id'].to_i)
           work.update(original_metadata: @new_metadata.to_json)
+
+          if @canonical_metadata.empty?
+            @new_metadata.each do |m|
+              @canonical_metadata << { m[:label] => 1 }
+            end
+          else
+            canonical_metadata = JSON.parse(work.collection.canonical_metadata)
+
+            unless canonical_metadata.empty?
+              canonical_metadata.each do |c|
+                c.each do |k, v|
+                  c[k] = v + 1
+                end
+              end
+            end
+
+            @canonical_metadata = canonical_metadata
+          end
+
+          work.collection.update(canonical_metadata: @canonical_metadata.to_json)
 
           unless @collection.works.include?(work)
             @rowset_errors << { error: "No work with ID #{row['work_id']} is in collection #{@collection.title}",
