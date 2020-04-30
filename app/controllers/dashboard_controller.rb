@@ -94,6 +94,7 @@ class DashboardController < ApplicationController
     start_date = start_date.to_datetime.beginning_of_day
     end_date = end_date.to_datetime.end_of_day
 
+    @statistics_object = current_user
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
 
     # Stats
