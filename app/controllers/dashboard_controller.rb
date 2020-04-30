@@ -83,16 +83,15 @@ class DashboardController < ApplicationController
   # Owner Summary Statistics - statistics for all owned collections
   def summary
     
-    start_date = params[:start_date]
-    end_date = params[:end_date]
-    
-    if start_date == nil
-      start_date = 1.week.ago
-      end_date = DateTime.now.utc
-    end
+    start_d = params[:start_date]
+    end_d = params[:end_date]
 
-    start_date = start_date.to_datetime.beginning_of_day
-    end_date = end_date.to_datetime.end_of_day
+    max_date = 1.day.ago
+
+    # Give a week fo data if there are no dates
+    @start_date = start_d&.to_datetime&.beginning_of_day || 1.week.ago.beginning_of_day
+    @end_date = end_d&.to_datetime&.end_of_day || max_date
+    @end_date = max_date if max_date < @end_date
 
     @statistics_object = current_user
     @subjects_disabled = @statistics_object.collections.all?(&:subjects_disabled)
@@ -101,10 +100,20 @@ class DashboardController < ApplicationController
     owner_collections = current_user.all_owner_collections.map{ |c| c.id }
     contributor_ids_for_dates = AhoyActivitySummary
         .where(collection_id: owner_collections)
-        .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+        .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
 
-    @contributors = User.where(id: contributor_ids_for_dates)               
-
+    @contributors = User.where(id: contributor_ids_for_dates)
+    
+    @activity = {}
+    
+    @contributors.each do |user|
+      @activity[user.id] = AhoyActivitySummary
+        .where(user_id: user.id)
+        .where(collection_id: owner_collections)
+        .where('date BETWEEN ? AND ?', @start_date, @end_date)
+        .group(:date)
+        .sum(:minutes)
+    end
   end
 
   # Collaborator Dashboard - watchlist
