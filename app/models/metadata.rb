@@ -29,26 +29,7 @@ class Metadata
         begin
           work = Work.find(row['work_id'].to_i)
           work.update(original_metadata: @new_metadata.to_json)
-
-          if @canonical_metadata.empty?
-            @new_metadata.each do |m|
-              @canonical_metadata << { m[:label] => 1 }
-            end
-          else
-            canonical_metadata = JSON.parse(work.collection.canonical_metadata)
-
-            unless canonical_metadata.empty?
-              canonical_metadata.each do |c|
-                c.each do |k, v|
-                  c[k] = v + 1
-                end
-              end
-            end
-
-            @canonical_metadata = canonical_metadata
-          end
-
-          work.collection.update(canonical_metadata: @canonical_metadata.to_json)
+          save_canonical_metadata(work)
 
           unless @collection.works.include?(work)
             @rowset_errors << { error: "No work with ID #{row['work_id']} is in collection #{@collection.title}",
@@ -76,12 +57,37 @@ class Metadata
           end
 
           work.update(original_metadata: @new_metadata.to_json)
+          save_canonical_metadata(work)
         end
       end
     end
 
     result = { content: rows, errors: @rowset_errors }
     result
+  end
+
+  def save_canonical_metadata(work)
+    canonical_metadata = work.collection.canonical_metadata
+
+    if canonical_metadata.empty?
+      @new_metadata.each do |m|
+        @canonical_metadata << { m[:label] => 1 }
+      end
+    else
+      json_metadata = JSON.parse(work.collection.canonical_metadata)
+
+      unless json_metadata.empty?
+        json_metadata.each do |c|
+          c.each do |k, v|
+            c[k] = v + 1
+          end
+        end
+      end
+
+      @canonical_metadata = json_metadata
+    end
+
+    work.collection.update(canonical_metadata: @canonical_metadata.to_json)
   end
 
   def output_file(rowset_errors)
