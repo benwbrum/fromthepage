@@ -4,10 +4,6 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  def new_trial
-    new
-  end
-
   def destroy
     resource.soft_delete
     Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)

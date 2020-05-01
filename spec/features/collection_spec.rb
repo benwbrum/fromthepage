@@ -28,9 +28,11 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     #check to see if Collaborators are visible
     expect(page).not_to have_content("Collection Collaborators")
+    expect(page).not_to have_content("API Access")
     page.click_link('Make Collection Private')
     #check to see if Collaborators are visible
     expect(page).to have_content("Collection Collaborators")
+    expect(page).to have_content("API Access")
   end
 
   it "checks that a restricted user can't view the collection" do

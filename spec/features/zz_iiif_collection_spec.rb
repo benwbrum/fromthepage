@@ -54,7 +54,6 @@ describe "uploads data for collections", :order => :defined do
     expect(page).to have_content(works.first.title)
     page.click_link("Incomplete Works")
     expect(page).to have_content("All works are fully transcribed")
-    expect(page).not_to have_content(works.last.title)
   end
 
   it "cleans up the logfile" do

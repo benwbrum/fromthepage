@@ -3,7 +3,7 @@
 // ---------------------------
 
 .signon {
-  max-width: 600px;
+  max-width: 500px;
   margin: $gapSize auto;
   &_field {
     margin: 0.8em 0;
@@ -58,38 +58,5 @@
     padding: 0;
     list-style: none;
     li { margin: 0.1em 0; }
-  }
-
-  button.signin {
-    width: 144px;
-  }
-
-  a.forgot {
-    margin-top: 32px;
-    display: inline-block;
-  }
-
-  .signup-links {
-    width: 50%;
-    float: left;
-    box-sizing: border-box;
-    padding: $gapSize;
-
-    p {
-      min-height: 80px;
-    }
-  }
-
-  #sign_up {
-    padding-left: 0;
-  }
-
-  #free_trial {
-    padding-right: 0;
-  }
-
-  hr.clearfix {
-    visibility: hidden;
-    margin-bottom: 100px;
   }
 }
