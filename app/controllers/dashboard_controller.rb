@@ -102,18 +102,14 @@ class DashboardController < ApplicationController
         .where(collection_id: owner_collections)
         .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
 
-    @contributors = User.where(id: contributor_ids_for_dates)
+    @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
     
-    @activity = {}
-    
-    @contributors.each do |user|
-      @activity[user.id] = AhoyActivitySummary
-        .where(user_id: user.id)
+    @activity = AhoyActivitySummary
         .where(collection_id: owner_collections)
         .where('date BETWEEN ? AND ?', @start_date, @end_date)
-        .group(:date)
+        .group(:user_id)
         .sum(:minutes)
-    end
+
   end
 
   # Collaborator Dashboard - watchlist
@@ -169,5 +165,59 @@ class DashboardController < ApplicationController
     end
   end
 
+  def collaborator_time_export
+      start_date = params[:start_date]
+      end_date = params[:end_date]
+  
+      start_date = start_date.to_datetime.beginning_of_day
+      end_date = end_date.to_datetime.end_of_day
+  
+      dates = (start_date.to_date..end_date.to_date)
 
+      headers = [
+        "Username",
+        "Email",
+      ]
+      
+      headers += dates.map{|d| d.strftime("%b %d, %Y")}
+
+      # Get Row Data (Users)
+      owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+
+      
+      contributor_ids_for_dates = AhoyActivitySummary
+          .where(collection_id: owner_collections)
+          .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+
+      contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+
+      csv = CSV.generate(:headers => true) do |records|
+        records << headers
+        contributors.each do |user|
+          row = [user.display_name, user.email]
+
+          activity = AhoyActivitySummary
+            .where(user_id: user.id)
+            .where(collection_id: owner_collections)
+            .where('date BETWEEN ? AND ?', start_date, end_date)
+            .group(:date)
+            .sum(:minutes)
+
+          user_activity = dates.map{ |d| activity[d.to_time] || 0 }
+            
+          row += user_activity
+
+          records << row
+        end
+      end
+  
+      
+
+      send_data( csv, 
+        :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+        :type => "application/csv")
+  
+      cookies['download_finished'] = 'true'
+  
+    end
 end
