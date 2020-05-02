@@ -33,7 +33,7 @@ gem 'render_anywhere'
 
 gem 'ahoy_matey'
 gem 'pry'
-
+gem 'oink'
 
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
@@ -42,6 +42,7 @@ gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
 
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
+
 
 group :assets do
   gem 'therubyracer'
@@ -75,7 +76,7 @@ end
 gem 'sassc-rails'
 
 # Use Autoprefixer for vendor prefixes
-gem 'autoprefixer-rails', '~>8'
+gem 'autoprefixer-rails', '<= 8.6.5'
 
 # Use Slim for templates
 gem 'slim', '~> 3.0.0'

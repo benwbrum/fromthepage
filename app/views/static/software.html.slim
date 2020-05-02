@@ -1,0 +1,129 @@
+-content_for :page_title, "Software"
+-content_for :meta_description, "FromThePage is open-source software for collaborating on texts. The tool supports projects from simple, plain-text transcription through bilingual digital editions."
+
+#software
+  h2 Collaborative transcription made easy.
+
+  section#transcription
+    .content
+      h3 Transcription
+      p Add and edit transcriptions while viewing scanned images of a document. Collaborate with others to transcribe a document.
+
+    =image_tag 'static/software/transcription.png'
+
+  section#annotation
+    .content
+      h3 Indexing & Annotation
+      p Index a document by tagging people, places, and other subjects of interest. Search by subject and add articles to tagged subjects to create annotations for collaborators.
+
+    =image_tag 'static/software/indexing-annotation.png'
+
+  section#dashboard
+    .content
+      h3 Dashboard
+      p See all the activity within a project at a glance with customized project owner and collaborator views.
+
+    =image_tag 'static/software/dashboard.png'
+
+  #features
+    section#version_control
+      h3 Version Control
+      p FromThePage displays the edit history of a document’s transcription and logs collaborator activity.
+
+    section#markup
+      h3 Automatic Markup
+      p FromThePage suggests subject tags based on previously transcribed documents.
+
+    section#ocr_correction
+      h3 OCR Correction
+      p FromThePage imports raw optical character recognition (OCR) text and provides a workflow optimized for OCR correction projects.
+
+    section#translation
+      h3 Language Support & Translation
+      p FromThePage supports transcription in any language, including right-to-left scripts, and enables collaborative translation with parallel text comparison.
+
+  section#pricing
+    h2 FromThePage Pricing
+
+    .pricing
+      .pricing_grid
+        .pricing_grid_row
+          .pricing_grid_cell
+            h4.pricing_title Researcher
+            ul.pricing_features
+              li.pricing_feature Collaborative transcription, translation, OCR correction and subject indexing
+              li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+              li.pricing_feature 1 project
+              li.pricing_feature Unlimited documents
+              li.pricing_feature Up to 10,000 pages
+              li.pricing_feature E-mail support
+          .pricing_grid_cell
+            h4.pricing_title Small Organization
+            ul.pricing_features
+              li.pricing_feature Collaborative transcription, translation, OCR correction and subject indexing
+              li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+              li.pricing_feature Unlimited projects
+              li.pricing_feature Unlimited documents
+              li.pricing_feature Up to 50,000 pages
+              li.pricing_feature E-mail and chat support
+              li.pricing_feature Phone consultation on new projects
+          .pricing_grid_cell
+            h4.pricing_title Large Institution
+            ul.pricing_features
+              li.pricing_feature Collaborative transcription, translation, subject indexing, and OCR correction
+              li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+              li.pricing_feature Unlimited projects
+              li.pricing_feature Unlimited documents
+              li.pricing_feature Over 50,000 pages
+              li.pricing_feature E-mail and chat support
+              li.pricing_feature Phone consultation on new projects and strategic consultation
+              li.pricing_feature
+                strong PLUS
+              li.pricing_feature Custom integration
+              li.pricing_feature Custom feature development
+              li.pricing_feature Custom import/export formats
+        .pricing_grid_row
+          .pricing_grid_cell
+            .pricing_price
+              span.pricing_price_value $80
+              .pricing_price_billing per month, billed monthly
+          .pricing_grid_cell
+            .pricing_price
+              span.pricing_price_value $250
+              .pricing_price_billing per month, billed annually
+          .pricing_grid_cell
+            .pricing_price
+              span.pricing_price_request Contact Us
+              .pricing_price_billing=="Pricing based on institution-specific requirements. Please #{ link_to 'contact us', contact_path } for a custom quote."
+
+        .pricing_grid_row
+          .pricing_grid_cell
+            =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+          .pricing_grid_cell
+            =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+          .pricing_grid_cell
+            =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+
+    h3=="Ready to get started? #{link_to 'Contact us.', contact_path}"
+
+  #integrations
+    h2 Integrations
+
+    section
+      h3 International Image Interoperability Framework (IIIF)
+      p FromThePage enables you to import documents to transcribe from any system that supports IIIF and share your transcribed documents with IIIF systems.
+
+    section
+      h3 OCLC's CONTENTdm
+      p FromThePage supports single-click import and export with OCLC's CONTENTdm including metadata and OCR text.
+
+    section
+      h3 Internet Archive & Omeka
+      p FromThePage integrates with Omeka and Internet Archive directly, so no upload is necessary if your documents are hosted on those platforms.
+
+    hr
+
+javascript:  mixpanel.track("Contact Us");
+
+
+
