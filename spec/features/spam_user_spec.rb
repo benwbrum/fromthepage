@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe "Spam user safeguards" do
 
+  
+  
+  
   it "allows users to modify their profile" do
     user = create('martha1')
     click_link "Your Profile"
@@ -21,11 +24,11 @@ describe "Spam user safeguards" do
     expect(page).not_to have_content("About you")
   end
 
-  it "presents fields to owners" do
+  it "presents fields to owners" do    
     user = create('martha3')
     user.owner = true
     user.save!
-
+    
     click_link "Your Profile"
     # look for website
     click_link "Edit Profile"
@@ -44,8 +47,7 @@ describe "Spam user safeguards" do
 
   def create(login)
     visit "/"
-    first(:link, 'Sign In').click
-    click_link("Sign Up Now")
+    click_link("Sign Up")
     expect(page.current_path).to eq new_user_registration_path
     fill_in 'User Name', with: login
     fill_in 'Email Address', with: "#{login}@test.com"
@@ -53,10 +55,10 @@ describe "Spam user safeguards" do
     fill_in 'Confirm Password', with: 'password'
     fill_in 'Real Name', with: 'Martha'
     click_button('Create Account')
-
+    
     user = User.where(:login => login).first
     user
-  end
+  end  
 
 
 

@@ -110,9 +110,9 @@ class DocumentSet < ActiveRecord::Base
 
   def picture_url(thumb=nil)
     if self.picture.blank?
-      self.collection.picture.url(thumb)
+      self.collection.picture.url(:thumb)
     else
-      self.picture.url(thumb)
+      self.picture.url(:thumb)
     end
   end
 
