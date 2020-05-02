@@ -2,9 +2,108 @@
 -content_for :meta_description, "FromThePage is free software that allows volunteers to transcribe handwritten documents online. Easy to index and annotate subjects within a text using a wiki-like mark-up. Users can discuss difficult writing or obscure words within a page to refine their transcription. The resulting text is hosted on the web, making documents easy to read and search."
 -content_for :meta_keywords, "transcribe handwritten documents online free open-source wiki historical crowdsourcing transcription"
 
+-content_for :content_above
+  section.intro
+    .wrapper: .intro_box
+      h1.intro_box_title &ldquo;Simply the finest crowdsourcing manuscript transcription software on the planet.&rdquo;
+      p.intro_box_text -Max Spiegel, Director of Philip K. Dick’s Exegesis at Penn State
+      =link_to 'Learn More', about_path, class: 'button big learn-more'
 
+section#description
+  h1 FromThePage is software for transcribing documents and collaborating on transcriptions with others.
+  h2 Use FromThePage for everything from simple, plain-text transcription projects to bilingual digital scholarly editions with annotations.
+
+section.advantages
+  ol.justified.vtop
+    li.justified_box
+      h2.advantages_title Transcribe
+      p.advantages_text Transcribe documents from anywhere – upload PDFs and pictures, or directly import documents from a digital library.
+      ul
+        li Free-from text transcription
+        li Field-based transcription
+        li OCR correction
+        li Indexing
+        li Translation
+        li Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+    li.justified_box
+      h2.advantages_title Collaborate
+      p.advantages_text Make your transcription project public or select authorized collaborators.
+      ul
+        li Version control
+        li Automatic markup
+        li In-document collaborator notes
+    li.justified_box
+      h2.advantages_title Manage
+      p.advantages_text Review the progress of your transcription project and the most recent activity in the transcriber community at a glance.
+      ul
+        li Project dashboard
+        li Transcription quality review
+        li Collaborator engagement and time tracking tools
+        li Digital library system integrations (IIIF, ContentDM - OCLC, Internet Archive and Omeka)
+
+  .start
+    h4 Start transcribing your documents.
+    =link_to 'Learn More', about_path, class: 'button big learn-more'
+
+section#quotes
+  h2 What FromThePage Users Are Saying
+  ol.justified.vtop
+    li.justified_box
+      blockquote
+        p The interface is flexible. The images are easy to manipulate, the transcription pane is very easy to use. […] It is extremely easy to deploy—I got my project up and running in about an hour.
+      cite
+        span Sue Perdue
+        small Documentary Editor
+    li.justified_box
+      blockquote
+        p I love that the site works for a public library as well as an academic and we benefit from working alongside different institutions on a digital platform…
+      cite.advantages_quote_cite
+        span Victoria Duncan
+        small Indianapolis Public Library
+    li.justified_box
+      blockquote
+        p We’re especially impressed with how FromThePage has recently extended IIIF support to include links to all relevant export formats at both the document and work level.
+      cite
+        span Stanford University Archives Team
+  .simplify
+    h4 Simplify your collaborative transcription.
+    =link_to 'Learn More', about_path, class: 'button big learn-more'
+
+section#transcription_count
+  span#count #{Page.where.not(:status=>nil).count}
+  p Pages Transcribed with FromThePage
 
 section.spotlight
-  = html_block('left')
-section.spotlight
-  = html_block('right')
+  h3 Featured Projects
+  ul.justified.vtop
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/indiana-archives.jpg', class: 'cover_image', size: '200', alt: 'Julia Brumfield'
+        figcaption.cover_caption
+          p Help the Indiana Archives commemorate the centennial of World War I by indexing our collection of service record cards. These cards detail the military service of Indiana men and women who served in the armed forces at the time of World War I.
+          =link_to 'Learn More', '/indianaarchives/indiana-wwi-service-record-cards'
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/la-county.jpg', class: 'cover_image', size: '200', alt: 'Zenas Matthews'
+        figcaption.cover_caption
+          p LA County Library's Letters of the Office of Indian Affairs document the turbulent time when new state officials worked to assume control of California's affairs, U.S. government officials arrived to document tribal groups, and private citizens poured into the state after the discovery of gold.
+
+          =link_to 'Learn More', '/lacountylibrary/letters-of-the-office-of-indian-affairs-1849-1880-california-superintendency'
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/lighthouse.jpg', class: 'cover_image', size: '200', alt: 'East Civil War Papers'
+        figcaption.cover_caption
+          p "At 6. P.M. sighted three ship’s boats coming toward the cape and landed, it proved to be the entire crew of the ship St. Charles that blew up by coal gas at 8.40 A.M. the 17th. "
+
+          p Volunteers on the Yaquina Head Lighthouse Keeper's Logs have discovered a shipwreck from 1892.  Want to find more?  Help transcribe the keeper's logs.
+
+          =link_to 'Learn More', '/yaquinalights/1871-1900-yaquina-head-lighthouse-letter-books'
+    li.justified_box>
+      figure.cover
+        =image_tag 'static/home/standford-papers.jpg', class: 'cover_image', size: '200', alt: 'Austin Fanzine Project'
+        figcaption.cover_caption
+          p The papers of Jane L. Stanford pertain largely to the founding and administration of Stanford University, along with her personal and social affairs; included in the papers are correspondence, business records, legal and financial papers, speeches, news clippings, and biographical materials.
+
+          =link_to 'Learn More', '/stanforduniversityarchives/jls'
+
+javascript: mixpanel.track("Landing Page");

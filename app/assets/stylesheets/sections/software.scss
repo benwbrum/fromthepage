@@ -1,0 +1,118 @@
+#software {
+  h2 {
+    padding-top: 57px;
+    text-align: center;
+    font-size: $fontSizeH1;
+  }
+
+  h3 { font-size: $fontSizeH4; }
+
+  p { font-size: $fontSizeBig; }
+
+  @mixin image-section {
+    clear: both;
+    padding-top: 80px;
+
+    .content {
+      box-sizing: border-box;
+    }
+  }
+
+  $boxWidth: 47%;
+
+  @mixin text-left {
+    @include image-section;
+
+    .content {
+      width: $boxWidth;
+      float: left;
+    }
+
+    img {
+      width: $boxWidth;
+      float: right;
+    }
+  }
+
+  @mixin text-right {
+    @include image-section;
+
+    .content {
+      width: $boxWidth;
+      float: right;
+    }
+
+    img {
+      width: $boxWidth;
+      float: left;
+    }
+  }
+
+  #transcription {
+    @include text-left;
+  }
+
+  #annotation {
+    @include text-right;
+  }
+
+  #dashboard {
+    @include text-left;
+  }
+
+  #features {
+    clear: both;
+    padding-top: 57px;
+  }
+
+  #features {
+    section {
+      width: 25%;
+      float: left;
+      box-sizing: border-box;
+      padding-left: $gapSize;
+
+      &:first-of-type {
+        padding-left: 0;
+      }
+    }
+  }
+
+  #pricing {
+    clear: both;
+    margin-top: $gapSize * 3;
+
+    h2 { margin-bottom: $gapSize * 2; }
+    h3 { text-align: center; }
+
+    ul.pricing_features {
+      list-style: none;
+      margin-left: 0;
+
+      li strong {
+        font-weight: bold;
+      }
+    }
+
+    .pricing_grid_cell .pricing_price .pricing_price_billing {
+      display: block;
+      font-size: $fontSize;
+      width: 100%;
+      margin: 13px 0 $gapSize 0;
+    }
+  }
+
+  #integrations {
+    section {
+      width: 33%;
+      float: left;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    hr {
+      clear: both;
+      visibility: hidden;
+    }
+  }
+}
