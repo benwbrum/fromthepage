@@ -12,7 +12,7 @@ class ScManifest < ApplicationRecord
   # EOI
 
   def self.manifest_for_at_id(at_id)
-    connection = open(at_id)
+    connection = URI.open(at_id)
     manifest_json = connection.read
     #manifest_json = TEST_MANIFEST
     service = IIIF::Service.parse(manifest_json)

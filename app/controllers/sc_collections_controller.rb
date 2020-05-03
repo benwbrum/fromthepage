@@ -232,7 +232,7 @@ class ScCollectionsController < ApplicationController
   end
 
   def find_service(at_id)
-    connection = open(at_id)
+    connection = URI.open(at_id)
     manifest_json = connection.read
     service = IIIF::Service.parse(manifest_json)
     return service

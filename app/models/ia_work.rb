@@ -22,7 +22,7 @@ class IaWork < ApplicationRecord
     # first get the call the location API and parse that document
     api_url = 'http://www.archive.org/services/find_file.php?file='+book_id
     logger.debug(api_url)
-    loc_doc = Nokogiri::HTML(open(api_url))
+    loc_doc = Nokogiri::HTML(URI.open(api_url))
     location = loc_doc.search('results').first
     server = location['server']
     dir = location['dir']
@@ -216,7 +216,7 @@ class IaWork < ApplicationRecord
   private
 
   def open_doc(url)
-    doc = Nokogiri::XML(open(url).read.force_encoding('utf-8'), nil, 'utf-8')
+    doc = Nokogiri::XML(URI.open(url).read.force_encoding('utf-8'), nil, 'utf-8')
 
     doc
   end
