@@ -50,6 +50,8 @@ gem 'puma'
 
 gem 'active_link_to'
 
+gem 'warning'
+
 group :assets do
   gem 'uglifier'
 end

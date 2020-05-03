@@ -455,6 +455,7 @@ GEM
     vcr (5.1.0)
     warden (1.2.8)
       rack (>= 2.0.6)
+    warning (1.0.0)
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
@@ -537,6 +538,7 @@ DEPENDENCIES
   uglifier
   user_agent_parser
   vcr
+  warning
   webmock
   will_paginate
 
