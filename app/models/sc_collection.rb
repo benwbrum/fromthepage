@@ -12,7 +12,7 @@ class ScCollection < ApplicationRecord
   UNIVERSE = 'https://raw.githubusercontent.com/ryanfb/iiif-universe/gh-pages/iiif-universe.json'
   def self.universe
     # fetch the universe doc
-    connection = open(UNIVERSE)
+    connection = URI.open(UNIVERSE)
     universe_json = connection.read
     service = IIIF::Service.parse(universe_json)
 
