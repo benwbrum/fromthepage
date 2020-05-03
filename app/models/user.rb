@@ -16,8 +16,8 @@ class User < ApplicationRecord
   attr_accessor :login_id
 
   has_many(:owner_works,
-           { :foreign_key => "owner_user_id",
-             :class_name => 'Work' })
+           :foreign_key => "owner_user_id",
+           :class_name => 'Work')
   has_many :collections, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
@@ -27,18 +27,17 @@ class User < ApplicationRecord
   has_one :notification, :dependent => :destroy
 
   has_and_belongs_to_many(:scribe_works,
-                          { :join_table => 'transcribe_authorizations',
-                            :class_name => 'Work'})
+                          :join_table => 'transcribe_authorizations',
+                          :class_name => 'Work')
   has_and_belongs_to_many(:owned_collections,
-                          { :join_table => 'collection_owners',
-                            :class_name => 'Collection'})
+                          :join_table => 'collection_owners',
+                          :class_name => 'Collection')
   has_and_belongs_to_many(:document_set_collaborations,
-                          { :join_table => 'document_set_collaborators',
-                            :class_name => 'DocumentSet'
-                            })
+                          :join_table => 'document_set_collaborators',
+                          :class_name => 'DocumentSet')
   has_and_belongs_to_many(:collection_collaborations,
-                          { :join_table => 'collection_collaborators',
-                            :class_name => 'Collection'})
+                          :join_table => 'collection_collaborators',
+                          :class_name => 'Collection')
 
 
   has_many :page_versions, -> { order 'created_on DESC' }
