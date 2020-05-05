@@ -56,4 +56,7 @@ $footerHeight:              220px;
 $footerFg:                  mix(#FFF, $themeDark, 75);
 $footerBg:                  $themeDark;
 
+// Highlight box background color
+$highlightBoxBg: mix(#FFF, $bodyBg, 50);
+
 @import "base/customer_color_scheme";
