@@ -69,7 +69,7 @@ class Metadata
   def save_canonical_metadata(work)
     canonical_metadata = work.collection.canonical_metadata
 
-    if canonical_metadata.empty?
+    if canonical_metadata.blank?
       @new_metadata.each do |m|
         @canonical_metadata << { m[:label] => 1 }
       end
