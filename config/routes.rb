@@ -105,7 +105,6 @@ Fromthepage::Application.routes.draw do
   #get 'transcription_field/edit_fields', to: 'transcription_field#edit_fields', as: :edit_fields
   post 'transcription_field/add_fields', to: 'transcription_field#add_fields', as: :add_fields
   get 'transcription_field/line_form', to: 'transcription_field#line_form'
-  get 'display/display_page', to: 'display#display_page'
 
   resources :document_sets, except: [:show, :create, :edit]
 

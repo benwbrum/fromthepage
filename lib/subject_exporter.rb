@@ -20,7 +20,7 @@ module SubjectExporter
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
             sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
-            page_url = url_for(display_display_page_path(page_id: page.id, only_path: false))
+            page_url = url_for(:controller => 'display', :action => 'display_page', :page_id => page.id, :only_path => false)
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
               article = link.article
