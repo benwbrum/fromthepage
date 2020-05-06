@@ -1,5 +1,6 @@
 require 'search_translator'
 class Page < ActiveRecord::Base
+  ActiveRecord::Base.lock_optimistically = false
 
   include XmlSourceProcessor
   include ApplicationHelper
