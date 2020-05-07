@@ -202,7 +202,7 @@ class DashboardController < ApplicationController
             .where('date BETWEEN ? AND ?', start_date, end_date)
             .group(:date)
             .sum(:minutes)
-            .transform_keys{ |key| k.to_date }
+            .transform_keys{ |k| k.to_date }
 
           user_activity = dates.map{ |d| activity[d.to_date] || 0 }
             
