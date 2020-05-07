@@ -12,8 +12,7 @@ module AhoyActivityUtils
         active_users.each do |user|
         
         # Just for more useful logging
-        u = User.find_by(id: user) 
-        puts "\t#{u&.login || '[Deleted User]'}"
+        puts "\tUser ID: #{user}"
 
         # We Define transcribe events as any even on the transcribe controller
         # This could be expanded or resctricted
