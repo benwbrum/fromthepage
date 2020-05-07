@@ -53,7 +53,11 @@ class CollectionController < ApplicationController
 
   def facets
     collection = Collection.find(params[:collection_id])
-    @canonical_metadata = JSON.parse(collection.canonical_metadata)
+    @canonical_metadata = []
+
+    unless collection.canonical_metadata.nil?
+      @canonical_metadata = JSON.parse(collection.canonical_metadata)
+    end
   end
 
   def load_settings
