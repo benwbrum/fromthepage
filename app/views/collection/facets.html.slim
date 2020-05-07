@@ -1,0 +1,16 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 11, :collection_id => @collection }})
+
+h2.nomargin Metadata Facets
+p Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.
+
+table.datagrid
+  thead
+    tr
+      th Field Label
+      th Occurrences
+  tbody
+    -@canonical_metadata.each do |metadata|
+      -metadata.each do |k, v|
+        tr
+          td =k
+          td =v

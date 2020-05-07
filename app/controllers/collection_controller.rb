@@ -51,6 +51,11 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
+  def facets
+    collection = Collection.find(params[:collection_id])
+    @canonical_metadata = JSON.parse(collection.canonical_metadata)
+  end
+
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners

@@ -319,6 +319,7 @@ Fromthepage::Application.routes.draw do
       get 'subjects', as: :subjects, to: 'article#list'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'facets'
 
       get 'edit', on: :member
       get 'new_work', on: :member
