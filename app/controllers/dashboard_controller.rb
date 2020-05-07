@@ -169,10 +169,10 @@ class DashboardController < ApplicationController
       start_date = params[:start_date]
       end_date = params[:end_date]
   
-      start_date = start_date.to_datetime.beginning_of_day
-      end_date = end_date.to_datetime.end_of_day
+      start_date = start_date.to_date
+      end_date = end_date.to_date
   
-      dates = (start_date.to_date..end_date.to_date)
+      dates = (start_date..end_date)
 
       headers = [
         "Username",
