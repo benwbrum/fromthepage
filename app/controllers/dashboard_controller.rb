@@ -82,7 +82,6 @@ class DashboardController < ApplicationController
 
   # Owner Summary Statistics - statistics for all owned collections
   def summary
-    
     start_d = params[:start_date]
     end_d = params[:end_date]
 
@@ -103,13 +102,12 @@ class DashboardController < ApplicationController
         .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
 
     @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
-    
+
     @activity = AhoyActivitySummary
         .where(collection_id: owner_collections)
         .where('date BETWEEN ? AND ?', @start_date, @end_date)
         .group(:user_id)
         .sum(:minutes)
-
   end
 
   # Collaborator Dashboard - watchlist
