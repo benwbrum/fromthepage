@@ -2,6 +2,7 @@ require 'iiif/presentation'
 class IiifController < ApplicationController
   include AbstractXmlHelper
   before_action :set_cors_headers
+  before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
   
   def collections
     site_collection = IIIF::Presentation::Collection.new
@@ -150,33 +151,33 @@ class IiifController < ApplicationController
     { "label" => "Verbatim Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1", 
-      "@id" => collection_work_export_plaintext_verbatim_path(work.collection.owner, work.collection, work, :only_path => false) 
+      "@id" => iiif_work_export_plaintext_verbatim_path(work.id, :only_path => false) 
     }
     manifest.seeAlso << 
     { "label" => "Emended Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext", 
-      "@id" => collection_work_export_plaintext_emended_path(work.collection.owner, work.collection, work, :only_path => false)
+      "@id" => iiif_work_export_plaintext_emended_path(work.id, :only_path => false)
     }
     if work.supports_translation?
       manifest.seeAlso << 
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext", 
-        "@id" => collection_work_export_plaintext_translation_verbatim_path(work.collection.owner, work.collection, work, :only_path => false)
+        "@id" => iiif_work_export_plaintext_translation_verbatim_path(work.id, :only_path => false)
       }
       manifest.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext", 
-        "@id" => collection_work_export_plaintext_translation_emended_path(work.collection.owner, work.collection, work, :only_path => false)
+        "@id" => iiif_work_export_plaintext_translation_emended_path(work.id, :only_path => false)
       }
     end    
     manifest.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search", 
-        "@id" => collection_work_export_plaintext_searchable_path(work.collection.owner, work.collection, work, :only_path => false)
+        "@id" => iiif_work_export_plaintext_searchable_path(work.id, :only_path => false)
     }
     manifest.service << status_service_for_manifest(work)
     sequence = iiif_sequence_from_work_id(work_id)
@@ -333,6 +334,48 @@ class IiifController < ApplicationController
     service = status_service_for_work(work)
     render :text => service.to_json(pretty: true), :content_type => "application/json"    
   end
+
+  def export_page_plaintext_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @page.verbatim_transcription_plaintext
+  end
+
+  def export_page_plaintext_translation_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @page.verbatim_translation_plaintext
+  end
+
+  def export_page_plaintext_emended
+    render  :layout => false, :content_type => "text/plain", :text => @page.emended_transcription_plaintext
+  end
+
+  def export_page_plaintext_translation_emended
+    render  :layout => false, :content_type => "text/plain", :text => @page.emended_translation_plaintext
+  end
+
+  def export_page_plaintext_searchable
+    render  :layout => false, :content_type => "text/plain", :text => @page.search_text
+  end
+
+  def export_work_plaintext_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_transcription_plaintext
+  end
+
+  def export_work_plaintext_translation_verbatim
+    render  :layout => false, :content_type => "text/plain", :text => @work.verbatim_translation_plaintext
+  end
+
+  def export_work_plaintext_emended
+    render  :layout => false, :content_type => "text/plain", :text => @work.emended_transcription_plaintext
+  end
+
+  def export_work_plaintext_translation_emended
+    render  :layout => false, :content_type => "text/plain", :text => @work.emended_translation_plaintext
+  end
+
+  def export_work_plaintext_searchable
+    render  :layout => false, :content_type => "text/plain", :text => @work.searchable_plaintext
+  end
+
+
 
 private
   def iiif_page_note(page, noteid)
@@ -626,26 +669,26 @@ private
     canvas.seeAlso << 
       { "label" => "HTML Transcription", 
         "format" => "text/html", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription", 
         "@id" => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page, :only_path => false)
     }
     canvas.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
-        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription", 
-        "@id" => collection_page_export_plaintext_searchable_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+        "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
+        "@id" => iiif_page_export_plaintext_searchable_path(page.work_id, page.id, :only_path => false)
     }
     canvas.seeAlso << 
     { "label" => "Verbatim Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2", 
-      "@id" => collection_page_export_plaintext_verbatim_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false) 
+      "@id" => iiif_page_export_plaintext_verbatim_path(page.work_id, page.id, :only_path => false)
     }
     canvas.seeAlso << 
     { "label" => "Emended Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1", 
-      "@id" => collection_page_export_plaintext_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+      "@id" => iiif_page_export_plaintext_emended_path(page.work_id, page.id, :only_path => false)
     }
     if page.work.supports_translation? && !page.source_translation.blank?
       canvas.seeAlso << 
@@ -658,13 +701,13 @@ private
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1", 
-        "@id" => collection_page_export_plaintext_translation_verbatim_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_translation_verbatim_path(page.work_id, page.id, :only_path => false)
       }
       canvas.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1", 
-        "@id" => collection_page_export_plaintext_translation_emended_path(page.work.collection.owner, page.work.collection, page.work, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_translation_emended_path(page.work_id, page.id, :only_path => false)
       }
     end
   end
@@ -750,4 +793,5 @@ private
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   end
+
 end

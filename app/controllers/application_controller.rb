@@ -295,6 +295,16 @@ end
     ahoy.track("#{controller_name}##{action_name}", extras)
   end
 
+
+  def check_api_access
+    if (defined? @collection) && @collection
+      if @collection.restricted? && !@collection.api_access
+        render :status => 403, :text => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
+      end
+    end
+  end
+
+
 private
   def store_current_location
     store_location_for(:user, request.url)

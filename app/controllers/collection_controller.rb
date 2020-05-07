@@ -153,6 +153,12 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
+  def toggle_collection_api_access
+    @collection.api_access = !@collection.api_access
+    @collection.save!
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
   def restrict_collection
     @collection.restricted = true
     @collection.save!
@@ -399,16 +405,18 @@ class CollectionController < ApplicationController
           d.article.title, 
           collection_article_show_url(d.collection.owner, d.collection, d.article)
         ]
-      else
-        pagedeeds = [
-          d.page.title,
-          collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
-          d.work.title,
-          collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
-          note,
-        ] 
-        record += pagedeeds
-        record += ['','']
+      else 
+        unless d.deed_type == DeedType::COLLECTION_JOINED
+          pagedeeds = [
+            d.page.title,
+            collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
+            d.work.title,
+            collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+            note,
+          ] 
+          record += pagedeeds
+          record += ['','']
+        end
       end
       record
     }

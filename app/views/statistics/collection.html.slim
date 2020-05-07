@@ -12,6 +12,7 @@
   :locals =>  { :transcribers   => @all_transcribers,
                 :indexers       => @all_indexers, 
                 :editors        => @all_editors, 
-                :subjects_disabled => @collection.subjects_disabled } })
+                :subjects_disabled => @collection.subjects_disabled,
+                :mailing_list_export => false } })
 
 =render({ :partial => '/shared/collection_footer' })
