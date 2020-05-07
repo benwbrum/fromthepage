@@ -64,6 +64,8 @@ Fromthepage::Application.routes.draw do
     get 'publish_collection', to: 'collection#publish_collection'
     get 'remove_collaborator', to: 'collection#remove_collaborator'
     get 'restrict_collection', to: 'collection#restrict_collection'
+    get 'enable_facets', to: 'collection#enable_facets'
+    get 'disable_facets', to: 'collection#disable_facets'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'

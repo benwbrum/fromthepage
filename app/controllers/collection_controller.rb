@@ -39,6 +39,18 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
+  def enable_facets
+    @collection.facets_enabled = true
+    @collection.save
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
+  def disable_facets
+    @collection.facets_enabled = false
+    @collection.save
+    redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
