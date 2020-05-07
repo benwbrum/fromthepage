@@ -138,14 +138,7 @@
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
-    &:after {
-      height: 0;
-      content: '';
-      width: 100%;
-      margin-left: 5px;
-      display: inline-block;
-      border-bottom: 1px dotted rgba(#000, 0.2);
-    }
+    
     .userpic {
       font-size: 26px;
       margin-right: 6px;
