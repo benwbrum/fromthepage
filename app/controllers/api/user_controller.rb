@@ -63,11 +63,15 @@ class Api::UserController < Api::ApiController
   def user_metagame_info
     @response = GamificationHelper.getPlayerInfoEvent(current_user.email)
 
-
-    @user = User.friendly.find(current_user.id)
-    @user.rank=@response.player.rank
-    @user.save
-    response_serialized_object @user.rank
+    if current_user.rank != @response.player.rank
+      @user = User.friendly.find(current_user.id)
+      @user.rank=@response.player.rank
+      @user.rank_badge_count=@response.player.badges.length()
+      current_user.rank_badge_count = @user.rank_badge_count
+      @user.save
+    end
+    @response.player.rank_badge_count = current_user.rank_badge_count
+    response_serialized_object @response
   end
 
 end

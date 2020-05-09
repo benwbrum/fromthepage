@@ -4,7 +4,7 @@ class ResponseWS
   def initialize(status,message,data,alert)
     @status = status
     @message = I18n.t(message, :default => message)
-    @data = data
+    @data = ResponseWS.flatResponse(data)
     @alert = alert
   end
   
@@ -32,4 +32,19 @@ class ResponseWS
     ResponseWS.error('api.default.error',nil,alert)
   end
   
+  def self.flatResponse(object)
+    (object && object.is_a?(OpenStruct)) ? ResponseWS.open_struct_to_hash(object) : object
+  end
+
+  def self.open_struct_to_hash(object, hash = {})
+    object.each_pair do |key, value|
+      hash[key] = case value
+        when OpenStruct then ResponseWS.open_struct_to_hash(value)
+        when Array then value.map { |v| ResponseWS.open_struct_to_hash(v) }
+        else value
+      end
+    end
+    hash
+  end
+
 end
