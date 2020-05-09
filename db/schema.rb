@@ -127,10 +127,10 @@ ActiveRecord::Schema.define(version: 20200506033815) do
 
   create_table "contributions", force: :cascade do |t|
     t.string   "type",                  limit: 255
-    t.string   "text",                  limit: 255
+    t.text     "text",                  limit: 65535
     t.integer  "mark_id",               limit: 4
     t.integer  "user_id",               limit: 4
-    t.integer  "cached_weighted_score", limit: 4,   default: 0
+    t.integer  "cached_weighted_score", limit: 4,     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "schema_type",           limit: 255
