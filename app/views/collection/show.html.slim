@@ -2,7 +2,7 @@
 .columns
   article.maincol
     -if @collection.intro_block
-      h2 About
+      h2 =t('collection.about')
       .collection-intro
         -unless @collection.picture.blank?
           .collection-intro_image
@@ -11,7 +11,7 @@
           ==@collection.intro_block
 
     div.collection-work-list
-      h2 Works
+      h2 =t('collection.works')
 
       .start_link
         -if @collection.has_untranscribed_pages?
@@ -51,11 +51,11 @@
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       -if @collection.is_a?(Collection)
-        p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
+        p.nodata_text = link_to t('collection.add_a_new_work'), new_work_collection_path(@collection.owner, @collection)
 
     -unless @collection.subjects_disabled
       -unless @collection.categories.empty?
-        h3 Subject Categories
+        h3 =t('collection.subject_categories')
         p.big ==@collection.categories.where('parent_id is null').map { |c| link_to c.title, article_list_path(:collection_id => @collection, anchor: "category-#{c.id}") }.join(', ')
 
   aside.sidecol
@@ -83,7 +83,7 @@
 
     =link_to t('collection.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
-    h3 Recent Notes
+    h3 =t('collection.recent_notes')
     -@collection.notes.active.limit(10).each do |note|
       -user = link_to note.user.display_name, user_profile_path(note.user)
       -note_title = strip_tags(note.title)
@@ -96,7 +96,7 @@
     small.legend
       =link_to t('collection.show_more'), deed_list_path(@collection.id), class: 'button outline round'
 
-    h3 Recent Edits
+    h3 t('collection.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
 =render({ :partial => '/shared/collection_footer' })
