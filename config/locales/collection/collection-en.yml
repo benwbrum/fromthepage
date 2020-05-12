@@ -15,3 +15,16 @@ en:
       add_a_new_work: "Add a new work"
       subject_categories: "Subject Categories"
       search: "Search"
+    collection_works:
+      work_title: "Work title"
+      progress: "Progress"
+    update:
+      notice: "Collection has been updated"
+    create:
+      notice: "Collection has been created"
+    start_transcribing:
+      notice: "Sorry, but there are no qualifying pages in this collection."
+    enable_ocr:
+      notice: "OCR correction has been enabled for all works."
+    disable_ocr:
+      notice: "OCR correction has been disabled for all works."

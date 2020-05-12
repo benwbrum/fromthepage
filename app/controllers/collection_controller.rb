@@ -223,7 +223,7 @@ class CollectionController < ApplicationController
     end
 
     if @collection.save!
-      flash[:notice] = 'Collection has been updated'
+      flash[:notice] = t('.notice')
       redirect_to action: 'edit', collection_id: @collection.id
     else
       render action: 'edit'
@@ -246,7 +246,7 @@ class CollectionController < ApplicationController
       end
     end
     if @collection.save
-      flash[:notice] = 'Collection has been created'
+      flash[:notice] = t('.notice')
       if request.referrer.include?('sc_collections')
         session[:iiif_collection] = @collection.id
         ajax_redirect_to(request.referrer)
@@ -469,7 +469,7 @@ class CollectionController < ApplicationController
   def start_transcribing
     page = find_untranscribed_page
     if page.nil?
-      flash[:notice] = "Sorry, but there are no qualifying pages in this collection."
+      flash[:notice] = t('.notice')
       redirect_to collection_path(@collection.owner, @collection)
     else
       if !user_signed_in?
@@ -482,13 +482,13 @@ class CollectionController < ApplicationController
 
   def enable_ocr
     @collection.enable_ocr
-    flash[:notice] = "OCR correction has been enabled for all works."
+    flash[:notice] = t('.notice')
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
   def disable_ocr
     @collection.disable_ocr
-    flash[:notice] = "OCR correction has been disabled for all works."
+    flash[:notice] = t('.notice')
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
