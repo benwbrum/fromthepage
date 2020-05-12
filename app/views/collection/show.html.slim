@@ -70,13 +70,13 @@
     =form_tag(display_search_path, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag 'search_string', nil, :placeholder => t('collection.search_in_collection')
-      =button_tag 'Search'
+      =button_tag t('collection.search')
       =label_tag 'search_string', "Search collection", class: 'hidden'
 
     =form_tag({:controller => 'collection', :action => 'show'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
       =search_field_tag :search, params[:search], placeholder: t('collection.search_for_works')
-      =button_tag 'Search'
+      =button_tag t('collection.search')
       =label_tag 'search', "Search for works", class: 'hidden'
 
     =link_to t('collection.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
@@ -96,7 +96,7 @@
     small.legend
       =link_to t('collection.show_more'), deed_list_path(@collection.id), class: 'button outline round'
 
-    h3 t('collection.recent_edits')
+    h3 =t('collection.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
 =render({ :partial => '/shared/collection_footer' })
