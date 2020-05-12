@@ -17,9 +17,9 @@
         -if @collection.has_untranscribed_pages?
           p
           -if user_signed_in?
-            =link_to "Start Transcribing", collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+            =link_to t('collection.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
           -else
-            =link_to "Start Transcribing", collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
+            =link_to t('collection.start_transcribing'), collection_guest_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
 
     -if all_complete
       h5.collection-work.acenter
@@ -69,19 +69,19 @@
 
     =form_tag(display_search_path, :method => :get, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
-      =search_field_tag 'search_string', nil, :placeholder => 'Search in collection...'
+      =search_field_tag 'search_string', nil, :placeholder => t('collection.search_in_collection')
       =button_tag 'Search'
       =label_tag 'search_string', "Search collection", class: 'hidden'
 
     =form_tag({:controller => 'collection', :action => 'show'}, method: :get, enforce_utf8: false, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.id)
-      =search_field_tag :search, params[:search], placeholder: 'Search for works...'
+      =search_field_tag :search, params[:search], placeholder: t('collection.search_for_works')
       =button_tag 'Search'
       =label_tag 'search', "Search for works", class: 'hidden'
 
-    =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+    =link_to t('collection.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
-    =link_to "Pages That Need Review", collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+    =link_to t('collection.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     h3 Recent Notes
     -@collection.notes.active.limit(10).each do |note|

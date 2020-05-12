@@ -1,3 +1,8 @@
 en:
   collection:
+    start_transcribing: "Start Transcribing"
     all_complete: "All works are fully transcribed."
+    search_in_collection: "Search in collection..."
+    search_for_works: "Search for works..."
+    pages_need_transcription: "Pages That Need Transcription"
+    pages_need_review: "Pages That Need Review"
