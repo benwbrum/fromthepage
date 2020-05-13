@@ -66,6 +66,16 @@ en:
       text_language: "Select the language of the transcription text"
       default_orientation: "Select the default page transcription orientation"
       voice_recognition: "Speech to text available for transcribing"
+      confirm_delete_collection: "Are you sure you want to delete this collection? After deleting you won't be able to recover it!"
+      delete_collection: "Delete Collection"
+      save_changes: "Save Changes"
+      add_a_new_work: "Add a new work"
+      start_a_project: "Start A Project"
+      add_another_work_under: "You can add another work under %{start_project}"
+      collection_image: "Collection Image"
+      no_image: "No Image"
+      picture_to_be_used_message: "A picture to be used to illustrate the collection description."
+      collection_link: "Collection Link"
     update:
       notice: "Collection has been updated"
     create:
