@@ -87,40 +87,40 @@
     p.fglight =t('.picture_to_be_used_message')
 
     h3 =t('.collection_link')
-    p This link will send transcribers directly to a page needing transcription:  <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/start_transcribing</b>
+    p =t('.page_needing_transcription', current_url:  "<b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/start_transcribing</b>").html_safe
 
-    h3 Collection Privacy
+    h3 =t('.collection_privacy')
     -if @collection.restricted
-      p The collection can only be viewed by the owners listed below. You may make the collection publicly readable.
+      p =t('.collection_restricted_message')
       =link_to(collection_publish_collection_path(:collection_id => @collection.id), class: 'button')
         =svg_symbol '#icon-unlock', class: 'icon'
-        span Make Collection Public
+        span =t('.make_collection_public')
     -else
-      p The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to the owners.
+      p =t('.collection_public_message')
       =link_to(collection_restrict_collection_path(:collection_id => @collection.id), class: 'button')
         =svg_symbol '#icon-lock', class: 'icon'
-        span Make Collection Private
+        span =t('.make_collection_private')
 
-    h3 Collection Status
+    h3 =t('.collection_status')
     -if @collection.active?
-      p This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
+      p =t('.collection_active_message')
       =link_to(collection_toggle_collection_active_path(:collection_id => @collection.id), class: 'button')
         =svg_symbol '#icon-lock', class: 'icon'
-        span Make Collection Inactive
+        span =t('.make_collection_inactive')
     -else
-      p This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
+      p =t('.collection_inactive_message')
       =link_to(collection_toggle_collection_active_path(:collection_id => @collection.id), class: 'button')
         =svg_symbol '#icon-unlock', class: 'icon'
-        span Make Collection Active
+        span =t('.make_collection_active')
 
     -if @collection.restricted
-      h3 Collection Collaborators
-      p.fglight Collaborators may transcribe and edit private collections.
+      h3 =t('.collection_collaborators')
+      p.fglight =t('.collection_collaborators_description')
       =form_tag(collection_add_collaborator_path, class: 'user-select-form') do
         =hidden_field_tag :collection_id, @collection.id
         =select_tag 'collaborator_id', options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier'), include_blank: true
-        =button_tag 'Add'
-        =label_tag 'collaborator_id', "Add Collaborator", class: 'hidden'
+        =button_tag t('.collection_collaborators_add_button')
+        =label_tag 'collaborator_id', t('.add_collaborator'), class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.where(collection_id: @collection.id).count
         .user-label
@@ -130,7 +130,7 @@
             =link_to user.display_name, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
-            =link_to 'Remove', collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
+            =link_to t('.remove_collaborator'), collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
 
       h3 API Access
       p.fglight Allow access to transcriptions via IIIF API
