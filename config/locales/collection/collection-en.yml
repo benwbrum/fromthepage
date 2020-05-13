@@ -49,6 +49,23 @@ en:
       no_collaborators: "No Collaborators"
       detailed_spreadsheet_export: "A detailed spreadsheet export of all collaborators is available on your owner dashboard."
       all_collaborator_emails: "All Collaborator Emails"
+    edit:
+      title: "Title"
+      current_url: "The current URL for this collection is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words."
+      description: "Description"
+      footer: "Footer"
+      learn_more_footer: "Learn more about configuring the footer."
+      transcription_conventions: "Transcription Conventions"
+      suggestions_transcription_conventions: "Suggestions for your transcription conventions."
+      help: "Basic Help Text"
+      suggestions_help_tab: "Suggestions for your help tab."
+      link_help: "Subject Linking Help Text (not displayed if subjects are disabled)"
+      subjects_disabled: "Disable subject indexing"
+      review_workflow: "All initial transcriptions need review"
+      hide_completed: "Hide completed works by default"
+      text_language: "Select the language of the transcription text"
+      default_orientation: "Select the default page transcription orientation"
+      voice_recognition: "Speech to text available for transcribing"
     update:
       notice: "Collection has been updated"
     create:
