@@ -29,6 +29,26 @@ en:
       recent_subject_indexing: "Recent Subject Indexing"
       recent_translation_subject_indexing: "Recent Translation Subject Indexing"
       recent_works_added: "Recent Works Added"
+    contributors:
+      contributions: "Contributions Between %{start_deed} and %{end_deed}"
+      select_new_date: "Select a new date range"
+      start_date: "Start date"
+      end_date: "End date"
+      update: "Update"
+    contributors_body:
+      new_collaborators: "New Collaborators"
+      collaborator_stats: "Collaborator Stats %{start_deed} through %{end_deed}"
+      view_activity: "View Activity"
+      export_activity_as_csv: "Export Activity as CSV"
+      no_activity_this_time_frame: "No activity in this time frame"
+      active_collaborators: "Active Collaborators"
+      collection: " (Collection: %{collection_time} minutes | Total: %{total_time} minutes)"
+      total_time: "Total time: %{hours} hours, %{minutes} minutes."
+      export_as_csv: "Export as CSV"
+      collaborators: "Collaborators"
+      no_collaborators: "No Collaborators"
+      detailed_spreadsheet_export: "A detailed spreadsheet export of all collaborators is available on your owner dashboard."
+      all_collaborator_emails: "All Collaborator Emails"
     update:
       notice: "Collection has been updated"
     create:
