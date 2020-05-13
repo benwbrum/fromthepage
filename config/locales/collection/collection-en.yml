@@ -18,6 +18,17 @@ en:
     collection_works:
       work_title: "Work title"
       progress: "Progress"
+    contributor_activity:
+      recent_transcriptions: "Recent Transcriptions"
+      recent_ocr_correction: "Recent OCR correction"
+      recent_pages_needing_review: "Recent Pages Needing Review"
+      recent_translations: "Recent Translations"
+      recent_translations_needing_review: "Recent Translations Needing Review"
+      recent_notes: "Recent Notes"
+      recent_subjects: "Recent Subjects"
+      recent_subject_indexing: "Recent Subject Indexing"
+      recent_translation_subject_indexing: "Recent Translation Subject Indexing"
+      recent_works_added: "Recent Works Added"
     update:
       notice: "Collection has been updated"
     create:
