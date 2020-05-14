@@ -128,6 +128,10 @@ en:
       pages_that_need_review: "Pages That Need Review"
       owned_by: "Owned by"
       return_to_collection: "Return to collection"
+    needs_transcription_pages:
+      pages_that_need_transcription: "Pages That Need Transcription"
+      owned_by: "Owned by"
+      return_to_collection: "Return to collection"
     update:
       notice: "Collection has been updated"
     create:
