@@ -139,6 +139,10 @@ en:
       title: "Title"
       collection_description: "Collection Description"
       create_collection: "Create Collection"
+    upload:
+      page_image_guidelines: "Page Image Guidelines"
+      acceptable_image_formats: "PNG, GIF, and JPG files are all acceptable."
+      images_should_be_oriented: "Images should be oriented so that they are right-side-up."
     update:
       notice: "Collection has been updated"
     create:
