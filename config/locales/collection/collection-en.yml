@@ -104,6 +104,18 @@ en:
       enable_field_based_transcription: "Enable Field Based Transcription"
       revert_document_based_transcription: "Revert to Document Based Transcription"
       edit_fields: "Edit Fields"
+      document_sets: "Document Sets"
+      document_sets_description: "Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents."
+      no_document_sets_in_collection: "This collection does not have any document sets."
+      enable_document_sets: "Enable Document Sets"
+      disable_document_sets: "Disable Document Sets"
+      ocr_correction: "OCR Correction"
+      ocr_correction_description: "Enable or disable OCR correction for all works in this collection."
+      enable_ocr: "Enable OCR"
+      disable_ocr: "Disable OCR"
+      blank_collection: "Blank Collection"
+      blank_collection_description: "Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported."
+      are_you_sure: "Are you sure?"
     update:
       notice: "Collection has been updated"
     create:

@@ -172,31 +172,30 @@
         span =t('.revert_document_based_transcription')
       =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => 'Edit fields'
 
-    h3 Document Sets
-    p Document sets are sub-sets of the works in this collection,
-      which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
+    h3 =t('.document_sets')
+    p =t('.document_sets_description')
     -if !@collection.supports_document_sets
-      p This collection does not have any document sets.
+      p =t('.no_document_sets_in_collection')
       =link_to(collection_enable_document_sets_path(:collection_id => @collection.id), class: 'button')
-        span Enable Document Sets
+        span =t('.enable_document_sets')
     -else
       =link_to(collection_disable_document_sets_path(:collection_id => @collection.id), class: 'button')
-        span Disable Document Sets
+        span =t('.disable_document_sets')
 
-    h3 OCR Correction
-    p Enable or disable OCR correction for all works in this collection.
+    h3 =t('.ocr_correction')
+    p =t('.ocr_correction_description')
     -if @collection.works.ocr_disabled.any?
       =link_to(collection_enable_ocr_path(:collection_id => @collection.id), class: 'button')
-        span Enable OCR
+        span =t('enable_ocr')
     '
     -if @collection.works.ocr_enabled.any?
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
-        span Disable OCR
+        span =t('.disable_ocr')
 
-    h3 Blank Collection
-    p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
-    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
-      span Blank Collection
+    h3 =t('.blank_collection')
+    p =t('.blank_collection_description')
+    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.are_you_sure') })
+      span =t('.blank_collection')
 
 =render({ :partial => '/shared/collection_footer' })
 
