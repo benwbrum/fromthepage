@@ -132,6 +132,13 @@ en:
       pages_that_need_transcription: "Pages That Need Transcription"
       owned_by: "Owned by"
       return_to_collection: "Return to collection"
+    new:
+      create_new_collection: "Create New Collection"
+      individual_researcher_limited_account: "Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com."
+      enter_collection_title: "To create a new collection please start from entering the collection title. On the next step you will be able to add works into the collection."
+      title: "Title"
+      collection_description: "Collection Description"
+      create_collection: "Create Collection"
     update:
       notice: "Collection has been updated"
     create:
