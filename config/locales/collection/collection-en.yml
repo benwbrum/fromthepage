@@ -120,6 +120,10 @@ en:
       blank_collection: "Blank Collection"
       blank_collection_description: "Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported."
       are_you_sure: "Are you sure?"
+      page_on_the_left: "Page on the Left"
+      page_on_the_right: "Page on the Right"
+      page_on_the_top: "Page on the Top"
+      page_on_the_bottom: "Page on the Bottom"
     update:
       notice: "Collection has been updated"
     create:

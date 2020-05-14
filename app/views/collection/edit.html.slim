@@ -57,7 +57,7 @@
         tr
           td(colspan="2")
             =f.label :default_orientation, t('.default_orientation')
-            =f.select :default_orientation, options_for_select([['Page on the Left','ltr'],['Page on the Right','rtl'],['Page on the Top','ttb'],['Page on the Bottom','btt']], @collection.default_orientation), {}, {class: 'w50'}
+            =f.select :default_orientation, options_for_select([[t('.page_on_the_left'),'ltr'],[t('.page_on_the_right'),'rtl'],[t('.page_on_the_top'),'ttb'],[t('.page_on_the_bottom'),'btt']], @collection.default_orientation), {}, {class: 'w50'}
 
         -if @ssl && !@collection.field_based
           tr
