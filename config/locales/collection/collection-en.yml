@@ -74,6 +74,7 @@ en:
       add_another_work_under: "You can add another work under %{start_project}"
       collection_image: "Collection Image"
       no_image: "No Image"
+      upload_image: "Upload Image"
       picture_to_be_used_message: "A picture to be used to illustrate the collection description."
       collection_link: "Collection Link"
       page_needing_transcription: "This link will send transcribers directly to a page needing transcription:  %{current_url}"

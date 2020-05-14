@@ -80,7 +80,7 @@
     h3 =t('.collection_image')
     =form_for :collection, url: collection_update_path(@collection), html: { multipart: true, class: 'image-form' } do |f|
       =hidden_field_tag(:collection_id, @collection.id)
-      label(data-empty=t('.no_image') data-hover="Upload Image" aria-label="Upload Image" title="Upload Image")
+      label(data-empty=t('.no_image') data-hover=t('.upload_image') aria-label=t('.upload_image') title=t('.upload_image'))
         =f.file_field :picture, accept: 'image/*'
         -if @collection.picture_url(:thumb)
           =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
