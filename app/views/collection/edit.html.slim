@@ -130,7 +130,7 @@
             =link_to user.display_name, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
           -if user != @main_owner
-            =link_to t('.remove_collaborator'), collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
+            =link_to t('.remove'), collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: t('.remove'), 'aria-label' => t('.remove_collaborator')
 
       h3 =t('.api_access')
       p.fglight =t('.api_access_description')
@@ -160,15 +160,15 @@
           =link_to user.display_name, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
         -if user != @main_owner
-          =link_to '', collection_remove_owner_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove owner'
+          =link_to '', collection_remove_owner_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: t('.remove'), 'aria-label' => t('.remove_owner')
 
     h3 =t('.transcription_type')
     p =t('.transcription_type_description')
     -if !@collection.field_based
-      =link_to(collection_enable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => 'Field based transcription')
+      =link_to(collection_enable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.field_based_transcription'))
         span =t('.enable_field_based_transcription')
     -else
-      =link_to(collection_disable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => 'Revert to document based transcription')
+      =link_to(collection_disable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_document_based_transcription'))
         span =t('.revert_document_based_transcription')
       =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => 'Edit fields'
 
