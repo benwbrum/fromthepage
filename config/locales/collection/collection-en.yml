@@ -124,6 +124,10 @@ en:
       page_on_the_right: "Page on the Right"
       page_on_the_top: "Page on the Top"
       page_on_the_bottom: "Page on the Bottom"
+    needs_review_pages:
+      pages_that_need_review: "Pages That Need Review"
+      owned_by: "Owned by"
+      return_to_collection: "Return to collection"
     update:
       notice: "Collection has been updated"
     create:
