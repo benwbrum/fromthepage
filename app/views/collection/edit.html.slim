@@ -119,7 +119,7 @@
       =form_tag(collection_add_collaborator_path, class: 'user-select-form') do
         =hidden_field_tag :collection_id, @collection.id
         =select_tag 'collaborator_id', options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier'), include_blank: true
-        =button_tag t('.collection_collaborators_add_button')
+        =button_tag t('.add_button')
         =label_tag 'collaborator_id', t('.add_collaborator'), class: 'hidden'
       -@collaborators.each do |user|
         -contributions = user.deeds.where(collection_id: @collection.id).count
@@ -132,25 +132,25 @@
           -if user != @main_owner
             =link_to t('.remove_collaborator'), collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove collaborator'
 
-      h3 API Access
-      p.fglight Allow access to transcriptions via IIIF API
+      h3 =t('.api_access')
+      p.fglight =t('.api_access_description')
       -if @collection.api_access
         =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
           =svg_symbol '#icon-lock', class: 'icon'
-          span Close API
+          span =t('.close_api')
       -else
         =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
           =svg_symbol '#icon-unlock', class: 'icon'
-          span Open API
+          span =t('.open_api')
 
 
-    h3 Collection Owners
-    p.fglight Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection.
+    h3 =t('.collection_owners')
+    p.fglight =t('.collection_owners_description')
     =form_tag(collection_add_owner_path, class: 'user-select-form') do
       =hidden_field_tag :collection_id, @collection.id
       =select_tag 'user_id', options_from_collection_for_select(@nonowners, 'id', 'name_with_identifier'), include_blank: true
-      =button_tag 'Add'
-      =label_tag 'user_id', "Add Owner", class: 'hidden'
+      =button_tag t('.add_button')
+      =label_tag 'user_id', t('.add_owner'), class: 'hidden'
     -@owners.each do |user|
       -contributions = user.deeds.where(collection_id: @collection.id).count
       .user-label
@@ -162,15 +162,15 @@
         -if user != @main_owner
           =link_to '', collection_remove_owner_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: 'Remove', 'aria-label' => 'Remove owner'
 
-    h3 Transcription Type
-    p Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
+    h3 =t('.transcription_type')
+    p =t('.transcription_type_description')
     -if !@collection.field_based
       =link_to(collection_enable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => 'Field based transcription')
-        span Enable Field Based Transcription
+        span =t('.enable_field_based_transcription')
     -else
       =link_to(collection_disable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => 'Revert to document based transcription')
-        span Revert to Document Based Transcription
-      =link_to 'Edit Fields', transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => 'Edit fields'
+        span =t('.revert_document_based_transcription')
+      =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => 'Edit fields'
 
     h3 Document Sets
     p Document sets are sub-sets of the works in this collection,
