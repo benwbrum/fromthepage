@@ -68,8 +68,9 @@
       nav.page-nav
         -if @page != @work.pages.first
           -higher_item = @page.higher_item
-          =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
-            =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
+          -unless higher_item.nil?
+            =link_to({ :page_id => higher_item.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
         -else
           span.page-nav_prev =svg_symbol '#icon-arrow-left', class: 'icon'
 
