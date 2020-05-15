@@ -36,11 +36,14 @@ class Api::CollectionController < Api::ApiController
   
   def update
     if params[:collection][:slug] == ""
-      @collection.update(params[:collection].except(:slug))
+      @collection.update(params[:collection].except(:slug).except(:picture))
       title = @collection.title.parameterize
       @collection.update(slug: title)
     else
-      @collection.update(params[:collection])
+      @collection.update(params[:collection].except(:picture))
+    end
+    if (params[:collection][:picture] != nil && params[:collection][:picture].instance_of?(ActionDispatch::Http::UploadedFile))
+      @collection.update(picture: params[:collection][:picture])
     end
     if @collection.save!
       # flash[:notice] = 'Collection has been updated'
