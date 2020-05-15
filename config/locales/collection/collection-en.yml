@@ -142,6 +142,9 @@ en:
     works_list:
       works: "Works"
       sort_works_by: "Sort Works By..."
+      alphabetical: "Alphabetical"
+      recent_activity: "Recent Activity"
+      percent_complete: "Percent Complete"
     update:
       notice: "Collection has been updated"
     create:
