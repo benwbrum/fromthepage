@@ -139,6 +139,9 @@ en:
       title: "Title"
       collection_description: "Collection Description"
       create_collection: "Create Collection"
+    works_list:
+      works: "Works"
+      sort_works_by: "Sort Works By..."
     update:
       notice: "Collection has been updated"
     create:
