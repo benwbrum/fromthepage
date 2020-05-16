@@ -25,7 +25,12 @@ class Api::ApiController < ApplicationController
   end
   
   def render_serialized(object)
-    render json: object, :include => get_fields(params[:fields]), :methods => get_methods(params[:fields])
+    begin
+      options = getSerializationOptions(object.data, params[:fields])
+      render json: object, :include => options[:include], :methods => options[:methods]
+    rescue
+      render json: object
+    end
   end
   
   def response_serialized_object(object)
@@ -44,10 +49,13 @@ class Api::ApiController < ApplicationController
       end
     end
     
-    def get_methods(fields_s)
-      methods = []
-      if(params[:fields] != nil)
-        methods = fields_s.split(',').grep(/^:/).map { |method| method.sub(":","").to_sym }
+    def getSerializationOptions(object, fields_s)
+      options = { :include => [], :methods => [] }
+      if(fields_s != nil)
+        fields = fields_s.split(',').grep(/^[^:]/).map &:to_sym
+        fields.each { | field | object.class.method_defined?(field)? options[:methods].push(field) : options[:include].push(field) }
       end
+      print options.inspect 
+      return options
     end
 end

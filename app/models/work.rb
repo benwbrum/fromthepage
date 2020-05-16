@@ -186,4 +186,9 @@ class Work < ActiveRecord::Base
       self.update_columns(featured_page: page.id)
   end
 
+  def as_json(options={})
+    methods = [:thumbnail]
+    options[:methods] = options[:methods] ? options[:methods] | methods : methods
+    super
+  end
 end

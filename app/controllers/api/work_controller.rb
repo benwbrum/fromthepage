@@ -80,9 +80,13 @@ class Api::WorkController < Api::ApiController
     collection_convention = work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      work.update_attributes(params[:work].except(:transcription_conventions))
+      work.update_attributes(params[:work].except(:transcription_conventions).except(:picture))
     else
-      work.update_attributes(params[:work])
+      work.update_attributes(params[:work].except(:picture))
+    end
+
+    if (params[:work][:picture] != nil && params[:work][:picture].instance_of?(ActionDispatch::Http::UploadedFile))
+      work.update(picture: params[:work][:picture])
     end
 
     #if the slug field param is blank, set slug to original candidate
