@@ -306,6 +306,12 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     super(options)
   end
 
+  def as_json(options={})
+    methods = [:thumbnail_url,:base_image_url]
+    options[:methods] = options[:methods] ? options[:methods] | methods : methods
+    super
+  end
+
 private
   def generate_thumbnail
     image = Magick::ImageList.new(self[:base_image])
