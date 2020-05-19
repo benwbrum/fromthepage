@@ -8,3 +8,8 @@ en:
       show_translation: "Show Translation"
       mark_the_page_blank: "mark the page blank"
       this_page_is_blank: "This page is blank"
+      this_page_is_not: "This page is not %{text_type}"
+      please_help_this_page: "Please %{help_link} this page"
+      or_mark_blank: "<br>or %{mark_blank}"
+      collaboration_is_restricted: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+      page_notes: "Page Notes"
