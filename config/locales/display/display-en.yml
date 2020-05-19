@@ -1,0 +1,10 @@
+en:
+  display:
+    display_page:
+      facsimile: "Facsimile"
+      translation: "Translation"
+      show_transcription: "Show Transcription"
+      transcription: "Transcription"
+      show_translation: "Show Translation"
+      mark_the_page_blank: "mark the page blank"
+      this_page_is_blank: "This page is blank"
