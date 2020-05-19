@@ -1,7 +1,7 @@
     -if @pages.size == 0
       .nodata
-        h4.nodata_title No pages found
-        p.nodata_text We were unable to find any pages matching your request
+        h4.nodata_title =t('.no_pages_found')
+        p.nodata_text =t('.unable_to_find_pages')
     -else
       -work_title = nil
       -for page in @pages
@@ -33,7 +33,7 @@
                 -action = page_params(page)
 
               -if page.status == Page::STATUS_BLANK
-                p.nodata_text =="This page is blank"
+                p.nodata_text ==t('.this_page_is_blank')
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else

@@ -24,3 +24,7 @@ en:
       pages_need_translation: "Pages That Need Translation"
       translations_need_review: "Translations That Need Review"
       translations_need_indexing: "Translations That Need Indexing"
+    pages_view:
+      no_pages_found: "No pages found"
+      unable_to_find_pages: "We were unable to find any pages matching your request"
+      this_page_is_blank: "This page is blank"
