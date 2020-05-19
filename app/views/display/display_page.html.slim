@@ -27,21 +27,21 @@
 
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
-        -action = t('.translation_action')
-        -help_word = t('.translation_help_word')
-        -text_type = t('.translation_text_type')
+        -action = 'translate'
+        -help_word = 'help translate'
+        -text_type = 'translated'
 
       -elsif correction_mode?
         -text = xml_to_html(@page.xml_text)
-        -action = t('.correction_action')
-        -help_word = t('.correction_help_word')
-        -text_type = t('.correction_text_type')
+        -action = 'display_page'
+        -help_word = 'help correct'
+        -text_type = 'corrected'
 
       -else
         -text = xml_to_html(@page.xml_text)
-        -action = t('.other_action')
-        -help_word = t('.other_help_word')
-        -text_type = t('.other_text_type')
+        -action = 'display_page'
+        -help_word = 'help transcribe'
+        -text_type = 'transcribed'
 
       -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
 

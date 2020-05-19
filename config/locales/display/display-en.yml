@@ -13,12 +13,3 @@ en:
       or_mark_blank: "<br>or %{mark_blank}"
       collaboration_is_restricted: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
       page_notes: "Page Notes"
-      translation_action: 'translate'
-      translation_help_word: 'help translate'
-      translation_text_type: 'translated'
-      correction_action: 'display_page'
-      correction_help_word: 'help correct'
-      correction_text_type: 'corrected'
-      other_action: 'display_page'
-      other_help_word: 'help transcribe'
-      other_text_type: 'transcribed'
