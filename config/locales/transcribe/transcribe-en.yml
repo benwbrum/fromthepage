@@ -1,0 +1,8 @@
+en:
+  transcribe:
+    assign_categories:
+      uncategorized_subjects: "Uncategorized Subjects"
+      manage_categories: "Manage Categories"
+      uncategorized_subjects_mentioned: "You have uncategorized subjects mentioned in the page transcription. Please review the subjects below and assign the appropriate categories for them."
+      subject: "Subject: "
+      assign_categories: "Assign categories"
