@@ -46,7 +46,6 @@ describe "IA import actions", :order => :defined do
     if page.has_button?('Import Anyway')
       click_button('Import Anyway')
     end
-    sleep(2)
     expect(ia_work_count + 1).to eq IaWork.all.count
     expect(page).to have_content("Manage Archive.org Import")
     page.check('use_ocr')
