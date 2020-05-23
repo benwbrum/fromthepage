@@ -7,25 +7,25 @@
   .page-toolbar
     .toolbar
       .toolbar_group
-          button#toggleImage.button.outline type="button" Show Image
+          button#toggleImage.button.outline type="button" =t('.show_image')
       .toolbar_group.w100.aright
-        =f.label 'mark_blank', 'Mark as blank'
+        =f.label 'mark_blank', t('.mark_as_blank')
         -if @page.status == Page::STATUS_BLANK
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
       .toolbar_group.w100.aright
-        =f.label 'needs_review', 'Page Needs Review'
+        =f.label 'needs_review', t('.page_needs_review')
         -if @page.translation_status == 'review'
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.translation_status == 'review'
     .page-review
-      |This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
+      =t('.this_page_marked_needs_review')
 
   .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
@@ -45,18 +45,18 @@
         -if @page.status == Page::STATUS_BLANK
           .centered
             .centered_content
-              p.nodata_text=="This page is blank"
+              p.nodata_text==t('.this_page_is_blank')
         -elsif text.present?
           ==text
         -else
           -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
-          -mark_blank = link_to('mark the page blank', transcribe_mark_page_blank_path(:page_id => @page.id))
+          -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id))
           .centered
             .centered_content
-              h5.nodata_title This page is not #{text_type}
+              h5.nodata_title =t('.this_page_is_not', text_type: text_type)
               p.nodata_text
-                =="Please #{help_link} this page"
-                =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
+                ==t('.please_help_this_page', help_link: help_link)
+                ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
       .page-imagescan style="display:none;"
         -if @page.ia_leaf
           =render :partial => '/ia/ia_bookreader_div'
@@ -67,28 +67,28 @@
     .page-column
       -if @collection.voice_recognition
         .page-column_voice
-          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+          =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
           span.voice-info
 
       .page-column_actions
         -unless @preview_xml
-          =>button_tag 'Preview', :name => 'preview'
+          =>button_tag t('.preview'), :name => 'preview'
         -else
-          =>button_tag 'Edit', :name => 'edit'
+          =>button_tag t('.edit'), :name => 'edit'
         -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag 'Autolink', :name => 'autolink'
+          =>button_tag t('.autolink'), :name => 'autolink'
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
       .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-        =f.label :source_translation, 'Edit translation', class: 'hidden'
+        =f.label :source_translation, t('.edit_translation'), class: 'hidden'
 
 
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions
 
-h2.legend Page Notes
+h2.legend =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 

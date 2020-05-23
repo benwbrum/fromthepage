@@ -27,7 +27,7 @@
         label.auto-fullscreen
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
-          span Always show in fullscreen
+          span =t('.always_show_fullscreen')
 
       .toolbar_group.w100.aright
         =f.label 'mark_blank', t('.mark_as_blank')
@@ -71,7 +71,7 @@
       -else
         -if @collection.voice_recognition
           .page-column_voice
-            =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
 
         .page-column_actions
