@@ -1,7 +1,7 @@
 .columns
   article.maincol
     -if @search_string.present?
-      h2 ==t('.search_for', search_string: search_string)
+      h2 =t('.search_for', search_string: @search_string)
     
     =render 'pages_view'
 
