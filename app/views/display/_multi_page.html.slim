@@ -41,7 +41,7 @@
 
       -if @collection.categories.present?
         -unless @collection.subjects_disabled
-          h3.categories Categories
+          h3.categories =t('.categories')
           .category-tree
             ==display_categories(@collection.categories, nil, true) do |category|
               -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")

@@ -44,21 +44,21 @@
                   -else
                     -status = 'transcribed'
                     -help = link_to('help transcribe', action)
-                  p.nodata_text =="This page is not #{status}, please #{help} this page"
+                  p.nodata_text == t('.this_page_is_not', status: status, help: help)
                 -else
-                  p.nodata_text == "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+                  p.nodata_text == t('.collaboration_is_restricted')
 
             -if page.work.supports_translation
               button.outline.work-page_toggle-view Translation
               .work-page_text(style="display:none")
                 -translation = xml_to_html(page.xml_translation, false)
                 -if page.translation_status == 'blank'
-                  p.nodata_text =="This page is blank"
+                  p.nodata_text == t('.this_page_is_blank')
                 -elsif translation.present?
                   ==translation.force_encoding('utf-8')
                 -else
-                  -help_translate = link_to('help translate', collection_translate_page_path(@collection.owner, @collection, page.work, page))
-                  p.nodata_text =="This page is not translated, please #{help_translate} this page"
+                  -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page))
+                  p.nodata_text == t('.page_not_translated', help_translate: help_translate)
 
             -current_version = page.page_versions[0]
             -if current_version && current_version.page_version > 0

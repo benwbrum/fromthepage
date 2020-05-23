@@ -24,7 +24,13 @@ en:
       translations_need_review: "Translations That Need Review"
       translations_need_indexing: "Translations That Need Indexing"
       search_for: "Search for %{search_string}"
+      categories: "Categories"
     pages_view:
       no_pages_found: "No pages found"
       unable_to_find_pages: "We were unable to find any pages matching your request"
       this_page_is_blank: "This page is blank"
+      this_page_is_not: "This page is not %{status}, please %{help} this page"
+      collaboration_is_restricted: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+      this_page_is_blank: "This page is blank"
+      help_translate: "help translate"
+      page_not_translated: "This page is not translated, please %{help_translate} this page"
