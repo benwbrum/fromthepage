@@ -34,3 +34,6 @@ en:
       this_page_is_blank: "This page is blank"
       help_translate: "help translate"
       page_not_translated: "This page is not translated, please %{help_translate} this page"
+      corrected: "corrected"
+      transcribed: "transcribed"
+      last_edit: "Last edit %{edit_time} ago by %{user_link}"

@@ -39,10 +39,10 @@
               -else
                 -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
                   -if page.work.ocr_correction
-                    -status = 'corrected'
+                    -status = t('.corrected')
                     -help = link_to('help correct', action)
                   -else
-                    -status = 'transcribed'
+                    -status = t('.transcribed')
                     -help = link_to('help transcribe', action)
                   p.nodata_text == t('.this_page_is_not', status: status, help: help)
                 -else
@@ -65,4 +65,4 @@
               small.work-page_edited
                 -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
-                =="Last edit #{edit_time} ago by #{user_link}"
+                = t('.last_edit', edit_time: edit_time, user_link: user_link)
