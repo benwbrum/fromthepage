@@ -65,4 +65,4 @@
               small.work-page_edited
                 -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
-                = t('.last_edit', edit_time: edit_time, user_link: user_link)
+                = t('.last_edit', edit_time: edit_time, user_link: user_link).html_safe
