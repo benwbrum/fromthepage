@@ -37,3 +37,10 @@ en:
       corrected: "corrected"
       transcribed: "transcribed"
       last_edit: "Last edit %{edit_time} ago by %{user_link}"
+    list_pages:
+      no_pages_found: "No pages found"
+      no_pages_in_work: "This work does not contain any pages yet, go to %{link} to create a new page"
+      page_title: "Page Title"
+      user_notes: "User Notes"
+      actions: "Actions"
+      no_notes: "No notes"
