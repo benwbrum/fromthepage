@@ -1,4 +1,6 @@
-class Contribution < ActiveRecord::Base
+class Contribution < ActiveRecord::Base 
+  extend FriendlyId
+  friendly_id :slug_candidates, :use => [:slugged, :history]
   attr_accessible :text, :cached_weighted_score, :mark_id
   
   belongs_to :mark

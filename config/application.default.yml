@@ -8,3 +8,10 @@ DATABASE_PASSWORD: "mypassword"
 METAGAME_PROJECT_NAME: "projectname"
 METAGAME_URL: "metagameBaseUrl"
 METAGAME_TOKEN: "metagameToken"
+
+#Configuration of Virtuoso
+VIRTUOSO_HOST: "127.0.0.1"
+VIRTUOSO_COLLECTION: "transcriptor"
+VIRTUOSO_GRAPH: "http://transcriptor.com"
+VIRTUOSO_USER: "demo"
+VIRTUOSO_PASSWORD: "transcriptor"

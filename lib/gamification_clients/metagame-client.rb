@@ -1,4 +1,4 @@
-require_relative 'http-client'
+require_relative '../http-client/http-client'
 
 class MetagameClient < HttpClient
 
