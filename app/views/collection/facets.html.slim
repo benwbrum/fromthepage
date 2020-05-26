@@ -3,14 +3,23 @@
 h2.nomargin Metadata Facets
 p Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.
 
-table.datagrid
-  thead
-    tr
-      th Field Label
-      th Occurrences
-  tbody
-    -@canonical_metadata.each do |metadata|
-      -metadata.each do |k, v|
-        tr
-          td =k
-          td =v
+=form_for(:metadata, url: collection_update_facets_path(@collection.owner, @collection)) do |f|
+  table.datagrid
+    thead
+      tr
+        th Field Label
+        th Occurrences
+        th Label
+        th Type
+        th Order
+    tbody
+      -@canonical_metadata.each do |metadata|
+        -metadata.each do |k, v|
+          tr
+            td =k
+            td =v
+            td =f.text_field :label
+            td =f.select :type, ['text', 'date']
+            td =f.text_field :order
+            =f.hidden_field :metadata_field, value: k
+  =f.submit

@@ -60,6 +60,36 @@ class CollectionController < ApplicationController
     end
   end
 
+  def update_facets
+    facet_config = []
+    collection = Collection.find(params[:collection_id])
+
+    if collection.facet_config.blank?
+      canonical_metadata = collection.canonical_metadata
+      json_metadata = JSON.parse(canonical_metadata)
+
+      json_metadata.each do |metadata|
+        metadata.each do |k, v|
+          facet_config << { k => "" }
+        end
+      end
+
+      collection.update(facet_config: facet_config.to_json)
+    else
+      json_facet_config = JSON.parse(collection.facet_config)
+      metadata_field = params['metadata']['metadata_field']
+      json_facet_config.each do |k, v|
+        if k[metadata_field]
+          k[metadata_field] = { :label => params[:metadata][:label], :type => params[:metadata][:type], :order => params[:metadata][:order] }
+        end
+      end
+
+      collection.update(facet_config: json_facet_config.to_json)
+    end
+
+    redirect_to collection_facets_path(collection.owner, collection), notice: "Collection facets updated successfully"
+  end
+
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
