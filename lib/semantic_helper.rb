@@ -1,30 +1,47 @@
-# require 'semantic_clients/virtuoso-client'
 require_relative 'semantic_clients/virtuoso-client'
+require_relative 'semantic_clients/default-semantic-client'
 
 class SemanticHelper
 
-  @@virtuosoClient = VirtuosoClient.new()
+  @@semanticClient = nil
 
   #### Insert a new group of triplets ####
   def self.insert(data)
-    @@virtuosoClient.insert(data)
+    semanticClient.insert(data)
   end
   
   ## Lists semantic contributions matching filters: type and propertyValue(if someone match) ##
   def self.listSemanticContributions(data = {})
-    @@virtuosoClient.listSemanticContributions(data)
+    semanticClient.listSemanticContributions(data)
   end
   
   ## Lists semantic contributions matching filters: type and propertyValue(if someone match) ##
   def self.listEntities(data = {})
-    @@virtuosoClient.listEntities(data)
+    semanticClient.listEntities(data)
   end
 
   def self.describeEntity(id, useDefaultGraph = false)
-    @@virtuosoClient.describeEntity(id, useDefaultGraph)
+    semanticClient.describeEntity(id, useDefaultGraph)
   end
 
   def self.describeSemanticContributionEntity(idSemanticContribution, useDefaultGraph = false)
-    @@virtuosoClient.describeSemanticContributionEntity(idSemanticContribution, useDefaultGraph)
+    semanticClient.describeSemanticContributionEntity(idSemanticContribution, useDefaultGraph)
   end
+
+  def self.semanticClient
+    if (@@semanticClient == nil)
+      @@semanticClient = createSemanticClient()
+    end
+    return @@semanticClient
+  end
+
+  def self.createSemanticClient
+    case ENV['SEMANTIC_CONNECTOR']
+      when 'virtuoso'
+        return VirtuosoClient.new()
+      else
+        return DefaultSemanticClient.new()
+    end
+  end
+
 end
