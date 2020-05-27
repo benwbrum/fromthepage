@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200506033815) do
+ActiveRecord::Schema.define(version: 20200525072010) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer  "visit_id",   limit: 4
@@ -134,9 +134,11 @@ ActiveRecord::Schema.define(version: 20200506033815) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "schema_type",           limit: 255
+    t.string   "slug",                  limit: 255
   end
 
   add_index "contributions", ["mark_id"], name: "index_contributions_on_mark_id", using: :btree
+  add_index "contributions", ["slug"], name: "index_contributions_on_slug", unique: true, using: :btree
   add_index "contributions", ["user_id"], name: "index_contributions_on_user_id", using: :btree
 
   create_table "deeds", force: :cascade do |t|

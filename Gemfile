@@ -88,7 +88,10 @@ gem "figaro"
 
 gem 'devise-token_authenticatable', '~> 0.3'
 
-
+#Use for parse and serialize semantic things
+gem 'json-ld'
+gem 'rdf'
+gem 'rdf-turtle'
 
 
 # Use font awesome icons

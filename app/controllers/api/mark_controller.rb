@@ -55,13 +55,14 @@ class Api::MarkController < Api::ApiController
   end
   
   def show
+    @mark.semanticContribution.semantic_proxy = true
     response_serialized_object(@mark)
   end
   
   private
     
     def mark_params
-      params.permit(:text, :coordinates, :text_type, :shape_type, :page_id, :layer_id, :transcription_text, :translation_text, :semantic_text, :schema_type)
+      params.permit(:text, :coordinates, :text_type, :shape_type, :page_id, :layer_id, :transcription_text, :translation_text, :semantic_text, :schema_type, :contribution_slug)
     end
     
     def set_mark

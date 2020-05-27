@@ -1,28 +1,26 @@
 require 'net/http'
+require 'json'
 
 class HttpClient
 
-    def initialize(baseURL,headers = {})
+    def initialize(baseURL, headers = {}, responseFormat = 'json')
         @baseURL = baseURL
         @headers = headers
+        @responseFormat = responseFormat
     end
 
-    private
     def do_post(path, params = {}, bodyParams = {})
         send_request(Net::HTTP::Post, path, params, bodyParams)
     end
 
-    private
     def do_get(path, params = {})
         send_request(Net::HTTP::Get, path, params)
     end
 
-    private
     def do_put(path, params = {}, bodyParams = {})
         send_request(Net::HTTP::Put, path, params, bodyParams)
     end
 
-    private
     def do_delete(path, params = {}, bodyParams = {})
         send_request(Net::HTTP::Delete, path, params, bodyParams)
     end
@@ -35,28 +33,29 @@ class HttpClient
 
         req = methodClass.new(uri)
         # Set headers in request
-        @headers.each do |key, value|
+        headers = @headers.collect{|k,v| [k.to_s, v]}.to_h
+        headers.each do |key, value|
             req[key] = value
         end
-        req.set_form_data(bodyParams)
+
+        bodyParams.is_a?(String) ? req.body = bodyParams : req.set_form_data(bodyParams)
 
         res = Net::HTTP.start(uri.hostname,uri.port, :use_ssl => uri.scheme == 'https') {|http|
             http.request(req)
         }
-        process_response(res)
+        process_response(res, @responseFormat)
     end
 
-    private
-    def process_response(response)
+    def process_response(response, processFormat)
       case response
         when Net::HTTPSuccess
-          JSON.parse(response.body, object_class: OpenStruct)
+          processFormat == 'json' ? JSON.parse(response.body, object_class: OpenStruct) : {'ok' => true, 'data' => response } 
         when Net::HTTPUnauthorized
-          {'error' => "#{response.message}: username and password set and correct?"}
+          { 'ok' => false, 'error' => "#{response.message}: username and password set and correct?"}
         when Net::HTTPServerError
-          {'error' => "#{response.message}: try again later?"}
+          { 'ok' => false, 'error' => "#{response.message}: try again later?"}
         else
-          {'error' => response.message}
+          { 'ok' => false, 'error' => response.message}
       end
     end
 end

@@ -1,4 +1,5 @@
 require 'gamification_helper'
+require 'semantic_helper'
 
 class Api::ApiController < ApplicationController
   
