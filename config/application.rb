@@ -38,12 +38,7 @@ module Fromthepage
     # }
 
     #CORS requests
-    config.middleware.use Rack::Cors do
-     allow do
-      origins '*'
-      resource '*', headers: :any, methods: %i(get post put delete options)
-     end
-    end
+    config.middleware.use Rack::Cors
 
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       class_attr_index = html_tag.index 'class="'
