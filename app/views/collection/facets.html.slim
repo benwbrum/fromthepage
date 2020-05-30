@@ -18,8 +18,11 @@ p Configure metadata facets by reviewing the metadata currently present in your 
           tr
             td =k
             td =v
-            td =f.text_field :label
-            td =f.select :type, ['text', 'date']
-            td =f.text_field :order
-            =f.hidden_field :metadata_field, value: k
+            =fields_for :metadata do |m|
+              =m.fields_for k do |t|
+                td =t.text_field :label
+              =m.fields_for k do |t|
+                td =t.select :type, ['text', 'date']
+              =m.fields_for k do |t|
+                td =t.text_field :order
   =f.submit
