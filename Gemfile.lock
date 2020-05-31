@@ -153,8 +153,12 @@ GEM
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     gravatar_image_tag (1.2.0)
+    haml (5.1.2)
+      temple (>= 0.8.0)
+      tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
+    htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
     i18n (0.8.6)
@@ -252,8 +256,18 @@ GEM
     rdf (3.1.1)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
+    rdf-aggregate-repo (3.1.0)
+      rdf (~> 3.1)
+    rdf-rdfa (3.1.0)
+      haml (~> 5.1)
+      htmlentities (~> 4.3)
+      rdf (~> 3.1)
+      rdf-aggregate-repo (~> 3.1)
+      rdf-xsd (~> 3.1)
     rdf-turtle (3.1.0)
       ebnf (~> 1.2)
+      rdf (~> 3.1)
+    rdf-xsd (3.1.0)
       rdf (~> 3.1)
     recaptcha (0.3.6)
     recursive-open-struct (0.4.5)
@@ -395,6 +409,7 @@ DEPENDENCIES
   rails-api
   rake
   rdf
+  rdf-rdfa
   rdf-turtle
   recaptcha (= 0.3.6)
   riiif

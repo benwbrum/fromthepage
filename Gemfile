@@ -92,6 +92,7 @@ gem 'devise-token_authenticatable', '~> 0.3'
 gem 'json-ld'
 gem 'rdf'
 gem 'rdf-turtle'
+gem 'rdf-rdfa'
 
 
 # Use font awesome icons

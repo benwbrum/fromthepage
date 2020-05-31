@@ -138,6 +138,10 @@ Fromthepage::Application.routes.draw do
     resources :user, path: 'user', only: [:create, :update, :destroy, :show] do
     end
     resources :upload, path: 'upload', only: [:create]
+    
+    match '/semantic_entity/list', as: :semantic_entity_search, to: 'semantic_entity#list', via: [:post]
+    
+    match '/schemaorg/:type', as: :get_schema_type, to: 'schema_org#get_schema_type', via: [:get]
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
