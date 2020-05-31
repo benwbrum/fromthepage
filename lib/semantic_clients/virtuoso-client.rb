@@ -46,8 +46,7 @@ class VirtuosoClient
   def listEntities(filter)
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
     entityType = (entityTypeSanitized = filter['entityType']) ? "FILTER (?entityType = #{ entityTypeSanitized }) " : ''
-    propertyValue = (propertyValueSanitized = filter['labelValue']) ? "FILTER regex(?propertyValue, '#{ propertyValueSanitized }', 'i') " : ''
-    includeMatchedProperties = filter['includeMatchedProperties'] 
+    propertyValue = (propertyValueSanitized = filter['labelValue']) ? "FILTER regex(?entityLabel, '#{ propertyValueSanitized }', 'i') " : ''
     query = "
         #{ getPrefixes() }
 
