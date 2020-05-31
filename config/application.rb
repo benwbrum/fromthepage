@@ -40,6 +40,10 @@ module Fromthepage
     #CORS requests
     config.middleware.use Rack::Cors
 
+    #Cache store
+    # config.cache_store = :memory_store, { size: 64.megabytes }
+    config.cache_store = :file_store, "#{root}/tmp/cache/"
+
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       class_attr_index = html_tag.index 'class="'
 
