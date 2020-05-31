@@ -9,7 +9,11 @@ class Api::SchemaOrgController < Api::ApiController
   end
 
   def get_schema_type
-    render_serialized rdfaToJsonld("http://schema.org/#{@type}")
+    # uses cache to optimize next calls
+    schemaType = Rails.cache.fetch(@type, expires_in: 72.hours) do
+      rdfaToJsonld("http://schema.org/#{@type}")
+    end
+    render_serialized schemaType
   end
 
   def rdfaToJsonld(url)
