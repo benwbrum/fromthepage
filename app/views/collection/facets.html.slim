@@ -24,4 +24,5 @@ p Configure metadata facets by reviewing the metadata currently present in your 
               td =t.select :input_type, ['text', 'date'], selected: metadata.facet_config.input_type
             =m.fields_for metadata[:key] do |t|
               td =t.text_field :order, value: metadata.facet_config.order
-  =f.submit
+  .toolbar
+    .toolbar-group.aright =f.submit
