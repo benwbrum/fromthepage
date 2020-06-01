@@ -53,11 +53,7 @@ class CollectionController < ApplicationController
 
   def facets
     collection = Collection.find(params[:collection_id])
-    @canonical_metadata = []
-
-    unless collection.canonical_metadata.nil?
-      @canonical_metadata = JSON.parse(collection.canonical_metadata)
-    end
+    @metadata_coverages = collection.metadata_coverages
   end
 
   def update_facets

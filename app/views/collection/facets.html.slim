@@ -13,16 +13,15 @@ p Configure metadata facets by reviewing the metadata currently present in your 
         th Type
         th Order
     tbody
-      -@canonical_metadata.each do |metadata|
-        -metadata.each do |k, v|
-          tr
-            td =k
-            td =v
-            =fields_for :metadata do |m|
-              =m.fields_for k do |t|
-                td =t.text_field :label
-              =m.fields_for k do |t|
-                td =t.select :type, ['text', 'date']
-              =m.fields_for k do |t|
-                td =t.text_field :order
+      -@metadata_coverages.each do |metadata|
+        tr
+          td =metadata[:key]
+          td =metadata[:count]
+          =fields_for :metadata do |m|
+            =m.fields_for metadata[:key] do |t|
+              td =t.text_field :label
+            =m.fields_for metadata[:key] do |t|
+              td =t.select :type, ['text', 'date']
+            =m.fields_for metadata[:key] do |t|
+              td =t.text_field :order
   =f.submit
