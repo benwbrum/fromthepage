@@ -72,7 +72,11 @@ class Metadata
     if canonical_metadata.blank?
       @new_metadata.each do |m|
         collection = work.collection
-        collection.metadata_coverages.create(key: m[:label], count: 1)
+        mc = collection.metadata_coverages.build
+        mc.key = m[:label]
+        mc.count = 1
+        mc.save
+        mc.create_facet_config(metadata_coverage_id: mc.collection_id)
       end
     else
       metadata_coverages = work.collection.metadata_coverages
