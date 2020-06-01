@@ -19,9 +19,9 @@ p Configure metadata facets by reviewing the metadata currently present in your 
           td =metadata[:count]
           =fields_for :metadata do |m|
             =m.fields_for metadata[:key] do |t|
-              td =t.text_field :label
+              td =t.text_field :label, value: metadata.facet_config.label
             =m.fields_for metadata[:key] do |t|
-              td =t.select :type, ['text', 'date']
+              td =t.select :input_type, ['text', 'date'], selected: metadata.facet_config.input_type
             =m.fields_for metadata[:key] do |t|
-              td =t.text_field :order
+              td =t.text_field :order, value: metadata.facet_config.order
   =f.submit

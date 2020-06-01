@@ -57,15 +57,16 @@ class CollectionController < ApplicationController
   end
 
   def update_facets
-    full_metadata = []
-    metadata_set = params[:metadata]
+    collection = Collection.find(params[:collection_id])
 
-    metadata_set.each do |k, v|
-      full_metadata << { k => { label: v['label'], type: v['type'], order: v['order'] } } unless v['label'].blank? && v['order'].blank?
+    collection.metadata_coverages.each do |m|
+      metadata = params[:metadata][m[:key]]
+      m.facet_config.label = metadata['label']
+      m.facet_config.input_type = metadata['input_type']
+      m.facet_config.order = metadata['order']
+      m.facet_config.save
     end
 
-    collection = Collection.find(params[:collection_id])
-    collection.update(facet_config: full_metadata.to_json)
     redirect_to collection_facets_path(collection.owner, collection), notice: "Collection facets updated successfully"
   end
 
