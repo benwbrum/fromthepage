@@ -67,27 +67,23 @@ class Metadata
   end
 
   def save_canonical_metadata(work)
-    canonical_metadata = work.collection.canonical_metadata
+    canonical_metadata = work.collection.metadata_coverages
 
     if canonical_metadata.blank?
       @new_metadata.each do |m|
-        @canonical_metadata << { m[:label] => 1 }
+        collection = work.collection
+        collection.metadata_coverages.create(key: m[:label], count: 1)
       end
     else
-      json_metadata = JSON.parse(work.collection.canonical_metadata)
+      metadata_coverages = work.collection.metadata_coverages
 
-      unless json_metadata.empty?
-        json_metadata.each do |c|
-          c.each do |k, v|
-            c[k] = v + 1
-          end
+      unless metadata_coverages.empty?
+        metadata_coverages.each do |m|
+          m.count = m.count + 1
+          m.save
         end
       end
-
-      @canonical_metadata = json_metadata
     end
-
-    work.collection.update(canonical_metadata: @canonical_metadata.to_json)
   end
 
   def output_file(rowset_errors)
