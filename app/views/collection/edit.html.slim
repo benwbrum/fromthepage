@@ -193,10 +193,11 @@
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span Disable OCR
 
-    h3 Metadata
-    p Upload metadata for items in this collection in bulk.
-    =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
-      span Upload Metadata
+    -unless current_user.account_type == "Individual Researcher"
+      h3 Metadata
+      p Upload metadata for items in this collection in bulk.
+      =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+        span Upload Metadata
 
     h3 Metadata Facets
     p Allow users to browse works within this collection via metadata. (You can configure the metadata facets in a separate step.)
