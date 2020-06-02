@@ -45,8 +45,10 @@ class VirtuosoClient
 
   def listEntities(filter)
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
-    entityType = (entityTypeSanitized = filter['entityType']) ? "FILTER (?entityType = #{ entityTypeSanitized }) " : ''
-    propertyValue = (propertyValueSanitized = filter['labelValue']) ? "FILTER regex(?entityLabel, '#{ propertyValueSanitized }', 'i') " : ''
+    sanitizedFilter = sanitizeFilter(filter)
+    entityType = (sanitizedFilter['entityType'] != nil) ? "FILTER (?entityType = #{ filter['entityType'] }) " : ''
+    propertyValue = (sanitizedFilter['labelValue'] != nil) ? "FILTER regex(?entityLabel, #{ sanitizedFilter['labelValue'] }, 'i') " : ''
+    limit = (sanitizedFilter['limit']  != nil) ? "LIMIT #{ sanitizedFilter['limit'] }" : ''
     query = "
         #{ getPrefixes() }
 
@@ -55,11 +57,12 @@ class VirtuosoClient
             ?entityId rdf:type ?entityType #{ entityType }.
             ?entityId rdfs:label ?entityLabel #{ propertyValue }.
         }
+        #{limit}
     "
     do_query(query, 'json')&.results || { :bindings => [] }
   end
 
-  def describeEntity(id, useDefaultGraph = false)
+  def describeEntity(idSemanticContribution, useDefaultGraph = false)
     idSemanticContributionQuery = useDefaultGraph ? "#{@graph}/#{idSemanticContribution}" : idSemanticContribution
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
     query = "
@@ -68,7 +71,7 @@ class VirtuosoClient
       DESCRIBE <#{ idSemanticContributionQuery }>
     "
     response = do_query(query)
-    (entity = response["data"].body) ? rdfToJsonld(entity, id) : nil
+    (entity = response["data"].body) ? rdfToJsonld(entity, idSemanticContribution) : nil
   end
 
   def describeSemanticContributionEntity(idSemanticContribution, useDefaultGraph = false)
@@ -112,7 +115,7 @@ class VirtuosoClient
       JSON::LD::API::fromRdf(graph) do |expanded|
         compacted = JSON::LD::API.compact(expanded, context['@context'])
       end
-      flatCompacted(compacted, element_id, is_container).to_json
+      flatCompacted(compacted, element_id, is_container)
     end
 
     def flatCompacted(compacted, element_id, is_container = false)
@@ -134,4 +137,15 @@ class VirtuosoClient
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
       "
     end
+
+    def sanitizeFilter(filter)
+      sanitizedFilter = {}
+      filter.each do |key, value|
+        entitySanitized = ActiveRecord::Base.connection.quote(value)
+        if (value && entitySanitized && entitySanitized != '')
+          sanitizedFilter[key] = entitySanitized
+        end
+      end
+      return sanitizedFilter
+    end 
 end
