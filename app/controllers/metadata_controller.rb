@@ -12,8 +12,11 @@ class MetadataController < ApplicationController
     collection = Collection.find(params[:metadata][:collection_id])
     metadata = Metadata.new(metadata_file: metadata_file, collection: collection)
     result = metadata.process_csv
+    rows = result[:content].count
+    row_errors = result[:errors].count
+    link = helpers.link_to 'link', collection_metadata_csv_error_path
 
-    flash[:alert] = "Your upload has finished processing. #{result[:content].count} rows were updated successfully, #{result[:errors].count} rows encountered errors. Download the error file here: #{helpers.link_to 'link', collection_metadata_csv_error_path}"
+    flash[:alert] = "Your upload has finished processing. #{rows} rows were updated successfully, #{row_errors} rows encountered errors. Download the error file here: #{link}"
 
     ajax_redirect_to edit_collection_path(collection.owner, collection)
   end
