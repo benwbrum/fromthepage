@@ -202,10 +202,10 @@
     h3 Metadata Facets
     p Allow users to browse works within this collection via metadata. (You can configure the metadata facets in a separate step.)
     -if @collection.facets_enabled?
-      =link_to(collection_disable_facets_path(:collection_id => @collection.id), class: 'button')
+      =link_to(facets_disable_path(:collection_id => @collection.id), class: 'button')
         span Disable Facets
     -else
-      =link_to(collection_enable_facets_path(:collection_id => @collection.id), class: 'button')
+      =link_to(facets_enable_path(:collection_id => @collection.id), class: 'button')
         span Enable Facets
 
     h3 Blank Collection

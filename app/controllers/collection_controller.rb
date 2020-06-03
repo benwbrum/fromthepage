@@ -39,18 +39,6 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
-  def enable_facets
-    @collection.facets_enabled = true
-    @collection.save
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
-  def disable_facets
-    @collection.facets_enabled = false
-    @collection.save
-    redirect_to edit_collection_path(@collection.owner, @collection)
-  end
-
   def facets
     collection = Collection.find(params[:collection_id])
     @metadata_coverages = collection.metadata_coverages
