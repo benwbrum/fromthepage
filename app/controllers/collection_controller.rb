@@ -44,20 +44,6 @@ class CollectionController < ApplicationController
     @metadata_coverages = collection.metadata_coverages
   end
 
-  def update_facets
-    collection = Collection.find(params[:collection_id])
-
-    collection.metadata_coverages.each do |m|
-      metadata = params[:metadata][m[:key]]
-      m.facet_config.label = metadata['label']
-      m.facet_config.input_type = metadata['input_type']
-      m.facet_config.order = metadata['order']
-      m.facet_config.save
-    end
-
-    redirect_to collection_facets_path(collection.owner, collection), notice: "Collection facets updated successfully"
-  end
-
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners

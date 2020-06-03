@@ -3,7 +3,7 @@
 h2.nomargin Metadata Facets
 p Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.
 
-=form_for(:metadata, url: collection_update_facets_path(@collection.owner, @collection)) do |f|
+=form_for(:metadata, url: facets_update_path(@collection.owner, @collection)) do |f|
   table.datagrid
     thead
       tr
@@ -24,5 +24,6 @@ p Configure metadata facets by reviewing the metadata currently present in your 
               td =t.select :input_type, ['text', 'date'], selected: metadata.facet_config.input_type
             =m.fields_for metadata[:key] do |t|
               td =t.text_field :order, value: metadata.facet_config.order
+  =hidden_field_tag :collection_id, @collection.id
   .toolbar
     .toolbar-group.aright =f.submit

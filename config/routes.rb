@@ -47,6 +47,7 @@ Fromthepage::Application.routes.draw do
   scope 'facets', as: 'facets' do
     get 'enable', to: 'facets#enable'
     get 'disable', to: 'facets#disable'
+    post 'update', to: 'facets#update'
   end
 
   scope 'collection', as: 'collection' do
@@ -323,7 +324,6 @@ Fromthepage::Application.routes.draw do
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'facets'
-      post 'update_facets'
 
       get 'edit', on: :member
       get 'new_work', on: :member
