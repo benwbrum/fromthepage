@@ -29,12 +29,14 @@ en:
       recent_subject_indexing: "Recent Subject Indexing"
       recent_translation_subject_indexing: "Recent Translation Subject Indexing"
       recent_works_added: "Recent Works Added"
+    #next section is admin only  
     contributors:
       contributions: "Contributions Between %{start_deed} and %{end_deed}"
       select_new_date: "Select a new date range"
       start_date: "Start date"
       end_date: "End date"
       update: "Update"
+    #next section is admin only  
     contributors_body:
       new_collaborators: "New Collaborators"
       collaborator_stats: "Collaborator Stats %{start_deed} through %{end_deed}"
@@ -49,6 +51,7 @@ en:
       no_collaborators: "No Collaborators"
       detailed_spreadsheet_export: "A detailed spreadsheet export of all collaborators is available on your owner dashboard."
       all_collaborator_emails: "All Collaborator Emails"
+    #next section is admin only    
     edit:
       title: "Title"
       current_url: "The current URL for this collection is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words."
@@ -132,6 +135,7 @@ en:
       pages_that_need_transcription: "Pages That Need Transcription"
       owned_by: "Owned by"
       return_to_collection: "Return to collection"
+    #next section is admin only  
     new:
       create_new_collection: "Create New Collection"
       individual_researcher_limited_account: "Individual Researcher Accounts are limited to a single collection. To upgrade your account contact support@fromthepage.com."
@@ -145,13 +149,17 @@ en:
       alphabetical: "Alphabetical"
       recent_activity: "Recent Activity"
       percent_complete: "Percent Complete"
+    #next section is admin only
     update:
       notice: "Collection has been updated"
+    #next section is admin only
     create:
       notice: "Collection has been created"
     start_transcribing:
       notice: "Sorry, but there are no qualifying pages in this collection."
+    #next section is admin only
     enable_ocr:
       notice: "OCR correction has been enabled for all works."
+    #next section is admin only
     disable_ocr:
       notice: "OCR correction has been disabled for all works."
