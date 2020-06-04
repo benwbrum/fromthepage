@@ -62,16 +62,19 @@ class VirtuosoClient
     do_query(query, 'json')&.results || { :bindings => [] }
   end
 
-  def describeEntity(idSemanticContribution, useDefaultGraph = false)
-    idSemanticContributionQuery = useDefaultGraph ? "#{@graph}/#{idSemanticContribution}" : idSemanticContribution
+  def describeEntity(entityId, useDefaultGraph = false)
+    entityIdQuery = useDefaultGraph ? "#{@graph}/#{entityId}" : entityId
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
     query = "
       #{ getPrefixes() }
 
-      DESCRIBE <#{ idSemanticContributionQuery }>
+      DESCRIBE <#{ entityIdQuery }> ?p ?q
+      WHERE {
+        <#{ entityIdQuery }> ?p ?q
+      }
     "
     response = do_query(query)
-    (entity = response["data"].body) ? rdfToJsonld(entity, idSemanticContribution) : nil
+    (entity = response["data"].body) ? compressEntityRelations(rdfToJsonld(entity, entityId), entityId) : nil
   end
 
   def describeSemanticContributionEntity(idSemanticContribution, useDefaultGraph = false)
@@ -147,5 +150,27 @@ class VirtuosoClient
         end
       end
       return sanitizedFilter
-    end 
+    end
+
+    def getEntityItem(jsonld_hash, entityId)
+      schemedEntityId = "transcriptor:#{entityId.split('/').last}" 
+      jsonld_hash['@graph'].find{ |entityItem| entityItem['@id'] == schemedEntityId }
+    end
+
+    # Iterates over object taking relationships ID's and nesting that to make one compact object
+    def compressEntityRelations(jsonld_hash, entityId)
+      graph = jsonld_hash['@graph']
+      entity = getEntityItem(jsonld_hash, entityId)
+      entity.each do |property, value|
+        if(value.is_a?(Hash) && value["@id"])
+          entity[property] = graph.find{ |entityItem| entityItem['@id'] == value["@id"] }
+        elsif value.is_a?(Array)
+          processedArray = []
+          value.each do | arrayMember |
+            processedArray.push(arrayMember["@id"] ? graph.find{ |entityItem| entityItem['@id'] == arrayMember["@id"] } : arrayMember)
+          end
+          entity[property] = processedArray
+        end
+      end
+    end
 end
