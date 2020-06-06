@@ -15,6 +15,11 @@ class SemanticHelper
     semanticClient.listSemanticContributions(data)
   end
   
+  ## Lists semantic contributions matching entityId ##
+  def self.listSemanticContributionsByEntity(data = {})
+    semanticClient.listSemanticContributionsByEntity(data)
+  end
+
   ## Lists semantic contributions matching filters: type and propertyValue(if someone match) ##
   def self.listEntities(data = {})
     semanticClient.listEntities(data)

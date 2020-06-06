@@ -26,8 +26,9 @@ class VirtuosoClient
 
   def listSemanticContributions(filter = {})
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
-    entityType = (entityTypeSanitized = filter['entityType']) ? "FILTER (?entityType = #{ entityTypeSanitized }) " : ''
-    propertyValue = (propertyValueSanitized = filter['propertyValue']) ? "FILTER regex(?propertyValue, '#{ propertyValueSanitized }', 'i') " : ''
+    sanitizedFilter = sanitizeFilter(filter)
+    entityType = (sanitizedFilter['entityType'] != nil) ? "FILTER (?entityType = #{ filter['entityType'] }) " : ''
+    propertyValue = (sanitizedFilter['propertyValue'] != nil) ? "FILTER regex(?propertyValue, '#{ filter['propertyValue'] }', 'i') " : ''
     includeMatchedProperties = filter['includeMatchedProperties'] 
     query = "
         #{ getPrefixes() }
@@ -43,10 +44,26 @@ class VirtuosoClient
     do_query(query, 'json')&.results || { :bindings => [] }
   end
 
+  def listSemanticContributionsByEntity(filter = {})
+    # sanitize with ActiveRecord::Base::sanitize_sql(string)
+    sanitizedFilter = sanitizeFilter(filter)
+    propertyValue = (sanitizedFilter['entityId'] != nil) ? "FILTER regex(?propertyValue, '#{ filter['entityId'] }', 'i') " : ''
+    query = "
+        #{ getPrefixes() }
+
+        SELECT DISTINCT ?idNote 
+        WHERE {
+            ?idNote rdf:type schema:NoteDigitalDocument .
+            ?idNote schema:mainEntity #{ filter['entityId'] } .
+        }
+    "
+    do_query(query, 'json')&.results || { :bindings => [] }
+  end
+
   def listEntities(filter)
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
     sanitizedFilter = sanitizeFilter(filter)
-    entityType = (sanitizedFilter['entityType'] != nil) ? "FILTER (?entityType = #{ filter['entityType'] }) " : ''
+    entityType = (sanitizedFilter['entityType'] != nil) ? "FILTER (?entityType = #{ filter['entityType'] }) " : 'FILTER (?entityType != schema:NoteDigitalDocument) '
     propertyValue = (sanitizedFilter['labelValue'] != nil) ? "FILTER regex(?entityLabel, #{ sanitizedFilter['labelValue'] }, 'i') " : ''
     limit = (sanitizedFilter['limit']  != nil) ? "LIMIT #{ sanitizedFilter['limit'] }" : ''
     query = "

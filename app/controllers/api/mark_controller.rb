@@ -4,7 +4,7 @@ class Api::MarkController < Api::ApiController
   before_action :set_mark, only: [:update, :destroy, :show]
 
   def public_actions
-    return [:index]
+    return [:index, :list_by_semantic_entity]
   end
 
   def index
@@ -26,6 +26,14 @@ class Api::MarkController < Api::ApiController
     responseMarks=[]
     marks.map{|mark| responseMarks.push(mark.valueObject) }
     render_serialized ResponseWS.default_ok(responseMarks)
+  end
+
+  def list_by_semantic_entity
+    params.permit(:filter)
+    entities = SemanticHelper.listSemanticContributionsByEntity(params[:filter] || {})&.bindings || []
+    entityIDs = entities.map{ |entity| entity.idNote&.value&.split('/').last }
+    marks = Mark.joins(:semanticContribution).where('contributions.slug in (?)', entityIDs)
+    response_serialized_object marks
   end
 
   def create
