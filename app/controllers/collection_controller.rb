@@ -165,6 +165,11 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
+  def restrict_transcribed
+    @collection.works.update_all(restrict_scribes: true)
+    redirect_to action: 'edit', collection_id: @collection.id
+  end
+
   def enable_fields
     @collection.field_based = true
     @collection.voice_recognition = false
