@@ -82,7 +82,6 @@ module ContentdmTranslator
 
   def self.ocr_from_cdm_info(info, fts_field)
     transcript = info[fts_field]
-    binding.pry
     if transcript.kind_of? String
       transcript
     else
