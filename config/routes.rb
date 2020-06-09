@@ -111,7 +111,7 @@ Fromthepage::Application.routes.draw do
     get 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
     get 'combine_duplicate', to: 'article#combine_duplicate'
-    put 'article_category', :to => 'article#article_category'
+    post 'article_category', :to => 'article#article_category'
   end
 
   scope 'export', as: 'export' do
