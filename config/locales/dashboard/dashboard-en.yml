@@ -1,0 +1,5 @@
+en:
+  dashboard:
+    alphabetical_collections_and_document_sets:
+      start_transcribing: "Start Transcribing"
+      owned_by: "Owned by %{author}"
