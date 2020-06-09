@@ -4,31 +4,31 @@
   article.maincol
     h3 =@work.title
     -if @work.description.present?
-      h5 Description
+      h5 =t('.description')
       .big =raw(@work.description)
 
     -if @work.physical_description.present?
-      h5 Physical Description
+      h5 =t('.physical_description')
       .big =@work.physical_description
 
     -if @work.document_history.present?
-      h5 Document History
+      h5 =t('.document_history')
       .big =@work.document_history
 
     -if @work.permission_description.present?
-      h5 Permission Description
+      h5 =t('.permission_description')
       .big =@work.permission_description
 
     -if @work.location_of_composition.present?
-      h5 Location of Composition
+      h5 =t('.location_of_composition')
       .big =@work.location_of_composition
 
     -if @work.author.present?
-      h5 Author Name
+      h5 =t('.author_name')
       .big =@work.author
 
     -if @work.transcription_conventions.present?
-      h5 Transcription Conventions
+      h5 =t('.transcription_conventions')
       div ==@work.transcription_conventions
 
   aside.sidecol
@@ -36,12 +36,12 @@
       =link_to(user_profile_path(@work.owner), class: 'userpic')
         =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
       .username
-        small Uploaded by
+        small =t('.uploaded_by')
         =link_to @work.owner.display_name, user_profile_path(@work.owner)
     hr
     h5
-      span.fgfaded Transcription Version:&nbsp;
+      span.fgfaded =t('.transcription_version').html_safe
       span =@work.transcription_version
     h5(style="margin-top:0")
-      span.fgfaded Number of Pages:&nbsp;
+      span.fgfaded =t('.number_of_pages').html_safe
       span =@work.pages.size
