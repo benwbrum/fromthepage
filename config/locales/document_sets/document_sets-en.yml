@@ -5,3 +5,5 @@ en:
       current_url_for_this_work: "The current URL for this work is %{current_url}.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words."
       description: "Description"
       save_document_set: "Save Document Set"
+    form:
+      error_explanation: "%{error_count} prohibited this document_set from being saved:"
