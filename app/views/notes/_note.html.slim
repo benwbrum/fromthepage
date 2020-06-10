@@ -4,17 +4,17 @@
   .user-bubble_content
     -if note.user == current_user
       .user-bubble_actions
-        a(data-note-edit=note.id title='Edit')
+        a(data-note-edit=note.id title=t('.edit'))
           =svg_symbol '#icon-edit', class: 'icon'
-        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => 'Are you sure you want to delete this note?' }, title: 'Delete')
-          =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete'
+        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => t('.delete_confirm_message') }, title: t('.delete'))
+          =svg_symbol '#icon-remove-sign', class: 'icon', title: t('.delete')
     -elsif current_user && current_user.like_owner?(@work)
       .user-bubble_actions
-        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => 'Are you sure you want to delete this note?' }, title: 'Delete')
-          =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete'
+        =link_to(note, method: :delete, remote: true, data: { "note-delete" => note.id, :confirm => t('.delete_confirm_message') }, title: 'Delete')
+          =svg_symbol '#icon-remove-sign', class: 'icon', title: t('.delete')
     =time_tag note.created_at
       =link_to note.user.display_name, user_profile_path(:user_id => note.user.id)
-      =" #{time_ago_in_words note.created_at} ago"
+      =t('.time_ago_in_words', time: time_ago_in_words(note.created_at))
     .user-bubble_note ==simple_format(sanitize(note.body, tags: %w(strong b em i a), attributes: %w(href)))
 
   -if note.user == current_user
@@ -25,6 +25,6 @@
         span.user-bubble_form_error
         -if @collection.voice_recognition
           span.voice-info.voice
-          =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img_update', onclick: 'startButton(event);'
-        a(data-note-edit=note.id title='Edit') Cancel
-        =f.button 'Update'
+          =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img_update', onclick: 'startButton(event);'
+        a(data-note-edit=note.id title=t('.edit')) =t('.cancel')
+        =f.button t('.update')
