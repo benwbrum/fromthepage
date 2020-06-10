@@ -1,0 +1,7 @@
+en:
+  document_sets:
+    edit:
+      document_is_marked_public: "If the document set is marked as public, works put within it will be readable even if the collection is marked as private."
+      current_url_for_this_work: "The current URL for this work is %{current_url}.  If you want to edit the document set section of the URL, please use lowercase letters and dashes between any words."
+      description: "Description"
+      save_document_set: "Save Document Set"
