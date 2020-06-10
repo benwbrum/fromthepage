@@ -7,3 +7,12 @@ en:
       save_document_set: "Save Document Set"
     form:
       error_explanation: "%{error_count} prohibited this document_set from being saved:"
+    set_works:
+      work_title: "Work title"
+      progress: "Progress"
+      collaboration: "Collaboration"
+      remove_from_set: "Remove from set"
+      restricted: "Restricted"
+      unrestricted: "Unrestricted"
+      remove_title_from_document_set: "Remove %{title} from Document Set"
+      remove_works: "Remove works"
