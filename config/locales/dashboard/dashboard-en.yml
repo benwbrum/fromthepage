@@ -8,3 +8,12 @@ en:
       meta_description: "You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age."
     hierarchical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
+    landing_page:
+      previous_image: "Previous image"
+      next_image: "Next image"
+      transcribe_a_page: "Transcribe a page"
+      all_collections: "All Collections"
+      search_for_collections_or_owners: "Search for collections or owners..."
+      search: "Search"
+      search_for_collections: "Search for collections"
+      recent_activity: "Recent Activity"
