@@ -1,0 +1,21 @@
+en:
+  deed:
+    deed:
+      transcribed_page: "transcribed page %{page}"
+      edited_page: "edited page %{page}"
+      indexed_page: "indexed page %{page}"
+      marked_page_as_blank: "marked page %{page} as blank"
+      edited_article: "edited %{article} article"
+      added_a_note_to_page: "added a note to page %{page}"
+      translated_page: "translated page %{page}"
+      edited_translation_of_page: "edited the translation of page %{page}"
+      corrected_page: "corrected page %{page}"
+      marked_page_as_needing_review: "marked page %{page} as needing review"
+      indexed_translation_of_page: "indexed the translation of page %{page}"
+      marked_translation_page_as_needing_review: "marked translation page %{page} as needing review"
+      added_work: "added %{work}"
+      joined: "joined "
+      this_collection: "this collection"
+      in_the_work: " in the work %{work}"
+      in_collection: " in %{collection} collection"
+      saying_deed: ", saying &ldquo;%{title}&rdquo;"
