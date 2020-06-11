@@ -1,0 +1,16 @@
+en:
+  page:
+    edit:
+      page_title: "Page Title"
+      page_image: "Page Image"
+      click_to_browse_a_file: "Click to browse a file..."
+      browse: "Browse"
+      delete_confirm_message: "Are you sure you want to delete this page? After deleting you won't be able to recover it!"
+      delete_page: "Delete Page"
+      save_changes: "Save Changes"
+      page_position: "Page Position: %{position}"
+      created: "Created %{date}"
+      here_you_can_edit: "Here you can edit the page title and upload a new image. If you want to edit page transcription or translation text please switch to the appropriate tab above."
+      dimensions: "Dimensions: %{width}&times;%{height}"
+      rotate_clockwise: "Rotate Clockwise"
+      rotate_counterclockwise: "Rotate Counterclockwise"
