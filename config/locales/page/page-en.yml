@@ -14,3 +14,12 @@ en:
       dimensions: "Dimensions: %{width}&times;%{height}"
       rotate_clockwise: "Rotate Clockwise"
       rotate_counterclockwise: "Rotate Counterclockwise"
+    new:
+      add_new_page: "Add New Page"
+      choose_a_title: "Choose a title for the page and select a page image to upload."
+      page_image: "Page Image"
+      click_to_browse_a_file: "Click to browse a file..."
+      browse: "Browse"
+      cancel: "Cancel"
+      save_and_new_work: "Save & New Work"
+      save_and_add_next_page: "Save & Add Next Page"
