@@ -166,7 +166,7 @@ class CollectionController < ApplicationController
   end
 
   def restrict_transcribed
-    @collection.works.update_all(restrict_scribes: true)
+    @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).update_all(restrict_scribes: true)
     redirect_to action: 'edit', collection_id: @collection.id
   end
 
