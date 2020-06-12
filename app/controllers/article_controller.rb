@@ -1,6 +1,7 @@
 class ArticleController < ApplicationController
   before_filter :authorized?, :except => [:list, :show, :tooltip, :graph]
 
+
   include AbstractXmlController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
@@ -185,6 +186,23 @@ class ArticleController < ApplicationController
     session[:col_id] = @collection.slug
   end
 
+
+  # display the article upload form
+  def upload_form
+  end
+
+  # actually process the uploaded CSV
+  def subject_upload
+
+  end
+
+
+  def upload_example
+    example = File.read(File.join(Rails.root, 'app', 'views', 'static', 'subject_example.csv'))
+    send_data example, filename: "subject_example.csv"
+#    render :file => 'static/subject_example.csv', :layout => false, :content_type => "text/csv"
+  end
+
   protected
   def rename_article(old_name, new_name)
     # walk through all pages referring to this
@@ -255,16 +273,18 @@ class ArticleController < ApplicationController
     from_article.destroy
   end
 
+
+  def gis_truncated?(params, dec)
+    unless params[:latitude] || params[:longitude] then return false end
+
+    lat = params[:latitude].split('.')
+    lon = params[:longitude].split('.')
+
+    if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
+    if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
+
+    if lat_dec > dec || lon_dec > dec then return true else return false end
+  end
+
 end
 
-def gis_truncated?(params, dec)
-  unless params[:latitude] || params[:longitude] then return false end
-
-  lat = params[:latitude].split('.')
-  lon = params[:longitude].split('.')
-
-  if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
-  if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
-
-  if lat_dec > dec || lon_dec > dec then return true else return false end
-end
