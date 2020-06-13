@@ -53,7 +53,7 @@ module AbstractXmlHelper
       if preserve_lb
         e.replace_with(REXML::Element.new('br'))
       else
-        if params[:action] == "read_work"
+        if params[:action] == "read_work" || params[:action] == 'needs_review_pages'
           if e.attributes['break'] == "no"
             lb.add_text('')
           else
