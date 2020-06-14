@@ -42,7 +42,12 @@ class VirtuosoClient
           ?idMainEntity ?entityMatchingProperty ?propertyValue #{ propertyValue }.
         }
     "
-    do_query(query, 'json')&.results || { :bindings => [] }
+    queryResult = do_query(query, 'json')
+    if queryResult
+      return queryResult.results
+    else
+      return { :bindings => [] }
+    end
   end
 
   def listSemanticContributionsByEntity(filter = {})

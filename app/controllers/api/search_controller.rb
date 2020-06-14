@@ -10,7 +10,6 @@ class Api::SearchController < Api::ApiController
     params.permit(:filter)
     entities = SemanticHelper.listSemanticContributionsByEntity(params[:filter] || {})&.bindings || []
     entityIDs = entities.map{ |entity| entity.idNote&.value&.split('/').last }
-    entityIDs = ['semantic-contribution-12', 'semantic-contribution-11']
     info = SemanticContribution.select(
         'collections.id AS `collectionId`','collections.title AS `collectionTitle`',
         'works.id AS `workId`','works.title AS `workTitle`',
