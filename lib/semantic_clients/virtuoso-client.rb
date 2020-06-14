@@ -1,4 +1,5 @@
 require_relative '../http-client/http-client'
+require_relative '../schema_helper'
 require "base64"
 require 'json/ld'
 require 'rdf/turtle'
@@ -28,7 +29,7 @@ class VirtuosoClient
     # sanitize with ActiveRecord::Base::sanitize_sql(string)
     sanitizedFilter = sanitizeFilter(filter)
     entityType = (sanitizedFilter['entityType'] != nil) ? "FILTER (?entityType = #{ filter['entityType'] }) " : ''
-    propertyValue = (sanitizedFilter['propertyValue'] != nil) ? "FILTER regex(?propertyValue, '#{ filter['propertyValue'] }', 'i') " : ''
+    propertyValue = (sanitizedFilter['propertyValue'] != nil) ? "FILTER regex(?propertyValue, '#{ getSchemaReference(filter['propertyValue']) }', 'i') " : ''
     includeMatchedProperties = filter['includeMatchedProperties'] 
     query = "
         #{ getPrefixes() }
@@ -54,16 +55,19 @@ class VirtuosoClient
         SELECT DISTINCT ?idNote 
         WHERE {
             ?idNote rdf:type schema:NoteDigitalDocument .
-            ?idNote schema:mainEntity #{ filter['entityId'] } .
+            ?idNote schema:mainEntity #{ getTranscriptorReference(filter['entityId']) } .
         }
     "
+    print query
+    print '\n'
     do_query(query, 'json')&.results || { :bindings => [] }
   end
 
   def listEntities(filter)
-    # sanitize with ActiveRecord::Base::sanitize_sql(string)
+    matchedEntityTypes = getEntityTypes(filter)
     sanitizedFilter = sanitizeFilter(filter)
-    entityType = (sanitizedFilter['entityType'] != nil) ? "FILTER (?entityType = #{ filter['entityType'] }) " : 'FILTER (?entityType != schema:NoteDigitalDocument) '
+    defaultTypeFilter = "FILTER (?entityDefaultType IN (#{ getEntityTypes({"entityType" => 'schema:Thing', "hierarchical" => true}).join(',') })) "
+    entityType = (matchedEntityTypes != nil) ? "FILTER (?entityType IN (#{ matchedEntityTypes.join(',') }) && ?entityType != schema:NoteDigitalDocument) " : "FILTER (?entityType != schema:NoteDigitalDocument) "
     propertyValue = (sanitizedFilter['labelValue'] != nil) ? "FILTER regex(?entityLabel, #{ sanitizedFilter['labelValue'] }, 'i') " : ''
     limit = (sanitizedFilter['limit']  != nil) ? "LIMIT #{ sanitizedFilter['limit'] }" : ''
     query = "
@@ -72,6 +76,7 @@ class VirtuosoClient
         SELECT DISTINCT ?entityId, ?entityType, ?entityLabel
         WHERE {
             ?entityId rdf:type ?entityType #{ entityType }.
+            ?entityId rdf:type ?entityDefaultType #{ defaultTypeFilter }.
             ?entityId rdfs:label ?entityLabel #{ propertyValue }.
         }
         #{limit}
@@ -189,5 +194,24 @@ class VirtuosoClient
           entity[property] = processedArray
         end
       end
+    end
+
+    def getEntityTypes(filter)
+      if(filter['entityType'])
+        matchedEntityType = SchemaHelper.getFullTypeHierarchy(filter['entityType'])
+        if(matchedEntityType)
+          return filter['hierarchical'] ? matchedEntityType : [filter['entityType']]
+        end
+        return nil
+      end
+      return nil
+    end
+
+    def getSchemaReference(stringReference)
+      stringReference.gsub(/<|>/, '').gsub(/http:\/\/schema.org\//, 'schema:')
+    end
+
+    def getTranscriptorReference(stringReference)
+      stringReference.gsub(/<|>/, '').gsub(@graph + "/", 'transcriptor:')
     end
 end

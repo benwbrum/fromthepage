@@ -116,6 +116,7 @@ Fromthepage::Application.routes.draw do
     resources :mark, path: 'mark', only: [:index, :create, :update, :destroy, :show] do
       get '', path: 'transcriptions', as: :show_transcriptions, to: 'transcription#list_by_mark'
       get '', path: 'votes',  to: 'transcription#list_likes_by_user'
+      post 'by_slug', path: '', as: :list_by_semantic_slug, to: 'mark#list_by_semantic_slug'
     end
     resources :layer, path: 'layer', only: [:index, :create, :update, :destroy, :show] do
       get '', path: 'marks', as: :show_marks, to: 'mark#list_by_layer'
@@ -142,6 +143,7 @@ Fromthepage::Application.routes.draw do
     match '/semantic_entity/list', as: :semantic_entity_search, to: 'semantic_entity#list', via: [:post]
     match '/semantic_entity/describe', as: :semantic_entity_describe, to: 'semantic_entity#show', via: [:get]
     match '/semantic_entity/list_marks', as: :semantic_entity_list_marks, to: 'mark#list_by_semantic_entity', via: [:post]
+    match '/semantic_entity/list_references', as: :semantic_entity_list_references, to: 'search#list_semantic_references', via: [:post]
     
     match '/schemaorg/:type', as: :get_schema_type, to: 'schema_org#get_schema_type', via: [:get]
   end

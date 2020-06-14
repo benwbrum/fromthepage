@@ -16,11 +16,13 @@ class Mark < ActiveRecord::Base
       self.transcription = Transcription.new({text: args[:transcription_text]})
       self.transcription.mark = self
       self.transcription.user = user
+      self.transcription.slug = SecureRandom.uuid
     end
     if(args[:translation_text])
       self.translation = Translation.new({text: args[:translation_text]})
       self.translation.mark = self
       self.translation.user = user
+      self.translation.slug = SecureRandom.uuid
     end
     if(args[:semantic_text])
       self.semanticContribution = SemanticContribution.new({text: args[:semantic_text], schema_type: args[:schema_type]})

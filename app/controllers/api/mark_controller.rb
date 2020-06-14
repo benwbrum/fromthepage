@@ -28,6 +28,18 @@ class Api::MarkController < Api::ApiController
     render_serialized ResponseWS.default_ok(responseMarks)
   end
 
+  def list_by_semantic_slug
+    marks = []
+    if params[:page_id]
+      marks = Mark.joins(:semanticContribution).where(contributions: { :slug => params[:slugs] }, :page_id => params[:page_id])
+    else
+      marks = Mark.joins(:semanticContribution).where(contributions: { :slug => params[:slugs] })
+    end
+    responseMarks=[]
+    marks.map{|mark| responseMarks.push(mark.valueObject) }
+    response_serialized_object responseMarks
+  end
+
   def list_by_semantic_entity
     params.permit(:filter)
     entities = SemanticHelper.listSemanticContributionsByEntity(params[:filter] || {})&.bindings || []
