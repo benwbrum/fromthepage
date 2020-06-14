@@ -58,8 +58,6 @@ class VirtuosoClient
             ?idNote schema:mainEntity #{ getTranscriptorReference(filter['entityId']) } .
         }
     "
-    print query
-    print '\n'
     do_query(query, 'json')&.results || { :bindings => [] }
   end
 
