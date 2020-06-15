@@ -101,18 +101,6 @@
         =svg_symbol '#icon-lock', class: 'icon'
         span =t('.make_collection_private')
 
-    h3 =t('.collection_status')
-    -if @collection.active?
-      p =t('.collection_active_message')
-      =link_to(collection_toggle_collection_active_path(:collection_id => @collection.id), class: 'button')
-        =svg_symbol '#icon-lock', class: 'icon'
-        span =t('.make_collection_inactive')
-    -else
-      p =t('.collection_inactive_message')
-      =link_to(collection_toggle_collection_active_path(:collection_id => @collection.id), class: 'button')
-        =svg_symbol '#icon-unlock', class: 'icon'
-        span =t('.make_collection_active')
-
     -if @collection.restricted
       h3 =t('.collection_collaborators')
       p.fglight =t('.collection_collaborators_description')
@@ -192,10 +180,27 @@
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span =t('.disable_ocr')
 
-    h3 =t('.blank_collection')
-    p =t('.blank_collection_description')
-    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.are_you_sure') })
-      span =t('.blank_collection')
+    h3 Restricted Completed Works
+    p This button will restrict the #{@collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
+    =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
+      span Restrict Completed Works
+
+    h3 Collection Status
+    -if @collection.active?
+      p This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
+      =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
+        =svg_symbol '#icon-lock', class: 'icon'
+        span Make Collection Inactive
+    -else
+      p This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
+      =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
+        =svg_symbol '#icon-unlock', class: 'icon'
+        span Make Collection Active
+
+    h3 Blank Collection
+    p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+    =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
+      span Blank Collection
 
 =render({ :partial => '/shared/collection_footer' })
 
