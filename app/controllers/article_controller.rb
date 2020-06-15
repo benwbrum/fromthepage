@@ -234,7 +234,6 @@ class ArticleController < ApplicationController
   def upload_example
     example = File.read(File.join(Rails.root, 'app', 'views', 'static', 'subject_example.csv'))
     send_data example, filename: "subject_example.csv"
-#    render :file => 'static/subject_example.csv', :layout => false, :content_type => "text/csv"
   end
 
   protected
