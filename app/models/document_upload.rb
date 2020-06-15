@@ -18,7 +18,8 @@ class DocumentUpload < ActiveRecord::Base
   def submit_process
     self.status = Status::QUEUED
     self.save
-    rake_call = "#{RAKE} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
+    rake = '/usr/bin/env rake' unless defined? RAKE
+    rake_call = "#{rake} fromthepage:process_document_upload[#{self.id}]  --trace 2>&1 >> #{log_file} &"
     logger.info rake_call
     system(rake_call)
   end
