@@ -180,27 +180,27 @@
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span =t('.disable_ocr')
 
-    h3 Restricted Completed Works
-    p This button will restrict the #{@collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
+    h3 =t('.restricted_completed_works')
+    p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
     =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
-      span Restrict Completed Works
+      span =t('.restrict_completed_works')
 
-    h3 Collection Status
+    h3 =t('.collection_status')
     -if @collection.active?
-      p This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting.
+      p =t('.collection_active_message')
       =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
         =svg_symbol '#icon-lock', class: 'icon'
-        span Make Collection Inactive
+        span =t('.make_collection_inactive')
     -else
-      p This is an inactive collection. Making a collection active allows users to edit content within this collection. Collection status does not affect the collection's privacy setting.
+      p =t('.collection_inactive_message')
       =link_to({ :action => 'toggle_collection_active', :collection_id => @collection.id }, class: 'button')
         =svg_symbol '#icon-unlock', class: 'icon'
-        span Make Collection Active
+        span =t('.make_collection_active')
 
-    h3 Blank Collection
-    p Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
+    h3 =t('.blank_collection')
+    p =t('.blank_collection_description')
     =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
-      span Blank Collection
+      span =t('.blank_collection')
 
 =render({ :partial => '/shared/collection_footer' })
 
