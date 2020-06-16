@@ -146,7 +146,7 @@ Fromthepage::Application.routes.draw do
     match '/semantic_entity/list_references', as: :semantic_entity_list_references, to: 'search#list_semantic_references', via: [:post]
     
     match '/schemaorg/:type', as: :get_schema_type, to: 'schema_org#get_schema_type', via: [:get]
-    match '/schemaorg/config/tree.jsonld', as: :get_schema_config, to: 'schema_org#get_schema_config', via: [:get]
+    match '/schemaorg/config/tree', as: :get_schema_config, to: 'schema_org#get_schema_config', via: [:get]
   end
 
   match '/:controller(/:action(/:id))', via: [:get, :post]
