@@ -33,7 +33,7 @@ class Page < ApplicationRecord
   after_save :update_sections_and_tables
   after_save :update_tex_figures
   after_save do
-    work.update_next_untranscribed_pages if self == work.next_untranscribed_page
+    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
   end
 
   after_initialize :defaults
