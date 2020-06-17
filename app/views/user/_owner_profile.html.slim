@@ -10,23 +10,23 @@ section.user-profile
         .headline_aside
           =link_to(update_profile_path(user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
             =svg_symbol '#icon-edit', class: 'icon'
-            span Edit Profile
+            span =t('.edit_profile')
           |&nbsp;&nbsp;
           =link_to(edit_user_registration_path, class: 'button outline')
             =svg_symbol '#icon-user', class: 'icon'
-            span Login &amp; Password
+            span =t('.login_and_password').html_safe
     .user-profile_stats
       -if user.website.present?
-        =link_to "Website", user.website, target: '_blank', rel: 'nofollow'
+        =link_to t('.website'), user.website, target: '_blank', rel: 'nofollow'
       -if user.about.present?
         p.big =user.about
 
 -unless carousel_collections.blank?
   .carousel
-    button.prev aria-label="Previous image"
-      =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous image'
-    button.next aria-label="Next image"
-      =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next image'
+    button.prev aria-label=t('.previous_image')
+      =svg_symbol '#icon-arrow-left', class: 'icon', title: t('.previous_image')
+    button.next aria-label=t('.next_image')
+      =svg_symbol '#icon-arrow-right', class: 'icon', title: t('.next_image')
     ul
       -carousel_collections.each do |c|
         -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''

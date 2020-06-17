@@ -1,0 +1,8 @@
+en:
+  user:
+    owner_profile:
+      edit_profile: "Edit Profile"
+      login_and_password: "Login &amp; Password"
+      website: "Website"
+      previous_image: "Previous image"
+      next_image: "Next image"
