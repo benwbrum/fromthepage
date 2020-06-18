@@ -16,6 +16,7 @@ describe "IA import actions", :order => :defined do
   end    
 
   it "imports a work from IA", :js => true do
+    pp Work.pluck(:title)
     ia_work_count = IaWork.all.count
     ia_link = "https://archive.org/details/lettertosamuelma00estl"
     visit dashboard_owner_path
@@ -31,6 +32,7 @@ describe "IA import actions", :order => :defined do
     select @collection.title, from: 'collection_id'
     click_button('Publish Work')
     expect(page).to have_content("has been converted into a FromThePage work")
+    pp Work.pluck(:title)
     expect(ia_work_count + 1).to eq IaWork.all.count
   end
 
@@ -61,6 +63,7 @@ describe "IA import actions", :order => :defined do
   end
 
   it "tests ocr correction" do
+    pp Work.pluck(:title)
     @ocr_work = Work.find_by(title: @title)
     @ocr_page = @ocr_work.pages.first
     visit collection_read_work_path(@ocr_work.owner, @ocr_work.collection, @ocr_work)
@@ -75,6 +78,7 @@ describe "IA import actions", :order => :defined do
   end
 
   it "checks ocr/transcribe statistics" do
+    pp Work.pluck(:title)
     visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("Works")
     @collection.works.each do |w|
