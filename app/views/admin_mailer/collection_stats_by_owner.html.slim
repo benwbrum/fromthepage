@@ -7,7 +7,7 @@ h2.nomargin =t('.recent_activity')
   - @activity.collaborators.each do |user|
     a href="mailto:#{user.email}" #{user.email}<br />
   p 
-    =t('.you_may_consider', link: a href="https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/" title='How to write a welcome email').html_safe
+    =t('.you_may_consider', link: link_to("How to write a welcome email", "https://content.fromthepage.com/project-owner-documentation/new-collaborator-email/")).html_safe
 
 / New Notes and Comments
 - unless @activity.comments.blank?
