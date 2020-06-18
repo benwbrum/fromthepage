@@ -23,3 +23,12 @@ en:
       note_body: "Note body"
       microphone: "Microphone"
       save_note: "Save Note"
+    create:
+      must_be_logged: "You must be logged in to create notes"
+      note_has_been_created: "Note has been created"
+      error_creating_note: "Error creating note"
+    update:
+      note_has_been_updated: "Note has been updated"
+      error_updating_note: "Error updating note"
+    destroy:
+      note_has_been_deleted: "Note has been deleted"
