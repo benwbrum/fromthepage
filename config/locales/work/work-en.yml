@@ -11,3 +11,7 @@ en:
       uploaded_by: "Uploaded by"
       transcription_version: "Transcription Version:&nbsp;"
       number_of_pages: "Number of Pages:&nbsp;"
+    create:
+      work_created: "Work created successfully"
+    update:
+      work_updated: "Work updated successfully"
