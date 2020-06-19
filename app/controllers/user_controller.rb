@@ -34,7 +34,7 @@ class UserController < ApplicationController
         @user.notification.update(notifications_hash)
 
       if @user.save!
-        flash[:notice] = "User profile has been updated"
+        flash[:notice] = t('.user_updated')
         ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
       else
         render :action => 'update_profile'
@@ -74,7 +74,7 @@ class UserController < ApplicationController
       @page_versions = @user.page_versions.includes(page: :work).limit(10)
       @article_versions = @user.article_versions.limit(10).joins(:article).includes(article: :categories)
     else
-      flash[:notice] = "User profile has been deleted"
+      flash[:notice] = t('.user_deleted')
       redirect_to dashboard_path
     end
     if @user.owner?
