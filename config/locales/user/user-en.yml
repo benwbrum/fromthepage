@@ -24,6 +24,7 @@ en:
       recent_article_edits: "Recent Article Edits"
       article: "Article"
       categories: "Categories"
+      user_deleted: "User profile has been deleted"
     update_profile:
       update_user_profile: "Update User Profile"
       name_only_required: "Your name is the only required field."
@@ -41,5 +42,3 @@ en:
       update_profile: "Update Profile"
     update:
       user_updated: "User profile has been updated"
-    profile:
-      user_deleted: "User profile has been deleted"
