@@ -70,3 +70,7 @@ en:
       add: "Add"
       add_collaborator: "Add Collaborator"
       remove: "Remove"
+    create:
+      document_created: "Document set has been created"
+    update:
+      document_updated: "Document set has been saved"
