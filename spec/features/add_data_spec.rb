@@ -41,8 +41,6 @@ describe "uploads data for collections", :order => :defined do
   end
 
   it "starts an ocr project", :js => true do
-    p 'ocr project start'
-    pp Work.pluck(:title)
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
     page.find(:css, "#document-upload").click
@@ -51,8 +49,6 @@ describe "uploads data for collections", :order => :defined do
     # workaround
     script = "$('#document_upload_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
     page.execute_script(script)
-    p 'ocr project middle'
-    pp Work.pluck(:title)
 
     attach_file('document_upload_file', './test_data/uploads/ocr.pdf')
     page.check('Use OCR from PDF text layer.')
@@ -64,8 +60,6 @@ describe "uploads data for collections", :order => :defined do
     uploaded_work = Work.where(:title => 'ocr').last
     expect(uploaded_work.ocr_correction).to eq true
     expect(uploaded_work.pages.first.source_text).to match 'dagegen'
-    p 'ocr project end'
-    pp Work.pluck(:title)
     Work.where(:title => 'test').last.update(:title => 'uniquely')
   end
 
@@ -175,7 +169,6 @@ describe "uploads data for collections", :order => :defined do
     page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.first.id}")
     page.check("work_assignment_#{@document_sets.last.id}_#{@set_collection.works.last.id}")
     page.find_button('Save').click
-    pp Work.pluck(:title)
   end
 
 end
