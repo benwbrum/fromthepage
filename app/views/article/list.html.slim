@@ -40,6 +40,9 @@
                         =link_to 'Enable GIS for Category', { :controller => 'category', :action => 'enable_gis', :collection_id => @collection.id, :category_id => category.id }
                       hr
                       =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
+                      hr
+                      =link_to 'Upload Subjects', article_upload_form_path(@collection.id)
+
           dd
             -if category.articles_list(@collection).empty?
               p.acenter.fglight There are no subjects for the category selected
