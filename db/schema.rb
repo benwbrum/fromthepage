@@ -693,8 +693,8 @@ ActiveRecord::Schema.define(version: 20200607193615) do
     t.text     "description",                limit: 16777215
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                            default: false
-    t.integer  "transcription_version",                       default: 0
+    t.boolean  "restrict_scribes",                              default: false
+    t.integer  "transcription_version",                         default: 0
     t.text     "physical_description",       limit: 16777215
     t.text     "document_history",           limit: 16777215
     t.text     "permission_description",     limit: 16777215
@@ -702,16 +702,17 @@ ActiveRecord::Schema.define(version: 20200607193615) do
     t.string   "author"
     t.text     "transcription_conventions",  limit: 16777215
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",                     default: false
-    t.boolean  "supports_translation",                        default: false
+    t.boolean  "scribes_can_edit_titles",                       default: false
+    t.boolean  "supports_translation",                          default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                        default: true
-    t.boolean  "ocr_correction",                              default: false
+    t.boolean  "pages_are_meaningful",                          default: true
+    t.boolean  "ocr_correction",                                default: false
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
     t.string   "identifier"
     t.integer  "next_untranscribed_page_id"
+    t.text     "original_metadata",          limit: 2147483647
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree
