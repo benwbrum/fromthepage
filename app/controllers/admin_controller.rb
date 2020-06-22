@@ -78,7 +78,12 @@ class AdminController < ApplicationController
       end        
 
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to :action => 'user_list'
+      if owner
+        ajax_redirect_to :action => 'owner_list'
+      else
+        ajax_redirect_to :action => 'user_list'
+      end
+  
     else
       render :action => 'edit_user'
     end
