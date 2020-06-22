@@ -7,6 +7,10 @@
       h5 Description
       .big =raw(@work.description)
 
+    -if @work.original_metadata.present?
+      h5 Metadata
+      .big =raw(html_metadata_from_work(@work))
+
     -if @work.physical_description.present?
       h5 Physical Description
       .big =@work.physical_description

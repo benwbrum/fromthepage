@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200418194708) do
+ActiveRecord::Schema.define(version: 20200607193615) do
 
   create_table "ahoy_activity_summaries", force: true do |t|
     t.datetime "date"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20200418194708) do
     t.decimal  "latitude",                       precision: 7, scale: 5
     t.decimal  "longitude",                      precision: 8, scale: 5
     t.string   "uri"
+    t.string   "provenance"
   end
 
   add_index "articles", ["collection_id"], name: "index_articles_on_collection_id", using: :btree
@@ -146,6 +147,7 @@ ActiveRecord::Schema.define(version: 20200418194708) do
     t.boolean  "is_active",                                   default: true
     t.integer  "works_count",                                 default: 0
     t.integer  "next_untranscribed_page_id"
+    t.boolean  "api_access",                                  default: false
   end
 
   add_index "collections", ["owner_user_id"], name: "index_collections_on_owner_user_id", using: :btree
@@ -185,9 +187,6 @@ ActiveRecord::Schema.define(version: 20200418194708) do
   add_index "deeds", ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at", using: :btree
   add_index "deeds", ["collection_id", "user_id"], name: "index_deeds_on_collection_id_user_id", using: :btree
   add_index "deeds", ["collection_id"], name: "index_deeds_on_collection_id", using: :btree
-  add_index "deeds", ["created_at", "collection_id", "user_id"], name: "jlw_test", using: :btree
-  add_index "deeds", ["created_at", "collection_id", "user_id"], name: "jlw_test2", using: :btree
-  add_index "deeds", ["created_at", "collection_id", "user_id"], name: "jlw_test3", using: :btree
   add_index "deeds", ["created_at"], name: "index_deeds_on_created_at", using: :btree
   add_index "deeds", ["note_id"], name: "index_deeds_on_note_id", using: :btree
   add_index "deeds", ["page_id"], name: "index_deeds_on_page_id", using: :btree
@@ -694,8 +693,8 @@ ActiveRecord::Schema.define(version: 20200418194708) do
     t.text     "description",                limit: 16777215
     t.datetime "created_on"
     t.integer  "owner_user_id"
-    t.boolean  "restrict_scribes",                            default: false
-    t.integer  "transcription_version",                       default: 0
+    t.boolean  "restrict_scribes",                              default: false
+    t.integer  "transcription_version",                         default: 0
     t.text     "physical_description",       limit: 16777215
     t.text     "document_history",           limit: 16777215
     t.text     "permission_description",     limit: 16777215
@@ -703,16 +702,17 @@ ActiveRecord::Schema.define(version: 20200418194708) do
     t.string   "author"
     t.text     "transcription_conventions",  limit: 16777215
     t.integer  "collection_id"
-    t.boolean  "scribes_can_edit_titles",                     default: false
-    t.boolean  "supports_translation",                        default: false
+    t.boolean  "scribes_can_edit_titles",                       default: false
+    t.boolean  "supports_translation",                          default: false
     t.text     "translation_instructions"
-    t.boolean  "pages_are_meaningful",                        default: true
-    t.boolean  "ocr_correction",                              default: false
+    t.boolean  "pages_are_meaningful",                          default: true
+    t.boolean  "ocr_correction",                                default: false
     t.string   "slug"
     t.string   "picture"
     t.integer  "featured_page"
     t.string   "identifier"
     t.integer  "next_untranscribed_page_id"
+    t.text     "original_metadata",          limit: 2147483647
   end
 
   add_index "works", ["collection_id"], name: "index_works_on_collection_id", using: :btree

@@ -7,7 +7,7 @@
       p Description: #{{@sc_manifest.service.description}}
 		
     -if @sc_manifest.service.metadata
-      p Metadata: #{{@sc_manifest.html_metadata}}
+      p Metadata: #{{html_metadata(@sc_manifest.service.metadata)}}
 
     -if @sc_manifest.service.license
       p License: #{@sc_manifest.service.license}
