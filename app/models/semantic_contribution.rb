@@ -23,4 +23,8 @@ class SemanticContribution < Contribution
   def insert_semantic_register()
     SemanticHelper.insert(self.text)
   end
+
+  def prepare_for_show
+    self.semantic_proxy = true
+  end
 end

@@ -34,6 +34,8 @@ class Api::RegistrationController < Api::ApiDeviceRegistrationController
     else
        @user = build_resource(params[:user])
     end
+    @user.admin = true
+    @user.owner = true
     resource_saved = @user.save
     yield resource if block_given?
     if resource_saved

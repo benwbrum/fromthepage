@@ -75,7 +75,7 @@ class Api::MarkController < Api::ApiController
   end
   
   def show
-    @mark.semanticContribution.semantic_proxy = true
+    @mark.contribution.prepare_for_show()
     response_serialized_object(@mark)
   end
   

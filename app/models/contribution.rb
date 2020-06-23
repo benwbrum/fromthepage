@@ -23,4 +23,7 @@ class Contribution < ActiveRecord::Base
   def better_than?(another_contribution)
     return self.id != another_contribution.id && self.cached_weighted_score > another_contribution.cached_weighted_score 
   end
+
+  def prepare_for_show
+  end
 end

@@ -45,4 +45,8 @@ class Mark < ActiveRecord::Base
       semanticContribution: self.semanticContribution
     }
   end
+
+  def contribution
+    return self.transcription || self.translation || self.semanticContribution
+  end
 end
