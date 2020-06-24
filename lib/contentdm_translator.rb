@@ -1,20 +1,27 @@
 module ContentdmTranslator
-  def self.update_work_from_cdm(work, ocr_correction=false)
-    # is there any sort of handle we need to keep at the work level?
 
+  def self.update_work_from_cdm(work, ocr_correction=false)
     # find the work manifest -- bail out if there is none
     return unless work.sc_manifest
     # make sure the manifest is cdm
     return unless iiif_manifest_is_cdm? work.sc_manifest.at_id
+
+    if ocr_correction
+      # get the fts field for this collection
+      fts_error, fts_field = fts_field_for_collection(work.collection)
+      if fts_error
+        puts "Error retrieving Full-Text Search field: #{error}\n"
+      end
+    end
     # for each page
     work.pages.each do |page|
-      update_page_from_cdm(page, ocr_correction)
+      update_page_from_cdm(page, ocr_correction, fts_field)
     end
     work.ocr_correction=ocr_correction
     work.save!
   end
 
-  def self.update_page_from_cdm(page, ocr_correction)
+  def self.update_page_from_cdm(page, ocr_correction, fts_field)
     # fetch the cdm metadata
     info = fetch_cdm_info(page)
     # prune the boilerplate
@@ -23,7 +30,7 @@ module ContentdmTranslator
     page.metadata=metadata
 
     if ocr_correction
-      ocr = ocr_from_cdm_info(info)
+      ocr = ocr_from_cdm_info(info, fts_field)
       page.source_text = ocr.encode(:xml => :text) if ocr
     end
 
@@ -32,6 +39,12 @@ module ContentdmTranslator
 
   def self.fetch_cdm_info(page)
     cdm_url = page_at_id_to_cdm_item_info(page.sc_canvas.sc_canvas_id)
+    cdm_response = open(cdm_url).read
+    JSON.parse(cdm_response)
+  end
+
+  def self.fetch_cdm_field_config(collection)
+    cdm_url = collection_to_cdm_field_config(collection)
     cdm_response = open(cdm_url).read
     JSON.parse(cdm_response)
   end
@@ -67,14 +80,10 @@ module ContentdmTranslator
     info.except(*ITEM_INFO_BLACKLIST)
   end
 
-  def self.ocr_from_cdm_info(info)
-    # Hard-coding field names is an ugly hack, but the FTS configuration
-    # is only accessible from the SOAP API, not the REST API and we don't
-    # want to prompt for username/password/license key at this point in
-    # the work flow
-    transcript = info['transc'] || info['full']
+  def self.ocr_from_cdm_info(info, fts_field)
+    transcript = info[fts_field]
     if transcript.kind_of? String
-    transcript
+      transcript
     else
       nil
     end
@@ -87,6 +96,17 @@ module ContentdmTranslator
 
     cdm
   end
+
+  def self.collection_to_cdm_field_config(collection)
+    at_id = collection.pages.joins(:sc_canvas).reorder('pages.created_on').last.sc_canvas.sc_canvas_id
+    cdm = at_id.sub(/cdm/, 'server')
+    cdm.sub!(/digital\/iiif/, 'dmwebservices/index.php?q=dmGetCollectionFieldInfo')
+    cdm.sub!(/\/canvas\/c\d*/, '/json')
+
+    cdm
+  end
+
+
 
   def self.iiif_manifest_is_cdm?(at_id)
     at_id.match(/contentdm.oclc.org/)
@@ -102,40 +122,24 @@ module ContentdmTranslator
     imported_work && iiif_manifest_is_cdm?(imported_work.sc_manifest.at_id)
   end
 
-  def self.fts_field_for_collection(collection, license_key, contentdm_user_name, contentdm_password)
-    error = nil
-    fts_field = nil
-    at_id = sample_manifest(collection).at_id
-
-    soap_client = Savon.client(:wsdl => 'https://worldcat.org/webservices/contentdm/catcher?wsdl')
-    message = {
-      :cdmurl => "http://#{cdm_server(at_id)}:8888",
-      :username => contentdm_user_name,
-      :password => contentdm_password,
-      :license => license_key,
-      :collection => cdm_collection(at_id)}
-    resp = soap_client.call(:get_conten_tdm_collection_config, :message => message )
-
-    doc = Nokogiri::XML resp.hash[:envelope][:body][:get_conten_tdm_collection_config_response][:return]
-
-    if doc.children.count == 0
-      # error response
-      error = Nokogiri::HTML(resp.hash[:envelope][:body][:get_conten_tdm_collection_config_response][:return]).text
-    elsif doc.search("//field/type[text()='FTS']").count == 0
-      # no FTS
-      error = "No full-text search (FTS) fields were configured on collection #{cdm_collection(at_id)}!"
+  def self.fts_field_for_collection(collection)
+    field_config = fetch_cdm_field_config(collection)
+    fts_field = field_config.detect { |element| element["type"] == "FTS"}
+    if fts_field
+      fts = fts_field['nick']
+      error = nil
     else
-      # good response
-      fts_field = doc.search("//field/type[text()='FTS']").first.parent.search('nickname').text
+      fts = nil
+      error = "No full-text search (FTS) fields were configured on CONTENTdm collection!"
     end
-
-    return error, fts_field
+    return error, fts
   end
+
 
   def self.export_work_to_cdm(work, username, password, license)
     error, fieldname = fts_field_for_collection(work.collection, license, username, password)
     if error
-      puts "Error retrieving Full-TextSearch field: #{error}\n"
+      puts "Error retrieving Full-Text Search field: #{error}\n"
       exit
     end
 

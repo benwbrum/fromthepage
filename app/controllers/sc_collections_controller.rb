@@ -29,7 +29,7 @@ class ScCollectionsController < ApplicationController
       redirect_to :back
     end
   end
-
+#dead code
   def search_pontiiif
     search_param = params[:search_param]
     at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)

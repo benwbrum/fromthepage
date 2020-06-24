@@ -67,6 +67,9 @@ Fromthepage::Application.routes.draw do
   put   'article/article_category', :to => 'article#article_category'
   patch 'category/update', :to => 'category#update'
   patch 'user/update', :to => 'user#update'
+  get   ':collection_id/article/upload', :to => 'article#upload_form', :as => 'article_upload_form'
+  post  'article/upload', :to => 'article#subject_upload', :as => 'article_subject_upload'
+  get   '/article/upload_example', :to => 'article#upload_example', :as => 'article_upload_example'
 
   patch 'page_block/update', :to => 'page_block#update'
   patch 'admin/update_user', :to => 'admin#update_user'

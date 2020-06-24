@@ -1,5 +1,6 @@
 require 'search_translator'
 class Page < ActiveRecord::Base
+  ActiveRecord::Base.lock_optimistically = false
 
   include XmlSourceProcessor
   include ApplicationHelper
@@ -313,9 +314,11 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def clear_links(text_type)
     # first use the existing links to blank the graphs
-    self.clear_article_graphs
-    # clear out the existing links to this page
-    PageArticleLink.delete_all("page_id = #{self.id} and text_type = '#{text_type}'")
+    if self.page_article_links.present?
+      self.clear_article_graphs
+      # clear out the existing links to this page
+      PageArticleLink.delete_all("page_id = #{self.id} and text_type = '#{text_type}'")
+    end
   end
 
   # tested
