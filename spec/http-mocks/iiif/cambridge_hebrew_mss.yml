@@ -212,4 +212,114 @@ http_interactions:
         }
     http_version: 
   recorded_at: Thu, 06 Jun 2019 19:01:20 GMT
+- request:
+    method: get
+    uri: https://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f205
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 24 Jun 2020 16:41:00 GMT
+      Server:
+      - Apache/2.4.6 (CentOS) mod_fcgid/2.3.9
+      Access-Control-Allow-Origin:
+      - "*"
+      Last-Modified:
+      - Fri, 20 Jul 2018 02:34:19 GMT
+      Etag:
+      - '"2a6-5716521f7ea4c"'
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json;charset=utf-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJAY29udGV4dCI6ICJodHRwOi8vaWlpZi5pby9hcGkvcHJlc2VudGF0
+        aW9uLzIvY29udGV4dC5qc29uIiwKICAiQGlkIjogImh0dHBzOi8vaWlpZi5k
+        dXJoYW0uYWMudWsvbWFuaWZlc3RzL3RyaWZsZS9jb2xsZWN0aW9uLzMyMTUw
+        L3QyYzBnMzU0ZjIwNSIsCiAgIkB0eXBlIjogInNjOkNvbGxlY3Rpb24iLAog
+        ICJsYWJlbCI6ICJDb3NpbidzIExpYnJhcnkiLAogICJsaWNlbnNlIjogImh0
+        dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQu
+        MCIsCiAgImF0dHJpYnV0aW9uIjogIkRpZ2l0aXNlZCBieSBEdXJoYW0gVW5p
+        dmVyc2l0eSBMaWJyYXJ5IiwKICAibG9nbyI6ICJodHRwczovL2lpaWYuZHVy
+        aGFtLmFjLnVrL2ltYWdlcy9sb2dvcy9kdXJ1bmlfbG9nby5wbmciLAogICJt
+        YW5pZmVzdHMiOiBbCiAgICB7CiAgICAgICJAaWQiOiAiaHR0cHM6Ly9paWlm
+        LmR1cmhhbS5hYy51ay9tYW5pZmVzdHMvdHJpZmxlLzMyMTUwL3QyL20zL3Iw
+        L3QybTNyMDc0djAway9tYW5pZmVzdCIsCiAgICAgICJAdHlwZSI6ICJzYzpN
+        YW5pZmVzdCIsCiAgICAgICJsYWJlbCI6ICJSZXNwb25jZSBhdSB0cmFpY3TD
+        qSBkZSBsYSBwcmVkZXN0aW5hdGlvbiwgY29tcG9zw6kgLi4uIHBhciBsZSBz
+        aWV1ciBDb3VldCAuLi4gUGFyIE0uIEFybmF1ZCBTb3JiaW4iCiAgICB9CiAg
+        XQp9
+    http_version: 
+  recorded_at: Wed, 24 Jun 2020 16:41:00 GMT
+- request:
+    method: get
+    uri: https://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f205
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 24 Jun 2020 16:41:01 GMT
+      Server:
+      - Apache/2.4.6 (CentOS) mod_fcgid/2.3.9
+      Access-Control-Allow-Origin:
+      - "*"
+      Last-Modified:
+      - Fri, 20 Jul 2018 02:34:19 GMT
+      Etag:
+      - '"2a6-5716521f7ea4c"'
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '678'
+      Content-Type:
+      - application/json;charset=utf-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        ewogICJAY29udGV4dCI6ICJodHRwOi8vaWlpZi5pby9hcGkvcHJlc2VudGF0
+        aW9uLzIvY29udGV4dC5qc29uIiwKICAiQGlkIjogImh0dHBzOi8vaWlpZi5k
+        dXJoYW0uYWMudWsvbWFuaWZlc3RzL3RyaWZsZS9jb2xsZWN0aW9uLzMyMTUw
+        L3QyYzBnMzU0ZjIwNSIsCiAgIkB0eXBlIjogInNjOkNvbGxlY3Rpb24iLAog
+        ICJsYWJlbCI6ICJDb3NpbidzIExpYnJhcnkiLAogICJsaWNlbnNlIjogImh0
+        dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLW5kLzQu
+        MCIsCiAgImF0dHJpYnV0aW9uIjogIkRpZ2l0aXNlZCBieSBEdXJoYW0gVW5p
+        dmVyc2l0eSBMaWJyYXJ5IiwKICAibG9nbyI6ICJodHRwczovL2lpaWYuZHVy
+        aGFtLmFjLnVrL2ltYWdlcy9sb2dvcy9kdXJ1bmlfbG9nby5wbmciLAogICJt
+        YW5pZmVzdHMiOiBbCiAgICB7CiAgICAgICJAaWQiOiAiaHR0cHM6Ly9paWlm
+        LmR1cmhhbS5hYy51ay9tYW5pZmVzdHMvdHJpZmxlLzMyMTUwL3QyL20zL3Iw
+        L3QybTNyMDc0djAway9tYW5pZmVzdCIsCiAgICAgICJAdHlwZSI6ICJzYzpN
+        YW5pZmVzdCIsCiAgICAgICJsYWJlbCI6ICJSZXNwb25jZSBhdSB0cmFpY3TD
+        qSBkZSBsYSBwcmVkZXN0aW5hdGlvbiwgY29tcG9zw6kgLi4uIHBhciBsZSBz
+        aWV1ciBDb3VldCAuLi4gUGFyIE0uIEFybmF1ZCBTb3JiaW4iCiAgICB9CiAg
+        XQp9
+    http_version: 
+  recorded_at: Wed, 24 Jun 2020 16:41:01 GMT
 recorded_with: VCR 5.0.0
