@@ -1,6 +1,7 @@
 class ArticleController < ApplicationController
   before_action :authorized?, :except => [:list, :show, :tooltip, :graph]
 
+
   include AbstractXmlController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
@@ -183,6 +184,56 @@ class ArticleController < ApplicationController
     session[:col_id] = @collection.slug
   end
 
+
+  # display the article upload form
+  def upload_form
+  end
+
+
+  def find_or_create_category(collection, title)
+    category = collection.categories.where(:title => title).first
+    if category.nil?
+      category = Category.new(:title => title)
+      collection.categories << category
+    end
+
+    category
+  end
+
+  # actually process the uploaded CSV
+  def subject_upload
+    @collection = Collection.find params[:upload][:collection_id]
+    # read the file
+    file = params[:upload][:file].tempfile
+    csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
+    provenance = params[:upload][:file].original_filename + " (uploaded #{Time.now} UTC)"
+    # check the values
+    if csv.headers.include?('HEADING') && csv.headers.include?('URI') && csv.headers.include?('ARTICLE') && csv.headers.include?('CATEGORY')
+      # create subjects if heading checks out
+      csv.each do |row|
+        title = row['HEADING']
+        article = @collection.articles.where(:title => title).first || Article.new(:title => title, :provenance => provenance)
+        article.collection = @collection
+        article.source_text = row['ARTICLE']
+        article.uri = row['URI']
+        article.categories << find_or_create_category(@collection, row['CATEGORY'])
+        article.save!
+      end
+      # redirect to subject list
+      redirect_to collection_subjects_path(@collection.owner, @collection)
+    else      
+      # flash message and redirect to upload form on problems
+      flash[:error] = "CSV file must contain headers for HEADING, ARTICLE, URI, and CATEGORY"
+      redirect_to article_upload_form_path(@collection)    
+    end
+  end
+
+
+  def upload_example
+    example = File.read(File.join(Rails.root, 'app', 'views', 'static', 'subject_example.csv'))
+    send_data example, filename: "subject_example.csv"
+  end
+
   protected
 
   def rename_article(old_name, new_name)
@@ -254,21 +305,21 @@ class ArticleController < ApplicationController
     from_article.destroy
   end
 
+  def gis_truncated?(params, dec)
+    unless params[:latitude] || params[:longitude] then return false end
+
+    lat = params[:latitude].split('.')
+    lon = params[:longitude].split('.')
+
+    if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
+    if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
+
+    if lat_dec > dec || lon_dec > dec then return true else return false end
+  end
+
   private
 
   def article_params
     params.require(:article).permit(:title, :url, :source_text)
   end
-end
-
-def gis_truncated?(params, dec)
-  unless params[:latitude] || params[:longitude] then return false end
-
-  lat = params[:latitude].split('.')
-  lon = params[:longitude].split('.')
-
-  if lat.length == 2 then lat_dec = lat.last.length else lat_dec = 0 end
-  if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
-
-  if lat_dec > dec || lon_dec > dec then return true else return false end
 end
