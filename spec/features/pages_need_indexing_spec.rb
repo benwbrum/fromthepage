@@ -10,7 +10,7 @@ describe "Pages need indexing" do
     visit "/#{collection.owner.login}/#{collection.slug}"
     expect(page).to have_text(collection.title)
 
-    find('.maincol').find_link(collection.works.first.title).click
+    page.find('.collection-work_title', text: collection.works.first.title).click_link collection.works.first.title
     expect(page).to have_button(REVIEW_BUTTON_TEXT)
     expect(page).to_not have_button(INDEXING_BUTTON_TEXT)
 
@@ -27,7 +27,7 @@ describe "Pages need indexing" do
     visit "/#{collection.owner.login}/#{collection.slug}"
     expect(page).to have_text(collection.title)
 
-    find('.maincol').find_link(collection.works.first.title).click
+    page.find('.collection-work_title', text: collection.works.first.title).click_link collection.works.first.title
     expect(page).to have_button(REVIEW_BUTTON_TEXT)
     expect(page).to have_button(INDEXING_BUTTON_TEXT)
 
