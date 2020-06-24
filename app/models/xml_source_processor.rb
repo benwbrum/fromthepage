@@ -337,7 +337,7 @@ EOF
 
   def update_links_and_xml(xml_string, preview_mode=false, text_type)
     # first clear out the existing links
-    clear_links(text_type)
+    clear_links(text_type) unless preview_mode
     processed = ""
     # process it
     doc = REXML::Document.new xml_string
