@@ -24,7 +24,7 @@ describe "uploads data for collections", :order => :defined do
       select("Create Collection", :from => 'manifest_import')
       click_button('Import Checked Manifests')
       expect(page.find('.flash_message')).to have_content("IIIF collection import is processing")
-      sleep(15)
+      sleep(55)
       expect(page).to have_content("Works")
       expect(Collection.last.title).to have_content("Library")
       expect(Collection.last.works.count).not_to be_nil
