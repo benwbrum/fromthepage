@@ -1,0 +1,35 @@
+en:
+  shared:
+    article_tabs:
+      overview: "Resumen General"
+      settings: "Configuración"
+      versions: "Versiones"
+    collection_tabs:
+      overview: "Resumen General"
+      statistics: "Estadísticas"
+      subjects: "Temas"
+      collaborators: "Colaboradores"
+      settings: "Configuración"
+      export: "Exportar"
+      add_work: "Añadir Obra"
+      edit_fields: "Editar Campos"
+      sets: "Conjuntos"
+      works_list: "Lista de Obras"
+    page_tabs:
+      overview: "Resumen General"
+      correct: "Corregir"
+      transcribe: "Transcribir"
+      translate: "Traducción"
+      versions: "Versiones"
+      help: "Ayuda"
+      settings: "Configuración"
+      nav_info: "Página %{position} de %{size}"
+    work_tabs:
+      read: "Leer"
+      about: "Acerca de"
+      contents: "Contenido"
+      versions: "Versiones"
+      print: "Imprimir"
+      settings: "Configuración"
+      pages: "Paginas"
+      help: "Ayuda"
