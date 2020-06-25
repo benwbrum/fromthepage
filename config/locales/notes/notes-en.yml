@@ -19,7 +19,7 @@ en:
     notes:
       nobody_has_written_a_note: "Nobody has written a note for this page yet"
       please_sign_in_to_write: "Please %{link} to write a note for this page"
-      write_a_new_note: "Write a new note..."
+      write_a_new_note: "Write a new note or ask a question..."
       note_body: "Note body"
       microphone: "Microphone"
       save_note: "Save Note"

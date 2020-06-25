@@ -12,7 +12,7 @@ en:
       please_help_this_page: "Please %{help_link} this page"
       or_mark_blank: "<br>or %{mark_blank}"
       collaboration_is_restricted: "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
-      page_notes: "Page Notes"
+      page_notes: "Notes and Questions"
     multi_page:
       search_in_collection: "Search in collection..."
       search: "Search"

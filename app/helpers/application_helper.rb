@@ -1,5 +1,6 @@
 module ApplicationHelper
   
+  #dead code
   def billing_host
     if defined? BILLING_HOST
       BILLING_HOST
@@ -143,5 +144,26 @@ module ApplicationHelper
   def fromthepage_version
     Fromthepage::Application::Version
   end
+
+  def value_to_html(value)
+    if value.is_a? String
+      return value
+    elsif value.is_a? Array
+      return value.map {|e| e["@value"]}.join("; ")
+    end
+  end
+
+  def html_metadata_from_work(work)
+    html_metadata(JSON.parse(work.original_metadata))
+  end
+
+  def html_metadata(metadata_hash)
+    html = ""
+    metadata_hash.each do |md|
+      html += "<p><b>#{md["label"]}</b>: #{value_to_html(md["value"])} </p>"
+    end
+    html
+  end
+
 
 end
