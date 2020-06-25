@@ -129,18 +129,8 @@ class ScManifest < ApplicationRecord
     unless self.service.description.blank?
       description += flatten_element(self.service.description) + "\n<br /><br />\n"
     end
-    description += "\n<br /><br />\nMetadata:" + self.html_metadata
 
     description
-  end
-
-  def html_metadata
-    html = ""
-    self.service.metadata.each do |md|
-      html += "<br />\n#{md["label"]}: #{md["value"]}"
-    end
-
-    html
   end
 
   protected

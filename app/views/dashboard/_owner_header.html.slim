@@ -1,4 +1,25 @@
--dashboard_set_title
+-tabs = [{\
+  :name => 'Start A Project',
+  :selected => 2,
+  :options => {\
+    :action => 'startproject',
+  },
+},{\
+  :name => 'Your Collections',
+  :selected => 1,
+  :options => {\
+    :action => 'owner',
+  },
+},{\
+  :name => 'Summary',
+  :selected => 3,
+  :options => {\
+    :action => 'summary',
+  },
+}]
+
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+-content_for :page_title, "#{selected_tab} - Owner Dashboard"
 
 .headline
   h1.headline_title Owner Dashboard
@@ -28,5 +49,5 @@ section.owner-counters
 
 .tabs
   =active_link_to "Start A Project", dashboard_startproject_path
-  =active_link_to "Your Works", dashboard_owner_path
+  =active_link_to "Your Collections", dashboard_owner_path
   =active_link_to "Summary", dashboard_summary_path
