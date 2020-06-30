@@ -70,13 +70,28 @@ class Metadata
     canonical_metadata = work.collection.metadata_coverages
 
     if canonical_metadata.blank?
-      @new_metadata.each do |m|
+      unless @new_metadata.blank?
+        @new_metadata.each do |m|
+          collection = work.collection
+          mc = collection.metadata_coverages.build
+          mc.key = m[:label]
+          mc.count = 1
+          mc.save
+          mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+        end
+      else
         collection = work.collection
-        mc = collection.metadata_coverages.build
-        mc.key = m[:label]
-        mc.count = 1
-        mc.save
-        mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+
+        om = JSON.parse(work.original_metadata)
+        om.each do |m|
+          unless m['label'].blank?
+            mc = collection.metadata_coverages.build
+            mc.key = m['label'].downcase.split.join('_').to_sym
+            mc.count = 1
+            mc.save
+            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+          end
+        end
       end
     else
       metadata_coverages = work.collection.metadata_coverages

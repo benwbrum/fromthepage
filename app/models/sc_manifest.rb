@@ -80,6 +80,9 @@ class ScManifest < ApplicationRecord
     self.work = work
     self.save!
 
+    m = Metadata.new(metadata_file: nil, collection: collection.id)
+    m.save_canonical_metadata(work)
+
     work
   end
 
