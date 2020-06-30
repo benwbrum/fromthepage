@@ -28,7 +28,7 @@ en:
       password_change:
         subject: "La contraseña ha sido cambiada"
     omniauth_callbacks:
-      failure: "No se pudo corroborar tu información de %{kind} ya que "%{reason}".""
+      failure: "No se pudo corroborar tu información de %{kind} ya que %{reason}."
       success: "Corroborado exitosamente por la cuenta %{kind}."
       #For success, I need to know what is being authenticated in order to correctly translate the concordance of genre for the nouns in the senstence.
     passwords:

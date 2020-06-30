@@ -41,7 +41,7 @@ en:
       no_document_sets: "Esta colección no tiene conjuntos de documentos"
     new:
       create_new_document_set: "Crear Nuevo Conjunto de Documentos"
-      document_set_is_marked_public: "Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada.""
+      document_set_is_marked_public: "Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada."
       description: "Descripción"
       create_document_set: "Crear Conjunto de Documentos"
     settings:

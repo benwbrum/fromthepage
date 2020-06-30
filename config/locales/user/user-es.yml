@@ -11,7 +11,7 @@ en:
       login_and_password: "Inicio de sesión y Contraseña"
       user_since: "Usuario desde %{date}"
       last_seen: "Visto por última vez %{date}"
-      recent_activity_by: "Actividad Reciente de %{user_display_name}""
+      recent_activity_by: "Actividad Reciente de %{user_display_name}"
       recent_notes: "Notas Recientes"
       date: "Fecha"
       page: "Página"
