@@ -160,3 +160,12 @@ en:
         success: "Forum has been updated"
       destroy:
         success: "Forum has been deleted"
+    ontology:
+      create:
+        success: "Ontology has been created"
+      update:
+        success: "Ontology has been updated"
+      destroy:
+        success: "Ontology has been deleted!"
+      list:
+        success: "Ontology has been listed"

@@ -167,3 +167,12 @@ es:
         success: "El Foro ha sido actualizado"
       destroy:
         success: "El Foro ha sido borrado"
+    ontology:
+      create:
+        success: "La Ontología ha sido creada con exito!"
+      update:
+        success: "La Ontología ha sido actualizada con exito!"
+      destroy:
+        success: "La Ontología ha sido borrada con exito!"
+      list:
+        success: "Se han listado las ontologias"

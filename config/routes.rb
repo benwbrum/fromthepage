@@ -99,6 +99,11 @@ Fromthepage::Application.routes.draw do
     patch '/api/user', :to=>'user#update'
     get 'collection/list_own', :to=>'collection#list_own'
 
+    get 'ontology/list', :to=>'ontology#list'
+    post 'ontology', :to=>'ontology#create'
+    put 'ontology/:id', :to=>'ontology#update'
+    delete 'ontology/:id', :to=>'ontology#destroy'
+
     get 'collection/list', :to=>'collection#collections_list'
     resources :collection, path: 'collection', only: [:create, :update, :destroy, :show] do
       get ':collection_id', path: 'works', as: :works, to: 'collection#show_works'
