@@ -80,18 +80,7 @@ class Metadata
           mc.create_facet_config(metadata_coverage_id: mc.collection_id)
         end
       else
-        collection = work.collection
-
-        om = JSON.parse(work.original_metadata)
-        om.each do |m|
-          unless m['label'].blank?
-            mc = collection.metadata_coverages.build
-            mc.key = m['label'].downcase.split.join('_').to_sym
-            mc.count = 1
-            mc.save
-            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
-          end
-        end
+        append_metadata(work)
       end
     else
       metadata_coverages = work.collection.metadata_coverages
@@ -101,6 +90,23 @@ class Metadata
           m.count = m.count + 1
           m.save
         end
+      end
+
+      append_metadata(work)
+    end
+  end
+
+  def append_metadata(work)
+    collection = work.collection
+
+    om = JSON.parse(work.original_metadata)
+    om.each do |m|
+      unless m['label'].blank?
+        mc = collection.metadata_coverages.build
+        mc.key = m['label'].downcase.split.join('_').to_sym
+        mc.count = 1
+        mc.save
+        mc.create_facet_config(metadata_coverage_id: mc.collection_id)
       end
     end
   end
