@@ -105,8 +105,8 @@ class Metadata
   def output_file(rowset_errors)
     CSV.open('/tmp/error.csv', 'wb') do |csv|
 
-      rowset_errors.each do |re|
-        csv << [re[:error], re[:work_id], re[:title]]
+      rowset_errors.each do |r|
+        csv << [r[:error], r[:work_id], r[:title]]
       end
     end
   end
