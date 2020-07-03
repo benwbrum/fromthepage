@@ -67,37 +67,38 @@ class Metadata
   end
 
   def save_canonical_metadata(work)
-    canonical_metadata = work.collection.metadata_coverages
-
-    if canonical_metadata.blank?
-      unless @new_metadata.blank?
-        @new_metadata.each do |m|
-          collection = work.collection
-          mc = collection.metadata_coverages.build
-          mc.key = m[:label]
-          mc.count = 1
-          mc.save
-          mc.create_facet_config(metadata_coverage_id: mc.collection_id)
-        end
-      else
-        append_metadata(work)
-      end
-    else
-      append_metadata(work)
-    end
-  end
-
-  def append_metadata(work)
-    collection = work.collection
-
-    om = JSON.parse(work.original_metadata)
-    om.each do |m|
-      unless m['label'].blank?
+    unless @new_metadata.blank?
+      @new_metadata.each do |m|
+        collection = work.collection
         mc = collection.metadata_coverages.build
-        mc.key = m['label'].downcase.split.join('_').to_sym
+        mc.key = m[:label]
         mc.count = 1
         mc.save
         mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+      end
+    else
+      collection = work.collection
+
+      om = JSON.parse(work.original_metadata)
+
+      om.each do |m|
+        unless m['label'].blank?
+          # check if record exist
+          # increment count field +1 if a record is returned, otherwise create it.
+          test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
+
+          if test
+            test.count = test.count + 1
+            test.save
+          end
+
+          if test.nil?
+            mc = collection.metadata_coverages.build
+            mc.key = m['label'].downcase.split.join('_').to_sym
+            mc.save
+            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+          end
+        end
       end
     end
   end
