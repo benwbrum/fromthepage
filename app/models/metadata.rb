@@ -83,15 +83,6 @@ class Metadata
         append_metadata(work)
       end
     else
-      metadata_coverages = work.collection.metadata_coverages
-
-      unless metadata_coverages.empty?
-        metadata_coverages.each do |m|
-          m.count = m.count + 1
-          m.save
-        end
-      end
-
       append_metadata(work)
     end
   end
