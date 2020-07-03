@@ -29,6 +29,7 @@ class Metadata
         begin
           work = Work.find(row['work_id'].to_i)
           work.update(original_metadata: @new_metadata.to_json)
+          binding.pry
           save_canonical_metadata(work)
 
           unless @collection.works.include?(work)
@@ -68,13 +69,26 @@ class Metadata
 
   def save_canonical_metadata(work)
     unless @new_metadata.blank?
-      @new_metadata.each do |m|
-        collection = work.collection
-        mc = collection.metadata_coverages.build
-        mc.key = m[:label]
-        mc.count = 1
-        mc.save
-        mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+      collection = work.collection
+      om = JSON.parse(work.original_metadata)
+      om.each do |m|
+        unless m['label'].blank?
+          collection = work.collection
+          mc = collection.metadata_coverages.build
+
+          test = collection.metadata_coverages.where(key: m['label']).first
+
+          if test
+            test.count = test.count + 1
+            test.save
+          end
+
+          if test.nil?
+            mc.key = m['label']
+            mc.save
+            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+          end
+        end
       end
     else
       collection = work.collection
