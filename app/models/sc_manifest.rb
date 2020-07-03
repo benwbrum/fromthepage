@@ -5,6 +5,8 @@ class ScManifest < ApplicationRecord
 
   has_many :sc_canvases
 
+  after_update :save_metadata
+
   attr_accessor :service
 
   # TEST_MANIFEST = <<EOI
@@ -80,9 +82,6 @@ class ScManifest < ApplicationRecord
     self.work = work
     self.save!
 
-    m = Metadata.new(metadata_file: nil, collection: collection.id)
-    m.save_canonical_metadata(work)
-
     work
   end
 
@@ -134,6 +133,32 @@ class ScManifest < ApplicationRecord
     end
 
     description
+  end
+
+  def save_metadata
+    collection = work.collection
+
+    om = JSON.parse(work.original_metadata)
+
+    om.each do |m|
+      unless m['label'].blank?
+        # check if record exist
+        # increment count field +1 if a record is returned, otherwise create it.
+        test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
+
+        if test
+          test.count = test.count + 1
+          test.save
+        end
+
+        if test.nil?
+          mc = collection.metadata_coverages.build
+          mc.key = m['label'].downcase.split.join('_').to_sym
+          mc.save
+          mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+        end
+      end
+    end
   end
 
   protected
