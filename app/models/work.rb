@@ -46,6 +46,7 @@ class Work < ApplicationRecord
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
+  after_update :save_metadata
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -72,6 +73,30 @@ class Work < ApplicationRecord
         md.captures.first
       else
         nil
+      end
+    end
+  end
+
+  def save_metadata
+    collection = self.collection
+    om = JSON.parse(self.original_metadata)
+    om.each do |m|
+      unless m['label'].blank?
+        collection = self.collection
+        mc = collection.metadata_coverages.build
+
+        test = collection.metadata_coverages.where(key: m['label']).first
+
+        if test
+          test.count = test.count + 1
+          test.save
+        end
+
+        if test.nil?
+          mc.key = m['label']
+          mc.save
+          mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+        end
       end
     end
   end

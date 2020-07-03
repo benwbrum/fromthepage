@@ -29,8 +29,6 @@ class Metadata
         begin
           work = Work.find(row['work_id'].to_i)
           work.update(original_metadata: @new_metadata.to_json)
-          binding.pry
-          save_canonical_metadata(work)
 
           unless @collection.works.include?(work)
             @rowset_errors << { error: "No work with ID #{row['work_id']} is in collection #{@collection.title}",
@@ -58,7 +56,6 @@ class Metadata
           end
 
           work.update(original_metadata: @new_metadata.to_json)
-          save_canonical_metadata(work)
         end
       end
     end
@@ -68,50 +65,26 @@ class Metadata
   end
 
   def save_canonical_metadata(work)
-    unless @new_metadata.blank?
-      collection = work.collection
-      om = JSON.parse(work.original_metadata)
-      om.each do |m|
-        unless m['label'].blank?
-          collection = work.collection
-          mc = collection.metadata_coverages.build
+    collection = work.collection
 
-          test = collection.metadata_coverages.where(key: m['label']).first
+    om = JSON.parse(work.original_metadata)
 
-          if test
-            test.count = test.count + 1
-            test.save
-          end
+    om.each do |m|
+      unless m['label'].blank?
+        # check if record exist
+        # increment count field +1 if a record is returned, otherwise create it.
+        test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
 
-          if test.nil?
-            mc.key = m['label']
-            mc.save
-            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
-          end
+        if test
+          test.count = test.count + 1
+          test.save
         end
-      end
-    else
-      collection = work.collection
 
-      om = JSON.parse(work.original_metadata)
-
-      om.each do |m|
-        unless m['label'].blank?
-          # check if record exist
-          # increment count field +1 if a record is returned, otherwise create it.
-          test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
-
-          if test
-            test.count = test.count + 1
-            test.save
-          end
-
-          if test.nil?
-            mc = collection.metadata_coverages.build
-            mc.key = m['label'].downcase.split.join('_').to_sym
-            mc.save
-            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
-          end
+        if test.nil?
+          mc = collection.metadata_coverages.build
+          mc.key = m['label'].downcase.split.join('_').to_sym
+          mc.save
+          mc.create_facet_config(metadata_coverage_id: mc.collection_id)
         end
       end
     end

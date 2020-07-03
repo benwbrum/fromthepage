@@ -3,6 +3,7 @@ class MetadataCoverage < ApplicationRecord
   has_one :facet_config
   after_create :initial_count
   validates :key, uniqueness: { case_sensitive: true }
+  validates :key, presence: true
 
   def initial_count
     if self.count.nil?
