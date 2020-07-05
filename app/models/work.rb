@@ -269,15 +269,18 @@ class Work < ApplicationRecord
           collection = self.collection
           mc = collection.metadata_coverages.build
 
-          test = collection.metadata_coverages.where(key: m['label']).first
+          # check that record exist
+          test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
 
+          # increment count field if it does
           if test
             test.count = test.count + 1
             test.save
           end
 
+          # otherwise create it
           if test.nil?
-            mc.key = m['label']
+            mc.key = m['label'].downcase.split.join('_').to_sym
             mc.save
             mc.create_facet_config(metadata_coverage_id: mc.collection_id)
           end
