@@ -46,7 +46,7 @@ class Work < ApplicationRecord
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
-  after_update :save_metadata
+  after_commit :save_metadata
 
   module TitleStyle
     REPLACE = 'REPLACE'
