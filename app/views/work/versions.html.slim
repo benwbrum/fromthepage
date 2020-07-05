@@ -19,3 +19,5 @@
         td.fgfaded =="#{version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")} by #{user_link}"
 
   =render(:partial => 'shared/pagination', :locals => { :model => @page_versions, :entries_info => true })
+  
+  =render({ :partial => '/shared/collection_footer' })
