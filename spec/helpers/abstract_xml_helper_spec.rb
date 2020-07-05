@@ -15,7 +15,7 @@ RSpec.describe AbstractXmlHelper, type: :helper do
   end
 
   it "returns a <br> tag with preserve_lb=true" do
-    expect(xml_to_html(@xml_text, true, true)).to include("correct pron<br/>\nounciation")
+    expect(xml_to_html(@xml_text, true, true)).to include("correct pron-<br/>\nounciation")
   end
 
   it "returns a <span> tag with a hyphen with preserve_lb=false" do

@@ -125,11 +125,6 @@ module ApplicationHelper
     end
   end
   
-  #dead code
-  def pontiiif_server
-    Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
-  end
-
   def language_attrs(collection)
     direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
     
