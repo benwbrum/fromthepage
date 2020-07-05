@@ -65,7 +65,7 @@ class AdminController < ApplicationController
 
   def update_user
     owner = @user.owner
-    if @user.update_attributes(params[:user])
+    if @user.update(user_params)
       if owner == false && @user.owner == true
         if SMTP_ENABLED
           begin
@@ -78,7 +78,12 @@ class AdminController < ApplicationController
       end        
 
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to :action => 'user_list'
+      if owner
+        ajax_redirect_to :action => 'owner_list'
+      else
+        ajax_redirect_to :action => 'user_list'
+      end
+  
     else
       render :action => 'edit_user'
     end
@@ -224,4 +229,9 @@ class AdminController < ApplicationController
 
   end
 
+  private
+
+  def user_params
+    params.require(:user).permit(:real_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)
+  end
 end

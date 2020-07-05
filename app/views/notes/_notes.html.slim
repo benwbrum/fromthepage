@@ -14,7 +14,7 @@
     =form_for :note, url: notes_path, remote: true, html: { class: 'user-bubble_form' } do |f|
       =hidden_field_tag(:page_id, @page.id)
       .user-bubble_form_editor
-        =f.text_area :body, :rows => 4, :placeholder => 'Write a new note...'
+        =f.text_area :body, :rows => 4, :placeholder => 'Write a new note or ask a question...'
       .user-bubble_form_footer
         span.user-bubble_form_error
         =f.label :body, 'Note body', class: 'hidden'

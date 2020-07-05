@@ -260,7 +260,7 @@ describe "editor actions" , :order => :defined do
 
     it "adds a note" do
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
-      fill_in 'Write a new note...', with: "Test note"
+      fill_in 'Write a new note or ask a question...', with: "Test note"
       find('#save_note_button').click
       expect(page).to have_content "Note has been created"
       find('#save_button_top').click
@@ -279,7 +279,7 @@ describe "editor actions" , :order => :defined do
       test_page = col.works.first.pages.first
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       text = Page.find_by(id: test_page.id).source_text
-      fill_in('Write a new note...', with: "Test two")
+      fill_in('Write a new note or ask a question...', with: "Test two")
       fill_in 'page_source_text', with: "Attempt to save"
       message = accept_alert do
         find('#save_button_top').click
@@ -318,7 +318,7 @@ describe "editor actions" , :order => :defined do
       expect(message).to have_content("You have unsaved changes.")
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       #previous page arrow - make sure it also works with notes
-      fill_in('Write a new note...', with: "Test two")
+      fill_in('Write a new note or ask a question...', with: "Test two")
       message = accept_alert do
         page.click_link("Previous page")
       end
@@ -401,7 +401,7 @@ describe "editor actions" , :order => :defined do
     it "adds an abusive note" do
       flag_count = Flag.count
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
-      fill_in 'Write a new note...', with: "Visit <a href=\"www.spam.com\">our store!</a>"
+      fill_in 'Write a new note or ask a question...', with: "Visit <a href=\"www.spam.com\">our store!</a>"
       find('#save_note_button').click
       expect(page).to have_content "Note has been created"
       expect(Flag.count).to eq(flag_count + 1)
