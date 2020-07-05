@@ -143,14 +143,15 @@ class ScManifest < ApplicationRecord
     om.each do |m|
       unless m['label'].blank?
         # check if record exist
-        # increment count field +1 if a record is returned, otherwise create it.
         test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
 
+        # increment count field +1 if record exist
         if test
           test.count = test.count + 1
           test.save
         end
 
+        # otherwise create it
         if test.nil?
           mc = collection.metadata_coverages.build
           mc.key = m['label'].downcase.split.join('_').to_sym
