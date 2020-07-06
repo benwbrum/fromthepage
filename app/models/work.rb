@@ -266,11 +266,13 @@ class Work < ApplicationRecord
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
+          label = m['label'].downcase.split.join('_').to_s
+
           collection = self.collection
           mc = collection.metadata_coverages.build
 
           # check that record exist
-          test = collection.metadata_coverages.where(key: m['label'].downcase.split.join('_').to_s).first
+          test = collection.metadata_coverages.where(key: label).first
 
           # increment count field if it does
           if test
@@ -280,7 +282,7 @@ class Work < ApplicationRecord
 
           # otherwise create it
           if test.nil?
-            mc.key = m['label'].downcase.split.join('_').to_sym
+            mc.key = label.to_sym
             mc.save
             mc.create_facet_config(metadata_coverage_id: mc.collection_id)
           end
