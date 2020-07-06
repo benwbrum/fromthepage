@@ -256,7 +256,7 @@ GEM
     net-ssh (6.1.0)
     netrc (0.11.0)
     nio4r (2.5.2)
-    nokogiri (1.10.9)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     oai (1.1.0)
@@ -397,7 +397,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    savon (2.12.0)
+    savon (2.12.1)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
