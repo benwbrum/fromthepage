@@ -274,7 +274,7 @@ class Work < ApplicationRecord
           # check that record exist
           test = collection.metadata_coverages.where(key: label).first
 
-          # increment count field if it does
+          # increment count field if a record is returned
           if test
             test.count = test.count + 1
             test.save
