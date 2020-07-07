@@ -187,14 +187,14 @@
       =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
         span Upload Metadata
 
-    h3 Metadata Facets
-    p Allow users to browse works within this collection via metadata. (You can configure the metadata facets in a separate step.)
-    -if @collection.facets_enabled?
-      =link_to(facets_disable_path(:collection_id => @collection.id), class: 'button')
-        span Disable Facets
-    -else
-      =link_to(facets_enable_path(:collection_id => @collection.id), class: 'button')
-        span Enable Facets
+      h3 Metadata Facets
+      p Allow users to browse works within this collection via metadata. (You can configure the metadata facets in a separate step.)
+      -if @collection.facets_enabled?
+        =link_to(facets_disable_path(:collection_id => @collection.id), class: 'button')
+          span Disable Facets
+      -else
+        =link_to(facets_enable_path(:collection_id => @collection.id), class: 'button')
+          span Enable Facets
 
     h3 Restricted Completed Works
     p This button will restrict the #{@collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.

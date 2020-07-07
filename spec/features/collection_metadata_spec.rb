@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "collection metadata", :order => :defined do
   before :each do
     @owner = User.where(login: 'wakanda').first
+    @user = User.where(login: 'margaret').first
   end
 
   it "creates a collection as owner" do
@@ -61,5 +62,13 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.")
     expect(page).to have_content("filename")
     expect(page).to have_content("field_identifier_local")
+  end
+
+  it "should not be available/visible for the Individual Researcher plan" do
+    logout
+    login_as @user
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@user, c)
+    expect(page).not_to have_content("Metadata")
   end
 end
