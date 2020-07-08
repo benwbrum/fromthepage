@@ -1,4 +1,4 @@
-en:
+es:
   user_mailer:
     nightly_user_activity:
       greet: "Hola %{user} --"
