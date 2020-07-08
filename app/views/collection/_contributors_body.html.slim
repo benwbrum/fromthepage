@@ -48,7 +48,7 @@
 h3 =t('.all_collaborator_emails')
 p#collaborators
   -unless @all_collaborators.empty?
-    =@all_collaborators
+    =@all_collaborators + ", support@fromthepage.com"
   -else
     =t('.no_collaborators')
 
