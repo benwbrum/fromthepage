@@ -1,0 +1,13 @@
+en:
+  work:
+    show:
+      description: "Descrição"
+      physical_description: "Descrição Física"
+      document_history: "Histórico do Documento"
+      permission_description: "Descrição da Permissão"
+      location_of_composition: "Localização da Composição"
+      author_name: "Nome do Autor"
+      transcription_conventions: "Convenções de Transcrição"
+      uploaded_by: "Subido por"
+      transcription_version: "Versão de Transcrição:&nbsp;"
+      number_of_pages: "Número de Páginas:&nbsp;"

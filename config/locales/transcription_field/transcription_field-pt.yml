@@ -1,0 +1,19 @@
+en:
+  transcription_field:
+    field_layout:
+      instructions: "Instruções"
+    line_form:
+      field_options: "Opções de campos (separar com ponto-e-vírgula)"
+      field_options_title: "Opções para campos selecionados."
+      percentage_width: "Largura %"
+      percentage_title: "Percentagem da largura da linha a usar para este campo."
+      page: "Página"
+      page_title: "Para formulários de várias páginas, em que página este campo deve aparecer? (Deixe em branco para exibir em cada página.)"
+    edit_fields:
+      edit_transcription_fields: "Editar Campos de Transcrição"
+      add_additional_line: "Adicionar Linha Adicional"
+      add_additional_field: "Adicionar Campo Adicional"
+      save: "Guardar"
+      cancel: "Cancelar"
+      done: "Completo"
+      preview: "Pré-Visualizar"

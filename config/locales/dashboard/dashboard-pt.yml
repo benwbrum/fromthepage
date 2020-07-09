@@ -1,0 +1,29 @@
+en:
+  dashboard:
+    alphabetical_collections_and_document_sets:
+      start_transcribing: "Iniciar Transcrição"
+      owned_by: "Controlada por %{author}"
+    collections_list:
+      collections: "Coleções"
+      meta_description: "Você pode escolher entre os muitos projetos interessantes hospedados em FromThePage. Comece a ler os escritos históricos que já foram transcritos por outros membros. Você pode ajudar um dos grandes projetos entrar na era digital."
+    hierarchical_collections_and_document_sets:
+      start_transcribing: "Iniciar Transcrição"
+    landing_page:
+      previous_image: "Imagem anterior"
+      next_image: "Imagem seguinte"
+      transcribe_a_page: "Transcrever uma página"
+      all_collections: "Todas as Coleções"
+      search_for_collections_or_owners: "Buscar por coleções ou donos..."
+      search: "Buscar"
+      search_for_collections: "Buscar por coleções"
+      recent_activity: "Atividade Recente"
+    watchlist:
+      projects_you_have_contributed_to: "Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo."
+      time_ago_in_words: "Há %{time}"
+      you_might_want_to_try: "Ainda não participou em nenhum projeto. Tente transcrever uma página de "
+      try_transcribing_a_page: "Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes "
+      collections: "coleções"
+      private_collections_you_belong_to: "Coleções Privadas às quais você pertence"
+      owned_by: "Controlada por #{author}"
+      everyone_activity: "Atividade de Todos"
+      your_activity: "Sua Actividade"
