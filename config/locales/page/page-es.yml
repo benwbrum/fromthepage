@@ -23,3 +23,7 @@ es:
       cancel: "Cancelar"
       save_and_new_work: "Guardar y Trabajo Nuevo"
       save_and_add_next_page: "Guardar y Añadir Página Siguiente"
+    delete:
+      page_deleted: "La página ha sido eliminada"
+    create:
+      page_created: "Página creada con suceso"
