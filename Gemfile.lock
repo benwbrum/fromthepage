@@ -179,10 +179,10 @@ GEM
     errbase (0.2.0)
     erubi (1.9.0)
     execjs (2.7.0)
-    factory_bot (6.0.2)
+    factory_bot (6.1.0)
       activesupport (>= 5.0.0)
-    factory_bot_rails (6.0.0)
-      factory_bot (~> 6.0.0)
+    factory_bot_rails (6.1.0)
+      factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
@@ -204,7 +204,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    httpi (2.4.4)
+    httpi (2.4.5)
       rack
       socksify
     i18n (1.8.3)
