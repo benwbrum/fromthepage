@@ -1,5 +1,6 @@
 en:
   admin:
     index:
+      last_deed_logged: "Last deed logged %{date} ago by %{author}"
       database_version: "Database Version %{version}"
       software_version: "Software Version %{version}"
