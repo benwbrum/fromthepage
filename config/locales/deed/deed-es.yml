@@ -14,7 +14,7 @@ es:
         marked_page_as_needing_review: "marcó %{page} la página como en necesidad de revisión"
         indexed_translation_of_page: "indexó la traducción de la página %{page}"
         marked_translation_page_as_needing_review: "marcó la página de traducción %{page} como necesitando revisión"
-        added_work: "%{trabajo} añadido"
+        added_work: "%{work} añadido"
         joined: "se unió "
         this_collection: "esta colección"
         in_the_work: " en la obra %{work}"
