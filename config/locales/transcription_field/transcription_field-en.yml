@@ -17,3 +17,5 @@ en:
       cancel: "Cancel"
       done: "Done"
       preview: "Preview"
+    add_fields:
+      must_have_options_list: "Select fields must have an options list.  Please add options to any select fields and resave."
