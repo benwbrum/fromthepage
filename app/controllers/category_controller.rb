@@ -10,7 +10,7 @@ class CategoryController < ApplicationController
 
   def update
     if @category.update(category_params)
-      flash[:notice] = "Category has been updated"
+      flash[:notice] = t('.category_updated')
       ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
     else
       render :action => 'edit'
@@ -29,7 +29,7 @@ class CategoryController < ApplicationController
     @new_category = Category.new(category_params)
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
-      flash[:notice] = "Category has been created"
+      flash[:notice] = t('.category_created')
       ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@new_category.id }"})
     else
       render :action => 'add_new'
@@ -40,7 +40,7 @@ class CategoryController < ApplicationController
     anchor = @category.parent_id.present? ? "category-#{@category.parent_id}" : nil
     @category.destroy #_but_attach_children_to_parent
 
-    flash[:notice] = "Category has been deleted"
+    flash[:notice] = t('.category_deleted')
     ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => anchor})
   end
 
@@ -48,7 +48,7 @@ class CategoryController < ApplicationController
     @category.update_attribute(:gis_enabled, true)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, true)}
 
-    notice = "GIS enabled for #{@category.title}"
+    notice = t('.gis_enabled_for', title: @category.title)
     count = @category.descendants.count
     if count > 0
       notice << " and #{count} child " << "category".pluralize(count)
@@ -62,7 +62,7 @@ class CategoryController < ApplicationController
     @category.update_attribute(:gis_enabled, false)
     @category.descendants.each {|d| d.update_attribute(:gis_enabled, false)}
 
-    notice = "GIS disabled for #{@category.title}"
+    notice = t('.gis_disabled_for', title: @category.title)
     count = @category.descendants.count
     if count > 0
       notice << " and #{count} child " << "category".pluralize(count)
