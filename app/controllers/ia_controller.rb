@@ -24,7 +24,7 @@ class IaController < ApplicationController
     end
 
     work = @ia_work.convert_to_work
-    flash[:notice] = "#{@ia_work.title} has been converted into a FromThePage work"
+    flash[:notice] = t('.converted_to_work', title: @ia_work.title)
 
     unless params[:collection_id].blank?
       work.collection = @collection
@@ -60,7 +60,7 @@ class IaController < ApplicationController
 
     target_leaves.each { |leaf| leaf.destroy }
 
-    flash[:notice] = "Pages preceding the beginning of the text have been concealed"
+    flash[:notice] = t('.preceding_the_beginning')
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 
@@ -81,21 +81,21 @@ class IaController < ApplicationController
 
     target_leaves.each { |leaf| leaf.destroy }
 
-    flash[:notice] = "Pages following the end of the text have been concealed"
+    flash[:notice] = t('.pages_following_the_end')
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 
   def title_from_ocr_top
     @ia_work.title_from_ocr(:top)
 
-    flash[:notice] = "Pages have been renamed with the top line of OCR text"
+    flash[:notice] = t('.pages_has_been_renamed')
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 
   def title_from_ocr_bottom
     @ia_work.title_from_ocr(:bottom)
 
-    flash[:notice] = "Pages have been renamed with the bottom line of OCR text"
+    flash[:notice] = t('.pages_has_been_renamed')
     redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 
@@ -111,7 +111,7 @@ class IaController < ApplicationController
         return
       end
     else
-      errors.add(:base, "Please enter a valid Archive.org book URL to import")
+      errors.add(:base, t('.please_enter_valid_url'))
       render :action => 'ia_book_form'
     end
   end
@@ -126,7 +126,7 @@ class IaController < ApplicationController
     @ia_work.detail_url = detail_url
     @ia_work.ingest_work(id)
 
-    flash[:notice] = "#{@ia_work.title} has been imported into your staging area"
+    flash[:notice] = t('.imported_into_staging', title: @ia_work.title)
     ajax_redirect_to :action => 'manage', :ia_work_id => @ia_work.id
   end
 
