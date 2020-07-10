@@ -105,7 +105,7 @@ class OmekaSitesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        flash[:notice] = "Omeka site was successfully deleted"
+        flash[:notice] = t('.omeka_site_deleted')
         redirect_back fallback_location: omeka_items_path
       }
       format.json { head :no_content }
