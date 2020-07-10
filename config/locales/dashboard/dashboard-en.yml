@@ -79,3 +79,8 @@ en:
       images_should_be_oriented: "Images should be oriented so that they are right-side-up."
       images_should_be_split_down: "Images should be split down the spine, so that only one page is visible on an image.<br> (See the %{link} tool if you need to split two-page images.)"
       images_should_be_named: "Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require \"zero-padding\" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)"
+    new_upload:
+      document_uploaded: "Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready."
+      reload_this_page: "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+    create_work:
+      work_created: "Work created successfully"
