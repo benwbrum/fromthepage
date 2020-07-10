@@ -270,7 +270,7 @@ class ExportController < ApplicationController
     system({'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key}, cmd)
 
     # display results somehow
-    flash[:notice] = "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."
+    flash[:notice] = t('.updating_contentdm_message')
     ajax_redirect_to :action => :index, :collection_id => @collection.id
   end
 
