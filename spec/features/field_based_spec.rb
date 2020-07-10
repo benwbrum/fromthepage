@@ -83,7 +83,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Second field")
     expect(page).to have_content("Third field")
     page.fill_in('fields_1_First_field', with: "Field one")
-    page.fill_in('fields_2_Second_field', with: "Field two")
+    page.fill_in('fields_2_Second_field', with: "Field < three")
     page.fill_in('fields_3_Third_field', with: "Field three")
     find('#save_button_top').click
     click_button 'Preview'
@@ -134,6 +134,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_export_path(@collection.owner, @collection)
     expect(page).to have_content("Export Individual Works")
     page.find('tr', text: work.title).find('.btnCsvTblExport').click
+    binding.pry
     expect(page.response_headers['Content-Type']).to eq 'application/csv'
   end
 
