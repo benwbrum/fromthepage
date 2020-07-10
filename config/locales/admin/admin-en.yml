@@ -4,3 +4,19 @@ en:
       last_deed_logged: "Last deed logged %{date} ago by %{author}"
       database_version: "Database Version %{version}"
       software_version: "Software Version %{version}"
+    update_user:
+      user_profile_updated: "User profile has been updated"
+    delete_user:
+      user_profile_deleted: "User profile has been deleted"
+    expunge_user:
+      user_expunged: "User %{user} has been expunged"
+    autoflag:
+      flag_message: "Looking for additional content to flag.  Revisit this page in a few minutes."
+    delete_upload:
+      uploaded_document_deleted: "Uploaded document has been deleted"
+    process_upload:
+      uploaded_document_queued: "Uploaded document has been queued for processing"
+    update:
+      admin_settings_updated: "Admin settings have been updated"
+    downgrade:
+      user_downgraded_successfully: "User downgraded successfully"
