@@ -39,3 +39,9 @@ en:
       you_dont_have_any_collections: "You don't have any collections yet"
       you_can_new_collection: "You can %{new_collection}"
       your_activity: "Your Activity"
+    owner_header:
+      owner_dashboard: "Owner Dashboard"
+      create_a_collection: "Create a Collection"
+      start_a_project: "Start A Project"
+      your_collections: "Your Collections"
+      summary: "Summary"
