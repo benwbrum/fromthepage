@@ -31,6 +31,7 @@ set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "pub
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, { rvm_path: "/usr/share/rvm/" }
 
 # Default value for keep_releases is 5
 set :keep_releases, 20

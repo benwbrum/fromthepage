@@ -47,4 +47,3 @@ server '45.79.215.153', user: 'fromthepage', roles: %{app}
 
 
 set :branch, 'fromthepage.com'
-
