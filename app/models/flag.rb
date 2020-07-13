@@ -22,6 +22,13 @@ class Flag < ActiveRecord::Base
 
 
   def self.check_page(version)
+    
+    if version.user.owner?
+      return
+    end
+   
+
+    
     if snippet = Flagger.check(version.transcription)
       flag = Flag.new
       flag.page_version = version
@@ -34,6 +41,10 @@ class Flag < ActiveRecord::Base
   end
 
   def self.check_article(version)
+    # if account_type.owner?
+     # FALSE_POSITIVE
+   # end
+   
     if snippet = Flagger.check(version.source_text)
       flag = Flag.new
       flag.article_version = version
@@ -46,6 +57,7 @@ class Flag < ActiveRecord::Base
   end
 
   def self.check_note(note)
+    
     if snippet = Flagger.check(note.body)
       flag = Flag.new
       flag.note = note
