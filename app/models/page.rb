@@ -286,7 +286,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
         input_type = TranscriptionField.find(tc.transcription_field_id).input_type
 
         cell_data.each do |key, value|
-          #tc = TableCell.new(row: 1, header: key, content: value)
+          if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
+            value = ERB::Util.html_escape(value)
+          end
           tc.header = key
           tc.content = value
           key = (input_type == "description") ? (key + " ") : (key + ": ")
