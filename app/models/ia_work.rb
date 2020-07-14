@@ -299,6 +299,12 @@ private
     if zips.size < 1
       zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 Tar'}
     end
+    if zips.size < 1
+      zips = formats.select{|e| e.inner_text=="Single Page Processed JPEG Tar"}
+    end
+
+
+
     zip = zips.first.parent['name']
 
     return [scandata, djvu, zip]
