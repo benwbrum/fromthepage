@@ -41,7 +41,7 @@
       -start_project = link_to t('.start_a_project'), dashboard_startproject_path
       .nodata
         h5.nodata_title =t('.you_dont_have_any_collections')
-        p.nodata_text =t('.you_can_new_collection', new_collection: new_collection)
+        p.nodata_text =t('.you_can_new_collection', new_collection: new_collection).html_safe
 
 
   aside.sidecol
