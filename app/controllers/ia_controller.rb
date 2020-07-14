@@ -104,6 +104,7 @@ class IaController < ApplicationController
     #id = detail_url.split('/').last
 
     if @detail_url =~ /https?:\/\/(www\.)?archive\.org\/.+/
+      @detail_url.sub!(/\/mode\/.*/, '')
       @matches = IaWork.where(:detail_url => @detail_url)
       if @matches.size() == 0
         # nothing to do here
