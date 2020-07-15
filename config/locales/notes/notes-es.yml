@@ -18,8 +18,17 @@ es:
       update: "Actualizar"
     notes:
       nobody_has_written_a_note: "Nadie ha escrito una nota para esta página todavía"
-      please_sign_in_to_write: "Por favor, %{link} para escribir una nota para esta página
-      write_a_new_note: Escribir una nueva nota..."
+      please_sign_in_to_write: "Por favor, %{link} para escribir una nota para esta página"
+      write_a_new_note: "Escribir una nueva nota..."
       note_body: "Cuerpo de la Nota"
       microphone: "Micrófono"
       save_note: "Guardar Nota"
+    create:
+      must_be_logged: "Debes iniciar sesión para crear notas"
+      note_has_been_created: "La nota ha sido creada"
+      error_creating_note: "Hubo un error al crear la nota"
+    update:
+      note_has_been_updated: "La nota fue actualizada"
+      error_updating_note: "Hubo un error al actualizar la nota"
+    destroy:
+      note_has_been_deleted: "La nota ha sido eliminada"
