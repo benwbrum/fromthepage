@@ -16,6 +16,17 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user_in_model
   before_action :masquerade_user!
   after_action :track_action
+  around_action :switch_locale
+
+  def switch_locale(&action)
+    if user_signed_in?
+      locale = current_user.dictation_language.split('-').shift
+    else
+      locale = I18n.default_locale
+    end
+
+    I18n.with_locale(locale, &action)
+  end
 
   # Set the current user in User
   def set_current_user_in_model
