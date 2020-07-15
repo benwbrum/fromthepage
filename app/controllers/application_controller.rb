@@ -25,7 +25,12 @@ class ApplicationController < ActionController::Base
       locale = I18n.default_locale
     end
 
-    I18n.with_locale(locale, &action)
+    if I18n.available_locales.include?(locale.to_sym)
+      I18n.with_locale(locale, &action)
+    else
+      locale = I18n.default_locale
+      I18n.with_locale(locale, &action)
+    end
   end
 
   # Set the current user in User
