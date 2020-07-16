@@ -57,10 +57,10 @@ pt:
     save_transcription:
       saved_notice: "Guardada"
       you_may_save_notice: "Você pode guardar até %{guest_deed_ count} transcrições como hóspede."
-      error_message: "Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})"
+      error_message: "Houve um erro ao analisar as marcas na sua transcrição. Este tipo de erro muitas vezes ocorre se um colchete angular está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=\"\"> símbolos no seu texto. (O erro do analisador foi: %{error_message})"
     save_translation:
       notice: "Você pode guardar até %{guest_deed_ count} transcrições como hóspede."
-      error_message: "Houve um erro ao analisar a marca na sua tradução. Este tipo de erro muitas vezes ocorre se um suporte de ângulo está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=""> símbolos no seu texto. (O erro do analisador foi: %{error_message})"
+      error_message: "Houve um erro ao analisar a marca na sua tradução. Este tipo de erro muitas vezes ocorre se um suporte de ângulo está faltando ou se uma tag HTML é deixada aberta. Verifique quaisquer instâncias de < or=\"\"> símbolos no seu texto. (O erro do analisador foi: %{error_message})"
     goto_next_untranscribed_page:
       notice: "Não há mais páginas para transcrever nesta coleção."
       another_page_notice: "Aqui está outra página nesta obra."
