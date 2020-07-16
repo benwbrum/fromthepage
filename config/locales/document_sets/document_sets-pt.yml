@@ -20,7 +20,7 @@ pt:
       document_sets_are_sub_sets: "Os conjuntos de documentos são subconjuntos dos documentos de uma coleção. Eles têm vários usos, incluindo:"
       focusing_transcriber_effort: "Focar os esforços dos transcritores em um grupo específico de obras."
       publishing_works_private_collection: "Publicar obras de uma coleção privada. (Quaisquer obras de uma coleção privada que sejam adicionadas a um conjunto de documentos público serão visíveis para o público.)"
-      aggregating_works_thematic_exhibits: "Agregar obras em exposições temáticas""
+      aggregating_works_thematic_exhibits: "Agregar obras em exposições temáticas"
       document_sets_for: "Conjuntos de Documentos para %{título}"
       title: "Titulo"
       privacy: "Privacidade"
