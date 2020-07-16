@@ -1,4 +1,4 @@
-en:
+pt:
   user_mailer:
     nightly_user_activity:
       greet: "Oi %{user} --"
