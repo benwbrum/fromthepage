@@ -2,24 +2,27 @@
 
 section.signon
   h1 Sign Up
-  p Please fill in the following information to create a new FromThePage account. 
   =form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :login
+      =f.label :login, 'User Name'
       =f.text_field :login, autofocus: true
+      small
+        i You'll use this name to log in. It will be shown publicly.
     .signon_field
-      =f.label :email, 'Email address'
+      =f.label :email, 'Email Address'
       =f.email_field :email
     .signon_field
       =f.label :password
       =f.password_field :password, autocomplete: 'off'
     .signon_field
-      =f.label :password_confirmation
+      =f.label :password_confirmation, 'Confirm Password'
       =f.password_field :password_confirmation, autocomplete: 'off'
     .signon_field
-      =f.label :display_name
-      =f.text_field :display_name
+      =f.label :real_name, 'Real Name'
+      =f.text_field :real_name
+      small
+        i Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
     .signon_field
       =f.hidden_field :owner
       =f.hidden_field :paid_date

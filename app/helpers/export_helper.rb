@@ -1,5 +1,43 @@
 module ExportHelper
 
+  def work_to_tei(work)
+    params[:format] = 'xml'# if params[:format].blank?
+
+    @work = work
+    @context = ExportContext.new
+
+    @user_contributions =
+      User.find_by_sql("SELECT  user_id user_id,
+                                users.real_name real_name,
+                                count(*) edit_count,
+                                min(page_versions.created_on) first_edit,
+                                max(page_versions.created_on) last_edit
+                        FROM    page_versions
+                        INNER JOIN pages
+                            ON page_versions.page_id = pages.id
+                        INNER JOIN users
+                            ON page_versions.user_id = users.id
+                        WHERE pages.work_id = #{@work.id}
+                          AND page_versions.transcription IS NOT NULL
+                        GROUP BY user_id
+                        ORDER BY count(*) DESC")
+
+    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
+
+    @all_articles = @work.articles
+
+    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
+    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
+    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
+                      .where.not(categories: {title: 'Places'})
+
+    ### Catch the rendered Work for post-processing
+    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
+    post_process_xml(xml, @work)
+  end
+
+
+
   def page_id_to_xml_id(id, translation=false)
     return "" if id.blank?
     

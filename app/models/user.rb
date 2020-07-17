@@ -16,8 +16,8 @@ class User < ApplicationRecord
   attr_accessor :login_id
 
   has_many(:owner_works,
-           { :foreign_key => "owner_user_id",
-             :class_name => 'Work' })
+           :foreign_key => "owner_user_id",
+           :class_name => 'Work')
   has_many :collections, :foreign_key => "owner_user_id"
   has_many :oai_sets
   has_many :ia_works
@@ -27,18 +27,17 @@ class User < ApplicationRecord
   has_one :notification, :dependent => :destroy
 
   has_and_belongs_to_many(:scribe_works,
-                          { :join_table => 'transcribe_authorizations',
-                            :class_name => 'Work'})
+                          :join_table => 'transcribe_authorizations',
+                          :class_name => 'Work')
   has_and_belongs_to_many(:owned_collections,
-                          { :join_table => 'collection_owners',
-                            :class_name => 'Collection'})
+                          :join_table => 'collection_owners',
+                          :class_name => 'Collection')
   has_and_belongs_to_many(:document_set_collaborations,
-                          { :join_table => 'document_set_collaborators',
-                            :class_name => 'DocumentSet'
-                            })
+                          :join_table => 'document_set_collaborators',
+                          :class_name => 'DocumentSet')
   has_and_belongs_to_many(:collection_collaborations,
-                          { :join_table => 'collection_collaborators',
-                            :class_name => 'Collection'})
+                          :join_table => 'collection_collaborators',
+                          :class_name => 'Collection')
 
 
   has_many :page_versions, -> { order 'created_on DESC' }
@@ -57,12 +56,21 @@ class User < ApplicationRecord
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
 
-  validates :display_name, presence: true
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
 
+  before_validation :update_display_name
+
   after_save :create_notifications
   #before_destroy :clean_up_orphans
+
+  def update_display_name
+    if self.owner
+      self.display_name = self.real_name
+    else
+      self.display_name = login
+    end
+  end
 
   def self.from_omniauth(access_token)
     data = access_token.info
@@ -74,7 +82,7 @@ class User < ApplicationRecord
            email: data['email'],
            password: Devise.friendly_token[0,20],
            display_name: data['name'],
-           print_name: data['name']
+           real_name: data['name']
         )
     end
     user

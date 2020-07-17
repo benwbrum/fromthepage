@@ -12,7 +12,7 @@ class ScCollection < ApplicationRecord
   UNIVERSE = 'https://raw.githubusercontent.com/ryanfb/iiif-universe/gh-pages/iiif-universe.json'
   def self.universe
     # fetch the universe doc
-    connection = open(UNIVERSE)
+    connection = URI.open(UNIVERSE)
     universe_json = connection.read
     service = IIIF::Service.parse(universe_json)
 
@@ -34,7 +34,7 @@ class ScCollection < ApplicationRecord
   end
 
   def self.collection_for_at_id(at_id)
-    connection = open(at_id)
+    connection = URI.open(at_id)
     collection_json = connection.read
     #collection_json = TEST_COLLECTION
     service = IIIF::Service.parse(collection_json)
@@ -45,10 +45,5 @@ class ScCollection < ApplicationRecord
     sc_collection.save!
 
     sc_collection
-  end
-
-  def self.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
-    # http://pontiiif.brumfieldlabs.com/api/v0.0/search/Irish
-    pontiiif_server + 'api/v0.0/search/' + CGI.escape(search_param)
   end
 end

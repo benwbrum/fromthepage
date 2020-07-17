@@ -70,11 +70,9 @@ class UserMailer < ActionMailer::Base
         user_page_ids ||= user.deeds.pluck(:page_id).uniq.compact
 
         Activity.new(
-          {
-            user: user,
-            added_works: works_added_to_users_collection_in_past_day(user),
-            active_note_pages: user_pages_with_notes_added_in_past_day(user, user_page_ids)
-          }
+          user: user,
+          added_works: works_added_to_users_collection_in_past_day(user),
+          active_note_pages: user_pages_with_notes_added_in_past_day(user, user_page_ids)
         )
       end
 

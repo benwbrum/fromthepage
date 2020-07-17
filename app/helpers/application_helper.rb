@@ -1,5 +1,6 @@
 module ApplicationHelper
   
+  #dead code
   def billing_host
     if defined? BILLING_HOST
       BILLING_HOST
@@ -87,12 +88,12 @@ module ApplicationHelper
       deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
     else
       #restricting to visible collections first speeds up the query
-      limited = Deed.joins(:collection).where('collections.restricted = 0')
+      limited = Deed.where(is_public: true)
       if options[:owner]
-        owner = User.friendly.find(params[:user_id])
-        deeds = limited.active.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
+        owner = User.friendly.find(options[:owner].id)
+        deeds = limited.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
       else
-        deeds = limited.active.where(condition).order('deeds.created_at DESC').limit(limit)
+        deeds = limited.where(condition).order('deeds.created_at DESC').limit(limit)
       end
     end
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
@@ -123,10 +124,6 @@ module ApplicationHelper
       @work.title
     end
   end
-  
-  def pontiiif_server
-    Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
-  end
 
   def language_attrs(collection)
     direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
@@ -147,5 +144,26 @@ module ApplicationHelper
   def fromthepage_version
     Fromthepage::Application::Version
   end
+
+  def value_to_html(value)
+    if value.is_a? String
+      return value
+    elsif value.is_a? Array
+      return value.map {|e| e["@value"]}.join("; ")
+    end
+  end
+
+  def html_metadata_from_work(work)
+    html_metadata(JSON.parse(work.original_metadata))
+  end
+
+  def html_metadata(metadata_hash)
+    html = ""
+    metadata_hash.each do |md|
+      html += "<p><b>#{md["label"]}</b>: #{value_to_html(md["value"])} </p>"
+    end
+    html
+  end
+
 
 end

@@ -31,12 +31,6 @@ class ScCollectionsController < ApplicationController
     end
   end
 
-  def search_pontiiif
-    search_param = params[:search_param]
-    at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
-    redirect_to :action => :explore_collection, :at_id => at_id
-  end
-
   def import
     at_id = params[:at_id]
     begin
@@ -238,7 +232,7 @@ class ScCollectionsController < ApplicationController
   end
 
   def find_service(at_id)
-    connection = open(at_id)
+    connection = URI.open(at_id)
     manifest_json = connection.read
     service = IIIF::Service.parse(manifest_json)
     return service

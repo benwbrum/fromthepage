@@ -43,11 +43,13 @@
     -else
       h3 Collaborators
       p No Collaborators
+      p A detailed spreadsheet export of all collaborators is available on your owner dashboard.
 
 h3 All Collaborator Emails
+p=link_to "Find recommendations for project newsletters.", "https://content.fromthepage.com/crowdsourcing-project-newsletter/"
 p#collaborators
   -unless @all_collaborators.empty?
-    =@all_collaborators
+    =@all_collaborators + ", support@fromthepage.com"
   -else
     |No collaborators
 

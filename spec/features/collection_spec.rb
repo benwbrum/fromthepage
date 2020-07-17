@@ -4,7 +4,6 @@ require 'spec_helper'
 describe "collection settings js tasks", :order => :defined do
 
   before :all do
-    Capybara.javascript_driver = :webkit
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
@@ -29,16 +28,17 @@ describe "collection settings js tasks", :order => :defined do
     page.find('.tabs').click_link("Settings")
     #check to see if Collaborators are visible
     expect(page).not_to have_content("Collection Collaborators")
+    expect(page).not_to have_content("API Access")
     page.click_link('Make Collection Private')
     #check to see if Collaborators are visible
     expect(page).to have_content("Collection Collaborators")
+    expect(page).to have_content("API Access")
   end
 
   it "checks that a restricted user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "adds collaborators to a private collection" do
@@ -91,8 +91,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks that the removed user can't view the collection" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "adds owners to a private collection" do
@@ -114,6 +113,9 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "checks added owner permissions" do
+    @rest_user.reload
+    @rest_user.account_type = nil
+    @rest_user.save
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
     expect(page).to have_content("Collections")
@@ -132,7 +134,7 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.display_name).find('a.remove').click
+    page.find('.user-label', text: @rest_user.real_name).find('a.remove').click
     page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
@@ -140,8 +142,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks removed owner permissions" do
     login_as(@rest_user, :scope => :user)
     visit dashboard_path
-    expect(page).to have_content("Collections")
-    expect(page).not_to have_content(@collection.title)
+    expect(page.find('.maincol')).not_to have_content(@collection.title)
   end
 
   it "sets collection to public" do
@@ -215,7 +216,6 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "sorts works in works list", :js => true do
-    Capybara.javascript_driver = :webkit
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Works List")

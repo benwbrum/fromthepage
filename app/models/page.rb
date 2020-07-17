@@ -1,5 +1,6 @@
 require 'search_translator'
 class Page < ApplicationRecord
+  ActiveRecord::Base.lock_optimistically = false
 
   include XmlSourceProcessor
   include ApplicationHelper
@@ -32,7 +33,7 @@ class Page < ApplicationRecord
   after_save :update_sections_and_tables
   after_save :update_tex_figures
   after_save do
-    work.update_next_untranscribed_pages if self == work.next_untranscribed_page
+    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
   end
 
   after_initialize :defaults
@@ -285,7 +286,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
         input_type = TranscriptionField.find(tc.transcription_field_id).input_type
 
         cell_data.each do |key, value|
-          #tc = TableCell.new(row: 1, header: key, content: value)
+          if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
+            value = ERB::Util.html_escape(value)
+          end
           tc.header = key
           tc.content = value
           key = (input_type == "description") ? (key + " ") : (key + ": ")
@@ -304,9 +307,11 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def clear_links(text_type)
     # first use the existing links to blank the graphs
-    self.clear_article_graphs
-    # clear out the existing links to this page
-    PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
+    if self.page_article_links.present?
+      self.clear_article_graphs
+      # clear out the existing links to this page
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
+    end
   end
 
   # tested

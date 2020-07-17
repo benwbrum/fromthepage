@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "needs review", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
@@ -70,7 +68,7 @@ describe "needs review", :order => :defined do
     expect(@page4.status).to be_nil
     expect(@page5.status).to be_nil
     expect(page).to have_content(@collection.title)
-    page.find('.maincol').click_link @work.title
+    page.find('.collection-work_title', text: @work.title).click_link @work.title
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
     page.fill_in 'page_source_text', with: "Review Text"
     page.check('page_needs_review')

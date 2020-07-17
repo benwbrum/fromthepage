@@ -78,7 +78,12 @@ class AdminController < ApplicationController
       end
 
       flash[:notice] = "User profile has been updated"
-      ajax_redirect_to :action => 'user_list'
+      if owner
+        ajax_redirect_to :action => 'owner_list'
+      else
+        ajax_redirect_to :action => 'user_list'
+      end
+  
     else
       render :action => 'edit_user'
     end
@@ -232,6 +237,6 @@ class AdminController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:display_name, :print_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)
+    params.require(:user).permit(:real_name, :login, :email, :account_type, :start_date, :paid_date, :user, :owner)
   end
 end

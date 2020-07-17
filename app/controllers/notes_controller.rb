@@ -76,6 +76,7 @@ class NotesController < ApplicationController
 
     deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
+
     deed.save!
   end
 

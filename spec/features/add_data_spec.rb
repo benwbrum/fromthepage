@@ -64,32 +64,33 @@ describe "uploads data for collections", :order => :defined do
 
   it "imports IIIF manifests", :js => true do
     #import a manifest for test data
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#import-iiif-manifest").click
-    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
-    find_button('iiif_import').click
-    expect(page).to have_content("Metadata")
-    expect(page).to have_content("Manifest")
-    select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import Manifest')
-    expect(page).to have_content(@collection.title)
-    visit dashboard_owner_path
-    works_count = Work.all.count
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#import-iiif-manifest").click
-    #this manifest has a very long title
-    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
-    find_button('iiif_import').click
-    expect(page).to have_content("Metadata")
-    expect(page).to have_content("Manifest")
-    select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import')
-    expect(page).to have_content(@collection.title)
-    expect((@collection.works.last.title).length).to be < 255
-    new_works = Work.all.count
-    expect(new_works).to be > works_count
-  
+    VCR.use_cassette('iiif/imports_iiif_manifests', :record => :new_episodes) do
+      visit dashboard_owner_path
+      page.find('.tabs').click_link("Start A Project")
+      page.find(:css, "#import-iiif-manifest").click
+      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
+      find_button('iiif_import').click
+      expect(page).to have_content("Metadata")
+      expect(page).to have_content("Manifest")
+      select(@collection.title, :from => 'sc_manifest_collection_id')
+      click_button('Import Manifest')
+      expect(page).to have_content(@collection.title)
+      visit dashboard_owner_path
+      works_count = Work.all.count
+      page.find('.tabs').click_link("Start A Project")
+      page.find(:css, "#import-iiif-manifest").click
+      #this manifest has a very long title
+      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
+      find_button('iiif_import').click
+      expect(page).to have_content("Metadata")
+      expect(page).to have_content("Manifest")
+      select(@collection.title, :from => 'sc_manifest_collection_id')
+      click_button('Import')
+      expect(page).to have_content(@collection.title)
+      expect((@collection.works.last.title).length).to be < 255
+      new_works = Work.all.count
+      expect(new_works).to be > works_count
+    end
   end
 
   it "creates an empty work", :js => true do

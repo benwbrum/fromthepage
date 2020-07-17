@@ -2,7 +2,7 @@ require 'contentdm_translator'
 
 class ExportController < ApplicationController
   require 'zip'
-  include CollectionHelper,ExportHelper
+  include CollectionHelper, ExportHelper, ExportService
 
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
@@ -26,6 +26,21 @@ class ExportController < ApplicationController
     render :layout => false
   end
 
+  def text
+    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
+    render :layout => false
+  end
+
+  def transcript
+    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
+    render :layout => false
+  end
+
+  def translation
+    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
+    render :layout => false
+  end
+
   def tei
     params[:format] = 'xml'# if params[:format].blank?
 
@@ -33,7 +48,9 @@ class ExportController < ApplicationController
 
     @user_contributions =
       User.find_by_sql("SELECT  user_id user_id,
-                                users.print_name print_name,
+                                users.real_name real_name,
+                                users.display_name display_name,
+                                users.guest guest,
                                 count(*) edit_count,
                                 min(page_versions.created_on) first_edit,
                                 max(page_versions.created_on) last_edit
@@ -58,9 +75,10 @@ class ExportController < ApplicationController
 
     ### Catch the rendered Work for post-processing
     xml = render_to_string :layout => false, :template => "export/tei.html.erb"
+    tei_xml = work_to_tei(@work)
 
     # Render the post-processed
-    render :plain => post_process_xml(xml, @work), :content_type => "application/xml"
+    render :plain => tei_xml, :content_type => "application/xml"
   end
 
   def subject_csv
@@ -75,7 +93,47 @@ class ExportController < ApplicationController
               :filename => "fromthepage_tables_export_#{@work.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
+  end
 
+  def export_work
+    dirname = @work.slug.truncate(200, omission: "")
+
+    respond_to do |format|
+      format.zip do
+        buffer = Zip::OutputStream.write_buffer do |out|
+          add_readme_to_zip(dirname: dirname, out: out)
+
+          %w(verbatim emended searchable).each do |format|
+            export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          end
+
+          %w(verbatim emended).each do |format|
+            export_plaintext_translation(name: format, dirname: dirname, out: out)
+          end
+
+          @work.pages.each do |page|
+            %w(verbatim emended).each do |format|
+              export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            end
+
+            %w(verbatim emended).each do |format|
+              export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+            end
+          end
+
+          %w(full text transcript translation).each do |format|
+            export_view(name: format, dirname: dirname, out: out)
+          end
+
+          @work.pages.each do |page|
+            export_html_full_pages(dirname: dirname, out: out, page: page)
+          end
+        end
+
+        buffer.rewind
+        send_data buffer.read, filename: "#{@collection.title}-#{@work.title}.zip"
+      end
+    end
   end
 
   def export_all_works
@@ -85,20 +143,48 @@ class ExportController < ApplicationController
       @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
     end
 
-#create a zip file which is automatically downloaded to the user's machine
+    # create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
       format.html
       format.zip do
-      compressed_filestream = Zip::OutputStream.write_buffer do |zos|
-        @works.each do |work|
-          @work = work
-          export_view = render_to_string(:action => 'show', :formats => [:html], :work_id => work.id, :layout => false, :encoding => 'utf-8')
-          zos.put_next_entry "#{work.slug.truncate(200, omission: "")}.xhtml"
-          zos.print export_view
+        buffer = Zip::OutputStream.write_buffer do |out|
+          @works.each do |work|
+            @work = work
+            dirname = work.slug.truncate(200, omission: "")
+            add_readme_to_zip(dirname: dirname, out: out)
+
+            export_tei(dirname: dirname, out:out)
+
+            %w(verbatim expanded searchable).each do |format|
+              export_plaintext_transcript(name: format, dirname: dirname, out: out)
+            end
+
+            %w(verbatim expanded).each do |format|
+              export_plaintext_translation(name: format, dirname: dirname, out: out)
+            end
+
+            @work.pages.each do |page|
+              %w(verbatim expanded).each do |format|
+                export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+              end
+
+              %w(verbatim expanded).each do |format|
+                export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+              end
+            end
+
+            %w(full text transcript translation).each do |format|
+              export_view(name: format, dirname: dirname, out: out)
+            end
+
+            @work.pages.each do |page|
+              export_html_full_pages(dirname: dirname, out: out, page: page)
+            end
+          end
         end
-      end
-      compressed_filestream.rewind
-      send_data compressed_filestream.read, filename: "#{@collection.title}.zip"
+
+        buffer.rewind
+        send_data buffer.read, filename: "#{@collection.title}.zip"
       end
     end
     cookies['download_finished'] = 'true'
@@ -162,7 +248,7 @@ class ExportController < ApplicationController
     license_key = params[:collection][:license_key]
     contentdm_user_name = params[:contentdm_user_name]
     contentdm_password = params[:contentdm_password]
-    error_message, fts_field = ContentdmTranslator.fts_field_for_collection(@collection, license_key, contentdm_user_name, contentdm_password)
+    error_message, fts_field = ContentdmTranslator.fts_field_for_collection(@collection)
 
     # persist license key so the user doesn't have to retype it
     if error_message.blank? || !error_message.match(/license.*invalid/)
@@ -200,7 +286,9 @@ private
 
   def get_headings(collection, ids)
     field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
-    cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
+    orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
+    markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
+    cell_headings = orphan_cell_headings + markdown_cell_headings
 
     @raw_headings = (field_headings + cell_headings).uniq
     @headings = []
@@ -366,5 +454,7 @@ private
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
     end
   end
+
+
 
 end

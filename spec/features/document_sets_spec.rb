@@ -80,7 +80,7 @@ describe "document sets", :order => :defined do
       unless c.restricted
         expect(page).to have_content(c.title)
       else
-        expect(page).not_to have_content(c.title)
+        expect(page.find('.maincol')).not_to have_content(c.title)
       end
     end
     @document_sets.each do |set|
@@ -144,7 +144,7 @@ describe "document sets", :order => :defined do
       unless c.restricted
         expect(page).to have_content(c.title)
       else
-        expect(page).not_to have_content(c.title)
+        expect(page.find('.maincol')).not_to have_content(c.title)
       end
     end
     @document_sets.each do |set|
@@ -174,7 +174,7 @@ describe "document sets", :order => :defined do
   it "checks notes on a public doc set/private collection" do
     login_as(@user, :scope => :user)
     visit collection_transcribe_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
-    fill_in 'Write a new note...', with: "Test private note"
+    fill_in 'Write a new note or ask a question...', with: "Test private note"
     find('#save_note_button').click
     expect(page).to have_content "Note has been created"
     note = Note.last

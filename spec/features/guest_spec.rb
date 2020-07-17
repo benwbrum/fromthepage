@@ -5,7 +5,7 @@ describe "guest user actions" do
 
   before :all do
     @collections = Collection.all
-    @collection = @collections.last
+    @collection = @collections.find(3)
     @work = @collection.works.last
     @page = @work.pages.last
     @owner = User.find_by(login: OWNER)
@@ -107,11 +107,11 @@ describe "guest user actions" do
 
     # Convert Account: after 3 transcriptions, the user should be forced to sign up
     expect(page.current_path).to eq new_user_registration_path
-    fill_in 'Login', with: 'martha'
-    fill_in 'Email address', with: 'martha@test.com'
+    fill_in 'User Name', with: 'martha'
+    fill_in 'Email Address', with: 'martha@test.com'
     fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    fill_in 'Display name', with: 'Martha'
+    fill_in 'Confirm Password', with: 'password'
+    fill_in 'Real Name', with: 'Martha'
     click_button('Create Account')
     @user = User.last
     expect(@user.login).to eq('martha')
@@ -120,7 +120,7 @@ describe "guest user actions" do
 
     # Versions Tab
     page.find('.tabs').click_link("Versions")
-    expect(page).to have_link("Martha")
+    expect(page).to have_link("martha")
   end
 
   it "looks at the landing page", :guest_enabled do

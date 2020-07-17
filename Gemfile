@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.2.1'
+gem 'rails', '6.0.3.2'
 
 gem 'will_paginate'
 gem 'rmagick'
@@ -9,7 +9,7 @@ gem 'oai'
 gem "capistrano", "~> 3.10", require: false
 gem "capistrano-rails", "~> 1.4", require: false
 gem 'capistrano-bundler', '~> 1.6'
-#gem 'rvm1-capistrano3', require: false
+gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2'
@@ -35,7 +35,7 @@ gem "user_agent_parser"
 gem 'pry'
 gem 'oink'
 
-gem 'iiif-image-api', git: 'https://github.com/BrumfieldLabs/iiif-image-api.git'
+gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git'
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 
@@ -50,8 +50,9 @@ gem 'puma'
 
 gem 'active_link_to'
 
+gem 'warning'
+
 group :assets do
-  gem 'mini_racer'
   gem 'uglifier'
 end
 
@@ -68,7 +69,6 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'launchy'
-  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
   gem 'pry-byebug'
   gem 'factory_bot_rails'
   gem 'pry-awesome_print' # makes console output easy to read

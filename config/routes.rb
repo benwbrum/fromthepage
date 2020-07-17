@@ -50,6 +50,7 @@ Fromthepage::Application.routes.draw do
     get 'activity_download', to: 'collection#activity_download'
     get 'show', to: 'collection#show', as: 'show'
     get 'toggle_collection_active', to: 'collection#toggle_collection_active'
+    get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
     get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
@@ -63,6 +64,7 @@ Fromthepage::Application.routes.draw do
     get 'publish_collection', to: 'collection#publish_collection'
     get 'remove_collaborator', to: 'collection#remove_collaborator'
     get 'restrict_collection', to: 'collection#restrict_collection'
+    get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'
@@ -97,11 +99,12 @@ Fromthepage::Application.routes.draw do
     get 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
     get 'combine_duplicate', to: 'article#combine_duplicate'
-    put 'article_category', :to => 'article#article_category'
+    post 'article_category', :to => 'article#article_category'
   end
 
   scope 'export', as: 'export' do
     get '/', to: 'export#index'
+    get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
@@ -122,6 +125,7 @@ Fromthepage::Application.routes.draw do
     get 'title_from_ocr_top', to: 'ia#title_from_ocr_top'
     get 'title_from_ocr_bottom', to: 'ia#title_from_ocr_bottom'
     post 'convert', to: 'ia#convert'
+    post 'import_work', to: 'ia#import_work'
     match 'confirm_import', to: 'ia#confirm_import', via: [:get, :post]
   end
 
@@ -189,6 +193,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'page_block', as: 'page_block' do
     patch 'update', :to => 'page_block#update'
+    get 'edit', to: 'page_block#edit'
   end
 
   scope 'rails', as: 'rails' do
@@ -237,6 +242,10 @@ Fromthepage::Application.routes.draw do
     get 'import', to: 'omeka_items#import'
   end
 
+  scope 'statistics', as: 'statistics' do
+    get 'export_csv', to: 'statistics#export_csv'
+  end
+
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
@@ -261,12 +270,44 @@ Fromthepage::Application.routes.draw do
   get '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
   get '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
 
+  get '/iiif/:work_id/export/plaintext/searchable', as: 'iiif_work_export_plaintext_searchable', to: 'iiif#export_work_plaintext_searchable'
+  get '/iiif/:work_id/export/plaintext/verbatim', as: 'iiif_work_export_plaintext_verbatim', to: 'iiif#export_work_plaintext_verbatim'
+  get '/iiif/:work_id/export/plaintext/emended', as: 'iiif_work_export_plaintext_emended', to: 'iiif#export_work_plaintext_emended'
+  get '/iiif/:work_id/export/plaintext/translation/verbatim', as: 'iiif_work_export_plaintext_translation_verbatim', to: 'iiif#export_work_plaintext_translation_verbatim'
+  get '/iiif/:work_id/export/plaintext/translation/emended', as: 'iiif_work_export_plaintext_translation_emended', to: 'iiif#export_work_plaintext_translation_emended'
+  get '/iiif/:work_id/export/:page_id/plaintext/searchable', as: 'iiif_page_export_plaintext_searchable', to: 'iiif#export_page_plaintext_searchable'
+  get '/iiif/:work_id/export/:page_id/plaintext/verbatim', as: 'iiif_page_export_plaintext_verbatim', to: 'iiif#export_page_plaintext_verbatim'
+  get '/iiif/:work_id/export/:page_id/plaintext/translation/verbatim', as: 'iiif_page_export_plaintext_translation_verbatim', to: 'iiif#export_page_plaintext_translation_verbatim'
+  get '/iiif/:work_id/export/:page_id/plaintext/emended', as: 'iiif_page_export_plaintext_emended', to: 'iiif#export_page_plaintext_emended'
+  get '/iiif/:work_id/export/:page_id/plaintext/translation/emended', as: 'iiif_page_export_plaintext_translation_emended', to: 'iiif#export_page_plaintext_translation_emended'
+
   get '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
   get '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
-  get 'ZenasMatthews' => 'collection#show', :collection_id => 7
-  get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
-  get 'YaquinaLights' => 'collection#show', :collection_id => 58
+  get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
+  get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+
+  get   'ZenasMatthews' => 'collection#show', :collection_id => 7
+  get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  get   'YaquinaLights' => 'collection#show', :collection_id => 58
+
+  patch 'work/update_work', :to => 'work#update_work'
+  patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
+  patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
+  put   'article/article_category', :to => 'article#article_category'
+  patch 'category/update', :to => 'category#update'
+  patch 'user/update', :to => 'user#update'
+  get   ':collection_id/article/upload', :to => 'article#upload_form', :as => 'article_upload_form'
+  post  'article/upload', :to => 'article#subject_upload', :as => 'article_subject_upload'
+  get   '/article/upload_example', :to => 'article#upload_example', :as => 'article_upload_example'
+
+  patch 'page_block/update', :to => 'page_block#update'
+  patch 'admin/update_user', :to => 'admin#update_user'
+  get   'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
+  patch 'admin/expunge_user', :to => 'admin#expunge_user'
+
+  get '/rails/mailers' => "rails/mailers#index"
+  get '/rails/mailers/*path' => "rails/mailers#preview"
 
   get '/software', to: 'static#software', as: :about
   get '/faq', to: 'static#faq', as: :faq

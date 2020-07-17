@@ -12,7 +12,7 @@ class ScManifest < ApplicationRecord
   # EOI
 
   def self.manifest_for_at_id(at_id)
-    connection = open(at_id)
+    connection = URI.open(at_id)
     manifest_json = connection.read
     #manifest_json = TEST_MANIFEST
     service = IIIF::Service.parse(manifest_json)
@@ -61,6 +61,7 @@ class ScManifest < ApplicationRecord
     work.title = cleanup_label(self.label)
     work.description = self.html_description
     work.collection = collection
+    work.original_metadata = self.service.metadata.to_json
     work.save!
     unless self.service.sequences.empty?
       self.service.sequences.first.canvases.each do |canvas|
@@ -93,7 +94,10 @@ class ScManifest < ApplicationRecord
   end
 
   def flatten_element(element)
-    if element.kind_of? Hash
+    if element.is_a? Array
+      element = element.first
+    end
+    if element.is_a? Hash
       element = element['@value'] || element['value']
     end
     element
@@ -125,18 +129,8 @@ class ScManifest < ApplicationRecord
     unless self.service.description.blank?
       description += flatten_element(self.service.description) + "\n<br /><br />\n"
     end
-    description += "\n<br /><br />\nMetadata:" + self.html_metadata
 
     description
-  end
-
-  def html_metadata
-    html = ""
-    self.service.metadata.each do |md|
-      html += "<br />\n#{md["label"]}: #{md["value"]}"
-    end
-
-    html
   end
 
   protected

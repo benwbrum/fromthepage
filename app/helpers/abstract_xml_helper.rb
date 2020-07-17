@@ -51,9 +51,17 @@ module AbstractXmlHelper
       lb.add_attribute('class', 'line-break')
 
       if preserve_lb
+        if e.attributes['break'] == "no"
+          sib = e.previous_sibling
+          if sib.kind_of? REXML::Element
+            sib.add_text('-')
+          else
+            sib.value=sib.value+'-'
+          end
+        end
         e.replace_with(REXML::Element.new('br'))
       else
-        if params[:action] == "read_work"
+        if params[:action] == "read_work" || params[:action] == 'needs_review_pages'
           if e.attributes['break'] == "no"
             lb.add_text('')
           else
