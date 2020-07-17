@@ -71,3 +71,7 @@ es:
       add: "Añadir"
       add_collaborator: "Añadir colaborador"
       remove: "Eliminar"
+    create:
+      document_created: "El documento ha sido creado"
+    update:
+      document_updated: "El documento ha sido actualizado"

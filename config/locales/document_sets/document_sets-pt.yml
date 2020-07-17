@@ -70,3 +70,7 @@ pt:
       add: "Adicionar"
       add_collaborator: "Adicionar Colaborador"
       remove: "Remover"
+    create:
+      document_created: "O documento foi criado"
+    update:
+      document_updated: "O documento foi atualizado"
