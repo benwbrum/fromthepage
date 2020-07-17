@@ -39,3 +39,5 @@ es:
       add_as_owner: "Añadido a obra privada como dueño"
       page_edited: "Nota añadida en respuesta a un comentario que hiciste"
       update_profile: "Actualizar Perfil"
+    update:
+      user_updated: "El perfil del usuario ha sido actualizado"
