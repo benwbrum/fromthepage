@@ -17,3 +17,5 @@ pt:
       cancel: "Cancelar"
       done: "Completo"
       preview: "Pré-Visualizar"
+    add_fields:
+      must_have_options_list: "Os campos selecionados devem ter uma lista de opções. Adicione opções a qualquer campo selecionado e salve novamente."
