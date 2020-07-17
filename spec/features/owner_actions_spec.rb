@@ -286,77 +286,78 @@ describe "owner actions", :order => :defined do
     page.find(:css, "#document-upload").click
     expect(page).to have_content("Trial accounts are limited to 200 pages. Please contact support@fromthepage.com to upgrade your account.")
 
-  it "warns if account type is Individual Researcher" do
-    @owner.account_type = "Individual Researcher"
-    visit dashboard_owner_path
-    page.find('a', text: 'Create a Collection').click
-    expect(@owner.collections.count).to be >= 1
-    expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
-  end
-
-  it "does not warn with another account type" do
-    @owner.account_type = "Small Organization"
-    visit dashboard_owner_path
-    page.find('a', text: 'Create a Collection').click
-    expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
-  end
-
-  context "owner/staff related" do
-    before :each do
-      @owner = User.where(login: 'wakanda').first
-      @user = User.where(login: 'shuri').first
-    end
-
-    it "creates a collection as owner" do
-      login_as @owner
+    it "warns if account type is Individual Researcher" do
+      @owner.account_type = "Individual Researcher"
       visit dashboard_owner_path
       page.find('a', text: 'Create a Collection').click
-      fill_in 'collection_title', with: 'Letters from America'
-      click_button('Create Collection')
-      expect(page).to have_content("Letters from America")
+      expect(@owner.collections.count).to be >= 1
+      expect(page).to have_content("Individual Researcher Accounts are limited to a single collection.")
     end
 
-    it "adds a new user as collection owner" do
-      login_as @owner
+    it "does not warn with another account type" do
+      @owner.account_type = "Small Organization"
       visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      click_link "Letters from America", match: :first
-      expect(page).to have_content("Settings")
-      click_link "Settings"
-      select("shuri - shuri@example.org", from: "user_id").select_option
-      within(".user-select-form") do
-        click_button "Add"
+      page.find('a', text: 'Create a Collection').click
+      expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
+    end
+
+    context "owner/staff related" do
+      before :each do
+        @owner = User.where(login: 'wakanda').first
+        @user = User.where(login: 'shuri').first
       end
-      @user.reload
-      expect(@user.owner).to be(true)
-      expect(@user.account_type).to eq "Staff"
-    end
 
-    it "confirms that Shuri can read Wakanda's collection" do
-      logout
-      login_as @user
-      visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-    end
+      it "creates a collection as owner" do
+        login_as @owner
+        visit dashboard_owner_path
+        page.find('a', text: 'Create a Collection').click
+        fill_in 'collection_title', with: 'Letters from America'
+        click_button('Create Collection')
+        expect(page).to have_content("Letters from America")
+      end
 
-    it "creates a collection as Shuri" do
-      login_as @user
-      visit dashboard_owner_path
-      page.find('a', text: 'Create a Collection').click
-      fill_in 'collection_title', with: 'Science Archives'
-      click_button('Create Collection')
-      expect(page).to have_content("Science Archives")
-      visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      expect(page).to have_content("Science Archives")
-    end
+      it "adds a new user as collection owner" do
+        login_as @owner
+        visit dashboard_owner_path
+        expect(page).to have_content("Letters from America")
+        click_link "Letters from America", match: :first
+        expect(page).to have_content("Settings")
+        click_link "Settings"
+        select("shuri - shuri@example.org", from: "user_id").select_option
+        within(".user-select-form") do
+          click_button "Add"
+        end
+        @user.reload
+        expect(@user.owner).to be(true)
+        expect(@user.account_type).to eq "Staff"
+      end
 
-    it "confirms that Wakanda can read all collections" do
-      logout
-      login_as @owner
-      visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      expect(page).to have_content("Science Archives")
+      it "confirms that Shuri can read Wakanda's collection" do
+        logout
+        login_as @user
+        visit dashboard_owner_path
+        expect(page).to have_content("Letters from America")
+      end
+
+      it "creates a collection as Shuri" do
+        login_as @user
+        visit dashboard_owner_path
+        page.find('a', text: 'Create a Collection').click
+        fill_in 'collection_title', with: 'Science Archives'
+        click_button('Create Collection')
+        expect(page).to have_content("Science Archives")
+        visit dashboard_owner_path
+        expect(page).to have_content("Letters from America")
+        expect(page).to have_content("Science Archives")
+      end
+
+      it "confirms that Wakanda can read all collections" do
+        logout
+        login_as @owner
+        visit dashboard_owner_path
+        expect(page).to have_content("Letters from America")
+        expect(page).to have_content("Science Archives")
+      end
     end
   end
 end
