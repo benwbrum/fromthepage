@@ -34,6 +34,10 @@
     -if @work.transcription_conventions.present?
       h5 Transcription Conventions
       div ==@work.transcription_conventions
+      
+    -if @work.sc_manifest.present?
+      h5 IIIF Manifest 
+      .big =@work.sc_manifest.at_id
 
   aside.sidecol
     .user-label
