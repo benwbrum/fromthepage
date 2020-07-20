@@ -76,11 +76,12 @@
         tr
           td(colspan="2")
             .aright
-              | Revert transcription conventions to collection default &nbsp;
               -if @work.transcription_conventions.present?
-                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: false, id: 'revert'
+                | Revert transcription conventions to collection default &nbsp;
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', hidden: false, id: 'revert'
               -else
-                =button_tag 'Revert', :work_id => @work.id, type: 'button', disabled: true, id: 'revert'
+                =button_tag 'Revert', :work_id => @work.id, type: 'button', hidden: true, id: 'revert'
+                  
         tr
           td(colspan="2")
             =f.label :translation_instructions, class: 'above'
