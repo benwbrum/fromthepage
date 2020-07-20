@@ -31,13 +31,13 @@ module AddWorkHelper
       if SMTP_ENABLED
         begin
           SystemMailer.new_upload(@document_upload).deliver!
-          flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
+          flash[:info] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
         rescue StandardError => e
           log_smtp_error(e, current_user)
-          flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+          flash[:info] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
         end
       else
-        flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+        flash[:info] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
       end
       @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
