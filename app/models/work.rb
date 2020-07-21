@@ -21,6 +21,7 @@ class Work < ApplicationRecord
 
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
+  has_many :work_facets
 
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
