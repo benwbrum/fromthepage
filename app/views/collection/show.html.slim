@@ -14,7 +14,7 @@
       h2 Works
 
       .start_link
-        -if @collection.has_untranscribed_pages?
+        -if @collection.has_untranscribed_pages? && @collection.active?
           p
           -if user_signed_in?
             =link_to "Start Transcribing", collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
@@ -39,7 +39,7 @@
             span.progress
               -unless @collection.subjects_disabled
                 span(style="width:#{@progress_annotated}%")
-              span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
               -unless @progress_review == 0
                 span(style="width:#{@progress_review}%")
 
@@ -49,7 +49,7 @@
       -link
       p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
-    -if user_signed_in? && current_user.like_owner?(@collection)
+    -if user_signed_in? && current_user.like_owner?(@collection) && @collection.active?
       -if @collection.is_a?(Collection)
         p.nodata_text = link_to 'Add a new work', new_work_collection_path(@collection.owner, @collection)
     
@@ -78,10 +78,11 @@
       =search_field_tag :search, params[:search], placeholder: 'Search for works...'
       =button_tag 'Search'
       =label_tag 'search', "Search for works", class: 'hidden'
+        
+        if collection.active?
+        =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
-    =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
-
-    =link_to "Pages That Need Review", collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+        =link_to "Pages That Need Review", collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     h3 Recent Notes
     -@collection.notes.active.limit(10).each do |note|
