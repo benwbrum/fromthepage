@@ -23,8 +23,8 @@
             -else
               -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => c.id)
               .nodata
-                h5.nodata_title t('.there_are_no_works')
-                p.nodata_text t('.you_can_upload_documents', start_project: start_project)
+                h5.nodata_title =t('.there_are_no_works')
+                p.nodata_text =t('.you_can_upload_documents', start_project: start_project).html_safe
       -unless current_user.document_sets.empty?
         h3 =t('.document_sets')
         -current_user.document_sets.each do |s|
