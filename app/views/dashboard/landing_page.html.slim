@@ -1,9 +1,9 @@
 -unless params[:search]
   .carousel
-    button.prev aria-label="Previous image"
-      =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous image'
-    button.next aria-label="Next image"
-      =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next image'
+    button.prev aria-label=t('.previous_image')
+      =svg_symbol '#icon-arrow-left', class: 'icon', title: t('.previous_image')
+    button.next aria-label=t('.next_image')
+      =svg_symbol '#icon-arrow-right', class: 'icon', title: t('.next_image')
 
     ul
       -@collections.each do |c|
@@ -19,9 +19,9 @@
           br
           -unless link_page.blank?
             -if user_signed_in?
-              =link_to "Transcribe a page", collection_transcribe_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
+              =link_to t('.transcribe_a_page'), collection_transcribe_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
             -else
-              =link_to "Transcribe a page", collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
+              =link_to t('.transcribe_a_page'), collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
 
 .columns.project-list
   article.maincol
@@ -66,15 +66,15 @@
             .projects_link =link_to "More...", user_profile_path(owner)
 
     .project-list_link
-      =link_to "All Collections", collections_list_path
+      =link_to t('.all_collections'), collections_list_path
 
   aside.sidecol
     =form_tag({:controller => 'dashboard', :action => 'landing_page'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-      =search_field_tag :search, params[:search], placeholder: 'Search for collections or owners...'
-      =button_tag 'Search'
-      =label_tag 'search', "Search for collections", class: 'hidden'
+      =search_field_tag :search, params[:search], placeholder: t('.search_for_collections_or_owners')
+      =button_tag t('.search')
+      =label_tag 'search', t('.search_for_collections'), class: 'hidden'
 
-    h2 Recent Activity
+    h2 =t('.recent_activity')
     =deeds_for()
 
 -content_for :javascript

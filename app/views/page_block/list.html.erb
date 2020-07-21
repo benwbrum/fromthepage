@@ -3,15 +3,15 @@
     <table class="datagrid">
       <thead>
         <tr>
-          <th>Page Block</th>
-          <th>Action</th>
+          <th><%= t('.page_block') %></th>
+          <th><%= t('.action') %></th>
         </tr>
       </thead>
       <tbody>
         <% for page_block in @page_blocks %>
           <tr>
             <td><%= page_block.description %></td>
-            <td><%= link_to("edit", { :action => "edit", :page_block_id => page_block.id }) %></td>
+            <td><%= link_to(t('.edit'), { :action => "edit", :page_block_id => page_block.id }) %></td>
           </tr>
         <% end %>
       </tbody>

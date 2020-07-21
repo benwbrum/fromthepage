@@ -2,15 +2,15 @@
 
 .page-headlines
   .headline
-    h3.headline_title Facsimile
+    h3.headline_title =t('.facsimile')
   .headline
     -if translation_mode?
-      h3.headline_title Translation
-      small.headline_aside =link_to 'Show Transcription', { :translation => false, :page_id => @page.id }, class: 'button outline'
+      h3.headline_title =t('.translation')
+      small.headline_aside =link_to t('.show_transcription'), { :translation => false, :page_id => @page.id }, class: 'button outline'
     -else
-      h3.headline_title Transcription
+      h3.headline_title =t('.transcription')
       -if @work.supports_translation
-        small.headline_aside =link_to 'Show Translation', { :translation => true, :page_id => @page.id }, class: 'button outline'
+        small.headline_aside =link_to t('.show_translation'), { :translation => true, :page_id => @page.id }, class: 'button outline'
 
 .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
   .page-column
@@ -43,30 +43,30 @@
         -help_word = 'help transcribe'
         -text_type = 'transcribed'
 
-      -mark_blank = link_to('mark the page blank', transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
+      -mark_blank = link_to(t('.mark_the_page_blank'), transcribe_mark_page_blank_path(:page_id => @page.id, :source_text => 'blank', :page => {:mark_blank => '1'} ))
 
       -if @page.status == Page::STATUS_BLANK
         .centered
           .centered_content
-            p.nodata_text=="This page is blank"
+            p.nodata_text==t('.this_page_is_blank')
       -elsif text.present?
         ==text
       -else
         .centered
           .centered_content
-            h5.nodata_title This page is not #{text_type}
+            h5.nodata_title =t('.this_page_is_not', text_type: text_type)
             p.nodata_text
               -if current_user && current_user.can_transcribe?(@page.work)
                 -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
-                =="Please #{help_link} this page"
-                =="<br>or #{mark_blank}" unless @page.status == Page::STATUS_BLANK
+                ==t('.please_help_this_page', help_link: help_link)
+                ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
               -elsif !current_user && !@page.work.restrict_scribes
                 -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
-                =="Please #{help_link} this page"
+                ==t('.please_help_this_page', help_link: help_link)
               -else
-                =="Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+                ==t('.collaboration_is_restricted')
 
-h2.legend#notes Notes and Questions
+h2.legend#notes =t('.page_notes')
 .page-notes
   =render :partial => "notes/notes"
 

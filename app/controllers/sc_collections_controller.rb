@@ -15,17 +15,17 @@ class ScCollectionsController < ApplicationController
     cdm_url = params[:cdm_url]
 
     if cdm_url.blank?
-      flash[:error] = "Please enter a URL for a CONTENTdm object."
+      flash[:error] = t('.please_enter_url')
       redirect_back fallback_location: { action: 'import' }
       return
     end
 
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
-      flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
+      flash[:notice] = t('.using_manifest_for', url: cdm_url)
       redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
     rescue => e
-      logger.error "Bad CONTENTdm URL: #{cdm_url} ERROR: #{e.message}"
+      logger.error t('.bad_contentdm_url', url: cdm_url, message: e.message)
       flash[:error] = e.message
       redirect_back fallback_location: { action: 'import' }
     end
@@ -67,9 +67,9 @@ class ScCollectionsController < ApplicationController
     rescue => e
       case params[:source]
       when 'contentdm'
-        flash[:error] = "No IIIF manifest exists for CONTENTdm item #{params[:source_url]}"
+        flash[:error] = t('.no_manifest_exist', url: params[:source_url])
       else
-        flash[:error] = "Please enter a valid IIIF manifest URL."
+        flash[:error] = t('.please_enter_valid_url')
       end
       redirect_back fallback_location: { action: 'import' }
     end
@@ -136,7 +136,7 @@ class ScCollectionsController < ApplicationController
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
-    flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
+    flash[:notice] = t('.import_is_processing')
 
     ajax_redirect_to collection_path(collection.owner, collection)
   end
@@ -177,7 +177,8 @@ class ScCollectionsController < ApplicationController
       logger.info rake_call
       system(rake_call)
       #flash notice about the rake task
-      flash[:notice] = "Metadata #{ocr ? 'and OCR text ' : ''} is being imported from CONTENTdm and should appear shortly."
+      ocr_text = ocr ? 'and OCR text ' : ''
+      flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
     end
     redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id
   end

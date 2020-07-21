@@ -35,7 +35,7 @@ class ArticleController < ApplicationController
       @article.destroy
       redirect_to collection_subjects_path(@collection.owner, @collection)
     else
-      flash.alert ="You must remove all referring links before you delete this subject."
+      flash.alert = t('.must_remove_referring_links')
       redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
     end
   end
@@ -52,7 +52,7 @@ class ArticleController < ApplicationController
           rename_article(old_title, @article.title)
         end
         record_deed
-        flash[:notice] = "Subject has been successfully updated"
+        flash[:notice] = t('.subject_successfully_updated')
         if gis_truncated 
           flash[:notice] << " (GIS coordinates truncated to #{GIS_DECIMAL_PRECISION} decimal " << "place".pluralize(GIS_DECIMAL_PRECISION) <<")"
         end
@@ -62,7 +62,7 @@ class ArticleController < ApplicationController
       end
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
-      flash[:notice] = "Subjects auto linking process completed"
+      flash[:notice] = t('.subjects_auto_linking')
       redirect_to :action => 'edit', :article_id => @article.id
     end
   end
@@ -84,7 +84,7 @@ class ArticleController < ApplicationController
       combine_articles(from_article, @article)
     end
 
-    flash[:notice] = "Selected subjects combined with #{@article.title}"
+    flash[:notice] = t('.selected_subjects_combined', title: @article.title)
     redirect_to :action => 'edit', :article_id => @article.id
   end
 
@@ -223,7 +223,7 @@ class ArticleController < ApplicationController
       redirect_to collection_subjects_path(@collection.owner, @collection)
     else      
       # flash message and redirect to upload form on problems
-      flash[:error] = "CSV file must contain headers for HEADING, ARTICLE, URI, and CATEGORY"
+      flash[:error] = t('.csv_file_must_contain_headers')
       redirect_to article_upload_form_path(@collection)    
     end
   end
