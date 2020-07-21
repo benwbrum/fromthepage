@@ -119,7 +119,7 @@ class WorkController < ApplicationController
 
     if @work.save
       record_deed(@work)
-      flash[:notice] = 'Work created successfully'
+      flash[:notice] = t('.work_created')
       ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
       render :new
@@ -148,12 +148,12 @@ class WorkController < ApplicationController
 
     if params[:work][:collection_id] != id.to_s
       change_collection
-      flash[:notice] = 'Work updated successfully'
+      flash[:notice] = t('.work_updated')
       #find new collection to properly redirect
       col = Collection.find_by(id: work.collection_id)
       redirect_to edit_collection_work_path(col.owner, col, work)
     else
-      flash[:notice] = 'Work updated successfully'
+      flash[:notice] = t('.work_updated')
       redirect_back fallback_location: root_path
     end
   end

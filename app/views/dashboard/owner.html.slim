@@ -13,23 +13,20 @@
             -unless @works.empty?
               -@works.each do |w|
                 li =link_to w.title, edit_collection_work_path(c.owner, c, w.id)
-              -more_works = link_to 'See All Works...', collection_works_list_path(c.owner, c)
-              -start_project = link_to 'Start A Project', dashboard_startproject_path(:collection_id => c.id)
-              p.nodata_text
-                  i
-                    |Total work count: #{@count}
+              -more_works = link_to t('.see_all_works'), collection_works_list_path(c.owner, c)
+              -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => c.id)
+              p.nodata_text = t('.total_work_count', count: @count)
                   -if @count > 15
                     i &nbsp; #{more_works}
                     br
-              p.nodata_text
-                i You can add another work under #{start_project}
+              p.nodata_text = t('.you_can_add_another_work', start_project: start_project).html_safe
             -else
-              -start_project = link_to 'Start A Project', dashboard_startproject_path(:collection_id => c.id)
+              -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => c.id)
               .nodata
-                h5.nodata_title There are no works in this collection yet
-                p.nodata_text You can upload documents under #{start_project}
+                h5.nodata_title t('.there_are_no_works')
+                p.nodata_text t('.you_can_upload_documents', start_project: start_project)
       -unless current_user.document_sets.empty?
-        h3 Document Sets
+        h3 =t('.document_sets')
         -current_user.document_sets.each do |s|
           .collection
             h4.collection_title
@@ -40,15 +37,15 @@
                 li =link_to w.title, collection_read_work_path(s.owner, s, w)
 
     -else
-      -new_collection = link_to 'create a collection', collection_new_path
-      -start_project = link_to 'start a project', dashboard_startproject_path
+      -new_collection = link_to t('.create_a_collection'), collection_new_path
+      -start_project = link_to t('.start_a_project'), dashboard_startproject_path
       .nodata
-        h5.nodata_title You don't have any collections yet
-        p.nodata_text You can #{new_collection}
+        h5.nodata_title =t('.you_dont_have_any_collections')
+        p.nodata_text =t('.you_can_new_collection', new_collection: new_collection).html_safe
 
 
   aside.sidecol
-    h3 Your Activity
+    h3 =t('.your_activity')
     =deeds_for({ :user_id => current_user.id, :limit => 10 })
 
 -if (defined? INTERCOM_APP_ID) && !INTERCOM_APP_ID.blank?

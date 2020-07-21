@@ -77,7 +77,7 @@ class AdminController < ApplicationController
         end
       end
 
-      flash[:notice] = "User profile has been updated"
+      flash[:notice] = t('.user_profile_updated')
       if owner
         ajax_redirect_to :action => 'owner_list'
       else
@@ -92,7 +92,7 @@ class AdminController < ApplicationController
   def delete_user
     @user.soft_delete
     #@user.destroy
-    flash[:notice] = "User profile has been deleted"
+    flash[:notice] = t('.user_profile_deleted')
     redirect_to :action => 'user_list'
   end
 
@@ -101,7 +101,7 @@ class AdminController < ApplicationController
 
   def expunge_user
     @user.expunge
-    flash[:notice] = "User #{@user.display_name} has been expunged"
+    flash[:notice] = t('.user_expunged', user: @user.display_name)
     if params[:flag_id]
       ajax_redirect_to :action => 'revert_flag', :flag_id => params[:flag_id]
     else
@@ -141,7 +141,7 @@ class AdminController < ApplicationController
   end
 
   def autoflag
-    flash[:notice] = "Looking for additional content to flag.  Revisit this page in a few minutes."
+    flash[:notice] = t('.flag_message')
 
     cmd = "rake fromthepage:flag_abuse &"
     logger.info(cmd)
@@ -157,14 +157,14 @@ class AdminController < ApplicationController
   def delete_upload
     @document_upload = DocumentUpload.find(params[:id])
     @document_upload.destroy
-    flash[:notice] = "Uploaded document has been deleted"
+    flash[:notice] = t('.uploaded_document_deleted')
     redirect_to :action => 'uploads'
   end
 
   def process_upload
     @document_upload = DocumentUpload.find(params[:id])
     @document_upload.submit_process
-    flash[:notice] = "Uploaded document has been queued for processing"
+    flash[:notice] = t('.uploaded_document_queued')
     redirect_to :action => 'uploads'
   end
 
@@ -209,7 +209,7 @@ class AdminController < ApplicationController
       block.save!
     end
 
-    flash[:notice] = "Admin settings have been updated"
+    flash[:notice] = t('.admin_settings_updated')
 
     redirect_to action: 'settings'
   end
@@ -231,7 +231,7 @@ class AdminController < ApplicationController
   def downgrade
     u = User.find(params[:user_id])
     u.downgrade
-    redirect_back fallback_location: { action: 'user_list' }, notice: "User downgraded successfully"
+    redirect_back fallback_location: { action: 'user_list' }, notice: t('.user_downgraded_successfully')
   end
 
   private

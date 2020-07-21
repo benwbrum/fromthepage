@@ -1,0 +1,11 @@
+es:
+  page_block:
+    edit:
+      html_block_for: "Bloque HTML para %{description}"
+    html_block:
+      edit_help_text: "Editar Texto de Ayuda"
+      create_help_text: "Crear Texto de Ayuda"
+    list:
+      page_block: "Bloque de Página"
+      action: "Acciones"
+      edit: "editar"

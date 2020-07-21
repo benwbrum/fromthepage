@@ -16,49 +16,49 @@
 
 -case deed.deed_type
 -when DeedType::PAGE_TRANSCRIPTION
-  -output += "transcribed page #{page}"
+  -output += t('.transcribed_page', page: page)
 
 -when DeedType::PAGE_EDIT
-  -output += "edited page #{page}"
+  -output += t('.edited_page', page: page)
 
 -when DeedType::PAGE_INDEXED
-  -output += "indexed page #{page}"
+  -output += t('.indexed_page', page: page)
   
 -when DeedType::PAGE_MARKED_BLANK
-  -output += "marked page #{page} as blank"
+  -output += t('.marked_page_as_blank', page: page)
 
 -when DeedType::ARTICLE_EDIT
-  -output += "edited #{article} article"
+  -output += t('.edited_article', article: article)
 
 -when DeedType::NOTE_ADDED
-  -output += "added a note to page #{page}"
+  -output += t('.added_a_note_to_page', page: page)
 
 -when DeedType::PAGE_TRANSLATED
-  -output += "translated page #{page}"
+  -output += t('.translated_page', page: page)
 
 -when DeedType::PAGE_TRANSLATION_EDIT
-  -output += "edited the translation of page #{page}"
+  -output += t('.edited_translation_of_page', page: page)
 
 -when DeedType::OCR_CORRECTED
-  -output += "corrected page #{page}"
+  -output += t('.corrected_page', page: page)
 
 -when DeedType::NEEDS_REVIEW
-  -output += "marked page #{page} as needing review"
+  -output += t('.marked_page_as_needing_review', page: page)
 
 -when DeedType::TRANSLATION_INDEXED
-  -output += "indexed the translation of page #{page}"
+  -output += t('.indexed_translation_of_page', page: page)
 
 -when DeedType::TRANSLATION_REVIEW
-  -output += "marked translation page #{page} as needing review"
+  -output += t('.marked_translation_page_as_needing_review', page: page)
 
 -when DeedType::WORK_ADDED
-  -output += "added #{work}"
+  -output += t('.added_work', work: work)
 
 -when DeedType::COLLECTION_JOINED
-    -output += "joined "
+    -output += t('.joined')
     
     -if deed.collection.nil?
-      -output += "this collection"
+      -output += t('.this_collection')
     -else
       -output += collection
 
@@ -67,11 +67,11 @@
     -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work), only_path: !mailer )
   -else
     -work = deed.work.title      
-  -output += " in the work #{work}"
+  -output += t('.in_the_work', work: work)
 -if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED)
-  -output += " in #{collection} collection"
+  -output += t('.in_collection', collection: collection)
 
 -if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
-  -output += ", saying &ldquo;#{deed.note.title}&rdquo;"
+  -output += t('.saying_deed', title: deed.note.title).html_safe
 
 ==output

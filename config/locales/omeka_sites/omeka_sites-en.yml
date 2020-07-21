@@ -1,0 +1,8 @@
+en:
+  omeka_sites:
+    create:
+      omeka_site_created: "Omeka site was successfully created"
+    update:
+      omeka_site_updated: "Omeka site was successfully updated"
+    destroy:
+      omeka_site_deleted: "Omeka site was successfully deleted"

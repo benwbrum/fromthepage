@@ -1,6 +1,6 @@
 .litebox-embed(style="width:550px")
-  h1 Add New Page
-  p Choose a title for the page and select a page image to upload.
+  h1 =t('.add_new_page')
+  p =t('.choose_a_title')
 
   =form_for(@page, { :url => { :action => 'create' }}) do |f|
     =hidden_field_tag(:work_id, @page.work.id)
@@ -10,19 +10,19 @@
         th =f.label :title
         td.w100 =f.text_field :title
       tr
-        th =f.label :base_image, 'Page Image'
+        th =f.label :base_image, t('.page_image')
         td
           .input-file
             =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
-            input(type="text" tabindex="-1" placeholder="Click to browse a file..." readonly)
-            button(type="button") Browse
+            input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') readonly)
+            button(type="button") #{t('.browse')}
     .toolbar
       .toolbar_group
-        =f.button 'Cancel', type: 'reset'
+        =f.button t('.cancel'), type: 'reset'
       .toolbar_group.aright
-        =f.button 'Save & New Work', :name => 'subaction', :value => 'save_and_new'
+        =f.button t('.save_and_new_work'), :name => 'subaction', :value => 'save_and_new'
         |&nbsp;
-        =f.button 'Save & Add Next Page', :name => 'subaction', :value => 'save_and_next'
+        =f.button t('.save_and_add_next_page'), :name => 'subaction', :value => 'save_and_next'
 
 javascript:
   $('.input-file').inputFile();
