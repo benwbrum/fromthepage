@@ -1,41 +1,41 @@
 -tabs = [{\
-  :name => 'Read',
+  :name => t('.read'),
   :selected => 1,
   :path => "#{collection_read_work_path(@collection.owner, @collection, @work)}",
 },{\
-  :name => 'About',
+  :name => t('.about'),
   :selected => 3,
   :path => "#{collection_work_about_path(@collection.owner, @collection, @work)}",
 },{\
-  :name => 'Contents',
+  :name => t('.contents'),
   :selected => 2,
   :path => "#{collection_work_contents_path(@collection.owner, @collection, @work)}",
 },{\
-  :name => 'Versions',
+  :name => t('.versions'),
   :selected => 4,
   :path => "#{versions_collection_work_path(@collection.owner, @collection, @work)}",
 }]
 
 -if false
   -tabs += [{\
-    :name => 'Print',
+    :name => t('.print'),
     :selected => 5,
     :path => "#{print_collection_work_path(@collection.owner, @collection, @work)}",
   }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
-    :name => 'Settings',
+    :name => t('.settings'),
     :selected => 6,
     :path => "#{edit_collection_work_path(@collection.owner, @collection, @work)}",
   },{\
-    :name => 'Pages',
+    :name => t('.pages'),
     :selected => 8,
     :path => "#{pages_collection_work_path(@collection.owner, @collection, @work)}",
   }]
 
 -tabs += [{\
-  :name => 'Help',
+  :name => t('.help'),
   :selected => 9,
   :path => "#{collection_work_help_path(@collection.owner, @collection, @work)}",
 }]

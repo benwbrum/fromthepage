@@ -1,21 +1,20 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 8, :collection_id => @collection.id }})
 
-p Document sets are sub-sets of the documents in a collection.  They have several uses, including:
+p =t('.document_sets_are_sub_sets')
 ul
-  li Focusing transcriber effort on a particular group of works.
-  li Publishing works from a private collection. (Any works in a private collection which are added to a public document set will be visible to the public.)
-  li Aggregating works into thematic exhibits
+  li =t('.focusing_transcriber_effort')
+  li =t('.publishing_works_private_collection')
+  li =t('.aggregating_works_thematic_exhibits')
 
 -if @collection.document_sets.present?
   h3
-    | Document Sets for 
-    =@collection.title
+    =t('.document_sets_for', title: @collection.title)
   table.datagrid
     thead
       tr
-        th Title
-        th Privacy
-        th Actions
+        th =t('.title')
+        th =t('.privacy')
+        th =t('.actions')
         td
     tbody#sets
       -@collection.document_sets.each do |document_set|
@@ -23,24 +22,24 @@ ul
           td
             =link_to document_set.title, collection_path(document_set.owner, document_set)
           td
-            =document_set.is_public ? 'Public' : 'Private'
+            =document_set.is_public ? t('.public') : t('.private')
           td
-            =link_to 'Edit', collection_settings_path(@collection.owner, document_set)
+            =link_to t('.edit'), collection_settings_path(@collection.owner, document_set)
           td
-            =link_to 'Delete', document_sets_destroy_path(:document_set_id => document_set.id), data: { :confirm => 'Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.' }
+            =link_to t('.delete'), document_sets_destroy_path(:document_set_id => document_set.id), data: { :confirm => t('.delete_document_set_confirm_message') }
 
 
 br
-=link_to 'Create a Document Set', new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
+=link_to t('.create_a_document_set'), new_document_set_path(collection_id: @collection.id), class: 'button', 'data-litebox' => ''
 
 -if @collection.document_sets.present?
-  h3 Assign Works to Document Sets
+  h3 =t('.assign_works_to_document_sets')
   =form_tag(document_set_assign_works_path(collection_id: @collection.id))
     table.datagrid
       thead
         tr
-          th Work
-          th Collaboration
+          th =t('.work')
+          th =t('.collaboration')
           -@collection.document_sets.each do |document_set|
             th
               =document_set.title
@@ -52,15 +51,15 @@ br
               =work.title
             td
               i
-                =work.restrict_scribes  ? 'Restricted' : 'Unrestricted'
+                =work.restrict_scribes  ? t('.restricted') : t('.unrestricted')
             -ids = work.document_sets.ids
             -@collection.document_sets.each do |document_set|
               td
                 =check_box_tag("work_assignment[#{document_set.id}][#{work.id}]", "true", ids.include?(document_set.id), {"title"=>"Toggle #{work.title} in Document Set #{document_set.title}"})
     br
-    =submit_tag "Save"
+    =submit_tag t('.save')
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
 -else
-  p This collection has no document sets
+  p =t('.no_document_sets')

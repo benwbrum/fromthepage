@@ -1,0 +1,13 @@
+en:
+  user_mailer:
+    nightly_user_activity:
+      greet: "Hi %{user} --"
+      inform_activity: "We just wanted to let you know that there's been activity in a collection that you worked on."
+      new_works: "New Works"
+      user_activity: "%{owner} added %{work} to the collection %{collection}. "
+      click_here: "Click here"
+      to_view: "&nbsp; to view %{collection}: %{work}"
+      new_notes: "New Notes"
+      view_note_on_page: "&nbsp; to view the note on page #{page} in #{collection}: #{work}, which has been added since you worked on it."
+      thanks: "Thanks, <br><br> FromThePage"
+      turn_off_notification: "&nbsp; to turn off this notification."

@@ -1,8 +1,8 @@
 
     ul.collection-work-stats
       li
-        span Work title
-        span Progress
+        span =t('.work_title')
+        span =t('.progress')
         span.progress_bar
       -@works.each do |w|
         -work_stats(w)

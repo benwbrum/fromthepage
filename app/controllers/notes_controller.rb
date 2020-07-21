@@ -18,14 +18,14 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       if not user_signed_in?
-        format.html { redirect_back fallback_location: root_path, flash: { error: "You must be logged in to create notes" } }
+        format.html { redirect_back fallback_location: root_path, flash: { error: t('.must_be_logged') } }
       elsif @note.save
         record_deed
         format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }) }, status: :created }
-        format.html { redirect_back fallback_location: @note, notice: "Note has been created" }
+        format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_created') }
       else
         format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
-        format.html { redirect_back fallback_location: @note, flash: { error: "Error creating note" } }
+        format.html { redirect_back fallback_location: @note, flash: { error: t('.error_creating_note') } }
       end
     end
   end
@@ -37,10 +37,10 @@ class NotesController < ApplicationController
         note_body = sanitize(@note.body, tags: %w(strong b em i a), attributes: %w(href))
 
         format.json { render json: { html: simple_format(note_body) }, status: :ok }
-        format.html { redirect_back fallback_location: @note, notice: "Note has been updated" }
+        format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_updated') }
       else
         format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
-        format.html { redirect_back fallback_location: @note, flash: { error: "Error updating note" } }
+        format.html { redirect_back fallback_location: @note, flash: { error: t('.error_updating_note') } }
       end
     end
   end
@@ -51,7 +51,7 @@ class NotesController < ApplicationController
     @note.delete
     respond_to do |format|
       format.json { head :no_content }
-      format.html { redirect_back fallback_location: root_path, notice: "Note has been deleted" }
+      format.html { redirect_back fallback_location: root_path, notice: t('.note_has_been_deleted') }
     end
   end
 

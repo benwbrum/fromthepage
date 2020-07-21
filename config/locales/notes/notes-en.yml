@@ -1,0 +1,34 @@
+en:
+  notes:
+    note:
+      html:
+        edit: "Edit"
+        confirm_delete_message: "Are you sure you want to delete this note?"
+        delete: "Delete"
+        time_ago_in_words: " %{time} ago"
+        microphone: "Microphone"
+        cancel: "Cancel"
+        update: "Update"
+      edit: "Edit"
+      confirm_delete_message: "Are you sure you want to delete this note?"
+      delete: "Delete"
+      time_ago_in_words: " %{time} ago"
+      microphone: "Microphone"
+      cancel: "Cancel"
+      update: "Update"
+    notes:
+      nobody_has_written_a_note: "Nobody has written a note for this page yet"
+      please_sign_in_to_write: "Please %{link} to write a note for this page"
+      write_a_new_note: "Write a new note or ask a question..."
+      note_body: "Note body"
+      microphone: "Microphone"
+      save_note: "Save Note"
+    create:
+      must_be_logged: "You must be logged in to create notes"
+      note_has_been_created: "Note has been created"
+      error_creating_note: "Error creating note"
+    update:
+      note_has_been_updated: "Note has been updated"
+      error_updating_note: "Error updating note"
+    destroy:
+      note_has_been_deleted: "Note has been deleted"

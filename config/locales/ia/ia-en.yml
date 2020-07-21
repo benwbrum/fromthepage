@@ -1,0 +1,16 @@
+en:
+  ia:
+    convert:
+      converted_to_work: "%{title} has been converted into a FromThePage work"
+    mark_beginning:
+      preceding_the_beginning: "Pages preceding the beginning of the text have been concealed"
+    mark_end:
+      pages_following_the_end: "Pages following the end of the text have been concealed"
+    title_from_ocr_top:
+      pages_has_been_renamed: "Pages have been renamed with the top line of OCR text"
+    title_from_ocr_bottom:
+      pages_has_been_renamed: "Pages have been renamed with the bottom line of OCR text"
+    confirm_import:
+      please_enter_valid_url: "Please enter a valid Archive.org book URL to import"
+    import_work:
+      imported_into_staging: "%{title} has been imported into your staging area"

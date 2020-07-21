@@ -19,10 +19,10 @@
 }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Owner Dashboard"
+-content_for :page_title, "#{selected_tab} - #{t('.owner_dashboard')}"
 
 .headline
-  h1.headline_title Owner Dashboard
+  h1.headline_title =t('.owner_dashboard')
   .headline_aside
     dl.dropdown.right
       dt.h5 tabindex=0
@@ -30,7 +30,7 @@
         =svg_symbol '#big-menu', class: 'icon icon-big'
       dd
         -unless current_user.all_owner_collections.empty?
-        =link_to 'Create a Collection', collection_new_path, :data => { litebox: { hash: 'create-collection' } }
+        =link_to t('.create_a_collection'), collection_new_path, :data => { litebox: { hash: 'create-collection' } }
 
 -if !(current_user.account_type == nil)
   .owner-info
@@ -48,6 +48,6 @@ section.owner-counters
     .counter(data-prefix="#{number_with_delimiter @document_sets.length}") #{'Document Set'.pluralize(@document_sets.length)}
 
 .tabs
-  =active_link_to "Start A Project", dashboard_startproject_path
-  =active_link_to "Your Collections", dashboard_owner_path
-  =active_link_to "Summary", dashboard_summary_path
+  =active_link_to t('.start_a_project'), dashboard_startproject_path
+  =active_link_to t('.your_collections'), dashboard_owner_path
+  =active_link_to t('.summary'), dashboard_summary_path
