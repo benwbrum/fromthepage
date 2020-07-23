@@ -1,4 +1,4 @@
-class AddPagesXmlTextIndexAgain < ActiveRecord::Migration[5.2]
+class AddPagesXmlTextIndexAgain < ActiveRecord::Migration[5.0]
   def up
     #this index is no longer used; now search_text is the relevant column
 #    add_index(:pages, :xml_text, :name => 'pages_xml_text_index', :length => 1000)

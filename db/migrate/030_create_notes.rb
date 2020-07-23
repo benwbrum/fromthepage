@@ -1,4 +1,4 @@
-class CreateNotes < ActiveRecord::Migration[5.2]
+class CreateNotes < ActiveRecord::Migration[5.0]
   def self.up
     create_table :notes do |t|
       # data

@@ -1,4 +1,4 @@
-class CreateCollection < ActiveRecord::Migration[5.2]
+class CreateCollection < ActiveRecord::Migration[5.0]
   def self.up
     # collection table
     create_table :collections do |t|

@@ -1,4 +1,4 @@
-class RemediateSourceText < ActiveRecord::Migration[5.2]
+class RemediateSourceText < ActiveRecord::Migration[5.0]
   def change
     pages = Page.where("source_text LIKE '%</link>%'")
     pages.each do |page|

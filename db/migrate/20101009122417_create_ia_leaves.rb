@@ -1,4 +1,4 @@
-class CreateIaLeaves < ActiveRecord::Migration[5.2]
+class CreateIaLeaves < ActiveRecord::Migration[5.0]
   def self.up
     create_table :ia_leaves do |t|
       t.integer :ia_work_id
