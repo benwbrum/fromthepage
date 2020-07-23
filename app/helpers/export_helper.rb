@@ -49,6 +49,21 @@ module ExportHelper
     tei = "<category xml:id=\"S#{subject.id}\">\n"
     tei << "<catDesc>\n"
     tei << "<term>#{subject.title}</term>\n"
+    tei << '<note type="categorization">Categories:'
+    subject.categories.each do |category|
+      tei << '<ab>'
+      category.ancestors.reverse.each do |parent|
+        if parent.root? 
+          category_class = "#category #root"
+        else
+          category_class = "#category #branch"
+        end
+        tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{parent.title}</ptr> -- "
+      end
+      tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{category.title}</ptr>"
+      tei << "</ab>"
+    end
+     tei << "</note>"
     tei << "<gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
     tei << "</catDesc>\n"
     tei << "</category>\n"
