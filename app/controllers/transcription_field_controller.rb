@@ -31,7 +31,7 @@ class TranscriptionFieldController < ApplicationController
           fields[:options] = nil
           if fields[:input_type] == "select"
             fields[:input_type] = "text"
-            errors.add(:base, "Select fields must have an options list.  Please add options to any select fields and resave.")
+            errors.add(:base, t('.must_have_options_list'))
           end
         else
           fields[:options].gsub!(/;\s/, ';')

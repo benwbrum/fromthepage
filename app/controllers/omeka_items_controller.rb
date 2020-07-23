@@ -61,7 +61,7 @@ class OmekaItemsController < ApplicationController
 
     respond_to do |format|
       format.html {
-        flash[:notice] = "Omeka item was successfully published"
+        flash[:notice] = t('.omeka_item_published')
         redirect_to :controller => 'work', :action => 'edit', :work_id => @omeka_item.work.id
       }
     end
@@ -75,7 +75,7 @@ class OmekaItemsController < ApplicationController
     respond_to do |format|
       if @omeka_item.update(params[:omeka_item])
         format.html {
-          flash[:notice] = "Omeka item was successfully updated"
+          flash[:notice] = t('.omeka_item_updated')
           ajax_redirect_to request.env['HTTP_REFERER'] #:back won't work here
         }
         format.json { head :no_content }
@@ -94,7 +94,7 @@ class OmekaItemsController < ApplicationController
 
     respond_to do |format|
       format.html {
-        flash[:notice] = "Omeka item was successfully deleted"
+        flash[:notice] = t('.omeka_item_deleted')
         redirect_back fallback_location: omeka_items_path
       }
       format.json { head :no_content }

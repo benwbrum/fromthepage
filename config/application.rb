@@ -26,5 +26,9 @@ module Fromthepage
     if config.respond_to?(:sass)
       require File.expand_path('../../lib/sassc_functions.rb', __FILE__)
     end
+
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
+    config.i18n.default_locale = :en
+    config.i18n.available_locales = [:en, :es, :pt]
   end
 end

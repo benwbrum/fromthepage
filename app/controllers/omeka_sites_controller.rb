@@ -66,7 +66,7 @@ class OmekaSitesController < ApplicationController
     respond_to do |format|
       if @omeka_site.save
         format.html {
-          flash[:notice] = "Omeka site was successfully created"
+          flash[:notice] = t('.omeka_site_created')
           ajax_redirect_to @omeka_site
         }
         format.json { render json: @omeka_site, status: :created, location: @omeka_site }
@@ -86,7 +86,7 @@ class OmekaSitesController < ApplicationController
     respond_to do |format|
       if @omeka_site.update(params[:omeka_site])
         format.html {
-          flash[:notice] = "Omeka site was successfully updated"
+          flash[:notice] = t('.omeka_site_updated')
           ajax_redirect_to @omeka_site
         }
         format.json { head :no_content }
@@ -105,7 +105,7 @@ class OmekaSitesController < ApplicationController
 
     respond_to do |format|
       format.html {
-        flash[:notice] = "Omeka site was successfully deleted"
+        flash[:notice] = t('.omeka_site_deleted')
         redirect_back fallback_location: omeka_items_path
       }
       format.json { head :no_content }

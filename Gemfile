@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.1'
+gem 'rails', '6.0.3.2'
 
 gem 'will_paginate'
 gem 'rmagick'
@@ -51,6 +51,8 @@ gem 'puma'
 gem 'active_link_to'
 
 gem 'warning'
+
+gem 'rails-i18n', '~> 6.0.0'
 
 group :assets do
   gem 'uglifier'

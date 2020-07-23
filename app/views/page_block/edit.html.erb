@@ -1,7 +1,7 @@
 <div class="columns">
   <div class="maincol">
     <%= form_for @page_block, :url => { :action => "update" } do |f| %>
-      <%= f.label :html, "HTML Block for #{@page_block.description}" %><br>
+      <%= f.label :html, t('.html_block_for', description: @page_block.description) %><br>
       <%= f.text_area :html, :cols => 80, :rows => 40 %><br>
       <%= f.hidden_field :id %>
       <%= f.submit %>

@@ -284,9 +284,30 @@ Fromthepage::Application.routes.draw do
   get '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
   get '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
 
-  get 'ZenasMatthews' => 'collection#show', :collection_id => 7
-  get 'JuliaBrumfield' => 'collection#show', :collection_id => 1
-  get 'YaquinaLights' => 'collection#show', :collection_id => 58
+  get   '/iiif/admin/explore/:at_id', :to => 'sc_collections#explore',:constraints => { :at_id => /.*/ }
+  get   '/iiif/admin/import_manifest', :to => 'sc_collections#import_manifest'
+
+  get   'ZenasMatthews' => 'collection#show', :collection_id => 7
+  get   'JuliaBrumfield' => 'collection#show', :collection_id => 1
+  get   'YaquinaLights' => 'collection#show', :collection_id => 58
+
+  patch 'work/update_work', :to => 'work#update_work'
+  patch 'transcribe/save_transcription', :to => 'transcribe#save_transcription'
+  patch 'transcribe/save_translation', :to => 'transcribe#save_translation'
+  put   'article/article_category', :to => 'article#article_category'
+  patch 'category/update', :to => 'category#update'
+  patch 'user/update', :to => 'user#update'
+  get   ':collection_id/article/upload', :to => 'article#upload_form', :as => 'article_upload_form'
+  post  'article/upload', :to => 'article#subject_upload', :as => 'article_subject_upload'
+  get   '/article/upload_example', :to => 'article#upload_example', :as => 'article_upload_example'
+
+  patch 'page_block/update', :to => 'page_block#update'
+  patch 'admin/update_user', :to => 'admin#update_user'
+  get   'admin/expunge_confirmation', :to => 'admin#expunge_confirmation'
+  patch 'admin/expunge_user', :to => 'admin#expunge_user'
+
+  get '/rails/mailers' => "rails/mailers#index"
+  get '/rails/mailers/*path' => "rails/mailers#preview"
 
   get '/software', to: 'static#software', as: :about
   get '/faq', to: 'static#faq', as: :faq

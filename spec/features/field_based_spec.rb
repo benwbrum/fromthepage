@@ -81,7 +81,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Second field")
     expect(page).to have_content("Third field")
     page.fill_in('fields_1_First_field', with: "Field one")
-    page.fill_in('fields_2_Second_field', with: "Field two")
+    page.fill_in('fields_2_Second_field', with: "Field < three")
     page.fill_in('fields_3_Third_field', with: "Field three")
     find('#save_button_top').click
     click_button 'Preview'
@@ -118,7 +118,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(message).to have_content("You have unsaved changes.")
     visit collection_transcribe_page_path(@collection.owner, @collection, test_page.work, test_page)
     #previous page arrow - make sure it also works with notes
-    fill_in('Write a new note...', with: "Test two")
+    fill_in('Write a new note or ask a question...', with: "Test two")
     message = accept_alert do
       page.click_link("Previous page")
     end

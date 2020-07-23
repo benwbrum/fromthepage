@@ -35,7 +35,7 @@ class DocumentSetsController < ApplicationController
     @document_set = DocumentSet.new(document_set_params)
     @document_set.owner = current_user
     if @document_set.save
-      flash[:notice] = 'Document set has been created'
+      flash[:notice] = t('.document_created')
       ajax_redirect_to collection_settings_path(@document_set.owner, @document_set)
     else
       render action: 'new'
@@ -93,7 +93,7 @@ class DocumentSetsController < ApplicationController
     end
 
     @document_set.save!
-    flash[:notice] = 'Document set has been saved'
+    flash[:notice] = t('.document_updated')
     unless request.referrer.include?("/settings")
       ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
     else

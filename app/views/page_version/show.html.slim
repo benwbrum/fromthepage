@@ -3,16 +3,16 @@
 -selected_version_date = @selected_version.created_on.localtime.strftime("%b %d, %Y %I:%M %p")
 -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
 
-p.diff-help Here you can see all page revisions and compare the changes have been made in each revision. Left column shows the page title and transcription in the selected revision, right column shows what have been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
+p.diff-help =t('.help_description').html_safe
 
 table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
-    th: h5.nomargin =pluralize(@page.page_versions.size, 'revision')
-    th =="#{selected_version_user} at #{selected_version_date}"
+    th: h5.nomargin =pluralize(@page.page_versions.size, t('.revision'))
+    th = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
     th
       =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
         =hidden_field_tag :page_version_id, @selected_version.id
-        =label_tag :compare_version_id, 'Compared with'
+        =label_tag :compare_version_id, t('.compared_with')
         =select_tag :compare_version_id, options_from_collection_for_select(@page.page_versions.all.to_a, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
   tr
 

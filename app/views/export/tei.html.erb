@@ -31,7 +31,7 @@ xml:id="export">
 
       <% @user_contributions.each do |user| %>
         <respStmt xml:id="U<%= user[:user_id]%>">
-          <persName><%= user[:real_name] %></persName>
+          <persName><%= user[:real_name] || user.display_name %></persName>
           <% if user[:edit_count] == 1 %>
             <resp>
               made one edit on

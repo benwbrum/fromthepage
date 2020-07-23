@@ -26,7 +26,6 @@ tmp/**/*
 *#
 *~
 mongo.log
-*.csv
 *.out
 
 /public/assets/
@@ -49,3 +48,4 @@ tags
 /**/svg-source
 
 .env
+config/locales/.DS_Store

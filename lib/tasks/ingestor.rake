@@ -108,13 +108,22 @@ namespace :fromthepage do
     ls.each do |path|
       print "\tunpdf_tree considering #{path})\n"
       if Dir.exist? path
-        print "Found directory #{path}\n"
+        print "\tunpdf_tree Found directory #{path}\n"
         unpdf_tree(path, ocr) #recurse
       else
         if File.extname(path) == '.PDF' || File.extname(path) == '.pdf'
-          print "Found pdf #{path}\n"
+          print "\t\tunpdf_tree Found pdf #{path}\n"
           #extract 
           destination = ImageHelper.extract_pdf(path, ocr)
+          print "\t\tunpdf_tree Extracted to #{destination}\n"
+          # copy any metadata.yml to the destination
+          metadata_fn = File.join(File.dirname(path), 'metadata.yml')
+          if File.exist? metadata_fn
+            print "\t\tunpdf_tree Copy #{metadata_fn} to #{destination}\n"
+            FileUtils.cp(metadata_fn, destination)
+          else
+            print "\t\tunpdf_tree No metadata file exists at #{metadata_fn}\n"
+          end
         end
       end
     end
@@ -233,7 +242,7 @@ namespace :fromthepage do
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
     if document_upload.ocr
-      if Dir.glob(File.join(path, "page*.txt")).count > 0
+      if Dir.glob(File.join(path, "*.txt")).count > 0
         work.ocr_correction = true
       else
         print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")}\n"

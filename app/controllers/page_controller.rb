@@ -21,7 +21,7 @@ class PageController < ApplicationController
 
   def delete
     @page.destroy
-    flash[:notice] = 'Page has been deleted'
+    flash[:notice] = t('.page_deleted')
     redirect_to work_pages_tab_path(:work_id => @work.id)
   end
 
@@ -59,7 +59,7 @@ class PageController < ApplicationController
     @work.pages << @page
 
     if @page.save
-      flash[:notice] = 'Page created successfully'
+      flash[:notice] = t('.page_created')
 
       if page_params[:base_image]
         process_uploaded_file(@page, @page.base_image)
@@ -78,7 +78,7 @@ class PageController < ApplicationController
   def update
     page = Page.find(params[:id])
     page.update(page_params)
-    flash[:notice] = 'Page has been successfully updated'
+    flash[:notice] = t('.page_updated')
 
     if params[:page][:base_image]
       process_uploaded_file(page, page.base_image)
