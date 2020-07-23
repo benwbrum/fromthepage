@@ -1,4 +1,4 @@
-class AddOwnerEmailToBlock < ActiveRecord::Migration[5.2]
+class AddOwnerEmailToBlock < ActiveRecord::Migration[5.0]
   def up
     if (PageBlock.find_by(view: 'new_owner')).nil?
       pb = PageBlock.new

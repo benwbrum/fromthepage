@@ -1,4 +1,4 @@
-class TranscribeHelpPageBlock < ActiveRecord::Migration[5.2]
+class TranscribeHelpPageBlock < ActiveRecord::Migration[5.0]
   def self.up
     make_block "static", "transcribe_help", "Transcribe Help Left Block", "left", STATIC_HELP_LEFT
     make_block "static", "transcribe_help", "Transcribe Help Right Block", "right", STATIC_HELP_RIGHT

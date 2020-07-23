@@ -1,4 +1,4 @@
-class AddXmlToPage < ActiveRecord::Migration[5.2]
+class AddXmlToPage < ActiveRecord::Migration[5.0]
   def self.up
     add_column :pages, :xml_transcription, :text
   end

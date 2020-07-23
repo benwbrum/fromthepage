@@ -1,4 +1,4 @@
-class CreateOaiRepositories < ActiveRecord::Migration[5.2]
+class CreateOaiRepositories < ActiveRecord::Migration[5.0]
   def self.up
     create_table :oai_repositories do |t|
       t.string :url

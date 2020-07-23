@@ -1,4 +1,4 @@
-class ImageSetsHaveStatus < ActiveRecord::Migration[5.2]
+class ImageSetsHaveStatus < ActiveRecord::Migration[5.0]
   def self.up
 =begin    add_column :image_sets, :step, :string, :length => 20
     add_column :image_sets, :status, :string, :length => 10

@@ -1,4 +1,4 @@
-class AddTimestampToPages < ActiveRecord::Migration[5.2]
+class AddTimestampToPages < ActiveRecord::Migration[5.0]
   def change
     add_column :pages, :edit_started_at, :timestamp
   end
