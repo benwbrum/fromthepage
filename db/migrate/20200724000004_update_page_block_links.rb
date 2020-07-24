@@ -1,4 +1,4 @@
-class UpdatePageBlockLinks < ActiveRecord::Migration[5.0]
+class UpdatePageBlockLinks2 < ActiveRecord::Migration[5.0]
   def change
     pages = PageBlock.all
     pages.each do |page|

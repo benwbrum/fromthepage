@@ -1,5 +1,5 @@
 # This migration comes from active_storage (originally 20180723000244)
-class AddForeignKeyConstraintToActiveStorageAttachmentsForBlobId < ActiveRecord::Migration[5.0]
+class AddForeignKeyConstraintToActiveStorageAttachmentsForBlobId2 < ActiveRecord::Migration[5.0]
   def up
     return if foreign_key_exists?(:active_storage_attachments, column: :blob_id)
 
