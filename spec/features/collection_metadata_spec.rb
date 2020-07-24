@@ -71,4 +71,15 @@ describe "collection metadata", :order => :defined do
     visit edit_collection_path(@user, c)
     expect(page).not_to have_content("Metadata")
   end
+
+  it "deletes a collection" do
+    logout
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@owner, c)
+    expect(page).to have_content("ladi")
+    click_link "Delete Collection"
+    expect(page).not_to have_content("ladi")
+    expect(c.metadata_coverages).to be_empty
+  end
 end
