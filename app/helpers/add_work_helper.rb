@@ -28,7 +28,6 @@ module AddWorkHelper
     if @document_upload.save
       if SMTP_ENABLED
         begin
-          SystemMailer.new_upload(@document_upload).deliver!
           flash[:notice] = t('.document_uploaded', email: @document_upload.user.email)
         rescue StandardError => e
           log_smtp_error(e, current_user)

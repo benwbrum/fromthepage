@@ -30,24 +30,30 @@
         :name => t('.export'),
         :selected => 6,
         :path => "#{collection_export_path(@collection.owner, @collection)}",
-    },{\
-        :name => t('.add_work'),
-        :selected => 7,
-        :path => "#{new_work_collection_path(@collection.owner, @collection)}",
-      }]
-    -if @collection.field_based
-      -tabs += [{\
-        :name => t('.edit_fields'),
-        :selected => 10,
-        :path => "#{collection_edit_fields_path(@collection.owner, @collection)}",
-      }]
-
+     }]
+     
   -else
     -tabs += [{\
     :name => t('.settings'),
     :selected => 5,
     :path => "#{collection_settings_path(@collection.owner, @collection)}",
     }]
+    
+  -if @collection.is_a?(Collection) && @collection.active?
+    -tabs += [{\
+      :name => t('.add_work'),
+      :selected => 7,
+      :path => "#{new_work_collection_path(@collection.owner, @collection)}",
+      }]
+      
+  -if @collection.field_based
+    -tabs += [{\
+      :name => t('.edit_fields'),
+      :selected => 10,
+      :path => "#{collection_edit_fields_path(@collection.owner, @collection)}",
+    }]
+
+  
 
   -if @collection.supports_document_sets
     -tabs += [{\

@@ -51,6 +51,7 @@ class ExportController < ApplicationController
                                 users.real_name real_name,
                                 users.display_name display_name,
                                 users.guest guest,
+                                users.login login,
                                 count(*) edit_count,
                                 min(page_versions.created_on) first_edit,
                                 max(page_versions.created_on) last_edit
@@ -67,18 +68,18 @@ class ExportController < ApplicationController
     @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
 
     @all_articles = @work.articles
+    person_category = @collection.categories.where(title: 'People').first
+    @person_articles = @all_articles.joins(:categories).where("articles_categories.category_id in (?)", person_category.descendants.map {|c| c.id}+[person_category.id])
+    place_category = @collection.categories.where(title: 'Places').first
+    @place_articles = @all_articles.joins(:categories).where("articles_categories.category_id in (?)", place_category.descendants.map {|c| c.id}+[place_category.id])
 
-    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
-    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
-    @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
-                      .where.not(categories: {title: 'Places'})
-
+    @other_articles = @all_articles - (@place_articles + @person_articles)    
     ### Catch the rendered Work for post-processing
     xml = render_to_string :layout => false, :template => "export/tei.html.erb"
     tei_xml = work_to_tei(@work)
 
     # Render the post-processed
-    render :plain => tei_xml, :content_type => "application/xml"
+    render :text => tei_xml, :content_type => "application/xml"
   end
 
   def subject_csv
