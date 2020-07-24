@@ -14,7 +14,7 @@
       h2 =t('.works')
 
       .start_link
-        -if @collection.has_untranscribed_pages?
+        -if @collection.has_untranscribed_pages? && @collection.active?
           p
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
@@ -49,7 +49,7 @@
       -link
       p.transcribed =link_to @link_title, collection_path(@collection.owner, @collection, works: @link_type)
 
-    -if user_signed_in? && current_user.like_owner?(@collection)
+    -if user_signed_in? && current_user.like_owner?(@collection) && @collection.active?
       -if @collection.is_a?(Collection)
         p.nodata_text = link_to t('.add_a_new_work'), new_work_collection_path(@collection.owner, @collection)
 
@@ -78,10 +78,11 @@
       =search_field_tag :search, params[:search], placeholder: t('.search_for_works')
       =button_tag t('.search')
       =label_tag 'search', "Search for works", class: 'hidden'
+        
+        if collection.active?
+        =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
-    =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
-
-    =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+        =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     h3 =t('.recent_notes')
     -@collection.notes.active.limit(10).each do |note|

@@ -80,8 +80,27 @@ xml:id="export">
           <% @person_articles.each do |person| %>
             <person xml:id="S<%=person.id%>">
               <persName><%= person.title %></persName>
+              <% if person.categories %>
+                <note type="categorization">
+                  Categories:
+                  <% person.categories.each do |category| %>
+                    <ab>
+                      <% category.ancestors.reverse.each do |parent| %>
+                        <%  if parent.root? 
+                              category_class = "#category #root"
+                            else
+                              category_class = "#category #branch"
+                            end
+                        %>
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> -- 
+                      <% end %>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                    </ab>
+                  <% end %>
+                </note>
+              <% end %>
               <% unless person.source_text.blank? %>
-                <note>
+                <note type="article">
                   <% unless person.source_text.blank? %>
                     <%= raw(xml_to_export_tei(person.xml_text, @context, "S#{person.id}")) %>
                   <% end %>
@@ -97,8 +116,27 @@ xml:id="export">
           <% @place_articles.each do |place| %>
             <place xml:id="S<%=place.id%>">
               <placeName><%= place.title %></placeName>
+              <% if place.categories %>
+                <note type="categorization">
+                  Categories:
+                  <% place.categories.each do |category| %>
+                    <ab>
+                      <% category.ancestors.reverse.each do |parent| %>
+                        <%  if parent.root? 
+                              category_class = "#category #root"
+                            else
+                              category_class = "#category #branch"
+                            end
+                        %>
+                        <ptr ana="<%= category_class %>" target="#C<%= parent.id %>"><%= parent.title %></ptr> -- 
+                      <% end %>
+                      <ptr ana="#category #leaf<%= ' #root' if category.root? %>" target="#C<%= category.id %>"><%= category.title %></ptr>
+                    </ab>
+                  <% end %>
+                </note>
+              <% end %>
               <% unless place.source_text.blank? %>
-                <note>
+                <note type="article">
                   <% unless place.source_text.blank? %>
                     <%= raw(xml_to_export_tei(place.xml_text, @context, "S#{place.id}")) %>
                   <% end %>
