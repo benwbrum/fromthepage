@@ -1,52 +1,54 @@
 -tabs = [{\
-  :name => t('.overview'),
+  :name => 'Overview',
   :selected => 1,
   :path => "#{collection_path(@collection.owner, @collection)}",
 },{\
-  :name => t('.statistics'),
+  :name => 'Statistics',
   :selected => 2,
   :path => "#{collection_statistics_path(@collection.owner, @collection)}",
 }]
 
 -unless @collection.subjects_disabled
   -tabs +=[{\
-  :name => t('.subjects'),
+  :name => 'Subjects',
   :selected => 3,
   :path => "#{collection_subjects_path(@collection.owner, @collection)}",
 }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
   -tabs += [{\
-    :name => t('.collaborators'),
+    :name => 'Collaborators',
     :selected => 4,
     :path => "#{contributors_collection_path(@collection.owner, @collection)}",
   }]
   -if @collection.is_a?(Collection)
     -tabs += [{\
-      :name => t('.settings'),
+      :name => 'Settings',
       :selected => 5,
       :path => "#{edit_collection_path(@collection.owner, @collection)}",
     },{\
-        :name => t('.export'),
+        :name => 'Export',
         :selected => 6,
         :path => "#{collection_export_path(@collection.owner, @collection)}",
+     }]
+     
   -else
     -tabs += [{\
-    :name => t('.settings'),
+    :name => 'Settings',
     :selected => 5,
     :path => "#{collection_settings_path(@collection.owner, @collection)}",
     }]
     
   -if @collection.is_a?(Collection) && @collection.active?
     -tabs += [{\
-      :name => t('.add_work'),
+      :name => 'Add Work',
       :selected => 7,
       :path => "#{new_work_collection_path(@collection.owner, @collection)}",
       }]
       
   -if @collection.field_based
     -tabs += [{\
-      :name => t('.edit_fields'),
+      :name => 'Edit Fields',
       :selected => 10,
       :path => "#{collection_edit_fields_path(@collection.owner, @collection)}",
     }]
@@ -55,13 +57,13 @@
 
   -if @collection.supports_document_sets
     -tabs += [{\
-      :name => t('.sets'),
+      :name => 'Sets',
       :selected => 8,
       :path => "#{document_sets_path(:collection_id => @collection)}",
     }]
 
   -tabs += [{\
-    :name => t('.works_list'),
+    :name => 'Works List',
     :selected => 9,
     :path => "#{collection_works_list_path(@collection.owner, @collection)}",
   }]
