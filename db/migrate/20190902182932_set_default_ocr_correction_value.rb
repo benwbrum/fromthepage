@@ -1,4 +1,4 @@
-class SetDefaultOcrCorrectionValue < ActiveRecord::Migration[5.2]
+class SetDefaultOcrCorrectionValue < ActiveRecord::Migration[5.0]
   def change
     # Set default value to false
     change_column :works, :ocr_correction, :boolean, default: false

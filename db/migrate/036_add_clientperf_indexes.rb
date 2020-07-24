@@ -1,5 +1,5 @@
 
-class AddClientperfIndexes < ActiveRecord::Migration[5.2]
+class AddClientperfIndexes < ActiveRecord::Migration[5.0]
   def self.up
     add_index :clientperf_uris, :uri
     add_index :clientperf_results, :clientperf_uri_id

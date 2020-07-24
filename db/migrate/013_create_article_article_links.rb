@@ -1,4 +1,4 @@
-class CreateArticleArticleLinks < ActiveRecord::Migration[5.2]
+class CreateArticleArticleLinks < ActiveRecord::Migration[5.0]
   def self.up
     create_table :article_article_links do |t|
       # foreign keys

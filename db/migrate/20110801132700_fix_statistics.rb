@@ -1,4 +1,4 @@
-class FixStatistics < ActiveRecord::Migration[5.2]
+class FixStatistics < ActiveRecord::Migration[5.0]
   def self.up
     # catch up existing works
     works = Work.all

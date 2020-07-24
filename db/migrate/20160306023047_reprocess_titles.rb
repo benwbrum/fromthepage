@@ -1,4 +1,4 @@
-class ReprocessTitles < ActiveRecord::Migration[5.2]
+class ReprocessTitles < ActiveRecord::Migration[5.0]
   def change
     Page.all.each do |page| 
       print "Migrating text page_id=#{page.id} title=#{page.title}\n"

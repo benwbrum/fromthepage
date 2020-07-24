@@ -1,4 +1,4 @@
-class CreateDeeds < ActiveRecord::Migration[5.2]
+class CreateDeeds < ActiveRecord::Migration[5.0]
   def self.up
     create_table :deeds do |t|
       # type key

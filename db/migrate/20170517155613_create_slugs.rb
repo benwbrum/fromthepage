@@ -1,4 +1,4 @@
-class CreateSlugs < ActiveRecord::Migration[5.2]
+class CreateSlugs < ActiveRecord::Migration[5.0]
   def change
     # Collection.find_each(&:save)
     # DocumentSet.find_each(&:save)

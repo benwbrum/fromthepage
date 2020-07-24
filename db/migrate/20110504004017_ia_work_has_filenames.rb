@@ -1,4 +1,4 @@
-class IaWorkHasFilenames < ActiveRecord::Migration[5.2]
+class IaWorkHasFilenames < ActiveRecord::Migration[5.0]
   def self.up
     add_column :ia_works, :scandata_file, :string, :length => 100
     add_column :ia_works, :djvu_file, :string, :length => 100

@@ -1,4 +1,4 @@
-class ConvertLatexPngsToSvgs < ActiveRecord::Migration[5.2]
+class ConvertLatexPngsToSvgs < ActiveRecord::Migration[5.0]
   def change
     TexFigure.all.each do |tex_figure|
       tex_figure.clear_artifact
