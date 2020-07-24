@@ -20,15 +20,15 @@ describe "collection settings js tasks", :order => :defined do
     page.click_link("Enable Field Based Transcription")
     expect(page).to have_content("Edit Transcription Fields")
     page.find('.tabs').click_link("Settings")
-    expect(page).to have_selector('a', text: 'Edit Fields')
-    page.find('.sidecol').click_link('Edit Fields')
+    expect(page).to have_selector('a', text: 'Fields')
+    page.find('.sidecol').click_link('Fields')
     expect(page).to have_content("Edit Transcription Fields")
   end
 
   it "edits fields for transcription" do
     expect(TranscriptionField.all.count).to eq 0
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Edit Fields")
+    page.find('.tabs').click_link("Fields")
     page.find('#new-fields tr[2]').fill_in('transcription_fields__label', with: 'First field')
     page.find('#new-fields tr[2]').fill_in('transcription_fields__percentage', with: 20)
     page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'Second field')
@@ -45,7 +45,7 @@ describe "collection settings js tasks", :order => :defined do
   it "checks the field preview on edit page" do
     #check the field preview
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Edit Fields")
+    page.find('.tabs').click_link("Fields")
     expect(page.find('div.editarea')).to have_content("First field")
     expect(page.find('div.editarea')).to have_content("Second field")
     expect(page.find('div.editarea')).to have_content("Third field")
@@ -57,7 +57,7 @@ describe "collection settings js tasks", :order => :defined do
 
   it "adds fields for transcription", :js => true do
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Edit Fields")
+    page.find('.tabs').click_link("Fields")
     count = page.all('#new-fields tr').count
     click_button 'Add Additional Field'
     expect(page.all('#new-fields tr').count).to eq (count+1)
@@ -65,7 +65,7 @@ describe "collection settings js tasks", :order => :defined do
 
   it "adds new line", :js => true do
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Edit Fields")
+    page.find('.tabs').click_link("Fields")
     count = page.all('#new-fields tr').count
     line_count = page.all('#new-fields tr th#line_num').count
     click_button 'Add Additional Line'
@@ -95,7 +95,7 @@ describe "collection settings js tasks", :order => :defined do
   it "reorders a transcription field" do
     field1 = TranscriptionField.find_by(label: "First field").position
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Edit Fields")
+    page.find('.tabs').click_link("Fields")
     page.find('#new-fields tr[2]').click_link('Move down')
     expect(TranscriptionField.find_by(label: "First field").position).not_to eq field1
   end
@@ -103,7 +103,7 @@ describe "collection settings js tasks", :order => :defined do
   it "deletes a transcription field" do
     count = TranscriptionField.all.count
     visit collection_path(@collection.owner, @collection)
-    page.find('.tabs').click_link("Edit Fields")
+    page.find('.tabs').click_link("Fields")
     page.find('#new-fields tr[2]').click_link('Delete field')
     expect(TranscriptionField.all.count).to be < count
   end
@@ -148,7 +148,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     page.click_link("Revert to Document Based Transcription")
-    expect(page).not_to have_selector('a', text: 'Edit Fields')
+    expect(page).not_to have_selector('a', text: 'Fields')
   end
 
 end
