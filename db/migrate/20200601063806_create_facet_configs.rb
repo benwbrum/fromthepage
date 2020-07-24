@@ -1,4 +1,4 @@
-class CreateFacetConfigs < ActiveRecord::Migration[6.0]
+class CreateFacetConfigs < ActiveRecord::Migration[5.0]
   def change
     create_table :facet_configs do |t|
       t.string :label

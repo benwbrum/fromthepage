@@ -1,4 +1,4 @@
-class CreateWorkFacets < ActiveRecord::Migration[6.0]
+class CreateWorkFacets < ActiveRecord::Migration[5.0]
   def change
     create_table :work_facets do |t|
       t.string :s0

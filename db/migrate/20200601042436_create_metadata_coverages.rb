@@ -1,4 +1,4 @@
-class CreateMetadataCoverages < ActiveRecord::Migration[6.0]
+class CreateMetadataCoverages < ActiveRecord::Migration[5.0]
   def change
     create_table :metadata_coverages do |t|
       t.string :key
