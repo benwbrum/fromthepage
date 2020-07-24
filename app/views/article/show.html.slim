@@ -10,7 +10,7 @@
       -if user_signed_in? && !current_user.guest
         i =link_to 'Edit the description in the settings tab.', collection_article_edit_path(@collection.owner, @collection, @article)
 
-    -if @article.uri
+    -if @article.uri && @article.uri.include?("http")
       p
         | See also: 
         a href="#{@article.uri}" target="_blank" #{@article.uri}

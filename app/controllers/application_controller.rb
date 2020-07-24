@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
       end
     end
     if params[:work_id]
-      @work = Work.friendly.find(params[:work_id])
+      @work = Work.find_by(:id => params[:work_id]) || Work.friendly.find(params[:work_id])
       @collection = @work.collection
     end
     if params[:document_set_id]

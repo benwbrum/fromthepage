@@ -23,7 +23,7 @@
       -if @work
         -if @total != @count
           =button_to "View All Pages", {action: "read_work", work_id: @work.id, needs_review: 'none'}, class: 'review-button'
-        -else
+        -elsif @collection.active?
           =button_to "Pages That Need Transcription", {action: "read_work", work_id: @work.id, needs_review: 'transcription' }, class: 'review-button'
           =button_to "Pages That Need Review", {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
           =button_to "Pages That Need Indexing", {action: "read_work", work_id: @work.id, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
