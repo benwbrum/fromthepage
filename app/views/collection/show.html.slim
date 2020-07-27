@@ -79,10 +79,10 @@
       =button_tag t('.search')
       =label_tag 'search', "Search for works", class: 'hidden'
         
-        if collection.active?
-        =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+    -if @collection.active?
+      =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
-        =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+      =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     h3 =t('.recent_notes')
     -@collection.notes.active.limit(10).each do |note|
