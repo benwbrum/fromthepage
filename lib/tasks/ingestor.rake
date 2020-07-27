@@ -46,7 +46,6 @@ namespace :fromthepage do
 
     if SMTP_ENABLED
       begin
-        SystemMailer.upload_succeeded(document_upload).deliver!
         UserMailer.upload_finished(document_upload).deliver!
       rescue StandardError => e
         print "SMTP Failed: Exception: #{e.message}"
@@ -242,7 +241,7 @@ namespace :fromthepage do
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
     if document_upload.ocr
-      if Dir.glob(File.join(path, "page*.txt")).count > 0
+      if Dir.glob(File.join(path, "*.txt")).count > 0
         work.ocr_correction = true
       else
         print "\tOCR correction specifiied but no files found in #{File.join(path, "page*.txt")}\n"
