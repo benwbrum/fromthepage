@@ -70,9 +70,10 @@
               label.article-duplicate_title
                 =check_box_tag 'from_article_ids[]', dup.id
                 |&nbsp;
-                span =dup.title
+                span =link_to (dup.title), controller: 'article', action: 'show', article_id: dup.id 
               span.article-duplicate_pages
-                small.label =pluralize(dup.link_list.size, 'page')
+                small.label =link_to (pluralize(dup.link_list.size, 'page')), controller: 'display', action: 'read_all_works', article_id: dup.id 
+                
         .toolbar
           .toolbar_group.aright =button_tag 'Combine Selected'
 
