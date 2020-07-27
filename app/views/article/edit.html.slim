@@ -71,7 +71,7 @@
                 =check_box_tag 'from_article_ids[]', dup.id
                 |&nbsp;
                 span =link_to (dup.title), controller: 'article', action: 'show', article_id: dup.id 
-              span.article-duplicate_pages
+              span.article-duplicate_pages 
                 small.label =link_to (pluralize(dup.link_list.size, 'page')), controller: 'display', action: 'read_all_works', article_id: dup.id 
                 
         .toolbar
