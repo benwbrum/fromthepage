@@ -20,12 +20,12 @@ xml:id="export">
     <editionStmt>
       <edition>Edition created from new transcripts of this manuscript.</edition>
       <respStmt xml:id="AU<%= @work.owner.id%>">
-        <resp>Initial upload of this work's facsimile images and metadata to FromThePage for editing</resp>
+        <resp>Initial upload of this work's facsimile images and metadata to FromThePage.com for editing</resp>
         <persName><%= @work.owner.real_name%></persName>
       </respStmt>
 
       <respStmt xml:id="OU<%= @collection.owner.id%>">
-        <resp>Adminstrator of the <%=@collection.title%> transcription project on FromThePage</resp>
+        <resp>Adminstrator of the <%=@collection.title%> transcription project on FromThePage.com</resp>
         <persName><%= @collection.owner.real_name %></persName>
       </respStmt>
 
@@ -141,9 +141,6 @@ xml:id="export">
                     <%= raw(xml_to_export_tei(place.xml_text, @context, "S#{place.id}")) %>
                   <% end %>
                 </note>
-              <% end %>
-              <% unless place.latitude.blank? %>
-                <geo><%= place.latitude %> <%= place.longitude %></geo>
               <% end %>
             </place>
           <% end %>
