@@ -29,7 +29,6 @@ gem 'devise-encryptable'
 gem 'protected_attributes'
 gem 'carrierwave'
 gem 'rubyzip'
-gem 'render_anywhere'
 
 gem 'ahoy_matey'
 gem 'pry'
