@@ -2,7 +2,7 @@
 
 .columns
   article.maincol
-    =form_for :work, url: { action: :update, id: @work.id }, html: {id: :update} do |f|
+    =form_for :work, url: work_update_path(id: @work.id), html: {id: :update} do |f|
       table.form.settings
         tr.big
           th =f.label :title, 'Work title'
@@ -23,7 +23,7 @@
           th.hidden Current URL
           td
             p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
- 
+
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
@@ -38,7 +38,7 @@
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
             =f.label :pages_are_meaningful, 'Pages Are Meaningful'
-        
+
         tr
           th.hidden Supports Translation
           td
@@ -87,7 +87,7 @@
             =f.text_area :translation_instructions, rows: 5, value: @work.translation_instructions
       .toolbar
         .toolbar_group
-          =link_to({ :controller => 'work', :action => 'delete', :work_id => @work.id }, data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' }, class: 'button')
+          =link_to(work_delete_path(:work_id => @work.id), data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' }, class: 'button')
             span Delete Work
         .toolbar_group.aright =f.button 'Save Changes', class: 'big'
 
@@ -107,7 +107,8 @@
       =hidden_field_tag(:work_id, @work.id)
       label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image")
         =f.file_field :picture, accept: 'image/*'
-        =image_tag(@work.picture_url(:thumb))
+        -if @work.picture_url(:thumb)
+          =image_tag(@work.picture_url(:thumb))
     p.fglight A picture to be used to illustrate the work.  If no picture is uploaded, a page image will be used.
 
     hr
@@ -151,11 +152,11 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
-    
+
       $('#work_transcription_conventions').keyup(function(){
         $('#revert').prop('disabled', false);
       });
-    
+
       $('#revert').click(function(e){
         e.preventDefault();
         $.ajax({
@@ -168,7 +169,7 @@
 
         });
       });
-    
+
       $("#update").on('submit', function(){
         var new_id = $("#work_collection_id").val();
         var collection_id = "#{@work.collection.id}"

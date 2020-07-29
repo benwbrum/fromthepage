@@ -3,10 +3,10 @@
 class DashboardController < ApplicationController
   include AddWorkHelper
 
-  before_filter :authorized?,
+  before_action :authorized?,
     only: [:owner, :staging, :omeka, :startproject, :summary]
 
-  before_filter :get_data,
+  before_action :get_data,
     only: [:owner, :staging, :omeka, :upload, :new_upload,
            :startproject, :empty_work, :create_work, :summary]
 
@@ -82,7 +82,6 @@ class DashboardController < ApplicationController
 
   # Owner Summary Statistics - statistics for all owned collections
   def summary
-    
     start_d = params[:start_date]
     end_d = params[:end_date]
 
@@ -103,13 +102,12 @@ class DashboardController < ApplicationController
         .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
 
     @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
-    
+
     @activity = AhoyActivitySummary
         .where(collection_id: owner_collections)
         .where('date BETWEEN ? AND ?', @start_date, @end_date)
         .group(:user_id)
         .sum(:minutes)
-
   end
 
   # Collaborator Dashboard - watchlist
@@ -166,59 +164,66 @@ class DashboardController < ApplicationController
   end
 
   def collaborator_time_export
-      start_date = params[:start_date]
-      end_date = params[:end_date]
-  
-      start_date = start_date.to_date
-      end_date = end_date.to_date
-  
-      dates = (start_date..end_date)
+    start_date = params[:start_date]
+    end_date = params[:end_date]
 
-      headers = [
-        "Username",
-        "Email",
-      ]
-      
-      headers += dates.map{|d| d.strftime("%b %d, %Y")}
+    start_date = start_date.to_date
+    end_date = end_date.to_date
 
-      # Get Row Data (Users)
-      owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    dates = (start_date..end_date)
 
-      
-      contributor_ids_for_dates = AhoyActivitySummary
+    headers = [
+      "Username",
+      "Email",
+    ]
+
+    headers += dates.map{|d| d.strftime("%b %d, %Y")}
+
+    # Get Row Data (Users)
+    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+
+
+    contributor_ids_for_dates = AhoyActivitySummary
+      .where(collection_id: owner_collections)
+      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+
+    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      contributors.each do |user|
+        row = [user.display_name, user.email]
+
+        activity = AhoyActivitySummary
+          .where(user_id: user.id)
           .where(collection_id: owner_collections)
-          .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+          .where('date BETWEEN ? AND ?', start_date, end_date)
+          .group(:date)
+          .sum(:minutes)
+          .transform_keys{ |k| k.to_date }
 
-      contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
 
-      csv = CSV.generate(:headers => true) do |records|
-        records << headers
-        contributors.each do |user|
-          row = [user.display_name, user.email]
+        row += user_activity
 
-          activity = AhoyActivitySummary
-            .where(user_id: user.id)
-            .where(collection_id: owner_collections)
-            .where('date BETWEEN ? AND ?', start_date, end_date)
-            .group(:date)
-            .sum(:minutes)
-            .transform_keys{ |k| k.to_date }
-
-          user_activity = dates.map{ |d| activity[d.to_date] || 0 }
-            
-          row += user_activity
-
-          records << row
-        end
+        records << row
       end
-  
-      
-
-      send_data( csv, 
-        :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-        :type => "application/csv")
-  
-      cookies['download_finished'] = 'true'
-  
     end
+
+    send_data( csv,
+              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+              :type => "application/csv")
+
+    cookies['download_finished'] = 'true'
+  end
+
+  private
+
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
+  end
+
+  def work_params
+    params.require(:work).permit(:title, :description, :collection_id)
+  end
 end

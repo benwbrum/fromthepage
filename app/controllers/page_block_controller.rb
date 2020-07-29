@@ -9,7 +9,7 @@ class PageBlockController < AdminController
 
   def update
     @page_block = PageBlock.find(params[:page_block][:id])
-    @page_block.update_attributes(params[:page_block])
+    @page_block.update(params[:page_block])
     redirect_to :action=>'list'
   end
 

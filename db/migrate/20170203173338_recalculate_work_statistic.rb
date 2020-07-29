@@ -1,4 +1,4 @@
-class RecalculateWorkStatistic < ActiveRecord::Migration
+class RecalculateWorkStatistic < ActiveRecord::Migration[5.0]
 #This can be commented out because statistics are recalculated in a later migration
 
 =begin
