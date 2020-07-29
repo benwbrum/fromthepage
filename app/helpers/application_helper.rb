@@ -90,7 +90,7 @@ module ApplicationHelper
       #restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
-        owner = User.friendly.find(options[:owner])
+        owner = User.friendly.find(options[:owner].id)
         deeds = limited.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
       else
         deeds = limited.where(condition).order('deeds.created_at DESC').limit(limit)
@@ -123,11 +123,6 @@ module ApplicationHelper
     else
       @work.title
     end
-  end
-  
-  #dead code
-  def pontiiif_server
-    Rails.application.config.respond_to?(:pontiiif_server) && Rails.application.config.pontiiif_server
   end
 
   def language_attrs(collection)

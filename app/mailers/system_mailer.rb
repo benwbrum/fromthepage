@@ -4,22 +4,12 @@ class SystemMailer < ActionMailer::Base
   default from: "FromThePage <support@fromthepage.com>"
   layout "mailer"
 
-  before_filter :add_inline_attachments!
+  before_action :add_inline_attachments!
 
   def config_test(target_email)
     mail from: SENDING_EMAIL_ADDRESS, to: target_email, subject: "Mail config test for FromThePage"
   end
 
-
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.system_mailer.new_upload.subject
-  #
-  def new_upload(document_upload)
-    @document_upload = document_upload
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New document upload - #{document_upload.name}"
-  end
 
   def email_stats(hours)
     @hours = hours
@@ -28,15 +18,6 @@ class SystemMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage had #{@recent_users.count} new users in last #{hours} hours."
   end
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.system_mailer.upload_succeeded.subject
-  #
-  def upload_succeeded(document_upload)
-    @document_upload = document_upload
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Upload succeeded - #{document_upload.name}"
-  end
 
   def cdm_sync_finished(collection)
     @collection = collection

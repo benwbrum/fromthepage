@@ -1,17 +1,17 @@
-    =form_for :document_set, url: remove_from_set_path, method: :get do |f|
+    =form_for :document_set, url: document_set_remove_from_set_path, method: :get do |f|
       =hidden_field_tag :collection_id, @collection.slug
       ul.collection-work-stats
         li
-          span Work title
-          span Progress
-          span Collaboration
-          span Remove from set
+          span =t('.work_title')
+          span =t('.progress')
+          span =t('.collaboration')
+          span =t('.remove_from_set')
         -@works.each do |w|
           -work_stats(w)
           li.document_set
             span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
             span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
-            span =w.restrict_scribes  ? 'Restricted' : 'Unrestricted'
-            span =check_box_tag("work[#{w.id}]", "work[#{w.id}]", false,{"title"=>"Remove #{w.title} from Document Set"})
+            span =w.restrict_scribes  ? t('.restricted') : t('.unrestricted')
+            span =check_box_tag("work[#{w.id}]", "work[#{w.id}]", false,{"title" => t('.remove_title_from_document_set', title: w.title)})
       br
-      .aright =button_tag 'Remove works'
+      .aright =button_tag t('.remove_works')

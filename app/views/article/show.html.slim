@@ -10,7 +10,7 @@
       -if user_signed_in? && !current_user.guest
         i =link_to 'Edit the description in the settings tab.', collection_article_edit_path(@collection.owner, @collection, @article)
 
-    -if @article.uri
+    -if @article.uri && @article.uri.include?("http")
       p
         | See also: 
         a href="#{@article.uri}" target="_blank" #{@article.uri}
@@ -52,7 +52,7 @@
       p.fglight
         |This subject does not belong to any category
         br
-        =link_to 'All uncategorized subjects in the collection', { action: 'list', collection_id: @collection.slug, anchor: "category-none" }
+        =link_to 'All uncategorized subjects in the collection', article_list_path(collection_id: @collection.slug, anchor: "category-none")
     -else
       ul.article-category-list.big
         -@article.categories.each do |cat|

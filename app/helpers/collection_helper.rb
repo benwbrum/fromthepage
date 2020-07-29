@@ -35,6 +35,7 @@ module CollectionHelper
   end
 
   def work_stats(work)
+    @progress_blank = work.work_statistic.pct_blank.round
     unless work.supports_translation
       @progress_annotated = work.work_statistic.pct_annotated.round
       @progress_review = work.work_statistic.pct_needs_review.round

@@ -1,4 +1,4 @@
-class ChangeIaWorksDescriptionSize < ActiveRecord::Migration
+class ChangeIaWorksDescriptionSize < ActiveRecord::Migration[5.0]
   def up
     change_column :ia_works, :description, :string, :limit => 1024
   end

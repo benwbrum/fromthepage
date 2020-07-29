@@ -46,12 +46,12 @@ html lang="en-US"
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
           -if !(Collection.all.count > 30)
-            =link_to 'Projects', dashboard_path, class: 'header_link'
+            =link_to t('.projects'), dashboard_path, class: 'header_link'
           -else
-            =link_to 'Find A Project', landing_page_path, class: 'header_link'
+            =link_to t('.find_a_project'), landing_page_path, class: 'header_link'
           =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
-            =link_to 'Sign Up', new_user_registration_path, class: 'header_link'
+            =link_to t('.sign_up'), new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right
@@ -62,23 +62,23 @@ html lang="en-US"
                 =svg_symbol '#header-user', class: 'icon'
               dd
                 -if current_user.guest
-                  =link_to 'Create An Account', new_user_registration_path
+                  =link_to t('.create_an_account'), new_user_registration_path
                   hr
-                =link_to 'Admin Dashboard', admin_path if current_user.admin
-                =link_to 'Owner Dashboard', dashboard_owner_path if current_user.owner
-                =link_to 'Collaborator Dashboard', dashboard_watchlist_path
+                =link_to t('.admin_dashboard'), admin_path if current_user.admin
+                =link_to t('.owner_dashboard'), dashboard_owner_path if current_user.owner
+                =link_to t('.collaborator_dashboard'), dashboard_watchlist_path
                 hr
-                =link_to 'Your Profile', user_profile_path(current_user)
+                =link_to t('.your_profile'), user_profile_path(current_user)
                 hr
-                =link_to 'Sign Out', destroy_user_session_path, method: :delete
+                =link_to t('.sign_out'), destroy_user_session_path, method: :delete
           -else
             =link_to new_user_session_path, class: 'header_link header_user'
-              span Sign In
+              span =t('.sign_in')
               =svg_symbol '#header-user', class: 'icon'
 
     -if user_masquerade?
       h2.strong
-        =link_to "Undo Login As \"#{current_user.display_name}\"", back_masquerade_path(current_user)
+        =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", back_masquerade_path(current_user)
 
 
     =(yield :content_above).force_encoding 'UTF-8'
@@ -91,13 +91,13 @@ html lang="en-US"
 
     footer.footer
       ul.footer_nav
-        li =link_to 'Documentation', 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
-        li =link_to 'Blog', 'http://content.fromthepage.com', target: '_blank'
-        li =link_to 'About', about_path
-        li =link_to 'Terms & Conditions', 'http://fromthepage.wpengine.com/terms-of-service/'
-        li =link_to 'Privacy Policy', privacy_path
-        li =mail_to 'support@fromthepage.com', 'Contact Us'
-      .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. All rights reserved.
+        li =link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
+        li =link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank'
+        li =link_to t('.about'), about_path
+        li =link_to t('.terms_and_conditions'), 'http://fromthepage.wpengine.com/terms-of-service/'
+        li =link_to t('.privacy_policy'), privacy_path
+        li =mail_to 'support@fromthepage.com', t('.contact_us')
+      .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
 
     .page-busy-overlay
 

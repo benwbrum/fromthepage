@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :collection do
     sequence(:title) { |n| "Collection Title #{n}" }
     owner_user_id { association(:owner).id }
+    subjects_disabled { false }
     works { build_list :work_with_pages, 2 }
 
     trait :with_links do
