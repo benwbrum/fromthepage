@@ -54,6 +54,10 @@
 
 h1 Administration
 .tabs
-  -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
-      a.active =tab[:name]
+  =active_link_to "Summary", admin_path, active: :exclusive
+  =active_link_to "Users", admin_user_list_path
+  =active_link_to "Abuse", admin_flag_list_path
+  =active_link_to "Owners", admin_owner_list_path
+  =active_link_to "Uploads", admin_uploads_path
+  =active_link_to "Logfile", admin_tail_logfile_path
+  =active_link_to "Settings", admin_settings_path

@@ -20,7 +20,7 @@ table.admin-grid.datagrid.striped
         td
           -if document.collection.present?
             p.fgfaded(data-prefix="Collection: ")
-              =link_to(document.collection.title, { controller: 'collection', action: 'show', collection_id: document.collection.id })
+              =link_to(document.collection.title, collection_path(document.user.slug, document.collection.id))
           .small.fgfaded(data-prefix="File Name: ")
             =link_to(document.file, document.file.to_s, target: '_blank')
         td.nowrap
@@ -38,8 +38,8 @@ table.admin-grid.datagrid.striped
                 =link_to('Process Upload', { :action => 'process_upload', :id => document.id })
                 hr
               -if document.status == DocumentUpload::Status::PROCESSING ||  document.status == DocumentUpload::Status::FINISHED
-                =link_to('Show Processing Log', { :action => 'view_processing_log', :id => document.id }, target: '_blank')
+                =link_to('Show Processing Log', admin_view_processing_log_path(:id => document.id), target: '_blank')
                 hr
-              =link_to('Delete Upload', { :action => 'delete_upload', :id => document.id }, class: 'fgred', data: { confirm: 'Are you sure you want to delete this document? After deleting you won\'t be able to recover it!' })
+              =link_to('Delete Upload', admin_delete_upload_path(:id => document.id), class: 'fgred', data: { confirm: 'Are you sure you want to delete this document? After deleting you won\'t be able to recover it!' })
 
 =render(:partial => 'shared/pagination', :locals => { :model => @document_uploads, :entries_info => true })

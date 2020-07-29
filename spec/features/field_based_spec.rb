@@ -2,8 +2,6 @@
 require 'spec_helper'
 
 describe "collection settings js tasks", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -12,7 +10,7 @@ describe "collection settings js tasks", :order => :defined do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
+  end
 
   it "sets collection to field based transcription" do
     visit collection_path(@collection.owner, @collection)

@@ -59,10 +59,10 @@ module CollectionStatistic
       :mentions     => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
       :contributors => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
     }
-    
+
     stats.merge(deeds)
   end
-  
+
   def timeframe(start_date, end_date, column='created_at')
     timeframe_clause = ""
     if start_date && end_date
@@ -76,7 +76,7 @@ module CollectionStatistic
 
     timeframe_clause
   end
-  
+
   def calculate_complete
     #note: need to compact mapped array so it doesn't fail on a nil value
     unless work_count == 0
@@ -105,12 +105,12 @@ module CollectionStatistic
 
     clause
   end
-  
+
   ##### background processing code
   def self.terminus_a_quo
     DocumentSet.maximum(:updated_at) # once we add the updated_at timestamp column to Collection, we should use the max of either
   end
-  
+
   def self.update_recent_statistics
     from_time = terminus_a_quo
     work_ids = Deed.where("updated_at > ?", from_time).pluck(:work_id)
@@ -118,7 +118,7 @@ module CollectionStatistic
     work_ids.sort!.uniq!
     completed_collection_ids = []
     completed_set_ids = []
-    
+
     work_ids.each do |work_id|
       work = Work.where(:id => work_id).first
       if work # handle deleted works
@@ -127,18 +127,15 @@ module CollectionStatistic
           Collection.find(collection_id).calculate_complete # calculate the stats for this collection
           completed_collection_ids << collection_id # add to the list of collections we've dealt with
         end
-        
+
         work.document_sets.each do |set|
           unless completed_set_ids.include? set.id
             set.calculate_complete
-            set.touch # force update the timestamp 
+            set.touch # force update the timestamp
             completed_set_ids << set.id
           end
         end
       end
     end
   end
-
-  
-  
 end
