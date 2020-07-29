@@ -8,7 +8,10 @@ module ExportHelper
 
     @user_contributions =
       User.find_by_sql("SELECT  user_id user_id,
+                                users.login login,
                                 users.real_name real_name,
+                                users.display_name display_name,
+                                users.guest guest,
                                 count(*) edit_count,
                                 min(page_versions.created_on) first_edit,
                                 max(page_versions.created_on) last_edit
