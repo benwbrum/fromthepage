@@ -52,7 +52,7 @@
       p.fglight
         |This subject does not belong to any category
         br
-        =link_to 'All uncategorized subjects in the collection', { action: 'list', collection_id: @collection.slug, anchor: "category-none" }
+        =link_to 'All uncategorized subjects in the collection', article_list_path(collection_id: @collection.slug, anchor: "category-none")
     -else
       ul.article-category-list.big
         -@article.categories.each do |cat|

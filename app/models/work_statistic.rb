@@ -1,5 +1,5 @@
-class WorkStatistic < ActiveRecord::Base
-  belongs_to :work
+class WorkStatistic < ApplicationRecord
+  belongs_to :work, optional: true
 
   def pct_transcribed
     raw = self[:transcribed_pages].to_f / self[:total_pages] * 100
@@ -98,7 +98,7 @@ class WorkStatistic < ActiveRecord::Base
 
     self[:complete]             = pct_completed
     self[:translation_complete] = pct_translation_completed
-    
+
     save!
   end
 

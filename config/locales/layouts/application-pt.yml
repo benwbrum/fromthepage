@@ -1,0 +1,21 @@
+pt:
+  layouts:
+    application:
+      projects: "Projetos"
+      find_a_project: "Buscar um Projeto"
+      sign_up: "Inscrever-se"
+      create_an_account: "Criar uma Conta"
+      admin_dashboard: "Painel de Administração"
+      owner_dashboard: "Painel de Controle do Dono"
+      collaborator_dashboard: "Painel de Controle do Colaborador"
+      your_profile: "Seu Perfil"
+      sign_out: "Sair"
+      sign_in: "Entrar"
+      undo_login_as: "Desfazer o Login Como"
+      documentation: "Documentação"
+      blog: "Blog"
+      about: "Sobre"
+      terms_and_conditions: "Termos e Condições"
+      privacy_policy: "Política de Privacidade"
+      contact_us: "Entre em Contato"
+      all_rights_reserved: "Todos os direitos reservados."

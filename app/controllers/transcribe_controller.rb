@@ -5,9 +5,9 @@ class TranscribeController  < ApplicationController
 
   require 'rexml/document'
   include Magick
-  before_filter :authorized?, :except => [:zoom, :guest, :help]
-  before_filter :active?
-  
+  before_action :authorized?, :except => [:zoom, :guest, :help]
+  before_action :active?
+
   protect_from_forgery :except => [:zoom, :unzoom]
   #this prevents failed redirects after sign up
   skip_before_action :store_current_location
@@ -33,7 +33,7 @@ class TranscribeController  < ApplicationController
 
     if @page.edit_started_by_user_id != current_user.id &&
        @page.edit_started_at > Time.now - 1.minute
-      flash.now[:alert] = "This page is being edited by another user!"
+      flash.now[:alert] = t('.alert')
       @current_user_alerted = true
     end unless @page.edit_started_at.nil?
   end
@@ -55,7 +55,7 @@ class TranscribeController  < ApplicationController
       @page.save
       record_deed(DeedType::PAGE_MARKED_BLANK)
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
-      flash[:notice] = "Saved"
+      flash[:notice] = t('.saved_notice')
       redirect_to redirect_path 
       return false
     elsif @page.status == Page::STATUS_BLANK && params[:page]['mark_blank'] == '0'
@@ -63,7 +63,7 @@ class TranscribeController  < ApplicationController
       @page.translation_status = nil
       @page.save
       @work.work_statistic.recalculate({type: 'blank'}) if @work.work_statistic
-      flash[:notice] = "Saved"
+      flash[:notice] = t('.saved_notice')
       redirect_to redirect_path
       return false
     else
@@ -108,14 +108,14 @@ class TranscribeController  < ApplicationController
       @page.process_fields(@field_cells)
     end
 
-    @page.attributes = params[:page]
+    @page.attributes = page_params
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
       mark_page_blank(redirect: 'transcribe') or return
     end
     #check to see if the page needs to be marked as needing review
     needs_review
-    
+
 
     if params['save']
       message = log_transcript_attempt
@@ -126,7 +126,7 @@ class TranscribeController  < ApplicationController
       begin
         if @page.save
           log_transcript_success
-          flash[:notice] = "Saved"
+          flash[:notice] = t('.saved_notice')
           if @page.work.ocr_correction
             record_deed(DeedType::OCR_CORRECTED)
           else
@@ -148,12 +148,12 @@ class TranscribeController  < ApplicationController
           end
           @work.work_statistic.recalculate({type: @page.status}) if @work.work_statistic
           @page.submit_background_processes("transcription")
-      
+
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
             deeds = Deed.where(user_id: current_user.id).count
             if deeds < GUEST_DEED_COUNT
-              flash[:notice] = "You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest."
+              flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
             else
               session[:user_return_to]=collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
@@ -167,10 +167,7 @@ class TranscribeController  < ApplicationController
         end
       rescue REXML::ParseException => ex
         log_transcript_exception(ex, message)
-        flash[:error] =
-          "There was an error parsing the mark-up in your transcript.
-           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.
-           Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
+        flash[:error] = t('.error_message', error_message: ex.message)
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'display_page'
         flash.clear
@@ -203,7 +200,7 @@ class TranscribeController  < ApplicationController
     #no reason to check articles if subjects disabled
     unless @page.collection.subjects_disabled
       @unassigned_articles = []
-      
+
       # Separate translationa and transcription links
       left, right = @page.page_article_links.partition{|x| x.text_type == 'translation' }
 
@@ -225,7 +222,7 @@ class TranscribeController  < ApplicationController
       redirect_to collection_transcribe_page_path(@collection.owner, @collection, @work, @page.id)
     end
   end
-  
+
   def translate
     session[:col_id] = @collection.slug
     @fromImage = cookies[:fromImage] || false
@@ -233,14 +230,14 @@ class TranscribeController  < ApplicationController
 
   def save_translation
     old_link_count = @page.page_article_links.where(text_type: 'translation').count
-    @page.attributes=params[:page]
+    @page.attributes = page_params
 
     #check to see if the page is marked blank
     mark_page_blank or return
-  
+
     #check to see if the page needs review
     needs_review
-    
+
     if params['save']
       message = log_translation_attempt
       #leave the status alone if it's needs review, but otherwise set it to translated
@@ -270,14 +267,14 @@ class TranscribeController  < ApplicationController
           if current_user.guest?
             deeds = Deed.where(user_id: current_user.id).count
             if deeds < GUEST_DEED_COUNT
-              flash[:notice] = "You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest."
+              flash[:notice] = t('.notice', guest_deed_count: GUEST_DEED_COUNT)
             else
               session[:user_return_to]=collection_translate_page_path(@collection.owner, @collection, @work, @page.id)
               redirect_to new_user_registration_path, :resource => current_user
               return
             end
           end
-          
+
           redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection, :text_type => 'translation'
         else
           log_translation_error(message)
@@ -285,10 +282,7 @@ class TranscribeController  < ApplicationController
         end
       rescue REXML::ParseException => ex
         log_translation_exception(ex, message)
-        flash[:error] =
-          "There was an error parsing the mark-up in your translation.
-           This kind of error often occurs if an angle bracket is missing or if an HTML tag is left open.
-           Check any instances of < or > symbols in your text.  (The parser error was: #{ex.message})"
+        flash[:error] = t('.error_message', error_message: ex.message)
         logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
         render :action => 'translate'
         flash.clear
@@ -320,34 +314,33 @@ class TranscribeController  < ApplicationController
   def still_editing
     @page.update_column("edit_started_at", Time.now)
     @page.update_column("edit_started_by_user_id", current_user.id)
-    render nothing: true
   end
 
   def goto_next_untranscribed_page
-    
+
     next_page_path = user_profile_path(@work.collection.owner)
-    flash[:notice] = "There are no more pages to transcribe in this collection."
+    flash[:notice] = t('.notice')
 
     if @work.next_untranscribed_page
-      flash[:notice] = "Here's another page in this work."
+      flash[:notice] = t('.another_page_notice')
       next_page_path = collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, @work.next_untranscribed_page)
     elsif @collection.class == DocumentSet
       docset = @collection
       next_page = docset.find_next_untranscribed_page_for_user(current_user)
       if !next_page.nil?
-        flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection."
+        flash[:notice] = t('.no_more_pages_notice')
         next_page_path = collection_transcribe_page_path(docset.owner, docset, next_page.work, next_page)
       else # Docset has no more Untranscribed works, bump up to collection level
         next_page = docset.collection.find_next_untranscribed_page_for_user(current_user)
         unless next_page.nil?
-          flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection."
+          flash[:notice] = t('.no_more_pages_notice')
           next_page_path = collection_transcribe_page_path(docset.collection.owner, docset.collection, next_page.work, next_page)
         end
       end
     else
       next_page = @collection.find_next_untranscribed_page_for_user(current_user)
       unless next_page.nil?
-        flash[:notice] = "There are no more pages to transcribe in this work. Here's another page in this collection."
+        flash[:notice] = t('.no_more_pages_notice')
         next_page_path = collection_transcribe_page_path(@collection.owner, @collection, next_page.work, next_page)
       end
     end
@@ -478,5 +471,11 @@ protected
       deed.deed_type = DeedType::PAGE_TRANSLATION_EDIT
     end
     deed.save!
+  end
+
+  private
+
+  def page_params
+    params.require(:page).permit(:source_text, :source_translation)
   end
 end
