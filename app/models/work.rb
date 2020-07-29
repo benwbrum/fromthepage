@@ -1,14 +1,14 @@
-class Work < ActiveRecord::Base
+class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
 
-  has_many :pages, -> { order 'position' }, :dependent => :destroy
-  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id'
+  has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
+  belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
 
-  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page"
+  belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :untranscribed_pages, -> { needs_transcription }, class_name: "Page"
 
-  belongs_to :collection, counter_cache: :works_count
+  belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :ia_work, :dependent => :destroy
   has_one :omeka_item, :dependent => :destroy
@@ -18,7 +18,7 @@ class Work < ActiveRecord::Base
   has_many :table_cells, :dependent => :destroy
 
   has_and_belongs_to_many :scribes, :class_name => 'User', :join_table => :transcribe_authorizations
-  
+
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
 
@@ -29,28 +29,8 @@ class Work < ActiveRecord::Base
 
   after_create :alert_intercom
 
-  attr_accessible :title,
-                  :author,
-                  :description,
-                  :collection_id,
-                  :physical_description,
-                  :document_history,
-                  :permission_description,
-                  :location_of_composition,
-                  :transcription_conventions,
-                  :supports_translation,
-                  :ocr_correction,
-                  :translation_instructions,
-                  :scribes_can_edit_titles,
-                  :restrict_scribes,
-                  :pages_are_meaningful,
-                  :slug,
-                  :picture,
-                  :featured_page,
-                  :identifier
-
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  validates :slug, uniqueness: true
+  validates :slug, uniqueness: { case_sensitive: true }
 
   mount_uploader :picture, PictureUploader
 
@@ -69,25 +49,25 @@ class Work < ActiveRecord::Base
 
   module TitleStyle
     REPLACE = 'REPLACE'
-    
+
     PAGE_ARABIC = "Page #{REPLACE}"
     PAGE_ROMAN = "Page #{REPLACE}"
     ENVELOPE = "Envelope (#{REPLACE})"
     COVER = 'Cover (#{REPLACE})'
     ENCLOSURE = 'Enclosure REPLACE'
     DEFAULT = PAGE_ARABIC
-    
+
     def self.render(style, number)
       style.sub(REPLACE, number.to_s)
     end
-    
+
     def self.style_from_prior_title(title)
       PAGE_ARABIC
     end
     def self.number_from_prior_title(style, title)
       regex_string = style.sub('REPLACE', "(\\d+)")
       md = title.match(/#{regex_string}/)
-      
+
       if md
         md.captures.first
       else
@@ -95,7 +75,7 @@ class Work < ActiveRecord::Base
       end
     end
   end
-  
+
   def verbatim_transcription_plaintext
     self.pages.map { |page| page.verbatim_transcription_plaintext}.join("\n\n\n")
   end
@@ -118,14 +98,14 @@ class Work < ActiveRecord::Base
 
   def suggest_next_page_title
     if self.pages.count == 0
-      TitleStyle::render(TitleStyle::DEFAULT, 1)    
+      TitleStyle::render(TitleStyle::DEFAULT, 1)
     else
       prior_title = self.pages.last.title
       style = TitleStyle::style_from_prior_title(prior_title)
-      number = TitleStyle::number_from_prior_title(style, prior_title)      
-      
+      number = TitleStyle::number_from_prior_title(style, prior_title)
+
       next_number = number ? number.to_i + 1 : self.pages.count + 1
-      
+
       TitleStyle::render(style, next_number)
     end
   end
@@ -164,7 +144,7 @@ class Work < ActiveRecord::Base
     return my_annotations[0..9]
   end
 
-  def update_statistic
+  def update_statistic(changed_page=nil) #association callbacks pass the page being added/removed, but we don't care
     unless self.work_statistic
       self.work_statistic = WorkStatistic.new
     end

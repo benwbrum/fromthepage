@@ -13,9 +13,9 @@
     a name = "create-work"
 
     h3
-      a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") Import a IIIF Manifest or Collection
+      a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") =t('.import_a_iiif_manifest_or_collection')
     section style="display: none"
-      =form_tag({ controller: 'sc_collections', action: 'import' }) do |f|
+      =form_tag(sc_collections_import_path) do |f|
         table.form
             td
               .input-file
@@ -23,11 +23,11 @@
                 =button_tag 'Import', :id => 'iiif_import'
 
     h3
-      a(href="#" class="title" onclick="return false;" id="import-contentdm") Import from CONTENTdm
+      a(href="#" class="title" onclick="return false;" id="import-contentdm") =t('.import_from_contentdm')
     section style="display: none"
       p
-      =label_tag :cdm_url, "Paste in the URL of a compound object on your CONTENTdm site."
-      =form_tag({ controller: 'sc_collections', action: 'import_cdm' }) do |f|
+      =label_tag :cdm_url, t('.paste_in_the_url')
+      =form_tag(sc_collections_import_cdm_path) do |f|
         table.form
             td
               .input-file
@@ -35,17 +35,17 @@
                 =button_tag 'Import', :id => 'cdm_import'
 
     h3
-      a(href="#" class="title" onclick="return false;" id="import-internet-archive") Import from the Internet Archive
+      a(href="#" class="title" onclick="return false;" id="import-internet-archive") =t('.import_from_the_internet_archive')
     section style="display: none"
-      =link_to 'Import From Archive.org', { :controller => 'ia', :action => 'ia_book_form' }, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
+      =link_to t('.import_from_archive_dot_org'), ia_book_form_path, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
 
     h3
-      a(href="#" class="title" onclick="return false;") Import from Omeka Classic
+      a(href="#" class="title" onclick="return false;") =t('.import_from_omeka_classic')
     section style="display: none"
       -if @omeka_sites.blank?
-        p.fgfaded You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
+        p.fgfaded =t('.you_have_not_connected')
       -else
-        p.fgfaded This is the list of connected Omeka sites. Click one to explore collections and import items.
+        p.fgfaded =t('.list_of_connected_omeka_sites')
         ul.omeka-sites
           -@omeka_sites.each do |omeka_site|
             li.omeka-site
@@ -54,16 +54,16 @@
               dl.dropdown.right
                 dt =svg_symbol '#icon-list', class: 'icon'
                 dd
-                  =link_to 'Edit Site', edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
+                  =link_to t('.edit_site'), edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
                   hr
-                  =link_to 'Delete Site', omeka_site, method: :delete, data: { confirm: 'Are you sure? You will need to re-create the site confiuration to import from this site again!' }, class: 'fgred'
-      =link_to 'Add Source', { :controller => 'omeka_sites', :action => 'new' }, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
+                  =link_to t('.delete_site'), omeka_site, method: :delete, data: { confirm: t('.omeka_delete_confirm_message') }, class: 'fgred'
+      =link_to t('.add_source'), new_omeka_site_path, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
 
     =render 'dashboard/empty'
 
   aside.sidecol
-    h4 Page Image Guidelines
+    h4 =t('.page_image_guidelines')
     .fglight
-      p PNG, GIF, and JPG files are all acceptable.
-      p Images should be oriented so that they are right-side-up.
-      p Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)
+      p =t('.acceptable_formats')
+      p =t('.images_should_be_oriented')
+      p =t('.images_should_be_named').html_safe

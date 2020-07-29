@@ -1,0 +1,25 @@
+pt:
+  page:
+    edit:
+      page_title: "Título da Página"
+      page_image: "Imagem da Página"
+      click_to_browse_a_file: "Clique para navegar num arquivo..."
+      browse: "Navegar"
+      delete_confirm_message: "Tem certeza que deseja apagar esta página? Depois de apagar não pode ser recuperada!"
+      delete_page: "Apagar Página"
+      save_changes: "Guardar Alterações"
+      page_position: "Posição da Página: %{position}"
+      created: "Criada %{date}"
+      here_you_can_edit: "Aqui você pode editar o título da página e subir uma nova imagem. Se quiser editar a transcrição da página ou o texto da tradução, por favor vá para a aba apropriada acima."
+      dimensions: "Dimensões: %{width}&times;%{height}"
+      rotate_clockwise: "Girar Sentido Horário"
+      rotate_counterclockwise: "Girar Sentido Anti-Horário"
+    new:
+      add_new_page: "Adicionar Página Nova"
+      choose_a_title: "Escolha um título para a página e selecione uma imagem de página para subir."
+      page_image: "Imagem da Página"
+      click_to_browse_a_file: "Clique para navegar num arquivo..."
+      browse: "Navegar"
+      cancel: "Cancelar"
+      save_and_new_work: "Guardar & Nova Obra"
+      save_and_add_next_page: "Guardar & Adicionar Página Seguinte"

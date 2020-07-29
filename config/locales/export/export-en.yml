@@ -1,0 +1,4 @@
+en:
+  export:
+    update_contentdm_credentials:
+      updating_contentdm_message: "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."

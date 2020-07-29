@@ -13,11 +13,11 @@
         -if cds.has_untranscribed_pages?
           p
           -if user_signed_in?
-            =link_to "Start Transcribing", collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+            =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
           -else
-            =link_to "Start Transcribing", collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
+            =link_to t('.start_transcribing'), collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
         .collection_summary
-          span =="Owned by #{owner_link}"
+          span =t('.owned_by', author: owner_link).html_safe
         ul
         -cds.document_sets.each do |doc_set|
           li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
@@ -35,8 +35,8 @@
             p.collection_snippet =snippet
           -if cds.has_untranscribed_pages?
           p
-            =link_to "Start Transcribing", collection_start_transcribing_path(cds.owner, cds), class: 'button'
+            =link_to t('.start_transcribing'), collection_start_transcribing_path(cds.owner, cds), class: 'button'
           .collection_summary
-            span =="Owned by #{owner_link}"
+            span =t('.owned_by', author: owner_link).html_safe
   
     

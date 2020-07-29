@@ -6,16 +6,32 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  before_filter :load_objects_from_params
-  before_filter :update_ia_work_server
-  before_filter :update_omeka_urls
+  before_action :load_objects_from_params
+  before_action :update_ia_work_server
+  before_action :update_omeka_urls
   before_action :store_current_location, :unless => :devise_controller?
-  before_filter :load_html_blocks
-  before_filter :authorize_collection
-  before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :set_current_user_in_model
-  before_filter :masquerade_user!
+  before_action :load_html_blocks
+  before_action :authorize_collection
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_current_user_in_model
+  before_action :masquerade_user!
   after_action :track_action
+  around_action :switch_locale
+
+  def switch_locale(&action)
+    if user_signed_in? && !current_user.dictation_language.nil?
+      locale = current_user.dictation_language.split('-').shift
+    else
+      locale = I18n.default_locale
+    end
+
+    if I18n.available_locales.include?(locale.to_sym)
+      I18n.with_locale(locale, &action)
+    else
+      locale = I18n.default_locale
+      I18n.with_locale(locale, &action)
+    end
+  end
 
   # Set the current user in User
   def set_current_user_in_model
@@ -286,7 +302,7 @@ end
     extras[:page_title] = @page.title if @page
     extras[:article_id] = @article.id if @article
     extras[:article_title] = @article.title if @article
-    ahoy.track("#{controller_name}##{action_name}", extras)
+    ahoy.track("#{controller_name}##{action_name}", extras) unless action_name == "still_editing"
   end
 
 

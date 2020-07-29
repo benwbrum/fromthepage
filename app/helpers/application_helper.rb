@@ -90,7 +90,7 @@ module ApplicationHelper
       #restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
-        owner = User.friendly.find(options[:owner])
+        owner = User.friendly.find(options[:owner].id)
         deeds = limited.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
       else
         deeds = limited.where(condition).order('deeds.created_at DESC').limit(limit)
@@ -124,7 +124,7 @@ module ApplicationHelper
       @work.title
     end
   end
-  
+
   def language_attrs(collection)
     direction = Rtl.rtl?(collection.text_language) ? 'rtl' : 'ltr'
     

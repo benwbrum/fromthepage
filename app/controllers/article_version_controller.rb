@@ -1,6 +1,6 @@
 class ArticleVersionController < ApplicationController
 
-  before_filter :set_versions
+  before_action :set_versions
 
   def set_versions
     @selected_version = @article_version.present? ? @article_version : @article.article_versions.first

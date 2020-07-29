@@ -23,21 +23,18 @@ module AddWorkHelper
 
   def new_upload
     @document_upload = DocumentUpload.new(document_upload_params)
-    @document_upload.ocr = document_upload_params[:ocr]
-    @document_upload.preserve_titles = document_upload_params[:preserve_titles]
     @document_upload.user = current_user
 
     if @document_upload.save
       if SMTP_ENABLED
         begin
-          SystemMailer.new_upload(@document_upload).deliver!
-          flash[:notice] = "Document has been uploaded and will be processed shortly. We'll email you at #{@document_upload.user.email} when ready."
+          flash[:notice] = t('.document_uploaded', email: @document_upload.user.email)
         rescue StandardError => e
           log_smtp_error(e, current_user)
-          flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+          flash[:notice] = t('.reload_this_page')
         end
       else
-        flash[:notice] = "Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it."
+        flash[:notice] = t('.reload_this_page')
       end
       @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id
@@ -45,7 +42,7 @@ module AddWorkHelper
       render action: 'upload'
     end
   end
-  
+
   def empty_work
     @work = Work.new
   end
@@ -59,9 +56,9 @@ module AddWorkHelper
     @collections = current_user.all_owner_collections
 
     if @work.save
-      flash[:notice] = 'Work created successfully'
+      flash[:notice] = t('.work_created')
       record_deed
-      ajax_redirect_to({ :controller => 'work', :action => 'pages_tab', :work_id => @work.id, :anchor => 'create-page' })
+      ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
       render action: 'empty_work'
     end
