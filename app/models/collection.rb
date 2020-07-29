@@ -334,10 +334,10 @@ class Collection < ApplicationRecord
     <a href="https://wary-oil.flywheelsites.com/project-owner-documentation/table-encoding/">Table Encoding</a><br><br>
     <a href="https://wary-oil.flywheelsites.com/project-owner-documentation/encoding-formula-with-latex/">Encoding mathematical and scientific formula with LaTex</a></p>
 ENDHELP
-    def set_help
-      unless self.help.present?
-        self.help = DEFAULT_HELP_TEXT
-      end
+
+  def set_help
+    unless self.help.present?
+      self.help = DEFAULT_HELP_TEXT
     end
   end
 
