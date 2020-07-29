@@ -36,11 +36,12 @@
         th.w25 =t('.page')
         th.w75 =t('.note')
       -@notes.includes(:page).each do |note|
-        -note_text = truncate(strip_tags(note.body), :length => 200)
-        tr
-          td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
-          td.overflow =link_to note.page.title, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page)
-          td =link_to note_text, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page, anchor: "note-#{note.id}")
+        -if note.page
+          -note_text = truncate(strip_tags(note.body), :length => 200)
+          tr
+            td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
+            td.overflow =link_to note.page.title, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page)
+            td =link_to note_text, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page, anchor: "note-#{note.id}")
 
     br
 
