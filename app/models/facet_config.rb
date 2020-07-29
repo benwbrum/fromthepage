@@ -17,6 +17,8 @@ class FacetConfig < ApplicationRecord
           if o['label'] == self['label']
             if self['input_type'] == "text"
               w.work_facet.update("s#{self['order']}".to_sym => self['label'])
+            elsif self['input_type'] == "date"
+              w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
             end
           end
         end
