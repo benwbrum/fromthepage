@@ -110,7 +110,7 @@ pt:
       field_based_transcription: "Transcrição baseada em campos de formulário"
       enable_field_based_transcription: "Ativar a Transcrição Baseada em Campos de Formulário"
       revert_document_based_transcription: "Reverter para a Transcrição Baseada em Documento"
-      edit_fields: "Editar Campos"
+      edit_fields: "Campos"
       document_sets: "Conjuntos de Documentos"
       document_sets_description: "Conjuntos de documentos são subconjuntos das obras desta coleção, que podem ser usados para focar um projeto de edição ou para criar uma exposição pública com um foco particular dos documentos."
       no_document_sets_in_collection: "Esta coleção não tem nenhum conjunto de documentos."
