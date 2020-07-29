@@ -11,16 +11,6 @@ class SystemMailer < ActionMailer::Base
   end
 
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.system_mailer.new_upload.subject
-  #
-  def new_upload(document_upload)
-    @document_upload = document_upload
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "New document upload - #{document_upload.name}"
-  end
-
   def email_stats(hours)
     @hours = hours
     @recent_users = User.where("created_at > ?", Time.now - hours.to_i.hours)
@@ -28,15 +18,6 @@ class SystemMailer < ActionMailer::Base
     mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "FromThePage had #{@recent_users.count} new users in last #{hours} hours."
   end
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.system_mailer.upload_succeeded.subject
-  #
-  def upload_succeeded(document_upload)
-    @document_upload = document_upload
-    mail from: SENDING_EMAIL_ADDRESS, to: ADMIN_EMAILS, subject: "Upload succeeded - #{document_upload.name}"
-  end
 
   def cdm_sync_finished(collection)
     @collection = collection

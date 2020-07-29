@@ -113,7 +113,7 @@ en:
       field_based_transcription: "Field based transcription"
       enable_field_based_transcription: "Enable Field Based Transcription"
       revert_document_based_transcription: "Revert to Document Based Transcription"
-      edit_fields: "Edit Fields"
+      edit_fields: "Fields"
       document_sets: "Document Sets"
       document_sets_description: "Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents."
       no_document_sets_in_collection: "This collection does not have any document sets."
