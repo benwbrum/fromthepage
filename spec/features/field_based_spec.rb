@@ -19,7 +19,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page).to have_content("Edit Transcription Fields")
     page.find('.tabs').click_link("Settings")
     expect(page).to have_selector('a', text: 'Edit Fields')
-    page.find('.sidecol').click_link('Edit Fields')
+    page.find('.sidecol').click_link('Fields')
     expect(page).to have_content("Edit Transcription Fields")
   end
 
