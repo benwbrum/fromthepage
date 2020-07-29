@@ -135,6 +135,7 @@ Fromthepage::Application.routes.draw do
     get 'watchlist' => 'dashboard#watchlist'
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
+    get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
   end
