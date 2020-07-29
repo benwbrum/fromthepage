@@ -1,0 +1,8 @@
+en:
+  omeka_items:
+    import:
+      omeka_item_published: "Omeka item was successfully published"
+    update:
+      omeka_item_updated: "Omeka item was successfully updated"
+    destroy:
+      omeka_item_deleted: "Omeka item was successfully deleted"

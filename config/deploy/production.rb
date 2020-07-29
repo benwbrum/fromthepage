@@ -46,5 +46,5 @@ server '50.116.44.131', user: 'fromthepage', roles: %{app}
 #   }
 
 
-set :branch, 'fromthepage.com'
+set :branch, 'fromthepage.com-rails6'
 

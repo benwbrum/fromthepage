@@ -1,7 +1,7 @@
     -if @pages.size == 0
       .nodata
-        h4.nodata_title No pages found
-        p.nodata_text We were unable to find any pages matching your request
+        h4.nodata_title =t('.no_pages_found')
+        p.nodata_text =t('.unable_to_find_pages')
     -else
       -work_title = nil
       -for page in @pages
@@ -33,36 +33,36 @@
                 -action = page_params(page)
 
               -if page.status == Page::STATUS_BLANK
-                p.nodata_text =="This page is blank"
+                p.nodata_text ==t('.this_page_is_blank')
               -elsif transcription.present?
                 ==transcription.force_encoding('utf-8')
               -else
                 -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
                   -if page.work.ocr_correction
-                    -status = 'corrected'
+                    -status = t('.corrected')
                     -help = link_to('help correct', action)
                   -else
-                    -status = 'transcribed'
+                    -status = t('.transcribed')
                     -help = link_to('help transcribe', action)
-                  p.nodata_text =="This page is not #{status}, please #{help} this page"
+                  p.nodata_text == t('.this_page_is_not', status: status, help: help)
                 -else
-                  p.nodata_text == "Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe."
+                  p.nodata_text == t('.collaboration_is_restricted')
 
             -if page.work.supports_translation
               button.outline.work-page_toggle-view Translation
               .work-page_text(style="display:none")
                 -translation = xml_to_html(page.xml_translation, false)
                 -if page.translation_status == 'blank'
-                  p.nodata_text =="This page is blank"
+                  p.nodata_text == t('.this_page_is_blank')
                 -elsif translation.present?
                   ==translation.force_encoding('utf-8')
                 -else
-                  -help_translate = link_to('help translate', collection_translate_page_path(@collection.owner, @collection, page.work, page))
-                  p.nodata_text =="This page is not translated, please #{help_translate} this page"
+                  -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page))
+                  p.nodata_text == t('.page_not_translated', help_translate: help_translate)
 
             -current_version = page.page_versions[0]
             -if current_version && current_version.page_version > 0
               small.work-page_edited
                 -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
                 -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
-                =="Last edit #{edit_time} ago by #{user_link}"
+                = t('.last_edit', edit_time: edit_time, user_link: user_link).html_safe

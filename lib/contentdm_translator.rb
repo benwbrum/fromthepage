@@ -199,7 +199,7 @@ module ContentdmTranslator
     matches = host.match(/https?:\/\/(cdm\d+)/)
     return matches[1] if matches
 
-    res = open("#{host}/iiif/info/manifest.json").read
+    res = URI.open("#{host}/iiif/info/manifest.json").read
     res_json = JSON.parse(res)
     url = res_json['@id'] || nil
 

@@ -2,12 +2,12 @@ require 'spec_helper'
 
 RSpec.describe Deed, type: :model do
   context "associations" do
-    it { should belong_to(:article) }
-    it { should belong_to(:collection) }
-    it { should belong_to(:note) }
-    it { should belong_to(:page) }
-    it { should belong_to(:user).class_name('User') }
-    it { should belong_to(:work) }
+    it { should belong_to(:article).optional }
+    it { should belong_to(:collection).optional }
+    it { should belong_to(:note).optional }
+    it { should belong_to(:page).optional }
+    it { should belong_to(:user).class_name('User').optional }
+    it { should belong_to(:work).optional }
   end
 
   context "validations" do

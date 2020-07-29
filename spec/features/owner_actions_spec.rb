@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "owner actions", :order => :defined do
-  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @collections = @owner.all_owner_collections
@@ -27,20 +25,21 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a new collection" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     fill_in 'collection_title', with: 'New Test Collection'
     click_button('Create Collection')
     test_collection = Collection.find_by(title: 'New Test Collection')
+    expect(test_collection.subjects_disabled).to be true
     expect(collection_count + 1).to eq @owner.all_owner_collections.count
     expect(page).to have_content("#{test_collection.title}")
     expect(page).to have_content("Upload PDF or ZIP File")
   end
 
   it "creates an empty new work in a collection", :js => true do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     work_title = "New Test Work"
     visit dashboard_owner_path
@@ -57,8 +56,10 @@ describe "owner actions", :order => :defined do
   end
 
   it "checks for subject in a new collection" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
+    test_collection.subjects_disabled = false
+    test_collection.save
     visit dashboard_owner_path
     page.find('.maincol').click_link("#{test_collection.title}")
     page.find('.tabs').click_link("Subjects")
@@ -67,7 +68,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "deletes a collection" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     test_collection = Collection.find_by(title: 'New Test Collection')
     collection_count = @owner.all_owner_collections.count
     visit dashboard_owner_path
@@ -81,7 +82,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "creates a collection from work dropdown", :js => true do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     col_title = "New Work Collection"
     visit dashboard_owner_path
     page.find('.tabs').click_link("Start A Project")
@@ -91,9 +92,10 @@ describe "owner actions", :order => :defined do
     within(page.find('.litebox-embed')) do
       expect(page).to have_content('Create New Collection')
       fill_in 'collection_title', with: col_title
-      find_button('Create Collection').trigger(:click)
+      page.execute_script("$('#create-collection').click()")
     end
-    page.find(:css, '#document-upload').click
+    sleep(2)
+    page.execute_script("$('#document-upload').click()")
     page.find('#document_upload_collection_id')
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
     sleep(2)
@@ -285,7 +287,7 @@ describe "owner actions", :order => :defined do
   end
 
   it "does not warn with another account type" do
-    @owner.account_type = "Trial"
+    @owner.account_type = "Small Organization"
     visit dashboard_owner_path
     page.find('a', text: 'Create a Collection').click
     expect(page).not_to have_content("Individual Researcher Accounts are limited to a single collection.")
@@ -349,12 +351,5 @@ describe "owner actions", :order => :defined do
       expect(page).to have_content("Science Archives")
     end
 
-    it "confirms that Wakanda can read all collections" do
-      logout
-      login_as @owner
-      visit dashboard_owner_path
-      expect(page).to have_content("Letters from America")
-      expect(page).to have_content("Science Archives")
-    end
   end
 end
