@@ -2,7 +2,7 @@ en:
   sc_collections:
     import_cdm:
       please_enter_url: "Ingrese una dirección URL para un objeto CONTENTdm."
-      using_manifest_for: "Utilizandomanifiesto IIIF de CONTENTdm para %{url}"
+      using_manifest_for: "Utilizando manifiesto IIIF de CONTENTdm para %{url}"
       bad_contentdm_url: "CONTENTdm URL incorrecto: %{url} ERROR: %{message}"
     import:
       no_manifest_exist: "No existe manifiesto IIIF para el elemento CONTENTdm %{url}"
