@@ -93,6 +93,11 @@ class RegistrationsController < Devise::RegistrationsController
 
   private
 
+  def sign_up_params
+    params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password, :password_confirmation)
+  end
+
+
   def joined_from_collection(visit_id)
     first_event = Ahoy::Event.where(visit_id: visit_id).first
     collection = first_event.properties["collection_id"] || nil
