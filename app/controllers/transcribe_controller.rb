@@ -476,6 +476,6 @@ protected
   private
 
   def page_params
-    params.require(:page).permit(:source_text, :source_translation)
+    params.require(:page).permit(:source_text, :source_translation, :title)
   end
 end
