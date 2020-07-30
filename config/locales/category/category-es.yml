@@ -1,0 +1,12 @@
+en:
+  category:
+    update:
+      category_updated: "La categoría ha sido actualizada"
+    create:
+      category_created: "La categoría ha sido creada"
+    delete:
+      category_deleted: "La categoría ha sido eliminada"
+    enable_gis:
+      gis_enabled_for: "GIS habilitado para %{title}"
+    disable_gis:
+      gis_disabled_for: "GIS deshabilitado para %{title}"

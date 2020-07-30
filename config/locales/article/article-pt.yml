@@ -1,0 +1,11 @@
+en:
+  article:
+    delete:
+      must_remove_referring_links: "Você deve remover todos os links que fazem referência antes de deletar este tema."
+    update:
+      subject_successfully_updated: "O tema foi atualizado com sucesso"
+      subjects_auto_linking: "Processo de auto-ligação dos temas concluído"
+    combine_duplicate:
+      selected_subjects_combined: "Temas selecionados combinados com %{title}"
+    subject_upload:
+      csv_file_must_contain_headers: "O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, and CATEGORY, os quais significam "cabeçalho," "artigo," "Indentificador Universal de Recursos," e "categoria" respectivamente."
