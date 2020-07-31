@@ -325,9 +325,20 @@ class Collection < ApplicationRecord
     end
   end
 
+    DEFAULT_HELP_TEXT = <<ENDHELP
+    <h2> Transcribing</h2>
+    <p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>
+    <p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>
+    <p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>
+    <h3>Helpful Documentation</h3>
+    <p><a href="https://content.fromthepage.com/project-owner-documentation/advanced-mark-up/">Advanced Markup</a><br><br>
+    <a href="https://content.fromthepage.com/project-owner-documentation/table-encoding/">Table Encoding</a><br><br>
+    <a href="https://content.fromthepage.com/project-owner-documentation/encoding-formula-with-latex/">Encoding mathematical and scientific formula with LaTex</a></p>
+ENDHELP
+
   def set_help
     unless self.help.present?
-      self.help = "<h2> Transcribing</h2>\n<p> Once you sign up for an account, a new Transcribe tab will appear above each page.</p>\n<p> You can create or edit transcriptions by modifying the text entry field and saving. Each modification is stored as a separate version of the page, so that it should be easy to revert to older versions if necessary.</p>\n<p> Registered users can also add notes to pages to comment on difficult words, suggest readings, or discuss the texts.</p>"
+      self.help = DEFAULT_HELP_TEXT
     end
   end
 
