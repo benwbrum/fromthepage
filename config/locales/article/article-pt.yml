@@ -8,4 +8,4 @@ en:
     combine_duplicate:
       selected_subjects_combined: "Temas selecionados combinados com %{title}"
     subject_upload:
-      csv_file_must_contain_headers: "O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, and CATEGORY, os quais significam "cabeçalho," "artigo," "Indentificador Universal de Recursos," e "categoria" respectivamente."
+      csv_file_must_contain_headers: "O arquivo CSV deve conter cabeçalhos para HEADING, ARTICLE, URI, and CATEGORY, os quais significam \"cabeçalho,\" \"artigo,\" \"Indentificador Universal de Recursos,\" e \"categoria\" respectivamente."

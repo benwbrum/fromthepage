@@ -78,7 +78,7 @@ es:
       acceptable_formats: "Los archivos PNG, GIF y JPG son aceptables."
       images_should_be_oriented: "Las imágenes deben estar orientadas para que el lado correcto quede hacia arriba."
       images_should_be_split_down: "Las imágenes deben dividirse por el lomo para que solo una página sea visible en la imagen.<br> (Consulte la herramienta %{link} si necesita dividir imágenes de dos páginas.)"
-      images_should_be_named: "Las imágenes deben nombrarse de modo que un ordenamiento alfabético dará como resultado el orden de página correcto.<br> (Esto puede requerir "cero-relleno" para cualquier número de página: <code>pagina_09.jpg, pagina_10jpg</code> se ordenará correctamente, pero <code>page_9.jpg, pagina_10.jpg</code> no.)"
+      images_should_be_named: "Las imágenes deben nombrarse de modo que un ordenamiento alfabético dará como resultado el orden de página correcto.<br> (Esto puede requerir \"cero-relleno\" para cualquier número de página: <code>pagina_09.jpg, pagina_10jpg</code> se ordenará correctamente, pero <code>page_9.jpg, pagina_10.jpg</code> no.)"
     new_upload:
       document_uploaded: "El documento se ha subido y se procesará en breve. Te enviaremos un correo electrónico a %{email} cuando esté listo."
       reload_this_page: "El documento se ha subido y se procesará en breve. Vuelve a cargar esta página en unos minutos para verlo."
