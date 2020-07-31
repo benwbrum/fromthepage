@@ -1,6 +1,9 @@
 en:
   deed:
     deed:
+      added_work: "added %{work}"
+      in_the_work: " in the work %{work}"
+      in_collection: " in %{collection} collection"
       html:
         transcribed_page: "transcribed page %{page}"
         edited_page: "edited page %{page}"
