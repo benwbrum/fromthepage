@@ -1,16 +1,16 @@
-en:
+es:
   ia:
     convert:
-      converted_to_work "%{title} ha sido convertido en una obra de FromThePage"
+      converted_to_work: "%{title} ha sido convertido en una obra de FromThePage"
     mark_beginning:
-      preceding_the_beginning "Las páginas previas al principio del texto han sido ocultadas"
+      preceding_the_beginning: "Las páginas previas al principio del texto han sido ocultadas"
     mark_end:
-      pages_following_the_end "Las páginas posteriores al final del texto han sido ocultadas"
+      pages_following_the_end: "Las páginas posteriores al final del texto han sido ocultadas"
     title_from_ocr_top:
-      pages_has_been_renamed "Páginas han sido renombradas con la línea superior del texto OCR"
+      pages_has_been_renamed: "Páginas han sido renombradas con la línea superior del texto OCR"
     title_from_ocr_bottom:
-      pages_has_been_renamed "Páginas han sido renombradas con la línea inferior del texto OCR"
+      pages_has_been_renamed: "Páginas han sido renombradas con la línea inferior del texto OCR"
     confirm_import:
-      please_enter_valid_url "Por favor, ingrese un URL de libro de Archive.org válido para importar"
+      please_enter_valid_url: "Por favor, ingrese un URL de libro de Archive.org válido para importar"
     import_work:
-      imported_into_staging "%{title} se ha importado al área de preparación"
+      imported_into_staging: "%{title} se ha importado al área de preparación"

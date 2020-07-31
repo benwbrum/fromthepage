@@ -1,4 +1,4 @@
-en:
+es:
   article:
     delete:
       must_remove_referring_links: "Debes eliminar todos los enlaces de referencia antes de eliminar este tema."
