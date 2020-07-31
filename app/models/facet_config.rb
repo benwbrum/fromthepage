@@ -1,6 +1,6 @@
 class FacetConfig < ApplicationRecord
   belongs_to :metadata_coverage
-  after_commit :populate_facets
+  after_commit :populate_facets, on: :update
 
   def populate_facets
     works = self.metadata_coverage.collection.works
