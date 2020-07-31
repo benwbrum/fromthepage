@@ -1,4 +1,4 @@
-en:
+pt:
   admin:
     index:
       last_deed_logged": "Última ação documentada há %{date} por %{author}"
