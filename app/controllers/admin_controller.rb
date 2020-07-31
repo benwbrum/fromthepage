@@ -134,6 +134,9 @@ class AdminController < ApplicationController
 
   def tail_logfile
     @lines = params[:lines].to_i
+    if @lines == 0
+      @lines=5000
+    end
     development_logfile = "#{Rails.root}/log/development.log"
     production_logfile = "#{Rails.root}/log/production.log"
     @dev_tail = `tail -#{@lines} #{development_logfile}`
