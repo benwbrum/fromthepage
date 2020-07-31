@@ -1,0 +1,11 @@
+en:
+  article:
+    delete:
+      must_remove_referring_links: "Debes eliminar todos los enlaces de referencia antes de eliminar este tema."
+    update:
+      subject_successfully_updated: "El tema se ha actualizado exitosamente"
+      subjects_auto_linking: "Proceso de auto-vinculación de temas completado"
+    combine_duplicate:
+      selected_subjects_combined: "Asignaturas seleccionadas combinadas con %{title}"
+    subject_upload:
+      csv_file_must_contain_headers: "El archivo CSV debe contener encabezados para HEADING, ARTICLE, URI y CATEGORY. Estos términos quieren decir encabezado, artículo, Identificador Universal de Recursos, y categoría, respectivamente."
