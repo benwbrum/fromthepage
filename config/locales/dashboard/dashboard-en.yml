@@ -72,7 +72,7 @@ en:
       list_of_connected_omeka_sites: "This is the list of connected Omeka sites. Click one to explore collections and import items."
       edit_site: "Edit Site"
       delete_site: "Delete Site"
-      omeka_delete_confirm_message: "Are you sure? You will need to re-create the site confiuration to import from this site again!"
+      omeka_delete_confirm_message: "Are you sure? You will need to re-create the site configuration to import from this site again!"
       add_source: "Add Source"
       page_image_guidelines: "Page Image Guidelines"
       acceptable_formats: "PNG, GIF, and JPG files are all acceptable."
