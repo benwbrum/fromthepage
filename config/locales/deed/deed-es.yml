@@ -1,6 +1,12 @@
 es:
   deed:
     deed:
+      added_work: "%{work} añadido"
+      in_the_work: " en la obra %{work}"
+      in_collection: " en la colección %{collection}"
+      added_a_note_to_page: "añadió una nota a la página %{page}"
+      saying_deed: ", diciendo &ldquo;%{title}&rdquo;"
+      transcribed_page: "transcribió la página %{page}"
       html:
         transcribed_page: "transcribió la página %{page}"
         edited_page: "editó la página %{page}"
