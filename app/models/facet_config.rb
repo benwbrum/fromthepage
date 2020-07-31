@@ -1,6 +1,8 @@
 class FacetConfig < ApplicationRecord
   belongs_to :metadata_coverage
   after_commit :populate_facets, on: :update
+  validates :order, numericality: true, allow_blank: true
+  validates :order, inclusion: { in: 0..9 }, allow_blank: true
 
   def populate_facets
     works = self.metadata_coverage.collection.works
