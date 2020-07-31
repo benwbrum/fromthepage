@@ -89,7 +89,7 @@ module ExportHelper
   def subject_to_tei(subject)
     tei = "<category xml:id=\"S#{subject.id}\">\n"
     tei << "<catDesc>\n"
-    tei << "<term>#{subject.title}</term>\n"
+    tei << "<term>#{ERB::Util.html_escape(subject.title)}</term>\n"
     tei << '<note type="categorization">Categories:'
     subject.categories.each do |category|
       tei << '<ab>'
@@ -116,7 +116,7 @@ module ExportHelper
   def seen_subject_to_tei(subject, parent_category)
     tei = "<category xml:id=\"C#{parent_category.id}S#{subject.id}\">\n"
     tei << "<catDesc>\n"
-    tei << "<term><rs ref=\"S#{subject.id}\">#{subject.title}</rs></term>\n"
+    tei << "<term><rs ref=\"S#{subject.id}\">#{ERB::Util.html_escape(subject.title)}</rs></term>\n"
     tei << "</catDesc>\n"
     tei << "</category>\n"
 
