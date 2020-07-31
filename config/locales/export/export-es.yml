@@ -1,4 +1,4 @@
-en:
+es:
   export:
     update_contentdm_credentials:
       updating_contentdm_message: "Actualizando CONTENTdm. Recibirás un correo electrónico cuando se complete la sincronización, luego necesitarás reconstruir el índice para que aparezcan los cambios."
