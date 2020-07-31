@@ -37,7 +37,7 @@ es:
       document_sets: "Conjuntos de Documentos"
       create_a_collection: "crear una colección"
       you_dont_have_any_collections: "No hay colecciones todavía"
-      you_can_new_collection: "Puedes #{new_collection}"
+      you_can_new_collection: "Puedes %{new_collection}"
       your_activity: "Tu Actividad"
     owner_header:
       owner_dashboard: "Panel de Control del Dueño"
