@@ -1,8 +1,7 @@
-class OmekaItem < ActiveRecord::Base
-  attr_accessible :coverage, :creator, :description, :format, :omeka_collection_id, :omeka_id, :omeka_url, :rights, :subject, :title
-  belongs_to :user
-  belongs_to :omeka_site
-  belongs_to :work
+class OmekaItem < ApplicationRecord
+  belongs_to :user, optional: true
+  belongs_to :omeka_site, optional: true
+  belongs_to :work, optional: true
   has_many :omeka_files
 
   def client_files
@@ -21,7 +20,7 @@ class OmekaItem < ActiveRecord::Base
           omeka_collection = create_mirror_collection(client_item.collection)
         end
       end
-      # if the item was in an Omeka collection, there is now a mirror object  
+      # if the item was in an Omeka collection, there is now a mirror object
       if omeka_collection.collection
         fromthepage_collection = omeka_collection.collection
       else
@@ -66,10 +65,7 @@ class OmekaItem < ActiveRecord::Base
 
     self.work = work
     self.save!
-
   end
-
-
 
   def self.new_from_site_item_id(site, id)
     client_item = site.client.get_item(id)
@@ -84,7 +80,6 @@ class OmekaItem < ActiveRecord::Base
 
     new_item
   end
-
 
   def self.attrs_from_dublin_core(dc)
     {
@@ -104,7 +99,7 @@ class OmekaItem < ActiveRecord::Base
     # Then determine whether the expiration date is in the past
     omeka_files.first[:thumbnail_url].match(/Expires=(\d+)/) && $1.to_i < Time.now.to_i
   end
-  
+
   def refresh_urls
     client_item = omeka_site.client.get_item(omeka_id)
     fresh_files =  client_item.files.map { |e| [e.data.mime_type, e.data.id, e.data.file_urls.thumbnail, e.data.file_urls.original] }
@@ -121,8 +116,7 @@ class OmekaItem < ActiveRecord::Base
     end
   end
 
-
-protected
+  protected
 
   def create_mirror_collection(client_collection)
     omeka_collection = OmekaCollection.new
@@ -131,7 +125,7 @@ protected
     omeka_collection.description = client_collection.dublin_core.description
     omeka_collection.omeka_site = omeka_site
     omeka_collection.save!
-    
+
     omeka_collection
   end
 
@@ -144,11 +138,10 @@ protected
     fromthepage_collection.save!
 
     omeka_collection.collection = fromthepage_collection
-    omeka_collection.save!    
-    
+    omeka_collection.save!
+
     fromthepage_collection
   end
-
 
   def record_deed(work)
     deed = Deed.new
@@ -158,5 +151,4 @@ protected
     deed.user = work.owner
     deed.save!
   end
-
 end

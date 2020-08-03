@@ -1,18 +1,18 @@
 -tabs = [{\
-  :name => 'Overview',
+  :name => t('.overview'),
   :selected => 1,
   :path => "#{collection_article_show_path(@collection.owner, @collection, @article)}",
 }]
 
 -if user_signed_in? && !current_user.guest
   -tabs += [{\
-    :name => 'Settings',
+    :name => t('.settings'),
     :selected => 4,
     :path =>"#{collection_article_edit_path(@collection.owner, @collection, @article)}",
   }]
 
 -tabs += [{\
-  :name => 'Versions',
+  :name => t('.versions'),
   :selected => 2,
   :path => "#{collection_article_version_path(@collection.owner, @collection, @article)}",
 }]

@@ -2,9 +2,9 @@
 div.columns
   div.maincol
 
-    h2 Edit Transcription Fields
+    h2 =t('.edit_transcription_fields')
 
-    =form_tag add_fields_path
+    =form_tag transcription_field_add_fields_path
       =hidden_field_tag(:collection_id, @collection.id)
       table.field_form#new-fields
         -unless @current_fields.blank?
@@ -18,13 +18,13 @@ div.columns
             =render ({ partial: 'new_field_form', locals: {collection_id: @collection, line_number: 1}})
       .toolbar.aright.fields
         .toolbar_group
-          =button_tag 'Add Additional Line', type: 'button', id: 'add-line', class: 'button fields', remote: true
-          =button_tag 'Add Additional Field', type: 'button', id: 'add-field', class: 'button fields'
-          =button_tag 'Save', name: 'save', type: 'submit', class: 'button fields'
-          =link_to 'Cancel', edit_collection_path(@collection.owner, @collection), class: 'button fields'
-          =button_tag 'Done', name: 'done', type: 'submit', class: 'button fields'
+          =button_tag t('.add_additional_line'), type: 'button', id: 'add-line', class: 'button fields', remote: true
+          =button_tag t('.add_additional_field'), type: 'button', id: 'add-field', class: 'button fields'
+          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button fields'
+          =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button fields'
+          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button fields'
 
-    h2.acenter Preview
+    h2.acenter =t('.preview')
     =render ({partial: 'field_layout', locals: {collection_id: @collection}})
 
     =render({ :partial => '/shared/collection_footer' })

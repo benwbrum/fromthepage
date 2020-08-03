@@ -1,10 +1,10 @@
-class IaWork < ActiveRecord::Base
+class IaWork < ApplicationRecord
   require 'open-uri'
 
-  belongs_to :user
-  belongs_to :work
-  has_many :ia_leaves
-  
+  belongs_to :user, optional: true
+  belongs_to :work, optional: true
+  has_many :ia_leaves, class_name: "IaLeaf"
+
   before_create :truncate_title
 
   def truncate_title
@@ -13,16 +13,16 @@ class IaWork < ActiveRecord::Base
 
   def display_page
     # blank status of raw ocr before displaying -- if the user hits save, status will become default
-  #  if @page.status == Page::STATUS_RAW_OCR
-  #    @page.status = nil;
-  #  end
+    #  if @page.status == Page::STATUS_RAW_OCR
+    #    @page.status = nil;
+    #  end
   end
 
   def self.refresh_server(book_id)
-      # first get the call the location API and parse that document
+    # first get the call the location API and parse that document
     api_url = 'http://www.archive.org/services/find_file.php?file='+book_id
     logger.debug(api_url)
-    loc_doc = Nokogiri::HTML(open(api_url))
+    loc_doc = Nokogiri::HTML(URI.open(api_url))
     location = loc_doc.search('results').first
     server = location['server']
     dir = location['dir']
@@ -52,22 +52,19 @@ class IaWork < ActiveRecord::Base
     end
   end
 
-
   def sub_prefix
     unless self[:scandata_file]
       return self[:book_id]
     end
 
     scandata_stub = self[:scandata_file].sub(/_scandata.xml/, '')
+
     if scandata_stub == self.book_id
       return self[:book_id]
     else
       return "#{scandata_stub}"
     end
-
   end
-
-
 
   # IA importer code refactored from ia_controller.rb
   def convert_to_work
@@ -214,26 +211,24 @@ class IaWork < ActiveRecord::Base
         ia_leaf.save!
       end
     end
-
   end
 
+  private
 
-private
   def open_doc(url)
-    doc = Nokogiri::XML(open(url).read.force_encoding('utf-8'), nil, 'utf-8')
+    doc = Nokogiri::XML(URI.open(url).read.force_encoding('utf-8'), nil, 'utf-8')
 
     doc
   end
 
   def leaf_number_from_object(object_element)
-
-      page_id = object_element.search('PARAM[@name="PAGE"]').first['value']
-      page_id[/\S*_0*/]=""
-      page_id[/\.djvu/]=''
-      logger.debug(page_id)
-      # there may well be an off-by-one error in the source.  I'm seeing page_id 7
-      # correspond with leaf_id 6
-      page_id.to_i
+    page_id = object_element.search('PARAM[@name="PAGE"]').first['value']
+    page_id[/\S*_0*/]=""
+    page_id[/\.djvu/]=''
+    logger.debug(page_id)
+    # there may well be an off-by-one error in the source.  I'm seeing page_id 7
+    # correspond with leaf_id 6
+    page_id.to_i
 
   end
 
@@ -259,7 +254,6 @@ private
 
     djvu_doc
   end
-
 
   ARCHIVE_FORMATS = ['zip', 'tar']
   IMAGE_FORMATS = ['jp2', 'jpg']
@@ -299,12 +293,19 @@ private
     if zips.size < 1
       zips = formats.select{|e| e.inner_text=='Single Page Processed JP2 Tar'}
     end
+    if zips.size < 1
+      zips = formats.select{|e| e.inner_text=="Single Page Processed JPEG Tar"}
+    end
+
+
+
     zip = zips.first.parent['name']
 
     return [scandata, djvu, zip]
   end
 
   protected
+
   def record_deed(work)
     deed = Deed.new
     deed.work = work
@@ -313,6 +314,4 @@ private
     deed.user = work.owner
     deed.save!
   end
-
-
 end

@@ -1,0 +1,21 @@
+en:
+  layouts:
+    application:
+      projects: "Projects"
+      find_a_project: "Find A Project"
+      sign_up: "Sign Up"
+      create_an_account: "Create An Account"
+      admin_dashboard: "Admin Dashboard"
+      owner_dashboard: "Owner Dashboard"
+      collaborator_dashboard: "Collaborator Dashboard"
+      your_profile: "Your Profile"
+      sign_out: "Sign Out"
+      sign_in: "Sign In"
+      undo_login_as: "Undo Login As"
+      documentation: "Documentation"
+      blog: "Blog"
+      about: "About"
+      terms_and_conditions: "Terms & Conditions"
+      privacy_policy: "Privacy Policy"
+      contact_us: "Contact Us"
+      all_rights_reserved: "All rights reserved."
