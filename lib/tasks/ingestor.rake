@@ -188,7 +188,7 @@ namespace :fromthepage do
     
   end
 
-  WHITELIST =  [
+  ALLOWLIST =  [
    "title",
    "identifier",
    "description",
@@ -231,8 +231,8 @@ namespace :fromthepage do
     User.current_user=document_upload.user
     document_sets = []
     if yaml
-      yaml.keep_if { |e| WHITELIST.include? e }
-      print "\tconvert_to_work whitelisted metadata.yml values \n#{yaml.to_s}\n"
+      yaml.keep_if { |e| ALLOWLIST.include? e }
+      print "\tconvert_to_work allowlisted metadata.yml values \n#{yaml.to_s}\n"
       document_sets = document_sets_from_yaml(yaml, document_upload.collection)
     end
     work = Work.new(yaml)
