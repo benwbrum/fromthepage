@@ -15,7 +15,7 @@ EXPECTED_XML_DISABLED = <<EOF
       </page>
 EOF
 
-SOURCE_TEXT_ILLEGAL_CHARS = "\fWith a lo\vad of illegal \u0002 charac\u0001ters and a tab\t"
+SOURCE_TEXT_ILLEGAL_CHARS = "\fWith a lo\vad of illegal \u000C charac\u0014ters and a tab\t"
 EXPECTED_XML_ILLEGAL_CHARS = <<EOF
 <?xml version='1.0' encoding='UTF-8'?>    
       <page>
