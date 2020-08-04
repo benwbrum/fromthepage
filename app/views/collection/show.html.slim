@@ -80,8 +80,12 @@
       =label_tag 'search', "Search for works", class: 'hidden'
         
     -if @collection.active?
-      =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
-
+      -if @collection.works.where(:ocr_correction => true).present? && @collection.works.where(:ocr_correction => false).present?
+        =link_to "Pages That Need Correction or Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+      -elsif @collection.works.where(:ocr_correction => true).present?
+        =link_to "Pages That Need Correction", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+      -else
+        =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
       =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
 
     h3 =t('.recent_notes')
