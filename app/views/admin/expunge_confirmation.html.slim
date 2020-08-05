@@ -20,5 +20,5 @@
           small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
         td.nowrap
           =time_tag(d.created_at, class: 'small fglight')
-            ="#{time_ago_in_words d.created_at} ago"
+            =time_ago_in_words d.created_at
 
