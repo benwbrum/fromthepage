@@ -1,0 +1,17 @@
+en:
+  work:
+    show:
+      description: "Description"
+      physical_description: "Physical Description"
+      document_history: "Document History"
+      permission_description: "Permission Description"
+      location_of_composition: "Location of Composition"
+      author_name: "Author Name"
+      transcription_conventions: "Transcription Conventions"
+      uploaded_by: "Uploaded by"
+      transcription_version: "Transcription Version:&nbsp;"
+      number_of_pages: "Number of Pages:&nbsp;"
+    create:
+      work_created: "Work created successfully"
+    update:
+      work_updated: "Work updated successfully"

@@ -13,7 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree ./plugins
-//= require transcribe.js.erb
 //= require user.js
 
 ;(function($, window, document, undefined) {
@@ -24,7 +23,8 @@ $.fn.flashclose = function(s) {
   s = $.extend({
     delay_notice: 1000,      // Notice auto close delay, 0 = don't close
     delay_alert: 6000,       // Alert auto close delay
-    delay_error: 0           // Error auto close delay
+    delay_error: 0,            // Error auto close delay
+    delay_info: 30000
   }, s || {});
 
   return this.each(function() {
@@ -37,6 +37,9 @@ $.fn.flashclose = function(s) {
     }
     if(container.hasClass('flash-error')) {
       delay = s.delay_error;
+    }
+    if(container.hasClass('flash-info')) {
+      delay = s.delay_info;
     }
 
     // Close on click

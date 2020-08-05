@@ -2,7 +2,7 @@ h1 =t('dashboard.collaborator')
 
 .columns
   article.maincol
-    p Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
+    p =t('.projects_you_have_contributed_to')
     -unless @collections.empty?
       -@collections.each do |c|
         -if c.show_to?(current_user)
@@ -15,21 +15,21 @@ h1 =t('dashboard.collaborator')
                 =gravatar_image_tag d.user.email, :alt => d.user.display_name
               .user-bubble_content
                 =time_tag d.created_at
-                  ="#{time_ago_in_words d.created_at} ago"
+                  =time_ago_in_words(d.created_at)
                 p =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
     -else
       -unless @page.nil?
         -if current_user.collection_collaborations.empty?
-          ="You haven't participated in any projects yet.  You might want to try transcribing a page of "
+          =t('.you_might_want_to_try')
           =link_to @page.work.title, {:controller => 'transcribe', :action => 'display_page', :page_id => @page.id}
           ="."
       -else
-        ="You haven't participated in any projects yet.  Try transcribing a page from one of these "
-        =link_to "collections", dashboard_path
+        =t('.try_transcribing_a_page')
+        =link_to t('.collections'), dashboard_path
         ="."
 
     -unless current_user.collection_collaborations.empty?
-      h3 Private Collections You Belong to
+      h3 =t('.private_collections_you_belong_to')
       -current_user.collection_collaborations.each do |collection|
         -owner_link = link_to collection.owner.display_name, user_profile_path(collection.owner) unless collection.owner.nil?
         .collections
@@ -37,11 +37,11 @@ h1 =t('dashboard.collaborator')
             .collection_details
               h4.collection_title =link_to collection.title, collection_path(collection.owner, collection) unless collection.owner.nil?
             .collection_summary
-              span =="Owned by #{owner_link}"
+              span =t('.owned_by', author: owner_link).html_safe
 
-    h3 Everyone's Activity
+    h3 =t('.everyone_activity')
     =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
 
   aside.sidecol
-    h3 Your Activity
+    h3 =t('.your_activity')
     =deeds_for({ :user_id => current_user.id, :limit => 10 })

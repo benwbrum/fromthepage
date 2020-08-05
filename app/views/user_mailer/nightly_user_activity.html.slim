@@ -1,27 +1,26 @@
-p Hi #{@user_activity.user.display_name} --
+p =t('.greet', user: @user_activity.user.display_name)
 
-p We just wanted to let you know that there's been activity in a collection that you worked on.
+p =t('.inform_activity')
 
 
 -unless @user_activity.added_works.blank?
-  h3(style="margin-bottom:0") New Works
+  h3(style="margin-bottom:0") =t('.new_works')
   -@user_activity.added_works.each do |work|
-    |#{work.owner.display_name} added #{work.title} to the collection #{work.collection.title}.  
-    span =link_to "Click here", collection_read_work_path(work.collection.owner, work.collection, work, only_path: false)
-    |&nbsp; to view #{work.collection.title}: #{work.title}.
+    =t('.user_activity', owner: work.owner.display_name, work: work.title, collection: work.collection.title)
+    span =link_to t('.click_here'), collection_read_work_url(work.collection.owner, work.collection, work, only_path: false)
+    =t('.to_view', collection: work.collection.title, work: work.title).html_safe
     p
 
 -unless @user_activity.active_note_pages.blank?
   p
-  h3(style="margin-bottom:0") New Notes
+  h3(style="margin-bottom:0") =t('.new_notes')
   -@user_activity.active_note_pages.each do |page|
-    =link_to "Click here", collection_transcribe_page_path(page.collection.owner, page.collection, page.work, page, only_path: false)
-    |&nbsp; to view the note on page #{page.title} in #{page.collection.title}: #{page.work.title}, which has been added since you worked on it.
+    =link_to t('.click_here'), collection_transcribe_page_url(page.collection.owner, page.collection, page.work, page, only_path: false)
+    =t('.view_note_on_page', page: page.title, collection: page.collection.title, work: page.work.title).html_safe
     p
 
-p Thanks, 
-|FromThePage
+p =t('.thanks').html_safe
 
 p
-span =link_to "Click here", update_profile_url(@user_activity.user)
-|&nbsp; to turn off this notification.
+span =link_to t('.click_here'), update_profile_url(@user_activity.user)
+=t('.turn_off_notification').html_safe

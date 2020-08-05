@@ -1,2 +1,2 @@
-class CollectionOwner < ActiveRecord::Base
+class CollectionOwner < ApplicationRecord
 end

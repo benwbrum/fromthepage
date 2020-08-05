@@ -3,58 +3,55 @@
 -unless @collection_deeds.empty?
 
   -unless @new_transcribers.empty?
-    h3.nomargin New Collaborators
-    p 
+    h3.nomargin =t('.new_collaborators')
+    p
       - @new_transcribers.each do |t|
-        =link_to t.display_name, { :controller => 'user', :action => 'profile', :user_id => t.id, only_path: false}
-        |     
+        =link_to t.display_name, user_profile_path(:user_id => t.id, only_path: false)
+        |
         =t.email
         | <br>
 
-  h4.legend.fglight Collaborator Stats #{@start_deed} through #{@end_deed}
-  =render({ :partial => 'statistics/recent_statistics', 
+  h4.legend.fglight =t('.collaborator_stats', start_deed: @start_deed, end_deed: @end_deed)
+  =render({ :partial => 'statistics/recent_statistics',
             :locals => { :stats => @stats, :subjects_disabled => @collection.subjects_disabled }})
-  
-  =link_to('View Activity ', { :controller => 'deed', :action => 'list',
-    :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed },  :class => 'button btnExport')
+
+  =link_to(t('.view_activity'), deed_list_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed),  :class => 'button btnExport')
   | &nbsp;
-  =link_to({:controller => 'collection', :action => 'activity_download',
-          :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed}, :class => 'button btnExport')
+  =link_to(collection_activity_download_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed), :class => 'button btnExport')
           =svg_symbol '#icon-export', class: 'icon'
-          span Export Activity as CSV
-    
+          span =t('.export_activity_as_csv')
+
 -else
-  h3 No activity in this time frame
+  h3 =t('.no_activity_this_time_frame')
 
 .contributor-users
-    h3 Active Collaborators
-    
+    h3 =t('.active_collaborators')
+
     -unless @active_transcribers.empty?
       p
       -@active_transcribers.each do |user|
-          =link_to user.display_name, { :controller => 'user', :action => 'profile', :user_id => user.id, only_path: false }
-          =" (Collection: #{(@user_time_proportional[user.id] / 60 + 1).floor} minutes | Total: #{(@user_time[user.id] / 60 + 1).floor} minutes)" if @user_time[user.id]  
+          =link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false)
+          =t('.collection', collection_time: (@user_time_proportional[user.id] / 60 + 1).floor, total_time: (@user_time[user.id] / 60 + 1).floor) if @user_time[user.id]
           | <br>
       p
         -total_minutes = (@user_time.values.sum / 60).floor + 1
-        ="Total time: #{(total_minutes / 60)} hours, #{(total_minutes % 60)} minutes."
-      p  
-        =link_to({:controller => 'collection', :action => 'contributors_download',
-            :collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed}, :class => 'button btnExport')
+        =t('.total_time', hours: (total_minutes / 60), minutes: (total_minutes % 60))
+      p
+        =link_to(collection_contributors_download_path(:collection_id => @collection.id, :start_date => @start_deed, :end_date => @end_deed), :class => 'button btnExport')
             =svg_symbol '#icon-export', class: 'icon'
-            span Export as CSV
+            span =t('.export_as_csv')
     -else
-      h3 Collaborators
-      p No Collaborators
-      p A detailed spreadsheet export of all collaborators is available on your owner dashboard.
+      h3 =t('.collaborators')
+      p =t('.no_collaborators')
+      p =t('.detailed_spreadsheet_export')
 
-h3 All Collaborator Emails
+h3 =t('.all_collaborator_emails')
 p=link_to "Find recommendations for project newsletters.", "https://content.fromthepage.com/crowdsourcing-project-newsletter/"
 p#collaborators
   -unless @all_collaborators.empty?
     =@all_collaborators + ", support@fromthepage.com"
   -else
-    |No collaborators
+    =t('.no_collaborators')
 
 -content_for :javascript
   javascript:
