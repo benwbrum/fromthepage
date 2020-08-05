@@ -1,21 +1,21 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 4, :collection_id => @collection }})
 
 
-h2.nomargin ="Contributions Between #{@start_deed} and #{@end_deed}"
+h2.nomargin =t('.contributions', start_deed: @start_deed, end_deed: @end_deed)
 
-h4.normargin Select a new date range
+h4.normargin =t('.select_new_date')
 
 =form_tag(contributors_collection_path(@collection.owner, @collection), method: "get") do
   =hidden_field_tag(:collection_id, @collection)
-  =label_tag(:start_date, "Start date")
+  =label_tag(:start_date, t('.start_date'))
   |  
   =text_field_tag(:start_date, @start_deed, style: "width:30%")
   |  
-  =label_tag(:end_date, "End date")
+  =label_tag(:end_date, t('.end_date'))
   |  
   =text_field_tag(:end_date, @end_deed, style: "width:30%")
   |  
-  =submit_tag("Update")
+  =submit_tag(t('.update'))
 br/
 
 =render "contributors_body"

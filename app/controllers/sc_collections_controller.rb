@@ -1,4 +1,5 @@
 require 'contentdm_translator'
+
 class ScCollectionsController < ApplicationController
   before_action :set_sc_collection, only: [:show, :edit, :update, :destroy, :explore_manifest, :import_manifest]
 
@@ -14,26 +15,20 @@ class ScCollectionsController < ApplicationController
     cdm_url = params[:cdm_url]
 
     if cdm_url.blank?
-      flash[:error] = "Please enter a URL for a CONTENTdm object."
-      redirect_to :back
+      flash[:error] = t('.please_enter_url')
+      redirect_back fallback_location: { action: 'import' }
       return
     end
 
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
-      flash[:notice] = "Using CONTENTdm IIIF manifest for #{cdm_url}"
+      flash[:notice] = t('.using_manifest_for', url: cdm_url)
       redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
     rescue => e
-      logger.error "Bad CONTENTdm URL: #{cdm_url} ERROR: #{e.message}"
+      logger.error t('.bad_contentdm_url', url: cdm_url, message: e.message)
       flash[:error] = e.message
-      redirect_to :back
+      redirect_back fallback_location: { action: 'import' }
     end
-  end
-#dead code
-  def search_pontiiif
-    search_param = params[:search_param]
-    at_id = ScCollection.collection_at_id_from_pontiiif_search(pontiiif_server, search_param)
-    redirect_to :action => :explore_collection, :at_id => at_id
   end
 
   def import
@@ -72,25 +67,24 @@ class ScCollectionsController < ApplicationController
     rescue => e
       case params[:source]
       when 'contentdm'
-        flash[:error] = "No IIIF manifest exists for CONTENTdm item #{params[:source_url]}"
+        flash[:error] = t('.no_manifest_exist', url: params[:source_url])
       else
-        flash[:error] = "Please enter a valid IIIF manifest URL."
+        flash[:error] = t('.please_enter_valid_url')
       end
-      redirect_to :back
+      redirect_back fallback_location: { action: 'import' }
     end
-
   end
 
 
   def explore_manifest
     at_id = params[:at_id]
-    
-    begin  
+
+    begin
       @sc_manifest = ScManifest.manifest_for_at_id(at_id)
     rescue ArgumentError
       redirect_to :action => 'explore_collection', :at_id => at_id
-      return    
-    end  
+      return
+    end
     @collection = set_collection
     if @sc_collection
       @label = @sc_collection.label
@@ -114,7 +108,7 @@ class ScCollectionsController < ApplicationController
     cdm_ocr = !params[:contentdm_ocr].blank?
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
-    unless collection_id == 'sc_collection'    
+    unless collection_id == 'sc_collection'
       collection = Collection.find_by(id: params[:collection_id])
     end
 
@@ -135,14 +129,14 @@ class ScCollectionsController < ApplicationController
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
     rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
-    
+
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
-    
+
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
-    flash[:notice] = "IIIF collection import is processing. Reload this page in a few minutes to see imported works."
+    flash[:notice] = t('.import_is_processing')
 
     ajax_redirect_to collection_path(collection.owner, collection)
   end
@@ -166,7 +160,7 @@ class ScCollectionsController < ApplicationController
     else
       unless params[:sc_manifest][:collection_id].blank?
         @collection = Collection.find params[:sc_manifest][:collection_id]
-        work = @sc_manifest.convert_with_collection(current_user, @collection)              
+        work = @sc_manifest.convert_with_collection(current_user, @collection)
       else
         work = @sc_manifest.convert_with_no_collection(current_user) 
       end
@@ -183,11 +177,11 @@ class ScCollectionsController < ApplicationController
       logger.info rake_call
       system(rake_call)
       #flash notice about the rake task
-      flash[:notice] = "Metadata #{ocr ? 'and OCR text ' : ''} is being imported from CONTENTdm and should appear shortly."
+      ocr_text = ocr ? 'and OCR text ' : ''
+      flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
     end
-    redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id 
+    redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id
   end
-
 
   def show
     respond_with(@sc_collection)
@@ -218,30 +212,30 @@ class ScCollectionsController < ApplicationController
   end
 
   private
-    def set_sc_collection
-      id = params[:sc_collection_id] || params[:id]
-#      @sc_collection = ScCollection.find(id)
-      @sc_collection = ScCollection.find_by id: id
-    end
 
-    def sc_collection_params
-      params.require(:sc_collection).permit(:collection_id, :context)
-    end
+  def set_sc_collection
+    id = params[:sc_collection_id] || params[:id]
+    #      @sc_collection = ScCollection.find(id)
+    @sc_collection = ScCollection.find_by id: id
+  end
 
-    def set_collection
-      #used to add new collections to select box on import
-      if session[:iiif_collection]
-        @collection = Collection.find_by(id: session[:iiif_collection])
-        session[:iiif_collection]=nil
-        return @collection
-      end
-    end
+  def sc_collection_params
+    params.require(:sc_collection).permit(:collection_id, :context)
+  end
 
-    def find_service(at_id)
-      connection = open(at_id)
-      manifest_json = connection.read
-      service = IIIF::Service.parse(manifest_json)
-      return service
+  def set_collection
+    #used to add new collections to select box on import
+    if session[:iiif_collection]
+      @collection = Collection.find_by(id: session[:iiif_collection])
+      session[:iiif_collection]=nil
+      return @collection
     end
-    
+  end
+
+  def find_service(at_id)
+    connection = URI.open(at_id)
+    manifest_json = connection.read
+    service = IIIF::Service.parse(manifest_json)
+    return service
+  end
 end

@@ -10,7 +10,7 @@
       -output = "Internet Archive book &ldquo;#{match.title}&rdquo; was imported by #{match.user.display_name} on #{match.created_at} "
       -if match.work
         -output += "and was converted into FromThePage work "
-        -output += link_to match.work.title, { :work_id => match.work.id, :controller => 'display', :action => 'read_work' }
+        -output += link_to match.work.title, display_read_work_path(:work_id => match.work.id)
       -else
         -output += "but has not been converted into a FromThePage work."
       li ==output

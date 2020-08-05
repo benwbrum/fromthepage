@@ -1,5 +1,5 @@
 require 'search_translator'
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
   ActiveRecord::Base.lock_optimistically = false
 
   include XmlSourceProcessor
@@ -10,14 +10,14 @@ class Page < ActiveRecord::Base
   before_update :populate_search
   validate :validate_source, :validate_source_translation
 
-  belongs_to :work
+  belongs_to :work, optional: true
   acts_as_list :scope => :work
 
   has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
   has_many :page_versions, -> { order 'page_version DESC' }, :dependent => :destroy
 
-  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id'
+  belongs_to :current_version, :class_name => 'PageVersion', :foreign_key => 'page_version_id', optional: true
 
   has_and_belongs_to_many :sections
 
@@ -33,19 +33,14 @@ class Page < ActiveRecord::Base
   after_save :update_sections_and_tables
   after_save :update_tex_figures
   after_save do
-    work.update_next_untranscribed_pages if self == work.next_untranscribed_page
+    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
   end
 
   after_initialize :defaults
   after_destroy :update_work_stats
-#  after_destroy :delete_deeds
+  #after_destroy :delete_deeds
   after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
-  attr_accessible :title
-  attr_accessible :source_text
-  attr_accessible :source_translation
-  attr_accessible :status
-  attr_accessible :metadata
   serialize :metadata, Hash
 
   scope :review, -> { where(status: 'review')}
@@ -54,7 +49,7 @@ class Page < ActiveRecord::Base
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
-  
+
   module TEXT_TYPE
     TRANSCRIPTION = 'transcription'
     TRANSLATION = 'translation'
@@ -110,11 +105,10 @@ class Page < ActiveRecord::Base
   end
 
   def canonical_facsimile_url
-
     if self.ia_leaf
       self.ia_leaf.facsimile_url
     elsif self.sc_canvas
-      self.sc_canvas.facsimile_url      
+      self.sc_canvas.facsimile_url
     else
       base_image
     end
@@ -127,7 +121,6 @@ class Page < ActiveRecord::Base
   def shrink_factor
     self[:shrink_factor] || 0
   end
-
 
   def scaled_image(factor = 2)
     if 0 == factor
@@ -195,20 +188,20 @@ class Page < ActiveRecord::Base
     if @sections
       self.sections.each { |s| s.delete }
       self.table_cells.each { |c| c.delete }
-      
+
       @sections.each do |section|
         section.pages << self
         section.work = self.work
         section.save!
       end
-      
+
       self.table_cells.each { |c| c.delete }
       @tables.each do |table|
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
             tc = TableCell.new(:row => rownum,
-              :content => cell,
-              :header => table[:header][cell_index] )
+                               :content => cell,
+                               :header => table[:header][cell_index] )
             tc.work = self.work
             tc.page = self
             tc.section = table[:section]
@@ -216,7 +209,7 @@ class Page < ActiveRecord::Base
           end
         end
       end
-      
+
     end
   end
 
@@ -231,7 +224,7 @@ class Page < ActiveRecord::Base
       TexFigure.submit_background_process(self.id)
     end
   end
-  
+
   def update_tex_figures
     self.tex_figures.each do |tex_figure|
       if tex_figure.changed?
@@ -263,7 +256,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def populate_search
     self.search_text = SearchTranslator.search_text_from_xml(self.xml_text, self.xml_translation)
   end
-  
+
   def verbatim_transcription_plaintext
     formatted_plaintext(self.xml_text)
   end
@@ -293,7 +286,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
         input_type = TranscriptionField.find(tc.transcription_field_id).input_type
 
         cell_data.each do |key, value|
-          #tc = TableCell.new(row: 1, header: key, content: value)
+          if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
+            value = ERB::Util.html_escape(value)
+          end
           tc.header = key
           tc.content = value
           key = (input_type == "description") ? (key + " ") : (key + ": ")
@@ -304,9 +299,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
       end
     end
     self.source_text = string
-
   end
-
 
   #######################
   # XML Source support
@@ -317,7 +310,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     if self.page_article_links.present?
       self.clear_article_graphs
       # clear out the existing links to this page
-      PageArticleLink.delete_all("page_id = #{self.id} and text_type = '#{text_type}'")
+      PageArticleLink.where("page_id = #{self.id} and text_type = '#{text_type}'").delete_all
     end
   end
 
@@ -328,8 +321,6 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     link.save!
     return link.id
   end
-
-
 
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
@@ -379,10 +370,11 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     users
   end
 
-private
+  private
+
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
-    doc.xpath("//link").each { |n| n.replace(n['target_title'])}    
+    doc.xpath("//link").each { |n| n.replace(n['target_title'])}
     formatted_plaintext_doc(doc)
   end
 
@@ -392,8 +384,11 @@ private
 
   def formatted_plaintext_doc(doc)
     doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//lb[@break='no']").each { |n| n.replace("-\n")}
     doc.xpath("//lb").each { |n| n.replace("\n")}
-    doc.text.sub(/^\s*/m, '')        
+    doc.xpath("//br").each { |n| n.replace("\n")}
+    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
+    doc.text.sub(/^\s*/m, '')
   end
 
   def modernize_absolute(filename)
@@ -417,7 +412,7 @@ private
   end
 
   def update_featured_page
-      self.work.update_columns(featured_page: nil)
+    self.work.update_columns(featured_page: nil)
   end
 
 end

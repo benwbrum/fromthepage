@@ -18,12 +18,12 @@ class UserController < ApplicationController
       logger.error("Possible spam: deleting user #{@user.email}")
       @user.destroy!
       redirect_to dashboard_path
-    else 
-      params_hash = params[:user].except(:notifications)
-      notifications_hash = params[:user][:notifications]
+    else
+      params_hash = user_params.except(:notifications)
+      notifications_hash = user_params[:notifications]
       params_hash.delete_if { |k,v| v == NOTOWNER }
       params_hash[:dictation_language] = params[:dialect]
-      
+
       if params_hash[:slug] == ""
         @user.update(params_hash.except(:slug))
         login = @user.login.parameterize
@@ -34,7 +34,7 @@ class UserController < ApplicationController
         @user.notification.update(notifications_hash)
 
       if @user.save!
-        flash[:notice] = "User profile has been updated"
+        flash[:notice] = t('.user_updated')
         ajax_redirect_to({ :action => 'profile', :user_id => @user.slug, :anchor => '' })
       else
         render :action => 'update_profile'
@@ -46,7 +46,7 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:user_slug])
     end
-    
+
     # Set dictation language to default (en-US) if it doesn't exist
     lang = !@user.dictation_language.blank? ? @user.dictation_language : "en-US"
     # Find the language portion of the language/dialect or set to nil
@@ -66,7 +66,7 @@ class UserController < ApplicationController
     unless @user
       @user = User.friendly.find(params[:id])
     end
-    if !@user.deleted || current_user.admin 
+    if !@user.deleted || current_user.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
       @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
       @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
@@ -74,7 +74,7 @@ class UserController < ApplicationController
       @page_versions = @user.page_versions.includes(page: :work).limit(10)
       @article_versions = @user.article_versions.limit(10).joins(:article).includes(article: :categories)
     else
-      flash[:notice] = "User profile has been deleted"
+      flash[:notice] = t('.user_deleted')
       redirect_to dashboard_path
     end
     if @user.owner?
@@ -93,6 +93,12 @@ class UserController < ApplicationController
     deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
     deed.save!
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:real_name, :orcid, :slug, :website, :location, :about, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added])
   end
 
 end
