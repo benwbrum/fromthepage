@@ -384,6 +384,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def formatted_plaintext_doc(doc)
     doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//lb[@break='no']").each { |n| n.replace("-\n")}
     doc.xpath("//lb").each { |n| n.replace("\n")}
     doc.text.sub(/^\s*/m, '')
   end
