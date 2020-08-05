@@ -240,8 +240,8 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
-    page.click_link("Pages That Need Correction or Transcription")
-    expect(page).to have_selector('h3', text: "Pages That Need Correction or Transcription")
+    page.click_link("Pages That Need Transcription")
+    expect(page).to have_selector('h3', text: "Pages That Need Transcription")
     #make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
     click_link("Return to collection")
