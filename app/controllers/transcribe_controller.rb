@@ -33,7 +33,7 @@ class TranscribeController  < ApplicationController
 
     if @page.edit_started_by_user_id != current_user.id &&
        @page.edit_started_at > Time.now - 1.minute
-      flash.now[:alert] = t('.alert')
+      flash.now[:info] = t('.alert')
       @current_user_alerted = true
     end unless @page.edit_started_at.nil?
   end
