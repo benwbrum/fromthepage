@@ -40,7 +40,7 @@ describe "convention related tasks", :order => :defined do
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
     page.find('.tabs').click_link("Settings")
     expect(page).to have_content @conventions
-    expect(page).to have_button('Revert', disabled: true)
+    expect(page).not_to have_button('Revert')
     page.fill_in 'work_transcription_conventions', with: @work_convention
     click_button 'Save Changes'
     visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
