@@ -28,13 +28,13 @@ module AddWorkHelper
     if @document_upload.save
       if SMTP_ENABLED
         begin
-          flash[:notice] = t('.document_uploaded', email: @document_upload.user.email)
+          flash[:info] = t('.document_uploaded', email: @document_upload.user.email)
         rescue StandardError => e
           log_smtp_error(e, current_user)
-          flash[:notice] = t('.reload_this_page')
+          flash[:info] = t('.reload_this_page')
         end
       else
-        flash[:notice] = t('.reload_this_page')
+        flash[:info] = t('.reload_this_page')
       end
       @document_upload.submit_process
       ajax_redirect_to controller: 'collection', action: 'show', collection_id: @document_upload.collection.id

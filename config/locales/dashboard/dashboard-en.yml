@@ -20,7 +20,6 @@ en:
       recent_activity: "Recent Activity"
     watchlist:
       projects_you_have_contributed_to: "Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on."
-      time_ago_in_words: "%{time} ago"
       you_might_want_to_try: "You haven't participated in any projects yet.  You might want to try transcribing a page of "
       try_transcribing_a_page: "You haven't participated in any projects yet.  Try transcribing a page from one of these "
       collections: "collections"

@@ -29,7 +29,7 @@ html lang="en-US"
 
   body
     -flash.each do |type, message|
-      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
+      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
       .flash(class='flash-#{type}')
         span.flash_message
           =svg_symbol flash_icon[type], class: 'icon'

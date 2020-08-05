@@ -19,7 +19,6 @@ pt:
       recent_activity: "Atividade Recente"
     watchlist:
       projects_you_have_contributed_to: "Os projetos para os quais você contribui -- transcrevendo, editando ou comentando -- serão listados aqui com sua atividade mais recente para que você possa se manter atualizado/a com o que está acontecendo."
-      time_ago_in_words: "Há %{time}"
       you_might_want_to_try: "Ainda não participou em nenhum projeto. Tente transcrever uma página de "
       try_transcribing_a_page: "Ainda não participou em nenhum projeto. Tente transcrever uma página de um destes "
       collections: "coleções"
@@ -31,7 +30,7 @@ pt:
       see_all_works: "Ver Todas as Obras..."
       start_a_project: "Iniciar um Projeto"
       total_work_count: "Número total de obras: %{count}"
-      you_can_add_another_work: "Você pode adicionar uma nova obra em %{start_ project}"
+      you_can_add_another_work: "Você pode adicionar uma nova obra em %{start_project}"
       there_are_no_works: "Ainda não há obras nesta coleção"
       you_can_upload_documents: "Você pode subir um documento em %{start_project}"
       document_sets: "Conjuntos de Documentos"
