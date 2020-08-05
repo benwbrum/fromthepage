@@ -74,7 +74,7 @@ pt:
       save_changes: "Guardar Alterações"
       add_a_new_work: "Adicionar uma nova obra"
       start_a_project: "Iniciar um Projeto"
-      add_another_work_under: "Você pode adicionar uma nova obra em %{start_ project}"
+      add_another_work_under: "Você pode adicionar uma nova obra em %{start_project}"
       collection_image: "Imagem da Coleção"
       no_image: "Sem Imagem"
       upload_image: "Subir Imagem"
