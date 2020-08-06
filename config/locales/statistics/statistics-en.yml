@@ -20,3 +20,12 @@ en:
       page: "Page"
       page_edits: "Page edits"
       ocr_correction: "OCR Correction"
+    collaborators:
+      collaborators: "Collaborators"
+      mailing_list_export: "Mailing List Export"
+      transcribing: "Transcribing"
+      no_transcribers: "No transcribers"
+      editing: "Editing"
+      no_editors: "No editors"
+      indexing: "Indexing"
+      no_indexers: "No indexers"
