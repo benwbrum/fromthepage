@@ -24,6 +24,8 @@ class AdminController < ApplicationController
     @works_count        = Work.all.count
     @ia_works_count     = IaWork.all.count
     @pages_count        = Page.all.count
+    @transcribed_count  = Page.where.not(status: nil).count
+    @notes_count        = Note.all.count
     @users_count        = User.all.count
     @owners_count       = User.where(owner: true).count
 
