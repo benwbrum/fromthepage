@@ -1,0 +1,12 @@
+en:
+  statistics:
+    collection:
+      last_days_statistics: "Last 7 Days Statistics"
+    recent_statistics:
+      collaborator: "Collaborator"
+      page: "Page"
+      page_edit: "Page edit"
+      reference: "Reference"
+      new_subject: "New subject"
+      note: "Note"
+      ocr_correction: "OCR Correction"
