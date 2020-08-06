@@ -1,4 +1,4 @@
-class DeleteOrphanedData < ActiveRecord::Migration
+class DeleteOrphanedData < ActiveRecord::Migration[5.0]
   def change
     #delete works for which there is no collection
     Work.all.each {|w| w.destroy unless w.collection}

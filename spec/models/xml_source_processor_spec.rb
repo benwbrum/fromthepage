@@ -15,6 +15,14 @@ EXPECTED_XML_DISABLED = <<EOF
       </page>
 EOF
 
+SOURCE_TEXT_ILLEGAL_CHARS = "\fWith a lo\vad of illegal \u000C charac\u0014ters and a tab\t"
+EXPECTED_XML_ILLEGAL_CHARS = <<EOF
+<?xml version='1.0' encoding='UTF-8'?>    
+      <page>
+        <p> With a lo ad of illegal   charac ters and a tab\t</p>
+      </page>
+EOF
+
 RSpec.describe XmlSourceProcessor, type: :model do
   describe '#wiki_to_xml' do
   
@@ -45,6 +53,17 @@ RSpec.describe XmlSourceProcessor, type: :model do
         expect(Article.all.count).to eq(0)
         expect(PageArticleLink.all.count).to eq(0)
       end
+    end
+  end
+  describe '#valid_xml_from_source' do
+    let(:collection){ build_stubbed(:collection ) }
+    let(:work)      { build_stubbed(:work, collection: collection) }
+    let(:page)      { build_stubbed(:page, work: work, source_text: SOURCE_TEXT_ILLEGAL_CHARS)}
+
+    it 'builds the xml document' do
+      expect(work.collection).to eq(collection)
+      xml = page.wiki_to_xml(page, Page::TEXT_TYPE::TRANSCRIPTION)
+      expect(xml).to eq(EXPECTED_XML_ILLEGAL_CHARS)
     end
   end
   describe '#rename_article_links' do

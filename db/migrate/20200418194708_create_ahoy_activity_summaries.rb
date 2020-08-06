@@ -1,4 +1,4 @@
-class CreateAhoyActivitySummaries < ActiveRecord::Migration
+class CreateAhoyActivitySummaries < ActiveRecord::Migration[5.0]
   def change
     # drop_table :ahoy_activity_summaries
     create_table :ahoy_activity_summaries do |t|

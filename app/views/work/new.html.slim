@@ -1,9 +1,9 @@
 .litebox-embed(style="width:550px")
   h1 Create Empty Work
-  p A work is a single document like a letter, a diary, a field book, post card, or notebook. 
-  -start_project = link_to 'Start A Project', { :controller => 'dashboard', :action => 'startproject', }
+  p A work is a single document like a letter, a diary, a field book, post card, or notebook.
+  -start_project = link_to 'Start A Project', dashboard_startproject_path
   p This creates an empty work. Once you create the work you can add individual page images. If you have a zip file or pdf with multiple images, you should create the work and upload the file under #{start_project} instead.
-  =form_for(@work, { :url => { :action => 'create' }}) do |f|
+  =form_for(@work, { :url => work_path }) do |f|
     =validation_summary @work.errors
     table.form
       tr.big

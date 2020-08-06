@@ -5,7 +5,7 @@ describe "IIIF Manifests API", :type => :request do
 
   it "returns JSON" do
     get iiif_manifest_path(1)
-    expect(response.content_type).to eq("application/json")
+    expect(response.content_type).to eq("application/json; charset=utf-8")
   end
 
   it "returns a URL with the corresponding ID" do

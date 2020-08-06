@@ -1,4 +1,4 @@
-class CreateOaiSets < ActiveRecord::Migration
+class CreateOaiSets < ActiveRecord::Migration[5.0]
   def self.up
     create_table :oai_sets do |t|
       t.string :set_spec

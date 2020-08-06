@@ -2,7 +2,7 @@ class AdminMailer < ActionMailer::Base
   include ContributorHelper
   helper ContributorHelper
 
-  before_filter :add_inline_attachments!
+  before_action :add_inline_attachments!
 
   default from: "FromThePage <support@fromthepage.com>"
   layout "admin_mailer"

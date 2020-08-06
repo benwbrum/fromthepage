@@ -493,6 +493,10 @@ button, .button, .dropdown dd a {
     color: $fgGreen;
     background: rgba($bgGreen, 0.9);
   }
+  &-info {
+    color: $fgBlue;
+    background: rgba($bgBlue, 0.9);
+  }
   &-alert {
     color: $fgOrange;
     background: rgba($bgOrange, 0.9);

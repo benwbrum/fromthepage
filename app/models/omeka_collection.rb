@@ -1,5 +1,4 @@
-class OmekaCollection < ActiveRecord::Base
-  attr_accessible :description, :omeka_id, :title
-  belongs_to :omeka_site
-  belongs_to :collection
+class OmekaCollection < ApplicationRecord
+  belongs_to :omeka_site, optional: true
+  belongs_to :collection, optional: true
 end
