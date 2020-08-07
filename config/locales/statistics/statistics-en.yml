@@ -1,0 +1,31 @@
+en:
+  statistics:
+    collection:
+      last_days_statistics: "Last 7 Days Statistics"
+    recent_statistics:
+      collaborator: "Collaborator"
+      page: "Page"
+      page_edit: "Page edit"
+      reference: "Reference"
+      new_subject: "New subject"
+      note: "Note"
+      ocr_correction: "OCR Correction"
+    collection_statistics:
+      work: "Work"
+      page: "Page"
+      note: "Note"
+      subject: "Subject"
+      reference: "Reference"
+      collaborator: "Collaborator"
+      page: "Page"
+      page_edits: "Page edits"
+      ocr_correction: "OCR Correction"
+    collaborators:
+      collaborators: "Collaborators"
+      mailing_list_export: "Mailing List Export"
+      transcribing: "Transcribing"
+      no_transcribers: "No transcribers"
+      editing: "Editing"
+      no_editors: "No editors"
+      indexing: "Indexing"
+      no_indexers: "No indexers"

@@ -12,7 +12,7 @@ pt:
       settings: "Configurações"
       export: "Exportar"
       add_work: "Adicionar Obra"
-      edit_fields: "Editar Campos"
+      edit_fields: "Campos"
       sets: "Conjuntos"
       works_list: "Lista de Obras"
     page_tabs:
