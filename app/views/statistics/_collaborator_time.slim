@@ -14,13 +14,13 @@ h4.legend.fglight Collaborator Time for Dates
 
 hr
 
-h3 Collaborator Time
+h3 =t('.collaborator_time')
 -unless @contributors.empty?
   =link_to({:controller => 'dashboard', :action => 'collaborator_time_export',
       :start_date => @start_date, :end_date => @end_date}, :class => 'button btnExport')
       =svg_symbol '#icon-export', class: 'icon'
-      span Export Detailed Activity as CSV
-  h4 User Totals for Dates
+      span =t('.export_activity_as_csv')
+  h4 =t('.user_totals_for_dates')
   .collection-users.justified
     .justified_box>
       -@contributors.each do |user|
@@ -29,7 +29,7 @@ h3 Collaborator Time
             span.userpic =gravatar_image_tag user.email, :alt => user.display_name
             span.vmiddle =user.display_name
 -else
-    p There is no activity for this date range.
+    p =t('.no_activity_for_date_range')
 
 
 -content_for :javascript

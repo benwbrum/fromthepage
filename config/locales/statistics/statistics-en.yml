@@ -42,3 +42,8 @@ en:
       ocr_correction: "OCR Correction"
       last_days_statistics: "Last 7 Days Statistics"
       new_subject: "New subject"
+    collaborator_time:
+      collaborator_time: "Collaborator Time"
+      export_activity_as_csv: "Export Detailed Activity as CSV"
+      user_totals_for_dates: "User Totals for Dates"
+      no_activity_for_date_range: "There is no activity for this date range."
