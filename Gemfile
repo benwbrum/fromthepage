@@ -108,7 +108,7 @@ gem 'iso-639'
 gem 'flamegraph'
 gem 'memory_profiler'
 gem 'meta_request'
-gem 'rack-mini-profiler', require: false
+gem 'rack-mini-profiler'
 gem 'stackprof'
 
 gem 'intercom', '~> 3.9.0'
