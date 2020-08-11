@@ -57,6 +57,8 @@ module TranscribeHelper
   def osd_source(page)
     if page.sc_canvas
       ["#{@page.sc_canvas.sc_service_id}/info.json"]
+    elsif page.ia_leaf
+      [@page.ia_leaf.iiif_image_info_url]
     else
       {type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json
     end
