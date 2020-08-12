@@ -64,8 +64,11 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
 
-  def choose_saml
+  def set_saml
+    redirect_to user_saml_omniauth_authorize_path  #go to users/auth/saml
+  end
 
+  def choose_saml
   end
 
 

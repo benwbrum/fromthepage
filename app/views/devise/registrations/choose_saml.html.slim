@@ -2,11 +2,10 @@
 
 section.signon
   h1 Sign in with your Institution
-  =form_tag(url: registrations_choose_provider_path) do
+  =form_tag(registrations_set_provider_path) do
     fieldset.signon_fieldset
       =label_tag :institution, class: 'signon_label'
         =select_tag(:institution, options_for_select(['Samling']), autofocus: true)
-        =svg_symbol '#icon-user', class: 'signon_label_icon'
     .toolbar
       .toolbar_group
         =button_tag 'Sign In', class: 'strong signin'

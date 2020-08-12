@@ -2,9 +2,8 @@
 
 section.signon
   h1 
-    |Sign in or 
-    | 
-    =link_to('Sign in with your Institution', registrations_choose_provider_path)
+    |Sign in 
+  =button_to('Sign in with your Institution (SSO)', registrations_choose_provider_path, class: 'strong signin')
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
