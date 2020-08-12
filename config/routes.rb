@@ -8,7 +8,10 @@ Fromthepage::Application.routes.draw do
     get "users/new_trial" => "registrations#new_trial"
   end
 
-#  devise_scope :registration 
+  devise_scope :registration do
+    get "registrations/choose_saml", to: 'registrations#choose_saml'
+  end
+
 
   iiif_for 'riiif/image', at: '/image-service'
 
