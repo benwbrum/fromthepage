@@ -77,7 +77,6 @@ class User < ApplicationRecord
     user = User.where(email: data['email']).first  #Will need to do email or name/username
     # Uncomment the section below if you want users to be created if they don't exist
     unless user
-      binding.pry
         user = User.create(
            login: data['email'].gsub(/@.*/,''),
            email: data['email'],
