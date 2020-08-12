@@ -6,10 +6,8 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get "users/new_trial" => "registrations#new_trial"
-  end
-
-  devise_scope :registration do
-    get "registrations/choose_saml", to: 'registrations#choose_saml'
+    get "registrations/choose_provider", to: 'registrations#choose_saml'
+    post "registrations/set_provider", to: 'registrations#set_saml'
   end
 
 

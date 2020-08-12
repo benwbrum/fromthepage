@@ -63,6 +63,12 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+
+  def choose_saml
+
+  end
+
+
   def alert_intercom()
     if INTERCOM_ACCESS_TOKEN
         intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)

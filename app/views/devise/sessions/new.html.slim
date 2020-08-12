@@ -4,7 +4,7 @@ section.signon
   h1 
     |Sign in or 
     | 
-    =link_to('Sign in with your Institution', registrations_choose_saml_path)
+    =link_to('Sign in with your Institution', registrations_choose_provider_path)
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
