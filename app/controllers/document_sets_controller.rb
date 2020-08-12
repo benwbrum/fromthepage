@@ -44,23 +44,22 @@ class DocumentSetsController < ApplicationController
   end
 
   def assign_works
-    set_work_map = params[:work_assignment]
+    set_work_map = params.to_unsafe_hash[:work_assignment]
     if set_work_map
-      @collection.document_sets.each do |document_set|
-        #document_set.works.clear
-        work_map = set_work_map[document_set.id.to_s]
-        current_ids = document_set.works.pluck(:id)
-        if work_map
-          new_ids = work_map.keys.map { |id| id.to_i }
-          set = (current_ids - new_ids + new_ids)
-          document_set.work_ids = set
-
-          document_set.save!          
+      set_work_map.keys.each do |work_id|
+        work = @collection.works.find(work_id)
+        work.document_sets.clear
+        set_work_map[work_id].each_pair do |set_id, throwaway|
+          work.document_sets << @collection.document_sets.find(set_id)
         end
       end
     end
+    # set next untranscribed page for each set now that works may have been added or removed
+    @collection.document_sets.each do |set|
+      set.set_next_untranscribed_page
+    end
 
-    redirect_to :action => :index, :collection_id => @collection.id
+    redirect_to :action => :index, :collection_id => @collection.id, :page => params[:page]
   end
 
   def assign_to_set
@@ -162,4 +161,6 @@ class DocumentSetsController < ApplicationController
   def document_set_params
     params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
   end
+
+
 end
