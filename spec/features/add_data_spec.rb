@@ -168,8 +168,8 @@ describe "uploads data for collections", :order => :defined do
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@set_collection.title}")
-    page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.first.id}")
-    page.check("work_assignment_#{@document_sets.last.id}_#{@set_collection.works.last.id}")
+    page.check("work_assignment_#{@set_collection.works.first.slug}_#{@document_sets.first.slug}")
+    page.check("work_assignment_#{@set_collection.works.last.slug}_#{@document_sets.last.slug}")
     page.find_button('Save').click
   end
 
