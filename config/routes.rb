@@ -8,6 +8,8 @@ Fromthepage::Application.routes.draw do
     get "users/new_trial" => "registrations#new_trial"
   end
 
+#  devise_scope :registration 
+
   iiif_for 'riiif/image', at: '/image-service'
 
   get '/omeka_sites/items' => 'omeka_sites#items'
