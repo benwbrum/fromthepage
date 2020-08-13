@@ -14,8 +14,8 @@ describe "different user role logins" do
     visit root_path
     expect(page).to have_link("Sign In")
     first(:link, 'Sign In').click
-    expect(page).to have_link("Sign Up Now")
-    click_link("Sign Up Now")
+    expect(page).to have_link("Sign Up")
+    click_link("Sign Up")
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
     expect(page).to have_content('3 errors prohibited this user from being saved')
