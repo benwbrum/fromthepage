@@ -18,14 +18,14 @@ xml:id="export">
     </titleStmt>
 
     <editionStmt>
-      <edition>Edition created from new transcripts of this manuscript.</edition>
+      <edition><%= t('.edition_created') %></edition>
       <respStmt xml:id="AU<%= @work.owner.id%>">
-        <resp>Initial upload of this work's facsimile images and metadata to FromThePage for editing</resp>
+        <resp><%= t('.initial_upload') %></resp>
         <persName><%= @work.owner.real_name%></persName>
       </respStmt>
 
       <respStmt xml:id="OU<%= @collection.owner.id%>">
-        <resp>Adminstrator of the <%=@collection.title%> transcription project on FromThePage</resp>
+        <resp><%= t('.administrator', collection: @collection.title) %></resp>
         <persName><%= @collection.owner.real_name %></persName>
       </respStmt>
 
@@ -34,12 +34,12 @@ xml:id="export">
           <persName><%= user[:real_name] || user.display_name %></persName>
           <% if user[:edit_count] == 1 %>
             <resp>
-              made one edit on
+              <%= t('.made_one_edit_on') %>
               <date type="only_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date>.
             </resp>
           <% else %>
             <resp>
-              made <%= user[:edit_count] %> edits between
+              <%= t('.made_edits_between', count: user[:edit_count]) %>
               <date type="first_edit" when="<%= user[:first_edit].iso8601 %>"><%= user[:first_edit].strftime("%B %e, %Y") %></date> and
               <date type="last_edit" when="<%= user[:last_edit].iso8601 %>"><%= user[:last_edit].strftime("%B %e, %Y") %></date>.
             </resp>
@@ -49,7 +49,7 @@ xml:id="export">
     </editionStmt>
 
     <publicationStmt>
-    <publisher>Dynamic TEI export from FromThePage (version <%= fromthepage_version %>)</publisher>
+    <publisher><%= t('.dynamic_tei_export', version: fromthepage_version) %></publisher>
       <availability>
         <p><%= @work.permission_description %></p>
       </availability>
@@ -177,9 +177,9 @@ xml:id="export">
         <change xml:id="CHG<%= page_version.work_version %>" who="U<%= page_version.user_id %>" when="<%= page_version.created_on.iso8601 %>" target="#P<%= page_version.page_id %>">
           Version <%= page_version.page_version %> of page "<%= page_version.page.title %>":
           <% if page_version.transcription.blank? %>
-            Empty transcript -- probably initial upload of page facsimile.
+            <%= t('.empty_transcript') %>
           <% else %>
-            Changes to page transcript.
+            <%= t('.changes_to_page_transcript') %>
           <% end%>
         </change>
       <% end %>
