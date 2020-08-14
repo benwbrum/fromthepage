@@ -1,4 +1,4 @@
-h2 Works by Collection
+h2 =t('.works_by_collection')
 
 .columns
   article.maincol
@@ -14,11 +14,11 @@ h2 Works by Collection
                 li =link_to w.title, display_read_work_path(:work_id => w.id)
 
     -else
-      -new_collection = link_to 'create a collection', collection_new_path
-      -start_project = link_to 'start a project', dashboard_startproject_path
+      -new_collection = link_to t('.create_a_collection'), collection_new_path
+      -start_project = link_to t('.start_a_project'), dashboard_startproject_path
       .nodata
-        h5.nodata_title You don't have any works yet
-        p.nodata_text You can #{new_collection}
+        h5.nodata_title =t('.you_dont_have_any_works_yet')
+        p.nodata_text =t('.you_can', new_collection: new_collection)
 
 
 =render(:partial => 'shared/pagination', :locals => { :model => @collections, :entries_info => true })
