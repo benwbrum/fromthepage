@@ -66,3 +66,9 @@ en:
       page_transcripts: "Page Transcripts"
       notes: "Notes:"
       page_translations: "Page Translations"
+    translation:
+      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
+      identifier: "Identifier: %{work}"
+      fromthepage_version: "FromThePage version: %{version}"
+      page_translations: "Page Translations"
+      notes: "Notes:"
