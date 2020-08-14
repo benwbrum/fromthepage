@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  
+  protect_from_forgery with: :exception, except: [:switch_locale]
+    
   before_action do
     if current_user && current_user.admin
       Rack::MiniProfiler.authorize_request
