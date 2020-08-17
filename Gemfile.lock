@@ -175,8 +175,6 @@ GEM
       railties (>= 5.0.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
-    faraday_middleware (1.0.0)
-      faraday (~> 1.0)
     ffi (1.13.1)
     flamegraph (0.9.5)
     friendly_id (5.3.0)
@@ -241,10 +239,6 @@ GEM
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
-    oai (1.1.0)
-      builder (>= 3.1.0)
-      faraday
-      faraday_middleware
     oauth2 (1.4.4)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -484,7 +478,6 @@ DEPENDENCIES
   mysql2
   newrelic_rpm
   nokogiri
-  oai
   oink
   omniauth-google-oauth2
   omniauth-saml

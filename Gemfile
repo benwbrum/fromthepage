@@ -5,7 +5,6 @@ gem 'rails', '6.0.3.2'
 gem 'will_paginate'
 gem 'rmagick'
 gem 'nokogiri'
-gem 'oai'
 gem "capistrano", "~> 3.10", require: false
 gem "capistrano-rails", "~> 1.4", require: false
 gem 'capistrano-bundler', '~> 1.6'
