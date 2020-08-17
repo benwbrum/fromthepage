@@ -16,8 +16,6 @@ gem 'mysql2'
 
 gem "recaptcha", require: "recaptcha/rails"
 
-gem 'omeka_client', git: 'https://github.com/benwbrum/omeka_client'
-
 gem 'acts_as_list'
 gem 'acts_as_tree'
 
