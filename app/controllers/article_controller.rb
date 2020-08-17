@@ -26,7 +26,7 @@ class ArticleController < ApplicationController
     if @collection.is_a?(DocumentSet)
       @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL')
     else
-      @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
+      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id))
     end
   end
 
