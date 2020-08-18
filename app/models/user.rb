@@ -19,9 +19,7 @@ class User < ApplicationRecord
            :foreign_key => "owner_user_id",
            :class_name => 'Work')
   has_many :collections, :foreign_key => "owner_user_id"
-  has_many :oai_sets
   has_many :ia_works
-  has_many :omeka_sites
   has_many :visits
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy

@@ -4,10 +4,10 @@ class DashboardController < ApplicationController
   include AddWorkHelper
 
   before_action :authorized?,
-    only: [:owner, :staging, :omeka, :startproject, :summary]
+    only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
-    only: [:owner, :staging, :omeka, :upload, :new_upload,
+    only: [:owner, :staging, :upload, :new_upload,
            :startproject, :empty_work, :create_work, :summary]
 
   before_action :remove_col_id
@@ -71,8 +71,6 @@ class DashboardController < ApplicationController
     @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection = @collection
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
     @sc_collections = ScCollection.all
   end
 

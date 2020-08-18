@@ -1,2 +1,0 @@
-class OaiRepository < ApplicationRecord
-end

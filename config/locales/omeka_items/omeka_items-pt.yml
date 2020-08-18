@@ -1,8 +1,0 @@
-pt:
-  omeka_items:
-    import:
-      omeka_item_published: "O item Omeka foi publicado com sucesso"
-    update:
-      omeka_item_updated: "O item Omeka foi atualizado com sucesso"
-    destroy:
-      omeka_item_deleted: "O item Omeka foi deletado com sucesso"
