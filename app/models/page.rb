@@ -23,7 +23,6 @@ class Page < ApplicationRecord
 
   has_many :notes, -> { order 'created_at' }, :dependent => :destroy
   has_one :ia_leaf, :dependent => :destroy
-  has_one :omeka_file, :dependent => :destroy
   has_one :sc_canvas, :dependent => :destroy
   has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
@@ -152,8 +151,6 @@ class Page < ApplicationRecord
       self.ia_leaf.thumb_url
     elsif self.sc_canvas
       self.sc_canvas.thumbnail_url
-    elsif self.omeka_file
-      self.omeka_file.thumbnail_url
     else
       file_to_url(self.thumbnail_image)
     end

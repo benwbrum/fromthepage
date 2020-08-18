@@ -1,2 +1,0 @@
-class OaiSet < ApplicationRecord
-end

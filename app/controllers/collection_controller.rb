@@ -287,8 +287,6 @@ class CollectionController < ApplicationController
     @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
   end

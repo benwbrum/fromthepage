@@ -11,7 +11,6 @@ class Work < ApplicationRecord
   belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
   has_one :ia_work, :dependent => :destroy
-  has_one :omeka_item, :dependent => :destroy
   has_one :sc_manifest, :dependent => :destroy
   has_one :work_statistic, :dependent => :destroy
   has_many :sections, -> { order 'position' }, :dependent => :destroy
