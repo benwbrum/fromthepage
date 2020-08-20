@@ -21,17 +21,17 @@ class Deed < ApplicationRecord
 
   def article
     real_article = super
-    real_article || Article.new(:title => '[deleted]')
+    real_article || Article.new(:id => 0, :title => '[deleted]')
   end
 
   def page
     real_page = super
-    real_page || Page.new(:title => '[deleted]')
+    real_page || Page.new(:id => 0, :title => '[deleted]')
   end
 
   def work
     real_work = super
-    real_work || Work.new(:title => '[deleted]')
+    real_work || Work.new(:id => 0, :title => '[deleted]')
   end
 
   def deed_type_name
