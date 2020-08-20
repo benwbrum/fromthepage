@@ -5,7 +5,7 @@ class Deed < ApplicationRecord
   belongs_to :article, optional: true
   belongs_to :collection, optional: true
   belongs_to :note, optional: true
-  belongs_to :page, optional: true
+  belongs_to :page, optional: true 
   belongs_to :user, optional: true
   belongs_to :work, optional: true
 
@@ -17,6 +17,22 @@ class Deed < ApplicationRecord
   visitable class_name: "Visit" # ahoy integration
 
   before_save :calculate_prerender, :calculate_prerender_mailer, :calculate_public
+
+
+  def article
+    real_article = super
+    real_article || Article.new(:title => '[deleted]')
+  end
+
+  def page
+    real_page = super
+    real_page || Page.new(:title => '[deleted]')
+  end
+
+  def work
+    real_work = super
+    real_work || Work.new(:title => '[deleted]')
+  end
 
   def deed_type_name
     DeedType.name(self.deed_type)
