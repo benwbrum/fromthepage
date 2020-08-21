@@ -21,17 +21,33 @@ class Deed < ApplicationRecord
 
   def article
     real_article = super
-    real_article || Article.new(:id => 0, :title => '[deleted]')
+    unless real_article
+      if DeedType.article_types.include? self.deed_type 
+        real_article = Article.new(:id => 0, :title => '[deleted]')
+      end
+    end
+    real_article
   end
 
   def page
     real_page = super
-    real_page || Page.new(:id => 0, :title => '[deleted]')
+    unless real_page
+      if DeedType.page_types.include? self.deed_type
+        real_page = Page.new(:id => 0, :title => '[deleted]')
+      end
+    end
+    real_page
   end
 
   def work
     real_work = super
-    real_work || Work.new(:id => 0, :title => '[deleted]')
+    unless real_work
+      # page deeds also require a mock work
+      if DeedType.page_types.include? self.deed_type
+        real_work = Work.new(:id => 0, :title => '[deleted]')
+      end
+    end
+    real_work
   end
 
   def deed_type_name

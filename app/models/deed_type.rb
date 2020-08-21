@@ -56,6 +56,28 @@ class DeedType
       TYPES.clone.except!(WORK_ADDED, COLLECTION_ACTIVE, COLLECTION_INACTIVE).keys
     end
 
+    def article_types
+      [
+        ARTICLE_EDIT
+      ]
+    end
+
+    def page_types
+      [
+        PAGE_TRANSCRIPTION,
+        PAGE_EDIT,
+        PAGE_INDEXED,
+        PAGE_MARKED_BLANK,
+        NOTE_ADDED,
+        PAGE_TRANSLATED,
+        PAGE_TRANSLATION_EDIT,
+        NEEDS_REVIEW,
+        TRANSLATION_REVIEW,
+        TRANSLATION_INDEXED
+      ]
+    end
+
+
     def collection_edits
       [
         PAGE_TRANSCRIPTION,
