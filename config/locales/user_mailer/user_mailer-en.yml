@@ -8,6 +8,6 @@ en:
       click_here: "Click here"
       to_view: "&nbsp; to view %{collection}: %{work}"
       new_notes: "New Notes"
-      view_note_on_page: "&nbsp; to view the note on page #{page} in #{collection}: #{work}, which has been added since you worked on it."
+      view_note_on_page: "&nbsp; to view the note on page %{page} in %{collection}: %{work}, which has been added since you worked on it."
       thanks: "Thanks, <br><br> FromThePage"
       turn_off_notification: "&nbsp; to turn off this notification."
