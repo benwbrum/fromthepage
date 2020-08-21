@@ -39,6 +39,8 @@
         =label_tag 'select_all', "Select All Manifests"
 
         ul.iiif-works-list
+          -preimported_pairs = ScManifest.joins(:work => :collection).where(:at_id => @sc_collection.service.manifests.map { |m| m['@id'] } ).pluck('sc_manifests.at_id', 'collections.title')
+          -preimported_collections = Hash[ preimported_pairs.group_by(&:first).map{ |k,a| [k,a.map(&:last)] } ]
           -@sc_collection.service.manifests.each_with_index do |json_manifest, index|
             li
               -at_id = json_manifest["@id"]
@@ -46,6 +48,10 @@
               =check_box_tag("manifest_id[#{index}]", 1, true, class: "manifest_checks")
               =label_tag "manifest_id[#{index}]", class: 'manifest_labels' do
                 =link_to(label_name, { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
+              -if preimported_collections[json_manifest['@id']]
+                i Already imported into
+                i #{' ' + preimported_collections[json_manifest['@id']].join(", ")}
+
         br
 
     -content_for :javascript

@@ -39,8 +39,8 @@ class ScCollectionsController < ApplicationController
       if service["@type"] == "sc:Collection"
         @sc_collection = ScCollection.collection_for_at_id(at_id)
         @collection = set_collection
-        render 'explore_collection', at_id: at_id
 
+        render 'explore_collection', at_id: at_id
       elsif service["@type"] == "sc:Manifest"
         @sc_manifest = ScManifest.manifest_for_at_id(at_id)
         find_parent = @sc_manifest.service["within"]
