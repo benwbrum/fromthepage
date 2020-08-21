@@ -404,11 +404,11 @@ class CollectionController < ApplicationController
         d.deed_type
       ]
 
-      if d.deed_type == DeedType::ARTICLE_EDIT
+      if d.deed_type == DeedType::ARTICLE_EDIT 
         record += ['','','','','',]
         record += [
-          d.article.title, 
-          collection_article_show_url(d.collection.owner, d.collection, d.article)
+          d.article ? d.article.title : '[deleted]', 
+          d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
         ]
       else
         unless d.deed_type == DeedType::COLLECTION_JOINED
