@@ -20,7 +20,7 @@ table.admin-grid.datagrid.striped
         td
           -if document.collection.present?
             p.fgfaded(data-prefix="Collection: ")
-              =link_to(document.collection.title, collection_path(document.user.slug, document.collection.id))
+              =link_to(document.collection.title, collection_url(document.user, document.collection))
           .small.fgfaded(data-prefix="File Name: ")
             =link_to(document.file, document.file.to_s, target: '_blank')
         td.nowrap
