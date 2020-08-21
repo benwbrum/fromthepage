@@ -134,6 +134,7 @@ class ScCollectionsController < ApplicationController
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
 
     logger.info rake_call
+    binding.pry
     system(rake_call)
     #flash notice about the rake task
     flash[:notice] = t('.import_is_processing')

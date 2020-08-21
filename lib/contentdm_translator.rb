@@ -39,7 +39,7 @@ module ContentdmTranslator
 
   def self.fetch_cdm_info(page)
     cdm_url = page_at_id_to_cdm_item_info(page.sc_canvas.sc_canvas_id)
-    cdm_response = open(cdm_url).read
+    cdm_response = URI.open(cdm_url).read
     JSON.parse(cdm_response)
   end
 
