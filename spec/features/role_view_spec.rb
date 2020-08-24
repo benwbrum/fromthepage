@@ -13,6 +13,7 @@ describe "different user role logins" do
     user_count = User.all.count
     visit root_path
     expect(page).to have_link("Sign In")
+    expect(page).not_to have_link(I18n.t('dashboard.plain'))
     first(:link, 'Sign In').click
     expect(page).to have_link("Sign Up Now")
     click_link("Sign Up Now")
