@@ -8,7 +8,7 @@ en:
       export_to_contentdm: "Export to CONTENTdm"
       export_to_contentdm_description: "Click the button to export completed transcripts from the entire collection to CONTENTdm."
       export_individual_works: "Export Individual Works"
-      export_individual_works_description: "You can choose to export individual works in two different file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document."
+      export_individual_works_description: "You can choose to export individual works in multiple file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document. Text is plaintext.  The zip export will give you all formats at a work and page granularity."
       work_title: "Work Title"
       pages: "Pages"
       indexed: "Indexed"
