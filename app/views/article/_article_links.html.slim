@@ -1,5 +1,5 @@
 -unless @article.show_links(@collection).empty?
-  h5 ="#{pluralize((@article.show_links(@collection).count).size, 'page')} refer to #{@article.title}"
+  h5 ="#{pluralize(@article.show_links(@collection).map{|link| link.page_id}.uniq.size, 'page')} refer to #{@article.title}"
   p =link_to "Show pages that mention #{@article.title} in all works", controller: 'display', action: 'read_all_works', article_id: @article.id
   ul.article-links
     -@article.show_links(@collection).each do |link|
