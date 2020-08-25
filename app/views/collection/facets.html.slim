@@ -3,6 +3,10 @@
 h2.nomargin Metadata Facets
 p Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.
 
+-if @errors
+  -@errors.each do |error|
+    p =error
+
 =form_for(:metadata, url: facets_update_path(@collection.owner, @collection)) do |f|
   table.datagrid
     thead
