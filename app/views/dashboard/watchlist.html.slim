@@ -37,7 +37,7 @@ h1 =t('dashboard.collaborator')
             .collection_details
               h4.collection_title =link_to collection.title, collection_path(collection.owner, collection) unless collection.owner.nil?
             .collection_summary
-              span =t('.owned_by', author: owner_link).html_safe
+              span =t('.project_by', author: owner_link).html_safe  
 
     h3 =t('.everyone_activity')
     =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
