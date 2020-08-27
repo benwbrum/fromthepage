@@ -3,12 +3,14 @@ en:
     alphabetical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
       owned_by: "Owned by %{author}"
+      project_by: "Project by %{author}"
     collections_list:
       collections: "Collections"
       meta_description: "You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age."
     hierarchical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
       owned_by: "Owned by %{author}"
+      project_by: "Project by %{author}"
     landing_page:
       previous_image: "Previous image"
       next_image: "Next image"
@@ -25,6 +27,7 @@ en:
       collections: "collections"
       private_collections_you_belong_to: "Private Collections You Belong to"
       owned_by: "Owned by #{author}"
+      project_by: "Project by #{author}"
       everyone_activity: "Everyone's Activity"
       your_activity: "Your Activity"
     owner:
