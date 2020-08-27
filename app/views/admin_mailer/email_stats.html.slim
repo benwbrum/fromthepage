@@ -27,7 +27,7 @@ p This is the activity from the last #{@hours} hours.
   -@recent_collections.each do |c|
     =link_to c.title, { :controller => 'collection', :action => 'show', :collection_id => c.id, only_path: false}
     |
-    =" owned by " 
+    =" project by " 
     |
     =link_to c.owner.display_name, { :controller => 'user', :action => 'profile', :user_id => c.owner.id, only_path: false}
     | <br>
