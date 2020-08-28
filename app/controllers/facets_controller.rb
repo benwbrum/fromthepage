@@ -3,6 +3,27 @@ class FacetsController < ApplicationController
     @collection = Collection.find(params[:collection_id])
     @collection.facets_enabled = true
     @collection.save
+
+    # create metadata_coverages for collections that don't have any.
+    if @collection.metadata_coverages.empty?
+      @collection.works.each do |w|
+        om = JSON.parse(w.original_metadata)
+
+        om.each do |m|
+          unless m['label'].blank?
+            label = m['label'].downcase.split.join('_').to_s
+
+            collection = w.collection
+            mc = collection.metadata_coverages.build
+
+            mc.key = label.to_sym
+            mc.save
+            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+          end
+        end
+      end
+    end
+
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
