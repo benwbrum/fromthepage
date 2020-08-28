@@ -1,7 +1,7 @@
 =javascript_include_tag 'application'
 .litebox-embed(style="width:550px")
-  h1 Upload Metadata
-  p To update metadata for several works within this collection, upload a spreadsheet with one row per work. See #{link_to "link", collection_metadata_example_path(params[:id])} for an example. (Note that multi-line/description fields cannot be updated.)
+  h1 =t('.upload_metadata')
+  p =t('.upload_metadata_description', link: link_to("link", collection_metadata_example_path(params[:id]))).html_safe
 
   =form_for(:metadata, url: collection_metadata_create_path) do |f|
     table.form
@@ -9,8 +9,8 @@
         td
         .input-file
           =f.file_field :file
-          input(type="text" placeholder="Click to browse a file..." readonly)
-          button(type="button") Browse
+          input(type="text" placeholder=t('.click_to_browse_a_file') readonly)
+          button(type="button") =t('.browse')
         =f.hidden_field :collection_id, value: params[:id]
     .toolbar
-      .toolbar_group.aright =f.button 'Upload'
+      .toolbar_group.aright =f.button t('.upload')
