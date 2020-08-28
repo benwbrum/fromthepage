@@ -1,7 +1,7 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 11, :collection_id => @collection }})
 
-h2.nomargin Metadata Facets
-p Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.
+h2.nomargin =t('.metadata_facets')
+p =t('.metadata_facets_description')
 
 -if @errors
   -@errors.each do |error|
@@ -11,11 +11,11 @@ p Configure metadata facets by reviewing the metadata currently present in your 
   table.datagrid
     thead
       tr
-        th Field Label
-        th Occurrences
-        th Label
-        th Type
-        th Order
+        th =t('.field_label')
+        th =t('.occurrences')
+        th =t('.label')
+        th =t('.type')
+        th =t('.order')
     tbody
       -@metadata_coverages.each do |metadata|
         tr
