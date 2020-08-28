@@ -266,7 +266,7 @@ class Work < ApplicationRecord
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
-          label = m['label'].downcase.split.join('_').to_s
+          label = m['label'].downcase.split.join('_').delete("()").to_s
 
           collection = self.collection
           mc = collection.metadata_coverages.build
