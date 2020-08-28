@@ -70,7 +70,7 @@
   -unless @collection.is_a? DocumentSet
     -if @collection.facets_enabled?
       -tabs += [{\
-        :name => 'Facets',
+        :name => t('.facets'),
         :selected => 11,
         :path => "#{collection_facets_path(@collection.owner, @collection)}",
       }]
