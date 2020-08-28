@@ -132,11 +132,11 @@ en:
       page_on_the_bottom: "Page on the Bottom"
     needs_review_pages:
       pages_that_need_review: "Pages That Need Review"
-      owned_by: "Owned by"
+      project_by: "Project by"
       return_to_collection: "Return to collection"
     needs_transcription_pages:
       pages_that_need_transcription: "Pages That Need Transcription"
-      owned_by: "Owned by"
+      project_by: "Project by"
       return_to_collection: "Return to collection"
     #next section is admin only
     new:
