@@ -8,19 +8,21 @@ class FacetConfig < ApplicationRecord
     works = self.metadata_coverage.collection.works
 
     works.each do |w|
-      om = JSON.parse(w.original_metadata)
+      unless w.original_metadata.nil?
+        om = JSON.parse(w.original_metadata)
 
-      unless w.work_facet
-        w.create_work_facet
-      end
+        unless w.work_facet
+          w.create_work_facet
+        end
 
-      om.each do |o|
-        unless o['label'].blank?
-          if o['label'] == self['label']
-            if self['input_type'] == "text"
-              w.work_facet.update("s#{self['order']}".to_sym => self['label'])
-            elsif self['input_type'] == "date"
-              w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
+        om.each do |o|
+          unless o['label'].blank?
+            if o['label'] == self['label']
+              if self['input_type'] == "text"
+                w.work_facet.update("s#{self['order']}".to_sym => self['label'])
+              elsif self['input_type'] == "date"
+                w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
+              end
             end
           end
         end
