@@ -77,6 +77,19 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("Order is not included in the list")
   end
 
+  it "can't enter an order as a string" do
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@owner, c)
+    click_link "Facets"
+    expect(page).to have_content("Metadata Facets")
+    expect(page).to have_content("filename")
+    fill_in 'metadata_filename_label', with: 'Filename'
+    fill_in 'metadata_filename_order', with: 'foo'
+    click_button 'Save Metadata'
+    expect(page).to have_content("Order is not a number")
+  end
+
   it "should not be available/visible for the Individual Researcher plan" do
     logout
     login_as @user
