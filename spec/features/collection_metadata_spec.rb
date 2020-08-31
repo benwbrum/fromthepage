@@ -64,6 +64,19 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("field_identifier_local")
   end
 
+  it "can't enter an order higher than 9" do
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@owner, c)
+    click_link "Facets"
+    expect(page).to have_content("Metadata Facets")
+    expect(page).to have_content("filename")
+    fill_in 'metadata_filename_label', with: 'Filename'
+    fill_in 'metadata_filename_order', with: 25
+    click_button 'Save Metadata'
+    expect(page).to have_content("Order is not included in the list")
+  end
+
   it "should not be available/visible for the Individual Researcher plan" do
     logout
     login_as @user
