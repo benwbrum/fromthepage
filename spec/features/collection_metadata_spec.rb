@@ -64,6 +64,21 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("field_identifier_local")
   end
 
+  it "allows saving additional metadata" do
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@owner, c)
+    click_link "Facets"
+    expect(page).to have_content("Metadata Facets")
+    expect(page).to have_content("filename")
+    fill_in 'metadata_filename_label', with: 'Filename'
+    fill_in 'metadata_filename_order', with: 9
+    click_button 'Save Metadata'
+    expect(page).to have_content("Collection facets updated successfully")
+    expect(find_field('metadata_filename_label').value).to eq "Filename"
+    expect(find_field('metadata_filename_order').value).to eq "9"
+  end
+
   it "can't enter an order higher than 9" do
     login_as @owner
     c = Collection.where(title: "ladi").first
