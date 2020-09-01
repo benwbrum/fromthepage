@@ -269,22 +269,25 @@ class Work < ApplicationRecord
           label = m['label'].downcase.split.join('_').delete("()").to_s
 
           collection = self.collection
-          mc = collection.metadata_coverages.build
 
-          # check that record exist
-          test = collection.metadata_coverages.where(key: label).first
+          unless self.collection.nil?
+            mc = collection.metadata_coverages.build
 
-          # increment count field if a record is returned
-          if test
-            test.count = test.count + 1
-            test.save
-          end
+            # check that record exist
+            test = collection.metadata_coverages.where(key: label).first
 
-          # otherwise create it
-          if test.nil?
-            mc.key = label.to_sym
-            mc.save
-            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+            # increment count field if a record is returned
+            if test
+              test.count = test.count + 1
+              test.save
+            end
+
+            # otherwise create it
+            if test.nil?
+              mc.key = label.to_sym
+              mc.save
+              mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+            end
           end
         end
       end
