@@ -51,6 +51,28 @@ describe "collection metadata", :order => :defined do
     click_button('Upload')
   end
 
+  it "increments occurrences as works are re-imported", :js => true do
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    filename = c.metadata_coverages.where(key: 'filename').first
+    expect(filename.count).to eq 5
+
+    # reupload the same work here.
+    visit edit_collection_path(@owner, c)
+    expect(page).to have_content("Allow users to browse works within this collection via metadata.")
+    click_link "Upload Metadata"
+    expect(page).to have_content("To update metadata for several works within this collection")
+
+    # workaround
+    script = "$('#metadata_file').css({opacity: 100, display: 'block', position: 'relative', left: ''});"
+    page.execute_script(script)
+
+    attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
+    click_button('Upload')
+    filename.reload
+    expect(filename.count).to eq 6
+  end
+
   it "enables facets" do
     login_as @owner
     c = Collection.where(title: "ladi").first
