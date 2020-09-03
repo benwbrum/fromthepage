@@ -7,18 +7,34 @@ class FacetsController < ApplicationController
     # create metadata_coverages for collections that don't have any.
     if @collection.metadata_coverages.empty?
       @collection.works.each do |w|
-        om = JSON.parse(w.original_metadata)
+        unless w.original_metadata.nil?
+          om = JSON.parse(w.original_metadata)
 
-        om.each do |m|
-          unless m['label'].blank?
-            label = m['label'].downcase.split.join('_').delete("()").to_s
+          om.each do |m|
+            unless m['label'].blank?
+              label = m['label'].downcase.split.join('_').delete("()").to_s
 
-            collection = w.collection
-            mc = collection.metadata_coverages.build
+              collection = w.collection
 
-            mc.key = label.to_sym
-            mc.save
-            mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+              unless w.collection.nil?
+                mc = collection.metadata_coverages.build
+
+                # check that record exist
+                test = collection.metadata_coverages.where(key: label).first
+
+                # increment count field if a record is returned
+                if test
+                  test.count = test.count + 1
+                  test.save
+                end
+
+                if test.nil?
+                  mc.key = label.to_sym
+                  mc.save
+                  mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+                end
+              end
+            end
           end
         end
       end
