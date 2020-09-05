@@ -1,9 +1,13 @@
 module AhoyActivityUtils
     def self.rollup_transcribe_for_date(day=1.day.ago)
+        # first, clean up old records for this date
+        AhoyActivitySummary.where(date: day.beginning_of_day).delete_all
+
+
         # Active users are users who log "transcription-type" deeds on a given day.
         # We only want to track these people for now
         active_users = Deed
-        .where(deed_type: DeedType.transcriptions)
+        .where(deed_type: DeedType.transcriptions_or_corrections)
         .where("created_at BETWEEN ? AND ?", day.beginning_of_day, day.end_of_day)
         .distinct.pluck(:user_id)
         
@@ -51,6 +55,7 @@ module AhoyActivityUtils
             end
         end
     end
+
     def self.total_contiguous_seconds(times, tolerance=60.minutes)
         
         total_seconds = 0
