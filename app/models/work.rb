@@ -262,7 +262,6 @@ class Work < ApplicationRecord
 
   def save_metadata
     unless self.original_metadata.nil?
-      collection = self.collection
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
