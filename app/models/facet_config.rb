@@ -2,7 +2,8 @@ class FacetConfig < ApplicationRecord
   belongs_to :metadata_coverage
   after_commit :populate_facets, on: :update
   validates :order, numericality: true, allow_blank: true
-  validates :order, inclusion: { in: 0..9 }, allow_blank: true
+  validates :order, inclusion: { in: 0..9, if: :type_text? }, allow_blank: true
+  validates :order, inclusion: { in: 0..2, if: :type_date? }, allow_blank: true
 
   def populate_facets
     works = self.metadata_coverage.collection.works
@@ -35,5 +36,13 @@ class FacetConfig < ApplicationRecord
         end
       end
     end
+  end
+
+  def type_text?
+    self.input_type == "text"
+  end
+
+  def type_date?
+    self.input_type == "date"
   end
 end
