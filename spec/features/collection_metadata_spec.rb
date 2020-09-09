@@ -101,7 +101,7 @@ describe "collection metadata", :order => :defined do
     expect(find_field('metadata_filename_order').value).to eq "9"
   end
 
-  it "can't enter an order higher than 9" do
+  it "allows a numeric value from 0 to 9 for text type" do
     login_as @owner
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
@@ -110,6 +110,20 @@ describe "collection metadata", :order => :defined do
     expect(page).to have_content("filename")
     fill_in 'metadata_filename_label', with: 'Filename'
     fill_in 'metadata_filename_order', with: 25
+    click_button 'Save Metadata'
+    expect(page).to have_content("Order is not included in the list")
+  end
+
+  it "allows a numeric value from 0 to 2 for date type" do
+    login_as @owner
+    c = Collection.where(title: "ladi").first
+    visit edit_collection_path(@owner, c)
+    click_link "Facets"
+    expect(page).to have_content("Metadata Facets")
+    expect(page).to have_content("filename")
+    fill_in 'metadata_filename_label', with: 'Filename'
+    select("date", from: 'metadata_filename_input_type')
+    fill_in 'metadata_filename_order', with: 3
     click_button 'Save Metadata'
     expect(page).to have_content("Order is not included in the list")
   end
