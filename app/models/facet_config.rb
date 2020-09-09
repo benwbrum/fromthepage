@@ -18,10 +18,17 @@ class FacetConfig < ApplicationRecord
         om.each do |o|
           unless o['label'].blank?
             if o['label'] == self['label']
-              if self['input_type'] == "text"
-                w.work_facet.update("s#{self['order']}".to_sym => self['label'])
-              elsif self['input_type'] == "date"
-                w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
+              input_type = self['input_type']
+
+              case input_type
+              when "text"
+                unless self['order'].nil?
+                  w.work_facet.update("s#{self['order']}".to_sym => self['label'])
+                end
+              when "date"
+                unless self['order'].nil?
+                  w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
+                end
               end
             end
           end
