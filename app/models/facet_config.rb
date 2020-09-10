@@ -17,19 +17,19 @@ class FacetConfig < ApplicationRecord
         end
 
         om.each do |o|
-          unless o['label'].blank?
-            if o['label'] == self['label']
-              input_type = self['input_type']
+          label = o['label'].downcase.split.join('_').delete("()").to_s
 
-              case input_type
-              when "text"
-                unless self['order'].nil?
-                  w.work_facet.update("s#{self['order']}".to_sym => self['label'])
-                end
-              when "date"
-                unless self['order'].nil?
-                  w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
-                end
+          if label == self['label']
+            input_type = self['input_type']
+
+            case input_type
+            when "text"
+              unless self['order'].nil?
+                w.work_facet.update("s#{self['order']}".to_sym => self['label'])
+              end
+            when "date"
+              unless self['order'].nil?
+                w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
               end
             end
           end
