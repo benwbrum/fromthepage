@@ -265,7 +265,7 @@ class Work < ApplicationRecord
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
-          label = m['label'].downcase.split.join('_').delete("()").to_s
+          label = m['label']
 
           collection = self.collection
 

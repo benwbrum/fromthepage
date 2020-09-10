@@ -17,7 +17,7 @@ class FacetConfig < ApplicationRecord
         end
 
         om.each do |o|
-          label = o['label'].downcase.split.join('_').delete("()").to_s
+          label = o['label']
 
           if label == self['label']
             input_type = self['input_type']
