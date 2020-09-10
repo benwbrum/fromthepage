@@ -137,7 +137,7 @@ module ContentdmTranslator
 
 
   def self.export_work_to_cdm(work, username, password, license)
-    error, fieldname = fts_field_for_collection(work.collection, license, username, password)
+    error, fieldname = fts_field_for_collection(work.collection)
     if error
       puts "Error retrieving Full-Text Search field: #{error}\n"
       exit
