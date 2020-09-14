@@ -398,7 +398,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def generate_thumbnail
     image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
-    factor = 100.to_f / self[:base_height].to_f
+    factor = 400.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil
