@@ -18,18 +18,20 @@ class FacetConfig < ApplicationRecord
 
         om.each do |o|
           label = o['label']
+          value = o['value']
 
-          if label == self['label']
+
+          if label == self.metadata_coverage.key
             input_type = self['input_type']
 
             case input_type
             when "text"
               unless self['order'].nil?
-                w.work_facet.update("s#{self['order']}".to_sym => self['label'])
+                w.work_facet.update("s#{self['order']}".to_sym => value)
               end
             when "date"
               unless self['order'].nil?
-                w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
+                w.work_facet.update("d#{self['order']}".to_sym => value)
               end
             end
           end
