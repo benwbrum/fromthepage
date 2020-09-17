@@ -122,7 +122,7 @@
     -unless @collection.is_a? DocumentSet
       -if @collection.facets_enabled?
         -unless @search.result.empty?
-          h3 Metadata Facets
+          h3 Work Facets
           .ul
             -@search.result.each do |wf|
               .li =link_to wf.s1, collection_search_path(@collection.owner, @collection, work_facet: wf.id) unless wf.s1.nil?
