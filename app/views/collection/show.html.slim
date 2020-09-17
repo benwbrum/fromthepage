@@ -28,7 +28,7 @@
     -if params.include?('work_facet')
       .collection-work
         .collection-work_image
-          -unless @work.thumbnail.nil? 
+          -unless @work.thumbnail.nil?
             =link_to image_tag(@work.thumbnail, alt: @work.title), collection_read_work_path(@collection.owner, @collection, @work)
         h4.collection-work_title =link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work)
         p.collection-work_snippet =truncate(strip_tags(@work.description), length: 300, separator: ' ') || ''
@@ -46,7 +46,7 @@
       -@works.each do |work|
         .collection-work
           .collection-work_image
-            -unless work.thumbnail.nil? 
+            -unless work.thumbnail.nil?
               =link_to image_tag(work.thumbnail, alt: work.title), collection_read_work_path(@collection.owner, @collection, work)
           h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
           p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
@@ -96,7 +96,7 @@
       =search_field_tag :search, params[:search], placeholder: t('.search_for_works')
       =button_tag t('.search')
       =label_tag 'search', "Search for works", class: 'hidden'
-        
+
     -if @collection.active?
       =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
