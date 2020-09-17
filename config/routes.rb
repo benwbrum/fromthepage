@@ -338,6 +338,7 @@ Fromthepage::Application.routes.draw do
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'facets'
+      get 'search'
 
       get 'edit', on: :member
       get 'new_work', on: :member

@@ -44,6 +44,13 @@ class CollectionController < ApplicationController
     @metadata_coverages = collection.metadata_coverages
   end
 
+  def search
+    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+    @work = WorkFacet.find(params['work_facet']).work
+    @search = WorkSearch.new(params[:page])
+    render :show
+  end
+
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
@@ -83,6 +90,7 @@ class CollectionController < ApplicationController
           @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
         else
           @works = works
+          @search = WorkSearch.new(params[:page])
         end
       else
         @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)

@@ -25,16 +25,16 @@
       h5.collection-work.acenter
         = t('.all_complete')
 
-    -@works.each do |work|
+    -if params.include?('work_facet')
       .collection-work
         .collection-work_image
-          -unless work.thumbnail.nil? 
-            =link_to image_tag(work.thumbnail, alt: work.title), collection_read_work_path(@collection.owner, @collection, work)
-        h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
-        p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+          -unless @work.thumbnail.nil? 
+            =link_to image_tag(@work.thumbnail, alt: @work.title), collection_read_work_path(@collection.owner, @collection, @work)
+        h4.collection-work_title =link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work)
+        p.collection-work_snippet =truncate(strip_tags(@work.description), length: 300, separator: ' ') || ''
         .collection-work_stats
-          -work_stats(work)
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+          -work_stats(@work)
+          span ="#{pluralize(@work.work_statistic.total_pages, 'page')}: #{@wording}"
           span
             span.progress
               -unless @collection.subjects_disabled
@@ -42,6 +42,24 @@
               span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
               -unless @progress_review == 0
                 span(style="width:#{@progress_review}%")
+    -else
+      -@works.each do |work|
+        .collection-work
+          .collection-work_image
+            -unless work.thumbnail.nil? 
+              =link_to image_tag(work.thumbnail, alt: work.title), collection_read_work_path(@collection.owner, @collection, work)
+          h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
+          p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+          .collection-work_stats
+            -work_stats(work)
+            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+            span
+              span.progress
+                -unless @collection.subjects_disabled
+                  span(style="width:#{@progress_annotated}%")
+                span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
+                -unless @progress_review == 0
+                  span(style="width:#{@progress_review}%")
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
@@ -100,5 +118,12 @@
 
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
+
+    -if @collection.facets_enabled?
+      h3 Metadata Facets
+      .ul
+        -@search.result.each do |wf|
+          .li =link_to wf.s1, collection_search_path(@collection.owner, @collection, work_facet: wf.id)
+          .li =link_to wf.s2, collection_search_path(@collection.owner, @collection, work_facet: wf.id)
 
 =render({ :partial => '/shared/collection_footer' })
