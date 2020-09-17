@@ -119,11 +119,12 @@
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-    -if @collection.facets_enabled?
-      h3 Metadata Facets
-      .ul
-        -@search.result.each do |wf|
-          .li =link_to wf.s1, collection_search_path(@collection.owner, @collection, work_facet: wf.id)
-          .li =link_to wf.s2, collection_search_path(@collection.owner, @collection, work_facet: wf.id)
+    -unless @collection.is_a? DocumentSet
+      -if @collection.facets_enabled?
+        h3 Metadata Facets
+        .ul
+          -@search.result.each do |wf|
+            .li =link_to wf.s1, collection_search_path(@collection.owner, @collection, work_facet: wf.id)
+            .li =link_to wf.s2, collection_search_path(@collection.owner, @collection, work_facet: wf.id)
 
 =render({ :partial => '/shared/collection_footer' })
