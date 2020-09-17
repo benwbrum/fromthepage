@@ -61,9 +61,6 @@ class ScManifest < ApplicationRecord
     work.title = cleanup_label(self.label)
     work.description = self.html_description
     work.collection = collection
-    self.service.metadata.each do |k, v|
-      k['label'] = k['label'].downcase.split.join('_').delete("()").to_s
-    end
     work.original_metadata = self.service.metadata.to_json
     work.save!
     unless self.service.sequences.empty?
