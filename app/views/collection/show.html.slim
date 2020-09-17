@@ -121,10 +121,11 @@
 
     -unless @collection.is_a? DocumentSet
       -if @collection.facets_enabled?
-        h3 Metadata Facets
-        .ul
-          -@search.result.each do |wf|
-            .li =link_to wf.s1, collection_search_path(@collection.owner, @collection, work_facet: wf.id) unless wf.s1.nil?
-            .li =link_to wf.s2, collection_search_path(@collection.owner, @collection, work_facet: wf.id) unless wf.s2.nil?
+        -unless @search.result.empty?
+          h3 Metadata Facets
+          .ul
+            -@search.result.each do |wf|
+              .li =link_to wf.s1, collection_search_path(@collection.owner, @collection, work_facet: wf.id) unless wf.s1.nil?
+              .li =link_to wf.s2, collection_search_path(@collection.owner, @collection, work_facet: wf.id) unless wf.s2.nil?
 
 =render({ :partial => '/shared/collection_footer' })
