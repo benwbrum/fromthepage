@@ -67,6 +67,8 @@ class CollectionController < ApplicationController
         ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
       end
 
+      # TODO change this parameter to reflect the distinction between the old work_search form
+      # and the `:search` parameter used by forty_facets
       if params[:search]
         @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       elsif (params[:works] == 'untranscribed')
@@ -90,11 +92,15 @@ class CollectionController < ApplicationController
           @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
         else
           @works = works
-          @search = WorkSearch.new(params[:page])
         end
       else
         @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       end
+      # construct the search object from the parameters
+      @search = WorkSearch.new(params)
+      # the search results are WorkFacets, not works, so we need to fetch the works themselves
+      facet_ids = @search.result.pluck(:id)
+      @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page)
     else
       redirect_to "/404"
     end
