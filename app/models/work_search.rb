@@ -2,11 +2,11 @@ class WorkSearch < FortyFacets::FacetSearch
   model 'WorkFacet'
 
 
-  facet :s1, name: 'Text 1', order: :downcase
-  facet :s2, name: 'Text 2', order: :downcase
-  facet :s3, name: 'Text 3', order: :downcase
-  facet :s4, name: 'Text 4', order: :downcase
-  facet :s5, name: 'Text 5', order: :downcase
+  facet :s1, name: 'Text 1'
+  facet :s2, name: 'Text 2'
+  facet :s3, name: 'Text 3'
+  facet :s4, name: 'Text 4'
+  facet :s5, name: 'Text 5'
 
 
   # eventually these should be ranges as follows
