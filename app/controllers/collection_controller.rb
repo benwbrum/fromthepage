@@ -100,7 +100,12 @@ class CollectionController < ApplicationController
       @search = WorkSearch.new(params)
       # the search results are WorkFacets, not works, so we need to fetch the works themselves
       facet_ids = @search.result.pluck(:id)
-      @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page)
+
+      unless @collection.is_a? DocumentSet
+        if @collection.facets_enabled?
+          @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page)
+        end
+      end
     else
       redirect_to "/404"
     end
