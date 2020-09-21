@@ -1,6 +1,7 @@
 h3 Facets
 
-=link_to "Reset All Filters", "?", class: 'button reset-button'
+-unless params[:search].nil?
+  =link_to "Reset All Filters", "?", class: 'button reset-button'
 
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
