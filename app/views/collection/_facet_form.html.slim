@@ -1,0 +1,70 @@
+h5
+  | Facets go here
+.panel.panel-default
+  #headingMinusOne.panel-heading[role="tab"]
+    h4.panel-title
+      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+        |  S1
+  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+    .panel-body
+      -[:s1].each do |filter_name|
+        -filter = @search.filter(filter_name)
+        .filter
+          .filter-values
+            ul.selectable
+              -filter.facet.reject(&:selected).each do |facet_value|
+                -entity = facet_value.entity
+                li
+                  -display = "#{entity}"
+                  =link_to display, filter.add(entity).path
+.panel.panel-default
+  #headingMinusOne.panel-heading[role="tab"]
+    h4.panel-title
+      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+        |  S2
+  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+    .panel-body
+      -[:s2].each do |filter_name|
+        -filter = @search.filter(filter_name)
+        .filter
+          .filter-values
+            ul.selectable
+              -filter.facet.reject(&:selected).each do |facet_value|
+                -entity = facet_value.entity
+                li
+                  -display = "#{entity}"
+                  =link_to display, filter.add(entity).path
+.panel.panel-default
+  #headingMinusOne.panel-heading[role="tab"]
+    h4.panel-title
+      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+        |  S3
+  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+    .panel-body
+      -[:s3].each do |filter_name|
+        -filter = @search.filter(filter_name)
+        .filter
+          .filter-values
+            ul.selectable
+              -filter.facet.reject(&:selected).each do |facet_value|
+                -entity = facet_value.entity
+                li
+                  -display = "#{entity}"
+                  =link_to display, filter.add(entity).path
+.panel.panel-default
+  #headingMinusOne.panel-heading[role="tab"]
+    h4.panel-title
+      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+        |  D1
+  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+    .panel-body
+      -[:d1].each do |filter_name|
+        -filter = @search.filter(filter_name)
+        .filter
+          .filter-values
+            ul.selectable
+              -filter.facet.reject(&:selected).each do |facet_value|
+                -entity = facet_value.entity
+                li
+                  -display = "#{entity}"
+                  =link_to display, filter.add(entity).path
