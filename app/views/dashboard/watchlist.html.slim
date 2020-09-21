@@ -2,6 +2,13 @@ h1 =t('dashboard.collaborator')
 
 .columns
   article.maincol
+    h3 =t('.private_collections_you_belong_to')
+    -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
+      =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+    -else
+      =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
+
+
     p =t('.projects_you_have_contributed_to')
     -unless @collections.empty?
       -@collections.each do |c|
@@ -28,19 +35,6 @@ h1 =t('dashboard.collaborator')
         =link_to t('.collections'), dashboard_path
         ="."
 
-    -unless current_user.collection_collaborations.empty?
-      h3 =t('.private_collections_you_belong_to')
-      -current_user.collection_collaborations.each do |collection|
-        -owner_link = link_to collection.owner.display_name, user_profile_path(collection.owner) unless collection.owner.nil?
-        .collections
-          .collection
-            .collection_details
-              h4.collection_title =link_to collection.title, collection_path(collection.owner, collection) unless collection.owner.nil?
-            .collection_summary
-              span =t('.project_by', author: owner_link).html_safe  
-
-    h3 =t('.everyone_activity')
-    =deeds_for({ :not_user_id => current_user.id, :limit => 15 })
 
   aside.sidecol
     h3 =t('.your_activity')
