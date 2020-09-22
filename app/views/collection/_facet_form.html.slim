@@ -3,6 +3,13 @@ h3 Facets
 -unless params[:search].nil?
   =link_to "Reset All Filters", "?", class: 'button reset-button'
 
+  -[:s1, :s2, :s3, :s4, :s5].each do |filter_name|
+    - filter = @search.filter(filter_name)
+    .ul
+      - filter.selected.each do |entity|
+        .li
+          = link_to entity, filter.remove(entity).path
+
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
