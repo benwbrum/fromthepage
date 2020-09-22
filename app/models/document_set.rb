@@ -193,4 +193,8 @@ class DocumentSet < ApplicationRecord
       'ltr'
     end
   end
+
+  def facets_enabled?
+    self.collection.facets_enabled?
+  end
 end

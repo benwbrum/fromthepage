@@ -101,7 +101,7 @@
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
 
-    -if @collection.is_a?(Collection) && @collection.facets_enabled?
+    -if @collection.facets_enabled?
       =render(:partial => 'facet_form')
 
 =render({ :partial => '/shared/collection_footer' })
