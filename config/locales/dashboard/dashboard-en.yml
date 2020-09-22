@@ -25,9 +25,9 @@ en:
       you_might_want_to_try: "You haven't participated in any projects yet.  You might want to try transcribing a page of "
       try_transcribing_a_page: "You haven't participated in any projects yet.  Try transcribing a page from one of these "
       collections: "collections"
-      private_collections_you_belong_to: "Private Collections You Belong to"
-      owned_by: "Owned by #{author}"
-      project_by: "Project by #{author}"
+      private_collections_you_belong_to: "Private projects"
+      owned_by: "Owned by %{author}"
+      project_by: "Project by %{author}"
       everyone_activity: "Everyone's Activity"
       your_activity: "Your Activity"
     owner:

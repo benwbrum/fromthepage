@@ -23,7 +23,7 @@ es:
       try_transcribing_a_page: "Aún no has participado en ningún proyecto.  Intenta transcribir una página de uno de estos "
       collections: "colecciones"
       private_collections_you_belong_to: "Colecciones Privadas a las que Perteneces"
-      owned_by: "Por #{author}"
+      owned_by: "Por %{author}"
       everyone_activity: "Actividad de todos"
       your_activity: "Tu Actividad"
     owner:
