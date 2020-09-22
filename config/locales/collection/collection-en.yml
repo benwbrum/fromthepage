@@ -87,7 +87,7 @@ en:
       collection_public_message: "The collection can be viewed by anyone on the internet. You may make the collection private to restrict its visiblity to the owners."
       make_collection_private: "Make Collection Private"
       restricted_completed_works: "Restricted Completed Works"
-      restricted_completed_works_description: "This button will restrict the #{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page."
+      restricted_completed_works_description: "This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page."
       restrict_completed_works: "Restrict Completed Works"
       collection_status: "Collection Status"
       collection_active_message: "This is an active collection. Making a collection inactive prevents users from editing content within the collection. Collection status does not affect the collection's privacy setting."
