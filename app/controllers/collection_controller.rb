@@ -101,7 +101,7 @@ class CollectionController < ApplicationController
       # the search results are WorkFacets, not works, so we need to fetch the works themselves
       facet_ids = @search.result.pluck(:id)
 
-      if @collection.is_a?(Collection) && @collection.facets_enabled?
+      if @collection.facets_enabled?
         @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page)
       end
     else
