@@ -58,10 +58,6 @@ class CreatePageBlocks < ActiveRecord::Migration[5.0]
     make_block "ia", "import_work", "Internet Archive Import Book Help"
     make_block "ia", "manage", "Internet Archive Manage Book Help", 'right', IA_MANAGE
 
-    make_block "oai", "record_list", "OAI Record List Help"
-    make_block "oai", "repository_list", "OAI Repository List Help"
-    make_block "oai", "set_list", "OAI Set List Help"
-
     make_block "page", "edit", "Single Page Settings Help", "right", PAGE_EDIT
     make_block "page", "new", "Single Page Creation Help"
     make_block "page", "image_tab", "Single Page Image Help"

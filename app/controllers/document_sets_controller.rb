@@ -33,7 +33,12 @@ class DocumentSetsController < ApplicationController
 
   def create
     @document_set = DocumentSet.new(document_set_params)
-    @document_set.owner = current_user
+    if current_user.account_type != "Staff"
+      @document_set.owner = current_user
+    else
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+      @document_set.owner = extant_collection.owner
+    end
     if @document_set.save
       flash[:notice] = t('.document_created')
       ajax_redirect_to collection_settings_path(@document_set.owner, @document_set)

@@ -1,22 +1,22 @@
 =render(:partial => 'header', :locals => { :selected => 3 })
 
 =form_tag({:controller => 'admin', :action => 'owner_list'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-  =search_field_tag :search, params[:search], placeholder: 'Search Owners...'
-  =button_tag 'Search', :name => nil
-  =label_tag :search, "Search users", class: "hidden"
+  =search_field_tag :search, params[:search], placeholder: t('.search_owners')
+  =button_tag t('.search'), :name => nil
+  =label_tag :search, t('.search_users'), class: "hidden"
 
 table.admin-grid.datagrid.striped
   thead
     tr
-      th(colspan="2") =link_to "Owner Login", admin_owner_list_path(:sort => 'login', :dir => 'asc')
-      th.w100 Name &amp; Location
-      th =link_to "Acct Type", admin_owner_list_path(:sort => 'account_type', :dir => 'desc')
-      th =link_to "Start Date", admin_owner_list_path(:sort => 'start_date', :dir => 'desc')
-      th =link_to "Acct Expiration", admin_owner_list_path(:sort => 'paid_date', :dir => 'desc')
-      th Active Pages
-      th Total Pages
-      th Last Sign In
-      th Action
+      th(colspan="2") =link_to t('.owner_login'), admin_owner_list_path(:sort => 'login', :dir => 'asc')
+      th.w100 =t('.name_and_location').html_safe
+      th =link_to t('.acct_type'), admin_owner_list_path(:sort => 'account_type', :dir => 'desc')
+      th =link_to t('.start_date'), admin_owner_list_path(:sort => 'start_date', :dir => 'desc')
+      th =link_to t('.acct_expiration'), admin_owner_list_path(:sort => 'paid_date', :dir => 'desc')
+      th =t('.active_pages')
+      th =t('.total_pages')
+      th =t('.last_sign_in')
+      th =t('.action')
 
   tbody
     -@owners.each do |o|
@@ -39,8 +39,8 @@ table.admin-grid.datagrid.striped
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td.nowrap
           .instack
-            =link_to 'Login As', user_masquerade_path(o)
-            =link_to 'Edit', admin_edit_user_path(:user_id => o.id), :data => { litebox: { hash: "" }}
-            =link_to 'Delete', admin_delete_user_path(:user_id => o.id), data: { confirm: 'Are you sure you want to delete user? After deleting you won\'t be able to recover it!' }
+            =link_to t('.login_as'), user_masquerade_path(o)
+            =link_to t('.edit'), admin_edit_user_path(:user_id => o.id), :data => { litebox: { hash: "" }}
+            =link_to t('.delete'), admin_delete_user_path(:user_id => o.id), data: { confirm: t('.are_you_sure') }
 
 =render(:partial => 'shared/pagination', :locals => { :model => @owners, :entries_info => true })

@@ -20,7 +20,7 @@ namespace :fromthepage do
       if manifest_array.include?(index.to_s)
         begin
           at_id = manifest["@id"]
-          puts at_id
+          print "\n[#{index}/#{service.manifests.count}] attempting #{at_id}\n"
           sc_manifest = ScManifest.manifest_for_at_id(at_id)
           work = nil
           work = sc_manifest.convert_with_collection(user, collection)

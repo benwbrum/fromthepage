@@ -1,12 +1,12 @@
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Administration"
+-content_for :page_title, "#{selected_tab} - #{t('.administration')}"
 
-h1 Administration
+h1 =t('.administration')
 .tabs
-  =active_link_to "Summary", admin_path, active: :exclusive
-  =active_link_to "Owners", admin_owner_list_path
-  =active_link_to "Users", admin_user_list_path
-  =active_link_to "Abuse", admin_flag_list_path
-  =active_link_to "Uploads", admin_uploads_path
-  =active_link_to "Logfile", admin_tail_logfile_path
-  =active_link_to "Settings", admin_settings_path
+  =active_link_to t('.summary'), admin_path, active: :exclusive
+  =active_link_to t('.owners'), admin_owner_list_path
+  =active_link_to t('.users'), admin_user_list_path
+  =active_link_to t('.abuse'), admin_flag_list_path
+  =active_link_to t('.uploads'), admin_uploads_path
+  =active_link_to t('.logfile'), admin_tail_logfile_path
+  =active_link_to t('.settings'), admin_settings_path
