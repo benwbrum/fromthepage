@@ -4,10 +4,10 @@ class DashboardController < ApplicationController
   include AddWorkHelper
 
   before_action :authorized?,
-    only: [:owner, :staging, :omeka, :startproject, :summary]
+    only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
-    only: [:owner, :staging, :omeka, :upload, :new_upload,
+    only: [:owner, :staging, :upload, :new_upload,
            :startproject, :empty_work, :create_work, :summary]
 
   before_action :remove_col_id
@@ -49,11 +49,15 @@ class DashboardController < ApplicationController
     end
   end
 
-  def collections_list
-    public_collections   = Collection.unrestricted.includes(:owner, next_untranscribed_page: :work)
-    public_document_sets = DocumentSet.unrestricted.includes(:owner, next_untranscribed_page: :work)
+  def collections_list(private_only=false)
+    if private_only
+      cds = []
+    else
+      public_collections   = Collection.unrestricted.includes(:owner, next_untranscribed_page: :work)
+      public_document_sets = DocumentSet.unrestricted.includes(:owner, next_untranscribed_page: :work)
 
-    cds = public_collections + public_document_sets
+      cds = public_collections + public_document_sets
+    end
     if user_signed_in?
       cds |= current_user.all_owner_collections.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_sets.includes(:owner, next_untranscribed_page: :work)
@@ -71,8 +75,6 @@ class DashboardController < ApplicationController
     @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection = @collection
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
     @sc_collections = ScCollection.all
   end
 
@@ -115,6 +117,7 @@ class DashboardController < ApplicationController
     works = Work.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct
     collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
+    collections_list(true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)
     @page = recent_work
   end

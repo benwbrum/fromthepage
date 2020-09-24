@@ -243,12 +243,9 @@ class CollectionController < ApplicationController
     if current_user.account_type != "Staff"
       @collection.owner = current_user
     else
-      current_user.collections.each do |c|
-        if c.owner.account_type != "Staff"
-          @collection.owner = c.owner
-          @collection.owners << current_user
-        end
-      end
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+      @collection.owner = extant_collection.owner
+      @collection.owners << current_user
     end
     if @collection.save
       flash[:notice] = t('.notice')
@@ -282,8 +279,6 @@ class CollectionController < ApplicationController
     @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
   end
@@ -409,11 +404,11 @@ class CollectionController < ApplicationController
         d.deed_type
       ]
 
-      if d.deed_type == DeedType::ARTICLE_EDIT
+      if d.deed_type == DeedType::ARTICLE_EDIT 
         record += ['','','','','',]
         record += [
-          d.article.title, 
-          collection_article_show_url(d.collection.owner, d.collection, d.article)
+          d.article ? d.article.title : '[deleted]', 
+          d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
         ]
       else
         unless d.deed_type == DeedType::COLLECTION_JOINED

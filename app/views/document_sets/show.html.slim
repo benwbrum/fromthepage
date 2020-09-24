@@ -37,7 +37,7 @@
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
-        small Owned by
+        small Project by
         =link_to @collection.owner.display_name, (user_profile_path(@collection.owner)
 
     h3 Recent Notes

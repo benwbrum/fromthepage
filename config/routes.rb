@@ -10,11 +10,6 @@ Fromthepage::Application.routes.draw do
 
   iiif_for 'riiif/image', at: '/image-service'
 
-  get '/omeka_sites/items' => 'omeka_sites#items'
-
-  resources :omeka_sites
-  resources :omeka_items
-
   resources :notes
 
   scope 'admin', as: 'admin' do
@@ -112,7 +107,7 @@ Fromthepage::Application.routes.draw do
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
-    get 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
+    post 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
   end
 
@@ -237,10 +232,6 @@ Fromthepage::Application.routes.draw do
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
-  end
-
-  scope 'omeka_items', as: 'omeka_items' do
-    get 'import', to: 'omeka_items#import'
   end
 
   scope 'statistics', as: 'statistics' do
