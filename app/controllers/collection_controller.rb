@@ -102,7 +102,7 @@ class CollectionController < ApplicationController
       facet_ids = @search.result.pluck(:id)
 
       if @collection.facets_enabled?
-        @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page)
+        @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
       end
     else
       redirect_to "/404"
