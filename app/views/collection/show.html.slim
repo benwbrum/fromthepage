@@ -78,7 +78,8 @@
       =search_field_tag :search, params[:search], placeholder: t('.search_for_works')
       =button_tag t('.search')
       =label_tag 'search', "Search for works", class: 'hidden'
-      #slider
+      -if @collection.facets_enabled?
+        #slider
 
     -if @collection.active?
       =link_to "Pages That Need Transcription", collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
