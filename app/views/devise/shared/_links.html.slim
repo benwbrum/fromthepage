@@ -18,4 +18,4 @@ ul.signon_links
     -if ENABLE_GOOGLEOAUTH
       li = link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2)
     -if ENABLE_SAML
-      li = link_to "Sign in with SAML",  user_saml_omniauth_authorize_path
+      p =button_to('Sign in with your Institution (SSO)', registrations_choose_provider_path, class: 'strong signin')
