@@ -73,6 +73,7 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(access_token)
+    binding.pry
     data = access_token.info
     user = User.where(email: data['email']).first  #Will need to do email or name/username
     # Uncomment the section below if you want users to be created if they don't exist
