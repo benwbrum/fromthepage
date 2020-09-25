@@ -32,4 +32,6 @@ module Fromthepage
     config.i18n.available_locales = [:en, :es, :pt]
 
   end
+  #TODO remove for production
+  Rails.application.config.action_controller.forgery_protection_origin_check=false
 end
