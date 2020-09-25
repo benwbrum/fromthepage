@@ -2,8 +2,6 @@ h3 Facets
 
 =stylesheet_link_tag "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
 
-#slider
-
 -unless params[:search].nil?
   =link_to "Reset All Filters", "?", class: 'button reset-button'
 
@@ -82,9 +80,3 @@ h3 Facets
                 li
                   -display = "#{entity}"
                   =link_to display, filter.add(entity).path
-
--content_for :javascript
-  javascript:
-    $(function() {
-      $("#slider").slider();
-    });
