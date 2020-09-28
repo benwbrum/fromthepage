@@ -73,8 +73,8 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(access_token)
-    binding.pry
     data = access_token.info
+    # TODO fetch based on external ID and provider key
     user = User.where(email: data['email']).first  #Will need to do email or name/username
     # Uncomment the section below if you want users to be created if they don't exist
     unless user

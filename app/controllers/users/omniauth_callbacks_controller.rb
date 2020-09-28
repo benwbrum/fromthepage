@@ -16,8 +16,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def saml
-    binding.pry
-    # You need to implement the method below in your model (e.g. app/models/user.rb)
     @user = User.from_omniauth(request.env["omniauth.auth"])
 
     if @user.persisted?
@@ -30,7 +28,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    flash[:notice] = 'Authentication failed' 
+    flash[:error] = 'Authentication failed' 
     redirect_to new_user_registration_url
   end
 end

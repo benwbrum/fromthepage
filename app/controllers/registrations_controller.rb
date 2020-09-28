@@ -65,8 +65,6 @@ class RegistrationsController < Devise::RegistrationsController
 
 
   def set_saml
-    binding.pry
-
     redirect_to user_saml_omniauth_authorize_path  #go to users/auth/saml
   end
 
