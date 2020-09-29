@@ -31,7 +31,7 @@ class FacetConfig < ApplicationRecord
               end
             when "date"
               unless self['order'].nil?
-                w.work_facet.update("d#{self['order']}".to_sym => value)
+                w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
               end
             end
           end
