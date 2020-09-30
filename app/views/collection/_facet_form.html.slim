@@ -16,7 +16,7 @@ h3 Facets
   .panel-body
     -@collection.metadata_coverages.each do |mc|
       -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 0
-        h4 =mc.key
+        h4 =mc.facet_config[:label]
         =form_for :date0, html: { class: "collection-search" } do |f|
           =f.text_field :date0
           =f.button "Search"
@@ -26,7 +26,7 @@ h3 Facets
   .panel-body
     -@collection.metadata_coverages.each do |mc|
       -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 1
-        h4 =mc.key
+        h4 =mc.facet_config[:label]
         =form_for :date1, html: { class: "collection-search" } do |f|
           =f.text_field :date1
           =f.button "Search"
@@ -36,7 +36,7 @@ h3 Facets
   .panel-body
     -@collection.metadata_coverages.each do |mc|
       -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 2
-        h4 =mc.key
+        h4 =mc.facet_config[:label]
         =form_for :date2, html: { class: "collection-search" } do |f|
           =text_field_tag :date2
           =button_tag "Search"
