@@ -15,32 +15,12 @@ h3 Facets
 .panel.panel-default
   .panel-body
     -@collection.metadata_coverages.each do |mc|
-      -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 0
+      -unless mc.facet_config[:label].blank?
         h4 =mc.facet_config[:label]
-        =form_for :date0, html: { class: "collection-search" } do |f|
-          =f.text_field :date0
+        =form_for :form, html: { class: "collection-search" } do |f|
+          =f.text_field :date
           =f.button "Search"
-          #slider0
-
-.panel.panel-default
-  .panel-body
-    -@collection.metadata_coverages.each do |mc|
-      -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 1
-        h4 =mc.facet_config[:label]
-        =form_for :date1, html: { class: "collection-search" } do |f|
-          =f.text_field :date1
-          =f.button "Search"
-          #slider1
-
-.panel.panel-default
-  .panel-body
-    -@collection.metadata_coverages.each do |mc|
-      -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 2
-        h4 =mc.facet_config[:label]
-        =form_for :date2, html: { class: "collection-search" } do |f|
-          =text_field_tag :date2
-          =button_tag "Search"
-          #slider2
+          .slider
 
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
@@ -114,7 +94,5 @@ h3 Facets
 -content_for :javascript
   javascript:
     $(function() {
-      $('#slider0').slider();
-      $('#slider1').slider();
-      $('#slider2').slider();
+      $('.slider').slider();
     });
