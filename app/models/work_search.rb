@@ -10,6 +10,7 @@ class WorkSearch < FortyFacets::FacetSearch
   # eventually these should be ranges as follows
   # range :d1, name: 'Date 1'
   # range :d2, name: 'Date 2'
+  facet :d0, name: 'Date 0'
   facet :d1, name: 'Date 1'
   facet :d2, name: 'Date 2'
 end
