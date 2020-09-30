@@ -13,6 +13,39 @@ h3 Facets
           = link_to entity, filter.remove(entity).path
 
 .panel.panel-default
+  .panel-body
+    -@collection.metadata_coverages.each do |mc|
+      -[:d0].each do |filter_name|
+        -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 0
+          h4 =mc.key
+          =form_for :date0, html: { class: "collection-search" } do |f|
+            =f.text_field :date0
+            =f.button "Search"
+            #slider0
+
+.panel.panel-default
+  .panel-body
+    -@collection.metadata_coverages.each do |mc|
+      -[:d1].each do |filter_name|
+        -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 1
+          h4 =mc.key
+          =form_for :date1, html: { class: "collection-search" } do |f|
+            =f.text_field :date1
+            =f.button "Search"
+            #slider1
+
+.panel.panel-default
+  .panel-body
+    -@collection.metadata_coverages.each do |mc|
+      -[:d2].each do |filter_name|
+        -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 2
+          h4 =mc.key
+          =form_for :date2, html: { class: "collection-search" } do |f|
+            =text_field_tag :date2
+            =button_tag "Search"
+            #slider2
+
+.panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
       a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
@@ -80,3 +113,11 @@ h3 Facets
                 li
                   -display = "#{entity}"
                   =link_to display, filter.add(entity).path
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('#slider0').slider();
+      $('#slider1').slider();
+      $('#slider2').slider();
+    });
