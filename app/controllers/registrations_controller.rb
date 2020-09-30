@@ -65,7 +65,8 @@ class RegistrationsController < Devise::RegistrationsController
 
 
   def set_saml
-    redirect_to user_saml_omniauth_authorize_path  #go to users/auth/saml
+    institution = saml_provider_param
+    redirect_to user_omniauth_authorize_path(institution)  #go to users/auth/saml/instution_name
   end
 
   def choose_saml
@@ -106,6 +107,9 @@ class RegistrationsController < Devise::RegistrationsController
     params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password, :password_confirmation)
   end
 
+  def saml_provider_param
+    params.require(:institution)
+  end
 
   def joined_from_collection(visit_id)
     first_event = Ahoy::Event.where(visit_id: visit_id).first
