@@ -1,7 +1,9 @@
 -content_for :page_title, "Sign In"
 
 section.signon
-  h1 Sign In
+  h1 
+    |Sign in 
+  =button_to('Sign in with your Institution (SSO)', registrations_choose_provider_path, class: 'strong signin')
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
