@@ -6,6 +6,17 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get "users/new_trial" => "registrations#new_trial"
+    post "registrations/choose_provider", to: 'registrations#choose_saml'
+    post "registrations/set_provider", to: 'registrations#set_saml'
+    match '/users/auth/saml/:identity_provider_id/callback',
+          via: [:get, :post],
+          to: 'users/omniauth_callbacks#saml',
+          as: 'user_omniauth_callback'
+
+    match '/users/auth/saml/:identity_provider_id',
+          via: [:get, :post],
+          to: 'users/omniauth_callbacks#passthru',
+          as: 'user_omniauth_authorize'
   end
 
   iiif_for 'riiif/image', at: '/image-service'
@@ -158,6 +169,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
+    get 'notes/:collection_id', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do

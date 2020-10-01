@@ -31,4 +31,10 @@ class DeedController < ApplicationController
     @deeds = @deed.order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
+  def notes
+    @deeds = Deed.where(collection_id: @collection.id, deed_type: DeedType::NOTE_ADDED).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    render :list
+  end
+
+
 end
