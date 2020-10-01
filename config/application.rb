@@ -33,6 +33,6 @@ module Fromthepage
     config.i18n.fallbacks = true
     config.i18n.fallbacks = [:en]
   end
-  #TODO remove for production
-  Rails.application.config.action_controller.forgery_protection_origin_check=false
+  #uncomment for development of SSO
+  #Rails.application.config.action_controller.forgery_protection_origin_check=false
 end
