@@ -234,6 +234,7 @@ namespace :fromthepage do
       yaml.keep_if { |e| ALLOWLIST.include? e }
       print "\tconvert_to_work allowlisted metadata.yml values \n#{yaml.to_s}\n"
       document_sets = document_sets_from_yaml(yaml, document_upload.collection)
+      yaml.delete("document_set")
     end
     work = Work.new(yaml)
     work.owner = document_upload.user

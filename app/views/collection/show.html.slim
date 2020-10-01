@@ -64,7 +64,7 @@
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
-        small Owned by
+        small Project by
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     =form_tag(display_search_path, :method => :get, class: 'collection-search') do
@@ -96,7 +96,7 @@
           span.deed-short_content
             =="#{user} wrote #{text}"
     small.legend
-      =link_to t('.show_more'), deed_list_path(@collection.id), class: 'button outline round'
+      =link_to t('.show_more'), deed_notes_path(@collection.id), class: 'button outline round'
 
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })

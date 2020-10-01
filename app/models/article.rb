@@ -43,7 +43,7 @@ class Article < ApplicationRecord
 
   #needed for document sets to correctly display articles
   def show_links(collection)
-    self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids}).group(:text_type, :page_id).order("pages.work_id, pages.title")
+    self.page_article_links.includes(:page).where(pages: {work_id: collection.works.ids})
   end
 
   def page_list

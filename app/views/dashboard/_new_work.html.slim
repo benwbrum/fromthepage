@@ -39,26 +39,6 @@
     section style="display: none"
       =link_to t('.import_from_archive_dot_org'), ia_book_form_path, :data => { litebox: { hash: 'import-ia' } }, class: 'button'
 
-    h3
-      a(href="#" class="title" onclick="return false;") =t('.import_from_omeka_classic')
-    section style="display: none"
-      -if @omeka_sites.blank?
-        p.fgfaded =t('.you_have_not_connected')
-      -else
-        p.fgfaded =t('.list_of_connected_omeka_sites')
-        ul.omeka-sites
-          -@omeka_sites.each do |omeka_site|
-            li.omeka-site
-              h5.omeka-site_title =link_to omeka_site.title, omeka_site
-              small.omeka-site_url =omeka_site.api_url
-              dl.dropdown.right
-                dt =svg_symbol '#icon-list', class: 'icon'
-                dd
-                  =link_to t('.edit_site'), edit_omeka_site_path(omeka_site), :data => { litebox: { hash: "edit-connection-#{omeka_site.id}" } }
-                  hr
-                  =link_to t('.delete_site'), omeka_site, method: :delete, data: { confirm: t('.omeka_delete_confirm_message') }, class: 'fgred'
-      =link_to t('.add_source'), new_omeka_site_path, :data => { litebox: { hash: 'create-connection' } }, class: 'button'
-
     =render 'dashboard/empty'
 
   aside.sidecol

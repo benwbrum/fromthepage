@@ -7,15 +7,15 @@
       table.form
         tr
           td(colspan="2")
-            =f.label :welcome_text, "Project owner welcome email text:", class: 'above'
+            =f.label :welcome_text, t('.welcome_text'), class: 'above'
             =f.text_area :welcome_text, rows: 12, value: @email_text
         tr
           td(colspan="2")
-            =f.label :flag_blacklist, "Terms to flag as potential abusive content:", class: 'above'
+            =f.label :flag_blacklist, t('.flag_blacklist'), class: 'above'
             =f.text_area :flag_blacklist, rows: 12, value: @flag_blacklist
 
       .toolbar
         .toolbar_group.aright
-          =f.button 'Save Changes', class: 'big'
+          =f.button t('.save_changes'), class: 'big'
 
   aside.sidecol

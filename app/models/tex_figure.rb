@@ -33,7 +33,7 @@ class TexFigure < ApplicationRecord
   end
 
   def self.submit_background_process(page_id)
-    rake_call = "#{RAKE} fromthepage:process_tex_figures[#{page_id}]  --trace 2>&1 >> #{log_file(page_id)} &"
+    rake_call = "#{RAKE} fromthepage:process_tex_figures[#{page_id}]  --trace >> #{log_file(page_id)} 2>&1 &"
     logger.info rake_call
     system(rake_call)
   end

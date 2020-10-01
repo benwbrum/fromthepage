@@ -1,9 +1,9 @@
 =render(:partial => 'header', :locals => { :selected => 4 })
 
 section
-  h4 Last #{@lines} lines of production logfile
+  h4 =t('.last_lines_of_production_logfile', lines: @lines)
   pre.admin-logfile =@prod_tail
 
-  h4 Last #{@lines} lines of development logfile
+  h4 =t('.last_lines_of_development_logfile', lines: @lines)
   pre.admin-logfile =@dev_tail
 

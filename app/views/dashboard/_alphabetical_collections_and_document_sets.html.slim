@@ -11,9 +11,7 @@
         p
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
-          -else
-            =link_to t('.start_transcribing'), collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
       -unless snippet.empty?
         p.collection_snippet =snippet
       .collection_summary
-        span =t('.owned_by', author: owner_link).html_safe
+        span =t('.project_by', author: owner_link).html_safe 
