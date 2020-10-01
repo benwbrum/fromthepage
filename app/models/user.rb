@@ -73,19 +73,46 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(access_token)
+    issuer = nil
+
+    if access_token['extra']
+      if access_token['extra']['response_object']
+        if !access_token['extra']['response_object'].issuers.empty?
+          issuer = access_token['extra']['response_object'].issuers.first
+        end
+      end
+    end
+
     data = access_token.info
-    # TODO fetch based on external ID and provider key
-    user = User.where(email: data['email']).first  #Will need to do email or name/username
-    # Uncomment the section below if you want users to be created if they don't exist
+
+    if data['external_id']
+      user = User.where(external_id: data['external_id'], sso_issuer: issuer).first
+    end
+    if !user && data['email']
+      user = User.where(email: data['email']).first
+    end
+    if !user && data['email2']
+      user = User.where(email: data['email2']).first
+    end
+    if !user && data['email3']
+      user = User.where(email: data['email3']).first
+    end
+
+
+    # create users if they don't exist
     unless user
+        email = data['email'] || data['email2'] || data['email3']
         user = User.create(
-           login: data['email'].gsub(/@.*/,''),
-           email: data['email'],
+           login: email.gsub(/@.*/,''),
+           email: email,
+           external_id: data['external_id'],
            password: Devise.friendly_token[0,20],
            display_name: data['name'],
-           real_name: data['name']
+           real_name: data['name'],
+           sso_issuer: issuer
         )
     end
+
     user
   end
 
