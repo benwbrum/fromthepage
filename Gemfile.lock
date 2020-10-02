@@ -258,6 +258,8 @@ GEM
       jwt (>= 2.0)
       omniauth (>= 1.1.1)
       omniauth-oauth2 (>= 1.6)
+    omniauth-multi-provider (0.2.1)
+      omniauth
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
@@ -485,6 +487,7 @@ DEPENDENCIES
   nokogiri
   oink
   omniauth-google-oauth2
+  omniauth-multi-provider
   omniauth-saml
   pry
   pry-awesome_print
