@@ -45,8 +45,24 @@ class CollectionController < ApplicationController
   end
 
   def search
-    @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
-    @work = WorkFacet.find(params['work_facet']).work
+    mc = @collection.metadata_coverages.where(key: params['facet_search']['label']).first
+    first_year = params['facet_search']['date'].split.first.to_i
+    last_year = params['facet_search']['date'].split.last.to_i
+    years = (first_year..last_year).to_a
+
+    facets = []
+
+    @collection.works.each do |w|
+      unless w.work_facet.nil?
+        if years.include?(w.work_facet.d0.year)
+          facets << w.work_facet
+        end
+      end
+    end
+
+    facet_ids = facets.pluck(:id)
+
+    @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => 10)
     @search = WorkSearch.new(params[:page])
     render :show
   end
