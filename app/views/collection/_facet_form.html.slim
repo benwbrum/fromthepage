@@ -16,12 +16,13 @@ h3 Facets
   .panel-body
     -@collection.metadata_coverages.each do |mc|
       -unless mc.facet_config[:label].blank?
-        h4 =mc.facet_config[:label]
-        =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), html: { class: "collection-search" } do |f|
-          =f.text_field :date
-          =f.hidden_field :label, value: mc.facet_config[:label]
-          =f.button "Search"
-          .slider
+        -if mc.facet_config[:input_type] == "date"
+          h4 =mc.facet_config[:label]
+          =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), html: { class: "collection-search" } do |f|
+            =f.text_field :date
+            =f.hidden_field :label, value: mc.facet_config[:label]
+            =f.button "Search"
+            .slider
 
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
