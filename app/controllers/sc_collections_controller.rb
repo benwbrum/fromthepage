@@ -39,8 +39,8 @@ class ScCollectionsController < ApplicationController
       if service["@type"] == "sc:Collection"
         @sc_collection = ScCollection.collection_for_at_id(at_id)
         @collection = set_collection
-        render 'explore_collection', at_id: at_id
 
+        render 'explore_collection', at_id: at_id
       elsif service["@type"] == "sc:Manifest"
         @sc_manifest = ScManifest.manifest_for_at_id(at_id)
         find_parent = @sc_manifest.service["within"]
@@ -128,7 +128,7 @@ class ScCollectionsController < ApplicationController
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED

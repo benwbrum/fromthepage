@@ -8,6 +8,6 @@ es:
       click_here: "Haz clic aquí"
       to_view: "&nbsp; para ver %{collection}: %{work}"
       new_notes: "Notas Nuevas"
-      view_note_on_page: "&nbsp; para ver la nota de la página #{page} en #{collection}: #{work}, que se ha añadido desde que trabajaste en ella."
+      view_note_on_page: "&nbsp; para ver la nota de la página %{page} en %{collection}: %{work}, que se ha añadido desde que trabajaste en ella."
       thanks: "Gracias, <br><br> FromThePage"
       turn_off_notification:   "&nbsp; para desactivar esta notificación."

@@ -17,7 +17,7 @@
           -else
             =link_to t('.start_transcribing'), collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
         .collection_summary
-          span =t('.owned_by', author: owner_link).html_safe
+          span =t('.project_by', author: owner_link).html_safe 
         ul
         -cds.document_sets.each do |doc_set|
           li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
@@ -37,6 +37,6 @@
           p
             =link_to t('.start_transcribing'), collection_start_transcribing_path(cds.owner, cds), class: 'button'
           .collection_summary
-            span =t('.owned_by', author: owner_link).html_safe
+            span =t('.project_by', author: owner_link).html_safe 
   
     

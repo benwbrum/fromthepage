@@ -2,7 +2,7 @@
 
   h3.collection_title
     =t('.collection')
-    =link_to @collection.title, collection_path(:collection_id => @collection.id, only_path: false)
+    =link_to @collection.title, collection_url(@collection.owner, @collection)
     =t('.owner').html_safe
     =link_to @collection.owner.display_name, user_profile_path(:user_id => @collection.owner.id, only_path: false)
 

@@ -320,6 +320,6 @@ class ArticleController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :url, :source_text)
+    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude)
   end
 end
