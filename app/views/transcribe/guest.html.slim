@@ -3,12 +3,7 @@
 .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
   .page-column
     .page-imagescan
-      -if @page.ia_leaf
-        =render :partial => '/ia/ia_bookreader_div'
-      -elsif @page.sc_canvas
-        =render :partial => '/shared/osd_div'
-      -else
-        =render :partial => '/shared/osd_div'
+      =render :partial => '/shared/osd_div'
   .page-column
     .centered
       .centered_content

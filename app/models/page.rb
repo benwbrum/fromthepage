@@ -23,7 +23,6 @@ class Page < ApplicationRecord
 
   has_many :notes, -> { order 'created_at' }, :dependent => :destroy
   has_one :ia_leaf, :dependent => :destroy
-  has_one :omeka_file, :dependent => :destroy
   has_one :sc_canvas, :dependent => :destroy
   has_many :table_cells, :dependent => :destroy
   has_many :tex_figures, :dependent => :destroy
@@ -152,8 +151,6 @@ class Page < ApplicationRecord
       self.ia_leaf.thumb_url
     elsif self.sc_canvas
       self.sc_canvas.thumbnail_url
-    elsif self.omeka_file
-      self.omeka_file.thumbnail_url
     else
       file_to_url(self.thumbnail_image)
     end
@@ -384,7 +381,10 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def formatted_plaintext_doc(doc)
     doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//lb[@break='no']").each { |n| n.replace("-\n")}
     doc.xpath("//lb").each { |n| n.replace("\n")}
+    doc.xpath("//br").each { |n| n.replace("\n")}
+    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
     doc.text.sub(/^\s*/m, '')
   end
 
@@ -398,7 +398,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
   def generate_thumbnail
     image = Magick::ImageList.new(modernize_absolute(self[:base_image]))
-    factor = 100.to_f / self[:base_height].to_f
+    factor = 400.to_f / self[:base_height].to_f
     image.thumbnail!(factor)
     image.write(thumbnail_filename)
     image = nil

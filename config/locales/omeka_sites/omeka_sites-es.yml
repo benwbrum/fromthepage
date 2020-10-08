@@ -1,8 +1,0 @@
-es:
-  omeka_sites:
-    create:
-      omeka_site_created: "El sitio web de Omeka se creó exitosamente"
-    update:
-      omeka_site_updated: "El sitio web de Omeka se actualizó exitosamente"
-    destroy:
-      omeka_site_deleted: "El sitio web de Omeka se eliminó exitosamente"

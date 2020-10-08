@@ -26,7 +26,7 @@ class ArticleController < ApplicationController
     if @collection.is_a?(DocumentSet)
       @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL')
     else
-      @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
+      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id))
     end
   end
 
@@ -85,7 +85,7 @@ class ArticleController < ApplicationController
     end
 
     flash[:notice] = t('.selected_subjects_combined', title: @article.title)
-    redirect_to :action => 'edit', :article_id => @article.id
+    redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
   end
 
   def graph
@@ -278,10 +278,10 @@ class ArticleController < ApplicationController
     end
     # walk through all articles referring to this
     for link in from_article.target_article_links
-      source_text = link.article.source_text
-      link.article.rename_article_links(old_from_title, to_article.title)
-      link.article.save!
-      logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
+      source_text = link.source_article.source_text
+      link.source_article.rename_article_links(old_from_title, to_article.title)
+      link.source_article.save!
+      logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.source_article.source_text}\n")
     end
 
     for link in from_article.source_article_links
@@ -320,6 +320,6 @@ class ArticleController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :url, :source_text)
+    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude)
   end
 end

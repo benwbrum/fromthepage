@@ -39,7 +39,7 @@ module ContentdmTranslator
 
   def self.fetch_cdm_info(page)
     cdm_url = page_at_id_to_cdm_item_info(page.sc_canvas.sc_canvas_id)
-    cdm_response = open(cdm_url).read
+    cdm_response = URI.open(cdm_url).read
     JSON.parse(cdm_response)
   end
 
@@ -137,7 +137,7 @@ module ContentdmTranslator
 
 
   def self.export_work_to_cdm(work, username, password, license)
-    error, fieldname = fts_field_for_collection(work.collection, license, username, password)
+    error, fieldname = fts_field_for_collection(work.collection)
     if error
       puts "Error retrieving Full-Text Search field: #{error}\n"
       exit

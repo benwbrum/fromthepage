@@ -6,14 +6,20 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get "users/new_trial" => "registrations#new_trial"
+    post "registrations/choose_provider", to: 'registrations#choose_saml'
+    post "registrations/set_provider", to: 'registrations#set_saml'
+    match '/users/auth/saml/:identity_provider_id/callback',
+          via: [:get, :post],
+          to: 'users/omniauth_callbacks#saml',
+          as: 'user_omniauth_callback'
+
+    match '/users/auth/saml/:identity_provider_id',
+          via: [:get, :post],
+          to: 'users/omniauth_callbacks#passthru',
+          as: 'user_omniauth_authorize'
   end
 
   iiif_for 'riiif/image', at: '/image-service'
-
-  get '/omeka_sites/items' => 'omeka_sites#items'
-
-  resources :omeka_sites
-  resources :omeka_items
 
   resources :notes
 
@@ -98,7 +104,7 @@ Fromthepage::Application.routes.draw do
     get 'tooltip', to: 'article#tooltip'
     get 'delete', to: 'article#delete'
     get 'show', to: 'article#show'
-    get 'combine_duplicate', to: 'article#combine_duplicate'
+    post 'combine_duplicate', to: 'article#combine_duplicate'
     post 'article_category', :to => 'article#article_category'
   end
 
@@ -112,7 +118,7 @@ Fromthepage::Application.routes.draw do
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
-    get 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
+    post 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
   end
 
@@ -163,6 +169,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
+    get 'notes/:collection_id', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -237,10 +244,6 @@ Fromthepage::Application.routes.draw do
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
-  end
-
-  scope 'omeka_items', as: 'omeka_items' do
-    get 'import', to: 'omeka_items#import'
   end
 
   scope 'statistics', as: 'statistics' do

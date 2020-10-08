@@ -30,5 +30,9 @@ module Fromthepage
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
     config.i18n.default_locale = :en
     config.i18n.available_locales = [:en, :es, :pt]
+    config.i18n.fallbacks = true
+    config.i18n.fallbacks = [:en]
   end
+  #uncomment for development of SSO
+  #Rails.application.config.action_controller.forgery_protection_origin_check=false
 end
