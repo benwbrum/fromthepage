@@ -1,30 +1,30 @@
     h3
-      a(href="#" class="title" onclick="return false;" id="create-empty-work") Create Empty Work
+      a(href="#" class="title" onclick="return false;" id="create-empty-work") =t('.create_empty_work')
 
     section(style=("display: none" unless @work.errors.any?))
-      p.big Use this option to create an empty work. You can then upload individual page images into the work.
-      =form_for(:work, { :url => { :action => 'create_work' }}) do |f|
+      p.big =t('.create_empty_work_description')
+      =form_for(:work, { :url => dashboard_create_work_path }) do |f|
         =validation_summary @work.errors
         table.form
           tr
             td
               =f.label :collection_id, class: "hidden"
-              =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @work.collection_id), prompt: '- Select a collection -'
+              =f.select :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', @work.collection_id), prompt: t('.select_a_collection')
           tr
             td
               =f.label :title, class: "hidden"
-              =f.text_field :title, placeholder: 'Title'
+              =f.text_field :title, placeholder: t('.title')
           tr
             td(colspan="2")
               =f.label :description, class: "hidden"
-              =f.text_area :description, rows: 4, placeholder: 'Description'
+              =f.text_area :description, rows: 4, placeholder: t('.description')
         .toolbar
-          .toolbar_group.aright =f.button 'Create Work'
+          .toolbar_group.aright =f.button t('.create_work')
 
     -content_for :javascript
       javascript:
         $(function(){
-          $('#work_collection_id').append("<option value='new'>Add New Collection</option>");
+          $('#work_collection_id').append("<option value='new'>#{t('.add_new_collection')}</option>");
         });
 
         $(function(){

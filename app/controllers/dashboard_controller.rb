@@ -3,11 +3,11 @@
 class DashboardController < ApplicationController
   include AddWorkHelper
 
-  before_filter :authorized?,
-    only: [:owner, :staging, :omeka, :startproject, :summary]
+  before_action :authorized?,
+    only: [:owner, :staging, :startproject, :summary]
 
-  before_filter :get_data,
-    only: [:owner, :staging, :omeka, :upload, :new_upload,
+  before_action :get_data,
+    only: [:owner, :staging, :upload, :new_upload,
            :startproject, :empty_work, :create_work, :summary]
 
   before_action :remove_col_id
@@ -49,11 +49,15 @@ class DashboardController < ApplicationController
     end
   end
 
-  def collections_list
-    public_collections   = Collection.unrestricted.includes(:owner, next_untranscribed_page: :work)
-    public_document_sets = DocumentSet.unrestricted.includes(:owner, next_untranscribed_page: :work)
+  def collections_list(private_only=false)
+    if private_only
+      cds = []
+    else
+      public_collections   = Collection.unrestricted.includes(:owner, next_untranscribed_page: :work)
+      public_document_sets = DocumentSet.unrestricted.includes(:owner, next_untranscribed_page: :work)
 
-    cds = public_collections + public_document_sets
+      cds = public_collections + public_document_sets
+    end
     if user_signed_in?
       cds |= current_user.all_owner_collections.includes(:owner, next_untranscribed_page: :work)
       cds |= current_user.document_sets.includes(:owner, next_untranscribed_page: :work)
@@ -71,8 +75,6 @@ class DashboardController < ApplicationController
     @work.collection = @collection
     @document_upload = DocumentUpload.new
     @document_upload.collection = @collection
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
     @sc_collections = ScCollection.all
   end
 
@@ -82,7 +84,6 @@ class DashboardController < ApplicationController
 
   # Owner Summary Statistics - statistics for all owned collections
   def summary
-    
     start_d = params[:start_date]
     end_d = params[:end_date]
 
@@ -103,13 +104,12 @@ class DashboardController < ApplicationController
         .where('date BETWEEN ? AND ?', @start_date, @end_date).distinct.pluck(:user_id)
 
     @contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
-    
+
     @activity = AhoyActivitySummary
         .where(collection_id: owner_collections)
         .where('date BETWEEN ? AND ?', @start_date, @end_date)
         .group(:user_id)
         .sum(:minutes)
-
   end
 
   # Collaborator Dashboard - watchlist
@@ -117,6 +117,7 @@ class DashboardController < ApplicationController
     works = Work.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct
     collections = Collection.joins(:deeds).where(deeds: { user_id: current_user.id }).distinct.order_by_recent_activity.limit(5)
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
+    collections_list(true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)
     @page = recent_work
   end
@@ -156,7 +157,7 @@ class DashboardController < ApplicationController
       @owners = User.where(id: search_user_ids).where.not(account_type: nil)
     else
       # Get random Collections and DocSets from paying users
-      @owners = User.non_trial_owners.includes(:random_collections, :random_document_sets).order(:display_name)
+      @owners = User.findaproject_owners.order(:display_name)
 
       # Sampled Randomly down to 8 items for Carousel
       docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
@@ -166,59 +167,66 @@ class DashboardController < ApplicationController
   end
 
   def collaborator_time_export
-      start_date = params[:start_date]
-      end_date = params[:end_date]
-  
-      start_date = start_date.to_date
-      end_date = end_date.to_date
-  
-      dates = (start_date..end_date)
+    start_date = params[:start_date]
+    end_date = params[:end_date]
 
-      headers = [
-        "Username",
-        "Email",
-      ]
-      
-      headers += dates.map{|d| d.strftime("%b %d, %Y")}
+    start_date = start_date.to_date
+    end_date = end_date.to_date
 
-      # Get Row Data (Users)
-      owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+    dates = (start_date..end_date)
 
-      
-      contributor_ids_for_dates = AhoyActivitySummary
+    headers = [
+      "Username",
+      "Email",
+    ]
+
+    headers += dates.map{|d| d.strftime("%b %d, %Y")}
+
+    # Get Row Data (Users)
+    owner_collections = current_user.all_owner_collections.map{ |c| c.id }
+
+
+    contributor_ids_for_dates = AhoyActivitySummary
+      .where(collection_id: owner_collections)
+      .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+
+    contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+
+    csv = CSV.generate(:headers => true) do |records|
+      records << headers
+      contributors.each do |user|
+        row = [user.display_name, user.email]
+
+        activity = AhoyActivitySummary
+          .where(user_id: user.id)
           .where(collection_id: owner_collections)
-          .where('date BETWEEN ? AND ?', start_date, end_date).distinct.pluck(:user_id)
+          .where('date BETWEEN ? AND ?', start_date, end_date)
+          .group(:date)
+          .sum(:minutes)
+          .transform_keys{ |k| k.to_date }
 
-      contributors = User.where(id: contributor_ids_for_dates).order(:display_name)
+        user_activity = dates.map{ |d| activity[d.to_date] || 0 }
 
-      csv = CSV.generate(:headers => true) do |records|
-        records << headers
-        contributors.each do |user|
-          row = [user.display_name, user.email]
+        row += user_activity
 
-          activity = AhoyActivitySummary
-            .where(user_id: user.id)
-            .where(collection_id: owner_collections)
-            .where('date BETWEEN ? AND ?', start_date, end_date)
-            .group(:date)
-            .sum(:minutes)
-            .transform_keys{ |k| k.to_date }
-
-          user_activity = dates.map{ |d| activity[d.to_date] || 0 }
-            
-          row += user_activity
-
-          records << row
-        end
+        records << row
       end
-  
-      
-
-      send_data( csv, 
-        :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
-        :type => "application/csv")
-  
-      cookies['download_finished'] = 'true'
-  
     end
+
+    send_data( csv,
+              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_activity_summary.csv",
+              :type => "application/csv")
+
+    cookies['download_finished'] = 'true'
+  end
+
+  private
+
+  def document_upload_params
+    params.require(:document_upload).permit(:document_upload, :file, :preserve_titles, :ocr, :collection_id)
+  end
+
+  def work_params
+    params.require(:work).permit(:title, :description, :collection_id)
+  end
 end

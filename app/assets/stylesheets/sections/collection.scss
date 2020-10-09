@@ -71,6 +71,13 @@
     margin-bottom: $gapSize;
     background-clip: padding-box;
     border: 1px solid rgba(#000, 0.06);
+    img {
+      width: 8em;
+      padding: 3px;
+      background: #FFF;
+      border: 1px solid rgba(#000, 0.1);
+    }
+
   }
   &_title {
     margin: 0;

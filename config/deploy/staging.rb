@@ -1,3 +1,4 @@
+set :rails_env, "production"
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary server in each group
@@ -6,7 +7,7 @@
 
 role :app, %w{fromthepage@45.79.215.153}
 #role :web, %w{deploy@example.com}
-#role :db,  %w{deploy@example.com}
+role :db,  %w{fromthepage@45.79.215.153}
 
 
 # Extended Server Syntax
@@ -46,5 +47,5 @@ server '45.79.215.153', user: 'fromthepage', roles: %{app}
 #   }
 
 
-set :branch, 'fromthepage.com'
+set :branch, 'fromthepage.com-rails6'
 

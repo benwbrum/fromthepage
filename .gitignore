@@ -7,12 +7,15 @@
 # Ignore bundler config
 /.bundle
 /.project
+/node_modules
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
 /db/development.sqlite3
 
+/coverage
+/public/imports
 /public/images/working
 /public/images/simple_captcha
 /public/uploads
@@ -48,3 +51,4 @@ tags
 /**/svg-source
 
 .env
+config/locales/.DS_Store

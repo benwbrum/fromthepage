@@ -8,7 +8,7 @@ namespace :fromthepage do
     manifest_indices = args.manifest_ids
     collection_id = args.collection_id
     user_id = args.user_id
-    import_ocr = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(args.import_ocr)
+    import_ocr = ActiveRecord::Type::Boolean.new.cast(args.import_ocr)
     collection = Collection.find_by(id: collection_id)
     user = User.find_by(id: user_id)
     manifest_array = manifest_indices.split(" ")
@@ -20,7 +20,7 @@ namespace :fromthepage do
       if manifest_array.include?(index.to_s)
         begin
           at_id = manifest["@id"]
-          puts at_id
+          print "\n[#{index}/#{service.manifests.count}] attempting #{at_id}\n"
           sc_manifest = ScManifest.manifest_for_at_id(at_id)
           work = nil
           work = sc_manifest.convert_with_collection(user, collection)
@@ -57,7 +57,7 @@ namespace :fromthepage do
   
   def find_service(at_id)
     puts "Importing #{at_id}"
-    connection = open(at_id)
+    connection = URI.open(at_id)
     manifest_json = connection.read
     service = IIIF::Service.parse(manifest_json)
     return service

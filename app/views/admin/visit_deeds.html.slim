@@ -1,7 +1,7 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
-h3 Contributions for #{@user.login}'s site visit on #{@visit.started_at.strftime('%b %d, %Y')}
-=link_to 'Other Visits', { :controller => 'admin', :action => 'user_visits', :user_id => @user.id }
+h3 =t('.contributions_for_user', user: @user.login, date: @visit.started_at.strftime('%b %d, %Y'))
+=link_to t('.other_visits'), admin_user_visits_path(:user_id => @user.id)
 table.datagrid.striped
   -@visit.deeds.each do |d|
     tr
@@ -14,4 +14,4 @@ table.datagrid.striped
         small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
       td.nowrap
         =time_tag(d.created_at, class: 'small fglight')
-          ="#{time_ago_in_words d.created_at} ago"
+          =time_ago_in_words d.created_at

@@ -1,4 +1,4 @@
-class DeleteOrphanedData < ActiveRecord::Migration
+class DeleteOrphanedData < ActiveRecord::Migration[5.0]
   def change
     #delete works for which there is no collection
     Work.all.each {|w| w.destroy unless w.collection}
@@ -21,9 +21,6 @@ class DeleteOrphanedData < ActiveRecord::Migration
     #delete ia works for which there is no work
     IaWork.all.each {|i| i.destroy unless i.work}
 
-    #delete omeka items for which there is no work
-    OmekaItem.all.each {|i| i.destroy unless i.work}
-
     #delete sc manifests for which there is no work
     ScManifest.all.each {|s| s.destroy unless s.work}
 
@@ -32,9 +29,6 @@ class DeleteOrphanedData < ActiveRecord::Migration
 
     #delete ia leaves for which there is no page
     IaLeaf.all.each {|i| i.destroy unless i.page}
-
-    #delete omeka files for which there is no page
-    OmekaFile.all.each {|o| o.destroy unless o.page}
 
     #delete sc canvases for which there is no page
     ScCanvas.all.each {|s| s.destroy unless s.page}

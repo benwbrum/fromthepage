@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.4.1'
+#lock '3.4.1'
 
 set :application, 'fromthepage'
 set :repo_url, 'git@github.com:benwbrum/fromthepage.git'
@@ -23,7 +23,7 @@ set :branch, 'ui-design'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb}
+set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/newrelic.yml public/robots.txt}
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}

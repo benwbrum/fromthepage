@@ -1,5 +1,5 @@
 .litebox-embed(style="width:450px")
-  h1 Edit User
+  h1 =t('.edit_user')
   =form_for(@user, :url => { :action => 'update_user' }) do |f|
     =hidden_field_tag :user_id, @user.id
     =validation_summary @user.errors
@@ -19,17 +19,20 @@
           =f.label :owner
             =f.check_box(:owner)
             |&nbsp;
-            span This user is an Owner
+            span =t('.this_user_is_an_owner')
       tr
         th =f.label :account_type
-        td =f.select(:account_type, options_for_select(['Individual Researcher', 'Small Organization', 'Large Institution', 'Trial']))
+        td =f.select(:account_type, options_for_select([t('.individual_researcher'), t('.small_organization'), t('.large_institution'), t('.trial'), t('.legacy')], selected: @user.account_type))
       tr
-        th =f.label :start_date, 'Start Date'
+        th =f.label :start_date, t('.start_date')
         td =f.text_field :start_date, placeholder: 'YYYY-MM-DD'
       tr
-        th =f.label :paid_date, 'Acct Expiration'
+        th =f.label :paid_date, t('.acct_expiration')
         td =f.text_field :paid_date, placeholder: 'YYYY-MM-DD'
 
 
     .toolbar
-      .toolbar_group.aright =f.button 'Save Changes', class: 'big'
+      .toolbar_group.aright
+        =link_to t('.downgrade'), admin_downgrade_path(:user_id => @user.id), class: 'button big' if @user.account_type == 'Trial' && @user.paid_date <= Time.now && @user.owner?
+        |&nbsp;
+        =f.button t('.save_changes'), class: 'big'

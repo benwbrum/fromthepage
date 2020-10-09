@@ -11,6 +11,8 @@ module DeviseHelper
         flash_alerts.push(flash[:error])
       elsif flash[:alert]
         flash_alerts.push(flash[:alert])
+      elsif flash[:info]
+        flash_alerts.push(flash[:info])
       elsif flash[:notice]
         flash_alerts.push(flash[:notice])
         error_key = nil

@@ -20,7 +20,7 @@ class RegistrationsController < Devise::RegistrationsController
     #merge the new user information into the guest user id to change into normal user
     if current_user && current_user.guest?
       @user = current_user
-      @user.update_attributes(sign_up_params)
+      @user.update(sign_up_params)
       @user.guest = false
       
     else
@@ -63,6 +63,16 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+
+  def set_saml
+    institution = saml_provider_param
+    redirect_to user_omniauth_authorize_path(institution)  #go to users/auth/saml/instution_name
+  end
+
+  def choose_saml
+  end
+
+
   def alert_intercom()
     if INTERCOM_ACCESS_TOKEN
         intercom=Intercom::Client.new(token:INTERCOM_ACCESS_TOKEN)
@@ -92,6 +102,14 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   private
+
+  def sign_up_params
+    params.require(:user).permit(:login, :real_name, :owner, :activity_email, :paid_date, :display_name, :email, :password, :password_confirmation)
+  end
+
+  def saml_provider_param
+    params.require(:institution)
+  end
 
   def joined_from_collection(visit_id)
     first_event = Ahoy::Event.where(visit_id: visit_id).first

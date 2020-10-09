@@ -1,4 +1,4 @@
-class CreatePageBlocks < ActiveRecord::Migration
+class CreatePageBlocks < ActiveRecord::Migration[5.0]
   def self.up
     create_table :page_blocks do |t|
       t.string  :controller
@@ -57,10 +57,6 @@ class CreatePageBlocks < ActiveRecord::Migration
 
     make_block "ia", "import_work", "Internet Archive Import Book Help"
     make_block "ia", "manage", "Internet Archive Manage Book Help", 'right', IA_MANAGE
-
-    make_block "oai", "record_list", "OAI Record List Help"
-    make_block "oai", "repository_list", "OAI Repository List Help"
-    make_block "oai", "set_list", "OAI Set List Help"
 
     make_block "page", "edit", "Single Page Settings Help", "right", PAGE_EDIT
     make_block "page", "new", "Single Page Creation Help"

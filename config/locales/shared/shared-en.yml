@@ -1,0 +1,35 @@
+en:
+  shared:
+    article_tabs:
+      overview: "Overview"
+      settings: "Settings"
+      versions: "Versions"
+    collection_tabs:
+      overview: "Overview"
+      statistics: "Statistics"
+      subjects: "Subjects"
+      collaborators: "Collaborators"
+      settings: "Settings"
+      export: "Export"
+      add_work: "Add Work"
+      edit_fields: "Fields"
+      sets: "Sets"
+      works_list: "Works List"
+    page_tabs:
+      overview: "Overview"
+      correct: "Correct"
+      transcribe: "Transcribe"
+      translate: "Translate"
+      versions: "Versions"
+      help: "Help"
+      settings: "Settings"
+      nav_info: "Page %{position} of %{size}"
+    work_tabs:
+      read: "Read"
+      about: "About"
+      contents: "Contents"
+      versions: "Versions"
+      print: "Print"
+      settings: "Settings"
+      pages: "Pages"
+      help: "Help"

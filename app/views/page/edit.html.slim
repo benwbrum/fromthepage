@@ -2,42 +2,42 @@
 
 .page-settings.columns
   .maincol
-    =form_for :page, url: { :action => 'update', :id => @page.id }, :html => { :multipart => true } do |f|
+    =form_for :page, url: page_update_path(:id => @page.id), :html => { :multipart => true } do |f|
       -direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
       table.form lang="#{@collection.text_language}" dir=direction class=direction
         tr.big
-          th =f.label :title, 'Page Title'
+          th =f.label :title, t('.page_title')
           td.w100 =f.text_field :title, value: @page.title
         tr
-          th =f.label :base_image, 'Page Image'
+          th =f.label :base_image, t('.page_image')
           td
             .input-file
               =f.file_field :base_image, tabindex: '-1', accept: 'image/*'
-              input(type="text" tabindex="-1" placeholder="Click to browse a file..." aria-label="Click to browse a file" readonly)
-              button(type="button") Browse
+              input(type="text" tabindex="-1" placeholder=t('.click_to_browse_a_file') aria-label=t('.click_to_browse_a_file') readonly)
+              button(type="button") #{t('.browse')}
       .toolbar
         .toolbar_group.w100
-          =link_to({ :action => 'delete', :page_id => @page.id }, data: { :confirm => 'Are you sure you want to delete this page? After deleting you won\'t be able to recover it!' }, class: 'button')
-            span Delete Page
-        .toolbar_group =f.button 'Save Changes', class: 'big'
+          =link_to({ :action => 'delete', :page_id => @page.id }, data: { :confirm => t('.delete_confirm_message') }, class: 'button')
+            span =t('.delete_page')
+        .toolbar_group =f.button t('.save_changes'), class: 'big'
 
   .sidecol
-    big ="Page Position: #{@page.position}"
+    big = t('.page_position', position: @page.position)
     =time_tag @page.created_on
-      ="Created #{@page.created_on.localtime.strftime("%b %d, %Y %I:%M %p")}"
-    p.small.fglight Here you can edit the page title and upload a new image. If you want to edit page transcription or translation text please switch to the appropriate tab above.
+      =t('.created', date: @page.created_on.localtime.strftime("%b %d, %Y %I:%M %p"))
+    p.small.fglight =t('.here_you_can_edit')
 
 -if @page.base_image.present?
   hr
   .headline
-    h2.headline_title Page Image
+    h2.headline_title =t('.page_image')
     .headline_aside
-      span.fgfaded =="Dimensions: #{@page.base_width}&times;#{@page.base_height}"
+      span.fgfaded = t('.dimensions', width: @page.base_width, height: @page.base_height).html_safe
     .headline_aside
       .button-stack
-        =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 90 }, class: 'button outline', title: 'Rotate Clockwise')
+        =link_to(page_rotate_path(:page_id => @page.id, :orientation => 90), class: 'button outline', title: t('.rotate_clockwise'))
           =svg_symbol "#icon-rotate-cw", class: 'icon'
-        =link_to({ :action => 'rotate', :page_id => @page.id, :orientation => 270 }, class: 'button outline', title: 'Rotate Counterclockwise')
+        =link_to(page_rotate_path(:page_id => @page.id, :orientation => 270), class: 'button outline', title: t('.rotate_counterclockwise'))
           =svg_symbol "#icon-rotate-ccw", class: 'icon'
 
   .page-image-preview =image_tag("#{file_to_url(@page.canonical_facsimile_url)}?#{Time.now.to_i}")

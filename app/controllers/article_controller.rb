@@ -1,5 +1,5 @@
 class ArticleController < ApplicationController
-  before_filter :authorized?, :except => [:list, :show, :tooltip, :graph]
+  before_action :authorized?, :except => [:list, :show, :tooltip, :graph]
 
 
   include AbstractXmlController
@@ -26,7 +26,7 @@ class ArticleController < ApplicationController
     if @collection.is_a?(DocumentSet)
       @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL')
     else
-      @uncategorized_articles = Article.joins('LEFT JOIN articles_categories ac ON id = ac.article_id').where(['ac.category_id IS NULL AND collection_id = ?', @collection.id])#.all
+      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id))
     end
   end
 
@@ -35,7 +35,7 @@ class ArticleController < ApplicationController
       @article.destroy
       redirect_to collection_subjects_path(@collection.owner, @collection)
     else
-      flash.alert ="You must remove all referring links before you delete this subject."
+      flash.alert = t('.must_remove_referring_links')
       redirect_to collection_article_show_path(@collection.owner, @collection, @article.id)
     end
   end
@@ -44,7 +44,7 @@ class ArticleController < ApplicationController
     old_title = @article.title
     gis_truncated = gis_truncated?(params[:article], GIS_DECIMAL_PRECISION)
 
-    @article.attributes = params[:article]
+    @article.attributes = article_params
     if params['save']
       #process_source_for_article
       if @article.save
@@ -52,7 +52,7 @@ class ArticleController < ApplicationController
           rename_article(old_title, @article.title)
         end
         record_deed
-        flash[:notice] = "Subject has been successfully updated"
+        flash[:notice] = t('.subject_successfully_updated')
         if gis_truncated 
           flash[:notice] << " (GIS coordinates truncated to #{GIS_DECIMAL_PRECISION} decimal " << "place".pluralize(GIS_DECIMAL_PRECISION) <<")"
         end
@@ -62,7 +62,7 @@ class ArticleController < ApplicationController
       end
     elsif params['autolink']
       @article.source_text = autolink(@article.source_text)
-      flash[:notice] = "Subjects auto linking process completed"
+      flash[:notice] = t('.subjects_auto_linking')
       redirect_to :action => 'edit', :article_id => @article.id
     end
   end
@@ -74,7 +74,7 @@ class ArticleController < ApplicationController
     else
       @article.categories.delete(@category)
     end
-    render :text => "success"
+    render :plain => "success"
   end
 
   def combine_duplicate
@@ -84,8 +84,8 @@ class ArticleController < ApplicationController
       combine_articles(from_article, @article)
     end
 
-    flash[:notice] = "Selected subjects combined with #{@article.title}"
-    redirect_to :action => 'edit', :article_id => @article.id
+    flash[:notice] = t('.selected_subjects_combined', title: @article.title)
+    redirect_to collection_article_edit_path(@collection.owner, @collection, @article)
   end
 
   def graph
@@ -160,15 +160,13 @@ class ArticleController < ApplicationController
       end
     end
 
-    dot_path = "#{Rails.root}/app/views/article/graph.dot"
-
     dot_source =
-      render_to_string({:file => dot_path,
-                        :layout => false,
-                        :locals => { :article_links => article_links,
-                                     :link_total => link_total,
-                                     :link_max => link_max,
-                                     :min_rank => min_rank }} )
+      render_to_string(:partial => "graph.dot",
+                       :layout => false,
+                       :locals => { :article_links => article_links,
+                                    :link_total => link_total,
+                                    :link_max => link_max,
+                                    :min_rank => min_rank })
 
     dot_file = "#{Rails.root}/public/images/working/dot/#{@article.id}.dot"
     File.open(dot_file, "w") do |f|
@@ -225,7 +223,7 @@ class ArticleController < ApplicationController
       redirect_to collection_subjects_path(@collection.owner, @collection)
     else      
       # flash message and redirect to upload form on problems
-      flash[:error] = "CSV file must contain headers for HEADING, ARTICLE, URI, and CATEGORY"
+      flash[:error] = t('.csv_file_must_contain_headers')
       redirect_to article_upload_form_path(@collection)    
     end
   end
@@ -237,6 +235,7 @@ class ArticleController < ApplicationController
   end
 
   protected
+
   def rename_article(old_name, new_name)
     # walk through all pages referring to this
     for link in @article.page_article_links
@@ -279,10 +278,10 @@ class ArticleController < ApplicationController
     end
     # walk through all articles referring to this
     for link in from_article.target_article_links
-      source_text = link.article.source_text
-      link.article.rename_article_links(old_from_title, to_article.title)
-      link.article.save!
-      logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.article.source_text}\n")
+      source_text = link.source_article.source_text
+      link.source_article.rename_article_links(old_from_title, to_article.title)
+      link.source_article.save!
+      logger.debug("DEBUG: changed \n#{source_text} \nto \n#{link.source_article.source_text}\n")
     end
 
     for link in from_article.source_article_links
@@ -306,7 +305,6 @@ class ArticleController < ApplicationController
     from_article.destroy
   end
 
-
   def gis_truncated?(params, dec)
     unless params[:latitude] || params[:longitude] then return false end
 
@@ -319,5 +317,9 @@ class ArticleController < ApplicationController
     if lat_dec > dec || lon_dec > dec then return true else return false end
   end
 
-end
+  private
 
+  def article_params
+    params.require(:article).permit(:title, :uri, :source_text, :latitude, :longitude)
+  end
+end

@@ -1,59 +1,12 @@
--tabs = [{\
-  :name => 'Summary',
-  :selected => 1,
-  :options => {\
-    :controller => 'admin',
-  },
-},{\
-  :name => 'Owners',
-  :selected => 3,
-  :options => {\
-    :controller => 'admin',
-    :action => 'owner_list',
-  },
-},{\
-  :name => 'Users',
-  :selected => 2,
-  :options => {\
-    :controller => 'admin',
-    :action => 'user_list',
-  },
-},{\
-  :name => 'Abuse',
-  :selected => 7,
-  :options => {\
-    :controller => 'admin',
-    :action => 'flag_list',
-  },
-},{\
-  :name => 'Uploads',
-  :selected => 5,
-  :options => {\
-    :controller => 'admin',
-    :action => 'uploads',
-  },
-},{\
-  :name => 'Logfile',
-  :selected => 4,
-  :options => {\
-    :controller => 'admin',
-    :action => 'tail_logfile',
-    :lines => 500,
-  },
-},{\
-  :name => 'Settings',
-  :selected => 6,
-  :options => {\
-    :controller => 'admin',
-    :action => 'settings',
-  },
-}]
-
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Administration"
+-content_for :page_title, "#{selected_tab} - #{t('.administration')}"
 
-h1 Administration
+h1 =t('.administration')
 .tabs
-  -for tab in tabs
-    =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]
-      a.active =tab[:name]
+  =active_link_to t('.summary'), admin_path, active: :exclusive
+  =active_link_to t('.owners'), admin_owner_list_path
+  =active_link_to t('.users'), admin_user_list_path
+  =active_link_to t('.abuse'), admin_flag_list_path
+  =active_link_to t('.uploads'), admin_uploads_path
+  =active_link_to t('.logfile'), admin_tail_logfile_path
+  =active_link_to t('.settings'), admin_settings_path
