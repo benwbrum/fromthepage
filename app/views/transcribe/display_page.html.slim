@@ -42,14 +42,14 @@
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
-          
+
       .toolbar_group.w100.alright
         -unless @preview_xml
-            =>button_tag 'Preview', :name => 'preview'
+            =>button_tag t('.preview'), :name => 'preview'
         -else
-            =>button_tag 'Edit', :name => 'edit'
+            =>button_tag t('.edit'), :name => 'edit'
         -unless @collection.subjects_disabled || @collection.field_based
-            =>button_tag 'Autolink', :name => 'autolink'
+            =>button_tag t('.autolink'), :name => 'autolink'
 
 
       .toolbar_group.w100.aright
