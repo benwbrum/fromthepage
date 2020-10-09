@@ -7,17 +7,17 @@
   
   <body>
     <h1 class="work-title"><%= @work.title %></h1>
-    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.
+    <div class="export-metadata"><%= t('.export_metadata', work: @work.title, collection: @collection.title, time: Time.now) %>
       <% unless @work.identifier.blank? %>
-        <p>Identifier: <%=@work.identifier%></p>
+        <p><%= t('.identifier', work: @work.identifier) %></p>
       <% end %>
       <p>
-        FromThePage version: <%= fromthepage_version %>
+        <%= t('.fromthepage_version', version: fromthepage_version) %>
       </p>
     </div>
 
     <hr />
-    <h2 class="divider">Page Transcripts</h2>
+    <h2 class="divider"><%= t('.page_transcripts') %></h2>
 
     <div class="pages">
       <% @work.pages.each do |page| %>
@@ -28,7 +28,7 @@
         </div>
         <% if page.notes.present? %>
           <div class="page-notes">
-            <strong>Notes:</strong>
+            <strong><%= t('.notes') %></strong>
             <% page.notes.each do |note| %>
               <div>
                 <p><span class="page-note-username"><%=note.user.display_name%></span></p>
@@ -40,7 +40,7 @@
         <% end %>
         <% if page.page_versions.present? %>
           <div class="page-history">
-            <strong>Page Edit History:</strong>
+            <strong><%= t('.page_edit_history') %></strong>
             <ul>
             <% for version in page.page_versions %>
               <li>
@@ -58,7 +58,7 @@
 
     <% if @work.supports_translation %>
       <hr />
-      <h2 class="divider">Page Translations</h2>
+      <h2 class="divider"><%= t('.page_translations') %></h2>
   
       <div class="pages">
         <% @work.pages.each do |page| %>
@@ -71,7 +71,7 @@
         <br />
         <% if page.notes.present? %>
           <div class="page-notes">
-            <strong>Notes:</strong>
+            <strong><%= t('.notes') %></strong>
             <% page.notes.each do |note| %>
               <div>
                 <p><span class="page-note-username"><%=note.user.display_name%></span></p>
@@ -87,7 +87,7 @@
 
     <hr />
     <% unless @work.collection.subjects_disabled %>
-      <h2 class="divider">Subjects and Indices</h2>
+      <h2 class="divider"><%= t('.subjects_and_indices') %></h2>
 
       <div class="subjects">
         <% @work.articles.sort{ |x,y| x.title.upcase <=> y.title.upcase }.each do |article| %>
@@ -98,7 +98,7 @@
           </div>
           <% if article.categories.present? %>
             <div class="article-categories">
-              <strong>Categories:</strong>
+              <strong><%= t('.categories') %></strong>
               <ul>
               <% article.categories.each do |cat| %>
                 <li><small><%= raw((cat.ancestors.reverse.push(cat).map { |c| c.title }).join(" &rarr; ")) %></small></li>
@@ -107,7 +107,7 @@
             </div>
           <% end %>
           <div class="article-indices">
-            <strong>Pages:</strong>
+            <strong><%= t('.pages') %></strong>
             <ul>
               <% article.show_links(@collection).each do |link| %>
                 <li>

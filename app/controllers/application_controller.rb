@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
-  
+  protect_from_forgery with: :exception, except: [:switch_locale, :saml]
+
   before_action do
     if current_user && current_user.admin
       Rack::MiniProfiler.authorize_request
@@ -8,7 +9,6 @@ class ApplicationController < ActionController::Base
 
   before_action :load_objects_from_params
   before_action :update_ia_work_server
-  before_action :update_omeka_urls
   before_action :store_current_location, :unless => :devise_controller?
   before_action :load_html_blocks
   before_action :authorize_collection
@@ -172,13 +172,6 @@ class ApplicationController < ActionController::Base
 
     return
   end
-
-  def update_omeka_urls
-    if @work && @work.omeka_item && @work.omeka_item.needs_refresh?
-      @work.omeka_item.refresh_urls
-    end    
-  end
-
 
   # perform appropriate API call for updating the IA server
   def update_ia_work_server

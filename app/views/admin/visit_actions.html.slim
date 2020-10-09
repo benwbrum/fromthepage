@@ -1,16 +1,16 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
-h3 Actions for #{@user.login}'s site visit on #{@visit.started_at.strftime('%b %d, %Y')}
-=link_to 'Other Visits', admin_user_visits_path(:user_id => @user.id)
+h3 =t('.actions_for_user', user: @user.login, date: @visit.started_at.strftime('%b %d, %Y'))
+=link_to t('.other_visits'), admin_user_visits_path(:user_id => @user.id)
 table.admin-grid.datagrid.striped
   thead
     tr
-      th Time
-      th Screen
-      th Collection
-      th Work
-      th Page
-      th Subject
+      th =t('.time')
+      th =t('.screen')
+      th =t('.collection')
+      th =t('.work')
+      th =t('.page')
+      th =t('.subject')
   tbody
     -@actions.each do |a|
       tr

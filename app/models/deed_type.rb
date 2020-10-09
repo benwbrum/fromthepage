@@ -87,6 +87,14 @@ class DeedType
       ]
     end
 
+    def transcriptions_or_corrections
+      [
+        PAGE_TRANSCRIPTION,
+        PAGE_EDIT,
+        OCR_CORRECTED
+      ]
+    end
+
     def edited_and_transcribed_pages
       [
         PAGE_EDIT,

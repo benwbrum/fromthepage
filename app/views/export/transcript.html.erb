@@ -7,17 +7,17 @@
 
   <body>
     <h1 class="work-title"><%= @work.title %></h1>
-    <div class="export-metadata">FromThePage export of <%= @work.title %> from <%= @collection.title %> made on <%= Time.now %>.
+    <div class="export-metadata"><%= t('.export_metadata', work: @work.title, collection: @collection.title, time: Time.now) %>
       <% unless @work.identifier.blank? %>
-        <p>Identifier: <%=@work.identifier%></p>
+        <p><%= t('.identifier', work: @work.identifier) %></p>
       <% end %>
       <p>
-        FromThePage version: <%= fromthepage_version %>
+        <%= t('.fromthepage_version', version: fromthepage_version) %>
       </p>
     </div>
 
     <hr />
-    <h2 class="divider">Page Transcripts</h2>
+    <h2 class="divider"><%= t('.page_transcripts') %></h2>
 
     <div class="pages">
       <% @work.pages.each do |page| %>
@@ -28,7 +28,7 @@
         </div>
         <% if page.notes.present? %>
           <div class="page-notes">
-            <strong>Notes:</strong>
+            <strong><%= t('.notes') %></strong>
             <% page.notes.each do |note| %>
               <div>
                 <p><span class="page-note-username"><%=note.user.display_name%></span></p>
@@ -45,7 +45,7 @@
 
     <% if @work.supports_translation %>
       <hr />
-      <h2 class="divider">Page Translations</h2>
+      <h2 class="divider"><%= t('.page_translations') %></h2>
 
       <div class="pages">
         <% @work.pages.each do |page| %>
@@ -58,7 +58,7 @@
         <br />
         <% if page.notes.present? %>
           <div class="page-notes">
-            <strong>Notes:</strong>
+            <strong><%= t('.notes') %></strong>
             <% page.notes.each do |note| %>
               <div>
                 <p><span class="page-note-username"><%=note.user.display_name%></span></p>

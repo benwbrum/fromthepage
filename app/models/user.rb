@@ -19,9 +19,7 @@ class User < ApplicationRecord
            :foreign_key => "owner_user_id",
            :class_name => 'Work')
   has_many :collections, :foreign_key => "owner_user_id"
-  has_many :oai_sets
   has_many :ia_works
-  has_many :omeka_sites
   has_many :visits
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
@@ -73,18 +71,46 @@ class User < ApplicationRecord
   end
 
   def self.from_omniauth(access_token)
+    issuer = nil
+
+    if access_token['extra']
+      if access_token['extra']['response_object']
+        if !access_token['extra']['response_object'].issuers.empty?
+          issuer = access_token['extra']['response_object'].issuers.first
+        end
+      end
+    end
+
     data = access_token.info
-    user = User.where(email: data['email']).first  #Will need to do email or name/username
-    # Uncomment the section below if you want users to be created if they don't exist
+
+    if data['external_id']
+      user = User.where(external_id: data['external_id'], sso_issuer: issuer).first
+    end
+    if !user && data['email']
+      user = User.where(email: data['email']).first
+    end
+    if !user && data['email2']
+      user = User.where(email: data['email2']).first
+    end
+    if !user && data['email3']
+      user = User.where(email: data['email3']).first
+    end
+
+
+    # create users if they don't exist
     unless user
-        user = User.create(name: data['name'],
-           login: data['email'].gsub(/@.*/,''),
-           email: data['email'],
+        email = data['email'] || data['email2'] || data['email3']
+        user = User.create(
+           login: email.gsub(/@.*/,''),
+           email: email,
+           external_id: data['external_id'],
            password: Devise.friendly_token[0,20],
            display_name: data['name'],
-           real_name: data['name']
+           real_name: data['name'],
+           sso_issuer: issuer
         )
     end
+
     user
   end
 

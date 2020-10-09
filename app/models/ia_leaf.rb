@@ -15,4 +15,8 @@ class IaLeaf < ApplicationRecord
     "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_small.jpg"
   end
 
+  def iiif_image_info_url
+    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}$#{leaf_number}/info.json"
+  end
+
 end

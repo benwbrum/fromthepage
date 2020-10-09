@@ -58,12 +58,7 @@
                 ==t('.please_help_this_page', help_link: help_link)
                 ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
       .page-imagescan style="display:none;"
-        -if @page.ia_leaf
-          =render :partial => '/ia/ia_bookreader_div'
-        -elsif @page.sc_canvas
-          =render :partial => '/shared/osd_div'
-        -else
-          =render :partial => '/shared/osd_div'
+        =render :partial => '/shared/osd_div'
     .page-column
       -if @collection.voice_recognition
         .page-column_voice

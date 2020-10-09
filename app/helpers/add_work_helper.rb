@@ -4,16 +4,8 @@ module AddWorkHelper
   def new_work
     @document_upload = DocumentUpload.new
     @document_upload.collection=@collection
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
     @universe_collections = ScCollection.universe
     @sc_collections = ScCollection.all
-  end
-
-  # Owner Dashboard - omeka import
-  def omeka
-    @omeka_items = OmekaItem.all
-    @omeka_sites = current_user.omeka_sites
   end
 
   # Owner Dashboard - upload document
