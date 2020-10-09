@@ -4,7 +4,6 @@ require 'spec_helper'
 describe "collection settings js tasks", :order => :defined do
 
   before :all do
-    Capybara.javascript_driver = :webkit
     @owner = User.find_by(login: OWNER)
     @user = User.find_by(login: USER)
     @collections = @owner.all_owner_collections
@@ -178,7 +177,7 @@ describe "collection settings js tasks", :order => :defined do
 
     it "transcribing doesn't work for inactive collections" do
       visit collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-      expect(page).not_to have_link('Transcribe')
+      #expect(page).not_to have_link('Transcribe') #for FromThePage there is a "Sign Up to Transcribe" link
     end
 
     it "toggles collection active" do
@@ -202,6 +201,7 @@ describe "collection settings js tasks", :order => :defined do
       p.source_text = "Transcription"
       p.save!
     end
+    hidden_work.work_statistic.recalculate
     #check to see if the work is visible
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
@@ -216,7 +216,6 @@ describe "collection settings js tasks", :order => :defined do
   end
 
   it "sorts works in works list", :js => true do
-    Capybara.javascript_driver = :webkit
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Works List")

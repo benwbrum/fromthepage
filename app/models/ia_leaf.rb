@@ -1,7 +1,7 @@
-class IaLeaf < ActiveRecord::Base
+class IaLeaf < ApplicationRecord
   self.table_name = "ia_leaves"
-  belongs_to :ia_work
-  belongs_to :page
+  belongs_to :ia_work, optional: true
+  belongs_to :page, optional: true
 
   def thumb_url
     "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_thumb.jpg"
@@ -13,6 +13,10 @@ class IaLeaf < ActiveRecord::Base
 
   def small_url
     "https://www.archive.org/download/#{ia_work.book_id}/page/leaf#{leaf_number}_small.jpg"
+  end
+
+  def iiif_image_info_url
+    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}$#{leaf_number}/info.json"
   end
 
 end

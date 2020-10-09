@@ -14,44 +14,45 @@
           =user_name
         -if @user == current_user
           .headline_aside
-            =link_to({ :action => 'update_profile', :user_id => @user.id }, class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
+            =link_to(user_update_profile_path(:user_id => @user.id), class: 'button outline', :data => { litebox: { hash: 'update-profile' }})
               =svg_symbol '#icon-edit', class: 'icon'
-              span Edit Profile
+              span =t('.edit_profile')
             |&nbsp;&nbsp;
             =link_to(edit_user_registration_path, class: 'button outline')
               =svg_symbol '#icon-user', class: 'icon'
-              span Login &amp; Password
+              span =t('.login_and_password').html_safe
       .user-profile_stats
         span ="#{number_with_delimiter(@user.deeds.count)} #{'contribution'.pluralize(@user.deeds.count)}"
-        span ="User since #{@user.created_at.strftime("%b %d, %Y")}"
+        span = t('.user_since', date: @user.created_at.strftime("%b %d, %Y"))
         -if @user.last_sign_in_at.present?
-          span ="Last seen #{@user.last_sign_in_at.strftime("%b %d, %Y")}"
+          span = t('.last_seen', date: @user.last_sign_in_at.strftime("%b %d, %Y"))
 
-  h2 Recent Activity by #{@user.display_name}
+  h2 =t('.recent_activity_by', user_display_name: @user.display_name)
   -if @notes.present?
-    h3 Recent Notes
+    h3 =t('.recent_notes')
     table.datagrid
       tr
-        th Date
-        th.w25 Page
-        th.w75 Note
+        th =t('.date')
+        th.w25 =t('.page')
+        th.w75 =t('.note')
       -@notes.includes(:page).each do |note|
-        -note_text = truncate(strip_tags(note.body), :length => 200)
-        tr
-          td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
-          td.overflow =link_to note.page.title, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page)
-          td =link_to note_text, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page, anchor: "note-#{note.id}")
+        -if note.page
+          -note_text = truncate(strip_tags(note.body), :length => 200)
+          tr
+            td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
+            td.overflow =link_to note.page.title, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page)
+            td =link_to note_text, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page, anchor: "note-#{note.id}")
 
     br
 
   -if @page_versions.present?
-    h3 Recent Page Edits
+    h3 =t('.recent_page_edits')
     table.datagrid
       tr
-        th Date
-        th.w25 Work
-        th.w60 Page
-        th.w15 Version
+        th =t('.date')
+        th.w25 =t('.work')
+        th.w60 =t('.page')
+        th.w15 =t('.version')
       -@page_versions.each do |version|
         tr
           td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
@@ -59,26 +60,25 @@
             -if version.page.work.present?
               =link_to version.page.work.title, collection_read_work_path(version.page.collection.owner, version.page.collection, version.page.work)
             -else
-              span.a50 No work
+              span.a50 =t('.no_work')
           td =link_to version.page.title, collection_display_page_path(version.page.collection.owner, version.page.collection, version.page.work, version.page)
-          td.nowrap =link_to "Revision #{version.page_version}", { :controller => 'page_version', :action => 'show', :page_version_id => version.id }
+          td.nowrap =link_to t('.revision', version: version.page_version), page_version_show_path(:page_version_id => version.id)
     br
 
   -if @article_versions.present?
-    h3 Recent Article Edits
+    h3 =t('.recent_article_edits')
     table.datagrid
       tr
-        th Date
-        th.w25 Article
-        th.w60 Categories
-        th.w15 Version
+        th =t('.date')
+        th.w25 =t('.article')
+        th.w60 =t('.categories')
+        th.w15 =t('.version')
       -@article_versions.each do |version|
           -unless version.article.collection.subjects_disabled
             -@collection = version.article.collection
             -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
             tr
               td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
-              td.overflow =link_to version.article.title, { :controller => 'article', :action => 'show', :article_id => version.article.id }
-              td ==version.article.categories.map { |c| link_to c.title, { :controller => 'article', :action => 'list', :collection_id => version.article.collection.id, anchor: "category-#{c.id}" } }.join(', ')
-              td.nowrap =link_to "Revision #{version.version}", { :controller => 'article_version', :action => 'show', :article_version_id => version.id }
-      
+              td.overflow =link_to version.article.title, article_show_path(:article_id => version.article.id)
+              td ==version.article.categories.map { |c| link_to c.title, article_list_path(:collection_id => version.article.collection.id, anchor: "category-#{c.id}") }.join(', ')
+              td.nowrap =link_to "Revision #{version.version}", article_version_show_path(:article_version_id => version.id)

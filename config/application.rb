@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -8,41 +8,31 @@ Bundler.require(*Rails.groups)
 
 module Fromthepage
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-
-    config.neato = '/usr/bin/env neato'
-    config.encoding = 'utf-8'
-
-    config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 6.0
 
     config.action_dispatch.default_headers = {
-        'Access-Control-Allow-Origin' => '*',
-        'Access-Control-Request-Method' => "GET"
-      }
-
-    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
-      class_attr_index = html_tag.index 'class="'
-
-      if class_attr_index
-        html_tag.insert class_attr_index+7, 'invalid '
-      else
-        html_tag.insert html_tag.index('>'), ' class="invalid"'
-      end
+      'Access-Control-Allow-Origin' => '*',
+      'Access-Control-Request-Method' => "GET"
     }
+
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
+
+    config.neato = '/usr/bin/env neato'
 
     if config.respond_to?(:sass)
       require File.expand_path('../../lib/sassc_functions.rb', __FILE__)
     end
-  end
-end
 
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
+    config.i18n.default_locale = :en
+    config.i18n.available_locales = [:en, :es, :pt]
+    config.i18n.fallbacks = true
+    config.i18n.fallbacks = [:en]
+  end
+  #uncomment for development of SSO
+  #Rails.application.config.action_controller.forgery_protection_origin_check=false
+end

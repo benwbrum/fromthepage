@@ -64,32 +64,33 @@ describe "uploads data for collections", :order => :defined do
 
   it "imports IIIF manifests", :js => true do
     #import a manifest for test data
-    visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#import-iiif-manifest").click
-    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
-    find_button('iiif_import').click
-    expect(page).to have_content("Metadata")
-    expect(page).to have_content("Manifest")
-    select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import Manifest')
-    expect(page).to have_content(@collection.title)
-    visit dashboard_owner_path
-    works_count = Work.all.count
-    page.find('.tabs').click_link("Start A Project")
-    page.find(:css, "#import-iiif-manifest").click
-    #this manifest has a very long title
-    page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
-    find_button('iiif_import').click
-    expect(page).to have_content("Metadata")
-    expect(page).to have_content("Manifest")
-    select(@collection.title, :from => 'sc_manifest_collection_id')
-    click_button('Import')
-    expect(page).to have_content(@collection.title)
-    expect((@collection.works.last.title).length).to be < 255
-    new_works = Work.all.count
-    expect(new_works).to be > works_count
-  
+    VCR.use_cassette('iiif/imports_iiif_manifests', :record => :new_episodes) do
+      visit dashboard_owner_path
+      page.find('.tabs').click_link("Start A Project")
+      page.find(:css, "#import-iiif-manifest").click
+      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
+      find_button('iiif_import').click
+      expect(page).to have_content("Metadata")
+      expect(page).to have_content("Manifest")
+      select(@collection.title, :from => 'sc_manifest_collection_id')
+      click_button('Import Manifest')
+      expect(page).to have_content(@collection.title)
+      visit dashboard_owner_path
+      works_count = Work.all.count
+      page.find('.tabs').click_link("Start A Project")
+      page.find(:css, "#import-iiif-manifest").click
+      #this manifest has a very long title
+      page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
+      find_button('iiif_import').click
+      expect(page).to have_content("Metadata")
+      expect(page).to have_content("Manifest")
+      select(@collection.title, :from => 'sc_manifest_collection_id')
+      click_button('Import')
+      expect(page).to have_content(@collection.title)
+      expect((@collection.works.last.title).length).to be < 255
+      new_works = Work.all.count
+      expect(new_works).to be >= works_count
+    end
   end
 
   it "creates an empty work", :js => true do
@@ -120,6 +121,8 @@ describe "uploads data for collections", :order => :defined do
     click_button('Save & New Work')
     count = work.pages.count
     expect(count).to eq 2
+    work = Work.find(work.id)
+    expect(work.work_statistic[:total_pages]).to eq 2
     expect(page).to have_content("Create Empty Work")
     #testing the cancel button involves ajax
   end
@@ -165,8 +168,8 @@ describe "uploads data for collections", :order => :defined do
     page.find('.maincol').find('a', text: @set_collection.title).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@set_collection.title}")
-    page.check("work_assignment_#{@document_sets.first.id}_#{@set_collection.works.first.id}")
-    page.check("work_assignment_#{@document_sets.last.id}_#{@set_collection.works.last.id}")
+    page.check("work_assignment_#{@set_collection.works.first.slug}_#{@document_sets.first.slug}")
+    page.check("work_assignment_#{@set_collection.works.last.slug}_#{@document_sets.last.slug}")
     page.find_button('Save').click
   end
 

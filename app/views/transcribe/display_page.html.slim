@@ -1,3 +1,5 @@
+=javascript_include_tag "transcribe"
+
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
@@ -9,9 +11,9 @@
   .page-toolbar
     .toolbar
       .toolbar_group
-        a.button.outline(data-fullscreen-toggle) Fullscreen
+        a.button.outline(data-fullscreen-toggle) =t('.fullscreen')
       .toolbar_group
-        -layout_modes = { 'ltr' => 'Image at the left', 'rtl' => 'Image at the right', 'ttb' => 'Image at the top', 'btt' => 'Image at the bottom' }
+        -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
         dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
@@ -25,17 +27,17 @@
         label.auto-fullscreen
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
-          span Always show in fullscreen
+          span =t('.always_show_fullscreen')
 
       .toolbar_group.w100.aright
-        =f.label 'mark_blank', 'Mark as blank'
+        =f.label 'mark_blank', t('.mark_as_blank')
         -if @page.status == Page::STATUS_BLANK
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
 
       .toolbar_group.w100.aright
-        =f.label 'needs_review', 'Needs Review'
+        =f.label 'needs_review', t('.needs_review')
         -if @page.status == Page::STATUS_NEEDS_REVIEW
           =f.check_box('needs_review', {checked: true})
         -else
@@ -51,66 +53,61 @@
 
 
       .toolbar_group.w100.aright
-        =button_tag 'Save Changes', :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
     .page-review
-      |This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
+      =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
       .page-imagescan
-        -if @page.ia_leaf
-          =render :partial => '/ia/ia_bookreader_div'
-        -elsif @page.sc_canvas
-          =render :partial => '/shared/osd_div'
-        -else
-          =render :partial => '/shared/osd_div'
+        =render :partial => '/shared/osd_div'
 
     div class=(!@collection.field_based ? 'page-column' : 'page-column fieldarea')
       -if @page.status == Page::STATUS_BLANK
         .centered
           .centered_content
-            p.nodata_text=="This page is marked blank"
+            p.nodata_text==t('.this_page_marked_blank')
         .page-editarea(style=("display:none"))
           =f.text_area :source_text
 
       -else
         -if @collection.voice_recognition
           .page-column_voice
-            =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
 
         //.page-column_actions
           -unless @preview_xml
-            =>button_tag 'Preview', :name => 'preview'
+            =>button_tag t('.preview'), :name => 'preview'
           -else
-            =>button_tag 'Edit', :name => 'edit'
+            =>button_tag t('.edit'), :name => 'edit'
           -unless @collection.subjects_disabled || @collection.field_based
-            =>button_tag 'Autolink', :name => 'autolink'
+            =>button_tag t('.autolink'), :name => 'autolink'
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
         .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
           -if @work.scribes_can_edit_titles
             .page-editarea_title
-              span =f.label :title, 'Title:', class: 'a50'
+              span =f.label :title, t('.title'), class: 'a50'
               span =f.text_field :title
           -if !@collection.field_based
             =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-            =f.label :source_text, 'Edit transcription', class: 'hidden'
+            =f.label :source_text, t('.edit_transcription'), class: 'hidden'
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
   .page-toolbar.mt-10
     .toolbar.aright
       -unless @preview_xml
-          =>button_tag 'Preview', :name => 'preview'
+          =>button_tag t('.preview'), :name => 'preview'
       -else
-          =>button_tag 'Edit', :name => 'edit'
+          =>button_tag t('.edit'), :name => 'edit'
       -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag 'Autolink', :name => 'autolink'
-      =button_tag 'Save Changes', :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+          =>button_tag t('.autolink'), :name => 'autolink'
+      =button_tag t('.save_changes'), :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -118,7 +115,7 @@
   =render :partial => 'shared/markup_help'
 
 .page-indent
-  =link_to 'More help....', collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
+  =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
 h2.legend Notes and Questions
 .page-notes
@@ -136,7 +133,7 @@ h2.legend Notes and Questions
           $.ajax({
             url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
 
-            complete: function () {
+            complete: function() {
               $(".page-busy-overlay").hide();
             }
           });

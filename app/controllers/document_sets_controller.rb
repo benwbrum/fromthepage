@@ -1,5 +1,5 @@
 class DocumentSetsController < ApplicationController
-  before_filter :authorized?
+  before_action :authorized?
   before_action :set_document_set, only: [:show, :edit, :update, :destroy]
 
   respond_to :html
@@ -33,9 +33,14 @@ class DocumentSetsController < ApplicationController
 
   def create
     @document_set = DocumentSet.new(document_set_params)
-    @document_set.owner = current_user
+    if current_user.account_type != "Staff"
+      @document_set.owner = current_user
+    else
+      extant_collection = current_user.collections.detect { |c| c.owner.account_type != "Staff" }
+      @document_set.owner = extant_collection.owner
+    end
     if @document_set.save
-      flash[:notice] = 'Document set has been created'
+      flash[:notice] = t('.document_created')
       ajax_redirect_to collection_settings_path(@document_set.owner, @document_set)
     else
       render action: 'new'
@@ -44,23 +49,22 @@ class DocumentSetsController < ApplicationController
   end
 
   def assign_works
-    set_work_map = params[:work_assignment]
+    set_work_map = params.to_unsafe_hash[:work_assignment]
     if set_work_map
-      @collection.document_sets.each do |document_set|
-        #document_set.works.clear
-        work_map = set_work_map[document_set.id.to_s]
-        current_ids = document_set.works.pluck(:id)
-        if work_map
-          new_ids = work_map.keys.map { |id| id.to_i }
-          set = (current_ids - new_ids + new_ids)
-          document_set.work_ids = set
-
-          document_set.save!          
+      set_work_map.keys.each do |work_id|
+        work = @collection.works.find(work_id)
+        work.document_sets.clear
+        set_work_map[work_id].each_pair do |set_id, throwaway|
+          work.document_sets << @collection.document_sets.find(set_id)
         end
       end
     end
+    # set next untranscribed page for each set now that works may have been added or removed
+    @collection.document_sets.each do |set|
+      set.set_next_untranscribed_page
+    end
 
-    redirect_to :action => :index, :collection_id => @collection.id
+    redirect_to :action => :index, :collection_id => @collection.id, :page => params[:page]
   end
 
   def assign_to_set
@@ -85,7 +89,7 @@ class DocumentSetsController < ApplicationController
 
   def update
     if params[:document_set][:slug] == ""
-      @document_set.update(params[:document_set].except(:slug))
+      @document_set.update(document_set_params.except(:slug))
       title = @document_set.title.parameterize
       @document_set.update(slug: title)
     else
@@ -93,7 +97,7 @@ class DocumentSetsController < ApplicationController
     end
 
     @document_set.save!
-    flash[:notice] = 'Document set has been saved'
+    flash[:notice] = t('.document_updated')
     unless request.referrer.include?("/settings")
       ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
     else
@@ -148,18 +152,20 @@ class DocumentSetsController < ApplicationController
   def destroy
     @document_set.destroy
     redirect_to action: 'index', collection_id: @document_set.collection_id
-
   end
 
   private
-    def set_document_set
-      unless (defined? @document_set) && @document_set
-        id = params[:document_set_id] || params[:id]
-        @document_set = DocumentSet.friendly.find(id)
-      end
-    end
 
-    def document_set_params
-      params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+  def set_document_set
+    unless (defined? @document_set) && @document_set
+      id = params[:document_set_id] || params[:id]
+      @document_set = DocumentSet.friendly.find(id)
     end
+  end
+
+  def document_set_params
+    params.require(:document_set).permit(:is_public, :owner_user_id, :collection_id, :title, :description, :picture, :slug)
+  end
+
+
 end

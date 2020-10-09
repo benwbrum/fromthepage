@@ -1,16 +1,16 @@
 =render(:partial => 'header', :locals => { :selected => 2 })
 
-h3 Site visits for #{@user.login}
-=link_to 'Other Users', { :controller => 'admin', :action => 'user_list' }
+h3 =t('.site_visits_for_user', user: @user.login)
+=link_to t('.other_users'), admin_user_list_path
 
 table.admin-grid.datagrid.striped
   thead
     tr
-      th Last Sign In
-      th Duration
-      th Clicks
-      th Contributions
-      th Actions
+      th =t('.last_sign_in')
+      th =t('.duration')
+      th =t('.clicks')
+      th =t('.contributions')
+      th =t('.actions')
   tbody
     -@visits.each do |v|
       tr
@@ -19,11 +19,11 @@ table.admin-grid.datagrid.striped
         td.nowrap =v.ahoy_events.count
         td.nowrap 
           -if v.deeds.count > 0
-            =link_to v.deeds.count, { :controller => 'admin', :action => 'visit_deeds', :user_id => @user.id, :visit_id => v.id }
+            =link_to v.deeds.count, admin_visit_deeds_path(:user_id => @user.id, :visit_id => v.id)
           -else
             =v.deeds.count
         td.nowrap
           .instack
-            =link_to 'Details', { :controller => 'admin', :action => 'visit_actions', :user_id => @user.id, :visit_id => v.id }
+            =link_to t('.details'), admin_visit_actions_path(:user_id => @user.id, :visit_id => v.id)
 
 =render(:partial => 'shared/pagination', :locals => { :model => @visits, :entries_info => true })

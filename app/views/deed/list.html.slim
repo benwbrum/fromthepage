@@ -1,15 +1,15 @@
 -content_for :page_title
-  ="Activity Stream"
+  =t('.activity_stream')
   -if @collection
     =" - #{@collection.title}"
   -if @user
     =" - #{@user.display_name}"
 
-h1 Activity Stream
+h1 =t('.activity_stream')
 -if @collection
-  h3 ="Collection: #{@collection.title}"
+  h3 =t('.collection_title', title: @collection.title)
 -if @user
-  h3 ="User: #{@user.display_name}"
+  h3 =t('.user_title', title: @user.display_name)
 
 table.datagrid.striped
   -@deeds.each do |d|
@@ -23,8 +23,8 @@ table.datagrid.striped
         small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
       td.nowrap
         =time_tag(d.created_at, class: 'small fglight')
-          ="#{time_ago_in_words d.created_at} ago"
+          =time_ago_in_words(d.created_at)
 br
 small.legend
-  =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => 'Newer Activity', :next_label => 'Older Activity' }
+  =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }
 br

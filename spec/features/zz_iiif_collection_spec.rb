@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe "uploads data for collections", :order => :defined do
-#  Capybara.javascript_driver = :webkit
-
   before :all do
     @owner = User.find_by(login: OWNER)
     @at_id = "https://iiif.durham.ac.uk/manifests/trifle/collection/32150/t2c0g354f205"
