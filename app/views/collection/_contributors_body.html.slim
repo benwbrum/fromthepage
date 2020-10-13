@@ -45,14 +45,13 @@
       p =t('.no_collaborators')
       p =t('.detailed_spreadsheet_export')
 
--if current_user.notification.owner_stats?
-  h3 =t('.all_collaborator_emails')
-  p=link_to "Find recommendations for project newsletters.", "https://content.fromthepage.com/crowdsourcing-project-newsletter/"
-  p#collaborators
-    -unless @all_collaborators.empty?
-      =@all_collaborators + ", support@fromthepage.com"
-    -else
-      =t('.no_collaborators')
+h3 =t('.all_collaborator_emails')
+p=link_to "Find recommendations for project newsletters.", "https://content.fromthepage.com/crowdsourcing-project-newsletter/"
+p#collaborators
+  -unless @all_collaborators.empty?
+    =@all_collaborators + ", support@fromthepage.com"
+  -else
+    =t('.no_collaborators')
 
 -content_for :javascript
   javascript:
