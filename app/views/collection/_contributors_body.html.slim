@@ -6,10 +6,11 @@
     h3.nomargin =t('.new_collaborators')
     p
       - @new_transcribers.each do |t|
-        =link_to t.display_name, user_profile_path(:user_id => t.id, only_path: false)
-        |
-        =t.email
-        | <br>
+        -if t.notification.user_activity?
+          =link_to t.display_name, user_profile_path(:user_id => t.id, only_path: false)
+          |
+          =t.email
+          | <br>
 
   h4.legend.fglight =t('.collaborator_stats', start_deed: @start_deed, end_deed: @end_deed)
   =render({ :partial => 'statistics/recent_statistics',
@@ -30,7 +31,7 @@
     -unless @active_transcribers.empty?
       p
       -@active_transcribers.each do |user|
-          =link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false)
+          =link_to user.display_name, user_profile_path(:user_id => user.id, only_path: false) if user.notification.user_activity?
           =t('.collection', collection_time: (@user_time_proportional[user.id] / 60 + 1).floor, total_time: (@user_time[user.id] / 60 + 1).floor) if @user_time[user.id]
           | <br>
       p
