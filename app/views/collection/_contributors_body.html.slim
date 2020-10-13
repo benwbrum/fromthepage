@@ -8,7 +8,7 @@
       - @new_transcribers.each do |t|
         -if t.notification.user_activity?
           =link_to t.display_name, user_profile_path(:user_id => t.id, only_path: false)
-          |
+          |&nbsp;
           =t.email
           | <br>
 
