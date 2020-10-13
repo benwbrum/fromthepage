@@ -49,7 +49,13 @@ h3 =t('.all_collaborator_emails')
 p=link_to "Find recommendations for project newsletters.", "https://content.fromthepage.com/crowdsourcing-project-newsletter/"
 p#collaborators
   -unless @all_collaborators.empty?
-    =@all_collaborators + ", support@fromthepage.com"
+    -@collaborators = @all_collaborators.split
+    -last_char = @collaborators.last[-1]
+
+    -if last_char == ","
+      =@all_collaborators + " support@fromthepage.com"
+    -else
+      =@all_collaborators + ", support@fromthepage.com"
   -else
     =t('.no_collaborators')
 
