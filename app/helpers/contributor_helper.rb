@@ -73,6 +73,17 @@ module ContributorHelper
     end.join(', ')
   end
 
+  def format_collaborators
+    @collaborators = @all_collaborators.split
+    last_char = @collaborators.last[-1]
+
+    if last_char == ","
+      @all_collaborators + " support@fromthepage.com"
+    else
+      @all_collaborators + ", support@fromthepage.com"
+    end
+  end
+
   def owner_expirations
     @collections = Collection.all
     @owners = User.where(owner: true).order(paid_date: :desc)
