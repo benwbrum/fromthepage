@@ -8,7 +8,10 @@
       - @new_transcribers.each do |t|
         =link_to t.display_name, user_profile_path(:user_id => t.id, only_path: false)
         |&nbsp;
-        =t.email
+        -if t.notification.user_activity?
+          =t.email
+        -else
+          ="opted out"
         | <br>
 
   h4.legend.fglight =t('.collaborator_stats', start_deed: @start_deed, end_deed: @end_deed)
