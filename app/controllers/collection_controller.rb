@@ -337,6 +337,8 @@ class CollectionController < ApplicationController
         time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
       end
 
+      user.email = "opted out" unless user.notification.user_activity?
+
       id_data = [user.display_name, user.email]
       time_data = [time_total, time_proportional]
 
