@@ -54,6 +54,7 @@
             this.reset();
           } else if(xhr.status === 200) {
             // Note updated
+            this.reset();
             var content = xhr.responseJSON.html;
             $container.removeClass('edit');
             $('.user-bubble_note', $container).html(content);
