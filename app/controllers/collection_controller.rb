@@ -399,6 +399,8 @@ class CollectionController < ApplicationController
     note = ''
     note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
 
+    d.user.email = "opt out" unless d.user.notification.user_activity?
+
       record = [
         d.created_at,
         d.user.display_name,
