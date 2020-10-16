@@ -380,7 +380,7 @@ class CollectionController < ApplicationController
     end_date = end_date.to_datetime.end_of_day
 
     recent_activity = @collection.deeds.where({created_at: start_date...end_date})
-      .where(deed_type: DeedType.contributor_types)
+        .where(deed_type: DeedType.contributor_types)
 
     headers = [
       :date,
@@ -397,36 +397,34 @@ class CollectionController < ApplicationController
     ]
 
     rows = recent_activity.map {|d|
-      if d.user.notification.user_activity?
 
-        note = ''
-        note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
+    note = ''
+    note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
 
-        record = [
-          d.created_at,
-          d.user.display_name,
-          d.user.email,
-          d.deed_type
+      record = [
+        d.created_at,
+        d.user.display_name,
+        d.user.email,
+        d.deed_type
+      ]
+
+      if d.deed_type == DeedType::ARTICLE_EDIT 
+        record += ['','','','','',]
+        record += [
+          d.article ? d.article.title : '[deleted]', 
+          d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
         ]
-
-        if d.deed_type == DeedType::ARTICLE_EDIT 
-          record += ['','','','','',]
-          record += [
-            d.article ? d.article.title : '[deleted]', 
-            d.article ? collection_article_show_url(d.collection.owner, d.collection, d.article) : ''
+      else
+        unless d.deed_type == DeedType::COLLECTION_JOINED
+          pagedeeds = [
+            d.page.title,
+            collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
+            d.work.title,
+            collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
+            note,
           ]
-        else
-          unless d.deed_type == DeedType::COLLECTION_JOINED
-            pagedeeds = [
-              d.page.title,
-              collection_transcribe_page_url(d.page.collection.owner, d.page.collection, d.page.work, d.page),
-              d.work.title,
-              collection_read_work_url(d.work.collection.owner, d.work.collection, d.work),
-              note,
-            ]
-            record += pagedeeds
-            record += ['','']
-          end
+          record += pagedeeds
+          record += ['','']
         end
       end
       record
@@ -435,15 +433,13 @@ class CollectionController < ApplicationController
     csv = CSV.generate(:headers => true) do |records|
       records << headers
       rows.each do |row|
-        unless row.nil?
           records << row
-        end
       end
     end
 
     send_data( csv, 
-              :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}_activity.csv",
-              :type => "application/csv")
+      :filename => "#{start_date.strftime('%Y-%m%b-%d')}-#{end_date.strftime('%Y-%m%b-%d')}_#{@collection.slug}_activity.csv",
+      :type => "application/csv")
 
     cookies['download_finished'] = 'true'
   end
