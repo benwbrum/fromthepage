@@ -326,41 +326,37 @@ class CollectionController < ApplicationController
     ]
 
     stats = @active_transcribers.map do |user|
-      if user.notification.user_activity?
-        time_total = 0
-        time_proportional = 0
+      time_total = 0
+      time_proportional = 0
 
-        if @user_time[user.id]
-          time_total = (@user_time[user.id] / 60 + 1).floor
-        end
-
-        if @user_time_proportional[user.id]
-          time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
-        end
-
-        id_data = [user.display_name, user.email]
-        time_data = [time_total, time_proportional]
-
-        user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
-
-        user_stats = [
-          user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSCRIPTION },
-          user_deeds.count { |d| d.deed_type == DeedType::PAGE_EDIT },
-          user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSLATED },
-          user_deeds.count { |d| d.deed_type == DeedType::OCR_CORRECTED },
-          user_deeds.count { |d| d.deed_type == DeedType::NOTE_ADDED }
-        ]
-
-        id_data + time_data + user_stats
+      if @user_time[user.id]
+        time_total = (@user_time[user.id] / 60 + 1).floor
       end
+
+      if @user_time_proportional[user.id]
+        time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
+      end
+
+      id_data = [user.display_name, user.email]
+      time_data = [time_total, time_proportional]
+
+      user_deeds = @collection_deeds.select { |d| d.user_id == user.id }
+
+      user_stats = [
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSCRIPTION },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_EDIT },
+        user_deeds.count { |d| d.deed_type == DeedType::PAGE_TRANSLATED },
+        user_deeds.count { |d| d.deed_type == DeedType::OCR_CORRECTED },
+        user_deeds.count { |d| d.deed_type == DeedType::NOTE_ADDED }
+      ]
+
+      id_data + time_data + user_stats
     end
 
     csv = CSV.generate(:headers => true) do |records|
       records << headers
       stats.each do |user|
-        unless user.nil?
           records << user
-        end
       end
     end
 
