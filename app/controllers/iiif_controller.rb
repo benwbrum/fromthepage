@@ -19,11 +19,29 @@ class IiifController < ApplicationController
     render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def user_collections
+    site_collection = IIIF::Presentation::Collection.new
+    site_collection['@id'] = iiif_user_collections_url(@user)
+    site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
+    (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
+      if collection_or_ds.is_public || collection_or_ds.api_access
+        site_collection.collections << iiif_collection_from_collection(collection_or_ds,false)
+      end
+    end
+
+    render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
+  end
+
   def collection
     iiif_collection = iiif_collection_from_collection(@collection,true)
 
     render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
   end
+
+  def document_set
+    iiif_collection = iiif_collection_from_collection(@document_set,true)
+    render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
+  end      
 
   def contributions
     domain = params[:domain]
@@ -113,7 +131,8 @@ class IiifController < ApplicationController
 
   def manifest
     work_id =  params[:id]
-    work = Work.where(id: work_id).first
+    work = Work.where(id: work_id).includes(:ia_work, :sc_manifest, :work_statistic).first
+
     seed = {
               '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}),
               'label' => work.title
@@ -450,7 +469,11 @@ private
   end
 
   def iiif_collection_id_from_collection(collection)
-    url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+    if collection.is_a? DocumentSet
+      iiif_document_set_url(collection)
+    else
+      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+    end
   end
 
   def iiif_collection_from_collection(collection,depth)
@@ -462,7 +485,7 @@ private
     end
 
     if depth == true
-      collection.works.each do |work|
+      collection.works.includes(:sc_manifest, :ia_work, :work_statistic).each do |work|
         seed = {
                   '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}),
                   'label' => work.title
