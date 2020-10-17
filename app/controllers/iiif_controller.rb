@@ -101,17 +101,36 @@ class IiifController < ApplicationController
   end
 
   def collection_for_domain(domain, terminus_a_quo = nil, terminus_ad_quem = nil)
-    if terminus_a_quo && terminus_ad_quem
-      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct
-    elsif terminus_a_quo
-      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct
+    if domain.include? '.'
+      # this is an actual domain
+      if terminus_a_quo && terminus_ad_quem
+        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic)
+      elsif terminus_a_quo
+        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
+      else
+        works = Work.joins(:sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").includes(:work_statistic, :sc_manifest)
+      end
+      label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
     else
-      works = Work.joins(:sc_manifest).where("at_id LIKE ?", "%#{domain}%")
+      # this is a user slug
+      user = User.find(domain)
+      if user && user.owner
+        if terminus_a_quo && terminus_ad_quem
+          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ?", user.id).where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic, :sc_manifest)
+        elsif terminus_a_quo
+          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
+        else
+          works = Work.joins(:collection).where("collections.owner_user_id = ?", user.id).includes(:work_statistic, :sc_manifest)
+        end        
+      else
+        works=[]
+        label = "No project owners found matching #{domain}."
+      end
     end
 
     domain_collection = IIIF::Presentation::Collection.new
     domain_collection['@id'] = url_for({:controller => 'iiif', :action => 'for', :id => domain, :only_path => false})
-    domain_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
+    domain_collection.label = label
 
     works.each do |work|
       seed = {
@@ -120,7 +139,7 @@ class IiifController < ApplicationController
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
