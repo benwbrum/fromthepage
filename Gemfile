@@ -10,7 +10,7 @@ gem "capistrano-rails", "~> 1.4", require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-sass-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2'
 
