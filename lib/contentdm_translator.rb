@@ -152,7 +152,7 @@ module ContentdmTranslator
         'metadataList' => {
           'metadata' => [
             { :field => 'dmrecord', :value => cdm_record(canvas_at_id)},
-            { :field => fieldname, :value => page.source_text}
+            { :field => fieldname, :value => page.verbatim_transcription_plaintext}
           ]
         }
       }
