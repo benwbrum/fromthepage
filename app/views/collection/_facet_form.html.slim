@@ -12,6 +12,7 @@ h3 Facets
 
 .panel.panel-default
   .panel-body
+    -slider_count = 0
     -@collection.metadata_coverages.each do |mc|
       -unless mc.facet_config[:label].blank?
         -if mc.facet_config[:input_type] == "date"
@@ -20,7 +21,7 @@ h3 Facets
             =f.text_field :date
             =f.hidden_field :label, value: mc.facet_config[:label]
             =f.button "Search"
-            .slider
+            div id="slider#{slider_count += 1}"
 
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
@@ -94,5 +95,17 @@ h3 Facets
 -content_for :javascript
   javascript:
     $(function() {
-      $('.slider').slider();
+      $("#slider1, #slider2, #slider3").each(function(){
+        $(this).slider({
+          range: true,
+          min: 1500,
+          max: 2020,
+          values: [1500, 2020],
+          slide: function( event, ui ) {
+            $( this.closest("form")[1] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+          }
+        });
+
+        $( this.closest("form")[1] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
+      });
     });
