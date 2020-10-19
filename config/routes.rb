@@ -273,6 +273,7 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
+  get '/iiif/collections', :to => 'iiif#collections'
   get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
   get '/iiif/:page_id/notes', :to => 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
