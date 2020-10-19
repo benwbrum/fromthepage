@@ -56,9 +56,11 @@ class FacetsController < ApplicationController
 
     collection.metadata_coverages.each do |m|
       metadata = params[:metadata][m[:key]]
-      m.facet_config.update(label: metadata['label'],
-                            input_type: metadata['input_type'],
-                            order: metadata['order'])
+      unless metadata.nil?
+        m.facet_config.update(label: metadata['label'],
+                              input_type: metadata['input_type'],
+                              order: metadata['order'])
+      end
 
       if m.facet_config.errors.any?
         errors << m.facet_config.errors.full_messages.first
