@@ -20,6 +20,9 @@ class Flag < ApplicationRecord
   end
 
   def self.check_page(version)
+    if version.user&.owner?
+      return
+    end
     if snippet = Flagger.check(version.transcription)
       flag = Flag.new
       flag.page_version = version

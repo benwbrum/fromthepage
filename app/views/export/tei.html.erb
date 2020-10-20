@@ -143,7 +143,9 @@ xml:id="export">
                 </note>
               <% end %>
               <% unless place.latitude.blank? %>
-                <geo><%= place.latitude %> <%= place.longitude %></geo>
+                <note type="geography">
+                  <geo><%= place.latitude %>, <%= place.longitude %></geo>
+                </note>
               <% end %>
             </place>
           <% end %>

@@ -197,4 +197,12 @@ class DocumentSet < ApplicationRecord
   def facets_enabled?
     self.collection.facets_enabled?
   end
+
+  def sc_collection # association does not exist for document sets
+    nil
+  end
+
+  def api_access # API access is only controlled by public/private for document sets
+    false
+  end
 end
