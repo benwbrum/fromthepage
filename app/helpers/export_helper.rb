@@ -87,10 +87,10 @@ module ExportHelper
   end
   
   def subject_to_tei(subject)
-    tei = "<category xml:id=\"S#{subject.id}\">\n"
-    tei << "<catDesc>\n"
-    tei << "<term>#{ERB::Util.html_escape(subject.title)}</term>\n"
-    tei << '<note type="categorization">Categories:'
+    tei = "          <category xml:id=\"S#{subject.id}\">\n"
+    tei << "            <catDesc>\n"
+    tei << "              <term>#{ERB::Util.html_escape(subject.title)}</term>\n"
+    tei << '              <note type="categorization">Categories:'
     subject.categories.each do |category|
       tei << '<ab>'
       category.ancestors.reverse.each do |parent|
@@ -102,12 +102,18 @@ module ExportHelper
         tei << "<ptr ana=\"#{category_class}\" target=\"#C#{parent.id}\">#{parent.title}</ptr> -- "
       end
       tei << "<ptr ana=\"#category #leaf#{' #root' if category.root?}\" target=\"#C#{category.id}\">#{category.title}</ptr>"
-      tei << "</ab>"
+      tei << "</ab>\n"
     end
-     tei << "</note>"
-    tei << "<gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
-    tei << "</catDesc>\n"
-    tei << "</category>\n"
+    tei << "              </note>\n"
+    unless subject.latitude.blank?
+      tei << "              <note type=\"geography\">\n"
+      tei << "                <geo>#{subject.latitude}, #{subject.longitude}</geo>\n"
+      tei << "              </note>\n"
+    end
+
+    tei << "              <gloss>#{xml_to_export_tei(subject.xml_text,ExportContext.new, "SD#{subject.id}")}</gloss>\n" unless subject.source_text.blank?
+    tei << "            </catDesc>\n"
+    tei << "          </category>\n"
 
     tei
   end
@@ -129,6 +135,9 @@ module ExportHelper
     return "" if xml_text.blank?
 #    xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
+    xml_text.gsub!('&', '&amp;')
+    xml_text.gsub!('&amp;amp;', '&amp;')
+
     # xml_text = titles_to_divs(xml_text, context)
     doc = REXML::Document.new(xml_text)
     #paras_string = ""
