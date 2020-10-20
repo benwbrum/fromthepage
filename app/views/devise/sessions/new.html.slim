@@ -1,7 +1,8 @@
 -content_for :page_title, "Sign In"
 
 section.signon
-  h1 Sign In
+  h1 
+    |Sign in 
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
@@ -23,7 +24,13 @@ section.signon
   - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
     =link_to 'Forgot your password?', new_password_path(resource_name), class: 'forgot'
 
+  -if ENABLE_SAML  
+    hr
+    h4 or
+    =button_to('Sign in with your Institution (SSO)', registrations_choose_provider_path, class: 'strong signin')
+
   hr
+
 
   section#sign_up.signup-links
     h2 Sign Up

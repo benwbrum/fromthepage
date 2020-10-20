@@ -16,7 +16,7 @@
               class: 'label'
           td
             =time_tag p.created_on
-              ="#{time_ago_in_words p.created_on} ago"
+              =time_ago_in_words p.created_on
 
     h3 Your Recent Article Edits
     table.datagrid.striped.editor-activity
@@ -32,7 +32,7 @@
               class: 'label'
           td
             =time_tag a.created_on
-              ="#{time_ago_in_words a.created_on} ago"
+              =time_ago_in_words a.created_on
 
     h3 Your Recent Notes
     table.datagrid.striped.editor-activity
@@ -46,7 +46,7 @@
               class: 'label'
           td
             =time_tag n.created_at
-              ="#{time_ago_in_words n.created_at} ago"
+              =time_ago_in_words n.created_at
 
   aside.sidecol
     h3 Activity Stream

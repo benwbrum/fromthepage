@@ -27,12 +27,10 @@ pt:
         in_collection: " na %{collection} coleção"
         saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
     deeds:
-      time_ago_in_words: "Há %{time}"
       show_more: "Mostrar Mais"
     list:
       activity_stream: "Fluxo de Atividade"
       collection_title: "Coleção: %{title}"
       user_title: "Usuário: %{title}"
-      time_ago_in_words: "Há %{time}"
       newer_activity: "Atividade Mais Recente"
       older_activity: "Atividade Mais Antiga"

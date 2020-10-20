@@ -108,11 +108,9 @@ $gapSize:                   20px;
 @import "sections/work";
 @import "sections/user";
 @import "sections/ia-import";
-@import "sections/omeka";
 @import "sections/iiif-import";
 
 @import "plugins/select2/core";
-@import "plugins/bookreader";
 
 #welcome-message {
   width: 480px;

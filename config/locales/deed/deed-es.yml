@@ -27,12 +27,10 @@ es:
         in_collection: " en la colección %{collection}"
         saying_deed: ", diciendo &ldquo;%{title}&rdquo;"
     deeds:
-      time_ago_in_words: "Hace %{time}"
       show_more: "Mostrar Más"
     list:
       activity_stream: "Flujo de Actividad"
       collection_title: "Colección: %{title}"
       user_title: "Usuario: %{title}"
-      time_ago_in_words: "Hace %{time}"
       newer_activity: "Actividad Más Reciente"
       older_activity: "Actividad Anterior"

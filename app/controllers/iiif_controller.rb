@@ -19,11 +19,29 @@ class IiifController < ApplicationController
     render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def user_collections
+    site_collection = IIIF::Presentation::Collection.new
+    site_collection['@id'] = iiif_user_collections_url(@user)
+    site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
+    (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
+      if collection_or_ds.is_public || collection_or_ds.api_access
+        site_collection.collections << iiif_collection_from_collection(collection_or_ds,false)
+      end
+    end
+
+    render :plain => site_collection.to_json(pretty: true), :content_type => "application/json"
+  end
+
   def collection
     iiif_collection = iiif_collection_from_collection(@collection,true)
 
     render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
   end
+
+  def document_set
+    iiif_collection = iiif_collection_from_collection(@document_set,true)
+    render :plain => iiif_collection.to_json(pretty: true), :content_type => "application/json"
+  end      
 
   def contributions
     domain = params[:domain]
@@ -83,17 +101,36 @@ class IiifController < ApplicationController
   end
 
   def collection_for_domain(domain, terminus_a_quo = nil, terminus_ad_quem = nil)
-    if terminus_a_quo && terminus_ad_quem
-      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct
-    elsif terminus_a_quo
-      works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct
+    if domain.include? '.'
+      # this is an actual domain
+      if terminus_a_quo && terminus_ad_quem
+        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic)
+      elsif terminus_a_quo
+        works = Work.joins(:deeds, :sc_manifest).where("sc_manifests.at_id LIKE ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", "%#{domain}%", terminus_a_quo).distinct.includes(:work_statistic)
+      else
+        works = Work.joins(:sc_manifest).where("sc_manifests.at_id LIKE ?", "%#{domain}%").includes(:work_statistic, :sc_manifest)
+      end
+      label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
     else
-      works = Work.joins(:sc_manifest).where("at_id LIKE ?", "%#{domain}%")
+      # this is a user slug
+      user = User.find(domain)
+      if user && user.owner
+        if terminus_a_quo && terminus_ad_quem
+          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ?", user.id).where(:deeds => { :created_at => terminus_a_quo..terminus_ad_quem, :deed_type => DeedType.contributor_types}).distinct.includes(:work_statistic, :sc_manifest)
+        elsif terminus_a_quo
+          works = Work.joins(:collection, :deeds).where("collections.owner_user_id = ? AND deeds.created_at >= ? AND deeds.deed_type != '#{DeedType::WORK_ADDED}'", user.id, terminus_a_quo).distinct.includes(:work_statistic, :sc_manifest)
+        else
+          works = Work.joins(:collection).where("collections.owner_user_id = ?", user.id).includes(:work_statistic, :sc_manifest)
+        end        
+      else
+        works=[]
+        label = "No project owners found matching #{domain}."
+      end
     end
 
     domain_collection = IIIF::Presentation::Collection.new
     domain_collection['@id'] = url_for({:controller => 'iiif', :action => 'for', :id => domain, :only_path => false})
-    domain_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} which were derived from resources matching *#{domain}*"
+    domain_collection.label = label
 
     works.each do |work|
       seed = {
@@ -102,7 +139,7 @@ class IiifController < ApplicationController
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }]
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
@@ -113,7 +150,8 @@ class IiifController < ApplicationController
 
   def manifest
     work_id =  params[:id]
-    work = Work.where(id: work_id).first
+    work = Work.where(id: work_id).includes(:ia_work, :sc_manifest, :work_statistic).first
+
     seed = {
               '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work_id, :only_path => false}),
               'label' => work.title
@@ -137,12 +175,12 @@ class IiifController < ApplicationController
       {
         "format" => "text/html",
         "label" => "Read #{work.title}",
-        "@id" => collection_read_work_path(work.collection.owner, work.collection, work, :only_path => false)
+        "@id" => collection_read_work_url(work.collection.owner, work.collection, work)
       },
       {
         "format" => "text/html",
         "label" => "Table of Contents for #{work.title}",
-        "@id" => collection_work_contents_path(work.collection.owner, work.collection, work, :only_path => false)
+        "@id" => collection_work_contents_url(work.collection.owner, work.collection, work)
       }
     ]
 
@@ -151,33 +189,33 @@ class IiifController < ApplicationController
     { "label" => "Verbatim Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-1", 
-      "@id" => iiif_work_export_plaintext_verbatim_path(work.id, :only_path => false) 
+      "@id" => iiif_work_export_plaintext_verbatim_url(work.id)
     }
     manifest.seeAlso << 
     { "label" => "Emended Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext", 
-      "@id" => iiif_work_export_plaintext_emended_path(work.id, :only_path => false)
+      "@id" => iiif_work_export_plaintext_emended_url(work.id)
     }
     if work.supports_translation?
       manifest.seeAlso << 
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext", 
-        "@id" => iiif_work_export_plaintext_translation_verbatim_path(work.id, :only_path => false)
+        "@id" => iiif_work_export_plaintext_translation_verbatim_url(work.id)
       }
       manifest.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext", 
-        "@id" => iiif_work_export_plaintext_translation_emended_path(work.id, :only_path => false)
+        "@id" => iiif_work_export_plaintext_translation_emended_url(work.id)
       }
     end    
     manifest.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search", 
-        "@id" => iiif_work_export_plaintext_searchable_path(work.id, :only_path => false)
+        "@id" => iiif_work_export_plaintext_searchable_url(work.id)
     }
     manifest.service << status_service_for_manifest(work)
     sequence = iiif_sequence_from_work_id(work_id)
@@ -431,7 +469,7 @@ private
       { "label" => "Verbatim Plaintext",
         "format" => "text/plain",
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
-        "@id" => collection_work_export_plaintext_verbatim_path(work.collection.owner, work.collection, work, :only_path => false)
+        "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work)
       },
       { "@id" => url_for(:controller => :export, :action => :show, :work_id => work.id), "label" => "XHTML Export", "profile" => "XHTML URL"},
       { "@id" => url_for(:controller => :export, :action => :tei, :work_id => work.id), "label" => "TEI Export", "profile" => "tei URL"}
@@ -450,7 +488,11 @@ private
   end
 
   def iiif_collection_id_from_collection(collection)
-    url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+    if collection.is_a? DocumentSet
+      iiif_document_set_url(collection)
+    else
+      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+    end
   end
 
   def iiif_collection_from_collection(collection,depth)
@@ -462,7 +504,7 @@ private
     end
 
     if depth == true
-      collection.works.each do |work|
+      collection.works.includes(:sc_manifest, :ia_work, :work_statistic).each do |work|
         seed = {
                   '@id' => url_for({:controller => 'iiif', :action => 'manifest', :id => work.id, :only_path => false}),
                   'label' => work.title
@@ -669,44 +711,44 @@ private
       { "label" => "HTML Transcription", 
         "format" => "text/html", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-transcription", 
-        "@id" => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page, :only_path => false)
+        "@id" => collection_annotation_page_transcription_html_url(page.work.owner, page.work.collection, page.work, page)
     }
     canvas.seeAlso << 
       { "label" => "Searchable Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search-1", 
-        "@id" => iiif_page_export_plaintext_searchable_path(page.work_id, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_searchable_url(page.work_id, page.id)
     }
     canvas.seeAlso << 
     { "label" => "Verbatim Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext-2", 
-      "@id" => iiif_page_export_plaintext_verbatim_path(page.work_id, page.id, :only_path => false)
+      "@id" => iiif_page_export_plaintext_verbatim_url(page.work_id, page.id)
     }
     canvas.seeAlso << 
     { "label" => "Emended Plaintext", 
       "format" => "text/plain", 
       "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-plaintext-1", 
-      "@id" => iiif_page_export_plaintext_emended_path(page.work_id, page.id, :only_path => false)
+      "@id" => iiif_page_export_plaintext_emended_url(page.work_id, page.id)
     }
     if page.work.supports_translation? && !page.source_translation.blank?
       canvas.seeAlso <<
         { "label" => "HTML Translation",
           "format" => "text/html",
           "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#html-translation",
-          "@id" => collection_annotation_page_translation_html_url(page.work.owner, page.work.collection, page.work, page, :only_path => false)
+          "@id" => collection_annotation_page_translation_html_url(page.work.owner, page.work.collection, page.work, page)
       }
       canvas.seeAlso << 
       { "label" => "Verbatim Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-translation-plaintext-1", 
-        "@id" => iiif_page_export_plaintext_translation_verbatim_path(page.work_id, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_translation_verbatim_url(page.work_id, page.id)
       }
       canvas.seeAlso << 
       { "label" => "Emended Translation Plaintext", 
         "format" => "text/plain", 
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#emended-translation-plaintext-1", 
-        "@id" => iiif_page_export_plaintext_translation_emended_path(page.work_id, page.id, :only_path => false)
+        "@id" => iiif_page_export_plaintext_translation_emended_url(page.work_id, page.id)
       }
     end
   end

@@ -3,12 +3,14 @@ en:
     alphabetical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
       owned_by: "Owned by %{author}"
+      project_by: "Project by %{author}"
     collections_list:
       collections: "Collections"
       meta_description: "You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age."
     hierarchical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
       owned_by: "Owned by %{author}"
+      project_by: "Project by %{author}"
     landing_page:
       previous_image: "Previous image"
       next_image: "Next image"
@@ -20,12 +22,12 @@ en:
       recent_activity: "Recent Activity"
     watchlist:
       projects_you_have_contributed_to: "Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on."
-      time_ago_in_words: "%{time} ago"
       you_might_want_to_try: "You haven't participated in any projects yet.  You might want to try transcribing a page of "
       try_transcribing_a_page: "You haven't participated in any projects yet.  Try transcribing a page from one of these "
       collections: "collections"
-      private_collections_you_belong_to: "Private Collections You Belong to"
-      owned_by: "Owned by #{author}"
+      private_collections_you_belong_to: "Private projects"
+      owned_by: "Owned by %{author}"
+      project_by: "Project by %{author}"
       everyone_activity: "Everyone's Activity"
       your_activity: "Your Activity"
     owner:
@@ -68,12 +70,9 @@ en:
       paste_in_the_url: "Paste in the URL of a compound object on your CONTENTdm site."
       import_from_the_internet_archive: "Import from the Internet Archive"
       import_from_archive_dot_org: "Import From Archive.org"
-      import_from_omeka_classic: "Import from Omeka Classic"
       you_have_not_connected: "You have not connected any Omeka sites. Use the button below to create a new Omeka connection."
-      list_of_connected_omeka_sites: "This is the list of connected Omeka sites. Click one to explore collections and import items."
       edit_site: "Edit Site"
       delete_site: "Delete Site"
-      omeka_delete_confirm_message: "Are you sure? You will need to re-create the site configuration to import from this site again!"
       add_source: "Add Source"
       page_image_guidelines: "Page Image Guidelines"
       acceptable_formats: "PNG, GIF, and JPG files are all acceptable."

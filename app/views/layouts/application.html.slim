@@ -29,7 +29,7 @@ html lang="en-US"
 
   body
     -flash.each do |type, message|
-      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
+      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
       .flash(class='flash-#{type}')
         span.flash_message
           =svg_symbol flash_icon[type], class: 'icon'
@@ -49,9 +49,10 @@ html lang="en-US"
             =link_to t('.projects'), dashboard_path, class: 'header_link'
           -else
             =link_to t('.find_a_project'), landing_page_path, class: 'header_link'
-          =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
+          -if user_signed_in?
+            =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
-            =link_to t('.sign_up'), new_user_registration_path, class: 'header_link'
+            =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right

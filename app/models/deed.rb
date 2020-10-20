@@ -33,11 +33,13 @@ class Deed < ApplicationRecord
 
   def calculate_prerender
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
-      self.prerender = ApplicationController.renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+      renderer = ApplicationController.renderer.new
+      self.prerender = renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
     end
   end
 
   def calculate_prerender_mailer
-    self.prerender_mailer = ApplicationController.renderer.render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
+    renderer = ApplicationController.renderer.new
+    self.prerender_mailer = renderer.render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
   end
 end
