@@ -15,6 +15,8 @@ en:
       add_a_new_work: "Add a new work"
       subject_categories: "Subject Categories"
       search: "Search"
+      pages_need_correction: "Pages That Need Correction"
+      pages_need_correction_or_transcription: "Pages That Need Correction or Transcription"
     collection_works:
       work_title: "Work title"
       progress: "Progress"
