@@ -35,3 +35,4 @@ en:
       user_title: "User: %{title}"
       newer_activity: "Newer Activity"
       older_activity: "Older Activity"
+      time_ago_in_words: "%{time} ago"

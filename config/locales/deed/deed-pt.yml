@@ -35,3 +35,4 @@ pt:
       user_title: "Usuário: %{title}"
       newer_activity: "Atividade Mais Recente"
       older_activity: "Atividade Mais Antiga"
+      time_ago_in_words: "Há %{time}"

@@ -35,3 +35,4 @@ es:
       user_title: "Usuario: %{title}"
       newer_activity: "Actividad Más Reciente"
       older_activity: "Actividad Anterior"
+      time_ago_in_words: "Hace %{time}"
