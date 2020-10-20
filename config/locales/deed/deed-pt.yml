@@ -28,6 +28,7 @@ pt:
         saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
     deeds:
       show_more: "Mostrar Mais"
+      time_ago_in_words: "Há %{time}"
     list:
       activity_stream: "Fluxo de Atividade"
       collection_title: "Coleção: %{title}"

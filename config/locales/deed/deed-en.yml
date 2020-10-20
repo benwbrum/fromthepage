@@ -28,6 +28,7 @@ en:
         saying_deed: ", saying &ldquo;%{title}&rdquo;"
     deeds:
       show_more: "Show More"
+      time_ago_in_words: "%{time} ago"
     list:
       activity_stream: "Activity Stream"
       collection_title: "Collection: %{title}"
