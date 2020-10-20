@@ -35,8 +35,11 @@ private
         # do nothing -- this had a hyphen
       else  
         lb.add_child(' ')
-      end
+      end  
     end
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//br").each { |n| n.replace("\n")}
+    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
     
     no_tags = doc.text
     no_linefeeds = no_tags.gsub(/\s/, ' ')
