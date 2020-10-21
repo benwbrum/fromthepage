@@ -76,12 +76,10 @@ module ContributorHelper
   def format_collaborators
     @collaborators = @all_collaborators.split
     last_char = @collaborators.last[-1]
+    email = ", support@fromthepage.com"
+    email.delete!(", ") if last_char == ","
 
-    if last_char == ","
-      @all_collaborators + " support@fromthepage.com"
-    else
-      @all_collaborators + ", support@fromthepage.com"
-    end
+    @all_collaborators + email
   end
 
   def owner_expirations
