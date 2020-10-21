@@ -39,6 +39,6 @@ es:
       add_as_owner: "Añadido a obra privada como dueño"
       page_edited: "Nota añadida en respuesta a un comentario que hiciste"
       update_profile: "Actualizar Perfil"
-      share_my_email: "Compartir mi email con los administradores del proyecto"
+      share_my_email: "Compartir mi e-mail con los administradores del proyecto"
     update:
       user_updated: "El perfil del usuario ha sido actualizado"
