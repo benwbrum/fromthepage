@@ -62,7 +62,7 @@
         th =f.label :page_edited, t('.page_edited')
       tr
         td =f.check_box("notifications[owner_contact]", {checked: @user.notification.owner_contact})
-        th =f.label :owner_contact, "Share my email with project administrators"
+        th =f.label :owner_contact, t('.share_my_email')
 
     .toolbar
       .toolbar_group.aright =f.button t('.update_profile')
