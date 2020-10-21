@@ -26,6 +26,7 @@ es:
       owned_by: "Por %{author}"
       everyone_activity: "Actividad de todos"
       your_activity: "Tu Actividad"
+      time_ago_in_words: "Hace %{time}"
     owner:
       see_all_works: "Consulte Todas las Obras..."
       start_a_project: "Iniciar Un Proyecto"

@@ -30,6 +30,7 @@ en:
       project_by: "Project by %{author}"
       everyone_activity: "Everyone's Activity"
       your_activity: "Your Activity"
+      time_ago_in_words: "%{time} ago"
     owner:
       see_all_works: "See All Works..."
       start_a_project: "Start A Project"
