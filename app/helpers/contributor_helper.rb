@@ -69,7 +69,7 @@ module ContributorHelper
     @new_transcribers = recent_users - older_users
     all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
     @all_collaborators = all_transcribers.map do |user|
-      "#{user.display_name} <#{user.email}>" if user.notification.user_activity?
+      "#{user.display_name} <#{user.email}>" if user.notification.owner_contact?
     end.join(', ')
   end
 
