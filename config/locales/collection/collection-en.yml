@@ -17,6 +17,7 @@ en:
       search: "Search"
       pages_need_correction: "Pages That Need Correction"
       pages_need_correction_or_transcription: "Pages That Need Correction or Transcription"
+      time_ago_in_words: "%{time} ago"
     collection_works:
       work_title: "Work title"
       progress: "Progress"

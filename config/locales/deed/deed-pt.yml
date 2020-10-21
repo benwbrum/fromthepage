@@ -28,9 +28,11 @@ pt:
         saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
     deeds:
       show_more: "Mostrar Mais"
+      time_ago_in_words: "Há %{time}"
     list:
       activity_stream: "Fluxo de Atividade"
       collection_title: "Coleção: %{title}"
       user_title: "Usuário: %{title}"
       newer_activity: "Atividade Mais Recente"
       older_activity: "Atividade Mais Antiga"
+      time_ago_in_words: "Há %{time}"

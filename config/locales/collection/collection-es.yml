@@ -15,6 +15,7 @@ es:
       add_a_new_work: "Añadir una obra nueva"
       subject_categories: "Categorías de Temas"
       search: "Búsqueda"
+      time_ago_in_words: "Hace %{time}"
     collection_works:
       work_title: "Título de la obra"
       progress: "Progreso"
