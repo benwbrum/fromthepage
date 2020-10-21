@@ -3,7 +3,7 @@
 -deeds.each do |d|
   .deed-short.small
     =time_tag(d.created_at, class: 'legend legend-left')
-      =time_ago_in_words(d.created_at)
+      =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
     span.deed-short_content
       -if d.prerender
         =raw(d.prerender)

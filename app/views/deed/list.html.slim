@@ -23,7 +23,7 @@ table.datagrid.striped
         small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
       td.nowrap
         =time_tag(d.created_at, class: 'small fglight')
-          =time_ago_in_words(d.created_at)
+          =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
 br
 small.legend
   =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }
