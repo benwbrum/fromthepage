@@ -40,6 +40,6 @@ en:
       add_as_owner: "Added to private work as an owner"
       page_edited: "Note added in response to a comment you made"
       update_profile: "Update Profile"
-      share_my_email: "Share my email with project administrators"
+      share_my_email: "Share my e-mail with project administrators"
     update:
       user_updated: "User profile has been updated"
