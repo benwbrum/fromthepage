@@ -6,6 +6,10 @@ class WorkSearch < FortyFacets::FacetSearch
   facet :s3, name: 'Text 3'
   facet :s4, name: 'Text 4'
   facet :s5, name: 'Text 5'
+  facet :s6, name: 'Text 6'
+  facet :s7, name: 'Text 7'
+  facet :s8, name: 'Text 8'
+  facet :s9, name: 'Text 9'
 
   # eventually these should be ranges as follows
   # range :d1, name: 'Date 1'
