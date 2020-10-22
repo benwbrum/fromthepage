@@ -79,7 +79,7 @@ describe "collection metadata", :order => :defined do
     visit edit_collection_path(@owner, c)
     click_link "Enable Facets"
     expect(page).to have_content("Metadata Facets")
-    expect(page).to have_content("Configure metadata facets by reviewing the metadata currently present in your collection, and selecting fields to be displayed to users.")
+    expect(page).to have_content("Configure metadata facets by reviewing the metadata currently present in your collection, and adding a label to fields to be displayed to users.")
     expect(page).to have_content("filename")
     expect(page).to have_content("field_identifier_local")
   end
