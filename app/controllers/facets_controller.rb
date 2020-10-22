@@ -40,7 +40,7 @@ class FacetsController < ApplicationController
       end
     end
 
-    redirect_to edit_collection_path(@collection.owner, @collection)
+    redirect_to collection_facets_path(@collection.owner, @collection)
   end
 
   def disable
