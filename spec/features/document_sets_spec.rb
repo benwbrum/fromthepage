@@ -271,12 +271,12 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Overview")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
-    click_link("All references to #{@article.title}")
+    click_button("Search All Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page).to have_content("Search for")
     #return to overview
     visit collection_article_show_path(@set.owner, @set, @article.id)
-    click_link("All references to #{@article.title} in pages that do not link to this subject")
+    click_button("Search Unlinked Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page).to have_content("Search for")
     page.find('a', text: "Show pages that mention #{@article.title} in all works").click
