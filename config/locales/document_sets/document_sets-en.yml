@@ -38,6 +38,7 @@ en:
       unrestricted: "Unrestricted"
       save: "Save"
       no_document_sets: "This collection has no document sets"
+      search_for_works: "Search for works..."
     new:
       create_new_document_set: "Create New Document Set"
       document_set_is_marked_public: "If the document set is marked as public, works put within it will be readable even if the collection is marked as private."
