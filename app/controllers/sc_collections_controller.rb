@@ -106,29 +106,35 @@ class ScCollectionsController < ApplicationController
     sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
     collection_id = params[:collection_id]
     cdm_ocr = !params[:contentdm_ocr].blank?
+
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
-    unless collection_id == 'sc_collection'
-      collection = Collection.find_by(id: params[:collection_id])
+    if collection_id == 'sc_collection'
+      collection = create_collection(sc_collection, current_user)
+      collection_id = collection.id
     end
 
-    if collection.nil?
-      collection = create_collection(sc_collection, current_user)
+    if md=collection_id.match(/D(\d+)/)
+      document_set = DocumentSet.find_by(id: md[1])
+      collection = document_set.collection
+    else
+      collection = Collection.find_by(id: collection_id)
     end
+
 
     #make sure import folder exists
     unless Dir.exist?("#{Rails.root}/public/imports")
       Dir.mkdir("#{Rails.root}/public/imports")
     end
     #create logfile for collection
-    log_file = "#{Rails.root}/public/imports/#{collection.id}_iiif.log"
+    log_file = "#{Rails.root}/public/imports/#{collection_id}_iiif.log"
 
     #map an array of at_ids for the selected manifests
     manifest_array = params[:manifest_id].keys.map {|id| id}
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection.id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} 2>&1 &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
@@ -136,7 +142,7 @@ class ScCollectionsController < ApplicationController
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
-    flash[:notice] = t('.import_is_processing')
+    flash[:info] = t('.import_is_processing')
 
     ajax_redirect_to collection_path(collection.owner, collection)
   end
@@ -158,9 +164,16 @@ class ScCollectionsController < ApplicationController
       set_sc_collection
       work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
     else
-      unless params[:sc_manifest][:collection_id].blank?
-        @collection = Collection.find params[:sc_manifest][:collection_id]
-        work = @sc_manifest.convert_with_collection(current_user, @collection)
+      collection_id = params[:sc_manifest][:collection_id]
+      unless collection_id.blank?
+        document_set = nil
+        if md=collection_id.match(/D(\d+)/)
+          document_set = DocumentSet.find_by(id: md[1])
+          @collection = document_set.collection
+        else
+          @collection = Collection.find_by(id: collection_id)
+        end
+        work = @sc_manifest.convert_with_collection(current_user, @collection, document_set)
       else
         work = @sc_manifest.convert_with_no_collection(current_user) 
       end
