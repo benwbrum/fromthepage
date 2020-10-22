@@ -40,9 +40,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -60,9 +61,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -80,9 +82,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -100,9 +103,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -120,9 +124,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -140,9 +145,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -160,9 +166,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -180,9 +187,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -200,9 +208,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -220,9 +229,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -240,9 +250,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 .panel.panel-default
   #headingMinusOne.panel-heading[role="tab"]
     h4.panel-title
@@ -260,9 +271,10 @@ h3 Facets
             ul.selectable
               -filter.facet.reject(&:selected).each do |facet_value|
                 -entity = facet_value.entity
-                li
-                  -display = "#{entity}"
-                  =link_to display, filter.add(entity).path
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
 
 -content_for :javascript
   javascript:
