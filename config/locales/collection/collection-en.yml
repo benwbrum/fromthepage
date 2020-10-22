@@ -135,7 +135,7 @@ en:
       metadata_description: "Upload metadata for items in this collection in bulk."
       upload_metadata: "Upload Metadata"
       metadata_facets: "Metadata Facets"
-      metadata_facets_description: "Allow users to browse works within this collection via metadata. (You can configure the metadata facets in a separate step.)"
+      metadata_facets_description: "Allow users to browse works within this collection via metadata."
       disable_facets: "Disable Facets"
       enable_facets: "Enable Facets"
     needs_review_pages:
