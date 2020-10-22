@@ -29,6 +29,27 @@ h3 Facets
       a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
       -@collection.metadata_coverages.each do |mc|
         -unless mc.facet_config[:label].blank?
+          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 0
+            =mc.facet_config[:label]
+  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+    .panel-body
+      -[:s0].each do |filter_name|
+        -filter = @search.filter(filter_name)
+        .filter
+          .filter-values
+            ul.selectable
+              -filter.facet.reject(&:selected).each do |facet_value|
+                -entity = facet_value.entity
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
+.panel.panel-default
+  #headingMinusOne.panel-heading[role="tab"]
+    h4.panel-title
+      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+      -@collection.metadata_coverages.each do |mc|
+        -unless mc.facet_config[:label].blank?
           -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 1
             =mc.facet_config[:label]
   #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]

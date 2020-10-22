@@ -1,6 +1,7 @@
 class WorkSearch < FortyFacets::FacetSearch
   model 'WorkFacet'
 
+  facet :s0, name: 'Text 0'
   facet :s1, name: 'Text 1'
   facet :s2, name: 'Text 2'
   facet :s3, name: 'Text 3'
