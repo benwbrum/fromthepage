@@ -197,7 +197,7 @@ class AdminController < ApplicationController
 
   def settings
     @email_text = PageBlock.find_by(view: "new_owner").html
-    @flag_blacklist = PageBlock.find_by(view: "flag_blacklist").html
+    @flag_denylist = PageBlock.find_by(view: "flag_denylist").html
   end
 
   def update
@@ -208,9 +208,9 @@ class AdminController < ApplicationController
       block.save!
     end
 
-    block = PageBlock.find_by(view: "flag_blacklist")
-    if params[:admin][:flag_blacklist] != block.html
-      block.html = params[:admin][:flag_blacklist]
+    block = PageBlock.find_by(view: "flag_denylist")
+    if params[:admin][:flag_denylist] != block.html
+      block.html = params[:admin][:flag_denylist]
       block.save!
     end
 

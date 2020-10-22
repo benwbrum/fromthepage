@@ -49,7 +49,7 @@ module ContentdmTranslator
     JSON.parse(cdm_response)
   end
 
-  ITEM_INFO_BLACKLIST = [
+  ITEM_INFO_DENYLIST = [
     "descri",
     "date",
     "creato",
@@ -77,7 +77,7 @@ module ContentdmTranslator
 
   def self.metadata_from_cdm_info(info)
     # only return useful and unique things
-    info.except(*ITEM_INFO_BLACKLIST)
+    info.except(*ITEM_INFO_DENYLIST)
   end
 
   def self.ocr_from_cdm_info(info, fts_field)
@@ -152,7 +152,7 @@ module ContentdmTranslator
         'metadataList' => {
           'metadata' => [
             { :field => 'dmrecord', :value => cdm_record(canvas_at_id)},
-            { :field => fieldname, :value => page.source_text}
+            { :field => fieldname, :value => page.verbatim_transcription_plaintext}
           ]
         }
       }

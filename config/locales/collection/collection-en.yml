@@ -15,6 +15,7 @@ en:
       add_a_new_work: "Add a new work"
       subject_categories: "Subject Categories"
       search: "Search"
+      time_ago_in_words: "%{time} ago"
     collection_works:
       work_title: "Work title"
       progress: "Progress"

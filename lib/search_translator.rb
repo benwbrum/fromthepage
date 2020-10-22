@@ -30,10 +30,20 @@ module SearchTranslator
 private
   def self.strip_markup(xml_text)
     doc = Nokogiri::XML(xml_text)
+    doc.search('lb').each do |lb|
+      if lb['break'] && lb['break'] == 'no'
+        # do nothing -- this had a hyphen
+      else  
+        lb.add_child(' ')
+      end  
+    end
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//br").each { |n| n.replace("\n")}
+    doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
     
     no_tags = doc.text
     no_linefeeds = no_tags.gsub(/\s/, ' ')
-    single_spaces = no_linefeeds.gsub(/\s{2,}/, ' ')
+    single_spaces = no_linefeeds.gsub(/ +/, ' ').strip
 
     single_spaces    
   end
