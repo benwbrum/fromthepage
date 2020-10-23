@@ -23,279 +23,52 @@ h3 Facets
             =f.button "Search"
             div id="slider#{slider_count += 1}"
 
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 0
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s0].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 1
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s1].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 2
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s2].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 3
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s3].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 4
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s4].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 5
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s5].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 6
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s6].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 7
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s7].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 8
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s8].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == 9
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:s9].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 0
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:d0].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 1
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:d1].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
-.panel.panel-default
-  #headingMinusOne.panel-heading[role="tab"]
-    h4.panel-title
-      a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-      -@collection.metadata_coverages.each do |mc|
-        -unless mc.facet_config[:label].blank?
-          -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == 2
-            =mc.facet_config[:label]
-  #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-    .panel-body
-      -[:d2].each do |filter_name|
-        -filter = @search.filter(filter_name)
-        .filter
-          .filter-values
-            ul.selectable
-              -filter.facet.reject(&:selected).each do |facet_value|
-                -entity = facet_value.entity
-                -unless entity.nil?
-                  li
-                    -display = "#{entity}"
-                    =link_to display, filter.add(entity).path
+-(0..9).each do |i|
+  .panel.panel-default
+    #headingMinusOne.panel-heading[role="tab"]
+      h4.panel-title
+        a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+        -@collection.metadata_coverages.each do |mc|
+          -unless mc.facet_config[:label].blank?
+            -if mc.facet_config[:input_type] == "text" && mc.facet_config[:order] == i
+              =mc.facet_config[:label]
+    #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+      .panel-body
+        -selector = "s#{i}".to_sym
+        -[selector].each do |filter_name|
+          -filter = @search.filter(filter_name)
+          .filter
+            .filter-values
+              ul.selectable
+                -filter.facet.reject(&:selected).each do |facet_value|
+                  -entity = facet_value.entity
+                  -unless entity.nil?
+                    li
+                      -display = "#{entity}"
+                      =link_to display, filter.add(entity).path
+-(0..2).each do |i|
+  .panel.panel-default
+    #headingMinusOne.panel-heading[role="tab"]
+      h4.panel-title
+        a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
+        -@collection.metadata_coverages.each do |mc|
+          -unless mc.facet_config[:label].blank?
+            -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == i
+              =mc.facet_config[:label]
+    #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
+      .panel-body
+        -selector = "d#{i}".to_sym
+        -[selector].each do |filter_name|
+          -filter = @search.filter(filter_name)
+          .filter
+            .filter-values
+              ul.selectable
+                -filter.facet.reject(&:selected).each do |facet_value|
+                  -entity = facet_value.entity
+                  -unless entity.nil?
+                    li
+                      -display = "#{entity}"
+                      =link_to display, filter.add(entity).path
 
 -content_for :javascript
   javascript:
