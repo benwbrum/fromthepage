@@ -114,7 +114,7 @@ class ScCollectionsController < ApplicationController
       collection_id = collection.id
     end
 
-    if md=collection_id.match(/D(\d+)/)
+    if collection_id.is_a?(String) && (md=collection_id.match(/D(\d+)/))
       document_set = DocumentSet.find_by(id: md[1])
       collection = document_set.collection
     else
@@ -142,7 +142,7 @@ class ScCollectionsController < ApplicationController
     logger.info rake_call
     system(rake_call)
     #flash notice about the rake task
-    flash[:info] = t('.import_is_processing')
+    flash[:notice] = t('.import_is_processing')
 
     ajax_redirect_to collection_path(collection.owner, collection)
   end
