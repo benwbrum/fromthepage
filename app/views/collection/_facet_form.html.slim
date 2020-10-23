@@ -12,17 +12,17 @@ h3 Facets
 
 .panel.panel-default
   .panel-body
-    -slider_count = 0
+    -count = 0
     -@collection.metadata_coverages.each do |mc|
       -unless mc.facet_config[:label].blank?
         -if mc.facet_config[:input_type] == "date"
           h4 =mc.facet_config[:label]
-          =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search" } do |f|
+          =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search", id: "search#{count}" } do |f|
             =f.text_field :date
             =f.hidden_field :label, value: mc.facet_config[:label]
             =f.hidden_field :date_order, value: mc.facet_config[:order]
             =f.button "Search"
-            div id="slider#{slider_count += 1}"
+            div id="slider#{count += 1}"
 
 -(0..9).each do |i|
   .panel.panel-default
