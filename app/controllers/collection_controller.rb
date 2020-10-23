@@ -122,6 +122,7 @@ class CollectionController < ApplicationController
 
       if @collection.facets_enabled?
         @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+        @works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10) if @works.empty?
       end
     else
       redirect_to "/404"
