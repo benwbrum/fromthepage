@@ -17,7 +17,7 @@ h3 Facets
       -unless mc.facet_config[:label].blank?
         -if mc.facet_config[:input_type] == "date"
           h4 =mc.facet_config[:label]
-          =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), html: { class: "collection-search" } do |f|
+          =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search" } do |f|
             =f.text_field :date
             =f.hidden_field :label, value: mc.facet_config[:label]
             =f.hidden_field :date_order, value: mc.facet_config[:order]
@@ -81,10 +81,10 @@ h3 Facets
           max: 2020,
           values: [1500, 2020],
           slide: function( event, ui ) {
-            $( this.closest("form")[1] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+            $( this.closest("form")[0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
           }
         });
 
-        $( this.closest("form")[1] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
+        $( this.closest("form")[0] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
       });
     });
