@@ -48,13 +48,16 @@ class CollectionController < ApplicationController
     mc = @collection.metadata_coverages.where(key: params['facet_search']['label']).first
     first_year = params['facet_search']['date'].split.first.to_i
     last_year = params['facet_search']['date'].split.last.to_i
+    order = params['facet_search']['date_order'].to_i
     years = (first_year..last_year).to_a
+    date_order = "d#{order}"
+    year = "w.work_facet.#{date_order}.year"
 
     facets = []
 
     @collection.works.each do |w|
       unless w.work_facet.nil?
-        if years.include?(w.work_facet.d0.year)
+        if years.include?(eval(year))
           facets << w.work_facet
         end
       end
