@@ -176,7 +176,7 @@ en:
       notice: "OCR correction has been disabled for all works."
     facets:
       metadata_facets: "Metadata Facets"
-      metadata_facets_description: "Configure metadata facets by reviewing the metadata currently present in your collection, and adding a label to fields to be displayed to users."
+      metadata_facets_description: "Configure metadata facets by reviewing the metadata in your collection and labelling fields to be displayed to transcribers."
       field_label: "Field Label"
       occurrences: "Occurrences"
       label: "Label"
