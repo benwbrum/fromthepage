@@ -14,7 +14,13 @@ class DocumentSetsController < ApplicationController
   end
 
   def index
-    @works = @collection.works.order(:title).paginate(page: params[:page], per_page: 20)
+    page = params[:page]
+    page = 1 if page.blank?
+    if params[:search]
+      @works = @collection.search_works(params[:search]).order(:title).paginate(page: page, per_page: 20)
+    else
+      @works = @collection.works.order(:title).paginate(page: page, per_page: 20)
+    end
   end
 
   def show
