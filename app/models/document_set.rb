@@ -175,7 +175,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def search_collection_works(search)
-    self.collection.works.where("title LIKE ?", "%#{search}%")
+    self.collection.search_works(search)
   end
 
   def self.search(search)

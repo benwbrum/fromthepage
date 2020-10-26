@@ -59,11 +59,15 @@
           li ==(cat.ancestors.reverse.push(cat).map { |c| link_to c.title, { action: 'list', collection_id: @collection.slug, anchor: "category-#{c.id}"} }).join(" &rarr; ")
 
     h3 References
-    ul.article-category-list
-      li =link_to "All references to #{@article.title}", { :controller => 'display', :action => 'search', :article_id => @article.id }, { :rel => 'nofolllow' }
-      li =link_to "All references to #{@article.title} in pages that do not link to this subject", { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true}, { :rel => 'nofolllow' }
-    br
     =render :partial => 'article_links'
+
+    h3 Text Search
+    p Search the text of #{@collection.title} for pages containing words used to link to <em>#{@article.title}</em>
+    =button_to "Search All Pages", { :controller => 'display', :action => 'search', :article_id => @article.id }
+    p  Only search text of pages which do not link to <em>#{@article.title}</em>
+    =button_to "Search Unlinked Pages", { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true}, { :rel => 'nofolllow' }
+ 
+ 
 
 -content_for :javascript
   javascript:

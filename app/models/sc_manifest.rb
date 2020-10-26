@@ -52,7 +52,7 @@ class ScManifest < ApplicationRecord
     convert_with_collection(user, collection)
   end
 
-  def convert_with_collection(user, collection)
+  def convert_with_collection(user, collection, document_set=nil)
     self.save!
 
     work = Work.new
@@ -79,6 +79,10 @@ class ScManifest < ApplicationRecord
 
     self.work = work
     self.save!
+
+    if document_set
+      document_set.works << work
+    end
 
     work
   end

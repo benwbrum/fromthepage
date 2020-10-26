@@ -165,5 +165,19 @@ module ApplicationHelper
     html
   end
 
+  def target_collection_options(default)
+    option_data = {}
+    current_user.collections.sort { |a,b| a.title <=> b.title }.each do |c| 
+      option_data[c.title]=c.id 
+      c.document_sets.sort { |a,b| a.title <=> b.title }.each do |set|
+        option_data[" -- #{set.title}"] = "D#{set.id}"
+      end
+    end
+
+    options_for_select(option_data)
+
+
+  end
+
 
 end
