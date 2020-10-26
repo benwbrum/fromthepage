@@ -87,4 +87,20 @@ h3 Facets
 
         $( this.closest("form")[0] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
       });
+
+      $("#search0, #search1, #search2").each(function(){
+        $(this).on("ajax:success", function(status, response, xhr){
+          console.log("Hello world");
+          console.log(JSON.parse(response));
+          response = JSON.parse(response);
+          $(".collection-works").empty();
+
+          $.each(response, function(index, value) {
+            console.log(value);
+            $(".collection-works").append("<div class='collection-work'> \
+                                             <h4 class='collection-work_title'>" + value.title + "</h4> \
+                                           </div>");
+          });
+        });
+      });
     });

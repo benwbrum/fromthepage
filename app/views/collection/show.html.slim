@@ -25,23 +25,24 @@
       h5.collection-work.acenter
         = t('.all_complete')
 
-    -@works.each do |work|
-      .collection-work
-        .collection-work_image
-          -unless work.thumbnail.nil? 
-            =link_to image_tag(work.thumbnail, alt: work.title), collection_read_work_path(@collection.owner, @collection, work)
-        h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
-        p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
-        .collection-work_stats
-          -work_stats(work)
-          span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
-          span
-            span.progress
-              -unless @collection.subjects_disabled
-                span(style="width:#{@progress_annotated}%")
-              span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
-              -unless @progress_review == 0
-                span(style="width:#{@progress_review}%")
+    .collection-works
+      -@works.each do |work|
+        .collection-work
+          .collection-work_image
+            -unless work.thumbnail.nil?
+              =link_to image_tag(work.thumbnail, alt: work.title), collection_read_work_path(@collection.owner, @collection, work)
+          h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
+          p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+          .collection-work_stats
+            -work_stats(work)
+            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+            span
+              span.progress
+                -unless @collection.subjects_disabled
+                  span(style="width:#{@progress_annotated}%")
+                span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
+                -unless @progress_review == 0
+                  span(style="width:#{@progress_review}%")
 
     =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
