@@ -98,7 +98,7 @@ h3 Facets
           $.each(response, function(index, value) {
             console.log(value);
             $(".collection-works").append("<div class='collection-work'> \
-                                             <h4 class='collection-work_title'>" + value.title + "</h4> \
+                                             <h4 class='collection-work_title'><a href='#'>" + value.title + "</a></h4> \
                                            </div>");
           });
         });
