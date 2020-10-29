@@ -31,7 +31,8 @@ module AbstractXmlController
     matches.reverse!
     #for each article, check text to see if it needs to be linked
     for match in matches
-      match_regex = Regexp.new('\b'+match['display_text'].gsub('?', '\?').gsub('.', '\.').gsub('(', '\(').gsub(')', '\)')+'\b', Regexp::IGNORECASE)
+      match_regex = Regexp.new('\b'+Regexp.escape(match['display_text'])+'\b', Regexp::IGNORECASE)
+      #match_regex = Regexp.new('\b'+match['display_text'].gsub('?', '\?').gsub('.', '\.').gsub('(', '\(').gsub(')', '\)')+'\b', Regexp::IGNORECASE)
       display_text = match['display_text']
       logger.debug("DEBUG looking for #{match_regex}")
 
