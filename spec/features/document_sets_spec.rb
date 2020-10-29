@@ -203,9 +203,6 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
-    page.find('.tabs').click_link("Collaborators")
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/collaborators"
-    expect(page).to have_content("Contributions Between")
     page.find('.tabs').click_link("Settings")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/settings"
     expect(page.find('h1')).to have_content(@set.title)
