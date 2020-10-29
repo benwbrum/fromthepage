@@ -196,6 +196,10 @@ class Work < ApplicationRecord
     end
   end
 
+  def total_pages
+    self.work_statistic.total_pages
+  end
+
   def normalize_friendly_id(string)
     string = string.truncate(230, separator: ' ', omission: '')
     super.gsub('_', '-')
