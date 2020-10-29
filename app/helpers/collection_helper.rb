@@ -34,7 +34,7 @@ module CollectionHelper
     end
   end
 
-  def work_stats(work)
+  def work_stats(collection, work)
     @progress_blank = work.work_statistic.pct_blank.round
     unless work.supports_translation
       @progress_annotated = work.work_statistic.pct_annotated.round
@@ -52,7 +52,7 @@ module CollectionHelper
       @type = "translated"
     end
 
-    if @collection.subjects_disabled
+    if collection.subjects_disabled
       unless @progress_review == 0
         @wording = "#{@progress_completed}% #{@type}, #{@progress_review}% needs review"
       else
@@ -63,7 +63,6 @@ module CollectionHelper
     else
       @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}, #{@progress_review}% needs review"
     end
-
   end
 
   def find_transcribe_pages

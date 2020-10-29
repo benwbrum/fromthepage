@@ -34,7 +34,7 @@
           h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
           p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
           .collection-work_stats
-            -work_stats(work)
+            -work_stats(@collection, work)
             span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
             span
               span.progress
