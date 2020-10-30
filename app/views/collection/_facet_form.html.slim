@@ -107,6 +107,11 @@ h3 Facets
                                              <p class='collection-work_snippet'></p>
                                              <div class='collection-work_stats'>
                                                <span>${value.total_pages} pages: ${value.work_stats}</span>
+                                               <span>
+                                                 <span class='progress'>
+                                                   <span style='width: ${value.progress_completed - value.progress_annotated + value.progress_blank}%'></span>
+                                                 </span>
+                                               </span>
                                              </div>
                                            </div>`);
           });

@@ -68,7 +68,7 @@ class CollectionController < ApplicationController
     @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => 10)
     @search = WorkSearch.new(params[:page])
 
-    render :plain => @works.to_json(:methods => [:thumbnail, :total_pages, :work_stats])
+    render :plain => @works.to_json(:methods => [:thumbnail, :total_pages, :work_stats, :progress_annotated, :progress_completed, :progress_blank])
   end
 
   def load_settings
