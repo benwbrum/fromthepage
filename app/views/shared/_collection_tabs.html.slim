@@ -16,11 +16,12 @@
 }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
-  -tabs += [{\
-    :name => t('.collaborators'),
-    :selected => 4,
-    :path => "#{contributors_collection_path(@collection.owner, @collection)}",
-  }]
+  -if @collection.is_a?(Collection)
+    -tabs += [{\
+      :name => t('.collaborators'),
+      :selected => 4,
+      :path => "#{contributors_collection_path(@collection.owner, @collection)}",
+    }]
   -if @collection.is_a?(Collection)
     -tabs += [{\
       :name => t('.settings'),
