@@ -44,7 +44,7 @@
                 -unless @progress_review == 0
                   span(style="width:#{@progress_review}%")
 
-    =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+      =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
     -unless (@collection.works.incomplete_transcription.count == @collection.works.count)
       -link
