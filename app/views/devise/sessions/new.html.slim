@@ -19,13 +19,6 @@ section.signon
         .toolbar_group.aright
           =f.label :remember_me
             =f.check_box :remember_me
-<<<<<<< HEAD
-            |&nbsp;Remember me   
-  hr
-  =render 'devise/shared/links'
-  -unless MIXPANEL_ID.blank?
-    javascript:  mixpanel.track("Sign In");
-=======
             |&nbsp;Remember me
 
   - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
@@ -55,4 +48,3 @@ section.signon
 
 -unless MIXPANEL_ID.blank?
   javascript:  mixpanel.track("Sign In");
->>>>>>> development
