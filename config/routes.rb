@@ -6,6 +6,17 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get "users/new_trial" => "registrations#new_trial"
+    post "registrations/choose_provider", to: 'registrations#choose_saml'
+    post "registrations/set_provider", to: 'registrations#set_saml'
+    match '/users/auth/saml/:identity_provider_id/callback',
+          via: [:get, :post],
+          to: 'users/omniauth_callbacks#saml',
+          as: 'user_omniauth_callback'
+
+    match '/users/auth/saml/:identity_provider_id',
+          via: [:get, :post],
+          to: 'users/omniauth_callbacks#passthru',
+          as: 'user_omniauth_authorize'
   end
 
   iiif_for 'riiif/image', at: '/image-service'
@@ -243,12 +254,15 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  get 'display_search', to: 'display#search'
+  post 'display_search', to: 'display#search'
   get 'demo', to: 'demo#index'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
+  get '/iiif/set/:document_set_id', :to => 'iiif#document_set', as: :iiif_document_set
+  get '/iiif/collections', :to => 'iiif#collections'
+  get '/iiif/collections/:user_id', :to => 'iiif#user_collections', as: :iiif_user_collections
   get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
   get '/iiif/:page_id/notes', :to => 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'

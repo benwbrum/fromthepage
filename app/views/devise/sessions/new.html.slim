@@ -1,7 +1,8 @@
 -content_for :page_title, "Sign In"
 
 section.signon
-  h1 Sign In
+  h1 
+    |Sign in 
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
@@ -18,8 +19,40 @@ section.signon
         .toolbar_group.aright
           =f.label :remember_me
             =f.check_box :remember_me
+<<<<<<< HEAD
             |&nbsp;Remember me   
   hr
   =render 'devise/shared/links'
   -unless MIXPANEL_ID.blank?
     javascript:  mixpanel.track("Sign In");
+=======
+            |&nbsp;Remember me
+
+  - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+    =link_to 'Forgot your password?', new_password_path(resource_name), class: 'forgot'
+
+  -if ENABLE_SAML  
+    hr
+    h4 or
+    =button_to('Sign in with your Institution (SSO)', registrations_choose_provider_path, class: 'strong signin')
+
+  hr
+
+
+  section#sign_up.signup-links
+    h2 Sign Up
+    p Want to join an existing project as a transcriber? Sign up as a transcriber.
+
+    = link_to "Sign Up Now", new_user_registration_path, class: 'button big'
+
+  section#free_trial.signup-links
+    h2 Start Free Trial
+    p Want to begin a new transcription project? Start a free trial.
+
+    =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+
+  hr.clearfix
+
+-unless MIXPANEL_ID.blank?
+  javascript:  mixpanel.track("Sign In");
+>>>>>>> development

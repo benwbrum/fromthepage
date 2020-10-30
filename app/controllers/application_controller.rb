@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception, except: [:switch_locale]
-    
+  protect_from_forgery with: :exception, except: [:switch_locale, :saml]
+
   before_action do
     if current_user && current_user.admin
       Rack::MiniProfiler.authorize_request
@@ -302,7 +302,7 @@ end
   def check_api_access
     if (defined? @collection) && @collection
       if @collection.restricted? && !@collection.api_access
-        render :status => 403, :text => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
+        render :status => 403, :plain => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
       end
     end
   end
