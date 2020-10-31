@@ -287,8 +287,17 @@ end
 
   def track_action
     extras = {}
-    extras[:collection_id] = @collection.id if @collection
-    extras[:collection_title] = @collection.title if @collection
+    if @collection
+      if @collection.is_a? DocumentSet
+        extras[:document_set_id] = @collection.id
+        extras[:document_set_title] = @collection.title
+        extras[:collection_id] = @collection.collection.id
+        extras[:collection_title] = @collection.collection.title
+      else
+        extras[:collection_id] = @collection.id
+        extras[:collection_title] = @collection.title
+      end
+    end
     extras[:work_id] = @work.id if @work
     extras[:work_title] = @work.title if @work
     extras[:page_id] = @page.id if @page
