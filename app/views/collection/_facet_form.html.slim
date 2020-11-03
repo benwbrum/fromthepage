@@ -75,17 +75,28 @@ h3 Facets
   javascript:
     $(function() {
       $("#slider1, #slider2, #slider3").each(function(){
-        $(this).slider({
-          range: true,
-          min: 1500,
-          max: 2020,
-          values: [1500, 2020],
-          slide: function( event, ui ) {
-            $( this.closest("form")[0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-          }
-        });
+        var form = $(this).ready(function() {
+          var current_url = window.location.href;
 
-        $( this.closest("form")[0] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
+          $.get(current_url + "/date_range", function(data) {
+            response = JSON.parse(data);
+            var min_year = response['min_year'];
+            var max_year = response['max_year'];
+            console.log(response);
+
+            form.slider({
+              range: true,
+              min: min_year,
+              max: max_year,
+              values: [min_year, max_year],
+              slide: function( event, ui ) {
+                $( form.closest("form")[0][0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+              }
+            });
+
+            $(form.closest("form")[0][0]).val($( form ).slider( "values", 0 ) + " - " + $( form ).slider( "values", 1 ));
+          });
+        });
       });
 
       $("#search0, #search1, #search2").each(function(){

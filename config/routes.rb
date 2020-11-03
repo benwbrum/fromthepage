@@ -354,6 +354,7 @@ Fromthepage::Application.routes.draw do
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'facets'
       post 'search'
+      get 'date_range'
 
       get 'edit', on: :member
       get 'new_work', on: :member
