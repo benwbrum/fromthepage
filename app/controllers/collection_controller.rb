@@ -71,13 +71,6 @@ class CollectionController < ApplicationController
     render :plain => @works.to_json(:methods => [:thumbnail, :total_pages, :work_stats, :progress_annotated, :progress_completed, :progress_blank])
   end
 
-  def date_range
-    work_dates = @collection.works.pluck(:created_on)
-    min_year = work_dates.min.year
-    max_year = work_dates.max.year
-    render :plain => { min_year: min_year, max_year: max_year }.to_json
-  end
-
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
