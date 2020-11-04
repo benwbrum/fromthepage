@@ -74,22 +74,22 @@ h3 Facets
 -content_for :javascript
   javascript:
     $(function() {
-      var min0 = "#{@works.map{|w| w.work_facet.d0}.min}";
-      var max0 = "#{@works.map{|w| w.work_facet.d0}.max}";
+      var min0 = "#{@works.map{|w| w.work_facet.d0}.min&.year}";
+      var max0 = "#{@works.map{|w| w.work_facet.d0}.max&.year}";
 
-      var min1 = "#{@works.map{|w| w.work_facet.d1}.min}";
-      var max1 = "#{@works.map{|w| w.work_facet.d1}.max}";
+      var min1 = "#{@works.map{|w| w.work_facet.d1}.min&.year}";
+      var max1 = "#{@works.map{|w| w.work_facet.d1}.max&.year}";
 
-      var min2 = "#{@works.map{|w| w.work_facet.d2}.min}";
-      var max2 = "#{@works.map{|w| w.work_facet.d2}.max}";
+      var min2 = "#{@works.map{|w| w.work_facet.d2}.min&.year}";
+      var max2 = "#{@works.map{|w| w.work_facet.d2}.max&.year}";
 
       $("#slider1, #slider2, #slider3").each(function(slider){
-
+        console.log(`min${slider}`);
         $(this).slider({
           range: true,
-          min: 1500,
+          min: 2020,
           max: 2020,
-          values: [1500, 2020],
+          values: [2020, 2020],
           slide: function( event, ui ) {
             $( this.closest("form")[0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
           }
