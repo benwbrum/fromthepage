@@ -79,8 +79,8 @@ h3 Facets
                    {min: "#{@works.map{|w| w.work_facet.d2}.min&.year}", max: "#{@works.map{|w| w.work_facet.d2}.max&.year}"}];
 
       $("#slider1, #slider2, #slider3").each(function(slider){
-        var min = arr[slider]['min'];
-        var max = arr[slider]['max'];
+        var min = parseInt(arr[slider]['min']);
+        var max = parseInt(arr[slider]['max']);
 
         $(this).slider({
           range: true,
