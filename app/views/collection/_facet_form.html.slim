@@ -74,7 +74,17 @@ h3 Facets
 -content_for :javascript
   javascript:
     $(function() {
-      $("#slider1, #slider2, #slider3").each(function(){
+      var min0 = "#{@works.map{|w| w.work_facet.d0}.min}";
+      var max0 = "#{@works.map{|w| w.work_facet.d0}.max}";
+
+      var min1 = "#{@works.map{|w| w.work_facet.d1}.min}";
+      var max1 = "#{@works.map{|w| w.work_facet.d1}.max}";
+
+      var min2 = "#{@works.map{|w| w.work_facet.d2}.min}";
+      var max2 = "#{@works.map{|w| w.work_facet.d2}.max}";
+
+      $("#slider1, #slider2, #slider3").each(function(slider){
+
         $(this).slider({
           range: true,
           min: 1500,
