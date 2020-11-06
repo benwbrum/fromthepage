@@ -281,7 +281,8 @@ class Work < ApplicationRecord
   end
 
   def save_metadata
-    unless self.original_metadata.nil?
+    # this is costly, so only execute if the relevant value has actually changed
+    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only 
       om = JSON.parse(self.original_metadata)
       om.each do |m|
         unless m['label'].blank?
@@ -310,6 +311,9 @@ class Work < ApplicationRecord
           end
         end
       end
+
+      # now update the work_facet
+      FacetConfig.update_facets(self)
     end
   end
 end
