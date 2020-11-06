@@ -89,8 +89,8 @@ class CollectionController < ApplicationController
 
       # TODO change this parameter to reflect the distinction between the old work_search form
       # and the `:search` parameter used by forty_facets
-      if params[:search]
-        @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+      if params[:work_search]
+        @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       elsif (params[:works] == 'untranscribed')
         ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
         @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
