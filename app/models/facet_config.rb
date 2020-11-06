@@ -31,7 +31,12 @@ class FacetConfig < ApplicationRecord
               end
             when "date"
               unless self['order'].nil?
-                w.work_facet.update("d#{self['order']}".to_sym => Date.today.strftime("%F"))
+                begin
+                  date = Date.edtf(value)
+                  w.work_facet.update("d#{self['order']}".to_sym => date)
+                rescue
+                  logger.info("Tried to create a date facet from invalid date #{value}")
+                end
               end
             end
           end
