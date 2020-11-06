@@ -18,7 +18,7 @@ h3 Facets
         -if mc.facet_config[:input_type] == "date"
           h4 =mc.facet_config[:label]
           =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search", id: "search#{count}" } do |f|
-            =f.text_field :date
+            =f.text_field :date, readonly: true
             =f.hidden_field :label, value: mc.facet_config[:label]
             =f.hidden_field :date_order, value: mc.facet_config[:order]
             =f.button "Search"
