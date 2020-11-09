@@ -266,6 +266,9 @@ class ExportController < ApplicationController
 
     # pass credentials, FTS field, and search to background job
     log_file = ContentdmTranslator.log_file(@collection)
+    unless Dir.exist? File.dirname(log_file)
+      FileUtils.mkdir_p(File.dirname(log_file))
+    end    
     cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file} 2>&1 &"
     logger.info(cmd)
     system({'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key}, cmd)
