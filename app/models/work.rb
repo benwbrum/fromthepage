@@ -196,26 +196,6 @@ class Work < ApplicationRecord
     end
   end
 
-  def total_pages
-    self.work_statistic.total_pages
-  end
-
-  def work_stats
-    ApplicationController.helpers.work_stats(self.collection, self)
-  end
-
-  def progress_annotated
-    self.work_statistic.pct_annotated.round
-  end
-
-  def progress_completed
-    self.work_statistic.pct_completed.round
-  end
-
-  def progress_blank
-    self.work_statistic.pct_blank.round
-  end
-
   def normalize_friendly_id(string)
     string = string.truncate(230, separator: ' ', omission: '')
     super.gsub('_', '-')
