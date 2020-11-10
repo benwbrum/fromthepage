@@ -21,7 +21,7 @@ h3 Facets
             =f.text_field :date, readonly: true
             =f.hidden_field :label, value: mc.facet_config[:label]
             =f.hidden_field :date_order, value: mc.facet_config[:order]
-            =f.button "Search"
+            =f.button "Search", id: "slider-search#{count}"
             div id="slider#{count += 1}"
 
 -(0..9).each do |i|
@@ -47,29 +47,7 @@ h3 Facets
                     li
                       -display = "#{entity}"
                       =link_to display, filter.add(entity).path
--(0..2).each do |i|
-  .panel.panel-default
-    #headingMinusOne.panel-heading[role="tab"]
-      h4.panel-title
-        a.collapsed[role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMinusOne" aria-expanded="false" aria-controls="collapseMinusOne"]
-        -@collection.metadata_coverages.each do |mc|
-          -unless mc.facet_config[:label].blank?
-            -if mc.facet_config[:input_type] == "date" && mc.facet_config[:order] == i
-              =mc.facet_config[:label]
-    #collapseMinusOne.panel-collapse.collapse[role="tabpanel" aria-labelledby="headingMinusOne"]
-      .panel-body
-        -selector = "d#{i}".to_sym
-        -[selector].each do |filter_name|
-          -filter = @search.filter(filter_name)
-          .filter
-            .filter-values
-              ul.selectable
-                -filter.facet.reject(&:selected).each do |facet_value|
-                  -entity = facet_value.entity
-                  -unless entity.nil?
-                    li
-                      -display = "#{entity}"
-                      =link_to display, filter.add(entity).path
+
 -d0_values=@works.map{|w| w.work_facet.d0}.reject{|v| v.nil?}
 -d1_values=@works.map{|w| w.work_facet.d1}.reject{|v| v.nil?}
 -d2_values=@works.map{|w| w.work_facet.d2}.reject{|v| v.nil?}
@@ -88,11 +66,11 @@ h3 Facets
 -content_for :javascript
   javascript:
     $(function() {
-                  const arr=[
-                    #{d0_range},
-                    #{d1_range},
-                    #{d2_range}
-                  ];
+      const arr=[
+        #{d0_range},
+        #{d1_range},
+        #{d2_range}
+      ];
       $("#slider1, #slider2, #slider3").each(function(slider){
         var min = parseInt(arr[slider]['min']);
         var max = parseInt(arr[slider]['max']);
@@ -109,37 +87,35 @@ h3 Facets
 
         $( this.closest("form")[0] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
       });
+    });
 
-      $("#search0, #search1, #search2").each(function(){
-        $(this).on("ajax:success", function(status, response, xhr){
-          response = JSON.parse(response);
-          $(".collection-works").empty();
 
-          $.each(response, function(index, value) {
-            $(".collection-works").append(`<div class='collection-work'>
-                                             <div class='collection-work_image'>
-                                               <a href='${window.location.href + "/" + value.slug}'>
-                                                 <img alt='${value.title}' src='${value.thumbnail}' />
-                                               </a>
-                                             </div>
-                                             <h4 class='collection-work_title'><a href='${window.location.href + "/" + value.slug}'>${value.title}</a></h4>
-                                             <p class='collection-work_snippet'></p>
-                                             <div class='collection-work_stats'>
-                                               <span>${value.total_pages} pages: ${value.work_stats}</span>
-                                               <span>
-                                                 <span class='progress'>
-                                                   <span style='width: ${value.progress_completed - value.progress_annotated + value.progress_blank}%'></span>
-                                                 </span>
-                                               </span>
-                                             </div>
-                                           </div>`);
-          });
+    $("#slider-search0").click(function(e){
+      var date_range = this.closest("form")[0];
+      var clean_date_range = date_range.value.replace(/\s*\-\s*/g,"-01-01 - ").replace(/$/, "-12-31");
+      e.preventDefault();
+      var new_url = new URL(window.location.href);
+      new_url.searchParams.append('search[d0]', clean_date_range)
 
-          $(".collection-works").append(`<div class='toolbar'>
-                                           <div class='toolbar_group'>
-                                             <div class='pagination_info'>All <b>${$('.collection-work').length}</b> records</div>
-                                           </div>
-                                         </div>`);
-        });
-      });
+      window.location = new_url.href;
+    });
+
+    $("#slider-search1").click(function(e){
+      var date_range = this.closest("form")[0];
+      var clean_date_range = date_range.value.replace(/\s*\-\s*/g,"-01-01 - ").replace(/$/, "-12-31");
+      e.preventDefault();
+      var new_url = new URL(window.location.href);
+      new_url.searchParams.append('search[d1]', clean_date_range)
+
+      window.location = new_url.href;
+    });
+
+    $("#slider-search2").click(function(e){
+      var date_range = this.closest("form")[0];
+      var clean_date_range = date_range.value.replace(/\s*\-\s*/g,"-01-01 - ").replace(/$/, "-12-31");
+      e.preventDefault();
+      var new_url = new URL(window.location.href);
+      new_url.searchParams.append('search[d2]', clean_date_range)
+
+      window.location = new_url.href;
     });
