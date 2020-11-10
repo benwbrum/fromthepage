@@ -52,7 +52,7 @@ module CollectionHelper
       @type = "translated"
     end
 
-    if collection.subjects_disabled
+    if @collection.subjects_disabled
       unless @progress_review == 0
         @wording = "#{@progress_completed}% #{@type}, #{@progress_review}% needs review"
       else
