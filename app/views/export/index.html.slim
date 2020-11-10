@@ -33,7 +33,7 @@ table.datagrid
     th(colspan="6") =t('.export_as')
 
   -for work in @works
-    -work_stats(work.collection, work)
+    -work_stats(work)
 
     tr
       td.big =link_to work.title, display_read_work_path(:work_id => work.id)
