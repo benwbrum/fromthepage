@@ -266,6 +266,13 @@ class WorkController < ApplicationController
       :translation_instructions,
       :scribes_can_edit_titles, 
       :restrict_scribes,
-      :picture)
+      :picture,
+      :genre,
+      :source_location,
+      :source_collection_name,
+      :source_box_folder,
+      :in_scope,
+      :editorial_notes,
+      :document_date)
   end
 end

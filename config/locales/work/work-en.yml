@@ -11,6 +11,15 @@ en:
       uploaded_by: "Uploaded by"
       transcription_version: "Transcription Version:&nbsp;"
       number_of_pages: "Number of Pages:&nbsp;"
+      genre: "Genre"
+      metadata: "Metadata"
+      source_location: "Source Location"
+      source_collection_name: "Source Collection Name"
+      source_box_folder: "Source Box/Folder"
+      scope: "Scope"
+      out_of_scope: "Out of scope"
+      editorial_notes: "Editorial Notes"
+      document_date: "Document Date"
     create:
       work_created: "Work created successfully"
     update:
