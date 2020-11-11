@@ -31,9 +31,34 @@
       h5 =t('.author_name')
       .big =@work.author
 
-    -if @work.transcription_conventions.present?
-      h5 =t('.transcription_conventions')
-      div ==@work.transcription_conventions
+
+    -if @work.document_date.present?
+      h5 =t('.document_date')
+      .big =@work.document_date
+
+    -if @work.genre.present?
+      h5 =t('.genre')
+      .big =@work.genre
+
+    -if @work.source_location.present?
+      h5 =t('.source_location')
+      .big =@work.source_location
+
+    -if @work.source_collection_name.present?
+      h5 =t('.source_collection_name')
+      .big =@work.source_collection_name
+
+    -if @work.source_box_folder.present?
+      h5 =t('.source_box_folder')
+      .big =@work.source_box_folder
+
+    -unless @work.in_scope
+      h5 =t('.scope')
+      .big =t('.out_of_scope')
+
+    -if @work.editorial_notes.present?
+      h5 =t('.editorial_notes')
+      .big =@work.editorial_notes
       
     -if @work.sc_manifest.present?
       h5 IIIF Manifest 
