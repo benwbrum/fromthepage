@@ -59,9 +59,19 @@ xml:id="export">
     <sourceDesc>
       <msDesc>
         <msIdentifier>
-          <collection><%= @collection.title %></collection>
+          <% unless @work.source_location.blank? %>
+            <repository><%=@work.source_location%></repository>
+          <% end %>
+          <% if @work.source_collection_name.blank? %>
+            <collection><%= @collection.title %></collection>
+          <% else %>
+            <collection><%= @work.source_collection_name %></collection>
+          <% end %>
           <% unless @work.identifier.blank? %>
             <idno><%=@work.identifier%></idno>
+          <% end %>
+          <% unless @work.source_box_folder.blank? %>
+            <idno><%=@work.source_box_folder%></idno>
           <% end %>
         </msIdentifier>
         <physDesc>
@@ -165,6 +175,25 @@ xml:id="export">
 
 
   <profileDesc>
+    <% unless @work.location_of_composition.blank? && @work.document_date.blank? %>
+      <creation>
+        <% unless @work.location_of_composition.blank? %>
+          <placeName><%= @work.location_of_composition %></placeName>
+        <% end %>
+        <% unless @work.document_date.blank? %>
+          <date when="<%= @work.document_date %>"><%= @work.document_date %></date>
+        <% end %>
+      </creation>
+    <% end %>
+
+    <% unless @work.genre.blank? %>
+     <textClass>
+      <keywords>
+       <term type="genre"><%= @work.genre %></term>
+      </keywords>
+     </textClass>
+    <% end %>
+
     <%unless @work.collection.text_language.blank?%>
       <%code = @work.collection.text_language%>
       <langUsage>
@@ -204,7 +233,7 @@ xml:id="export">
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
           <fw type="pageNum"><%= page.title %></fw>
-          <%= raw(xml_to_export_tei(page.xml_text, @context, page.id))%>
+          <%= raw(xml_to_export_tei(page.xml_text, @context, page.id, true))%>
           <% notes = page.notes %>
           <% if notes && notes.length > 0 %>
             <% notes.each do |note| %>
@@ -228,7 +257,7 @@ xml:id="export">
           <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">
         <% end%>
           <fw type="pageNum"><%= page.title %></fw>
-          <%= raw(xml_to_export_tei(page.xml_translation, @context, page.id))%>
+          <%= raw(xml_to_export_tei(page.xml_translation, @context, page.id, true))%>
         <% if @work.pages_are_meaningful? %>
           </div>
         <% end%>
