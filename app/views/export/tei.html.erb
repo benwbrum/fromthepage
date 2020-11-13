@@ -46,6 +46,21 @@ xml:id="export">
           <% end %>
         </respStmt>
       <% end %>
+
+      <% if @work.deeds.where(deed_type: DeedType::PAGE_REVIEWED).present? %>
+        <% User.find(@work.deeds.where(deed_type: DeedType::PAGE_REVIEWED).pluck(:user_id)).each do |user| %>
+          <respStmt xml:id="U<%= user.id %>">
+            <resp n="proof_1"><%= t('.single_proof_by') %></resp>
+            <name><%= user.real_name || user.display_name %></name>
+          </respStmt>
+        <%end%>
+      <%end%>
+
+      <respStmt xml:id="OU<%= current_user.id%>">
+        <resp n="proof_2"><%= t('.double_proof_by') %></resp>
+        <persName><%= current_user.real_name %></persName>
+      </respStmt>
+
     </editionStmt>
 
     <publicationStmt>

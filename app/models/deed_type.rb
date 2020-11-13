@@ -22,6 +22,8 @@ class DeedType
   COLLECTION_ACTIVE = 'coll_act'
   COLLECTION_INACTIVE = 'coll_inact'
   COLLECTION_JOINED = 'coll_join'
+  PAGE_REVIEWED = "pg_revd"
+  TRANSLATION_REVIEWED = 'xlat_revd'
 
   # The TYPES hash houses all of the deed types and makes is easier to access
   # groups of deed types and also their human-readable names. Any new deed type
@@ -42,7 +44,9 @@ class DeedType
     WORK_ADDED => 'Work Added',
     COLLECTION_ACTIVE => 'Collection Active',
     COLLECTION_INACTIVE => 'Collection Inactive',
-    COLLECTION_JOINED => 'Collection Joined'
+    COLLECTION_JOINED => 'Collection Joined',
+    PAGE_REVIEWED => 'Page Reviewed',
+    TRANSLATION_REVIEWED => 'Translation Reviewed'
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
@@ -64,7 +68,9 @@ class DeedType
         ARTICLE_EDIT,
         OCR_CORRECTED,
         NEEDS_REVIEW,
+        PAGE_REVIEWED,
         TRANSLATION_REVIEW,
+        TRANSLATION_REVIEWED,
         COLLECTION_ACTIVE,
         COLLECTION_INACTIVE,
         COLLECTION_JOINED
@@ -99,6 +105,7 @@ class DeedType
       [
         PAGE_EDIT,
         NEEDS_REVIEW,
+        PAGE_REVIEWED,
         OCR_CORRECTED,
         PAGE_MARKED_BLANK,
         PAGE_TRANSCRIPTION
@@ -109,6 +116,7 @@ class DeedType
       [
         PAGE_TRANSLATION_EDIT,
         TRANSLATION_REVIEW,
+        TRANSLATION_REVIEWED,
         PAGE_TRANSLATED
       ]
     end

@@ -84,6 +84,7 @@ class TranscribeController  < ApplicationController
         record_deed(DeedType::TRANSLATION_REVIEW)
       else
         @page.translation_status = nil
+        record_deed(DeedType::TRANSLATION_REVIEWED)
         return
       end
     elsif @page.work.collection.review_workflow == true && @page.status == nil
@@ -98,6 +99,7 @@ class TranscribeController  < ApplicationController
         end
       else
         @page.status = nil
+        record_deed(DeedType::PAGE_REVIEWED)
         return
       end
     end
@@ -133,7 +135,9 @@ class TranscribeController  < ApplicationController
           if @page.work.ocr_correction
             record_deed(DeedType::OCR_CORRECTED)
           else
-            record_transcription_deed
+            if @page.source_text_previously_changed?
+              record_transcription_deed
+            end
           end
           #don't reset subjects if they're disabled
           unless @page.collection.subjects_disabled || (@page.source_text.include?("[[") == false)
