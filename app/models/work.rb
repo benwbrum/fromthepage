@@ -1,7 +1,7 @@
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
-
+  
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
 
@@ -30,6 +30,7 @@ class Work < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }
+  validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
 
@@ -114,6 +115,28 @@ class Work < ApplicationRecord
 
   def articles
     Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
+  end
+
+
+  def document_date=(date_as_edtf)
+    if date_as_edtf.respond_to? :to_edtf
+      self[:document_date] = date_as_edtf.to_edtf
+    else
+      # the edtf-ruby gem has some gaps in coverage for e.g. seasons
+      self[:document_date] = date_as_edtf.to_s
+    end      
+  end
+
+  def document_date
+    Date.edtf(self[:document_date])
+  end
+
+  def document_date_is_edtf
+    if self[:document_date].present?
+      if Date.edtf(self[:document_date]).nil?
+        errors.add(:document_date, 'must be in EDTF format')
+      end
+    end
   end
 
   def update_deed_collection
