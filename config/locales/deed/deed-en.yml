@@ -25,7 +25,7 @@ en:
         added_work: "added %{work}"
         in_the_work: " in the work %{work}"
         in_collection: " in %{collection} collection"
-      joined: "joined "
+        joined: "joined "
       this_collection: "this collection"
     deeds:
       show_more: "Show More"
