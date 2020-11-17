@@ -105,6 +105,11 @@ describe "guest user actions" do
     page.fill_in 'page_source_text', with: "Third Guest Deed"
     find('#save_button_top').click
 
+    # Transcribe Tab: Contribution 4
+    page.find('.tabs').click_link("Transcribe")
+    page.fill_in 'page_source_text', with: "Fourth Guest Deed"
+    find('#save_button_top').click
+
     # Convert Account: after 3 transcriptions, the user should be forced to sign up
     expect(page.current_path).to eq new_user_registration_path
     fill_in 'User Name', with: 'martha'
