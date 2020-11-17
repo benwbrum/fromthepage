@@ -73,7 +73,9 @@ class DeedType
         TRANSLATION_REVIEWED,
         COLLECTION_ACTIVE,
         COLLECTION_INACTIVE,
-        COLLECTION_JOINED
+        COLLECTION_JOINED,
+        PAGE_TRANSLATED,
+        PAGE_TRANSLATION_EDIT
       ]
     end
 
