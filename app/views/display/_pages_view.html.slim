@@ -41,7 +41,7 @@
                     -help = link_to('help correct', action)
                   -else
                     -status = t('.transcribed')
-                    -help = link_to('help transcribe', action)
+                    -help = link_to(t('.help_transcribe'), action)
                   p.nodata_text == t('.this_page_is_not', status: status, help: help)
                 -else
                   p.nodata_text == t('.collaboration_is_restricted')

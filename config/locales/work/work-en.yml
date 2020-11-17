@@ -24,3 +24,5 @@ en:
       work_created: "Work created successfully"
     update:
       work_updated: "Work updated successfully"
+    edit:
+      additional_metadata: "Additional Metadata"
