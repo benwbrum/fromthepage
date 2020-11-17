@@ -25,6 +25,9 @@ en:
       article: "Article"
       categories: "Categories"
       user_deleted: "User profile has been deleted"
+      contribution:
+        one: "Contribution"
+        other: "Contributions"
     update_profile:
       update_user_profile: "Update User Profile"
       name_only_required: "Your name is the only required field."
