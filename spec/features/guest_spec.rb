@@ -98,7 +98,6 @@ describe "guest user actions" do
     page.find('.tabs').click_link("Translate")
     page.fill_in 'page_source_translation', with: "Guest Translation"
     find('#save_button_top').click
-    binding.pry
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
 
     # Transcribe Tab: Contribution 3
