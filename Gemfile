@@ -52,6 +52,9 @@ gem 'warning'
 
 gem 'rails-i18n', '~> 6.0.0'
 
+gem 'edtf'
+gem 'edtf-humanize'
+
 group :assets do
   gem 'uglifier'
 end
