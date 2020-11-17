@@ -27,3 +27,5 @@ en:
       page_deleted: "Page has been deleted"
     create:
       page_created: "Page created successfully"
+    update:
+      page_updated: "Page updated"
