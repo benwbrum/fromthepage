@@ -12,6 +12,7 @@
 .columns
   article.maincol
     =form_for :work, url: work_update_path(id: @work.id), html: {id: :update} do |f|
+      =validation_summary @work.errors
       table.form.settings
         tr.big
           th =f.label :title, 'Work title'
