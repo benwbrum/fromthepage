@@ -34,7 +34,7 @@
 
     -if @work.document_date.present?
       h5 =t('.document_date')
-      .big =@work.document_date
+      .big =@work.document_date.humanize
 
     -if @work.genre.present?
       h5 =t('.genre')

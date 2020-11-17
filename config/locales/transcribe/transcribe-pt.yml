@@ -29,6 +29,7 @@ pt:
       save_changes: "Guardar Alterações"
       more_help: "Mais ajuda...."
       alert: "Esta página está sendo editada por outro usuário!"
+      notes_and_questions: "Notas e Perguntas"
     guest:
       save_up_to_three_transcriptions: "Você pode guardar até três transcrições <br> como hóspede ou se inscrever agora."
       transcribe_as_guest: "Transcrever como hóspede"
