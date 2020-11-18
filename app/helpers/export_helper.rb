@@ -130,7 +130,7 @@ module ExportHelper
     
   end
 
-  def xml_to_export_tei(xml_text, context, page_id = "")
+  def xml_to_export_tei(xml_text, context, page_id = "", add_corrsp=false)
 
     return "" if xml_text.blank?
 #    xml_text.gsub!(/\n/, "")
@@ -146,7 +146,9 @@ module ExportHelper
     doc.elements.each_with_index("//p") do |e,i|
       transform_links(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
-      e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+      if add_corrsp
+        e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
+      end
       my_display_html << e.to_s
     end
 

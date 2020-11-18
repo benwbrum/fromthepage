@@ -24,6 +24,9 @@ es:
       recent_article_edits: "Ediciones del Artículo Recientes "
       article: "Artículo"
       categories: "Categorías"
+      contribution:
+        one: ""  #todo
+        other: "" #todo
     update_profile:
       update_user_profile: "Actualizar Perfil de Usuario"
       name_only_required: "Tu nombre es el único campo obligatorio."

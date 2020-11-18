@@ -1,8 +1,18 @@
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $('.title').click(function(){
+        $(this).parent().next().toggle();
+      });
+    });
+
+
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 6, :work_id => @work.id }})
 
 .columns
   article.maincol
     =form_for :work, url: work_update_path(id: @work.id), html: {id: :update} do |f|
+      =validation_summary @work.errors
       table.form.settings
         tr.big
           th =f.label :title, 'Work title'
@@ -10,12 +20,6 @@
         tr
           th =f.label :collection_id
           td =f.collection_select(:collection_id, @collections, :id, :title)
-        tr
-          th =f.label :author
-          td =f.text_field :author, value: @work.author
-        tr
-          th =f.label :location_of_composition, 'Location'
-          td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
           th =f.label :slug, 'URL'
           td =f.text_field :slug, value: @work.slug
@@ -32,43 +36,24 @@
           td
             p.nomargin.settings Identifier from systems outside of FromThePage, to be used correlating exports to external records.  (This field is not visible to the public.)
         tr
-          th.hidden Pages are meaningful
-          td
-            p.settings <b>Pages Are Meaningful</b>: Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
+          td(colspan="2")
             =f.check_box :pages_are_meaningful, value: @work.pages_are_meaningful
             |&nbsp;
             =f.label :pages_are_meaningful, 'Pages Are Meaningful'
+            br
+            span.settings Pages can be meaningful semantic divisions of a work (such as in a journal with a date for each page), or they might not be (as in letters or books, where the text should not be divided into sections based on pages).  When checked, the work will have page titles prominently displayed.
 
         tr
-          th.hidden Supports Translation
-          td
-            p.settings <b>Supports Translation</b>: A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
-            =f.check_box :supports_translation, value: @work.supports_translation
-            |&nbsp;
-            =f.label :supports_translation, "Support Translation"
-        tr
-          th.hidden OCR Correction Enabled
-          td
-            p.settings <b>OCR Correction Enabled</b>: A work may begin with OCR text that needs to be corrected.  When checked, the Transcribe tab will be replaced by a Correct tab.
+          td(colspan="2")
             =f.check_box :ocr_correction, value: @work.ocr_correction
             |&nbsp;
             =f.label :ocr_correction, 'Enable OCR Correction'
+            br
+            span.settings A work may begin with OCR text that needs to be corrected.  When checked, the Transcribe tab will be replaced by a Correct tab.
         tr
           td(colspan="2")
             =f.label :description, class: 'above'
             =f.text_area :description, rows: 5, value: @work.description
-        tr
-          td(colspan="2")
-            =f.label :physical_description, class: 'above'
-            =f.text_area :physical_description, rows: 5, value: @work.physical_description
-        tr
-          td(colspan="2")
-            =f.label :document_history, class: 'above'
-            =f.text_area :document_history, rows: 5, value: @work.document_history
-        tr
-          td(colspan="2")
-            =f.label :permission_description, class: 'above'
-            =f.text_area :permission_description, rows: 5, value: @work.permission_description
         tr
           td(colspan="2")
             =f.label :transcription_conventions, class: 'above'
@@ -84,8 +69,64 @@
                   
         tr
           td(colspan="2")
+            =f.check_box :supports_translation, value: @work.supports_translation
+            |&nbsp;
+            =f.label :supports_translation, "Support Translation"
+            br
+            span.settings A work can be translated as well as transcribed.  When checked, the work will have a Translation tab for each page.
+        tr
+          td(colspan="2")
             =f.label :translation_instructions, class: 'above'
             =f.text_area :translation_instructions, rows: 5, value: @work.translation_instructions
+
+      h3
+        a(href="#" class="title" onclick="return false;" id="import-iiif-manifest") =t('.additional_metadata')
+
+      table.form.settings style="display: none"
+        tr
+          td(colspan="2") These metadata fields are displayed on this work's About screen and in TEI exports, but do not affect functionality of FromThePage.
+        tr
+          th =f.label :author
+          td =f.text_field :author, value: @work.author
+        tr
+          th =f.label :location_of_composition, 'Place of Creation'
+          td =f.text_field :location_of_composition, value: @work.location_of_composition
+        tr
+          th =f.label :document_date, 'Document Date'
+          td =f.text_field :document_date, value: @work.document_date
+        tr
+          th =f.label :genre
+          td =f.text_field :genre, value: @work.genre
+        tr
+          th =f.label :source_location, 'Source Location'
+          td =f.text_field :source_location, value: @work.source_location
+        tr
+          th =f.label :source_collection_name, 'Source Collection Name'
+          td =f.text_field :source_collection_name, value: @work.source_collection_name
+        tr
+          th =f.label :source_box_folder, 'Source Box/Folder'
+          td =f.text_field :source_box_folder, value: @work.source_box_folder
+        tr
+          td(colspan="2")
+            =f.check_box :in_scope, value: @work.in_scope
+            |&nbsp;
+            =f.label :in_scope, "In Scope"
+        tr
+          td(colspan="2")
+            =f.label :editorial_notes, class: 'above'
+            =f.text_area :editorial_notes, rows: 5, value: @work.editorial_notes
+        tr
+          td(colspan="2")
+            =f.label :physical_description, class: 'above'
+            =f.text_area :physical_description, rows: 5, value: @work.physical_description
+        tr
+          td(colspan="2")
+            =f.label :document_history, class: 'above'
+            =f.text_area :document_history, rows: 5, value: @work.document_history
+        tr
+          td(colspan="2")
+            =f.label :permission_description, class: 'above'
+            =f.text_area :permission_description, rows: 5, value: @work.permission_description
       .toolbar
         .toolbar_group
           =link_to(work_delete_path(:work_id => @work.id), data: { :confirm => 'Are you sure you want to delete this work? After deleting you won\'t be able to recover it!' }, class: 'button')

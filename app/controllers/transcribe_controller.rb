@@ -80,25 +80,35 @@ class TranscribeController  < ApplicationController
         @page.translation_status = Page::STATUS_NEEDS_REVIEW
         record_deed(DeedType::TRANSLATION_REVIEW)
       elsif params[:page]['needs_review'] == '1'
-        @page.translation_status = Page::STATUS_NEEDS_REVIEW
-        record_deed(DeedType::TRANSLATION_REVIEW)
+        unless @page.translation_status == Page::STATUS_NEEDS_REVIEW
+          @page.translation_status = Page::STATUS_NEEDS_REVIEW
+          record_deed(DeedType::TRANSLATION_REVIEW)
+        end
       else
-        @page.translation_status = nil
+        if @page.translation_status == Page::STATUS_NEEDS_REVIEW
+          @page.translation_status = nil
+          record_deed(DeedType::TRANSLATION_REVIEWED)
+        end
         return
       end
     elsif @page.work.collection.review_workflow == true && @page.status == nil
       @page.status = Page::STATUS_NEEDS_REVIEW
       record_deed(DeedType::NEEDS_REVIEW)
     else
-      if params[:page]['needs_review'] == '1'
-        @page.status = Page::STATUS_NEEDS_REVIEW
-        record_deed(DeedType::NEEDS_REVIEW)
-        if @page.translation_status == 'blank'
-          @page.translation_status = nil
+      if params[:page]['needs_review'] == '1'        
+        unless @page.status == Page::STATUS_NEEDS_REVIEW
+          @page.status = Page::STATUS_NEEDS_REVIEW
+          record_deed(DeedType::NEEDS_REVIEW)
         end
+        #if @page.translation_status == 'blank'
+        #  @page.translation_status = nil
+        #end
       else
-        @page.status = nil
-        return
+        if @page.status == Page::STATUS_NEEDS_REVIEW
+          @page.status = nil
+          record_deed(DeedType::PAGE_REVIEWED)
+          return
+        end
       end
     end
   end
@@ -133,7 +143,9 @@ class TranscribeController  < ApplicationController
           if @page.work.ocr_correction
             record_deed(DeedType::OCR_CORRECTED)
           else
-            record_transcription_deed
+            if @page.source_text_previously_changed?
+              record_transcription_deed
+            end
           end
           #don't reset subjects if they're disabled
           unless @page.collection.subjects_disabled || (@page.source_text.include?("[[") == false)
@@ -154,7 +166,7 @@ class TranscribeController  < ApplicationController
 
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
-            deeds = Deed.where(user_id: current_user.id).count
+            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
             if deeds < GUEST_DEED_COUNT
               flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
             else
@@ -268,7 +280,7 @@ class TranscribeController  < ApplicationController
 
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
-            deeds = Deed.where(user_id: current_user.id).count
+            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
             if deeds < GUEST_DEED_COUNT
               flash[:notice] = t('.notice', guest_deed_count: GUEST_DEED_COUNT)
             else
