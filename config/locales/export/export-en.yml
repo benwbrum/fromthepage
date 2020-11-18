@@ -49,6 +49,8 @@ en:
       dynamic_tei_export: "Dynamic TEI export from FromThePage (version %{version})"
       empty_transcript: "Empty transcript -- probably initial upload of page facsimile."
       changes_to_page_transcript: "Changes to page transcript."
+      single_proof_by: "Single Proof by:"
+      double_proof_by: "Double Proof by:"
     text:
       export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
       identifier: "Identifier: %{work}"

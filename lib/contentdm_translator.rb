@@ -45,7 +45,7 @@ module ContentdmTranslator
 
   def self.fetch_cdm_field_config(collection)
     cdm_url = collection_to_cdm_field_config(collection)
-    cdm_response = open(cdm_url).read
+    cdm_response = URI.open(cdm_url).read
     JSON.parse(cdm_response)
   end
 

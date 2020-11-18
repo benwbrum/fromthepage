@@ -29,6 +29,7 @@ es:
       save_changes: "Guardar Cambios"
       more_help: "Más ayuda...."
       alert: "¡Esta página está siendo editada por otro usuario!"
+      notes_and_questions: "" #TODO
     guest:
       save_up_to_three_transcriptions: "Puedes guardar hasta tres transcripciones <br>como visitante o registrarte ahora."
       transcribe_as_guest: "Transcribir como visitante"
