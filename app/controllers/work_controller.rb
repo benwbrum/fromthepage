@@ -103,10 +103,10 @@ class WorkController < ApplicationController
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
-  def update_work
-    @work.update(work_params)
-    redirect_to :action => 'edit', :work_id => @work.id
-  end
+  # def update_work
+  #   @work.update(work_params)
+  #   redirect_to :action => 'edit', :work_id => @work.id
+  # end
 
   # tested
   def create
@@ -165,7 +165,8 @@ class WorkController < ApplicationController
     else
       if @work.save
         flash[:notice] = t('.work_updated')
-        redirect_back fallback_location: root_path
+        col = Collection.find(@work.collection_id)
+        redirect_to edit_collection_work_path(col.owner, col, @work)
       else
         @scribes = @work.scribes
         @nonscribes = User.all - @scribes
