@@ -166,7 +166,7 @@ class TranscribeController  < ApplicationController
 
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
-            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.transcriptions_or_corrections).count
+            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
             if deeds < GUEST_DEED_COUNT
               flash[:notice] = t('.you_may_save_notice', guest_deed_count: GUEST_DEED_COUNT)
             else
@@ -280,7 +280,7 @@ class TranscribeController  < ApplicationController
 
           #if this is a guest user, force them to sign up after three saves
           if current_user.guest?
-            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.transcriptions_or_corrections).count
+            deeds = Deed.where(user_id: current_user.id).where(deed_type: DeedType.edited_and_transcribed_pages).count
             if deeds < GUEST_DEED_COUNT
               flash[:notice] = t('.notice', guest_deed_count: GUEST_DEED_COUNT)
             else
