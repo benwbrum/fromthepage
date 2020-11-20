@@ -146,7 +146,6 @@ class WorkController < ApplicationController
       title = @work.title.parameterize
       @work.assign_attributes(slug: title)
     end
-
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)
@@ -165,8 +164,7 @@ class WorkController < ApplicationController
     else
       if @work.save
         flash[:notice] = t('.work_updated')
-        col = Collection.find(@work.collection_id)
-        redirect_to edit_collection_work_path(col.owner, col, @work)
+        redirect_to edit_collection_work_path(@collection.owner, @collection, @work)
       else
         @scribes = @work.scribes
         @nonscribes = User.all - @scribes
