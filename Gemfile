@@ -56,6 +56,7 @@ gem 'rails-i18n', '~> 6.0.0'
 gem 'forty_facets'
 
 gem 'edtf'
+gem 'edtf-humanize'
 
 group :assets do
   gem 'uglifier'
@@ -83,6 +84,7 @@ group :development, :test do
   # https://github.com/dejan/rails_panel
   gem 'bullet'
   gem 'listen'
+  gem 'i18n-tasks', '~> 0.9.31'
 end
 
 # Use SassC for stylesheets
