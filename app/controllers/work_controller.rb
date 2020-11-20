@@ -103,10 +103,10 @@ class WorkController < ApplicationController
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
-  def update_work
-    @work.update(work_params)
-    redirect_to :action => 'edit', :work_id => @work.id
-  end
+  # def update_work
+  #   @work.update(work_params)
+  #   redirect_to :action => 'edit', :work_id => @work.id
+  # end
 
   # tested
   def create
@@ -127,39 +127,56 @@ class WorkController < ApplicationController
   end
 
   def update
-    work = Work.find(params[:id]) || Work.find_by(id: params[:work_id])
-    id = work.collection_id
+    @work = Work.find(params[:id]) || Work.find_by(id: params[:work_id])
+    id = @work.collection_id
+    @collection = @work.collection if @collection.nil?
     #check the work transcription convention against the collection version
     #if they're the same, don't update that attribute of the work
     params_convention = params[:work][:transcription_conventions]
-    collection_convention = work.collection.transcription_conventions
+    collection_convention = @work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      work.update(work_params.except(:transcription_conventions))
+      @work.assign_attributes(work_params.except(:transcription_conventions))
     else
-      work.update(work_params)
+      @work.assign_attributes(work_params)
     end
 
     #if the slug field param is blank, set slug to original candidate
     if params[:work][:slug] == ""
-      title = work.title.parameterize
-      work.update(slug: title)
+      title = @work.title.parameterize
+      @work.assign_attributes(slug: title)
     end
-
     if params[:work][:collection_id] != id.to_s
-      change_collection
-      flash[:notice] = t('.work_updated')
-      #find new collection to properly redirect
-      col = Collection.find_by(id: work.collection_id)
-      redirect_to edit_collection_work_path(col.owner, col, work)
+      if @work.save
+        change_collection(@work)
+        flash[:notice] = t('.work_updated')
+        #find new collection to properly redirect
+        col = Collection.find_by(id: @work.collection_id)
+        redirect_to edit_collection_work_path(col.owner, col, @work)
+      else
+        @scribes = @work.scribes
+        @nonscribes = User.all - @scribes
+        @collections = current_user.collections
+        #set subjects to true if there are any articles/page_article_links
+        @subjects = !@work.articles.blank?
+        render :edit
+      end
     else
-      flash[:notice] = t('.work_updated')
-      redirect_back fallback_location: root_path
+      if @work.save
+        flash[:notice] = t('.work_updated')
+        redirect_to edit_collection_work_path(@collection.owner, @collection, @work)
+      else
+        @scribes = @work.scribes
+        @nonscribes = User.all - @scribes
+        @collections = current_user.collections
+        #set subjects to true if there are any articles/page_article_links
+        @subjects = !@work.articles.blank?
+        render :edit
+      end
     end
   end
 
-  def change_collection
-    work = Work.find_by(id: params[:id])
+  def change_collection(work)
     record_deed(work)
     unless work.articles.blank?
       #delete page_article_links for this work
@@ -266,6 +283,13 @@ class WorkController < ApplicationController
       :translation_instructions,
       :scribes_can_edit_titles, 
       :restrict_scribes,
-      :picture)
+      :picture,
+      :genre,
+      :source_location,
+      :source_collection_name,
+      :source_box_folder,
+      :in_scope,
+      :editorial_notes,
+      :document_date)
   end
 end
