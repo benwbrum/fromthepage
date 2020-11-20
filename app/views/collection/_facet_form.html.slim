@@ -14,7 +14,7 @@
     .ul
       - filter.selected.each do |entity|
         .li
-          = link_to "#{entity} [X]", filter.remove(entity).path
+          = link_to "[x] #{entity}", filter.remove(entity).path
   =link_to "Reset All Filters", "?", class: 'button reset-button'
 
 h3 Facets
@@ -37,7 +37,7 @@ h3 Facets
 -@collection.facet_configs.each do |facet_config|
   -if !facet_config.label.blank? && facet_config.input_type == "text"
     -i = facet_config.order.to_i
-    h3
+    h4
       a(href="#" class="facet-label" onclick="return false;" id="import-iiif-manifest")               =facet_config[:label]
     section style="display: none"
       -selector = "s#{i}".to_sym
