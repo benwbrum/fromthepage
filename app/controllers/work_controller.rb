@@ -103,10 +103,10 @@ class WorkController < ApplicationController
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
-  def update_work
-    @work.update(work_params)
-    redirect_to :action => 'edit', :work_id => @work.id
-  end
+  # def update_work
+  #   @work.update(work_params)
+  #   redirect_to :action => 'edit', :work_id => @work.id
+  # end
 
   # tested
   def create
@@ -146,7 +146,6 @@ class WorkController < ApplicationController
       title = @work.title.parameterize
       @work.assign_attributes(slug: title)
     end
-
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)
@@ -165,7 +164,7 @@ class WorkController < ApplicationController
     else
       if @work.save
         flash[:notice] = t('.work_updated')
-        redirect_back fallback_location: root_path
+        redirect_to edit_collection_work_path(@collection.owner, @collection, @work)
       else
         @scribes = @work.scribes
         @nonscribes = User.all - @scribes
