@@ -103,10 +103,10 @@ class WorkController < ApplicationController
     redirect_to :action => 'edit', :work_id => @work.id
   end
 
-  # def update_work
-  #   @work.update(work_params)
-  #   redirect_to :action => 'edit', :work_id => @work.id
-  # end
+  def update_work
+    @work.update(work_params)
+    redirect_to :action => 'edit', :work_id => @work.id
+  end
 
   # tested
   def create
