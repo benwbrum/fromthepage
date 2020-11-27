@@ -123,6 +123,26 @@ class CollectionController < ApplicationController
 
       if @collection.facets_enabled?
         @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+
+        @date_ranges = []
+        date_configs = @collection.facet_configs.where(:input_type => 'date').order('"order"')
+        if date_configs.size > 0
+          collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
+          date_configs.each do |facet_config|
+            facet_attr = [:d0,:d1,:d2][facet_config.order]
+
+            selection_values = @works.map{|w| w.work_facet.send(facet_attr)}.reject{|v| v.nil?}
+            collection_values = collection_facets.map{|work_facet| work_facet.send(facet_attr)}.reject{|v| v.nil?}
+
+            @date_ranges << {
+              :facet => facet_attr,
+              :max => collection_values.max.year,
+              :min => collection_values.min.year,
+              :top => selection_values.max.year,
+              :bottom => selection_values.min.year
+            }
+          end
+        end
       end
     else
       redirect_to "/404"

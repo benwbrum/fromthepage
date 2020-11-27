@@ -56,38 +56,22 @@ h3 Facets
 
 
 
--d0_values=@works.map{|w| w.work_facet.d0}.reject{|v| v.nil?}
--d1_values=@works.map{|w| w.work_facet.d1}.reject{|v| v.nil?}
--d2_values=@works.map{|w| w.work_facet.d2}.reject{|v| v.nil?}
--if d0_values.min.nil?
-  -d0_range="{min: 1, max: 2}"
--else
-  -d0_range="{min: #{d0_values.min.year}, max: #{d0_values.max&.year}}"
--if d1_values.min.nil?
-  -d1_range="{min: 1, max: 2}"
--else
-  -d1_range="{min: #{d1_values.min.year}, max: #{d1_values.max.year}}"
--if d2_values.min.nil?
-  -d2_range="{min: 1, max: 2}"
--else
-  -d2_range="{min: #{d2_values.min.year}, max: #{d2_values.max.year}}"
 -content_for :javascript
   javascript:
     $(function() {
-      const arr=[
-        #{d0_range},
-        #{d1_range},
-        #{d2_range}
-      ];
+      const bounds=#{raw(@date_ranges.to_json)};
+
       $("#slider1, #slider2, #slider3").each(function(slider){
-        var min = parseInt(arr[slider]['min']);
-        var max = parseInt(arr[slider]['max']);
+        var min = parseInt(bounds[slider]['min'])
+        var max = parseInt(bounds[slider]['max'])
+        var bottom = parseInt(bounds[slider]['bottom'])
+        var top = parseInt(bounds[slider]['top'])
 
         $(this).slider({
           range: true,
           min: min,
           max: max,
-          values: [min, max],
+          values: [bottom, top],
           slide: function( event, ui ) {
             $( this.closest("form")[0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
           }
