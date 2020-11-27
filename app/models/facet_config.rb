@@ -32,6 +32,7 @@ class FacetConfig < ApplicationRecord
           case input_type
           when "text"
             unless self['order'].nil?
+              value = Nokogiri::HTML(value).text
               w.work_facet.update("s#{self['order']}".to_sym => value)
             end
           when "date"
