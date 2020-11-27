@@ -21,6 +21,16 @@ class FacetConfig < ApplicationRecord
         w.create_work_facet
       end
 
+      # blank out any current entry
+      unless self['order'].blank?
+        if self.input_type == 'text'
+          key = "s#{self['order']}".to_sym
+        else
+          "d#{self['order']}".to_sym
+        end
+        w.work_facet.update(key => nil)
+      end
+
       om.each do |o|
         label = o['label']
         value = o['value']

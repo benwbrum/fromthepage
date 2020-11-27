@@ -116,13 +116,14 @@ class CollectionController < ApplicationController
       else
         @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       end
-      # construct the search object from the parameters
-      @search = WorkSearch.new(params)
-      # the search results are WorkFacets, not works, so we need to fetch the works themselves
-      facet_ids = @search.result.pluck(:id)
 
       if @collection.facets_enabled?
-        @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+        # construct the search object from the parameters
+        @search = WorkSearch.new(params)
+        @search.filter([:work, :collection_id]).value=@collection.id
+        # the search results are WorkFacets, not works, so we need to fetch the works themselves
+        facet_ids = @search.result.pluck(:id)
+        @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
 
         @date_ranges = []
         date_configs = @collection.facet_configs.where(:input_type => 'date').order('"order"')
