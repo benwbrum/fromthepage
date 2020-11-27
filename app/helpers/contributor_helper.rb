@@ -68,7 +68,18 @@ module ContributorHelper
     #compare older to recent list to get new transcribers
     @new_transcribers = recent_users - older_users
     all_transcribers = User.includes(:deeds).where(deeds: {collection_id: @collection.id}).distinct
-    @all_collaborators = all_transcribers.map { |user| "#{user.display_name} <#{user.email}>"}.join(', ')
+    @all_collaborators = all_transcribers.map do |user|
+      "#{user.display_name} <#{user.email}>" if user.notification.owner_contact?
+    end.join(', ')
+  end
+
+  def format_collaborators
+    @collaborators = @all_collaborators.split
+    last_char = @collaborators.last[-1]
+    email = ", support@fromthepage.com"
+    email.delete!(", ") if last_char == ","
+
+    @all_collaborators + email
   end
 
   def owner_expirations

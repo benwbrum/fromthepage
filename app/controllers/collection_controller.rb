@@ -337,6 +337,8 @@ class CollectionController < ApplicationController
         time_proportional = (@user_time_proportional[user.id] / 60 + 1).floor
       end
 
+      user.email = "opted out" unless user.notification.owner_contact?
+
       id_data = [user.display_name, user.email]
       time_data = [time_total, time_proportional]
 
@@ -396,6 +398,8 @@ class CollectionController < ApplicationController
 
     note = ''
     note += d.note.title if d.deed_type == DeedType::NOTE_ADDED && !d.note.nil?
+
+    d.user.email = "opt out" unless d.user.notification.owner_contact?
 
       record = [
         d.created_at,
