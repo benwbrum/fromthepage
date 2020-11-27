@@ -12,10 +12,9 @@ class WorkSearch < FortyFacets::FacetSearch
   facet :s8, name: 'Text 8'
   facet :s9, name: 'Text 9'
 
-  # eventually these should be ranges as follows
-  # range :d1, name: 'Date 1'
-  # range :d2, name: 'Date 2'
   range :d0, name: 'Date 0'
   range :d1, name: 'Date 1'
   range :d2, name: 'Date 2'
+
+  facet [:work, :collection_id]
 end

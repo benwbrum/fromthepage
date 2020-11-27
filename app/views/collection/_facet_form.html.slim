@@ -33,8 +33,7 @@ h3 Facets
             =f.hidden_field :date_order, value: facet_config.order
             =f.button "Search", id: "slider-search#{count}"
             div id="slider#{count += 1}"
-
--@collection.facet_configs.each do |facet_config|
+-@collection.facet_configs.order(:order).each do |facet_config|
   -if !facet_config.label.blank? && facet_config.input_type == "text"
     -i = facet_config.order.to_i
     h4
