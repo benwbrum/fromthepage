@@ -70,7 +70,7 @@ describe "collection metadata", :order => :defined do
     attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
     click_button('Upload')
     filename.reload
-    expect(filename.count).to eq 6
+    expect(filename.count).to eq 5
   end
 
   it "enables facets" do
@@ -96,7 +96,7 @@ describe "collection metadata", :order => :defined do
     click_button 'Save Metadata'
     expect(page).to have_content("Collection facets updated successfully")
     expect(find_field('metadata_filename_label').value).to eq "Filename"
-    expect(find_field('metadata_filename_order').value).to eq "9"
+    expect(find_field('metadata_filename_order').value).to eq "0"
   end
 
   it "allows a numeric value from 0 to 9 for text type" do
