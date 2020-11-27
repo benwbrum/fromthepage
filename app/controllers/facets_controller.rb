@@ -68,9 +68,19 @@ class FacetsController < ApplicationController
     end
 
     if errors.empty?
+      # renumber down to contiguous 0-indexed values
+      collection.facet_configs.where(:input_type => 'text').where.not(:order => nil).each_with_index do |facet_config, i|
+        facet_config.update(order: i)
+      end
+      collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).each_with_index do |facet_config, i|
+        facet_config.update(order: i)
+      end
+
       redirect_to collection_facets_path(collection.owner, collection), notice: "Collection facets updated successfully"
     else
       render('collection/facets', :locals => { :@metadata_coverages => collection.metadata_coverages, :@errors => errors })
     end
   end
 end
+
+
