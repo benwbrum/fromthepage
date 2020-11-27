@@ -33,6 +33,7 @@ before_install:
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
   - qtchooser -qt=qt5
   - mysql -e 'CREATE DATABASE test;'
+  - nvm install --lts
 
 before_script:
   - bundle exec rake db:create
