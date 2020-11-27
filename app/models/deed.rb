@@ -40,6 +40,6 @@ class Deed < ApplicationRecord
 
   def calculate_prerender_mailer
     renderer = ApplicationController.renderer.new
-    self.prerender_mailer = renderer.render(:partial => 'deed/deed', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
+    self.prerender_mailer = renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
   end
 end
