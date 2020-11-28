@@ -19,8 +19,8 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
-    if user_signed_in? && !current_user.dictation_language.nil?
-      locale = current_user.dictation_language.split('-').shift
+    if user_signed_in? && !current_user.preferred_locale.nil?
+      locale = current_user.preferred_locale
     else
       locale = I18n.default_locale
     end
