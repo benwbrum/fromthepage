@@ -14,7 +14,6 @@ class UserController < ApplicationController
   NOTOWNER = "NOTOWNER"
   def update
     # spam check
-    binding.pry
     if !@user.owner && (params[:user][:about] != NOTOWNER || params[:user][:about] != NOTOWNER)
       logger.error("Possible spam: deleting user #{@user.email}")
       @user.destroy!
