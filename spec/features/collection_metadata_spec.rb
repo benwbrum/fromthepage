@@ -144,7 +144,7 @@ describe "collection metadata", :order => :defined do
     login_as @user
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@user, c)
-    expect(page).not_to have_content("Metadata")
+    expect(page).not_to have_content("Metadata Facets")
   end
 
   it "deletes a collection" do
