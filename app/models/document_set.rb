@@ -13,7 +13,7 @@ class DocumentSet < ApplicationRecord
   has_many :pages, through: :works
 
   has_many :document_set_works
-  has_many :works, through: :document_set_works
+  has_many :works, -> { order 'title' }, through: :document_set_works
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
 
@@ -194,10 +194,14 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def facets_enabled?
+    self.collection.facets_enabled?
+  end
+
   def sc_collection # association does not exist for document sets
     nil
   end
-  
+
   def api_access # API access is only controlled by public/private for document sets
     false
   end

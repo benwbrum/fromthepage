@@ -63,7 +63,6 @@ module CollectionHelper
     else
       @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}, #{@progress_review}% needs review"
     end
-
   end
 
   def find_transcribe_pages
