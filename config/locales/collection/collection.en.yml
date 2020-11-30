@@ -131,6 +131,13 @@ en:
       page_on_the_right: "Page on the Right"
       page_on_the_top: "Page on the Top"
       page_on_the_bottom: "Page on the Bottom"
+      metadata: "Metadata"
+      metadata_description: "Upload metadata for items in this collection in bulk."
+      upload_metadata: "Upload Metadata"
+      metadata_facets: "Metadata Facets"
+      metadata_facets_description: "Allow users to browse works within this collection via metadata."
+      disable_facets: "Disable Facets"
+      enable_facets: "Enable Facets"
     needs_review_pages:
       pages_that_need_review: "Pages That Need Review"
       project_by: "Project by"
@@ -167,3 +174,11 @@ en:
     #next section is admin only
     disable_ocr:
       notice: "OCR correction has been disabled for all works."
+    facets:
+      metadata_facets: "Metadata Facets"
+      metadata_facets_description: "Configure metadata facets by reviewing the metadata in your collection and labelling fields to be displayed to transcribers."
+      field_label: "Field Label"
+      occurrences: "Occurrences"
+      label: "Label"
+      type: "Type"
+      order: "Order"

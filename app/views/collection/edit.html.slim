@@ -180,6 +180,21 @@
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span =t('.disable_ocr')
 
+    h3 =t('.metadata')
+    p =t('.metadata_description')
+    =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+      span =t('.upload_metadata')
+
+    -unless current_user.account_type == "Individual Researcher"
+      h3 =t('.metadata_facets')
+      p =t('.metadata_facets_description')
+      -if @collection.facets_enabled?
+        =link_to(facets_disable_path(:collection_id => @collection.id), class: 'button')
+          span =t('.disable_facets')
+      -else
+        =link_to(facets_enable_path(:collection_id => @collection.id), class: 'button')
+          span =t('.enable_facets')
+
     h3 =t('.restricted_completed_works')
     p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
     =link_to({ :action => 'restrict_transcribed', :collection_id => @collection.id }, class: 'button restrict-button')
@@ -222,4 +237,6 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
+
+      $(".page-busy-overlay").hide();
     });

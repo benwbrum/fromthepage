@@ -50,6 +50,12 @@ Fromthepage::Application.routes.draw do
     patch 'expunge_user', :to => 'admin#expunge_user'
   end
 
+  scope 'facets', as: 'facets' do
+    get 'enable', to: 'facets#enable'
+    get 'disable', to: 'facets#disable'
+    post 'update', to: 'facets#update'
+  end
+
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
@@ -75,6 +81,13 @@ Fromthepage::Application.routes.draw do
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
+
+    scope 'metadata', as: 'metadata' do
+      get ':id/example', to: 'metadata#example', as: :example
+      get ':id/upload', to: 'metadata#upload', as: :upload
+      get 'csv_error', to:'metadata#csv_error'
+      post 'create', to: 'metadata#create'
+    end
   end
 
   scope 'work', as: 'work' do
@@ -339,6 +352,8 @@ Fromthepage::Application.routes.draw do
       get 'subjects', as: :subjects, to: 'article#list'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'facets'
+      post 'search'
 
       get 'edit', on: :member
       get 'new_work', on: :member

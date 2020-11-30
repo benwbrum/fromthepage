@@ -1,0 +1,33 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 11, :collection_id => @collection }})
+
+h2.nomargin =t('.metadata_facets')
+p =t('.metadata_facets_description')
+
+-if @errors
+  -@errors.each do |error|
+    p =error
+
+=form_for(:metadata, url: facets_update_path(@collection.owner, @collection)) do |f|
+  table.datagrid
+    thead
+      tr
+        th =t('.field_label')
+        th =t('.occurrences')
+        th =t('.label')
+        th =t('.type')
+        th =t('.order')
+    tbody
+      -@metadata_coverages.each do |metadata|
+        tr
+          td =metadata[:key]
+          td =metadata[:count]
+          =fields_for :metadata do |m|
+            =m.fields_for metadata[:key] do |t|
+              td =t.text_field :label, value: metadata.facet_config.label
+            =m.fields_for metadata[:key] do |t|
+              td =t.select :input_type, ['text', 'date'], selected: metadata.facet_config.input_type
+            =m.fields_for metadata[:key] do |t|
+              td =t.text_field :order, value: metadata.facet_config.order
+  =hidden_field_tag :collection_id, @collection.id
+  .toolbar
+    .toolbar-group.aright =f.submit
