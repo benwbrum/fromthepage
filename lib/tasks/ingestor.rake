@@ -71,7 +71,7 @@ namespace :fromthepage do
     # ingest
     ingest_tree(document_upload, temp_dir)
     # clean
-    #clean_tmp_dir(temp_dir)
+    clean_tmp_dir(temp_dir)
   end
   
   def clean_tmp_dir(temp_dir)
