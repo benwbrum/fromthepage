@@ -15,6 +15,7 @@ en:
       edit_fields: "Fields"
       sets: "Sets"
       works_list: "Works List"
+      facets: "Facets"
     page_tabs:
       overview: "Overview"
       correct: "Correct"

@@ -20,6 +20,7 @@ class Work < ApplicationRecord
 
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
+  has_one :work_facet, :dependent => :destroy
 
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
@@ -46,6 +47,7 @@ class Work < ApplicationRecord
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
+  after_commit :save_metadata, on: [:create, :update]
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -281,4 +283,40 @@ class Work < ApplicationRecord
     end
   end
 
+  def save_metadata
+    # this is costly, so only execute if the relevant value has actually changed
+    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only 
+      om = JSON.parse(self.original_metadata)
+      om.each do |m|
+        unless m['label'].blank?
+          label = m['label']
+
+          collection = self.collection
+
+          unless self.collection.nil?
+            mc = collection.metadata_coverages.build
+
+            # check that record exist
+            test = collection.metadata_coverages.where(key: label).first
+
+            # increment count field if a record is returned
+            if test
+              test.count = test.count + 1
+              test.save
+            end
+
+            # otherwise create it
+            if test.nil?
+              mc.key = label.to_sym
+              mc.save
+              mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+            end
+          end
+        end
+      end
+
+      # now update the work_facet
+      FacetConfig.update_facets(self)
+    end
+  end
 end

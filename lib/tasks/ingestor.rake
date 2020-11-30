@@ -242,6 +242,9 @@ namespace :fromthepage do
     work.collection = document_upload.collection
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
+
+    work.uploaded_filename = File.basename(path)
+
     if document_upload.ocr
       clean_dir=path.gsub('[','\[').gsub(']','\]')
       if Dir.glob(File.join(clean_dir, "*.txt")).count > 0
