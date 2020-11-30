@@ -71,7 +71,7 @@ namespace :fromthepage do
     # ingest
     ingest_tree(document_upload, temp_dir)
     # clean
-    clean_tmp_dir(temp_dir)
+    #clean_tmp_dir(temp_dir)
   end
   
   def clean_tmp_dir(temp_dir)
@@ -168,7 +168,8 @@ namespace :fromthepage do
   def ingest_tree(document_upload, temp_dir) 
     print "ingest_tree(#{temp_dir})\n"
     # first process all sub-directories
-    ls = Dir.glob(File.join(temp_dir, "*")).sort
+    clean_dir=temp_dir.gsub('[','\[').gsub(']','\]')
+    ls = Dir.glob(File.join(clean_dir, "*")).sort
     ls.each do |path|
       print "ingest_tree considering #{path})\n"
       if Dir.exist? path
@@ -178,7 +179,7 @@ namespace :fromthepage do
     end    
     
     # now process this directory if it contains image files
-    image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
+    image_files = Dir.glob(File.join(clean_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
     if image_files.length > 0
       print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
       convert_to_work(document_upload, temp_dir)
@@ -242,7 +243,8 @@ namespace :fromthepage do
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
     if document_upload.ocr
-      if Dir.glob(File.join(path, "*.txt")).count > 0
+      clean_dir=path.gsub('[','\[').gsub(']','\]')
+      if Dir.glob(File.join(clean_dir, "*.txt")).count > 0
         work.ocr_correction = true
       else
         print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")}\n"
@@ -261,8 +263,9 @@ namespace :fromthepage do
     FileUtils.mkdir_p(new_dir_name)
     IMAGE_FILE_EXTENSIONS.each do |ext|
 #      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
-      FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
-      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+      clean_dir=path.gsub('[','\[').gsub(']','\]')
+      FileUtils.cp(Dir.glob(File.join(clean_dir, "*.#{ext}")), new_dir_name)    
+      Dir.glob(File.join(clean_dir, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
 #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
