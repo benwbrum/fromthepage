@@ -180,12 +180,12 @@
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span =t('.disable_ocr')
 
-    -unless current_user.account_type == "Individual Researcher"
-      h3 =t('.metadata')
-      p =t('.metadata_description')
-      =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
-        span =t('.upload_metadata')
+    h3 =t('.metadata')
+    p =t('.metadata_description')
+    =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+      span =t('.upload_metadata')
 
+    -unless current_user.account_type == "Individual Researcher"
       h3 =t('.metadata_facets')
       p =t('.metadata_facets_description')
       -if @collection.facets_enabled?
