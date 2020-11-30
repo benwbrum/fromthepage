@@ -310,11 +310,11 @@ module XmlSourceProcessor
   def process_line_breaks(text)
     text="<p>#{text}</p>"
     text = text.gsub(/\s*\n\s*\n\s*/, "</p><p>")
-    text = text.gsub(/-\r\n\s*/, '<lb break="no" />')
+    text = text.gsub(/([[:word:]]+)-\r\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\n\s*/, "<lb/>")
-    text = text.gsub(/-\n\s*/, '<lb break="no" />')
+    text = text.gsub(/([[:word:]]+)-\n\s*/, '\1<lb break="no" />')
     text = text.gsub(/\n\s*/, "<lb/>")
-    text = text.gsub(/-\r\s*/, '<lb break="no" />')
+    text = text.gsub(/([[:word:]]+)-\r\s*/, '\1<lb break="no" />')
     text = text.gsub(/\r\s*/, "<lb/>")
     return text
   end
