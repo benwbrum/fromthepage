@@ -68,6 +68,12 @@
     :selected => 9,
     :path => "#{collection_works_list_path(@collection.owner, @collection)}",
   }]
+  -if @collection.facets_enabled?
+    -tabs += [{\
+      :name => t('.facets'),
+      :selected => 11,
+      :path => "#{collection_facets_path(@collection.owner, @collection)}",
+    }]
 
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""

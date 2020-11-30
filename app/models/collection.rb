@@ -17,6 +17,8 @@ class Collection < ApplicationRecord
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, through: :works
+  has_many :metadata_coverages, :dependent => :destroy
+  has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
