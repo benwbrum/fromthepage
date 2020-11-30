@@ -13,7 +13,7 @@ class DocumentSet < ApplicationRecord
   has_many :pages, through: :works
 
   has_many :document_set_works
-  has_many :works, through: :document_set_works
+  has_many :works, -> { order 'title' }, through: :document_set_works
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
 
