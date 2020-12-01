@@ -24,6 +24,9 @@ pt:
       recent_article_edits: "Edições Recentes de Artigos"
       article: "Artigo"
       categories: "Categorias"
+      contribution:
+        one: "Contribuição"
+        other: "Contribuições"
     update_profile:
       update_user_profile: "Atualizar Perfil do Usuário"
       name_only_required: "O seu nome é o único campo requerido."

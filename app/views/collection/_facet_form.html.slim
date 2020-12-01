@@ -1,0 +1,112 @@
+-content_for :javascript
+  javascript:
+    $(document).ready(function() {
+      $('.facet-label').click(function(){
+        $(this).parent().next().toggle();
+      });
+    });
+
+
+-unless params[:search].nil?
+  h5 Current Filters
+  -[:s0, :s1, :s2, :s3, :s4, :s5, :s6, :s7, :s8, :s9].each do |filter_name|
+    - filter = @search.filter(filter_name)
+    .ul
+      - filter.selected.each do |entity|
+        .li
+          = link_to "[x] #{entity}", filter.remove(entity).path
+  =link_to "Reset All Filters", "?", class: 'button reset-button'
+
+h3 Facets
+
+
+.panel.panel-default
+  .panel-body
+    -count = 0
+    -@collection.facet_configs.each do |facet_config|
+      -unless facet_config.label.blank?
+        -if facet_config.input_type == "date"
+          h4 =facet_config.label
+          =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search", id: "search#{count}" } do |f|
+            =f.text_field :date, readonly: true
+            =f.hidden_field :label, value: facet_config.label
+            =f.hidden_field :date_order, value: facet_config.order
+            =f.button "Search", id: "slider-search#{count}"
+            div id="slider#{count += 1}"
+-@collection.facet_configs.order(:order).each do |facet_config|
+  -if !facet_config.label.blank? && facet_config.input_type == "text"
+    -i = facet_config.order.to_i
+    h4
+      a(href="#" class="facet-label" onclick="return false;" id="import-iiif-manifest")               =facet_config[:label]
+    section style="display: none"
+      -selector = "s#{i}".to_sym
+      -[selector].each do |filter_name|
+        -filter = @search.filter(filter_name)
+        .filter
+          .filter-values
+            ul.selectable
+              -filter.facet.reject(&:selected).each do |facet_value|
+                -entity = facet_value.entity
+                -unless entity.nil?
+                  li
+                    -display = "#{entity}"
+                    =link_to display, filter.add(entity).path
+
+
+
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      const bounds=#{raw(@date_ranges.to_json)};
+
+      $("#slider1, #slider2, #slider3").each(function(slider){
+        var min = parseInt(bounds[slider]['min'])
+        var max = parseInt(bounds[slider]['max'])
+        var bottom = parseInt(bounds[slider]['bottom'])
+        var top = parseInt(bounds[slider]['top'])
+
+        $(this).slider({
+          range: true,
+          min: min,
+          max: max,
+          values: [bottom, top],
+          slide: function( event, ui ) {
+            $( this.closest("form")[0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+          }
+        });
+
+        $( this.closest("form")[0] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
+      });
+    });
+
+
+    $("#slider-search0").click(function(e){
+      var date_range = this.closest("form")[0];
+      var clean_date_range = date_range.value.replace(/\s*\-\s*/g,"-01-01 - ").replace(/$/, "-12-31");
+      e.preventDefault();
+      var new_url = new URL(window.location.href);
+      new_url.searchParams.append('search[d0]', clean_date_range)
+
+      window.location = new_url.href;
+    });
+
+    $("#slider-search1").click(function(e){
+      var date_range = this.closest("form")[0];
+      var clean_date_range = date_range.value.replace(/\s*\-\s*/g,"-01-01 - ").replace(/$/, "-12-31");
+      e.preventDefault();
+      var new_url = new URL(window.location.href);
+      new_url.searchParams.append('search[d1]', clean_date_range)
+
+      window.location = new_url.href;
+    });
+
+    $("#slider-search2").click(function(e){
+      var date_range = this.closest("form")[0];
+      var clean_date_range = date_range.value.replace(/\s*\-\s*/g,"-01-01 - ").replace(/$/, "-12-31");
+      e.preventDefault();
+      var new_url = new URL(window.location.href);
+      new_url.searchParams.append('search[d2]', clean_date_range)
+
+      window.location = new_url.href;
+    });

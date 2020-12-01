@@ -1,0 +1,2 @@
+module FacetsHelper
+end

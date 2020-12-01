@@ -202,7 +202,7 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_content("Test Preview")
       click_button('Edit')
       expect(page).to have_content('Preview')
-      page.fill_in 'page_source_text', with: "Test Transcription"
+      page.fill_in 'page_source_text', with: "Test Transcription\n\n-\ndash test"
       find('#save_button_top').click
       page.click_link("Overview")
       expect(page).to have_content("Test Transcription")

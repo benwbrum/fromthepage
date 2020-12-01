@@ -36,6 +36,7 @@ en:
       page_not_translated: "This page is not translated, please %{help_translate} this page"
       corrected: "corrected"
       transcribed: "transcribed"
+      help_transcribe: "help transcribe"
       last_edit: "Last edit %{edit_time} ago by %{user_link}"
     list_pages:
       no_pages_found: "No pages found"
