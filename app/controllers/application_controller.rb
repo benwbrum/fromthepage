@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
-    if user_signed_in? && current_user.preferred_locale
+    if user_signed_in? && !current_user.preferred_locale.blank?
       # the user has set their locale manually; use it.
       locale = current_user.preferred_locale
     else

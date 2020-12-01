@@ -35,7 +35,7 @@
         =f.hidden_field :about, value: "NOTOWNER"
       tr  
         th =f.label :preferred_locale, t('.interface_language'), class: 'collection-label'
-        td =f.select :preferred_locale, options_for_select(I18n.available_locales.map{|code| [I18n.translate(code), code]}, @user.preferred_locale)
+        td =f.select :preferred_locale, options_for_select(I18n.available_locales.map{|code| [I18n.translate(code), code]}, @user.preferred_locale), :include_blank => true
       tr  
         td(colspan="2")
           =label_tag :dictation_language, t('.default_dictation_language'), class: 'collection-label'
