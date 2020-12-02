@@ -157,7 +157,7 @@ class DashboardController < ApplicationController
       @owners = User.where(id: search_user_ids).where.not(account_type: nil)
     else
       # Get random Collections and DocSets from paying users
-      @owners = User.findaproject_owners.order(:display_name)
+      @owners = User.findaproject_owners.order(:display_name).joins(:collections).joins(:document_sets).includes(:collections).includes(:document_sets)
 
       # Sampled Randomly down to 8 items for Carousel
       docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
