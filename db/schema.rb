@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_170442) do
+ActiveRecord::Schema.define(version: 2020_11_28_180552) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -621,6 +621,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.boolean "activity_email"
     t.string "external_id"
     t.string "sso_issuer"
+    t.string "preferred_locale"
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -659,16 +660,16 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
   end
 
   create_table "work_facets", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "s0"
-    t.string "s1"
-    t.string "s2"
-    t.string "s3"
-    t.string "s4"
-    t.string "s5"
-    t.string "s6"
-    t.string "s7"
-    t.string "s8"
-    t.string "s9"
+    t.string "s0", limit: 512
+    t.string "s1", limit: 512
+    t.string "s2", limit: 512
+    t.string "s3", limit: 512
+    t.string "s4", limit: 512
+    t.string "s5", limit: 512
+    t.string "s6", limit: 512
+    t.string "s7", limit: 512
+    t.string "s8", limit: 512
+    t.string "s9", limit: 512
     t.date "d0"
     t.date "d1"
     t.date "d2"
@@ -723,6 +724,13 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
     t.string "uploaded_filename"
+    t.string "genre"
+    t.string "source_location"
+    t.string "source_collection_name"
+    t.string "source_box_folder"
+    t.boolean "in_scope"
+    t.text "editorial_notes"
+    t.string "document_date"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true

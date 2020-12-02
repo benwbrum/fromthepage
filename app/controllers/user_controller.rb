@@ -98,7 +98,7 @@ class UserController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:real_name, :orcid, :slug, :website, :location, :about, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added])
+    params.require(:user).permit(:real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added])
   end
 
 end
