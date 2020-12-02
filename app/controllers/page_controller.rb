@@ -100,6 +100,7 @@ class PageController < ApplicationController
     end
 
     FileUtils.mv(image_file.tempfile, filename)
+    FileUtils.chmod("u=wr,go=r", filename)
     page.base_image = filename
     page.shrink_factor = 0
     set_dimensions(page)
