@@ -63,9 +63,9 @@
 
     h3 Text Search
     p Search the text of #{@collection.title} for pages containing words used to link to <em>#{@article.title}</em>
-    =button_to "Search All Pages", { :controller => 'display', :action => 'search', :article_id => @article.id }
+    =button_to "Search All Pages", { :controller => 'display', :action => 'search', :article_id => @article.id, :collection_id => @collection }
     p  Only search text of pages which do not link to <em>#{@article.title}</em>
-    =button_to "Search Unlinked Pages", { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true}, { :rel => 'nofolllow' }
+    =button_to "Search Unlinked Pages", { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true, :collection_id => @collection}, { :rel => 'nofolllow' }
  
  
 
