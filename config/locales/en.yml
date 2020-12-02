@@ -2,3 +2,6 @@ en:
   dashboard:
     plain: "Dashboard"
     collaborator: "Collaborator Dashboard"
+  en: "English"
+  es: "Español"
+  pt: "Português"
