@@ -52,6 +52,7 @@ gem 'active_link_to'
 gem 'warning'
 
 gem 'rails-i18n', '~> 6.0.0'
+gem 'http_accept_language'
 
 gem 'forty_facets'
 

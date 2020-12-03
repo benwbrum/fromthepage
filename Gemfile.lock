@@ -197,6 +197,7 @@ GEM
     hashie (4.1.0)
     highline (2.0.3)
     hodel_3000_compliant_logger (0.1.1)
+    http_accept_language (2.1.1)
     httpi (2.4.5)
       rack
       socksify
@@ -504,6 +505,7 @@ DEPENDENCIES
   forty_facets
   friendly_id
   gravatar_image_tag
+  http_accept_language
   i18n-tasks (~> 0.9.31)
   iiif-image-api!
   iiif-presentation!
