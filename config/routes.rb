@@ -268,6 +268,7 @@ Fromthepage::Application.routes.draw do
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   post 'display_search', to: 'display#search'
+  get 'paged_search', to: 'display#paged_search'
   get 'demo', to: 'demo#index'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
