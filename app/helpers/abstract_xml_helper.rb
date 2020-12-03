@@ -61,7 +61,7 @@ module AbstractXmlHelper
         end
         e.replace_with(REXML::Element.new('br'))
       else
-        if params[:action] == "read_work" || params[:action] == 'needs_review_pages'
+        if params[:action] == "read_work" || params[:action] == 'needs_review_pages' || params[:action] == 'paged_search' 
           if e.attributes['break'] == "no"
             lb.add_text('')
           else
