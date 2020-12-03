@@ -61,6 +61,10 @@ class DisplayController < ApplicationController
   end
 
   def search
+    redirect_to paged_search_path(request.params)
+  end
+
+  def paged_search
     if @article
       session[:col_id] = @collection.slug
       # get the unique search terms
@@ -104,6 +108,7 @@ class DisplayController < ApplicationController
     end
     logger.debug "DEBUG #{@search_string}"
   end
+
 
 
 end
