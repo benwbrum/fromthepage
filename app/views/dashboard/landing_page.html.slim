@@ -7,21 +7,22 @@
 
     ul
       -@collections.each do |c|
-        -link_page = c.pages.includes(:work).needs_transcription.first
-        -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
-        li
-          =link_to(image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c))
-          h3
-            =link_to c.title, collection_path(c.owner, c)
-          h5.owner-link
-              =link_to c.owner.display_name, user_profile_path(c.owner)
-          =snippet
-          br
-          -unless link_page.blank?
-            -if user_signed_in?
-              =link_to t('.transcribe_a_page'), collection_transcribe_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
-            -else
-              =link_to t('.transcribe_a_page'), collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
+        -cache c do
+          -link_page = c.next_untranscribed_page
+          -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+          li
+            =link_to(image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c))
+            h3
+              =link_to c.title, collection_path(c.owner, c)
+            h5.owner-link
+                =link_to c.owner.display_name, user_profile_path(c.owner)
+            =snippet
+            br
+            -unless link_page.blank?
+              -if user_signed_in?
+                =link_to t('.transcribe_a_page'), collection_transcribe_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
+              -else
+                =link_to t('.transcribe_a_page'), collection_guest_page_path(c.owner, c, link_page.work, link_page), class: 'projects_link'
 
 .columns.project-list
   article.maincol
