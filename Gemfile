@@ -26,6 +26,7 @@ gem 'carrierwave'
 gem 'rubyzip'
 
 gem 'ahoy_matey'
+gem 'flipper'
 
 gem "browser", "~> 2.0"
 gem "user_agent_parser"

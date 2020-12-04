@@ -8,6 +8,16 @@ class UserController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def enable_codemirror
+    Flipper.enable(:codemirror)
+    redirect_back :fallback_location => dashboard_role_path
+  end
+
+  def disable_codemirror
+    Flipper.disable(:codemirror)
+    redirect_back :fallback_location => dashboard_role_path
+  end
+
   def update_profile
   end
 
