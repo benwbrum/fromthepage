@@ -19,6 +19,7 @@ class User < ApplicationRecord
            :foreign_key => "owner_user_id",
            :class_name => 'Work')
   has_many :collections, :foreign_key => "owner_user_id"
+  has_many :document_sets, :foreign_key => "owner_user_id"
   has_many :ia_works
   has_many :visits
   has_many :flags, :foreign_key => "author_user_id"
@@ -96,19 +97,30 @@ class User < ApplicationRecord
       user = User.where(email: data['email3']).first
     end
 
+    # update the user's SSO if they don't have one
+    if user && user.sso_issuer.nil?
+      user.sso_issuer = issuer
+      user.save!
+    end
 
     # create users if they don't exist
     unless user
-        email = data['email'] || data['email2'] || data['email3']
-        user = User.create(
-           login: email.gsub(/@.*/,''),
-           email: email,
-           external_id: data['external_id'],
-           password: Devise.friendly_token[0,20],
-           display_name: data['name'],
-           real_name: data['name'],
-           sso_issuer: issuer
-        )
+      email = data['email'] || data['email2'] || data['email3']
+      login = email.gsub(/@.*/,'')
+      # avoid duplicate logins
+      while User.where(login: login).exists? do
+        login += '_'
+      end
+
+      user = User.create(
+         login: login,
+         email: email,
+         external_id: data['external_id'],
+         password: Devise.friendly_token[0,20],
+         display_name: data['name'],
+         real_name: data['name'],
+         sso_issuer: issuer
+      )
     end
 
     user
@@ -198,9 +210,6 @@ class User < ApplicationRecord
     DocumentSet.where(owner_user_id: self.id).where(is_public: true)
   end
 
-  def document_sets
-    DocumentSet.where(owner_user_id: self.id)
-  end
 
   def collections_and_document_sets
     (collections + document_sets).sort_by {|obj| obj.title}

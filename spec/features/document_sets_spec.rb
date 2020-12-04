@@ -203,9 +203,6 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
-    page.find('.tabs').click_link("Collaborators")
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/collaborators"
-    expect(page).to have_content("Contributions Between")
     page.find('.tabs').click_link("Settings")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/settings"
     expect(page.find('h1')).to have_content(@set.title)
@@ -271,12 +268,12 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Overview")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
-    click_link("All references to #{@article.title}")
+    click_button("Search All Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page).to have_content("Search for")
     #return to overview
     visit collection_article_show_path(@set.owner, @set, @article.id)
-    click_link("All references to #{@article.title} in pages that do not link to this subject")
+    click_button("Search Unlinked Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page).to have_content("Search for")
     page.find('a', text: "Show pages that mention #{@article.title} in all works").click
@@ -361,7 +358,7 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
-    page.fill_in 'page_source_text', with: "Document set breadcrumbs"
+    page.fill_in 'page_source_text', with: "Document set breadcrumbs\n\n#{@page.source_text}"
     find('#save_button_top').click
 
     # Overview Tab

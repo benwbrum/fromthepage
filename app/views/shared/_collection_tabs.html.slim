@@ -16,11 +16,12 @@
 }]
 
 -if user_signed_in? && current_user.like_owner?(@collection)
-  -tabs += [{\
-    :name => t('.collaborators'),
-    :selected => 4,
-    :path => "#{contributors_collection_path(@collection.owner, @collection)}",
-  }]
+  -if @collection.is_a?(Collection)
+    -tabs += [{\
+      :name => t('.collaborators'),
+      :selected => 4,
+      :path => "#{contributors_collection_path(@collection.owner, @collection)}",
+    }]
   -if @collection.is_a?(Collection)
     -tabs += [{\
       :name => t('.settings'),
@@ -67,6 +68,12 @@
     :selected => 9,
     :path => "#{collection_works_list_path(@collection.owner, @collection)}",
   }]
+  -if @collection.facets_enabled?
+    -tabs += [{\
+      :name => t('.facets'),
+      :selected => 11,
+      :path => "#{collection_facets_path(@collection.owner, @collection)}",
+    }]
 
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""

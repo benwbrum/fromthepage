@@ -1,18 +1,18 @@
 class Flagger
-  @@blacklist = nil
+  @@denylist = nil
 
-  def self.initialize_blacklist
-    if @@blacklist.nil?
-      pb = PageBlock.find_by(:controller => 'admin', :view => 'flag_blacklist')
-      @@blacklist = PageBlock.find_by(:controller => 'admin', :view => 'flag_blacklist').html.split("\n").map { |badness| badness.gsub(".", "\\.") }
+  def self.initialize_denylist
+    if @@denylist.nil?
+      pb = PageBlock.find_by(:controller => 'admin', :view => 'flag_denylist')
+      @@denylist = PageBlock.find_by(:controller => 'admin', :view => 'flag_denylist').html.split("\n").map { |badness| badness.gsub(".", "\\.") }
     end
   end
 
 
   def self.check(content)
-    initialize_blacklist
+    initialize_denylist
     # look for suspicious strings
-    @@blacklist.each do |badness|
+    @@denylist.each do |badness|
       if content && content.match(/(.{,80})(\S+)(#{badness})(.{,80})/m)
         # return a bad snippet if we find them
         prefix = $1

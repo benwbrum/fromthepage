@@ -1,5 +1,13 @@
 require 'spec_helper'
 
+FIELD_XML = <<EOF
+<?xml version='1.0' encoding='UTF-8'?>    
+      <page>
+        <p><span class='field__label'>Last Name: </span>Mitchell</p><p><span class='field__label'>First Name: </span>John</p><p><span class='field__label'>Middle Name: </span></p><p><span class='field__label'>Suffix or Title: </span></p><p><span class='field__label'>Home Town: </span>Pinson</p><p><span class='field__label'>Home County: </span>Jefferson</p><p><span class='field__label'>Home State: </span>Alabama</p><p><span class='field__label'>Race: </span>Caucasian</p><p><span class='field__label'>Gender: </span></p><p><span class='field__label'>Branch: </span>Army</p><p><span class='field__label'>Service Number: </span>14208593</p><p><span class='field__label'>See Also: </span></p><p><span class='field__label'>Notes: </span></p><p/>
+      </page>
+EOF
+
+
 describe "editor actions" , :order => :defined do
   context "Factory" do 
     before :all do
@@ -38,6 +46,27 @@ describe "editor actions" , :order => :defined do
       page.find('#save_button_top').click
 
       expect(Page.find(page_fact.id).status).to eq(nil)
+    end
+
+    it "creates correct verbatim plaintext" do
+      page_fact.source_text = "foo <strike>bar</strike> contin-\nued on next\nline"
+      page_fact.save
+
+      expect(page_fact.verbatim_transcription_plaintext).to eq("foo bar contin-\nued on next\nline\n\n")
+    end
+
+    it "creates correct search text" do
+      page_fact.source_text = "foo <strike>bar</strike> contin-\nued on next\nline"
+      page_fact.save
+
+      expect(page_fact.search_text).to eq("foo bar continued on next line\n\n\n\n")
+    end
+
+    it "creates search text from fields" do
+      page_fact.xml_text = FIELD_XML
+      page_fact.save
+
+      expect(page_fact.search_text).to match("Mitchell First")
     end
   end
   
@@ -173,7 +202,7 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_content("Test Preview")
       click_button('Edit', match: :first)
       expect(page).to have_content('Preview')
-      page.fill_in 'page_source_text', with: "Test Transcription"
+      page.fill_in 'page_source_text', with: "Test Transcription\n\n-\ndash test"
       find('#save_button_top').click
       page.click_link("Overview")
       expect(page).to have_content("Test Transcription")
