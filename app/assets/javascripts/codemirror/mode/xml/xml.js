@@ -95,18 +95,6 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         state.tokenize = inTag;
         return "tag bracket";
       }
-    } else if (ch == "&") {
-      var ok;
-      if (stream.eat("#")) {
-        if (stream.eat("x")) {
-          ok = stream.eatWhile(/[a-fA-F\d]/) && stream.eat(";");
-        } else {
-          ok = stream.eatWhile(/[\d]/) && stream.eat(";");
-        }
-      } else {
-        ok = stream.eatWhile(/[\w\.\-:]/) && stream.eat(";");
-      }
-      return ok ? "atom" : "error";
     } else {
       stream.eatWhile(/[^&<]/);
       return null;
