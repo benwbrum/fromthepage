@@ -10,6 +10,7 @@ gem "capistrano-rails", "~> 1.4", require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
+gem 'jquery-ui-sass-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2'
 
@@ -51,6 +52,12 @@ gem 'active_link_to'
 gem 'warning'
 
 gem 'rails-i18n', '~> 6.0.0'
+gem 'http_accept_language'
+
+gem 'forty_facets'
+
+gem 'edtf'
+gem 'edtf-humanize'
 
 group :assets do
   gem 'uglifier'
@@ -78,6 +85,7 @@ group :development, :test do
   # https://github.com/dejan/rails_panel
   gem 'bullet'
   gem 'listen'
+  gem 'i18n-tasks', '~> 0.9.31'
 end
 
 # Use SassC for stylesheets

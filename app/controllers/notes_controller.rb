@@ -9,11 +9,7 @@ class NotesController < ApplicationController
     # add param-loaded associations
     @note.page = @page
     @note.work = @work
-    if @collection.is_a?(Collection)
-      @note.collection = @collection
-    else
-      @note.collection = @collection.collection
-    end
+    @note.collection = @work.collection
     @note.user = current_user
 
     respond_to do |format|
@@ -68,12 +64,7 @@ class NotesController < ApplicationController
     deed.note = @note
     deed.page = @page
     deed.work = @work
-    if @collection.is_a?(Collection)
-      deed.collection = @collection
-    else
-      deed.collection = @collection.collection
-    end
-
+    deed.collection = @work.collection
     deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
 

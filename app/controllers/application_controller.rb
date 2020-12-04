@@ -19,18 +19,21 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
-    if user_signed_in? && !current_user.dictation_language.nil?
-      locale = current_user.dictation_language.split('-').shift
+    if user_signed_in? && !current_user.preferred_locale.blank?
+      # the user has set their locale manually; use it.
+      locale = current_user.preferred_locale
     else
+      # the user might their locale set in the browser
+      locale = http_accept_language.compatible_language_from(I18n.available_locales)
+    end
+
+    if locale.nil? || !I18n.available_locales.include?(locale.to_sym)
+      # use the default if the above optiosn didn't work
       locale = I18n.default_locale
     end
 
-    if I18n.available_locales.include?(locale.to_sym)
-      I18n.with_locale(locale, &action)
-    else
-      locale = I18n.default_locale
-      I18n.with_locale(locale, &action)
-    end
+    # execute the action with the locale
+    I18n.with_locale(locale, &action)
   end
 
   # Set the current user in User
@@ -287,8 +290,17 @@ end
 
   def track_action
     extras = {}
-    extras[:collection_id] = @collection.id if @collection
-    extras[:collection_title] = @collection.title if @collection
+    if @collection
+      if @collection.is_a? DocumentSet
+        extras[:document_set_id] = @collection.id
+        extras[:document_set_title] = @collection.title
+        extras[:collection_id] = @collection.collection.id
+        extras[:collection_title] = @collection.collection.title
+      else
+        extras[:collection_id] = @collection.id
+        extras[:collection_title] = @collection.title
+      end
+    end
     extras[:work_id] = @work.id if @work
     extras[:work_title] = @work.title if @work
     extras[:page_id] = @page.id if @page
@@ -302,7 +314,7 @@ end
   def check_api_access
     if (defined? @collection) && @collection
       if @collection.restricted? && !@collection.api_access
-        render :status => 403, :text => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
+        render :status => 403, :plain => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
       end
     end
   end

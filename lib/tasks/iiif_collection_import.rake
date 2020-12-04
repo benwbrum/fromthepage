@@ -9,7 +9,14 @@ namespace :fromthepage do
     collection_id = args.collection_id
     user_id = args.user_id
     import_ocr = ActiveRecord::Type::Boolean.new.cast(args.import_ocr)
-    collection = Collection.find_by(id: collection_id)
+    document_set = nil
+
+    if md=collection_id.match(/D(\d+)/)
+      document_set = DocumentSet.find_by(id: md[1])
+      collection = document_set.collection
+    else
+      collection = Collection.find_by(id: collection_id)
+    end
     user = User.find_by(id: user_id)
     manifest_array = manifest_indices.split(" ")
     puts "manifest_indices were #{manifest_indices.inspect}"
@@ -24,6 +31,9 @@ namespace :fromthepage do
           sc_manifest = ScManifest.manifest_for_at_id(at_id)
           work = nil
           work = sc_manifest.convert_with_collection(user, collection)
+          if document_set
+            document_set.works << work
+          end
           puts "#{work.title} has been imported"
           unless work.errors.blank?
             error.update(work.errors)

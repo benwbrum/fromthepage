@@ -14,6 +14,7 @@ en:
       microphone: "Microphone"
       cancel: "Cancel"
       update: "Update"
+      time_ago_in_words: "%{time} ago"
     notes:
       nobody_has_written_a_note: "Nobody has written a note for this page yet"
       please_sign_in_to_write: "Please %{link} to write a note for this page"

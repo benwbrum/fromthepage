@@ -45,11 +45,17 @@
 -when DeedType::NEEDS_REVIEW
   -output += t('.marked_page_as_needing_review', page: page)
 
+-when DeedType::PAGE_REVIEWED
+  -output += t('.reviewed_page', page: page)
+
 -when DeedType::TRANSLATION_INDEXED
   -output += t('.indexed_translation_of_page', page: page)
 
 -when DeedType::TRANSLATION_REVIEW
   -output += t('.marked_translation_page_as_needing_review', page: page)
+
+-when DeedType::TRANSLATION_REVIEWED
+  -output += t('.reviewed_translation', page: page)
 
 -when DeedType::WORK_ADDED
   -output += t('.added_work', work: work)

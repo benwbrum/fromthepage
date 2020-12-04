@@ -31,7 +31,7 @@
         =hidden_field_tag :sc_collection_id, @sc_collection.id
         -new_collection = @collection ? @collection.id : nil
         .iiif-select-form
-          =select_tag :collection_id, options_from_collection_for_select(current_user.collections, 'id', 'title', new_collection), id: 'manifest_import', prompt: '- Select a collection to import into -', required: true, 'aria-label' => "Select a collection"
+          =select_tag :collection_id, target_collection_options(new_collection), id: 'manifest_import', prompt: '- Select a collection to import into -', required: true, 'aria-label' => "Select a collection"
           =button_tag 'Import Checked Manifests'
 
         =check_box_tag("select_all", 1, true)

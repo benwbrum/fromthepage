@@ -1,16 +1,16 @@
 pt:
   deed:
     deed:
-      added_work: "adicionou %{work}"
-      in_the_work: " na obra %{work}"
-      in_collection: " na %{collection} coleção"
-      added_a_note_to_page: "adicionou uma nota à página %{page}"
-      saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
-      transcribed_page: "transcreveu a página %{page}"
       html:
+        added_work: "adicionou %{work}"
+        in_the_work: " na obra %{work}"
+        in_collection: " na %{collection} coleção"
+        added_a_note_to_page: "adicionou uma nota à página %{page}"
+        saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
         transcribed_page: "transcreveu a página %{page}"
         edited_page: "editou a página %{page}"
         indexed_page: "indexou a página %{page}"
+        reviewed_page: ""  #TODO
         marked_page_as_blank: "marcou a página %{page} como em branco"
         edited_article: "editou o %{article} artigo"
         added_a_note_to_page: "adicionou uma nota à página %{page}"
@@ -22,15 +22,17 @@ pt:
         marked_translation_page_as_needing_review: "marcou a página de tradução %{page} como precisando de revisão"
         added_work: "adicionou %{work}"
         joined: "se juntou "
-        this_collection: "esta coleção"
         in_the_work: " na obra %{work}"
         in_collection: " na %{collection} coleção"
         saying_deed: ", dizendo &ldquo;%{title}&rdquo;"
+      this_collection: "esta coleção"
     deeds:
       show_more: "Mostrar Mais"
+      time_ago_in_words: "Há %{time}"
     list:
       activity_stream: "Fluxo de Atividade"
       collection_title: "Coleção: %{title}"
       user_title: "Usuário: %{title}"
       newer_activity: "Atividade Mais Recente"
       older_activity: "Atividade Mais Antiga"
+      time_ago_in_words: "Há %{time}"

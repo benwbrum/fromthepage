@@ -50,6 +50,12 @@ Fromthepage::Application.routes.draw do
     patch 'expunge_user', :to => 'admin#expunge_user'
   end
 
+  scope 'facets', as: 'facets' do
+    get 'enable', to: 'facets#enable'
+    get 'disable', to: 'facets#disable'
+    post 'update', to: 'facets#update'
+  end
+
   scope 'collection', as: 'collection' do
     get 'new', to: 'collection#new'
     get 'delete', to: 'collection#delete'
@@ -75,6 +81,13 @@ Fromthepage::Application.routes.draw do
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
+
+    scope 'metadata', as: 'metadata' do
+      get ':id/example', to: 'metadata#example', as: :example
+      get ':id/upload', to: 'metadata#upload', as: :upload
+      get 'csv_error', to:'metadata#csv_error'
+      post 'create', to: 'metadata#create'
+    end
   end
 
   scope 'work', as: 'work' do
@@ -254,12 +267,16 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  get 'display_search', to: 'display#search'
+  post 'display_search', to: 'display#search'
+  get 'paged_search', to: 'display#paged_search'
   get 'demo', to: 'demo#index'
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection
+  get '/iiif/set/:document_set_id', :to => 'iiif#document_set', as: :iiif_document_set
+  get '/iiif/collections', :to => 'iiif#collections'
+  get '/iiif/collections/:user_id', :to => 'iiif#user_collections', as: :iiif_user_collections
   get '/iiif/:page_id/list/:annotation_type', :to => 'iiif#list'
   get '/iiif/:page_id/notes', :to => 'iiif#notes'
   get '/iiif/:page_id/note/:note_id', :to => 'iiif#note'
@@ -336,6 +353,8 @@ Fromthepage::Application.routes.draw do
       get 'subjects', as: :subjects, to: 'article#list'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'facets'
+      post 'search'
 
       get 'edit', on: :member
       get 'new_work', on: :member

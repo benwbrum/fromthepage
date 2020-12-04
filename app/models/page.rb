@@ -385,7 +385,8 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     doc.xpath("//lb").each { |n| n.replace("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
-    doc.text.sub(/^\s*/m, '')
+
+    doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
   end
 
   def modernize_absolute(filename)
