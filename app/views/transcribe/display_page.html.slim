@@ -50,9 +50,6 @@
             =>button_tag t('.edit'), :name => 'edit'
         -unless @collection.subjects_disabled || @collection.field_based
             =>button_tag t('.autolink'), :name => 'autolink'
-
-
-      .toolbar_group.w100.aright
         =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
@@ -99,15 +96,16 @@
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
-  .page-toolbar.mt-10
-    .toolbar.aright
-      -unless @preview_xml
-          =>button_tag t('.preview'), :name => 'preview'
-      -else
-          =>button_tag t('.edit'), :name => 'edit'
-      -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag t('.autolink'), :name => 'autolink'
-      =button_tag t('.save_changes'), :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+      .page-toolbar-bottom
+        .toolbar
+          .toolbar_group.w100.aright
+            -unless @preview_xml
+                =>button_tag t('.preview'), :name => 'preview'
+            -else
+                =>button_tag t('.edit'), :name => 'edit'
+            -unless @collection.subjects_disabled || @collection.field_based
+                =>button_tag t('.autolink'), :name => 'autolink'
+            =button_tag t('.save_changes'), :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
 
 .fgfaded ==@work.set_transcription_conventions
 
