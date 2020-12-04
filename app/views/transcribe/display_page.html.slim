@@ -164,139 +164,142 @@ h2.legend =t('notes_and_questions')
       });
 
     });
-    var fromthepage_tags = {
-      "!top": ["add", "cb", "date", "figure", "gap", "hi", "milestone", "stamp", "table", "unclear", "sup", "u", "strike", "s", "span", "a"],
-      add: { children: ["u", "s"] },
-      cb: { attrs: { "n": null } },
-      date: {attrs: { when: "YYYY-MM-DD" }, children: ["hi", "unclear", "gap"] },
-      figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
-      hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
-      milestone: { attrs: { "unit": ["column"], "n": null}},
-      row: { children: ["cell"] },
-      stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
-      sup: { children: ["u", "s"] },
-      table: { attrs: {"rend": ["rules"]}, children: ["row"] }
-    }
+-if Flipper.enabled?(:codemirror)
+  -content_for :javascript
+    javascript:
+      var fromthepage_tags = {
+        "!top": ["add", "cb", "date", "figure", "gap", "hi", "milestone", "stamp", "table", "unclear", "sup", "u", "strike", "s", "span", "a"],
+        add: { children: ["u", "s"] },
+        cb: { attrs: { "n": null } },
+        date: {attrs: { when: "YYYY-MM-DD" }, children: ["hi", "unclear", "gap"] },
+        figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
+        hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
+        milestone: { attrs: { "unit": ["column"], "n": null}},
+        row: { children: ["cell"] },
+        stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
+        sup: { children: ["u", "s"] },
+        table: { attrs: {"rend": ["rules"]}, children: ["row"] }
+      }
 
 
-    function completeAfter(cm, pred) {
-      var cur = cm.getCursor();
-      if (!pred || pred()) setTimeout(function() {
-        if (!cm.state.completionActive)
-          cm.showHint({completeSingle: false});
-      }, 100);
-      return CodeMirror.Pass;
-    }
-
-    function completeIfAfterLt(cm) {
-      return completeAfter(cm, function() {
+      function completeAfter(cm, pred) {
         var cur = cm.getCursor();
-        return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
-      });
-    }
+        if (!pred || pred()) setTimeout(function() {
+          if (!cm.state.completionActive)
+            cm.showHint({completeSingle: false});
+        }, 100);
+        return CodeMirror.Pass;
+      }
 
-    function completeIfInTag(cm) {
-      return completeAfter(cm, function() {
-        var tok = cm.getTokenAt(cm.getCursor());
-        if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
-        var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
-        return inner.tagName;
-      });
-    }
-
-    var myCodeMirror = CodeMirror.fromTextArea(
-      document.getElementById("page_source_text"),
-      {
-        lineNumbers: false,
-        mode: "xml",
-        extraKeys: {
-          "'<'": completeAfter,
-          "'/'": completeIfAfterLt,
-          "' '": completeIfInTag,
-          "'='": completeIfInTag,
-          "Ctrl-Space": "autocomplete",
-          "Tab": "autocomplete"
-        },
-        hintOptions: {schemaInfo: fromthepage_tags},
-        buttons: [
-          {
-            hotkey: 'Ctrl-^',
-            class: 'sup',
-            label: 'sup',
-            callback: function (cm) {
-              var selection = cm.getSelection();
-              cm.replaceSelection('<hi rend="sup">' + selection + '</hi>');
-              if (!selection) {
-                var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 5);
-              }
-            }
-          },
-          {
-            hotkey: 'Ctrl-%',
-            class: 'strike',
-            label: 'str',
-            callback: function (cm) {
-              var selection = cm.getSelection();
-              cm.replaceSelection('<hi rend="str">' + selection + '</hi>');
-              if (!selection) {
-                var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 5);
-              }
-            }
-          },
-          {
-            hotkey: 'Ctrl-u',
-            class: 'u',
-            label: 'u',
-            callback: function (cm) {
-              var selection = cm.getSelection();
-              cm.replaceSelection('<hi rend="underline">' + selection + '</hi>');
-              if (!selection) {
-                var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 5);
-              }
-            }
-          },
-          {
-            hotkey: 'Ctrl-d',
-            class: 'italic',
-            label: 'date',
-            callback: function (cm) {
-              var selection = cm.getSelection();
-              cm.replaceSelection('<date when="">' + selection + '</date>');
-              if (!selection) {
-                var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 7);
-              }
-            }
-          },
-          {
-            hotkey: 'Ctrl-F',
-            class: 'italic',
-            label: 'fig',
-            callback: function (cm) {
-              var selection = cm.getSelection();
-              cm.replaceSelection('<figure rend="hr">' + selection + '</figure>');
-              if (!selection) {
-                var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 9);
-              }
-            }
-          },
-          {
-            hotkey: 'Ctrl-U',
-            class: 'italic',
-            label: 'unclear',
-            callback: function (cm) {
-              var selection = cm.getSelection();
-              cm.replaceSelection('<unclear>' + selection + '</unclear>');
-              if (!selection) {
-                var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 9);
-              }
-            }
-          }]
+      function completeIfAfterLt(cm) {
+        return completeAfter(cm, function() {
+          var cur = cm.getCursor();
+          return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
         });
+      }
 
-        myCodeMirror.setSize("100%", "100%");
+      function completeIfInTag(cm) {
+        return completeAfter(cm, function() {
+          var tok = cm.getTokenAt(cm.getCursor());
+          if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+          var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+          return inner.tagName;
+        });
+      }
+
+      var myCodeMirror = CodeMirror.fromTextArea(
+        document.getElementById("page_source_text"),
+        {
+          lineNumbers: false,
+          mode: "xml",
+          extraKeys: {
+            "'<'": completeAfter,
+            "'/'": completeIfAfterLt,
+            "' '": completeIfInTag,
+            "'='": completeIfInTag,
+            "Ctrl-Space": "autocomplete",
+            "Tab": "autocomplete"
+          },
+          hintOptions: {schemaInfo: fromthepage_tags},
+          buttons: [
+            {
+              hotkey: 'Ctrl-^',
+              class: 'sup',
+              label: 'sup',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<hi rend="sup">' + selection + '</hi>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-%',
+              class: 'strike',
+              label: 'str',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<hi rend="str">' + selection + '</hi>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-u',
+              class: 'u',
+              label: 'u',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<hi rend="underline">' + selection + '</hi>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-d',
+              class: 'italic',
+              label: 'date',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<date when="">' + selection + '</date>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 7);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-F',
+              class: 'italic',
+              label: 'fig',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<figure rend="hr">' + selection + '</figure>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 9);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-U',
+              class: 'italic',
+              label: 'unclear',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<unclear>' + selection + '</unclear>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 9);
+                }
+              }
+            }]
+          });
+
+          myCodeMirror.setSize("100%", "100%");
