@@ -207,14 +207,15 @@ h2.legend =t('notes_and_questions')
     var myCodeMirror = CodeMirror.fromTextArea(
       document.getElementById("page_source_text"),
       {
-        lineNumbers: true,
+        lineNumbers: false,
         mode: "xml",
         extraKeys: {
           "'<'": completeAfter,
           "'/'": completeIfAfterLt,
           "' '": completeIfInTag,
           "'='": completeIfInTag,
-          "Ctrl-Space": "autocomplete"
+          "Ctrl-Space": "autocomplete",
+          "Tab": "autocomplete"
         },
         hintOptions: {schemaInfo: fromthepage_tags},
         buttons: [
@@ -297,3 +298,5 @@ h2.legend =t('notes_and_questions')
             }
           }]
         });
+
+        myCodeMirror.setSize("100%", "100%");
