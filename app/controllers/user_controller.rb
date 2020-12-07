@@ -8,8 +8,22 @@ class UserController < ApplicationController
     redirect_to dashboard_path
   end
 
-  def enable_codemirror
-    Flipper.enable(:codemirror)
+  def feature_toggle
+    feature = params[:feature]
+    value = params[:value]
+    session[:features] ||= {}
+    if value=='enable'
+      session[:features][feature]=true
+    elsif value=='disable'
+      session[:features][feature]=nil
+    else
+      if session[:features][feature]
+        render :plain => "#{feature} is enabled"
+      else
+        render :plain => "#{feature} is disabled"
+      end
+      return
+    end
     redirect_back :fallback_location => dashboard_role_path
   end
 
