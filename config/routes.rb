@@ -272,8 +272,8 @@ Fromthepage::Application.routes.draw do
   get 'demo', to: 'demo#index'
 
   scope 'feature', as: 'feature' do
-    get 'codemirror/enable', to: 'user#enable_codemirror' 
-    get 'codemirror/disable', to: 'user#disable_codemirror' 
+    get ':feature/:value', to: 'user#feature_toggle' 
+    get ':feature', to: 'user#feature_toggle' 
   end
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest

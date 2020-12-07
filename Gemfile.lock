@@ -184,7 +184,6 @@ GEM
       ruby2_keywords
     ffi (1.13.1)
     flamegraph (0.9.5)
-    flipper (0.19.1)
     forty_facets (0.1.9.1)
     friendly_id (5.4.1)
       activerecord (>= 4.0.0)
@@ -504,7 +503,6 @@ DEPENDENCIES
   edtf-humanize
   factory_bot_rails
   flamegraph
-  flipper
   forty_facets
   friendly_id
   gravatar_image_tag

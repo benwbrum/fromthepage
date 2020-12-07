@@ -12,6 +12,7 @@
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
+
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors
@@ -164,7 +165,7 @@ h2.legend =t('notes_and_questions')
       });
 
     });
--if Flipper.enabled?(:codemirror)
+-if feature_enabled?(:codemirror)
   -content_for :javascript
     javascript:
       var fromthepage_tags = {
@@ -210,7 +211,7 @@ h2.legend =t('notes_and_questions')
       var myCodeMirror = CodeMirror.fromTextArea(
         document.getElementById("page_source_text"),
         {
-          lineNumbers: false,
+          lineNumbers: #{feature_enabled?(:line_numbers) ? 'true' : 'false'},
           mode: "xml",
           extraKeys: {
             "'<'": completeAfter,

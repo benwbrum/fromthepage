@@ -131,6 +131,15 @@ module AbstractXmlHelper
       e.replace_with(gap)
     end
 
+    doc.elements.each("//stamp") do |e|
+      stamp_type = e.attributes["type"] || ''
+      stamp = REXML::Element.new('span')
+      stamp.add_text("{#{stamp_type.titleize} Stamp}")
+      stamp.add_attribute('class', 'stamp')
+      e.replace_with(stamp)
+    end
+
+
 
     doc.elements.each("//table") do |e|
       rend = e.attributes["rend"]
