@@ -224,7 +224,7 @@ h2.legend =t('notes_and_questions')
       var myCodeMirror = CodeMirror.fromTextArea(
         document.getElementById("page_source_text"),
         {
-          lineNumbers: #{feature_enabled?(:line_numbers) ? 'true' : 'false'},
+          lineNumbers: true,
           mode: "xml",
           extraKeys: {
             "'<'": completeAfter,
