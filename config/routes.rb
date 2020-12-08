@@ -271,6 +271,11 @@ Fromthepage::Application.routes.draw do
   get 'paged_search', to: 'display#paged_search'
   get 'demo', to: 'demo#index'
 
+  scope 'feature', as: 'feature' do
+    get ':feature/:value', to: 'user#feature_toggle' 
+    get ':feature', to: 'user#feature_toggle' 
+  end
+
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
   get '/iiif/collection/:collection_id', :to => 'iiif#collection', as: :iiif_collection

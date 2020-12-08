@@ -84,6 +84,19 @@
   }
 }
 
+.page-toolbar-bottom {
+  padding-bottom: $gapSize;
+  margin-top: $gapSize/2;
+  label { margin-right: 6px; }
+
+  @media screen and (max-width: $widthL) {
+    .hide-l { display: none; }
+  }
+  @media screen and (max-width: $widthM) {
+    .hide-m { display: none; }
+  }
+}
+
 
 // Page columns
 
