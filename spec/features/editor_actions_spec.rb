@@ -197,10 +197,10 @@ describe "editor actions" , :order => :defined do
       page.find('.tabs').click_link("Transcribe")
       expect(page).to have_content("Collection Footer")
       page.fill_in 'page_source_text', with: "Test Preview"
-      click_button('Preview')
+      click_button('Preview', match: :first)
       expect(page).to have_content('Edit')
       expect(page).to have_content("Test Preview")
-      click_button('Edit')
+      click_button('Edit', match: :first)
       expect(page).to have_content('Preview')
       page.fill_in 'page_source_text', with: "Test Transcription\n\n-\ndash test"
       find('#save_button_top').click
