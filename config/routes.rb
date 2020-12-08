@@ -44,6 +44,7 @@ Fromthepage::Application.routes.draw do
     get 'visit_deeds', to: 'admin#visit_deeds'
     get 'visit_actions', to: 'admin#visit_actions'
     get 'expunge_confirmation', :to => 'admin#expunge_confirmation'
+    get 'ok_user', :to => 'admin#ok_user'
     get 'downgrade', to: 'admin#downgrade'
     post 'update', to: 'admin#update'
     patch 'update_user', :to => 'admin#update_user'
