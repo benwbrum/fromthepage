@@ -134,6 +134,12 @@ class AdminController < ApplicationController
     redirect_to :action => 'flag_list', :page => params[:page]
   end
 
+  def ok_user
+    flag = Flag.find(params[:flag_id])
+    flag.ok_user
+    redirect_to :action => 'flag_list', :page => params[:page]
+  end
+
   def tail_logfile
     @lines = params[:lines].to_i
     if @lines == 0
