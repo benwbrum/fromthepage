@@ -175,8 +175,10 @@ module ApplicationHelper
     end
 
     options_for_select(option_data)
+  end
 
-
+  def feature_enabled?(feature)
+    session[:features] && session[:features][feature.to_s]
   end
 
 

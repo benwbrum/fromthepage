@@ -224,17 +224,17 @@ describe "subject linking" do
     #make sure the autolink doesn't duplicate a link
     expect(page).to have_content("[[John Samuel Smith]]")
     expect(page).to have_content("Mrs. Davis")
-    click_button('Autolink')
+    click_button('Autolink', match: :first)
     expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith]]")
     expect(page).not_to have_content("[[Mrs.]]")
     expect(page).to have_content("Mrs. Davis")
     #make sure it doesn't autolink something that has no subject
     page.fill_in 'page_source_text', with: "Austin"
-    click_button('Autolink')
+    click_button('Autolink', match: :first)
     expect(page).not_to have_content("[[Austin]]")
     #check that it links if there is a subject
     page.fill_in 'page_source_text', with: "Texas"
-    click_button('Autolink')
+    click_button('Autolink', match: :first)
     expect(page).to have_content("[[Texas]]")
   end
 
