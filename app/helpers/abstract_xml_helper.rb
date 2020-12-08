@@ -88,6 +88,75 @@ module AbstractXmlHelper
       span.add_attribute('class', "depth#{depth}")
     end
 
+    doc.elements.each("//hi") do |e|
+      rend = e.attributes["rend"]
+      span=e
+      case rend
+      when 'sup'
+        span.name='sup'
+      when 'underline'
+        span.name='u'
+      when 'italic'
+        span.name='i'
+      when 'bold'
+        span.name='i'
+      when 'sub'
+        span.name='sub'
+      end
+    end
+
+    doc.elements.each("//figure") do |e|
+      rend = e.attributes["rend"]
+      if rend == 'hr'
+        e.name='hr'
+      else
+        e.name='span'
+        e.add_text("{#{rend.titleize}}")
+      end
+    end
+
+    doc.elements.each("//unclear") do |e|
+      unclear = REXML::Element.new('span')
+      unclear.add_text("[")
+      unclear.add_attribute('class', 'unclear')
+      e.children.each { |c| unclear.add(c) }
+      unclear.add_text("]")
+      e.replace_with(unclear)
+    end
+
+    doc.elements.each("//gap") do |e|
+      gap = REXML::Element.new('span')
+      gap.add_text("[...]")
+      gap.add_attribute('class', 'gap')
+      e.replace_with(gap)
+    end
+
+    doc.elements.each("//stamp") do |e|
+      stamp_type = e.attributes["type"] || ''
+      stamp = REXML::Element.new('span')
+      stamp.add_text("{#{stamp_type.titleize} Stamp}")
+      stamp.add_attribute('class', 'stamp')
+      e.replace_with(stamp)
+    end
+
+
+
+    doc.elements.each("//table") do |e|
+      rend = e.attributes["rend"]
+      if rend == 'ruled'
+        e.add_attribute('class', 'tabular')
+      end
+    end
+
+    doc.elements.each("//row") do |e|
+      e.name='tr'
+    end
+
+
+    doc.elements.each("//cell") do |e|
+      e.name='td'
+    end
+
     if @page
       doc.elements.each("//texFigure") do |e|
         position = e.attributes["position"]
