@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :work do
     sequence(:title) { |n| "Work Title #{n}" }
     sequence(:identifier) { |n| "work_id_#{n}" }
+    owner { build(:user) }
 
     trait :with_links do
       pages { build_stubbed_list :page_with_links, 2 }
