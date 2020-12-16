@@ -65,7 +65,7 @@
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
         =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
       .username
-        small Project by
+        small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     =form_tag(display_search_path, :method => :post, class: 'collection-search') do
