@@ -3,6 +3,7 @@ pt:
     alphabetical_collections_and_document_sets:
       start_transcribing: "Iniciar Transcrição"
       owned_by: "Por %{author}"
+      project_by: "Proyecto por %{author}"
     collections_list:
       collections: "Coleções"
       meta_description: "Você pode escolher entre os muitos projetos interessantes hospedados em FromThePage. Comece a ler os escritos históricos que já foram transcritos por outros membros. Você pode ajudar um dos grandes projetos entrar na era digital."
