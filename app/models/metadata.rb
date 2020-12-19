@@ -14,7 +14,7 @@ class Metadata
     csv.each do |row|
       metadata = []
       csv.headers.each do |header|
-        if row[header] && header != 'work_id' && header != 'filename'
+        if row[header] && header != 'work_id' #&& header != 'filename'
           metadata << { label: header,  value: row[header] }
         end
       end
@@ -23,7 +23,13 @@ class Metadata
       if work_id
         work = Work.where(id: work_id.to_i).first
       else
-        work = Work.where(uploaded_filename: row['filename']).first
+        raw_filename = row['filename']
+        if raw_filename.blank?
+          work=nil
+        else
+          clean_filename = raw_filename.sub(File.extname(raw_filename),'')
+          work = Work.where(uploaded_filename: clean_filename).first
+        end
       end
 
       if work.nil?
@@ -31,6 +37,8 @@ class Metadata
           @rowset_errors << { error: "No work exists with ID #{row['work_id']}",
           work_id: row['work_id'],
           title: row['title'] }        
+        elsif row['filename'].blank?
+          @rowset_errors << { error: "No work filename or work ID valeus were in the uploaded file" }          
         else
           @rowset_errors << { error: "No work exists with filename #{row['filename']}" }
         end
