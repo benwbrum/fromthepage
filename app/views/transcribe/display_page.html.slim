@@ -224,7 +224,7 @@ h2.legend =t('notes_and_questions')
       var myCodeMirror = CodeMirror.fromTextArea(
         document.getElementById("page_source_text"),
         {
-          lineNumbers: true,
+          lineNumbers: true, 
           mode: "xml",
           extraKeys: {
             "'<'": completeAfter,
@@ -311,7 +311,7 @@ h2.legend =t('notes_and_questions')
                 cm.replaceSelection('<unclear>' + selection + '</unclear>');
                 if (!selection) {
                   var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 9);
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 10);
                 }
               }
             }]
