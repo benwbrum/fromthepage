@@ -42,7 +42,8 @@ module AbstractXmlHelper
       end
     end
     # get rid of line breaks within other html mark-up
-    doc.elements.delete_all("//table//lb")
+    doc.elements.delete_all("//table/lb")
+    doc.elements.delete_all("//table/row/lb")
 
     # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e|
