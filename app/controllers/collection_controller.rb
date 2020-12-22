@@ -87,8 +87,6 @@ class CollectionController < ApplicationController
         ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
       end
 
-      # TODO change this parameter to reflect the distinction between the old work_search form
-      # and the `:search` parameter used by forty_facets
       if params[:work_search]
         @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       elsif (params[:works] == 'untranscribed')

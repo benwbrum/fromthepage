@@ -20,7 +20,7 @@ class Flag < ApplicationRecord
   end
 
   def self.check_page(version)
-    if version.user&.owner? || version.user.account_type == "Staff"
+    if version.user&.owner? || version.user&.account_type == "Staff"
       return
     end
     if snippet = Flagger.check(version.transcription)
