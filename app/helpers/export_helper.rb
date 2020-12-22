@@ -145,6 +145,7 @@ module ExportHelper
     my_display_html = ""
     doc.elements.each_with_index("//p") do |e,i|
       transform_links(e)
+      transform_expansions(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
         e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
@@ -153,6 +154,22 @@ module ExportHelper
     end
 
     return my_display_html.gsub('<lb/>', "<lb/>\n").gsub('</p>', "\n</p>\n\n").gsub('<p>', "<p>\n").encode('utf-8')
+  end
+
+  def transform_expansions(p_element)
+    p_element.elements.each('//expan') do |expan|
+      orig = expan.attributes['orig']
+      choice = REXML::Element.new("choice")
+      tei_expan = REXML::Element.new("expan")
+      expan.children.each { |c| tei_expan.add(c) }
+      choice.add(tei_expan)
+      unless orig.blank?
+        tei_abbr = REXML::Element.new("abbr")
+        tei_abbr.add_text(orig)
+        choice.add(tei_abbr)
+      end
+      expan.replace_with(choice)
+    end
   end
 
   # def titles_to_divs(xml_text, context)
