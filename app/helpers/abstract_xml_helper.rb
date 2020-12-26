@@ -41,8 +41,20 @@ module AbstractXmlHelper
         e.replace_with(anchor)
       end
     end
+
+    doc.elements.each("//expan") do |e|
+      orig = e.attributes['orig']
+
+      anchor = REXML::Element.new("a")
+      anchor.add_attribute("title", orig)
+      anchor.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| anchor.add(c) }
+      e.replace_with(anchor)
+    end
+
     # get rid of line breaks within other html mark-up
-    doc.elements.delete_all("//table//lb")
+    doc.elements.delete_all("//table/lb")
+    doc.elements.delete_all("//table/row/lb")
 
     # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e|
