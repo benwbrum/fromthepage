@@ -1,7 +1,7 @@
 =javascript_include_tag 'application'
 .litebox-embed(style="width:550px")
   h1 =t('.upload_metadata')
-  p =t('.upload_metadata_description', link: link_to("link", collection_metadata_example_path(params[:id]))).html_safe
+  p =t('.upload_metadata_description', link: link_to(t('.template_file_anchor'), collection_metadata_example_path(params[:id]))).html_safe
 
   =form_for(:metadata, url: collection_metadata_create_path) do |f|
     table.form
