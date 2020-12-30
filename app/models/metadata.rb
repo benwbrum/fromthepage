@@ -9,7 +9,17 @@ class Metadata
 
 
   def process_csv
-    csv = CSV.read(@metadata_file, :headers=>true)
+    begin
+      csv = CSV.read(@metadata_file, :headers=>true)
+    rescue
+      contents = File.read(@metadata_file)
+      detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+      csv = CSV.read(@metadata_file, 
+                      :encoding => "bom|#{detection[:encoding]}",
+                      :liberal_parsing => true,
+                      :headers => true)
+    end
     success = 0
     csv.each do |row|
       metadata = []
@@ -49,10 +59,13 @@ class Metadata
         title: row['title'] }
         output_file(@rowset_errors)
       else
-        work.update_column(:original_metadata, metadata.to_json)
+        work.original_metadata=metadata.to_json
+        work.save!
         success+=1
       end
     end
+
+    # we should update metadata coverage after this
 
     result = { content: success, errors: @rowset_errors }
     result
