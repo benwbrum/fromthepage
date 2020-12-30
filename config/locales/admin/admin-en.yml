@@ -71,6 +71,8 @@ en:
       delete_the_abusive_content: "Delete the abusive content, leaving other contributions by the user untouched."
       expunge_user: "Expunge User"
       delete_the_user_and_remove_all_contributions: "Delete the user and remove all of their contributions."
+      ok_user: "OK User"
+      mark_this_users_content_as_not_abusive: "Mark this user's content as not abusive."
     owner_list:
       search_owners: "Search Owners..."
       search: "Search"

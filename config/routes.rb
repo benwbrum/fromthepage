@@ -44,6 +44,7 @@ Fromthepage::Application.routes.draw do
     get 'visit_deeds', to: 'admin#visit_deeds'
     get 'visit_actions', to: 'admin#visit_actions'
     get 'expunge_confirmation', :to => 'admin#expunge_confirmation'
+    get 'ok_user', :to => 'admin#ok_user'
     get 'downgrade', to: 'admin#downgrade'
     post 'update', to: 'admin#update'
     patch 'update_user', :to => 'admin#update_user'
@@ -270,6 +271,11 @@ Fromthepage::Application.routes.draw do
   post 'display_search', to: 'display#search'
   get 'paged_search', to: 'display#paged_search'
   get 'demo', to: 'demo#index'
+
+  scope 'feature', as: 'feature' do
+    get ':feature/:value', to: 'user#feature_toggle' 
+    get ':feature', to: 'user#feature_toggle' 
+  end
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'

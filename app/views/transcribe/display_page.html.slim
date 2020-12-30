@@ -1,8 +1,17 @@
+=stylesheet_link_tag "codemirror/lib/codemirror"
+=stylesheet_link_tag "codemirror-buttons/buttons"
 =javascript_include_tag "transcribe"
+=javascript_include_tag "codemirror/lib/codemirror"
+=javascript_include_tag "codemirror/mode/xml/xml"
+=javascript_include_tag "codemirror/addon/display/display/panel"
+=javascript_include_tag "codemirror/addon/hint/show-hint"
+=javascript_include_tag "codemirror/addon/hint/xml-hint"
+=javascript_include_tag "codemirror-buttons/buttons"
 
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
+
 
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
@@ -43,7 +52,13 @@
         -else
           =f.check_box('needs_review', {checked: false})
 
-      .toolbar_group.w100.aright
+      .toolbar_group.w100.alright
+        -unless @preview_xml
+            =>button_tag t('.preview'), :name => 'preview'
+        -else
+            =>button_tag t('.edit'), :name => 'edit'
+        -unless @collection.subjects_disabled || @collection.field_based
+            =>button_tag t('.autolink'), :name => 'autolink'
         =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
@@ -69,7 +84,7 @@
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
 
-        .page-column_actions
+        //.page-column_actions
           -unless @preview_xml
             =>button_tag t('.preview'), :name => 'preview'
           -else
@@ -90,9 +105,16 @@
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
-  .page-toolbar.mt-10
-    .toolbar.aright
-      =button_tag t('.save_changes'), :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+      .page-toolbar-bottom
+        .toolbar
+          .toolbar_group.w100.aright
+            -unless @preview_xml
+                =>button_tag t('.preview'), :name => 'preview'
+            -else
+                =>button_tag t('.edit'), :name => 'edit'
+            -unless @collection.subjects_disabled || @collection.field_based
+                =>button_tag t('.autolink'), :name => 'autolink'
+            =button_tag t('.save_changes'), :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
 
 .fgfaded ==@work.set_transcription_conventions
 
@@ -156,6 +178,144 @@ h2.legend =t('notes_and_questions')
       });
 
     });
+-if feature_enabled?(:codemirror)
+  -content_for :javascript
+    javascript:
+      var fromthepage_tags = {
+        "!top": ["add", "cb", "date", "expan", "figure", "gap", "hi", "milestone", "stamp", "table", "unclear", "sup", "u", "strike", "s", "span", "a"],
+        add: { children: ["u", "s"] },
+        cb: { attrs: { "n": null } },
+        date: {attrs: { when: "YYYY-MM-DD" }, children: ["hi", "unclear", "gap"] },
+        expan: {attrs: { orig: null }},
+        figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
+        hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
+        milestone: { attrs: { "unit": ["column"], "n": null}},
+        row: { children: ["cell"] },
+        stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
+        sup: { children: ["u", "s"] },
+        table: { attrs: {"rend": ["rules"]}, children: ["row"] }
+      }
 
--unless MIXPANEL_ID.blank?
-  javascript:  mixpanel.track("Transcribe Page");
+
+      function completeAfter(cm, pred) {
+        var cur = cm.getCursor();
+        if (!pred || pred()) setTimeout(function() {
+          if (!cm.state.completionActive)
+            cm.showHint({completeSingle: false});
+        }, 100);
+        return CodeMirror.Pass;
+      }
+
+      function completeIfAfterLt(cm) {
+        return completeAfter(cm, function() {
+          var cur = cm.getCursor();
+          return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+        });
+      }
+
+      function completeIfInTag(cm) {
+        return completeAfter(cm, function() {
+          var tok = cm.getTokenAt(cm.getCursor());
+          if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+          var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+          return inner.tagName;
+        });
+      }
+
+      var myCodeMirror = CodeMirror.fromTextArea(
+        document.getElementById("page_source_text"),
+        {
+          lineNumbers: true, 
+          mode: "xml",
+          extraKeys: {
+            "'<'": completeAfter,
+            "'/'": completeIfAfterLt,
+            "' '": completeIfInTag,
+            "'='": completeIfInTag,
+            "Ctrl-Space": "autocomplete",
+            "Tab": "autocomplete"
+          },
+          lineWrapping: true,
+          hintOptions: {schemaInfo: fromthepage_tags},
+          buttons: [
+            {
+              hotkey: 'Ctrl-^',
+              class: 'sup',
+              label: 'sup',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<hi rend="sup">' + selection + '</hi>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-%',
+              class: 'strike',
+              label: 'str',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<hi rend="str">' + selection + '</hi>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-u',
+              class: 'u',
+              label: 'u',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<hi rend="underline">' + selection + '</hi>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-d',
+              class: 'italic',
+              label: 'date',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<date when="">' + selection + '</date>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 7);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-F',
+              class: 'italic',
+              label: 'fig',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<figure rend="hr">' + selection + '</figure>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 9);
+                }
+              }
+            },
+            {
+              hotkey: 'Ctrl-U',
+              class: 'italic',
+              label: 'unclear',
+              callback: function (cm) {
+                var selection = cm.getSelection();
+                cm.replaceSelection('<unclear>' + selection + '</unclear>');
+                if (!selection) {
+                  var cursorPos = cm.getCursor();
+                  cm.setCursor(cursorPos.line, cursorPos.ch - 10);
+                }
+              }
+            }]
+          });
+
+          myCodeMirror.setSize("100%", "100%");
