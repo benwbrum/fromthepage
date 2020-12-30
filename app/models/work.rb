@@ -298,16 +298,13 @@ class Work < ApplicationRecord
 
             # check that record exist
             test = collection.metadata_coverages.where(key: label).first
-
             # increment count field if a record is returned
             if test
-              test.count = test.count + 1
+              test.count+= 1
               test.save
-            end
-
-            # otherwise create it
-            if test.nil?
+            else
               mc.key = label.to_sym
+              mc.count = 1
               mc.save
               mc.create_facet_config(metadata_coverage_id: mc.collection_id)
             end
