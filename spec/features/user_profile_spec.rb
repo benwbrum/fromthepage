@@ -36,4 +36,12 @@ describe 'User profile and settings actions' do
     expect(current_url).to eq(edit_user_path)
   end
 
+
+  it 'should display number of contributions on profile page' do
+    visit user_profile_path(@user)
+    expect(page).to have_content(@user.display_name)
+    expect(page).to have_content('Contributions')
+  end
+
+
 end
