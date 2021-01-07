@@ -183,7 +183,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes/:collection_id', to: 'deed#notes', as: 'notes'
+    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
