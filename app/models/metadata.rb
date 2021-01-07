@@ -7,62 +7,70 @@ class Metadata
     @collection = collection
   end
 
+
   def process_csv
     begin
-      csv = CSV.open(@metadata_file)
-      headers = csv.shift
-    rescue CSV::MalformedCSVError
-      csv = CSV.open(@metadata_file, :encoding => "ISO8859-1")
-      headers = csv.shift
+      csv = CSV.read(@metadata_file, :headers=>true)
+    rescue
+      contents = File.read(@metadata_file)
+      detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+      csv = CSV.read(@metadata_file, 
+                      :encoding => "bom|#{detection[:encoding]}",
+                      :liberal_parsing => true,
+                      :headers => true)
     end
-
-    rows = CSV.parse(@metadata_file).map { |a| Hash[ headers.zip(a) ] }
-    rows.shift
-
-    # process rows.
-    rows.each do |row|
-      if row.include?('work_id')
-        row.each do |r|
-          @new_metadata << { label: r[0],  value: r[1] }
+    success = 0
+    csv.each do |row|
+      metadata = []
+      csv.headers.each do |header|
+        if row[header] && header != 'work_id' #&& header != 'filename'
+          metadata << { label: header,  value: row[header] }
         end
+      end
 
-        begin
-          work = Work.find(row['work_id'].to_i)
-          work.update(original_metadata: @new_metadata.to_json)
-
-          unless @collection.works.include?(work)
-            @rowset_errors << { error: "No work with ID #{row['work_id']} is in collection #{@collection.title}",
-                                work_id: row['work_id'],
-                                title: row['title'] }
-          end
-        rescue ActiveRecord::RecordNotFound
-          @rowset_errors << { error: "No work exists with ID #{row['work_id']}",
-                              work_id: row['work_id'],
-                              title: row['title'] }
-
-          # write the error.csv to the filesystem.
-          output_file(@rowset_errors)
-        end
-      elsif row.include?('filename')
-        work = Work.where(uploaded_filename: row['filename']).first
-
-        if work.nil?
-          @rowset_errors << { error: "No work exists with filename #{row['filename']}" }
-          output_file(@rowset_errors)
+      work_id = row['work_id']
+      if work_id
+        work = Work.where(id: work_id.to_i).first
+      else
+        raw_filename = row['filename']
+        if raw_filename.blank?
+          work=nil
         else
-          row.each do |k, v|
-            encval = v.force_encoding('ISO-8859-1') unless v.nil?
-            @new_metadata << { label: k, value: encval }
-          end
-
-          work.update(original_metadata: @new_metadata.to_json)
+          clean_filename = raw_filename.sub(File.extname(raw_filename),'')
+          work = Work.where(uploaded_filename: clean_filename).first
         end
+      end
+
+      if work.nil?
+        if work_id
+          @rowset_errors << { error: "No work exists with ID #{row['work_id']}",
+          work_id: row['work_id'],
+          title: row['title'] }        
+        elsif row['filename'].blank?
+          @rowset_errors << { error: "No work filename or work ID valeus were in the uploaded file" }          
+        else
+          @rowset_errors << { error: "No work exists with filename #{row['filename']}" }
+        end
+        output_file(@rowset_errors)
+      elsif work.collection != @collection
+        @rowset_errors << { error: "No work with ID #{row['work_id']} is in collection #{@collection.title}",
+        work_id: row['work_id'],
+        title: row['title'] }
+        output_file(@rowset_errors)
+      else
+        work.original_metadata=metadata.to_json
+        work.save!
+        success+=1
       end
     end
 
-    result = { content: rows, errors: @rowset_errors }
+    # we should update metadata coverage after this
+
+    result = { content: success, errors: @rowset_errors }
     result
   end
+
 
   def output_file(rowset_errors)
     CSV.open('/tmp/error.csv', 'wb') do |csv|
