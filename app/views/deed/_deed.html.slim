@@ -5,10 +5,10 @@
 -user_name = deed.user.display_name if deed.user
 
 -user = link_to(user_name, user_profile_url(deed.user, only_path: !mailer))
--page = deed.page.nil? ? '' : link_to(deed.page.title, collection_display_page_url(deed.collection.owner, deed.collection, deed.work, deed.page, only_path: !mailer))
--article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.collection.owner, deed.collection, deed.article, only_path: !mailer))
+-page = deed.page.nil? ? '' : link_to(deed.page.title, collection_display_page_url(deed.page.collection.owner, deed.page.collection, deed.work, deed.page, only_path: !mailer))
+-article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
 -if(!deed.work.nil? && !deed.work.collection.nil? )
-  -work = link_to(deed.work.title, collection_read_work_url(deed.collection.owner, deed.collection, deed.work, only_path: !mailer))
+  -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work, only_path: !mailer))
 -unless(deed.collection.nil?)
   -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
 
