@@ -31,7 +31,7 @@ before_install:
   - sudo apt-get install firefox-geckodriver
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
   - qtchooser -qt=qt5
-  - mysql -e 'CREATE DATABASE test;'
+  - sudo mysql -e 'CREATE DATABASE test;'
   - nvm install --lts
 
 before_script:
