@@ -146,6 +146,7 @@ module ExportHelper
     doc.elements.each_with_index("//p") do |e,i|
       transform_links(e)
       transform_expansions(e)
+      transform_regularizations(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
         e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
@@ -159,16 +160,37 @@ module ExportHelper
   def transform_expansions(p_element)
     p_element.elements.each('//expan') do |expan|
       orig = expan.attributes['orig']
-      choice = REXML::Element.new("choice")
-      tei_expan = REXML::Element.new("expan")
-      expan.children.each { |c| tei_expan.add(c) }
-      choice.add(tei_expan)
       unless orig.blank?
-        tei_abbr = REXML::Element.new("abbr")
-        tei_abbr.add_text(orig)
-        choice.add(tei_abbr)
+        choice = REXML::Element.new("choice")
+        tei_expan = REXML::Element.new("expan")
+        expan.children.each { |c| tei_expan.add(c) }
+        choice.add(tei_expan)
+        unless orig.blank?
+          tei_abbr = REXML::Element.new("abbr")
+          tei_abbr.add_text(orig)
+          choice.add(tei_abbr)
+        end
+        expan.replace_with(choice)
       end
-      expan.replace_with(choice)
+    end
+  end
+
+  def transform_regularizations(p_element)
+    p_element.elements.each('//reg') do |reg|
+      orig = reg.attributes['orig']
+#      binding.pry
+      unless orig.blank? || reg.parent.name == 'choice'
+        choice = REXML::Element.new("choice")
+        tei_reg = REXML::Element.new("reg")
+        reg.children.each { |c| tei_reg.add(c) }
+        choice.add(tei_reg)
+        unless orig.blank?
+          tei_orig = REXML::Element.new("orig")
+          tei_orig.add_text(orig)
+          choice.add(tei_orig)
+        end
+        reg.replace_with(choice)
+      end
     end
   end
 
