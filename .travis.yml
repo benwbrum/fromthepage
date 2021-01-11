@@ -19,9 +19,9 @@ jobs:
       before_script: skip
       script: echo No pry found
     - stage: test
-    - addons:
-        mariadb: '10.2'
-      env: DB=mariadb
+      services:	
+      - mysql
+      env: DB=mariadb:10.2
       gemfile: Gemfile
 
 before_install:
