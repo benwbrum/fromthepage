@@ -129,6 +129,11 @@ module AbstractXmlHelper
       end
     end
 
+    doc.elements.each("//add") do |e|
+      e.name='span'
+      e.add_attribute('class', "addition")
+    end
+
     doc.elements.each("//figure") do |e|
       rend = e.attributes["rend"]
       if rend == 'hr'

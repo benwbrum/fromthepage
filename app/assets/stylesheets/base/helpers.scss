@@ -32,6 +32,21 @@
 .underline {
   text-decoration: underline !important;
 }
+.strikethrough {
+  text-decoration: line-through !important;
+}
+.addition {
+  vertical-align: super;
+  font-size: 100%;
+}
+.unclear {
+  text-decoration: wavy !important;
+}
+.subscript {
+  text-decoration: wavy !important;
+}
+
+
 
 // Width and height
 .h100 {
