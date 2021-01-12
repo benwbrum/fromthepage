@@ -52,6 +52,16 @@ module AbstractXmlHelper
       e.replace_with(anchor)
     end
 
+    doc.elements.each("//reg") do |e|
+      orig = e.attributes['orig']
+
+      anchor = REXML::Element.new("a")
+      anchor.add_attribute("title", orig)
+      anchor.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| anchor.add(c) }
+      e.replace_with(anchor)
+    end
+
     # get rid of line breaks within other html mark-up
     doc.elements.delete_all("//table/lb")
     doc.elements.delete_all("//table/row/lb")
@@ -114,7 +124,14 @@ module AbstractXmlHelper
         span.name='i'
       when 'sub'
         span.name='sub'
+      when 'str'
+        span.name='strike'
       end
+    end
+
+    doc.elements.each("//add") do |e|
+      e.name='span'
+      e.add_attribute('class', "addition")
     end
 
     doc.elements.each("//figure") do |e|
