@@ -25,7 +25,7 @@ class PageBlockController < AdminController
   end
 
   def page_block_params
-    params.require(:page_block).permit(:page_block, :id, :tag, :origin_action, :origin_controller)
+    params.require(:page_block).permit(:page_block, :id, :tag, :origin_action, :origin_controller, :html)
   end
 
 end
