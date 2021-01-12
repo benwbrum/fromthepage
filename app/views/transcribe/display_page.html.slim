@@ -286,6 +286,22 @@ h2.legend =t('notes_and_questions')
             }
           },
           {
+            hotkey: 'Ctrl-R',
+            class: 'italic',
+            label: 'reg',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<reg orig="">' + selection + '</reg>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              } else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6 - selection.length - 2);
+              }
+            }
+          },
+          {
             class: 'red',
             label: 'red',
             callback: function (cm) {
@@ -436,7 +452,7 @@ h2.legend =t('notes_and_questions')
   -content_for :javascript
     javascript:
       var fromthepage_tags = {
-        "!top": ["add", "cb", "date", "expan", "figure", "gap", "hi", "milestone", "stamp", "sub", "sup", "table", "unclear", "u", "strike", "s", "span", "a"],
+        "!top": ["add", "cb", "date", "expan", "figure", "gap", "hi", "milestone", "reg", "stamp", "sub", "sup", "table", "unclear", "u", "strike", "s", "span", "a"],
         add: { children: ["u", "s"] },
         cb: { attrs: { "n": null } },
         date: {attrs: { when: "YYYY-MM-DD" }, children: ["hi", "unclear", "gap"] },
@@ -444,6 +460,7 @@ h2.legend =t('notes_and_questions')
         figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
         hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
         milestone: { attrs: { "unit": ["column"], "n": null}},
+        reg: {attrs: { orig: null }},
         row: { children: ["cell"] },
         stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
         sup: { children: ["u", "s"] },
