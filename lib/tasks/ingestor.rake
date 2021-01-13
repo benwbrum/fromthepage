@@ -292,6 +292,7 @@ namespace :fromthepage do
       print "\t\tconvert_to_work calculating base and height \n"
       page.base_height = image.rows
       page.base_width = image.columns
+      binding.pry
       if work.ocr_correction
         ocr_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, "txt")))
         if File.exist? ocr_fn
