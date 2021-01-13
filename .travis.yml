@@ -17,9 +17,9 @@ jobs:
       before_script: skip
       script: echo No pry found
     - stage: test
-      - addons:
-        mariadb: '10.2'
-      env: DB=mariadb
+      services:
+      - mysql
+      env: DB=mysql
       gemfile: Gemfile
 
 before_install:
@@ -31,7 +31,7 @@ before_install:
   - sudo apt-get install firefox-geckodriver
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
   - qtchooser -qt=qt5
-  - sudo mysql -e 'CREATE DATABASE test;'
+  - mysql -e 'CREATE DATABASE test;'
   - nvm install --lts
 
 before_script:
