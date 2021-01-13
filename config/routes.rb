@@ -214,6 +214,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'page_block', as: 'page_block' do
+    get 'list', to: 'page_block#list'
     patch 'update', :to => 'page_block#update'
     get 'edit', to: 'page_block#edit'
   end
