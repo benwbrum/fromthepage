@@ -421,7 +421,9 @@ class IiifController < ApplicationController
   end
 
   def export_work_html
+    xhtml = work_to_xhtml(@work)
 
+    render :plain => xhtml, :layout => false, :content_type => "text/html"
   end
 
 private
@@ -480,7 +482,7 @@ private
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
         "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work)
       },
-      { "@id" => url_for(:controller => :export, :action => :show, :work_id => work.id), "label" => "XHTML Export", "profile" => "XHTML URL"},
+      { "@id" => iiif_work_export_html_url(work), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
       { "@id" => iiif_work_export_tei_url(work), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages

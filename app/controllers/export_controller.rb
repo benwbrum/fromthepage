@@ -22,8 +22,9 @@ class ExportController < ApplicationController
   end
 
   def show
-    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
-    render :layout => false
+    xhtml = work_to_xhtml(@work)
+
+    render :text => xhtml, :layout => false
   end
 
   def text
