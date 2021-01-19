@@ -1,5 +1,10 @@
 module ExportHelper
 
+  def work_to_xhtml(work)
+    @work = Work.includes(pages: [{notes: :user}, {page_versions: :user}]).find_by(id: work.id)
+    render_to_string :layout => false, :template => "export/show.html.erb"
+  end
+
   def work_to_tei(work)
     params[:format] = 'xml'# if params[:format].blank?
 
