@@ -22,8 +22,9 @@ class ExportController < ApplicationController
   end
 
   def show
-    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
-    render :layout => false
+    xhtml = work_to_xhtml(@work)
+
+    render :text => xhtml, :layout => false
   end
 
   def text
@@ -42,43 +43,8 @@ class ExportController < ApplicationController
   end
 
   def tei
-    params[:format] = 'xml'# if params[:format].blank?
-
-    @context = ExportContext.new
-
-    @user_contributions =
-      User.find_by_sql("SELECT  user_id user_id,
-                                users.real_name real_name,
-                                users.display_name display_name,
-                                users.guest guest,
-                                users.login login,
-                                count(*) edit_count,
-                                min(page_versions.created_on) first_edit,
-                                max(page_versions.created_on) last_edit
-                        FROM    page_versions
-                        INNER JOIN pages
-                            ON page_versions.page_id = pages.id
-                        INNER JOIN users
-                            ON page_versions.user_id = users.id
-                        WHERE pages.work_id = #{@work.id}
-                          AND page_versions.transcription IS NOT NULL
-                        GROUP BY user_id
-                        ORDER BY count(*) DESC")
-
-    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
-
-    @all_articles = @work.articles
-    person_category = @collection.categories.where(title: 'People').first
-    @person_articles = @all_articles.joins(:categories).where("articles_categories.category_id in (?)", person_category.descendants.map {|c| c.id}+[person_category.id])
-    place_category = @collection.categories.where(title: 'Places').first
-    @place_articles = @all_articles.joins(:categories).where("articles_categories.category_id in (?)", place_category.descendants.map {|c| c.id}+[place_category.id])
-
-    @other_articles = @all_articles - (@place_articles + @person_articles)    
-    ### Catch the rendered Work for post-processing
-    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
     tei_xml = work_to_tei(@work)
 
-    # Render the post-processed
     render :text => tei_xml, :content_type => "application/xml", :layout => false
   end
 
