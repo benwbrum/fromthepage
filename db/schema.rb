@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_28_180552) do
+ActiveRecord::Schema.define(version: 2021_01_20_134610) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -73,6 +73,27 @@ ActiveRecord::Schema.define(version: 2020_11_28_180552) do
   create_table "articles_categories", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "article_id"
     t.integer "category_id"
+  end
+
+  create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.string "zip_file"
+    t.string "status"
+    t.boolean "plaintext_verbatim"
+    t.boolean "plaintext_emended"
+    t.boolean "plaintext_searchable"
+    t.boolean "tei"
+    t.boolean "html"
+    t.boolean "subject_csv"
+    t.boolean "field_csv"
+    t.boolean "page_level"
+    t.boolean "work_level"
+    t.boolean "collection_level"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
+    t.index ["user_id"], name: "index_bulk_exports_on_user_id"
   end
 
   create_table "categories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -723,19 +744,21 @@ ActiveRecord::Schema.define(version: 2020_11_28_180552) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
-    t.string "uploaded_filename"
     t.string "genre"
     t.string "source_location"
     t.string "source_collection_name"
     t.string "source_box_folder"
-    t.boolean "in_scope"
+    t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
+    t.string "uploaded_filename"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
 
+  add_foreign_key "bulk_exports", "collections"
+  add_foreign_key "bulk_exports", "users"
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "work_facets", "works"
 end

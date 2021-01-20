@@ -1,11 +1,51 @@
 module ExportHelper
+  include Rails.application.routes.url_helpers
+
+  def write_work_exports(works, out, export_user)
+    works.each do |work|
+      @work = work
+      dirname = work.slug.truncate(200, omission: "")
+      add_readme_to_zip(dirname: dirname, out: out)
+
+      export_tei(dirname: dirname, out:out, export_user:export_user)
+
+      %w(verbatim expanded searchable).each do |format|
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+      end
+
+      %w(verbatim expanded).each do |format|
+        export_plaintext_translation(name: format, dirname: dirname, out: out)
+      end
+
+      @work.pages.each do |page|
+        %w(verbatim expanded).each do |format|
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+        end
+
+        %w(verbatim expanded).each do |format|
+          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+        end
+      end
+
+      %w(full text transcript translation).each do |format|
+        export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+      end
+
+      @work.pages.each do |page|
+        export_html_full_pages(dirname: dirname, out: out, page: page)
+      end
+    end
+
+  end
+
 
   def work_to_xhtml(work)
     @work = Work.includes(pages: [{notes: :user}, {page_versions: :user}]).find_by(id: work.id)
     render_to_string :layout => false, :template => "export/show.html.erb"
   end
 
-  def work_to_tei(work)
+  def work_to_tei(work, exporting_user)
+    params ||= {}
     params[:format] = 'xml'# if params[:format].blank?
 
     @work = work
@@ -40,7 +80,21 @@ module ExportHelper
                       .where.not(categories: {title: 'Places'})
 
     ### Catch the rendered Work for post-processing
-    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
+    xml = ApplicationController.new.render_to_string(
+      layout: false, 
+      template: "export/tei.html.erb",
+      assigns: {
+        work: @work,
+        context: @context,
+        user_contributions: @user_contributions,
+        work_versions: @work_versions,
+        all_articles: @all_articles,
+        person_articles: @person_articles,
+        place_articles: @place_articles,
+        other_articles: @other_articles,
+        collection: @work.collection,
+        user: exporting_user
+      })
     post_process_xml(xml, @work)
   end
 

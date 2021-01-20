@@ -104,50 +104,14 @@ class ExportController < ApplicationController
   end
 
   def export_all_works
-    unless @collection.subjects_disabled
-      @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
-    else
-      @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
-    end
+    @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
 
     # create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
       format.html
       format.zip do
         buffer = Zip::OutputStream.write_buffer do |out|
-          @works.each do |work|
-            @work = work
-            dirname = work.slug.truncate(200, omission: "")
-            add_readme_to_zip(dirname: dirname, out: out)
-
-            export_tei(dirname: dirname, out:out)
-
-            %w(verbatim expanded searchable).each do |format|
-              export_plaintext_transcript(name: format, dirname: dirname, out: out)
-            end
-
-            %w(verbatim expanded).each do |format|
-              export_plaintext_translation(name: format, dirname: dirname, out: out)
-            end
-
-            @work.pages.each do |page|
-              %w(verbatim expanded).each do |format|
-                export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-              end
-
-              %w(verbatim expanded).each do |format|
-                export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
-              end
-            end
-
-            %w(full text transcript translation).each do |format|
-              export_view(name: format, dirname: dirname, out: out)
-            end
-
-            @work.pages.each do |page|
-              export_html_full_pages(dirname: dirname, out: out, page: page)
-            end
-          end
+          write_work_exports(@works, out, current_user)
         end
 
         buffer.rewind

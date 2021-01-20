@@ -1,0 +1,8 @@
+<%= render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }}) %>
+
+<h3>
+  <%= link_to('Export', collection_export_path(@collection.owner, @collection)) %> 
+  - Bulk Export
+</h3>
+
+<%= render 'form', bulk_export: @bulk_export %>

@@ -1,0 +1,81 @@
+<%= render(:partial => 'admin/header', :locals => { :selected => 6 }) %>
+
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @bulk_export.user_id %>
+</p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @bulk_export.collection_id %>
+</p>
+
+<p>
+  <strong>Zip file:</strong>
+  <%= @bulk_export.zip_file %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @bulk_export.status %>
+</p>
+
+<p>
+  <strong>Plaintext verbatim:</strong>
+  <%= @bulk_export.plaintext_verbatim %>
+</p>
+
+<p>
+  <strong>Plaintext emended:</strong>
+  <%= @bulk_export.plaintext_emended %>
+</p>
+
+<p>
+  <strong>Plaintext searchable:</strong>
+  <%= @bulk_export.plaintext_searchable %>
+</p>
+
+<p>
+  <strong>Tei:</strong>
+  <%= @bulk_export.tei %>
+</p>
+
+<p>
+  <strong>Html:</strong>
+  <%= @bulk_export.html %>
+</p>
+
+<p>
+  <strong>Subject csv:</strong>
+  <%= @bulk_export.subject_csv %>
+</p>
+
+<p>
+  <strong>Field csv:</strong>
+  <%= @bulk_export.field_csv %>
+</p>
+
+<p>
+  <strong>Page level:</strong>
+  <%= @bulk_export.page_level %>
+</p>
+
+<p>
+  <strong>Work level:</strong>
+  <%= @bulk_export.work_level %>
+</p>
+
+<p>
+  <strong>Collection level:</strong>
+  <%= @bulk_export.collection_level %>
+</p>
+
+
+<h4>Processing Log</h4>
+
+<pre>
+<%= @bulk_export.log_contents %>
+</pre>
