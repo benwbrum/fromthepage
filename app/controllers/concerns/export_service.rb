@@ -1,4 +1,6 @@
 module ExportService
+  include AbstractXmlHelper
+
   def add_readme_to_zip(dirname:, out:)
     readme = "#{Rails.root}/doc/zip/README"
     file = File.open(readme, "r")
@@ -7,10 +9,10 @@ module ExportService
     out.write file.read
   end
 
-  def export_tei(dirname:, out:)
+  def export_tei(dirname:, out:, export_user:)
     path = File.join dirname, 'tei', "tei.xml"
     out.put_next_entry path
-    out.write work_to_tei(@work)
+    out.write work_to_tei(@work, export_user)
   end
 
   def export_plaintext_transcript(name:, dirname:, out:)
@@ -80,25 +82,65 @@ module ExportService
     end
   end
 
-  def export_view(name:, dirname:, out:)
+  def export_view(name:, dirname:, out:, export_user:)
     path = File.join dirname, 'html', "#{name}.html"
 
     case name
     when "full"
-      full_view = render_to_string(:action => 'show', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      full_view = ApplicationController.new.render_to_string(
+        :template => 'export/show', 
+        :formats => [:html], 
+        :work_id => @work.id, 
+        :layout => false, 
+        :encoding => 'utf-8',
+        :assigns => {
+          :collection => @work.collection,
+          :work => @work,
+          :export_user => export_user
+        })
       out.put_next_entry path
       out.write full_view
     when "text"
-      text_view = render_to_string(:action => 'text', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      text_view = ApplicationController.new.render_to_string(
+        :template => 'export/text', 
+        :formats => [:html], 
+        :work_id => @work.id, 
+        :layout => false, 
+        :encoding => 'utf-8',
+        :assigns => {
+          :collection => @work.collection,
+          :work => @work,
+          :export_user => export_user
+        })
       out.put_next_entry path
       out.write text_view
     when "transcript"
-      transcript_view = render_to_string(:action => 'transcript', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+      transcript_view = ApplicationController.new.render_to_string(
+        :template => 'export/transcript', 
+        :formats => [:html], 
+        :work_id => @work.id, 
+        :layout => false, 
+        :encoding => 'utf-8',
+        :assigns => {
+          :collection => @work.collection,
+          :work => @work,
+          :export_user => export_user
+        })
       out.put_next_entry path
       out.write transcript_view
     when "translation"
       if @work.supports_translation?
-        translation_view = render_to_string(:action => 'translation', :formats => [:html], :work_id => @work.id, :layout => false, :encoding => 'utf-8')
+        translation_view = ApplicationController.new.render_to_string(
+          :template => 'export/translation', 
+          :formats => [:html], 
+          :work_id => @work.id, 
+          :layout => false, 
+          :encoding => 'utf-8',
+          :assigns => {
+            :collection => @work.collection,
+            :work => @work,
+            :export_user => export_user
+          })
         out.put_next_entry path
         out.write translation_view
       end
@@ -110,7 +152,7 @@ module ExportService
 
     out.put_next_entry path
 
-    page_view = render_to_string('display/display_page.html.slim', :locals => {:@work => @work, :@page => page}, :layout => false)
+    page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
     out.write page_view
   end
 end
