@@ -21,10 +21,6 @@ jobs:
       - mysql
       env: DB=mysql
       gemfile: Gemfile
-    - addons:
-        mariadb: '10.2'
-      env: DB=mariadb
-      gemfile: Gemfile
 
 before_install:
   - sudo apt-get -qq update
