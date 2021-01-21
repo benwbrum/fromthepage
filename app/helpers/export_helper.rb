@@ -1,38 +1,67 @@
 module ExportHelper
   include Rails.application.routes.url_helpers
 
-  def write_work_exports(works, out, export_user)
+  def write_work_exports(works, out, export_user, bulk_export)
     works.each do |work|
       @work = work
       dirname = work.slug.truncate(200, omission: "")
       add_readme_to_zip(dirname: dirname, out: out)
 
-      export_tei(dirname: dirname, out:out, export_user:export_user)
-
-      %w(verbatim expanded searchable).each do |format|
-        export_plaintext_transcript(name: format, dirname: dirname, out: out)
-      end
-
-      %w(verbatim expanded).each do |format|
-        export_plaintext_translation(name: format, dirname: dirname, out: out)
-      end
-
-      @work.pages.each do |page|
-        %w(verbatim expanded).each do |format|
-          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+      if bulk_export.work_level
+        if bulk_export.tei
+          export_tei(dirname: dirname, out:out, export_user:export_user)
         end
 
-        %w(verbatim expanded).each do |format|
-          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+        if bulk_export.plaintext_verbatim
+          format='verbatim'
+          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          export_plaintext_translation(name: format, dirname: dirname, out: out)
+        end
+
+        if bulk_export.plaintext_emended
+          format='expanded'
+          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          export_plaintext_translation(name: format, dirname: dirname, out: out)
+        end
+
+        if bulk_export.plaintext_searchable
+          format='searchable'
+          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+        end
+
+        if bulk_export.html
+          %w(full text transcript translation).each do |format|
+            export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+          end
         end
       end
 
-      %w(full text transcript translation).each do |format|
-        export_view(name: format, dirname: dirname, out: out, export_user:export_user)
-      end
+      if bulk_export.page_level
+        @work.pages.each do |page|
+          if bulk_export.plaintext_verbatim
+            format='verbatim'
+            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+          end
 
-      @work.pages.each do |page|
-        export_html_full_pages(dirname: dirname, out: out, page: page)
+          if bulk_export.plaintext_emended
+            format='expanded'
+            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+          end  
+
+          if bulk_export.plaintext_searchable
+            format='searchable'
+            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          end
+        end
+
+
+        if bulk_export.html
+          @work.pages.each do |page|
+            export_html_full_pages(dirname: dirname, out: out, page: page)
+          end
+        end
       end
     end
 
@@ -340,7 +369,7 @@ module ExportHelper
       current_depth = 1
       sections = []
       
-      doc_body.children.each {|e|
+      doc_body.children.each do |e|
       
         if(e.node_type != :text && e.get_elements('head').length > 0)
           header = e.get_elements('head').first
@@ -375,7 +404,7 @@ module ExportHelper
         # Adds the current element to the new section at the right location
         sections.first.add(e) unless sections.empty?
       
-      }
+      end
       
       return doc
     end
