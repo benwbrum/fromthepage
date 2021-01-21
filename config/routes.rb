@@ -142,7 +142,8 @@ Fromthepage::Application.routes.draw do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
     get '/', to: 'bulk_export#index', as: 'index'
-    get ':bulk_export_id/:bulk_export_id', to: 'bulk_export#show', as: 'show'
+    get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
+    get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
   end
 
   scope 'ia', as: 'ia' do
