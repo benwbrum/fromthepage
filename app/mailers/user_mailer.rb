@@ -1,4 +1,5 @@
 class UserMailer < ActionMailer::Base
+  include Rails.application.routes.url_helpers
   default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
 
