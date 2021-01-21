@@ -41,7 +41,7 @@ html lang="en-US"
         .toolbar_group
           =link_to root_path, class: 'logo', title: 'Home', 'aria-label' => 'Home'
             -if USE_PNG_LOGO
-              =image_tag 'logo.png', height: '64', alt: 'Home'
+              =image_tag 'logo.png', width: 134, height: 50, alt: 'Home'
             -else
               =svg_symbol '#logo', title: 'Home'
         .toolbar_group
