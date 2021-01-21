@@ -211,6 +211,9 @@ Fromthepage::Application.routes.draw do
   scope 'user', as: 'user' do
     get 'update_profile', to: 'user#update_profile'
     patch 'update', :to => 'user#update'
+    get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
+    post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
+    post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
   end
 
   scope 'page_block', as: 'page_block' do
