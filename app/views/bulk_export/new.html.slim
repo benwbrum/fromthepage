@@ -1,0 +1,87 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 6, :collection_id => @collection }})
+
+.columns
+  article.maincol
+
+    =form_with(url: bulk_export_create_path, model: @bulk_export, local: true) do |f|
+      =hidden_field_tag :collection_id, @collection.slug
+      =validation_summary @bulk_export.errors
+      table.form.settings
+        tr
+          td(colspan="2")
+            =f.check_box :plaintext_verbatim, value: @bulk_export.plaintext_verbatim
+            |&nbsp;
+            =f.label :plaintext_verbatim, 'Verbatim Plaintext'
+            br
+            span.settings This plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It will contain the verbatim text, with all formatting, emendation, and subject linking stripped out.
+
+        tr
+          td(colspan="2")
+            =f.check_box :html, value: @bulk_export.html
+            |&nbsp;
+            =f.label :html, 'HTML'
+            br
+            span.settings This may be useful for preservation in other systems or as a starting point for display on another website.
+        tr
+          td(colspan="2")
+            =f.check_box :plaintext_emended, value: @bulk_export.plaintext_emended
+            |&nbsp;
+            =f.label :plaintext_emended, 'Expanded Plaintext'
+            br
+            span.settings Like the verbatim plaintext, this plaintext file will represent line breaks with single newline, paragraph breaks with a double newline, and page breaks with a triple newline. It differs from the verbatim text, in that normalization will be applied to all subjects mentioned, so that while the verbatim text may read “I greeted Mr. Jones and his wife this morning.”, the emended plaintext will read “I greeted James Jones and Elizabeth Smith Jones this morning”. This artificial text is useful for programmatic analysis, but is not meant to be read by humans.
+
+        tr
+          td(colspan="2")
+            =f.check_box :plaintext_searchable, value: @bulk_export.plaintext_searchable
+            |&nbsp;
+            =f.label :plaintext_searchable, 'Search-optimized Plaintext'
+            br
+            span.settings A plaintext version of the work optimized for full-text search. This version contains a verbatim plaintext transcript of each page (as described above), except that words broken by hyphenated newlines are joined together, and a list of the canonical names mentioned within each page is appended to the end of the page.
+
+        tr
+          td(colspan="2")
+            =f.check_box :tei, value: @bulk_export.tei
+            |&nbsp;
+            =f.label :tei, 'TEI XML'
+            br
+            span.settings This may be useful to editors who plan to do further mark-up within TEI-XML editors like oXygen.
+
+        tr
+          td(colspan="2")
+            =f.check_box :page_level, value: @bulk_export.page_level
+            |&nbsp;
+            =f.label :page_level, 'One file per page'
+            br
+            span.settings Export the requested format broken into one file per page.
+
+        tr
+          td(colspan="2")
+            =f.check_box :work_level, value: @bulk_export.work_level
+            |&nbsp;
+            =f.label :work_level, 'One file per work'
+            br
+            span.settings Export the requested format as one file per work.
+
+
+      .toolbar
+        .toolbar_group.aright =f.button 'Start Export', class: 'big'
+
+  aside.sidecol
+    h4 Previous Exports
+    table.admin-grid.datagrid.striped
+      thead
+        tr
+          th Time
+          th Status
+
+      tbody
+        -@collection.bulk_exports.where.not(:status => BulkExport::Status::CLEANED).order(:created_at => :desc).each do |bulk_export|
+          tr
+            td.nowrap
+              =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+            td.nowrap
+              small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
+              -if bulk_export.status == BulkExport::Status::FINISHED
+                br
+                =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id))
+
