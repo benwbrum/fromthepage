@@ -16,15 +16,25 @@ class BulkExport < ApplicationRecord
 
 
   def export_to_zip
+    self.status = Status::PROCESSING
+    self.save
     # TODO read config options
     works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
-    zipfile_name = "/tmp/wingingit.zip"
 
-    buffer = Zip::OutputStream.open(zipfile_name) do |out|
+    buffer = Zip::OutputStream.open(zip_file_name) do |out|
       write_work_exports(works, out, self.user)
       out.close
     end
 
+    self.status = Status::FINISHED
+    self.save
+  end
+
+  def clean_zip_file
+    File.unlink(zip_file_name) if File.exist?(zip_file_name)
+    File.unlink(log_file) if File.exist?(log_file)
+    self.status = Status::CLEANED
+    self.save
   end
 
 
@@ -41,11 +51,27 @@ class BulkExport < ApplicationRecord
   end
 
   def log_file
-    "/tmp/fromthepage_rake_bulk_export_#{self.id}.log"
+    File.join(zip_file_path, "rake_bulk_export_#{self.id}.log")
   end
 
   def log_contents
-    File.read(log_file)
+    if File.exist?(log_file)
+      File.read(log_file)
+    else
+      "Log file has been cleaned"
+    end
   end
+
+  def zip_file_path
+    path = "/tmp/fromthepage_exports"
+    FileUtils.mkdir_p(path)
+
+    path
+  end
+
+  def zip_file_name
+    File.join(zip_file_path, "export_#{self.id}.zip")
+  end
+
 
 end

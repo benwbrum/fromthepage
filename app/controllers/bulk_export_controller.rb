@@ -1,5 +1,5 @@
 class BulkExportController < ApplicationController
-  before_action :set_bulk_export, only: [:show, :edit, :update, :destroy]
+  before_action :set_bulk_export, only: [:show, :edit, :download]
 
   PAGES_PER_SCREEN = 20
 
@@ -28,6 +28,18 @@ class BulkExportController < ApplicationController
       redirect_to collection_export_path(@collection.owner, @collection)
     else
       render :new
+    end
+  end
+
+  def download
+    if @bulk_export.status == BulkExport::Status::FINISHED
+      # read and spew the file
+      send_file(@bulk_export.zip_file_name, 
+        filename: "fromthepage_export.zip", 
+        :content_type => "application/zip")
+    else
+      flash[:info] = "This export download has been cleaned.  Please start a new one."
+      redirect_to collection_export_path(@bulk_export.collection.owner, @bulk_export.collection)
     end
   end
 

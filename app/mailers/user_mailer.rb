@@ -15,6 +15,12 @@ class UserMailer < ActionMailer::Base
     mail to: @document_upload.user.email, subject: "Your upload is ready"
   end
 
+  def bulk_export_finished(bulk_export)
+    @bulk_export = bulk_export
+
+    mail to: @bulk_export.user.email, subject: "Your export is ready"
+  end
+
   def new_owner(user, text)
     @owner = user
     @text = text
