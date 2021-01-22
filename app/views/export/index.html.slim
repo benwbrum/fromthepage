@@ -6,10 +6,6 @@ p.big
     =link_to(bulk_export_new_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnExportAll')
       =svg_symbol '#icon-export', class: 'icon'
       span =t('.export_all_works')
-  span.fright(style="margin-left: 30px")
-    =link_to(export_export_all_works_path(:collection_id => @collection.id, format: :zip), class: 'button btnExport', id: 'btnExportAll')
-      =svg_symbol '#icon-export', class: 'icon'
-      span =t('.old_export_all_works')
 
   span =t('.export_all_works_description')
 
