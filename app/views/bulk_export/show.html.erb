@@ -5,17 +5,17 @@
 
 <p>
   <strong>User:</strong>
-  <%= @bulk_export.user_id %>
+  <%= @bulk_export.user.display_name %>
 </p>
 
 <p>
   <strong>Collection:</strong>
-  <%= @bulk_export.collection_id %>
+  <%= @bulk_export.collection.title %>
 </p>
 
 <p>
   <strong>Zip file:</strong>
-  <%= @bulk_export.zip_file %>
+  <%= @bulk_export.zip_file_name %>
 </p>
 
 <p>
@@ -24,54 +24,12 @@
 </p>
 
 <p>
-  <strong>Plaintext verbatim:</strong>
-  <%= @bulk_export.plaintext_verbatim %>
+  <strong>Configuration:</strong><br/>
+  <% @bulk_export.attributes.keep_if { |k,v| v }.keep_if {|k,v| !['id', 'user_id', 'collection_id', 'status'].include? (k) }.keys.map{|e| e.titleize }.each do |title| %>
+    <%= title %><br/>
+  <% end %>
 </p>
 
-<p>
-  <strong>Plaintext emended:</strong>
-  <%= @bulk_export.plaintext_emended %>
-</p>
-
-<p>
-  <strong>Plaintext searchable:</strong>
-  <%= @bulk_export.plaintext_searchable %>
-</p>
-
-<p>
-  <strong>Tei:</strong>
-  <%= @bulk_export.tei %>
-</p>
-
-<p>
-  <strong>Html:</strong>
-  <%= @bulk_export.html %>
-</p>
-
-<p>
-  <strong>Subject csv:</strong>
-  <%= @bulk_export.subject_csv %>
-</p>
-
-<p>
-  <strong>Field csv:</strong>
-  <%= @bulk_export.field_csv %>
-</p>
-
-<p>
-  <strong>Page level:</strong>
-  <%= @bulk_export.page_level %>
-</p>
-
-<p>
-  <strong>Work level:</strong>
-  <%= @bulk_export.work_level %>
-</p>
-
-<p>
-  <strong>Collection level:</strong>
-  <%= @bulk_export.collection_level %>
-</p>
 
 <h4>Zip File</h4>
 <p>
