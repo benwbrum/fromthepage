@@ -78,18 +78,19 @@ ActiveRecord::Schema.define(version: 2021_01_20_134610) do
   create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "collection_id", null: false
-    t.string "zip_file"
     t.string "status"
-    t.boolean "plaintext_verbatim"
-    t.boolean "plaintext_emended"
-    t.boolean "plaintext_searchable"
-    t.boolean "tei"
-    t.boolean "html"
-    t.boolean "subject_csv"
-    t.boolean "field_csv"
-    t.boolean "page_level"
-    t.boolean "work_level"
-    t.boolean "collection_level"
+    t.boolean "plaintext_verbatim_page"
+    t.boolean "plaintext_verbatim_work"
+    t.boolean "plaintext_emended_page"
+    t.boolean "plaintext_emended_work"
+    t.boolean "plaintext_searchable_page"
+    t.boolean "plaintext_searchable_work"
+    t.boolean "tei_work"
+    t.boolean "html_page"
+    t.boolean "html_work"
+    t.boolean "subject_csv_collection"
+    t.boolean "table_csv_collection"
+    t.boolean "table_csv_work"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"

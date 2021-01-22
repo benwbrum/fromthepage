@@ -25,10 +25,8 @@ class BulkExportController < ApplicationController
       @bulk_export.submit_export_process
 
       flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
-      redirect_to collection_export_path(@collection.owner, @collection)
-    else
-      render :new
     end
+    render :action => :new
   end
 
   def download
@@ -52,6 +50,20 @@ class BulkExportController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def bulk_export_params
-      params.require(:bulk_export).permit(:user_id, :collection_id, :zip_file, :status, :plaintext_verbatim, :plaintext_emended, :plaintext_searchable, :tei, :html, :subject_csv, :field_csv, :page_level, :work_level, :collection_level)
+      params.require(:bulk_export).permit(
+        :user_id, 
+        :collection_id, 
+        :plaintext_verbatim_page, 
+        :plaintext_verbatim_work, 
+        :plaintext_emended_page, 
+        :plaintext_emended_work, 
+        :plaintext_searchable_page, 
+        :plaintext_searchable_work, 
+        :tei_work, 
+        :html_page, 
+        :html_work, 
+        :subject_csv_collection, 
+        :table_csv_work, 
+        :table_csv_collection)
     end
 end

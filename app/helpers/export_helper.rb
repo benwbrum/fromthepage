@@ -7,64 +7,59 @@ module ExportHelper
       dirname = work.slug.truncate(200, omission: "")
       add_readme_to_zip(dirname: dirname, out: out)
 
-      if bulk_export.work_level
-        if bulk_export.tei
-          export_tei(dirname: dirname, out:out, export_user:export_user)
-        end
+      if bulk_export.tei_work
+        export_tei(dirname: dirname, out:out, export_user:export_user)
+      end
 
-        if bulk_export.plaintext_verbatim
-          format='verbatim'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-          export_plaintext_translation(name: format, dirname: dirname, out: out)
-        end
+      if bulk_export.plaintext_verbatim_work
+        format='verbatim'
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+        export_plaintext_translation(name: format, dirname: dirname, out: out)
+      end
 
-        if bulk_export.plaintext_emended
-          format='expanded'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-          export_plaintext_translation(name: format, dirname: dirname, out: out)
-        end
+      if bulk_export.plaintext_emended_work
+        format='expanded'
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+        export_plaintext_translation(name: format, dirname: dirname, out: out)
+      end
 
-        if bulk_export.plaintext_searchable
-          format='searchable'
-          export_plaintext_transcript(name: format, dirname: dirname, out: out)
-        end
+      if bulk_export.plaintext_searchable_work
+        format='searchable'
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+      end
 
-        if bulk_export.html
-          %w(full text transcript translation).each do |format|
-            export_view(name: format, dirname: dirname, out: out, export_user:export_user)
-          end
+      if bulk_export.html_work
+        %w(full text transcript translation).each do |format|
+          export_view(name: format, dirname: dirname, out: out, export_user:export_user)
         end
       end
 
-      if bulk_export.page_level
-        @work.pages.each do |page|
-          if bulk_export.plaintext_verbatim
-            format='verbatim'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
-          end
-
-          if bulk_export.plaintext_emended
-            format='expanded'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
-          end  
-
-          if bulk_export.plaintext_searchable
-            format='searchable'
-            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-          end
+      @work.pages.each do |page|
+        if bulk_export.plaintext_verbatim_page
+          format='verbatim'
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
         end
 
+        if bulk_export.plaintext_emended_page
+          format='expanded'
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+        end  
 
-        if bulk_export.html
-          @work.pages.each do |page|
-            export_html_full_pages(dirname: dirname, out: out, page: page)
-          end
+        if bulk_export.plaintext_searchable_page
+          format='searchable'
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+        end
+      end
+
+
+      if bulk_export.html_page
+        @work.pages.each do |page|
+          export_html_full_pages(dirname: dirname, out: out, page: page)
         end
       end
     end
-
   end
 
 
