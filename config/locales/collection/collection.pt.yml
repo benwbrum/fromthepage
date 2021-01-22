@@ -1,13 +1,13 @@
 pt:
   collection:
-    #TODO next 7 messages  
-    incomplete_works: ""
-    show_all: ""
-    #TODO -- the follow messages are for percent complete, like 10% corrected or 20% transcribed
-    corrected: ""
-    transcribed: ""
+    #TODO as próximas 7 mensagens  
+    incomplete_works: "Trabalhos incompletos"
+    show_all: "Mostre Tudo"
+    #TODO -- as mensagens a seguir são para porcentagem de conclusão, como 10% corrigidas ou 20% transcritas
+    corrected: "Corrigido"
+    transcribed: "Transcrito"
     translated: "traduzido"
-    needs_review: ""
+    needs_review: "Precisa ser revisado"
     indexed: "indexado"  
     show:
       all_complete: "Todas as obras estão totalmente transcritas."
