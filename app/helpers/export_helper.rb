@@ -2,10 +2,25 @@ module ExportHelper
   include Rails.application.routes.url_helpers
 
   def write_work_exports(works, out, export_user, bulk_export)
+    # collection-level exports
+    if bulk_export.subject_csv_collection
+      export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.table_csv_collection
+      export_table_csv_collection(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
     works.each do |work|
       @work = work
       dirname = work.slug.truncate(200, omission: "")
       add_readme_to_zip(dirname: dirname, out: out)
+
+
+      # work-specific exports
+      if bulk_export.table_csv_work
+        export_table_csv_work(dirname: '', out: out, work: work)
+      end
 
       if bulk_export.tei_work
         export_tei(dirname: dirname, out:out, export_user:export_user)
@@ -33,6 +48,8 @@ module ExportHelper
           export_view(name: format, dirname: dirname, out: out, export_user:export_user)
         end
       end
+
+      # Page-specific exports
 
       @work.pages.each do |page|
         if bulk_export.plaintext_verbatim_page
