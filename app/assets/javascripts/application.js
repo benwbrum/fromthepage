@@ -278,8 +278,8 @@ $(function() {
     $(this).closest('li').toggleClass('expanded');
   });
 
-  // Disable export button when no format checked
-  var exportCheckboxes = $('.bulk-export_format input');
+  // Disable export button when no format options selected
+  var exportCheckboxes = $('.bulk-export_options input');
   exportCheckboxes.change(function() {
     $(this).closest('form')
       .find('button[type=submit]')
