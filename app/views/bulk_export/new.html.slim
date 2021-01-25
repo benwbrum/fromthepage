@@ -99,5 +99,21 @@
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
               -if bulk_export.status == BulkExport::Status::FINISHED
                 br
-                =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id))
+                =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport')
 
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Remove 'page_busy' spinner once download finished
+      // Cookie should be set to 'true' in the controller method
+      $('.btnExport').on('click', function() {
+        Cookies.remove('download_finished', {path: '/'});
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });
