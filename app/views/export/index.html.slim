@@ -75,7 +75,7 @@ table.datagrid
             =svg_symbol '#icon-export', class: 'icon'
             span =t('.table_csv')
       td.nowrap
-        =link_to(:controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip)
+        =link_to({ :controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip }, class: 'btnExport')
           =svg_symbol '#icon-export', class: 'icon'
           span ZIP
 
