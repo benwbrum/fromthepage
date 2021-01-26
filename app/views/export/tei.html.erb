@@ -56,10 +56,12 @@ xml:id="export">
         <%end%>
       <%end%>
 
+      <% if current_user %>
       <respStmt xml:id="OU<%= current_user.id%>">
         <resp n="proof_2"><%= t('.double_proof_by') %></resp>
         <persName><%= current_user.real_name %></persName>
       </respStmt>
+      <%end%>
 
     </editionStmt>
 
