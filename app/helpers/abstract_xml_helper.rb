@@ -59,7 +59,6 @@ module AbstractXmlHelper
     doc.elements.each("//expan") do |e|
       orig = e.attributes['orig']
       span = REXML::Element.new("span")
-      # anchor.add_attribute("title", orig)
       span.add_attribute("class", "expanded-abbreviation")
       e.children.each { |c| span.add(c) }
       inner_span = REXML::Element.new("span")
@@ -72,11 +71,14 @@ module AbstractXmlHelper
     doc.elements.each("//reg") do |e|
       orig = e.attributes['orig']
 
-      anchor = REXML::Element.new("a")
-      anchor.add_attribute("title", orig)
-      anchor.add_attribute("class", "expanded-abbreviation")
-      e.children.each { |c| anchor.add(c) }
-      e.replace_with(anchor)
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      inner_span.add_text(orig)
+      span.add(inner_span)
+      e.replace_with(span)
     end
 
     # get rid of line breaks within other html mark-up
