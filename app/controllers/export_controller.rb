@@ -99,6 +99,7 @@ class ExportController < ApplicationController
 
         buffer.rewind
         send_data buffer.read, filename: "#{@collection.title}-#{@work.title}.zip"
+        cookies['download_finished'] = 'true'
       end
     end
   end
