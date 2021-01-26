@@ -20,7 +20,7 @@ describe "export tasks" do
     expect(page).to have_content("Export All Works")
     expect(page).to have_content(@work.title)
     page.find('#btnExportAll').click
-    expect(page.response_headers['Content-Type']).to eq 'text/html'
+    expect(page.response_headers['Content-Type']).to eq 'text/html; charset=utf-8'
   end
 
   it "exports the subject index" do
