@@ -35,6 +35,7 @@ class BulkExportController < ApplicationController
       send_file(@bulk_export.zip_file_name, 
         filename: "fromthepage_export.zip", 
         :content_type => "application/zip")
+      cookies['download_finished'] = 'true'
     else
       flash[:info] = "This export download has been cleaned.  Please start a new one."
       redirect_to collection_export_path(@bulk_export.collection.owner, @bulk_export.collection)
