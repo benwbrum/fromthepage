@@ -1,0 +1,44 @@
+<%= render(:partial => 'admin/header', :locals => { :selected => 6 }) %>
+
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @bulk_export.user.display_name %>
+</p>
+
+<p>
+  <strong>Collection:</strong>
+  <%= @bulk_export.collection.title %>
+</p>
+
+<p>
+  <strong>Zip file:</strong>
+  <%= @bulk_export.zip_file_name %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @bulk_export.status %>
+</p>
+
+<p>
+  <strong>Configuration:</strong><br/>
+  <% @bulk_export.attributes.keep_if { |k,v| v }.keep_if {|k,v| !['id', 'user_id', 'collection_id', 'status'].include? (k) }.keys.map{|e| e.titleize }.each do |title| %>
+    <%= title %><br/>
+  <% end %>
+</p>
+
+
+<h4>Zip File</h4>
+<p>
+  <%= link_to('Download', bulk_export_download_path(@bulk_export)) %>
+</p>
+
+
+<h4>Processing Log</h4>
+
+<pre>
+<%= @bulk_export.log_contents %>
+</pre>
