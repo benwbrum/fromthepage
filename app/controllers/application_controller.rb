@@ -321,6 +321,11 @@ end
     end
   end
 
+  def set_api_user
+    authenticate_with_http_token do |token, options|
+      @api_user = User.find_by(api_key: token)
+    end
+  end
 
 private
   def store_current_location
