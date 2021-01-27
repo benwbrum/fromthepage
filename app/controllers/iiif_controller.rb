@@ -415,7 +415,7 @@ class IiifController < ApplicationController
   end
 
   def export_work_tei
-    tei_xml = work_to_tei(@work)
+    tei_xml = work_to_tei(@work, current_user)
 
     render  :layout => false, :content_type => "application/xml", :plain => tei_xml
   end
