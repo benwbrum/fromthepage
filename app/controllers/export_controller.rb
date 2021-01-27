@@ -89,7 +89,7 @@ class ExportController < ApplicationController
           end
 
           %w(full text transcript translation).each do |format|
-            export_view(name: format, dirname: dirname, out: out)
+            export_view(name: format, dirname: dirname, out: out, export_user: :user)
           end
 
           @work.pages.each do |page|
