@@ -18,6 +18,11 @@ module SearchTranslator
     all_links=doc.search('link')
     all_titles=all_links.map{ |e| e['target_title'] }
     uniq_titles=all_titles.uniq
+
+    all_abbrevs=[]
+    doc.xpath('//expan').each{|e| all_abbrevs << e['orig'] unless e['orig'].blank? }
+    uniq_titles += all_abbrevs.uniq
+
     newline_separated_titles=uniq_titles.join("\n")
 
     newline_separated_titles
@@ -40,6 +45,7 @@ private
     doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//expan").each { |n| n.replace(n['orig']) unless n['orig'].blank? }
     
     no_tags = doc.text
     no_linefeeds = no_tags.gsub(/\s/, ' ')

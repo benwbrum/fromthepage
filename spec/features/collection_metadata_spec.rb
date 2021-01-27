@@ -55,7 +55,7 @@ describe "collection metadata", :order => :defined do
     login_as @owner
     c = Collection.where(title: "ladi").first
     filename = c.metadata_coverages.where(key: 'filename').first
-    expect(filename.count).to eq 5
+    expect(filename.count).to eq 3
 
     # reupload the same work here.
     visit edit_collection_path(@owner, c)
@@ -70,7 +70,7 @@ describe "collection metadata", :order => :defined do
     attach_file('metadata_file', './test_data/uploads/eaacone_metadata_FromThePage_TestDataset.csv')
     click_button('Upload')
     filename.reload
-    expect(filename.count).to eq 5
+    expect(filename.count).to eq 3
   end
 
   it "enables facets" do

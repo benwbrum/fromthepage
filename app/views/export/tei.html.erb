@@ -56,10 +56,12 @@ xml:id="export">
         <%end%>
       <%end%>
 
-      <respStmt xml:id="OU<%= current_user.id%>">
-        <resp n="proof_2"><%= t('.double_proof_by') %></resp>
-        <persName><%= current_user.real_name %></persName>
-      </respStmt>
+      <% if @export_user %>
+        <respStmt xml:id="OU<%= @export_user.id%>">
+          <resp n="proof_2"><%= t('.double_proof_by') %></resp>
+          <persName><%= @export_user.real_name %></persName>
+        </respStmt>
+      <% end %>
 
     </editionStmt>
 
@@ -283,7 +285,7 @@ xml:id="export">
       <% if @work.sc_manifest %>
         <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= page.sc_canvas.sc_resource_id %>"/>      
       <% else %>
-        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
+        <pb xml:id="F<%=page.id%>" n="<%=page.position%>" facs="<%= "#{root_url(:host => Rails.application.config.action_mailer[:default_url_options][:host])}image-service/#{page.id}/full/full/0/native.jpg" %>"/>
       <% end %>
       <% if @work.pages_are_meaningful? %>
         <div xml:id="<%=page_id_to_xml_id(page.id, @context.translation_mode)%>">

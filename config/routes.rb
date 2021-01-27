@@ -91,6 +91,8 @@ Fromthepage::Application.routes.draw do
     end
   end
 
+
+
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
     get 'update_featured_page', to: 'work#update_featured_page'
@@ -134,6 +136,14 @@ Fromthepage::Application.routes.draw do
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
     post 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
+  end
+
+  scope 'bulk_export', as: 'bulk_export' do
+    get ':collection_id/new', to: 'bulk_export#new', as: 'new'
+    post ':collection_id/new', to: 'bulk_export#create', as: 'create'
+    get '/', to: 'bulk_export#index', as: 'index'
+    get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
+    get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
   end
 
   scope 'ia', as: 'ia' do
@@ -183,7 +193,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes/:collection_id', to: 'deed#notes', as: 'notes'
+    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -214,6 +224,7 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'page_block', as: 'page_block' do
+    get 'list', to: 'page_block#list'
     patch 'update', :to => 'page_block#update'
     get 'edit', to: 'page_block#edit'
   end
@@ -297,6 +308,8 @@ Fromthepage::Application.routes.draw do
   get '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
   get '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
 
+  get '/iiif/:work_id/export/tei', as: 'iiif_work_export_tei', to: 'iiif#export_work_tei'
+  get '/iiif/:work_id/export/html', as: 'iiif_work_export_html', to: 'iiif#export_work_html'
   get '/iiif/:work_id/export/plaintext/searchable', as: 'iiif_work_export_plaintext_searchable', to: 'iiif#export_work_plaintext_searchable'
   get '/iiif/:work_id/export/plaintext/verbatim', as: 'iiif_work_export_plaintext_verbatim', to: 'iiif#export_work_plaintext_verbatim'
   get '/iiif/:work_id/export/plaintext/emended', as: 'iiif_work_export_plaintext_emended', to: 'iiif#export_work_plaintext_emended'
