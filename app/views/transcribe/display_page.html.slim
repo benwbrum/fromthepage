@@ -467,19 +467,35 @@ h2.legend =t('notes_and_questions')
           {
             hotkey: 'Ctrl-E',
             class: 'italic',
-            label: 'expan',
+            label: 'abbr',
             callback: function (cm) {
               var selection = cm.getSelection();
-              cm.replaceSelection('<expan orig="">' + selection + '</expan>');
+              cm.replaceSelection('<abbr expan="">' + selection + '</abbr>');
               if (!selection) {
                 var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 8);
+                cm.setCursor(cursorPos.line, cursorPos.ch - 7);
               } else {
                 var cursorPos = cm.getCursor();
-                cm.setCursor(cursorPos.line, cursorPos.ch - 8 - selection.length - 2);
+                cm.setCursor(cursorPos.line, cursorPos.ch - 7 - selection.length - 2);
               }
             }
           },
+          // {
+          //   hotkey: 'Ctrl-E',
+          //   class: 'italic',
+          //   label: 'expan',
+          //   callback: function (cm) {
+          //     var selection = cm.getSelection();
+          //     cm.replaceSelection('<expan orig="">' + selection + '</expan>');
+          //     if (!selection) {
+          //       var cursorPos = cm.getCursor();
+          //       cm.setCursor(cursorPos.line, cursorPos.ch - 8);
+          //     } else { 
+          //       var cursorPos = cm.getCursor();
+          //       cm.setCursor(cursorPos.line, cursorPos.ch - 8 - selection.length - 2);
+          //     }
+          //   }
+          // },
           {
             hotkey: 'Ctrl-D',
             class: 'strikethrough',
