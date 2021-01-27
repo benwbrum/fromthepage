@@ -12,22 +12,32 @@ class BulkExport < ApplicationRecord
     PROCESSING = 'processing'
     FINISHED = 'finished'
     CLEANED = 'cleaned'
+    ERROR = 'error'
   end
 
 
   def export_to_zip
     self.status = Status::PROCESSING
     self.save
-    # TODO read config options
-    works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
 
-    buffer = Zip::OutputStream.open(zip_file_name) do |out|
-      write_work_exports(works, out, self.user, self)
-      out.close
+    begin
+      works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
+
+      buffer = Zip::OutputStream.open(zip_file_name) do |out|
+        write_work_exports(works, out, self.user, self)
+        out.close
+      end
+
+      self.status = Status::FINISHED
+      self.save
+
+    rescue => ex
+      self.status = Status::ERROR
+      self.save
+
+      raise
     end
 
-    self.status = Status::FINISHED
-    self.save
   end
 
   def clean_zip_file
