@@ -3,7 +3,7 @@
 h2.nomargin =t('.export_all_works')
 p.big
   span.fright(style="margin-left: 30px")
-    =link_to(bulk_export_new_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnExportAll')
+    =link_to(export_export_all_works_path(:collection_id => @collection.id, format: :zip), class: 'button btnExport', id: 'btnExportAll')
       =svg_symbol '#icon-export', class: 'icon'
       span =t('.export_all_works')
 
@@ -75,7 +75,7 @@ table.datagrid
             =svg_symbol '#icon-export', class: 'icon'
             span =t('.table_csv')
       td.nowrap
-        =link_to({ :controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip }, class: 'btnExport')
+        =link_to(:controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip)
           =svg_symbol '#icon-export', class: 'icon'
           span ZIP
 
@@ -104,8 +104,8 @@ p
   =t('.iiif_api_description', link: link_to('here', 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')).html_safe
 
 p
-  =t('.iiif_collection_api_endpoint', link: link_to(iiif_collection_url(@collection.id, only_path: false),
-                                                    iiif_collection_url(@collection.id, only_path: false))).html_safe
+  =t('.iiif_collection_api_endpoint', link: link_to(iiif_collection_path(@collection.id, only_path: false),
+                                                    iiif_collection_path(@collection.id, only_path: false))).html_safe
 
 =render({ :partial => '/shared/collection_footer' })
 

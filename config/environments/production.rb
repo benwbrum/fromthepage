@@ -127,7 +127,4 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   Ahoy.geocode = false
-
-  # Send zip exports using Apache instead of Rails
-  config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
 end

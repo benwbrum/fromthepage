@@ -277,15 +277,6 @@ $(function() {
     e.stopPropagation();
     $(this).closest('li').toggleClass('expanded');
   });
-
-  // Disable export button when no format options selected
-  var exportCheckboxes = $('.bulk-export_options input');
-  exportCheckboxes.change(function() {
-    $(this).closest('form')
-      .find('button[type=submit]')
-      .prop('disabled', exportCheckboxes.filter(':checked').length < 1);
-  });
-  exportCheckboxes.change();
 });
 
 //Enable and disable select options for field-based transcription

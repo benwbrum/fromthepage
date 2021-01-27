@@ -1,7 +1,6 @@
 en:
   user:
     owner_profile:
-      api_keys: "API Keys"
       edit_profile: "Edit Profile"
       login_and_password: "Login &amp; Password"
       website: "Website"

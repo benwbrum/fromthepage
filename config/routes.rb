@@ -91,8 +91,6 @@ Fromthepage::Application.routes.draw do
     end
   end
 
-
-
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
     get 'update_featured_page', to: 'work#update_featured_page'
@@ -136,14 +134,6 @@ Fromthepage::Application.routes.draw do
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
     post 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
-  end
-
-  scope 'bulk_export', as: 'bulk_export' do
-    get ':collection_id/new', to: 'bulk_export#new', as: 'new'
-    post ':collection_id/new', to: 'bulk_export#create', as: 'create'
-    get '/', to: 'bulk_export#index', as: 'index'
-    get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
-    get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
   end
 
   scope 'ia', as: 'ia' do
@@ -221,9 +211,6 @@ Fromthepage::Application.routes.draw do
   scope 'user', as: 'user' do
     get 'update_profile', to: 'user#update_profile'
     patch 'update', :to => 'user#update'
-    get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
-    post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
-    post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
   end
 
   scope 'page_block', as: 'page_block' do

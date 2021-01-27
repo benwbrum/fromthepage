@@ -7,7 +7,7 @@
   
   <body>
     <h1 class="work-title"><%= @work.title %></h1>
-    <div class="export-metadata"><%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+    <div class="export-metadata"><%= t('.export_metadata', work: @work.title, collection: @collection.title, time: Time.now) %>
       <% unless @work.identifier.blank? %>
         <p><%= t('.identifier', work: @work.identifier) %></p>
       <% end %>

@@ -15,10 +15,6 @@ section.user-profile
           =link_to(edit_user_registration_path, class: 'button outline')
             =svg_symbol '#icon-user', class: 'icon'
             span =t('.login_and_password').html_safe
-          |&nbsp;&nbsp;
-          =link_to(user_api_key_path, class: 'button outline', :data => { litebox: { hash: 'api-key' }})
-            =svg_symbol '#icon-lock', class: 'icon'
-            span =t('.api_keys').html_safe
     .user-profile_stats
       -if user.website.present?
         =link_to t('.website'), user.website, target: '_blank', rel: 'nofollow'

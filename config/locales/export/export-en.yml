@@ -4,7 +4,7 @@ en:
       updating_contentdm_message: "Updating CONTENTdm.  You should receive an email when the sync completes, then will need to rebuild your index for the changes to appear."
     index:
       export_all_works: "Export All Works"
-      export_all_works_description: "Choose formats and granularities to export the entire collection in a zip file."
+      export_all_works_description: "Click the button to export all works from the collection into a zip file containing each work as HTML and plain text."
       export_to_contentdm: "Export to CONTENTdm"
       export_to_contentdm_description: "Click the button to export completed transcripts from the entire collection to CONTENTdm."
       export_individual_works: "Export Individual Works"

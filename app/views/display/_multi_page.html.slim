@@ -15,7 +15,7 @@
 
       -if @collection
         =form_tag({:controller => 'display', :action => 'search'}, :method => :post, class: 'collection-search') do
-          =hidden_field_tag('collection_id', @collection.slug)
+          =hidden_field_tag('collection_id', @collection.id)
           =search_field_tag 'search_string', @search_string, :placeholder => t('.search_in_collection')
           =button_tag t('.search')
           =label_tag 'search_string', t('.search_in_collection'), class: 'hidden'

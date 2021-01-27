@@ -1,7 +1,7 @@
 class UserController < ApplicationController
   before_action :remove_col_id, :only => [:profile, :update_profile]
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile]
 
   def demo
     session[:demo_mode] = true;
@@ -78,28 +78,6 @@ class UserController < ApplicationController
       .select {|i| Collection::LANGUAGE_ARRAY[@lang_index][i].include?(lang)}[0]
     # Transform to integer and subtract 2 because of how the array is nested
     @dialect_index = !int.nil? ? int-2 : nil
-  end
-
-
-  def api_key
-    @user = current_user
-  end
-
-  def generate_api_key
-    @user = current_user
-    @user.api_key = User.generate_api_key
-    @user.save!
-
-#    ajax_redirect_to(user_api_key_path(@user))
-    render :action => :api_key, :layout => false
-  end
-
-  def disable_api_key
-    @user = current_user
-    @user.api_key = nil
-    @user.save!
-    # ajax_redirect_to(user_api_key_path(@user))
-    render :action => :api_key, :layout => false
   end
 
   def profile
