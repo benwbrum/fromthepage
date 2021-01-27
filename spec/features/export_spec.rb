@@ -14,6 +14,7 @@ describe "export tasks" do
   end
 
   it "exports all works in a collection" do
+    #TODO add better export tests for new UI
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Export")
