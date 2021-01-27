@@ -8,7 +8,7 @@ describe "admin actions" do
   end
 
   before :each do
-      login_as(@admin, :scope => :user)
+    login_as(@admin, :scope => :user)
   end  
 
   it "looks at admin tabs" do
@@ -107,6 +107,21 @@ describe "admin actions" do
     click_link('Start Date')
     expect(page.find('.admin-grid tbody tr[1]')).to have_content(@admin.login)
   end
+
+  it "searches user list" do
+    user2 = User.find_by(login: NEW_OWNER)
+    visit admin_path
+    page.find('.tabs').click_link("Users")
+    page.fill_in 'search', with: user2.email
+    click_button('Search')
+    expect(page).to have_content(user2.email)
+    page.fill_in 'search', with: user2.login
+    click_button('Search')
+    expect(page).to have_content(user2.email)
+    page.fill_in 'search', with: user2.display_name
+    click_button('Search')
+    expect(page).to have_content(user2.email)
+  end    
 
   it "downgrades a user" do
     visit admin_path

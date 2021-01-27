@@ -376,7 +376,10 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
   def formatted_plaintext(source)
-    formatted_plaintext_doc(Nokogiri::XML(source))
+    doc = Nokogiri::XML(source)
+    doc.xpath("//expan").each { |n| n.replace(n['orig'])}
+    doc.xpath("//reg").each { |n| n.replace(n['orig'])}
+    formatted_plaintext_doc(doc)
   end
 
   def formatted_plaintext_doc(doc)

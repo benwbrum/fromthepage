@@ -263,7 +263,8 @@ class User < ApplicationRecord
   end
 
   def self.search(search)
-    where("display_name LIKE ? OR login LIKE ?", "%#{search}%", "%#{search}%")
+    wildcard = "%#{search}%"
+    where("display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?", wildcard, wildcard, wildcard, wildcard)
   end
 
   def create_notifications
