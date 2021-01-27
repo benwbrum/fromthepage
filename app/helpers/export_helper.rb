@@ -121,7 +121,7 @@ module ExportHelper
                       .where.not(categories: {title: 'Places'})
 
     ### Catch the rendered Work for post-processing
-    xml = ApplicationController.new.render_to_string(
+    xml = render_to_string(
       layout: false, 
       template: "export/tei.html.erb",
       assigns: {
