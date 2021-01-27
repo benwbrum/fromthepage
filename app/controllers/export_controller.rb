@@ -43,7 +43,7 @@ class ExportController < ApplicationController
   end
 
   def tei
-    tei_xml = work_to_tei(@work)
+    tei_xml = work_to_tei(@work, current_user)
 
     render :text => tei_xml, :content_type => "application/xml", :layout => false
   end
