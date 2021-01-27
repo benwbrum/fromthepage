@@ -221,6 +221,9 @@ Fromthepage::Application.routes.draw do
   scope 'user', as: 'user' do
     get 'update_profile', to: 'user#update_profile'
     patch 'update', :to => 'user#update'
+    get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
+    post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
+    post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
   end
 
   scope 'page_block', as: 'page_block' do
@@ -287,6 +290,19 @@ Fromthepage::Application.routes.draw do
     get ':feature/:value', to: 'user#feature_toggle' 
     get ':feature', to: 'user#feature_toggle' 
   end
+
+
+  namespace :api do
+    get '/', to: "api#help"
+    namespace :v1 do
+      get 'bulk_export', to: 'bulk_export#index'
+      get 'bulk_export/:collection_slug', to: 'bulk_export#index'
+      post 'bulk_export/:collection_slug', to: 'bulk_export#start'
+      get 'bulk_export/:bulk_export_id/status', to: 'bulk_export#status', as: 'bulk_export_status'
+      get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
+    end
+  end
+
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'

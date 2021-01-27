@@ -13,6 +13,16 @@ describe "export tasks" do
     login_as(@owner, :scope => :user)
   end
 
+  it "exports all works in a collection" do
+    #TODO add better export tests for new UI
+    visit dashboard_owner_path
+    page.find('.collection_title', text: @collection.title).click_link(@collection.title)
+    page.find('.tabs').click_link("Export")
+    expect(page).to have_content("Export All Works")
+    expect(page).to have_content(@work.title)
+    page.find('#btnExportAll').click
+    expect(page.response_headers['Content-Type']).to eq 'text/html; charset=utf-8'
+  end
 
   it "exports the subject index" do
     visit "/export?collection_id=#{@collection.id}"

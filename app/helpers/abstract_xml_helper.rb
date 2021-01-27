@@ -44,24 +44,41 @@ module AbstractXmlHelper
       end
     end
 
+    doc.elements.each("//abbr") do |e|
+      expan = e.attributes['expan']
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      span.add_text(expan)
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      e.children.each { |c| inner_span.add(c) }
+      span.add(inner_span)
+      e.replace_with(span)
+    end
+
     doc.elements.each("//expan") do |e|
       orig = e.attributes['orig']
-
-      anchor = REXML::Element.new("a")
-      anchor.add_attribute("title", orig)
-      anchor.add_attribute("class", "expanded-abbreviation")
-      e.children.each { |c| anchor.add(c) }
-      e.replace_with(anchor)
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      inner_span.add_text(orig)
+      span.add(inner_span)
+      e.replace_with(span)
     end
 
     doc.elements.each("//reg") do |e|
       orig = e.attributes['orig']
 
-      anchor = REXML::Element.new("a")
-      anchor.add_attribute("title", orig)
-      anchor.add_attribute("class", "expanded-abbreviation")
-      e.children.each { |c| anchor.add(c) }
-      e.replace_with(anchor)
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      inner_span.add_text(orig)
+      span.add(inner_span)
+      e.replace_with(span)
     end
 
     # get rid of line breaks within other html mark-up
