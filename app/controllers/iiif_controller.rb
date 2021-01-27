@@ -2,7 +2,10 @@ require 'iiif/presentation'
 class IiifController < ApplicationController
   include AbstractXmlHelper
   include ExportHelper
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
   before_action :set_cors_headers
+  before_action :set_api_user
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
 
   def collections
@@ -25,7 +28,7 @@ class IiifController < ApplicationController
     site_collection['@id'] = iiif_user_collections_url(@user)
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
     (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
-      if collection_or_ds.is_public || collection_or_ds.api_access
+      if collection_or_ds.is_public || collection_or_ds.api_access || (@api_user && @api_user.like_owner?(collection_or_ds))
         site_collection.collections << iiif_collection_from_collection(collection_or_ds,false)
       end
     end
@@ -844,6 +847,12 @@ private
     headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  end
+
+  def set_api_user
+    authenticate_with_http_token do |token, options|
+      @api_user = User.find_by(api_key: token)
+    end
   end
 
 end
