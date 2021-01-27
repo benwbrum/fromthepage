@@ -273,6 +273,23 @@ module ExportHelper
         expan.replace_with(choice)
       end
     end
+
+    p_element.elements.each('//abbr') do |abbr|
+      expan = abbr.attributes['expan']
+      unless expan.blank?
+        choice = REXML::Element.new("choice")
+        tei_expan = REXML::Element.new("expan")
+        tei_expan.add_text(expan)
+        choice.add(tei_expan)
+
+        tei_abbr = REXML::Element.new("abbr")
+        abbr.children.each { |c| tei_abbr.add(c) }
+        choice.add(tei_abbr)
+
+        abbr.replace_with(choice)
+      end
+    end
+
   end
 
   def transform_regularizations(p_element)
