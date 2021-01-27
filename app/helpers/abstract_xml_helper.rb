@@ -6,7 +6,7 @@ module AbstractXmlHelper
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
@@ -14,6 +14,8 @@ module AbstractXmlHelper
     if preserve_lb
       xml_text.gsub!("<lb break='no'/> ", "-<br />")
     end
+
+    @collection ||= collection
 
     doc = REXML::Document.new(xml_text)
     #unless subject linking is disabled, do this
@@ -198,11 +200,6 @@ module AbstractXmlHelper
       
     end
 
-    unless user_signed_in?
-      doc.elements.each("//sensitive") do |e|
-        e.replace_with(REXML::Comment.new("sensitive information suppressed"))
-      end
-    end
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)
