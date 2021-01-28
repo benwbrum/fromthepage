@@ -1,0 +1,43 @@
+h2.nomargin =t('.heading')
+p =t('.description')
+=form_with(url: collection_editor_button_update_path, local: true) do |f|
+  =hidden_field_tag :collection_id, @collection.slug
+  -buttons = @collection.editor_buttons.to_a.map { |b| b.key}
+  ul.edit-buttons
+    -EditorButton::BUTTON_MAP.keys.each do |key|
+      li
+        .edit-buttons_format
+          h5
+            =t(".#{key}_label")
+          p.nomargin =t(".#{key}_description")
+        .edit-buttons_options
+          =f.label key
+            =check_box_tag key, '1', buttons.include?(key)
+            span
+              -if EditorButton::BUTTON_MAP[key].size > 1
+                code
+                  =EditorButton::BUTTON_MAP[key][0]
+                =t('.tei') 
+                br
+                code
+                  =EditorButton::BUTTON_MAP[key][1]
+                =t('.html') 
+              -else
+                code
+                  =EditorButton::BUTTON_MAP[key][0]
+    li
+      .edit-buttons_format
+        h5 =t('.markup_preference_label')
+        p.nomargin =t('.markup_preference_description')
+      .edit-buttons_options
+        =f.label :prefer_html_true
+          =radio_button_tag :prefer_html, :true, @prefer_html
+          span =t('.prefer_html')
+        =f.label :prefer_html_false
+          =radio_button_tag :prefer_html, :false, !@prefer_html
+          span =t('.prefer_tei')
+            
+
+  .toolbar
+    .toolbar_group.aright =f.button 'Save', class: 'big', 'data-start-export': ''
+
