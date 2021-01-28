@@ -15,6 +15,7 @@ class Collection < ApplicationRecord
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, :dependent => :destroy
   has_many :bulk_exports, :dependent => :destroy
+  has_many :editor_buttons, :dependent => :destroy
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, through: :works
