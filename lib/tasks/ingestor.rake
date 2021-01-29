@@ -228,7 +228,6 @@ namespace :fromthepage do
           
     print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
     
-#    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
     document_sets = []
     if yaml
