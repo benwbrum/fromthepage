@@ -89,6 +89,11 @@ Fromthepage::Application.routes.draw do
       get 'csv_error', to:'metadata#csv_error'
       post 'create', to: 'metadata#create'
     end
+
+    scope 'editor_button', as: 'editor_button' do
+      get ':collection_id/edit', to: 'collection#edit_buttons', as: 'edit'
+      post ':collection_id/edit', to: 'collection#update_buttons', as: 'update'
+    end
   end
 
 
