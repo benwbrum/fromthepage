@@ -122,8 +122,11 @@ h2.legend =t('notes_and_questions')
 
 =render({ :partial => '/shared/collection_footer' })
 
+-has_title = @work.scribes_can_edit_titles
+-text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
 
-=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text"} })
+-if text_direction == 'ltr'
+  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :has_title => has_title, :text_direction => text_direction} })
 
 
 -unless @current_user_alerted
