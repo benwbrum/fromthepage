@@ -20,9 +20,9 @@ pt:
       out_of_scope: "Fora do escopo"
       editorial_notes: "Notas editoriais"
       document_date: "Data do documento"
-    create: "Criar"
+    create:
       work_created: "Trabalho criado com sucesso"
-    update: "Atualizar"
+    update:
       work_updated: "Trabalho atualizado com sucesso"
-    edit: "Editar"
+    edit:
       additional_metadata: "Metadados adicionais"
