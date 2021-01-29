@@ -22,7 +22,7 @@ class DocumentUpload < ApplicationRecord
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
 
     logger.info rake_call
-#    system(rake_call)
+    system(rake_call)
   end
 
   def log_file

@@ -35,7 +35,6 @@ class ScCollectionsController < ApplicationController
     at_id = params[:at_id]
     begin
       service = find_service(at_id)
-      binding.pry
 
       if service["@type"] == "sc:Collection"
         @sc_collection = ScCollection.collection_for_at_id(at_id)
