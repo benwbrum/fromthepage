@@ -11,3 +11,18 @@ pt:
       uploaded_by: "Subido por"
       transcription_version: "Versão de Transcrição:&nbsp;"
       number_of_pages: "Número de Páginas:&nbsp;"
+      genre: "Gênero"
+      metadata: "Metadata"
+      source_location: "Localização de fonte"
+      source_collection_name: "Nome de coleção fonte"
+      source_box_folder: "Caixa de fontes"
+      scope: "Escopo"
+      out_of_scope: "Fora do escopo"
+      editorial_notes: "Notas editoriais"
+      document_date: "Data do documento"
+    create:
+      work_created: "Trabalho criado com sucesso"
+    update:
+      work_updated: "Trabalho atualizado com sucesso"
+    edit:
+      additional_metadata: "Metadados adicionais"

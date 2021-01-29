@@ -28,42 +28,42 @@ module DisplayHelper
     @path = collection_transcribe_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
     if page.status.nil?
       if page.work.ocr_correction
-        @wording = 'Correct'
+        @wording = t('.correct')
       else
-        @wording = 'Transcribe'
+        @wording = t('.transcribe')
       end
     elsif page.status == Page::STATUS_BLANK
-      @wording = 'Blank page'
+      @wording = t('.blank_page')
       @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
     elsif page.status == Page::STATUS_NEEDS_REVIEW
-      @wording = 'Review'
+      @wording = t('.review')
     elsif page.work.supports_translation?
       @path = collection_translate_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
       if page.translation_status.nil?
-        @wording = 'Translate'
+        @wording = t('.translate')
       elsif page.translation_status == Page::STATUS_NEEDS_REVIEW
-        @wording = 'Review'
+        @wording = t('.review')
       elsif page.translation_status == Page::STATUS_TRANSLATED
         unless @collection.subjects_disabled
-          @wording = 'Index'
+          @wording = t('.index')
         else
-          @wording = 'Completed'
+          @wording = t('.completed')
         end
       elsif page.translation_status == Page::STATUS_INDEXED
-        @wording = 'Completed'
+        @wording = t('.completed')
         @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
       end
     elsif page.status == Page::STATUS_TRANSCRIBED
       unless @collection.subjects_disabled
-        @wording = 'Index'
+        @wording = t('.index')
       else
-        @wording = 'Completed'
+        @wording = t('.completed')
       end
     elsif page.status == Page::STATUS_INDEXED
-      @wording = 'Completed'
+      @wording = t('.completed')
       @path = collection_display_page_path(params[:user_slug], params[:collection_id], params[:work_id], page)
     else
-      @wording = 'Transcribe'
+      @wording = t('.transcribe')
     end
   end
 
