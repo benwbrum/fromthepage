@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_140557) do
+ActiveRecord::Schema.define(version: 2021_01_30_132501) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -498,6 +498,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_140557) do
     t.integer "edit_started_by_user_id"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
+    t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
     t.index ["work_id"], name: "index_pages_on_work_id"
   end
 
