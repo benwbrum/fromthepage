@@ -113,3 +113,26 @@ def wait_for_upload_processing
     sleep 2
   end
 end
+
+
+
+def fill_in_editor_field(text)
+  if page.has_field?('page_source_text') # we find page_source_text
+    fill_in('page_source_text', :with => text)
+  elsif page.has_field?('page_source_translation') # we find page_source_translation
+    fill_in('page_source_translation', :with => text)
+  else #codemirror
+    within ".CodeMirror" do
+      p "Looked for  .CodeMirror and Found It"
+      # Click makes CodeMirror element active:
+      current_scope.click
+
+      # Find the hidden textarea:
+      field = current_scope.find("textarea", visible: false)
+
+      # Mimic user typing the text:
+      field.send_keys text
+    end
+  end
+end
+
