@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_28_180552) do
+ActiveRecord::Schema.define(version: 2021_01_31_215326) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -73,6 +73,29 @@ ActiveRecord::Schema.define(version: 2020_11_28_180552) do
   create_table "articles_categories", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "article_id"
     t.integer "category_id"
+    t.index ["article_id", "category_id"], name: "index_articles_categories_on_article_id_and_category_id"
+  end
+
+  create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.string "status"
+    t.boolean "plaintext_verbatim_page"
+    t.boolean "plaintext_verbatim_work"
+    t.boolean "plaintext_emended_page"
+    t.boolean "plaintext_emended_work"
+    t.boolean "plaintext_searchable_page"
+    t.boolean "plaintext_searchable_work"
+    t.boolean "tei_work"
+    t.boolean "html_page"
+    t.boolean "html_work"
+    t.boolean "subject_csv_collection"
+    t.boolean "table_csv_collection"
+    t.boolean "table_csv_work"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
+    t.index ["user_id"], name: "index_bulk_exports_on_user_id"
   end
 
   create_table "categories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -467,6 +490,7 @@ ActiveRecord::Schema.define(version: 2020_11_28_180552) do
     t.integer "edit_started_by_user_id"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
+    t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
     t.index ["work_id"], name: "index_pages_on_work_id"
   end
 
@@ -622,6 +646,7 @@ ActiveRecord::Schema.define(version: 2020_11_28_180552) do
     t.string "external_id"
     t.string "sso_issuer"
     t.string "preferred_locale"
+    t.string "api_key"
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -723,19 +748,21 @@ ActiveRecord::Schema.define(version: 2020_11_28_180552) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
-    t.string "uploaded_filename"
     t.string "genre"
     t.string "source_location"
     t.string "source_collection_name"
     t.string "source_box_folder"
-    t.boolean "in_scope"
+    t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
+    t.string "uploaded_filename"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
 
+  add_foreign_key "bulk_exports", "collections"
+  add_foreign_key "bulk_exports", "users"
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "work_facets", "works"
 end

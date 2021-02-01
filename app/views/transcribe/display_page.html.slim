@@ -178,18 +178,391 @@ h2.legend =t('notes_and_questions')
       });
 
     });
--if feature_enabled?(:codemirror)
+-if feature_enabled?(:codemirror) || [46191, 45477].include?(@work.id)
+  -content_for :javascript
+    javascript:
+      var button_config = [
+        {
+          hotkey: 'Ctrl-^',
+          class: 'sup',
+          label: 'sup',
+          callback: function (cm) {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<hi rend="sup">' + selection + '</hi>');
+            if (!selection) {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+            }
+          }
+        },
+        {
+          hotkey: 'Ctrl-%',
+          class: 'strike',
+          label: 'str',
+          callback: function (cm) {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<hi rend="str">' + selection + '</hi>');
+            if (!selection) {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+            }
+          }
+        },
+        {
+          hotkey: 'Ctrl-u',
+          class: 'u',
+          label: 'u',
+          callback: function (cm) {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<hi rend="underline">' + selection + '</hi>');
+            if (!selection) {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+            }
+          }
+        },
+        {
+          hotkey: 'Ctrl-d',
+          class: 'italic',
+          label: 'date',
+          callback: function (cm) {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<date when="">' + selection + '</date>');
+            if (!selection) {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 7);
+            } else {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 7 - selection.length - 2);
+            }
+          }
+        },
+        {
+          hotkey: 'Ctrl-H',
+          class: 'italic',
+          label: 'fig',
+          callback: function (cm) {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<figure rend="hr">' + selection + '</figure>');
+            if (!selection) {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 9);
+            }
+          }
+        },
+        {
+          hotkey: 'Ctrl-U',
+          class: 'italic',
+          label: 'unclear',
+          callback: function (cm) {
+            var selection = cm.getSelection();
+            cm.replaceSelection('<unclear>' + selection + '</unclear>');
+            if (!selection) {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - 10);
+            }
+          }
+        }];
+
+
+  -if @collection.owner.slug == 'stanfordlibraries' #image du monde
+    -content_for :javascript
+      javascript:
+        var button_config = [
+          {
+            hotkey: 'Ctrl-E',
+            class: 'italic',
+            label: 'expan',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<expan orig="">' + selection + '</expan>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 8);
+              } else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 8 - selection.length - 2);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-R',
+            class: 'italic',
+            label: 'reg',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<reg orig="">' + selection + '</reg>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              } else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6 - selection.length - 2);
+              }
+            }
+          },
+          {
+            class: 'red',
+            label: 'red',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<span style="color:red;">' + selection + '</span>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 7);
+              }
+            }
+          },
+          {
+            class: 'blue',
+            label: 'blue',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<span style="color:blue;">' + selection + '</span>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 7);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-^',
+            class: 'sup',
+            label: 'sup',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<hi rend="sup">' + selection + '</hi>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-%',
+            class: 'strike',
+            label: 'str',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<hi rend="str">' + selection + '</hi>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-u',
+            class: 'u',
+            label: 'u',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<hi rend="underline">' + selection + '</hi>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 5);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-U',
+            class: 'italic',
+            label: 'unclear',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<unclear>' + selection + '</unclear>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 10);
+              }
+            }
+          }];
+
+  -if @collection.owner.slug == 'cwrgm'
+    -content_for :javascript
+      javascript:
+        var button_config = [
+          {
+            hotkey: 'Ctrl-P',
+            class: 'sup',
+            label: 'sup',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<sup>' + selection + '</sup>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-S',
+            class: 'strike',
+            label: 'str',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<s>' + selection + '</s>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 4);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-U',
+            class: 'u',
+            label: 'u',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<u>' + selection + '</u>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 4);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-G',
+            class: 'italic',
+            label: 'gap',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<gap>' + selection + '</gap>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              }
+            }
+          },
+          { 
+            class: 'subscript',
+            label: 'sub',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<sub>' + selection + '</sub>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              }
+            }
+          }];
+
+
+  -if @collection.owner.slug == 'folger'
+    -content_for :javascript
+      javascript:
+        var button_config = [
+          {
+            hotkey: 'Ctrl-P',
+            label: 'sup',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<sup>' + selection + '</sup>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-E',
+            class: 'italic',
+            label: 'abbr',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<abbr expan="">' + selection + '</abbr>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 7);
+              } else {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 7 - selection.length - 2);
+              }
+            }
+          },
+          // {
+          //   hotkey: 'Ctrl-E',
+          //   class: 'italic',
+          //   label: 'expan',
+          //   callback: function (cm) {
+          //     var selection = cm.getSelection();
+          //     cm.replaceSelection('<expan orig="">' + selection + '</expan>');
+          //     if (!selection) {
+          //       var cursorPos = cm.getCursor();
+          //       cm.setCursor(cursorPos.line, cursorPos.ch - 8);
+          //     } else { 
+          //       var cursorPos = cm.getCursor();
+          //       cm.setCursor(cursorPos.line, cursorPos.ch - 8 - selection.length - 2);
+          //     }
+          //   }
+          // },
+          {
+            hotkey: 'Ctrl-D',
+            class: 'strikethrough',
+            label: 'del',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<del>' + selection + '</del>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              }
+            }
+          },
+          // {
+          //   hotkey: 'Ctrl-I',
+          //   label: '^ ins',
+          //   callback: function (cm) {
+          //     var selection = cm.getSelection();
+          //     cm.replaceSelection('<ins>' + selection + '</ins>');
+          //     if (!selection) {
+          //       var cursorPos = cm.getCursor();
+          //       cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+          //     }
+          //   }
+          // },
+          {
+            hotkey: 'Ctrl-Shift-=',
+            class: 'italic',
+            label: 'add',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<add>' + selection + '</add>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 6);
+              }
+            }
+          },
+          {
+            hotkey: 'Ctrl-U',
+            class: 'italic',
+            label: 'unclear',
+            callback: function (cm) {
+              var selection = cm.getSelection();
+              cm.replaceSelection('<unclear>' + selection + '</unclear>');
+              if (!selection) {
+                var cursorPos = cm.getCursor();
+                cm.setCursor(cursorPos.line, cursorPos.ch - 10);
+              }
+            }
+          }];
+
+
+
   -content_for :javascript
     javascript:
       var fromthepage_tags = {
-        "!top": ["add", "cb", "date", "expan", "figure", "gap", "hi", "milestone", "stamp", "table", "unclear", "sup", "u", "strike", "s", "span", "a"],
-        add: { children: ["u", "s"] },
+        "!top": ["add", "cb", "date", "del", "expan", "figure", "gap", "hi", "ins", "milestone", "reg", "stamp", "sub", "sup", "table", "unclear", "u", "strike", "s", "span", "a"],
+        add: { children: ["u", "s", "hi"] },
         cb: { attrs: { "n": null } },
         date: {attrs: { when: "YYYY-MM-DD" }, children: ["hi", "unclear", "gap"] },
         expan: {attrs: { orig: null }},
         figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
         hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
+        ins: { children: ["u", "s", "hi"]},
         milestone: { attrs: { "unit": ["column"], "n": null}},
+        reg: {attrs: { orig: null }},
         row: { children: ["cell"] },
         stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
         sup: { children: ["u", "s"] },
@@ -237,85 +610,7 @@ h2.legend =t('notes_and_questions')
           },
           lineWrapping: true,
           hintOptions: {schemaInfo: fromthepage_tags},
-          buttons: [
-            {
-              hotkey: 'Ctrl-^',
-              class: 'sup',
-              label: 'sup',
-              callback: function (cm) {
-                var selection = cm.getSelection();
-                cm.replaceSelection('<hi rend="sup">' + selection + '</hi>');
-                if (!selection) {
-                  var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
-                }
-              }
-            },
-            {
-              hotkey: 'Ctrl-%',
-              class: 'strike',
-              label: 'str',
-              callback: function (cm) {
-                var selection = cm.getSelection();
-                cm.replaceSelection('<hi rend="str">' + selection + '</hi>');
-                if (!selection) {
-                  var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
-                }
-              }
-            },
-            {
-              hotkey: 'Ctrl-u',
-              class: 'u',
-              label: 'u',
-              callback: function (cm) {
-                var selection = cm.getSelection();
-                cm.replaceSelection('<hi rend="underline">' + selection + '</hi>');
-                if (!selection) {
-                  var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 5);
-                }
-              }
-            },
-            {
-              hotkey: 'Ctrl-d',
-              class: 'italic',
-              label: 'date',
-              callback: function (cm) {
-                var selection = cm.getSelection();
-                cm.replaceSelection('<date when="">' + selection + '</date>');
-                if (!selection) {
-                  var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 7);
-                }
-              }
-            },
-            {
-              hotkey: 'Ctrl-F',
-              class: 'italic',
-              label: 'fig',
-              callback: function (cm) {
-                var selection = cm.getSelection();
-                cm.replaceSelection('<figure rend="hr">' + selection + '</figure>');
-                if (!selection) {
-                  var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 9);
-                }
-              }
-            },
-            {
-              hotkey: 'Ctrl-U',
-              class: 'italic',
-              label: 'unclear',
-              callback: function (cm) {
-                var selection = cm.getSelection();
-                cm.replaceSelection('<unclear>' + selection + '</unclear>');
-                if (!selection) {
-                  var cursorPos = cm.getCursor();
-                  cm.setCursor(cursorPos.line, cursorPos.ch - 10);
-                }
-              }
-            }]
+          buttons: button_config
           });
 
           myCodeMirror.setSize("100%", "100%");

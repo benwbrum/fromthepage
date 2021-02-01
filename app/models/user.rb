@@ -22,6 +22,7 @@ class User < ApplicationRecord
   has_many :document_sets, :foreign_key => "owner_user_id"
   has_many :ia_works
   has_many :visits
+  has_many :bulk_exports
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
@@ -263,7 +264,8 @@ class User < ApplicationRecord
   end
 
   def self.search(search)
-    where("display_name LIKE ? OR login LIKE ?", "%#{search}%", "%#{search}%")
+    wildcard = "%#{search}%"
+    where("display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?", wildcard, wildcard, wildcard, wildcard)
   end
 
   def create_notifications
@@ -299,4 +301,14 @@ class User < ApplicationRecord
 
     self.save
   end
+
+
+  # Generate a unique API key
+  def self.generate_api_key
+    loop do
+      token = SecureRandom.base64.tr('+/=', 'Qrt')
+      break token unless User.exists?(api_key: token)
+    end
+  end
+
 end

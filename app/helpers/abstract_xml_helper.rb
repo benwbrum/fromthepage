@@ -6,7 +6,7 @@ module AbstractXmlHelper
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
@@ -14,6 +14,8 @@ module AbstractXmlHelper
     if preserve_lb
       xml_text.gsub!("<lb break='no'/> ", "-<br />")
     end
+
+    @collection ||= collection
 
     doc = REXML::Document.new(xml_text)
     #unless subject linking is disabled, do this
@@ -42,14 +44,41 @@ module AbstractXmlHelper
       end
     end
 
+    doc.elements.each("//abbr") do |e|
+      expan = e.attributes['expan']
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      span.add_text(expan)
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      e.children.each { |c| inner_span.add(c) }
+      span.add(inner_span)
+      e.replace_with(span)
+    end
+
     doc.elements.each("//expan") do |e|
       orig = e.attributes['orig']
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      inner_span.add_text(orig)
+      span.add(inner_span)
+      e.replace_with(span)
+    end
 
-      anchor = REXML::Element.new("a")
-      anchor.add_attribute("title", orig)
-      anchor.add_attribute("class", "expanded-abbreviation")
-      e.children.each { |c| anchor.add(c) }
-      e.replace_with(anchor)
+    doc.elements.each("//reg") do |e|
+      orig = e.attributes['orig']
+
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      inner_span.add_text(orig)
+      span.add(inner_span)
+      e.replace_with(span)
     end
 
     # get rid of line breaks within other html mark-up
@@ -114,7 +143,14 @@ module AbstractXmlHelper
         span.name='i'
       when 'sub'
         span.name='sub'
+      when 'str'
+        span.name='strike'
       end
+    end
+
+    doc.elements.each("//add") do |e|
+      e.name='span'
+      e.add_attribute('class', "addition")
     end
 
     doc.elements.each("//figure") do |e|
@@ -181,11 +217,6 @@ module AbstractXmlHelper
       
     end
 
-    unless user_signed_in?
-      doc.elements.each("//sensitive") do |e|
-        e.replace_with(REXML::Comment.new("sensitive information suppressed"))
-      end
-    end
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)

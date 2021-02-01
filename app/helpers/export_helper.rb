@@ -1,6 +1,92 @@
 module ExportHelper
+  include Rails.application.routes.url_helpers
 
-  def work_to_tei(work)
+  def write_work_exports(works, out, export_user, bulk_export)
+    # collection-level exports
+    if bulk_export.subject_csv_collection
+      export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.table_csv_collection
+      export_table_csv_collection(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
+    works.each do |work|
+      @work = work
+      dirname = work.slug.truncate(200, omission: "")
+      add_readme_to_zip(dirname: dirname, out: out)
+
+
+      # work-specific exports
+      if bulk_export.table_csv_work
+        export_table_csv_work(dirname: '', out: out, work: work)
+      end
+
+      if bulk_export.tei_work
+        export_tei(dirname: dirname, out:out, export_user:export_user)
+      end
+
+      if bulk_export.plaintext_verbatim_work
+        format='verbatim'
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+        export_plaintext_translation(name: format, dirname: dirname, out: out)
+      end
+
+      if bulk_export.plaintext_emended_work
+        format='expanded'
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+        export_plaintext_translation(name: format, dirname: dirname, out: out)
+      end
+
+      if bulk_export.plaintext_searchable_work
+        format='searchable'
+        export_plaintext_transcript(name: format, dirname: dirname, out: out)
+      end
+
+      if bulk_export.html_work
+        %w(full text transcript translation).each do |format|
+          export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+        end
+      end
+
+      # Page-specific exports
+
+      @work.pages.each do |page|
+        if bulk_export.plaintext_verbatim_page
+          format='verbatim'
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+        end
+
+        if bulk_export.plaintext_emended_page
+          format='expanded'
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+        end  
+
+        if bulk_export.plaintext_searchable_page
+          format='searchable'
+          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+        end
+      end
+
+
+      if bulk_export.html_page
+        @work.pages.each do |page|
+          export_html_full_pages(dirname: dirname, out: out, page: page)
+        end
+      end
+    end
+  end
+
+
+  def work_to_xhtml(work)
+    @work = Work.includes(pages: [{notes: :user}, {page_versions: :user}]).find_by(id: work.id)
+    render_to_string :layout => false, :template => "export/show.html.erb"
+  end
+
+  def work_to_tei(work, exporting_user)
+    params ||= {}
     params[:format] = 'xml'# if params[:format].blank?
 
     @work = work
@@ -35,7 +121,27 @@ module ExportHelper
                       .where.not(categories: {title: 'Places'})
 
     ### Catch the rendered Work for post-processing
-    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
+    if defined? render_to_string
+      thingy = self
+    else
+      thingy = ApplicationController.new
+    end
+
+    xml = thingy.render_to_string(
+      layout: false, 
+      template: "export/tei.html.erb",
+      assigns: {
+        work: @work,
+        context: @context,
+        user_contributions: @user_contributions,
+        work_versions: @work_versions,
+        all_articles: @all_articles,
+        person_articles: @person_articles,
+        place_articles: @place_articles,
+        other_articles: @other_articles,
+        collection: @work.collection,
+        user: exporting_user
+      })
     post_process_xml(xml, @work)
   end
 
@@ -146,6 +252,7 @@ module ExportHelper
     doc.elements.each_with_index("//p") do |e,i|
       transform_links(e)
       transform_expansions(e)
+      transform_regularizations(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
         e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
@@ -159,16 +266,53 @@ module ExportHelper
   def transform_expansions(p_element)
     p_element.elements.each('//expan') do |expan|
       orig = expan.attributes['orig']
-      choice = REXML::Element.new("choice")
-      tei_expan = REXML::Element.new("expan")
-      expan.children.each { |c| tei_expan.add(c) }
-      choice.add(tei_expan)
       unless orig.blank?
-        tei_abbr = REXML::Element.new("abbr")
-        tei_abbr.add_text(orig)
-        choice.add(tei_abbr)
+        choice = REXML::Element.new("choice")
+        tei_expan = REXML::Element.new("expan")
+        expan.children.each { |c| tei_expan.add(c) }
+        choice.add(tei_expan)
+        unless orig.blank?
+          tei_abbr = REXML::Element.new("abbr")
+          tei_abbr.add_text(orig)
+          choice.add(tei_abbr)
+        end
+        expan.replace_with(choice)
       end
-      expan.replace_with(choice)
+    end
+
+    p_element.elements.each('//abbr') do |abbr|
+      expan = abbr.attributes['expan']
+      unless expan.blank?
+        choice = REXML::Element.new("choice")
+        tei_expan = REXML::Element.new("expan")
+        tei_expan.add_text(expan)
+        choice.add(tei_expan)
+
+        tei_abbr = REXML::Element.new("abbr")
+        abbr.children.each { |c| tei_abbr.add(c) }
+        choice.add(tei_abbr)
+
+        abbr.replace_with(choice)
+      end
+    end
+
+  end
+
+  def transform_regularizations(p_element)
+    p_element.elements.each('//reg') do |reg|
+      orig = reg.attributes['orig']
+      unless orig.blank? || reg.parent.name == 'choice'
+        choice = REXML::Element.new("choice")
+        tei_reg = REXML::Element.new("reg")
+        reg.children.each { |c| tei_reg.add(c) }
+        choice.add(tei_reg)
+        unless orig.blank?
+          tei_orig = REXML::Element.new("orig")
+          tei_orig.add_text(orig)
+          choice.add(tei_orig)
+        end
+        reg.replace_with(choice)
+      end
     end
   end
 
@@ -259,7 +403,7 @@ module ExportHelper
       current_depth = 1
       sections = []
       
-      doc_body.children.each {|e|
+      doc_body.children.each do |e|
       
         if(e.node_type != :text && e.get_elements('head').length > 0)
           header = e.get_elements('head').first
@@ -294,7 +438,7 @@ module ExportHelper
         # Adds the current element to the new section at the right location
         sections.first.add(e) unless sections.empty?
       
-      }
+      end
       
       return doc
     end

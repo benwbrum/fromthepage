@@ -1,4 +1,14 @@
 GIT
+  remote: https://github.com/BrumfieldLabs/riiif.git
+  revision: 2b9ca620a83a24980e4fcd2c227b55b6a6d096d4
+  branch: quote-paths-for-shell
+  specs:
+    riiif (2.3.0)
+      deprecation (>= 1.0.0)
+      iiif-image-api (>= 0.1.0)
+      railties (>= 4.2, < 7)
+
+GIT
   remote: https://github.com/benwbrum/osullivan
   revision: 814ac4ddabb2423de9d7e4f6b2dc8d8153317903
   branch: service_is_array
@@ -150,7 +160,7 @@ GEM
     crass (1.0.6)
     database_cleaner (1.8.5)
     debug_inspector (0.0.3)
-    deprecation (1.0.0)
+    deprecation (1.1.0)
       activesupport
     device_detector (1.0.5)
     devise (4.7.3)
@@ -357,10 +367,6 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
-    riiif (2.3.0)
-      deprecation (>= 1.0.0)
-      iiif-image-api (>= 0.1.0)
-      railties (>= 4.2, < 7)
     rmagick (4.1.2)
     roman (0.2.0)
     rspec-core (3.10.0)
@@ -534,7 +540,7 @@ DEPENDENCIES
   rails (= 6.0.3.2)
   rails-i18n (~> 6.0.0)
   recaptcha
-  riiif
+  riiif!
   rmagick
   rspec-rails
   rtl

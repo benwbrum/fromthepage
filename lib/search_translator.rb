@@ -21,6 +21,7 @@ module SearchTranslator
 
     all_abbrevs=[]
     doc.xpath('//expan').each{|e| all_abbrevs << e['orig'] unless e['orig'].blank? }
+    doc.xpath('//abbr').each{|e| all_abbrevs << e.text }
     uniq_titles += all_abbrevs.uniq
 
     newline_separated_titles=uniq_titles.join("\n")
@@ -45,7 +46,7 @@ private
     doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
-    doc.xpath("//expan").each { |n| n.replace(n['orig']) unless n['orig'].blank? }
+    doc.xpath("//abbr").each { |n| n.replace(n['expan']) unless n['expan'].blank? }
     
     no_tags = doc.text
     no_linefeeds = no_tags.gsub(/\s/, ' ')
