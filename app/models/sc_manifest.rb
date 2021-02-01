@@ -21,9 +21,8 @@ class ScManifest < ApplicationRecord
       raise ArgumentError, "#{at_id} contains a collection, not an item"
     end
     sc_manifest = ScManifest.new
-    #sc_manifest.at_id = service['@id']
     sc_manifest.at_id = at_id
-    sc_manifest.label = service.label
+    sc_manifest.label = ScManifest.cleanup_label(service.label)
     sc_manifest.service = service
 
     sc_manifest
@@ -58,7 +57,7 @@ class ScManifest < ApplicationRecord
     work = Work.new
     work.owner = user
 
-    work.title = cleanup_label(self.label)
+    work.title = self.label
     work.description = self.html_description
     work.collection = collection
     work.original_metadata = self.service.metadata.to_json
@@ -87,7 +86,7 @@ class ScManifest < ApplicationRecord
     work
   end
 
-  def cleanup_label(label)
+  def self.cleanup_label(label)
     label = flatten_element(label)
     new_label = label.truncate(255, separator: ' ', omission: '')
     new_label.gsub!("&quot;", "'")
@@ -97,7 +96,7 @@ class ScManifest < ApplicationRecord
     new_label
   end
 
-  def flatten_element(element)
+  def self.flatten_element(element)
     if element.is_a? Array
       element = element.first
     end
@@ -110,7 +109,7 @@ class ScManifest < ApplicationRecord
 
   def sc_canvas_to_page(sc_canvas)
     page = Page.new
-    page.title = flatten_element(sc_canvas.sc_canvas_label)
+    page.title = ScManifest.flatten_element(sc_canvas.sc_canvas_label)
 
     page
   end
@@ -131,7 +130,7 @@ class ScManifest < ApplicationRecord
   def html_description
     description=""
     unless self.service.description.blank?
-      description += flatten_element(self.service.description) + "\n<br /><br />\n"
+      description += ScManifest.flatten_element(self.service.description) + "\n<br /><br />\n"
     end
 
     description

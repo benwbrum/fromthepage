@@ -301,7 +301,6 @@ module ExportHelper
   def transform_regularizations(p_element)
     p_element.elements.each('//reg') do |reg|
       orig = reg.attributes['orig']
-#      binding.pry
       unless orig.blank? || reg.parent.name == 'choice'
         choice = REXML::Element.new("choice")
         tei_reg = REXML::Element.new("reg")
