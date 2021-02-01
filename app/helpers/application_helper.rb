@@ -147,9 +147,14 @@ module ApplicationHelper
 
   def value_to_html(value)
     if value.is_a? String
-      return value
+      return value # scalar value
     elsif value.is_a? Array
-      return value.map {|e| e["@value"]}.join("; ")
+      if value.first.is_a? String
+        return value.join("; ") # simple array
+      else
+        # array of language pairs
+        return value.map {|e| e["@value"]}.join("; ")
+      end
     end
   end
 

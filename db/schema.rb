@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_20_134610) do
+ActiveRecord::Schema.define(version: 2021_01_31_215326) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2021_01_20_134610) do
   create_table "articles_categories", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "article_id"
     t.integer "category_id"
+    t.index ["article_id", "category_id"], name: "index_articles_categories_on_article_id_and_category_id"
   end
 
   create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -489,6 +490,7 @@ ActiveRecord::Schema.define(version: 2021_01_20_134610) do
     t.integer "edit_started_by_user_id"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
+    t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
     t.index ["work_id"], name: "index_pages_on_work_id"
   end
 
@@ -644,6 +646,7 @@ ActiveRecord::Schema.define(version: 2021_01_20_134610) do
     t.string "external_id"
     t.string "sso_issuer"
     t.string "preferred_locale"
+    t.string "api_key"
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
