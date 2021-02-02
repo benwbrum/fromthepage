@@ -48,12 +48,21 @@ class ExportController < ApplicationController
     render :text => tei_xml, :content_type => "application/xml", :layout => false
   end
 
-  def subject_csv
-    send_data(@collection.export_subjects_as_csv,
-              :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+  def subject_details_csv
+    send_data(@collection.export_subject_details_as_csv,
+              :filename => "fromthepage_subject_details_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
   end
+
+
+  def subject_index_csv
+    send_data(@collection.export_subject_index_as_csv,
+              :filename => "fromthepage_subject_index_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
+
 
   def table_csv
     send_data(export_tables_as_csv(@work),

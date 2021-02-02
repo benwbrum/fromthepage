@@ -1,5 +1,6 @@
 require 'csv'
 require 'subject_exporter'
+require 'subject_details_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
@@ -72,10 +73,16 @@ class Collection < ApplicationRecord
     page_fields.uniq
   end
 
-  def export_subjects_as_csv
+  def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)
 
     subject_link.export
+  end
+
+  def export_subject_details_as_csv
+    subjects = SubjectDetailsExporter::Exporter.new(self)
+
+    subjects.export
   end
 
   def show_to?(user)
