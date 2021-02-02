@@ -1,4 +1,3 @@
-
 // ---------------------------
 // COLORS
 // ---------------------------
@@ -38,6 +37,7 @@ $fgH5:                      darken($fgH1, 24%);
 // -----------------------------
 // LAYOUT COLOR SCHEME
 // -----------------------------
+
 $themeLight:                #EDB;
 $themeDark:                 #433;
 
@@ -52,7 +52,7 @@ $headerHeight:              80px;
 $headerFg:                  $themeDark;
 $headerBg:                  $themeLight;
 
-$footerHeight:              220px;
+$footerHeight:              100px;
 $footerFg:                  mix(#FFF, $themeDark, 75);
 $footerBg:                  $themeDark;
 
