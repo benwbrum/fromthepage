@@ -31,7 +31,7 @@ module SubjectDetailsExporter
           row << subject.source_text.split(/\s/).count
           row << subject.source_text.chars.count
           row << subject.page_article_links.count
-          row << subject.provenance.blank? ? 'FromThePage' : subject.provenance
+          row << if subject.provenance.blank? then 'FromThePage' else subject.provenance end
           row << subject.created_on.iso8601
 
           csv << row
