@@ -505,7 +505,7 @@ private
     if collection.is_a? DocumentSet
       iiif_document_set_url(collection)
     else
-      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.slug, :only_path => false })
     end
   end
 
