@@ -37,12 +37,12 @@ describe "editor actions" , :order => :defined do
       visit "/display/display_page?page_id=#{page_fact.id}"
       expect(page).to have_content("This page is not transcribed")
       page.find('.tabs').click_link("Transcribe")
-      page.fill_in('page_source_text', with: "Content")
+      fill_in_editor_field("Content")
       page.find('#save_button_top').click
 
       expect(Page.find(page_fact.id).status).to eq(Page::STATUS_TRANSCRIBED)
 
-      page.fill_in('page_source_text', with: "")
+      fill_in_editor_field("")
       page.find('#save_button_top').click
 
       expect(Page.find(page_fact.id).status).to eq(nil)
@@ -196,13 +196,13 @@ describe "editor actions" , :order => :defined do
       expect(page).to have_content("This page is not transcribed")
       page.find('.tabs').click_link("Transcribe")
       expect(page).to have_content("Collection Footer")
-      page.fill_in 'page_source_text', with: "Test Preview"
+      fill_in_editor_field "Test Preview"
       click_button('Preview', match: :first)
       expect(page).to have_content('Edit')
       expect(page).to have_content("Test Preview")
       click_button('Edit', match: :first)
       expect(page).to have_content('Preview')
-      page.fill_in 'page_source_text', with: "Test Transcription\n\n-\ndash test"
+      fill_in_editor_field "Test Transcription\n\n-\ndash test"
       find('#save_button_top').click
       page.click_link("Overview")
       expect(page).to have_content("Test Transcription")
@@ -213,13 +213,13 @@ describe "editor actions" , :order => :defined do
       visit "/display/display_page?page_id=#{@work.pages.first.id}"
       page.find('.tabs').click_link("Translate")
       expect(page).to have_content("Collection Footer")
-      page.fill_in 'page_source_translation', with: "Test Translation Preview"
+      fill_in_editor_field "Test Translation Preview"
       click_button('Preview')
       expect(page).to have_content('Edit')
       expect(page).to have_content("Test Translation Preview")
       click_button('Edit')
       expect(page).to have_content('Preview')
-      page.fill_in 'page_source_translation', with: "Test Translation"
+      fill_in_editor_field "Test Translation"
       click_button('Save Changes')
       expect(page).to have_content("Test Translation")
     end
@@ -307,7 +307,7 @@ describe "editor actions" , :order => :defined do
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
       text = Page.find_by(id: test_page.id).source_text
       fill_in('Write a new note or ask a question...', with: "Test two")
-      fill_in 'page_source_text', with: "Attempt to save"
+      fill_in_editor_field "Attempt to save"
       message = accept_alert do
         find('#save_button_top').click
       end
@@ -339,7 +339,7 @@ describe "editor actions" , :order => :defined do
       test_page = col.works.first.pages.second
       #next page arrow
       visit collection_transcribe_page_path(col.owner, col, test_page.work, test_page)
-      fill_in 'page_source_text', with: "Attempt to save"
+      fill_in_editor_field "Attempt to save"
       message = accept_alert do
         page.click_link("Next page")
       end
@@ -439,7 +439,7 @@ describe "editor actions" , :order => :defined do
     it "adds an abusive transcript" do
       flag_count = Flag.count
       visit collection_transcribe_page_path(@collection.owner, @collection, @page.work, @page)
-      page.fill_in 'page_source_text', with: "Visit <a href=\"www.spam.com\">our store!</a>"
+      fill_in_editor_field "Visit <a href=\"www.spam.com\">our store!</a>"
       find('#save_button_top').click
       expect(Flag.count).to eq(flag_count + 1)
     end
@@ -447,7 +447,7 @@ describe "editor actions" , :order => :defined do
     it "adds an abusive translation" do
       flag_count = Flag.count
       visit collection_translate_page_path(@collection.owner, @collection, @page.work, @page)
-      page.fill_in 'page_source_translation', with: "Visit <a href=\"www.spam.com\">our store!</a>"
+      fill_in_editor_field "Visit <a href=\"www.spam.com\">our store!</a>"
       find('#save_button_top').click
       expect(Flag.count).to eq(flag_count + 1)
     end
