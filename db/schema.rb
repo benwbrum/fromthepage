@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_31_215326) do
+ActiveRecord::Schema.define(version: 2021_02_02_205613) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -106,6 +106,16 @@ ActiveRecord::Schema.define(version: 2021_01_31_215326) do
     t.boolean "gis_enabled", default: false, null: false
     t.index ["collection_id"], name: "index_categories_on_collection_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+  end
+
+  create_table "cdm_bulk_imports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "ocr_correction", default: false
+    t.string "collection_param", null: false
+    t.text "cdm_urls"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_cdm_bulk_imports_on_user_id"
   end
 
   create_table "clientperf_results", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -763,6 +773,7 @@ ActiveRecord::Schema.define(version: 2021_01_31_215326) do
 
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "users"
+  add_foreign_key "cdm_bulk_imports", "users"
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "work_facets", "works"
 end
