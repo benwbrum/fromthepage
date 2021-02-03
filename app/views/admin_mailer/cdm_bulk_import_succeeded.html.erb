@@ -1,0 +1,10 @@
+<h2 style="color:#453939; margin:0; font-weight:normal;">CONTENTdm Bulk Import Succeeded</h2>
+<p>
+  Your import was successful.
+</p>
+<p>These are the works in the collection:</p>
+<ul>
+  <% @collection.works.each do |work|%>
+    <li><%=work.title%></li>
+  <%end%>
+</ul>

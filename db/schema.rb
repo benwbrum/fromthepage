@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_140557) do
+ActiveRecord::Schema.define(version: 2021_02_02_205613) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_140557) do
   create_table "articles_categories", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "article_id"
     t.integer "category_id"
+    t.index ["article_id", "category_id"], name: "index_articles_categories_on_article_id_and_category_id"
   end
 
   create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -105,6 +106,16 @@ ActiveRecord::Schema.define(version: 2021_01_28_140557) do
     t.boolean "gis_enabled", default: false, null: false
     t.index ["collection_id"], name: "index_categories_on_collection_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+  end
+
+  create_table "cdm_bulk_imports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "ocr_correction", default: false
+    t.string "collection_param", null: false
+    t.text "cdm_urls"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_cdm_bulk_imports_on_user_id"
   end
 
   create_table "clientperf_results", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -498,6 +509,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_140557) do
     t.integer "edit_started_by_user_id"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
+    t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
     t.index ["work_id"], name: "index_pages_on_work_id"
   end
 
@@ -770,7 +782,11 @@ ActiveRecord::Schema.define(version: 2021_01_28_140557) do
 
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "users"
+<<<<<<< HEAD
   add_foreign_key "editor_buttons", "collections"
+=======
+  add_foreign_key "cdm_bulk_imports", "users"
+>>>>>>> development
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "work_facets", "works"
 end

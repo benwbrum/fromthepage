@@ -1,5 +1,11 @@
 en:
   display:
+    correct: "Correct"
+    transcribe: "Transcribe"
+    blank_page: "Blank page"
+    review: "Review"
+    translate: "Translate"
+    completed: "Completed"
     display_page:
       facsimile: "Facsimile"
       translation: "Translation"

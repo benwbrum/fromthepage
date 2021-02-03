@@ -1,5 +1,12 @@
 es:
   display:
+    #TODO next 6 messages
+    correct: ""
+    transcribe: ""
+    blank_page: ""
+    review: ""
+    translate: ""
+    completed: ""
     display_page:
       facsimile: "Facsímil"
       translation: "Traducción"

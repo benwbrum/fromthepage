@@ -1,5 +1,14 @@
 es:
   collection:
+    #TODO next 7 messages  
+    incomplete_works: ""
+    show_all: ""
+    #TODO -- the follow messages are for percent complete, like 10% corrected or 20% transcribed
+    corrected: ""
+    transcribed: ""
+    translated: "traducidas"
+    needs_review: ""
+    indexed: "indexadas"  
     show:
       all_complete: "Todas las obras están completamente transcritas."
       start_transcribing: "Comenzar a Transcribir"
@@ -16,6 +25,7 @@ es:
       subject_categories: "Categorías de Temas"
       search: "Búsqueda"
       time_ago_in_words: "Hace %{time}"
+      project_by: "Proyecto de"
     collection_works:
       work_title: "Título de la obra"
       progress: "Progreso"
@@ -130,11 +140,11 @@ es:
       page_on_the_bottom: "Página de Abajo"
     needs_review_pages:
       pages_that_need_review: "Páginas que Necesitan Revisión"
-      owned_by: "Propiedad de"
+      project_by: "Proyecto de"
       return_to_collection: "Volver a la colección"
     needs_transcription_pages:
       pages_that_need_transcription: "Páginas que Necesitan Transcripción"
-      owned_by: "Propiedad de"
+      project_by: "Proyecto de"
       return_to_collection: "Volver a la colección"
       # next section is admin only
     new:

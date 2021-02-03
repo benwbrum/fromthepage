@@ -389,7 +389,6 @@ EOF
   end
 
   def self.cell_to_plaintext(cell)
-    #    binding.pry if cell.content =~ /Brimstone/
     doc = cell_to_xml(cell)
     doc.each_element('.//text()') { |e| p e.text }.join
   end
