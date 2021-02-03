@@ -1,0 +1,15 @@
+h3 Bulk CONTENTdm Import
+
+=form_tag(sc_collections_cdm_bulk_import_create_path) do
+  p
+    - new_collection = @collection ? @collection.id : nil
+    = select_tag(:collection_id, target_collection_options(new_collection), {prompt: '- Select a collection to import into -'})
+  p
+    = check_box_tag :ocr_correction
+    = label_tag :ocr_correction, 'Import OCR text from CONTENTdm'
+  p
+    = label_tag :cdm_urls, 'Compound Object URLs'
+    = text_area_tag :cdm_urls, '', rows: 15
+  p Separate URLs with spaces or newlines.
+  = submit_tag 'Import'
+
