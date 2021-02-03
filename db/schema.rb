@@ -259,6 +259,15 @@ ActiveRecord::Schema.define(version: 2021_02_02_205613) do
     t.index ["user_id"], name: "index_document_uploads_on_user_id"
   end
 
+  create_table "editor_buttons", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "key"
+    t.integer "collection_id", null: false
+    t.boolean "prefer_html"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_editor_buttons_on_collection_id"
+  end
+
   create_table "facet_configs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "label"
     t.string "input_type"
@@ -773,7 +782,11 @@ ActiveRecord::Schema.define(version: 2021_02_02_205613) do
 
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "users"
+<<<<<<< HEAD
+  add_foreign_key "editor_buttons", "collections"
+=======
   add_foreign_key "cdm_bulk_imports", "users"
+>>>>>>> development
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "work_facets", "works"
 end
