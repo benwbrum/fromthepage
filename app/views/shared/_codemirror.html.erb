@@ -1,0 +1,102 @@
+<%=stylesheet_link_tag "codemirror/lib/codemirror"%>
+<%=stylesheet_link_tag "codemirror-buttons/buttons"%>
+<%=javascript_include_tag "codemirror/lib/codemirror"%>
+<%=javascript_include_tag "codemirror/mode/xml/xml"%>
+<%=javascript_include_tag "codemirror/addon/display/display/panel"%>
+<%=javascript_include_tag "codemirror/addon/hint/show-hint"%>
+<%=javascript_include_tag "codemirror/addon/hint/xml-hint"%>
+<%=javascript_include_tag "codemirror-buttons/buttons"%>
+
+<script>
+  var button_config = [
+    <% @collection.editor_buttons.each do |button| %>
+      {
+        hotkey: '<%= button.hotkey %>',
+        class: '<%= "editor-buttons-#{button.key}" %>',
+        label: '<%= "#{button.key}" %>',
+        callback: function (cm) {
+          var selection = cm.getSelection();
+          cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
+          if (!selection) {
+            var cursorPos = cm.getCursor();
+            cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %>);
+          }
+          <% if button.has_attribute %>
+            else {
+              var cursorPos = cm.getCursor();
+              cm.setCursor(cursorPos.line, cursorPos.ch - <%= button.cursor_offset %> - selection.length - 2);
+            }
+          <% end %>
+        }
+      },
+    <% end %>
+  ];
+
+  var fromthepage_tags = {
+    "!top": ["abbr", "add", "cb", "date", "del", "expan", "figure", "gap", "hi", "ins", "milestone", "reg", "stamp", "sub", "sup", "table", "unclear", "u", "strike", "s", "span", "a"],
+    abbr: { attrs: { expan: null}},
+    add: { children: ["u", "s", "hi"] },
+    cb: { attrs: { "n": null } },
+    date: {attrs: { when: "YYYY-MM-DD" }, children: ["hi", "unclear", "gap"] },
+    expan: {attrs: { abbr: null }},
+    figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
+    hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
+    ins: { children: ["u", "s", "hi"]},
+    milestone: { attrs: { "unit": ["column"], "n": null}},
+    reg: {attrs: { orig: null }},
+    row: { children: ["cell"] },
+    stamp: { attrs: {"type": ["clerical", "postage", "revenue"]}},
+    sup: { children: ["u", "s"] },
+    table: { attrs: {"rend": ["rules"]}, children: ["row"] }
+  }
+
+
+  function completeAfter(cm, pred) {
+    var cur = cm.getCursor();
+    if (!pred || pred()) setTimeout(function() {
+      if (!cm.state.completionActive)
+        cm.showHint({completeSingle: false});
+    }, 100);
+    return CodeMirror.Pass;
+  }
+
+  function completeIfAfterLt(cm) {
+    return completeAfter(cm, function() {
+      var cur = cm.getCursor();
+      return cm.getRange(CodeMirror.Pos(cur.line, cur.ch - 1), cur) == "<";
+    });
+  }
+
+  function completeIfInTag(cm) {
+    return completeAfter(cm, function() {
+      var tok = cm.getTokenAt(cm.getCursor());
+      if (tok.type == "string" && (!/['"]/.test(tok.string.charAt(tok.string.length - 1)) || tok.string.length == 1)) return false;
+      var inner = CodeMirror.innerMode(cm.getMode(), tok.state).state;
+      return inner.tagName;
+    });
+  }
+
+  var myCodeMirror = CodeMirror.fromTextArea(
+    document.getElementById("<%= textarea %>"),
+    {
+      lineNumbers: true, 
+      mode: "xml",
+      extraKeys: {
+        "'<'": completeAfter,
+        "'/'": completeIfAfterLt,
+        "' '": completeIfInTag,
+        "'='": completeIfInTag,
+        "Ctrl-Space": "autocomplete",
+        "Tab": "autocomplete"
+      },
+      lineWrapping: true,
+      hintOptions: {schemaInfo: fromthepage_tags},
+      buttons: button_config
+    });
+
+  <% if has_title %>
+    myCodeMirror.setSize("100%", "91.5%");
+  <% else %>
+    myCodeMirror.setSize("100%", "100%");
+  <% end %>
+</script>
