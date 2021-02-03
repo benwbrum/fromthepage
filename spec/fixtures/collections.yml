@@ -11,6 +11,7 @@ collection_1:
   link_help: "This is help text for Linking Subjects."
   supports_document_sets: false
   subjects_disabled: false
+  slug: cs-pierce
 collection_2:
   id: 2
   title: Imported Collection
@@ -24,6 +25,7 @@ collection_2:
   link_help: "This is help text for Linking Subjects."
   supports_document_sets: false
   subjects_disabled: false
+  slug: imported-collection
 collection_3:
   id: 3
   title: LA County Library
@@ -37,3 +39,4 @@ collection_3:
   link_help: "This is help text for Linking Subjects."
   supports_document_sets: false
   subjects_disabled: false
+  slug: la-county-library
