@@ -123,7 +123,6 @@ def fill_in_editor_field(text)
     fill_in('page_source_translation', :with => text)
   else #codemirror
     within ".CodeMirror" do
-      p "Looked for  .CodeMirror and Found It"
       # Click makes CodeMirror element active:
       current_scope.click
 

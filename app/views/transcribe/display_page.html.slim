@@ -146,3 +146,34 @@ h2.legend =t('notes_and_questions')
         }
 
         transcribe_periodic_timer();
+
+-content_for :javascript
+  javascript:
+    //set language for voice to text
+    var lang = "#{current_user.dictation_language || @collection.language}";
+
+    $(function() {
+      $('[data-fullscreen-toggle]').on('click', function() {
+        $(this).toggleClass('pressed');
+        $('.page-editor').toggleClass('fullscreen');
+        $(window).trigger('resize.FullHeight');
+      });
+      $('[data-layout-set]').on('click', function() {
+        var mode = $(this).data('layout-set');
+        Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
+        $('[data-layout-mode]').attr('data-layout-mode', mode);
+      });
+      $('#auto-fullscreen').on('change', function() {
+        var checked = this.checked ? 'yes' : 'no';
+        Cookies.set('auto_fullscreen', checked, { expires: 365 });
+      });
+
+      $('#page_needs_review').click(function(){
+        $('#page_mark_blank').prop('checked', false);
+      });
+
+      $('#page_mark_blank').click(function(){
+        $('#page_needs_review').prop('checked', false);
+      });
+
+    });
