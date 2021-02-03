@@ -44,6 +44,19 @@ class AdminMailer < ActionMailer::Base
     mail to: user_email, subject: "#{@collection.title} - Import Complete"
   end
 
+  def cdm_bulk_import_failed(cdm_bulk_export, errors)
+    user_email = cdm_bulk_export.user.email
+    @errors = errors
+    mail to: user_email, subject: "CONTENTdm Bulk Import Errors"
+  end
+
+  def cdm_bulk_import_succeeded(cdm_bulk_export)
+    user_email = cdm_bulk_export.user.email
+    @collection = cdm_bulk_export.collection_or_document_set
+    mail to: user_email, subject: "CONTENTdm Bulk Import Complete"
+  end
+
+
   class OwnerCollectionActivity
     attr_accessor :owner, :collections, :collaborators, :since, :comments, :activity
     

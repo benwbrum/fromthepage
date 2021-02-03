@@ -69,7 +69,9 @@ en:
     new_work:
       import_a_iiif_manifest_or_collection: "Import a IIIF Manifest or Collection"
       import_from_contentdm: "Import from CONTENTdm"
-      paste_in_the_url: "Paste in the URL of a compound object on your CONTENTdm site."
+      paste_in_the_url: "Paste in the URL of a compound object or a collection on your CONTENTdm site."
+      or_import_many: "Or "
+      import_many_link: "import several individual compound objects."
       import_from_the_internet_archive: "Import from the Internet Archive"
       import_from_archive_dot_org: "Import From Archive.org"
       you_have_not_connected: "You have not connected any Omeka sites. Use the button below to create a new Omeka connection."
