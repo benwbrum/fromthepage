@@ -158,8 +158,17 @@ class ApplicationController < ActionController::Base
     elsif !DocumentSet.find_by(slug: id).nil?
       @collection = DocumentSet.find_by(slug: id)
     elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id)
- 
+      @collection = Collection.find_by(slug: id) 
+    end
+
+    # check to make sure URLs haven't gotten scrambled
+    if @work
+      if @work.collection != @collection
+        # this could be a document set or a bad collection
+        unless @collection.is_a? DocumentSet
+          @collection = @work.collection
+        end
+      end
     end
     return @collection
   end
