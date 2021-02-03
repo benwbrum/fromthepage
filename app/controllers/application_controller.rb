@@ -238,7 +238,8 @@ class ApplicationController < ActionController::Base
     return if (params[:controller] == 'iiif')
 
     unless @collection.show_to?(current_user)
-      redirect_to dashboard_path
+      flash[:error] = t('unauthorized_collection', :project => @collection.title)
+      redirect_to user_profile_path(@collection.owner)
     end
   end
 
