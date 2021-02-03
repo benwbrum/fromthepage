@@ -24,6 +24,7 @@ es:
       recent_article_edits: "Ediciones del Artículo Recientes "
       article: "Artículo"
       categories: "Categorías"
+      user_deleted: "El perfil del usuario ha sido borrado"
       contribution:
         one: "contribución"
         other: "contribuciones"
