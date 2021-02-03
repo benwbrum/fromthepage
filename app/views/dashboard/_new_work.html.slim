@@ -33,6 +33,8 @@
               .input-file
                 =text_field_tag :cdm_url
                 =button_tag 'Import', :id => 'cdm_import'
+        =t('.or_import_many')
+        =link_to(t('.import_many_link'), sc_collections_cdm_bulk_import_new_path)
 
     h3
       a(href="#" class="title" onclick="return false;" id="import-internet-archive") =t('.import_from_the_internet_archive')

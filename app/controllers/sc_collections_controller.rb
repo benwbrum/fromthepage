@@ -11,6 +11,25 @@ class ScCollectionsController < ApplicationController
     respond_with(@sc_collections)
   end
 
+  def cdm_bulk_import_new
+
+  end
+
+  def cdm_bulk_import_create
+    import = CdmBulkImport.new
+    import.collection_param = params[:collection_id]
+    import.user = current_user
+    clean_urls = params[:cdm_urls].gsub(/\s+/m, "\n")
+    import.cdm_urls = clean_urls
+    import.save!
+
+    import.submit_background_task
+
+    flash[:info] = "Your import has been started.  When it is complete, you should receive email at #{current_user.email}."
+    redirect_to dashboard_owner_path
+  end
+
+
   def import_cdm
     cdm_url = params[:cdm_url]
 
