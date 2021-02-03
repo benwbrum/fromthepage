@@ -110,8 +110,8 @@ p
   =t('.iiif_api_description', link: link_to('here', 'https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations')).html_safe
 
 p
-  =t('.iiif_collection_api_endpoint', link: link_to(iiif_collection_url(@collection.id, only_path: false),
-                                                    iiif_collection_url(@collection.id, only_path: false))).html_safe
+  =t('.iiif_collection_api_endpoint', link: link_to(iiif_collection_url(@collection.slug, only_path: false),
+                                                    iiif_collection_url(@collection.slug, only_path: false))).html_safe
 
 =render({ :partial => '/shared/collection_footer' })
 
