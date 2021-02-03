@@ -238,10 +238,28 @@ class ApplicationController < ActionController::Base
     return if (params[:controller] == 'iiif')
 
     unless @collection.show_to?(current_user)
-      flash[:error] = t('unauthorized_collection', :project => @collection.title)
-      redirect_to user_profile_path(@collection.owner)
+      # second chance?
+      unless set_fallback_collection
+        flash[:error] = t('unauthorized_collection', :project => @collection.title)
+        redirect_to user_profile_path(@collection.owner)
+      end
     end
   end
+
+  def set_fallback_collection
+    if @work && @work.collection.supports_document_sets
+      alternative_set = @work.document_sets.where(:is_public => true).first
+      if alternative_set
+        @collection = alternative_set
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date, :activity_email) }
