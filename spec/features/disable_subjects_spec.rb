@@ -44,7 +44,7 @@ describe "disable subject linking", :order => :defined do
     #check for subject related items on Export tab
     page.find('.tabs').click_link("Export")
     expect(page).to have_content("Export Individual Works")
-    expect(page).not_to have_content("Export Subject Index")
+    expect(page).not_to have_content("Export Subjects")
     #check for subject related items on Collaborators tab
     page.find('.tabs').click_link("Collaborators")
     expect(page).to have_content("Contributions")
