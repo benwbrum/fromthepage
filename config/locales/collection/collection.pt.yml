@@ -1,9 +1,7 @@
 pt:
   collection:
-    #TODO as próximas 7 mensagens  
     incomplete_works: "Trabalhos incompletos"
     show_all: "Mostre Tudo"
-    #TODO -- as mensagens a seguir são para porcentagem de conclusão, como 10% corrigidas ou 20% transcritas
     corrected: "Corrigido"
     transcribed: "Transcrito"
     translated: "traduzido"
