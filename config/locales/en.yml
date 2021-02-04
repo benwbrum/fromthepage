@@ -2,6 +2,7 @@ en:
   dashboard:
     plain: "Dashboard"
     collaborator: "Collaborator Dashboard"
+  unauthorized_collection: "You do not have access to %{project}.  Please contact the project owner to be added."
   en: "English"
   es: "Español"
   pt: "Português"
