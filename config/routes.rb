@@ -89,6 +89,11 @@ Fromthepage::Application.routes.draw do
       get 'csv_error', to:'metadata#csv_error'
       post 'create', to: 'metadata#create'
     end
+
+    scope 'editor_button', as: 'editor_button' do
+      get ':collection_id/edit', to: 'collection#edit_buttons', as: 'edit'
+      post ':collection_id/edit', to: 'collection#update_buttons', as: 'update'
+    end
   end
 
 
@@ -130,7 +135,8 @@ Fromthepage::Application.routes.draw do
     get 'export_all_works', to: 'export#export_all_works'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
-    get 'subject_csv', to: 'export#subject_csv'
+    get 'subject_csv', to: 'export#subject_index_csv'
+    get 'subject_details_csv', to: 'export#subject_details_csv'
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
@@ -241,6 +247,8 @@ Fromthepage::Application.routes.draw do
     get 'explore_manifest', to: 'sc_collections#explore_manifest'
     get 'explore_collection', to: 'sc_collections#explore_collection'
     post 'import_cdm', to: 'sc_collections#import_cdm'
+    get 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
+    post 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_create', as: 'cdm_bulk_import_create'
     match 'import', to: 'sc_collections#import', via: [:get, :post]
     match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]
     match 'import_collection', to: 'sc_collections#import_collection', via: [:get, :post]

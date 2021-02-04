@@ -57,7 +57,7 @@ module AbstractXmlHelper
     end
 
     doc.elements.each("//expan") do |e|
-      orig = e.attributes['orig']
+      orig = e.attributes['abbr'] || e.attributes['orig']
       span = REXML::Element.new("span")
       span.add_attribute("class", "expanded-abbreviation")
       e.children.each { |c| span.add(c) }

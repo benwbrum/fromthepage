@@ -186,7 +186,7 @@ describe "owner actions", :order => :defined do
     test_page = work.pages.first
 
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
-    page.fill_in 'page_source_text', with: "[[Switzerland]]"
+    fill_in_editor_field "[[Switzerland]]"
     find('#save_button_top').click
     expect(page.find('.flash_message')).to have_content("Saved")
 
@@ -209,7 +209,7 @@ describe "owner actions", :order => :defined do
 
     #note: this is probably redundant, but it prevents failure from other tests
     visit collection_transcribe_page_path(col.owner, col, work, test_page)
-    page.fill_in 'page_source_text', with: "[[Switzerland]]"
+    fill_in_editor_field "[[Switzerland]]"
     find('#save_button_top').click
     expect(page.find('.flash_message')).to have_content("Saved")
 

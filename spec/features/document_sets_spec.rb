@@ -358,7 +358,7 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
-    page.fill_in 'page_source_text', with: "Document set breadcrumbs\n\n#{@page.source_text}"
+    fill_in_editor_field "Document set breadcrumbs\n\n#{@page.source_text}"
     find('#save_button_top').click
 
     # Overview Tab

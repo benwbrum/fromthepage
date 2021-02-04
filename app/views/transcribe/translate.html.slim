@@ -21,6 +21,12 @@
         -else
           =f.check_box('needs_review', {checked: false})
       .toolbar_group.w100.aright
+        -unless @preview_xml
+          =>button_tag t('.preview'), :name => 'preview'
+        -else
+          =>button_tag t('.edit'), :name => 'edit'
+        -unless @collection.subjects_disabled || @collection.field_based
+          =>button_tag t('.autolink'), :name => 'autolink'
         =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.translation_status == 'review'
@@ -65,13 +71,6 @@
           =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
           span.voice-info
 
-      .page-column_actions
-        -unless @preview_xml
-          =>button_tag t('.preview'), :name => 'preview'
-        -else
-          =>button_tag t('.edit'), :name => 'edit'
-        -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag t('.autolink'), :name => 'autolink'
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
@@ -88,6 +87,9 @@ h2.legend =t('.page_notes')
   =render :partial => "notes/notes"
 
 =render({ :partial => '/shared/collection_footer' })
+
+=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :has_title => false, :text_direction => 'ltr' } })
+
 
 -content_for :javascript
   javascript:
