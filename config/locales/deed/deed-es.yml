@@ -11,6 +11,7 @@ es:
         transcribed_page: "transcribió la página %{page}"
         edited_page: "editó la página %{page}"
         indexed_page: "indexó la página %{page}"
+        reviewed_page: "página revisada %{page} "
         reviewed_page: "" #TODO
         marked_page_as_blank: "marcó la página %{page} como en blanco"
         edited_article: "editó el %{article} artículo"
@@ -21,6 +22,7 @@ es:
         marked_page_as_needing_review: "marcó %{page} la página como en necesidad de revisión"
         indexed_translation_of_page: "indexó la traducción de la página %{page}"
         marked_translation_page_as_needing_review: "marcó la página de traducción %{page} como necesitando revisión"
+        reviewed_translation: "traducción revisada de la página %{page}"
         added_work: "%{work} añadido"
         joined: "se unió "
         this_collection: "esta colección"

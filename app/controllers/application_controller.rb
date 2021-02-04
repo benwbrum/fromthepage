@@ -158,8 +158,17 @@ class ApplicationController < ActionController::Base
     elsif !DocumentSet.find_by(slug: id).nil?
       @collection = DocumentSet.find_by(slug: id)
     elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id)
- 
+      @collection = Collection.find_by(slug: id) 
+    end
+
+    # check to make sure URLs haven't gotten scrambled
+    if @work
+      if @work.collection != @collection
+        # this could be a document set or a bad collection
+        unless @collection.is_a? DocumentSet
+          @collection = @work.collection
+        end
+      end
     end
     return @collection
   end
@@ -229,9 +238,28 @@ class ApplicationController < ActionController::Base
     return if (params[:controller] == 'iiif')
 
     unless @collection.show_to?(current_user)
-      redirect_to dashboard_path
+      # second chance?
+      unless set_fallback_collection
+        flash[:error] = t('unauthorized_collection', :project => @collection.title)
+        redirect_to user_profile_path(@collection.owner)
+      end
     end
   end
+
+  def set_fallback_collection
+    if @work && @work.collection.supports_document_sets
+      alternative_set = @work.document_sets.where(:is_public => true).first
+      if alternative_set
+        @collection = alternative_set
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date, :activity_email) }
