@@ -1,0 +1,48 @@
+<%= stylesheet_link_tag "handsontable.min" %>
+<%=javascript_include_tag "handsontable.full.min" %>
+
+<div id="hot-example">HOT EXAMPLE GOES HERE</div>
+
+<script>
+  var columnConfig = [
+    <% @spreadsheet_fields.each do |transcription_field| %>
+      { 
+        data: "<%= transcription_field.label %>",
+        <% if transcription_field.input_type == 'select' %>
+          type: 'dropdown',
+          source: <%= raw(transcription_field.options.split(";").to_json) unless transcription_field.options.nil? %>
+        <% end %>
+       },
+    <% end %>
+  ]
+  var colHeadersConfig = [
+    <% @spreadsheet_fields.each do |transcription_field| %>    
+      "<%= transcription_field.label %>",
+    <% end %>
+  ]
+  var windowWidthInPx = 1200;
+  var colWidthConfig = [
+    <% @spreadsheet_fields.each do |transcription_field| %>    
+      <%= transcription_field.percentage.to_f / 100 %> * windowWidthInPx,
+    <% end %>
+  ]
+
+
+  // var data = [
+  //   ["", "Ford", "Tesla", "Toyota", "Honda"],
+  //   ["2017", 10, 11, 12, 13],
+  //   ["2018", 20, 11, 14, 13],
+  //   ["2019", 30, 15, 12, 13]
+  // ];
+
+  var container = document.getElementById('hot-example');
+  var hot = new Handsontable(container, {
+    rowHeaders: true,
+    colHeaders: colHeadersConfig,
+    filters: true,
+    dropdownMenu: true,
+    columns: columnConfig,
+    colWidths: colWidthConfig,
+    startRows: <%= @spreadsheet_row_count %>
+  });
+</script>

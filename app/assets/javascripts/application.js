@@ -15,6 +15,7 @@
 //= require jquery.ui.all
 //= require_tree ./plugins
 //= require user.js
+//= require handsontable.full.min
 
 ;(function($, window, document, undefined) {
 
