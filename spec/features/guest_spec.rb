@@ -85,7 +85,7 @@ describe "guest user actions" do
     expect(@guest.guest).to be true
 
     # Contribution 1
-    page.fill_in 'page_source_text', with: "Guest Transcription 1"
+    fill_in_editor_field "Guest Transcription 1"
     find('#save_button_top').click
     expect(page).to have_content("You may save up to #{GUEST_DEED_COUNT} transcriptions as a guest.")
 
@@ -97,11 +97,11 @@ describe "guest user actions" do
 
     # Transcribe Tab: Contribution 2
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "Second Guest Deed"
+    fill_in_editor_field "Second Guest Deed"
     find('#save_button_top').click
 
     # Transcribe Tab: Contribution 3
-    page.fill_in 'page_source_text', with: "Third Guest Deed"
+    fill_in_editor_field "Third Guest Deed"
     find('#save_button_top').click
 
 

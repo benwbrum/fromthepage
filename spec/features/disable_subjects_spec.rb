@@ -70,7 +70,7 @@ describe "disable subject linking", :order => :defined do
     page.find('.work-page_title', text: @title).click_link(@title)
     expect(page).not_to have_content("Autolink")
     expect(page).to have_content("A single newline")
-    page.fill_in 'page_source_text', with: "[[Canonical Subject|display subject]] [[Short Subject]]"
+    fill_in_editor_field("[[Canonical Subject|display subject]] [[Short Subject]]")
     find('#save_button_top').click
     expect(page).to have_content("[[Canonical Subject|display subject]] [[Short Subject]]")
     expect(page).to have_content("Transcription")

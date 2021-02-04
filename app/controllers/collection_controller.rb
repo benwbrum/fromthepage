@@ -15,7 +15,7 @@ class CollectionController < ApplicationController
   before_action :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons]
 
   def authorized?
     unless user_signed_in?
@@ -26,6 +26,31 @@ class CollectionController < ApplicationController
       ajax_redirect_to dashboard_path
     end
   end
+
+  def edit_buttons
+    @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
+  end
+
+  def update_buttons
+    @collection.editor_buttons.delete_all
+
+    prefer_html = (params[:prefer_html] == 'true')
+
+    EditorButton::BUTTON_MAP.keys.each do |key|
+      if params[key] == "1"
+        button_config = EditorButton.new
+        button_config.key = key
+        button_config.prefer_html = prefer_html
+        button_config.collection = @collection
+        button_config.save
+      end
+    end
+
+    flash[:notice] = 'Editor Buttons Updated'
+    ajax_redirect_to(edit_collection_path(@collection.owner, @collection))
+
+  end
+
 
   def enable_document_sets
     @collection.supports_document_sets = true
