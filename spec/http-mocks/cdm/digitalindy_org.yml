@@ -19,23 +19,34 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Mon, 30 Sep 2019 15:58:33 GMT
+      - Wed, 03 Feb 2021 21:20:40 GMT
       Server:
       - Apache
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - X-Requested-With
+      Link:
+      - <http://iiif.io/api/presentation/2/context.json>; rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
       Last-Modified:
-      - Fri, 27 Sep 2019 06:49:07 GMT
+      - Fri, 29 Jan 2021 11:27:27 GMT
       Etag:
-      - '"27ec-59383485c1156-gzip"'
+      - '"2af3-5ba0849fa32a7-gzip"'
       Accept-Ranges:
       - bytes
       Cache-Control:
       - max-age=0
       Expires:
-      - Mon, 30 Sep 2019 15:58:33 GMT
+      - Wed, 03 Feb 2021 21:20:40 GMT
       Vary:
       - Accept-Encoding
       Content-Length:
-      - '1388'
+      - '1477'
       Content-Type:
       - application/json
     body:
@@ -60,12 +71,15 @@ http_interactions:
         Attucks High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/dk/manifest.json","@type":"sc:Collection","label":"Dance
         Kaleidoscope"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/dchs/manifest.json","@type":"sc:Collection","label":"Decatur
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/dth/manifest.json","@type":"sc:Collection","label":"Decatur
-        Township History"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/eit/manifest.json","@type":"sc:Collection","label":"Eiteljorg
+        Township History"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/emi/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Early Music"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/eit/manifest.json","@type":"sc:Collection","label":"Eiteljorg
         Museum of American Indians and Western Art"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/emhs/manifest.json","@type":"sc:Collection","label":"Emmerich
         Manual High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/eoh/manifest.json","@type":"sc:Collection","label":"English''s
         Opera House"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/fchs/manifest.json","@type":"sc:Collection","label":"Franklin
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/fsb/manifest.json","@type":"sc:Collection","label":"Free
-        Soil Banner"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/gfc/manifest.json","@type":"sc:Collection","label":"Gennesaret
+        Soil Banner"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ftv/manifest.json","@type":"sc:Collection","label":"Freetown
+        Village"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/fth/manifest.json","@type":"sc:Collection","label":"From
+        The Hip"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/gfc/manifest.json","@type":"sc:Collection","label":"Gennesaret
         Free Clinics"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/gwhs/manifest.json","@type":"sc:Collection","label":"George
         Washington High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/hewhs/manifest.json","@type":"sc:Collection","label":"Harry
         E. Wood High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/htmp/manifest.json","@type":"sc:Collection","label":"Heartland
@@ -74,7 +88,8 @@ http_interactions:
         Woman"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/icc/manifest.json","@type":"sc:Collection","label":"Indianapolis
         Chamber of Commerce"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ico/manifest.json","@type":"sc:Collection","label":"Indianapolis
         Chamber Orchestra"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/icchoir/manifest.json","@type":"sc:Collection","label":"Indianapolis
-        Children''s Choir"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/IH/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Children''s Choir"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ffm/manifest.json","@type":"sc:Collection","label":"Indianapolis
+        Firefighters Museum"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/IH/manifest.json","@type":"sc:Collection","label":"Indianapolis
         History"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/impd/manifest.json","@type":"sc:Collection","label":"Indianapolis
         Metropolitan Police Department"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/io/manifest.json","@type":"sc:Collection","label":"Indianapolis
         Opera"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/postcard/manifest.json","@type":"sc:Collection","label":"Indianapolis
@@ -89,7 +104,7 @@ http_interactions:
         Water Company"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/zoo/manifest.json","@type":"sc:Collection","label":"Indianapolis
         Zoo"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ijf/manifest.json","@type":"sc:Collection","label":"Indy
         Jazz Fest"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ipr/manifest.json","@type":"sc:Collection","label":"Indy
-        Parks and Rec"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ic/manifest.json","@type":"sc:Collection","label":"International
+        Parks and Recreation"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/if/manifest.json","@type":"sc:Collection","label":"IndyFringe"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ic/manifest.json","@type":"sc:Collection","label":"International
         Center"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ivci/manifest.json","@type":"sc:Collection","label":"International
         Violin Competition of Indianapolis"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/ioh/manifest.json","@type":"sc:Collection","label":"Irvington
         Oral Histories"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/iuoc/manifest.json","@type":"sc:Collection","label":"Irvington
@@ -99,7 +114,8 @@ http_interactions:
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/lnhs/manifest.json","@type":"sc:Collection","label":"Lawrence
         North High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/mws/manifest.json","@type":"sc:Collection","label":"May
         Wright Sewall Papers"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/mkn/manifest.json","@type":"sc:Collection","label":"Meridian-Kessler
-        Neighborhood"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nesco/manifest.json","@type":"sc:Collection","label":"Near
+        Neighborhood"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/murals/manifest.json","@type":"sc:Collection","label":"Murals
+        For Justice"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nesco/manifest.json","@type":"sc:Collection","label":"Near
         East Side Community Organization"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nchs/manifest.json","@type":"sc:Collection","label":"North
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/nhs/manifest.json","@type":"sc:Collection","label":"Northwest
         High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/pmhs/manifest.json","@type":"sc:Collection","label":"Perry
@@ -115,6 +131,5 @@ http_interactions:
         Voice"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/wchs/manifest.json","@type":"sc:Collection","label":"Warren
         Central High School"},{"@id":"https://cdm17308.contentdm.oclc.org/iiif/info/twv/manifest.json","@type":"sc:Collection","label":"The
         Weekly View"}]}'
-    http_version: 
-  recorded_at: Mon, 30 Sep 2019 15:58:33 GMT
-recorded_with: VCR 5.0.0
+  recorded_at: Wed, 03 Feb 2021 21:20:40 GMT
+recorded_with: VCR 6.0.0

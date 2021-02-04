@@ -160,6 +160,12 @@
         span =t('.revert_document_based_transcription')
       =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
 
+    -if !@collection.field_based
+      h3 =t('.editor_buttons')
+      p =t('.editor_buttons_description')
+      =link_to(collection_editor_button_edit_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }})
+        span =t('.edit_buttons')
+
     h3 =t('.document_sets')
     p =t('.document_sets_description')
     -if !@collection.supports_document_sets

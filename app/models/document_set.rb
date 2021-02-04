@@ -50,6 +50,10 @@ class DocumentSet < ApplicationRecord
     self.collection.subjects_disabled
   end
 
+  def editor_buttons
+    self.collection.editor_buttons
+  end
+
   def articles
     Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
   end
