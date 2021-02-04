@@ -22,3 +22,12 @@ pt:
       note_body: "Corpo da nota"
       microphone: "Microfone"
       save_note: "Guardar Nota"
+    create:
+      must_be_logged: "Você deve estar logado para criar notas"
+      note_has_been_created: "A nota foi criada"
+      error_creating_note: "Erro ao criar a nota"
+    update:
+      note_has_been_updated: "A nota foi atualizada"
+      error_updating_note: "Erro ao atualizar a nota"
+    destroy:
+      note_has_been_deleted: "A nota foi excluída"

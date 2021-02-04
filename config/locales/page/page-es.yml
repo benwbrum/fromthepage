@@ -27,3 +27,5 @@ es:
       page_deleted: "La página ha sido eliminada"
     create:
       page_created: "Página creada con suceso"
+    update:
+      page_updated: "Página actualizada"
