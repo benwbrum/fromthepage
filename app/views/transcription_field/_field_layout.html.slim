@@ -1,5 +1,7 @@
 -field_order(@collection)
 div.editarea
+  =render({ :partial => '/shared/handsontable' })
+
   -@fields.each do |line, array|
     div
       -field_layout(array)
