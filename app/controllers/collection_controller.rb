@@ -109,7 +109,10 @@ class CollectionController < ApplicationController
   def show
     unless @collection.nil?
       if @collection.restricted
-        ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
+        if !user_signed_in? || !@collection.show_to?(current_user)
+          flash[:error] = t('unauthorized_collection', :project => @collection.title)
+          redirect_to user_profile_path(@collection.owner)
+        end
       end
 
       if params[:work_search]
