@@ -13,6 +13,11 @@
         <% if column.input_type == 'select' %>
           type: 'dropdown',
           source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
+        <% elsif column.input_type == 'numeric' %>
+          type: 'numeric'
+        <% elsif column.input_type == 'checkbox' %>
+          type: 'checkbox'
+        <% else %>
         <% end %>
        },
     <% end %>
