@@ -1,7 +1,5 @@
 -field_order(@collection)
 div.editarea
-  =render({ :partial => '/shared/handsontable' })
-
   -@fields.each do |line, array|
     div
       -field_layout(array)
@@ -9,7 +7,14 @@ div.editarea
         -if (@page && (field.page_number == @page.position || field.page_number == nil )) || (current_page?({action: 'edit_fields'}))
           -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
           span(style="width:#{span_width}%")
-            -if field.input_type != "instruction"
+            -if field.input_type == "instruction"
+              div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
+                span
+                  = t('.instructions')
+                =field.label
+            -elsif field.input_type == 'spreadsheet'
+              =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field} })
+            -else
               =label_tag field.label, field.label
               <br>
               -content = cell.nil? ? nil : cell.content
@@ -22,8 +27,4 @@ div.editarea
                 =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
               -else
                 =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
-            -else
-              div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
-                span
-                  = t('.instructions')
-                =field.label
+
