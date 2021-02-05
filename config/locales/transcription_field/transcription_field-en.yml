@@ -17,5 +17,17 @@ en:
       cancel: "Cancel"
       done: "Done"
       preview: "Preview"
+    edit_columns:
+      edit_spreadsheet_columns: "Edit Spreadsheet Columns"
+      add_additional_column: "Add Additional Column"
+      save: "Save"
+      cancel: "Cancel"
+      done: "Done"
+      preview: "Preview"
+    column_form:
+      column_options: "Column options (separate with semicolons)"
+      column_options_title: "Options for dropdown cells."
+      percentage_width: "Width %"
+      percentage_title: "Percentage of the line width to use for this field."
     add_fields:
       must_have_options_list: "Select fields must have an options list.  Please add options to any select fields and resave."

@@ -280,6 +280,14 @@ Fromthepage::Application.routes.draw do
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
+
+    scope 'spreadsheet_column', as: 'spreadsheet_column' do
+      get 'reorder_column', to: 'transcription_field#reorder_column'
+      get 'delete', to: 'transcription_field#delete_column'
+      get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
+      get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
+      post 'add_columns', to: 'transcription_field#add_columns'
+    end
   end
 
   scope 'statistics', as: 'statistics' do

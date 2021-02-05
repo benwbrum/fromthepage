@@ -290,13 +290,14 @@ $(function() {
 });
 
 //Enable and disable select options for field-based transcription
-function addOptions(selector){
+function addOptions(selector, enabled_index){
   var parentTr = selector.parentElement.parentElement;
   var optionsObj = $(parentTr).find('td .field-options')[0];
   var index = selector.options.selectedIndex;
-  if (index == 1){
+  if (index == enabled_index){
     $(optionsObj).prop('disabled', false);
   } else {
     $(optionsObj).prop('disabled', true);
   }
 };
+
