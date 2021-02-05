@@ -1,29 +1,31 @@
 <%= stylesheet_link_tag "handsontable.min" %>
 <%=javascript_include_tag "handsontable.full.min" %>
 
-<div id="hot-example">HOT EXAMPLE GOES HERE</div>
+
+
+<div id="hot-div-<%= transcription_field.id %>"></div>
 
 <script>
   var columnConfig = [
-    <% @spreadsheet_fields.each do |transcription_field| %>
+    <% transcription_field.spreadsheet_columns.each do |column| %>
       { 
-        data: "<%= transcription_field.label %>",
-        <% if transcription_field.input_type == 'select' %>
+        data: "<%= column.label %>",
+        <% if column.input_type == 'select' %>
           type: 'dropdown',
-          source: <%= raw(transcription_field.options.split(";").to_json) unless transcription_field.options.nil? %>
+          source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
         <% end %>
        },
     <% end %>
   ]
   var colHeadersConfig = [
-    <% @spreadsheet_fields.each do |transcription_field| %>    
-      "<%= transcription_field.label %>",
+    <% transcription_field.spreadsheet_columns.each do |column| %>    
+      "<%= column.label %>",
     <% end %>
   ]
   var windowWidthInPx = 1200;
   var colWidthConfig = [
-    <% @spreadsheet_fields.each do |transcription_field| %>    
-      <%= transcription_field.percentage.to_f / 100 %> * windowWidthInPx,
+    <% transcription_field.spreadsheet_columns.each do |column| %>    
+      <%= column.percentage.to_f / 100 %> * windowWidthInPx,
     <% end %>
   ]
 
@@ -35,7 +37,7 @@
   //   ["2019", 30, 15, 12, 13]
   // ];
 
-  var container = document.getElementById('hot-example');
+  var container = document.getElementById("hot-div-<%= transcription_field.id %>");
   var hot = new Handsontable(container, {
     rowHeaders: true,
     colHeaders: colHeadersConfig,
