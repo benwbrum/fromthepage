@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_205613) do
+ActiveRecord::Schema.define(version: 2021_02_05_184631) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -587,6 +587,18 @@ ActiveRecord::Schema.define(version: 2021_02_02_205613) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "spreadsheet_columns", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "transcription_field_id", null: false
+    t.integer "position"
+    t.string "label"
+    t.string "input_type"
+    t.string "options"
+    t.integer "percentage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
+  end
+
   create_table "table_cells", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "work_id"
     t.integer "page_id"
@@ -625,6 +637,7 @@ ActiveRecord::Schema.define(version: 2021_02_02_205613) do
     t.integer "position"
     t.integer "percentage"
     t.integer "page_number"
+    t.integer "starting_rows"
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -782,11 +795,9 @@ ActiveRecord::Schema.define(version: 2021_02_02_205613) do
 
   add_foreign_key "bulk_exports", "collections"
   add_foreign_key "bulk_exports", "users"
-<<<<<<< HEAD
-  add_foreign_key "editor_buttons", "collections"
-=======
   add_foreign_key "cdm_bulk_imports", "users"
->>>>>>> development
+  add_foreign_key "editor_buttons", "collections"
   add_foreign_key "facet_configs", "metadata_coverages"
+  add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "work_facets", "works"
 end

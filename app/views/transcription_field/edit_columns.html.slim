@@ -2,11 +2,20 @@
 div.columns
   div.maincol
 
-    h2 =t('.edit_spreadsheet_columns')
+    h2 =t('.edit_spreadsheet_header')
 
     =form_tag transcription_field_spreadsheet_column_add_columns_path
       =hidden_field_tag(:collection_id, @collection.id)
       =hidden_field_tag(:transcription_field_id, @transcription_field.id)
+      =label_tag :starting_rows, t('.start_rows_label')
+      =text_field_tag :starting_rows, @transcription_field.starting_rows, :maxLength => 3, :size => 3, class: 'field percent'
+      p =t('.start_rows_description')
+        
+
+
+
+      h3 =t('.edit_spreadsheet_columns')
+
       table.field_form#new-columns
         =render ({partial: 'column_form'})
         -unless @current_columns.blank?
@@ -16,6 +25,7 @@ div.columns
           =render ({partial: 'column_form', locals: {transcription_field: @transcription_field}})
           -3.times do
             =render ({ partial: 'new_column_form', locals: {collection_id: @collection, column: nil, transcription_field: @transcription_field}})
+
       .toolbar.aright.fields
         .toolbar_group
           =button_tag t('.add_additional_column'), type: 'button', id: 'add-column', class: 'button fields'
@@ -23,7 +33,8 @@ div.columns
           =link_to t('.cancel'), transcription_field_edit_fields_path(:collection_id => @collection.slug), class: 'button fields'
           =button_tag t('.done'), name: 'done', type: 'submit', class: 'button fields'
 
-    =render({ :partial => '/shared/collection_footer' })
+
+=render({ :partial => '/shared/collection_footer' })
 
 
 -content_for :javascript

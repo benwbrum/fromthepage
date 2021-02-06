@@ -110,6 +110,10 @@ class TranscriptionFieldController < ApplicationController
     @collection = Collection.friendly.find(spreadsheet_column_params[:collection_id])
 
     @transcription_field = TranscriptionField.find(spreadsheet_column_params[:transcription_field_id])
+    unless params[:starting_rows].blank?
+      @transcription_field.update(:starting_rows => params[:starting_rows].to_i)
+    end
+
     new_columns = spreadsheet_column_params[:spreadsheet_columns]
 
     new_columns.each_with_index do |column, index|
@@ -175,7 +179,7 @@ class TranscriptionFieldController < ApplicationController
   private
 
   def spreadsheet_column_params
-    params.permit(:collection_id, :transcription_field_id, spreadsheet_columns: [:label, :input_type, :percentage, :options, :id])
+    params.permit(:collection_id, :transcription_field_id, :starting_rows, spreadsheet_columns: [:label, :input_type, :percentage, :options, :id])
   end
 
   def authorized?
