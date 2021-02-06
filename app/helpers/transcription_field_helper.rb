@@ -1,8 +1,6 @@
 module TranscriptionFieldHelper
   def field_order(collection)
     @fields = collection.transcription_fields.order(:line_number).order(:position).group_by(&:line_number)
-    @spreadsheet_fields = collection.transcription_fields.order(:line_number).order(:position)
-    @spreadsheet_row_count = 41
   end
 
   def field_layout(array)

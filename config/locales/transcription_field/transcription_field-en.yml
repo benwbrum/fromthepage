@@ -18,12 +18,15 @@ en:
       done: "Done"
       preview: "Preview"
     edit_columns:
-      edit_spreadsheet_columns: "Edit Spreadsheet Columns"
+      edit_spreadsheet_header: "Spreadsheet Configuration"
+      edit_spreadsheet_columns: "Column Configuration"
       add_additional_column: "Add Additional Column"
       save: "Save"
       cancel: "Cancel"
       done: "Done"
       preview: "Preview"
+      start_rows_label: "Starting Rows: "
+      start_rows_description: "Number of rows the spreadsheet should display initially.  (Transcribers will be able to add additional rows if needed.)"
     column_form:
       column_options: "Column options (separate with semicolons)"
       column_options_title: "Options for dropdown cells."
