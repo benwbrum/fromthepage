@@ -64,7 +64,7 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
   for (var prop in config_) config[prop] = config_[prop]
 
   // Return variables for tokenizers
-  var type, setStyle;
+  var type, setStyle, tagType;
 
   function inText(stream, state) {
     function chain(parser) {
@@ -92,11 +92,21 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         return "meta";
       } else {
         type = stream.eat("/") ? "closeTag" : "openTag";
+        state.tagType = "xml";
         state.tokenize = inTag;
         return "tag bracket";
       }
     } else {
-      stream.eatWhile(/[^&<]/);
+      if (ch == "[") {
+        if (stream.eat("[")) {
+          type = "openTag";
+          state.tagType = "wiki";
+          state.tokenize = inTag;
+          return "tag bracket";
+        }
+
+      }
+      stream.eatWhile(/[^&<\[]/);
       return null;
     }
   }
@@ -121,8 +131,16 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
       state.tokenize = inAttribute(ch);
       state.stringStartCol = stream.column();
       return state.tokenize(stream, state);
+    } else if (ch = "]" && stream.eat("]")) {
+      state.tokenize = inText;
+      type = "endTag";
+      return "tag bracket";      
     } else {
-      stream.match(/^[^\s\u00a0=<>\"\']*[^\s\u00a0=<>\"\'\/]/);
+      if (state.tagType == "xml") {
+        stream.match(/^[^\s\u00a0=<>\"\']*[^\s\u00a0=<>\"\'\/]/);
+      } else { // state.tagType == "wiki"
+        stream.match(/^[^\[\]]*[^\[\]]/);
+      }
       return "word";
     }
   }
