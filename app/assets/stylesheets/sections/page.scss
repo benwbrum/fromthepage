@@ -51,6 +51,7 @@
 
 .page-editor {
   margin: 0 0 $gapSize 0;
+
   &.fullscreen {
     top: 0;
     left: 0;
@@ -63,6 +64,8 @@
     padding: $gapSize * 1.5 $gapSize * 1.5 0 $gapSize * 1.5;
 
     .auto-fullscreen { display: inline-block; }
+    
+    .page-columns + .page-toolbar { display: none; };
   }
 
   .auto-fullscreen { display: none; }
@@ -74,24 +77,18 @@
 .page-toolbar {
   padding-bottom: $gapSize;
   margin-top: -$gapSize / 2;
+
+  .page-columns + & {
+    margin: 0;
+    padding: $gapSize 0 0 0;
+  }
+
   label { margin-right: 6px; }
 
   @media screen and (max-width: $widthL) {
     .hide-l { display: none; }
   }
-  @media screen and (max-width: $widthM) {
-    .hide-m { display: none; }
-  }
-}
 
-.page-toolbar-bottom {
-  padding-bottom: $gapSize;
-  margin-top: $gapSize/2;
-  label { margin-right: 6px; }
-
-  @media screen and (max-width: $widthL) {
-    .hide-l { display: none; }
-  }
   @media screen and (max-width: $widthM) {
     .hide-m { display: none; }
   }
@@ -112,90 +109,66 @@
 
 .page-columns {
   width: 100%;
+  display: flex;
   min-height: 700px;
   position: relative;
   box-sizing: border-box;
   border: 1px solid rgba($borderColor, 0.6);
-  &[data-layout-mode='rtl'] .page-column {
-    left: 0;
-    border-width: 0;
-    &:first-child {
-      left: 50%;
-      border-width: 0 0 0 1px;
+
+  &[data-layout-mode='rtl'] {
+    flex-direction: row-reverse;
+
+    .page-column:last-child {
+      border-width: 0 1px 0 0;
     }
   }
-  &[data-layout-mode='ttb'] .page-column {
-    left: 0;
-    width: 100%;
-    height: 50%;
-    border-width: 0;
-    &:last-child {
-      top: 50%;
+
+  &[data-layout-mode='ttb'] {
+    flex-direction: column;
+
+    .page-column:last-child {
       border-width: 1px 0 0 0;
     }
   }
-  &[data-layout-mode='btt'] .page-column {
-    left: 0;
-    width: 100%;
-    height: 50%;
-    border-width: 0;
-    &:first-child {
-      top: 50%;
-      border-width: 1px 0 0 0;
+
+  &[data-layout-mode='btt'] {
+    flex-direction: column-reverse;
+
+    .page-column:last-child {
+      border-width: 0 0 1px 0;
     }
   }
 }
 
 .page-column {
-  top: 0;
-  width: 50%;
-  height: 100%;
-  position: absolute;
+  min-width: 0;
+  min-height: 0;
+  flex: 1 0 50%;
+  display: flex;
+  background: $bgWhite;
   box-sizing: border-box;
-  border: 1px solid rgba($borderColor, 0.6);
-  background: #FFF;
-  &:first-child {
-    left: 0;
-    border-width: 0;
-  }
-  &:last-child {
-    left: 50%;
-    border-width: 0 0 0 1px;
-  }
+  flex-direction: column;
+  border: 0 solid rgba($borderColor, 0.6);
+  border-width: 0 0 0 1px;
+
   &_voice {
     top: 10px;
     left: 10px;
     position: absolute;
-  }
-  &_actions {
-    top: 14px;
-    right: 6px;
-    position: absolute;
-    button, .button {
-      border-color: mix(#fff, $bodyFgLight, 50);
-      box-shadow: none;
-      color: $bodyFg;
-      font-size: $fontSizeSmall;
-      background: mix( white, $bodyFgLight, 95);
-      &:hover, &:active {
-        color: $bodyFg;
-        background: mix( white, $bodyFgLight, 85);
-      }
+
+    .voice-error {
+      font-weight: bold;
+      color: red;
+    }
+
+    .voice-info {
+      font-weight: bold;
+    }
+
+    .voice {
+      margin-right: 10px;
     }
   }
-}
-
-.voice-error {
-  font-weight: bold;
-  color: red;
-}
-
-.voice-info {
-  font-weight: bold;
-}
-
-.voice {
-  margin-right: 10px;
 }
 
 .page-preview {
@@ -214,38 +187,68 @@
 }
 
 .page-editarea {
-  height: 100%;
-  background: #FFF;
-  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
   input, textarea {
     border: 0;
     background: none;
     box-shadow: none;
   }
+
   textarea, div.editarea {
     height: 100%;
     resize: none;
+    flex: 1 1 auto;
     padding: $gapSize / 2;
   }
+
   &_title {
     height: 50px;
-    display: table;
-    margin: 5px 5px 0 5px;
-    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    padding-left: 10px;
+    align-items: center;
     font-size: $fontSizeBig;
     border-bottom: 1px solid rgba(#000, 0.1);
-    > * {
-      padding: 5px;
-      display: table-cell;
-      white-space: nowrap;
-      vertical-align: middle;
-      &:last-child { width: 100%; }
-    }
-    + textarea { height: calc(100% - 55px); }
   }
 }
 
-.fieldarea, .fieldarea > .page-editarea {
+.cm-editor {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+
+  .CodeMirror {
+    flex: 1 1 auto;
+    height: auto !important;
+
+    &-buttonsPanel {
+      padding: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      background-color: rgba(#000, 0.025);
+      border-bottom: 1px solid rgba(#000, 0.1);
+
+      button {
+        margin: 2px;
+        padding: 0 4px;
+        font-size: 13px;
+        box-shadow: none;
+        line-height: 1.75em;
+        font-family: monospace;
+      }
+    }
+  }
+}
+
+.fieldarea,
+.fieldarea > .page-editarea {
   background-color: $bodyBg;
   border: 0;
 }
@@ -307,6 +310,10 @@ div.editarea {
   overflow: hidden;
   box-sizing: border-box;
   background: rgba(#000, 0.03);
+
+  .image-container {
+    border: none !important;
+  }
 }
 
 .page-review {
