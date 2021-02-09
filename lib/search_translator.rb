@@ -47,6 +47,7 @@ private
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
     doc.xpath("//abbr").each { |n| n.replace(n['expan']) unless n['expan'].blank? }
+    doc.xpath("//catchword").each { |n| n.remove }
     
     no_tags = doc.text
     no_linefeeds = no_tags.gsub(/\s/, ' ')

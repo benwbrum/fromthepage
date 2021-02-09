@@ -254,7 +254,7 @@ xml:id="export">
           <% notes = page.notes %>
           <% if notes && notes.length > 0 %>
             <% notes.each do |note| %>
-              <note resp="#U<%= note.user_id %>"><%= note.body %></note>
+              <note type='comment' resp="#U<%= note.user_id %>"><%= note.body %></note>
             <% end %>
           <% end %>
         <% if @work.pages_are_meaningful? %>

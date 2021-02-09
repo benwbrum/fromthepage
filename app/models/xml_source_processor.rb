@@ -110,6 +110,7 @@ module XmlSourceProcessor
     xml_string = process_line_breaks(xml_string)
     xml_string = valid_xml_from_source(xml_string)
     xml_string = update_links_and_xml(xml_string, false, text_type)
+    xml_string = postprocess_xml_markup(xml_string)
     postprocess_sections
     xml_string
   end
@@ -374,6 +375,28 @@ EOF
     doc.write(processed)
     return processed
   end
+
+
+  # handle XML-dependent post-processing
+  def postprocess_xml_markup(xml_string)
+    doc = REXML::Document.new xml_string
+    processed = ''
+    doc.elements.each("//lb") do |element|
+      print "DEBUG considering\t#{element.previous_sibling}#{element}\n"
+      if element.previous_element && element.previous_element.name == 'lb'
+        print "DEBUG deleting\t#{element.previous_sibling}#{element}\n"
+        pre = doc.to_s
+        print "DEBUG pre=\t#{doc.to_s}\n"
+        element.parent.elements.delete(element)
+        print "DEBUG post=\t#{doc.to_s}\n"
+        print "DEBUG DELETION DID NOTHING\n" if pre == doc.to_s
+
+      end
+    end
+    doc.write(processed)
+    return processed
+  end
+
 
   CELL_PREFIX = "<?xml version='1.0' encoding='UTF-8'?><cell>"
   CELL_SUFFIX = '</cell>'
