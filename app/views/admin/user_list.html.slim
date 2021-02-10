@@ -19,7 +19,7 @@ table.admin-grid.datagrid.striped
       tr
         td
           =link_to(user_profile_path(u), class: 'userpic userpic-small')
-            =gravatar_image_tag u.email, :alt => u.display_name
+            =profile_picture(u)
         td.nowrap.toleft
           div =link_to u.login, user_profile_path(u)
           small =u.email
