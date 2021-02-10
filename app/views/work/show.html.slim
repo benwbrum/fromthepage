@@ -67,7 +67,7 @@
   aside.sidecol
     .user-label
       =link_to(user_profile_path(@work.owner), class: 'userpic')
-        =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
+        =profile_picture(@work.owner)
       .username
         small =t('.uploaded_by')
         =link_to @work.owner.display_name, user_profile_path(@work.owner)
