@@ -382,15 +382,9 @@ EOF
     doc = REXML::Document.new xml_string
     processed = ''
     doc.elements.each("//lb") do |element|
-      print "DEBUG considering\t#{element.previous_sibling}#{element}\n"
-      if element.previous_element && element.previous_element.name == 'lb'
-        print "DEBUG deleting\t#{element.previous_sibling}#{element}\n"
+      if element.previous_element && element.previous_sibling.node_type == :element && element.previous_element.name == 'lb'
         pre = doc.to_s
-        print "DEBUG pre=\t#{doc.to_s}\n"
         element.parent.elements.delete(element)
-        print "DEBUG post=\t#{doc.to_s}\n"
-        print "DEBUG DELETION DID NOTHING\n" if pre == doc.to_s
-
       end
     end
     doc.write(processed)
