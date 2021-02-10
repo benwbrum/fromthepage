@@ -1,0 +1,9 @@
+-user_name = user.display_name.blank? ? user.real_name : user.display_name
+-if user.picture_url(:thumb)
+  .userpic =image_tag(user.picture_url(:thumb), alt: user_name)
+-else 
+  -if gravatar_size
+    .userpic =gravatar_image_tag user.email, :alt => user_name, :gravatar => { :size => gravatar_size }
+  -else
+    .userpic =gravatar_image_tag user.email, :alt => user_name
+
