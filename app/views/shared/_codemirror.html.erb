@@ -33,7 +33,7 @@
   ];
 
   var fromthepage_tags = {
-    "!top": ["abbr", "add", "cb", "date", "del", "expan", "figure", "gap", "hi", "ins", "milestone", "reg", "stamp", "sub", "sup", "table", "unclear", "u", "strike", "s", "span", "a"],
+    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "gap", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "s", "span", "a"],
     abbr: { attrs: { expan: null}},
     add: { children: ["u", "s", "hi"] },
     cb: { attrs: { "n": null } },
@@ -42,6 +42,7 @@
     figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
     hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
     ins: { children: ["u", "s", "hi"]},
+    lb: { attrs: { "break": "no"}},
     milestone: { attrs: { "unit": ["column"], "n": null}},
     reg: {attrs: { orig: null }},
     row: { children: ["cell"] },
