@@ -138,7 +138,7 @@
 
     .user-label
       =link_to(user_profile_path(@work.owner), class: 'userpic')
-        =gravatar_image_tag @work.owner.email, :alt => @work.owner.display_name
+        =profile_picture(@work.owner)
       .username
         small Uploaded by
         =link_to @work.owner.display_name, user_profile_path(@work.owner)
@@ -179,7 +179,7 @@
         -@scribes.each do |user|
           .user-label
             .userpic
-              =gravatar_image_tag user.email, :alt => user.display_name
+              =profile_picture(user)
             .username
               =link_to user.name_with_identifier, user_profile_path(user)
               small =user.email
