@@ -79,7 +79,7 @@
         -contributions = user.deeds.where(collection_id: @collection.slug).count
         .user-label
           .userpic
-            =gravatar_image_tag user.email, :alt => user.display_name
+            =profile_picture(user)
           .username
             =link_to user.name_with_identifier, user_profile_path(user)
             small =pluralize(contributions, 'contribution')

@@ -18,7 +18,7 @@ h2 =t('.collaborators')
       -transcribers.each do |user, count|
         .collection-user(data-prefix="#{count}")
           =link_to(user_profile_path(user), class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span =profile_picture(user)
             span.vmiddle =user.display_name
     -else
       h3 =t('.transcribing')
@@ -30,7 +30,7 @@ h2 =t('.collaborators')
       -editors.each do |user, count|
         .collection-user(data-prefix="#{count}")
           =link_to(user_profile_path(user), class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span =profile_picture(user)
             span.vmiddle =user.display_name
     -else
       h3 =t('.editing')
@@ -43,7 +43,7 @@ h2 =t('.collaborators')
         -indexers.each do |user, count|
           .collection-user(data-prefix="#{count}")
             =link_to(user_profile_path(user), class: 'collection-user_link')
-              span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+              span =profile_picture(user)
               span.vmiddle =user.display_name
       -else
         h3 =t('.indexing')

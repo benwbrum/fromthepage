@@ -26,7 +26,6 @@ class Collection < ApplicationRecord
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
