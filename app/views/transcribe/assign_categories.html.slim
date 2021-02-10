@@ -15,7 +15,7 @@ p.big =t('.uncategorized_subjects_mentioned')
 
     pre== excerpt_subject(@page, article.title, {:text_type => @text_type})
 
-    select(data-assign-categories="#{update_article_url}" size="1" aria-label=t('.assign_categories') multiple)
+    select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" aria-label=t('.assign_categories') multiple)
       -@collection.categories.walk_tree do |c, level|
         -selected = true if article.categories.include?(c)
         option(data-level=level value=c.id selected=selected aria-label=t('.options') *language_attrs(@collection)) =c.title
