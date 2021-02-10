@@ -52,7 +52,7 @@ describe "editor actions" , :order => :defined do
       page_fact.source_text = "foo <strike>bar</strike> contin-\nued on next\nline"
       page_fact.save
 
-      expect(page_fact.verbatim_transcription_plaintext).to eq("foo bar contin-\nued on next\nline\n\n")
+      expect(page_fact.verbatim_transcription_plaintext).to eq("foo bar contin-\nued on next\nline\n\n\n")
     end
 
     it "creates correct search text" do
