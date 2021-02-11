@@ -36,14 +36,16 @@
   ]
 
   var data = [
-    <% cells_by_row = transcription_field.table_cells.where(:page_id => @page.id).group_by { |cell| cell.row } %>
-    <% cells_by_row.values.each do |data_row| %>
-      [
-        <% transcription_field.spreadsheet_columns.each do |column_config| %>
-          <% cell = data_row.detect {|c| c.header == column_config.label } %>
-          <%= raw(cell.content.to_json) %>,
-        <% end %>
-      ],
+    <% if @page %>
+      <% cells_by_row = transcription_field.table_cells.where(:page_id => @page.id).group_by { |cell| cell.row } %>
+      <% cells_by_row.values.each do |data_row| %>
+        [
+          <% transcription_field.spreadsheet_columns.each do |column_config| %>
+            <% cell = data_row.detect {|c| c.header == column_config.label } %>
+            <%= raw(cell.content.to_json) %>,
+          <% end %>
+        ],
+      <% end %>
     <% end %>
   ]
   if(data.length == 0) {
