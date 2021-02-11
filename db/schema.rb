@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_05_184631) do
+ActiveRecord::Schema.define(version: 2021_02_11_203038) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -611,6 +611,7 @@ ActiveRecord::Schema.define(version: 2021_02_05_184631) do
     t.integer "transcription_field_id"
     t.index ["page_id"], name: "index_table_cells_on_page_id"
     t.index ["section_id"], name: "index_table_cells_on_section_id"
+    t.index ["transcription_field_id"], name: "index_table_cells_on_transcription_field_id"
     t.index ["work_id"], name: "index_table_cells_on_work_id"
   end
 
@@ -679,6 +680,7 @@ ActiveRecord::Schema.define(version: 2021_02_05_184631) do
     t.string "sso_issuer"
     t.string "preferred_locale"
     t.string "api_key"
+    t.string "picture"
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
