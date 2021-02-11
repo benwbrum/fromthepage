@@ -151,7 +151,7 @@
       label(data-empty="No Image" data-hover="Upload Image" aria-label="Upload Image")
         =f.file_field :picture, accept: 'image/*'
         -if @work.picture_url(:thumb)
-          =image_tag(@work.picture_url(:thumb))
+          =image_tag(@work.picture_url(:thumb), :alt => "work_thumbnail")
     p.fglight A picture to be used to illustrate the work.  If no picture is uploaded, a page image will be used.
 
     hr
