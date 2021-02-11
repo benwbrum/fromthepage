@@ -179,3 +179,35 @@ h2.legend =t('notes_and_questions')
       });
 
     });
+
+
+
+    $(".page-editor").submit(function(event) {
+
+        /* stop form from submitting normally */
+        event.preventDefault();
+
+        /* get some values from elements on the page: */
+        var $form = $(this);
+        var url = $form.attr('action');
+        var form_data = {};
+
+        /* fill the post data with elements from the form fields */
+        for(var i=0, element; element = this.elements[i++];) {
+          form_data[element.name] = element.value;
+        };
+
+        /* fill the post data with elements from the spreadsheet */
+        var element = $('.spreadsheet-input');
+        var hot_object = hot; /* element.data('hot-object'); */
+        var param_name = element.data('field-name');
+        form_data[param_name] = hot_object.getData();
+
+        /* Send the data using post */
+        var posting = $.post(url, form_data);
+
+    });
+
+    // TODO change the parameter name for the HOT data to the name of the spreadsheet field
+    // TODO change the way we access the HOT data to allow more than one spreadsheet
+

@@ -1,15 +1,16 @@
 <%= stylesheet_link_tag "handsontable.min" %>
-<%=javascript_include_tag "handsontable.full.min" %>
+<%= javascript_include_tag "handsontable.full.min" %>
 
 
 
-<div id="hot-div-<%= transcription_field.id %>"></div>
+<div id="hot-div-<%= transcription_field.id %>" 
+  class="spreadsheet-input" 
+  data-field-name="fields[<%= transcription_field.id %>]"></div>
 
 <script>
   var columnConfig = [
     <% transcription_field.spreadsheet_columns.each do |column| %>
       { 
-        data: "<%= column.label %>",
         <% if column.input_type == 'select' %>
           type: 'dropdown',
           source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
@@ -34,6 +35,20 @@
     <% end %>
   ]
 
+  var data = [
+    <% cells_by_row = transcription_field.table_cells.where(:page_id => @page.id).group_by { |cell| cell.row } %>
+    <% cells_by_row.values.each do |data_row| %>
+      [
+        <% transcription_field.spreadsheet_columns.each do |column_config| %>
+          <% cell = data_row.detect {|c| c.header == column_config.label } %>
+          <%= raw(cell.content.to_json) %>,
+        <% end %>
+      ],
+    <% end %>
+  ]
+  if(data.length == 0) {
+    data = null;
+  };
 
   // var data = [
   //   ["", "Ford", "Tesla", "Toyota", "Honda"],
@@ -47,9 +62,13 @@
     rowHeaders: true,
     colHeaders: colHeadersConfig,
     filters: true,
+    data: data,
     dropdownMenu: true,
     columns: columnConfig,
     colWidths: colWidthConfig,
     startRows: <%= transcription_field.starting_rows %>
   });
+
+  // $(container).data('hot-object', hot);
+
 </script>
