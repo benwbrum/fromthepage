@@ -33,6 +33,7 @@ div.columns
           =link_to t('.cancel'), transcription_field_edit_fields_path(:collection_id => @collection.slug), class: 'button fields'
           =button_tag t('.done'), name: 'done', type: 'submit', class: 'button fields'
 
+    h2.acenter =t('.preview')
     =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => @transcription_field} })
 
 
