@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_10_163929) do
+ActiveRecord::Schema.define(version: 2021_02_12_210203) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -323,6 +323,7 @@ ActiveRecord::Schema.define(version: 2021_02_10_163929) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "ocr_text"
+    t.index ["page_id"], name: "index_ia_leaves_on_page_id"
   end
 
   create_table "ia_works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -611,6 +612,7 @@ ActiveRecord::Schema.define(version: 2021_02_10_163929) do
     t.integer "transcription_field_id"
     t.index ["page_id"], name: "index_table_cells_on_page_id"
     t.index ["section_id"], name: "index_table_cells_on_section_id"
+    t.index ["transcription_field_id"], name: "index_table_cells_on_transcription_field_id"
     t.index ["work_id"], name: "index_table_cells_on_work_id"
   end
 
