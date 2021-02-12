@@ -17,7 +17,7 @@ class NotesController < ApplicationController
         format.html { redirect_back fallback_location: root_path, flash: { error: t('.must_be_logged') } }
       elsif @note.save
         record_deed
-        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }) }, status: :created }
+        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]) }, status: :created }
         format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_created') }
       else
         format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
