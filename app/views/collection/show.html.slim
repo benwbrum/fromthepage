@@ -6,7 +6,7 @@
       .collection-intro
         -unless @collection.picture.blank?
           .collection-intro_image
-            =image_tag(@collection.picture_url(:thumb), alt: collection.title)
+            =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
         .collection-intro_about
           ==@collection.intro_block
 
