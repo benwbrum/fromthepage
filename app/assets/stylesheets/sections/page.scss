@@ -226,6 +226,7 @@
 
   .CodeMirror {
     flex: 1 1 auto;
+    font-family: $fontFamily;
     height: auto !important;
 
     &-buttonsPanel {
