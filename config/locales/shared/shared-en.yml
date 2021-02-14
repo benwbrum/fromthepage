@@ -34,3 +34,9 @@ en:
       settings: "Settings"
       pages: "Pages"
       help: "Help"
+    codemirror:
+      abbr_description: "Insert an abbreviation"
+      add_description: "Mark an addition"
+      date_description: "Insert a date"
+      del_description: "Mark a deletion"
+      expan_description: "Expanded abbreviation"
