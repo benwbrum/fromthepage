@@ -45,11 +45,11 @@
 
       .toolbar_group
         -unless @preview_xml
-            =>button_tag t('.preview'), :name => 'preview', type: 'button'
+          =>button_tag t('.preview'), :name => 'preview', type: 'button'
         -else
-            =>button_tag t('.edit'), :name => 'edit', type: 'button'
+          =>button_tag t('.edit'), :name => 'edit', type: 'button'
         -unless @collection.subjects_disabled || @collection.field_based
-            =>button_tag t('.autolink'), :name => 'autolink', type: 'button'
+          =>button_tag t('.autolink'), :name => 'autolink', type: 'button'
         =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
