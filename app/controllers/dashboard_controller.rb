@@ -119,21 +119,8 @@ class DashboardController < ApplicationController
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)
-    @page = recent_work
   end
 
-  # Collaborator Dashboard - user with no activity watchlist
-  def recent_work
-    recent_deed_ids = Deed.joins(:collection, :work).merge(Collection.unrestricted).merge(Work.unrestricted)
-      .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
-    @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: { status: nil })
-
-    # find the first blank page in the most recently accessed work (as long as the works list isn't blank)
-    recent_work = unless @works.empty?
-      @works.first.pages.where(status: nil).first
-      # if the works list is blank, return nil
-    end
-  end
 
   # Collaborator Dashboard - activity
   def editor

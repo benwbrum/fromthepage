@@ -158,6 +158,7 @@ $.fn.categoriesSelect = function() {
   return this.each(function() {
     var $element = $(this);
     var update_url = $element.data('assign-categories');
+    var collection_slug = $element.data('collection-slug');
 
     $element.select2({
       placeholder: 'Assign categories...',
@@ -171,13 +172,13 @@ $.fn.categoriesSelect = function() {
       $.ajax({
         type: 'POST',
         url: update_url,
-        data: { 'status': true, 'category_id': e.params.data.id }
+        data: { 'status': true, 'category_id': e.params.data.id, 'collection_id': collection_slug }
       });
     }).on('select2:unselect', function(e) {
       $.ajax({
         type: 'POST',
         url: update_url,
-        data: { 'status': false, 'category_id': e.params.data.id }
+        data: { 'status': false, 'category_id': e.params.data.id, 'collection_id': collection_slug }
       });
     });
   });

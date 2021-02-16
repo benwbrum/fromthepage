@@ -13,7 +13,7 @@
         -d.collection = nil
         .user-bubble
           =link_to(user_profile_path(d.user), class: 'userpic')
-            =gravatar_image_tag d.user.email, :alt => d.user.display_name
+            =profile_picture(d.user)
           .user-bubble_content
             =time_tag d.created_at
               =time_ago_in_words d.created_at

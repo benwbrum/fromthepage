@@ -6,7 +6,7 @@
       .collection-intro
         -unless @collection.picture.blank?
           .collection-intro_image
-            =image_tag(@collection.picture_url(:thumb))
+            =image_tag(@collection.picture_url(:thumb), alt: @collection.title)
         .collection-intro_about
           ==@collection.intro_block
 
@@ -63,20 +63,20 @@
 
     .user-label.owner
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
-        =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
+        =profile_picture(@collection.owner)
       .username
         small =t('.project_by')
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)
 
     =form_tag(display_search_path, :method => :post, class: 'collection-search') do
       =hidden_field_tag('collection_id', @collection.slug)
-      =search_field_tag 'search_string', nil, :placeholder => t('.search_in_collection')
+      =search_field_tag 'search_string', nil, :placeholder => t('.search_in_collection'), "aria-label" => 'search in collection'
       =button_tag t('.search')
       =label_tag 'search_string', "Search collection", class: 'hidden'
 
     =form_tag({:controller => 'collection', :action => 'show'}, method: :get, enforce_utf8: false, class: 'collection-search') do
-      =hidden_field_tag('collection_id', @collection)
-      =search_field_tag :work_search, params[:work_search], placeholder: t('.search_for_works')
+      =hidden_field_tag('collection_id', @collection, {:id => "collection id for search work"})
+      =search_field_tag :work_search, params[:work_search], placeholder: t('.search_for_works'), "aria-label" => 'search for works'
       =button_tag t('.search')
       =label_tag 'search', "Search for works", class: 'hidden'
 

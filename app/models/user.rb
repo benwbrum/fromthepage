@@ -15,6 +15,8 @@ class User < ApplicationRecord
 
   attr_accessor :login_id
 
+  mount_uploader :picture, PictureUploader
+
   has_many(:owner_works,
            :foreign_key => "owner_user_id",
            :class_name => 'Work')

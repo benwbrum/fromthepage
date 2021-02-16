@@ -23,6 +23,12 @@
         td =f.text_field :orcid, :placeholder => 'Your ORCID ID'
       -if @user.owner
         tr
+          th =f.label :picture, t('.picture')
+          td 
+            =f.file_field :picture, accept: 'image/*'
+            -if @user.picture_url(:thumb)
+              .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
+        tr
           th URL: 
           td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}
         tr
