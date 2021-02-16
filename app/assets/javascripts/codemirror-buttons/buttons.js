@@ -57,6 +57,10 @@
             if (config.title) {
                 buttonNode.setAttribute('title', config.title);
             }
+
+            if (config.tooltip) {
+                buttonNode.setAttribute('data-tippy-content', config.tooltip);
+            }
         }
 
         if (config.hotkey) {
