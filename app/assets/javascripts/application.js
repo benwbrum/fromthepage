@@ -286,6 +286,12 @@ $(function() {
       .prop('disabled', exportCheckboxes.filter(':checked').length < 1);
   });
   exportCheckboxes.change();
+
+  // Tippy tooltips
+  tippy('[data-tippy-content]', {
+    placement: 'bottom-start',
+    duration: [100, 200],
+  });
 });
 
 //Enable and disable select options for field-based transcription
