@@ -21,8 +21,7 @@ module TranscribeHelper
     line_radius += 1 # Makes the "radius" make more sense as a value
 
     output = "<b>#{title}</b>" # have something to return if the match fails
-
-    regexed_title = /(\[\[#{title.gsub(/\s*/, '\s*')}.*?\]\])/m
+    regexed_title = /(\[\[#{title.gsub('(', '\(').gsub(')', '\)').gsub(/\s+/, '\s+')}.*?\]\])/m
     match = text.match(regexed_title)
 
     unless match.nil?
