@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '6.0.3.2'
 
-gem 'will_paginate'
+gem 'will_paginate', git: 'https://github.com/BrumfieldLabs/will_paginate.git'
 gem 'rmagick'
 gem 'nokogiri'
 gem "capistrano", "~> 3.10", require: false

@@ -26,7 +26,6 @@ class Collection < ApplicationRecord
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
@@ -331,7 +330,7 @@ class Collection < ApplicationRecord
 
   def set_transcription_conventions
     unless self.transcription_conventions.present?
-      self.transcription_conventions = "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li>\n <li>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views.</li></ul>"
+      self.transcription_conventions = "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Retain original capitalization.</li>\n<li><i>Punctuation: </i>Use original punctuation when possible.</li>\n<li><i>Line Breaks: </i>Hit <code>Enter</code> once after each line ends.  Two returns indicate a new paragraph, whether indicated by a blank line or by indentation in the original.</li></ul>"
     end
   end
 
