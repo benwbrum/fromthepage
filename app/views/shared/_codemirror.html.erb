@@ -1,5 +1,4 @@
 <%=stylesheet_link_tag "codemirror/lib/codemirror"%>
-<%=stylesheet_link_tag "codemirror-buttons/buttons"%>
 <%=javascript_include_tag "codemirror/lib/codemirror"%>
 <%=javascript_include_tag "codemirror/mode/xml/xml"%>
 <%=javascript_include_tag "codemirror/addon/display/display/panel"%>
@@ -14,6 +13,7 @@
         hotkey: '<%= button.hotkey %>',
         class: '<%= "editor-buttons-#{button.key}" %>',
         label: '<%= "#{button.key}" %>',
+        tooltip: '<%= t(".#{button.key}_description", default: button.key) %>',
         callback: function (cm) {
           var selection = cm.getSelection();
           cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
@@ -51,7 +51,6 @@
     table: { attrs: {"rend": ["rules"]}, children: ["row"] }
   }
 
-
   function completeAfter(cm, pred) {
     var cur = cm.getCursor();
     if (!pred || pred()) setTimeout(function() {
@@ -80,7 +79,7 @@
   var myCodeMirror = CodeMirror.fromTextArea(
     document.getElementById("<%= textarea %>"),
     {
-      lineNumbers: true, 
+      lineNumbers: true,
       mode: "xml",
       extraKeys: {
         "'<'": completeAfter,
@@ -94,10 +93,4 @@
       hintOptions: {schemaInfo: fromthepage_tags},
       buttons: button_config
     });
-
-  <% if has_title %>
-    myCodeMirror.setSize("100%", "91.5%");
-  <% else %>
-    myCodeMirror.setSize("100%", "100%");
-  <% end %>
 </script>
