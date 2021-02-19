@@ -228,6 +228,8 @@
     flex: 1 1 auto;
     font-family: $fontFamily;
     height: auto !important;
+    display: flex;
+    flex-direction: column;
 
     &-buttonsPanel {
       padding: 4px;
@@ -244,6 +246,10 @@
         line-height: 1.75em;
         font-family: monospace;
       }
+    }
+
+    &-scroll {
+      flex-grow: 1;
     }
   }
 }
