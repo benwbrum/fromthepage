@@ -65,6 +65,9 @@ class NotesController < ApplicationController
     deed.page = @page
     deed.work = @work
     deed.collection = @work.collection
+    if @collection && @collection.is_a?(DocumentSet)
+      deed.document_set = @collection 
+    end
     deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
 

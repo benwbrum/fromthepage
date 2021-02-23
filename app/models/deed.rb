@@ -4,6 +4,7 @@
 class Deed < ApplicationRecord
   belongs_to :article, optional: true
   belongs_to :collection, optional: true
+  belongs_to :document_set, optional: true
   belongs_to :note, optional: true
   belongs_to :page, optional: true
   belongs_to :user, optional: true

@@ -8,14 +8,18 @@ class DeedController < ApplicationController
 
     # Get a list of collections that the user is allowed to view
     # And take the union of the requested Collections if requested
-    scoped_collections = Collection.access_controlled(current_user).pluck(:id)
-    scoped_collections &= [@collection.id] if @collection 
+    if @collection
+      @deed = @collection.deeds
+    elsif @user
+      # Scope to User as needed
+      @deed = @deed.where(user_id: @user.id) if @user
+    else
+      # Query ONLY allowed collections
+      scoped_collections = Collection.access_controlled(current_user).pluck(:id)
+      @deed = Deed.where(collection_id: scoped_collections)
+    end
     
-    # Query ONLY allowed collections
-    @deed = Deed.where(collection_id: scoped_collections)
     
-    # Scope to User as needed
-    @deed = @deed.where(user_id: @user.id) if @user
 
     # Scope for date
     if params[:start_date]

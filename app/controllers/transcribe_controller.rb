@@ -467,6 +467,7 @@ protected
       deed.collection = @collection
     else
       deed.collection = @collection.collection
+      deed.document_set = @collection
     end
     deed.user = current_user
 

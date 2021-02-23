@@ -11,6 +11,7 @@ class DocumentSet < ApplicationRecord
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
 
   has_many :pages, through: :works
+  has_many :deeds
 
   has_many :document_set_works
   has_many :works, -> { order 'title' }, through: :document_set_works
@@ -68,10 +69,6 @@ class DocumentSet < ApplicationRecord
 
   def notes
     Note.where(work_id: self.works.ids)
-  end
-
-  def deeds
-    self.collection.deeds.where(work_id: self.works.ids)
   end
 
   def restricted

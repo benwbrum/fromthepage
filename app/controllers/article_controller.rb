@@ -258,6 +258,9 @@ class ArticleController < ApplicationController
     deed.article = @article
     deed.deed_type = DeedType::ARTICLE_EDIT
     deed.collection = @article.collection
+    if @collection && @collection.is_a?(DocumentSet)
+      deed.document_set = @collection 
+    end
     deed.user = current_user
     deed.save!
   end
