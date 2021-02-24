@@ -61,10 +61,12 @@ module AbstractXmlHelper
       span = REXML::Element.new("span")
       span.add_attribute("class", "expanded-abbreviation")
       e.children.each { |c| span.add(c) }
-      inner_span = REXML::Element.new("span")
-      inner_span.add_attribute("class", "original-abbreviation")
-      inner_span.add_text(orig)
-      span.add(inner_span)
+      unless orig.blank?
+        inner_span = REXML::Element.new("span")
+        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span.add_text(orig)
+        span.add(inner_span)
+      end
       e.replace_with(span)
     end
 
@@ -74,10 +76,12 @@ module AbstractXmlHelper
       span = REXML::Element.new("span")
       span.add_attribute("class", "expanded-abbreviation")
       e.children.each { |c| span.add(c) }
-      inner_span = REXML::Element.new("span")
-      inner_span.add_attribute("class", "original-abbreviation")
-      inner_span.add_text(orig)
-      span.add(inner_span)
+      unless orig.blank?
+        inner_span = REXML::Element.new("span")
+        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span.add_text(orig)
+        span.add(inner_span)
+      end
       e.replace_with(span)
     end
 
