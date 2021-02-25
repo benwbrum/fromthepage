@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_11_203038) do
+ActiveRecord::Schema.define(version: 2021_02_21_124941) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -205,11 +205,13 @@ ActiveRecord::Schema.define(version: 2021_02_11_203038) do
     t.string "prerender", limit: 2047
     t.string "prerender_mailer", limit: 2047
     t.boolean "is_public", default: true
+    t.integer "document_set_id"
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
     t.index ["collection_id", "user_id"], name: "index_deeds_on_collection_id_user_id"
     t.index ["collection_id"], name: "index_deeds_on_collection_id"
     t.index ["created_at"], name: "index_deeds_on_created_at"
+    t.index ["document_set_id"], name: "index_deeds_on_document_set_id"
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
     t.index ["user_id"], name: "index_deeds_on_user_id"
@@ -323,6 +325,7 @@ ActiveRecord::Schema.define(version: 2021_02_11_203038) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "ocr_text"
+    t.index ["page_id"], name: "index_ia_leaves_on_page_id"
   end
 
   create_table "ia_works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

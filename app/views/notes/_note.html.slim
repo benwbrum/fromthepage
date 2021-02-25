@@ -1,6 +1,6 @@
 .user-bubble.editable(id="note-#{note.id}")
-  =link_to(user_profile_path(:user_id => note.user.id), class: 'userpic')
-    =gravatar_image_tag note.user.email, :alt => note.user.display_name
+  =link_to(user_profile_path(:user_id => note.user.id))
+    =profile_picture(note.user)
   .user-bubble_content
     -if note.user == current_user
       .user-bubble_actions

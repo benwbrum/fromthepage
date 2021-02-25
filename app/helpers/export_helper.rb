@@ -253,6 +253,8 @@ module ExportHelper
       transform_links(e)
       transform_expansions(e)
       transform_regularizations(e)
+      transform_marginalia_and_catchwords(e)
+      transform_lb(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
         e.add_attribute("corresp", "#{page_id_to_xml_id(page_id, !context.translation_mode)}P#{i}")
@@ -315,6 +317,35 @@ module ExportHelper
       end
     end
   end
+
+  def transform_marginalia_and_catchwords(p_element)
+    p_element.elements.each('//marginalia') do |e|
+      e.name='note'
+      e.add_attribute('type', 'marginalia')
+    end
+    
+    p_element.elements.each('//catchword') do |e|
+      e.name='fw'
+      e.add_attribute('type', 'catchword')
+    end
+  end
+
+  def transform_lb(p_element)
+    # while we support text within an LB tag to encode line 
+    # continuation sigla, TEI doesn't and recommends the sigil be part of the text before the LB
+    p_element.elements.each('//lb') do |e|
+      if e['break'] == 'no'
+        unless e.text.blank?
+          previous_element = e.previous_sibling
+          e.children.each do |child|
+            previous_element.next_sibling = child
+          end
+        end
+      end
+    end
+    
+  end
+
 
   # def titles_to_divs(xml_text, context)
     # logger.debug("FOO #{context.div_stack.count}\n")

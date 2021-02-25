@@ -39,6 +39,13 @@ module ApplicationHelper
     end
   end
 
+  def profile_picture(user, gravatar_size = nil)
+    render({ 
+              :partial => 'shared/profile_picture',
+              :locals => { :user => user, :gravatar_size => gravatar_size }
+      })
+  end
+
   def svg_symbol(id, options={})
     content_tag(:svg, options) do
       content_tag(:use, nil, :'xlink:href' => asset_path('symbols.svg') + id)
