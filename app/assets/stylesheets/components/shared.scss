@@ -260,6 +260,15 @@
   &_footer { margin: 0.8em 0 0 0; }
 }
 
+.tippy-box {
+  font-size: 13px;
+  line-height: 1.3;
+  background-color: rgba(#000, 0.85);
+}
+
+.tippy-arrow {
+  color: rgba(#000, 0.85);
+}
 
 
 .expanded-abbreviation {

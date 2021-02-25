@@ -4,7 +4,6 @@
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
-
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors
@@ -37,21 +36,21 @@
         -else
           =f.check_box('mark_blank', {checked: false})
 
-      .toolbar_group.w100.aright
+      .toolbar_group
         =f.label 'needs_review', t('.needs_review')
         -if @page.status == Page::STATUS_NEEDS_REVIEW
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
 
-      .toolbar_group.w100.alright
+      .toolbar_group
         -unless @preview_xml
-            =>button_tag t('.preview'), :name => 'preview'
+          =>button_tag t('.preview'), :name => 'preview', type: 'submit'
         -else
-            =>button_tag t('.edit'), :name => 'edit'
+          =>button_tag t('.edit'), :name => 'edit', type: 'submit'
         -unless @collection.subjects_disabled || @collection.field_based
-            =>button_tag t('.autolink'), :name => 'autolink'
-        =button_tag t('.save_changes'), :name => 'save', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+          =>button_tag t('.autolink'), :name => 'autolink', type: 'submit'
+        =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
     .page-review
@@ -76,45 +75,34 @@
             =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
             span.voice-info
 
-        //.page-column_actions
-          -unless @preview_xml
-            =>button_tag t('.preview'), :name => 'preview'
-          -else
-            =>button_tag t('.edit'), :name => 'edit'
-          -unless @collection.subjects_disabled || @collection.field_based
-            =>button_tag t('.autolink'), :name => 'autolink'
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
         .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
           -if @work.scribes_can_edit_titles
             .page-editarea_title
-              span =f.label :title, t('.title'), class: 'a50'
-              span =f.text_field :title
+              =f.label :title, t('.title'), class: 'a50'
+              =f.text_field :title
           -if !@collection.field_based
-            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-            =f.label :source_text, t('.edit_transcription'), class: 'hidden'
+            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_transcription'))
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
-      .page-toolbar-bottom
-        .toolbar
-          .toolbar_group.w100.aright
-            -unless @preview_xml
-                =>button_tag t('.preview'), :name => 'preview'
-            -else
-                =>button_tag t('.edit'), :name => 'edit'
-            -unless @collection.subjects_disabled || @collection.field_based
-                =>button_tag t('.autolink'), :name => 'autolink'
-            =button_tag t('.save_changes'), :name => 'save', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+  .page-toolbar
+    .toolbar
+      .toolbar_group.w100.fgfaded.wrap-text ==@work.set_transcription_conventions
+      .toolbar_group.aright
+        -unless @preview_xml
+          =>button_tag t('.preview'), :name => 'preview', type: 'button'
+        -else
+          =>button_tag t('.edit'), :name => 'edit', type: 'button'
+        -unless @collection.subjects_disabled || @collection.field_based
+          =>button_tag t('.autolink'), :name => 'autolink', type: 'button'
+        =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
 
-.fgfaded ==@work.set_transcription_conventions
+p.fgfaded =render :partial => 'shared/markup_help'
 
-.fgfaded.page-indent
-  =render :partial => 'shared/markup_help'
-
-.page-indent
-  =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
+p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
 h2.legend =t('notes_and_questions')
 .page-notes
@@ -122,13 +110,10 @@ h2.legend =t('notes_and_questions')
 
 =render({ :partial => '/shared/collection_footer' })
 
--has_title = @work.scribes_can_edit_titles
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
 
--if false && text_direction == 'ltr'
-  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :has_title => has_title, :text_direction => text_direction} })
-  
-
+-if text_direction == 'ltr'
+  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
 
 -unless @current_user_alerted
@@ -160,11 +145,13 @@ h2.legend =t('notes_and_questions')
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
       });
+
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
       });
+
       $('#auto-fullscreen').on('change', function() {
         var checked = this.checked ? 'yes' : 'no';
         Cookies.set('auto_fullscreen', checked, { expires: 365 });
@@ -177,7 +164,6 @@ h2.legend =t('notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-
     });
 
 
@@ -211,3 +197,4 @@ h2.legend =t('notes_and_questions')
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet
 
+    });

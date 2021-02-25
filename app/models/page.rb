@@ -443,8 +443,15 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
   def formatted_plaintext_doc(doc)
-    doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
-    doc.xpath("//lb[@break='no']").each { |n| n.replace("-\n")}
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
+    doc.xpath("//lb[@break='no']").each do |n| 
+      if n.text.blank?
+        sigil = '-'
+      else
+        sigil = n.text
+      end
+      n.replace("#{sigil}\n")
+    end
     doc.xpath("//lb").each { |n| n.replace("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}

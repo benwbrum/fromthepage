@@ -86,6 +86,7 @@
     };
     wrap.parentNode.insertBefore(info.wrapper, wrap);
     var hasFocus = cm.hasFocus();
+    info.wrapper.classList.add("cm-editor")
     info.wrapper.appendChild(wrap);
     if (hasFocus) cm.focus();
 

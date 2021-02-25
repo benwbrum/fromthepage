@@ -26,7 +26,7 @@ h3 =t('.collaborator_time')
       -@contributors.each do |user|
         .collection-user(data-prefix="#{@activity[user.id]} min")
           =link_to(user_profile_path(user), class: 'collection-user_link')
-            span.userpic =gravatar_image_tag user.email, :alt => user.display_name
+            span =profile_picture(user)
             span.vmiddle =user.display_name
 -else
     p =t('.no_activity_for_date_range')

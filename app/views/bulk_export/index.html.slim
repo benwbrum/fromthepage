@@ -13,7 +13,7 @@ table.admin-grid.datagrid.striped
       tr
         td
           =link_to(user_profile_path(bulk_export.user), class: 'userpic userpic-small')
-            =gravatar_image_tag bulk_export.user.email, alt: bulk_export.user.display_name
+            =profile_picture(bulk_export.user)
         td.nowrap.toleft
           div =link_to bulk_export.user.login, user_profile_path(bulk_export.user)
           small =bulk_export.user.email

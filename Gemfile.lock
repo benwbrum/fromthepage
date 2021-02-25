@@ -9,6 +9,12 @@ GIT
       railties (>= 4.2, < 7)
 
 GIT
+  remote: https://github.com/BrumfieldLabs/will_paginate.git
+  revision: fb3a46f26b88742941a11cb72f8062e33c885698
+  specs:
+    will_paginate (3.3.0)
+
+GIT
   remote: https://github.com/benwbrum/osullivan
   revision: 814ac4ddabb2423de9d7e4f6b2dc8d8153317903
   branch: service_is_array
@@ -139,17 +145,18 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
-    carrierwave (2.1.0)
+    carrierwave (2.1.1)
       activemodel (>= 5.0.0)
       activesupport (>= 5.0.0)
       addressable (~> 2.6)
       image_processing (~> 1.1)
       mimemagic (>= 0.3.0)
       mini_mime (>= 0.1.3)
+      ssrf_filter (~> 1.0)
     charlock_holmes (0.7.7)
     childprocess (3.0.0)
     coderay (1.1.3)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     coveralls (0.8.23)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -193,7 +200,7 @@ GEM
     faraday (1.1.0)
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
-    ffi (1.13.1)
+    ffi (1.14.2)
     flamegraph (0.9.5)
     forty_facets (0.1.9.1)
     friendly_id (5.4.1)
@@ -212,7 +219,7 @@ GEM
     httpi (2.4.5)
       rack
       socksify
-    i18n (1.8.5)
+    i18n (1.8.8)
       concurrent-ruby (~> 1.0)
     i18n-tasks (0.9.31)
       activesupport (>= 4.0.2)
@@ -263,7 +270,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.14.2)
+    minitest (5.14.3)
     msgpack (1.3.3)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -443,6 +450,7 @@ GEM
     sshkit (1.21.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    ssrf_filter (1.0.7)
     stackprof (0.2.16)
     sync (0.5.0)
     temple (0.8.2)
@@ -455,7 +463,7 @@ GEM
     tilt (2.0.10)
     tins (1.26.0)
       sync
-    tzinfo (1.2.8)
+    tzinfo (1.2.9)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -477,10 +485,9 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    will_paginate (3.3.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.1)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
@@ -559,7 +566,7 @@ DEPENDENCIES
   vcr
   warning
   webmock
-  will_paginate
+  will_paginate!
 
 BUNDLED WITH
    2.1.4

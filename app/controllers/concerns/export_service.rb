@@ -13,7 +13,7 @@ module ExportService
   def export_subject_csv(dirname:, out:, collection:)
     path = "subject_index.csv"
     out.put_next_entry(path)
-    out.write(collection.export_subjects_as_csv)
+    out.write(collection.export_subject_index_as_csv)
   end
 
   def export_table_csv_collection(dirname:, out:, collection:)

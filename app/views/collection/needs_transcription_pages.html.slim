@@ -11,7 +11,7 @@ div
 
     .user-label.owner
       =link_to(user_profile_path(@collection.owner), class: 'userpic')
-        =gravatar_image_tag @collection.owner.email, :alt => @collection.owner.display_name
+        =profile_picture(@collection.owner)
       .username
         small =t('.project_by') 
         =link_to @collection.owner.display_name, user_profile_path(@collection.owner)

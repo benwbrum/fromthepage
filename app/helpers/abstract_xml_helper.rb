@@ -61,10 +61,12 @@ module AbstractXmlHelper
       span = REXML::Element.new("span")
       span.add_attribute("class", "expanded-abbreviation")
       e.children.each { |c| span.add(c) }
-      inner_span = REXML::Element.new("span")
-      inner_span.add_attribute("class", "original-abbreviation")
-      inner_span.add_text(orig)
-      span.add(inner_span)
+      unless orig.blank?
+        inner_span = REXML::Element.new("span")
+        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span.add_text(orig)
+        span.add(inner_span)
+      end
       e.replace_with(span)
     end
 
@@ -74,10 +76,12 @@ module AbstractXmlHelper
       span = REXML::Element.new("span")
       span.add_attribute("class", "expanded-abbreviation")
       e.children.each { |c| span.add(c) }
-      inner_span = REXML::Element.new("span")
-      inner_span.add_attribute("class", "original-abbreviation")
-      inner_span.add_text(orig)
-      span.add(inner_span)
+      unless orig.blank?
+        inner_span = REXML::Element.new("span")
+        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span.add_text(orig)
+        span.add(inner_span)
+      end
       e.replace_with(span)
     end
 
@@ -88,16 +92,21 @@ module AbstractXmlHelper
     # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e|
       lb = REXML::Element.new('span')
-      lb.add_text("")
+
       lb.add_attribute('class', 'line-break')
 
       if preserve_lb
         if e.attributes['break'] == "no"
+          if e.has_text?
+            sigil = e.get_text.to_s
+          else
+            sigil = '-'
+          end
           sib = e.previous_sibling
           if sib.kind_of? REXML::Element
-            sib.add_text('-')
+            sib.add_text(sigil)
           else
-            sib.value=sib.value+'-'
+            sib.value=sib.value+sigil
           end
         end
         e.replace_with(REXML::Element.new('br'))
@@ -170,6 +179,24 @@ module AbstractXmlHelper
       e.children.each { |c| unclear.add(c) }
       unclear.add_text("]")
       e.replace_with(unclear)
+    end
+
+    doc.elements.each("//marginalia") do |e|
+      span = REXML::Element.new('span')
+      span.add_text("{")
+      span.add_attribute('class', 'marginalia')
+      e.children.each { |c| span.add(c) }
+      span.add_text("}")
+      e.replace_with(span)
+    end
+
+    doc.elements.each("//catchword") do |e|
+      span = REXML::Element.new('span')
+      span.add_text("{")
+      span.add_attribute('class', 'catchword')
+      e.children.each { |c| span.add(c) }
+      span.add_text("}")
+      e.replace_with(span)
     end
 
     doc.elements.each("//gap") do |e|

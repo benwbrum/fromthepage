@@ -9,7 +9,7 @@
 
 -if user_signed_in?
   .user-bubble
-    .userpic =gravatar_image_tag current_user.email, :alt => current_user.display_name
+    =profile_picture(current_user)
 
     =form_for :note, url: notes_path, remote: true, html: { class: 'user-bubble_form' } do |f|
       =hidden_field_tag(:page_id, @page.id)
