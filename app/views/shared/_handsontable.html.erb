@@ -42,7 +42,22 @@
         [
           <% transcription_field.spreadsheet_columns.each do |column_config| %>
             <% cell = data_row.detect {|c| c.header == column_config.label } %>
-            <%= raw(cell.content.to_json) %>,
+            <% if column_config.input_type == 'checkbox' %>
+              <% if cell.content == 'true' %>
+                "true",
+              <% else %>
+                "false",
+              <% end %>
+            <% else %>
+              <%= raw(cell.content.to_json) %>,
+            <% end %>
+          <% end %>
+        ],
+      <% end %>
+      <% (transcription_field.starting_rows - cells_by_row.count).times do %>
+        [
+          <% transcription_field.spreadsheet_columns.count.times do %>
+            null,
           <% end %>
         ],
       <% end %>
@@ -65,6 +80,7 @@
     colHeaders: colHeadersConfig,
     filters: true,
     data: data,
+    contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
     colWidths: colWidthConfig,

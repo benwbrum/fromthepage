@@ -180,8 +180,16 @@ module ExportService
 
 private
 
+  def spreadsheet_heading_to_indexable(field_id, column_label)
+    {field_id => column_label}
+  end
+
+  def spreadsheet_column_to_indexable(column)
+    spreadsheet_heading_to_indexable(column.transcription_field_id, column.label)
+  end
+
   def get_headings(collection, ids)
-    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
+    field_headings = collection.transcription_fields.order(:line_number, :position).where.not(input_type: 'instruction').pluck(:id)
     orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
     markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
     cell_headings = orphan_cell_headings + markdown_cell_headings
@@ -195,9 +203,21 @@ private
     #get headings from field-based
     field_headings.each do |field_id|
       field = TranscriptionField.where(:id => field_id).first
-      raw_heading = field ? field.label : field_id
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
+      if field && field.input_type == 'spreadsheet'
+        raw_field_index = @raw_headings.index(field_id)
+        field.spreadsheet_columns.each do |column|
+          raw_field_index += 1
+          raw_heading = "#{field.label} #{column.label}"
+          @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
+          @headings << "#{raw_heading} (text)"
+          @headings << "#{raw_heading} (subject)"
+        end
+        @raw_headings.delete(field_id)
+      else
+        raw_heading = field ? field.label : field_id
+        @headings << "#{raw_heading} (text)"
+        @headings << "#{raw_heading} (subject)"
+      end
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
@@ -332,7 +352,11 @@ private
 
   def index_for_cell(cell)
     if cell.transcription_field_id
-      index = (@raw_headings.index(cell.transcription_field_id))
+      if cell.transcription_field.input_type == 'spreadsheet'
+        index = @raw_headings.index(spreadsheet_heading_to_indexable(cell.transcription_field_id, cell.header))
+      else
+        index = (@raw_headings.index(cell.transcription_field_id))
+      end
     end
     index = (@raw_headings.index(cell.header)) unless index
     index = (@raw_headings.index(cell.header.strip)) unless index
