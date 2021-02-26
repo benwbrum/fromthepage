@@ -163,7 +163,11 @@ class IiifController < ApplicationController
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
     dc_source = dc_source_from_work(work)
-    manifest.metadata = [dc_source] if dc_source
+    if dc_source
+      manifest.metadata = [dc_source]
+    else
+      manifest.metadata = []
+    end
     manifest.metadata += JSON[work.original_metadata]
 
     if work.sc_manifest
