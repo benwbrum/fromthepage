@@ -91,8 +91,9 @@ module ContentdmTranslator
 
   def self.page_at_id_to_cdm_item_info(at_id)
     cdm = at_id.sub(/cdm/, 'server')
-    cdm.sub!(/digital\/iiif/, 'dmwebservices/index.php?q=dmGetItemInfo')
+    cdm.sub!(/(digital\/)?iiif/, 'dmwebservices/index.php?q=dmGetItemInfo')
     cdm.sub!(/\/canvas\/c\d*/, '/json')
+    cdm.sub!(/:(\d+)/, '/\1') # handle coollection:id format instead of old collection/id
 
     cdm
   end
@@ -100,8 +101,8 @@ module ContentdmTranslator
   def self.collection_to_cdm_field_config(collection)
     at_id = collection.pages.joins(:sc_canvas).reorder('pages.created_on').last.sc_canvas.sc_canvas_id
     cdm = at_id.sub(/cdm/, 'server')
-    cdm.sub!(/digital\/iiif/, 'dmwebservices/index.php?q=dmGetCollectionFieldInfo')
-    cdm.sub!(/\/canvas\/c\d*/, '/json')
+    cdm.sub!(/(digital\/)?iiif/, 'dmwebservices/index.php?q=dmGetCollectionFieldInfo')
+    cdm.sub!(/(:\d+)?\/canvas\/c\d*/, '/json')
 
     cdm
   end
