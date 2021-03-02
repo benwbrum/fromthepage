@@ -171,6 +171,8 @@ en:
       expan_description: "Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)"
       fig_label: "Figure"
       fig_description: "Indicates a figure or a horizontal line."
+      head_label: "Head"
+      head_description: "Marks a heading"
       gap_label: "Gap"
       gap_description: "Marks a gap in the text, often due to damage"
       lb_label: "Line Break"
