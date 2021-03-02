@@ -138,6 +138,14 @@ module AbstractXmlHelper
       span.add_attribute('class', "depth#{depth}")
     end
 
+    doc.elements.each("//head") do |e|
+      # convert to a span
+      depth = 2      
+      span = e
+      e.name = 'span'
+      span.add_attribute('class', "depth#{depth}")
+    end
+
     doc.elements.each("//hi") do |e|
       rend = e.attributes["rend"]
       span=e
