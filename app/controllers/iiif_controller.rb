@@ -143,7 +143,7 @@ class IiifController < ApplicationController
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }] if work.sc_manifest
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id}] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
@@ -163,7 +163,14 @@ class IiifController < ApplicationController
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
     dc_source = dc_source_from_work(work)
-    manifest.metadata = [dc_source] if dc_source
+    if dc_source
+      manifest.metadata = [dc_source]
+    else
+      manifest.metadata = []
+    end
+    if work.original_metadata
+      manifest.metadata += JSON[work.original_metadata]
+    end
 
     if work.sc_manifest
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"

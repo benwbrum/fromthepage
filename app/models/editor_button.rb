@@ -9,8 +9,9 @@ class EditorButton < ApplicationRecord
     EXPAN = 'expan'
     FIG = 'fig'
     GAP = 'gap'
-    REG = 'reg'
+    HEAD = 'head'
     MARGINALIA = 'marginalia'
+    REG = 'reg'
     SOFT_BREAK = 'lb'
     STRIKE = 's'
     SUB = 'sub'
@@ -27,6 +28,7 @@ class EditorButton < ApplicationRecord
     Keys::EXPAN => ['<expan abbr="">'],
     Keys::FIG => ['<fig rend="hr">'],
     Keys::GAP => ['<gap>'],
+    Keys::HEAD => ['<head>'],
     Keys::SOFT_BREAK => ['<lb break="no">'],
     Keys::MARGINALIA => ['<marginalia>'],
     Keys::REG => ['<reg orig="">'],
