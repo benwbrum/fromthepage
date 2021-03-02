@@ -109,11 +109,14 @@ html lang="en-US"
         =link_to 'https://www.instagram.com/_fromthepage_/', target: '_blank'
           =svg_symbol '#logo-instagram', title: 'Instagram'
 
-
     .page-busy-overlay
 
     =javascript_include_tag 'application'
     =yield :javascript
+
+    =javascript_include_tag 'https://unpkg.com/@popperjs/core@2'
+    =javascript_include_tag 'https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js'
+    =javascript_include_tag '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js'
 
     -if defined? INTERCOM_APP_ID
       -if user_signed_in? && current_user.owner? && !INTERCOM_APP_ID.blank?

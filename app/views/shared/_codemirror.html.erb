@@ -1,5 +1,4 @@
 <%=stylesheet_link_tag "codemirror/lib/codemirror"%>
-<%=stylesheet_link_tag "codemirror-buttons/buttons"%>
 <%=javascript_include_tag "codemirror/lib/codemirror"%>
 <%=javascript_include_tag "codemirror/mode/xml/xml"%>
 <%=javascript_include_tag "codemirror/addon/display/display/panel"%>
@@ -14,6 +13,7 @@
         hotkey: '<%= button.hotkey %>',
         class: '<%= "editor-buttons-#{button.key}" %>',
         label: '<%= "#{button.key}" %>',
+        tooltip: '<%= t(".#{button.key}_description", default: button.key) %>',
         callback: function (cm) {
           var selection = cm.getSelection();
           cm.replaceSelection('<%= button.open_tag %>' + selection + '<%= button.close_tag %>');
@@ -33,7 +33,7 @@
   ];
 
   var fromthepage_tags = {
-    "!top": ["abbr", "add", "cb", "date", "del", "expan", "figure", "gap", "hi", "ins", "milestone", "reg", "stamp", "sub", "sup", "table", "unclear", "u", "strike", "s", "span", "a"],
+    "!top": ["abbr", "add", "catchword", "cb", "date", "del", "expan", "figure", "gap", "hi", "ins", "lb", "marginalia", "milestone", "reg", "stamp", "sub", "sup", "supplied", "table", "unclear", "u", "strike", "s", "span", "a"],
     abbr: { attrs: { expan: null}},
     add: { children: ["u", "s", "hi"] },
     cb: { attrs: { "n": null } },
@@ -42,6 +42,7 @@
     figure: { attrs: { "type": ["hr", "postmark", "seal"] }},
     hi: { attrs: { "rend": ["bold", "italic", "str", "sub", "sup", "underline"]}},
     ins: { children: ["u", "s", "hi"]},
+    lb: { attrs: { "break": "no"}},
     milestone: { attrs: { "unit": ["column"], "n": null}},
     reg: {attrs: { orig: null }},
     row: { children: ["cell"] },
@@ -49,7 +50,6 @@
     sup: { children: ["u", "s"] },
     table: { attrs: {"rend": ["rules"]}, children: ["row"] }
   }
-
 
   function completeAfter(cm, pred) {
     var cur = cm.getCursor();
@@ -79,7 +79,7 @@
   var myCodeMirror = CodeMirror.fromTextArea(
     document.getElementById("<%= textarea %>"),
     {
-      lineNumbers: true, 
+      lineNumbers: true,
       mode: "xml",
       extraKeys: {
         "'<'": completeAfter,
@@ -93,10 +93,4 @@
       hintOptions: {schemaInfo: fromthepage_tags},
       buttons: button_config
     });
-
-  <% if has_title %>
-    myCodeMirror.setSize("100%", "91.5%");
-  <% else %>
-    myCodeMirror.setSize("100%", "100%");
-  <% end %>
 </script>

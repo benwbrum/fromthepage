@@ -2,7 +2,6 @@
 //= link_directory ../javascripts .js
 //= link_directory ../stylesheets .css
 //= link_directory ../stylesheets/codemirror/lib .css
-//= link_directory ../stylesheets/codemirror-buttons .css
 //= link datepicker/datepicker.js
 //= link application.css
 //= link codemirror/lib/codemirror.js
