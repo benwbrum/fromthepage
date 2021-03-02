@@ -168,7 +168,9 @@ class IiifController < ApplicationController
     else
       manifest.metadata = []
     end
-    manifest.metadata += JSON[work.original_metadata]
+    if work.original_metadata
+      manifest.metadata += JSON[work.original_metadata]
+    end
 
     if work.sc_manifest
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
