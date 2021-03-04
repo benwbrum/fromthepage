@@ -77,16 +77,12 @@ module CollectionHelper
 
   def find_untranscribed_page
     # Get first untranscribed work
-    untranscribed_works = Work.where({collection_id: @collection.id})
-        .joins(:work_statistic).where(work_statistics: {complete: 0})
+    untranscribed_works = @collection.works.joins(:work_statistic).where(work_statistics: {complete: 0})
     
     if untranscribed_works.any?{|w| w.untranscribed?}
       work_ids = untranscribed_works.select{|w| w.untranscribed?}
     else
-      work_ids = Work.where({collection_id: @collection.id})
-                      .incomplete_transcription
-                      .order_by_recent_inactivity
-                      .pluck(:id)
+      work_ids = @collection.works.incomplete_transcription.order_by_recent_inactivity
     end
     Page.where({work_id: work_ids})
       .needs_transcription
