@@ -119,7 +119,6 @@ module ExportHelper
     @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
                       .where.not(categories: {title: 'Places'})
-
     ### Catch the rendered Work for post-processing
     if defined? render_to_string
       thingy = self
@@ -143,6 +142,8 @@ module ExportHelper
         user: exporting_user
       })
     post_process_xml(xml, @work)
+
+    xml
   end
 
 
