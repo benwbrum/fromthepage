@@ -1,7 +1,7 @@
 -user_name = user.display_name.presence || user.login
 section.user-profile
   .user-profile_image
-    =profile_picture(@user)
+    =profile_picture(@user, 128)
   .user-profile_details
     .headline
       h1.headline_title
@@ -27,22 +27,16 @@ section.user-profile
 
 -unless carousel_collections.blank?
   .carousel
-    button.prev aria-label=t('.previous_image')
-      =svg_symbol '#icon-arrow-left', class: 'icon', title: t('.previous_image')
-    button.next aria-label=t('.next_image')
-      =svg_symbol '#icon-arrow-right', class: 'icon', title: t('.next_image')
-    ul
-      -carousel_collections.each do |c|
-        -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
-        li
-          =link_to(image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c))
-          h3
-            =link_to c.title, collection_path(c.owner, c)
-          =snippet
-          br
+    -carousel_collections.each do |c|
+      -snippet = truncate(strip_tags(c.intro_block), length: 300, separator: ' ') || ''
+      .carousel_slide
+        =link_to image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c), class: 'carousel_slide_image'
+        .carousel_slide_content
+          h3 =link_to c.title, collection_path(c.owner, c)
+          p =snippet
 
-.columns.list
-  article.maincol 
+.columns
+  article.maincol
     -if @collections_and_document_sets.any?{ |c| c.class == Collection && c.supports_document_sets }
       =render partial: '/dashboard/hierarchical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
     -else
@@ -55,12 +49,13 @@ section.user-profile
 -content_for :javascript
   javascript:
     $(function(){
-      $('.carousel').jCarouselLite({
-        btnNext: ".next",
-        btnPrev: ".prev",
-        visible: 1,
+      $('.carousel').slick({
+        autoplay: true,
+        arrows: true,
+        infinite: true,
         speed: 1000,
-        auto: 8000,
-        pause: '.carousel li'
+        autoplaySpeed: 8000,
+        prevArrow: '<button class="button outline" aria-label="#{t('.previous_image')}">#{svg_symbol '#icon-arrow-left', class: 'icon'}</button>',
+        nextArrow: '<button class="button outline" aria-label="#{t('.next_image')}">#{svg_symbol '#icon-arrow-right', class: 'icon'}</button>',
       });
     });
