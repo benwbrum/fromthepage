@@ -31,17 +31,17 @@
                       span Actions
                       =svg_symbol '#big-menu', class: 'icon icon-big'
                     dd
-                      =link_to 'Edit Category', category_edit_path(:collection_id => @collection.id, :category_id => category.id), 'data-litebox' => ''
-                      =link_to 'Add Child Category', category_add_new_path(:collection_id => @collection.id, :category_id => category.id), 'data-litebox' => ''
-                      =link_to 'Add Root Category', category_add_new_path(:collection_id => @collection.id), 'data-litebox' => ''
+                      =link_to 'Edit Category', category_edit_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
+                      =link_to 'Add Child Category', category_add_new_path(:collection_id => @collection.slug, :category_id => category.id), 'data-litebox' => ''
+                      =link_to 'Add Root Category', category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
                       -if category.gis_enabled
-                        =link_to 'Disable GIS for Category', category_disable_gis_path(:collection_id => @collection.id, :category_id => category.id)
+                        =link_to 'Disable GIS for Category', category_disable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
                       -else
-                        =link_to 'Enable GIS for Category', category_enable_gis_path(:collection_id => @collection.id, :category_id => category.id)
+                        =link_to 'Enable GIS for Category', category_enable_gis_path(:collection_id => @collection.slug, :category_id => category.id)
                       hr
-                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.id, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
+                      =link_to 'Delete Category', { :controller => 'category', :action => 'delete', :collection_id => @collection.slug, :category_id => category.id }, class: 'fgred', data: { :confirm => 'Are you sure you want to delete this category and all its subcategories? After deleting you won\'t be able to recover it!' }
                       hr
-                      =link_to 'Upload Subjects', article_upload_form_path(@collection.id)
+                      =link_to 'Upload Subjects', article_upload_form_path(@collection.slug)
 
           dd
             -if category.articles_list(@collection).empty?
