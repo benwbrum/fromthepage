@@ -62,18 +62,37 @@
 
   #features {
     clear: both;
+    overflow: hidden;
     padding-top: 57px;
-  }
 
-  #features {
     section {
       width: 25%;
       float: left;
       box-sizing: border-box;
       padding-left: $gapSize;
 
-      &:first-of-type {
+      &:first-child {
         padding-left: 0;
+      }
+    }
+  }
+
+  #video {
+    text-align: center;
+
+    &_wrapper {
+      height: 0;
+      width: 100%;
+      position: relative;
+      padding-top: 56.25%;
+
+      iframe {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        border: 1px solid $borderColor;
       }
     }
   }
