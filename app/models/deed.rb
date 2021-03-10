@@ -31,6 +31,18 @@ class Deed < ApplicationRecord
     return true # don't fail validation when is_public==false!
   end
 
+  def show_to?(user)
+    if self.is_public
+      true
+    else
+      if self.work
+        self.work.access_object(user)
+      else
+        false
+      end
+    end
+  end
+
   def calculate_prerender
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
       renderer = ApplicationController.renderer.new

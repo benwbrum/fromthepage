@@ -67,7 +67,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def notes
-    Note.where(work_id: self.works.ids)
+    Note.where(work_id: self.works.ids).order('created_at DESC')
   end
 
   def deeds
