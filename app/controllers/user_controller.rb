@@ -125,17 +125,6 @@ class UserController < ApplicationController
     end
   end
 
-  def record_deed
-    deed = Deed.new
-    deed.note = @note
-    deed.page = @page
-    deed.work = @work
-    deed.collection = @collection
-    deed.deed_type = DeedType::NOTE_ADDED
-    deed.user = current_user
-    deed.save!
-  end
-
   private
 
   def user_params

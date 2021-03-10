@@ -97,7 +97,7 @@
           span.deed-short_content
             =="#{user} wrote #{text}"
     small.legend
-      =link_to t('.show_more'), deed_notes_path(@collection.id), class: 'button outline round'
+      =link_to t('.show_more'), deed_notes_path(@collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })

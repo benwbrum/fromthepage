@@ -6,16 +6,24 @@ class DeedController < ApplicationController
     #get rid of col_id if no breadcrumbs
     remove_col_id
 
-    # Get a list of collections that the user is allowed to view
-    # And take the union of the requested Collections if requested
-    scoped_collections = Collection.access_controlled(current_user).pluck(:id)
-    scoped_collections &= [@collection.id] if @collection 
-    
-    # Query ONLY allowed collections
-    @deed = Deed.where(collection_id: scoped_collections)
-    
-    # Scope to User as needed
-    @deed = @deed.where(user_id: @user.id) if @user
+    if @collection
+      # show more link on collections and document sets
+      @deed = @collection.deeds
+    elsif @user
+      # user activity stream show more link
+      @deed = @user.deeds.includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+    else
+      # show more link for site-wide/find-a-project Show More links
+      if current_user && current_user.admin && params[:private]=='true'
+        # let admin users see all activity if they add "private=true" to the URL
+        @deed = Deed.all
+      else
+        # Query ONLY allowed collections
+        scoped_collections = Collection.access_controlled(current_user).pluck(:id)
+        @deed = Deed.where(collection_id: scoped_collections)
+      end
+    end
+
 
     # Scope for date
     if params[:start_date]
@@ -33,7 +41,7 @@ class DeedController < ApplicationController
 
   def notes
     if @collection
-      @deeds = Deed.where(collection_id: @collection.id, deed_type: DeedType::NOTE_ADDED).order('created_at DESC').includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      @deeds = @collection.deeds.where(deed_type: DeedType::NOTE_ADDED).order('created_at DESC').includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
     else
       @deeds = Deed.where(deed_type: DeedType::NOTE_ADDED).order('created_at DESC').joins(:collection).includes(:note, :page, :user, :work).where("collections.restricted = 0").paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
     end
