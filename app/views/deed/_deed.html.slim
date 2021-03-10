@@ -2,9 +2,13 @@
 -suppress_collection = local_assigns[:suppress_collection]
 -mailer = local_assigns[:mailer] ? true : false
 -prerender = local_assigns[:prerender] ? true : false
+
 -access_object = nil
--if deed.collection && deed.work
-  -access_object = deed.work.access_object(current_user)
+-if prerender
+  -access_object = deed.collection
+-else
+  -if deed.collection && deed.work
+    -access_object = deed.work.access_object(current_user)
 
 -user_name = deed.user.display_name if deed.user
 
