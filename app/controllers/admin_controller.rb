@@ -204,6 +204,7 @@ class AdminController < ApplicationController
   def settings
     @email_text = PageBlock.find_by(view: "new_owner").html
     @flag_denylist = PageBlock.find_by(view: "flag_denylist").html
+    @email_denylist = (PageBlock.where(view: "email_denylist").first ? PageBlock.where(view: "email_denylist").first.html : '')
   end
 
   def update
@@ -219,6 +220,13 @@ class AdminController < ApplicationController
       block.html = params[:admin][:flag_denylist]
       block.save!
     end
+
+    block = PageBlock.where(view: "email_denylist").first || PageBlock.new(view: 'email_denylist')
+    if params[:admin][:email_denylist] != block.html
+      block.html = params[:admin][:email_denylist]
+      block.save!
+    end
+
 
     flash[:notice] = t('.admin_settings_updated')
 

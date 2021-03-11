@@ -13,6 +13,10 @@
           td(colspan="2")
             =f.label :flag_denylist, "Terms to flag as potential abusive content:", class: 'above'
             =f.text_area :flag_denylist, rows: 12, value: @flag_denylist
+        tr
+          td(colspan="2")
+            =f.label :email_denylist, "Email patterns to ban:", class: 'above'
+            =f.text_area :email_denylist, rows: 12, value: @email_denylist
 
       .toolbar
         .toolbar_group.aright
