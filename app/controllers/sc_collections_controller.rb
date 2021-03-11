@@ -18,6 +18,7 @@ class ScCollectionsController < ApplicationController
   def cdm_bulk_import_create
     import = CdmBulkImport.new
     import.collection_param = params[:collection_id]
+    import.ocr_correction = params[:ocr_correction]
     import.user = current_user
     clean_urls = params[:cdm_urls].gsub(/\s+/m, "\n")
     import.cdm_urls = clean_urls
