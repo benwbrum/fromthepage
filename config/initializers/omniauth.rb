@@ -11,6 +11,18 @@ Rails.application.config.middleware.use OmniAuth::Builder do
       options = {}
       if identity_provider_id == 'lds'
         options = {
+          idp_cert: ENV['IDP_CERT_LDS_PROD'],
+          idp_sso_target_url: 'https://ident.churchofjesuschrist.org/sso/SSORedirect/metaAlias/church/idp',
+          issuer: 'https://fromthepage.com',
+          attribute_statements: { 
+            external_id: ['churchaccountid'], 
+            email: ['workforceemail'], 
+            email2: ['missionaryemail'], 
+            name: ['preferredname'] 
+          }
+        }
+      elsif identity_provider_id == 'ldstest'
+        options = {
           idp_cert: IDP_CERT,
           idp_sso_target_url: 'https://ident-uat.churchofjesuschrist.org/sso/SSORedirect/metaAlias/church/idp',
           issuer: 'https://fromthepage.com',
