@@ -1,7 +1,7 @@
 =javascript_include_tag "openseadragon.js"
+=javascript_include_tag "openseadragon-filtering.js"
 
-.image-container(id="image_container"
-                 style="width: 100%; height: 100%; border: 1px solid #000; color: #333; background-color: #000;")
+.image-container(id="image_container")
 
 -content_for :javascript
   javascript:
@@ -10,6 +10,7 @@
       viewer = OpenSeadragon({
         id: "image_container",
         prefixUrl: "",
+        crossOriginPolicy: "Anonymous",
         showRotationControl: true,
         gestureSettingsTouch: {
           pinchRotate: true
