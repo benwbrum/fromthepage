@@ -361,6 +361,41 @@
   table.form + & { margin: $gapSize 0 0 0; }
 }
 
+.flex-toolbar {
+  display: flex;
+  align-items: center;
+
+  &.vtop {
+    align-items: flex-start;
+  }
+
+  &_group {
+    display: flex;
+    line-height: 1.1;
+    align-items: center;
+
+    &:not(:first-child) {
+      margin-left: $gapSize;
+    }
+
+    & > *:not(:first-child) {
+      margin-left: 0.5rem;
+    }
+
+    &.push-left {
+      margin-right: auto;
+    }
+
+    &.push-right {
+      margin-left: auto;
+    }
+  }
+
+  table.form + & {
+    margin: $gapSize 0 0 0;
+  }
+}
+
 .instack {
   margin: 0;
   list-style: none;
