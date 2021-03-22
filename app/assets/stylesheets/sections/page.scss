@@ -380,3 +380,26 @@ div.editarea {
 .page-indent {
   margin-left: 30px;
 }
+
+
+// Image filters
+
+.filter {
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0.8em;
+
+  &:not(:first-child) {
+    border-top: 1px solid rgba(#000, 0.06);
+  }
+
+  &_label {
+    flex-grow: 1;
+    margin-right: 1rem;
+  }
+
+  &_value {
+    width: 2em;
+    text-align: right;
+  }
+}
