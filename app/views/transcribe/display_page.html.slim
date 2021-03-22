@@ -9,47 +9,66 @@
   =validation_summary @page.errors
 
   .page-toolbar
-    .toolbar
-      .toolbar_group
-        a.button.outline(data-fullscreen-toggle) =t('.fullscreen')
-      .toolbar_group
+    .flex-toolbar
+      .flex-toolbar_group
+        a.button.outline(data-fullscreen-toggle)
+          =svg_symbol "#icon-expand", class: 'icon'
+          span.hide-l =t('.fullscreen')
         -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
         dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
-            span.hide-l =layout_modes[@layout_mode]
+            span.hide-l =t('.layout')
           dd
             -layout_modes.each do |mode, text|
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-      .toolbar_group.hide-m
+        dl.dropdown
+          dt.button.outline
+            =svg_symbol "#icon-filters", class: 'icon'
+            span.hide-l =t('.filters')
+          dd
+            .filter
+              span.filter_label Brightness
+              =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'brightness'
+              span.filter_value 0
+            .filter
+              span.filter_label Contrast
+              =range_field_tag 'filter', 0, min: 0, max: 20, step: 1, 'data-filter': 'contrast'
+              span.filter_value 0
+            .filter
+              span.filter_label Threshold
+              =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
+              span.filter_value 0
+
+      .flex-toolbar_group.hide-m
         label.auto-fullscreen
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
           span =t('.always_show_fullscreen')
 
-      .toolbar_group.w100.aright
+      .flex-toolbar_group.push-right
         =f.label 'mark_blank', t('.mark_as_blank')
         -if @page.status == Page::STATUS_BLANK
           =f.check_box('mark_blank', {checked: true})
         -else
           =f.check_box('mark_blank', {checked: false})
 
-      .toolbar_group
+      .flex-toolbar_group
         =f.label 'needs_review', t('.needs_review')
         -if @page.status == Page::STATUS_NEEDS_REVIEW
           =f.check_box('needs_review', {checked: true})
         -else
           =f.check_box('needs_review', {checked: false})
 
-      .toolbar_group
+      .flex-toolbar_group
         -unless @preview_xml
-          =>button_tag t('.preview'), :name => 'preview', type: 'submit'
+          =button_tag t('.preview'), :name => 'preview', type: 'submit'
         -else
-          =>button_tag t('.edit'), :name => 'edit', type: 'submit'
+          =button_tag t('.edit'), :name => 'edit', type: 'submit'
         -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag t('.autolink'), :name => 'autolink', type: 'submit'
+          =button_tag t('.autolink'), :name => 'autolink', type: 'submit'
         =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
@@ -89,9 +108,9 @@
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
   .page-toolbar
-    .toolbar
-      .toolbar_group.w100.fgfaded.wrap-text ==@work.set_transcription_conventions
-      .toolbar_group.aright
+    .flex-toolbar
+      .flex-toolbar_group.push-left.fgfaded =@work.set_transcription_conventions
+      .flex-toolbar_group
         -unless @preview_xml
           =>button_tag t('.preview'), :name => 'preview', type: 'button'
         -else
@@ -164,4 +183,34 @@ h2.legend =t('notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
+
+      $('[data-filter]').on('input', updateFilters);
+
+      var filters = {
+        brightness: 0,
+        contrast: 0,
+        threshold: 0,
+      }
+
+      function updateFilters(e) {
+        var input = e.currentTarget;
+        var value = parseFloat(input.value);
+
+        Object.assign(filters, { [input.dataset.filter]: value });
+        $(e.currentTarget).siblings('.filter_value').text(value > 0 ? `+${value}` : value);
+
+        var processors = [
+          OpenSeadragon.Filters.BRIGHTNESS(filters.brightness * 20),
+          OpenSeadragon.Filters.CONTRAST(filters.contrast / 5 + 1),
+        ];
+
+        if (filters.threshold !== 0) {
+          processors.push(OpenSeadragon.Filters.THRESHOLDING((filters.threshold + 10) * 10));
+        }
+
+        viewer.setFilterOptions({
+          filters: { processors },
+          loadMode: 'sync',
+        });
+      }
     });
