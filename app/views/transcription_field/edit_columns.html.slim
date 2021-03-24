@@ -22,7 +22,6 @@ div.columns
           -@current_columns.each do |column|
             =render ({ partial: 'new_column_form', locals: {collection_id: @collection, column: column}})
         -else
-          =render ({partial: 'column_form', locals: {transcription_field: @transcription_field}})
           -3.times do
             =render ({ partial: 'new_column_form', locals: {collection_id: @collection, column: nil, transcription_field: @transcription_field}})
 
