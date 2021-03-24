@@ -17,6 +17,8 @@ en:
       cancel: "Cancel"
       done: "Done"
       preview: "Preview"
+    add_columns:
+      starting_rows_must_not_be_blank: "Starting rows must not be blank."
     edit_columns:
       edit_spreadsheet_header: "Spreadsheet Configuration"
       edit_spreadsheet_columns: "Column Configuration"
