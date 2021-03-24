@@ -110,7 +110,9 @@ class TranscriptionFieldController < ApplicationController
     @collection = Collection.friendly.find(spreadsheet_column_params[:collection_id])
 
     @transcription_field = TranscriptionField.find(spreadsheet_column_params[:transcription_field_id])
-    unless params[:starting_rows].blank?
+    if params[:starting_rows].blank?
+      errors.add(:base, t('.starting_rows_must_not_be_blank'))
+    else
       @transcription_field.update(:starting_rows => params[:starting_rows].to_i)
     end
 
