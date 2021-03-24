@@ -4,8 +4,6 @@ class SpreadsheetColumn < ApplicationRecord
 
   validates :options, presence: true, if: Proc.new {|field| field.input_type == 'select'}, on: [:create, :update]
 
-  validates :percentage, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 100 }
-
   INPUTS = ["text", "numeric", "select", "checkbox"]
 
 end
