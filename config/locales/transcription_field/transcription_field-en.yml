@@ -25,7 +25,7 @@ en:
       cancel: "Cancel"
       done: "Done"
       preview: "Preview"
-      start_rows_label: "Starting Rows: "
+      start_rows_label: "Starting Row Count: "
       start_rows_description: "Number of rows the spreadsheet should display initially.  (Transcribers will be able to add additional rows if needed.)"
     column_form:
       column_options: "Column options (separate with semicolons)"
