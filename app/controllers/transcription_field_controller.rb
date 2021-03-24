@@ -179,7 +179,7 @@ class TranscriptionFieldController < ApplicationController
   private
 
   def spreadsheet_column_params
-    params.permit(:collection_id, :transcription_field_id, :starting_rows, spreadsheet_columns: [:label, :input_type, :percentage, :options, :id])
+    params.permit(:collection_id, :transcription_field_id, :starting_rows, spreadsheet_columns: [:label, :input_type, :options, :id])
   end
 
   def authorized?

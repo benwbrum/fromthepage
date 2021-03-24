@@ -2,12 +2,10 @@
 -input_type_value = !column.blank? ? column.input_type : nil
 -label_value = !column.blank? ? column.label : nil
 -options_value = !column.blank? ? column.options : nil
--percentage_value = !column.blank? ? column.percentage : nil
 tr
   td =text_field_tag "spreadsheet_columns[][label]", "#{label_value}", 'aria-label' => 'Field label'
   td =select_tag("spreadsheet_columns[][input_type]", options_for_select(SpreadsheetColumn::INPUTS, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type third')
   td =text_area_tag "spreadsheet_columns[][options]", "#{options_value}", 'aria-label' => 'Field options', class:  'field-options fourth', disabled: true
-  td =text_field_tag "spreadsheet_columns[][percentage]", "#{percentage_value}", 'aria-label' => 'Width Percentage', class: 'percent'
 
   -unless column.blank?
     td 
