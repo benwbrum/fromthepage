@@ -225,11 +225,14 @@ module ContentdmTranslator
     end
     
     if server && collection && record
-      "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
+      # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
+      "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}:#{record}/manifest.json"
     elsif server && collection
-      "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
+      # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867/manifest.json
+      "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}/manifest.json"
     elsif server
-      "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
+      # https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
+      "https://#{server}.contentdm.oclc.org/iiif/2/manifest.json"
     else
       raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
     end
