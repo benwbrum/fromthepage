@@ -68,6 +68,33 @@
   //   ["2019", 30, 15, 12, 13]
   // ];
 
+  function highlightRow(rowNum, maxRows, topOffset, bottomOffset) {
+    // first calculate against a 100% high canvas
+    rowHeightAsSpreadsheetPct = 1.0 / maxRows;
+
+    pctOfPageThatIsSpreadsheet = (1.0 - topOffset - bottomOffset);
+    rowHeightAsPagePct = pctOfPageThatIsSpreadsheet / maxRows;
+
+    rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
+
+
+    // now transpose for viewport coordinates
+    viewportY = rowOffsetFromPageTop / window.viewer.viewport.getAspectRatio();
+    viewportHeight = rowHeightAsPagePct / window.viewer.viewport.getAspectRatio();
+
+    window.viewer.removeOverlay("runtime-overlay");
+    
+    var elt = document.createElement("div");
+    elt.id = "runtime-overlay";
+    elt.className = "filter";
+    window.viewer.addOverlay({
+      element: elt,
+      location: new OpenSeadragon.Rect(0.0, viewportY, 1.0, viewportHeight)
+    });
+  };
+
+
+
   var container = document.getElementById("hot-div-<%= transcription_field.id %>");
   var hot = new Handsontable(container, {
     rowHeaders: true,
@@ -77,11 +104,19 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
+    afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
+      // setting if prevent scrolling after selection
+      //alert("highlightRow("+row+", <%= transcription_field.starting_rows %>, 0.1, 0.1);");
+      highlightRow(row, <%= transcription_field.starting_rows %>, 0.1, 0.1);
+    },
     manualColumnResize: true,
     manualRowResize: true,
     startRows: <%= transcription_field.starting_rows %>
   });
 
   // $(container).data('hot-object', hot);
+      // actually call it
+
+  //alert("highlightRow(rowNum, <%= transcription_field.starting_rows %>, 0.1, 0.1);");
 
 </script>
