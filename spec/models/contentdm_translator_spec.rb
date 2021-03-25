@@ -22,7 +22,7 @@ RSpec.describe ContentdmTranslator do
         end
         it "returns an good iiif url for collection" do
             url = ContentdmTranslator.cdm_url_to_iiif(collection_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/COL1D:manifest.json')
+            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/COL1D/manifest.json')
         end
         it "returns an good iiif url for repository" do
             url = ContentdmTranslator.cdm_url_to_iiif(repository_url)
