@@ -16,7 +16,7 @@ describe "import data" do
     let(:item_url)      { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/2' }
     let(:collection_url){ 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01' }
     let(:repository_url){ 'https://cdm16488.contentdm.oclc.org/' }
-    let(:bad_item_url)  { 'https://cdm16488.contentdm.oclc.org/digital/collection/MPD01/id/1' }
+    let(:bad_item_url)  { 'https://hrc.contentdm.oclc.org/digital/collection/p15878coll90/id/41/rec/3' }
 
     it "browses a single record", :js => true do
       owner = User.first
