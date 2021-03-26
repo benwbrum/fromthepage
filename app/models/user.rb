@@ -60,11 +60,24 @@ class User < ApplicationRecord
 
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
+  validate :email_does_not_match_denylist
+
 
   before_validation :update_display_name
 
   after_save :create_notifications
   #before_destroy :clean_up_orphans
+
+  def email_does_not_match_denylist
+    raw = PageBlock.where(view: "email_denylist").first
+    if raw
+      patterns = raw.html.split(/\s+/)
+      if patterns.detect {|pattern| self.email.match(/#{pattern}/) }
+        errors.add(:email, 'error 38')
+      end
+    end
+  end
+
 
   def update_display_name
     if self.owner
