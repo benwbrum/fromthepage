@@ -177,6 +177,27 @@ class TranscriptionFieldController < ApplicationController
     redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
   end
 
+  def enable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => true)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def disable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => false)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def choose_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @collection = @transcription_field.collection
+    @page = @collection.pages.sample(1).first
+  end
+
+  def save_offset
+
+  end
 
   private
 

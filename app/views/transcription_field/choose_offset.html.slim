@@ -1,0 +1,12 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection }})
+div.columns
+  div.maincol
+    .image-container(id="image_container"
+                     style="height: 500px")
+
+      img(src="#{@page.canonical_facsimile_url}", style="height: 100%;")
+  div.aside
+    h2 =t('.page_layout')
+    p Click on the top part of the image that contains a spreadsheet form
+
+
