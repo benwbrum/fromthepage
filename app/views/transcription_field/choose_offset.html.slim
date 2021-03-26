@@ -1,10 +1,13 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection }})
 div.columns
   div.maincol
-    .image-container(id="image_container"
-                     style="height: 500px")
 
-      img(src="#{@page.canonical_facsimile_url}", style="height: 100%;")
+
+
+    .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
+      .page-column
+        .page-imagescan
+          =render :partial => '/shared/osd_div'
   div.aside
     h2 =t('.page_layout')
     p Click on the top part of the image that contains a spreadsheet form
