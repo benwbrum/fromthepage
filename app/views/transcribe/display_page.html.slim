@@ -110,7 +110,7 @@
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group.push-left.fgfaded =@work.set_transcription_conventions
-      .flex-toolbar_group
+      .flex-toolbar_group.push-top
         -unless @preview_xml
           =>button_tag t('.preview'), :name => 'preview', type: 'button'
         -else

@@ -390,6 +390,14 @@
     &.push-right {
       margin-left: auto;
     }
+
+    &.push-top {
+      margin-bottom: auto;
+    }
+
+    &.push-bottom {
+      margin-top: auto;
+    }
   }
 
   table.form + & {
