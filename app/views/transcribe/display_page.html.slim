@@ -24,23 +24,6 @@
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-        dl.dropdown
-          dt.button.outline
-            =svg_symbol "#icon-filters", class: 'icon'
-            span.hide-l =t('.filters')
-          dd
-            .filter
-              span.filter_label Brightness
-              =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'brightness'
-              span.filter_value 0
-            .filter
-              span.filter_label Contrast
-              =range_field_tag 'filter', 0, min: 0, max: 20, step: 1, 'data-filter': 'contrast'
-              span.filter_value 0
-            .filter
-              span.filter_label Threshold
-              =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
-              span.filter_value 0
         -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
           =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
           span.voice-info
@@ -175,34 +158,4 @@ h2.legend =t('notes_and_questions')
       $('#page_mark_blank').click(function(){
         $('#page_needs_review').prop('checked', false);
       });
-
-      $('[data-filter]').on('input', updateFilters);
-
-      var filters = {
-        brightness: 0,
-        contrast: 0,
-        threshold: 0,
-      }
-
-      function updateFilters(e) {
-        var input = e.currentTarget;
-        var value = parseFloat(input.value);
-
-        Object.assign(filters, { [input.dataset.filter]: value });
-        $(e.currentTarget).siblings('.filter_value').text(value > 0 ? `+${value}` : value);
-
-        var processors = [
-          OpenSeadragon.Filters.BRIGHTNESS(filters.brightness * 20),
-          OpenSeadragon.Filters.CONTRAST(filters.contrast / 5 + 1),
-        ];
-
-        if (filters.threshold !== 0) {
-          processors.push(OpenSeadragon.Filters.THRESHOLDING((filters.threshold + 10) * 10));
-        }
-
-        viewer.setFilterOptions({
-          filters: { processors },
-          loadMode: 'sync',
-        });
-      }
     });
