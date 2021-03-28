@@ -25,8 +25,9 @@
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
         -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
-          =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
-          span.voice-info
+          .voice-recognition
+            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            span.voice-info
 
       .flex-toolbar_group.hide-m
         label.auto-fullscreen
