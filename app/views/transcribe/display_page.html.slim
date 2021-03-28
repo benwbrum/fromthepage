@@ -150,6 +150,10 @@ h2.legend =t('notes_and_questions')
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
+
+        if (viewer) {
+          requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+        }
       });
 
       $('#auto-fullscreen').on('change', function() {
