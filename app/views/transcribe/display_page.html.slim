@@ -41,6 +41,9 @@
               span.filter_label Threshold
               =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
               span.filter_value 0
+        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+          =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+          span.voice-info
 
       .flex-toolbar_group.hide-m
         label.auto-fullscreen
@@ -50,17 +53,11 @@
 
       .flex-toolbar_group.push-right
         =f.label 'mark_blank', t('.mark_as_blank')
-        -if @page.status == Page::STATUS_BLANK
-          =f.check_box('mark_blank', {checked: true})
-        -else
-          =f.check_box('mark_blank', {checked: false})
+        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
 
       .flex-toolbar_group
         =f.label 'needs_review', t('.needs_review')
-        -if @page.status == Page::STATUS_NEEDS_REVIEW
-          =f.check_box('needs_review', {checked: true})
-        -else
-          =f.check_box('needs_review', {checked: false})
+        =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
 
       .flex-toolbar_group
         -unless @preview_xml
@@ -89,11 +86,6 @@
           =f.text_area :source_text
 
       -else
-        -if @collection.voice_recognition
-          .page-column_voice
-            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
-            span.voice-info
-
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
