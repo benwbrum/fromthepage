@@ -295,14 +295,63 @@ div.editarea {
 .page-imagescan {
   height: 100%;
   overflow: hidden;
+  position: relative;
   box-sizing: border-box;
   background: rgba(#000, 0.03);
+}
 
-  .image-container {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
+.image-toolbar {
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  opacity: 0;
+  display: flex;
+  padding: 0 8px;
+  visibility: hidden;
+  border-radius: 18px;
+  justify-content: center;
+  position: absolute !important;
+  background: rgba(#000, 0.8);
+  transform: translate3d(-50%, -100%, 0);
+  transition: opacity 0.3s 1s, visibility 0.3s 1s, transform 0.3s 1s $easeOutCubic;
+
+  &.fullpage,
+  .page-imagescan:hover & {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+    transform: translate3d(-50%, 10px, 0);
   }
+
+  a, .dropdown dt {
+    padding: 10px 8px;
+    color: rgba(#FFF, 0.7);
+
+    .icon {
+      display: block;
+    }
+  }
+
+  a:hover,
+  .dropdown dt:hover,
+  .dropdown.open dt {
+    color: #FFF;
+  }
+
+  .dropdown dd {
+    color: rgba(#FFF, 0.7);
+    background: rgba(#000, 0.8);
+
+    &:after {
+      border-bottom-color: rgba(#000, 0.8);
+    }
+  }
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
 }
 
 .page-review {
