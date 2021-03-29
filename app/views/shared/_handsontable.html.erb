@@ -3,6 +3,7 @@
 
 
 
+<%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
 <div id="hot-div-<%= transcription_field.id %>" 
   class="spreadsheet-input" 
   data-field-name="fields[<%= transcription_field.id %>]"></div>
@@ -68,6 +69,7 @@
   //   ["2019", 30, 15, 12, 13]
   // ];
 
+
   var container = document.getElementById("hot-div-<%= transcription_field.id %>");
   var hot = new Handsontable(container, {
     rowHeaders: true,
@@ -79,6 +81,9 @@
     columns: columnConfig,
     manualColumnResize: true,
     manualRowResize: true,
+    afterChange: function (changes, source) {
+      document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
+    },
     startRows: <%= transcription_field.starting_rows %>
   });
 
