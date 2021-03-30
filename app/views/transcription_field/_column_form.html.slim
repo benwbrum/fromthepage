@@ -1,4 +1,7 @@
-tr
-  th =label_tag :label
-  th =label_tag :input_type
-  th =label_tag :options, t('.column_options'), :title => t('.column_options_title')
+thead
+  tr
+    th =t('.label')
+    th =t('.input_type')
+    th
+      span title=t('.column_options_title') =t('.column_options')
+    th
