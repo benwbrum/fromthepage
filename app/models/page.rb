@@ -301,7 +301,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           tc.header = column.label
           if cell.blank?
             cell = ''
-          elsif cell.scan('<').count != cell.scan('>').count # broken tags or actual < / > signs
+          elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
             cell = ERB::Util.html_escape(cell)
           end
           tc.content = cell
