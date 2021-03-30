@@ -1,17 +1,13 @@
 <%= stylesheet_link_tag "handsontable.min" %>
 <%= javascript_include_tag "handsontable.full.min" %>
 
-
-
 <%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
-<div id="hot-div-<%= transcription_field.id %>" 
-  class="spreadsheet-input" 
-  data-field-name="fields[<%= transcription_field.id %>]"></div>
+<div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
 
 <script>
   var columnConfig = [
     <% transcription_field.spreadsheet_columns.each do |column| %>
-      { 
+      {
         <% if column.input_type == 'select' %>
           type: 'dropdown',
           source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
@@ -24,8 +20,9 @@
        },
     <% end %>
   ]
+
   var colHeadersConfig = [
-    <% transcription_field.spreadsheet_columns.each do |column| %>    
+    <% transcription_field.spreadsheet_columns.each do |column| %>
       "<%= column.label %>",
     <% end %>
   ]
@@ -58,6 +55,7 @@
       <% end %>
     <% end %>
   ]
+
   if(data.length == 0) {
     data = null;
   };
@@ -69,13 +67,15 @@
   //   ["2019", 30, 15, 12, 13]
   // ];
 
-
   var container = document.getElementById("hot-div-<%= transcription_field.id %>");
   var hot = new Handsontable(container, {
     rowHeaders: true,
     colHeaders: colHeadersConfig,
     filters: true,
     data: data,
+    width: '100%',
+    height: (data ? data.length : <%= transcription_field.starting_rows %>) * 32 + 35,
+    stretchH: 'all',
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
