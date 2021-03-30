@@ -463,6 +463,7 @@
 
 
 // Configure buttons
+
 .edit-buttons {
   padding: 0;
   margin: 1.5em 0;
@@ -519,45 +520,76 @@
 }
 
 
+// Edit transcription fields
 
-//Edit transcription fields
-.button.fields {
-  margin: $gapSize/2 $gapSize/2 0 0;
-}
-
-.toolbar.fields {
-  width: 95%;
-}
-
-.field_form {
+.field-form {
   width: 100%;
-  //border-collapse: separate;
-  table-layout: auto;
-  label { margin-left: 5px;}
-  th {
-    font-weight: normal;
-    white-space: nowrap;
-    text-align: left;
-    word-wrap: break-word;
-    padding: 4px 0 4px 8px;
-  }
-  td {
-    padding: 4px 0 4px 8px;
-  }
   margin-bottom: 15px;
-  .first {width: 15px;}
-  .fourth {width: 100%;}
-  .percent {width: 50px;}
+
+  th, td {
+    padding: 4px;
+    vertical-align: top;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  th {
+    padding-top: 15px;
+  }
+
+  &_label {
+    width: 35%;
+  }
+
+  &_type {
+    width: 15%;
+  }
+
+  &_options {
+    width: 50%;
+  }
+
+  &_actions {
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  &_icon {
+    padding: 6px 4px;
+    color: $bodyFgLight;
+    display: inline-block;
+
+    &[disabled] {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    &:hover {
+      color: $bodyFg;
+    }
+  }
 
   textarea {
     height: calc(2em + 2px);
+    min-height: calc(2em + 2px);
   }
+
+  .first {width: 15px;}
+  .fourth {width: 100%;}
+  .percent {width: 50px;}
 }
 
 a.field_icons {
   margin: 5px;
   color: $bodyFgLight;
   display: inline-block;
+
   &:hover {
     color: $bodyFg;
   }
