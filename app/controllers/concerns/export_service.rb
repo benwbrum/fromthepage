@@ -351,7 +351,7 @@ private
 
 
   def index_for_cell(cell)
-    if cell.transcription_field_id
+    if cell.transcription_field_id && cell.transcription_field.present?
       if cell.transcription_field.input_type == 'spreadsheet'
         index = @raw_headings.index(spreadsheet_heading_to_indexable(cell.transcription_field_id, cell.header))
       else
