@@ -145,12 +145,20 @@ h2.legend =t('notes_and_questions')
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
+
+        if (hot) {
+          hot.updateSettings({});
+        }
       });
 
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
+
+        if (hot) {
+          hot.updateSettings({});
+        }
       });
 
       $('#auto-fullscreen').on('change', function() {
