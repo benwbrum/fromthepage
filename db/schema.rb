@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_180026) do
+ActiveRecord::Schema.define(version: 2021_03_24_190600) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.index ["article_id", "category_id"], name: "index_articles_categories_on_article_id_and_category_id"
   end
 
-  create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "collection_id", null: false
     t.string "status"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
-  create_table "cdm_bulk_imports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "cdm_bulk_imports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.boolean "ocr_correction", default: false
     t.string "collection_param", null: false
@@ -205,11 +205,13 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.string "prerender", limit: 2047
     t.string "prerender_mailer", limit: 2047
     t.boolean "is_public", default: true
+    t.integer "document_set_id"
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
     t.index ["collection_id", "user_id"], name: "index_deeds_on_collection_id_user_id"
     t.index ["collection_id"], name: "index_deeds_on_collection_id"
     t.index ["created_at"], name: "index_deeds_on_created_at"
+    t.index ["document_set_id"], name: "index_deeds_on_document_set_id"
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
     t.index ["user_id"], name: "index_deeds_on_user_id"
@@ -259,7 +261,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.index ["user_id"], name: "index_document_uploads_on_user_id"
   end
 
-  create_table "editor_buttons", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "editor_buttons", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "key"
     t.integer "collection_id", null: false
     t.boolean "prefer_html"
@@ -268,7 +270,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.index ["collection_id"], name: "index_editor_buttons_on_collection_id"
   end
 
-  create_table "facet_configs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "facet_configs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "label"
     t.string "input_type"
     t.integer "order"
@@ -353,7 +355,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.boolean "use_ocr", default: false
   end
 
-  create_table "metadata_coverages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "metadata_coverages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "key"
     t.integer "count", default: 0
     t.integer "collection_id"
@@ -588,13 +590,12 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "spreadsheet_columns", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "spreadsheet_columns", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "transcription_field_id", null: false
     t.integer "position"
     t.string "label"
     t.string "input_type"
     t.string "options"
-    t.integer "percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
@@ -719,7 +720,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.index ["visit_token"], name: "index_visits_on_visit_token", unique: true
   end
 
-  create_table "work_facets", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "work_facets", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "s0", limit: 512
     t.string "s1", limit: 512
     t.string "s2", limit: 512
@@ -783,6 +784,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
+    t.string "uploaded_filename"
     t.string "genre"
     t.string "source_location"
     t.string "source_collection_name"
@@ -790,7 +792,6 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
-    t.string "uploaded_filename"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true

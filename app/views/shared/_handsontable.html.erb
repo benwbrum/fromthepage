@@ -1,0 +1,92 @@
+<%= stylesheet_link_tag "handsontable.min" %>
+<%= javascript_include_tag "handsontable.full.min" %>
+
+<%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
+<div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
+
+<script>
+  var columnConfig = [
+    <% transcription_field.spreadsheet_columns.each do |column| %>
+      {
+        <% if column.input_type == 'select' %>
+          type: 'dropdown',
+          source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
+        <% elsif column.input_type == 'numeric' %>
+          type: 'numeric'
+        <% elsif column.input_type == 'checkbox' %>
+          type: 'checkbox'
+        <% else %>
+        <% end %>
+       },
+    <% end %>
+  ]
+
+  var colHeadersConfig = [
+    <% transcription_field.spreadsheet_columns.each do |column| %>
+      "<%= column.label %>",
+    <% end %>
+  ]
+
+  var data = [
+    <% if @page %>
+      <% cells_by_row = transcription_field.table_cells.where(:page_id => @page.id).group_by { |cell| cell.row } %>
+      <% cells_by_row.values.each do |data_row| %>
+        [
+          <% transcription_field.spreadsheet_columns.each do |column_config| %>
+            <% cell = data_row.detect {|c| c.header == column_config.label } %>
+            <% if column_config.input_type == 'checkbox' %>
+              <% if cell.content == 'true' %>
+                "true",
+              <% else %>
+                "false",
+              <% end %>
+            <% else %>
+              <%= raw(cell.content.to_json) %>,
+            <% end %>
+          <% end %>
+        ],
+      <% end %>
+      <% (transcription_field.starting_rows - cells_by_row.count).times do %>
+        [
+          <% transcription_field.spreadsheet_columns.count.times do %>
+            null,
+          <% end %>
+        ],
+      <% end %>
+    <% end %>
+  ]
+
+  if(data.length == 0) {
+    data = null;
+  };
+
+  // var data = [
+  //   ["", "Ford", "Tesla", "Toyota", "Honda"],
+  //   ["2017", 10, 11, 12, 13],
+  //   ["2018", 20, 11, 14, 13],
+  //   ["2019", 30, 15, 12, 13]
+  // ];
+
+  var container = document.getElementById("hot-div-<%= transcription_field.id %>");
+  var hot = new Handsontable(container, {
+    rowHeaders: true,
+    colHeaders: colHeadersConfig,
+    filters: true,
+    data: data,
+    width: '100%',
+    height: (data ? data.length : <%= transcription_field.starting_rows %>) * 32 + 35,
+    stretchH: 'all',
+    contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
+    dropdownMenu: true,
+    columns: columnConfig,
+    manualColumnResize: true,
+    manualRowResize: true,
+    afterChange: function (changes, source) {
+      document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
+    },
+    startRows: <%= transcription_field.starting_rows %>
+  });
+
+  // $(container).data('hot-object', hot);
+
+</script>
