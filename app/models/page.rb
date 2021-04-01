@@ -384,7 +384,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
-    filename.sub("#{ext}","_thumb#{ext}")
+    filename.sub(/#{ext}$/,"_thumb#{ext}")
   end
 
   def remove_transcription_links(text)
