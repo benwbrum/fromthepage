@@ -63,6 +63,13 @@ class ExportController < ApplicationController
     cookies['download_finished'] = 'true'
   end
 
+  def work_metadata_csv
+    send_data(export_work_metadata_as_csv(@collection),
+              :filename => "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
+
 
   def table_csv
     send_data(export_tables_as_csv(@work),

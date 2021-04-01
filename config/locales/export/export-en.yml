@@ -28,6 +28,9 @@ en:
       export_all_table_data_as_csv: "Export All Table Data as CSV"
       iiif_api_description: "We also have a IIIF-based API for programmatically exporting transcripts from your collections. Learn more %{link}"
       iiif_collection_api_endpoint: "IIIF Collection API Endpoint: %{link}"
+      export_work_metadata: "Export Work Metadata"
+      export_work_metadata_as_csv: "Export Work Metadata As CSV" 
+      export_work_metadata_description: "Export a spreadsheet containing a row for each work in the collection, with columns for statistcs about pages transcribed and metadata for the work."
     edit_contentdm_credentials:
       contentdm_credentials: "CONTENTdm Credentials"
       contentdm_credentials_description: "Enter your CONTENTdm license key and your login credentials to export to CONTENTdm"

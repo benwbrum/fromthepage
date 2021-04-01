@@ -227,6 +227,60 @@ private
     @headings
   end
 
+
+  def export_work_metadata_as_csv(collection)
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
+      static_headers = [
+        'Title', 
+        'Collection', 
+        'Document Sets', 
+        'Uploaded Filename', 
+        'FromThePage ID',
+        'FromThePage Slug',
+        'FromThePage URL',
+        'Identifier',
+        'Originating Manifest ID',
+        'Total Pages',
+        'Pages Transcribed',
+        'Pages Corrected',
+        'Pages Indexed',
+        'Pages Translated',
+        'Pages Needing Review',
+        'Pages Marked Blank'
+      ]
+
+      metadata_headers = [
+      ]
+
+      csv << static_headers + metadata_headers
+
+      collection.works.includes(:document_sets, :work_statistic).each do |work| 
+        row = [
+          work.title,
+          work.collection.title,
+          work.document_sets.map{|ds| ds.title}. join('|'),
+          work.uploaded_filename,
+          work.id,
+          work.slug,
+          collection_read_work_url(collection.owner, collection, work),
+          work.identifier,
+          work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
+          work.work_statistic.total_pages,
+          work.work_statistic.transcribed_pages,
+          work.work_statistic.corrected_pages,
+          work.work_statistic.annotated_pages,
+          work.work_statistic.translated_pages,
+          work.work_statistic.needs_review,
+          work.work_statistic.blank_pages
+        ]
+
+        csv << row
+      end
+    end
+
+    csv_string
+  end
+
   def export_tables_as_csv(table_obj)
     if table_obj.is_a?(Collection)
       collection = table_obj
