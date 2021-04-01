@@ -91,7 +91,7 @@
   .page-toolbar
     .toolbar
       .toolbar_group.w100.fgfaded.wrap-text ==@work.set_transcription_conventions
-      .toolbar_group.aright.vtop
+      .toolbar_group.aright
         -unless @preview_xml
           =>button_tag t('.preview'), :name => 'preview', type: 'button'
         -else
