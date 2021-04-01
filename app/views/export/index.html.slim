@@ -108,7 +108,7 @@ table.datagrid
   h2 =t('.export_work_metadata')
   p.big
     span.fright(style="margin-left: 30px")
-      =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportTables')
+      =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
         =svg_symbol '#icon-export', class: 'icon'
         span =t('.export_work_metadata_as_csv')
     span =t('.export_work_metadata_description')
