@@ -9,6 +9,11 @@ module ExportService
     out.write file.read
   end
 
+  def export_work_metadata_csv(dirname:, out:, collection:)
+    path = "work_metadata.csv"
+    out.put_next_entry(path)
+    out.write(export_work_metadata_as_csv(collection))
+  end
 
   def export_subject_csv(dirname:, out:, collection:)
     path = "subject_index.csv"
@@ -254,7 +259,7 @@ private
 
       csv << static_headers + metadata_headers
 
-      collection.works.includes(:document_sets, :work_statistic).each do |work| 
+      collection.works.includes(:document_sets, :work_statistic).reorder(:id).each do |work| 
         row = [
           work.title,
           work.collection.title,
