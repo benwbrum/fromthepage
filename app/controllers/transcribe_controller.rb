@@ -117,7 +117,7 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
 
     if @page.field_based
-      @field_cells = params[:fields]
+      @field_cells = request.params[:fields]
       @page.process_fields(@field_cells)
     end
 
