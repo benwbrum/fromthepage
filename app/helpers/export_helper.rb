@@ -11,6 +11,10 @@ module ExportHelper
       export_table_csv_collection(dirname: '', out: out, collection: bulk_export.collection)
     end
 
+    if bulk_export.work_metadata_csv
+      export_work_metadata_csv(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
     works.each do |work|
       @work = work
       dirname = work.slug.truncate(200, omission: "")
