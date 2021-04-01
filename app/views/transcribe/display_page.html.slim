@@ -158,10 +158,10 @@ h2.legend =t('notes_and_questions')
 
         if (viewer) {
           requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
-	}
+	      };
         if (hot) {
           hot.updateSettings({});
-        }
+        };
       });
 
       $('#auto-fullscreen').on('change', function() {
