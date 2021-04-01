@@ -110,9 +110,10 @@ h2.legend =t('notes_and_questions')
 
 =render({ :partial => '/shared/collection_footer' })
 
+
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
 
--if text_direction == 'ltr'
+-if !@collection.field_based && text_direction == 'ltr'
   =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
 
@@ -144,6 +145,10 @@ h2.legend =t('notes_and_questions')
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
+
+        if (hot) {
+          hot.updateSettings({});
+        }
       });
 
       $('[data-layout-set]').on('click', function() {
@@ -153,6 +158,9 @@ h2.legend =t('notes_and_questions')
 
         if (viewer) {
           requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+	}
+        if (hot) {
+          hot.updateSettings({});
         }
       });
 
@@ -169,3 +177,8 @@ h2.legend =t('notes_and_questions')
         $('#page_needs_review').prop('checked', false);
       });
     });
+
+
+
+    // TODO change the parameter name for the HOT data to the name of the spreadsheet field
+    // TODO change the way we access the HOT data to allow more than one spreadsheet

@@ -270,29 +270,91 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     emended_plaintext(self.xml_translation)
   end
 
+
+  def process_spreadsheet(field, cell_data)
+    # returns a formatted string
+    formatted = String.new
+
+    # read spreadsheet-wide data like table heading
+    formatted << "<table class=\"tabular\"><thead>"
+
+    # read column-specific data like column heading
+    column_configs = field.spreadsheet_columns.to_a
+    column_configs.each do |column|
+      formatted << "<th>#{column.label}</th>"
+    end
+
+    formatted << "</thead><tbody>"
+    # write out 
+    parsed_cell_data = JSON.parse(cell_data.values.first)
+    parsed_cell_data.each_with_index do |row, rownum|
+      unless this_and_following_rows_empty?(parsed_cell_data, rownum)
+        # row = parsed_cell_data[row_key]
+        formatted_row = "<tr>"
+        row.each_with_index do |cell, colnum|
+          column = column_configs[colnum]
+          # save the table cell object
+          tc = TableCell.new(row: rownum+1)
+          tc.work = self.work
+          tc.page = self
+          tc.transcription_field_id = field.id
+          tc.header = column.label
+          if cell.blank?
+            cell = ''
+          elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
+            cell = ERB::Util.html_escape(cell)
+          end
+          tc.content = cell
+          tc.save!
+
+          # format the cell
+          formatted_row << "<td>#{cell}</td>"
+        end
+        formatted_row << "</tr>"
+        formatted << formatted_row
+      end
+    end
+    formatted << "</tbody></table>"
+
+    formatted
+  end
+
+  def this_and_following_rows_empty?(cell_data, rownum)
+    remaining_rows = cell_data[rownum..(cell_data.count - 1)]
+
+    row_with_value = remaining_rows.detect { |row|  row.detect{|cell| !cell.blank? } }
+
+    row_with_value.nil?
+  end
+
   #create table cells if the collection is field based
   def process_fields(field_cells)
     string = String.new
     cells = self.table_cells.each {|c| c.delete}
     unless field_cells.blank?
       field_cells.each do |id, cell_data|
-        tc = TableCell.new(row: 1)
-        tc.work = self.work
-        tc.page = self
-        tc.transcription_field_id = id.to_i
-        input_type = TranscriptionField.find(tc.transcription_field_id).input_type
+        field = TranscriptionField.find(id.to_i)
+        input_type = field.input_type
+        if input_type == 'spreadsheet'
+          string << process_spreadsheet(field, cell_data)
+        else
+          tc = TableCell.new(row: 1)
+          tc.work = self.work
+          tc.page = self
+          tc.transcription_field_id = id.to_i
 
-        cell_data.each do |key, value|
-          if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
-            value = ERB::Util.html_escape(value)
+          cell_data.each do |key, value|
+            if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
+              value = ERB::Util.html_escape(value)
+            end
+            tc.header = key
+            tc.content = value
+            key = (input_type == "description") ? (key + " ") : (key + ": ")
+            string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
           end
-          tc.header = key
-          tc.content = value
-          key = (input_type == "description") ? (key + " ") : (key + ": ")
-          string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
-        end
 
-        tc.save!
+          tc.save!
+        end
       end
     end
     self.source_text = string
@@ -322,7 +384,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
-    filename.sub("#{ext}","_thumb#{ext}")
+    filename.sub(/#{ext}$/,"_thumb#{ext}")
   end
 
   def remove_transcription_links(text)
