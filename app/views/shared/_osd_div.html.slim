@@ -54,18 +54,27 @@
         tileSources: #{raw(osd_source(@page))}
       });
 
+      viewer.addHandler('reset-bounds', function() {
+        var bounds = viewer.viewport.getBounds();
+        var aspect = bounds.height / bounds.width;
+        var home = viewer.viewport.getHomeBounds();
+        var rect = new OpenSeadragon.Rect(0, Math.min(0, home.y), 1, aspect);
+        viewer.viewport.fitBounds(rect, true);
+      });
+
       viewer.addHandler('viewport-change', function() {
         var bounds = viewer.viewport.getBounds();
         localStorage['json_bounds'] = JSON.stringify(bounds);
       });
 
       viewer.addHandler('open', function() {
-        json_bounds = localStorage['json_bounds'];
-
+        var json_bounds = localStorage['json_bounds'];
         if (json_bounds) {
-          bounds = JSON.parse(json_bounds);
+          var bounds = JSON.parse(json_bounds);
           var rect = new OpenSeadragon.Rect(bounds.x, bounds.y, bounds.width, bounds.height);
           viewer.viewport.fitBounds(rect, true);
+        } else {
+          viewer.raiseEvent('reset-bounds');
         }
       });
 
