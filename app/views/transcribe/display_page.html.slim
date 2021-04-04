@@ -146,7 +146,7 @@ h2.legend =t('notes_and_questions')
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
 
-        if (hot) {
+        if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         }
       });
@@ -156,10 +156,11 @@ h2.legend =t('notes_and_questions')
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
 
-        if (viewer) {
+        if (typeof viewer !== 'undefined') {
           requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
-	      };
-        if (hot) {
+        };
+
+        if (typeof hot !== 'undefined') {
           hot.updateSettings({});
         };
       });
