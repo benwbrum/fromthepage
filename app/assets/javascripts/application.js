@@ -293,6 +293,7 @@ $(function() {
   tippy('[data-tippy-content]', {
     placement: 'bottom-start',
     duration: [100, 200],
+    maxWidth: 300,
   });
 });
 
