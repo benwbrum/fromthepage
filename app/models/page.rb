@@ -314,9 +314,10 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
     formatted << "</thead><tbody>"
     # write out 
-    cell_data.keys.each_with_index do |row_key, rownum|
-      unless this_and_following_rows_empty?(cell_data, rownum)
-        row = cell_data[row_key]
+    parsed_cell_data = JSON.parse(cell_data.values.first)
+    parsed_cell_data.each_with_index do |row, rownum|
+      unless this_and_following_rows_empty?(parsed_cell_data, rownum)
+        # row = parsed_cell_data[row_key]
         formatted_row = "<tr>"
         row.each_with_index do |cell, colnum|
           column = column_configs[colnum]
@@ -326,7 +327,9 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           tc.page = self
           tc.transcription_field_id = field.id
           tc.header = column.label
-          if cell.scan('<').count != cell.scan('>').count # broken tags or actual < / > signs
+          if cell.blank?
+            cell = ''
+          elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
             cell = ERB::Util.html_escape(cell)
           end
           tc.content = cell
@@ -345,7 +348,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
   def this_and_following_rows_empty?(cell_data, rownum)
-    remaining_rows = cell_data.values[rownum..(cell_data.count - 1)]
+    remaining_rows = cell_data[rownum..(cell_data.count - 1)]
 
     row_with_value = remaining_rows.detect { |row|  row.detect{|cell| !cell.blank? } }
 
@@ -409,7 +412,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
-    filename.sub("#{ext}","_thumb#{ext}")
+    filename.sub(/#{ext}$/,"_thumb#{ext}")
   end
 
   def remove_transcription_links(text)

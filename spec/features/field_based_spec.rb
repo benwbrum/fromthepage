@@ -44,13 +44,13 @@ describe "collection settings js tasks", :order => :defined do
     #check the field preview
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Fields")
-    expect(page.find('div.editarea')).to have_content("First field")
-    expect(page.find('div.editarea')).to have_content("Second field")
-    expect(page.find('div.editarea')).to have_content("Third field")
+    expect(page.find('div.page-fields')).to have_content("First field")
+    expect(page.find('div.page-fields')).to have_content("Second field")
+    expect(page.find('div.page-fields')).to have_content("Third field")
     #check field width for first field (set to 20%)
-    expect(page.find('div.editarea span[1]')[:style]).to eq "width:19%"
+    expect(page.find('div.page-fields .field-wrapper[1]')[:style]).to eq "width: 20%"
     #check field width for second field (not set)
-    expect(page.find('div.editarea span[2]')[:style]).not_to eq "width:19%"
+    expect(page.find('div.page-fields .field-wrapper[2]')[:style]).not_to eq "width: 20%"
   end
 
   it "adds fields for transcription", :js => true do

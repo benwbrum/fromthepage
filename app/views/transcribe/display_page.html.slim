@@ -9,47 +9,47 @@
   =validation_summary @page.errors
 
   .page-toolbar
-    .toolbar
-      .toolbar_group
-        a.button.outline(data-fullscreen-toggle) =t('.fullscreen')
-      .toolbar_group
+    .flex-toolbar
+      .flex-toolbar_group
+        a.button.outline(data-fullscreen-toggle)
+          =svg_symbol "#icon-expand", class: 'icon'
+          span.hide-l =t('.fullscreen')
         -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
         dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
-            span.hide-l =layout_modes[@layout_mode]
+            span.hide-l =t('.layout')
           dd
             -layout_modes.each do |mode, text|
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-      .toolbar_group.hide-m
+        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+          .voice-recognition
+            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            span.voice-info
+
+      .flex-toolbar_group.hide-m
         label.auto-fullscreen
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
           span =t('.always_show_fullscreen')
 
-      .toolbar_group.w100.aright
+      .flex-toolbar_group.push-right
         =f.label 'mark_blank', t('.mark_as_blank')
-        -if @page.status == Page::STATUS_BLANK
-          =f.check_box('mark_blank', {checked: true})
-        -else
-          =f.check_box('mark_blank', {checked: false})
+        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
 
-      .toolbar_group
+      .flex-toolbar_group
         =f.label 'needs_review', t('.needs_review')
-        -if @page.status == Page::STATUS_NEEDS_REVIEW
-          =f.check_box('needs_review', {checked: true})
-        -else
-          =f.check_box('needs_review', {checked: false})
+        =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
 
-      .toolbar_group
+      .flex-toolbar_group
         -unless @preview_xml
-          =>button_tag t('.preview'), :name => 'preview', type: 'submit'
+          =button_tag t('.preview'), :name => 'preview', type: 'submit'
         -else
-          =>button_tag t('.edit'), :name => 'edit', type: 'submit'
+          =button_tag t('.edit'), :name => 'edit', type: 'submit'
         -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag t('.autolink'), :name => 'autolink', type: 'submit'
+          =button_tag t('.autolink'), :name => 'autolink', type: 'submit'
         =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
@@ -70,11 +70,6 @@
           =f.text_area :source_text
 
       -else
-        -if @collection.voice_recognition
-          .page-column_voice
-            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
-            span.voice-info
-
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
@@ -84,14 +79,15 @@
               =f.label :title, t('.title'), class: 'a50'
               =f.text_field :title
           -if !@collection.field_based
-            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_transcription'))
+            =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_transcription'))
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
   .page-toolbar
-    .toolbar
-      .toolbar_group.w100.fgfaded.wrap-text ==@work.set_transcription_conventions
-      .toolbar_group.aright
+    .flex-toolbar
+      .flex-toolbar_group.push-left
+        .fgfaded ==@work.set_transcription_conventions
+      .flex-toolbar_group.push-top
         -unless @preview_xml
           =>button_tag t('.preview'), :name => 'preview', type: 'button'
         -else
@@ -145,12 +141,24 @@ h2.legend =t('notes_and_questions')
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
+
+        if (typeof hot !== 'undefined') {
+          hot.updateSettings({});
+        }
       });
 
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
+
+        if (typeof viewer !== 'undefined') {
+          requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+        };
+
+        if (typeof hot !== 'undefined') {
+          hot.updateSettings({});
+        };
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -168,32 +176,6 @@ h2.legend =t('notes_and_questions')
     });
 
 
-
-    $(".page-editor").submit(function(event) {
-
-        /* stop form from submitting normally */
-        event.preventDefault();
-
-        /* get some values from elements on the page: */
-        var $form = $(this);
-        var url = $form.attr('action');
-        var form_data = {};
-
-        /* fill the post data with elements from the form fields */
-        for(var i=0, element; element = this.elements[i++];) {
-          form_data[element.name] = element.value;
-        };
-
-        /* fill the post data with elements from the spreadsheet */
-        var element = $('.spreadsheet-input');
-        var hot_object = hot; /* element.data('hot-object'); */
-        var param_name = element.data('field-name');
-        form_data[param_name] = hot_object.getData();
-
-        /* Send the data using post */
-        var posting = $.post(url, form_data);
-
-    });
 
     // TODO change the parameter name for the HOT data to the name of the spreadsheet field
     // TODO change the way we access the HOT data to allow more than one spreadsheet
