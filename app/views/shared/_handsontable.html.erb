@@ -116,15 +116,20 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
-    <% if transcription_field.row_highlight %>
-      afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
-        // setting if prevent scrolling after selection
+    afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
+      // setting if prevent scrolling after selection
+      console.log("afterSelection("+row+", "+column+", "+row2+", "+column2+"...)");
+      if(row+1 == hot.countRows()) {
+        // add a new row if we are at the end
+        hot.alter('insert_row', hot.countRows());
+      };
+      <% if transcription_field.row_highlight %>
         highlightRow(row, 
           <%= transcription_field.starting_rows %>, 
           <%= transcription_field.top_offset %>, 
           <%= transcription_field.bottom_offset %>);
-      },
-    <% end %>
+      <% end %>
+    },
     manualColumnResize: true,
     manualRowResize: true,
     afterChange: function (changes, source) {
