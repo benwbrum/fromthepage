@@ -1,30 +1,30 @@
 -field_order(@collection)
-div.editarea
+.page-fields
   -@fields.each do |line, array|
-    div
+    .fields-row
       -field_layout(array)
       -@field_array.each do |field, cell|
         -if (@page && (field.page_number == @page.position || field.page_number == nil )) || (current_page?({action: 'edit_fields'}))
-          -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
-          span(style="width:#{span_width}%")
-            -if field.input_type == "instruction"
-              div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
-                span
-                  = t('.instructions')
-                =field.label
-            -elsif field.input_type == 'spreadsheet'
+          -if field.input_type == 'spreadsheet'
+            .spreadsheet-wrapper
               =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field} })
-            -else
-              =label_tag field.label, field.label
-              <br>
-              -content = cell.nil? ? nil : cell.content
-              -if field.input_type == "text"
-                =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
-              -elsif field.input_type == "select"
-                -options = field.options.split(";") unless field.options.nil?
-                =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
-              -elsif field.input_type == "description"
-                =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+          -else
+            -span_width = !field.percentage.blank? ? field.percentage : @width
+            .field-wrapper(style="width: #{span_width}%")
+              -if field.input_type == "instruction"
+                div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
+                  h5 =t('.instructions')
+                  p =field.label
               -else
-                =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+                =label_tag field.label, field.label
+                -content = cell.nil? ? nil : cell.content
+                -if field.input_type == "text"
+                  =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+                -elsif field.input_type == "select"
+                  -options = field.options.split(";") unless field.options.nil?
+                  =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
+                -elsif field.input_type == "description"
+                  =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+                -else
+                  =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
 

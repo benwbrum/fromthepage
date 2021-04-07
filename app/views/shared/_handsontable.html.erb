@@ -1,16 +1,13 @@
 <%= stylesheet_link_tag "handsontable.min" %>
 <%= javascript_include_tag "handsontable.full.min" %>
 
-
-
-<div id="hot-div-<%= transcription_field.id %>" 
-  class="spreadsheet-input" 
-  data-field-name="fields[<%= transcription_field.id %>]"></div>
+<%= hidden_field_tag("fields[#{transcription_field.id}][#{transcription_field.label}]", '', id: "fields-#{transcription_field.id}") %>
+<div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
 
 <script>
   var columnConfig = [
     <% transcription_field.spreadsheet_columns.each do |column| %>
-      { 
+      {
         <% if column.input_type == 'select' %>
           type: 'dropdown',
           source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
@@ -23,8 +20,9 @@
        },
     <% end %>
   ]
+
   var colHeadersConfig = [
-    <% transcription_field.spreadsheet_columns.each do |column| %>    
+    <% transcription_field.spreadsheet_columns.each do |column| %>
       "<%= column.label %>",
     <% end %>
   ]
@@ -36,14 +34,18 @@
         [
           <% transcription_field.spreadsheet_columns.each do |column_config| %>
             <% cell = data_row.detect {|c| c.header == column_config.label } %>
-            <% if column_config.input_type == 'checkbox' %>
-              <% if cell.content == 'true' %>
-                "true",
-              <% else %>
-                "false",
-              <% end %>
+            <% if cell.nil? %>
+              null,
             <% else %>
-              <%= raw(cell.content.to_json) %>,
+              <% if column_config.input_type == 'checkbox' %>
+                <% if cell.content == 'true' %>
+                  "true",
+                <% else %>
+                  "false",
+                <% end %>
+              <% else %>
+                <%= raw(cell.content.to_json) %>,
+              <% end %>
             <% end %>
           <% end %>
         ],
@@ -57,6 +59,7 @@
       <% end %>
     <% end %>
   ]
+
   if(data.length == 0) {
     data = null;
   };
@@ -80,21 +83,23 @@
     rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
     fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
 
-    // now transpose for viewport coordinates
-    viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
-    viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
-    // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
+    if(window.viewer.world.getItemCount() > 0) {
+      // now transpose for viewport coordinates
+      viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
+      viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
+      // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
 
 
-    window.viewer.removeOverlay("runtime-overlay");
-    
-    var elt = document.createElement("div");
-    elt.id = "runtime-overlay";
-    elt.className = "filter";
-    window.viewer.addOverlay({
-      element: elt,
-      location: new OpenSeadragon.Rect(0.0, viewportY, 1.0, viewportHeight)
-    });
+      window.viewer.removeOverlay("runtime-overlay");
+      
+      var elt = document.createElement("div");
+      elt.id = "runtime-overlay";
+      elt.className = "filter";
+      window.viewer.addOverlay({
+        element: elt,
+        location: new OpenSeadragon.Rect(0.0, viewportY, 1.0, viewportHeight)
+      });
+    }
   };
 
 
@@ -105,6 +110,9 @@
     colHeaders: colHeadersConfig,
     filters: true,
     data: data,
+    width: '100%',
+    height: (data ? data.length : <%= transcription_field.starting_rows %>) * 23 + 27,
+    stretchH: 'all',
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
@@ -119,6 +127,9 @@
     <% end %>
     manualColumnResize: true,
     manualRowResize: true,
+    afterChange: function (changes, source) {
+      document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
+    },
     startRows: <%= transcription_field.starting_rows %>
   });
 

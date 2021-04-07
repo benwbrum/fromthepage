@@ -1,7 +1,7 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 10, :collection_id => @collection }})
+
 div.columns
   div.maincol
-
     h2 =t('.edit_spreadsheet_header')
 
     h3 =t('.screen_ruler')
@@ -19,17 +19,15 @@ div.columns
     =form_tag transcription_field_spreadsheet_column_add_columns_path
       =hidden_field_tag(:collection_id, @collection.id)
       =hidden_field_tag(:transcription_field_id, @transcription_field.id)
-      h3 =t('.row_configuration')
-      =label_tag :starting_rows, t('.start_rows_label')
-      =text_field_tag :starting_rows, @transcription_field.starting_rows, :maxLength => 3, :size => 3, class: 'field percent'
-      p =t('.start_rows_description')
-    
-
-
+      table.form
+        tbody
+          tr
+            th.big =label_tag :starting_rows, t('.start_rows_label')
+            td.big =number_field_tag :starting_rows, @transcription_field.starting_rows, :min => 0, :max => 999, class: 'field percent'
+            td.w100.fglight =t('.start_rows_description')
 
       h3 =t('.edit_spreadsheet_columns')
-
-      table.field_form#new-columns
+      table.field-form#new-columns
         =render ({partial: 'column_form'})
         -unless @current_columns.blank?
           -@current_columns.each do |column|
@@ -38,38 +36,33 @@ div.columns
           -3.times do
             =render ({ partial: 'new_column_form', locals: {collection_id: @collection, column: nil, transcription_field: @transcription_field}})
 
-      .toolbar.aright.fields
-        .toolbar_group
-          =button_tag t('.add_additional_column'), type: 'button', id: 'add-column', class: 'button fields'
-          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button fields'
-          =link_to t('.cancel'), transcription_field_edit_fields_path(:collection_id => @collection.slug), class: 'button fields'
-          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button fields'
+      .flex-toolbar
+        .flex-toolbar_group
+          =button_tag t('.add_additional_column'), type: 'button', id: 'add-column', class: 'button'
+        .flex-toolbar_group.push-right
+          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
+          =link_to t('.cancel'), transcription_field_edit_fields_path(:collection_id => @collection.slug), class: 'button'
+          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
 
-    h2.acenter =t('.preview')
+    h2 =t('.preview')
     =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => @transcription_field} })
-
-
-
-
-=render({ :partial => '/shared/collection_footer' })
-
 
 -content_for :javascript
   javascript:
     $(function() {
-      $('#add-column').click(function(e){
+      $('#add-column').click(function(e) {
         $('#new-columns').append("#{j render partial: 'new_column_form', locals: {collection_id: @collection, column: nil, transcription_field: @transcription_field}}");
       });
 
-      $(document).on('change', '.input_type', function(){
-          addOptions(this,2);
+      $(document).on('change', '.input_type', function() {
+        addOptions(this, 2);
       })
 
-      $('table#new-columns tr').each(function(){
+      $('table#new-columns tr').each(function() {
         var optionsObj = $(this).find('td .field-options')[0];
-        if (optionsObj !== undefined){
+        if (optionsObj !== undefined) {
           var index = $(this).find('td .input_type')[0].options.selectedIndex;
-          if (index == 2){
+          if (index == 2) {
             $(optionsObj).prop('disabled', false);
           };
         };
