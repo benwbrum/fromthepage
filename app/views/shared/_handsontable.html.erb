@@ -74,13 +74,17 @@
 
     pctOfPageThatIsSpreadsheet = (1.0 - topOffset - bottomOffset);
     rowHeightAsPagePct = pctOfPageThatIsSpreadsheet / maxRows;
+    margin = 0.005;
+    fuzzyRowHeightAsPagePct = rowHeightAsPagePct + (margin * 2);
 
     rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
-
+    fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
 
     // now transpose for viewport coordinates
-    viewportY = rowOffsetFromPageTop / window.viewer.viewport.getAspectRatio();
-    viewportHeight = rowHeightAsPagePct / window.viewer.viewport.getAspectRatio();
+    viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
+    viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
+    // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
+
 
     window.viewer.removeOverlay("runtime-overlay");
     
@@ -106,8 +110,10 @@
     columns: columnConfig,
     afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
       // setting if prevent scrolling after selection
-      //alert("highlightRow("+row+", <%= transcription_field.starting_rows %>, 0.1, 0.1);");
-      highlightRow(row, <%= transcription_field.starting_rows %>, 0.1, 0.1);
+      highlightRow(row, 
+        <%= transcription_field.starting_rows %>, 
+        <%= transcription_field.top_offset %>, 
+        <%= transcription_field.bottom_offset %>);
     },
     manualColumnResize: true,
     manualRowResize: true,
