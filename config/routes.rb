@@ -288,6 +288,10 @@ Fromthepage::Application.routes.draw do
       get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
       get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
       post 'add_columns', to: 'transcription_field#add_columns'
+      get ':transcription_field_id/disable_ruler', to: 'transcription_field#disable_ruler', as: 'disable_ruler'
+      get ':transcription_field_id/enable_ruler', to: 'transcription_field#enable_ruler', as: 'enable_ruler'
+      get ':transcription_field_id/choose_offset', to: 'transcription_field#choose_offset', as: 'choose_offset'
+      post ':transcription_field_id/:page_id/save_offset', to: 'transcription_field#save_offset', as: 'save_offset'
     end
   end
 

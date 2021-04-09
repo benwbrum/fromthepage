@@ -206,13 +206,11 @@ ActiveRecord::Schema.define(version: 2021_04_01_191543) do
     t.string "prerender", limit: 2047
     t.string "prerender_mailer", limit: 2047
     t.boolean "is_public", default: true
-    t.integer "document_set_id"
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
     t.index ["collection_id", "user_id"], name: "index_deeds_on_collection_id_user_id"
     t.index ["collection_id"], name: "index_deeds_on_collection_id"
     t.index ["created_at"], name: "index_deeds_on_created_at"
-    t.index ["document_set_id"], name: "index_deeds_on_document_set_id"
     t.index ["note_id"], name: "index_deeds_on_note_id"
     t.index ["page_id"], name: "index_deeds_on_page_id"
     t.index ["user_id"], name: "index_deeds_on_user_id"
