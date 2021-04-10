@@ -83,7 +83,7 @@
     rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
     fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
 
-    if(window.viewer.world.getItemCount() > 0) {
+    if (window.viewer.world.getItemCount() > 0) {
       // now transpose for viewport coordinates
       viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
       viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
@@ -120,13 +120,23 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
-    afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
-      // setting if prevent scrolling after selection
-      console.log("afterSelection("+row+", "+column+", "+row2+", "+column2+"...)");
-      if (row+1 == hot.countRows()) {
-        // add a new row if we are at the end
-        hot.alter('insert_row', hot.countRows());
-      };
+    manualColumnResize: true,
+    manualRowResize: true,
+    startRows: <%= transcription_field.starting_rows %>,
+    afterCreateRow: updateHotHeight,
+    afterRemoveRow: updateHotHeight,
+    afterChange: function(changes, source) {
+      document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
+      if (changes) {
+        var rowsCount = this.countRows();
+        changes.forEach(([row, prop, oldValue, newValue]) => {
+          if (row + 1 === rowsCount) {
+            this.alter('insert_row', rowsCount);
+          };
+        });
+      }
+    },
+    afterSelection: function(row, column, row2, column2, preventScrolling, selectionLayerLevel) {
       <% if transcription_field.row_highlight %>
         highlightRow(row,
           <%= transcription_field.starting_rows %>,
@@ -134,14 +144,6 @@
           <%= transcription_field.bottom_offset %>);
       <% end %>
     },
-    afterCreateRow: updateHotHeight,
-    afterRemoveRow: updateHotHeight,
-    manualColumnResize: true,
-    manualRowResize: true,
-    afterChange: function(changes, source) {
-      document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
-    },
-    startRows: <%= transcription_field.starting_rows %>,
   });
 
   // $(container).data('hot-object', hot);
