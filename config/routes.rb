@@ -383,6 +383,7 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
   get '/software', to: 'static#software', as: :about
+  get '/about', to: 'static#about', as: :about_us
   get '/faq', to: 'static#faq', as: :faq
   get '/privacy', to: 'static#privacy', as: :privacy
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
