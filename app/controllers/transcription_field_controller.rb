@@ -177,6 +177,36 @@ class TranscriptionFieldController < ApplicationController
     redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
   end
 
+  def enable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => true)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def disable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => false)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def choose_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @collection = @transcription_field.collection
+    @page = @collection.pages.sample(1).first
+  end
+
+  def save_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    raw_selector = params[:selector]
+    parts = raw_selector.split(",")
+    raw_y = parts[1]
+    raw_h = parts[3]
+
+    @transcription_field.top_offset = raw_y.to_f / @page.base_height
+    @transcription_field.bottom_offset = 1.0 - ((raw_h.to_f + raw_y.to_f).to_f / @page.base_height)
+    @transcription_field.save!
+    ajax_redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+  end
 
   private
 

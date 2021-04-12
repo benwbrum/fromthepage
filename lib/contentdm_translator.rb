@@ -189,11 +189,15 @@ module ContentdmTranslator
   end
 
   def self.cdm_collection(at_id)
-    at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
+    if at_id.match(/.*iiif\/info\//)
+      at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
+    else
+      at_id.sub(/.*iiif\/2\//, '').sub(/:.*/,'')
+    end
   end
 
   def self.cdm_record(at_id)
-    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '')
+    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '').sub(/^.*:/, '')
   end
 
   def self.get_cdm_host_from_url(host)
