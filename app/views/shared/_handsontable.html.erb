@@ -34,14 +34,18 @@
         [
           <% transcription_field.spreadsheet_columns.each do |column_config| %>
             <% cell = data_row.detect {|c| c.header == column_config.label } %>
-            <% if column_config.input_type == 'checkbox' %>
-              <% if cell.content == 'true' %>
-                "true",
-              <% else %>
-                "false",
-              <% end %>
+            <% if cell.nil? %>
+              null,
             <% else %>
-              <%= raw(cell.content.to_json) %>,
+              <% if column_config.input_type == 'checkbox' %>
+                <% if cell.content == 'true' %>
+                  "true",
+                <% else %>
+                  "false",
+                <% end %>
+              <% else %>
+                <%= raw(cell.content.to_json) %>,
+              <% end %>
             <% end %>
           <% end %>
         ],
@@ -67,6 +71,39 @@
   //   ["2019", 30, 15, 12, 13]
   // ];
 
+  function highlightRow(rowNum, maxRows, topOffset, bottomOffset) {
+    // first calculate against a 100% high canvas
+    rowHeightAsSpreadsheetPct = 1.0 / maxRows;
+
+    pctOfPageThatIsSpreadsheet = (1.0 - topOffset - bottomOffset);
+    rowHeightAsPagePct = pctOfPageThatIsSpreadsheet / maxRows;
+    margin = 0.005;
+    fuzzyRowHeightAsPagePct = rowHeightAsPagePct + (margin * 2);
+
+    rowOffsetFromPageTop = topOffset + (rowHeightAsPagePct*(rowNum));
+    fuzzyRowOffsetFromPageTop = rowOffsetFromPageTop - margin;
+
+    if(window.viewer.world.getItemCount() > 0) {
+      // now transpose for viewport coordinates
+      viewportY = fuzzyRowOffsetFromPageTop * window.viewer.world.getItemAt(0).normHeight;
+      viewportHeight = fuzzyRowHeightAsPagePct * window.viewer.world.getItemAt(0).normHeight;
+      // console.log("highlightRow("+rowNum+", "+maxRows+", "+topOffset+", "+bottomOffset+") setting viewportY="+viewportY);
+
+
+      window.viewer.removeOverlay("runtime-overlay");
+      
+      var elt = document.createElement("div");
+      elt.id = "runtime-overlay";
+      elt.className = "filter";
+      window.viewer.addOverlay({
+        element: elt,
+        location: new OpenSeadragon.Rect(0.0, viewportY, 1.0, viewportHeight)
+      });
+    }
+  };
+
+
+
   var container = document.getElementById("hot-div-<%= transcription_field.id %>");
   var hot = new Handsontable(container, {
     rowHeaders: true,
@@ -79,6 +116,15 @@
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
     columns: columnConfig,
+    <% if transcription_field.row_highlight %>
+      afterSelection: (row, column, row2, column2, preventScrolling, selectionLayerLevel) => {
+        // setting if prevent scrolling after selection
+        highlightRow(row, 
+          <%= transcription_field.starting_rows %>, 
+          <%= transcription_field.top_offset %>, 
+          <%= transcription_field.bottom_offset %>);
+      },
+    <% end %>
     manualColumnResize: true,
     manualRowResize: true,
     afterChange: function (changes, source) {
@@ -88,5 +134,8 @@
   });
 
   // $(container).data('hot-object', hot);
+      // actually call it
+
+  //alert("highlightRow(rowNum, <%= transcription_field.starting_rows %>, 0.1, 0.1);");
 
 </script>

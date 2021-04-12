@@ -113,6 +113,34 @@ class Page < ApplicationRecord
     end
   end
 
+  def base_height
+    if self[:base_height].blank?
+      if self.sc_canvas 
+        self.sc_canvas.height
+      elsif self.ia_leaf
+        self.ia_leaf.page_h
+      else
+        nil
+      end
+    else
+      self[:base_height]
+    end
+  end
+
+  def base_width
+    if self[:base_width].blank?
+      if self.sc_canvas 
+        self.sc_canvas.width
+      elsif self.ia_leaf
+        self.ia_leaf.page_w
+      else
+        nil
+      end
+    else
+      self[:base_width]
+    end
+  end
+
   def base_image
     self[:base_image] || ""
   end
