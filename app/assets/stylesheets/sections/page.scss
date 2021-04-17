@@ -50,38 +50,44 @@
 // Page editor full screen mode
 
 .page-editor {
-  margin: 0 0 $gapSize 0;
+  margin: -3rem 0 2rem 0;
 
   &.fullscreen {
     top: 0;
     left: 0;
+    margin: 0;
     width: 100%;
     height: 100%;
     z-index: 9999;
+    overflow: auto;
     position: fixed;
     background: $bodyBg;
     box-sizing: border-box;
-    padding: $gapSize * 1.5 $gapSize * 1.5 0 $gapSize * 1.5;
+    padding: 0 3rem 3rem 3rem;
 
-    .auto-fullscreen { display: inline-block; }
-    
-    .page-columns + .page-toolbar { display: none; };
+    .auto-fullscreen {
+      display: inline-block;
+    }
+
+    .page-imagescan {
+      bottom: -3rem;
+    }
   }
 
-  .auto-fullscreen { display: none; }
+  .auto-fullscreen {
+    display: none;
+  }
 }
 
 
 // Page toolbar
 
 .page-toolbar {
-  padding-bottom: $gapSize;
-  margin-top: -$gapSize / 2;
-
-  .page-columns + & {
-    margin: 0;
-    padding: $gapSize 0 0 0;
-  }
+  top: 0;
+  z-index: 999;
+  padding: 2rem 0;
+  position: sticky;
+  background-color: $bodyBg;
 
   label { margin-right: 6px; }
 
@@ -110,17 +116,18 @@
 .page-columns {
   width: 100%;
   display: flex;
-  min-height: 700px;
+  min-height: 50vh;
   position: relative;
-  box-sizing: border-box;
-  background: rgba(#000, 0.03);
-  border: 1px solid rgba($borderColor, 0.6);
+
+  .page-column:last-child {
+    margin: 0 0 0 2rem;
+  }
 
   &[data-layout-mode='rtl'] {
     flex-direction: row-reverse;
 
     .page-column:last-child {
-      border-width: 0 1px 0 0;
+      margin: 0 2rem 0 0;
     }
   }
 
@@ -128,7 +135,7 @@
     flex-direction: column;
 
     .page-column:last-child {
-      border-width: 1px 0 0 0;
+      margin: 2rem 0 0 0;
     }
   }
 
@@ -136,33 +143,40 @@
     flex-direction: column-reverse;
 
     .page-column:last-child {
-      border-width: 0 0 1px 0;
+      margin: 0 0 2rem 0;
     }
   }
 }
 
 .page-column {
+  z-index: 0;
   min-width: 0;
   min-height: 0;
-  flex: 1 0 50%;
+  flex: 1 1 50%;
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
-  border: 0 solid rgba($borderColor, 0.6);
+
+  .centered {
+    background: rgba(#FFF, 0.5);
+    border: 1px solid rgba($borderColor, 0.5);
+  }
 }
 
-.page-preview {
-  height: 100%;
-  overflow-y: auto;
-  padding: $gapSize;
-  box-sizing: border-box;
-  font-size: $fontSizeBig;
-  background: rgba(#FFF, 0.3);
-  p:first-child { margin-top: 25px; }
-  p:last-child { margin-bottom: 0; }
-  .centered_content { text-align: center; }
-  .field__label {
-    color: #906e58;
+.page-imagescan {
+  top: 74px;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  overflow: hidden;
+  position: sticky;
+  align-self: flex-start;
+  background: rgba(#000, 0.03);
+  height: calc(100vh - 74px - 3rem);
+
+  [data-layout-mode='ttb'] &,
+  [data-layout-mode='btt'] & {
+    height: calc((100vh - 74px - 3rem) / 2);
   }
 }
 
@@ -174,14 +188,15 @@
   flex-direction: column;
 
   &_title {
-    height: 50px;
+    height: 45px;
     display: flex;
     flex-shrink: 0;
     padding-left: 10px;
+    margin-bottom: 2rem;
     align-items: center;
     background: $bgWhite;
     font-size: $fontSizeBig;
-    border-bottom: 1px solid rgba(#000, 0.1);
+    border: 1px solid $inputBorderColor;
 
     input {
       border: 0;
@@ -191,14 +206,11 @@
   }
 
   &_textarea {
+    border: 0;
     height: 100%;
     resize: none;
     padding: 10px;
     flex: 1 1 auto;
-  }
-
-  &_textarea {
-    border: 0;
     box-shadow: none;
     background: $bgWhite;
   }
@@ -219,19 +231,27 @@
     height: auto !important;
 
     &-buttonsPanel:not(:empty) {
-      padding: 4px;
+      top: 74px;
+      z-index: 1;
       display: flex;
       flex-wrap: wrap;
-      border-bottom: 1px solid rgba(#000, 0.1);
+      position: sticky;
+      padding-bottom: 5px;
+      background-color: $bodyBg;
 
       button {
-        margin: 2px;
         padding: 0 4px;
         font-size: 13px;
         box-shadow: none;
+        margin: 0 3px 3px 0;
         line-height: 1.75em;
         font-family: monospace;
       }
+    }
+
+    &-wrap {
+      z-index: 0;
+      border: 1px solid $inputBorderColor;
     }
 
     &-scroll {
@@ -240,24 +260,11 @@
   }
 }
 
-.page-fields {
-  height: 100%;
-  padding: 15px;
-  flex: 1 1 auto;
-  overflow: auto;
+.fields-row {
+  display: flex;
+  flex-wrap: wrap;
 
-  .fields-row {
-    display: flex;
-    flex-wrap: wrap;
-
-    &:not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
-
-  .spreadsheet-wrapper {
-    width: 100%;
-    flex: 1 1 100%;
+  &:not(:last-child) {
     margin-bottom: 10px;
   }
 
@@ -267,6 +274,11 @@
 
     &:not(:last-child) {
       padding-right: 5px;
+    }
+
+    &.spreadsheet {
+      padding: 0;
+      width: 100%;
     }
 
     label {
@@ -291,12 +303,49 @@
   }
 }
 
-.page-imagescan {
+.page-preview {
   height: 100%;
-  overflow: hidden;
-  position: relative;
+  padding: 1.5rem;
+  overflow-x: auto;
   box-sizing: border-box;
-  background: rgba(#000, 0.03);
+  font-size: $fontSizeBig;
+  background: rgba(#FFF, 0.5);
+  border: 1px solid rgba($borderColor, 0.5);
+
+  p:first-child {
+    margin-top: 0;
+  }
+
+  .centered_content {
+    text-align: center;
+  }
+
+  .field__label {
+    color: rgba($bodyFg, 0.6);
+  }
+
+  table {
+    width: 100%;
+    border-spacing: 0;
+    font-size: $fontSize;
+    border-collapse: collapse;
+    background-color: rgba($bgWhite, 0.5);
+
+    th {
+      padding: 0.5em;
+      line-height: 1.2;
+      color: $fgSelected;
+      white-space: nowrap;
+      background: $bgSelected;
+      border: 1px solid rgba(#000, 0.15);
+    }
+
+    td {
+      line-height: 1.2;
+      padding: 0.25em 0.5em;
+      border: 1px solid $borderColor;
+    }
+  }
 }
 
 .image-toolbar {
@@ -345,6 +394,26 @@
       border-bottom-color: rgba(#000, 0.8);
     }
   }
+
+  .filter {
+    display: flex;
+    align-items: center;
+    padding: 0.5em 0.8em;
+
+    &:not(:first-child) {
+      border-top: 1px solid rgba(#000, 0.06);
+    }
+
+    &_label {
+      flex-grow: 1;
+      margin-right: 1rem;
+    }
+
+    &_value {
+      width: 2em;
+      text-align: right;
+    }
+  }
 }
 
 .image-container {
@@ -354,12 +423,12 @@
 }
 
 .page-review {
-  padding: 0 30px 15px;
   color: $fgLink;
-  width: 45%;
-  margin: 0 5% 0 50%;
+  max-width: 700px;
+  text-align: center;
+  margin: 0 auto 2rem auto;
+  font-size: $fontSizeSmall;
 }
-
 
 
 // image row highlight
@@ -417,27 +486,4 @@
 
 .page-indent {
   margin-left: 30px;
-}
-
-
-// Image filters
-
-.filter {
-  display: flex;
-  align-items: center;
-  padding: 0.5em 0.8em;
-
-  &:not(:first-child) {
-    border-top: 1px solid rgba(#000, 0.06);
-  }
-
-  &_label {
-    flex-grow: 1;
-    margin-right: 1rem;
-  }
-
-  &_value {
-    width: 2em;
-    text-align: right;
-  }
 }

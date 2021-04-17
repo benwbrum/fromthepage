@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 6, :page_id => @page.id }})
 
-=form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }) do |f|
+=form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }, :html => { class: 'page-editor' }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =validation_summary @page.errors
 
@@ -34,7 +34,7 @@
     .page-review
       =t('.this_page_marked_needs_review')
 
-  .page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
+  .page-columns
     .page-column
       -if correction_mode?
         -text = xml_to_html(@page.xml_text)
@@ -64,16 +64,14 @@
               p.nodata_text
                 ==t('.please_help_this_page', help_link: help_link)
                 ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
-      .page-imagescan style="display:none;"
+      .page-imagescan(style="display:none")
         =render :partial => '/shared/osd_div'
     .page-column
       -if @preview_xml
         .page-preview ==xml_to_html(@preview_xml)
 
       .page-editarea(style=("display:none" if @preview_xml))
-        =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false)
-        =f.label :source_translation, t('.edit_translation'), class: 'hidden'
-
+        =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_translation'))
 
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions
