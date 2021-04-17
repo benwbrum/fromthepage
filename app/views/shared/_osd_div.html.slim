@@ -14,15 +14,15 @@
     dd
       .filter
         span.filter_label Brightness
-        =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'brightness'
+        =range_field_tag 'filter-brightness', 0, min: -10, max: 10, step: 1, 'data-filter': 'brightness'
         span.filter_value 0
       .filter
         span.filter_label Contrast
-        =range_field_tag 'filter', 0, min: 0, max: 20, step: 1, 'data-filter': 'contrast'
+        =range_field_tag 'filter-contrast', 0, min: 0, max: 20, step: 1, 'data-filter': 'contrast'
         span.filter_value 0
       .filter
         span.filter_label Threshold
-        =range_field_tag 'filter', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
+        =range_field_tag 'filter-threshold', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
         span.filter_value 0
 
 .image-container(id="image_container")
