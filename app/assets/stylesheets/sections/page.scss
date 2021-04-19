@@ -246,10 +246,13 @@
   flex: 1 1 auto;
   overflow: auto;
 
-  .fields-row:not(:last-child) {
+  .fields-row {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 
   .spreadsheet-wrapper {
