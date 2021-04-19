@@ -360,6 +360,16 @@
   margin: 0 5% 0 50%;
 }
 
+
+
+// image row highlight
+.image-row-highlight {
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+  background-color: green;
+}
+
+
 // Assign categories
 
 .page-uncategorized {
