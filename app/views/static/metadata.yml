@@ -1,5 +1,5 @@
 # Title of a work -- this brief string is displayed prominently to end users
-title: 'doc set experiment'
+title: '1918'
 # Description -- a block of HTML describing the work
 description: 1918 Diary of Julia Craddock Brumfield
 # Physical Description -- raw HTML is accepted
@@ -31,5 +31,5 @@ translation_instructions: ''
 pages_are_meaningful: true
 # Slug to be used for URL permalink
 slug: '1918'
-document_set: ['document set 1']
-#you can also put multiple document sets in arrays like ['document set 1', 'document set 2']
+document_set: ['Diaries']
+#you can also put multiple document sets in arrays like ['Diaries', 'Public']
