@@ -39,6 +39,7 @@ class TranscriptionFieldController < ApplicationController
         if fields[:id].blank?
           #if the field doesn't exist, create a new one
           transcription_field = TranscriptionField.new(fields.permit!)
+          transcription_field.starting_rows = 1
           transcription_field.collection_id = params[:collection_id]
           transcription_field.save
         else
@@ -135,12 +136,14 @@ class TranscriptionFieldController < ApplicationController
           #if the field doesn't exist, create a new one
           spreadsheet_column = SpreadsheetColumn.new(column)
           spreadsheet_column.transcription_field = @transcription_field
+          spreadsheet_column.position = index + 1
           spreadsheet_column.save
         else
           #otherwise update field if anything changed
           spreadsheet_column = SpreadsheetColumn.find_by(id: column[:id])
           #remove ID from params before update
           column.delete(:id)
+          spreadsheet_column.position = index + 1
           spreadsheet_column.update(column)
         end
       end
@@ -156,16 +159,13 @@ class TranscriptionFieldController < ApplicationController
   end
 
   # reordering functions
-  def reorder_column
+  def reorder
     @collection = Collection.friendly.find(params[:collection_id])
     transcription_field = TranscriptionField.find_by(id: params[:field_id])
-    column = SpreadsheetColumn.find_by(id: params[:spreadsheet_column_id])
-    if(params[:direction]=='up')
-      column.move_higher
-    else
-      column.move_lower
+    params[:column].each_with_index do |id, index|
+      SpreadsheetColumn.where(id: id).update_all(position: index + 1)
     end
-    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
+    head :ok
   end
 
   def delete_column
