@@ -283,7 +283,7 @@ Fromthepage::Application.routes.draw do
     post 'add_fields', to: 'transcription_field#add_fields'
 
     scope 'spreadsheet_column', as: 'spreadsheet_column' do
-      get 'reorder_column', to: 'transcription_field#reorder_column'
+      patch 'reorder', to: 'transcription_field#reorder'
       get 'delete', to: 'transcription_field#delete_column'
       get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
       get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
