@@ -196,10 +196,11 @@ private
   def get_headings(collection, ids)
     field_headings = collection.transcription_fields.order(:line_number, :position).where.not(input_type: 'instruction').pluck(:id)
     orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
+    renamed_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
     markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
-    cell_headings = orphan_cell_headings + markdown_cell_headings
+    cell_headings = orphan_cell_headings + markdown_cell_headings 
 
-    @raw_headings = (field_headings + cell_headings).uniq
+    @raw_headings = (field_headings + cell_headings + renamed_cell_headings).uniq
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
