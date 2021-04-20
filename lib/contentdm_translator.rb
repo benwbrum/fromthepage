@@ -228,15 +228,13 @@ module ContentdmTranslator
       record = matches[2]
     end
     
+    # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
-      # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
-      new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}:#{record}/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
     elsif server && collection
-      # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867/manifest.json
-      new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
     elsif server
-      # https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
-      new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
     else
       raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
     end
@@ -244,14 +242,17 @@ module ContentdmTranslator
     begin
       URI.open(new_uri)
     rescue OpenURI::HTTPError
-      # support back-level CONTENTdm IIIF presentation implementation
       if server && collection && record
-        new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
+        # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}:#{record}/manifest.json"
       elsif server && collection
-        new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
-      else server
-        new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
+        # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}/manifest.json"
+      else
+        # https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/manifest.json"
       end
+
     end
 
     new_uri
