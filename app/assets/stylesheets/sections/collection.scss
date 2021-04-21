@@ -573,6 +573,10 @@
     &:hover {
       color: $bodyFg;
     }
+
+    &.reorder {
+      cursor: ns-resize;
+    }
   }
 
   textarea {
@@ -583,6 +587,10 @@
   .first {width: 15px;}
   .fourth {width: 100%;}
   .percent {width: 50px;}
+
+  .ui-sortable-placeholder td {
+    height: 34px;
+  }
 }
 
 a.field_icons {
