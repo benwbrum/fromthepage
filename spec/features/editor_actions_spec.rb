@@ -40,7 +40,7 @@ describe "editor actions" , :order => :defined do
       fill_in_editor_field("Content")
       page.find('#save_button_top').click
 
-      expect(Page.find(page_fact.id).status).to eq(Page::STATUS_TRANSCRIBED)
+      expect(Page.find(page_fact.id).status).to eq(Page::STATUS_INCOMPLETE)
 
       fill_in_editor_field("")
       page.find('#save_button_top').click

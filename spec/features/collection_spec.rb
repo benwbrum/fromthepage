@@ -283,7 +283,7 @@ describe "collection spec (isolated)" do
       page.find('.maincol h4').click_link('Page 1')
       fill_in_editor_field('Transcription')
 #      fill_in('page_source_text', with: 'Transcription')
-      page.find('#save_button_top').click
+      page.find('#finish_button_top').click
       expect(page).to have_content('Saved')
 
       page.find('.breadcrumbs').click_link('Stats Test Collection')

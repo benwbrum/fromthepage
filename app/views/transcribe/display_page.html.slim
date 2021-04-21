@@ -54,9 +54,9 @@
         / check status of page and configuration of collection
         -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
           =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
-        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED) 
+        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_INDEXED) 
           =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
-        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW)
+        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_INDEXED)
           =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
         -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
           =button_tag t('.finish'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);'
@@ -113,9 +113,9 @@
         / check status of page and configuration of collection
         -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
           =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
-        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED) 
+        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_INDEXED) 
           =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
-        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW)
+        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_INDEXED)
           =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
         -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
           =button_tag t('.finish'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);'
