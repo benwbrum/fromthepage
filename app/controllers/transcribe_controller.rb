@@ -91,9 +91,12 @@ class TranscribeController  < ApplicationController
         end
         return
       end
-    elsif @page.work.collection.review_workflow == true && @page.status == nil
-      @page.status = Page::STATUS_NEEDS_REVIEW
-      record_deed(DeedType::NEEDS_REVIEW)
+    elsif params['save_to_needs_review']
+      unless @page.status == Page::STATUS_NEEDS_REVIEW
+        # don't log a deed if the page was already in needs review
+        @page.status = Page::STATUS_NEEDS_REVIEW
+        record_deed(DeedType::NEEDS_REVIEW)
+      end
     else
       if params[:page]['needs_review'] == '1'        
         unless @page.status == Page::STATUS_NEEDS_REVIEW
@@ -130,12 +133,22 @@ class TranscribeController  < ApplicationController
     needs_review
 
 
-    if params['save']
+    if params['save'] || params['save_to_incomplete'] || params['save_to_needs_review'] || params['save_to_transcribed']
       message = log_transcript_attempt
       #leave the status alone if it's needs review, but otherwise set it to transcribed
-      unless @page.status == Page::STATUS_NEEDS_REVIEW
+      if params['save_to_incomplete']
+        @page.status = Page::STATUS_INCOMPLETE
+      elsif params['save_to_needs_review']
+        @page.status = Page::STATUS_NEEDS_REVIEW
+      elsif params['save_to_transcribed'] && params[:page]['needs_review'] != '1'
         @page.status = Page::STATUS_TRANSCRIBED
+      else
+        # old code; possibly dead
+        unless @page.status == Page::STATUS_NEEDS_REVIEW
+          @page.status = Page::STATUS_TRANSCRIBED
+        end
       end
+
       begin
         if @page.save
           log_transcript_success
@@ -157,7 +170,7 @@ class TranscribeController  < ApplicationController
             if old_link_count == 0 && new_link_count > 0
               record_deed(DeedType::PAGE_INDEXED)
             end
-            if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
+            if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW && @page.status != Page::STATUS_INCOMPLETE
               @page.update_columns(status: Page::STATUS_INDEXED)
             end
           end
