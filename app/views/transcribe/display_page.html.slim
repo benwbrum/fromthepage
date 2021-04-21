@@ -39,9 +39,10 @@
         =f.label 'mark_blank', t('.mark_as_blank')
         =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
 
-      .flex-toolbar_group
-        =f.label 'needs_review', t('.needs_review')
-        =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
+      -if !@collection.review_workflow
+        .flex-toolbar_group
+          =f.label 'needs_review', t('.needs_review')
+          =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
 
       .flex-toolbar_group
         -unless @preview_xml
@@ -50,11 +51,26 @@
           =button_tag t('.edit'), :name => 'edit', type: 'submit'
         -unless @collection.subjects_disabled || @collection.field_based
           =button_tag t('.autolink'), :name => 'autolink', type: 'submit'
-        =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        / check status of page and configuration of collection
+        -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
+          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED) 
+          =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW)
+          =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+        -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.finish'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);'
+        -if @collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.finish'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);'
+        -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
+          =button_tag t('.approve'), :name => 'save_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);'
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
     .page-review
-      =t('.this_page_marked_needs_review')
+      -if @collection.review_workflow
+        =t('.this_page_marked_needs_review_workflow_version')
+      -else
+        =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
@@ -94,7 +110,20 @@
           =>button_tag t('.edit'), :name => 'edit', type: 'button'
         -unless @collection.subjects_disabled || @collection.field_based
           =>button_tag t('.autolink'), :name => 'autolink', type: 'button'
-        =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+        / check status of page and configuration of collection
+        -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
+          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED) 
+          =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW)
+          =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+        -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.finish'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);'
+        -if @collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.finish'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);'
+        -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
+          =button_tag t('.approve'), :name => 'save_to_transcribed', type: 'submit', id: 'approve_button_bottom', onclick: 'unsavedNotes(event);'
+
 
 p.fgfaded =render :partial => 'shared/markup_help'
 
