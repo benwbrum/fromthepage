@@ -31,4 +31,5 @@ translation_instructions: ''
 pages_are_meaningful: true
 # Slug to be used for URL permalink
 slug: '1918'
-
+document_set: ['Diaries']
+#you can also put multiple document sets in arrays like ['Diaries', 'Public']
