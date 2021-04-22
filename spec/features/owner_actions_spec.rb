@@ -95,7 +95,6 @@ describe "owner actions", :order => :defined do
       page.execute_script("$('#create-collection').click()")
     end
     sleep(2)
-    binding.pry
     page.execute_script("$('#document-upload').click()")
     page.find('#document_upload_collection_id')
     expect(page).to have_select('document_upload_collection_id', selected: col_title)
