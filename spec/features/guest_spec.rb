@@ -56,7 +56,7 @@ describe "guest user actions" do
     click_button("Transcribe as guest")
 
     # Button permits Guest to save contributions
-    expect(page).to have_button("Save Changes")
+    expect(page).to have_button("Save")
 
     # Navbar displays Guest as user and gives link to create account
     expect(page.html).to include('<small>Guest</small>')
@@ -80,7 +80,7 @@ describe "guest user actions" do
     expect(page).to have_content("Sign In")
     click_button("Transcribe as guest")
     expect(page).to have_content(GUEST_NAV_HEADING)
-    expect(page).to have_button("Save Changes")
+    expect(page).to have_button("Save")
     @guest = User.last
     expect(@guest.guest).to be true
 
