@@ -72,7 +72,7 @@ describe "needs review", :order => :defined do
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
     fill_in_editor_field "Review Text"
     page.check('page_needs_review')
-    find('#save_button_top').click
+    find('#finish_button_top').click
     expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     expect(page).to have_content("Review Text")
@@ -83,7 +83,7 @@ describe "needs review", :order => :defined do
     page.find('.tabs').click_link("Transcribe")
     fill_in_editor_field "Review Text 2"
     page.check('page_needs_review')
-    find('#save_button_top').click
+    find('#finish_button_top').click
     expect(page).to have_content("Review Text 2")
     expect(page).to have_content("Transcription")
     expect(Page.find_by(id: @page5.id).status).to eq ('review')
@@ -292,7 +292,7 @@ describe "needs review", :order => :defined do
 
     visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
     fill_in_editor_field "Needs Review Workflow Text"
-    find('#save_button_top').click
+    find('#finish_button_top').click
     expect(page).to have_content("Needs Review Workflow Text")
     expect(Page.find_by(id: review_page.id).status).to eq ('review')
 
