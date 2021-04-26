@@ -1,13 +1,14 @@
 -@line = local_assigns[:line_number]
 tr
-  th#line_num.nowrap
-    b #{@line}
-  th =t('.label')
-  th =t('.input_type')
-  th
+  th.field-form_line colspan="6" #{@line}
+tr
+  th.field-form_label =t('.label')
+  th.field-form_type =t('.input_type')
+  th.field-form_options
     span title=t('.field_options_title') =t('.field_options')
-  th
+  th.field-form_width
     span title=t('.percentage_title') =t('.percentage_width')
-  th
+  th.field-form_page
     span title=t('.page_title') =t('.page')
-  th
+  th.field-form_actions
+    | &nbsp;
