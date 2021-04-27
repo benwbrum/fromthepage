@@ -425,8 +425,9 @@ Fromthepage::Application.routes.draw do
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
-        get 'versions', on: :member
+        get 'download', on: :member
         get 'print', on: :member
+        get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member

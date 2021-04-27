@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_01_191543) do
+ActiveRecord::Schema.define(version: 2021_04_27_152944) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(version: 2021_04_01_191543) do
     t.integer "next_untranscribed_page_id"
     t.boolean "api_access", default: false
     t.boolean "facets_enabled", default: false
+    t.boolean "user_download", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true

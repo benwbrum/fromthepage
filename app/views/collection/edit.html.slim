@@ -51,6 +51,10 @@
             =f.label :hide_completed, t('.hide_completed')
         tr
           td(colspan="2")
+            =f.check_box :user_download, value: @collection.user_download
+            =f.label :user_download, t('.user_download')
+        tr
+          td(colspan="2")
             =f.label :text_language, t('.text_language'), class: 'collection-label'
             =f.select :text_language, options_for_select(@text_languages, (@collection.text_language ? @collection.text_language : 'eng')), {}, {class: 'w50'}
 
