@@ -1,0 +1,22 @@
+<%= @work.title %> {.work-title}
+=======================
+
+<%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+<%= t('.fromthepage_version', version: fromthepage_version) %>
+
+<% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
+
+\newpage
+  <% if @work.sc_manifest %>
+![<%= page.title %>](<%= page.sc_canvas.sc_resource_id %>)
+  <% else %>
+![<%= page.title %>](<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>)
+  <% end %>
+
+\newpage
+### <%= page.title %>
+<div class="page-content">
+  <%= raw(xml_to_pandoc_md(page.xml_text, true, true)) %>
+</div>
+
+<% end %>
