@@ -1,0 +1,52 @@
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 5, :work_id => @work.id }})
+
+.columns
+  article.maincol
+    h2.nomargin Download
+    ul.bulk-export
+      li
+        .bulk-export_format
+          h5 Plaintext
+          p.nomargin Download a plain text version of this work.
+        .bulk-export_options
+          span =button_to "Download"
+      -if current_user.like_owner?(@collection)
+        li
+          .bulk-export_format
+            h5 Emended Plaintext
+            p.nomargin Download an emended plain text version of this work.
+          .bulk-export_options
+            span =button_to "Download"
+
+
+    h2.nomargin Experiment
+    ul.bulk-export
+      li
+        .bulk-export_format
+          h5 Voyant
+          p.nomargin Send the transcription of this work to a Voyant Tools for analysis.
+        .bulk-export_options
+          span =link_to("Analyze", "https://voyant-tools.org/?corpus=#{CGI.escape(@collection.title)}&archive=#{iiif_work_export_plaintext_emended_url(@work.id)}", class: 'button')
+      li
+        .bulk-export_format
+          h5 Word Trees
+          p.nomargin Send the transcription of this work to Jason Davies' Word Trees visualizer for analysis.
+        .bulk-export_options
+          span =link_to("Analyze", "https://www.jasondavies.com/wordtree/?source=#{CGI.escape(iiif_work_export_plaintext_emended_url(@work.id))}", class: 'button')
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Remove 'page_busy' spinner once download finished
+      // Cookie should be set to 'true' in the controller method
+      $('.btnExport').on('click', function() {
+        Cookies.remove('download_finished', {path: '/'});
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });
