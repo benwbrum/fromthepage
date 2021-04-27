@@ -44,7 +44,7 @@ class Page < ApplicationRecord
 
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: nil)}
+  scope :needs_transcription, -> { where(status: nil).or(Page.where(status: STATUS_INCOMPLETE))  }
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
@@ -55,6 +55,7 @@ class Page < ApplicationRecord
   end
 
   STATUS_TRANSCRIBED = 'transcribed'
+  STATUS_INCOMPLETE = 'incomplete'
   STATUS_BLANK = 'blank'
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_INDEXED = 'indexed'
@@ -110,6 +111,34 @@ class Page < ApplicationRecord
       self.sc_canvas.facsimile_url
     else
       base_image
+    end
+  end
+
+  def base_height
+    if self[:base_height].blank?
+      if self.sc_canvas 
+        self.sc_canvas.height
+      elsif self.ia_leaf
+        self.ia_leaf.page_h
+      else
+        nil
+      end
+    else
+      self[:base_height]
+    end
+  end
+
+  def base_width
+    if self[:base_width].blank?
+      if self.sc_canvas 
+        self.sc_canvas.width
+      elsif self.ia_leaf
+        self.ia_leaf.page_w
+      else
+        nil
+      end
+    else
+      self[:base_width]
     end
   end
 

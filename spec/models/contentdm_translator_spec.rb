@@ -34,21 +34,22 @@ RSpec.describe ContentdmTranslator do
                     example.run
                 end
             end
+
             it "item" do
                 url = ContentdmTranslator.cdm_url_to_iiif(vanity_item)
-                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/2/ahs:200/manifest.json')
+                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/info/ahs/200/manifest.json')
             end
             it "collection" do
                 url = ContentdmTranslator.cdm_url_to_iiif(vanity_collection)
-                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/2/ahs/manifest.json')
+                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/info/ahs/manifest.json')
             end
             it "collection variant" do
                 url = ContentdmTranslator.cdm_url_to_iiif(vanity_collection_2)
-                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/2/ahs/manifest.json')
+                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/info/ahs/manifest.json')
             end
             it "repository" do
                 url = ContentdmTranslator.cdm_url_to_iiif(vanity_repository)
-                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/2/manifest.json')
+                expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/info/manifest.json')
             end
         end
     end

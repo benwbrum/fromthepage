@@ -246,10 +246,13 @@
   flex: 1 1 auto;
   overflow: auto;
 
-  .fields-row:not(:last-child) {
+  .fields-row {
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 10px;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 
   .spreadsheet-wrapper {
@@ -356,6 +359,16 @@
   width: 45%;
   margin: 0 5% 0 50%;
 }
+
+
+
+// image row highlight
+.image-row-highlight {
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+  background-color: green;
+}
+
 
 // Assign categories
 
