@@ -6,10 +6,10 @@
     ul.bulk-export
       li
         .bulk-export_format
-          h5 Plaintext
-          p.nomargin Download a plain text version of this work.
+          h5 PDF
+          p.nomargin Download a PDF version of this work.
         .bulk-export_options
-          span =button_to "Download"
+          span =button_to "Download", export_printable_path(@collection, @work), params: { edition: 'text', format: 'pdf', method: :get}
       -if current_user.like_owner?(@collection)
         li
           .bulk-export_format

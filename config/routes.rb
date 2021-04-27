@@ -133,7 +133,7 @@ Fromthepage::Application.routes.draw do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
-    get ':collection_id/:work_id/facing_edition', to: 'export#facing_edition', as: 'facing_edition'
+    post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
     get 'subject_csv', to: 'export#subject_index_csv'
