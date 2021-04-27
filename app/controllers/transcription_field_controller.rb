@@ -39,6 +39,7 @@ class TranscriptionFieldController < ApplicationController
         if fields[:id].blank?
           #if the field doesn't exist, create a new one
           transcription_field = TranscriptionField.new(fields.permit!)
+          transcription_field.starting_rows = 1
           transcription_field.collection_id = params[:collection_id]
           transcription_field.save
         else
@@ -135,12 +136,14 @@ class TranscriptionFieldController < ApplicationController
           #if the field doesn't exist, create a new one
           spreadsheet_column = SpreadsheetColumn.new(column)
           spreadsheet_column.transcription_field = @transcription_field
+          spreadsheet_column.position = index + 1
           spreadsheet_column.save
         else
           #otherwise update field if anything changed
           spreadsheet_column = SpreadsheetColumn.find_by(id: column[:id])
           #remove ID from params before update
           column.delete(:id)
+          spreadsheet_column.position = index + 1
           spreadsheet_column.update(column)
         end
       end
@@ -156,16 +159,13 @@ class TranscriptionFieldController < ApplicationController
   end
 
   # reordering functions
-  def reorder_column
+  def reorder
     @collection = Collection.friendly.find(params[:collection_id])
     transcription_field = TranscriptionField.find_by(id: params[:field_id])
-    column = SpreadsheetColumn.find_by(id: params[:spreadsheet_column_id])
-    if(params[:direction]=='up')
-      column.move_higher
-    else
-      column.move_lower
+    params[:column].each_with_index do |id, index|
+      SpreadsheetColumn.where(id: id).update_all(position: index + 1)
     end
-    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
+    head :ok
   end
 
   def delete_column
@@ -177,6 +177,36 @@ class TranscriptionFieldController < ApplicationController
     redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
   end
 
+  def enable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => true)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def disable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => false)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def choose_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @collection = @transcription_field.collection
+    @page = @collection.pages.sample(1).first
+  end
+
+  def save_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    raw_selector = params[:selector]
+    parts = raw_selector.split(",")
+    raw_y = parts[1]
+    raw_h = parts[3]
+
+    @transcription_field.top_offset = raw_y.to_f / @page.base_height
+    @transcription_field.bottom_offset = 1.0 - ((raw_h.to_f + raw_y.to_f).to_f / @page.base_height)
+    @transcription_field.save!
+    ajax_redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+  end
 
   private
 

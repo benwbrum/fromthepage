@@ -189,11 +189,15 @@ module ContentdmTranslator
   end
 
   def self.cdm_collection(at_id)
-    at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
+    if at_id.match(/.*iiif\/info\//)
+      at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
+    else
+      at_id.sub(/.*iiif\/2\//, '').sub(/:.*/,'')
+    end
   end
 
   def self.cdm_record(at_id)
-    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '')
+    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '').sub(/^.*:/, '')
   end
 
   def self.get_cdm_host_from_url(host)
@@ -224,18 +228,34 @@ module ContentdmTranslator
       record = matches[2]
     end
     
+    # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
-      # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
-      "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}:#{record}/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
     elsif server && collection
-      # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867/manifest.json
-      "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
     elsif server
-      # https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
-      "https://#{server}.contentdm.oclc.org/iiif/2/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
     else
       raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
     end
+
+    begin
+      URI.open(new_uri)
+    rescue OpenURI::HTTPError
+      if server && collection && record
+        # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}:#{record}/manifest.json"
+      elsif server && collection
+        # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}/manifest.json"
+      else
+        # https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/manifest.json"
+      end
+
+    end
+
+    new_uri
   end
 
   def self.sample_manifest(collection)
