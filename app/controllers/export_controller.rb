@@ -27,6 +27,10 @@ class ExportController < ApplicationController
     render :text => xhtml, :layout => false
   end
 
+  def facing_edition
+    render :layout => false
+  end
+
   def text
     @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
     render :layout => false

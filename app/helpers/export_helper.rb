@@ -1,6 +1,26 @@
 module ExportHelper
   include Rails.application.routes.url_helpers
 
+  def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
+    raw_html = xml_to_html(xml_text, preserve_lb, flatten_links, collection)
+
+    doc = REXML::Document.new(xml_text)
+    doc.elements.each("//lb") do |e|
+      e.replace_with(REXML::Text.new("\\\n"))
+    end
+
+    my_display_html = ""
+    doc.write(my_display_html)
+    my_display_html.gsub!("</p>", "</p>\n\n")
+    my_display_html.gsub!("<br/>","<br/>\n")
+    my_display_html.gsub!("[","\\[")
+    my_display_html.gsub!("]","\\]")
+
+    return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
+  end
+
+
+
   def write_work_exports(works, out, export_user, bulk_export)
     # collection-level exports
     if bulk_export.subject_csv_collection
