@@ -9,14 +9,26 @@ module ExportHelper
       e.replace_with(REXML::Text.new("\\\n"))
     end
 
-    my_display_html = ""
-    doc.write(my_display_html)
-    my_display_html.gsub!("</p>", "</p>\n\n")
-    my_display_html.gsub!("<br/>","<br/>\n")
-    my_display_html.gsub!("[","\\[")
-    my_display_html.gsub!("]","\\]")
+    markdown = ""
+    doc.write(markdown)
+    markdown.gsub!("</p>", "</p>\n\n")
+    markdown.gsub!("<br/>","<br/>\n")
+    markdown.gsub!("[","\\[")
+    markdown.gsub!("]","\\]")
 
-    return my_display_html.gsub!("<?xml version='1.0' encoding='UTF-8'?>","").gsub('<p/>','').gsub(/<\/?page>/,'').strip!
+    markdown.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
+    markdown.gsub!('<p/>','')
+    markdown.gsub!(/<\/?page>/,'')
+
+    # escape LaTeX special characters
+    markdown.gsub!("\\",'\textbackslash')
+    markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
+    markdown.gsub!('^', '\textasciicircum')
+    markdown.gsub!('~', '\textasciitilde')
+
+    markdown.strip!
+
+    return markdown
   end
 
 
