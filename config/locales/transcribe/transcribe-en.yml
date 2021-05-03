@@ -28,7 +28,7 @@ en:
       title: "Title:"
       edit_transcription: "Edit transcription"
       save_changes: "Save"
-      finish: "Finish"
+      done: "Done"
       approve: "Approve"
       more_help: "More help...."
       alert: "This page is being edited by another user!"
