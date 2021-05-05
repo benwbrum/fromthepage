@@ -6,17 +6,21 @@
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
 
+<% unless @edition_type == 'text'%>
 \newpage
   <% if @work.sc_manifest %>
 ![<%= page.title %>](<%= page.sc_canvas.sc_resource_id %>)
+  <% elsif page.ia_leaf %>
+![<%= page.title %>](<%= page.ia_leaf.facsimile_url %>)
   <% else %>
-![<%= page.title %>](<%= "#{url_for(:root)}image-service/#{page.id}/full/full/0/native.jpg" %>)
+![<%= page.title %>](<%= page.canonical_facsimile_url %>)
   <% end %>
-
 \newpage
+<% end %>
+
 ### <%= page.title %>
 <div class="page-content">
-  <%= raw(xml_to_pandoc_md(page.xml_text, true, true)) %>
+  <%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
 </div>
 
 <% end %>

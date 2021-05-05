@@ -4,13 +4,22 @@ module ExportHelper
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
     raw_html = xml_to_html(xml_text, preserve_lb, flatten_links, collection)
 
+    raw_html.gsub!("\\",'\textbackslash')
+
+
     doc = REXML::Document.new(xml_text)
     doc.elements.each("//lb") do |e|
-      e.replace_with(REXML::Text.new("\\\n"))
+      if preserve_lb
+        e.replace_with(REXML::Text.new("\\\n"))
+      else
+        e.replace_with(REXML::Text.new(" "))        
+      end
     end
+
 
     markdown = ""
     doc.write(markdown)
+    markdown.gsub!("&amp;", "&")
     markdown.gsub!("</p>", "</p>\n\n")
     markdown.gsub!("<br/>","<br/>\n")
     markdown.gsub!("[","\\[")
@@ -21,9 +30,8 @@ module ExportHelper
     markdown.gsub!(/<\/?page>/,'')
 
     # escape LaTeX special characters
-    markdown.gsub!("\\",'\textbackslash')
     markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
-    markdown.gsub!('^', '\textasciicircum')
+#    markdown.gsub!('^', '\textasciicircum')  #\^{}
     markdown.gsub!('~', '\textasciitilde')
 
     markdown.strip!
