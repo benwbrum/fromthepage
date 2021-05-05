@@ -131,16 +131,15 @@ class TranscribeController  < ApplicationController
     end
     #check to see if the page needs to be marked as needing review
     needs_review
-
-
-    if params['save'] || params['save_to_incomplete'] || params['save_to_needs_review'] || params['save_to_transcribed']
+    if params['save'] || params['save_to_incomplete'] || params['save_to_needs_review'] || params['save_to_transcribed'] || params['approve_to_transcribed']
       message = log_transcript_attempt
       #leave the status alone if it's needs review, but otherwise set it to transcribed
-      if params['save_to_incomplete']
+
+      if params['save_to_incomplete'] && params[:page]['needs_review'] != '1' 
         @page.status = Page::STATUS_INCOMPLETE
       elsif params['save_to_needs_review']
         @page.status = Page::STATUS_NEEDS_REVIEW
-      elsif params['save_to_transcribed'] && params[:page]['needs_review'] != '1'
+      elsif (params['save_to_transcribed'] && params[:page]['needs_review'] != '1') || params['approve_to_transcribed']
         @page.status = Page::STATUS_TRANSCRIBED
       else
         # old code; possibly dead
