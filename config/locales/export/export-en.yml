@@ -91,3 +91,8 @@ en:
       fromthepage_version: "FromThePage version: %{version}"
       page_translations: "Page Translations"
       notes: "Notes:"
+    facing_edition:
+      html:
+        export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
+        fromthepage_version: "FromThePage version: %{version}"
+

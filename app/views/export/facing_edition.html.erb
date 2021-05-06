@@ -2,7 +2,6 @@
 =======================
 
 <%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
-<%= t('.fromthepage_version', version: fromthepage_version) %>
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
 
@@ -13,7 +12,7 @@
   <% elsif page.ia_leaf %>
 ![<%= page.title %>](<%= page.ia_leaf.facsimile_url %>)
   <% else %>
-![<%= page.title %>](<%= page.canonical_facsimile_url %>)
+![<%= page.title %>](<%= root_url %><%= file_to_url(page.canonical_facsimile_url) %>)
   <% end %>
 \newpage
 <% end %>
