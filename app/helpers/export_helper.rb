@@ -16,6 +16,10 @@ module ExportHelper
       end
     end
 
+    doc.elements.each("//pb") do |e|
+      e.replace_with(REXML::Text.new("\n\n\n"))
+    end
+
 
     markdown = ""
     doc.write(markdown)
@@ -33,6 +37,8 @@ module ExportHelper
     markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
 #    markdown.gsub!('^', '\textasciicircum')  #\^{}
     markdown.gsub!('~', '\textasciitilde')
+    markdown.gsub!(/^\s*(\d+)([.)])/, '\1\\\\\2')
+    markdown.gsub!(/^\s*<p>(\d+)([.)])/, '<p>\1\\\\\2')
 
     markdown.strip!
 
