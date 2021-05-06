@@ -75,10 +75,12 @@ class FacetsController < ApplicationController
     if errors.empty?
       # renumber down to contiguous 0-indexed values
       collection.facet_configs.where(:input_type => 'text').where.not(:order => nil).each_with_index do |facet_config, i|
-        facet_config.update(order: i)
+        facet_config.order=i
+        facet_config.save!
       end
       collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).each_with_index do |facet_config, i|
-        facet_config.update(order: i)
+        facet_config.order=i
+        facet_config.save!
       end
       FacetConfig.populate_facets(collection)
 
