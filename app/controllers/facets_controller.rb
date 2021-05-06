@@ -80,6 +80,7 @@ class FacetsController < ApplicationController
       collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).each_with_index do |facet_config, i|
         facet_config.update(order: i)
       end
+      FacetConfig.populate_facets(collection)
 
       redirect_to collection_facets_path(collection.owner, collection), notice: "Collection facets updated successfully"
     else
