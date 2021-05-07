@@ -333,7 +333,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
             cell = ERB::Util.html_escape(cell)
           end
-          tc.content = cell
+          tc.content = cell.to_s
           tc.save!
 
           # format the cell
