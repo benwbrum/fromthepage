@@ -5,6 +5,20 @@
 <div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
 
 <script>
+
+  edtfValidator = function (value, callback) {
+    setTimeout(function(){
+      if (/^\d\d\d\d(-\d\d)?(-\d\d)?$/.test(value)) {
+        callback(true);
+      }
+      else {
+        callback(false);
+      }
+    }, 100);
+  };
+
+  Handsontable.validators.registerValidator('edtf', edtfValidator);
+
   var columnConfig = [
     <% transcription_field.spreadsheet_columns.each do |column| %>
       {
@@ -17,6 +31,8 @@
           type: 'numeric'
         <% elsif column.input_type == 'checkbox' %>
           type: 'checkbox'
+        <% elsif column.input_type == 'date' %>
+          validator: edtfValidator
         <% else %>
         <% end %>
        },
