@@ -9,7 +9,9 @@
     <% transcription_field.spreadsheet_columns.each do |column| %>
       {
         <% if column.input_type == 'select' %>
-          type: 'dropdown',
+          type: 'autocomplete',
+          strict: true,
+          allowInvalid: true,
           source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
         <% elsif column.input_type == 'numeric' %>
           type: 'numeric'
