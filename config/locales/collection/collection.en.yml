@@ -11,6 +11,8 @@ en:
     show:
       all_complete: "All works are fully transcribed."
       start_transcribing: "Start Transcribing"
+      search_the_text: "Search the text..."
+      search_by_title: "Search by title..."
       search_in_collection: "Search in collection..."
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
@@ -190,7 +192,7 @@ en:
       unclear_label: "Unclear"
       unclear_description: "Marks unclear text."
       u_label: "Underline"
-      u_description: "Marks underlined text."      
+      u_description: "Marks underlined text."
     needs_review_pages:
       pages_that_need_review: "Pages That Need Review"
       project_by: "Project by"
