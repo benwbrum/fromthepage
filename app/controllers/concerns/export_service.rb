@@ -365,7 +365,7 @@ private
 
         if page.sections.blank?
           #get cell data for a page with only one table
-          page.table_cells.group_by(&:row).each do |row, cell_array|
+          page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
             cell_data(cell_array, data_cells)
             if has_spreadsheet
