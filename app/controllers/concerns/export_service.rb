@@ -339,6 +339,8 @@ private
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
+        has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
+
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
         page_notes = page.notes
           .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
@@ -359,12 +361,16 @@ private
 
         page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
+        running_data = []
 
         if page.sections.blank?
           #get cell data for a page with only one table
           page.table_cells.group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
-            cell_data(cell_array, @raw_headings, data_cells)
+            cell_data(cell_array, data_cells)
+            if has_spreadsheet
+              running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+            end
             #shift cells over if any page has sections
             if !col_sections
               section_cells = []
@@ -387,7 +393,10 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, @raw_headings, data_cells)
+              cell_data(cell_array, data_cells)
+              if has_spreadsheet
+                running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+              end
               # write the record to the CSV and start a new record
               csv << (page_cells + page_metadata_cells + section_cells + data_cells)
               #create a new array for the next row
@@ -425,7 +434,7 @@ private
   end
 
 
-  def cell_data(array, raw_headings, data_cells)
+  def cell_data(array, data_cells)
     array.each do |cell|
       index = index_for_cell(cell)
       target = index *2
@@ -434,7 +443,30 @@ private
     end
   end
 
+  def process_header_footer_data(data_cells, running_data, cell_array, rownum)
+    # assume that we are a spreadsheet already
 
+    # create running data if it's our first time
+    if running_data.nil? 
+      running_data = []
+    end
+
+    # are we in row 1?  fill the running data with non-spreadsheet fields
+    if rownum == 1
+      cell_array.each do |cell|
+        unless cell.transcription_field.input_type == 'spreadsheet'
+          running_data << cell
+        end 
+      end
+    else
+      # are we in row 2 or greater?
+      # fill data cells from running header/footer data
+      cell_data(running_data, data_cells)
+    end
+
+    # return the current running data
+    running_data
+  end
 
 
 
