@@ -50,9 +50,10 @@
           <% end %>
         ],
       <% end %>
+      <% spreadsheet_column_count = transcription_field.spreadsheet_columns.count %>
       <% (transcription_field.starting_rows - cells_by_row.count).times do %>
         [
-          <% transcription_field.spreadsheet_columns.count.times do %>
+          <% spreadsheet_column_count.times do %>
             null,
           <% end %>
         ],
