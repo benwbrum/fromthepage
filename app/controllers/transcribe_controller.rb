@@ -415,7 +415,17 @@ protected
 
   def log_transcript_attempt
     # we have access to @page, @user, and params
-    log_message = log_attempt(TRANSCRIPTION, params[:page][:source_text])
+    if @page.field_based
+      if request.params[:fields].nil?
+        source_text = "[NULL FIELD-BASED PARAMS]"
+      else
+        source_text = request.params[:fields].pretty_inspect
+      end
+    else
+      source_text = params[:page][:source_text]
+    end
+
+    log_message = log_attempt(TRANSCRIPTION, source_text)
     return log_message
   end
 
