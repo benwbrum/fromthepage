@@ -32,7 +32,8 @@
         <% elsif column.input_type == 'checkbox' %>
           type: 'checkbox'
         <% elsif column.input_type == 'date' %>
-          validator: edtfValidator
+          validator: edtfValidator,
+          comment: { value: '<%= t(".date_tooltip") %>'}
         <% else %>
         <% end %>
        },
@@ -129,6 +130,7 @@
     rowHeaders: true,
     colHeaders: colHeadersConfig,
     filters: true,
+    comments: true,
     data: data,
     width: '100%',
     rowHeights: 23,
