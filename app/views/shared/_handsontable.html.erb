@@ -29,7 +29,7 @@
 
   var data = [
     <% if @page %>
-      <% cells_by_row = transcription_field.table_cells.where(:page_id => @page.id).group_by { |cell| cell.row } %>
+      <% cells_by_row = (preview_cells || transcription_field.table_cells.where(:page_id => @page.id)).group_by { |cell| cell.row } %>
       <% cells_by_row.values.each do |data_row| %>
         [
           <% transcription_field.spreadsheet_columns.each do |column_config| %>
