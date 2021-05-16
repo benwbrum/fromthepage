@@ -357,7 +357,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   end
 
   def replace_table_cells(new_table_cells)
-    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes})
+    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes.merge({created_at: Time.now, updated_at: Time.now})})
   end
 
   #create table cells if the collection is field based

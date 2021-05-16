@@ -6,7 +6,7 @@
       .fields-row
         -field_layout(array)
         -@field_array.each do |field, cell|
-          -if @field_preview[field.id]
+          -if @field_preview && @field_preview[field.id]
             -cell = @field_preview[field.id].first
           -if field.input_type == 'spreadsheet'
             .spreadsheet-wrapper
