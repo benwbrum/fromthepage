@@ -39,7 +39,7 @@ table.admin-grid.datagrid.striped
         td.nowrap =o.last_sign_in_at.localtime.strftime('%b %d, %Y at %H:%M') if o.last_sign_in_at
         td.nowrap
           .instack
-            =link_to t('.login_as'), user_masquerade_path(o)
+            =link_to t('.login_as'), masquerade_path(o)
             =link_to t('.edit'), admin_edit_user_path(:user_id => o.id), :data => { litebox: { hash: "" }}
             =link_to t('.delete'), admin_delete_user_path(:user_id => o.id), data: { confirm: t('.are_you_sure') }
 
