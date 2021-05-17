@@ -33,6 +33,7 @@
           type: 'checkbox'
         <% elsif column.input_type == 'date' %>
           validator: edtfValidator,
+          placeholder: 'YYYY-MM-DD',
           comment: { value: '<%= t(".date_tooltip") %>'}
         <% else %>
         <% end %>
