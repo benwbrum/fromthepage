@@ -312,6 +312,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     column_configs.each do |column|
       formatted << "<th>#{column.label}</th>"
     end
+    checkbox_headers = column_configs.select{|cc| cc.input_type == 'checkbox'}.map{|cc| cc.label }.flatten
 
     formatted << "</thead><tbody>"
     # write out 
@@ -333,7 +334,11 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
             cell = ERB::Util.html_escape(cell)
           end
-          tc.content = cell
+          if checkbox_headers.include? tc.header
+            tc.content = (cell == 'true').to_s
+          else
+            tc.content = cell
+          end
           tc.save!
 
           # format the cell
