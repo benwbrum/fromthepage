@@ -15,6 +15,7 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
+    @field_preview = {}
   end
 
   def add_fields
