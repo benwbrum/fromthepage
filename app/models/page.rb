@@ -212,8 +212,8 @@ class Page < ApplicationRecord
 
   def update_sections_and_tables
     if @sections
-      self.sections.each { |s| s.delete }
-      self.table_cells.each { |c| c.delete }
+      self.sections.delete_all
+      self.table_cells.delete_all
 
       @sections.each do |section|
         section.pages << self
@@ -221,7 +221,6 @@ class Page < ApplicationRecord
         section.save!
       end
 
-      self.table_cells.each { |c| c.delete }
       @tables.each do |table|
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
@@ -303,6 +302,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def process_spreadsheet(field, cell_data)
     # returns a formatted string
     formatted = String.new
+    new_table_cells = []
 
     # read spreadsheet-wide data like table heading
     formatted << "<table class=\"tabular\"><thead>"
@@ -339,7 +339,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
           else
             tc.content = cell
           end
-          tc.save!
+          new_table_cells << tc
 
           # format the cell
           formatted_row << "<td>#{cell}</td>"
@@ -350,7 +350,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     end
     formatted << "</tbody></table>"
 
-    formatted
+    [formatted, new_table_cells]
   end
 
   def this_and_following_rows_empty?(cell_data, rownum)
@@ -361,16 +361,22 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     row_with_value.nil?
   end
 
+  def replace_table_cells(new_table_cells)
+    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes.merge({created_at: Time.now, updated_at: Time.now})})
+  end
+
   #create table cells if the collection is field based
   def process_fields(field_cells)
+    new_table_cells = []
     string = String.new
-    cells = self.table_cells.each {|c| c.delete}
     unless field_cells.blank?
       field_cells.each do |id, cell_data|
         field = TranscriptionField.find(id.to_i)
         input_type = field.input_type
         if input_type == 'spreadsheet'
-          string << process_spreadsheet(field, cell_data)
+          spreadsheet_string, spreadsheet_cells = process_spreadsheet(field, cell_data)
+          string << spreadsheet_string
+          new_table_cells += spreadsheet_cells
         else
           tc = TableCell.new(row: 1)
           tc.work = self.work
@@ -387,11 +393,12 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
             string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
           end
 
-          tc.save!
+          new_table_cells << tc
         end
       end
     end
     self.source_text = string
+    new_table_cells
   end
 
   #######################
