@@ -276,14 +276,14 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'transcription_field', as: 'transcription_field' do
-    get 'reorder_field', to: 'transcription_field#reorder_field'
+    patch 'reorder', to: 'transcription_field#reorder_fields'
     get 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
 
     scope 'spreadsheet_column', as: 'spreadsheet_column' do
-      patch 'reorder', to: 'transcription_field#reorder'
+      patch 'reorder', to: 'transcription_field#reorder_columns'
       get 'delete', to: 'transcription_field#delete_column'
       get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
       get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
