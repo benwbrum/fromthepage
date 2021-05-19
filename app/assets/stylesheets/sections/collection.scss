@@ -524,6 +524,7 @@
 
 .field-form {
   width: 100%;
+
   margin-bottom: 15px;
 
   th, td {
@@ -543,6 +544,12 @@
     padding-top: 15px;
   }
 
+  &_line {
+    font-weight: bold;
+    font-size: $fontSizeBig;
+    padding: 20px 0 0 0 !important;
+  }
+
   &_label {
     width: 35%;
   }
@@ -556,8 +563,16 @@
   }
 
   &_actions {
+    min-width: 52px;
     white-space: nowrap;
     vertical-align: middle;
+    box-sizing: border-box;
+  }
+
+  &_width,
+  &_page {
+    min-width: 75px;
+    box-sizing: border-box;
   }
 
   &_icon {
@@ -583,10 +598,6 @@
     height: calc(2em + 2px);
     min-height: calc(2em + 2px);
   }
-
-  .first {width: 15px;}
-  .fourth {width: 100%;}
-  .percent {width: 50px;}
 
   .ui-sortable-placeholder td {
     height: 34px;
