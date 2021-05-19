@@ -28,12 +28,9 @@ module ExportService
   end
 
   def export_table_csv_work(dirname:, out:, work:)
-    path = "fields_and_tables.csv"
+    path = File.join dirname, 'csv', "fields_and_tables.csv"
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
-    # path = "subject_index.csv"
-    # out.put_next_entry(path)
-    # out.write(collection.export_subjects_as_csv)
   end
 
   def export_tei(dirname:, out:, export_user:)
