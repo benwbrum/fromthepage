@@ -9,20 +9,20 @@
           h5 PDF
           p.nomargin Download a PDF version of this work.
         .bulk-export_options
-          span =button_to "Download", export_printable_path(@collection, @work), params: { edition: 'text', format: 'pdf', method: :get}
+          span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'pdf', method: :get}
       li
         .bulk-export_format
           h5 MS Word
           p.nomargin Download a DOCX version of this work.
         .bulk-export_options
-          span =button_to "Download", export_printable_path(@collection, @work), params: { edition: 'text', format: 'doc', method: :get}
+          span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :get}
       -if current_user.like_owner?(@collection)
       li
         .bulk-export_format
           h5 Facing PDF
           p.nomargin Download a PDF version of this work including images and text on facing pages.
         .bulk-export_options
-          span =button_to "Download", export_printable_path(@collection, @work), params: { edition: 'facing', format: 'pdf', method: :get}
+          span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'facing', format: 'pdf', method: :get}
 
 
     h2.nomargin Experiment
