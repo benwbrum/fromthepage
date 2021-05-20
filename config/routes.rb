@@ -133,6 +133,7 @@ Fromthepage::Application.routes.draw do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
+    post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
     get 'subject_csv', to: 'export#subject_index_csv'
@@ -425,8 +426,9 @@ Fromthepage::Application.routes.draw do
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
-        get 'versions', on: :member
+        get 'download', on: :member
         get 'print', on: :member
+        get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
