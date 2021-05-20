@@ -152,6 +152,7 @@ en:
       editor_buttons: "Editor Buttons"
       editor_buttons_description: "Choose mark-up buttons to appear on the transcription editor."
       edit_buttons: "Configure Buttons"
+      user_download: "Allow users to download works."
     edit_buttons:
       heading: "Transcription Editor Configuration"
       description: "FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up."
