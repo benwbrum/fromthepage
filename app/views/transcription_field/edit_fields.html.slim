@@ -8,13 +8,15 @@ div.columns
       table.field-form#new-fields
         -unless @current_fields.blank?
           -@current_fields.group_by(&:line_number).each do |line, field|
-            =render ({partial: 'line_form', locals: {line_number: "Line #{line}"}})
-            -field.each do |field|
-              =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: field}})
+            tbody
+              =render ({partial: 'line_form', locals: {line_number: "Line #{line}"}})
+              -field.each do |field|
+                =render ({ partial: 'new_field_form', locals: {collection_id: @collection, field: field}})
         -else
-          =render ({partial: 'line_form', locals: {line_number: "Line 1"}})
-          -3.times do
-            =render ({ partial: 'new_field_form', locals: {collection_id: @collection, line_number: 1}})
+          tbody
+            =render ({partial: 'line_form', locals: {line_number: "Line 1"}})
+            -3.times do
+              =render ({ partial: 'new_field_form', locals: {collection_id: @collection, line_number: 1}})
       .flex-toolbar
         .flex-toolbar_group
           =button_tag t('.add_additional_line'), type: 'button', id: 'add-line', class: 'button', remote: true
@@ -30,16 +32,51 @@ div.columns
 -content_for :javascript
   javascript:
     $(function() {
+      var sortableConfig = {
+        axis: 'y',
+        items: 'tr.sortable-field',
+        connectWith: '#new-fields tbody',
+        forceHelperSize: true,
+        forcePlaceholderSize: true,
+        update: function(e, ui) {
+          var line = $(this).index() + 1;
+          var data = $(this).sortable('serialize');
+          if (data) {
+            $.ajax({
+              url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
+              type: "PATCH",
+              data: `${data}&line=${line}`,
+            });
+          }
+        },
+      };
+
+      $('#new-fields tbody').sortable(sortableConfig);
+
+      $('#new-fields').on('click', '[data-delete-field]', function() {
+        var lineCount = $(this).closest('table').find('tbody').length;
+        var fieldCount = $(this).closest('tbody').find('.sortable-field').length;
+        console.log('REMOVE', lineCount, fieldCount);
+        if (lineCount > 1 && fieldCount === 1) {
+          $(this).closest('tbody').remove();
+        } else if (fieldCount > 1) {
+          $(this).closest('tr').remove();
+        }
+      });
+
       $('#add-field').click(function(e) {
-        $('#new-fields').append("#{j render partial: 'new_field_form', locals: {collection_id: @collection, line_number: 'new'}}");
+        $('#new-fields tbody').last().append("#{j render partial: 'new_field_form', locals: {collection_id: @collection, line_number: 'new'}}");
       });
 
       $('#add-line').click(function(e) {
-        var lineCount = $('th#line_num').last().text();
+        var lineCount = $('.field-form_line').last().text();
         $.ajax({
           method: 'GET',
           url: '/transcription_field/line_form',
-          data: {line_count: lineCount}
+          data: {line_count: lineCount},
+          complete: function() {
+            $('#new-fields tbody').sortable(sortableConfig);
+          }
         });
       });
 
@@ -47,13 +84,11 @@ div.columns
         addOptions(this,1);
       })
 
-      $('table#new-fields tr').each(function() {
-        if ($(this).find('th#line_num').val() === undefined) {
-          var optionsObj = $(this).find('td .field-options')[0];
-          var index = $(this).find('td .input_type')[0].options.selectedIndex;
-          if (index == 1) {
-            $(optionsObj).prop('disabled', false);
-          };
+      $('#new-fields tr.sortable-field').each(function() {
+        var optionsObj = $(this).find('.field-options')[0];
+        var index = $(this).find('.input_type')[0].options.selectedIndex;
+        if (index == 1) {
+          $(optionsObj).prop('disabled', false);
         };
       })
     });
