@@ -33,6 +33,7 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
     @current_user_alerted = false
+    @field_preview ||= {}
 
     if @page.edit_started_by_user_id != current_user.id &&
        @page.edit_started_at > Time.now - 1.minute
@@ -121,7 +122,7 @@ class TranscribeController  < ApplicationController
 
     if @page.field_based
       @field_cells = request.params[:fields]
-      @page.process_fields(@field_cells)
+      table_cells = @page.process_fields(@field_cells)
     end
 
     @page.attributes = page_params
@@ -150,6 +151,10 @@ class TranscribeController  < ApplicationController
 
       begin
         if @page.save
+          if @page.field_based
+            @page.replace_table_cells(table_cells)
+          end
+
           log_transcript_success
           flash[:notice] = t('.saved_notice')
           if @page.work.ocr_correction
@@ -210,9 +215,18 @@ class TranscribeController  < ApplicationController
     elsif params['preview']
       @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
+      if @page.field_based
+        # what do we do about the table cells?
+        @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+      end
+
       display_page
       render :action => 'display_page'
     elsif params['edit']
+      if @page.field_based
+        # what do we do about the table cells?
+        @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+      end
       display_page
       render :action => 'display_page'
     elsif params['autolink']
@@ -415,7 +429,17 @@ protected
 
   def log_transcript_attempt
     # we have access to @page, @user, and params
-    log_message = log_attempt(TRANSCRIPTION, params[:page][:source_text])
+    if @page.field_based
+      if request.params[:fields].nil?
+        source_text = "[NULL FIELD-BASED PARAMS]"
+      else
+        source_text = request.params[:fields].pretty_inspect
+      end
+    else
+      source_text = params[:page][:source_text]
+    end
+
+    log_message = log_attempt(TRANSCRIPTION, source_text)
     return log_message
   end
 

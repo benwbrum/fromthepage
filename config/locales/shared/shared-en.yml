@@ -35,6 +35,8 @@ en:
       pages: "Pages"
       help: "Help"
       download: "Download"
+    handsontable:
+      date_tooltip: "Dates should be formatted YYYY-MM-DD (four-digit year, two-digit month, two-digit day, with hyphens between them)."
     codemirror:
       abbr_description: "Marks abbreviations in a text with expansions in the expan attribute."
       add_description: "Marks text inserted after-the-fact by the writer."

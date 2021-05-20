@@ -70,10 +70,11 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span IIIF
       -unless work.table_cells.blank?
-        td.nowrap
-          =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
-            =svg_symbol '#icon-export', class: 'icon'
-            span =t('.table_csv')
+        -if work.table_cells.count < 10000
+          td.nowrap
+            =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
+              =svg_symbol '#icon-export', class: 'icon'
+              span =t('.table_csv')
       td.nowrap
         =link_to({ :controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip }, class: 'btnExport')
           =svg_symbol '#icon-export', class: 'icon'
