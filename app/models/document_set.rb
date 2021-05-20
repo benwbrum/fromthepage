@@ -50,6 +50,10 @@ class DocumentSet < ApplicationRecord
     self.collection.review_workflow
   end
 
+  def user_download
+    self.collection.user_download
+  end
+
   def subjects_disabled
     self.collection.subjects_disabled
   end

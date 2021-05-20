@@ -46,6 +46,17 @@ en:
       subjects_and_indices: "Subjects and Indices"
       categories: "Categories:"
       pages: "Pages:"
+    facing_edition:
+      export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
+      identifier: "Identifier: %{work}"
+      fromthepage_version: "FromThePage version: %{version}"
+      page_transcripts: "Page Transcripts"
+      notes: "Notes:"
+      page_edit_history: "Page Edit History:"
+      page_translations: "Page Translations"
+      subjects_and_indices: "Subjects and Indices"
+      categories: "Categories:"
+      pages: "Pages:"
     tei:
       edition_created: "Edition created from new transcripts of this manuscript."
       initial_upload: "Initial upload of this work's facsimile images and metadata to FromThePage for editing"
@@ -80,3 +91,8 @@ en:
       fromthepage_version: "FromThePage version: %{version}"
       page_translations: "Page Translations"
       notes: "Notes:"
+    facing_edition:
+      html:
+        export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
+        fromthepage_version: "FromThePage version: %{version}"
+
