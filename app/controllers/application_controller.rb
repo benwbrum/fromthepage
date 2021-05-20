@@ -19,10 +19,23 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
+    locale = nil
+
+    # use user-record locale
     if user_signed_in? && !current_user.preferred_locale.blank?
       # the user has set their locale manually; use it.
       locale = current_user.preferred_locale
-    else
+    end
+
+    # if we can't find that, use session locale
+    if locale.nil?
+      if session[:current_locale]
+        locale = session[:current_locale]
+      end
+    end
+
+    # if we can't find that, use browser locale
+    if locale.nil?
       # the user might their locale set in the browser
       locale = http_accept_language.compatible_language_from(I18n.available_locales)
     end
@@ -31,7 +44,6 @@ class ApplicationController < ActionController::Base
       # use the default if the above optiosn didn't work
       locale = I18n.default_locale
     end
-
     # execute the action with the locale
     I18n.with_locale(locale, &action)
   end
