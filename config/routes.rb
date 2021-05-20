@@ -232,6 +232,7 @@ Fromthepage::Application.routes.draw do
     get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
     post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
     post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
+    get 'choose_locale/:chosen_locale', to: 'user#choose_locale', as: 'choose_locale'
   end
 
   scope 'page_block', as: 'page_block' do

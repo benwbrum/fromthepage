@@ -77,6 +77,14 @@ html lang="en-US"
               span =t('.sign_in')
               =svg_symbol '#header-user', class: 'icon'
 
+          dl.dropdown.right
+            dt.header_link.header_user tabindex=0
+              span
+                big =locale.to_s.upcase
+            dd
+              -I18n.available_locales.each do |locale_option|
+                =link_to t(locale_option.to_s), user_choose_locale_path(locale_option.to_s)
+
     -if user_masquerade?
       h2.strong
         =link_to "#{t('.undo_login_as')} \"#{current_user.display_name}\"", back_masquerade_path(current_user)
