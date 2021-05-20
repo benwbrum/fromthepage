@@ -69,7 +69,7 @@ module ExportHelper
 
       # work-specific exports
       if bulk_export.table_csv_work
-        export_table_csv_work(dirname: '', out: out, work: work)
+        export_table_csv_work(dirname: dirname, out: out, work: work)
       end
 
       if bulk_export.tei_work

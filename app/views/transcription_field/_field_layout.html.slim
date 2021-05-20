@@ -1,13 +1,16 @@
 -field_order(@collection)
 .page-fields
   -@fields.each do |line, array|
-    .fields-row
-      -field_layout(array)
-      -@field_array.each do |field, cell|
-        -if (@page && (field.page_number == @page.position || field.page_number == nil )) || (current_page?({action: 'edit_fields'}))
+    -page_number = array.map{|field| field.page_number}.uniq.first
+    -if (@page && (page_number == @page.position || page_number == nil)) || (current_page?({action: 'edit_fields'}))
+      .fields-row
+        -field_layout(array)
+        -@field_array.each do |field, cell|
+          -if @field_preview && @field_preview[field.id]
+            -cell = @field_preview[field.id].first
           -if field.input_type == 'spreadsheet'
             .spreadsheet-wrapper
-              =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field} })
+              =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
           -else
             -span_width = !field.percentage.blank? ? field.percentage : @width
             .field-wrapper(style="width: #{span_width}%")

@@ -5,16 +5,36 @@
 <div id="hot-div-<%= transcription_field.id %>" class="spreadsheet-input" data-field-name="fields[<%= transcription_field.id %>]"></div>
 
 <script>
+
+  edtfValidator = function (value, callback) {
+    setTimeout(function(){
+      if (/^\d\d\d\d(-\d\d)?(-\d\d)?$/.test(value)) {
+        callback(true);
+      }
+      else {
+        callback(false);
+      }
+    }, 100);
+  };
+
+  Handsontable.validators.registerValidator('edtf', edtfValidator);
+
   var columnConfig = [
     <% transcription_field.spreadsheet_columns.each do |column| %>
       {
         <% if column.input_type == 'select' %>
-          type: 'dropdown',
+          type: 'autocomplete',
+          strict: true,
+          allowInvalid: true,
           source: <%= raw(column.options.split(";").to_json) unless column.options.nil? %>
         <% elsif column.input_type == 'numeric' %>
           type: 'numeric'
         <% elsif column.input_type == 'checkbox' %>
           type: 'checkbox'
+        <% elsif column.input_type == 'date' %>
+          validator: edtfValidator,
+          placeholder: 'YYYY-MM-DD',
+          comment: { value: '<%= t(".date_tooltip") %>'}
         <% else %>
         <% end %>
        },
@@ -29,7 +49,7 @@
 
   var data = [
     <% if @page %>
-      <% cells_by_row = transcription_field.table_cells.where(:page_id => @page.id).group_by { |cell| cell.row } %>
+      <% cells_by_row = (preview_cells || transcription_field.table_cells.where(:page_id => @page.id)).group_by { |cell| cell.row } %>
       <% cells_by_row.values.each do |data_row| %>
         [
           <% transcription_field.spreadsheet_columns.each do |column_config| %>
@@ -50,9 +70,10 @@
           <% end %>
         ],
       <% end %>
+      <% spreadsheet_column_count = transcription_field.spreadsheet_columns.count %>
       <% (transcription_field.starting_rows - cells_by_row.count).times do %>
         [
-          <% transcription_field.spreadsheet_columns.count.times do %>
+          <% spreadsheet_column_count.times do %>
             null,
           <% end %>
         ],
@@ -111,6 +132,7 @@
     rowHeaders: true,
     colHeaders: colHeadersConfig,
     filters: true,
+    comments: true,
     data: data,
     width: '100%',
     rowHeights: 23,
