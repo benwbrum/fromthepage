@@ -8,6 +8,7 @@ class EditorButton < ApplicationRecord
     DEL = 'del'
     EXPAN = 'expan'
     FIG = 'fig'
+    FOOTNOTE = 'footnote'
     GAP = 'gap'
     HEAD = 'head'
     MARGINALIA = 'marginalia'
@@ -27,6 +28,7 @@ class EditorButton < ApplicationRecord
     Keys::DEL => ['<del>'],
     Keys::EXPAN => ['<expan abbr="">'],
     Keys::FIG => ['<fig rend="hr">'],
+    Keys::FOOTNOTE => ['<footnote marker="*">'],
     Keys::GAP => ['<gap>'],
     Keys::HEAD => ['<head>'],
     Keys::SOFT_BREAK => ['<lb break="no">'],
