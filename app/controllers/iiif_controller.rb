@@ -143,7 +143,7 @@ class IiifController < ApplicationController
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }] if work.sc_manifest
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id}] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
@@ -163,7 +163,17 @@ class IiifController < ApplicationController
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
     dc_source = dc_source_from_work(work)
-    manifest.metadata = [dc_source] if dc_source
+    if dc_source
+      manifest.metadata = [dc_source]
+    else
+      manifest.metadata = []
+    end
+    if work.original_metadata
+      manifest.metadata += JSON[work.original_metadata]
+    end
+    work_metadata = work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page", "in_scope").delete_if{|k,v| v.blank?}
+
+    work_metadata.each_pair { |label,value| manifest.metadata << { "label" => label.titleize, "value" => value.to_s } }
 
     if work.sc_manifest
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"

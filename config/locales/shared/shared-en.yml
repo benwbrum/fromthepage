@@ -34,6 +34,9 @@ en:
       settings: "Settings"
       pages: "Pages"
       help: "Help"
+      download: "Download"
+    handsontable:
+      date_tooltip: "Dates should be formatted YYYY-MM-DD (four-digit year, two-digit month, two-digit day, with hyphens between them)."
     codemirror:
       abbr_description: "Marks abbreviations in a text with expansions in the expan attribute."
       add_description: "Marks text inserted after-the-fact by the writer."
@@ -42,6 +45,7 @@ en:
       expan_description: "Marks expanded abbreviations with original forms in the abbr attribute."
       fig_description: "Indicates a figure or a horizontal line."
       gap_description: "Marks a gap in the text, often due to damage"
+      head_description: "Marks headings within the text"
       marginalia_description: "Marks text in the margins of the main text."
       reg_description: "Marks a regularized form of the text, with original forms in the orig attribute."
       s_description: "Marks text that has been struck through for any reason."

@@ -9,52 +9,68 @@
   =validation_summary @page.errors
 
   .page-toolbar
-    .toolbar
-      .toolbar_group
-        a.button.outline(data-fullscreen-toggle) =t('.fullscreen')
-      .toolbar_group
+    .flex-toolbar
+      .flex-toolbar_group
+        a.button.outline(data-fullscreen-toggle)
+          =svg_symbol "#icon-expand", class: 'icon'
+          span.hide-l =t('.fullscreen')
         -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
         dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
           dt.button.outline
             =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
-            span.hide-l =layout_modes[@layout_mode]
+            span.hide-l =t('.layout')
           dd
             -layout_modes.each do |mode, text|
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
                 span =text
-      .toolbar_group.hide-m
+        -if @page.status != Page::STATUS_BLANK && @collection.voice_recognition
+          .voice-recognition
+            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
+            span.voice-info
+
+      .flex-toolbar_group.hide-m
         label.auto-fullscreen
           =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
           |&nbsp;
           span =t('.always_show_fullscreen')
 
-      .toolbar_group.w100.aright
+      .flex-toolbar_group.push-right
         =f.label 'mark_blank', t('.mark_as_blank')
-        -if @page.status == Page::STATUS_BLANK
-          =f.check_box('mark_blank', {checked: true})
-        -else
-          =f.check_box('mark_blank', {checked: false})
+        =f.check_box('mark_blank', {checked: @page.status == Page::STATUS_BLANK})
 
-      .toolbar_group
-        =f.label 'needs_review', t('.needs_review')
-        -if @page.status == Page::STATUS_NEEDS_REVIEW
-          =f.check_box('needs_review', {checked: true})
-        -else
-          =f.check_box('needs_review', {checked: false})
+      -if !@collection.review_workflow
+        .flex-toolbar_group
+          =f.label 'needs_review', t('.needs_review')
+          =f.check_box('needs_review', {checked: @page.status == Page::STATUS_NEEDS_REVIEW})
 
-      .toolbar_group
+      .flex-toolbar_group
         -unless @preview_xml
-          =>button_tag t('.preview'), :name => 'preview', type: 'submit'
+          =button_tag t('.preview'), :name => 'preview', type: 'submit', title: "#{t('.preview_tooltip')}"
         -else
-          =>button_tag t('.edit'), :name => 'edit', type: 'submit'
+          =button_tag t('.edit'), :name => 'edit', type: 'submit', title: "#{t('.edit_tooltip')}"
         -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag t('.autolink'), :name => 'autolink', type: 'submit'
-        =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);'
+          =button_tag t('.autolink'), :name => 'autolink', type: 'submit', title: "#{t('.autolink_tooltip')}"
+        / check status of page and configuration of collection
+        -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
+          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_INDEXED) 
+          =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
+        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_INDEXED)
+          =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}"
+        -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}"
+        -if @collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}"
+        -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
+          =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}"
 
   -if @page.status == Page::STATUS_NEEDS_REVIEW
     .page-review
-      =t('.this_page_marked_needs_review')
+      -if @collection.review_workflow
+        =t('.this_page_marked_needs_review_workflow_version')
+      -else
+        =t('.this_page_marked_needs_review')
 
   .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
     .page-column
@@ -70,11 +86,6 @@
           =f.text_area :source_text
 
       -else
-        -if @collection.voice_recognition
-          .page-column_voice
-            =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'voice', id: 'start_img', onclick: 'startButton(event);'
-            span.voice-info
-
         -if @preview_xml
           .page-preview[*language_attrs(@collection)] ==xml_to_html(@preview_xml)
 
@@ -84,21 +95,34 @@
               =f.label :title, t('.title'), class: 'a50'
               =f.text_field :title
           -if !@collection.field_based
-            =f.text_area(:source_text, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_transcription'))
+            =f.text_area(:source_text, class: 'page-editarea_textarea', autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_transcription'))
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
   .page-toolbar
-    .toolbar
-      .toolbar_group.w100.fgfaded.wrap-text ==@work.set_transcription_conventions
-      .toolbar_group.aright
+    .flex-toolbar
+      .flex-toolbar_group.push-left
+        .fgfaded ==@work.set_transcription_conventions
+      .flex-toolbar_group.push-top
         -unless @preview_xml
-          =>button_tag t('.preview'), :name => 'preview', type: 'button'
+          =button_tag t('.preview'), :name => 'preview', type: 'submit', title: "#{t('.preview_tooltip')}"
         -else
-          =>button_tag t('.edit'), :name => 'edit', type: 'button'
+          =button_tag t('.edit'), :name => 'edit', type: 'submit', title: "#{t('.edit_tooltip')}"
         -unless @collection.subjects_disabled || @collection.field_based
-          =>button_tag t('.autolink'), :name => 'autolink', type: 'button'
-        =button_tag t('.save_changes'), :name => 'save', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);'
+          =button_tag t('.autolink'), :name => 'autolink', type: 'submit', title: "#{t('.autolink_tooltip')}"
+        / check status of page and configuration of collection
+        -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
+          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_INDEXED) 
+          =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
+        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_INDEXED)
+          =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}"
+        -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}"
+        -if @collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
+          =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}"
+        -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
+          =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}"
 
 p.fgfaded =render :partial => 'shared/markup_help'
 
@@ -110,9 +134,10 @@ h2.legend =t('notes_and_questions')
 
 =render({ :partial => '/shared/collection_footer' })
 
+
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
 
--if text_direction == 'ltr'
+-if !@collection.field_based && text_direction == 'ltr'
   =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
 
 
@@ -144,12 +169,24 @@ h2.legend =t('notes_and_questions')
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
         $(window).trigger('resize.FullHeight');
+
+        if (typeof hot !== 'undefined') {
+          hot.updateSettings({});
+        }
       });
 
       $('[data-layout-set]').on('click', function() {
         var mode = $(this).data('layout-set');
         Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
         $('[data-layout-mode]').attr('data-layout-mode', mode);
+
+        if (typeof viewer !== 'undefined') {
+          requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+        };
+
+        if (typeof hot !== 'undefined') {
+          hot.updateSettings({});
+        };
       });
 
       $('#auto-fullscreen').on('change', function() {
@@ -165,3 +202,8 @@ h2.legend =t('notes_and_questions')
         $('#page_needs_review').prop('checked', false);
       });
     });
+
+
+
+    // TODO change the parameter name for the HOT data to the name of the spreadsheet field
+    // TODO change the way we access the HOT data to allow more than one spreadsheet

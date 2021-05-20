@@ -263,6 +263,7 @@
 .tippy-box {
   font-size: 13px;
   line-height: 1.3;
+  text-align: left;
   background-color: rgba(#000, 0.85);
 }
 
@@ -359,6 +360,49 @@
   }
   &.vtop > &_group { vertical-align: top; }
   table.form + & { margin: $gapSize 0 0 0; }
+}
+
+.flex-toolbar {
+  display: flex;
+  align-items: center;
+
+  &.vtop {
+    align-items: flex-start;
+  }
+
+  &_group {
+    display: flex;
+    line-height: 1.1;
+    align-items: center;
+
+    &:not(:first-child) {
+      margin-left: $gapSize;
+    }
+
+    & > *:not(:first-child) {
+      margin-left: 0.5rem;
+    }
+
+    &.push-left {
+      margin-right: auto;
+    }
+
+    &.push-right {
+      margin-left: auto;
+    }
+
+    &.push-top {
+      margin-bottom: auto;
+    }
+
+    &.push-bottom {
+      margin-top: auto;
+    }
+  }
+
+  table.form + & {
+    margin: $gapSize 0 0 0;
+  }
 }
 
 .instack {

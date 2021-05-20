@@ -40,7 +40,7 @@ describe "editor actions" , :order => :defined do
       fill_in_editor_field("Content")
       page.find('#save_button_top').click
 
-      expect(Page.find(page_fact.id).status).to eq(Page::STATUS_TRANSCRIBED)
+      expect(Page.find(page_fact.id).status).to eq(Page::STATUS_INCOMPLETE)
 
       fill_in_editor_field("")
       page.find('#save_button_top').click
@@ -280,7 +280,7 @@ describe "editor actions" , :order => :defined do
     it "tries to log in as another user" do
       visit "/users/masquerade/#{@owner.id}"
       expect(page.current_path).to eq collections_list_path
-      expect(page.find('.dropdown')).not_to have_content @owner.display_name
+      expect(page.find('.header_user')).not_to have_content @owner.display_name
       expect(page).to have_content @user.display_name
       expect(page).not_to have_selector('a', text: 'Undo Login As')
     end
@@ -290,7 +290,7 @@ describe "editor actions" , :order => :defined do
       fill_in 'Write a new note or ask a question...', with: "Test note"
       find('#save_note_button').click
       expect(page).to have_content "Note has been created"
-      find('#save_button_top').click
+      find('#finish_button_top').click
       expect(page).to have_content('Saved')
     end
 
@@ -309,7 +309,7 @@ describe "editor actions" , :order => :defined do
       fill_in('Write a new note or ask a question...', with: "Test two")
       fill_in_editor_field "Attempt to save"
       message = accept_alert do
-        find('#save_button_top').click
+        find('#finish_button_top').click
       end
       sleep(2)
       expect(message).to have_content("You have unsaved notes.")

@@ -46,6 +46,14 @@ class DocumentSet < ApplicationRecord
     self.collection.hide_completed
   end
 
+  def review_workflow
+    self.collection.review_workflow
+  end
+
+  def user_download
+    self.collection.user_download
+  end
+
   def subjects_disabled
     self.collection.subjects_disabled
   end

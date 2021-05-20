@@ -15,6 +15,7 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
+    @field_preview = {}
   end
 
   def add_fields
@@ -39,6 +40,7 @@ class TranscriptionFieldController < ApplicationController
         if fields[:id].blank?
           #if the field doesn't exist, create a new one
           transcription_field = TranscriptionField.new(fields.permit!)
+          transcription_field.starting_rows = 1
           transcription_field.collection_id = params[:collection_id]
           transcription_field.save
         else
@@ -61,6 +63,14 @@ class TranscriptionFieldController < ApplicationController
   end
 
   # reordering functions
+  def reorder_fields
+    @collection = Collection.friendly.find(params[:collection_id])
+    params[:field].each_with_index do |id, index|
+      TranscriptionField.where(id: id).update_all(position: index + 1, line_number: params[:line])
+    end
+    head :ok
+  end
+
   def reorder_field
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])
@@ -88,7 +98,130 @@ class TranscriptionFieldController < ApplicationController
     end
   end
 
+
+
+  # Spreadsheet column actions
+  def column_form
+    @line_count = 1
+    @count = 1
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def edit_columns
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @collection = @transcription_field.collection
+    @current_columns = @transcription_field.spreadsheet_columns.order(:position)
+  end
+
+  def add_columns
+    @collection = Collection.friendly.find(spreadsheet_column_params[:collection_id])
+
+    @transcription_field = TranscriptionField.find(spreadsheet_column_params[:transcription_field_id])
+    if params[:starting_rows].blank?
+      errors.add(:base, t('.starting_rows_must_not_be_blank'))
+    else
+      @transcription_field.update(:starting_rows => params[:starting_rows].to_i)
+    end
+
+    new_columns = spreadsheet_column_params[:spreadsheet_columns]
+
+    new_columns.each_with_index do |column, index|
+      #ignore blank fields
+      unless column[:label].blank?
+        if column[:options].blank?
+          column[:options] = nil
+          if column[:input_type] == "select"
+            column[:input_type] = "text"
+            errors.add(:base, t('.must_have_options_list'))
+          end
+        else
+          column[:options].gsub!(/;\s/, ';')
+        end
+
+        if column[:id].blank?
+          #if the field doesn't exist, create a new one
+          spreadsheet_column = SpreadsheetColumn.new(column)
+          spreadsheet_column.transcription_field = @transcription_field
+          spreadsheet_column.position = index + 1
+          spreadsheet_column.save
+        else
+          #otherwise update field if anything changed
+          spreadsheet_column = SpreadsheetColumn.find_by(id: column[:id])
+          #remove ID from params before update
+          column.delete(:id)
+          spreadsheet_column.position = index + 1
+          spreadsheet_column.update(column)
+        end
+      end
+    end
+    if errors[:base].any?
+      flash[:error] = errors[:base].uniq.join(" ")
+    end
+    if params[:done].nil?
+      redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+    else
+      redirect_to transcription_field_edit_fields_path(:collection_id => @collection.slug)
+    end
+  end
+
+  # reordering functions
+  def reorder_columns
+    @collection = Collection.friendly.find(params[:collection_id])
+    transcription_field = TranscriptionField.find_by(id: params[:field_id])
+    params[:column].each_with_index do |id, index|
+      SpreadsheetColumn.where(id: id).update_all(position: index + 1)
+    end
+    head :ok
+  end
+
+  def delete_column
+    @collection = Collection.friendly.find(params[:collection_id])
+    transcription_field = TranscriptionField.find_by(id: params[:field_id])
+    column = SpreadsheetColumn.find_by(id: params[:spreadsheet_column_id])
+    column.remove_from_list
+    column.destroy
+    redirect_to transcription_field_spreadsheet_column_path(transcription_field.id)
+  end
+
+  def enable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => true)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def disable_ruler
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @transcription_field.update(:row_highlight => false)
+    redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)    
+  end
+
+  def choose_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    @collection = @transcription_field.collection
+    @page = @collection.pages.sample(1).first
+  end
+
+  def save_offset
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    raw_selector = params[:selector]
+    parts = raw_selector.split(",")
+    raw_y = parts[1]
+    raw_h = parts[3]
+
+    @transcription_field.top_offset = raw_y.to_f / @page.base_height
+    @transcription_field.bottom_offset = 1.0 - ((raw_h.to_f + raw_y.to_f).to_f / @page.base_height)
+    @transcription_field.save!
+    ajax_redirect_to transcription_field_spreadsheet_column_path(@transcription_field.id)
+  end
+
   private
+
+  def spreadsheet_column_params
+    params.permit(:collection_id, :transcription_field_id, :starting_rows, spreadsheet_columns: [:label, :input_type, :options, :id])
+  end
 
   def authorized?
     unless user_signed_in?

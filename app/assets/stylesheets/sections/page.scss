@@ -113,6 +113,7 @@
   min-height: 700px;
   position: relative;
   box-sizing: border-box;
+  background: rgba(#000, 0.03);
   border: 1px solid rgba($borderColor, 0.6);
 
   &[data-layout-mode='rtl'] {
@@ -145,30 +146,9 @@
   min-height: 0;
   flex: 1 0 50%;
   display: flex;
-  background: $bgWhite;
   box-sizing: border-box;
   flex-direction: column;
   border: 0 solid rgba($borderColor, 0.6);
-  border-width: 0 0 0 1px;
-
-  &_voice {
-    top: 10px;
-    left: 10px;
-    position: absolute;
-
-    .voice-error {
-      font-weight: bold;
-      color: red;
-    }
-
-    .voice-info {
-      font-weight: bold;
-    }
-
-    .voice {
-      margin-right: 10px;
-    }
-  }
 }
 
 .page-preview {
@@ -193,27 +173,34 @@
   flex: 1 1 auto;
   flex-direction: column;
 
-  input, textarea {
-    border: 0;
-    background: none;
-    box-shadow: none;
-  }
-
-  textarea, div.editarea {
-    height: 100%;
-    resize: none;
-    flex: 1 1 auto;
-    padding: $gapSize / 2;
-  }
-
   &_title {
     height: 50px;
     display: flex;
     flex-shrink: 0;
     padding-left: 10px;
     align-items: center;
+    background: $bgWhite;
     font-size: $fontSizeBig;
     border-bottom: 1px solid rgba(#000, 0.1);
+
+    input {
+      border: 0;
+      background: none;
+      box-shadow: none;
+    }
+  }
+
+  &_textarea {
+    height: 100%;
+    resize: none;
+    padding: 10px;
+    flex: 1 1 auto;
+  }
+
+  &_textarea {
+    border: 0;
+    box-shadow: none;
+    background: $bgWhite;
   }
 }
 
@@ -225,17 +212,16 @@
   flex-direction: column;
 
   .CodeMirror {
+    display: flex;
     flex: 1 1 auto;
+    flex-direction: column;
     font-family: $fontFamily;
     height: auto !important;
-    display: flex;
-    flex-direction: column;
 
-    &-buttonsPanel {
+    &-buttonsPanel:not(:empty) {
       padding: 4px;
       display: flex;
       flex-wrap: wrap;
-      background-color: rgba(#000, 0.025);
       border-bottom: 1px solid rgba(#000, 0.1);
 
       button {
@@ -254,60 +240,53 @@
   }
 }
 
-.fieldarea,
-.fieldarea > .page-editarea {
-  background-color: $bodyBg;
-  border: 0;
-}
-
-div.editarea {
-  box-sizing: border-box;
+.page-fields {
+  height: 100%;
+  padding: 15px;
+  flex: 1 1 auto;
   overflow: auto;
-  span {
-    box-sizing: border-box;
-    display: inline-block;
-    margin-bottom: 10px;
-    margin-right: auto;
-  }
-  input, textarea, select {
-    border: 1px solid $inputBorderColor;
-    background-color: $inputBackground;
-    box-shadow: inset 0 1px rgba(#000, 0.03);
-    box-sizing: border-box;
-    min-width: 2em;
-  }
-  textarea {
-    margin-top: 0;
-    resize: vertical;
-    overflow: auto;
-  }
-  label {
-    box-sizing: border-box;
-    text-align: left;
-    vertical-align: middle;
-    margin-left: 5px;
-    overflow: hidden;
-  }
-  .field-instructions{
-    padding: 2rem;
-    padding-top: 4rem;
-    background-color: #c8d6e5;
-    color: #143e6d;
-    border-radius: 5px;
-    position: relative;
 
-    span {
-      position: absolute;
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: 1.35rem;
-      top: 0.5rem;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      letter-spacing: 0.25rem;
-      font-family: sans-serif;
-      color: #395e88;
+  .fields-row {
+    display: flex;
+    flex-wrap: wrap;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  .spreadsheet-wrapper {
+    width: 100%;
+    flex: 1 1 100%;
+    margin-bottom: 10px;
+  }
+
+  .field-wrapper {
+    margin-bottom: 10px;
+    box-sizing: border-box;
+
+    &:not(:last-child) {
+      padding-right: 5px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+    }
+  }
+
+  .field-instructions {
+    color: $fgH2;
+    padding: 6px 0 6px 10px;
+    border-left: 4px solid rgba($fgH2, 0.6);
+
+    h5 {
+      margin: 0;
+      color: $fgH1;
+    }
+
+    p {
+      margin: 0.5em 0 0 0;
     }
   }
 }
@@ -315,12 +294,63 @@ div.editarea {
 .page-imagescan {
   height: 100%;
   overflow: hidden;
+  position: relative;
   box-sizing: border-box;
   background: rgba(#000, 0.03);
+}
 
-  .image-container {
-    border: none !important;
+.image-toolbar {
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  opacity: 0;
+  display: flex;
+  padding: 0 8px;
+  visibility: hidden;
+  border-radius: 18px;
+  justify-content: center;
+  position: absolute !important;
+  background: rgba(#000, 0.8);
+  transform: translate3d(-50%, -100%, 0);
+  transition: opacity 0.3s 1s, visibility 0.3s 1s, transform 0.3s 1s $easeOutCubic;
+
+  &.fullpage,
+  .page-imagescan:hover & {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+    transform: translate3d(-50%, 10px, 0);
   }
+
+  a, .dropdown dt {
+    padding: 10px 8px;
+    color: rgba(#FFF, 0.7);
+
+    .icon {
+      display: block;
+    }
+  }
+
+  a:hover,
+  .dropdown dt:hover,
+  .dropdown.open dt {
+    color: #FFF;
+  }
+
+  .dropdown dd {
+    color: rgba(#FFF, 0.7);
+    background: rgba(#000, 0.8);
+
+    &:after {
+      border-bottom-color: rgba(#000, 0.8);
+    }
+  }
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
 }
 
 .page-review {
@@ -329,6 +359,16 @@ div.editarea {
   width: 45%;
   margin: 0 5% 0 50%;
 }
+
+
+
+// image row highlight
+.image-row-highlight {
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+  background-color: green;
+}
+
 
 // Assign categories
 
@@ -377,4 +417,27 @@ div.editarea {
 
 .page-indent {
   margin-left: 30px;
+}
+
+
+// Image filters
+
+.filter {
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0.8em;
+
+  &:not(:first-child) {
+    border-top: 1px solid rgba(#000, 0.06);
+  }
+
+  &_label {
+    flex-grow: 1;
+    margin-right: 1rem;
+  }
+
+  &_value {
+    width: 2em;
+    text-align: right;
+  }
 }
