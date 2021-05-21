@@ -35,10 +35,14 @@ class ExportController < ApplicationController
     rendered_markdown = render_to_string(:template => '/export/facing_edition.html', :layout => false)
 
     # write the string to a temp directory
-    temp_dir = File.join("/tmp/fromthepage_printables/")
+    temp_dir = File.join(Rails.root, 'public', 'printable')
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    file_stub = "#{@work.slug.gsub('-','_')}_#{Time.now.gmtime.iso8601.gsub(/\D/,'')}"
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    temp_dir = File.join(temp_dir, time_stub)
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
     if @output_type == 'pdf'
       output_file = File.join(temp_dir, "#{file_stub}.pdf")
