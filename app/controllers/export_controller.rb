@@ -59,7 +59,7 @@ class ExportController < ApplicationController
     system(cmd)
 
     # spew the output to the browser
-    send_file(output_file, 
+    send_data(File.read(output_file), 
       filename: File.basename(output_file), 
       :content_type => "application/pdf")
     cookies['download_finished'] = 'true'
