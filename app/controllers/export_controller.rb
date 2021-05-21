@@ -50,7 +50,7 @@ class ExportController < ApplicationController
 
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
-    cmd = "pandoc -o #{output_file} #{md_file} --latex-engine=xelatex > #{log_file} 2>&1"
+    cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex > #{log_file} 2>&1"
     logger.info(cmd)
     system(cmd)
 
