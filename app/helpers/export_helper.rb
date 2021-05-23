@@ -305,6 +305,7 @@ module ExportHelper
       transform_expansions(e)
       transform_regularizations(e)
       transform_marginalia_and_catchwords(e)
+      transform_footnotes(e)
       transform_lb(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
@@ -378,6 +379,17 @@ module ExportHelper
     p_element.elements.each('//catchword') do |e|
       e.name='fw'
       e.add_attribute('type', 'catchword')
+    end
+  end
+
+  def transform_footnotes(p_element)
+    p_element.elements.each('//footnote') do |e|
+      marker = e.attributes['marker']
+      
+      e.name='note'
+      e.delete_attribute('marker')
+      e.add_attribute('type', 'footnote')
+      e.add_attribute('n', marker)
     end
   end
 
