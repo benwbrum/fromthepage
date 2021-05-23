@@ -35,10 +35,14 @@ class ExportController < ApplicationController
     rendered_markdown = render_to_string(:template => '/export/facing_edition.html', :layout => false)
 
     # write the string to a temp directory
-    temp_dir = File.join("/tmp/fromthepage_printables/")
+    temp_dir = File.join(Rails.root, 'public', 'printable')
     Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
 
-    file_stub = "#{@work.slug.gsub('-','_')}_#{Time.now.gmtime.iso8601.gsub(/\D/,'')}"
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    temp_dir = File.join(temp_dir, time_stub)
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
     if @output_type == 'pdf'
       output_file = File.join(temp_dir, "#{file_stub}.pdf")
@@ -50,12 +54,12 @@ class ExportController < ApplicationController
 
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
-    cmd = "pandoc -o #{output_file} #{md_file} --latex-engine=xelatex > #{log_file} 2>&1"
+    cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex > #{log_file} 2>&1"
     logger.info(cmd)
     system(cmd)
 
     # spew the output to the browser
-    send_file(output_file, 
+    send_data(File.read(output_file), 
       filename: File.basename(output_file), 
       :content_type => "application/pdf")
     cookies['download_finished'] = 'true'
