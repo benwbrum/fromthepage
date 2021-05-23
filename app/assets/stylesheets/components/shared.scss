@@ -317,6 +317,50 @@
 }
 
 
+.footnote-marker {
+  cursor: help;
+  text-decoration: italic;
+  background-size: 2px 1px;
+  background-repeat: repeat-x;
+  background-position: 0 1.1em;
+  background-image: linear-gradient(to right, transparent 50%, currentColor 50%);
+}
+
+
+
+.footnote-body {
+  /* hide and position tooltip */
+/*  top: -0.5em; */
+  color: white;
+  font-size: 150%;
+  color: #FFF;
+  padding: 10px;
+  text-align: left;
+  max-width: 400px;
+  line-height: 1.2;
+  position: relative;
+  border-radius: 5px;
+  margin: 6px 0 0 -5px;
+  background: rgba(#000, 0.85);
+  box-shadow: 0 5px 15px rgba(#000, 0.12);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* border-radius: 5px; */
+  opacity: 0;
+  position: absolute; 
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -ms-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+
+.footnote-marker:hover .footnote-body {
+  /* display tooltip on hover */
+  opacity: 1;
+}
+
 
 // ---------------------------
 // APPLICATION SHARED STYLES
