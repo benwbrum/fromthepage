@@ -2,12 +2,15 @@ module ExportHelper
   include Rails.application.routes.url_helpers
 
   def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
-    raw_html = xml_to_html(xml_text, preserve_lb, flatten_links, collection)
 
-    raw_html.gsub!("\\",'\textbackslash')
+    # do some escaping of the document for markdown
+    preprocessed = xml_text || ''
+    preprocessed.gsub!("[","\\[")
+    preprocessed.gsub!("]","\\]")
 
 
-    doc = REXML::Document.new(xml_text)
+
+    doc = REXML::Document.new(preprocessed)
     doc.elements.each("//lb") do |e|
       if preserve_lb
         e.replace_with(REXML::Text.new("\\\n"))
@@ -20,14 +23,31 @@ module ExportHelper
       e.replace_with(REXML::Text.new("\n\n\n"))
     end
 
+    doc.elements.each('//link') do |e|
+      e.replace_with(e.children.first)
+    end
+
+    doc.elements.each_with_index("//footnote") do |e,i|
+      marker = "#{i}" #e.attributes['marker'] || '*'
+
+      doc.root.add REXML::Text.new("\n\n[^#{marker}]: ")
+      e.children.each do |child|
+        doc.root.add child
+      end
+      doc.root.add REXML::Text.new("\n")
+
+      e.replace_with(REXML::Text.new("[^#{marker}]"))
+    end
+
+
 
     markdown = ""
     doc.write(markdown)
     markdown.gsub!("&amp;", "&")
     markdown.gsub!("</p>", "</p>\n\n")
     markdown.gsub!("<br/>","<br/>\n")
-    markdown.gsub!("[","\\[")
-    markdown.gsub!("]","\\]")
+
+
 
     markdown.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
     markdown.gsub!('<p/>','')
@@ -305,6 +325,7 @@ module ExportHelper
       transform_expansions(e)
       transform_regularizations(e)
       transform_marginalia_and_catchwords(e)
+      transform_footnotes(e)
       transform_lb(e)
       e.add_attribute("xml:id", "#{page_id_to_xml_id(page_id, context.translation_mode)}P#{i}")
       if add_corrsp
@@ -378,6 +399,17 @@ module ExportHelper
     p_element.elements.each('//catchword') do |e|
       e.name='fw'
       e.add_attribute('type', 'catchword')
+    end
+  end
+
+  def transform_footnotes(p_element)
+    p_element.elements.each('//footnote') do |e|
+      marker = e.attributes['marker']
+      
+      e.name='note'
+      e.delete_attribute('marker')
+      e.add_attribute('type', 'footnote')
+      e.add_attribute('n', marker)
     end
   end
 

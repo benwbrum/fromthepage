@@ -499,6 +499,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     doc.xpath("//lb").each { |n| n.replace("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//footnote").each { |n| n.replace('')}
 
     doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
   end
