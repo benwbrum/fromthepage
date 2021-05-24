@@ -240,3 +240,5 @@ en:
       label: "Label"
       type: "Type"
       order: "Order"
+    facet_form:
+      filter: "Filter"
