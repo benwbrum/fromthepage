@@ -43,6 +43,7 @@ en:
       date_description: "Marks dates, with standardized form in the when attribute."
       del_description: "Marks text that has been removed by erasure or strike-through."
       expan_description: "Marks expanded abbreviations with original forms in the abbr attribute."
+      footnote_description: "Encloses the body of a footnote, with the footnote symbol in the marker attribute."
       fig_description: "Indicates a figure or a horizontal line."
       gap_description: "Marks a gap in the text, often due to damage"
       head_description: "Marks headings within the text"
