@@ -85,6 +85,18 @@ module AbstractXmlHelper
       e.replace_with(span)
     end
 
+    doc.elements.each("//footnote") do |e|
+      marker = e.attributes['marker'] || '*'
+      span = REXML::Element.new("sup")
+      span.add_attribute("class", "footnote-marker")
+      span.add_text(marker)
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "footnote-body")
+      e.children.each { |c| inner_span.add(c) }
+      span.add(inner_span)
+      e.replace_with(span)
+    end
+
     # get rid of line breaks within other html mark-up
     doc.elements.delete_all("//table/lb")
     doc.elements.delete_all("//table/row/lb")
