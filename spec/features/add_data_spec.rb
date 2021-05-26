@@ -23,7 +23,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "starts a new project from tab", :js => true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
+    page.find('.tabs', match: :first).click_link("Start A Project")
     page.find(:css, "#document-upload").click
     select(@collection.title, :from => 'document_upload_collection_id')
 
@@ -42,7 +42,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "starts an ocr project", :js => true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
+    page.find('.tabs', match: :first).click_link("Start A Project")
     page.find(:css, "#document-upload").click
     select(@collection.title, :from => 'document_upload_collection_id')
 
@@ -66,7 +66,7 @@ describe "uploads data for collections", :order => :defined do
     #import a manifest for test data
     VCR.use_cassette('iiif/imports_iiif_manifests', :record => :new_episodes) do
       visit dashboard_owner_path
-      page.find('.tabs').click_link("Start A Project")
+      page.find('.tabs', match: :first).click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
       page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:2638"
       find_button('iiif_import').click
@@ -77,7 +77,7 @@ describe "uploads data for collections", :order => :defined do
       expect(page).to have_content(@collection.title)
       visit dashboard_owner_path
       works_count = Work.all.count
-      page.find('.tabs').click_link("Start A Project")
+      page.find('.tabs', match: :first).click_link("Start A Project")
       page.find(:css, "#import-iiif-manifest").click
       #this manifest has a very long title
       page.fill_in 'at_id', with: "https://data.ucd.ie/api/img/manifests/ivrla:7645"
@@ -95,7 +95,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "creates an empty work", :js => true do
     visit dashboard_owner_path
-    page.find('.tabs').click_link("Start A Project")
+    page.find('.tabs', match: :first).click_link("Start A Project")
     page.find(:css, "#create-empty-work").click
     select(@collection.title, :from => 'work_collection_id')
     fill_in 'work_title', with: @title
@@ -107,7 +107,7 @@ describe "uploads data for collections", :order => :defined do
 
   it "adds pages to an empty work" do
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @title).click
+    page.find('.maincol', match: :first).find('a', text: @title, match: :first).click
     page.find('.tabs').click_link("Pages")
     page.find('a', text: "Add New Page").click
     attach_file('page_base_image', './test_data/uploads/JWGravesAmnestyPage1.jpg')
@@ -131,7 +131,7 @@ describe "uploads data for collections", :order => :defined do
     @owner = User.find_by(login: OWNER)
     visit dashboard_owner_path
     doc_set = DocumentSet.where(owner_user_id: @owner.id).count
-    page.find('.maincol').find('a', text: @set_collection.title).click
+    page.find('.maincol', match: :first).find('a', text: @set_collection.title, match: :first).click
     page.find('.tabs').click_link("Settings")
     page.find('.button', text: 'Enable Document Sets').click
     expect(page).to have_content('Create a Document Set')
@@ -165,7 +165,7 @@ describe "uploads data for collections", :order => :defined do
   it "adds works to document sets" do
     @document_sets = DocumentSet.where(owner_user_id: @owner.id)
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: @set_collection.title).click
+    page.find('.maincol', match: :first).find('a', text: @set_collection.title, match: :first).click
     page.find('.tabs').click_link("Sets")
     expect(page).to have_content("Document Sets for #{@set_collection.title}")
     page.check("work_assignment_#{@set_collection.works.first.slug}_#{@document_sets.first.slug}")
