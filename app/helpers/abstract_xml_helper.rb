@@ -118,7 +118,7 @@ module AbstractXmlHelper
           if sib.kind_of? REXML::Element
             sib.add_text(sigil)
           else
-            sib.value=sib.value+sigil
+            sib.value=sib.value+sigil unless sib.nil?
           end
         end
         e.replace_with(REXML::Element.new('br'))
@@ -188,6 +188,7 @@ module AbstractXmlHelper
         e.name='hr'
       else
         e.name='span'
+        rend ||= 'figure'
         e.add_text("{#{rend.titleize}}")
       end
     end
