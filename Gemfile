@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '6.0.3.2'
+gem 'rails', '6.1.3.2'
 
 gem 'will_paginate', git: 'https://github.com/BrumfieldLabs/will_paginate.git'
 gem 'rmagick'
@@ -115,7 +115,6 @@ gem 'iso-639'
 # Profiling for use in prod
 gem 'flamegraph'
 gem 'memory_profiler'
-gem 'meta_request'
 gem 'rack-mini-profiler'
 gem 'stackprof'
 
