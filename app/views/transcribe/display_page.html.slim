@@ -59,9 +59,9 @@
         -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_INDEXED)
           =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}"
         -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
-          =button_tag t('.finish'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}"
+          =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}"
         -if @collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
-          =button_tag t('.finish'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}"
+          =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}"
         -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
           =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}"
 
