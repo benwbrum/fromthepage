@@ -15,6 +15,7 @@ class TranscriptionFieldController < ApplicationController
 
   def edit_fields
     @current_fields = @collection.transcription_fields.order(:line_number).order(:position)
+    @field_preview = {}
   end
 
   def add_fields
@@ -62,6 +63,14 @@ class TranscriptionFieldController < ApplicationController
   end
 
   # reordering functions
+  def reorder_fields
+    @collection = Collection.friendly.find(params[:collection_id])
+    params[:field].each_with_index do |id, index|
+      TranscriptionField.where(id: id).update_all(position: index + 1, line_number: params[:line])
+    end
+    head :ok
+  end
+
   def reorder_field
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])
@@ -159,7 +168,7 @@ class TranscriptionFieldController < ApplicationController
   end
 
   # reordering functions
-  def reorder
+  def reorder_columns
     @collection = Collection.friendly.find(params[:collection_id])
     transcription_field = TranscriptionField.find_by(id: params[:field_id])
     params[:column].each_with_index do |id, index|

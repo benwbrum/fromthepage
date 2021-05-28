@@ -39,7 +39,8 @@ gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: '
 
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-multi-provider'
+gem 'omniauth-multi-provider', '~> 0.2.1'
+gem 'omniauth', '~> 1.9.1'
 
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
 
@@ -102,7 +103,7 @@ gem 'slim'
 gem 'gravatar_image_tag'
 
 #Admin masquerade as a user
-gem 'devise_masquerade'
+gem 'devise_masquerade', '~> 1.2.0'
 
 #friendly routes
 gem 'friendly_id'

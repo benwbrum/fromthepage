@@ -101,7 +101,9 @@ class DisplayController < ApplicationController
       @search_string = CGI::escapeHTML(params[:search_string])
       # convert 'natural' search strings unless they're precise
       unless @search_string.match(/["+-]/)
-        @search_string.gsub!(/(\S+)/, '+\1*')
+        @search_string.gsub!(/\s+/, ' ')
+        @search_string = "+\"#{@search_string}\""
+        # @search_string.gsub!(/(\S+)/, '+\1*')
       end
       # restrict to pages that include that subject
       @pages = Page.order('work_id, position').joins(:work).where(work_id: @collection.works.ids).where("MATCH(search_text) AGAINST(? IN BOOLEAN MODE)", @search_string).paginate(page: params[:page])

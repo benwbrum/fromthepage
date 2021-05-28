@@ -133,6 +133,7 @@ Fromthepage::Application.routes.draw do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
+    post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
     get 'subject_csv', to: 'export#subject_index_csv'
@@ -231,6 +232,7 @@ Fromthepage::Application.routes.draw do
     get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
     post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
     post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
+    get 'choose_locale/:chosen_locale', to: 'user#choose_locale', as: 'choose_locale'
   end
 
   scope 'page_block', as: 'page_block' do
@@ -276,14 +278,14 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'transcription_field', as: 'transcription_field' do
-    get 'reorder_field', to: 'transcription_field#reorder_field'
+    patch 'reorder', to: 'transcription_field#reorder_fields'
     get 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
 
     scope 'spreadsheet_column', as: 'spreadsheet_column' do
-      patch 'reorder', to: 'transcription_field#reorder'
+      patch 'reorder', to: 'transcription_field#reorder_columns'
       get 'delete', to: 'transcription_field#delete_column'
       get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
       get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
@@ -425,8 +427,9 @@ Fromthepage::Application.routes.draw do
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
-        get 'versions', on: :member
+        get 'download', on: :member
         get 'print', on: :member
+        get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
