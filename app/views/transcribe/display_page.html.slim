@@ -78,9 +78,10 @@
 
     .page-column
       -if @page.status == Page::STATUS_BLANK
-        .centered
-          .centered_content
-            p.nodata_text==t('.this_page_marked_blank')
+        .page-preview[*language_attrs(@collection)]
+          .centered
+            .centered_content
+              p.nodata_text==t('.this_page_marked_blank')
         .page-editarea(style="display:none")
           =f.text_area :source_text
 
