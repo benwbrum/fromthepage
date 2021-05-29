@@ -176,6 +176,7 @@
 
   [data-layout-mode='ttb'] &,
   [data-layout-mode='btt'] & {
+    flex-basis: auto;
     height: calc((100vh - 74px - 3rem) / 2);
   }
 }
@@ -238,6 +239,11 @@
       position: sticky;
       padding-bottom: 5px;
       background-color: $bodyBg;
+
+      [data-layout-mode='ttb'] & {
+        padding-top: 8px;
+        top: calc(74px + (100vh - 74px - 3rem) / 2);
+      }
 
       button {
         padding: 0 4px;
