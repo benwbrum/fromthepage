@@ -44,7 +44,7 @@ class Page < ApplicationRecord
 
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: nil).or(Page.where(status: STATUS_INCOMPLETE))  }
+  scope :needs_transcription, -> { where(status: [nil, STATUS_INCOMPLETE])  }
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
