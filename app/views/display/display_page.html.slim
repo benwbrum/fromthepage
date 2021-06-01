@@ -6,9 +6,16 @@
   .headline
     -if translation_mode?
       h3.headline_title =t('.translation')
+      .page_status
+        =t("page.edit.status")
+        =t("page.edit.page_status_#{@page.translation_status}")
       small.headline_aside =link_to t('.show_transcription'), { :translation => false, :page_id => @page.id }, class: 'button outline'
     -else
       h3.headline_title =t('.transcription')
+      .page_status
+        =t("page.edit.status")
+        =t("page.edit.page_status_#{@page.status}")
+
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), { :translation => true, :page_id => @page.id }, class: 'button outline'
 
