@@ -18,6 +18,22 @@
               =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page))
             -else
               =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
+            span
+              span.progress
+                -if page.status.nil?
+                  -progress_pct = 0
+                -elsif page.status == Page::STATUS_INCOMPLETE
+                  -progress_pct = 33
+                  span(style="width:0%")
+                  span(style="width:0%")
+                -elsif page.status == Page::STATUS_NEEDS_REVIEW
+                  -progress_pct = 67
+                  span(style="width:0%")
+                -else
+                  -progress_pct = 100
+                span(style="width:#{progress_pct}%")
+            .page_status
+              =t("page.edit.page_status_#{page.status}")
 
           .work-page_content
             -if page.work.pages_are_meaningful
