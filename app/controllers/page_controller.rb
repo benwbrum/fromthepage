@@ -124,7 +124,7 @@ class PageController < ApplicationController
   end
 
   def page_params
-    params.require(:page).permit(:page, :title, :base_image)
+    params.require(:page).permit(:page, :title, :base_image, :status, :translation_status)
   end
 
 end

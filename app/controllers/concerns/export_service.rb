@@ -307,7 +307,8 @@ private
         'Page Position',
         'Page URL',
         'Page Contributors',
-        'Page Notes'
+        'Page Notes',
+        'Page Status'
       ]
 
       section_cells = [
@@ -353,7 +354,8 @@ private
           page.position,
           page_url,
           page_contributors,
-          page_notes
+          page_notes,
+          t("page.edit.page_status_#{page.status}")
         ]
 
         page_metadata_cells = page_metadata_cells(page)
