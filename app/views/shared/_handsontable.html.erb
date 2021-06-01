@@ -122,8 +122,12 @@
     }
   };
 
+  var getHotHeight = function(rows) {
+    return rows * 23 + 25 + 2;
+  };
+
   var updateHotHeight = function() {
-    hot.updateSettings({ height: hot.countRows() * 23 + 25 + 2 });
+    hot.updateSettings({ height: getHotHeight(hot.countRows()) });
   };
 
   var container = document.getElementById("hot-div-<%= transcription_field.id %>");
@@ -137,7 +141,7 @@
     width: '100%',
     rowHeights: 23,
     columnHeaderHeight: 25,
-    height: (data ? data.length : <%= transcription_field.starting_rows %>) * 23 + 25 + 2,
+    height: getHotHeight(data ? data.length : <%= transcription_field.starting_rows %>),
     stretchH: 'all',
     contextMenu: ['row_above', 'row_below', 'remove_row', 'undo', 'redo', 'cut', 'copy'],
     dropdownMenu: true,
