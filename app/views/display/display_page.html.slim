@@ -19,14 +19,12 @@
       -if @work.supports_translation
         small.headline_aside =link_to t('.show_translation'), { :translation => true, :page_id => @page.id }, class: 'button outline'
 
-.page-columns(data-fullheight='{ "bottom": 30, "cssrule": "height" }')
-  .page-column
-    .page-imagescan
-      =render :partial => '/shared/osd_div'
+.page-columns
+  .page-column.page-imagescan
+    =render :partial => '/shared/osd_div'
 
   .page-column
     .page-preview[*language_attrs(@collection)]
-
       -if translation_mode?
         -text = xml_to_html(@page.xml_translation)
         -action = 'translate'

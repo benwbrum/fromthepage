@@ -102,11 +102,11 @@
 }
 
 .wrapper {
+  padding: 3rem;
   margin: 0 auto;
   text-align: left;
   max-width: $widthMax;
   box-sizing: border-box;
-  padding: $gapSize * 1.5 $gapSize;
 }
 
 .columns {
