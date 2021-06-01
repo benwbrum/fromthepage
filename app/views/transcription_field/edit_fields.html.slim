@@ -27,7 +27,8 @@ div.columns
           =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
 
     h2 =t('.preview')
-    =render({partial: 'field_layout', locals: {collection_id: @collection}})
+    div.fields-preview
+      =render({partial: 'field_layout', locals: {collection_id: @collection}})
 
 -content_for :javascript
   javascript:

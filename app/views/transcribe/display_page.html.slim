@@ -72,17 +72,17 @@
       -else
         =t('.this_page_marked_needs_review')
 
-  .page-columns(data-layout-mode="#{@layout_mode}" data-fullheight='{ "bottom": 30, "cssrule": "height" }')
-    .page-column
-      .page-imagescan
-        =render :partial => '/shared/osd_div'
+  .page-columns(data-layout-mode="#{@layout_mode}")
+    .page-column.page-imagescan
+      =render :partial => '/shared/osd_div'
 
-    div class=(!@collection.field_based ? 'page-column' : 'page-column fieldarea')
+    .page-column
       -if @page.status == Page::STATUS_BLANK
-        .centered
-          .centered_content
-            p.nodata_text==t('.this_page_marked_blank')
-        .page-editarea(style=("display:none"))
+        .page-preview[*language_attrs(@collection)]
+          .centered
+            .centered_content
+              p.nodata_text==t('.this_page_marked_blank')
+        .page-editarea(style="display:none")
           =f.text_area :source_text
 
       -else
@@ -99,34 +99,10 @@
           -else
             =render ({partial: 'transcription_field/field_layout', locals: {collection_id: @collection, transcribe: true}})
 
-  .page-toolbar
-    .flex-toolbar
-      .flex-toolbar_group.push-left
-        .fgfaded ==@work.set_transcription_conventions
-      .flex-toolbar_group.push-top
-        -unless @preview_xml
-          =button_tag t('.preview'), :name => 'preview', type: 'submit', title: "#{t('.preview_tooltip')}"
-        -else
-          =button_tag t('.edit'), :name => 'edit', type: 'submit', title: "#{t('.edit_tooltip')}"
-        -unless @collection.subjects_disabled || @collection.field_based
-          =button_tag t('.autolink'), :name => 'autolink', type: 'submit', title: "#{t('.autolink_tooltip')}"
-        / check status of page and configuration of collection
-        -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
-          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
-        -if @collection.review_workflow && (@page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_INDEXED) 
-          =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
-        -if !@collection.review_workflow && (@page.status == Page::STATUS_TRANSCRIBED || @page.status == Page::STATUS_NEEDS_REVIEW || @page.status == Page::STATUS_INDEXED)
-          =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}"
-        -if !@collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
-          =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}"
-        -if @collection.review_workflow && (@page.status.nil? || @page.status == Page::STATUS_INCOMPLETE)
-          =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}"
-        -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
-          =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_bottom', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}"
-
-p.fgfaded =render :partial => 'shared/markup_help'
-
-p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
+.fgfaded
+  ==@work.set_transcription_conventions
+  =render :partial => 'shared/markup_help'
+  p =link_to t('.more_help'), collection_work_help_path(@collection.owner, @collection, @page.work), target: '_blank'
 
 h2.legend =t('notes_and_questions')
 .page-notes
@@ -134,12 +110,9 @@ h2.legend =t('notes_and_questions')
 
 =render({ :partial => '/shared/collection_footer' })
 
-
 -text_direction = Rtl.rtl?(@collection.text_language) ? 'rtl' : 'ltr'
-
 -if !@collection.field_based && text_direction == 'ltr'
   =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_text", :text_direction => text_direction} })
-
 
 -unless @current_user_alerted
   -unless current_user.slug.nil?
@@ -168,7 +141,6 @@ h2.legend =t('notes_and_questions')
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
-        $(window).trigger('resize.FullHeight');
 
         if (typeof hot !== 'undefined') {
           hot.updateSettings({});
