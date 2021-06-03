@@ -8,7 +8,7 @@ en:
       percentage_width: "Width %"
       percentage_title: "Percentage of the line width to use for this field."
       page: "Page"
-      page_title: "For multi-page forms, which page should this field appear on?  (Leave blank to display on each page.)"
+      page_title: "For multi-page forms, which page should this field appear on? (Leave blank to display on each page.)"
     edit_fields:
       edit_transcription_fields: "Edit Transcription Fields"
       add_additional_line: "Add Additional Line"
@@ -16,6 +16,23 @@ en:
       save: "Save"
       cancel: "Cancel"
       done: "Done"
-      preview: "Preview"
+      preview: "Fields Preview"
+    add_columns:
+      starting_rows_must_not_be_blank: "Starting rows must not be blank."
+    edit_columns:
+      edit_spreadsheet_header: "Spreadsheet Configuration"
+      edit_spreadsheet_columns: "Column Configuration"
+      add_additional_column: "Add Additional Column"
+      save: "Save"
+      cancel: "Cancel"
+      done: "Done"
+      preview: "Spreadsheet Preview"
+      start_rows_label: "Starting Row Count: "
+      start_rows_description: "Number of rows the spreadsheet should display initially. (Transcribers will be able to add additional rows if needed.)"
+    column_form:
+      column_options: "Column options (separate with semicolons)"
+      column_options_title: "Options for dropdown cells."
+      percentage_width: "Width %"
+      percentage_title: "Percentage of the line width to use for this field."
     add_fields:
-      must_have_options_list: "Select fields must have an options list.  Please add options to any select fields and resave."
+      must_have_options_list: "Select fields must have an options list. Please add options to any select fields and resave."

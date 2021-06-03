@@ -11,14 +11,19 @@ class CategoryController < ApplicationController
   def update
     if @category.update(category_params)
       flash[:notice] = t('.category_updated')
-      ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@category.id }"})
+      ajax_redirect_to collection_subjects_path(@category.collection.owner, @category.collection, {:anchor => "category-#{@category.id }"})
     else
       render :action => 'edit'
     end
   end
 
   def add_new
-    @new_category = Category.new({ :collection_id => @collection.id })
+    @new_category = Category.new
+    if @collection.is_a?(DocumentSet)
+      @new_category.collection = @collection.collection
+    else
+      @new_category.collection = @collection
+    end      
     if @category.present?
       @new_category.parent = @category
       @new_category.gis_enabled = @category.gis_enabled
@@ -30,7 +35,7 @@ class CategoryController < ApplicationController
     @new_category.parent = Category.find(params[:category][:parent_id]) if params[:category][:parent_id].present?
     if @new_category.save
       flash[:notice] = t('.category_created')
-      ajax_redirect_to collection_subjects_path(@collection.owner, @collection, {:anchor => "category-#{@new_category.id }"})
+      ajax_redirect_to collection_subjects_path(@new_category.collection.owner, @new_category.collection, {:anchor => "category-#{@new_category.id }"})
     else
       render :action => 'add_new'
     end

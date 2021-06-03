@@ -11,6 +11,8 @@ en:
     show:
       all_complete: "All works are fully transcribed."
       start_transcribing: "Start Transcribing"
+      search_the_text: "Search the text..."
+      search_by_title: "Search by title..."
       search_in_collection: "Search in collection..."
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
@@ -150,6 +152,7 @@ en:
       editor_buttons: "Editor Buttons"
       editor_buttons_description: "Choose mark-up buttons to appear on the transcription editor."
       edit_buttons: "Configure Buttons"
+      user_download: "Allow users to download works."
     edit_buttons:
       heading: "Transcription Editor Configuration"
       description: "FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up."
@@ -171,6 +174,8 @@ en:
       expan_description: "Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)"
       fig_label: "Figure"
       fig_description: "Indicates a figure or a horizontal line."
+      footnote_label: "Footnote"
+      footnote_description: "Contains the body of a footnote.  This tag should be placed next to the text being referenced, where a footnote marker would appear."
       head_label: "Head"
       head_description: "Marks a heading"
       gap_label: "Gap"
@@ -190,7 +195,7 @@ en:
       unclear_label: "Unclear"
       unclear_description: "Marks unclear text."
       u_label: "Underline"
-      u_description: "Marks underlined text."      
+      u_description: "Marks underlined text."
     needs_review_pages:
       pages_that_need_review: "Pages That Need Review"
       project_by: "Project by"
@@ -235,3 +240,5 @@ en:
       label: "Label"
       type: "Type"
       order: "Order"
+    facet_form:
+      filter: "Filter"

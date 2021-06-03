@@ -6,10 +6,12 @@ pt:
     transcribed: "Transcrito"
     translated: "traduzido"
     needs_review: "Precisa ser revisado"
-    indexed: "indexado"  
+    indexed: "indexado"
     show:
       all_complete: "Todas as obras estão totalmente transcritas."
       start_transcribing: "Iniciar Transcrição"
+      search_the_text: "Buscar o texto..."
+      search_by_title: "Buscar por título..."
       search_in_collection: "Buscar na coleção..."
       search_for_works: "Buscar obras..."
       pages_need_transcription: "Páginas para Transcrever"

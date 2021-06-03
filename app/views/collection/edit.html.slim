@@ -49,6 +49,11 @@
           td(colspan="2")
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, t('.hide_completed')
+        -if feature_enabled?(:download)
+          tr
+            td(colspan="2")
+              =f.check_box :user_download, value: @collection.user_download
+              =f.label :user_download, t('.user_download')
         tr
           td(colspan="2")
             =f.label :text_language, t('.text_language'), class: 'collection-label'
@@ -66,9 +71,6 @@
               =f.label :voice_recognition, t('.voice_recognition')
 
       .toolbar
-        .toolbar_group.w100
-          =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
-            span =t('.delete_collection')
         .toolbar_group
           =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'
 
@@ -222,6 +224,11 @@
     p =t('.blank_collection_description')
     =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
       span =t('.blank_collection')
+
+
+    h3 =t('.delete_collection')
+    =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
+      span =t('.delete_collection')
 
 =render({ :partial => '/shared/collection_footer' })
 

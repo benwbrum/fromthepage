@@ -138,6 +138,48 @@
     <path fill="currentColor" d="M1,1v14h14V1H1z M2,8V2h12v6H2z"/>
   </symbol>
 
+  <symbol id="icon-expand" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M1 1h14v14H1V1zm8.5 2a.5.5 0 0 0-.09.992L9.5 4h1.793L9.146 6.146a.5.5 0 0 0 .638.765l.07-.057L12 4.707V6.5a.5.5 0 0 0 .41.492L12.5 7a.5.5 0 0 0 .492-.41L13 6.5V3H9.5zm-3 10a.5.5 0 0 0 .09-.992L6.5 12H4.707l2.147-2.146a.5.5 0 0 0-.638-.765l-.07.057L4 11.293V9.5a.5.5 0 0 0-.41-.492L3.5 9a.5.5 0 0 0-.492.41L3 9.5V13h3.5z"/>
+  </symbol>
+
+  <symbol id="icon-collapse" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M15 1v14H1V1h14zM7 9H3.5a.5.5 0 0 0-.09.992L3.5 10h1.793l-2.147 2.146a.5.5 0 0 0 .638.765l.07-.057L6 10.707V12.5a.5.5 0 0 0 .41.492L6.5 13a.5.5 0 0 0 .492-.41L7 12.5V9zm2.5-6a.5.5 0 0 0-.492.41L9 3.5V7h3.5a.5.5 0 0 0 .09-.992L12.5 6h-1.793l2.147-2.146a.5.5 0 0 0-.638-.765l-.07.057L10 5.293V3.5a.5.5 0 0 0-.41-.492L9.5 3z"/>
+  </symbol>
+
+  <symbol id="icon-zoom-in" viewBox="0 0 16 16">
+    <circle fill="none" cx="7.5" cy="7.5" r="6" stroke="currentColor"/>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M15 15l-2.5-2.5"/>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" d="M7.5 4.5v6m-3-3h6"/>
+  </symbol>
+
+  <symbol id="icon-zoom-out" viewBox="0 0 16 16">
+    <circle fill="none" cx="7.5" cy="7.5" r="6" stroke="currentColor"/>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M15 15l-2.5-2.5"/>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" d="M4.5 7.5h6"/>
+  </symbol>
+
+  <symbol id="icon-fit-view" viewBox="0 0 16 16">
+    <path fill="none" stroke="currentColor" d="M1.5 1.5h13v13h-13z"/>
+    <path fill="currentColor" d="M5 3h6v10H5z"/>
+  </symbol>
+
+  <symbol id="icon-rotate-left" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M3 6h8v9H3z"/>
+    <path fill="none" stroke="currentColor" d="M14.5 9A6.5 6.5 0 0 0 8 2.5"/>
+    <path fill="currentColor" d="M9 0v5L5 2.5z"/>
+  </symbol>
+
+  <symbol id="icon-rotate-right" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M13 6H5v9h8z"/>
+    <path fill="none" stroke="currentColor" d="M1.5 9A6.5 6.5 0 0 1 8 2.5"/>
+    <path fill="currentColor" d="M7 0v5l4-2.5z"/>
+  </symbol>
+
+  <symbol id="icon-filters" viewBox="0 0 16 16">
+    <path fill="currentColor" d="M8 3a5 5 0 1 1 0 10A5 5 0 0 1 8 3zm0 1a4 4 0 1 0 0 8V4z"/>
+    <path fill="none" stroke="currentColor" stroke-linecap="round" d="M8 .5V2m0 12v1.5M4.25 1.505L5 2.804m6 10.392l.75 1.3M1.505 4.25L2.804 5m10.392 6l1.3.75M.5 8H2m12 0h1.5M1.505 11.75L2.804 11m10.392-6l1.3-.75M4.25 14.495L5 13.196m6-10.392l.75-1.3"/>
+  </symbol>
+
   <symbol id="icon-rotate-cw" viewBox="0 0 16 16">
     <path fill="currentColor" d="M16,9V2l-2.48,1.72C12.24,2.07,10.24,1,8,1C4.14,1,1,4.14,1,8c0,3.86,3.14,7,7,7c2.5,0,4.69-1.32,5.93-3.29 l-1.7-1.06C11.34,12.05,9.78,13,8,13c-2.76,0-5-2.24-5-5c0-2.76,2.24-5,5-5c1.57,0,2.96,0.73,3.87,1.86L9.5,6.5L16,9z"/>
   </symbol>
@@ -168,6 +210,10 @@
 
   <symbol id="icon-list" viewBox="0 0 16 16">
     <path fill="currentColor" d="M14,8c0,0.55-0.45,1-1,1H3C2.45,9,2,8.55,2,8s0.45-1,1-1h10C13.55,7,14,7.45,14,8z M13,12H3c-0.55,0-1,0.45-1,1s0.45,1,1,1 h10c0.55,0,1-0.45,1-1S13.55,12,13,12z M3,4h10c0.55,0,1-0.45,1-1s-0.45-1-1-1H3C2.45,2,2,2.45,2,3S2.45,4,3,4z"/>
+  </symbol>
+
+  <symbol id="icon-reorder" viewBox="0 0 16 16">
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M2 8h12M2 3h12M2 13h12"/>
   </symbol>
 
   <symbol id="logo-twitter" viewBox="0 0 16 16">

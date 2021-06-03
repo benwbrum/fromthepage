@@ -27,6 +27,22 @@ class UserController < ApplicationController
     redirect_back :fallback_location => dashboard_role_path
   end
 
+  def choose_locale
+    new_locale = params[:chosen_locale].to_sym
+    if !I18n.available_locales.include?(new_locale)
+      # use the default if the above optiosn didn't work
+      new_locale = I18n.default_locale
+    end
+
+    if user_signed_in?
+      current_user.preferred_locale = new_locale
+      current_user.save
+    else
+      session[:current_locale] = new_locale
+    end
+    redirect_back :fallback_location => dashboard_role_path
+  end
+
   def update_profile
   end
 

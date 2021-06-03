@@ -33,6 +33,7 @@ class TranscribeController  < ApplicationController
     @layout_mode = cookies[:transcribe_layout_mode] || @collection.default_orientation
     session[:col_id] = @collection.slug
     @current_user_alerted = false
+    @field_preview ||= {}
 
     if @page.edit_started_by_user_id != current_user.id &&
        @page.edit_started_at > Time.now - 1.minute
@@ -91,9 +92,12 @@ class TranscribeController  < ApplicationController
         end
         return
       end
-    elsif @page.work.collection.review_workflow == true && @page.status == nil
-      @page.status = Page::STATUS_NEEDS_REVIEW
-      record_deed(DeedType::NEEDS_REVIEW)
+    elsif params['save_to_needs_review']
+      unless @page.status == Page::STATUS_NEEDS_REVIEW
+        # don't log a deed if the page was already in needs review
+        @page.status = Page::STATUS_NEEDS_REVIEW
+        record_deed(DeedType::NEEDS_REVIEW)
+      end
     else
       if params[:page]['needs_review'] == '1'        
         unless @page.status == Page::STATUS_NEEDS_REVIEW
@@ -117,8 +121,8 @@ class TranscribeController  < ApplicationController
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
 
     if @page.field_based
-      @field_cells = params[:fields]
-      @page.process_fields(@field_cells)
+      @field_cells = request.params[:fields]
+      table_cells = @page.process_fields(@field_cells)
     end
 
     @page.attributes = page_params
@@ -128,16 +132,29 @@ class TranscribeController  < ApplicationController
     end
     #check to see if the page needs to be marked as needing review
     needs_review
-
-
-    if params['save']
+    if params['save'] || params['save_to_incomplete'] || params['save_to_needs_review'] || params['save_to_transcribed'] || params['approve_to_transcribed']
       message = log_transcript_attempt
       #leave the status alone if it's needs review, but otherwise set it to transcribed
-      unless @page.status == Page::STATUS_NEEDS_REVIEW
+
+      if params['save_to_incomplete'] && params[:page]['needs_review'] != '1' 
+        @page.status = Page::STATUS_INCOMPLETE
+      elsif params['save_to_needs_review']
+        @page.status = Page::STATUS_NEEDS_REVIEW
+      elsif (params['save_to_transcribed'] && params[:page]['needs_review'] != '1') || params['approve_to_transcribed']
         @page.status = Page::STATUS_TRANSCRIBED
+      else
+        # old code; possibly dead
+        unless @page.status == Page::STATUS_NEEDS_REVIEW
+          @page.status = Page::STATUS_TRANSCRIBED
+        end
       end
+
       begin
         if @page.save
+          if @page.field_based
+            @page.replace_table_cells(table_cells)
+          end
+
           log_transcript_success
           flash[:notice] = t('.saved_notice')
           if @page.work.ocr_correction
@@ -157,7 +174,7 @@ class TranscribeController  < ApplicationController
             if old_link_count == 0 && new_link_count > 0
               record_deed(DeedType::PAGE_INDEXED)
             end
-            if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW
+            if new_link_count > 0 && @page.status != Page::STATUS_NEEDS_REVIEW && @page.status != Page::STATUS_INCOMPLETE
               @page.update_columns(status: Page::STATUS_INDEXED)
             end
           end
@@ -198,9 +215,18 @@ class TranscribeController  < ApplicationController
     elsif params['preview']
       @display_context = 'preview'
       @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
+      if @page.field_based
+        # what do we do about the table cells?
+        @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+      end
+
       display_page
       render :action => 'display_page'
     elsif params['edit']
+      if @page.field_based
+        # what do we do about the table cells?
+        @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+      end
       display_page
       render :action => 'display_page'
     elsif params['autolink']
@@ -403,7 +429,17 @@ protected
 
   def log_transcript_attempt
     # we have access to @page, @user, and params
-    log_message = log_attempt(TRANSCRIPTION, params[:page][:source_text])
+    if @page.field_based
+      if request.params[:fields].nil?
+        source_text = "[NULL FIELD-BASED PARAMS]"
+      else
+        source_text = request.params[:fields].pretty_inspect
+      end
+    else
+      source_text = params[:page][:source_text]
+    end
+
+    log_message = log_attempt(TRANSCRIPTION, source_text)
     return log_message
   end
 

@@ -149,7 +149,7 @@ class CollectionController < ApplicationController
         @search.filter([:work, :collection_id]).value=@collection.id
         # the search results are WorkFacets, not works, so we need to fetch the works themselves
         facet_ids = @search.result.pluck(:id)
-        @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+        @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
 
         @date_ranges = []
         date_configs = @collection.facet_configs.where(:input_type => 'date').order('"order"')
@@ -610,6 +610,6 @@ class CollectionController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
   end
 end
