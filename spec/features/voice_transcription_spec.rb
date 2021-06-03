@@ -12,8 +12,7 @@ describe "voice transcription", :order => :defined do
 
   before :each do
     login_as(@owner, :scope => :user)
-  end    
-
+  end
 
   it "checks for microphones (not enabled)" do
     #first set the work to translation
@@ -25,14 +24,14 @@ describe "voice transcription", :order => :defined do
       page.find('.tabs').click_link('Transcribe')
     end
     #transcription div
-    expect(page).not_to have_selector('.page-column_voice')
+    expect(page).not_to have_selector('.voice-recognition')
     expect(page).not_to have_selector('#start_img')
     #note
     expect(page).not_to have_selector('.voice-info')
     expect(page).not_to have_selector('#start_img_note')
     #translate
     page.find('.tabs').click_link('Translate')
-    expect(page).not_to have_selector('.page-column_voice')
+    expect(page).not_to have_selector('.voice-recognition')
     expect(page).not_to have_selector('#start_img')
     #article
     visit collection_article_edit_path(@collection.owner, @collection, @article)
@@ -61,13 +60,13 @@ it "checks for microphones (enabled)" do
       page.find('.tabs').click_link('Transcribe')
     end
     #transcription div
-    expect(page).to have_selector('.page-column_voice')
+    expect(page).to have_selector('.voice-recognition')
     expect(page).to have_selector('#start_img')
     #note
     expect(page).to have_selector('#start_img_note')
     #translate
     page.find('.tabs').click_link('Translate')
-    expect(page).to have_selector('.page-column_voice')
+    expect(page).to have_selector('.voice-recognition')
     expect(page).to have_selector('#start_img')
     #article
     visit collection_article_edit_path(@collection.owner, @collection, @article)

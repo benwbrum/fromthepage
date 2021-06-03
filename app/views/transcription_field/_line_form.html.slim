@@ -1,8 +1,14 @@
 -@line = local_assigns[:line_number]
 tr
-  th#line_num #{@line}
-  th =label_tag :label
-  th =label_tag :input_type
-  th =label_tag :options, t('.field_options'), :title => t('.field_options_title')
-  th =label_tag :percentage, t('.percentage_width'), :title => t('.percentage_title')
-  th =label_tag :page_number, t('.page'), :title => t('.page_title')
+  th.field-form_line colspan="6" #{@line}
+tr
+  th.field-form_label =t('.label')
+  th.field-form_type =t('.input_type')
+  th.field-form_options
+    span title=t('.field_options_title') =t('.field_options')
+  th.field-form_width
+    span title=t('.percentage_title') =t('.percentage_width')
+  th.field-form_page
+    span title=t('.page_title') =t('.page')
+  th.field-form_actions
+    | &nbsp;

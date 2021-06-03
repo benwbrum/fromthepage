@@ -78,6 +78,14 @@
             =f.label :subject_csv_collection
               =f.check_box :subject_csv_collection, value: @bulk_export.subject_csv_collection
               span One file per collection
+        li
+          .bulk-export_format
+            h5 Work Metadata CSV
+            p.nomargin A spreadsheet listing each work with page counts and metadata.
+          .bulk-export_options
+            =f.label :work_metadata_csv
+              =f.check_box :work_metadata_csv, value: @bulk_export.work_metadata_csv
+              span One file per collection
 
       .toolbar
         .toolbar_group.aright =f.button 'Start Export', class: 'big', 'data-start-export': ''

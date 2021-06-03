@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_180026) do
+ActiveRecord::Schema.define(version: 2021_04_27_152944) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.boolean "table_csv_work"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "work_metadata_csv", default: false
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
   end
@@ -173,6 +174,7 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.integer "next_untranscribed_page_id"
     t.boolean "api_access", default: false
     t.boolean "facets_enabled", default: false
+    t.boolean "user_download", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -594,7 +596,6 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.string "label"
     t.string "input_type"
     t.string "options"
-    t.integer "percentage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
@@ -640,6 +641,9 @@ ActiveRecord::Schema.define(version: 2021_02_20_180026) do
     t.integer "percentage"
     t.integer "page_number"
     t.integer "starting_rows"
+    t.float "top_offset", default: 0.0
+    t.float "bottom_offset", default: 1.0
+    t.boolean "row_highlight", default: false
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

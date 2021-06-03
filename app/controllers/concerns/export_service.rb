@@ -9,6 +9,11 @@ module ExportService
     out.write file.read
   end
 
+  def export_work_metadata_csv(dirname:, out:, collection:)
+    path = "work_metadata.csv"
+    out.put_next_entry(path)
+    out.write(export_work_metadata_as_csv(collection))
+  end
 
   def export_subject_csv(dirname:, out:, collection:)
     path = "subject_index.csv"
@@ -23,12 +28,9 @@ module ExportService
   end
 
   def export_table_csv_work(dirname:, out:, work:)
-    path = "fields_and_tables.csv"
+    path = File.join dirname, 'csv', "fields_and_tables.csv"
     out.put_next_entry(path)
     out.write(export_tables_as_csv(work))
-    # path = "subject_index.csv"
-    # out.put_next_entry(path)
-    # out.write(collection.export_subjects_as_csv)
   end
 
   def export_tei(dirname:, out:, export_user:)
@@ -180,13 +182,22 @@ module ExportService
 
 private
 
-  def get_headings(collection, ids)
-    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
-    orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
-    markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
-    cell_headings = orphan_cell_headings + markdown_cell_headings
+  def spreadsheet_heading_to_indexable(field_id, column_label)
+    {field_id => column_label}
+  end
 
-    @raw_headings = (field_headings + cell_headings).uniq
+  def spreadsheet_column_to_indexable(column)
+    spreadsheet_heading_to_indexable(column.transcription_field_id, column.label)
+  end
+
+  def get_headings(collection, ids)
+    field_headings = collection.transcription_fields.order(:line_number, :position).where.not(input_type: 'instruction').pluck(:id)
+    orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
+    renamed_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is not null").pluck(Arel.sql('DISTINCT header')) - collection.transcription_fields.pluck(:label)
+    markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
+    cell_headings = orphan_cell_headings + markdown_cell_headings 
+
+    @raw_headings = (field_headings + cell_headings + renamed_cell_headings).uniq
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
@@ -195,9 +206,21 @@ private
     #get headings from field-based
     field_headings.each do |field_id|
       field = TranscriptionField.where(:id => field_id).first
-      raw_heading = field ? field.label : field_id
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
+      if field && field.input_type == 'spreadsheet'
+        raw_field_index = @raw_headings.index(field_id)
+        field.spreadsheet_columns.each do |column|
+          raw_field_index += 1
+          raw_heading = "#{field.label} #{column.label}"
+          @raw_headings.insert(raw_field_index, spreadsheet_column_to_indexable(column))
+          @headings << "#{raw_heading} (text)"
+          @headings << "#{raw_heading} (subject)"
+        end
+        @raw_headings.delete(field_id)
+      else
+        raw_heading = field ? field.label : field_id
+        @headings << "#{raw_heading} (text)"
+        @headings << "#{raw_heading} (subject)"
+      end
     end
     #get headings from non-field-based
     cell_headings.each do |raw_heading|
@@ -205,6 +228,60 @@ private
       @headings << "#{raw_heading} (subject)"
     end
     @headings
+  end
+
+
+  def export_work_metadata_as_csv(collection)
+    csv_string = CSV.generate(:force_quotes => true) do |csv|
+      static_headers = [
+        'Title', 
+        'Collection', 
+        'Document Sets', 
+        'Uploaded Filename', 
+        'FromThePage ID',
+        'FromThePage Slug',
+        'FromThePage URL',
+        'Identifier',
+        'Originating Manifest ID',
+        'Total Pages',
+        'Pages Transcribed',
+        'Pages Corrected',
+        'Pages Indexed',
+        'Pages Translated',
+        'Pages Needing Review',
+        'Pages Marked Blank'
+      ]
+
+      metadata_headers = [
+      ]
+
+      csv << static_headers + metadata_headers
+
+      collection.works.includes(:document_sets, :work_statistic).reorder(:id).each do |work| 
+        row = [
+          work.title,
+          work.collection.title,
+          work.document_sets.map{|ds| ds.title}. join('|'),
+          work.uploaded_filename,
+          work.id,
+          work.slug,
+          collection_read_work_url(collection.owner, collection, work),
+          work.identifier,
+          work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
+          work.work_statistic.total_pages,
+          work.work_statistic.transcribed_pages,
+          work.work_statistic.corrected_pages,
+          work.work_statistic.annotated_pages,
+          work.work_statistic.translated_pages,
+          work.work_statistic.needs_review,
+          work.work_statistic.blank_pages
+        ]
+
+        csv << row
+      end
+    end
+
+    csv_string
   end
 
   def export_tables_as_csv(table_obj)
@@ -230,7 +307,8 @@ private
         'Page Position',
         'Page URL',
         'Page Contributors',
-        'Page Notes'
+        'Page Notes',
+        'Page Status'
       ]
 
       section_cells = [
@@ -259,6 +337,8 @@ private
     all_deeds = work.deeds
     work.pages.includes(:table_cells).each do |page|
       unless page.table_cells.empty?
+        has_spreadsheet = page.table_cells.detect { |cell| cell.transcription_field && cell.transcription_field.input_type == 'spreadsheet' }
+
         page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
         page_notes = page.notes
           .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
@@ -274,17 +354,22 @@ private
           page.position,
           page_url,
           page_contributors,
-          page_notes
+          page_notes,
+          t("page.edit.page_status_#{page.status}")
         ]
 
         page_metadata_cells = page_metadata_cells(page)
         data_cells = Array.new(@headings.count, "")
+        running_data = []
 
         if page.sections.blank?
           #get cell data for a page with only one table
-          page.table_cells.group_by(&:row).each do |row, cell_array|
+          page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
             #get the cell data and add it to the array
-            cell_data(cell_array, @raw_headings, data_cells)
+            cell_data(cell_array, data_cells)
+            if has_spreadsheet
+              running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+            end
             #shift cells over if any page has sections
             if !col_sections
               section_cells = []
@@ -307,7 +392,10 @@ private
             #group the table cells per section into rows
             section.table_cells.group_by(&:row).each do |row, cell_array|
               #get the cell data and add it to the array
-              cell_data(cell_array, @raw_headings, data_cells)
+              cell_data(cell_array, data_cells)
+              if has_spreadsheet
+                running_data = process_header_footer_data(data_cells, running_data, cell_array, row)
+              end
               # write the record to the CSV and start a new record
               csv << (page_cells + page_metadata_cells + section_cells + data_cells)
               #create a new array for the next row
@@ -331,8 +419,12 @@ private
 
 
   def index_for_cell(cell)
-    if cell.transcription_field_id
-      index = (@raw_headings.index(cell.transcription_field_id))
+    if cell.transcription_field_id && cell.transcription_field.present?
+      if cell.transcription_field.input_type == 'spreadsheet'
+        index = @raw_headings.index(spreadsheet_heading_to_indexable(cell.transcription_field_id, cell.header))
+      else
+        index = (@raw_headings.index(cell.transcription_field_id))
+      end
     end
     index = (@raw_headings.index(cell.header)) unless index
     index = (@raw_headings.index(cell.header.strip)) unless index
@@ -341,7 +433,7 @@ private
   end
 
 
-  def cell_data(array, raw_headings, data_cells)
+  def cell_data(array, data_cells)
     array.each do |cell|
       index = index_for_cell(cell)
       target = index *2
@@ -350,7 +442,30 @@ private
     end
   end
 
+  def process_header_footer_data(data_cells, running_data, cell_array, rownum)
+    # assume that we are a spreadsheet already
 
+    # create running data if it's our first time
+    if running_data.nil? 
+      running_data = []
+    end
+
+    # are we in row 1?  fill the running data with non-spreadsheet fields
+    if rownum == 1
+      cell_array.each do |cell|
+        unless cell.transcription_field.input_type == 'spreadsheet'
+          running_data << cell
+        end 
+      end
+    else
+      # are we in row 2 or greater?
+      # fill data cells from running header/footer data
+      cell_data(running_data, data_cells)
+    end
+
+    # return the current running data
+    running_data
+  end
 
 
 

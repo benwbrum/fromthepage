@@ -76,7 +76,7 @@ $inputInvalidColor:         #C00;
 // LAYOUT
 // ---------------------------
 
-$widthMax:                  1280px;
+$widthMax:                  1440px;
 $widthL:                    1024px;
 $widthM:                    900px;
 $widthMin:                  768px;
@@ -136,3 +136,4 @@ $gapSize:                   20px;
 
 @import "datepicker/datepicker";
 @import "jquery.ui.all";
+@import "handsontable.min"

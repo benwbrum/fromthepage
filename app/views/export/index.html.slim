@@ -70,10 +70,11 @@ table.datagrid
           =svg_symbol '#icon-export', class: 'icon'
           span IIIF
       -unless work.table_cells.blank?
-        td.nowrap
-          =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
-            =svg_symbol '#icon-export', class: 'icon'
-            span =t('.table_csv')
+        -if work.table_cells.count < 10000
+          td.nowrap
+            =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
+              =svg_symbol '#icon-export', class: 'icon'
+              span =t('.table_csv')
       td.nowrap
         =link_to({ :controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip }, class: 'btnExport')
           =svg_symbol '#icon-export', class: 'icon'
@@ -104,6 +105,14 @@ table.datagrid
         =svg_symbol '#icon-export', class: 'icon'
         span =t('.export_all_table_data_as_csv')
     span =t('.export_all_tables_description')
+
+h2 =t('.export_work_metadata')
+p.big
+  span.fright(style="margin-left: 30px")
+    =link_to(export_work_metadata_path(@collection.slug), class: 'button btnExport', id: 'btnExportMetadata')
+      =svg_symbol '#icon-export', class: 'icon'
+      span =t('.export_work_metadata_as_csv')
+  span =t('.export_work_metadata_description')
 
 h2 API
 p

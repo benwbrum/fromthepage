@@ -18,15 +18,15 @@ RSpec.describe ContentdmTranslator do
         end
         it "returns an good iiif url for an item" do
             url = ContentdmTranslator.cdm_url_to_iiif(item_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/info/COL1D/123/manifest.json')
+            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/COL1D:123/manifest.json')
         end
         it "returns an good iiif url for collection" do
             url = ContentdmTranslator.cdm_url_to_iiif(collection_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/info/COL1D/manifest.json')
+            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/COL1D/manifest.json')
         end
         it "returns an good iiif url for repository" do
             url = ContentdmTranslator.cdm_url_to_iiif(repository_url)
-            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/info/manifest.json')
+            expect(url).to eq('https://cdm123.contentdm.oclc.org/iiif/2/manifest.json')
         end
         context "for vanity URL" do
             around(:each) do |example|
@@ -34,6 +34,7 @@ RSpec.describe ContentdmTranslator do
                     example.run
                 end
             end
+
             it "item" do
                 url = ContentdmTranslator.cdm_url_to_iiif(vanity_item)
                 expect(url).to eq('https://cdm17308.contentdm.oclc.org/iiif/info/ahs/200/manifest.json')
