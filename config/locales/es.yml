@@ -5,3 +5,4 @@ es:
   en: "English"
   es: "Español"
   pt: "Português"
+  time_ago_in_words: "Hace %{time}"
