@@ -199,7 +199,7 @@ describe "document sets", :order => :defined do
     find("#show-more-deeds").click
     expect(page).to have_content "Test private note"    
     page.find('a', text: @set.works.first.pages.first.title).click
-    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
+    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set.collection, @set.works.first, @set.works.first.pages.first)
   end
 
   it "cleans up test data" do
