@@ -98,7 +98,9 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
-  rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    bad_record_id(e)
+  end
 
   def load_objects_from_params
     # this needs to be ordered from the specific to the
@@ -185,9 +187,9 @@ class ApplicationController < ActionController::Base
     return @collection
   end
 
-  def bad_record_id
+  def bad_record_id(e)
     logger.error("Bad record ID exception for params=#{params.inspect}")
-
+    logger.error(e.backtrace[2])
     if @collection
       redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
     else
