@@ -533,7 +533,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
     # print each row as markdown
     table_element.xpath('//tr').each do |row_element|
-      text_table << row_element.xpath('td').map{|e| e.text.rjust(column_widths[e.path.match(/.*(\d)/)[1].to_i], ' ') }.join(' | ') << "\n"
+      text_table << row_element.xpath('td').map{|e| e.text.rjust(column_widths[e.path.match(/.*\[(\d+)\]/)[1].to_i], ' ') }.join(' | ') << "\n"
     end
 
     table_element.replace(text_table)
