@@ -252,12 +252,12 @@ private
         'Pages Marked Blank'
       ]
 
-      metadata_headers = [
-      ]
+      raw_metadata_strings = collection.works.pluck(:original_metadata)
+      metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
 
       csv << static_headers + metadata_headers
 
-      collection.works.includes(:document_sets, :work_statistic).reorder(:id).each do |work| 
+      collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
         row = [
           work.title,
           work.collection.title,
@@ -276,6 +276,16 @@ private
           work.work_statistic.needs_review,
           work.work_statistic.blank_pages
         ]
+
+        unless work.original_metadata.blank?
+          metadata = {}
+          JSON.parse(work.original_metadata).each {|e| metadata[e['label']] = e['value'] }
+
+          metadata_headers.each do |header|
+            # look up the value for this index
+            row << metadata[header]
+          end
+        end
 
         csv << row
       end
