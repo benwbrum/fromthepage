@@ -139,6 +139,7 @@ Fromthepage::Application.routes.draw do
     get 'tei', to: 'export#tei'
     get 'subject_csv', to: 'export#subject_index_csv'
     get 'subject_details_csv', to: 'export#subject_details_csv'
+    get 'subject_coocurrence_csv', to: 'export#subject_coocurrence_csv'
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get ':collection_id/work_metadata_csv', to: 'export#work_metadata_csv', as: 'work_metadata'
