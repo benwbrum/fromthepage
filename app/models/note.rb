@@ -31,7 +31,7 @@ class Note < ApplicationRecord
       previous_users = User.joins(:notes).where(notes: {id: self.page.notes.ids}).joins(:notification).where(notifications: {note_added: true}).distinct
       previous_users.each do |user|
         #send email regarding previous note, if it isn't the same user
-        if (user.id != self.user_id)
+        if (user.id != self.user_id && self.work.access_object(user))
           begin
             UserMailer.added_note(user, self).deliver!
           rescue StandardError => e
