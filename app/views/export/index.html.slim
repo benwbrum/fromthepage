@@ -96,6 +96,12 @@ table.datagrid
         =svg_symbol '#icon-export', class: 'icon'
         span =t('.export_subject_details_as_csv')
     span =t('.export_subject_details_description')
+  p.big
+    span.fright(style="margin-left: 30px")
+      =link_to(export_subject_coocurrence_csv_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnCsvCoocurrenceExport')
+        =svg_symbol '#icon-export', class: 'icon'
+        span =t('.export_subject_coocurrence_as_csv')
+    span =t('.export_subject_coocurrence_description')
 
 -unless @table_export.blank?
   h2 =t('.export_all_tables')

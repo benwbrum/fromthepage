@@ -26,58 +26,24 @@
         -if @user.last_sign_in_at.present?
           span = t('.last_seen', date: @user.last_sign_in_at.strftime("%b %d, %Y"))
 
+  
+
   h2 =t('.recent_activity_by', user_display_name: @user.display_name)
-  -if @notes.present?
-    h3 =t('.recent_notes')
-    table.datagrid
+  table.datagrid.striped
+    -@deeds.each do |d|
       tr
-        th =t('.date')
-        th.w25 =t('.page')
-        th.w75 =t('.note')
-      -@notes.includes(:page).each do |note|
-        -if note.page
-          -note_text = truncate(strip_tags(note.body), :length => 200)
-          tr
-            td.nowrap =note.created_at.localtime.strftime("%b %d, %Y, %l:%M %p")
-            td.overflow =link_to note.page.title, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page)
-            td =link_to note_text, collection_display_page_path(note.page.collection.owner, note.page.collection, note.page.work, note.page, anchor: "note-#{note.id}")
+        td.w100.toleft
+          -if d.work.nil? || d.work.access_object(current_user)
+            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+          -else
+            =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
+            
+        td
+          small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
+        td.nowrap
+          =time_tag(d.created_at, class: 'small fglight')
+            =t('time_ago_in_words', time: time_ago_in_words(d.created_at))
 
-    br
-
-  -if @page_versions.present?
-    h3 =t('.recent_page_edits')
-    table.datagrid
-      tr
-        th =t('.date')
-        th.w25 =t('.work')
-        th.w60 =t('.page')
-        th.w15 =t('.version')
-      -@page_versions.each do |version|
-        tr
-          td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
-          td.overflow
-            -if version.page.work.present?
-              =link_to version.page.work.title, collection_read_work_path(version.page.collection.owner, version.page.collection, version.page.work)
-            -else
-              span.a50 =t('.no_work')
-          td =link_to version.page.title, collection_display_page_path(version.page.collection.owner, version.page.collection, version.page.work, version.page)
-          td.nowrap =link_to t('.revision', version: version.page_version), page_version_show_path(:page_version_id => version.id)
-    br
-
-  -if @article_versions.present?
-    h3 =t('.recent_article_edits')
-    table.datagrid
-      tr
-        th =t('.date')
-        th.w25 =t('.article')
-        th.w60 =t('.categories')
-        th.w15 =t('.version')
-      -@article_versions.each do |version|
-          -unless version.article.collection.subjects_disabled
-            -@collection = version.article.collection
-            -description = truncate(strip_tags(xml_to_html(version.article.xml_text)), :length => 100)
-            tr
-              td.nowrap =version.created_on.localtime.strftime("%b %d, %Y, %l:%M %p")
-              td.overflow =link_to version.article.title, article_show_path(:article_id => version.article.id)
-              td ==version.article.categories.map { |c| link_to c.title, article_list_path(:collection_id => version.article.collection.id, anchor: "category-#{c.id}") }.join(', ')
-              td.nowrap =link_to "Revision #{version.version}", article_version_show_path(:article_version_id => version.id)
+  br
+  small.legend
+    =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }

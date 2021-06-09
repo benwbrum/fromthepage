@@ -18,7 +18,14 @@ table.datagrid.striped
         =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
           =profile_picture(d.user)
       td.w100.toleft
-        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+        -if @collection.nil?
+          -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
+            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+          -else
+            =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
+        -else
+          =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
+          
       td
         small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
       td.nowrap
