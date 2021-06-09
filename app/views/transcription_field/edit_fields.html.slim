@@ -42,6 +42,7 @@ div.columns
         update: function(e, ui) {
           var line = $(this).index() + 1;
           var data = $(this).sortable('serialize');
+          ui.item.find('input[id=transcription_fields__line_number]').val(line);
           if (data) {
             $.ajax({
               url: "#{transcription_field_reorder_path(collection_id: @collection.id)}",
