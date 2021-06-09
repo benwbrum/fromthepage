@@ -355,7 +355,7 @@ private
           page_url,
           page_contributors,
           page_notes,
-          t("page.edit.page_status_#{page.status}")
+          I18n.t("page.edit.page_status_#{page.status}")
         ]
 
         page_metadata_cells = page_metadata_cells(page)
