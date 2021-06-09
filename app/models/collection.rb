@@ -1,6 +1,7 @@
 require 'csv'
 require 'subject_exporter'
 require 'subject_details_exporter'
+require 'subject_coocurrence_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
@@ -81,6 +82,12 @@ class Collection < ApplicationRecord
 
   def export_subject_details_as_csv
     subjects = SubjectDetailsExporter::Exporter.new(self)
+
+    subjects.export
+  end
+
+  def export_subject_coocurrence_as_csv
+    subjects = SubjectCoocurrenceExporter::Exporter.new(self)
 
     subjects.export
   end

@@ -98,6 +98,14 @@ class ExportController < ApplicationController
   end
 
 
+  def subject_coocurrence_csv
+    send_data(@collection.export_subject_coocurrence_as_csv,
+              :filename => "fromthepage_subject_coocurrence_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
+
+
   def subject_index_csv
     send_data(@collection.export_subject_index_as_csv,
               :filename => "fromthepage_subject_index_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",

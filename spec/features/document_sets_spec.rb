@@ -182,7 +182,25 @@ describe "document sets", :order => :defined do
     page.find('a', text: "Test private note").click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     page.find('.user-bubble_content', text: "Test private note")
-    end
+
+    # test activity stream for set
+    visit collection_path(@set.owner, @set)
+    expect(page).to have_content "Test private note"    
+    find("#show-more-deeds").click
+    expect(page).to have_content "Test private note"    
+    page.find('a', text: @set.works.first.pages.first.title).click
+    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
+
+
+    # test activity stream for collection
+    login_as(@owner, :scope => :user)
+    visit collection_path(@set.owner, @set.collection)
+    expect(page).to have_content "Test private note"    
+    find("#show-more-deeds").click
+    expect(page).to have_content "Test private note"    
+    page.find('a', text: @set.works.first.pages.first.title).click
+    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set.collection, @set.works.first, @set.works.first.pages.first)
+  end
 
   it "cleans up test data" do
     @test_set = DocumentSet.last
