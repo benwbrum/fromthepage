@@ -246,10 +246,10 @@ namespace :fromthepage do
 
     if document_upload.ocr
       clean_dir=path.gsub('[','\[').gsub(']','\]')
-      if Dir.glob(File.join(clean_dir, "*.txt")).count > 0
+      if (Dir.glob(File.join(clean_dir, "*.txt")).count + Dir.glob(File.join(clean_dir, "*.xml")).count) > 0
         work.ocr_correction = true
       else
-        print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")}\n"
+        print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")} or #{File.join(path, "page*.xml")}\n"
       end
     end
 
@@ -293,7 +293,12 @@ namespace :fromthepage do
       page.base_width = image.columns
       if work.ocr_correction
         ocr_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, "txt")))
-        if File.exist? ocr_fn
+        xml_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, "xml")))
+        if File.exist? xml_fn
+          print "\t\tconvert_to_work reading raw XML text from #{xml_fn}\n"
+          page.source_text = File.read(xml_fn).gsub(/\[+/, '[').gsub(/\]+/, ']')
+          # if there are errors, consider escaping
+        elsif File.exist? ocr_fn
           print "\t\tconvert_to_work reading raw OCR text from #{ocr_fn}\n"
           page.source_text = File.read(ocr_fn).encode(:xml => :text).gsub(/\[+/, '[').gsub(/\]+/, ']')
         end
