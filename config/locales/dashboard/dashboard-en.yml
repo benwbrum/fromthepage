@@ -59,7 +59,7 @@ en:
       click_to_browse_files: "Click to browse files"
       browse: "Browse"
       use_image_filenames: " Use image filenames as page titles."
-      use_ocr_from_pdf: " Use OCR from PDF text layer."
+      use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
       zip_files_may_contain: "ZIP files may contain folders containing images, PDFs, or folders containing pdfs."
       each_folder_will_be_treated: "Each folder will be treated as a different document, so do not mix pages from different documents in the same folder."
       each_pdf_will_be_treated: "Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF."

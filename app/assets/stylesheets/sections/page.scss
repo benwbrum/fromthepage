@@ -156,6 +156,11 @@
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
+
+  [data-layout-mode='ttb'] &,
+  [data-layout-mode='btt'] & {
+    min-height: calc((100vh - 74px - 3rem) / 2);
+  }
 }
 
 .page-imagescan {
