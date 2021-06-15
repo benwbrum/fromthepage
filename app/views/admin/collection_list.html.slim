@@ -1,6 +1,4 @@
-=stylesheet_link_tag "https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css"
-
-
+=stylesheet_link_tag 'datatables.min'
 h2 =t('.all_collections')
 
 .columns
@@ -76,6 +74,7 @@ h2 =t('.all_collections')
       .nodata
         h5.nodata_title =t('.you_dont_have_any_collections_yet')
         p.nodata_text =t('.you_can', new_collection: new_collection)
+
 
 
 -content_for :javascript
