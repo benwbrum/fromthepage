@@ -185,7 +185,7 @@ class AdminController < ApplicationController
   end
 
   def collection_list
-    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    @collections = Collection.order(:title)
   end
 
   def work_list
