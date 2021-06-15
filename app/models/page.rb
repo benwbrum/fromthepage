@@ -546,7 +546,16 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
 
     # print each row as markdown
     table_element.xpath('//tr').each do |row_element|
-      text_table << row_element.xpath('td').map{|e| e.text.rjust(column_widths[e.path.match(/.*\[(\d+)\]/)[1].to_i], ' ') }.join(' | ') << "\n"
+      text_table << row_element.xpath('td').map do |e|
+        width = 80 #default for hand-coded tables
+        index = e.path.match(/.*td\[(\d+)\]/)
+        if index
+          width = column_widths[index[1].to_i] || 80 
+        else
+          width = column_widths.values.first
+        end
+        e.text.rjust(width, ' ') 
+      end.join(' | ') << "\n"
     end
 
     table_element.replace(text_table)

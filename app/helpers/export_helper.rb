@@ -82,6 +82,7 @@ module ExportHelper
     end
 
     works.each do |work|
+      print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
       @work = work
       dirname = work.slug.truncate(200, omission: "")
       add_readme_to_zip(dirname: dirname, out: out)
