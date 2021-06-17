@@ -4,6 +4,7 @@ class BulkExport < ApplicationRecord
 
   belongs_to :user
   belongs_to :collection
+  belongs_to :work
 
 
   module Status
@@ -21,7 +22,11 @@ class BulkExport < ApplicationRecord
     self.save
 
     begin
-      works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
+      if self.work
+        works=[self.work]
+      else
+        works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
+      end
 
       buffer = Zip::OutputStream.open(zip_file_name) do |out|
         write_work_exports(works, out, self.user, self)
