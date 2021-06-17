@@ -29,6 +29,21 @@ class BulkExportController < ApplicationController
     render :action => :new
   end
 
+  def create_for_work
+    @bulk_export = BulkExport.new(bulk_export_params)
+    @bulk_export.collection = @collection
+    @bulk_export.work = @work
+    @bulk_export.user = current_user
+    @bulk_export.status = BulkExport::Status::NEW
+
+    if @bulk_export.save
+      @bulk_export.submit_export_process
+
+      flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
+    end
+    redirect_to download_collection_work_path(@collection.owner.slug, @collection.slug, @work.slug)
+  end
+
   def download
     if @bulk_export.status == BulkExport::Status::FINISHED
       # read and spew the file
