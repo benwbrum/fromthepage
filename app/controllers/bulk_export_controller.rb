@@ -21,12 +21,12 @@ class BulkExportController < ApplicationController
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
 
-    if @bulk_export.save
+    if @bulk_export.save!
       @bulk_export.submit_export_process
 
       flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
     end
-    render :action => :new
+    redirect_to dashboard_exports_path
   end
 
   def create_for_work
