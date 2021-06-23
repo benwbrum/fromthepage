@@ -4,7 +4,7 @@ class BulkExport < ApplicationRecord
 
   belongs_to :user
   belongs_to :collection
-  belongs_to :work
+  belongs_to :work, optional: true
 
 
   module Status

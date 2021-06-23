@@ -2,13 +2,14 @@
 
 class DashboardController < ApplicationController
   include AddWorkHelper
+  PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
     only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
     only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary]
+           :startproject, :empty_work, :create_work, :summary, :exports]
 
   before_action :remove_col_id
 
@@ -119,6 +120,11 @@ class DashboardController < ApplicationController
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)
+  end
+
+
+  def exports
+    @bulk_exports = current_user.bulk_exports.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
 
 
