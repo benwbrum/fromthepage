@@ -8,7 +8,7 @@
 <% unless @edition_type == 'text'%>
 \newpage
   <% if @work.sc_manifest %>
-![<%= page.title %>](<%= page.sc_canvas.sc_resource_id %>)
+![<%= page.title %>](<%= page.sc_canvas.sc_resource_id.sub('/full/full/', '/full/800,/') %>)
   <% elsif page.ia_leaf %>
 ![<%= page.title %>](<%= page.ia_leaf.facsimile_url %>)
   <% else %>
