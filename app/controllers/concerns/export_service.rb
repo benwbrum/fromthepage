@@ -12,7 +12,8 @@ module ExportService
   def export_printable_to_zip(work, edition, output_format, dirname, out)
     path = File.join dirname, 'printable', "facing_edition.pdf"
     tempfile = export_printable(work, edition, output_format)
-    out.add(path, tempfile)
+    out.put_next_entry(path)
+    out.write(IO.read(tempfile))
   end
 
   def export_printable(work, edition, format)
@@ -40,9 +41,9 @@ module ExportService
 
     file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
     md_file = File.join(temp_dir, "#{file_stub}.md")
-    if @output_type == 'pdf'
+    if format == 'pdf'
       output_file = File.join(temp_dir, "#{file_stub}.pdf")
-    elsif @output_type == 'doc'
+    elsif format == 'doc'
       output_file = File.join(temp_dir, "#{file_stub}.docx")      
     end
 
