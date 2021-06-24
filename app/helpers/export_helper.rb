@@ -120,6 +120,10 @@ module ExportHelper
         end
       end
 
+      if bulk_export.facing_edition_work
+        export_printable_to_zip(work, 'facing', 'pdf', dirname, out)
+      end
+
       # Page-specific exports
 
       @work.pages.each do |page|
