@@ -41,7 +41,7 @@ class BulkExportController < ApplicationController
 
       flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
     end
-    redirect_to download_collection_work_path(@collection.owner.slug, @collection.slug, @work.slug)
+    redirect_to dashboard_exports_path
   end
 
   def download

@@ -48,8 +48,7 @@
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :facing_edition_work, value: true
-              =f.submit 'Start'
-            span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'facing', format: 'pdf', method: :get}
+              =f.submit 'Export'
         li
           .bulk-export_format
             h5 Verbatim Plaintext
@@ -59,7 +58,7 @@
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_verbatim_page, value: true
-              =f.submit 'Start'
+              =f.submit 'Export'
         li
           .bulk-export_format
             h5 Searchable Plaintext
@@ -69,7 +68,7 @@
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_searchable_page, value: true
-              =f.submit 'Start'
+              =f.submit 'Export'
         li
           .bulk-export_format
             h5 Expanded Plaintext
@@ -79,7 +78,7 @@
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :plaintext_emended_page, value: true
-              =f.submit 'Start'
+              =f.submit 'Export'
         li
           .bulk-export_format
             h5 HTML
@@ -89,7 +88,7 @@
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :html_page, value: true
-              =f.submit 'Start'
+              =f.submit 'Export'
         li
           .bulk-export_format
             h5 Table/Field CSV
@@ -99,7 +98,7 @@
               =f.hidden_field :collection_id, value: @collection.slug
               =hidden_field_tag :work_id, @work.id
               =f.hidden_field :table_csv_work, value: true
-              =f.submit 'Start'
+              =f.submit 'Export'
 
 
 -content_for :javascript
