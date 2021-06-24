@@ -44,6 +44,11 @@
             h5 Facing PDF
             p.nomargin Download a PDF version of this work including images and text on facing pages.
           .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :facing_edition_work, value: true
+              =f.submit 'Start'
             span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'facing', format: 'pdf', method: :get}
         li
           .bulk-export_format
