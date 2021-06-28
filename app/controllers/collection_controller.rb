@@ -176,12 +176,6 @@ class CollectionController < ApplicationController
     end
   end
 
-  def owners
-    @main_owner = @collection.owner
-    @owners = @collection.owners + [@main_owner]
-    @nonowners = User.all - @owners
-  end
-
   def add_owner
     @user.owner = true
     @user.account_type = "Staff"
