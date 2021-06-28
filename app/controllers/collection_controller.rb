@@ -12,10 +12,10 @@ class CollectionController < ApplicationController
 
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload]
+  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator]
 
   def authorized?
     unless user_signed_in?
@@ -176,6 +176,7 @@ class CollectionController < ApplicationController
     end
   end
 
+
   def add_owner
     @user.owner = true
     @user.account_type = "Staff"
@@ -186,12 +187,12 @@ class CollectionController < ApplicationController
     if @user.notification.add_as_owner
       send_email(@user, @collection)
     end
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to collection_edit_owners_path(@collection)
   end
 
   def remove_owner
     @collection.owners.delete(@user)
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to collection_edit_owners_path(@collection)
   end
 
   def add_collaborator
@@ -200,12 +201,12 @@ class CollectionController < ApplicationController
     if @user.notification.add_as_collaborator
       send_email(@user, @collection)
     end
-    redirect_to action: 'edit', collection_id: @collection.id
+    ajax_redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def remove_collaborator
     @collection.collaborators.delete(@user)
-    redirect_to action: 'edit', collection_id: @collection.id
+    ajax_redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def send_email(user, collection)

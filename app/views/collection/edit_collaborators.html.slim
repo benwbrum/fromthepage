@@ -1,0 +1,20 @@
+.litebox-embed(style="width:450px")
+
+  h3 =t('collection.edit.collection_owners')
+  p.fglight =t('collection.edit.collection_collaborators_description')
+  =form_tag(collection_add_collaborator_path, class: 'user-select-form') do
+    =hidden_field_tag :collection_id, @collection.id
+    =select_tag 'collaborator_id', options_from_collection_for_select(@noncollaborators, 'id', 'name_with_identifier'), include_blank: true
+    =button_tag t('collection.edit.add_button')
+    =label_tag 'user_id', t('.add_owner'), class: 'hidden'
+  -@collaborators.each do |user|
+    -contributions = user.deeds.where(collection_id: @collection.id).count
+    .user-label
+      .userpic
+        =profile_picture(user)
+      .username
+        =link_to user.display_name, user_profile_path(user)
+        small =pluralize(contributions, 'contribution')
+      -if user != @main_owner
+        =link_to '', collection_remove_collaborator_path(:user_id => user.id, :collection_id => @collection.id), class: 'remove', title: t('.remove'), 'aria-label' => t('collection.edit.remove_collaborator'), :data => { litebox: { hash: 'remove-owner-buttons' }}
+  =link_to('Done', edit_collection_path(@collection.owner, @collection), class: 'button')
