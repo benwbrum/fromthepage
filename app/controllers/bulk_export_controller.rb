@@ -21,12 +21,27 @@ class BulkExportController < ApplicationController
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
 
+    if @bulk_export.save!
+      @bulk_export.submit_export_process
+
+      flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
+    end
+    redirect_to dashboard_exports_path
+  end
+
+  def create_for_work
+    @bulk_export = BulkExport.new(bulk_export_params)
+    @bulk_export.collection = @collection
+    @bulk_export.work = @work
+    @bulk_export.user = current_user
+    @bulk_export.status = BulkExport::Status::NEW
+
     if @bulk_export.save
       @bulk_export.submit_export_process
 
       flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
     end
-    render :action => :new
+    redirect_to dashboard_exports_path
   end
 
   def download
@@ -66,6 +81,7 @@ class BulkExportController < ApplicationController
         :subject_csv_collection, 
         :table_csv_work, 
         :table_csv_collection,
-        :work_metadata_csv)
+        :work_metadata_csv,
+        :facing_edition_work)
     end
 end

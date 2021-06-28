@@ -16,6 +16,12 @@
   :options => {\
     :action => 'summary',
   },
+},{\
+  :name => 'Exports',
+  :selected => 4,
+  :options => {\
+    :action => 'exports',
+  },
 }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
@@ -53,3 +59,4 @@ section.owner-counters
   =active_link_to t('.start_a_project'), dashboard_startproject_path
   =active_link_to t('.your_collections'), dashboard_owner_path
   =active_link_to t('.summary'), dashboard_summary_path
+  =active_link_to t('.exports'), dashboard_exports_path
