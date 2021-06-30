@@ -35,6 +35,12 @@ class UserMailer < ActionMailer::Base
     mail to: @user.email, subject: "New FromThePage Note"
   end
 
+  def collection_reviewer(user, obj)
+    @user = user
+    @collection = obj
+    mail to: @user.email, subject: "You've been added as a reviewer on #{@collection.title}"
+  end
+
   def collection_collaborator(user, obj)
     @user = user
     if obj.is_a?(Collection)

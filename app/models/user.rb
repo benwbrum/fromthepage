@@ -40,6 +40,9 @@ class User < ApplicationRecord
   has_and_belongs_to_many(:collection_collaborations,
                           :join_table => 'collection_collaborators',
                           :class_name => 'Collection')
+  has_and_belongs_to_many(:review_collections,
+                          :join_table => 'collection_reviewers',
+                          :class_name => 'Collection')
 
 
   has_many :page_versions, -> { order 'created_on DESC' }

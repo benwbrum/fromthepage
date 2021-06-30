@@ -12,10 +12,10 @@ class CollectionController < ApplicationController
 
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator]
+  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer]
 
   def authorized?
     unless user_signed_in?
@@ -104,6 +104,8 @@ class CollectionController < ApplicationController
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+    @reviewers = @collection.reviewers
+    @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
   end
 
   def show
@@ -207,6 +209,19 @@ class CollectionController < ApplicationController
   def remove_collaborator
     @collection.collaborators.delete(@user)
     ajax_redirect_to collection_edit_collaborators_path(@collection)
+  end
+
+  def add_reviewer
+    @collection.reviewers << @user
+    if @user.notification.add_as_collaborator
+      send_email(@user, @collection)
+    end
+    ajax_redirect_to collection_edit_reviewers_path(@collection)
+  end
+
+  def remove_reviewer
+    @collection.reviewers.delete(@user)
+    ajax_redirect_to collection_edit_reviewers_path(@collection)
   end
 
   def send_email(user, collection)
@@ -605,6 +620,6 @@ class CollectionController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
   end
 end

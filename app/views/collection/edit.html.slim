@@ -43,10 +43,6 @@
             =f.label :subjects_disabled, t('.subjects_disabled')
         tr
           td(colspan="2")
-            =f.check_box :review_workflow, value: @collection.review_workflow
-            =f.label :review_workflow, t('.review_workflow')
-        tr
-          td(colspan="2")
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, t('.hide_completed')
         -if feature_enabled?(:download)
@@ -69,6 +65,28 @@
             td(colspan="2")
               =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, t('.voice_recognition')
+        tr
+          td(colspan="2")
+            h3
+              =f.label :review_type, t('review_type')
+            =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
+            =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
+            br
+            =f.radio_button :review_type, Collection::ReviewType::REQUIRED
+            =f.label "review_type_#{Collection::ReviewType::REQUIRED}", t('.review_type_required')
+            br
+            =f.radio_button :review_type, Collection::ReviewType::RESTRICTED
+            =f.label "review_type_#{Collection::ReviewType::RESTRICTED}", t('.review_type_restricted')
+            -if @collection.review_type == Collection::ReviewType::RESTRICTED
+              p =t('.authorized_reviewers')
+              -@reviewers.each do |user|
+                .user-label
+                  .userpic
+                    =profile_picture(user)
+                  .username
+                    =link_to user.display_name, user_profile_path(user)
+              =link_to('Edit Authorized Reviewers',collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons' }})
+              
 
       .toolbar
         .toolbar_group
@@ -108,7 +126,6 @@
       p.fglight =t('.collection_collaborators_description')
       =link_to('Edit',collection_edit_collaborators_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-collaborator-buttons' }})
       -@collaborators.each do |user|
-        -contributions = user.deeds.where(collection_id: @collection.id).count
         .user-label
           .userpic
             =profile_picture(user)
