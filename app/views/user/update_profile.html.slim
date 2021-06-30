@@ -72,6 +72,9 @@
         td =f.check_box("notifications[add_as_collaborator]", {checked: @user.notification.add_as_collaborator})
         th =f.label :add_as_collaborator, t('.add_as_collaborator')
       tr
+        td =f.check_box("notifications[add_as_reviewer]", {checked: @user.notification.add_as_reviewer})
+        th =f.label :add_as_reviewer, t('.add_as_reviewer')
+      tr
         td =f.check_box("notifications[add_as_owner]", {checked: @user.notification.add_as_owner})
         th =f.label :add_as_owner, t('.add_as_owner')
       tr

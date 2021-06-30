@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_23_214318) do
+ActiveRecord::Schema.define(version: 2021_06_30_225314) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -149,6 +149,15 @@ ActiveRecord::Schema.define(version: 2021_06_23_214318) do
     t.datetime "updated_at"
   end
 
+  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_collection_reviewers_on_collection_id"
+    t.index ["user_id"], name: "index_collection_reviewers_on_user_id"
+  end
+
   create_table "collections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.integer "owner_user_id"
@@ -161,7 +170,6 @@ ActiveRecord::Schema.define(version: 2021_06_23_214318) do
     t.boolean "subjects_disabled", default: true
     t.text "transcription_conventions"
     t.string "slug"
-    t.boolean "review_workflow", default: false
     t.boolean "hide_completed", default: true
     t.text "help"
     t.text "link_help"
@@ -178,6 +186,7 @@ ActiveRecord::Schema.define(version: 2021_06_23_214318) do
     t.boolean "api_access", default: false
     t.boolean "facets_enabled", default: false
     t.boolean "user_download", default: false
+    t.string "review_type"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -389,6 +398,7 @@ ActiveRecord::Schema.define(version: 2021_06_23_214318) do
     t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "add_as_reviewer", default: true
   end
 
   create_table "oai_repositories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
