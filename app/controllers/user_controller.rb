@@ -45,8 +45,6 @@ class UserController < ApplicationController
     redirect_back :fallback_location => dashboard_role_path
   end
 
-  def update_profile
-  end
 
   NOTOWNER = "NOTOWNER"
   def update
@@ -82,6 +80,10 @@ class UserController < ApplicationController
   def update_profile
     unless @user
       @user = User.friendly.find(params[:user_slug])
+    end
+
+    if @user.real_name.blank?
+      @user.real_name = @user.display_name || @user.login
     end
 
     # Set dictation language to default (en-US) if it doesn't exist
