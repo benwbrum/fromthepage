@@ -73,7 +73,6 @@ Fromthepage::Application.routes.draw do
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
-    get 'remove_owner', to: 'collection#remove_owner'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'publish_collection', to: 'collection#publish_collection'
@@ -83,6 +82,7 @@ Fromthepage::Application.routes.draw do
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
     post 'add_owner', to: 'collection#add_owner'
+    post 'remove_owner', to: 'collection#remove_owner'
     post 'create', to: 'collection#create'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
