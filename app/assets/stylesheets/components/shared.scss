@@ -898,10 +898,12 @@ button, .button, .dropdown dd a {
   .remove {
     top: 50%;
     right: 0;
+    border: 0;
     width: 1em;
     height: 1em;
     display: none;
     font-size: 20px;
+    box-shadow: none;
     position: absolute;
     margin-top: -0.5em;
     border-radius: 50%;
