@@ -35,6 +35,9 @@ class FacetConfig < ApplicationRecord
             case input_type
             when "text"
               unless facet['order'].nil?
+                if value.kind_of? Hash
+                  value = value['value'] || value['@value']
+                end
                 value = Nokogiri::HTML(value).text
                 new_attributes["s#{facet['order']}".to_sym] = value
               end
