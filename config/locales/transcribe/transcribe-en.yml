@@ -43,7 +43,7 @@ en:
       preview_tooltip: "Preview the page without saving changes"
       edit_tooltip: "Continue editing the page"
     guest:
-      save_up_to_three_transcriptions: "You may save up to three transcriptions <br> as a guest or sign up now."
+      save_up_to_three_transcriptions: "You may save up to three transcriptions as a guest or sign up now."
       transcribe_as_guest: "Transcribe as guest"
       sign_up_now: "Sign Up Now"
       sign_up_now_to_transcribe: "Sign up now to transcribe."
