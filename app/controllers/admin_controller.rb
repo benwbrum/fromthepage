@@ -185,7 +185,7 @@ class AdminController < ApplicationController
   end
 
   def collection_list
-    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    @collections = Collection.order(:title)
   end
 
   def work_list
@@ -199,6 +199,28 @@ class AdminController < ApplicationController
 
   def page_list
     @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+  end
+
+  def progress_metrics
+    transcription_deeds = Deed.where(deed_type: DeedType.transcriptions_or_corrections_no_edits)
+    contributor_deeds = Deed.where(deed_type: DeedType.contributor_types)
+
+    @transcription_counts = {}
+    @contribution_counts = {}
+    @activity_project_counts = {}
+    @unique_contributor_counts = {}
+    @week_intervals=[1,2,4,12,26,52,104,156,208]
+    @week_intervals.each do |weeks_ago|
+      start_date = Date.yesterday - weeks_ago.weeks
+      end_date = start_date + 1.week
+      @transcription_counts[weeks_ago] = transcription_deeds.where("created_at between ? and ?", start_date, end_date).count
+      @contribution_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).count
+      @activity_project_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:collection_id)
+      @unique_contributor_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:user_id)
+    end
+
+    @pages_per_hour = transcription_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
+    @contributions_per_hour = contributor_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
   end
 
   def settings

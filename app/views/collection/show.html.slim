@@ -84,6 +84,9 @@
       =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
       =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
+ 
+    -if @collection.facets_enabled?
+      =render(:partial => 'facet_form')
 
     h3 =t('.recent_notes')
     -@collection.notes.active.limit(10).each do |note|
@@ -97,12 +100,9 @@
           span.deed-short_content
             =="#{user} wrote #{text}"
     small.legend
-      =link_to t('.show_more'), deed_notes_path(@collection.id), class: 'button outline round'
+      =link_to t('.show_more'), deed_notes_path(@collection.slug), class: 'button outline round'
 
     h3 =t('.recent_edits')
     =deeds_for({ :collection => @collection, :limit => 20, :types => DeedType.collection_edits, :long_view => true })
-
-    -if @collection.facets_enabled?
-      =render(:partial => 'facet_form')
 
 =render({ :partial => '/shared/collection_footer' })

@@ -22,6 +22,36 @@ describe "export tasks" do
     expect(page).to have_content(@work.title)
     page.find('#btnExportAll').click
     expect(page.response_headers['Content-Type']).to eq 'text/html; charset=utf-8'
+
+    page.check('bulk_export_html_page')
+    page.check('bulk_export_html_work')
+    page.check('bulk_export_plaintext_verbatim_page')
+    page.check('bulk_export_plaintext_verbatim_work')
+    page.check('bulk_export_plaintext_emended_work')
+    page.check('bulk_export_plaintext_emended_page')
+    page.check('bulk_export_plaintext_searchable_work')
+    page.check('bulk_export_plaintext_searchable_page')
+    page.check('bulk_export_tei_work')
+    page.check('bulk_export_table_csv_work')
+    page.check('bulk_export_table_csv_collection')
+    page.check('bulk_export_subject_csv_collection')
+    page.check('bulk_export_work_metadata_csv')
+
+    page.find('button', text: 'Start Export').click
+    expect(page).to have_content("Queued")
+
+    login_as(User.where(admin: true).first, :scope => :user)
+
+    # wait for the background process to run
+    1.upto(10) do
+      sleep 5
+      if BulkExport.last.status == 'finished'
+        break
+      end
+    end
+
+    visit bulk_export_index_path
+    expect(page).to have_content("Finished")
   end
 
   it "exports the subject index" do

@@ -24,7 +24,7 @@ pt:
       add_a_new_work: "Adicionar uma nova obra"
       subject_categories: "Categorias de Temas"
       search: "Buscar"
-      time_ago_in_words: "%Há {time}"
+      time_ago_in_words: "Há %{time}"
       project_by: "Projeto por"
     collection_works:
       work_title: "Título da obra"

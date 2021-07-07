@@ -44,7 +44,7 @@ class Page < ApplicationRecord
 
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: nil).or(Page.where(status: STATUS_INCOMPLETE))  }
+  scope :needs_transcription, -> { where(status: [nil, STATUS_INCOMPLETE])  }
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
@@ -60,6 +60,19 @@ class Page < ApplicationRecord
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_INDEXED = 'indexed'
   STATUS_TRANSLATED = 'translated'
+
+  ALL_STATUSES = [
+    nil,
+    STATUS_INCOMPLETE,
+    STATUS_TRANSCRIBED,
+    STATUS_NEEDS_REVIEW,
+    STATUS_INDEXED,
+    STATUS_TRANSLATED,
+    STATUS_BLANK
+  ]
+
+  MAIN_STATUSES = ALL_STATUSES - [STATUS_TRANSLATED]
+  TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_INCOMPLETE, STATUS_TRANSCRIBED]
 
   # tested
   def collection
@@ -496,12 +509,58 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
       end
       n.replace("#{sigil}\n")
     end
+    doc.xpath("//table").each { |n| formatted_plaintext_table(n) }
     doc.xpath("//lb").each { |n| n.replace("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
+    doc.xpath("//footnote").each { |n| n.replace('')}
 
     doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
   end
+
+  def formatted_plaintext_table(table_element)
+    text_table = ""
+
+    # clean up in-cell line-breaks
+    table_element.xpath('//lb').each { |n| n.replace(' ')}
+
+    # calculate the widths of each column based on max(header, cell[0...end])
+    column_count = ([table_element.xpath("//th").count] + table_element.xpath('//tr').map{|e| e.xpath('td').count }).max
+    column_widths = {}
+    1.upto(column_count) do |column_index|
+      longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map{|e| e.text().length}.max || 0)
+      corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
+      heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
+      column_widths[column_index] = [longest_cell, heading_length].max
+    end
+
+    # print the header as markdown
+    cell_strings = []
+    table_element.xpath("//th").each_with_index do |e,i|
+      cell_strings << e.text.rjust(column_widths[i+1], ' ')
+    end
+    text_table << cell_strings.join(' | ') << "\n"
+
+    # print the separator
+    text_table << column_count.times.map{|i| ''.rjust(column_widths[i+1], '-')}.join(' | ') << "\n"
+
+    # print each row as markdown
+    table_element.xpath('//tr').each do |row_element|
+      text_table << row_element.xpath('td').map do |e|
+        width = 80 #default for hand-coded tables
+        index = e.path.match(/.*td\[(\d+)\]/)
+        if index
+          width = column_widths[index[1].to_i] || 80 
+        else
+          width = column_widths.values.first
+        end
+        e.text.rjust(width, ' ') 
+      end.join(' | ') << "\n"
+    end
+
+    table_element.replace(text_table)
+  end
+
 
   def modernize_absolute(filename)
     if filename

@@ -175,7 +175,7 @@ describe "needs review", :order => :defined do
 
       stats = page.find('.collection-work', text: w.title).find('.collection-work_stats') 
       expect(stats).to have_content("#{indexed}% indexed")
-      expect(stats).to have_content("#{completed}% #{wording}")
+      expect(stats).to have_content("#{completed+review}% #{wording}")
       unless review == 0
         expect(stats).to have_content("#{review}% needs review")
       end
@@ -208,7 +208,7 @@ describe "needs review", :order => :defined do
       expect(list).to have_content(w.title)
       expect(list).to have_content(w.pages.count)
       expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)
-      expect(list).to have_content("#{completed}% #{wording}")
+      expect(list).to have_content("#{completed+review}% #{wording}")
       unless review == 0
         expect(list.find('span', text: 'needs review')).to have_content(review)
       end

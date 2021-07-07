@@ -26,6 +26,7 @@ Fromthepage::Application.routes.draw do
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
     get 'collection_list', to: 'admin#collection_list'
+    get 'progress_metrics', to: 'admin#progress_metrics'
     get 'work_list', to: 'admin#work_list'
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
@@ -138,6 +139,7 @@ Fromthepage::Application.routes.draw do
     get 'tei', to: 'export#tei'
     get 'subject_csv', to: 'export#subject_index_csv'
     get 'subject_details_csv', to: 'export#subject_details_csv'
+    get 'subject_coocurrence_csv', to: 'export#subject_coocurrence_csv'
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
     get ':collection_id/work_metadata_csv', to: 'export#work_metadata_csv', as: 'work_metadata'
@@ -149,6 +151,7 @@ Fromthepage::Application.routes.draw do
   scope 'bulk_export', as: 'bulk_export' do
     get ':collection_id/new', to: 'bulk_export#new', as: 'new'
     post ':collection_id/new', to: 'bulk_export#create', as: 'create'
+    post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
     get '/', to: 'bulk_export#index', as: 'index'
     get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
     get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
@@ -173,6 +176,7 @@ Fromthepage::Application.routes.draw do
     get 'watchlist' => 'dashboard#watchlist'
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
+    get 'exports', to: 'dashboard#exports'
     get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'

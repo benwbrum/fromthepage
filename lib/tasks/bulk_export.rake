@@ -18,7 +18,8 @@ namespace :fromthepage do
     bulk_export = BulkExport.find bulk_export_id
     
     print "found bulk_export for \n\tuser=#{bulk_export.user.login}, \n\tfrom collection=#{bulk_export.collection.title}\n"
-    
+    pp bulk_export.attributes
+        
     bulk_export.status = BulkExport::Status::PROCESSING
     bulk_export.save
     

@@ -3,6 +3,8 @@ class UserController < ApplicationController
   # no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
 
+  PAGES_PER_SCREEN = 50
+
   def demo
     session[:demo_mode] = true;
     redirect_to dashboard_path
@@ -43,8 +45,6 @@ class UserController < ApplicationController
     redirect_back :fallback_location => dashboard_role_path
   end
 
-  def update_profile
-  end
 
   NOTOWNER = "NOTOWNER"
   def update
@@ -80,6 +80,10 @@ class UserController < ApplicationController
   def update_profile
     unless @user
       @user = User.friendly.find(params[:user_slug])
+    end
+
+    if @user.real_name.blank?
+      @user.real_name = @user.display_name || @user.login
     end
 
     # Set dictation language to default (en-US) if it doesn't exist
@@ -126,10 +130,7 @@ class UserController < ApplicationController
     if !@user.deleted || current_user.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
       @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
-      @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
-      @notes = @user.notes.limit(10)
-      @page_versions = @user.page_versions.includes(page: :work).limit(10)
-      @article_versions = @user.article_versions.limit(10).joins(:article).includes(article: :categories)
+      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
     else
       flash[:notice] = t('.user_deleted')
       redirect_to dashboard_path
@@ -139,17 +140,6 @@ class UserController < ApplicationController
       sets = @user.document_sets.carousel
       @carousel_collections = (collections + sets).sample(8)
     end
-  end
-
-  def record_deed
-    deed = Deed.new
-    deed.note = @note
-    deed.page = @page
-    deed.work = @work
-    deed.collection = @collection
-    deed.deed_type = DeedType::NOTE_ADDED
-    deed.user = current_user
-    deed.save!
   end
 
   private

@@ -27,14 +27,14 @@ module ContentdmTranslator
     # prune the boilerplate
     metadata = metadata_from_cdm_info(info)
     # store the metadata on the page
-    page.metadata=metadata
+    page_columns = { metadata: metadata }
 
     if ocr_correction
       ocr = ocr_from_cdm_info(info, fts_field)
-      page.source_text = ocr.encode(:xml => :text) if ocr
+      page_columns[:source_text] = ocr.encode(:xml => :text) if ocr
     end
 
-    page.save!
+    page.update_columns(page_columns)
   end
 
   def self.fetch_cdm_info(page)
