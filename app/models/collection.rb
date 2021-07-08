@@ -27,6 +27,7 @@ class Collection < ApplicationRecord
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
+  has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
@@ -51,6 +52,16 @@ class Collection < ApplicationRecord
     carousel
     reorder(Arel.sql("RAND()")) unless sample_size > 1
     limit(sample_size).reorder(Arel.sql("RAND()"))
+  end
+
+  module ReviewType 
+    OPTIONAL = 'optional'
+    REQUIRED = 'required'
+    RESTRICTED = 'restricted'
+  end
+
+  def review_workflow
+    review_type != ReviewType::OPTIONAL
   end
 
   def self.access_controlled(user)

@@ -1,0 +1,13 @@
+p Hi #{@user.display_name} --
+
+p #{@collection.owner.display_name} added you as an authorized reviewer on #{@collection.title}.  You should be able to edit and approve any page needing review.
+
+span =link_to "Click here", collection_url(@collection.owner, @collection, only_path: false)
+|&nbsp; to view #{@collection.title}.
+
+p Thanks, 
+|FromThePage
+
+p
+span =link_to "Click here", update_profile_url(@user, only_path: false)
+|&nbsp; to turn off this notification.
