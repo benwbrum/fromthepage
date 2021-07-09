@@ -248,6 +248,7 @@ private
     cell_headings = orphan_cell_headings + markdown_cell_headings 
 
     @raw_headings = (field_headings + cell_headings + renamed_cell_headings).uniq
+    @indexable_headings = @raw_headings.map { |e| e.is_a?(String) ? e.downcase : e }
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
@@ -486,8 +487,8 @@ private
         index = (@raw_headings.index(cell.transcription_field_id))
       end
     end
-    index = (@raw_headings.index(cell.header)) unless index
-    index = (@raw_headings.index(cell.header.strip)) unless index
+    index = (@indexable_headings.index(cell.header.downcase)) unless index
+    index = (@indexable_headings.index(cell.header.strip.downcase)) unless index
 
     index
   end
@@ -496,6 +497,7 @@ private
   def cell_data(array, data_cells)
     array.each do |cell|
       index = index_for_cell(cell)
+      binding.pry unless index
       target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
