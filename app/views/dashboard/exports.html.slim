@@ -13,6 +13,7 @@
         tr
           th(colspan="1") =t('.exported_item')
           th(colspan="1") =t('.date')
+          th(colspan="1") =t('.configuration')
           th(colspan="2") =t('.status')
 
       tbody
@@ -27,6 +28,9 @@
             td.nowrap
               p
                 =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+            td.nowrap
+              -bulk_export.attributes.select{|k,v| v == true}.keys.each do |flag|
+                div =t(".#{flag.to_s}")
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
             td.nowrap
