@@ -61,6 +61,14 @@
               span One file per work
         li
           .bulk-export_format
+            h5 Facing Edition PDF
+            p.nomargin A PDF file containing images and transcripts on facing pages.
+          .bulk-export_options
+            =f.label :facing_edition_work
+              =f.check_box :facing_edition_work, value: @bulk_export.facing_edition_work
+              span One file per work
+        li
+          .bulk-export_format
             h5 Table/Field CSV
             p.nomargin Exports a spreadsheet with field-based or tabular data.
           .bulk-export_options

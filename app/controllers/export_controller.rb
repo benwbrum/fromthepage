@@ -28,45 +28,19 @@ class ExportController < ApplicationController
   end
 
   def printable
-    @edition_type = params[:edition]
-    @output_type = params[:format]
+    output_file = export_printable(@work, params[:edition], params[:format])    
 
-    # render to a string
-    rendered_markdown = render_to_string(:template => '/export/facing_edition.html', :layout => false)
-
-    # write the string to a temp directory
-    temp_dir = File.join(Rails.root, 'public', 'printable')
-    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
-
-    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
-    temp_dir = File.join(temp_dir, time_stub)
-    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
-
-    file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
-    md_file = File.join(temp_dir, "#{file_stub}.md")
-    if @output_type == 'pdf'
-      output_file = File.join(temp_dir, "#{file_stub}.pdf")
-    elsif @output_type == 'doc'
-      output_file = File.join(temp_dir, "#{file_stub}.docx")      
+    if params[:format] == 'pdf'
+      content_type = "application/pdf"
+    elsif params[:format] == 'doc'
+      content_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     end
-
-    File.write(md_file, rendered_markdown)
-
-    # run pandoc against the temp directory
-    log_file = File.join(temp_dir, "#{file_stub}.log")
-    cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex > #{log_file} 2>&1"
-    logger.info(cmd)
-    system(cmd)
 
     # spew the output to the browser
     send_data(File.read(output_file), 
       filename: File.basename(output_file), 
-      :content_type => "application/pdf")
+      :content_type => content_type)
     cookies['download_finished'] = 'true'
-
-    # flash[:notice] = "Download complete"
-    # redirect_to download_collection_work_path(@collection.owner, @collection, @work)
-
   end
 
   def text

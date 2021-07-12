@@ -82,6 +82,7 @@ module ExportHelper
     end
 
     works.each do |work|
+      print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
       @work = work
       dirname = work.slug.truncate(200, omission: "")
       add_readme_to_zip(dirname: dirname, out: out)
@@ -117,6 +118,10 @@ module ExportHelper
         %w(full text transcript translation).each do |format|
           export_view(name: format, dirname: dirname, out: out, export_user:export_user)
         end
+      end
+
+      if bulk_export.facing_edition_work
+        export_printable_to_zip(work, 'facing', 'pdf', dirname, out)
       end
 
       # Page-specific exports

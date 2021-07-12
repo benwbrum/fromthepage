@@ -16,6 +16,7 @@
 //= require_tree ./plugins
 //= require user.js
 //= require handsontable.full.min
+//= require datatables.min
 
 ;(function($, window, document, undefined) {
 
