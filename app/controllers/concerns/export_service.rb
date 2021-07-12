@@ -9,6 +9,56 @@ module ExportService
     out.write file.read
   end
 
+  def export_printable_to_zip(work, edition, output_format, dirname, out)
+    path = File.join dirname, 'printable', "facing_edition.pdf"
+    tempfile = export_printable(work, edition, output_format)
+    out.put_next_entry(path)
+    out.write(IO.read(tempfile))
+  end
+
+  def export_printable(work, edition, format)
+
+    # render to a string
+    rendered_markdown = 
+      ApplicationController.new.render_to_string(
+        :template => '/export/facing_edition.html', 
+        :layout => false,
+        :assigns => {
+          :collection => work.collection,
+          :work => work,
+          :edition_type => edition,
+          :output_type => format
+        }
+      )
+
+    # write the string to a temp directory
+    temp_dir = File.join(Rails.root, 'public', 'printable')
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    time_stub = Time.now.gmtime.iso8601.gsub(/\D/,'')
+    temp_dir = File.join(temp_dir, time_stub)
+    Dir.mkdir(temp_dir) unless Dir.exist? temp_dir
+
+    file_stub = "#{@work.slug.gsub('-','_')}_#{time_stub}"
+    md_file = File.join(temp_dir, "#{file_stub}.md")
+    if format == 'pdf'
+      output_file = File.join(temp_dir, "#{file_stub}.pdf")
+    elsif format == 'doc'
+      output_file = File.join(temp_dir, "#{file_stub}.docx")      
+    end
+
+    File.write(md_file, rendered_markdown)
+
+    # run pandoc against the temp directory
+    log_file = File.join(temp_dir, "#{file_stub}.log")
+    cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
+    print cmd
+    logger.info(cmd)
+    system(cmd)
+
+    output_file
+  end
+
   def export_work_metadata_csv(dirname:, out:, collection:)
     path = "work_metadata.csv"
     out.put_next_entry(path)

@@ -1,0 +1,64 @@
+=render(:partial => 'dashboard/owner_header', :locals => { :selected => 6 })
+
+
+
+.columns
+  article.maincol
+    p This lists all bulk exports you have run.  Exports are cleaned after a few days, and are no longer available for download
+
+    p Create a bulk export from the Export tab of a collection or the Download tab of a work.
+
+    table.admin-grid.datagrid.striped.
+      thead
+        tr
+          th(colspan="1") =t('.exported_item')
+          th(colspan="1") =t('.date')
+          th(colspan="2") =t('.status')
+
+      tbody
+        -@bulk_exports.each do |bulk_export|
+          tr
+            td
+              -if bulk_export.collection.present?
+                =link_to(bulk_export.collection.title, collection_url(bulk_export.user, bulk_export.collection))
+              -if bulk_export.work.present?
+                br
+                =link_to(bulk_export.work.title, collection_read_work_path(bulk_export.collection.owner, bulk_export.collection, bulk_export.work))
+            td.nowrap
+              p
+                =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+            td.nowrap
+              small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
+            td.nowrap
+              -if bulk_export.status == BulkExport::Status::FINISHED
+                =link_to(t('.download'), bulk_export_download_path(:bulk_export_id => bulk_export.id), class: 'btnExport button')
+
+
+
+        .toolbar_group =will_paginate @bulk_exports
+
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @bulk_exports, :entries_info => true })
+
+  aside.sidecol
+    p Reload this page to update the list.
+    =link_to 'Refresh', dashboard_exports_path, class: 'button'
+
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Remove 'page_busy' spinner once download finished
+      // Cookie should be set to 'true' in the controller method
+      $('.btnExport').on('click', function() {
+        Cookies.remove('download_finished', {path: '/'});
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });
+
