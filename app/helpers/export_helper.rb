@@ -269,6 +269,18 @@ module ExportHelper
   end
   
   def subject_to_tei(subject)
+    tei = format_subject_to_tei(subject)
+    parts = subject.title.split(/(\. |--| \()/)
+    0.upto(parts.size/2 - 1) do |i|
+      higher_subject_title = parts[0..(2*i)].join
+      higher_subject = @collection.articles.where(title: higher_subject_title).first
+      tei << format_subject_to_tei(higher_subject) if higher_subject
+    end
+
+    tei
+  end
+
+  def format_subject_to_tei(subject)
     tei = "          <category xml:id=\"S#{subject.id}\">\n"
     tei << "            <catDesc>\n"
     tei << "              <term>#{ERB::Util.html_escape(subject.title)}</term>\n"
@@ -299,6 +311,7 @@ module ExportHelper
 
     tei
   end
+
 
 
   def seen_subject_to_tei(subject, parent_category)
