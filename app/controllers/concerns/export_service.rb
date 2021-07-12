@@ -497,7 +497,6 @@ private
   def cell_data(array, data_cells)
     array.each do |cell|
       index = index_for_cell(cell)
-      binding.pry unless index
       target = index *2
       data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
       data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
