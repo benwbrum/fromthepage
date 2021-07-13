@@ -10,14 +10,19 @@ module ExportService
   end
 
   def export_printable_to_zip(work, edition, output_format, dirname, out)
-    path = File.join dirname, 'printable', "facing_edition.pdf"
+    case edition
+    when "facing"
+      path = File.join dirname, 'printable', "facing_edition.pdf"
+    when "text"
+      path = File.join dirname, 'printable', "text.#{output_format}"
+    end
+
     tempfile = export_printable(work, edition, output_format)
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
   end
 
   def export_printable(work, edition, format)
-
     # render to a string
     rendered_markdown = 
       ApplicationController.new.render_to_string(
@@ -52,7 +57,7 @@ module ExportService
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
     cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
-    print cmd
+    puts cmd
     logger.info(cmd)
     system(cmd)
 

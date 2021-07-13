@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_23_214318) do
+ActiveRecord::Schema.define(version: 2021_07_09_234034) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(version: 2021_06_23_214318) do
     t.boolean "work_metadata_csv", default: false
     t.integer "work_id"
     t.boolean "facing_edition_work"
+    t.boolean "text_pdf_work"
+    t.boolean "text_docx_work"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
     t.index ["work_id"], name: "index_bulk_exports_on_work_id"
@@ -147,6 +149,15 @@ ActiveRecord::Schema.define(version: 2021_06_23_214318) do
     t.integer "collection_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_collection_reviewers_on_collection_id"
+    t.index ["user_id"], name: "index_collection_reviewers_on_user_id"
   end
 
   create_table "collections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
