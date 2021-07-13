@@ -106,7 +106,7 @@
     -if @collection.restricted
       h3 =t('.collection_collaborators')
       p =t('.collection_collaborators_description')
-      p =link_to('Edit Collaborators', collection_edit_collaborators_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
+      p =link_to('Edit Collaborators', collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
       -@collaborators.each do |user|
         -contributions = user.deeds.where(collection_id: @collection.id).count
         .user-label
@@ -127,7 +127,7 @@
 
     h3 =t('.collection_owners')
     p =t('.collection_owners_description')
-    p =link_to('Edit Owners', collection_edit_owners_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
+    p =link_to('Edit Owners', collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
     -@owners.each do |user|
       .user-label
         =profile_picture(user)
