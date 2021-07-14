@@ -30,15 +30,17 @@ class ExportController < ApplicationController
   def printable
     output_file = export_printable(@work, params[:edition], params[:format])    
 
+    if params[:format] == 'pdf'
+      content_type = "application/pdf"
+    elsif params[:format] == 'doc'
+      content_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    end
+
     # spew the output to the browser
     send_data(File.read(output_file), 
       filename: File.basename(output_file), 
-      :content_type => "application/pdf")
+      :content_type => content_type)
     cookies['download_finished'] = 'true'
-
-    # flash[:notice] = "Download complete"
-    # redirect_to download_collection_work_path(@collection.owner, @collection, @work)
-
   end
 
   def text
