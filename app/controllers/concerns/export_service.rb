@@ -141,6 +141,9 @@ module ExportService
         out.put_next_entry path
         out.write page.emended_transcription_plaintext
       end
+    when "searchable"
+      out.put_next_entry path
+      out.write page.search_text      
     end
   end
 
