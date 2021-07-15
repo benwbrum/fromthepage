@@ -178,7 +178,6 @@ class CollectionController < ApplicationController
     end
   end
 
-
   def add_owner
     @user.owner = true
     @user.account_type = "Staff"
@@ -203,12 +202,12 @@ class CollectionController < ApplicationController
     if @user.notification.add_as_collaborator
       send_email(@user, @collection)
     end
-    ajax_redirect_to collection_edit_collaborators_path(@collection)
+    redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def remove_collaborator
     @collection.collaborators.delete(@user)
-    ajax_redirect_to collection_edit_collaborators_path(@collection)
+    redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def add_reviewer

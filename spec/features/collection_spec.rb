@@ -47,6 +47,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     #this user should not get an email (notifications turned off)
+    page.click_link 'Edit Collaborators'
     select(@rest_user.name_with_identifier, from: 'collaborator_id')
     page.find('#collaborator_id+button').click
     expect(ActionMailer::Base.deliveries).to be_empty
@@ -83,8 +84,9 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.display_name).find('a.remove').click
-    page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
+    page.click_link 'Edit Collaborators'
+    page.find('.user-label', text: @rest_user.display_name).find('button').click
+    page.find('.user-label', text: @notify_user.display_name).find('button').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 
@@ -100,6 +102,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
     #this user should not get an email (notifications turned off)
+    page.click_link 'Edit Owners'
     select(@rest_user.name_with_identifier, from: 'user_id')
     page.find('#user_id+button').click
     expect(ActionMailer::Base.deliveries).to be_empty
@@ -134,8 +137,9 @@ describe "collection settings js tasks", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.find('.user-label', text: @rest_user.real_name).find('a.remove').click
-    page.find('.user-label', text: @notify_user.display_name).find('a.remove').click
+    page.click_link 'Edit Owners'
+    page.find('.user-label', text: @rest_user.display_name).find('button').click
+    page.find('.user-label', text: @notify_user.display_name).find('button').click
     expect(page).not_to have_selector('.user-label', text: @rest_user.name_with_identifier)
   end
 

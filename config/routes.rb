@@ -73,19 +73,26 @@ Fromthepage::Application.routes.draw do
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
     get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
+<<<<<<< HEAD
     get 'remove_owner', to: 'collection#remove_owner'
     get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
     get 'remove_reviewer', to: 'collection#remove_reviewer'
+=======
+>>>>>>> 2575-settings-page-perf
     get 'disable_document_sets', to: 'collection#disable_document_sets'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
-    get 'remove_collaborator', to: 'collection#remove_collaborator'
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'remove_collaborator', to: 'collection#remove_collaborator'
     post 'add_owner', to: 'collection#add_owner'
+<<<<<<< HEAD
     post 'add_reviewer', to: 'collection#add_reviewer'
+=======
+    post 'remove_owner', to: 'collection#remove_owner'
+>>>>>>> 2575-settings-page-perf
     post 'create', to: 'collection#create'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
