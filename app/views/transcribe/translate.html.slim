@@ -1,3 +1,5 @@
+=javascript_include_tag "transcribe"
+
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 6, :page_id => @page.id }})
 
 =form_for(@page, :url => { :action => 'save_translation', :type => 'translation' }, :html => { class: 'page-editor' }) do |f|
@@ -72,6 +74,8 @@
 
       .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_translation'))
+        
+        =hidden_field_tag :dictation_text
 
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions

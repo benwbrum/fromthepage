@@ -123,17 +123,16 @@
 
     -if @collection.restricted
       h3 =t('.collection_collaborators')
-      p.fglight =t('.collection_collaborators_description')
-      =link_to('Edit',collection_edit_collaborators_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-collaborator-buttons' }})
+      p =t('.collection_collaborators_description')
+      p =link_to('Edit Collaborators', collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
       -@collaborators.each do |user|
         .user-label
-          .userpic
-            =profile_picture(user)
+          =profile_picture(user)
           .username
             =link_to user.display_name, user_profile_path(user)
 
       h3 =t('.api_access')
-      p.fglight =t('.api_access_description')
+      p =t('.api_access_description')
       -if @collection.api_access
         =link_to({ :action => 'toggle_collection_api_access', :collection_id => @collection.id }, class: 'button')
           =svg_symbol '#icon-lock', class: 'icon'
@@ -143,15 +142,12 @@
           =svg_symbol '#icon-unlock', class: 'icon'
           span =t('.open_api')
 
-
     h3 =t('.collection_owners')
-    p.fglight 
-      =t('.collection_owners_description')
-      =link_to('Edit',collection_edit_owners_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-owner-buttons' }})
+    p =t('.collection_owners_description')
+    p =link_to('Edit Owners', collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
     -@owners.each do |user|
       .user-label
-        .userpic
-          =profile_picture(user)
+        =profile_picture(user)
         .username
           =link_to user.display_name, user_profile_path(user)
 
@@ -237,18 +233,8 @@
 
 -content_for :javascript
   javascript:
-
     $(function() {
-      $('#collaborator_id').select2({
-        placeholder: 'Add new collaborator...',
-      });
-
-      $('#user_id').select2({
-        placeholder: 'Add new owner...',
-      });
-
-      $('#collection_text_language').select2(
-        );
+      $('#collection_text_language').select2();
 
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();

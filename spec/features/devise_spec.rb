@@ -74,7 +74,7 @@ describe "Devise" do
       page.fill_in 'Email address', with: owner.email
       page.fill_in 'Password', with: owner.password
       page.fill_in 'Password confirmation', with: owner.password
-      page.fill_in 'Display name', with: owner.display_name
+      page.fill_in :user_real_name, with: owner.display_name
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{owner.display_name}")
     end
@@ -84,7 +84,7 @@ describe "Devise" do
       page.fill_in 'Email address', with: owner.email
       page.fill_in 'Password', with: owner.password
       page.fill_in 'Password confirmation', with: owner.password
-      page.fill_in 'Display name', with: owner.display_name
+      page.fill_in :user_real_name, with: owner.display_name
       click_button('Create Account')
       # This is the closest I can get to testing this path.
       # Ideally we would also test that the path includes `#freetrial`
@@ -99,7 +99,7 @@ describe "Devise" do
       page.fill_in 'Email address', with: owner.email
       page.fill_in 'Password', with: owner.password
       page.fill_in 'Password confirmation', with: owner.password
-      page.fill_in 'Display name', with: owner.display_name
+      page.fill_in :user_real_name, with: owner.display_name
       click_button('Create Account')
       # This is the closest I can get to testing this path.
       # Ideally we would also test that the path includes `#freetrial`
