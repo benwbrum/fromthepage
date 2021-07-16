@@ -38,4 +38,4 @@ h3 =t('.how_is_your_project_going')
 p 
   i =t('.what_is_easy').html_safe
 p
-  span =link_to t('.click_here')
+  span =link_to t('.click_here'), update_profile_url(@user, only_path: false)
