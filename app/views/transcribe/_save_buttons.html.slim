@@ -1,0 +1,26 @@
+.flex-toolbar_group
+  -unless @preview_xml
+    =button_tag t('.preview'), :name => 'preview', type: 'submit', title: "#{t('.preview_tooltip')}"
+  -else
+    =button_tag t('.edit'), :name => 'edit', type: 'submit', title: "#{t('.edit_tooltip')}"
+  -unless @collection.subjects_disabled || @collection.field_based
+    =button_tag t('.autolink'), :name => 'autolink', type: 'submit', title: "#{t('.autolink_tooltip')}"
+
+  / check status of page and configuration of collection
+  -if @page.status.nil? || @page.status == Page::STATUS_INCOMPLETE || @page.status == Page::STATUS_BLANK
+    =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+
+  -if [Page::STATUS_NEEDS_REVIEW, Page::STATUS_INDEXED, Page::STATUS_TRANSCRIBED].include?(@page.status)
+    -if @collection.review_workflow
+      =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
+    -else
+      =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}"
+
+  -if [nil, Page::STATUS_INCOMPLETE].include?(@page.status)
+    -if @collection.review_workflow
+      =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}"
+    -else
+      =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}"
+
+  -if @collection.review_workflow && @page.status == Page::STATUS_NEEDS_REVIEW
+    =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}"
