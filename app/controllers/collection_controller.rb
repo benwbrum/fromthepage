@@ -215,12 +215,12 @@ class CollectionController < ApplicationController
     if @user.notification.add_as_collaborator
       send_email(@user, @collection)
     end
-    ajax_redirect_to collection_edit_reviewers_path(@collection)
+    redirect_to collection_edit_reviewers_path(@collection)
   end
 
   def remove_reviewer
     @collection.reviewers.delete(@user)
-    ajax_redirect_to collection_edit_reviewers_path(@collection)
+    redirect_to collection_edit_reviewers_path(@collection)
   end
 
   def send_email(user, collection)
