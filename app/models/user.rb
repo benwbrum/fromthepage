@@ -61,7 +61,7 @@ class User < ApplicationRecord
   scope :paid_owners,      -> { non_trial_owners.where('paid_date > ?', Time.now) }
   scope :expired_owners,   -> { non_trial_owners.where('paid_date <= ?', Time.now) }
 
-  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
+  validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[^<>]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
   validate :email_does_not_match_denylist
 
@@ -165,6 +165,19 @@ class User < ApplicationRecord
 
   def can_transcribe?(work)
     !work.restrict_scribes || self.like_owner?(work) || work.scribes.include?(self)
+  end
+
+  def can_review?(obj)
+    # object could be a page or a collection
+    if obj.is_a? Page
+      obj=obj.work.collection
+    end
+
+    if obj.review_type == Collection::ReviewType::RESTRICTED
+      obj.reviewers.include?(self) || self.like_owner?(obj)
+    else
+      true
+    end
   end
 
   def collaborator?(obj)

@@ -46,9 +46,9 @@
 
       =render(:partial => 'save_buttons')
 
-  -if @page.status == Page::STATUS_NEEDS_REVIEW
+  -if @page.status == Page::STATUS_NEEDS_REVIEW && current_user.can_review?(@collection)
     .page-review
-      -if @collection.review_workflow
+      -if @collection.review_workflow 
         =t('.this_page_marked_needs_review_workflow_version')
       -else
         =t('.this_page_marked_needs_review')
