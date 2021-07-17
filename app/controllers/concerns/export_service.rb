@@ -10,14 +10,19 @@ module ExportService
   end
 
   def export_printable_to_zip(work, edition, output_format, dirname, out)
-    path = File.join dirname, 'printable', "facing_edition.pdf"
+    case edition
+    when "facing"
+      path = File.join dirname, 'printable', "facing_edition.pdf"
+    when "text"
+      path = File.join dirname, 'printable', "text.#{output_format}"
+    end
+
     tempfile = export_printable(work, edition, output_format)
     out.put_next_entry(path)
     out.write(IO.read(tempfile))
   end
 
   def export_printable(work, edition, format)
-
     # render to a string
     rendered_markdown = 
       ApplicationController.new.render_to_string(
@@ -52,7 +57,7 @@ module ExportService
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
     cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
-    print cmd
+    puts cmd
     logger.info(cmd)
     system(cmd)
 
@@ -136,6 +141,9 @@ module ExportService
         out.put_next_entry path
         out.write page.emended_transcription_plaintext
       end
+    when "searchable"
+      out.put_next_entry path
+      out.write page.search_text      
     end
   end
 
@@ -248,6 +256,7 @@ private
     cell_headings = orphan_cell_headings + markdown_cell_headings 
 
     @raw_headings = (field_headings + cell_headings + renamed_cell_headings).uniq
+    @indexable_headings = @raw_headings.map { |e| e.is_a?(String) ? e.downcase : e }
     @headings = []
 
     @page_metadata_headings = collection.page_metadata_fields
@@ -486,8 +495,8 @@ private
         index = (@raw_headings.index(cell.transcription_field_id))
       end
     end
-    index = (@raw_headings.index(cell.header)) unless index
-    index = (@raw_headings.index(cell.header.strip)) unless index
+    index = (@indexable_headings.index(cell.header.downcase)) unless index
+    index = (@indexable_headings.index(cell.header.strip.downcase)) unless index
 
     index
   end
