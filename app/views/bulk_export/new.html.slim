@@ -61,6 +61,22 @@
               span One file per work
         li
           .bulk-export_format
+            h5 Text PDF
+            p.nomargin A PDF file containing text transcripts.
+          .bulk-export_options
+            =f.label :text_pdf_work
+              =f.check_box :text_pdf_work, value: @bulk_export.text_pdf_work
+              span One file per work
+        li
+          .bulk-export_format
+            h5 Text DOCX
+            p.nomargin An MS-Word (.docx) file containing text transcripts.
+          .bulk-export_options
+            =f.label :text_docx_work
+              =f.check_box :text_docx_work, value: @bulk_export.text_docx_work
+              span One file per work
+        li
+          .bulk-export_format
             h5 Facing Edition PDF
             p.nomargin A PDF file containing images and transcripts on facing pages.
           .bulk-export_options
