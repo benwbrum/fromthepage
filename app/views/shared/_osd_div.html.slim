@@ -31,6 +31,8 @@
   javascript:
     OpenSeadragon.DEFAULT_SETTINGS.timeout = 60000;
     var viewer = 'foo'; // global variable
+    var lastFocused = null; // last focused field in the edit area
+
     $(function() {
       viewer = OpenSeadragon({
         id: "image_container",
@@ -77,6 +79,20 @@
         } else {
           viewer.raiseEvent('reset-bounds');
         }
+      });
+
+      viewer.addHandler('canvas-press', function() {
+        lastFocused = $('.page-editarea :focus')[0];
+      });
+
+      viewer.addHandler('canvas-release', function() {
+        setTimeout(function() {
+          if (lastFocused) {
+            lastFocused.focus();
+            lastFocused.setSelectionRange(lastFocused.selectionStart, lastFocused.selectionEnd);
+            lastFocused = null;
+          }
+        }, 100);
       });
 
       $('[data-filter]').on('input', updateFilters);
