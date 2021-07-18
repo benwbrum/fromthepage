@@ -284,7 +284,7 @@ describe "needs review", :order => :defined do
     login_as(@owner, :scope => :user)
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    page.check('collection_review_workflow')
+    page.choose('collection_review_type_required')
     find('#collection_settings_save').click
     review_page = @work.pages.first
     expect(review_page.status).to be_nil

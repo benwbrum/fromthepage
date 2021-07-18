@@ -270,10 +270,12 @@ describe "collection spec (isolated)" do
 
       select('Add New Collection', :from => 'work_collection_id')
       page.find('#new_collection').fill_in('collection_title', with: 'Stats Test Collection')
+      old_count = Collection.all.count
       click_button('Create Collection')
-      expect(page).to have_content('Collection has been created')
+      expect(Collection.all.to_a.count).to eq(old_count+1)
 
       page.find(:css, '#create-empty-work').click
+
 
       fill_in('work_title', with: 'Stats Test Work')
       click_button('Create Work')
@@ -286,9 +288,8 @@ describe "collection spec (isolated)" do
       page.find('.tabs').click_link('Read')
       page.find('.maincol h4').click_link('Page 1')
       fill_in_editor_field('Transcription')
-#      fill_in('page_source_text', with: 'Transcription')
       page.find('#finish_button_top').click
-      expect(page).to have_content('Saved')
+      # expect(page).to have_content('Saved')
 
       page.find('.breadcrumbs').click_link('Stats Test Collection')
       expect(page).to have_content("All works are fully transcribed.")

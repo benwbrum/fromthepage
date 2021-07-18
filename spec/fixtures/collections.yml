@@ -12,6 +12,7 @@ collection_1:
   supports_document_sets: false
   subjects_disabled: false
   slug: cs-pierce
+  review_type: optional
 collection_2:
   id: 2
   title: Imported Collection
@@ -26,6 +27,7 @@ collection_2:
   supports_document_sets: false
   subjects_disabled: false
   slug: imported-collection
+  review_type: optional
 collection_3:
   id: 3
   title: LA County Library
@@ -40,3 +42,4 @@ collection_3:
   supports_document_sets: false
   subjects_disabled: false
   slug: la-county-library
+  review_type: optional
