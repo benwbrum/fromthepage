@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(version: 2021_07_17_213149) do
     t.boolean "work_metadata_csv", default: false
     t.integer "work_id"
     t.boolean "facing_edition_work"
+    t.boolean "text_pdf_work"
+    t.boolean "text_docx_work"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
     t.index ["work_id"], name: "index_bulk_exports_on_work_id"
