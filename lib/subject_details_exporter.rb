@@ -10,6 +10,8 @@ module SubjectDetailsExporter
         'External URI',
         'Categories',
         'Subject URI',
+        'Latitude',
+        'Longitude',
         'Article Length (Words)', 
         'Article Length (Characters)', 
         'Number Occurrences',
@@ -28,6 +30,8 @@ module SubjectDetailsExporter
           row << subject.uri
           row << subject.categories.map { |category| category.title }.join("; ")
           row << Rails.application.routes.url_helpers.collection_article_show_url(@collection.owner, @collection, subject.id)
+          row << subject.latitude
+          row << subject.longitude
           row << subject.source_text.split(/\s/).count
           row << subject.source_text.chars.count
           row << subject.page_article_links.count
