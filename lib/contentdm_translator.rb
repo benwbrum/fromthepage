@@ -27,14 +27,14 @@ module ContentdmTranslator
     # prune the boilerplate
     metadata = metadata_from_cdm_info(info)
     # store the metadata on the page
-    page.metadata=metadata
+    page_columns = { metadata: metadata }
 
     if ocr_correction
       ocr = ocr_from_cdm_info(info, fts_field)
-      page.source_text = ocr.encode(:xml => :text) if ocr
+      page_columns[:source_text] = ocr.encode(:xml => :text) if ocr
     end
 
-    page.save!
+    page.update_columns(page_columns)
   end
 
   def self.fetch_cdm_info(page)
@@ -45,11 +45,11 @@ module ContentdmTranslator
 
   def self.fetch_cdm_field_config(collection)
     cdm_url = collection_to_cdm_field_config(collection)
-    cdm_response = open(cdm_url).read
+    cdm_response = URI.open(cdm_url).read
     JSON.parse(cdm_response)
   end
 
-  ITEM_INFO_BLACKLIST = [
+  ITEM_INFO_DENYLIST = [
     "descri",
     "date",
     "creato",
@@ -77,7 +77,7 @@ module ContentdmTranslator
 
   def self.metadata_from_cdm_info(info)
     # only return useful and unique things
-    info.except(*ITEM_INFO_BLACKLIST)
+    info.except(*ITEM_INFO_DENYLIST)
   end
 
   def self.ocr_from_cdm_info(info, fts_field)
@@ -91,8 +91,9 @@ module ContentdmTranslator
 
   def self.page_at_id_to_cdm_item_info(at_id)
     cdm = at_id.sub(/cdm/, 'server')
-    cdm.sub!(/digital\/iiif/, 'dmwebservices/index.php?q=dmGetItemInfo')
+    cdm.sub!(/(digital\/)?iiif/, 'dmwebservices/index.php?q=dmGetItemInfo')
     cdm.sub!(/\/canvas\/c\d*/, '/json')
+    cdm.sub!(/:(\d+)/, '/\1') # handle coollection:id format instead of old collection/id
 
     cdm
   end
@@ -100,8 +101,8 @@ module ContentdmTranslator
   def self.collection_to_cdm_field_config(collection)
     at_id = collection.pages.joins(:sc_canvas).reorder('pages.created_on').last.sc_canvas.sc_canvas_id
     cdm = at_id.sub(/cdm/, 'server')
-    cdm.sub!(/digital\/iiif/, 'dmwebservices/index.php?q=dmGetCollectionFieldInfo')
-    cdm.sub!(/\/canvas\/c\d*/, '/json')
+    cdm.sub!(/(digital\/)?iiif/, 'dmwebservices/index.php?q=dmGetCollectionFieldInfo')
+    cdm.sub!(/(:\d+)?\/canvas\/c\d*/, '/json')
 
     cdm
   end
@@ -152,7 +153,7 @@ module ContentdmTranslator
         'metadataList' => {
           'metadata' => [
             { :field => 'dmrecord', :value => cdm_record(canvas_at_id)},
-            { :field => fieldname, :value => page.source_text}
+            { :field => fieldname, :value => page.verbatim_transcription_plaintext}
           ]
         }
       }
@@ -188,11 +189,15 @@ module ContentdmTranslator
   end
 
   def self.cdm_collection(at_id)
-    at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
+    if at_id.match(/.*iiif\/info\//)
+      at_id.sub(/.*iiif\/info\//, '').sub(/\/\d+\/manifest.json/, '')
+    else
+      at_id.sub(/.*iiif\/2\//, '').sub(/:.*/,'')
+    end
   end
 
   def self.cdm_record(at_id)
-    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '')
+    at_id.sub(/\/canvas\/.*/,'').sub(/^.*\//, '').sub(/^.*:/, '')
   end
 
   def self.get_cdm_host_from_url(host)
@@ -223,15 +228,34 @@ module ContentdmTranslator
       record = matches[2]
     end
     
+    # support back-level CONTENTdm IIIF presentation implementation
     if server && collection && record
-      "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/#{record}/manifest.json"
     elsif server && collection
-      "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/#{collection}/manifest.json"
     elsif server
-      "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
+      new_uri = "https://#{server}.contentdm.oclc.org/iiif/info/manifest.json"
     else
       raise "ContentDM URLs must be of the form http://cdmNNNNN.contentdm.oclc.org/..."
     end
+
+    begin
+      URI.open(new_uri)
+    rescue OpenURI::HTTPError
+      if server && collection && record
+        # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867:4764/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}:#{record}/manifest.json"
+      elsif server && collection
+        # https://cdm17217.contentdm.oclc.org/iiif/2/voter1867/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/#{collection}/manifest.json"
+      else
+        # https://cdm17217.contentdm.oclc.org/iiif/2/manifest.json
+        new_uri = "https://#{server}.contentdm.oclc.org/iiif/2/manifest.json"
+      end
+
+    end
+
+    new_uri
   end
 
   def self.sample_manifest(collection)

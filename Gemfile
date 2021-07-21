@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '6.0.3.2'
 
-gem 'will_paginate'
+gem 'will_paginate', git: 'https://github.com/BrumfieldLabs/will_paginate.git'
 gem 'rmagick'
 gem 'nokogiri'
 gem "capistrano", "~> 3.10", require: false
@@ -10,6 +10,7 @@ gem "capistrano-rails", "~> 1.4", require: false
 gem 'capistrano-bundler', '~> 1.6'
 gem 'rvm1-capistrano3', require: false
 gem 'jquery-rails'
+gem 'jquery-ui-sass-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2'
 
@@ -33,12 +34,13 @@ gem 'pry'
 gem 'oink'
 
 gem 'iiif-image-api', git: 'https://github.com/samvera-labs/iiif-image-api.git'
-gem 'riiif'
+gem 'riiif', git: 'https://github.com/BrumfieldLabs/riiif.git', branch: 'quote-paths-for-shell'
 gem 'iiif-presentation', git: 'https://github.com/benwbrum/osullivan', branch: 'service_is_array'
 
 gem 'omniauth-saml'
 gem 'omniauth-google-oauth2'
-gem 'omniauth-multi-provider'
+gem 'omniauth-multi-provider', '~> 0.2.1'
+gem 'omniauth', '~> 1.9.1'
 
 gem 'rack-reverse-proxy', :require => 'rack/reverse_proxy'
 
@@ -51,6 +53,13 @@ gem 'active_link_to'
 gem 'warning'
 
 gem 'rails-i18n', '~> 6.0.0'
+gem 'http_accept_language'
+
+gem 'forty_facets'
+gem 'charlock_holmes'
+
+gem 'edtf'
+gem 'edtf-humanize'
 
 group :assets do
   gem 'uglifier'
@@ -78,6 +87,7 @@ group :development, :test do
   # https://github.com/dejan/rails_panel
   gem 'bullet'
   gem 'listen'
+  gem 'i18n-tasks', '~> 0.9.31'
 end
 
 # Use SassC for stylesheets
@@ -93,7 +103,7 @@ gem 'slim'
 gem 'gravatar_image_tag'
 
 #Admin masquerade as a user
-gem 'devise_masquerade'
+gem 'devise_masquerade', '~> 1.2.0'
 
 #friendly routes
 gem 'friendly_id'

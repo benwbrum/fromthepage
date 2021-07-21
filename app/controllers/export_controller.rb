@@ -22,8 +22,25 @@ class ExportController < ApplicationController
   end
 
   def show
-    @work = Work.includes(pages: [:notes, {page_versions: :user}]).find_by(id: params[:work_id])
-    render :layout => false
+    xhtml = work_to_xhtml(@work)
+
+    render :text => xhtml, :layout => false
+  end
+
+  def printable
+    output_file = export_printable(@work, params[:edition], params[:format])    
+
+    if params[:format] == 'pdf'
+      content_type = "application/pdf"
+    elsif params[:format] == 'doc'
+      content_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    end
+
+    # spew the output to the browser
+    send_data(File.read(output_file), 
+      filename: File.basename(output_file), 
+      :content_type => content_type)
+    cookies['download_finished'] = 'true'
   end
 
   def text
@@ -42,52 +59,41 @@ class ExportController < ApplicationController
   end
 
   def tei
-    params[:format] = 'xml'# if params[:format].blank?
+    tei_xml = work_to_tei(@work, current_user)
 
-    @context = ExportContext.new
-
-    @user_contributions =
-      User.find_by_sql("SELECT  user_id user_id,
-                                users.real_name real_name,
-                                users.display_name display_name,
-                                users.guest guest,
-                                users.login login,
-                                count(*) edit_count,
-                                min(page_versions.created_on) first_edit,
-                                max(page_versions.created_on) last_edit
-                        FROM    page_versions
-                        INNER JOIN pages
-                            ON page_versions.page_id = pages.id
-                        INNER JOIN users
-                            ON page_versions.user_id = users.id
-                        WHERE pages.work_id = #{@work.id}
-                          AND page_versions.transcription IS NOT NULL
-                        GROUP BY user_id
-                        ORDER BY count(*) DESC")
-
-    @work_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order("work_version DESC").includes(:page).all
-
-    @all_articles = @work.articles
-    person_category = @collection.categories.where(title: 'People').first
-    @person_articles = @all_articles.joins(:categories).where("articles_categories.category_id in (?)", person_category.descendants.map {|c| c.id}+[person_category.id])
-    place_category = @collection.categories.where(title: 'Places').first
-    @place_articles = @all_articles.joins(:categories).where("articles_categories.category_id in (?)", place_category.descendants.map {|c| c.id}+[place_category.id])
-
-    @other_articles = @all_articles - (@place_articles + @person_articles)    
-    ### Catch the rendered Work for post-processing
-    xml = render_to_string :layout => false, :template => "export/tei.html.erb"
-    tei_xml = work_to_tei(@work)
-
-    # Render the post-processed
     render :text => tei_xml, :content_type => "application/xml", :layout => false
   end
 
-  def subject_csv
-    send_data(@collection.export_subjects_as_csv,
-              :filename => "fromthepage_subjects_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+  def subject_details_csv
+    send_data(@collection.export_subject_details_as_csv,
+              :filename => "fromthepage_subject_details_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
               :type => "application/csv")
     cookies['download_finished'] = 'true'
   end
+
+
+  def subject_coocurrence_csv
+    send_data(@collection.export_subject_coocurrence_as_csv,
+              :filename => "fromthepage_subject_coocurrence_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
+
+
+  def subject_index_csv
+    send_data(@collection.export_subject_index_as_csv,
+              :filename => "fromthepage_subject_index_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
+
+  def work_metadata_csv
+    send_data(export_work_metadata_as_csv(@collection),
+              :filename => "fromthepage_work_metadata_export_#{@collection.id}_#{Time.now.utc.iso8601}.csv",
+              :type => "application/csv")
+    cookies['download_finished'] = 'true'
+  end
+
 
   def table_csv
     send_data(export_tables_as_csv(@work),
@@ -123,7 +129,7 @@ class ExportController < ApplicationController
           end
 
           %w(full text transcript translation).each do |format|
-            export_view(name: format, dirname: dirname, out: out)
+            export_view(name: format, dirname: dirname, out: out, export_user: :user)
           end
 
           @work.pages.each do |page|
@@ -133,55 +139,20 @@ class ExportController < ApplicationController
 
         buffer.rewind
         send_data buffer.read, filename: "#{@collection.title}-#{@work.title}.zip"
+        cookies['download_finished'] = 'true'
       end
     end
   end
 
   def export_all_works
-    unless @collection.subjects_disabled
-      @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
-    else
-      @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
-    end
+    @works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: @collection.id)
 
     # create a zip file which is automatically downloaded to the user's machine
     respond_to do |format|
       format.html
       format.zip do
         buffer = Zip::OutputStream.write_buffer do |out|
-          @works.each do |work|
-            @work = work
-            dirname = work.slug.truncate(200, omission: "")
-            add_readme_to_zip(dirname: dirname, out: out)
-
-            export_tei(dirname: dirname, out:out)
-
-            %w(verbatim expanded searchable).each do |format|
-              export_plaintext_transcript(name: format, dirname: dirname, out: out)
-            end
-
-            %w(verbatim expanded).each do |format|
-              export_plaintext_translation(name: format, dirname: dirname, out: out)
-            end
-
-            @work.pages.each do |page|
-              %w(verbatim expanded).each do |format|
-                export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-              end
-
-              %w(verbatim expanded).each do |format|
-                export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
-              end
-            end
-
-            %w(full text transcript translation).each do |format|
-              export_view(name: format, dirname: dirname, out: out)
-            end
-
-            @work.pages.each do |page|
-              export_html_full_pages(dirname: dirname, out: out, page: page)
-            end
-          end
+          write_work_exports(@works, out, current_user)
         end
 
         buffer.rewind
@@ -266,6 +237,9 @@ class ExportController < ApplicationController
 
     # pass credentials, FTS field, and search to background job
     log_file = ContentdmTranslator.log_file(@collection)
+    unless Dir.exist? File.dirname(log_file)
+      FileUtils.mkdir_p(File.dirname(log_file))
+    end    
     cmd = "rake fromthepage:cdm_transcript_export[#{@collection.id}] > #{log_file} 2>&1 &"
     logger.info(cmd)
     system({'contentdm_username' => contentdm_user_name, 'contentdm_password' => contentdm_password, 'contentdm_license' => license_key}, cmd)
@@ -282,180 +256,6 @@ class ExportController < ApplicationController
     render json: { software: version,
                    database: database }
   end
-
-private
-
-  def get_headings(collection, ids)
-    field_headings = collection.transcription_fields.order(:position).where.not(input_type: 'instruction').pluck(:id)
-    orphan_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id not in (select id from transcription_fields)").pluck(Arel.sql('DISTINCT header'))
-    markdown_cell_headings = TableCell.where(work_id: ids).where("transcription_field_id is null").pluck(Arel.sql('DISTINCT header'))
-    cell_headings = orphan_cell_headings + markdown_cell_headings
-
-    @raw_headings = (field_headings + cell_headings).uniq
-    @headings = []
-
-    @page_metadata_headings = collection.page_metadata_fields
-    @headings += @page_metadata_headings
-
-    #get headings from field-based
-    field_headings.each do |field_id|
-      field = TranscriptionField.where(:id => field_id).first
-      raw_heading = field ? field.label : field_id
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
-    end
-    #get headings from non-field-based
-    cell_headings.each do |raw_heading|
-      @headings << "#{raw_heading} (text)"
-      @headings << "#{raw_heading} (subject)"
-    end
-    @headings
-  end
-
-  def export_tables_as_csv(table_obj)
-    if table_obj.is_a?(Collection)
-      collection = table_obj
-      ids = table_obj.works.ids
-      works = table_obj.works
-    elsif table_obj.is_a?(Work)
-      collection = table_obj.collection
-      #need arrays so they will act equivalently to the collection works
-      ids = [table_obj.id]
-      works = [table_obj]
-    end
-
-    get_headings(collection, ids)
-
-    csv_string = CSV.generate(:force_quotes => true) do |csv|
-
-      page_cells = [
-        'Work Title',
-        'Work Identifier',
-        'Page Title',
-        'Page Position',
-        'Page URL',
-        'Page Contributors',
-        'Page Notes'
-      ]
-
-      section_cells = [
-        'Section (text)',
-        'Section (subjects)',
-        'Section (subject categories)'
-      ]
-
-      if table_obj.sections.blank?
-        csv << (page_cells + @headings)
-        col_sections = false
-      else
-        csv << (page_cells + section_cells + @headings)
-        col_sections = true
-      end
-
-      works.each do |w|
-        csv = generate_csv(w, csv, col_sections)
-      end
-
-    end
-    cookies['download_finished'] = 'true'
-    csv_string
-  end
-
-  def generate_csv(work, csv, col_sections)
-    all_deeds = work.deeds
-    work.pages.includes(:table_cells).each do |page|
-      unless page.table_cells.empty?
-        page_url=url_for({:controller=>'display',:action => 'display_page', :page_id => page.id, :only_path => false})
-        page_notes = page.notes
-          .map{ |n| "[#{n.user.display_name}<#{n.user.email}>]: #{n.body}" }.join('|').gsub('|', '//').gsub(/\s+/, ' ')
-        page_contributors = all_deeds
-          .select{ |d| d.page_id == page.id}
-          .map{ |d| "#{d.user.display_name}<#{d.user.email}>".gsub('|', '//') }
-          .uniq.join('|')
-
-        page_cells = [
-          work.title,
-          work.identifier,
-          page.title,
-          page.position,
-          page_url,
-          page_contributors,
-          page_notes
-        ]
-
-        page_metadata_cells = page_metadata_cells(page)
-        data_cells = Array.new(@headings.count, "")
-
-        if page.sections.blank?
-          #get cell data for a page with only one table
-          page.table_cells.group_by(&:row).each do |row, cell_array|
-            #get the cell data and add it to the array
-            cell_data(cell_array, @raw_headings, data_cells)
-            #shift cells over if any page has sections
-            if !col_sections
-              section_cells = []
-            else
-              section_cells = ["", "", ""]
-            end
-            # write the record to the CSV and start a new record
-            csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-            #create a new array for the next row
-            data_cells = Array.new(@headings.count, "")
-          end
-
-        else
-          #get the table sections/headers and iterate cells within the sections
-          page.sections.each do |section|
-            section_title_text = XmlSourceProcessor::cell_to_plaintext(section.title) || nil
-            section_title_subjects = XmlSourceProcessor::cell_to_subject(section.title) || nil
-            section_title_categories = XmlSourceProcessor::cell_to_category(section.title) || nil
-            section_cells = [section_title_text, section_title_subjects, section_title_categories]
-            #group the table cells per section into rows
-            section.table_cells.group_by(&:row).each do |row, cell_array|
-              #get the cell data and add it to the array
-              cell_data(cell_array, @raw_headings, data_cells)
-              # write the record to the CSV and start a new record
-              csv << (page_cells + page_metadata_cells + section_cells + data_cells)
-              #create a new array for the next row
-              data_cells = Array.new(@headings.count, "")
-            end
-          end
-        end
-      end
-    end
-    return csv
-  end
-
-  def page_metadata_cells(page)
-    metadata_cells = []
-    @page_metadata_headings.each do |key|
-      metadata_cells << page.metadata[key]
-    end
-
-    metadata_cells
-  end
-
-
-  def index_for_cell(cell)
-    if cell.transcription_field_id
-      index = (@raw_headings.index(cell.transcription_field_id))
-    end
-    index = (@raw_headings.index(cell.header)) unless index
-    index = (@raw_headings.index(cell.header.strip)) unless index
-
-    index
-  end
-
-
-  def cell_data(array, raw_headings, data_cells)
-    array.each do |cell|
-      index = index_for_cell(cell)
-      target = index *2
-      data_cells[target] = XmlSourceProcessor.cell_to_plaintext(cell.content)
-      data_cells[target+1] = XmlSourceProcessor.cell_to_subject(cell.content)
-    end
-  end
-
 
 
 end

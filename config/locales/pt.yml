@@ -1,0 +1,8 @@
+pt:
+  dashboard:
+    plain: "Painel de Controle"
+    collaborator: "Painel de Controle do Colaborador"
+  en: "English"
+  es: "Español"
+  pt: "Português"
+  time_ago_in_words: "Há %{time}"

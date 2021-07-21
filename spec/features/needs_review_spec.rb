@@ -70,9 +70,9 @@ describe "needs review", :order => :defined do
     expect(page).to have_content(@collection.title)
     page.find('.collection-work_title', text: @work.title).click_link @work.title
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
-    page.fill_in 'page_source_text', with: "Review Text"
+    fill_in_editor_field "Review Text"
     page.check('page_needs_review')
-    find('#save_button_top').click
+    find('#finish_button_top').click
     expect(page).to have_content("This page has been marked as \"needs review\"")
     page.click_link("Overview")
     expect(page).to have_content("Review Text")
@@ -81,9 +81,9 @@ describe "needs review", :order => :defined do
     page.find('.page-nav_next').click
     expect(page).to have_content(@page5.title)
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "Review Text 2"
+    fill_in_editor_field "Review Text 2"
     page.check('page_needs_review')
-    find('#save_button_top').click
+    find('#finish_button_top').click
     expect(page).to have_content("Review Text 2")
     expect(page).to have_content("Transcription")
     expect(Page.find_by(id: @page5.id).status).to eq ('review')
@@ -93,7 +93,7 @@ describe "needs review", :order => :defined do
     visit "/display/display_page?page_id=#{@page6.id}"
     expect(@page6.translation_status).to be_nil
     page.find('.tabs').click_link("Translate")
-    page.fill_in 'page_source_translation', with: "Review Translate Text"
+    fill_in_editor_field "Review Translate Text"
     page.check('page_needs_review')
     find('#save_button_top').click
     expect(page).to have_content("This page has been marked as \"needs review\"")
@@ -175,7 +175,7 @@ describe "needs review", :order => :defined do
 
       stats = page.find('.collection-work', text: w.title).find('.collection-work_stats') 
       expect(stats).to have_content("#{indexed}% indexed")
-      expect(stats).to have_content("#{completed}% #{wording}")
+      expect(stats).to have_content("#{completed+review}% #{wording}")
       unless review == 0
         expect(stats).to have_content("#{review}% needs review")
       end
@@ -208,7 +208,7 @@ describe "needs review", :order => :defined do
       expect(list).to have_content(w.title)
       expect(list).to have_content(w.pages.count)
       expect(list.find('span', text: 'indexed')).to have_content(stats.pct_annotated.round)
-      expect(list).to have_content("#{completed}% #{wording}")
+      expect(list).to have_content("#{completed+review}% #{wording}")
       unless review == 0
         expect(list.find('span', text: 'needs review')).to have_content(review)
       end
@@ -223,7 +223,7 @@ describe "needs review", :order => :defined do
     page.find('.collection-work_title', text: @work.title).click_link
     page.find('.work-page_title', text: @page4.title).click_link(@page4.title)
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "Change Review Text"
+    fill_in_editor_field "Change Review Text"
     page.uncheck('page_needs_review')
     find('#save_button_top').click
     expect(page).not_to have_content("This page has been marked as \"needs review\"")
@@ -238,7 +238,7 @@ describe "needs review", :order => :defined do
     visit "/display/display_page?page_id=#{@page6.id}"
     expect(@page6.translation_status).to eq ('review')
     page.find('.tabs').click_link("Translate")
-    page.fill_in 'page_source_translation', with: "Change Review Translate Text"
+    fill_in_editor_field "Change Review Translate Text"
     page.uncheck('page_needs_review')
     find('#save_button_top').click
     expect(page).not_to have_content("This page has been marked as \"needs review\"")
@@ -291,13 +291,13 @@ describe "needs review", :order => :defined do
     expect(review_page.translation_status).to be_nil
 
     visit collection_transcribe_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
-    page.fill_in 'page_source_text', with: "Needs Review Workflow Text"
-    find('#save_button_top').click
+    fill_in_editor_field "Needs Review Workflow Text"
+    find('#finish_button_top').click
     expect(page).to have_content("Needs Review Workflow Text")
     expect(Page.find_by(id: review_page.id).status).to eq ('review')
 
     visit collection_translate_page_path(@work.collection.owner, @work.collection, @work, review_page.id)
-    page.fill_in 'page_source_translation', with: "Translation Needs Review Workflow Text"
+    fill_in_editor_field "Translation Needs Review Workflow Text"
     find('#save_button_top').click
     expect(page).to have_content("Translation Needs Review Workflow Text")
     expect(Page.find_by(id: review_page.id).translation_status).to eq ('review')

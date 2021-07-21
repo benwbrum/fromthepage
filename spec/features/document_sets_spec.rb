@@ -109,11 +109,11 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content(@set.works.first.pages.first.title)
     #can a restricted user access a private doc set through a link
     visit collection_path(@owner, @test_set)
-    expect(page.current_path).to eq collections_list_path
+    expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(@test_set.title)
     #can a restricted user see a work from a private collection through a link
     visit collection_read_work_path(@owner, @collection, @collection.works.last)
-    expect(page.current_path).to eq collections_list_path
+    expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(@collection.works.last.title)
   end
 
@@ -167,7 +167,7 @@ describe "document sets", :order => :defined do
     expect(page.find('h1')).to have_content(@test_set.works.first.title)
     #check that the collaborator can't access other private doc set
     visit collection_read_work_path(@owner, DocumentSet.second, DocumentSet.second.works.first)
-    expect(page.current_path).to eq collections_list_path
+    expect(page.current_path).to eq user_profile_path(@owner)
     expect(page.find('h1')).not_to have_content(DocumentSet.second.works.first.title)
   end
 
@@ -182,7 +182,25 @@ describe "document sets", :order => :defined do
     page.find('a', text: "Test private note").click
     expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
     page.find('.user-bubble_content', text: "Test private note")
-    end
+
+    # test activity stream for set
+    visit collection_path(@set.owner, @set)
+    expect(page).to have_content "Test private note"    
+    find("#show-more-deeds").click
+    expect(page).to have_content "Test private note"    
+    page.find('a', text: @set.works.first.pages.first.title).click
+    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set, @set.works.first, @set.works.first.pages.first)
+
+
+    # test activity stream for collection
+    login_as(@owner, :scope => :user)
+    visit collection_path(@set.owner, @set.collection)
+    expect(page).to have_content "Test private note"    
+    find("#show-more-deeds").click
+    expect(page).to have_content "Test private note"    
+    page.find('a', text: @set.works.first.pages.first.title).click
+    expect(page.current_path).to eq collection_display_page_path(@set.owner, @set.collection, @set.works.first, @set.works.first.pages.first)
+  end
 
   it "cleans up test data" do
     @test_set = DocumentSet.last
@@ -203,9 +221,6 @@ describe "document sets", :order => :defined do
     login_as(@owner, :scope => :user)
     work = @set.works.first
     visit "/#{@owner.slug}/#{@set.slug}"
-    page.find('.tabs').click_link("Collaborators")
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/collaborators"
-    expect(page).to have_content("Contributions Between")
     page.find('.tabs').click_link("Settings")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/settings"
     expect(page.find('h1')).to have_content(@set.title)
@@ -271,12 +286,12 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Overview")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.sidecol')).to have_content(@article.categories.first.title)
-    click_link("All references to #{@article.title}")
+    click_button("Search All Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page).to have_content("Search for")
     #return to overview
     visit collection_article_show_path(@set.owner, @set, @article.id)
-    click_link("All references to #{@article.title} in pages that do not link to this subject")
+    click_button("Search Unlinked Pages")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page).to have_content("Search for")
     page.find('a', text: "Show pages that mention #{@article.title} in all works").click
@@ -361,7 +376,7 @@ describe "document sets", :order => :defined do
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/transcribe/#{@page.id}"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     expect(page.find('.breadcrumbs')).to have_selector('a', text: work.title)
-    page.fill_in 'page_source_text', with: "Document set breadcrumbs"
+    fill_in_editor_field "Document set breadcrumbs\n\n#{@page.source_text}"
     find('#save_button_top').click
 
     # Overview Tab

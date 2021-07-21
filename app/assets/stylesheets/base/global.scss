@@ -27,7 +27,6 @@ body {
   box-sizing: border-box;
   padding-bottom: $footerHeight;
   text-rendering: optimizeLegibility;
-  //text-rendering: geometricPrecision;
   font: normal #{$fontSize}/#{$lineHeight} $fontFamily;
   -webkit-tap-highlight-color: transparent;
   -webkit-focus-ring-color: transparent;
@@ -186,4 +185,26 @@ mark {
 
 p.rtl, h4.rtl, td.diff-version.rtl {
   text-align: right;
+}
+
+
+.gap {
+  font-style: italic;  
+}
+
+.unclear {
+  font-style: italic;  
+}
+
+.stamp {
+  font-style: italic;    
+}
+
+.marginalia {
+  font-style: italic;    
+}
+
+
+.expanded-abbreviation {
+  font-style: italic;    
 }

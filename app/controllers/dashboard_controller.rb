@@ -2,13 +2,14 @@
 
 class DashboardController < ApplicationController
   include AddWorkHelper
+  PAGES_PER_SCREEN = 20
 
   before_action :authorized?,
     only: [:owner, :staging, :startproject, :summary]
 
   before_action :get_data,
     only: [:owner, :staging, :upload, :new_upload,
-           :startproject, :empty_work, :create_work, :summary]
+           :startproject, :empty_work, :create_work, :summary, :exports]
 
   before_action :remove_col_id
 
@@ -119,21 +120,13 @@ class DashboardController < ApplicationController
     document_sets = DocumentSet.joins(works: :deeds).where(works: { id: works.ids }).order('deeds.created_at DESC').distinct.limit(5)
     collections_list(true) # assigns @collections_and_document_sets for private collections only
     @collections = (collections + document_sets).sort { |a, b| a.title <=> b.title }.take(5)
-    @page = recent_work
   end
 
-  # Collaborator Dashboard - user with no activity watchlist
-  def recent_work
-    recent_deed_ids = Deed.joins(:collection, :work).merge(Collection.unrestricted).merge(Work.unrestricted)
-      .where("work_id is not null").order('created_at desc').distinct.limit(5).pluck(:work_id)
-    @works = Work.joins(:pages).where(id: recent_deed_ids).where(pages: { status: nil })
 
-    # find the first blank page in the most recently accessed work (as long as the works list isn't blank)
-    recent_work = unless @works.empty?
-      @works.first.pages.where(status: nil).first
-      # if the works list is blank, return nil
-    end
+  def exports
+    @bulk_exports = current_user.bulk_exports.order('id DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
   end
+
 
   # Collaborator Dashboard - activity
   def editor
@@ -157,11 +150,11 @@ class DashboardController < ApplicationController
       @owners = User.where(id: search_user_ids).where.not(account_type: nil)
     else
       # Get random Collections and DocSets from paying users
-      @owners = User.findaproject_owners.order(:display_name)
+      @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
 
       # Sampled Randomly down to 8 items for Carousel
-      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
-      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids).sample(5)
+      docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+      colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
       @collections = (docsets + colls).sample(8)
     end
   end

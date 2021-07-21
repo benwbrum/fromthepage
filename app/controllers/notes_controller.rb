@@ -9,11 +9,7 @@ class NotesController < ApplicationController
     # add param-loaded associations
     @note.page = @page
     @note.work = @work
-    if @collection.is_a?(Collection)
-      @note.collection = @collection
-    else
-      @note.collection = @collection.collection
-    end
+    @note.collection = @work.collection
     @note.user = current_user
 
     respond_to do |format|
@@ -21,7 +17,7 @@ class NotesController < ApplicationController
         format.html { redirect_back fallback_location: root_path, flash: { error: t('.must_be_logged') } }
       elsif @note.save
         record_deed
-        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }) }, status: :created }
+        format.json { render json: { html: render_to_string(partial: 'note.html', locals: { note: @note }, formats: [:html]) }, status: :created }
         format.html { redirect_back fallback_location: @note, notice: t('.note_has_been_created') }
       else
         format.json { render json: @note.errors.full_messages, status: :unprocessable_entity }
@@ -68,12 +64,7 @@ class NotesController < ApplicationController
     deed.note = @note
     deed.page = @page
     deed.work = @work
-    if @collection.is_a?(Collection)
-      deed.collection = @collection
-    else
-      deed.collection = @collection.collection
-    end
-
+    deed.collection = @work.collection
     deed.deed_type = DeedType::NOTE_ADDED
     deed.user = current_user
 

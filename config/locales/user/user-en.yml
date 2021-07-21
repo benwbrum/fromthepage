@@ -1,6 +1,7 @@
 en:
   user:
     owner_profile:
+      api_keys: "API Keys"
       edit_profile: "Edit Profile"
       login_and_password: "Login &amp; Password"
       website: "Website"
@@ -25,6 +26,9 @@ en:
       article: "Article"
       categories: "Categories"
       user_deleted: "User profile has been deleted"
+      contribution:
+        one: "Contribution"
+        other: "Contributions"
     update_profile:
       update_user_profile: "Update User Profile"
       name_only_required: "Your name is the only required field."
@@ -40,5 +44,6 @@ en:
       add_as_owner: "Added to private work as an owner"
       page_edited: "Note added in response to a comment you made"
       update_profile: "Update Profile"
+      picture: "Profile Picture"
     update:
       user_updated: "User profile has been updated"

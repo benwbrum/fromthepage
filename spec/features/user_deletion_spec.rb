@@ -25,7 +25,7 @@ describe "User deletion" do
      # transcribe a page
     visit "/display/display_page?page_id=#{@page1.id}"
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[Places|Texas]]"
+    fill_in_editor_field "[[Places|Texas]]"
     find('#save_button_top').click
 
     @article = Article.first

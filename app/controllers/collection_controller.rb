@@ -15,7 +15,7 @@ class CollectionController < ApplicationController
   before_action :load_settings, :only => [:edit, :update, :upload]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons]
 
   def authorized?
     unless user_signed_in?
@@ -27,6 +27,31 @@ class CollectionController < ApplicationController
     end
   end
 
+  def edit_buttons
+    @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
+  end
+
+  def update_buttons
+    @collection.editor_buttons.delete_all
+
+    prefer_html = (params[:prefer_html] == 'true')
+
+    EditorButton::BUTTON_MAP.keys.each do |key|
+      if params[key] == "1"
+        button_config = EditorButton.new
+        button_config.key = key
+        button_config.prefer_html = prefer_html
+        button_config.collection = @collection
+        button_config.save
+      end
+    end
+
+    flash[:notice] = 'Editor Buttons Updated'
+    ajax_redirect_to(edit_collection_path(@collection.owner, @collection))
+
+  end
+
+
   def enable_document_sets
     @collection.supports_document_sets = true
     @collection.save!
@@ -37,6 +62,38 @@ class CollectionController < ApplicationController
     @collection.supports_document_sets = false
     @collection.save!
     redirect_to edit_collection_path(@collection.owner, @collection)
+  end
+
+  def facets
+    collection = Collection.find(params[:collection_id])
+    @metadata_coverages = collection.metadata_coverages
+  end
+
+  def search
+    mc = @collection.metadata_coverages.where(key: params['facet_search']['label']).first
+    first_year = params['facet_search']['date'].split.first.to_i
+    last_year = params['facet_search']['date'].split.last.to_i
+    order = params['facet_search']['date_order'].to_i
+    years = (first_year..last_year).to_a
+    date_order = "d#{order}"
+    year = "w.work_facet.#{date_order}.year"
+
+    facets = []
+
+    @collection.works.each do |w|
+      unless w.work_facet.nil?
+        if years.include?(eval(year))
+          facets << w.work_facet
+        end
+      end
+    end
+
+    facet_ids = facets.pluck(:id)
+
+    @works = Work.joins(:work_facet).where('work_facets.id in (?)', facet_ids).paginate(page: params[:page], :per_page => 10)
+    @search = WorkSearch.new(params[:page])
+
+    render :plain => @works.to_json(:methods => [:thumbnail])
   end
 
   def load_settings
@@ -52,11 +109,14 @@ class CollectionController < ApplicationController
   def show
     unless @collection.nil?
       if @collection.restricted
-        ajax_redirect_to dashboard_path unless user_signed_in? && @collection.show_to?(current_user)
+        if !user_signed_in? || !@collection.show_to?(current_user)
+          flash[:error] = t('unauthorized_collection', :project => @collection.title)
+          redirect_to user_profile_path(@collection.owner)
+        end
       end
 
-      if params[:search]
-        @works = @collection.search_works(params[:search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+      if params[:work_search]
+        @works = @collection.search_works(params[:work_search]).includes(:work_statistic).paginate(page: params[:page], per_page: 10)
       elsif (params[:works] == 'untranscribed')
         ids = @collection.works.includes(:work_statistic).where.not(work_statistics: {complete: 100}).pluck(:id)
         @works = @collection.works.order_by_incomplete.where(id: ids).paginate(page: params[:page], per_page: 10)
@@ -81,6 +141,35 @@ class CollectionController < ApplicationController
         end
       else
         @works = @collection.works.includes(:work_statistic).paginate(page: params[:page], per_page: 10)
+      end
+
+      if @collection.facets_enabled?
+        # construct the search object from the parameters
+        @search = WorkSearch.new(params)
+        @search.filter([:work, :collection_id]).value=@collection.id
+        # the search results are WorkFacets, not works, so we need to fetch the works themselves
+        facet_ids = @search.result.pluck(:id)
+        @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
+
+        @date_ranges = []
+        date_configs = @collection.facet_configs.where(:input_type => 'date').order('"order"')
+        if date_configs.size > 0
+          collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
+          date_configs.each do |facet_config|
+            facet_attr = [:d0,:d1,:d2][facet_config.order]
+
+            selection_values = @works.map{|w| w.work_facet.send(facet_attr)}.reject{|v| v.nil?}
+            collection_values = collection_facets.map{|work_facet| work_facet.send(facet_attr)}.reject{|v| v.nil?}
+
+            @date_ranges << {
+              :facet => facet_attr,
+              :max => collection_values.max.year,
+              :min => collection_values.min.year,
+              :top => selection_values.max.year,
+              :bottom => selection_values.min.year
+            }
+          end
+        end
       end
     else
       redirect_to "/404"
@@ -521,6 +610,6 @@ class CollectionController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
   end
 end

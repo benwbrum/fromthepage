@@ -26,6 +26,7 @@ Fromthepage::Application.routes.draw do
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
     get 'collection_list', to: 'admin#collection_list'
+    get 'progress_metrics', to: 'admin#progress_metrics'
     get 'work_list', to: 'admin#work_list'
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
@@ -44,10 +45,17 @@ Fromthepage::Application.routes.draw do
     get 'visit_deeds', to: 'admin#visit_deeds'
     get 'visit_actions', to: 'admin#visit_actions'
     get 'expunge_confirmation', :to => 'admin#expunge_confirmation'
+    get 'ok_user', :to => 'admin#ok_user'
     get 'downgrade', to: 'admin#downgrade'
     post 'update', to: 'admin#update'
     patch 'update_user', :to => 'admin#update_user'
     patch 'expunge_user', :to => 'admin#expunge_user'
+  end
+
+  scope 'facets', as: 'facets' do
+    get 'enable', to: 'facets#enable'
+    get 'disable', to: 'facets#disable'
+    post 'update', to: 'facets#update'
   end
 
   scope 'collection', as: 'collection' do
@@ -75,7 +83,21 @@ Fromthepage::Application.routes.draw do
     post 'add_owner', to: 'collection#add_owner'
     post 'create', to: 'collection#create'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
+
+    scope 'metadata', as: 'metadata' do
+      get ':id/example', to: 'metadata#example', as: :example
+      get ':id/upload', to: 'metadata#upload', as: :upload
+      get 'csv_error', to:'metadata#csv_error'
+      post 'create', to: 'metadata#create'
+    end
+
+    scope 'editor_button', as: 'editor_button' do
+      get ':collection_id/edit', to: 'collection#edit_buttons', as: 'edit'
+      post ':collection_id/edit', to: 'collection#update_buttons', as: 'update'
+    end
   end
+
+
 
   scope 'work', as: 'work' do
     get 'delete', to: 'work#delete'
@@ -112,14 +134,27 @@ Fromthepage::Application.routes.draw do
     get '/', to: 'export#index'
     get 'export_work', to: 'export#export_work'
     get 'export_all_works', to: 'export#export_all_works'
+    post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'
     get 'tei', to: 'export#tei'
-    get 'subject_csv', to: 'export#subject_csv'
+    get 'subject_csv', to: 'export#subject_index_csv'
+    get 'subject_details_csv', to: 'export#subject_details_csv'
+    get 'subject_coocurrence_csv', to: 'export#subject_coocurrence_csv'
     get 'table_csv', to: 'export#table_csv'
     get 'export_all_tables', to: 'export#export_all_tables'
+    get ':collection_id/work_metadata_csv', to: 'export#work_metadata_csv', as: 'work_metadata'
     get 'edit_contentdm_credentials', to: 'export#edit_contentdm_credentials'
     post 'update_contentdm_credentials', to: 'export#update_contentdm_credentials'
     get 'work_plaintext_verbatim', to: 'export#work_plaintext_verbatim'
+  end
+
+  scope 'bulk_export', as: 'bulk_export' do
+    get ':collection_id/new', to: 'bulk_export#new', as: 'new'
+    post ':collection_id/new', to: 'bulk_export#create', as: 'create'
+    post ':collection_id/work_create', to: 'bulk_export#create_for_work', as: 'create_for_work'
+    get '/', to: 'bulk_export#index', as: 'index'
+    get ':bulk_export_id', to: 'bulk_export#show', as: 'show'
+    get ':bulk_export_id/download', to: 'bulk_export#download', as: 'download'
   end
 
   scope 'ia', as: 'ia' do
@@ -141,6 +176,7 @@ Fromthepage::Application.routes.draw do
     get 'watchlist' => 'dashboard#watchlist'
     get 'startproject', to: 'dashboard#startproject'
     get 'summary', to: 'dashboard#summary'
+    get 'exports', to: 'dashboard#exports'
     get 'collaborator_time_export', to: 'dashboard#collaborator_time_export'
     post 'new_upload', to: 'dashboard#new_upload'
     post 'create_work', to: 'dashboard#create_work'
@@ -169,7 +205,7 @@ Fromthepage::Application.routes.draw do
 
   scope 'deed', as: 'deed' do
     get 'list', to: 'deed#list'
-    get 'notes/:collection_id', to: 'deed#notes', as: 'notes'
+    get 'notes(/:collection_id)', to: 'deed#notes', as: 'notes'
   end
 
   scope 'static', as: 'static' do
@@ -197,9 +233,14 @@ Fromthepage::Application.routes.draw do
   scope 'user', as: 'user' do
     get 'update_profile', to: 'user#update_profile'
     patch 'update', :to => 'user#update'
+    get ':user_id/api_key', to: 'user#api_key', as: 'api_key'
+    post ':user_id/api_key', to: 'user#generate_api_key', as: 'generate_api_key'
+    post ':user_id/api_key/disable', to: 'user#disable_api_key', as: 'disable_api_key'
+    get 'choose_locale/:chosen_locale', to: 'user#choose_locale', as: 'choose_locale'
   end
 
   scope 'page_block', as: 'page_block' do
+    get 'list', to: 'page_block#list'
     patch 'update', :to => 'page_block#update'
     get 'edit', to: 'page_block#edit'
   end
@@ -213,6 +254,8 @@ Fromthepage::Application.routes.draw do
     get 'explore_manifest', to: 'sc_collections#explore_manifest'
     get 'explore_collection', to: 'sc_collections#explore_collection'
     post 'import_cdm', to: 'sc_collections#import_cdm'
+    get 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
+    post 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_create', as: 'cdm_bulk_import_create'
     match 'import', to: 'sc_collections#import', via: [:get, :post]
     match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]
     match 'import_collection', to: 'sc_collections#import_collection', via: [:get, :post]
@@ -239,11 +282,23 @@ Fromthepage::Application.routes.draw do
   end
 
   scope 'transcription_field', as: 'transcription_field' do
-    get 'reorder_field', to: 'transcription_field#reorder_field'
+    patch 'reorder', to: 'transcription_field#reorder_fields'
     get 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
+
+    scope 'spreadsheet_column', as: 'spreadsheet_column' do
+      patch 'reorder', to: 'transcription_field#reorder_columns'
+      get 'delete', to: 'transcription_field#delete_column'
+      get ':transcription_field_id/edit_columns', to: 'transcription_field#edit_columns'
+      get ':transcription_field_id/column_form', to: 'transcription_field#column_form'
+      post 'add_columns', to: 'transcription_field#add_columns'
+      get ':transcription_field_id/disable_ruler', to: 'transcription_field#disable_ruler', as: 'disable_ruler'
+      get ':transcription_field_id/enable_ruler', to: 'transcription_field#enable_ruler', as: 'enable_ruler'
+      get ':transcription_field_id/choose_offset', to: 'transcription_field#choose_offset', as: 'choose_offset'
+      post ':transcription_field_id/:page_id/save_offset', to: 'transcription_field#save_offset', as: 'save_offset'
+    end
   end
 
   scope 'statistics', as: 'statistics' do
@@ -254,8 +309,27 @@ Fromthepage::Application.routes.draw do
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
-  get 'display_search', to: 'display#search'
+  post 'display_search', to: 'display#search'
+  get 'paged_search', to: 'display#paged_search'
   get 'demo', to: 'demo#index'
+
+  scope 'feature', as: 'feature' do
+    get ':feature/:value', to: 'user#feature_toggle' 
+    get ':feature', to: 'user#feature_toggle' 
+  end
+
+
+  namespace :api do
+    get '/', to: "api#help"
+    namespace :v1 do
+      get 'bulk_export', to: 'bulk_export#index'
+      get 'bulk_export/:collection_slug', to: 'bulk_export#index'
+      post 'bulk_export/:collection_slug', to: 'bulk_export#start'
+      get 'bulk_export/:bulk_export_id/status', to: 'bulk_export#status', as: 'bulk_export_status'
+      get 'bulk_export/:bulk_export_id/download', to: 'bulk_export#download', as: 'bulk_export_download'
+    end
+  end
+
 
   get '/iiif/:id/manifest', :to => 'iiif#manifest', as: :iiif_manifest
   get '/iiif/:id/layer/:type', :to => 'iiif#layer'
@@ -277,6 +351,8 @@ Fromthepage::Application.routes.draw do
   get '/iiif/contributions/:domain/:terminus_a_quo', constraints: { domain: /.*/ },:to => 'iiif#contributions'
   get '/iiif/contributions/:domain', constraints: { domain: /.*/ }, :to => 'iiif#contributions'
 
+  get '/iiif/:work_id/export/tei', as: 'iiif_work_export_tei', to: 'iiif#export_work_tei'
+  get '/iiif/:work_id/export/html', as: 'iiif_work_export_html', to: 'iiif#export_work_html'
   get '/iiif/:work_id/export/plaintext/searchable', as: 'iiif_work_export_plaintext_searchable', to: 'iiif#export_work_plaintext_searchable'
   get '/iiif/:work_id/export/plaintext/verbatim', as: 'iiif_work_export_plaintext_verbatim', to: 'iiif#export_work_plaintext_verbatim'
   get '/iiif/:work_id/export/plaintext/emended', as: 'iiif_work_export_plaintext_emended', to: 'iiif#export_work_plaintext_emended'
@@ -339,6 +415,8 @@ Fromthepage::Application.routes.draw do
       get 'subjects', as: :subjects, to: 'article#list'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'facets'
+      post 'search'
 
       get 'edit', on: :member
       get 'new_work', on: :member
@@ -353,8 +431,9 @@ Fromthepage::Application.routes.draw do
       match ':work_id', to: 'display#read_work', via: [:get, :post], as: :read_work
 
       resources :work, path: '', param: :work_id, only: [:edit] do
-        get 'versions', on: :member
+        get 'download', on: :member
         get 'print', on: :member
+        get 'versions', on: :member
         get 'pages', on: :member, as: :pages, to: 'work#pages_tab'
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member

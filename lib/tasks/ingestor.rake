@@ -168,7 +168,8 @@ namespace :fromthepage do
   def ingest_tree(document_upload, temp_dir) 
     print "ingest_tree(#{temp_dir})\n"
     # first process all sub-directories
-    ls = Dir.glob(File.join(temp_dir, "*")).sort
+    clean_dir=temp_dir.gsub('[','\[').gsub(']','\]')
+    ls = Dir.glob(File.join(clean_dir, "*")).sort
     ls.each do |path|
       print "ingest_tree considering #{path})\n"
       if Dir.exist? path
@@ -178,7 +179,7 @@ namespace :fromthepage do
     end    
     
     # now process this directory if it contains image files
-    image_files = Dir.glob(File.join(temp_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
+    image_files = Dir.glob(File.join(clean_dir, "*.{"+IMAGE_FILE_EXTENSIONS.join(',')+"}"))
     if image_files.length > 0
       print "Found #{image_files.length} image files in #{temp_dir} -- converting to a work\n"
       convert_to_work(document_upload, temp_dir)
@@ -227,7 +228,6 @@ namespace :fromthepage do
           
     print "\tconvert_to_work loaded metadata.yml values \n#{yaml.to_s}\n"
     
-#    binding.pry if path == "/tmp/fromthepage_uploads/16/terrell-papers-jpg"
     User.current_user=document_upload.user
     document_sets = []
     if yaml
@@ -241,11 +241,15 @@ namespace :fromthepage do
     work.collection = document_upload.collection
 
     work.title = File.basename(path).ljust(3,'.') unless work.title
+
+    work.uploaded_filename = File.basename(path)
+
     if document_upload.ocr
-      if Dir.glob(File.join(path, "*.txt")).count > 0
+      clean_dir=path.gsub('[','\[').gsub(']','\]')
+      if (Dir.glob(File.join(clean_dir, "*.txt")).count + Dir.glob(File.join(clean_dir, "*.xml")).count) > 0
         work.ocr_correction = true
       else
-        print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")}\n"
+        print "\tOCR correction specified but no files found in #{File.join(path, "page*.txt")} or #{File.join(path, "page*.xml")}\n"
       end
     end
 
@@ -261,8 +265,9 @@ namespace :fromthepage do
     FileUtils.mkdir_p(new_dir_name)
     IMAGE_FILE_EXTENSIONS.each do |ext|
 #      print "\t\tconvert_to_work copying #{File.join(path, "*.#{ext}")} to #{new_dir_name}:\n"
-      FileUtils.cp(Dir.glob(File.join(path, "*.#{ext}")), new_dir_name)    
-      Dir.glob(File.join(path, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
+      clean_dir=path.gsub('[','\[').gsub(']','\]')
+      FileUtils.cp(Dir.glob(File.join(clean_dir, "*.#{ext}")), new_dir_name)    
+      Dir.glob(File.join(clean_dir, "*.#{ext}")).sort.each { |fn| print "\t\t\tcp #{fn} to #{new_dir_name}\n" }      
 #      print "\t\tconvert_to_work copied #{File.join(path, "*.#{ext}")} to #{new_dir_name}\n"
     end    
 
@@ -288,7 +293,12 @@ namespace :fromthepage do
       page.base_width = image.columns
       if work.ocr_correction
         ocr_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, "txt")))
-        if File.exist? ocr_fn
+        xml_fn = File.join(path, File.basename(image_fn.gsub(IMAGE_FILE_EXTENSIONS_PATTERN, "xml")))
+        if File.exist? xml_fn
+          print "\t\tconvert_to_work reading raw XML text from #{xml_fn}\n"
+          page.source_text = File.read(xml_fn).gsub(/\[+/, '[').gsub(/\]+/, ']')
+          # if there are errors, consider escaping
+        elsif File.exist? ocr_fn
           print "\t\tconvert_to_work reading raw OCR text from #{ocr_fn}\n"
           page.source_text = File.read(ocr_fn).encode(:xml => :text).gsub(/\[+/, '[').gsub(/\]+/, ']')
         end

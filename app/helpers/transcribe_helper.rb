@@ -21,8 +21,7 @@ module TranscribeHelper
     line_radius += 1 # Makes the "radius" make more sense as a value
 
     output = "<b>#{title}</b>" # have something to return if the match fails
-
-    regexed_title = /(\[\[#{title.gsub(/\s*/, '\s*')}.*?\]\])/m
+    regexed_title = /(\[\[#{title.gsub('(', '\(').gsub(')', '\)').gsub(/\s+/, '\s+')}.*?\]\])/m
     match = text.match(regexed_title)
 
     unless match.nil?
@@ -59,6 +58,8 @@ module TranscribeHelper
       ["#{@page.sc_canvas.sc_service_id}/info.json"]
     elsif page.ia_leaf
       [@page.ia_leaf.iiif_image_info_url]
+    elsif browser.platform.ios? && browser.webkit?
+      ["#{url_for(:root)}image-service/#{page.id}/info.json"]
     else
       {type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json
     end

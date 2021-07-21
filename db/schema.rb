@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_170442) do
+ActiveRecord::Schema.define(version: 2021_07_09_234034) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -73,6 +73,35 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
   create_table "articles_categories", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "article_id"
     t.integer "category_id"
+    t.index ["article_id", "category_id"], name: "index_articles_categories_on_article_id_and_category_id"
+  end
+
+  create_table "bulk_exports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.string "status"
+    t.boolean "plaintext_verbatim_page"
+    t.boolean "plaintext_verbatim_work"
+    t.boolean "plaintext_emended_page"
+    t.boolean "plaintext_emended_work"
+    t.boolean "plaintext_searchable_page"
+    t.boolean "plaintext_searchable_work"
+    t.boolean "tei_work"
+    t.boolean "html_page"
+    t.boolean "html_work"
+    t.boolean "subject_csv_collection"
+    t.boolean "table_csv_collection"
+    t.boolean "table_csv_work"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "work_metadata_csv", default: false
+    t.integer "work_id"
+    t.boolean "facing_edition_work"
+    t.boolean "text_pdf_work"
+    t.boolean "text_docx_work"
+    t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
+    t.index ["user_id"], name: "index_bulk_exports_on_user_id"
+    t.index ["work_id"], name: "index_bulk_exports_on_work_id"
   end
 
   create_table "categories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -83,6 +112,16 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.boolean "gis_enabled", default: false, null: false
     t.index ["collection_id"], name: "index_categories_on_collection_id"
     t.index ["parent_id"], name: "index_categories_on_parent_id"
+  end
+
+  create_table "cdm_bulk_imports", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "ocr_correction", default: false
+    t.string "collection_param", null: false
+    t.text "cdm_urls"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_cdm_bulk_imports_on_user_id"
   end
 
   create_table "clientperf_results", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -110,6 +149,15 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.integer "collection_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_collection_reviewers_on_collection_id"
+    t.index ["user_id"], name: "index_collection_reviewers_on_user_id"
   end
 
   create_table "collections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -140,6 +188,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.integer "next_untranscribed_page_id"
     t.boolean "api_access", default: false
     t.boolean "facets_enabled", default: false
+    t.boolean "user_download", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -226,6 +275,15 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.index ["user_id"], name: "index_document_uploads_on_user_id"
   end
 
+  create_table "editor_buttons", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "key"
+    t.integer "collection_id", null: false
+    t.boolean "prefer_html"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_editor_buttons_on_collection_id"
+  end
+
   create_table "facet_configs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "label"
     t.string "input_type"
@@ -281,6 +339,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "ocr_text"
+    t.index ["page_id"], name: "index_ia_leaves_on_page_id"
   end
 
   create_table "ia_works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -467,6 +526,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.integer "edit_started_by_user_id"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
+    t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
     t.index ["work_id"], name: "index_pages_on_work_id"
   end
 
@@ -544,6 +604,17 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
+  create_table "spreadsheet_columns", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "transcription_field_id", null: false
+    t.integer "position"
+    t.string "label"
+    t.string "input_type"
+    t.string "options"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
+  end
+
   create_table "table_cells", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "work_id"
     t.integer "page_id"
@@ -556,6 +627,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.integer "transcription_field_id"
     t.index ["page_id"], name: "index_table_cells_on_page_id"
     t.index ["section_id"], name: "index_table_cells_on_section_id"
+    t.index ["transcription_field_id"], name: "index_table_cells_on_transcription_field_id"
     t.index ["work_id"], name: "index_table_cells_on_work_id"
   end
 
@@ -582,6 +654,10 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.integer "position"
     t.integer "percentage"
     t.integer "page_number"
+    t.integer "starting_rows"
+    t.float "top_offset", default: 0.0
+    t.float "bottom_offset", default: 1.0
+    t.boolean "row_highlight", default: false
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -621,6 +697,9 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.boolean "activity_email"
     t.string "external_id"
     t.string "sso_issuer"
+    t.string "preferred_locale"
+    t.string "api_key"
+    t.string "picture"
     t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -659,16 +738,16 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
   end
 
   create_table "work_facets", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "s0"
-    t.string "s1"
-    t.string "s2"
-    t.string "s3"
-    t.string "s4"
-    t.string "s5"
-    t.string "s6"
-    t.string "s7"
-    t.string "s8"
-    t.string "s9"
+    t.string "s0", limit: 512
+    t.string "s1", limit: 512
+    t.string "s2", limit: 512
+    t.string "s3", limit: 512
+    t.string "s4", limit: 512
+    t.string "s5", limit: 512
+    t.string "s6", limit: 512
+    t.string "s7", limit: 512
+    t.string "s8", limit: 512
+    t.string "s9", limit: 512
     t.date "d0"
     t.date "d1"
     t.date "d2"
@@ -722,12 +801,25 @@ ActiveRecord::Schema.define(version: 2020_10_01_170442) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
+    t.string "genre"
+    t.string "source_location"
+    t.string "source_collection_name"
+    t.string "source_box_folder"
+    t.boolean "in_scope", default: true
+    t.text "editorial_notes"
+    t.string "document_date"
     t.string "uploaded_filename"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
 
+  add_foreign_key "bulk_exports", "collections"
+  add_foreign_key "bulk_exports", "users"
+  add_foreign_key "bulk_exports", "works"
+  add_foreign_key "cdm_bulk_imports", "users"
+  add_foreign_key "editor_buttons", "collections"
   add_foreign_key "facet_configs", "metadata_coverages"
+  add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "work_facets", "works"
 end

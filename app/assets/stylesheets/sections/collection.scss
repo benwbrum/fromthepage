@@ -403,37 +403,204 @@
   }
 }
 
-//Edit transcription fields
-.button.fields {
-  margin: $gapSize/2 $gapSize/2 0 0;
+
+// Collection export
+
+.bulk-export {
+  padding: 0;
+  margin: 1.5em 0;
+  list-style: none;
+
+  li {
+    margin: 0;
+    display: flex;
+    padding: 15px 0;
+    border-style: solid;
+    border-width: 1px 0 0 0;
+    border-color: rgba(#000, 0.15);
+
+    &:last-child {
+      border-width: 1px 0;
+    }
+  }
+
+  &_format {
+    flex: 1 1 auto;
+    padding-right: 15px;
+  
+    h5 {
+      display: flex;
+      align-items: center;
+      margin: 0 0 0.25em 0;
+  
+      input {
+        width: 19px;
+        height: 19px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &_options {
+    display: flex;
+    flex: 0 0 180px;
+    padding-left: 15px;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid rgba(#000, 0.15);
+
+    label {
+      margin: 3px 0;
+      display: flex;
+      align-items: center;
+
+      input {
+        margin-right: 3px;
+      }
+    }
+  }
 }
 
-.toolbar.fields {
-  width: 95%;
+
+// Configure buttons
+
+.edit-buttons {
+  padding: 0;
+  margin: 1.5em 0;
+  list-style: none;
+
+  li {
+    margin: 0;
+    display: flex;
+    padding: 15px 0;
+    border-style: solid;
+    border-width: 1px 0 0 0;
+    border-color: rgba(#000, 0.15);
+
+    &:last-child {
+      border-width: 1px 0;
+    }
+  }
+
+  &_format {
+    flex: 1 1 auto;
+    padding-right: 15px;
+  
+    h5 {
+      display: flex;
+      align-items: center;
+      margin: 0 0 0.25em 0;
+  
+      input {
+        width: 19px;
+        height: 19px;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &_options {
+    display: flex;
+    flex: 0 0 300px;
+    padding-left: 15px;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid rgba(#000, 0.15);
+
+    label {
+      margin: 3px 0;
+      display: flex;
+      align-items: center;
+
+      input {
+        margin-right: 3px;
+      }
+    }
+  }
 }
 
-.field_form {
+
+// Edit transcription fields
+
+.field-form {
   width: 100%;
-  //border-collapse: separate;
-  table-layout: auto;
-  label { margin-left: 5px;}
-  th {
-    font-weight: normal;
-    white-space: nowrap;
-    text-align: left;
-    word-wrap: break-word;
-    padding: 4px 0 4px 8px;
-  }
-  td {
-    padding: 4px 0 4px 8px;
-  }
+
   margin-bottom: 15px;
-  .first {width: 15px;}
-  .fourth {width: 100%;}
-  .percent {width: 50px;}
+
+  th, td {
+    padding: 4px;
+    vertical-align: top;
+
+    &:first-child {
+      padding-left: 0;
+    }
+
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+
+  th {
+    padding-top: 15px;
+  }
+
+  &_line {
+    font-weight: bold;
+    font-size: $fontSizeBig;
+    padding: 20px 0 0 0 !important;
+  }
+
+  &_label {
+    width: 35%;
+  }
+
+  &_type {
+    width: 15%;
+  }
+
+  &_options {
+    width: 50%;
+  }
+
+  &_actions {
+    min-width: 52px;
+    white-space: nowrap;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+
+  &_width,
+  &_page {
+    min-width: 75px;
+    box-sizing: border-box;
+  }
+
+  &_icon {
+    padding: 6px 4px;
+    color: $bodyFgLight;
+    display: inline-block;
+
+    &[disabled] {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    &:hover {
+      color: $bodyFg;
+    }
+
+    &.reorder {
+      cursor: ns-resize;
+    }
+  }
 
   textarea {
     height: calc(2em + 2px);
+    min-height: calc(2em + 2px);
+  }
+
+  .ui-sortable-placeholder td {
+    height: 34px;
   }
 }
 
@@ -441,6 +608,7 @@ a.field_icons {
   margin: 5px;
   color: $bodyFgLight;
   display: inline-block;
+
   &:hover {
     color: $bodyFg;
   }
@@ -493,4 +661,11 @@ td.document_set input[type="checkbox"] {
 
 li.document_set input[type="checkbox"] {
   margin-left: 50px;
+}
+
+// Facets
+
+#slider1, #slider2, #slider3 {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }

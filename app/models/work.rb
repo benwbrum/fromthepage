@@ -1,7 +1,7 @@
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
-
+  
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
 
@@ -20,6 +20,7 @@ class Work < ApplicationRecord
 
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
+  has_one :work_facet, :dependent => :destroy
 
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
@@ -30,6 +31,7 @@ class Work < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
   validates :slug, uniqueness: { case_sensitive: true }
+  validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
 
@@ -45,6 +47,7 @@ class Work < ApplicationRecord
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
+  after_commit :save_metadata, on: [:create, :update]
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -72,6 +75,25 @@ class Work < ApplicationRecord
       else
         nil
       end
+    end
+  end
+
+
+  def access_object(user)
+    if self.collection.show_to?(user)
+      # public collection or collection that has authorized access
+      self.collection
+    elsif self.collection.supports_document_sets
+      # private collection whcih might have document sets that grant access
+      alternative_set = self.document_sets.where(:is_public => true).first
+      if alternative_set
+        alternative_set
+      else
+        # is there a private document set which this user has been given access to?
+        nil
+      end
+    else
+      nil #false
     end
   end
 
@@ -114,6 +136,28 @@ class Work < ApplicationRecord
 
   def articles
     Article.joins(:page_article_links).where(page_article_links: {page_id: self.pages.ids}).distinct
+  end
+
+
+  def document_date=(date_as_edtf)
+    if date_as_edtf.respond_to? :to_edtf
+      self[:document_date] = date_as_edtf.to_edtf
+    else
+      # the edtf-ruby gem has some gaps in coverage for e.g. seasons
+      self[:document_date] = date_as_edtf.to_s
+    end      
+  end
+
+  def document_date
+    Date.edtf(self[:document_date])
+  end
+
+  def document_date_is_edtf
+    if self[:document_date].present?
+      if Date.edtf(self[:document_date]).nil?
+        errors.add(:document_date, 'must be in EDTF format')
+      end
+    end
   end
 
   def update_deed_collection
@@ -258,4 +302,37 @@ class Work < ApplicationRecord
     end
   end
 
+  def save_metadata
+    # this is costly, so only execute if the relevant value has actually changed
+    if self.original_metadata && self.original_metadata_previously_changed? # this is costly, so only 
+      om = JSON.parse(self.original_metadata)
+      om.each do |m|
+        unless m['label'].blank?
+          label = m['label']
+
+          collection = self.collection
+
+          unless self.collection.nil?
+            mc = collection.metadata_coverages.build
+
+            # check that record exist
+            test = collection.metadata_coverages.where(key: label).first
+            # increment count field if a record is returned
+            if test
+              test.count+= 1
+              test.save
+            else
+              mc.key = label.to_sym
+              mc.count = 1
+              mc.save
+              mc.create_facet_config(metadata_coverage_id: mc.collection_id)
+            end
+          end
+        end
+      end
+
+      # now update the work_facet
+      FacetConfig.update_facets(self)
+    end
+  end
 end

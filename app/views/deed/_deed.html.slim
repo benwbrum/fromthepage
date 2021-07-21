@@ -1,17 +1,44 @@
 -long_view = false if local_assigns[:long_view].nil?
+-suppress_collection = local_assigns[:suppress_collection]
 -mailer = local_assigns[:mailer] ? true : false
 -prerender = local_assigns[:prerender] ? true : false
+
+-access_object = nil
+-if prerender
+  -access_object = deed.collection
+-else
+  -if deed.collection && deed.work
+    -access_object = deed.work.access_object(current_user)
 
 -user_name = deed.user.display_name if deed.user
 
 -user = link_to(user_name, user_profile_url(deed.user, only_path: !mailer))
--page = deed.page.nil? ? '' : link_to(deed.page.title, collection_transcribe_page_url(deed.page.collection.owner, deed.page.collection, deed.page.work, deed.page, only_path: !mailer))
--article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
--if(!deed.work.nil? && !deed.work.collection.nil? )
-  -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work, only_path: !mailer))
--unless(deed.collection.nil?)
-  -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
 
+-if deed.page.nil?
+  -page = ''
+-else
+  -if access_object
+    -page = link_to(deed.page.title, collection_display_page_url(access_object.owner, access_object, deed.work, deed.page, only_path: !mailer))
+  -else
+    -page = deed.page.title
+-article = deed.article.nil? ? '' : link_to(deed.article.title, collection_article_show_url(deed.article.collection.owner, deed.article.collection, deed.article, only_path: !mailer))
+
+-if(!deed.work.nil? && !deed.work.collection.nil? )
+  -if access_object
+    -work = link_to(deed.work.title, collection_read_work_url(access_object.owner, access_object, deed.work, only_path: !mailer))
+  -else
+    -work = deed.work.title
+
+-unless(deed.collection.nil?)
+  -if prerender
+     -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
+  -else
+    -if deed.collection.show_to?(current_user)
+      -collection = link_to(deed.collection.title, collection_url(deed.collection.owner, deed.collection, only_path: !mailer ))
+    -elsif access_object
+      -collection = link_to(access_object.title, collection_url(access_object.owner, access_object, only_path: !mailer ))
+    -else
+      -collection = deed.collection.title
 -output = "#{user} "
 
 -case deed.deed_type
@@ -45,11 +72,17 @@
 -when DeedType::NEEDS_REVIEW
   -output += t('.marked_page_as_needing_review', page: page)
 
+-when DeedType::PAGE_REVIEWED
+  -output += t('.reviewed_page', page: page)
+
 -when DeedType::TRANSLATION_INDEXED
   -output += t('.indexed_translation_of_page', page: page)
 
 -when DeedType::TRANSLATION_REVIEW
   -output += t('.marked_translation_page_as_needing_review', page: page)
+
+-when DeedType::TRANSLATION_REVIEWED
+  -output += t('.reviewed_translation', page: page)
 
 -when DeedType::WORK_ADDED
   -output += t('.added_work', work: work)
@@ -62,16 +95,12 @@
     -else
       -output += collection
 
--if(long_view && !deed.work.nil?)
-  -if deed.work.collection
-    -work = link_to(deed.work.title, collection_read_work_url(deed.work.collection.owner, deed.work.collection, deed.work, only_path: !mailer))
-  -else
-    -work = deed.work.title      
+-if(!deed.work.nil?)
   -output += t('.in_the_work', work: work)
--if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED)
+
+-if(!collection.nil? && deed.deed_type != DeedType::COLLECTION_JOINED && !suppress_collection)
   -output += t('.in_collection', collection: collection)
 
 -if(long_view && deed.deed_type == DeedType::NOTE_ADDED && !deed.note.nil?)
   -output += t('.saying_deed', title: deed.note.title).html_safe
-
 ==output

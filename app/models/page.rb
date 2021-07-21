@@ -44,7 +44,7 @@ class Page < ApplicationRecord
 
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: nil)}
+  scope :needs_transcription, -> { where(status: [nil, STATUS_INCOMPLETE])  }
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
@@ -55,10 +55,24 @@ class Page < ApplicationRecord
   end
 
   STATUS_TRANSCRIBED = 'transcribed'
+  STATUS_INCOMPLETE = 'incomplete'
   STATUS_BLANK = 'blank'
   STATUS_NEEDS_REVIEW = 'review'
   STATUS_INDEXED = 'indexed'
   STATUS_TRANSLATED = 'translated'
+
+  ALL_STATUSES = [
+    nil,
+    STATUS_INCOMPLETE,
+    STATUS_TRANSCRIBED,
+    STATUS_NEEDS_REVIEW,
+    STATUS_INDEXED,
+    STATUS_TRANSLATED,
+    STATUS_BLANK
+  ]
+
+  MAIN_STATUSES = ALL_STATUSES - [STATUS_TRANSLATED]
+  TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_INCOMPLETE, STATUS_TRANSCRIBED]
 
   # tested
   def collection
@@ -110,6 +124,34 @@ class Page < ApplicationRecord
       self.sc_canvas.facsimile_url
     else
       base_image
+    end
+  end
+
+  def base_height
+    if self[:base_height].blank?
+      if self.sc_canvas 
+        self.sc_canvas.height
+      elsif self.ia_leaf
+        self.ia_leaf.page_h
+      else
+        nil
+      end
+    else
+      self[:base_height]
+    end
+  end
+
+  def base_width
+    if self[:base_width].blank?
+      if self.sc_canvas 
+        self.sc_canvas.width
+      elsif self.ia_leaf
+        self.ia_leaf.page_w
+      else
+        nil
+      end
+    else
+      self[:base_width]
     end
   end
 
@@ -183,8 +225,8 @@ class Page < ApplicationRecord
 
   def update_sections_and_tables
     if @sections
-      self.sections.each { |s| s.delete }
-      self.table_cells.each { |c| c.delete }
+      self.sections.delete_all
+      self.table_cells.delete_all
 
       @sections.each do |section|
         section.pages << self
@@ -192,7 +234,6 @@ class Page < ApplicationRecord
         section.save!
       end
 
-      self.table_cells.each { |c| c.delete }
       @tables.each do |table|
         table[:rows].each_with_index do |row, rownum|
           row.each_with_index do |cell, cell_index|
@@ -270,32 +311,107 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
     emended_plaintext(self.xml_translation)
   end
 
+
+  def process_spreadsheet(field, cell_data)
+    # returns a formatted string
+    formatted = String.new
+    new_table_cells = []
+
+    # read spreadsheet-wide data like table heading
+    formatted << "<table class=\"tabular\"><thead>"
+
+    # read column-specific data like column heading
+    column_configs = field.spreadsheet_columns.to_a
+    column_configs.each do |column|
+      formatted << "<th>#{column.label}</th>"
+    end
+    checkbox_headers = column_configs.select{|cc| cc.input_type == 'checkbox'}.map{|cc| cc.label }.flatten
+
+    formatted << "</thead><tbody>"
+    # write out 
+    parsed_cell_data = JSON.parse(cell_data.values.first)
+    parsed_cell_data.each_with_index do |row, rownum|
+      unless this_and_following_rows_empty?(parsed_cell_data, rownum)
+        # row = parsed_cell_data[row_key]
+        formatted_row = "<tr>"
+        row.each_with_index do |cell, colnum|
+          column = column_configs[colnum]
+          # save the table cell object
+          tc = TableCell.new(row: rownum+1)
+          tc.work = self.work
+          tc.page = self
+          tc.transcription_field_id = field.id
+          tc.header = column.label
+          if cell.blank?
+            cell = ''
+          elsif cell.to_s.scan('<').count != cell.to_s.scan('>').count # broken tags or actual < / > signs
+            cell = ERB::Util.html_escape(cell)
+          end
+          if checkbox_headers.include? tc.header
+            tc.content = (cell == 'true' || cell == true).to_s
+          else
+            tc.content = cell
+          end
+          new_table_cells << tc
+
+          # format the cell
+          formatted_row << "<td>#{cell}</td>"
+        end
+        formatted_row << "</tr>"
+        formatted << formatted_row
+      end
+    end
+    formatted << "</tbody></table>"
+
+    [formatted, new_table_cells]
+  end
+
+  def this_and_following_rows_empty?(cell_data, rownum)
+    remaining_rows = cell_data[rownum..(cell_data.count - 1)]
+
+    row_with_value = remaining_rows.detect { |row|  row.detect{|cell| !cell.blank? } }
+
+    row_with_value.nil?
+  end
+
+  def replace_table_cells(new_table_cells)
+    self.table_cells.insert_all(new_table_cells.map{|obj| obj.attributes.merge({created_at: Time.now, updated_at: Time.now})})
+  end
+
   #create table cells if the collection is field based
   def process_fields(field_cells)
+    new_table_cells = []
     string = String.new
-    cells = self.table_cells.each {|c| c.delete}
     unless field_cells.blank?
       field_cells.each do |id, cell_data|
-        tc = TableCell.new(row: 1)
-        tc.work = self.work
-        tc.page = self
-        tc.transcription_field_id = id.to_i
-        input_type = TranscriptionField.find(tc.transcription_field_id).input_type
+        field = TranscriptionField.find(id.to_i)
+        input_type = field.input_type
+        if input_type == 'spreadsheet'
+          spreadsheet_string, spreadsheet_cells = process_spreadsheet(field, cell_data)
+          string << spreadsheet_string
+          new_table_cells += spreadsheet_cells
+        else
+          tc = TableCell.new(row: 1)
+          tc.work = self.work
+          tc.page = self
+          tc.transcription_field_id = id.to_i
 
-        cell_data.each do |key, value|
-          if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
-            value = ERB::Util.html_escape(value)
+          cell_data.each do |key, value|
+            if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
+              value = ERB::Util.html_escape(value)
+            end
+            tc.header = key
+            tc.content = value
+            key = (input_type == "description") ? (key + " ") : (key + ": ")
+            string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
           end
-          tc.header = key
-          tc.content = value
-          key = (input_type == "description") ? (key + " ") : (key + ": ")
-          string << "<span class=\"field__label\">" + key + "</span>" + value + "\n\n"
-        end
 
-        tc.save!
+          new_table_cells << tc
+        end
       end
     end
     self.source_text = string
+    new_table_cells
   end
 
   #######################
@@ -322,7 +438,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def thumbnail_filename
     filename=modernize_absolute(self.base_image)
     ext=File.extname(filename)
-    filename.sub("#{ext}","_thumb#{ext}")
+    filename.sub(/#{ext}$/,"_thumb#{ext}")
   end
 
   def remove_transcription_links(text)
@@ -372,21 +488,79 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
   def emended_plaintext(source)
     doc = Nokogiri::XML(source)
     doc.xpath("//link").each { |n| n.replace(n['target_title'])}
+    doc.xpath("//abbr").each { |n| n.replace(n['expan'])}
     formatted_plaintext_doc(doc)
   end
 
   def formatted_plaintext(source)
-    formatted_plaintext_doc(Nokogiri::XML(source))
+    doc = Nokogiri::XML(source)
+    doc.xpath("//expan").each { |n| n.replace(n['orig'])}
+    doc.xpath("//reg").each { |n| n.replace(n['orig'])}
+    formatted_plaintext_doc(doc)
   end
 
   def formatted_plaintext_doc(doc)
-    doc.xpath("//p").each { |n| n.add_next_sibling("\n")}
-    doc.xpath("//lb[@break='no']").each { |n| n.replace("-\n")}
+    doc.xpath("//p").each { |n| n.add_next_sibling("\n\n")}
+    doc.xpath("//lb[@break='no']").each do |n| 
+      if n.text.blank?
+        sigil = '-'
+      else
+        sigil = n.text
+      end
+      n.replace("#{sigil}\n")
+    end
+    doc.xpath("//table").each { |n| formatted_plaintext_table(n) }
     doc.xpath("//lb").each { |n| n.replace("\n")}
     doc.xpath("//br").each { |n| n.replace("\n")}
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
-    doc.text.sub(/^\s*/m, '')
+    doc.xpath("//footnote").each { |n| n.replace('')}
+
+    doc.text.sub(/^\s*/m, '').gsub(/ *$/m,'')
   end
+
+  def formatted_plaintext_table(table_element)
+    text_table = ""
+
+    # clean up in-cell line-breaks
+    table_element.xpath('//lb').each { |n| n.replace(' ')}
+
+    # calculate the widths of each column based on max(header, cell[0...end])
+    column_count = ([table_element.xpath("//th").count] + table_element.xpath('//tr').map{|e| e.xpath('td').count }).max
+    column_widths = {}
+    1.upto(column_count) do |column_index|
+      longest_cell = (table_element.xpath("//tr/td[position()=#{column_index}]").map{|e| e.text().length}.max || 0)
+      corresponding_heading = heading_length = table_element.xpath("//th[position()=#{column_index}]").first
+      heading_length = corresponding_heading.nil? ? 0 : corresponding_heading.text().length
+      column_widths[column_index] = [longest_cell, heading_length].max
+    end
+
+    # print the header as markdown
+    cell_strings = []
+    table_element.xpath("//th").each_with_index do |e,i|
+      cell_strings << e.text.rjust(column_widths[i+1], ' ')
+    end
+    text_table << cell_strings.join(' | ') << "\n"
+
+    # print the separator
+    text_table << column_count.times.map{|i| ''.rjust(column_widths[i+1], '-')}.join(' | ') << "\n"
+
+    # print each row as markdown
+    table_element.xpath('//tr').each do |row_element|
+      text_table << row_element.xpath('td').map do |e|
+        width = 80 #default for hand-coded tables
+        index = e.path.match(/.*td\[(\d+)\]/)
+        if index
+          width = column_widths[index[1].to_i] || 80 
+        else
+          width = column_widths.values.first
+        end
+        e.text.rjust(width, ' ') 
+      end.join(' | ') << "\n"
+    end
+
+    table_element.replace(text_table)
+  end
+
 
   def modernize_absolute(filename)
     if filename

@@ -15,12 +15,16 @@ class User < ApplicationRecord
 
   attr_accessor :login_id
 
+  mount_uploader :picture, PictureUploader
+
   has_many(:owner_works,
            :foreign_key => "owner_user_id",
            :class_name => 'Work')
   has_many :collections, :foreign_key => "owner_user_id"
+  has_many :document_sets, :foreign_key => "owner_user_id"
   has_many :ia_works
   has_many :visits
+  has_many :bulk_exports
   has_many :flags, :foreign_key => "author_user_id"
   has_one :notification, :dependent => :destroy
 
@@ -56,11 +60,24 @@ class User < ApplicationRecord
 
   validates :login, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A[a-zA-Z0-9_\.]*\z/, message: "Invalid characters in username"}, exclusion: { in: %w(transcribe translate work collection deed), message: "Username is invalid"}
   validates :website, allow_blank: true, format: { with: URI.regexp }
+  validate :email_does_not_match_denylist
+
 
   before_validation :update_display_name
 
   after_save :create_notifications
   #before_destroy :clean_up_orphans
+
+  def email_does_not_match_denylist
+    raw = PageBlock.where(view: "email_denylist").first
+    if raw
+      patterns = raw.html.split(/\s+/)
+      if patterns.detect {|pattern| self.email.match(/#{pattern}/) }
+        errors.add(:email, 'error 38')
+      end
+    end
+  end
+
 
   def update_display_name
     if self.owner
@@ -96,19 +113,30 @@ class User < ApplicationRecord
       user = User.where(email: data['email3']).first
     end
 
+    # update the user's SSO if they don't have one
+    if user && user.sso_issuer.nil?
+      user.sso_issuer = issuer
+      user.save!
+    end
 
     # create users if they don't exist
     unless user
-        email = data['email'] || data['email2'] || data['email3']
-        user = User.create(
-           login: email.gsub(/@.*/,''),
-           email: email,
-           external_id: data['external_id'],
-           password: Devise.friendly_token[0,20],
-           display_name: data['name'],
-           real_name: data['name'],
-           sso_issuer: issuer
-        )
+      email = data['email'] || data['email2'] || data['email3']
+      login = email.gsub(/@.*/,'')
+      # avoid duplicate logins
+      while User.where(login: login).exists? do
+        login += '_'
+      end
+
+      user = User.create(
+         login: login,
+         email: email,
+         external_id: data['external_id'],
+         password: Devise.friendly_token[0,20],
+         display_name: data['name'],
+         real_name: data['name'],
+         sso_issuer: issuer
+      )
     end
 
     user
@@ -198,9 +226,6 @@ class User < ApplicationRecord
     DocumentSet.where(owner_user_id: self.id).where(is_public: true)
   end
 
-  def document_sets
-    DocumentSet.where(owner_user_id: self.id)
-  end
 
   def collections_and_document_sets
     (collections + document_sets).sort_by {|obj| obj.title}
@@ -254,7 +279,8 @@ class User < ApplicationRecord
   end
 
   def self.search(search)
-    where("display_name LIKE ? OR login LIKE ?", "%#{search}%", "%#{search}%")
+    wildcard = "%#{search}%"
+    where("display_name LIKE ? OR login LIKE ? OR real_name LIKE ? OR email LIKE ?", wildcard, wildcard, wildcard, wildcard)
   end
 
   def create_notifications
@@ -290,4 +316,14 @@ class User < ApplicationRecord
 
     self.save
   end
+
+
+  # Generate a unique API key
+  def self.generate_api_key
+    loop do
+      token = SecureRandom.base64.tr('+/=', 'Qrt')
+      break token unless User.exists?(api_key: token)
+    end
+  end
+
 end

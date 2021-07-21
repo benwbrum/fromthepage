@@ -13,7 +13,7 @@ class DocumentSet < ApplicationRecord
   has_many :pages, through: :works
 
   has_many :document_set_works
-  has_many :works, through: :document_set_works
+  has_many :works, -> { order 'title' }, through: :document_set_works
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
 
@@ -46,8 +46,20 @@ class DocumentSet < ApplicationRecord
     self.collection.hide_completed
   end
 
+  def review_workflow
+    self.collection.review_workflow
+  end
+
+  def user_download
+    self.collection.user_download
+  end
+
   def subjects_disabled
     self.collection.subjects_disabled
+  end
+
+  def editor_buttons
+    self.collection.editor_buttons
   end
 
   def articles
@@ -63,7 +75,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def notes
-    Note.where(work_id: self.works.ids)
+    Note.where(work_id: self.works.ids).order('created_at DESC')
   end
 
   def deeds
@@ -171,11 +183,11 @@ class DocumentSet < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ?", "%#{search}%")
+    self.works.where("title LIKE ? OR original_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
   def search_collection_works(search)
-    self.collection.works.where("title LIKE ?", "%#{search}%")
+    self.collection.search_works(search)
   end
 
   def self.search(search)
@@ -194,10 +206,14 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def facets_enabled?
+    self.collection.facets_enabled?
+  end
+
   def sc_collection # association does not exist for document sets
     nil
   end
-  
+
   def api_access # API access is only controlled by public/private for document sets
     false
   end

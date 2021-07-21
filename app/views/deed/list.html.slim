@@ -16,14 +16,21 @@ table.datagrid.striped
     tr
       td
         =link_to(user_profile_path(d.user), class: 'userpic userpic-small')
-          =gravatar_image_tag d.user.email, :alt => d.user.display_name
+          =profile_picture(d.user)
       td.w100.toleft
-        =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+        -if @collection.nil?
+          -if d.collection.show_to?(current_user) || (d.work && d.work.access_object(current_user))
+            =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })
+          -else
+            =raw(strip_tags(render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true })))
+        -else
+          =render(:partial => 'deed/deed.html', :locals => { :deed => d, :long_view => true, :suppress_collection => true })
+          
       td
         small.label(class="deed-type-#{d.deed_type}") =d.deed_type_name
       td.nowrap
         =time_tag(d.created_at, class: 'small fglight')
-          =time_ago_in_words(d.created_at)
+          =t('.time_ago_in_words', time: time_ago_in_words(d.created_at))
 br
 small.legend
   =will_paginate @deeds, { :class => 'deed-pager', :page_links => false, :previous_label => t('.newer_activity'), :next_label => t('.older_activity') }

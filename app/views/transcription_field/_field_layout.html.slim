@@ -1,15 +1,24 @@
 -field_order(@collection)
-div.editarea
-  -@fields.each do |line, array|
-    div
+-@fields.each do |line, array|
+  -page_number = array.map{|field| field.page_number}.uniq.first
+  -if (@page && (page_number == @page.position || page_number == nil)) || (current_page?({action: 'edit_fields'}))
+    .fields-row
       -field_layout(array)
       -@field_array.each do |field, cell|
-        -if (@page && (field.page_number == @page.position || field.page_number == nil )) || (current_page?({action: 'edit_fields'}))
-          -span_width = !field.percentage.blank? ? (field.percentage - 1) : @width
-          span(style="width:#{span_width}%")
-            -if field.input_type != "instruction"
+        -if @field_preview && @field_preview[field.id]
+          -cell = @field_preview[field.id].first
+        -if field.input_type == 'spreadsheet'
+          .field-wrapper.spreadsheet
+            =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
+        -else
+          -span_width = !field.percentage.blank? ? field.percentage : @width
+          .field-wrapper(style="width: #{span_width}%")
+            -if field.input_type == "instruction"
+              div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
+                h5 =t('.instructions')
+                p =field.label
+            -else
               =label_tag field.label, field.label
-              <br>
               -content = cell.nil? ? nil : cell.content
               -if field.input_type == "text"
                 =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
@@ -20,8 +29,3 @@ div.editarea
                 =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
               -else
                 =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
-            -else
-              div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
-                span
-                  = t('.instructions')
-                =field.label

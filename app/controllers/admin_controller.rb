@@ -134,6 +134,12 @@ class AdminController < ApplicationController
     redirect_to :action => 'flag_list', :page => params[:page]
   end
 
+  def ok_user
+    flag = Flag.find(params[:flag_id])
+    flag.ok_user
+    redirect_to :action => 'flag_list', :page => params[:page]
+  end
+
   def tail_logfile
     @lines = params[:lines].to_i
     if @lines == 0
@@ -179,7 +185,7 @@ class AdminController < ApplicationController
   end
 
   def collection_list
-    @collections = Collection.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
+    @collections = Collection.order(:title)
   end
 
   def work_list
@@ -195,9 +201,32 @@ class AdminController < ApplicationController
     @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
   end
 
+  def progress_metrics
+    transcription_deeds = Deed.where(deed_type: DeedType.transcriptions_or_corrections_no_edits)
+    contributor_deeds = Deed.where(deed_type: DeedType.contributor_types)
+
+    @transcription_counts = {}
+    @contribution_counts = {}
+    @activity_project_counts = {}
+    @unique_contributor_counts = {}
+    @week_intervals=[1,2,4,12,26,52,104,156,208]
+    @week_intervals.each do |weeks_ago|
+      start_date = Date.yesterday - weeks_ago.weeks
+      end_date = start_date + 1.week
+      @transcription_counts[weeks_ago] = transcription_deeds.where("created_at between ? and ?", start_date, end_date).count
+      @contribution_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).count
+      @activity_project_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:collection_id)
+      @unique_contributor_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:user_id)
+    end
+
+    @pages_per_hour = transcription_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
+    @contributions_per_hour = contributor_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
+  end
+
   def settings
     @email_text = PageBlock.find_by(view: "new_owner").html
-    @flag_blacklist = PageBlock.find_by(view: "flag_blacklist").html
+    @flag_denylist = PageBlock.find_by(view: "flag_denylist").html
+    @email_denylist = (PageBlock.where(view: "email_denylist").first ? PageBlock.where(view: "email_denylist").first.html : '')
   end
 
   def update
@@ -208,11 +237,18 @@ class AdminController < ApplicationController
       block.save!
     end
 
-    block = PageBlock.find_by(view: "flag_blacklist")
-    if params[:admin][:flag_blacklist] != block.html
-      block.html = params[:admin][:flag_blacklist]
+    block = PageBlock.find_by(view: "flag_denylist")
+    if params[:admin][:flag_denylist] != block.html
+      block.html = params[:admin][:flag_denylist]
       block.save!
     end
+
+    block = PageBlock.where(view: "email_denylist").first || PageBlock.new(view: 'email_denylist')
+    if params[:admin][:email_denylist] != block.html
+      block.html = params[:admin][:email_denylist]
+      block.save!
+    end
+
 
     flash[:notice] = t('.admin_settings_updated')
 

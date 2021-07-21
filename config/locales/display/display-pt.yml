@@ -1,5 +1,12 @@
 pt:
   display:
+    #TODO next 6 messages
+    correct: ""
+    transcribe: ""
+    blank_page: ""
+    review: ""
+    translate: ""
+    completed: ""
     display_page:
       facsimile: "Fac-símile"
       translation: "Tradução"
@@ -36,6 +43,7 @@ pt:
       page_not_translated: "Esta página não está traduzida, por favor %{help_translate} esta página"
       corrected: "corrigiu"
       transcribed: "transcreveu"
+      help_transcribe: "Por favor, ajude a transcrever"
       last_edit: "Última edição há %{edit_time} por %{user_link}"
     list_pages:
       no_pages_found: "Nenhuma página encontrada"

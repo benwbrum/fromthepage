@@ -1,9 +1,14 @@
 es:
   dashboard:
+    plain: "Panel de control"
+    collaborator: "Colaborador"
     alphabetical_collections_and_document_sets:
       start_transcribing: "Comenzar a Transcribir"
+      project_by: "Proyecto por %{author}"
       owned_by: "Por %{author}"
+      project_by: "Proyecto por %{author}"
     collections_list:
+      recent_activity: "Actividad reciente"
       collections: "Colecciones"
       meta_description: "Eres libre de elegir entre los muchos proyectos interesantes disponibles en FromThePage. Puedes comenzar leyendo los escritos históricos que ya han sido transcritos por otros miembros. Te invitamos a colaborar en uno de los grandes proyectos de la era digital."
     hierarchical_collections_and_document_sets:
@@ -24,8 +29,10 @@ es:
       collections: "colecciones"
       private_collections_you_belong_to: "Colecciones Privadas a las que Perteneces"
       owned_by: "Por %{author}"
+      project_by: "Proyecto por %{author}"
       everyone_activity: "Actividad de todos"
       your_activity: "Tu Actividad"
+      time_ago_in_words: "Hace %{time}"
     owner:
       see_all_works: "Consulte Todas las Obras..."
       start_a_project: "Iniciar Un Proyecto"

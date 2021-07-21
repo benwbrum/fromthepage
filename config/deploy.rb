@@ -23,11 +23,11 @@ set :branch, 'ui-design'
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/newrelic.yml public/robots.txt}
+set :linked_files, %w{config.ru config/database.yml config/environments/production.rb config/initializers/01fromthepage.rb config/initializers/omniauth.rb config/newrelic.yml public/robots.txt}
 
 # Default value for linked_dirs is []
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "public/images/uploaded"]
+set :linked_dirs, ["log", "public/images/working", "public/uploads", "tmp", "public/images/uploaded", "public/images/fordham"]
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

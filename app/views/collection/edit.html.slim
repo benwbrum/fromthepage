@@ -49,6 +49,11 @@
           td(colspan="2")
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, t('.hide_completed')
+        -if feature_enabled?(:download)
+          tr
+            td(colspan="2")
+              =f.check_box :user_download, value: @collection.user_download
+              =f.label :user_download, t('.user_download')
         tr
           td(colspan="2")
             =f.label :text_language, t('.text_language'), class: 'collection-label'
@@ -66,9 +71,6 @@
               =f.label :voice_recognition, t('.voice_recognition')
 
       .toolbar
-        .toolbar_group.w100
-          =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
-            span =t('.delete_collection')
         .toolbar_group
           =f.button t('.save_changes'), class: 'big', id: 'collection_settings_save'
 
@@ -113,7 +115,7 @@
         -contributions = user.deeds.where(collection_id: @collection.id).count
         .user-label
           .userpic
-            =gravatar_image_tag user.email, :alt => user.display_name
+            =profile_picture(user)
           .username
             =link_to user.display_name, user_profile_path(user)
             small =pluralize(contributions, 'contribution')
@@ -143,7 +145,7 @@
       -contributions = user.deeds.where(collection_id: @collection.id).count
       .user-label
         .userpic
-          =gravatar_image_tag user.email, :alt => user.display_name
+          =profile_picture(user)
         .username
           =link_to user.display_name, user_profile_path(user)
           small =pluralize(contributions, 'contribution')
@@ -159,6 +161,12 @@
       =link_to(collection_disable_fields_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_document_based_transcription'))
         span =t('.revert_document_based_transcription')
       =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
+
+    -if !@collection.field_based
+      h3 =t('.editor_buttons')
+      p =t('.editor_buttons_description')
+      =link_to(collection_editor_button_edit_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.edit_buttons'), :data => { litebox: { hash: 'edit-buttons' }})
+        span =t('.edit_buttons')
 
     h3 =t('.document_sets')
     p =t('.document_sets_description')
@@ -179,6 +187,21 @@
     -if @collection.works.ocr_enabled.any?
       =link_to(collection_disable_ocr_path(:collection_id => @collection.id), class: 'button')
         span =t('.disable_ocr')
+
+    h3 =t('.metadata')
+    p =t('.metadata_description')
+    =link_to(collection_metadata_upload_path(@collection.id), class: 'button', :data => { litebox: { hash: 'upload-metadata' }})
+      span =t('.upload_metadata')
+
+    -unless current_user.account_type == "Individual Researcher"
+      h3 =t('.metadata_facets')
+      p =t('.metadata_facets_description')
+      -if @collection.facets_enabled?
+        =link_to(facets_disable_path(:collection_id => @collection.id), class: 'button')
+          span =t('.disable_facets')
+      -else
+        =link_to(facets_enable_path(:collection_id => @collection.id), class: 'button')
+          span =t('.enable_facets')
 
     h3 =t('.restricted_completed_works')
     p =t('.restricted_completed_works_description', work_count: @collection.works.joins(:work_statistic).where('work_statistics.complete' => 100, :restrict_scribes => false).count)
@@ -202,6 +225,11 @@
     =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
       span =t('.blank_collection')
 
+
+    h3 =t('.delete_collection')
+    =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
+      span =t('.delete_collection')
+
 =render({ :partial => '/shared/collection_footer' })
 
 -content_for :javascript
@@ -222,4 +250,6 @@
       $('.image-form :file').on('change', function() {
         $(this).closest('form').submit();
       });
+
+      $(".page-busy-overlay").hide();
     });

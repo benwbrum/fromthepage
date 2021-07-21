@@ -1,15 +1,50 @@
 class UserController < ApplicationController
   before_action :remove_col_id, :only => [:profile, :update_profile]
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:update, :update_profile, :api_key]
+
+  PAGES_PER_SCREEN = 50
 
   def demo
     session[:demo_mode] = true;
     redirect_to dashboard_path
   end
 
-  def update_profile
+  def feature_toggle
+    feature = params[:feature]
+    value = params[:value]
+    session[:features] ||= {}
+    if value=='enable'
+      session[:features][feature]=true
+    elsif value=='disable'
+      session[:features][feature]=nil
+    else
+      if session[:features][feature]
+        render :plain => "#{feature} is enabled"
+      else
+        render :plain => "#{feature} is disabled"
+      end
+      return
+    end
+    redirect_back :fallback_location => dashboard_role_path
   end
+
+  def choose_locale
+    new_locale = params[:chosen_locale].to_sym
+    if !I18n.available_locales.include?(new_locale)
+      # use the default if the above optiosn didn't work
+      new_locale = I18n.default_locale
+    end
+
+    if user_signed_in?
+      current_user.preferred_locale = new_locale
+      current_user.save
+    else
+      session[:current_locale] = new_locale
+    end
+    redirect_back :fallback_location => dashboard_role_path
+  end
+
 
   NOTOWNER = "NOTOWNER"
   def update
@@ -47,6 +82,10 @@ class UserController < ApplicationController
       @user = User.friendly.find(params[:user_slug])
     end
 
+    if @user.real_name.blank?
+      @user.real_name = @user.display_name || @user.login
+    end
+
     # Set dictation language to default (en-US) if it doesn't exist
     lang = !@user.dictation_language.blank? ? @user.dictation_language : "en-US"
     # Find the language portion of the language/dialect or set to nil
@@ -61,6 +100,28 @@ class UserController < ApplicationController
     @dialect_index = !int.nil? ? int-2 : nil
   end
 
+
+  def api_key
+    @user = current_user
+  end
+
+  def generate_api_key
+    @user = current_user
+    @user.api_key = User.generate_api_key
+    @user.save!
+
+#    ajax_redirect_to(user_api_key_path(@user))
+    render :action => :api_key, :layout => false
+  end
+
+  def disable_api_key
+    @user = current_user
+    @user.api_key = nil
+    @user.save!
+    # ajax_redirect_to(user_api_key_path(@user))
+    render :action => :api_key, :layout => false
+  end
+
   def profile
     #find the user if it isn't already set
     unless @user
@@ -69,10 +130,7 @@ class UserController < ApplicationController
     if !@user.deleted || current_user.admin
       @collections_and_document_sets = @user.visible_collections_and_document_sets(current_user)
       @collection_ids = @collections_and_document_sets.map {|collection| collection.id}
-      @deeds = Deed.where(collection_id: @collection_ids).order("created_at DESC").limit(10)
-      @notes = @user.notes.limit(10)
-      @page_versions = @user.page_versions.includes(page: :work).limit(10)
-      @article_versions = @user.article_versions.limit(10).joins(:article).includes(article: :categories)
+      @deeds = @user.deeds.includes(:note, :page, :user, :work, :collection).order('created_at DESC').paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
     else
       flash[:notice] = t('.user_deleted')
       redirect_to dashboard_path
@@ -84,21 +142,10 @@ class UserController < ApplicationController
     end
   end
 
-  def record_deed
-    deed = Deed.new
-    deed.note = @note
-    deed.page = @page
-    deed.work = @work
-    deed.collection = @collection
-    deed.deed_type = DeedType::NOTE_ADDED
-    deed.user = current_user
-    deed.save!
-  end
-
   private
 
   def user_params
-    params.require(:user).permit(:real_name, :orcid, :slug, :website, :location, :about, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added])
+    params.require(:user).permit(:picture, :real_name, :orcid, :slug, :website, :location, :about, :preferred_locale, notifications: [:user_activity, :owner_stats, :add_as_collaborator, :add_as_owner, :note_added])
   end
 
 end

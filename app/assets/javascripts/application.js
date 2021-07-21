@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.all
 //= require_tree ./plugins
 //= require user.js
+//= require handsontable.full.min
+//= require datatables.min
 
 ;(function($, window, document, undefined) {
 
@@ -157,6 +160,7 @@ $.fn.categoriesSelect = function() {
   return this.each(function() {
     var $element = $(this);
     var update_url = $element.data('assign-categories');
+    var collection_slug = $element.data('collection-slug');
 
     $element.select2({
       placeholder: 'Assign categories...',
@@ -170,13 +174,13 @@ $.fn.categoriesSelect = function() {
       $.ajax({
         type: 'POST',
         url: update_url,
-        data: { 'status': true, 'category_id': e.params.data.id }
+        data: { 'status': true, 'category_id': e.params.data.id, 'collection_id': collection_slug }
       });
     }).on('select2:unselect', function(e) {
       $.ajax({
         type: 'POST',
         url: update_url,
-        data: { 'status': false, 'category_id': e.params.data.id }
+        data: { 'status': false, 'category_id': e.params.data.id, 'collection_id': collection_slug }
       });
     });
   });
@@ -276,16 +280,33 @@ $(function() {
     e.stopPropagation();
     $(this).closest('li').toggleClass('expanded');
   });
+
+  // Disable export button when no format options selected
+  var exportCheckboxes = $('.bulk-export_options input');
+  exportCheckboxes.change(function() {
+    $(this).closest('form')
+      .find('button[type=submit]')
+      .prop('disabled', exportCheckboxes.filter(':checked').length < 1);
+  });
+  exportCheckboxes.change();
+
+  // Tippy tooltips
+  tippy('[data-tippy-content]', {
+    placement: 'bottom-start',
+    duration: [100, 200],
+    maxWidth: 300,
+  });
 });
 
 //Enable and disable select options for field-based transcription
-function addOptions(selector){
+function addOptions(selector, enabled_index){
   var parentTr = selector.parentElement.parentElement;
   var optionsObj = $(parentTr).find('td .field-options')[0];
   var index = selector.options.selectedIndex;
-  if (index == 1){
+  if (index == enabled_index){
     $(optionsObj).prop('disabled', false);
   } else {
     $(optionsObj).prop('disabled', true);
   }
 };
+

@@ -39,6 +39,13 @@ module ApplicationHelper
     end
   end
 
+  def profile_picture(user, gravatar_size = nil)
+    render({ 
+              :partial => 'shared/profile_picture',
+              :locals => { :user => user, :gravatar_size => gravatar_size }
+      })
+  end
+
   def svg_symbol(id, options={})
     content_tag(:svg, options) do
       content_tag(:use, nil, :'xlink:href' => asset_path('symbols.svg') + id)
@@ -84,19 +91,24 @@ module ApplicationHelper
     end
 
 
+    suppress_collection = false
     if options[:collection]
       deeds = @collection.deeds.active.where(condition).order('deeds.created_at DESC').limit(limit)
+      suppress_collection = true
     else
       #restricting to visible collections first speeds up the query
       limited = Deed.where(is_public: true)
       if options[:owner]
         owner = User.friendly.find(options[:owner].id)
         deeds = limited.where(collection_id: owner.all_owner_collections.ids).order('deeds.created_at DESC').limit(limit)
+      elsif options[:user_id]
+        deeds = Deed.where(condition).order('deeds.created_at DESC').limit(limit)
       else
         deeds = limited.where(condition).order('deeds.created_at DESC').limit(limit)
       end
     end
-    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options } })
+    options[:suppress_collection] = suppress_collection
+    render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
   end
 
   def validation_summary(errors)
@@ -147,9 +159,14 @@ module ApplicationHelper
 
   def value_to_html(value)
     if value.is_a? String
-      return value
+      return value # scalar value
     elsif value.is_a? Array
-      return value.map {|e| e["@value"]}.join("; ")
+      if value.first.is_a? String
+        return value.join("; ") # simple array
+      else
+        # array of language pairs
+        return value.map {|e| e["@value"]}.join("; ")
+      end
     end
   end
 
@@ -163,6 +180,22 @@ module ApplicationHelper
       html += "<p><b>#{md["label"]}</b>: #{value_to_html(md["value"])} </p>"
     end
     html
+  end
+
+  def target_collection_options(default)
+    option_data = {}
+    current_user.collections.sort { |a,b| a.title <=> b.title }.each do |c| 
+      option_data[c.title]=c.id 
+      c.document_sets.sort { |a,b| a.title <=> b.title }.each do |set|
+        option_data[" -- #{set.title}"] = "D#{set.id}"
+      end
+    end
+
+    options_for_select(option_data)
+  end
+
+  def feature_enabled?(feature)
+    session[:features] && session[:features][feature.to_s]
   end
 
 

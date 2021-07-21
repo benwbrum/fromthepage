@@ -1,0 +1,119 @@
+=render({ :partial => '/shared/work_tabs', :locals => { :selected => 5, :work_id => @work.id }})
+
+.columns
+  article.maincol
+    h2.nomargin Download
+    ul.bulk-export
+      li
+        .bulk-export_format
+          h5 PDF
+          p.nomargin Download a PDF version of this work.
+        .bulk-export_options
+          span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'pdf', method: :get}
+      li
+        .bulk-export_format
+          h5 MS Word
+          p.nomargin Download a DOCX version of this work.
+        .bulk-export_options
+          span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :get}
+
+
+    h2.nomargin Experiment
+    ul.bulk-export
+      li
+        .bulk-export_format
+          h5 Voyant
+          p.nomargin Send the transcription of this work to a Voyant Tools for analysis.
+        .bulk-export_options
+          span =link_to("Analyze", "https://voyant-tools.org/?corpus=#{CGI.escape(@collection.title)}&archive=#{iiif_work_export_plaintext_emended_url(@work.id)}", class: 'button')
+      li
+        .bulk-export_format
+          h5 Word Trees
+          p.nomargin Send the transcription of this work to Jason Davies' Word Trees visualizer for analysis.
+        .bulk-export_options
+          span =link_to("Analyze", "https://www.jasondavies.com/wordtree/?source=#{CGI.escape(iiif_work_export_plaintext_emended_url(@work.id))}", class: 'button')
+
+
+
+    -if current_user.like_owner?(@collection)
+      h2.nomargin Export
+      p Zip file export formats only accessible to project owners.
+      ul.bulk-export
+        li
+          .bulk-export_format
+            h5 Facing PDF
+            p.nomargin Download a PDF version of this work including images and text on facing pages.
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :facing_edition_work, value: true
+              =f.submit 'Export'
+        li
+          .bulk-export_format
+            h5 Verbatim Plaintext
+            p.nomargin Export verbatim, plaintext transcripts as a zip file containing one file per page.
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :plaintext_verbatim_page, value: true
+              =f.submit 'Export'
+        li
+          .bulk-export_format
+            h5 Searchable Plaintext
+            p.nomargin Export plaintext transcripts optimized for full-text search as a zip file containing one file per page.
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :plaintext_searchable_page, value: true
+              =f.submit 'Export'
+        li
+          .bulk-export_format
+            h5 Expanded Plaintext
+            p.nomargin Export plaintext transcripts replacing verbatim text with canonical subject titles as a zip file containing one file per page.
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :plaintext_emended_page, value: true
+              =f.submit 'Export'
+        li
+          .bulk-export_format
+            h5 HTML
+            p.nomargin Export transcripts as a zip file containing one HTML file per page.
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :html_page, value: true
+              =f.submit 'Export'
+        li
+          .bulk-export_format
+            h5 Table/Field CSV
+            p.nomargin Export all tabular, spreadsheet, or field-based data as a single CSV file.
+          .bulk-export_options
+            =form_for :bulk_export, url: bulk_export_create_for_work_path do |f| 
+              =f.hidden_field :collection_id, value: @collection.slug
+              =hidden_field_tag :work_id, @work.id
+              =f.hidden_field :table_csv_work, value: true
+              =f.submit 'Export'
+
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      // Remove 'page_busy' spinner once download finished
+      // Cookie should be set to 'true' in the controller method
+      $('.btnExport').on('click', function() {
+        Cookies.remove('download_finished', {path: '/'});
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
+      });
+    });

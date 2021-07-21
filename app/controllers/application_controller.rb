@@ -19,18 +19,33 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
-    if user_signed_in? && !current_user.dictation_language.nil?
-      locale = current_user.dictation_language.split('-').shift
-    else
-      locale = I18n.default_locale
+    locale = nil
+
+    # use user-record locale
+    if user_signed_in? && !current_user.preferred_locale.blank?
+      # the user has set their locale manually; use it.
+      locale = current_user.preferred_locale
     end
 
-    if I18n.available_locales.include?(locale.to_sym)
-      I18n.with_locale(locale, &action)
-    else
-      locale = I18n.default_locale
-      I18n.with_locale(locale, &action)
+    # if we can't find that, use session locale
+    if locale.nil?
+      if session[:current_locale]
+        locale = session[:current_locale]
+      end
     end
+
+    # if we can't find that, use browser locale
+    if locale.nil?
+      # the user might their locale set in the browser
+      locale = http_accept_language.compatible_language_from(I18n.available_locales)
+    end
+
+    if locale.nil? || !I18n.available_locales.include?(locale.to_sym)
+      # use the default if the above optiosn didn't work
+      locale = I18n.default_locale
+    end
+    # execute the action with the locale
+    I18n.with_locale(locale, &action)
   end
 
   # Set the current user in User
@@ -83,7 +98,9 @@ class ApplicationController < ActionController::Base
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
   # protect_from_forgery :secret => 'I Hate InvalidAuthenticityToken'
-  rescue_from ActiveRecord::RecordNotFound, with: :bad_record_id
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    bad_record_id(e)
+  end
 
   def load_objects_from_params
     # this needs to be ordered from the specific to the
@@ -155,15 +172,24 @@ class ApplicationController < ActionController::Base
     elsif !DocumentSet.find_by(slug: id).nil?
       @collection = DocumentSet.find_by(slug: id)
     elsif !Collection.find_by(slug: id).nil?
-      @collection = Collection.find_by(slug: id)
- 
+      @collection = Collection.find_by(slug: id) 
+    end
+
+    # check to make sure URLs haven't gotten scrambled
+    if @work
+      if @work.collection != @collection
+        # this could be a document set or a bad collection
+        unless @collection.is_a? DocumentSet
+          @collection = @work.collection
+        end
+      end
     end
     return @collection
   end
 
-  def bad_record_id
+  def bad_record_id(e)
     logger.error("Bad record ID exception for params=#{params.inspect}")
-
+    logger.error(e.backtrace[2])
     if @collection
       redirect_to :controller => 'collection', :action => 'show', :collection_id => @collection.id
     else
@@ -226,9 +252,28 @@ class ApplicationController < ActionController::Base
     return if (params[:controller] == 'iiif')
 
     unless @collection.show_to?(current_user)
-      redirect_to dashboard_path
+      # second chance?
+      unless set_fallback_collection
+        flash[:error] = t('unauthorized_collection', :project => @collection.title)
+        redirect_to user_profile_path(@collection.owner)
+      end
     end
   end
+
+  def set_fallback_collection
+    if @work && @work.collection.supports_document_sets
+      alternative_set = @work.document_sets.where(:is_public => true).first
+      if alternative_set
+        @collection = alternative_set
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:login, :email, :password, :password_confirmation, :display_name, :owner, :paid_date, :activity_email) }
@@ -287,8 +332,17 @@ end
 
   def track_action
     extras = {}
-    extras[:collection_id] = @collection.id if @collection
-    extras[:collection_title] = @collection.title if @collection
+    if @collection
+      if @collection.is_a? DocumentSet
+        extras[:document_set_id] = @collection.id
+        extras[:document_set_title] = @collection.title
+        extras[:collection_id] = @collection.collection.id
+        extras[:collection_title] = @collection.collection.title
+      else
+        extras[:collection_id] = @collection.id
+        extras[:collection_title] = @collection.title
+      end
+    end
     extras[:work_id] = @work.id if @work
     extras[:work_title] = @work.title if @work
     extras[:page_id] = @page.id if @page
@@ -302,11 +356,18 @@ end
   def check_api_access
     if (defined? @collection) && @collection
       if @collection.restricted? && !@collection.api_access
-        render :status => 403, :text => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
+        if @api_user.nil? || !(@api_user.like_owner?(@collection))
+          render :status => 403, :plain => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
+        end
       end
     end
   end
 
+  def set_api_user
+    authenticate_with_http_token do |token, options|
+      @api_user = User.find_by(api_key: token)
+    end
+  end
 
 private
   def store_current_location

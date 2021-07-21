@@ -53,7 +53,7 @@ describe "testing deletions" do
     count = work.pages.count
     test_page = work.pages.first
     visit dashboard_owner_path
-    page.find('.maincol').find('a', text: work.title).click
+    page.find('.maincol').find_all('a', text: work.title).first.click
     expect(page).to have_content(work.title)
     page.find('.tabs').click_link("Read")
     expect(page).to have_content(test_page.title)

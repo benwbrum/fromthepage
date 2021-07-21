@@ -1,6 +1,9 @@
 dist: xenial
 sudo: false
 language: ruby
+cache:
+  - bundler
+  - yarn
 
 rvm: 2.7.1
 
@@ -18,10 +21,6 @@ jobs:
       - mysql
       env: DB=mysql
       gemfile: Gemfile
-    - addons:
-        mariadb: '10.2'
-      env: DB=mariadb
-      gemfile: Gemfile
 
 before_install:
   - sudo apt-get -qq update
@@ -33,6 +32,7 @@ before_install:
   - export QMAKE=/usr/lib/x86_64-linux-gnu/qt5/bin/qmake
   - qtchooser -qt=qt5
   - mysql -e 'CREATE DATABASE test;'
+  - nvm install --lts
 
 before_script:
   - bundle exec rake db:create

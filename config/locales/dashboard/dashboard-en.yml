@@ -1,15 +1,16 @@
 en:
   dashboard:
+    plain: "Dashboard"
+    collaborator: "Collaborator"
     alphabetical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
-      owned_by: "Owned by %{author}"
       project_by: "Project by %{author}"
     collections_list:
+      recent_activity: "Recent Activity"
       collections: "Collections"
       meta_description: "You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age."
     hierarchical_collections_and_document_sets:
       start_transcribing: "Start Transcribing"
-      owned_by: "Owned by %{author}"
       project_by: "Project by %{author}"
     landing_page:
       previous_image: "Previous image"
@@ -30,6 +31,7 @@ en:
       project_by: "Project by %{author}"
       everyone_activity: "Everyone's Activity"
       your_activity: "Your Activity"
+      time_ago_in_words: "%{time} ago"
     owner:
       see_all_works: "See All Works..."
       start_a_project: "Start A Project"
@@ -57,7 +59,7 @@ en:
       click_to_browse_files: "Click to browse files"
       browse: "Browse"
       use_image_filenames: " Use image filenames as page titles."
-      use_ocr_from_pdf: " Use OCR from PDF text layer."
+      use_ocr_from_pdf: " Import text from PDF text layers, text files or XML files."
       zip_files_may_contain: "ZIP files may contain folders containing images, PDFs, or folders containing pdfs."
       each_folder_will_be_treated: "Each folder will be treated as a different document, so do not mix pages from different documents in the same folder."
       each_pdf_will_be_treated: "Each PDF will be treated as its own document, so do not split pages from the same document among more than one PDF."
@@ -67,7 +69,9 @@ en:
     new_work:
       import_a_iiif_manifest_or_collection: "Import a IIIF Manifest or Collection"
       import_from_contentdm: "Import from CONTENTdm"
-      paste_in_the_url: "Paste in the URL of a compound object on your CONTENTdm site."
+      paste_in_the_url: "Paste in the URL of a compound object or a collection on your CONTENTdm site."
+      or_import_many: "Or "
+      import_many_link: "import several individual compound objects."
       import_from_the_internet_archive: "Import from the Internet Archive"
       import_from_archive_dot_org: "Import From Archive.org"
       you_have_not_connected: "You have not connected any Omeka sites. Use the button below to create a new Omeka connection."
@@ -92,3 +96,25 @@ en:
       description: "Description"
       create_work: "Create Work"
       add_new_collection: "Add New Collection"
+    exports:
+      exported_item: Exported Collection/Work
+      date: Export Date
+      status: Status
+      configuration: Configuration (level)
+      plaintext_verbatim_page: Verbatim Plaintext (page)
+      plaintext_verbatim_work: Verbatim Plaintext (work)
+      plaintext_emended_page: Analytic Plaintext (page)
+      plaintext_emended_work: Analytic Plaintext (work)
+      plaintext_searchable_page: Searchable Plaintext (page)
+      plaintext_searchable_work: Searchable Plaintext (work)
+      tei_work: TEX-XML (work)
+      html_page: HTML (page)
+      html_work: HTML (work)
+      subject_csv_collection: Subject Index CSV (collection)
+      table_csv_collection: Field/Table CSV (collection)
+      table_csv_work: Field/Table CSV (work)
+      work_metadata_csv: Work Metadata (collection)
+      facing_edition_work: Facing Edition PDF (work)
+      text_pdf_work: Text PDF (work)
+      text_docx_work: MS Word .docx (work)
+

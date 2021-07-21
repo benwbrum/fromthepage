@@ -1,0 +1,44 @@
+=render(:partial => 'admin/header', :locals => { :selected => 6 })
+.columns
+  article.maincol
+
+    table.admin-grid.datagrid.striped
+      thead
+        tr
+          th(colspan="2") =t('.user')
+          th.w100 =t('.upload_details')
+          th(colspan="1") =t('.date')
+          th(colspan="2") =t('.status')
+
+      tbody
+        -@bulk_exports.each do |bulk_export|
+          tr
+            td
+              =link_to(user_profile_path(bulk_export.user), class: 'userpic userpic-small')
+                =profile_picture(bulk_export.user)
+            td.nowrap.toleft
+              div =link_to bulk_export.user.login, user_profile_path(bulk_export.user)
+              small =bulk_export.user.email
+            td
+              -if bulk_export.collection.present?
+                p.fgfaded(data-prefix="Collection: ")
+                  =link_to(bulk_export.collection.title, collection_url(bulk_export.user, bulk_export.collection))
+              .small.fgfaded(data-prefix="File Name: ")
+                =bulk_export.zip_file_name
+            td.nowrap
+              p
+                =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+            td.nowrap
+              small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
+            td.nowrap
+              dl.dropdown.right
+                dt tabindex=0
+                  span Actions
+                  =svg_symbol '#icon-list', class: 'icon'
+                dd
+                  =link_to(t('.show_details'), bulk_export_show_path(:bulk_export_id => bulk_export.id))
+
+        .toolbar_group =will_paginate @bulk_exports
+
+    =render(:partial => 'shared/pagination', :locals => { :model => @bulk_exports, :entries_info => true })
+

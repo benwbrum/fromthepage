@@ -6,7 +6,7 @@ module AbstractXmlHelper
     return html
   end
 
-  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false)
+  def xml_to_html(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
     return "" if xml_text.blank?
     xml_text.gsub!(/\n/, "")
     xml_text.gsub!('ISO-8859-15', 'UTF-8')
@@ -14,6 +14,8 @@ module AbstractXmlHelper
     if preserve_lb
       xml_text.gsub!("<lb break='no'/> ", "-<br />")
     end
+
+    @collection ||= collection
 
     doc = REXML::Document.new(xml_text)
     #unless subject linking is disabled, do this
@@ -41,27 +43,87 @@ module AbstractXmlHelper
         e.replace_with(anchor)
       end
     end
+
+    doc.elements.each("//abbr") do |e|
+      expan = e.attributes['expan']
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      span.add_text(expan)
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "original-abbreviation")
+      e.children.each { |c| inner_span.add(c) }
+      span.add(inner_span)
+      e.replace_with(span)
+    end
+
+    doc.elements.each("//expan") do |e|
+      orig = e.attributes['abbr'] || e.attributes['orig']
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      unless orig.blank?
+        inner_span = REXML::Element.new("span")
+        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span.add_text(orig)
+        span.add(inner_span)
+      end
+      e.replace_with(span)
+    end
+
+    doc.elements.each("//reg") do |e|
+      orig = e.attributes['orig']
+
+      span = REXML::Element.new("span")
+      span.add_attribute("class", "expanded-abbreviation")
+      e.children.each { |c| span.add(c) }
+      unless orig.blank?
+        inner_span = REXML::Element.new("span")
+        inner_span.add_attribute("class", "original-abbreviation")
+        inner_span.add_text(orig)
+        span.add(inner_span)
+      end
+      e.replace_with(span)
+    end
+
+    doc.elements.each("//footnote") do |e|
+      marker = e.attributes['marker'] || '*'
+      span = REXML::Element.new("sup")
+      span.add_attribute("class", "footnote-marker")
+      span.add_text(marker)
+      inner_span = REXML::Element.new("span")
+      inner_span.add_attribute("class", "footnote-body")
+      e.children.each { |c| inner_span.add(c) }
+      span.add(inner_span)
+      e.replace_with(span)
+    end
+
     # get rid of line breaks within other html mark-up
-    doc.elements.delete_all("//table//lb")
+    doc.elements.delete_all("//table/lb")
+    doc.elements.delete_all("//table/row/lb")
 
     # convert line breaks to br or nothing, depending
     doc.elements.each("//lb") do |e|
       lb = REXML::Element.new('span')
-      lb.add_text("")
+
       lb.add_attribute('class', 'line-break')
 
       if preserve_lb
         if e.attributes['break'] == "no"
+          if e.has_text?
+            sigil = e.get_text.to_s
+          else
+            sigil = '-'
+          end
           sib = e.previous_sibling
           if sib.kind_of? REXML::Element
-            sib.add_text('-')
+            sib.add_text(sigil)
           else
-            sib.value=sib.value+'-'
+            sib.value=sib.value+sigil unless sib.nil?
           end
         end
         e.replace_with(REXML::Element.new('br'))
       else
-        if params[:action] == "read_work" || params[:action] == 'needs_review_pages'
+        if params[:action] == "read_work" || params[:action] == 'needs_review_pages' || params[:action] == 'paged_search' 
           if e.attributes['break'] == "no"
             lb.add_text('')
           else
@@ -88,6 +150,109 @@ module AbstractXmlHelper
       span.add_attribute('class', "depth#{depth}")
     end
 
+    doc.elements.each("//head") do |e|
+      # convert to a span
+      depth = 2      
+      span = e
+      e.name = 'span'
+      span.add_attribute('class', "depth#{depth}")
+    end
+
+    doc.elements.each("//hi") do |e|
+      rend = e.attributes["rend"]
+      span=e
+      case rend
+      when 'sup'
+        span.name='sup'
+      when 'underline'
+        span.name='u'
+      when 'italic'
+        span.name='i'
+      when 'bold'
+        span.name='i'
+      when 'sub'
+        span.name='sub'
+      when 'str'
+        span.name='strike'
+      end
+    end
+
+    doc.elements.each("//add") do |e|
+      e.name='span'
+      e.add_attribute('class', "addition")
+    end
+
+    doc.elements.each("//figure") do |e|
+      rend = e.attributes["rend"]
+      if rend == 'hr'
+        e.name='hr'
+      else
+        e.name='span'
+        rend ||= 'figure'
+        e.add_text("{#{rend.titleize}}")
+      end
+    end
+
+    doc.elements.each("//unclear") do |e|
+      unclear = REXML::Element.new('span')
+      unclear.add_text("[")
+      unclear.add_attribute('class', 'unclear')
+      e.children.each { |c| unclear.add(c) }
+      unclear.add_text("]")
+      e.replace_with(unclear)
+    end
+
+    doc.elements.each("//marginalia") do |e|
+      span = REXML::Element.new('span')
+      span.add_text("{")
+      span.add_attribute('class', 'marginalia')
+      e.children.each { |c| span.add(c) }
+      span.add_text("}")
+      e.replace_with(span)
+    end
+
+    doc.elements.each("//catchword") do |e|
+      span = REXML::Element.new('span')
+      span.add_text("{")
+      span.add_attribute('class', 'catchword')
+      e.children.each { |c| span.add(c) }
+      span.add_text("}")
+      e.replace_with(span)
+    end
+
+    doc.elements.each("//gap") do |e|
+      gap = REXML::Element.new('span')
+      gap.add_text("[...]")
+      gap.add_attribute('class', 'gap')
+      e.replace_with(gap)
+    end
+
+    doc.elements.each("//stamp") do |e|
+      stamp_type = e.attributes["type"] || ''
+      stamp = REXML::Element.new('span')
+      stamp.add_text("{#{stamp_type.titleize} Stamp}")
+      stamp.add_attribute('class', 'stamp')
+      e.replace_with(stamp)
+    end
+
+
+
+    doc.elements.each("//table") do |e|
+      rend = e.attributes["rend"]
+      if rend == 'ruled'
+        e.add_attribute('class', 'tabular')
+      end
+    end
+
+    doc.elements.each("//row") do |e|
+      e.name='tr'
+    end
+
+
+    doc.elements.each("//cell") do |e|
+      e.name='td'
+    end
+
     if @page
       doc.elements.each("//texFigure") do |e|
         position = e.attributes["position"]
@@ -100,11 +265,6 @@ module AbstractXmlHelper
       
     end
 
-    unless user_signed_in?
-      doc.elements.each("//sensitive") do |e|
-        e.replace_with(REXML::Comment.new("sensitive information suppressed"))
-      end
-    end
     # now our doc is correct - what do we do with it?
     my_display_html = ""
     doc.write(my_display_html)

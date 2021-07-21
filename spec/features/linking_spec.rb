@@ -75,7 +75,7 @@ describe "subject linking" do
     page.find('a', text: "Show pages that mention").click
     page.find('.work-page_title').find('a').click
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: ""
+    fill_in_editor_field ""
     find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Facsimile")
@@ -93,7 +93,7 @@ describe "subject linking" do
     test_page = @work.pages.last
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Transcription")
@@ -102,7 +102,7 @@ describe "subject linking" do
     expect(links).to eq 1
     #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Texas")
@@ -122,11 +122,11 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[Texas"
+    fill_in_editor_field "[[Texas"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Wrong number of closing braces")
-    page.fill_in 'page_source_text', with: ""
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    fill_in_editor_field ""
+    fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Transcription")
@@ -138,18 +138,18 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
     #no text in the link
-    page.fill_in 'page_source_text', with: "[[ ]]"
+    fill_in_editor_field "[[ ]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank tag")
     #no text in the category
-    page.fill_in 'page_source_text', with: "[[|Texas]]"
+    fill_in_editor_field "[[|Texas]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank subject")
     #no text in the subject
-    page.fill_in 'page_source_text', with: "[[Texas| ]]"
+    fill_in_editor_field "[[Texas| ]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Blank text")
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
     page.click_link("Overview")
     expect(page).to have_content("Transcription")
@@ -160,11 +160,11 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[Texas[?]]"
+    fill_in_editor_field "[[Texas[?]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Unclosed bracket")
-    page.fill_in 'page_source_text', with: ""
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    fill_in_editor_field ""
+    fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
@@ -174,11 +174,11 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[[Texas]]]"
+    fill_in_editor_field "[[[Texas]]]"
     find('#save_button_top').click
     expect(page).to have_content("Subject Linking Error: Tags should be created using 2 brackets, not 3")
-    page.fill_in 'page_source_text', with: ""
-    page.fill_in 'page_source_text', with: "[[Texas]]"
+    fill_in_editor_field ""
+    fill_in_editor_field "[[Texas]]"
     find('#save_button_top').click
     expect(page).to have_content("Transcription")
     expect(page).to have_content("Texas")
@@ -188,7 +188,7 @@ describe "subject linking" do
     test_page = @work.pages.third
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Transcribe")
-    page.fill_in 'page_source_text', with: "[[\"Houston\"]]"
+    fill_in_editor_field "[[\"Houston\"]]"
     find('#save_button_top').click
     expect(page).to have_content("Houston")
   end
@@ -198,7 +198,7 @@ describe "subject linking" do
     test_page = translate_work.pages.first
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Translate")
-    page.fill_in 'page_source_translation', with: "[[Texas]]"
+    fill_in_editor_field "[[Texas]]"
     click_button('Save Changes')
     page.click_link("Overview")
     page.click_link('Show Translation')
@@ -207,7 +207,7 @@ describe "subject linking" do
     expect(links).to eq 1
   #check to see if the links are regenerating on save
     page.find('.tabs').click_link("Translate")
-    page.fill_in 'page_source_translation', with: "[[Texas]]"
+    fill_in_editor_field "[[Texas]]"
     click_button('Save Changes')
     page.click_link("Overview")
     page.click_link('Show Translation')
@@ -224,17 +224,17 @@ describe "subject linking" do
     #make sure the autolink doesn't duplicate a link
     expect(page).to have_content("[[John Samuel Smith]]")
     expect(page).to have_content("Mrs. Davis")
-    click_button('Autolink')
+    click_button('Autolink', match: :first)
     expect(page).not_to have_content("[[John [[Samuel Jones|Samuel]] Smith]]")
     expect(page).not_to have_content("[[Mrs.]]")
     expect(page).to have_content("Mrs. Davis")
     #make sure it doesn't autolink something that has no subject
-    page.fill_in 'page_source_text', with: "Austin"
-    click_button('Autolink')
+    fill_in_editor_field "Austin"
+    click_button('Autolink', match: :first)
     expect(page).not_to have_content("[[Austin]]")
     #check that it links if there is a subject
-    page.fill_in 'page_source_text', with: "Texas"
-    click_button('Autolink')
+    fill_in_editor_field "Texas"
+    click_button('Autolink', match: :first)
     expect(page).to have_content("[[Texas]]")
   end
 
@@ -244,11 +244,11 @@ describe "subject linking" do
     visit "/display/display_page?page_id=#{test_page.id}"
     page.find('.tabs').click_link("Translate")
     #make sure it doesn't autolink something that has no subject
-    page.fill_in 'page_source_translation', with: "Austin"
+    fill_in_editor_field "Austin"
     click_button('Autolink')
     expect(page).not_to have_content("[[Austin]]")
     #check that it links if there is a subject
-    page.fill_in 'page_source_translation', with: "Texas"
+    fill_in_editor_field "Texas"
     click_button('Autolink')
     expect(page).to have_content("[[Texas]]")
   end
@@ -256,7 +256,7 @@ describe "subject linking" do
   it "checks the number of subject links" do
     link_page = @work.pages.last
     visit collection_transcribe_page_path(@collection.owner, @collection, @work, link_page)
-    page.fill_in 'page_source_text', with: "[[Ada Lovelace]] [[Ada Lovelace]]"
+    fill_in_editor_field "[[Ada Lovelace]] [[Ada Lovelace]]"
     find('#save_button_top').click
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Subjects")

@@ -1,4 +1,5 @@
 class UserMailer < ActionMailer::Base
+  include Rails.application.routes.url_helpers
   default from: SENDING_EMAIL_ADDRESS
   layout "mailer"
 
@@ -13,6 +14,12 @@ class UserMailer < ActionMailer::Base
     @document_upload = document_upload
 
     mail to: @document_upload.user.email, subject: "Your upload is ready"
+  end
+
+  def bulk_export_finished(bulk_export)
+    @bulk_export = bulk_export
+
+    mail to: @bulk_export.user.email, subject: "Your export is ready"
   end
 
   def new_owner(user, text)
@@ -83,18 +90,23 @@ class UserMailer < ActionMailer::Base
           .where(deeds: {deed_type: DeedType::NOTE_ADDED})
           .merge(Deed.past_day).distinct
           .where.not(deeds: {user_id: user.id})
-        pages_with_recent_notes.where(id: user_page_ids)
-          .select {|page| page if page.deeds.where(deed_type: DeedType::NOTE_ADDED).last.user_id != user.id}
+        pages_with_recent_notes.where(id: user_page_ids).select do |page| 
+          if page.deeds.where(deed_type: DeedType::NOTE_ADDED).last.user_id != user.id && page.work.access_object(user)
+            page
+          end
+        end
       end
 
       def works_added_to_users_collection_in_past_day(user)
         # collections the user has worked in
         user_collection_ids = user.deeds.pluck(:collection_id).uniq
         # works that have been added to those collections by someone other than the user in the past day
-        Work.where(collection_id: user_collection_ids).joins(:deeds)
+        works = Work.where(collection_id: user_collection_ids).joins(:deeds)
           .where(deeds: {deed_type: DeedType::WORK_ADDED})
           .merge(Deed.past_day).where.not(deeds: {user_id: user.id})
           .distinct
+
+        works.select {|work| work.access_object(user)}
       end
     end #end class << self
 

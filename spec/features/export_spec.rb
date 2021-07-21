@@ -14,20 +14,59 @@ describe "export tasks" do
   end
 
   it "exports all works in a collection" do
+    #TODO add better export tests for new UI
     visit dashboard_owner_path
     page.find('.collection_title', text: @collection.title).click_link(@collection.title)
     page.find('.tabs').click_link("Export")
     expect(page).to have_content("Export All Works")
     expect(page).to have_content(@work.title)
     page.find('#btnExportAll').click
-    expect(page.response_headers['Content-Type']).to eq 'application/zip'
+    expect(page.response_headers['Content-Type']).to eq 'text/html; charset=utf-8'
+
+    page.check('bulk_export_html_page')
+    page.check('bulk_export_html_work')
+    page.check('bulk_export_plaintext_verbatim_page')
+    page.check('bulk_export_plaintext_verbatim_work')
+    page.check('bulk_export_plaintext_emended_work')
+    page.check('bulk_export_plaintext_emended_page')
+    page.check('bulk_export_plaintext_searchable_work')
+    page.check('bulk_export_plaintext_searchable_page')
+    page.check('bulk_export_tei_work')
+    page.check('bulk_export_table_csv_work')
+    page.check('bulk_export_table_csv_collection')
+    page.check('bulk_export_subject_csv_collection')
+    page.check('bulk_export_work_metadata_csv')
+
+    page.find('button', text: 'Start Export').click
+    expect(page).to have_content("Queued")
+
+    login_as(User.where(admin: true).first, :scope => :user)
+
+    # wait for the background process to run
+    1.upto(10) do
+      sleep 5
+      if BulkExport.last.status == 'finished'
+        break
+      end
+    end
+
+    visit bulk_export_index_path
+    expect(page).to have_content("Finished")
   end
 
   it "exports the subject index" do
     visit "/export?collection_id=#{@collection.id}"
-    expect(page).to have_content("Export Subject Index")
+    expect(page).to have_content("Export Subjects")
     expect(page).to have_content(@work.title)
     page.find('#btnCsvExport').click
+    expect(page.response_headers['Content-Type']).to eq 'application/csv'
+  end
+
+  it "exports the subject details" do
+    visit "/export?collection_id=#{@collection.id}"
+    expect(page).to have_content("Export Subjects")
+    expect(page).to have_content(@work.title)
+    page.find('#btnCsvDetailExport').click
     expect(page.response_headers['Content-Type']).to eq 'application/csv'
   end
 

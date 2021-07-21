@@ -73,7 +73,7 @@ describe "collection settings js tasks", :order => :defined do
     expect(page.find('h1')).to have_content(@work.title)
     page.find('.maincol').find('a', text: @work.pages.first.title).click
     expect(page.find('h1')).to have_content(@work.pages.first.title)
-    page.fill_in 'page_source_text', with: "Collaborator test"
+    fill_in_editor_field('Collaborator test')
     find('#save_button_top').click
     page.click_link("Overview")
     expect(page.find('.page-preview')).to have_content("Collaborator test")
@@ -281,8 +281,9 @@ describe "collection spec (isolated)" do
       page.find('.collections').click_link('Stats Test Work')
       page.find('.tabs').click_link('Read')
       page.find('.maincol h4').click_link('Page 1')
-      fill_in('page_source_text', with: 'Transcription')
-      page.find('#save_button_top').click
+      fill_in_editor_field('Transcription')
+#      fill_in('page_source_text', with: 'Transcription')
+      page.find('#finish_button_top').click
       expect(page).to have_content('Saved')
 
       page.find('.breadcrumbs').click_link('Stats Test Collection')

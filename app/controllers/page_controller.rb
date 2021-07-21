@@ -62,7 +62,7 @@ class PageController < ApplicationController
       flash[:notice] = t('.page_created')
 
       if page_params[:base_image]
-        process_uploaded_file(@page, @page.base_image)
+        process_uploaded_file(@page, page_params[:base_image])
       end
 
       if subaction == 'save_and_new'
@@ -81,7 +81,7 @@ class PageController < ApplicationController
     flash[:notice] = t('.page_updated')
 
     if params[:page][:base_image]
-      process_uploaded_file(page, page.base_image)
+      process_uploaded_file(page, page_params[:base_image])
     end
 
     redirect_back fallback_location: page
@@ -90,18 +90,17 @@ class PageController < ApplicationController
 
   private
 
-  def process_uploaded_file(page, filename)
-    if filename.blank?
-      # create a new filename
-      filename = "#{Rails.root}/public/images/working/upload/#{page.id}.jpg"
-    end
+  def process_uploaded_file(page, image_file)
+    # create a new filename
+    filename = "#{Rails.root}/public/images/working/upload/#{page.id}.jpg"
+
     dirname = File.dirname(filename)
     unless Dir.exist? dirname
       FileUtils.mkdir_p(dirname)
     end
-    File.open(filename, "wb") do |f|
-      f.write(params[:page][:base_image].read)
-    end
+
+    FileUtils.mv(image_file.tempfile, filename)
+    FileUtils.chmod("u=wr,go=r", filename)
     page.base_image = filename
     page.shrink_factor = 0
     set_dimensions(page)
@@ -125,7 +124,7 @@ class PageController < ApplicationController
   end
 
   def page_params
-    params.require(:page).permit(:page, :title)
+    params.require(:page).permit(:page, :title, :base_image, :status, :translation_status)
   end
 
 end

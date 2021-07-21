@@ -1,5 +1,7 @@
 require 'csv'
 require 'subject_exporter'
+require 'subject_details_exporter'
+require 'subject_coocurrence_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
@@ -14,14 +16,17 @@ class Collection < ApplicationRecord
   has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
   has_one :sc_collection, :dependent => :destroy
   has_many :transcription_fields, :dependent => :destroy
+  has_many :bulk_exports, :dependent => :destroy
+  has_many :editor_buttons, :dependent => :destroy
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
   has_many :pages, through: :works
+  has_many :metadata_coverages, :dependent => :destroy
+  has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
 
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
   has_and_belongs_to_many :owners, :class_name => 'User', :join_table => :collection_owners
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :collection_collaborators
-  #  attr_accessor :picture
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
 
@@ -69,10 +74,22 @@ class Collection < ApplicationRecord
     page_fields.uniq
   end
 
-  def export_subjects_as_csv
+  def export_subject_index_as_csv
     subject_link = SubjectExporter::Exporter.new(self)
 
     subject_link.export
+  end
+
+  def export_subject_details_as_csv
+    subjects = SubjectDetailsExporter::Exporter.new(self)
+
+    subjects.export
+  end
+
+  def export_subject_coocurrence_as_csv
+    subjects = SubjectCoocurrenceExporter::Exporter.new(self)
+
+    subjects.export
   end
 
   def show_to?(user)
@@ -320,7 +337,7 @@ class Collection < ApplicationRecord
 
   def set_transcription_conventions
     unless self.transcription_conventions.present?
-      self.transcription_conventions = "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Modernize for readability</li>\n<li><i>Punctuation: </i>Add modern periods, but don't add punctuation like commas and apostrophes.</li>\n<li><i>Line Breaks: </i>Hit <code>return</code> once after each line ends.  Two returns indicate a new paragraph, which is usually indentation  following the preceding sentence in the original.  The times at the end of each entry should get their own paragraph, since the software does not support indentation in the transcriptions.</li>\n <li><i>Illegible text: </i>Indicate illegible readings in single square brackets: <code>[Dr?]</code></li>\n <li>A single newline indicates a line-break in the original document, and will not appear as a break in the text in some views or exports. Two newlines indicate a paragraph, and will appear as a paragraph break in all views.</li></ul>"
+      self.transcription_conventions = "<p><b>Transcription Conventions</b>\n<ul><li><i>Spelling: </i>Use original spelling if possible.</li>\n <li><i>Capitalization: </i>Retain original capitalization.</li>\n<li><i>Punctuation: </i>Use original punctuation when possible.</li>\n<li><i>Line Breaks: </i>Hit <code>Enter</code> once after each line ends.  Two returns indicate a new paragraph, whether indicated by a blank line or by indentation in the original.</li></ul>"
     end
   end
 

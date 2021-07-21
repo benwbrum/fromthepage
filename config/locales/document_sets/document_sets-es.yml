@@ -39,6 +39,8 @@ es:
       unrestricted: "No restringido"
       save: "Guardar"
       no_document_sets: "Esta colección no tiene conjuntos de documentos"
+      search_for_works: "Búsqueda de obras..."
+      search: "Búsqueda"
     new:
       create_new_document_set: "Crear Nuevo Conjunto de Documentos"
       document_set_is_marked_public: "Si el conjunto de documentos está marcado como público, las obras colocadas en él serán legibles incluso si la colección está marcada como privada."

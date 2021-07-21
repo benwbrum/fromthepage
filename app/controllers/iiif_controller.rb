@@ -1,7 +1,11 @@
 require 'iiif/presentation'
 class IiifController < ApplicationController
   include AbstractXmlHelper
+  include ExportHelper
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
   before_action :set_cors_headers
+  before_action :set_api_user
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
 
   def collections
@@ -24,7 +28,7 @@ class IiifController < ApplicationController
     site_collection['@id'] = iiif_user_collections_url(@user)
     site_collection.label = "IIIF resources avaliable on the FromThePage installation at #{Rails.application.config.action_mailer.default_url_options[:host]} for #{@user.display_name}."
     (@user.collections.to_a + @user.document_sets.to_a).each do |collection_or_ds|
-      if collection_or_ds.is_public || collection_or_ds.api_access
+      if collection_or_ds.is_public || collection_or_ds.api_access || (@api_user && @api_user.like_owner?(collection_or_ds))
         site_collection.collections << iiif_collection_from_collection(collection_or_ds,false)
       end
     end
@@ -139,7 +143,7 @@ class IiifController < ApplicationController
             }
       manifest = IIIF::Presentation::Manifest.new(seed)
       manifest.label = work.title
-      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id }] if work.sc_manifest
+      manifest.metadata = [{"label" => "dc:source", "value" => work.sc_manifest.at_id}] if work.sc_manifest
       manifest.service = status_service_for_manifest(work)
 
       domain_collection.manifests << manifest
@@ -159,7 +163,17 @@ class IiifController < ApplicationController
     manifest = IIIF::Presentation::Manifest.new(seed)
     manifest.label = work.title
     dc_source = dc_source_from_work(work)
-    manifest.metadata = [dc_source] if dc_source
+    if dc_source
+      manifest.metadata = [dc_source]
+    else
+      manifest.metadata = []
+    end
+    if work.original_metadata
+      manifest.metadata += JSON[work.original_metadata]
+    end
+    work_metadata = work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page", "in_scope").delete_if{|k,v| v.blank?}
+
+    work_metadata.each_pair { |label,value| manifest.metadata << { "label" => label.titleize, "value" => value.to_s } }
 
     if work.sc_manifest
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
@@ -413,7 +427,17 @@ class IiifController < ApplicationController
     render  :layout => false, :content_type => "text/plain", :plain => @work.searchable_plaintext
   end
 
+  def export_work_tei
+    tei_xml = work_to_tei(@work, current_user)
 
+    render  :layout => false, :content_type => "application/xml", :plain => tei_xml
+  end
+
+  def export_work_html
+    xhtml = work_to_xhtml(@work)
+
+    render :plain => xhtml, :layout => false, :content_type => "text/html"
+  end
 
 private
   def iiif_page_note(page, noteid)
@@ -471,8 +495,8 @@ private
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
         "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work)
       },
-      { "@id" => url_for(:controller => :export, :action => :show, :work_id => work.id), "label" => "XHTML Export", "profile" => "XHTML URL"},
-      { "@id" => url_for(:controller => :export, :action => :tei, :work_id => work.id), "label" => "TEI Export", "profile" => "tei URL"}
+      { "@id" => iiif_work_export_html_url(work), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
+      { "@id" => iiif_work_export_tei_url(work), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages
     pages.each do |page|
@@ -491,7 +515,7 @@ private
     if collection.is_a? DocumentSet
       iiif_document_set_url(collection)
     else
-      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.id, :only_path => false })
+      url_for({ :controller => 'iiif', :action => 'collection', :collection_id => collection.slug, :only_path => false })
     end
   end
 
@@ -833,6 +857,12 @@ private
     headers['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  end
+
+  def set_api_user
+    authenticate_with_http_token do |token, options|
+      @api_user = User.find_by(api_key: token)
+    end
   end
 
 end

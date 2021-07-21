@@ -2,17 +2,17 @@ module CollectionHelper
 
   def link
     if params[:works] == 'show'
-      @link_title = "Incomplete Works"
+      @link_title = t('.incomplete_works')
       @link_type = "hide"
     elsif params[:works] == 'hide'
-      @link_title = "Show All"
+      @link_title = t('.show_all')
       @link_type = "show"
     else
       if @collection.hide_completed
-        @link_title = "Show All"
+        @link_title = t('.show_all')
         @link_type = "show"
       else
-        @link_title = "Incomplete Works"
+        @link_title = t('.incomplete_works')
         @link_type = "hide"
       end
     end
@@ -41,29 +41,28 @@ module CollectionHelper
       @progress_review = work.work_statistic.pct_needs_review.round
       @progress_completed = work.work_statistic.pct_completed.round
       if work.ocr_correction
-        @type = "corrected"
+        @type = t('collection.corrected')
       else
-        @type = "transcribed"
+        @type = t('collection.transcribed')
       end
     else
       @progress_annotated = work.work_statistic.pct_translation_annotated.round
       @progress_review = work.work_statistic.pct_translation_needs_review.round
       @progress_completed = work.work_statistic.pct_translation_completed.round
-      @type = "translated"
+      @type = t('collection.translated')
     end
 
     if @collection.subjects_disabled
       unless @progress_review == 0
-        @wording = "#{@progress_completed}% #{@type}, #{@progress_review}% needs review"
+        @wording = "#{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')}"
       else
-        @wording = "#{@progress_completed}% #{@type}"
+        @wording = "#{@progress_completed+@progress_review}% #{@type}"
       end
     elsif @progress_review == 0
-      @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}"
+      @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type}"
     else
-      @wording = "#{@progress_annotated}% indexed, #{@progress_completed}% #{@type}, #{@progress_review}% needs review"
+      @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')}"
     end
-
   end
 
   def find_transcribe_pages
@@ -78,16 +77,12 @@ module CollectionHelper
 
   def find_untranscribed_page
     # Get first untranscribed work
-    untranscribed_works = Work.where({collection_id: @collection.id})
-        .joins(:work_statistic).where(work_statistics: {complete: 0})
+    untranscribed_works = @collection.works.joins(:work_statistic).where(work_statistics: {complete: 0})
     
     if untranscribed_works.any?{|w| w.untranscribed?}
       work_ids = untranscribed_works.select{|w| w.untranscribed?}
     else
-      work_ids = Work.where({collection_id: @collection.id})
-                      .incomplete_transcription
-                      .order_by_recent_inactivity
-                      .pluck(:id)
+      work_ids = @collection.works.incomplete_transcription.order_by_recent_inactivity
     end
     Page.where({work_id: work_ids})
       .needs_transcription
