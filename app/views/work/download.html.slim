@@ -3,17 +3,19 @@
 .columns
   article.maincol
     h2.nomargin Download
+    -if @work.work_statistic.pct_completed!=100
+      p Warning: this work may not be complete.
     ul.bulk-export
       li
         .bulk-export_format
           h5 PDF
-          p.nomargin Download a PDF version of this work.
+          p.nomargin Download a PDF version of this work.                  
         .bulk-export_options
           span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'pdf', method: :get}
       li
         .bulk-export_format
           h5 MS Word
-          p.nomargin Download a DOCX version of this work.
+          p.nomargin Download a DOCX version of this work.                 
         .bulk-export_options
           span =button_to "Download", export_printable_path(@collection, @work), class: 'btnExport', params: { edition: 'text', format: 'doc', method: :get}
 

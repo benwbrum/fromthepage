@@ -56,10 +56,11 @@ module ExportService
 
     # run pandoc against the temp directory
     log_file = File.join(temp_dir, "#{file_stub}.log")
-    cmd = "pandoc -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
+    cmd = "pandoc --from markdown_strict+superscript -o #{output_file} #{md_file} --pdf-engine=xelatex --verbose > #{log_file} 2>&1"
     puts cmd
     logger.info(cmd)
     system(cmd)
+    puts File.read(log_file)
 
     output_file
   end
