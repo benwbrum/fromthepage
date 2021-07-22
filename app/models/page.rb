@@ -348,7 +348,7 @@ UPDATE `articles` SET graph_image=NULL WHERE `articles`.`id` IN (SELECT article_
             cell = ERB::Util.html_escape(cell)
           end
           if checkbox_headers.include? tc.header
-            tc.content = (cell == 'true').to_s
+            tc.content = (cell == 'true' || cell == true).to_s
           else
             tc.content = cell
           end
