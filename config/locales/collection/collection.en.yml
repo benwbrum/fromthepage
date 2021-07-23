@@ -251,3 +251,14 @@ en:
       order: "Order"
     facet_form:
       filter: "Filter"
+    reviewer_dashboard:
+      description: Works with Pages Needing Review  
+      no_works_need_review: No works need review
+      title: Title
+      needs_review: Needs Review
+      incomplete: Incomplete
+      complete: Complete
+      total: Total
+      contributors: Contributors
+      last_activity: Last Activity
+      filter_works: Filter
