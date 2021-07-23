@@ -18,6 +18,7 @@
         th.vbottom =t('.last_activity')
         th.vbottom =t('.contributors')
     tbody
+      -contributor_map = {} 
       -@works.each do |work|
         tr
           td.vbottom =link_to work.title, {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'review-button'
@@ -30,8 +31,11 @@
           td.vbottom
             -user_deed_count = work.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:deeds).group('deeds.user_id').count.sort { |a,b| b[1] <=> a[1] }
             -max_contributor_rows = 4
+            -work_contributor_ids = user_deed_count.map{|e|e[0] }.uniq
+            -unless work_contributor_ids - contributor_map.keys == []
+              -User.find(work_contributor_ids).each {|u| contributor_map[u.id]=u }
             -user_deed_count[0..max_contributor_rows-1].each do |user_id, deed_count|
-              =User.find(user_id).display_name
+              =contributor_map[user_id].display_name
               =" (#{deed_count})"
               br
             -if user_deed_count.size > max_contributor_rows
