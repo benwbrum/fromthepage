@@ -21,6 +21,7 @@ class Work < ApplicationRecord
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
   has_one :work_facet, :dependent => :destroy
+  has_many :bulk_exports, :dependent => :delete_all
 
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
