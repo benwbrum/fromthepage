@@ -27,6 +27,12 @@ class CollectionController < ApplicationController
     end
   end
 
+  def reviewer_dashboard
+    # works which have at least one page needing review
+    @works = @collection.works.joins(:work_statistic).where.not('work_statistics.needs_review' => 0)
+  end
+
+
   def edit_buttons
     @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
   end

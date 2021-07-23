@@ -418,6 +418,7 @@ Fromthepage::Application.routes.draw do
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
+      get 'review', as: :review, to: 'collection#reviewer_dashboard'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'facets'
