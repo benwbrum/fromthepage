@@ -12,7 +12,6 @@
         th.vbottom =t('.title')
         th.vbottom =t('.review')
         th.vbottom =t('.incomplete')
-        th.vbottom =t('.complete')
         th.vbottom =t('.total')
         th.vbottom =t('.notes')
         th.vbottom =t('.last_activity')
@@ -23,8 +22,7 @@
         tr
           td.vbottom =link_to work.title, {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'review-button'
           td.vbottom.dt-body-right =work.work_statistic.needs_review
-          td.vbottom.dt-body-right =work.work_statistic.total_pages - work.work_statistic.complete
-          td.vbottom.dt-body-right =work.work_statistic.complete
+          td.vbottom.dt-body-right =work.work_statistic.total_pages - (work.work_statistic.transcribed_pages+work.work_statistic.blank_pages)
           td.vbottom.dt-body-right =work.work_statistic.total_pages
           td.vbottom.dt-body-right =work.notes.count
           td.vbottom =work.work_statistic.updated_at
