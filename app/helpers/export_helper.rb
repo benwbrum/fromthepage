@@ -40,29 +40,38 @@ module ExportHelper
     end
 
 
-
     markdown = ""
+    processed = "never ran"
     doc.write(markdown)
-    markdown.gsub!("&amp;", "&")
-    markdown.gsub!("</p>", "</p>\n\n")
-    markdown.gsub!("<br/>","<br/>\n")
+    cmd = "pandoc --from html --to markdown"
+    Open3.popen2(cmd) do |stdin, stdout, t| 
+      stdin.print(markdown)
+      stdin.close
+      processed = stdout.read
+    end
+
+#     markdown = ""
+#     doc.write(markdown)
+#     markdown.gsub!("&amp;", "&")
+#     markdown.gsub!("</p>", "</p>\n\n")
+#     markdown.gsub!("<br/>","<br/>\n")
 
 
 
-    markdown.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
-    markdown.gsub!('<p/>','')
-    markdown.gsub!(/<\/?page>/,'')
+#     markdown.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
+#     markdown.gsub!('<p/>','')
+#     markdown.gsub!(/<\/?page>/,'')
 
-    # escape LaTeX special characters
-    markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
-#    markdown.gsub!('^', '\textasciicircum')  #\^{}
-    markdown.gsub!('~', '\textasciitilde')
-    markdown.gsub!(/^\s*(\d+)([.)])/, '\1\\\\\2')
-    markdown.gsub!(/^\s*<p>(\d+)([.)])/, '<p>\1\\\\\2')
+#     # escape LaTeX special characters
+#     markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
+# #    markdown.gsub!('^', '\textasciicircum')  #\^{}
+#     markdown.gsub!('~', '\textasciitilde')
+#     markdown.gsub!(/^\s*(\d+)([.)])/, '\1\\\\\2')
+#     markdown.gsub!(/^\s*<p>(\d+)([.)])/, '<p>\1\\\\\2')
 
-    markdown.strip!
+#     markdown.strip!
 
-    return markdown
+    return processed
   end
 
 
