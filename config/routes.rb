@@ -136,7 +136,7 @@ Fromthepage::Application.routes.draw do
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'
-    get 'tei', to: 'export#tei'
+    get ':work_id/tei', to: 'export#tei', as: 'tei'
     get 'subject_csv', to: 'export#subject_index_csv'
     get 'subject_details_csv', to: 'export#subject_details_csv'
     get 'subject_coocurrence_csv', to: 'export#subject_coocurrence_csv'
