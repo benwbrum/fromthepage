@@ -123,18 +123,12 @@ module AbstractXmlHelper
         end
         e.replace_with(REXML::Element.new('br'))
       else
-        if params[:action] == "read_work" || params[:action] == 'needs_review_pages' || params[:action] == 'paged_search' 
           if e.attributes['break'] == "no"
             lb.add_text('')
           else
             lb.add_text(' ')
             lb.add_attribute('class', 'line-break')
           end
-        else
-          if e.attributes['break'] == "no"
-            lb.add_text('-')
-          end
-        end
       end
 
       e.replace_with(lb) unless preserve_lb
