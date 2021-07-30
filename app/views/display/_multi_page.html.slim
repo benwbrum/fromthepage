@@ -25,7 +25,7 @@
           =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.id, needs_review: 'none'}, class: 'review-button'
         -elsif @collection.active?
           =button_to t('.pages_need_transcription'), {action: "read_work", work_id: @work.id, needs_review: 'transcription' }, class: 'review-button'
-          -if logged_in? && current_user.can_review?(@collection)
+          -if user_signed_in? && current_user.can_review?(@collection)
             =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
           =button_to t('.pages_need_indexing'), {action: "read_work", work_id: @work.id, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
 
