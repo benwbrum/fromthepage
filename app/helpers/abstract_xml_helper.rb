@@ -123,18 +123,20 @@ module AbstractXmlHelper
         end
         e.replace_with(REXML::Element.new('br'))
       else
-        if request.nil? || ["read_work", 'needs_review_pages', 'paged_search'].include?(params[:action])  
+        # preserve_lb == false
+        # if !request.nil? && ["read_work", 'needs_review_pages', 'paged_search'].include?(params[:action])  
+        # binding.pry
           if e.attributes['break'] == "no"
             lb.add_text('')
           else
             lb.add_text(' ')
             lb.add_attribute('class', 'line-break')
           end
-        else
-          if e.attributes['break'] == "no"
-            lb.add_text('-')
-          end
-        end
+        # else
+        #   if e.attributes['break'] == "no"
+        #     lb.add_text('-')
+        #   end
+        # end
       end
 
       e.replace_with(lb) unless preserve_lb

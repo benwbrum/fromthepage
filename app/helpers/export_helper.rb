@@ -21,11 +21,21 @@ module ExportHelper
 
       e.replace_with(REXML::Text.new("[^#{marker}]"))
     end
+
+
+
     postprocessed = ""
     doc.write(postprocessed)
 
     html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
-
+    doc = REXML::Document.new("<div>#{html}</div>")
+    doc.elements.each("//span") do |e|
+      if e.attributes['class'] == 'line-break'
+        e.replace_with(REXML::Text.new(" "))
+      end
+    end
+    html=''
+    doc.write(html)
 
     processed = "never ran"
 
