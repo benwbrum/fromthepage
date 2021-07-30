@@ -8,4 +8,4 @@ en:
       other_recent_activity: "Other Recent Activity in Your Collections:"
       how_is_your_project_going: "How's your project going?"
       what_is_easy: "What's easy? What's hard? What can we do to improve FromThePage? We'd love to hear from you &mdash; just respond to this email."
-      opt_out_email: "If you would prefer not to receive these emails, please contact support@fromthepage.com to opt out."
+      opt_out_email: "If you would prefer not to receive these emails, please click %{link} to change your notification settings"

@@ -38,4 +38,4 @@ h3 =t('.how_is_your_project_going')
 p 
   i =t('.what_is_easy').html_safe
 p
-  i =t('.opt_out_email')
+ =t('.opt_out_email', link: link_to("here", update_profile_url(@activity.owner, only_path: false))).html_safe
