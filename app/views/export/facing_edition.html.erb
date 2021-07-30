@@ -18,8 +18,6 @@
 <% end %>
 
 ### <%= page.title %>
-<div class="page-content">
-  <%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
-</div>
+<%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
 
 <% end %>
