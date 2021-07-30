@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe "Pages need indexing" do
   INDEXING_BUTTON_TEXT = 'Pages That Need Indexing'
-  REVIEW_BUTTON_TEXT = 'Pages That Need Review'
 
   scenario "when a collection has indexing disabled" do
     collection = create(:collection, :with_pages, subjects_disabled: true)
@@ -11,7 +10,6 @@ describe "Pages need indexing" do
     expect(page).to have_text(collection.title)
 
     page.find('.collection-work_title', text: collection.works.first.title).click_link collection.works.first.title
-    expect(page).to have_button(REVIEW_BUTTON_TEXT)
     expect(page).to_not have_button(INDEXING_BUTTON_TEXT)
 
     # Remove Factories
@@ -28,7 +26,6 @@ describe "Pages need indexing" do
     expect(page).to have_text(collection.title)
 
     page.find('.collection-work_title', text: collection.works.first.title).click_link collection.works.first.title
-    expect(page).to have_button(REVIEW_BUTTON_TEXT)
     expect(page).to have_button(INDEXING_BUTTON_TEXT)
 
     # Remove Factories
