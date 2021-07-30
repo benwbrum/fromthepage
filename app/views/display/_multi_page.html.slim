@@ -44,7 +44,7 @@
           h3.categories =t('.categories')
           .category-tree
             ==display_categories(@collection.categories, nil, true) do |category|
-              -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
+              -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.slug, :anchor => "category-#{category.id}")
               -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
               -if category.children.any?
                 -ret << "<span class=\"tree-bullet\"></span>"
