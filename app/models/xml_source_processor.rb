@@ -272,7 +272,8 @@ module XmlSourceProcessor
     6.downto(2) do |depth|
       line.scan(/(={#{depth}}(.+)={#{depth}})/).each do |wiki_title|
         verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title.last)
-        line = line.sub(wiki_title.first, "<entryHeading title=\"#{verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
+        safe_verbatim=verbatim.gsub(/"/, "&quot;")
+        line = line.sub(wiki_title.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
         @sections << Section.new(:title => wiki_title.last, :depth => depth)
       end
     end
