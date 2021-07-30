@@ -9,24 +9,7 @@ module ExportHelper
     preprocessed.gsub!("]","\\]")
 
 
-
     doc = REXML::Document.new(preprocessed)
-    doc.elements.each("//lb") do |e|
-      if preserve_lb
-        e.replace_with(REXML::Text.new("\\\n"))
-      else
-        e.replace_with(REXML::Text.new(" "))        
-      end
-    end
-
-    doc.elements.each("//pb") do |e|
-      e.replace_with(REXML::Text.new("\n\n\n"))
-    end
-
-    doc.elements.each('//link') do |e|
-      e.replace_with(e.children.first)
-    end
-
     doc.elements.each_with_index("//footnote") do |e,i|
       marker = "#{i}" #e.attributes['marker'] || '*'
 
@@ -41,28 +24,29 @@ module ExportHelper
 
 
 
-    markdown = ""
-    doc.write(markdown)
-    markdown.gsub!("&amp;", "&")
-    markdown.gsub!("</p>", "</p>\n\n")
-    markdown.gsub!("<br/>","<br/>\n")
+    postprocessed = ""
+    doc.write(postprocessed)
 
+    html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
+    doc = REXML::Document.new("<div>#{html}</div>")
+    doc.elements.each("//span") do |e|
+      if e.attributes['class'] == 'line-break'
+        e.replace_with(REXML::Text.new(" "))
+      end
+    end
+    html=''
+    doc.write(html)
 
+    processed = "never ran"
 
-    markdown.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
-    markdown.gsub!('<p/>','')
-    markdown.gsub!(/<\/?page>/,'')
+    cmd = "pandoc --from html --to markdown"
+    Open3.popen2(cmd) do |stdin, stdout, t| 
+      stdin.print(html)
+      stdin.close
+      processed = stdout.read
+    end
 
-    # escape LaTeX special characters
-    markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
-#    markdown.gsub!('^', '\textasciicircum')  #\^{}
-    markdown.gsub!('~', '\textasciitilde')
-    markdown.gsub!(/^\s*(\d+)([.)])/, '\1\\\\\2')
-    markdown.gsub!(/^\s*<p>(\d+)([.)])/, '<p>\1\\\\\2')
-
-    markdown.strip!
-
-    return markdown
+    return processed
   end
 
 
