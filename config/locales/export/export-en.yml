@@ -61,16 +61,18 @@ en:
       categories: "Categories:"
       pages: "Pages:"
     tei:
-      edition_created: "Edition created from new transcripts of this manuscript."
-      initial_upload: "Initial upload of this work's facsimile images and metadata to FromThePage for editing"
-      administrator: "Adminstrator of the %{collection} transcription project on FromThePage"
-      made_one_edit_on: "made one edit on"
-      made_edits_between: "made %{count} edits between"
-      dynamic_tei_export: "Dynamic TEI export from FromThePage (version %{version})"
-      empty_transcript: "Empty transcript -- probably initial upload of page facsimile."
-      changes_to_page_transcript: "Changes to page transcript."
-      single_proof_by: "Single Proof by:"
-      double_proof_by: "Double Proof by:"
+      html:
+        erb:
+          edition_created: "Edition created from new transcripts of this manuscript."
+          initial_upload: "Initial upload of this work's facsimile images and metadata to FromThePage for editing"
+          administrator: "Adminstrator of the %{collection} transcription project on FromThePage"
+          made_one_edit_on: "made one edit on"
+          made_edits_between: "made %{count} edits between"
+          dynamic_tei_export: "Dynamic TEI export from FromThePage (version %{version})"
+          empty_transcript: "Empty transcript -- probably initial upload of page facsimile."
+          changes_to_page_transcript: "Changes to page transcript."
+          single_proof_by: "Single Proof by:"
+          double_proof_by: "Double Proof by:"
     text:
       export_metadata: "FromThePage export of %{work} from %{collection} made on %{time}."
       identifier: "Identifier: %{work}"
