@@ -29,7 +29,7 @@ class CollectionController < ApplicationController
 
   def reviewer_dashboard
     # works which have at least one page needing review
-    @works = @collection.works.joins(:work_statistic, :notes, :pages).includes(:work_statistic, :notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
+    @works = @collection.works.joins(:work_statistic).left_outer_joins(:notes).includes(:work_statistic, :notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
   end
 
 
