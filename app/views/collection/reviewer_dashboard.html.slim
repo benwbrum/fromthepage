@@ -1,0 +1,60 @@
+=stylesheet_link_tag 'datatables.min'
+
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+
+-if @works.empty?
+  h4 =t '.no_works_need_review'
+-else
+  h4 =t '.description'
+  table#works.stripe
+    thead
+      tr
+        th.vbottom =t('.title')
+        th.vbottom =t('.review')
+        th.vbottom =t('.incomplete')
+        th.vbottom =t('.total')
+        th.vbottom =t('.notes')
+        th.vbottom =t('.last_activity')
+        th.vbottom =t('.contributors')
+    tbody
+      -contributor_map = {} 
+      -@works.each do |work|
+        tr
+          td.vbottom =link_to work.title, {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'review-button'
+          td.vbottom.dt-body-right =work.work_statistic.needs_review
+          td.vbottom.dt-body-right =work.work_statistic.total_pages - (work.work_statistic.transcribed_pages+work.work_statistic.blank_pages)
+          td.vbottom.dt-body-right =work.work_statistic.total_pages
+          td.vbottom.dt-body-right =work.notes.count
+          td.vbottom =work.work_statistic.updated_at
+          td.vbottom
+            -user_deed_count = work.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:deeds).group('deeds.user_id').count.sort { |a,b| b[1] <=> a[1] }
+            -max_contributor_rows = 4
+            -work_contributor_ids = user_deed_count.map{|e|e[0] }.uniq
+            -unless work_contributor_ids - contributor_map.keys == []
+              -User.find(work_contributor_ids).each {|u| contributor_map[u.id]=u }
+            -user_deed_count[0..max_contributor_rows-1].each do |user_id, deed_count|
+              =contributor_map[user_id].display_name
+              =" (#{deed_count})"
+              br
+            -if user_deed_count.size > max_contributor_rows
+              i ="and #{user_deed_count.size - max_contributor_rows} more"
+              
+
+
+
+  
+
+=render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+
+    $(document).ready( function() {
+        $('#works').DataTable({ 
+          paging: false,
+          language: {
+            searchPlaceholder: "#{t('.filter_works')}",
+            search: ""
+          } 
+        });
+    } );

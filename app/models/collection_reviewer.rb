@@ -1,0 +1,2 @@
+class CollectionReviewer < ApplicationRecord
+end
