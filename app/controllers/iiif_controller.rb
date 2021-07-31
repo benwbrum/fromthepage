@@ -495,8 +495,8 @@ private
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
         "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work)
       },
-      { "@id" => iiif_work_export_html_url(work), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
+      { "@id" => iiif_work_export_html_url(work.slug), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
+      { "@id" => iiif_work_export_tei_url(work.slug), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages
     pages.each do |page|

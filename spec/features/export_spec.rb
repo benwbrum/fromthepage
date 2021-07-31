@@ -93,7 +93,7 @@ describe "export tasks" do
     visit "/export?collection_id=#{@collection.id}"
     expect(page).to have_content("Export Individual Works")
     page.find('tr', text: @work.title).click_link("TEI")
-    expect(page.current_path).to eq ("/export/tei")
+    expect(page.current_path).to eq ("/export/#{@work.slug}/tei")
     expect(page).to have_content(@work.title)
     expect(page).to have_content("TEI export")
   end

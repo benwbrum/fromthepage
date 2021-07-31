@@ -25,7 +25,8 @@
           =button_to t('.view_all_pages'), {action: "read_work", work_id: @work.id, needs_review: 'none'}, class: 'review-button'
         -elsif @collection.active?
           =button_to t('.pages_need_transcription'), {action: "read_work", work_id: @work.id, needs_review: 'transcription' }, class: 'review-button'
-          =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
+          -if user_signed_in? && current_user.can_review?(@collection)
+            =button_to t('.pages_need_review'), {action: "read_work", work_id: @work.id, needs_review: 'review' }, class: 'review-button'
           =button_to t('.pages_need_indexing'), {action: "read_work", work_id: @work.id, needs_review: 'index' }, class: 'review-button' if @work.supports_indexing?
 
           -if @work.supports_translation
@@ -44,7 +45,7 @@
           h3.categories =t('.categories')
           .category-tree
             ==display_categories(@collection.categories, nil, true) do |category|
-              -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.id, :anchor => "category-#{category.id}")
+              -link_url = url_for(:controller => 'article', :action => 'list', :collection_id => @collection.slug, :anchor => "category-#{category.id}")
               -ret = "<a href=\"#{link_url}\" class=\"tree-item\">"
               -if category.children.any?
                 -ret << "<span class=\"tree-bullet\"></span>"

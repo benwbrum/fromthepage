@@ -16,6 +16,7 @@ work_1:
   supports_translation: true
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'ms-844'
 work_2:
   id: 2
   title: MF1323.1197 Reel 32_0057-2
@@ -34,6 +35,7 @@ work_2:
   supports_translation: true
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323'
 work_3:
   id: 3
   title: MF1323.1197 Reel 32_0046-2
@@ -52,6 +54,7 @@ work_3:
   supports_translation: false
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323-1197-reel-32-0046-2'
 work_4:
   id: 4
   title: MF1323.1197 Reel 32_0053-2
@@ -70,6 +73,7 @@ work_4:
   supports_translation: false
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323-1197-reel-32-0053-2'
 work_5:
   id: 5
   title: MF1323.1197 Reel 32_0057-1
@@ -88,6 +92,7 @@ work_5:
   supports_translation: true
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323-1197-reel-32-0057-1'
 work_6:
   id: 6
   title: MF1323.1197 Reel 32_0053-1
@@ -106,6 +111,7 @@ work_6:
   supports_translation: false
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323-1197-reel-32-0053-1'
 work_7:
   id: 7
   title: MF1323.1197 Reel 32_0046-1
@@ -124,6 +130,7 @@ work_7:
   supports_translation: false
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323-1197-reel-32-0046-1'
 work_8:
   id: 8
   title: MF1323.1197 Reel 32_0046-3
@@ -142,6 +149,7 @@ work_8:
   supports_translation: false
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'mf1323-1197-reel-32-0046-3'
 work_9:
   id: 9
   title: MS_641-642
@@ -160,3 +168,4 @@ work_9:
   supports_translation: false
   translation_instructions: 
   pages_are_meaningful: true
+  slug: 'ms-641-642'
