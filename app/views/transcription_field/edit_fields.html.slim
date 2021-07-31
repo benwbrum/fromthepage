@@ -3,6 +3,8 @@
 div.columns
   div.maincol
     h2 =t('.edit_transcription_fields')
+    p 
+      i =t('.transcription_warning')
     =form_tag transcription_field_add_fields_path
       =hidden_field_tag(:collection_id, @collection.id)
       table.field-form#new-fields

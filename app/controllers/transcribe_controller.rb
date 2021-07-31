@@ -213,15 +213,23 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
-      @display_context = 'preview'
-      @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
-      if @page.field_based
-        # what do we do about the table cells?
-        @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+      begin
+        @display_context = 'preview'
+        @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
+        if @page.field_based
+          # what do we do about the table cells?
+          @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+        end
+
+        display_page
+        render :action => 'display_page'
+      rescue REXML::ParseException => ex
+        flash[:error] = t('.error_message', error_message: ex.message)
+        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
+        render :action => 'display_page'
+        flash.clear
       end
 
-      display_page
-      render :action => 'display_page'
     elsif params['edit']
       if @page.field_based
         # what do we do about the table cells?

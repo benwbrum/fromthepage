@@ -15,6 +15,13 @@
   :path => "#{collection_subjects_path(@collection.owner, @collection)}",
 }]
 
+-if user_signed_in? && current_user.can_review?(@collection) && @collection.review_type
+  -tabs +=[{\
+  :name => t('.review'),
+  :selected => 12,
+  :path => "#{collection_review_path(@collection.owner, @collection)}",
+}]
+
 -if user_signed_in? && current_user.like_owner?(@collection)
   -if @collection.is_a?(Collection)
     -tabs += [{\

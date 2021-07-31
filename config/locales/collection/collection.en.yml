@@ -76,6 +76,10 @@ en:
       suggestions_help_tab: "Suggestions for your help tab."
       link_help: "Subject Linking Help Text (not displayed if subjects are disabled)"
       subjects_disabled: "Disable subject indexing"
+      review_type: "Review Type"
+      review_type_optional: " Optional: Collaborators may request review of their transcriptions."
+      review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
+      review_type_restricted: " Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
       review_workflow: "All initial transcriptions need review"
       hide_completed: "Hide completed works by default"
       text_language: "Select the language of the transcription text"
@@ -120,6 +124,11 @@ en:
       collection_owners_description: "Owners may add works to the collection and upload page images as well as transcribing and reading works in the collection."
       add_owner: "Add Owner"
       remove_owner: "Remove owner"
+      collection_reviewers: "Authorized Reviewers"
+      collection_reviewers_description: "These users will be able to review and approve transcriptions, as well as edit them."
+      add_reviewer: "Add Reviewer"
+      remove_reviewer: "Remove Reviewer"
+
       transcription_type: "Transcription Type"
       transcription_type_description: "Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled."
       field_based_transcription: "Field based transcription"
@@ -242,3 +251,14 @@ en:
       order: "Order"
     facet_form:
       filter: "Filter"
+    reviewer_dashboard:
+      description: Works with Pages Needing Review  
+      no_works_need_review: No works need review
+      title: Title
+      needs_review: Needs Review
+      incomplete: Incomplete
+      complete: Complete
+      total: Total
+      contributors: Contributors
+      last_activity: Last Activity
+      filter_works: Filter
