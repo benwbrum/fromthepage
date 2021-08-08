@@ -27,6 +27,12 @@ class CollectionController < ApplicationController
     end
   end
 
+  def search_users
+    query = "%#{params[:term]}%"
+    users = User.where("real_name like ? or email like ?", query, query)
+    render json: { results: users.map{|u| {text: "#{u.display_name} #{u.email}", id: u.id}}}
+  end
+
   def reviewer_dashboard
     # works which have at least one page needing review
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
