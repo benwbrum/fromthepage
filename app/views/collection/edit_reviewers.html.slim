@@ -4,7 +4,7 @@
   p.fglight =t('collection.edit.collection_reviewers_description')
   =form_tag(collection_add_reviewer_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id, id: 'add_reviewer_collection_id'
-    =select_tag 'user_id', options_from_collection_for_select(@nonreviewers, 'id', 'name_with_identifier'), include_blank: true, id: 'add_reviewer_user_id'
+    =select_tag 'user_id', nil, include_blank: true, id: 'add_reviewer_user_id'
     =button_tag t('collection.edit.add_button')
   -@reviewers.each do |user|
     -contributions = user.deeds.where(collection_id: @collection.id).count
@@ -24,6 +24,18 @@
 
 javascript:
   $('#add_reviewer_user_id').select2({
-    placeholder: 'Add new reviewer...',
+    placeholder: 'Add new reviewer...',  
+    ajax: {
+      url: '#{collection_search_users_path(@collection)}',
+      dataType: 'json', 
+      delay: 250,
+      data: function (params) {
+        var query = {
+          term: params.term,
+          user_type: 'reviewer'
+        }
+        return query;
+      }
+    }
   });
 
