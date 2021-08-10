@@ -4,7 +4,11 @@
   p.fglight =t('collection.edit.collection_owners_description')
   =form_tag(collection_add_owner_path, class: 'user-select-form') do
     =hidden_field_tag :collection_id, @collection.id
-    =select_tag 'user_id', nil, include_blank: true
+    -if User.count > 100
+      -options = nil
+    -else
+      -options = options_from_collection_for_select(@nonowners, 'id', 'name_with_identifier')
+    =select_tag 'user_id', options, include_blank: true
     =button_tag t('collection.edit.add_button')
   -@owners.each do |user|
     -contributions = user.deeds.where(collection_id: @collection.id).count
