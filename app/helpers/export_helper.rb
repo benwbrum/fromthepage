@@ -182,10 +182,29 @@ module ExportHelper
 
     @all_articles = @work.articles
 
-    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
-    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
+    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'}).to_a
+    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'}).to_a
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
-                      .where.not(categories: {title: 'Places'})
+                      .where.not(categories: {title: 'Places'}).to_a
+    @other_articles.each do |subject|
+      subjects = expand_subject(subject)
+      if subjects.count > 1
+        subjects[1..].each do |expanded|
+          if expanded.categories.where(title: 'People').present?
+            @person_articles << expanded
+          elsif expanded.categories.where(title: 'Places').present?
+            @place_articles << expanded
+          else
+            @other_articles << expanded
+          end
+        end
+      end
+    end
+
+    @person_articles.uniq!
+    @place_articles.uniq!
+    @other_articles.uniq!
+
     ### Catch the rendered Work for post-processing
     if defined? render_to_string
       thingy = self
@@ -259,16 +278,24 @@ module ExportHelper
 
     has_content ? tei : ""
   end
+
+  def expand_subject(subject)
+    subjects = [subject]
+
+    parts = subject.title.split(/(\. |--)/)
+    0.upto(parts.size/2 - 1) do |i|
+      higher_subject_title = parts[0..(2*i)].join
+      higher_subject = @collection.articles.where(title: higher_subject_title).first
+      if higher_subject
+        subjects << higher_subject
+      end
+    end
+
+    subjects
+  end
   
   def subject_to_tei(subject)
     tei = format_subject_to_tei(subject)
-    # parts = subject.title.split(/(\. |--)/)
-    # 0.upto(parts.size/2 - 1) do |i|
-    #   higher_subject_title = parts[0..(2*i)].join
-    #   higher_subject = @collection.articles.where(title: higher_subject_title).first
-    #   tei << format_subject_to_tei(higher_subject) if higher_subject
-    # end
-
     tei
   end
 
