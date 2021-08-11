@@ -2,7 +2,7 @@ en:
   layouts:
     application:
       projects: "Projects"
-      find_a_project: "Find A Project"
+      find_a_project: "Find A Cool Project"
       sign_up: "Sign Up"
       create_an_account: "Create An Account"
       admin_dashboard: "Admin Dashboard"
