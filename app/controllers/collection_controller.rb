@@ -320,6 +320,9 @@ class CollectionController < ApplicationController
     int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
     #transform to integer and subtract 2 because of how the array is nested
     @dialect_index = !int.nil? ? int-2 : nil
+    if @collection.field_based && !@collection.transcription_fields.present? 
+      flash.now[:info] = t('.alert') 
+    end
   end
 
   def update
