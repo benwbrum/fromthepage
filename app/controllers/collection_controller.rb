@@ -111,16 +111,19 @@ class CollectionController < ApplicationController
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
-    # @nonowners = User.order(:display_name) - @owners
-    # @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
-    # @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
     @reviewers = @collection.reviewers
-    # @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
-    @nonowners = []
-    @noncollaborators = []
-    @nonreviewers = []
+    if User.count > 100
+      @nonowners = []
+      @noncollaborators = []
+      @nonreviewers = []
+    else
+      @nonowners = User.order(:display_name) - @owners
+      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
+    end
   end
 
   def show
