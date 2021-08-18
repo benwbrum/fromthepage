@@ -27,6 +27,12 @@ class CollectionController < ApplicationController
     end
   end
 
+  def search_users
+    query = "%#{params[:term]}%"
+    users = User.where("real_name like ? or email like ?", query, query)
+    render json: { results: users.map{|u| {text: "#{u.display_name} #{u.email}", id: u.id}}}
+  end
+
   def reviewer_dashboard
     # works which have at least one page needing review
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
@@ -105,13 +111,19 @@ class CollectionController < ApplicationController
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
-    @nonowners = User.order(:display_name) - @owners
-    @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
-    @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
     @reviewers = @collection.reviewers
-    @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
+    if User.count > 100
+      @nonowners = []
+      @noncollaborators = []
+      @nonreviewers = []
+    else
+      @nonowners = User.order(:display_name) - @owners
+      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
+    end
   end
 
   def show
@@ -320,6 +332,9 @@ class CollectionController < ApplicationController
     int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
     #transform to integer and subtract 2 because of how the array is nested
     @dialect_index = !int.nil? ? int-2 : nil
+    if @collection.field_based && !@collection.transcription_fields.present? 
+      flash.now[:info] = t('.alert') 
+    end
   end
 
   def update

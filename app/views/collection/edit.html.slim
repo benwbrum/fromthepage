@@ -85,7 +85,7 @@
                     =profile_picture(user)
                   .username
                     =link_to user.display_name, user_profile_path(user)
-              =link_to('Edit Authorized Reviewers',collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons' }})
+              =link_to('Edit Authorized Reviewers',collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
               
 
       .toolbar
