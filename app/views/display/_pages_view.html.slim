@@ -52,13 +52,16 @@
                 ==transcription.force_encoding('utf-8')
               -else
                 -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
-                  -if page.work.ocr_correction
-                    -status = t('.corrected')
-                    -help = link_to('help correct', action)
+                  -if @collection.active?
+                    -if page.work.ocr_correction
+                      -status = t('.corrected')
+                      -help = link_to('help correct', action)
+                    -else
+                      -status = t('.transcribed')
+                      -help = link_to(t('.help_transcribe'), action)
+                    p.nodata_text == t('.this_page_is_not', status: status, help: help)
                   -else
-                    -status = t('.transcribed')
-                    -help = link_to(t('.help_transcribe'), action)
-                  p.nodata_text == t('.this_page_is_not', status: status, help: help)
+                    p.nodata_text 
                 -else
                   p.nodata_text == t('.collaboration_is_restricted')
 

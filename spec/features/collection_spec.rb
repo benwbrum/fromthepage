@@ -180,8 +180,9 @@ describe "collection settings js tasks", :order => :defined do
     end
 
     it "transcribing doesn't work for inactive collections" do
-      visit collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-      #expect(page).not_to have_link('Transcribe') #for FromThePage there is a "Sign Up to Transcribe" link
+      unstarted_page = @page.work.pages.where(status: nil).first
+      visit collection_display_page_path(@collection.owner, @collection, @page.work, unstarted_page)
+      expect(page).to have_content('not active')
     end
 
     it "toggles collection active" do
