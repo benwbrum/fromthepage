@@ -73,7 +73,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     if @user.save
-      flash[:notice] = t('.user_updated')
+      flash[:notice] = t('user.update.user_updated')
       ajax_redirect_to({ :controller => 'user', :action => 'profile', :user_id => @user.slug, :anchor => '' })
     else
       render :controller => 'user', :action => 'edit'
