@@ -87,6 +87,7 @@ Fromthepage::Application.routes.draw do
     post 'add_owner', to: 'collection#add_owner'
     post 'remove_owner', to: 'collection#remove_owner'
     post 'create', to: 'collection#create'
+    get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
