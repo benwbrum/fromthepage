@@ -31,7 +31,7 @@ describe 'User profile and settings actions' do
     # fill_in('user[login]', with: 'NewLogin')
     fill_in('user[email]', with: 'newemail@example.com')
     click_button('Save Changes')
-    expect(page).to have_content('Your account has been updated successfully.')
+    expect(page).to have_content('has been updated')
     expect(current_url).to eq(edit_user_path)
   end
 
