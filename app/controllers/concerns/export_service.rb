@@ -496,6 +496,7 @@ private
         index = (@raw_headings.index(cell.transcription_field_id))
       end
     end
+    index = (@indexable_headings.index(cell.header)) unless index
     index = (@indexable_headings.index(cell.header.downcase)) unless index
     index = (@indexable_headings.index(cell.header.strip.downcase)) unless index
 

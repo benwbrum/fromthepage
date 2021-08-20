@@ -285,7 +285,7 @@ module ExportHelper
     parts = subject.title.split(/(\. |--)/)
     0.upto(parts.size/2 - 1) do |i|
       higher_subject_title = parts[0..(2*i)].join
-      higher_subject = @collection.articles.where(title: higher_subject_title).first
+      higher_subject = subject.collection.articles.where(title: higher_subject_title).first
       if higher_subject
         subjects << higher_subject
       end
