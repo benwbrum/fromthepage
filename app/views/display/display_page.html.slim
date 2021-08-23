@@ -54,17 +54,20 @@
       -else
         .centered
           .centered_content
-            h5.nodata_title =t('.this_page_is_not', text_type: text_type)
-            p.nodata_text
-              -if current_user && current_user.can_transcribe?(@page.work)
-                -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
-                ==t('.please_help_this_page', help_link: help_link)
-                ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
-              -elsif !current_user && !@page.work.restrict_scribes
-                -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
-                ==t('.please_help_this_page', help_link: help_link)
-              -else
-                ==t('.collaboration_is_restricted')
+            -if @collection.active? # Inactive Collections shouldn't display this stuff
+              h5.nodata_title =t('.this_page_is_not', text_type: text_type)
+              p.nodata_text
+                -if current_user && current_user.can_transcribe?(@page.work)
+                  -help_link = link_to(help_word, { :controller => 'transcribe', :action => action, :page_id => @page.id })
+                  ==t('.please_help_this_page', help_link: help_link)
+                  ==t('.or_mark_blank', mark_blank: mark_blank) unless @page.status == Page::STATUS_BLANK
+                -elsif !current_user && !@page.work.restrict_scribes
+                  -help_link = link_to(help_word, transcribe_guest_path(:page_id => @page.id))
+                  ==t('.please_help_this_page', help_link: help_link)
+                -else
+                  ==t('.collaboration_is_restricted')
+            -else
+              ==t('.collection_is_not_active')
 
 h2.legend#notes =t('.page_notes')
 .page-notes

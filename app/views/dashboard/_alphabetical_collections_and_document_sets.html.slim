@@ -7,7 +7,7 @@
         =image_tag(cds.picture_url(:thumb), alt: cds.title)
     .collection_details
       h4.collection_title =link_to cds.title, collection_path(cds.owner, cds) unless cds.owner.nil?
-      -if cds.has_untranscribed_pages?
+      -if cds.has_untranscribed_pages? && cds.active?
         p
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
