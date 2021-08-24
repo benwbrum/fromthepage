@@ -444,7 +444,10 @@ EOF
   # taken place within the article table in the DB
   ##############################################
   def rename_article_links(old_title, new_title)
-    title_regex = old_title.gsub(/\s+/, '\s+')
+    title_regex = 
+      Regexp.escape(old_title)
+        .gsub('\\ ',' ') # Regexp.escape converts ' ' to '\\ ' for some reason -- undo this
+        .gsub(/\s+/, '\s+') # convert multiple whitespaces into 1+n space characters
 
     self.source_text = rename_link_in_text(source_text, title_regex, new_title)
 
