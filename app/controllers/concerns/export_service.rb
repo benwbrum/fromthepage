@@ -65,6 +65,8 @@ module ExportService
     output_file
   end
 
+
+
   def export_work_metadata_csv(dirname:, out:, collection:)
     path = "work_metadata.csv"
     out.put_next_entry(path)
@@ -238,6 +240,224 @@ module ExportService
     page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
     out.write page_view
   end
+
+  GEMFILE_CONTENTS = <<EOF
+source "https://rubygems.org"
+# Hello! This is where you manage which Jekyll version is used to run.
+# When you want to use a different version, change it below, save the
+# file and run `bundle install`. Run Jekyll with `bundle exec`, like so:
+#
+#     bundle exec jekyll serve
+#
+# This will help ensure the proper Jekyll version is running.
+# Happy Jekylling!
+gem "jekyll", "~> 4.0.1"
+# This is the default theme for new Jekyll sites. You may change this to anything you like.
+gem "minima", "~> 2.5"
+gem "minimal-mistakes-jekyll"
+# If you want to use GitHub Pages, remove the "gem "jekyll"" above and
+# uncomment the line below. To upgrade, run `bundle update github-pages`.
+# gem "github-pages", group: :jekyll_plugins
+# If you have any plugins, put them here!
+group :jekyll_plugins do
+  gem "jekyll-feed", "~> 0.12"
+end
+
+# Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
+# and associated library.
+install_if -> { RUBY_PLATFORM =~ %r!mingw|mswin|java! } do
+  gem "tzinfo", "~> 1.2"
+  gem "tzinfo-data"
+end
+
+# Performance-booster for watching directories on Windows
+gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
+EOF
+
+  SUBJECT_LAYOUT_CONTENTS =<<EOF_LAYOUT
+---
+layout: archive
+---
+
+{{ content }}
+
+<ul>
+  {% for page_link in page.page_links %}
+    <li>
+      <a href="/{{page_link.work_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a> 
+    </li>
+  {% endfor %}
+</ul>
+EOF_LAYOUT
+
+  def export_static_site(dirname:, out:, collection:)
+    # site-wide files first
+
+    path = File.join dirname, "Gemfile"
+    out.put_next_entry(path)
+    out.write(GEMFILE_CONTENTS)
+
+    path = File.join dirname, '_layouts', 'subject.html'
+    out.put_next_entry(path)
+    out.write(SUBJECT_LAYOUT_CONTENTS.gsub('REPLACEME', '#'))
+
+    path = File.join dirname, "index.md"
+    out.put_next_entry(path)
+    out.write("---\n"+collection.intro_block)
+
+    path = File.join dirname, "_config.yml"
+    out.put_next_entry(path)
+    site_config = {
+      'title' => collection.title,
+      'email' => collection.owner.email,
+      'description' => collection.intro_block,
+      'theme' => 'minimal-mistakes-jekyll',
+      'plugins' => ['jekyll-feed'], # todo jekyll-remote-theme
+      'defaults' => [
+        { 'scope' => 
+          { 
+            'path' => ''
+          },
+          'values' => 
+          { 
+            'layout' => 'home', 
+            'sidebar' => 
+            { 
+              'nav' => 'main'
+            }
+          }
+        }
+      ]
+    }
+    out.write(site_config.to_yaml)
+
+    path = File.join dirname, "_data", "navigation.yml"
+    out.put_next_entry(path)
+
+    work_nav = []
+    collection.works.sort.each do |work|
+      work_nav << {
+        'title' => work.title,
+        'url' => "pages/works/#{work.slug}"
+      }
+    end
+ #   work_nav.sort!
+
+    subject_nav = []
+    collection.articles.sort.each do |subject|
+      subject_nav << {
+        'title' => subject.title,
+        'url' => "pages/subjects/#{subject.id}"
+      }
+    end
+#    subject_nav.sort!
+
+    navigation = {
+      'main' =>
+        [
+          { 
+            'title' => 'Works',
+            'url' => 'pages/work-list',
+            'children' => work_nav
+          },
+          {
+            'title' => 'Subjects',
+            'url' => 'pages/subject-list',
+            'children' => subject_nav
+          },
+          {
+            'title' => 'About',
+            'url' => 'pages/about'
+          }
+        ]
+    }
+    out.write(navigation.to_yaml)
+
+
+    # work on pages now
+    collection.works.each do |work|
+      path = File.join dirname, 'pages', 'works', "#{work.slug}.md"
+      out.put_next_entry path
+
+    # if dc_source
+    #   manifest.metadata = [dc_source]
+    # else
+    #   manifest.metadata = []
+    # end
+    # if work.original_metadata
+    #   manifest.metadata += JSON[work.original_metadata]
+    # end
+    # work_metadata = work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page", "in_scope").delete_if{|k,v| v.blank?}
+
+    # work_metadata.each_pair { |label,value| manifest.metadata << { "label" => label.titleize, "value" => value.to_s } }
+
+      metadata = []
+      if work.original_metadata
+        metadata += JSON[work.original_metadata]
+      end
+      work_metadata = work.attributes.except("id", "title", "next_untranscribed_page", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page", "in_scope").delete_if{|k,v| v.blank?}
+
+      work_metadata.each_pair { |label,value| metadata << { "label" => label.titleize, "value" => value.to_s } }
+
+      frontmatter = {
+        'title' => work.title,
+        'metadata' => metadata
+      }
+
+      text = ApplicationController.new.render_to_string(
+        :template => 'export/show', 
+        :formats => [:html], 
+        :work_id => work.id, 
+        :layout => false, 
+        :encoding => 'utf-8',
+        :assigns => {
+          :collection => work.collection,
+          :work => work,
+          :export_user => nil,
+          :target => :jekyll
+        }
+      )
+      text.gsub!(/^\s+/,'')
+      markdown = frontmatter.to_yaml+"\n---\n"+text
+      out.write(markdown)
+
+    end
+
+    collection.articles.each do |subject|
+      path = File.join dirname, 'pages', 'subjects', "#{subject.id}.md"
+      out.put_next_entry path
+
+      text = xml_to_html(subject.xml_text, false, :jekyll, collection) # TODO convert to HTML
+  #     page_links: 
+  # - work_title: Volume 3 Book 1
+  #   work_url: pages/works/jeremiah-white-graves-diary-volume-3-book-01
+  #   page_title: January 22, 1866 - January 31, 1866
+  #   page_anchor: page-1356954
+      page_links = []
+      subject.page_article_links.each do |link|
+        page_links << {
+          'work_title' => link.page.work.title,
+          'work_url' => "pages/works/#{link.page.work.slug}",
+          'page_title' => link.page.title,
+          'page_anchor' => "page-#{link.page_id}"
+        }
+      end
+      frontmatter = {
+        'title' => subject.title,
+        'layout' => 'subject',
+        'page_links' => page_links
+      }
+
+
+      markdown = frontmatter.to_yaml+"\n---\n"+text
+      out.write(markdown)
+
+    end
+
+
+  end
+
+
 
 private
 

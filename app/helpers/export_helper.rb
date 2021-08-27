@@ -65,6 +65,10 @@ module ExportHelper
       export_work_metadata_csv(dirname: '', out: out, collection: bulk_export.collection)
     end
 
+    if bulk_export.static
+      export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
+    end
+
     works.each do |work|
       print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
       @work = work

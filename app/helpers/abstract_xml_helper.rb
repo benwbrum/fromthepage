@@ -29,7 +29,11 @@ module AbstractXmlHelper
         #anchor.text = display_text
         if id
           if flatten_links
-            anchor.add_attribute("href", "#article-#{id}")
+            if flatten_links == :jekyll
+              anchor.add_attribute("href", "/pages/subjects/#{id}")
+            else
+              anchor.add_attribute("href", "#article-#{id}")
+            end
           else
             anchor.add_attribute("data-tooltip", url_for(:controller => 'article', :action => 'tooltip', :article_id => id, :collection_id => @collection.slug))
             anchor.add_attribute("href", url_for(:controller => 'article', :action => 'show', :article_id => id))
