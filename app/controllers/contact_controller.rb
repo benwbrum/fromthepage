@@ -3,7 +3,6 @@ class ContactController < ApplicationController
 
 
   def send_email
-    binding.pry
     render
 
     unless params[email_param].blank?
