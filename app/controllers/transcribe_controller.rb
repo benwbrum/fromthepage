@@ -361,8 +361,10 @@ class TranscribeController  < ApplicationController
   end
 
   def still_editing
-    @page = Page.find(params[:page_id])
-    @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+    if current_user
+      @page = Page.find(params[:page_id])
+      @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+    end
     render plain: ''
   end
 
