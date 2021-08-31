@@ -290,6 +290,86 @@ layout: archive
 </ul>
 EOF_LAYOUT
 
+
+  WORK_LAYOUT_CONTENTS =<<EOF_WORK_LAYOUT
+---
+layout: archive
+---
+
+{{ content }}
+
+<dl>
+  {% for metadata in page.metadata %}
+    <dt class="fas">
+      {{ metadata.label }}
+    </dt>
+    <dd>
+      {{ metadata.value }}
+    </dd>
+  {% endfor %}
+</dl>
+EOF_WORK_LAYOUT
+
+  LISTING_LAYOUT_CONTENTS =<<EOF_LISTING_LAYOUT
+---
+layout: archive
+---
+
+{{ content }}
+
+
+{% assign tree = page.listing %}
+{% include tree.html %}
+
+EOF_LISTING_LAYOUT
+
+  TREE_INCLUDE_CONTENTS =<<EOF_TREE_INCLUDE
+<ul>
+  {% for item in tree %}
+    <li>
+      {% if item.url %}
+        <a href="{{ item.url }}">
+          {{ item.title }}
+        </a>
+      {% else %}
+          {{ item.title }}
+      {% endif %}
+    </li>
+
+    {% if item.has_children %}
+      {% assign tree = item.children %}
+      {% include tree.html %}
+    {% endif %}
+  {% endfor %}
+</ul>
+EOF_TREE_INCLUDE
+
+  def category_to_tree(category) 
+    element = {}
+    element['title'] = category.title
+    children = []
+
+    if category.children.any? || category.articles.any?
+      element['has_children'] = true
+    end
+    category.children.each do |child|
+      children << category_to_tree(child)
+    end
+
+    category.articles.each do |subject|
+      node = {
+        'title' => subject.title,
+        'url' => "/pages/subjects/#{subject.id}"
+      }
+      children << node
+    end
+
+    element['children'] = children
+
+    element
+  end
+
+
   def export_static_site(dirname:, out:, collection:)
     # site-wide files first
 
@@ -300,6 +380,18 @@ EOF_LAYOUT
     path = File.join dirname, '_layouts', 'subject.html'
     out.put_next_entry(path)
     out.write(SUBJECT_LAYOUT_CONTENTS.gsub('REPLACEME', '#'))
+
+    path = File.join dirname, '_layouts', 'work.html'
+    out.put_next_entry(path)
+    out.write(WORK_LAYOUT_CONTENTS)
+
+    path = File.join dirname, '_layouts', 'listing.html'
+    out.put_next_entry(path)
+    out.write(LISTING_LAYOUT_CONTENTS)
+
+    path = File.join dirname, '_includes', 'tree.html'
+    out.put_next_entry(path)
+    out.write(TREE_INCLUDE_CONTENTS)
 
     path = File.join dirname, "index.md"
     out.put_next_entry(path)
@@ -338,7 +430,7 @@ EOF_LAYOUT
     collection.works.sort.each do |work|
       work_nav << {
         'title' => work.title,
-        'url' => "pages/works/#{work.slug}"
+        'url' => "/pages/works/#{work.slug}"
       }
     end
  #   work_nav.sort!
@@ -347,7 +439,7 @@ EOF_LAYOUT
     collection.articles.sort.each do |subject|
       subject_nav << {
         'title' => subject.title,
-        'url' => "pages/subjects/#{subject.id}"
+        'url' => "/pages/subjects/#{subject.id}"
       }
     end
 #    subject_nav.sort!
@@ -357,21 +449,91 @@ EOF_LAYOUT
         [
           { 
             'title' => 'Works',
-            'url' => 'pages/work-list',
+            'url' => '/pages/work-list',
             'children' => work_nav
           },
           {
             'title' => 'Subjects',
-            'url' => 'pages/subject-list',
+            'url' => '/pages/subject-list',
             'children' => subject_nav
           },
           {
             'title' => 'About',
-            'url' => 'pages/about'
+            'url' => '/pages/about'
           }
         ]
     }
     out.write(navigation.to_yaml)
+
+    # listing pages
+    path = File.join dirname, "pages", "work-list.md"
+    out.put_next_entry(path)
+    work_listing_frontmatter = {
+      'layout' => 'listing',
+      'title' => 'Works'
+    }
+    work_listing_frontmatter['listing'] = collection.works.map do |work| 
+      { 
+        'title' => work.title, 
+        'url' => "/pages/works/#{work.slug}"
+      } 
+    end
+    out.write(work_listing_frontmatter.to_yaml+"\n---\n")
+
+
+    path = File.join dirname, "pages", "subject-list.md"
+    out.put_next_entry(path)
+    subject_listing_frontmatter = {
+      'layout' => 'listing',
+      'title' => 'Subjects'
+    }
+    tree = []
+    collection.categories.each do |category|
+      tree << category_to_tree(category)
+    end
+
+    uncategorized_articles = collection.articles.where.not(:id => collection.articles.joins(:categories).pluck(:id))
+    if uncategorized_articles.count > 0
+      children = []
+      uncategorized_articles.each do |subject|
+        children << {
+          'title' => subject.title,
+         'url' => "pages/subjects/#{subject.id}"
+         }
+      end
+
+      uncategorized = { 
+        'title' => 'Uncategorized',
+        'has_children' => true,
+        'children' => children
+      }
+      tree << uncategorized
+    end
+
+    subject_listing_frontmatter['listing'] = tree
+    out.write(subject_listing_frontmatter.to_yaml+"\n---\n")
+
+
+    # listing pages
+    path = File.join dirname, "pages", "about.md"
+    out.put_next_entry(path)
+    contributor_listing_frontmatter = {
+      'layout' => 'listing',
+      'title' => 'Contributors'
+    }
+    contributor_ids = collection.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]}
+    listing = []
+    contributor_ids.each do |user_id|
+      user = User.find(user_id)
+      if user.real_name.blank?
+        listing << { 'title' => user.display_name}
+      else
+        listing << { 'title' => user.real_name}
+      end
+    end
+    contributor_listing_frontmatter['listing'] = listing
+    out.write(contributor_listing_frontmatter.to_yaml+"\n---\n")
+
 
 
     # work on pages now
@@ -395,12 +557,13 @@ EOF_LAYOUT
       if work.original_metadata
         metadata += JSON[work.original_metadata]
       end
-      work_metadata = work.attributes.except("id", "title", "next_untranscribed_page", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page", "in_scope").delete_if{|k,v| v.blank?}
+      work_metadata = work.attributes.except("id", "title", "next_untranscribed_page_id", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "in_scope").delete_if{|k,v| v.blank?}
 
       work_metadata.each_pair { |label,value| metadata << { "label" => label.titleize, "value" => value.to_s } }
 
       frontmatter = {
         'title' => work.title,
+        'layout' => 'work',
         'metadata' => metadata
       }
 
@@ -453,6 +616,9 @@ EOF_LAYOUT
       out.write(markdown)
 
     end
+
+    # produce listing files
+
 
 
   end
