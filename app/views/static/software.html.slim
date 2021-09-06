@@ -101,7 +101,7 @@
           .pricing_grid_cell
             .pricing_price
               span.pricing_price_request Contact Us
-              .pricing_price_billing=="Pricing based on institution-specific requirements. Please #{ link_to 'contact us', contact_path } for a custom quote."
+              .pricing_price_billing=="Pricing based on institution-specific requirements. Please #{ link_to 'contact us', contact_path(contact_form_token) } for a custom quote."
 
         .pricing_grid_row
           .pricing_grid_cell
@@ -111,7 +111,7 @@
           .pricing_grid_cell
             =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
 
-    h3=="Ready to get started? #{link_to 'Contact us.', contact_path}"
+    h3=="Ready to get started? #{link_to 'Contact us.', contact_path(contact_form_token)}"
 
   #integrations
     h2 Integrations
