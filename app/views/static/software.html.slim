@@ -116,7 +116,7 @@
           .pricing_grid_cell
             =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
 
-    h3=="Ready to get started? #{link_to 'Contact us.', contact_path}"
+    h3=="Ready to get started? #{link_to 'Contact us.', contact_path(contact_form_token)}"
 
   #integrations
     h2 Integrations
