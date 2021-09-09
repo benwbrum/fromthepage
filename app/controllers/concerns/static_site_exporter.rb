@@ -11,6 +11,7 @@ module StaticSiteExporter
     write_tree_include(dirname,out,collection)
     write_index_markdown(dirname, out, collection)
     write_config_yaml(dirname, out, collection)
+    write_navigation_yaml(dirname, out, collection)
     write_work_listing(dirname, out, collection)
     write_subject_listing(dirname, out, collection)
     write_contributor_page(dirname, out, collection)
