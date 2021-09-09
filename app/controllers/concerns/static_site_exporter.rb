@@ -9,6 +9,7 @@ module StaticSiteExporter
     write_work_layout(dirname,out,collection)
     write_listing_layout(dirname,out,collection)
     write_tree_include(dirname,out,collection)
+    write_footer_include(dirname,out,collection)
     write_index_markdown(dirname, out, collection)
     write_config_yaml(dirname, out, collection)
     write_navigation_yaml(dirname, out, collection)
@@ -131,6 +132,29 @@ EOF_LISTING_LAYOUT
 </ul>
 EOF_TREE_INCLUDE
 
+  FOOTER_INCLUDE_CONTENTS =<<EOF_FOOTER_INCLUDE
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    {% if site.data.ui-text[site.locale].follow_label %}
+      <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
+    {% endif %}
+
+    {% if site.footer.links %}
+      {% for link in site.footer.links %}
+        {% if link.label and link.url %}
+          <li><a href="{{ link.url }}" rel="nofollow noopener noreferrer"><i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}</a></li>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">Project by {{ site.owner }}.  {{ site.data.ui-text[site.locale].powered_by | default: "Powered by" }} <a href="https://fromthepage.com/">FromThePage</a>, <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+EOF_FOOTER_INCLUDE
+
+
   def category_to_tree(category) 
     element = {}
     element['title'] = category.title
@@ -186,12 +210,19 @@ EOF_TREE_INCLUDE
     out.write(TREE_INCLUDE_CONTENTS)
   end
 
+  def write_footer_include(dirname, out, collection)
+    path = File.join dirname, '_includes', 'footer.html'
+    out.put_next_entry(path)
+    out.write(FOOTER_INCLUDE_CONTENTS)
+  end
+
   def write_config_yaml(dirname, out, collection)
     path = File.join dirname, "_config.yml"
     out.put_next_entry(path)
     site_config = {
       'title' => collection.title,
       'email' => collection.owner.email,
+      'owner' => collection.owner.display_name,
       'description' => collection.intro_block,
       'theme' => 'minimal-mistakes-jekyll',
       'plugins' => ['jekyll-feed'], # todo jekyll-remote-theme
@@ -202,11 +233,7 @@ EOF_TREE_INCLUDE
           },
           'values' => 
           { 
-            'layout' => 'home', 
-            'sidebar' => 
-            { 
-              'nav' => 'main'
-            }
+            'layout' => 'archive', 
           }
         }
       ]
@@ -231,7 +258,6 @@ EOF_TREE_INCLUDE
         'url' => "/pages/works/#{work.slug}"
       }
     end
- #   work_nav.sort!
 
     subject_nav = []
     collection.articles.sort.each do |subject|
@@ -240,26 +266,32 @@ EOF_TREE_INCLUDE
         'url' => "/pages/subjects/#{subject.id}"
       }
     end
-#    subject_nav.sort!
+
+    nav_contents = [
+      { 
+        'title' => 'Works',
+        'url' => '/pages/work-list',
+        'children' => work_nav
+      }
+    ]
+
+    unless subject_nav.empty?
+      nav_contents <<
+        {
+          'title' => 'Subjects',
+          'url' => '/pages/subject-list',
+          'children' => subject_nav
+        }
+    end
+
+    nav_contents << 
+      {
+        'title' => 'Contributors',
+        'url' => '/pages/about'
+      }
 
     navigation = {
-      'main' =>
-        [
-          { 
-            'title' => 'Works',
-            'url' => '/pages/work-list',
-            'children' => work_nav
-          },
-          {
-            'title' => 'Subjects',
-            'url' => '/pages/subject-list',
-            'children' => subject_nav
-          },
-          {
-            'title' => 'About',
-            'url' => '/pages/about'
-          }
-        ]
+      'main' => nav_contents
     }
     out.write(navigation.to_yaml)
   end
