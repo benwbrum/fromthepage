@@ -399,10 +399,11 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
   get '/software', to: 'static#software', as: :about
+  get '/about', to: 'static#about', as: :about_us
   get '/faq', to: 'static#faq', as: :faq
   get '/privacy', to: 'static#privacy', as: :privacy
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
-  get '/contact', to: 'contact#form', as: 'contact'
+  get '/:token/contact', to: 'contact#form', as: 'contact'
   get '/at', to: 'static#at', as: :at
   get '/AT', to: 'static#at', as: :at_caps
   get '/NatsStory', to: 'static#natsstory', as: :natsstory

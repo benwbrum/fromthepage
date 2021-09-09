@@ -1,5 +1,10 @@
 module ApplicationHelper
   
+  def contact_form_token
+    ("#{Time.now.year}#{Time.now.month}#{Time.now.day}".to_i * 32 / 7)
+  end
+
+
   #dead code
   def billing_host
     if defined? BILLING_HOST
