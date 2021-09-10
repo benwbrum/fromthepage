@@ -45,7 +45,6 @@
           td(colspan="2")
             =f.check_box :hide_completed, value: @collection.hide_completed
             =f.label :hide_completed, t('.hide_completed')
-        -if feature_enabled?(:download)
           tr
             td(colspan="2")
               =f.check_box :user_download, value: @collection.user_download
