@@ -76,10 +76,11 @@ function startDictation(target){
     for (var i = e.resultIndex; i < e.results.length; ++i){
       if (e.results[i].isFinal){
         final_transcript += e.results[i][0].transcript;
+        voiceData.text(final_transcript);
+        myCodeMirror.replaceSelection(final_transcript);
+        final_transcript="";
       }
     }
-    voiceData.text(final_transcript);
-    myCodeMirror.replaceSelection(final_transcript);
   };
 }
 
