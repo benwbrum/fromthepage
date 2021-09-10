@@ -101,7 +101,7 @@ EOF_LISTING_LAYOUT
   {% for item in tree %}
     <li>
       {% if item.url %}
-        <a href="{{ item.url }}">
+        <a href="{{ item.url | relative_url }}">
           {{ item.title }}
         </a>
       {% else %}
