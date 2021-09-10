@@ -76,9 +76,9 @@ table.datagrid
               =svg_symbol '#icon-export', class: 'icon'
               span =t('.table_csv')
       td.nowrap
-        =link_to({ :controller => 'export', :action => 'export_work', :work_id => work.id, format: :zip }, class: 'btnExport')
+        =link_to download_collection_work_path(@collection.owner, @collection, work)
           =svg_symbol '#icon-export', class: 'icon'
-          span ZIP
+          span More
 
 =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
