@@ -56,18 +56,18 @@ function startDictation(target){
   recognizing = true;
   button = target;
   var form = $(button.form);
-  var voiceData = form.find('#dictation_text');
+  var voiceData = form.find('textarea');
   voiceSpan = form.find('.voice-info');
   if (voiceSpan.hasClass('voice-error')){
     voiceSpan.removeClass('voice-error');
   }
-  var initialText = '';
+  var initialText
 
-  // if (voiceData.text() != '') {
-  //   initialText = voiceData.text() + '\n';
-  // } else {
-  //   initialText = '';
-  // }
+  if (voiceData.text() != '') {
+    initialText = voiceData.text() + '\n';
+  } else {
+    initialText = '';
+  }
   var final_transcript = initialText;
   var interim_transcript = initialText;
 
@@ -76,11 +76,9 @@ function startDictation(target){
     for (var i = e.resultIndex; i < e.results.length; ++i){
       if (e.results[i].isFinal){
         final_transcript += e.results[i][0].transcript;
-        voiceData.text(final_transcript);
-        myCodeMirror.replaceSelection(final_transcript);
-        final_transcript="";
       }
     }
+    voiceData.text(final_transcript);
   };
 }
 
