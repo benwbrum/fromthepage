@@ -17,6 +17,8 @@ en:
       export_as: "Export As"
       plain_text: "Plain text"
       table_csv: "Table CSV"
+      more: "More"
+      more_export_formats: "Additional export formats"
       export_subject_index: "Export Subjects"
       export_subject_index_description: "Click the button to export subject indexes from the entire collection in a single CSV file.  (The export process could take some time to complete, so please wait until you get the File Save dialog.)"
       export_subjects_as_csv: "Export Index as CSV"
