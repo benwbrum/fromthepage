@@ -209,7 +209,7 @@ EOF_FOOTER_INCLUDE
       'email' => collection.owner.email,
       'owner' => collection.owner.display_name,
       'description' => collection.intro_block,
-      'plugins' => ['jekyll-feed', 'jekyll-remote-theme'], 
+      'plugins' => ['jekyll-feed', 'jekyll-remote-theme', 'jekyll-include-cache'], 
       'remote_theme' => "mmistakes/minimal-mistakes",
       'defaults' => [
         { 'scope' => 
