@@ -1,7 +1,7 @@
 module ExportHelper
   include Rails.application.routes.url_helpers
 
-  def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
+  def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 
     # do some escaping of the document for markdown
     preprocessed = xml_text || ''
@@ -28,7 +28,12 @@ module ExportHelper
     doc.write(postprocessed)
 
     html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
-    doc = REXML::Document.new("<div>#{html}</div>")
+    if div_pad
+      doc = REXML::Document.new("<div>#{html}</div>")
+    else
+      doc = REXML::Document.new("#{html}")
+    end
+
     doc.elements.each("//span") do |e|
       if e.attributes['class'] == 'line-break'
         e.replace_with(REXML::Text.new(" "))
