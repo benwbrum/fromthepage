@@ -13,8 +13,8 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: rails
-  password: rails
+  username: root
+  password:
   socket: /var/run/mysqld/mysqld.sock
   strict: false
   variables:
@@ -23,8 +23,6 @@ default: &default
 development:
   <<: *default
   database: diary_development
-  # database: diary2_development
-#  database: fordham_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -32,7 +30,7 @@ development:
 test:
   <<: *default
   database: diary_test
-# 
+
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
