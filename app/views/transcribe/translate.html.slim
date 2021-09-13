@@ -75,8 +75,6 @@
       .page-editarea(style=("display:none" if @preview_xml))
         =f.text_area(:source_translation, autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: false, 'aria-label': t('.edit_translation'))
         
-        =hidden_field_tag :dictation_text
-
 -if @work.translation_instructions.present?
   .fgfaded ==@work.translation_instructions
 
@@ -85,8 +83,8 @@ h2.legend =t('.page_notes')
   =render :partial => "notes/notes"
 
 =render({ :partial => '/shared/collection_footer' })
-
-=render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr' } })
+-unless @collection.voice_recognition  
+  =render({ :partial => '/shared/codemirror', :locals => { :textarea => "page_source_translation", :text_direction => 'ltr' } })
 
 
 -content_for :javascript

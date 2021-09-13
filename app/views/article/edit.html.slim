@@ -24,7 +24,6 @@
 
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
 
-              =render({ :partial => '/shared/codemirror', :locals => { :textarea => "article_source_text", :text_direction => 'ltr'} })
 
 
       -if @article.gis_enabled?
