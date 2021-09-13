@@ -3,6 +3,7 @@
 
 
 \newpage
+### Metadata
 <p>
 <%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
 </p>
@@ -14,7 +15,6 @@
   end
   metadata_array += @work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page_id", "in_scope").delete_if{|k,v| v.blank?}.map{|e| {e[0] => e[1]}}
 %>
-### Metadata
 <% metadata_array.each do |element_hash| %>
 _<%= element_hash.keys.first %>_ <%= element_hash.values.first %>
 
