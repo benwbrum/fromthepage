@@ -6,7 +6,18 @@ class IiifController < ApplicationController
 
   before_action :set_cors_headers
   before_action :set_api_user
+  before_action :load_objects_from_ids
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
+
+  def load_objects_from_ids
+    if @work && params[:work_id]
+      if params[:work_id] =~ /^\d+$/
+        if @work.id != params[:work_id].to_i
+          @work = Work.find(params[:work_id].to_i)
+        end
+      end
+    end
+  end
 
   def collections
     site_collection = IIIF::Presentation::Collection.new
@@ -493,10 +504,10 @@ private
       { "label" => "Verbatim Plaintext",
         "format" => "text/plain",
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
-        "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work)
+        "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
       },
-      { "@id" => iiif_work_export_html_url(work), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
+      { "@id" => iiif_work_export_html_url(work.id), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
+      { "@id" => iiif_work_export_tei_url(work.id), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages
     pages.each do |page|

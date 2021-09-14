@@ -1,7 +1,7 @@
 module ExportHelper
   include Rails.application.routes.url_helpers
 
-  def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil)
+  def xml_to_pandoc_md(xml_text, preserve_lb=true, flatten_links=false, collection=nil, div_pad=true)
 
     # do some escaping of the document for markdown
     preprocessed = xml_text || ''
@@ -9,24 +9,7 @@ module ExportHelper
     preprocessed.gsub!("]","\\]")
 
 
-
     doc = REXML::Document.new(preprocessed)
-    doc.elements.each("//lb") do |e|
-      if preserve_lb
-        e.replace_with(REXML::Text.new("\\\n"))
-      else
-        e.replace_with(REXML::Text.new(" "))        
-      end
-    end
-
-    doc.elements.each("//pb") do |e|
-      e.replace_with(REXML::Text.new("\n\n\n"))
-    end
-
-    doc.elements.each('//link') do |e|
-      e.replace_with(e.children.first)
-    end
-
     doc.elements.each_with_index("//footnote") do |e,i|
       marker = "#{i}" #e.attributes['marker'] || '*'
 
@@ -41,28 +24,34 @@ module ExportHelper
 
 
 
-    markdown = ""
-    doc.write(markdown)
-    markdown.gsub!("&amp;", "&")
-    markdown.gsub!("</p>", "</p>\n\n")
-    markdown.gsub!("<br/>","<br/>\n")
+    postprocessed = ""
+    doc.write(postprocessed)
 
+    html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
+    if div_pad
+      doc = REXML::Document.new("<div>#{html}</div>")
+    else
+      doc = REXML::Document.new("#{html}")
+    end
 
+    doc.elements.each("//span") do |e|
+      if e.attributes['class'] == 'line-break'
+        e.replace_with(REXML::Text.new(" "))
+      end
+    end
+    html=''
+    doc.write(html)
 
-    markdown.gsub!("<?xml version='1.0' encoding='UTF-8'?>","")
-    markdown.gsub!('<p/>','')
-    markdown.gsub!(/<\/?page>/,'')
+    processed = "never ran"
 
-    # escape LaTeX special characters
-    markdown.gsub!(/([&%$#_{}])/, '\\\\\1')
-#    markdown.gsub!('^', '\textasciicircum')  #\^{}
-    markdown.gsub!('~', '\textasciitilde')
-    markdown.gsub!(/^\s*(\d+)([.)])/, '\1\\\\\2')
-    markdown.gsub!(/^\s*<p>(\d+)([.)])/, '<p>\1\\\\\2')
+    cmd = "pandoc --from html --to markdown"
+    Open3.popen2(cmd) do |stdin, stdout, t| 
+      stdin.print(html)
+      stdin.close
+      processed = stdout.read
+    end
 
-    markdown.strip!
-
-    return markdown
+    return processed
   end
 
 
@@ -81,74 +70,88 @@ module ExportHelper
       export_work_metadata_csv(dirname: '', out: out, collection: bulk_export.collection)
     end
 
-    works.each do |work|
-      print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
-      @work = work
-      dirname = work.slug.truncate(200, omission: "")
-      add_readme_to_zip(dirname: dirname, out: out)
+    if bulk_export.static
+      export_static_site(dirname: 'site', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.work_level? || bulk_export.page_level?
+      works.each do |work|
+        print "\t\tExporting work\t#{work.id}\t#{work.title}\n"
+        @work = work
+        dirname = work.slug.truncate(200, omission: "")
+        add_readme_to_zip(dirname: dirname, out: out)
 
 
-      # work-specific exports
-      if bulk_export.table_csv_work
-        export_table_csv_work(dirname: dirname, out: out, work: work)
-      end
-
-      if bulk_export.tei_work
-        export_tei(dirname: dirname, out:out, export_user:export_user)
-      end
-
-      if bulk_export.plaintext_verbatim_work
-        format='verbatim'
-        export_plaintext_transcript(name: format, dirname: dirname, out: out)
-        export_plaintext_translation(name: format, dirname: dirname, out: out)
-      end
-
-      if bulk_export.plaintext_emended_work
-        format='expanded'
-        export_plaintext_transcript(name: format, dirname: dirname, out: out)
-        export_plaintext_translation(name: format, dirname: dirname, out: out)
-      end
-
-      if bulk_export.plaintext_searchable_work
-        format='searchable'
-        export_plaintext_transcript(name: format, dirname: dirname, out: out)
-      end
-
-      if bulk_export.html_work
-        %w(full text transcript translation).each do |format|
-          export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+        # work-specific exports
+        if bulk_export.table_csv_work
+          export_table_csv_work(dirname: dirname, out: out, work: work)
         end
-      end
 
-      if bulk_export.facing_edition_work
-        export_printable_to_zip(work, 'facing', 'pdf', dirname, out)
-      end
+        if bulk_export.tei_work
+          export_tei(dirname: dirname, out:out, export_user:export_user)
+        end
 
-      # Page-specific exports
-
-      @work.pages.each do |page|
-        if bulk_export.plaintext_verbatim_page
+        if bulk_export.plaintext_verbatim_work
           format='verbatim'
-          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          export_plaintext_translation(name: format, dirname: dirname, out: out)
         end
 
-        if bulk_export.plaintext_emended_page
+        if bulk_export.plaintext_emended_work
           format='expanded'
-          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
-          export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
-        end  
-
-        if bulk_export.plaintext_searchable_page
-          format='searchable'
-          export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+          export_plaintext_translation(name: format, dirname: dirname, out: out)
         end
-      end
 
+        if bulk_export.plaintext_searchable_work
+          format='searchable'
+          export_plaintext_transcript(name: format, dirname: dirname, out: out)
+        end
 
-      if bulk_export.html_page
+        if bulk_export.html_work
+          %w(full text transcript translation).each do |format|
+            export_view(name: format, dirname: dirname, out: out, export_user:export_user)
+          end
+        end
+
+        if bulk_export.facing_edition_work
+          export_printable_to_zip(work, 'facing', 'pdf', dirname, out)
+        end
+
+        if bulk_export.text_pdf_work
+          export_printable_to_zip(work, 'text', 'pdf', dirname, out)
+        end
+
+        if bulk_export.text_docx_work
+          export_printable_to_zip(work, 'text', 'doc', dirname, out)
+        end
+
+        # Page-specific exports
+
         @work.pages.each do |page|
-          export_html_full_pages(dirname: dirname, out: out, page: page)
+          if bulk_export.plaintext_verbatim_page
+            format='verbatim'
+            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+          end
+
+          if bulk_export.plaintext_emended_page
+            format='expanded'
+            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+            export_plaintext_translation_pages(name: format, dirname: dirname, out: out, page: page)
+          end  
+
+          if bulk_export.plaintext_searchable_page
+            format='searchable'
+            export_plaintext_transcript_pages(name: format, dirname: dirname, out: out, page: page)
+          end
+        end
+
+
+        if bulk_export.html_page
+          @work.pages.each do |page|
+            export_html_full_pages(dirname: dirname, out: out, page: page)
+          end
         end
       end
     end
@@ -190,10 +193,29 @@ module ExportHelper
 
     @all_articles = @work.articles
 
-    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'})
-    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'})
+    @person_articles = @all_articles.joins(:categories).where(categories: {title: 'People'}).to_a
+    @place_articles = @all_articles.joins(:categories).where(categories: {title: 'Places'}).to_a
     @other_articles = @all_articles.joins(:categories).where.not(categories: {title: 'People'})
-                      .where.not(categories: {title: 'Places'})
+                      .where.not(categories: {title: 'Places'}).to_a
+    @other_articles.each do |subject|
+      subjects = expand_subject(subject)
+      if subjects.count > 1
+        subjects[1..].each do |expanded|
+          if expanded.categories.where(title: 'People').present?
+            @person_articles << expanded
+          elsif expanded.categories.where(title: 'Places').present?
+            @place_articles << expanded
+          else
+            @other_articles << expanded
+          end
+        end
+      end
+    end
+
+    @person_articles.uniq!
+    @place_articles.uniq!
+    @other_articles.uniq!
+
     ### Catch the rendered Work for post-processing
     if defined? render_to_string
       thingy = self
@@ -267,8 +289,28 @@ module ExportHelper
 
     has_content ? tei : ""
   end
+
+  def expand_subject(subject)
+    subjects = [subject]
+
+    parts = subject.title.split(/(\. |--)/)
+    0.upto(parts.size/2 - 1) do |i|
+      higher_subject_title = parts[0..(2*i)].join
+      higher_subject = subject.collection.articles.where(title: higher_subject_title).first
+      if higher_subject
+        subjects << higher_subject
+      end
+    end
+
+    subjects
+  end
   
   def subject_to_tei(subject)
+    tei = format_subject_to_tei(subject)
+    tei
+  end
+
+  def format_subject_to_tei(subject)
     tei = "          <category xml:id=\"S#{subject.id}\">\n"
     tei << "            <catDesc>\n"
     tei << "              <term>#{ERB::Util.html_escape(subject.title)}</term>\n"
@@ -299,6 +341,7 @@ module ExportHelper
 
     tei
   end
+
 
 
   def seen_subject_to_tei(subject, parent_category)

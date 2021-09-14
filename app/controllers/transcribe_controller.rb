@@ -125,7 +125,7 @@ class TranscribeController  < ApplicationController
       table_cells = @page.process_fields(@field_cells)
     end
 
-    @page.attributes = page_params
+    @page.attributes = page_params unless page_params.empty?
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
       mark_page_blank(redirect: 'transcribe') or return
@@ -151,7 +151,7 @@ class TranscribeController  < ApplicationController
 
       begin
         if @page.save
-          if @page.field_based
+          if @page.field_based && !table_cells.empty?
             @page.replace_table_cells(table_cells)
           end
 
@@ -213,15 +213,23 @@ class TranscribeController  < ApplicationController
         # raise ex
       end
     elsif params['preview']
-      @display_context = 'preview'
-      @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
-      if @page.field_based
-        # what do we do about the table cells?
-        @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+      begin
+        @display_context = 'preview'
+        @preview_xml = @page.wiki_to_xml(@page, Page::TEXT_TYPE::TRANSCRIPTION)
+        if @page.field_based
+          # what do we do about the table cells?
+          @field_preview = table_cells.group_by { |cell| cell.transcription_field_id }
+        end
+
+        display_page
+        render :action => 'display_page'
+      rescue REXML::ParseException => ex
+        flash[:error] = t('.error_message', error_message: ex.message)
+        logger.fatal "\n\n#{ex.class} (#{ex.message}):\n"
+        render :action => 'display_page'
+        flash.clear
       end
 
-      display_page
-      render :action => 'display_page'
     elsif params['edit']
       if @page.field_based
         # what do we do about the table cells?
@@ -353,8 +361,10 @@ class TranscribeController  < ApplicationController
   end
 
   def still_editing
-    @page = Page.find(params[:page_id])
-    @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+    if current_user
+      @page = Page.find(params[:page_id])
+      @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+    end
     render plain: ''
   end
 

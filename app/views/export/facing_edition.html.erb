@@ -1,7 +1,27 @@
 <%= @work.title %> {.work-title}
 =======================
 
+
+\newpage
+### Metadata
+<p>
 <%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+</p>
+
+<% 
+  metadata_array = [] 
+  if @work.original_metadata 
+    metadata_array = JSON(@work.original_metadata).keep_if{|e| !e["value"].blank? }.map{|e| {e["label"] => e["value"]}}
+  end
+  metadata_array += @work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page_id", "in_scope").delete_if{|k,v| v.blank?}.map{|e| {e[0] => e[1]}}
+%>
+<% xml_metadata = metadata_array.map do |element_hash| 
+  "<i>#{element_hash.keys.first}</i> #{element_hash.values.first}"
+end
+xml_metadata = xml_metadata.join("<lb/>\n")
+%>
+<%= xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false) %>
+\newpage
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
 
@@ -18,8 +38,29 @@
 <% end %>
 
 ### <%= page.title %>
-<div class="page-content">
-  <%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
-</div>
+<%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
 
+<% end %>
+
+
+\newpage
+This document would not be possible without the editorial contributions of the following people:
+
+<% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
+<% contributor_names = [] %>
+<% contributor_ids.each do |user_id| %>
+  <% user = User.find(user_id) 
+    if user.real_name.blank?
+      name = user.display_name
+    else
+      name = user.real_name
+    end
+    contributor_names << name unless name.blank?
+  %>
+<% end %>
+
+<% if contributor_names.size > 1 %>
+  <%= contributor_names[0..-2].join(', ') %> and <%= contributor_names.last %>
+<% else %>
+  <%= contributor_names.first %>
 <% end %>

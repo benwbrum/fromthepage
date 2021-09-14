@@ -27,6 +27,8 @@ div.columns
             td.w100.fglight =t('.start_rows_description')
 
       h3 =t('.edit_spreadsheet_columns')
+      p 
+        i =t('.transcription_warning')
       table.field-form#new-columns
         =render ({partial: 'column_form'})
         tbody#soratble-columns

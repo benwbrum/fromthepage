@@ -12,10 +12,10 @@ class CollectionController < ApplicationController
 
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
-  before_action :load_settings, :only => [:edit, :update, :upload]
+  before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit_buttons, :edit_owners, :remove_owner, :add_owner, :edit_collaborators, :remove_collaborator, :add_collaborator, :edit_reviewers, :remove_reviewer, :add_reviewer]
 
   def authorized?
     unless user_signed_in?
@@ -26,6 +26,18 @@ class CollectionController < ApplicationController
       ajax_redirect_to dashboard_path
     end
   end
+
+  def search_users
+    query = "%#{params[:term]}%"
+    users = User.where("real_name like ? or email like ?", query, query)
+    render json: { results: users.map{|u| {text: "#{u.display_name} #{u.email}", id: u.id}}}
+  end
+
+  def reviewer_dashboard
+    # works which have at least one page needing review
+    @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
+  end
+
 
   def edit_buttons
     @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
@@ -99,11 +111,19 @@ class CollectionController < ApplicationController
   def load_settings
     @main_owner = @collection.owner
     @owners = [@main_owner] + @collection.owners
-    @nonowners = User.order(:display_name) - @owners
-    @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
     @works_not_in_collection = current_user.owner_works - @collection.works
     @collaborators = @collection.collaborators
-    @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+    @reviewers = @collection.reviewers
+    if User.count > 100
+      @nonowners = []
+      @noncollaborators = []
+      @nonreviewers = []
+    else
+      @nonowners = User.order(:display_name) - @owners
+      @nonowners.each { |user| user.display_name = user.login if user.display_name.empty? }
+      @noncollaborators = User.order(:display_name) - @collaborators - @collection.owners
+      @nonreviewers = User.order(:display_name) - @reviewers - @collection.owners
+    end
   end
 
   def show
@@ -176,12 +196,6 @@ class CollectionController < ApplicationController
     end
   end
 
-  def owners
-    @main_owner = @collection.owner
-    @owners = @collection.owners + [@main_owner]
-    @nonowners = User.all - @owners
-  end
-
   def add_owner
     @user.owner = true
     @user.account_type = "Staff"
@@ -192,12 +206,12 @@ class CollectionController < ApplicationController
     if @user.notification.add_as_owner
       send_email(@user, @collection)
     end
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to collection_edit_owners_path(@collection)
   end
 
   def remove_owner
     @collection.owners.delete(@user)
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to collection_edit_owners_path(@collection)
   end
 
   def add_collaborator
@@ -206,12 +220,25 @@ class CollectionController < ApplicationController
     if @user.notification.add_as_collaborator
       send_email(@user, @collection)
     end
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to collection_edit_collaborators_path(@collection)
   end
 
   def remove_collaborator
     @collection.collaborators.delete(@user)
-    redirect_to action: 'edit', collection_id: @collection.id
+    redirect_to collection_edit_collaborators_path(@collection)
+  end
+
+  def add_reviewer
+    @collection.reviewers << @user
+    if @user.notification.add_as_collaborator
+      send_email(@user, @collection)
+    end
+    redirect_to collection_edit_reviewers_path(@collection)
+  end
+
+  def remove_reviewer
+    @collection.reviewers.delete(@user)
+    redirect_to collection_edit_reviewers_path(@collection)
   end
 
   def send_email(user, collection)
@@ -305,6 +332,9 @@ class CollectionController < ApplicationController
     int = array[@lang_index].size.times.select {|i| array[@lang_index][i].include?(lang)}[0]
     #transform to integer and subtract 2 because of how the array is nested
     @dialect_index = !int.nil? ? int-2 : nil
+    if @collection.field_based && !@collection.transcription_fields.present? 
+      flash.now[:info] = t('.alert') 
+    end
   end
 
   def update
@@ -610,6 +640,6 @@ class CollectionController < ApplicationController
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_workflow, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
   end
 end

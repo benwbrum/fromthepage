@@ -72,16 +72,22 @@ Fromthepage::Application.routes.draw do
     get 'disable_ocr', to: 'collection#disable_ocr'
     get 'blank_collection', to: 'collection#blank_collection'
     get 'edit', to: 'collection#edit'
-    get 'remove_owner', to: 'collection#remove_owner'
+    get ':collection_id/edit_owners', to: 'collection#edit_owners', as: 'edit_owners'
+    post 'add_reviewer', to: 'collection#add_reviewer'
+    get ':collection_id/edit_reviewers', to: 'collection#edit_reviewers', as: 'edit_reviewers'
+    post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
     get 'disable_fields', to: 'collection#disable_fields'
     get 'publish_collection', to: 'collection#publish_collection'
-    get 'remove_collaborator', to: 'collection#remove_collaborator'
+    get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
     get 'restrict_collection', to: 'collection#restrict_collection'
     get 'restrict_transcreibed', to: 'collection#restrict_transcribed'
     post 'add_collaborator', to: 'collection#add_collaborator'
+    post 'remove_collaborator', to: 'collection#remove_collaborator'
     post 'add_owner', to: 'collection#add_owner'
+    post 'remove_owner', to: 'collection#remove_owner'
     post 'create', to: 'collection#create'
+    get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
@@ -136,7 +142,7 @@ Fromthepage::Application.routes.draw do
     get 'export_all_works', to: 'export#export_all_works'
     post ':collection_id/:work_id/printable', to: 'export#printable', as: 'printable'
     get 'show', to: 'export#show'
-    get 'tei', to: 'export#tei'
+    get ':work_id/tei', to: 'export#tei', as: 'tei'
     get 'subject_csv', to: 'export#subject_index_csv'
     get 'subject_details_csv', to: 'export#subject_details_csv'
     get 'subject_coocurrence_csv', to: 'export#subject_coocurrence_csv'
@@ -393,10 +399,11 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
   get '/software', to: 'static#software', as: :about
+  get '/about', to: 'static#about', as: :about_us
   get '/faq', to: 'static#faq', as: :faq
   get '/privacy', to: 'static#privacy', as: :privacy
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
-  get '/contact', to: 'contact#form', as: 'contact'
+  get '/:token/contact', to: 'contact#form', as: 'contact'
   get '/at', to: 'static#at', as: :at
   get '/AT', to: 'static#at', as: :at_caps
   get '/NatsStory', to: 'static#natsstory', as: :natsstory
@@ -413,6 +420,7 @@ Fromthepage::Application.routes.draw do
       get 'statistics', as: :statistics, to: 'statistics#collection'
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
+      get 'review', as: :review, to: 'collection#reviewer_dashboard'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'facets'

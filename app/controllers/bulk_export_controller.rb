@@ -82,6 +82,9 @@ class BulkExportController < ApplicationController
         :table_csv_work, 
         :table_csv_collection,
         :work_metadata_csv,
-        :facing_edition_work)
+        :facing_edition_work,
+        :text_docx_work,
+        :text_pdf_work,
+        :static)
     end
 end

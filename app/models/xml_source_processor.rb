@@ -272,7 +272,8 @@ module XmlSourceProcessor
     6.downto(2) do |depth|
       line.scan(/(={#{depth}}(.+)={#{depth}})/).each do |wiki_title|
         verbatim = XmlSourceProcessor.cell_to_plaintext(wiki_title.last)
-        line = line.sub(wiki_title.first, "<entryHeading title=\"#{verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
+        safe_verbatim=verbatim.gsub(/"/, "&quot;")
+        line = line.sub(wiki_title.first, "<entryHeading title=\"#{safe_verbatim}\" depth=\"#{depth}\" >#{wiki_title.last}</entryHeading>")
         @sections << Section.new(:title => wiki_title.last, :depth => depth)
       end
     end
@@ -443,7 +444,10 @@ EOF
   # taken place within the article table in the DB
   ##############################################
   def rename_article_links(old_title, new_title)
-    title_regex = old_title.gsub(/\s+/, '\s+')
+    title_regex = 
+      Regexp.escape(old_title)
+        .gsub('\\ ',' ') # Regexp.escape converts ' ' to '\\ ' for some reason -- undo this
+        .gsub(/\s+/, '\s+') # convert multiple whitespaces into 1+n space characters
 
     self.source_text = rename_link_in_text(source_text, title_regex, new_title)
 

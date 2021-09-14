@@ -315,6 +315,7 @@ describe "owner actions", :order => :defined do
       click_link "Letters from America", match: :first
       expect(page).to have_content("Settings")
       click_link "Settings"
+      page.click_link 'Edit Owners'
       select("shuri - shuri@example.org", from: "user_id").select_option
       within(".user-select-form") do
         click_button "Add"

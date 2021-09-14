@@ -332,11 +332,12 @@
   /* hide and position tooltip */
 /*  top: -0.5em; */
   color: white;
-  font-size: 150%;
+  font-size: 100%;
   color: #FFF;
   padding: 10px;
   text-align: left;
-  max-width: 400px;
+  max-width: 800px;
+  width: 20em;
   line-height: 1.2;
   position: relative;
   border-radius: 5px;
@@ -898,10 +899,12 @@ button, .button, .dropdown dd a {
   .remove {
     top: 50%;
     right: 0;
+    border: 0;
     width: 1em;
     height: 1em;
     display: none;
     font-size: 20px;
+    box-shadow: none;
     position: absolute;
     margin-top: -0.5em;
     border-radius: 50%;

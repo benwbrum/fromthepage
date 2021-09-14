@@ -86,6 +86,10 @@ RSpec.describe XmlSourceProcessor, type: :model do
     let(:page_multilink) do
       build_stubbed(:page, source_text: "[[Old Title]][[Unchanged]]")
     end
+    let(:page_full_link_paren) do
+      build_stubbed(:page, source_text: "[[Old Title (Parenthetical)|old title parenthetical]]")
+    end
+
     it 'should rename links in the format [[Title|verbatim]]' do
       expected = '[[New Title|old title verbatim]]'
       page_full_link.rename_article_links('Old Title', 'New Title')
@@ -111,6 +115,13 @@ RSpec.describe XmlSourceProcessor, type: :model do
       page_short_link_newline.rename_article_links('Old Title', 'New Title')
       expect(page_short_link_newline.source_text).to eq(expected)
     end
+
+    it 'should rename links that contained parentheses [[Old Title (Parenthetical)| old title parenthetical]]' do
+      expected = "[[New Title|old title parenthetical]]"
+      page_full_link_paren.rename_article_links('Old Title (Parenthetical)', 'New Title')
+      expect(page_full_link_paren.source_text).to eq(expected)
+    end
+
 
     it 'should rename links in both transcription and translation texts' do
       expected = '[[New Translation|old translation verbatim]]'

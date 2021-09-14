@@ -10,6 +10,7 @@ class Work < ApplicationRecord
 
   belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
+  has_many :notes, through: :pages
   has_one :ia_work, :dependent => :destroy
   has_one :sc_manifest, :dependent => :destroy
   has_one :work_statistic, :dependent => :destroy
@@ -21,6 +22,7 @@ class Work < ApplicationRecord
   has_many :document_set_works
   has_many :document_sets, through: :document_set_works
   has_one :work_facet, :dependent => :destroy
+  has_many :bulk_exports, :dependent => :delete_all
 
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
