@@ -30,7 +30,7 @@ module AbstractXmlHelper
         if id
           if flatten_links
             if flatten_links == :jekyll
-              anchor.add_attribute("href", "/pages/subjects/#{id}")
+              anchor.add_attribute("href", "../subjects/#{id}")
             else
               anchor.add_attribute("href", "#article-#{id}")
             end

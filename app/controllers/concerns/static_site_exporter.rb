@@ -57,7 +57,7 @@ layout: archive
 <ul>
   {% for page_link in page.page_links %}
     <li>
-      <a href="/{{page_link.work_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a> 
+      <a href="{{page_link.work_url  | relative_url}}REPLACEME{{page_link.page_anchor}}">{{ page_link.work_title }} {{ page_link.page_title }}</a> 
     </li>
   {% endfor %}
 </ul>
