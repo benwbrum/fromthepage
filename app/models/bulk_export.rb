@@ -17,6 +17,15 @@ class BulkExport < ApplicationRecord
   end
 
 
+  def work_level?
+    self.attributes.detect{|k,v| k.match(/_work/) && v==true }
+  end
+
+  def page_level?
+    self.attributes.detect{|k,v| k.match(/_page/) && v==true }
+  end
+  
+
   def export_to_zip
     self.status = Status::PROCESSING
     self.save
