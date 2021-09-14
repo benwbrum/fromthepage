@@ -1,5 +1,6 @@
 module ExportService
   include AbstractXmlHelper
+  include StaticSiteExporter
 
   def add_readme_to_zip(dirname:, out:)
     readme = "#{Rails.root}/doc/zip/README"
@@ -64,6 +65,8 @@ module ExportService
 
     output_file
   end
+
+
 
   def export_work_metadata_csv(dirname:, out:, collection:)
     path = "work_metadata.csv"
@@ -238,6 +241,7 @@ module ExportService
     page_view = xml_to_html(page.xml_text, true, false, page.work.collection)
     out.write page_view
   end
+
 
 private
 
