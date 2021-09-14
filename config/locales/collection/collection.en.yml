@@ -84,7 +84,7 @@ en:
       hide_completed: "Hide completed works by default"
       text_language: "Select the language of the transcription text"
       default_orientation: "Select the default page transcription orientation"
-      voice_recognition: "Speech to text available for transcribing"
+      voice_recognition: "Speech to text available for transcribing (not compatible with advanced editor)"
       confirm_delete_collection: "Are you sure you want to delete this collection? After deleting you won't be able to recover it!"
       delete_collection: "Delete Collection"
       save_changes: "Save Changes"
