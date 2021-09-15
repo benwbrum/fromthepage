@@ -450,6 +450,8 @@ Fromthepage::Application.routes.draw do
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
         get 'remove_scribe', on: :member
+        get 'describe', on: :member
+        patch 'save_description', on: :member, to: 'work#save_description'
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

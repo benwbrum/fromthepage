@@ -1,0 +1,40 @@
+-tabs = [{\
+  :name => t('.overview'),
+  :selected => 1,
+  :path => "TODO",
+}]
+-tabs += [{\
+  :name => t('.describe'),
+  :selected => 2,
+  :path => "#{describe_collection_work_path(@work.slug)}",
+}]
+-tabs += [{\
+  :name => t('.versions'),
+  :selected => 3,
+  :path => "TODO",
+}]
+-tabs += [{\
+  :name => t('.help'),
+  :selected => 9,
+  :path => "#{collection_work_help_path(@collection.owner, @collection, @work)}",
+}]
+
+
+-selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
+
+-@display_context ||= ''
+
+.headline
+  h1.headline_title =@work.title
+  .headline_aside
+    -unless @display_context == 'preview'
+      nav.page-nav
+        =link_to({ :page_id => @work.pages.last.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+          =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
+
+        =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+          =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+.tabs
+  -for tab in tabs
+      =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
+        a.active =tab[:name]

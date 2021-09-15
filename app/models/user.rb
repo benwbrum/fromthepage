@@ -55,6 +55,9 @@ class User < ApplicationRecord
   has_many :random_document_sets, -> { unrestricted.has_intro_block.not_near_complete.not_empty.random_sample },
     class_name: "DocumentSet", :foreign_key => "owner_user_id"
 
+  has_many :metadata_description_versions, :dependent => :destroy
+
+
   scope :owners,           -> { where(owner: true) }
   scope :trial_owners,     -> { owners.where(account_type: 'Trial') }
   scope :findaproject_owners, -> { owners.where.not(account_type: [nil, 'Trial', 'Staff']) }

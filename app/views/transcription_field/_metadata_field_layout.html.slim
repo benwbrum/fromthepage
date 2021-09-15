@@ -1,0 +1,27 @@
+-metadata_field_order(@collection)
+-@fields.each do |line, array|
+  -page_number = array.map{|field| field.page_number}.uniq.first
+  .fields-row
+    -field_layout(array)
+    -@field_array.each do |field, cell|
+      -if @field_preview && @field_preview[field.id]
+        -cell = @field_preview[field.id].first
+      -span_width = !field.percentage.blank? ? field.percentage : @width
+      .field-wrapper(style="width: #{span_width}%")
+        -if field.input_type == "instruction"
+          div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
+            h5 =t('.instructions')
+            p =field.label
+        -else
+          =label_tag field.label, field.label
+          -cell = @metadata_array.detect{|element| element["transcription_field_id"] == field.id}
+          -content = cell.nil? ? nil : cell['value']
+          -if field.input_type == "text"
+            =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+          -elsif field.input_type == "select"
+            -options = field.options.split(";") unless field.options.nil?
+            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
+          -elsif field.input_type == "description"
+            =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+          -else
+            =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
