@@ -23,7 +23,9 @@ class Work < ApplicationRecord
   has_many :document_sets, through: :document_set_works
   has_one :work_facet, :dependent => :destroy
   has_many :bulk_exports, :dependent => :delete_all
+  has_many :metadata_description_versions, :dependent => :destroy
 
+  after_save :create_version
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
 
@@ -294,6 +296,59 @@ class Work < ApplicationRecord
   def has_untranscribed_pages?
     next_untranscribed_page.present?
   end
+
+  def process_fields(field_cells)
+    metadata_fields = []
+    # new_table_cells = []
+    unless field_cells.blank?
+      field_cells.each do |id, cell_data|
+        field = TranscriptionField.find(id.to_i)
+        input_type = field.input_type
+
+        # TODO don't save instruction or description types
+
+        element = {}
+        element['transcription_field_id'] = id.to_i
+
+
+        cell_data.each do |key, value|
+          # if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
+          #   value = ERB::Util.html_escape(value)
+          # end
+          element['label'] = key
+          element['value'] = value
+        end
+
+        metadata_fields << element
+      end
+    end
+    self.metadata_description = metadata_fields.to_json
+    # add this to versions here
+    metadata_fields
+  end
+
+  def create_version
+    # only do this if metadata description has saved
+    if saved_change_to_metadata_description?
+      version = MetadataDescriptionVersion.new
+      version.work = self
+      version.metadata_description = self.metadata_description
+      unless User.current_user.nil?
+        version.user = User.current_user
+      else
+        version.user = User.find_by(id: self.work.owner_user_id)
+      end
+
+      previous_version = MetadataDescriptionVersion.where("work_id = ?", self.id).order("version_number DESC").first
+      if previous_version
+        version.version_number = previous_version.version_number + 1
+      else
+        version.version_number = 1
+      end
+      version.save!
+    end
+  end
+
 
   def alert_intercom
     if (defined? INTERCOM_ACCESS_TOKEN) && INTERCOM_ACCESS_TOKEN

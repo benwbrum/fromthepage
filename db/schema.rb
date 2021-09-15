@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_15_154049) do
+ActiveRecord::Schema.define(version: 2021_09_15_185944) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -377,6 +377,17 @@ ActiveRecord::Schema.define(version: 2021_09_15_154049) do
     t.integer "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "metadata_description_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.text "metadata_description"
+    t.integer "user_id", null: false
+    t.integer "work_id", null: false
+    t.integer "version_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_metadata_description_versions_on_user_id"
+    t.index ["work_id"], name: "index_metadata_description_versions_on_work_id"
   end
 
   create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -813,7 +824,10 @@ ActiveRecord::Schema.define(version: 2021_09_15_154049) do
     t.text "editorial_notes"
     t.string "document_date"
     t.string "uploaded_filename"
+    t.text "metadata_description"
+    t.integer "metadata_description_version_id"
     t.index ["collection_id"], name: "index_works_on_collection_id"
+    t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
@@ -824,6 +838,9 @@ ActiveRecord::Schema.define(version: 2021_09_15_154049) do
   add_foreign_key "cdm_bulk_imports", "users"
   add_foreign_key "editor_buttons", "collections"
   add_foreign_key "facet_configs", "metadata_coverages"
+  add_foreign_key "metadata_description_versions", "users"
+  add_foreign_key "metadata_description_versions", "works"
   add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "work_facets", "works"
+  add_foreign_key "works", "metadata_description_versions"
 end
