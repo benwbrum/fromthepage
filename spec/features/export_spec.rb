@@ -36,6 +36,7 @@ describe "export tasks" do
     page.check('bulk_export_table_csv_collection')
     page.check('bulk_export_subject_csv_collection')
     page.check('bulk_export_work_metadata_csv')
+    page.check('bulk_export_static')
 
     page.find('button', text: 'Start Export').click
     expect(page).to have_content("Queued")
