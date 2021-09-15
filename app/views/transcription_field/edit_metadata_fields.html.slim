@@ -1,0 +1,7 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection }})
+
+div.columns
+  div.maincol
+    h2 =t('.edit_metadata_fields')
+    p 
+    =render({partial: 'edit_field_form', locals: { field_type: TranscriptionField::FieldType::METADATA }})

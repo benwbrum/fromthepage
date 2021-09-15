@@ -8,5 +8,13 @@ class TranscriptionField < ApplicationRecord
   validates :percentage, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 100 }
   validates :page_number, numericality: { allow_nil: true, greater_than: 0, less_than_or_equal_to: 1000 }
 
-  INPUTS = ["text", "select", "textarea", "description", "instruction", "spreadsheet"]
+
+  module FieldType
+    TRANSCRIPTION = 'transcription'
+    METADATA = 'metadata'
+  end
+
+
+  TRANSCRIPTION_INPUTS = ["text", "select", "textarea", "description", "instruction", "spreadsheet"]
+  METADATA_INPUTS = ["text", "select", "textarea", "description", "instruction"]
 end

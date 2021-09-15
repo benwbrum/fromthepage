@@ -128,7 +128,10 @@ en:
       collection_reviewers_description: "These users will be able to review and approve transcriptions, as well as edit them."
       add_reviewer: "Add Reviewer"
       remove_reviewer: "Remove Reviewer"
-
+      metadata_entry: Metadata Description
+      edit_metadata_fields: "Edit Fields"
+      revert_from_description_to_transcription: "Disable Description"
+      enable_metadata_description: "Enable Metadata Description"
       transcription_type: "Transcription Type"
       transcription_type_description: "Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled."
       field_based_transcription: "Field based transcription"

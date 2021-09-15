@@ -67,6 +67,7 @@ Fromthepage::Application.routes.draw do
     get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
     get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
+    get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
@@ -78,6 +79,7 @@ Fromthepage::Application.routes.draw do
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
     get 'disable_fields', to: 'collection#disable_fields'
+    get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
     get 'restrict_collection', to: 'collection#restrict_collection'
@@ -291,6 +293,7 @@ Fromthepage::Application.routes.draw do
     patch 'reorder', to: 'transcription_field#reorder_fields'
     get 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
+    get 'edit_metadata_fields', to: 'transcription_field#edit_metadata_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
 
@@ -423,6 +426,7 @@ Fromthepage::Application.routes.draw do
       get 'review', as: :review, to: 'collection#reviewer_dashboard'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
       get 'facets'
       post 'search'
 

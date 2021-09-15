@@ -9,6 +9,8 @@ en:
       percentage_title: "Percentage of the line width to use for this field."
       page: "Page"
       page_title: "For multi-page forms, which page should this field appear on? (Leave blank to display on each page.)"
+    edit_metadata_fields:
+      edit_metadata_fields: "Edit Metadata Description Fields"
     edit_fields:
       edit_transcription_fields: "Edit Transcription Fields"
       transcription_warning: "This project has already been partially transcribed. Adding fields is fine, but deleting or changing fields may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename fields."
