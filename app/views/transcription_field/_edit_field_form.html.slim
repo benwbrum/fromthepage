@@ -1,6 +1,13 @@
 =form_tag transcription_field_add_fields_path
     =hidden_field_tag(:collection_id, @collection.id)
     =hidden_field_tag(:field_type, field_type)
+    -if field_type == TranscriptionField::FieldType::METADATA
+      table.form
+        tbody
+          tr
+            td(colspan="2")
+              =label_tag :description_instructions, t('.description_instructions_label'), class: "above"
+              =text_area_tag :description_instructions, @collection.description_instructions, :rows => 4
     table.field-form#new-fields
       -unless @current_fields.blank?
         -@current_fields.group_by(&:line_number).each do |line, field|
