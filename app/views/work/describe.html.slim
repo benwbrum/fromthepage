@@ -57,7 +57,11 @@
 
     .page-column
       .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
-          =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
+        =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
+
+        -if @collection.description_instructions.present?
+          .fgfaded ==@collection.description_instructions
+
 h2.legend =t('notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"

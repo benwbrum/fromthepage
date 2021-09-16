@@ -25,6 +25,11 @@ class TranscriptionFieldController < ApplicationController
 
   def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
+
+    if params[:description_instructions]
+      @collection.update(:description_instructions => params[:description_instructions])
+    end
+
     field_type = params[:field_type]
     new_fields = params[:transcription_fields]
 

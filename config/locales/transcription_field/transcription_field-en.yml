@@ -40,3 +40,6 @@ en:
       percentage_title: "Percentage of the line width to use for this field."
     add_fields:
       must_have_options_list: "Select fields must have an options list. Please add options to any select fields and resave."
+
+    edit_field_form:
+      description_instructions_label: "Metadata Description Instructions"
