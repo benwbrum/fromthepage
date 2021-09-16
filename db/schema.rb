@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_15_185944) do
+ActiveRecord::Schema.define(version: 2021_09_16_184221) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -826,6 +826,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_185944) do
     t.string "uploaded_filename"
     t.text "metadata_description"
     t.integer "metadata_description_version_id"
+    t.string "description_status", default: "undescribed"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"

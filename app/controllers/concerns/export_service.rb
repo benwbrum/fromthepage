@@ -356,7 +356,7 @@ private
 
         unless work.metadata_description.blank?
           # description status
-          row << 'STATUS TODO'
+          row << work.description_status
           # described by
           row << User.find(work.metadata_description_versions.pluck(:user_id)).map{|u| u.display_name}.join('; ')
 

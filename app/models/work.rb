@@ -53,6 +53,12 @@ class Work < ApplicationRecord
   scope :ocr_disabled, -> { where(ocr_correction: false) }
   after_commit :save_metadata, on: [:create, :update]
 
+  module DescriptionStatus
+    UNDESCRIBED = 'undescribed'
+    DESCRIBED = 'described'
+  end
+
+
   module TitleStyle
     REPLACE = 'REPLACE'
 
@@ -323,6 +329,7 @@ class Work < ApplicationRecord
       end
     end
     self.metadata_description = metadata_fields.to_json
+    self.description_status = DescriptionStatus::DESCRIBED
     # add this to versions here
     metadata_fields
   end
