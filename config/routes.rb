@@ -452,6 +452,7 @@ Fromthepage::Application.routes.draw do
         get 'remove_scribe', on: :member
         get 'describe', on: :member
         patch 'save_description', on: :member, to: 'work#save_description'
+        get 'description_versions', on: :member
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

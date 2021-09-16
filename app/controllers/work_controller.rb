@@ -43,6 +43,31 @@ class WorkController < ApplicationController
 
   end
 
+  def description_versions
+    # @selected_version = @page_version.present? ? @page_version : @page.page_versions.first
+    # @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version.prev
+    selected_version_id = params[:metadata_description_version_id]
+    if selected_version_id
+      @selected_version= MetadataDescriptionVersion.find(selected_version_id)
+    else
+      @selected_version= @work.metadata_description_versions.first
+    end
+    # NB: Unlike in page versions (which are created when we first create the page), metadata description versions may be nil
+    compare_version_id = params[:compare_version_id]
+    if compare_version_id
+      @previous_version = MetadataDescriptionVersion.find(compare_version_id)
+    else
+      if @selected_version.version_number > 1
+        @previous_version = @work.metadata_description_versions.second
+      else
+        @previous_version = @selected_version
+      end
+    end
+    # again, both may be blank here
+  end
+
+
+
   def delete
     @work.destroy
     redirect_to dashboard_owner_path

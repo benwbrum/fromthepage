@@ -23,7 +23,7 @@ class Work < ApplicationRecord
   has_many :document_sets, through: :document_set_works
   has_one :work_facet, :dependent => :destroy
   has_many :bulk_exports, :dependent => :delete_all
-  has_many :metadata_description_versions, :dependent => :destroy
+  has_many :metadata_description_versions, -> { order 'version_number DESC' }, :dependent => :destroy
 
   after_save :create_version
   after_save :update_statistic
