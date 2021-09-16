@@ -9,6 +9,7 @@
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group
+        button#toggleImage.button.outline type="button" =t('.show_image')
         a.button.outline(data-fullscreen-toggle)
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
@@ -37,14 +38,29 @@
 
 
   .page-columns(data-layout-mode="#{@layout_mode}")
-    .page-column.page-imagescan
-      p Images/text go here
-      p was render :partial => '/shared/osd_div'
-      p =@work.metadata_description
+    .page-column
+      .page-preview(*language_attrs(@collection))
+        .work-page_content
+          -@work.pages.each do |page|
+            -if page.work.pages_are_meaningful
+              h4.work-page_title =page.title
+
+            .work-page_text[*language_attrs(@collection)]
+              -transcription = xml_to_html(page.xml_text, false)
+              -if page.status == Page::STATUS_BLANK
+                p.nodata_text ==t('.this_page_is_blank')
+              -elsif transcription.present?
+                ==transcription.force_encoding('utf-8')
+      .page-imagescan
+        =render :partial => '/shared/osd_div'
+
 
     .page-column
       .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
           =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
+h2.legend =t('notes_and_questions')
+.page-notes
+  =render :partial => "notes/notes"
 
 
 =render({ :partial => '/shared/collection_footer' })
@@ -70,6 +86,26 @@
 -content_for :javascript
   javascript:
     $(function() {
+      var fromImage = true;
+      updateDisplay(fromImage);
+
+
+      $('#toggleImage').click(function(){
+        fromImage = !fromImage;
+
+        updateDisplay(fromImage)
+        Cookies.set('fromImage', fromImage, { expires: 365, path: '/' });
+      });
+
+      function updateDisplay(){
+        $('.page-imagescan').toggle(fromImage);
+        $('.page-preview').toggle(!fromImage);
+
+        var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
+        $('#toggleImage').html(buttonText);
+      }
+
+
       $('[data-fullscreen-toggle]').on('click', function() {
         $(this).toggleClass('pressed');
         $('.page-editor').toggleClass('fullscreen');
@@ -106,3 +142,4 @@
         $('#page_needs_review').prop('checked', false);
       });
     });
+

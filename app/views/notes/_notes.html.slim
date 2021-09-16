@@ -1,10 +1,14 @@
--if @page.notes.empty?
+-if @page
+  -notes = @page.notes
+-else
+  -notes = @work.notes.where(page_id: nil)
+-if notes.empty?
   p.acenter.fglight(data-note-empty)
     = t('.nobody_has_written_a_note')
 -unless user_signed_in?
   p.acenter.fglight = t('.please_sign_in_to_write', link: link_to('sign in', new_user_session_path)).html_safe
 
--@page.notes.each do |note|
+-notes.each do |note|
   =render({ partial: 'notes/note', locals: { note: note }})
 
 -if user_signed_in?
@@ -12,7 +16,11 @@
     =profile_picture(current_user)
 
     =form_for :note, url: notes_path, remote: true, html: { class: 'user-bubble_form' } do |f|
-      =hidden_field_tag(:page_id, @page.id)
+      -if @page
+        =hidden_field_tag(:page_id, @page.id)
+      -else
+        =hidden_field_tag(:work_id, @work.id)
+
       =hidden_field_tag(:collection_id, @collection.slug)
       .user-bubble_form_editor
         =f.text_area :body, :rows => 4, :placeholder => t('.write_a_new_note')
