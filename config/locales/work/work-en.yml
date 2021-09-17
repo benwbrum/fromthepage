@@ -31,4 +31,6 @@ en:
       revision: "revision"
       author_contributed_at: "%{author} at %{date}"
       compared_with: "Compared with"
+    save_description:
+      work_described: "Your description has been saved"
 

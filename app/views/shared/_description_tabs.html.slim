@@ -8,11 +8,12 @@
   :selected => 2,
   :path => describe_collection_work_path(@work.slug),
 }]
--tabs += [{\
-  :name => t('.versions'),
-  :selected => 3,
-  :path => description_versions_collection_work_path(@work.slug),
-}]
+-if @work.metadata_description_versions.present?
+  -tabs += [{\
+    :name => t('.versions'),
+    :selected => 3,
+    :path => description_versions_collection_work_path(@work.slug),
+  }]
 -tabs += [{\
   :name => t('.help'),
   :selected => 9,
