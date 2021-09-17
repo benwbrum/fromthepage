@@ -16,7 +16,7 @@
   :path => "#{versions_collection_work_path(@collection.owner, @collection, @work)}",
 }]
 
--if user_signed_in? && ((feature_enabled?(:download) && @collection.user_download) || current_user.like_owner?(@collection))
+-if user_signed_in? && (@collection.user_download || current_user.like_owner?(@collection))
   -tabs += [{\
     :name => t('.download'),
     :selected => 5,
