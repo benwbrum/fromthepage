@@ -78,7 +78,7 @@ div.fields-preview
         $.ajax({
           method: 'GET',
           url: '/transcription_field/line_form',
-          data: {line_count: lineCount},
+          data: {line_count: lineCount, field_type: "#{field_type}"},
           complete: function() {
             $('#new-fields tbody').sortable(sortableConfig);
           }
