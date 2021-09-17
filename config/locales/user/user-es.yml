@@ -1,6 +1,7 @@
 es:
   user:
     owner_profile:
+      api_keys: "Claves API"
       edit_profile: "Editar Perfil"
       login_and_password: "Inicio de sesión y Contraseña"
       website: "Página Web"
@@ -41,7 +42,9 @@ es:
       owner_stats: "Correos electrónicos nocturnos con la actividad de la colección propia"
       add_as_collaborator: "Añadido a obra privada como colaborador"
       add_as_owner: "Añadido a obra privada como dueño"
+      add_as_reviewer: "Añadido a la colección como revisor autorizado"
       page_edited: "Nota añadida en respuesta a un comentario que hiciste"
       update_profile: "Actualizar Perfil"
+      picture: "Imagen de perfil"
     update:
       user_updated: "El perfil del usuario ha sido actualizado"
