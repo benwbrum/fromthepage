@@ -23,3 +23,9 @@ pt:
       cancel: "Cancelar"
       save_and_new_work: "Guardar & Nova Obra"
       save_and_add_next_page: "Guardar & Adicionar Página Seguinte"
+    delete:
+      page_deleted: "Esta página foi eliminada"
+    create:
+      page_created: "Esta página foi criada com sucesso"
+    update:
+      page_updated: "Esta página foi atualizada"
