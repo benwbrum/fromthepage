@@ -27,7 +27,7 @@ class WorkController < ApplicationController
 
 
   def describe
-    @metadata_array = JSON.parse(@work.metadata_description)
+    @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 
   def save_description
@@ -35,6 +35,12 @@ class WorkController < ApplicationController
     @metadata_array = @work.process_fields(@field_cells)
     if @work.save
       # TODO record_description_deed(@work)
+      if @work.saved_change_to_description_status?
+        record_deed(@work, DeedType::DESCRIBED_METADATA, current_user)
+      else
+        record_deed(@work, DeedType::EDITED_METADATA, current_user)
+      end
+
       flash[:notice] = t('.work_described')
       render :describe
     else
@@ -124,7 +130,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
-      record_deed(@work)
+      record_deed(@work, DeedType::WORK_ADDED, work.owner)
       flash[:notice] = t('.work_created')
       ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
@@ -183,7 +189,7 @@ class WorkController < ApplicationController
   end
 
   def change_collection(work)
-    record_deed(work)
+    record_deed(work, DeedType::WORK_ADDED, work.owner)
     unless work.articles.blank?
       #delete page_article_links for this work
       page_ids = work.pages.ids
@@ -217,12 +223,12 @@ class WorkController < ApplicationController
 
   protected
 
-  def record_deed(work)
+  def record_deed(work, deed_type, user)
     deed = Deed.new
     deed.work = work
-    deed.deed_type = DeedType::WORK_ADDED
+    deed.deed_type = deed_type
     deed.collection = work.collection
-    deed.user = work.owner
+    deed.user = user
     deed.save!
   end
 

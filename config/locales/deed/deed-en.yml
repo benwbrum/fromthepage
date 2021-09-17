@@ -26,6 +26,8 @@ en:
         in_the_work: " in the work %{work}"
         in_collection: " in %{collection} collection"
         joined: "joined "
+        described_metadata: "described metadata"
+        edited_metadata: "edited metadata"
       this_collection: "this collection"
     deeds:
       show_more: "Show More"

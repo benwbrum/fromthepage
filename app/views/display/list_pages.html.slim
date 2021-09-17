@@ -24,7 +24,7 @@
         td
           -page_action(page)
           =link_to @wording, @path, class: 'button small outline'
-    -if @work.metadata_description?
+    -if @collection.metadata_entry?
       tr
         td
           =link_to(describe_collection_work_path(@work.slug))
