@@ -1,12 +1,12 @@
 -tabs = [{\
   :name => t('.overview'),
   :selected => 1,
-  :path => "TODO",
+  :path => metadata_overview_collection_work_path(@work.slug),
 }]
 -tabs += [{\
   :name => t('.describe'),
   :selected => 2,
-  :path => "#{describe_collection_work_path(@work.slug)}",
+  :path => describe_collection_work_path(@work.slug),
 }]
 -tabs += [{\
   :name => t('.versions'),
@@ -38,3 +38,4 @@
   -for tab in tabs
       =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
         a.active =tab[:name]
+

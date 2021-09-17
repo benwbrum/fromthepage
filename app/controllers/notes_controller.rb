@@ -2,7 +2,6 @@ class NotesController < ApplicationController
   include ActionView::Helpers::TextHelper
 
   def create
-    binding.pry
     @note = Note.new(note_params)
     # truncate the body for the title
     @note.title = @note.body

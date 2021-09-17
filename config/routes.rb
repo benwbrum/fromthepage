@@ -453,6 +453,7 @@ Fromthepage::Application.routes.draw do
         get 'describe', on: :member
         patch 'save_description', on: :member, to: 'work#save_description'
         get 'description_versions', on: :member
+        get 'metadata_overview', on: :member
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'
