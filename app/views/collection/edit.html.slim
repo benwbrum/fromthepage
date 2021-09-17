@@ -162,14 +162,15 @@
         span =t('.revert_document_based_transcription')
       =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
 
-    h3 =t('.metadata_entry')
-    -if @collection.metadata_entry?
-      =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
-      =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
-        span =t('.revert_from_description_to_transcription')
-    -else
-      =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
-        span =t('.enable_metadata_description')    
+    -if feature_enabled?(:description)
+      h3 =t('.metadata_entry')
+      -if @collection.metadata_entry?
+        =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
+        =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
+          span =t('.revert_from_description_to_transcription')
+      -else
+        =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))
+          span =t('.enable_metadata_description')    
 
 
 
