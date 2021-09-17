@@ -42,6 +42,16 @@ class DocumentSet < ApplicationRecord
     self.description
   end
 
+
+  def text_entry?
+    self.collection.text_entry?
+  end
+
+  def metadata_entry?
+    self.collection.text_entry?
+  end
+
+
   def hide_completed
     self.collection.hide_completed
   end

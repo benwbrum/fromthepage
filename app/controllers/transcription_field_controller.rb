@@ -109,6 +109,7 @@ class TranscriptionFieldController < ApplicationController
   def line_form
     @line_count = params[:line_count].strip.next
     @count = @line_count.split(" ").last.to_i
+    @field_type = params[:field_type]
     respond_to do |format|
       format.js
     end
