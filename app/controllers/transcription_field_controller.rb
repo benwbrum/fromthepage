@@ -29,6 +29,9 @@ class TranscriptionFieldController < ApplicationController
     if params[:description_instructions]
       @collection.update(:description_instructions => params[:description_instructions])
     end
+    if params[:data_entry_type]
+      @collection.update(:data_entry_type => params[:data_entry_type])
+    end
 
     field_type = params[:field_type]
     new_fields = params[:transcription_fields]

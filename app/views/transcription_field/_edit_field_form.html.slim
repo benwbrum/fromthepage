@@ -6,6 +6,15 @@
         tbody
           tr
             td(colspan="2")
+              =label_tag :data_entry_type, t('.data_entry_type_label'), class: "above"
+              br
+              =radio_button_tag :data_entry_type, Collection::DataEntryType::TEXT_AND_METADATA, @collection.data_entry_type == Collection::DataEntryType::TEXT_AND_METADATA 
+              =label_tag "data_entry_type_#{Collection::DataEntryType::TEXT_AND_METADATA}", t('.data_entry_type_text_and_metadata')
+              br
+              =radio_button_tag :data_entry_type, Collection::DataEntryType::METADATA_ONLY, @collection.data_entry_type == Collection::DataEntryType::METADATA_ONLY
+              =label_tag "data_entry_type_#{Collection::DataEntryType::METADATA_ONLY}", t('.data_entry_type_metadata_only')
+          tr
+            td(colspan="1")
               =label_tag :description_instructions, t('.description_instructions_label'), class: "above"
               =text_area_tag :description_instructions, @collection.description_instructions, :rows => 4
     table.field-form#new-fields

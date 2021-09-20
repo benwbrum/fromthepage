@@ -43,3 +43,7 @@ en:
 
     edit_field_form:
       description_instructions_label: "Metadata Description Instructions"
+      data_entry_type_label: "Description Type"
+      data_entry_type_text_and_metadata: "Users transcribe text and describe metadata"
+      data_entry_type_metadata_only: "Users only describe metadata"
+
