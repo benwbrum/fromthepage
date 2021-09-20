@@ -30,11 +30,21 @@
   .headline_aside
     -unless @display_context == 'preview'
       nav.page-nav
-        =link_to({ :page_id => @work.pages.last.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
-          =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
+        -if @collection.text_entry?
+          =link_to({ :page_id => @work.pages.last.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+            =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
 
-        =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
-          =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+          =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+        -else
+          -index = @collection.works.index(@work)
+          -if index > 0
+            =link_to(describe_collection_work_path(@collection.owner, @collection, @collection.works[index-1]), class: 'page-nav_prev', title: 'Previous work', 'aria-label' => 'Previous work', onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous work'
+          -if index < (@collection.works.size - 1)
+            =link_to(describe_collection_work_path(@collection.owner, @collection, @collection.works[index+1]), class: 'page-nav_next', title: 'Next work', 'aria-label' => 'Next work', onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next work'
+
 .tabs
   -for tab in tabs
       =link_to_unless tab[:selected] == selected, tab[:name], tab[:path]
