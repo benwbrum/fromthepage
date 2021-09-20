@@ -4,8 +4,6 @@
   .fields-row
     -field_layout(array)
     -@field_array.each do |field, cell|
-      -if @field_preview && @field_preview[field.id]
-        -cell = @field_preview[field.id].first
       -span_width = !field.percentage.blank? ? field.percentage : @width
       .field-wrapper(style="width: #{span_width}%")
         -if field.input_type == "instruction"
@@ -14,7 +12,13 @@
             p =field.label
         -else
           =label_tag field.label, field.label
-          -cell = @metadata_array.detect{|element| element["transcription_field_id"] == field.id}
+          -if owner_preview
+            =cell=nil
+          -else
+            -if @field_preview && @field_preview[field.id]
+              -cell = @field_preview[field.id].first
+            -else
+              -cell = @field_array.detect{|element| element["transcription_field_id"] == field.id}
           -content = cell.nil? ? nil : cell['value']
           -if field.input_type == "text"
             =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'

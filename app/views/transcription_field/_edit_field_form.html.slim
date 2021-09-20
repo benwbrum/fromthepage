@@ -31,7 +31,10 @@
 
 h2 =t('.preview')
 div.fields-preview
-  =render({partial: 'field_layout', locals: {collection_id: @collection}})
+  -if field_type == TranscriptionField::FieldType::METADATA
+    =render({partial: 'metadata_field_layout', locals: {collection_id: @collection, owner_preview: true}})
+  -else
+    =render({partial: 'field_layout', locals: {collection_id: @collection}})
 
 -content_for :javascript
   javascript:

@@ -2,34 +2,86 @@
 require 'spec_helper'
 
 describe "Metadata Description" do
-    before :all do
-        @owner = User.find_by(login: OWNER)
-    end
+  before :all do
+    @owner = User.find_by(login: OWNER)
+    # DatabaseCleaner.start
+  end
+  before :each do
+    login_as(@owner, :scope => :user)
+    visit '/feature/description/enable'
+  end
+
+
+  after :all do
+    DatabaseCleaner.clean
+  end
+
+  let(:collection) { create(:collection, owner: @owner) }
+  # factory code from work spec
+  # let(:work_no_ocr){ create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: false) }
+  # let(:page_no_ocr){ create(:page, work: work_no_ocr) }
+
+  # let(:work_ocr)   { create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: true) }
+  # let(:page_ocr)   { create(:page, work: work_ocr) }
+
+  it "Enables and disables" do
+    visit edit_collection_path(@owner, collection)
+    page.click_link("Enable Metadata Description")
+    expect(page).to have_content("Metadata Fields")
+    expect(Collection.last.data_entry_type).to eq(Collection::DataEntryType::TEXT_AND_METADATA)
+
+    visit edit_collection_path(@owner, collection)
+    page.click_link("Disable Description")
+    expect(page).not_to have_content("Metadata Fields")
+    expect(Collection.last.data_entry_type).to eq(Collection::DataEntryType::TEXT_ONLY)
+
+
+  end
+
+
+  describe "Owner Flow" do
     before :each do
       login_as(@owner, :scope => :user)
       visit '/feature/description/enable'
-      DatabaseCleaner.start
-    end
-    after :each do
-      DatabaseCleaner.clean
     end
 
-    let(:collection) { create(:collection, owner: @owner) }
-    # factory code from work spec
-    # let(:work_no_ocr){ create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: false) }
-    # let(:page_no_ocr){ create(:page, work: work_no_ocr) }
-
-    # let(:work_ocr)   { create(:work, owner_user_id: @owner.id, collection: collection, ocr_correction: true) }
-    # let(:page_ocr)   { create(:page, work: work_ocr) }
-
-    it "Enables metadata description" do
+    it "edits description fields" do
       visit edit_collection_path(@owner, collection)
       page.click_link("Enable Metadata Description")
-      expect(page).to have_content("Metadata Fields")
-      expect(Collection.last.data_entry_type).to eq(Collection::DataEntryType::TEXT_AND_METADATA)
-      expect(page).to have_content("Metadata Fields")
+
+      visit collection_path(@owner, collection)
+      page.find('.tabs').click_link("Metadata Fields")
+      page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'First field')
+      page.find('#new-fields tr[3]').fill_in('transcription_fields__percentage', with: 20)
+      page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Second field')
+      page.find('#new-fields tr[4]').select('textarea', from: 'transcription_fields__input_type')
+      page.find('#new-fields tr[5]').fill_in('transcription_fields__label', with: 'Third field')
+      page.find('#new-fields tr[5]').select('select', from: 'transcription_fields__input_type')
+      old_field_count = TranscriptionField.all.count
+      click_button 'Save'
+      expect(page).to have_content("Select fields must have an options list.")
+      expect(TranscriptionField.last.input_type).to eq "text"
+      expect(TranscriptionField.last.field_type).to eq TranscriptionField::FieldType::METADATA
+      expect(TranscriptionField.all.count).to eq old_field_count + 3
+      expect(TranscriptionField.first.percentage).to eq 20
+
+
+      # now check the field preview on the edit page
+      visit collection_path(@owner, collection)
+      page.find('.tabs').click_link("Metadata Fields")
+      expect(page.find('div.fields-preview')).to have_content("First field")
+      expect(page.find('div.fields-preview')).to have_content("Second field")
+      expect(page.find('div.fields-preview')).to have_content("Third field")
+      #check field width for first field (set to 20%)
+      expect(page.find('div.fields-preview .field-wrapper[1]')[:style]).to eq "width: 20%"
+      #check field width for second field (not set)
+      expect(page.find('div.fields-preview .field-wrapper[2]')[:style]).not_to eq "width: 20%"
+
+      # TODO separate and figure out the db cleaner business
     end
+
   end
+end
 
 # test code from field_based_spec
 # describe "collection settings js tasks", :order => :defined do
@@ -43,33 +95,6 @@ describe "Metadata Description" do
 #     login_as(@owner, :scope => :user)
 #   end
 
-#   it "sets collection to field based transcription" do
-#     visit collection_path(@collection.owner, @collection)
-#     page.find('.tabs').click_link("Settings")
-#     page.click_link("Enable Field Based Transcription")
-#     expect(page).to have_content("Edit Transcription Fields")
-#     page.find('.tabs').click_link("Settings")
-#     expect(page).to have_selector('a', text: 'Fields')
-#     page.find('.sidecol').click_link('Fields')
-#     expect(page).to have_content("Edit Transcription Fields")
-#   end
-
-#   it "edits fields for transcription" do
-#     expect(TranscriptionField.all.count).to eq 0
-#     visit collection_path(@collection.owner, @collection)
-#     page.find('.tabs').click_link("Fields")
-#     page.find('#new-fields tr[3]').fill_in('transcription_fields__label', with: 'First field')
-#     page.find('#new-fields tr[3]').fill_in('transcription_fields__percentage', with: 20)
-#     page.find('#new-fields tr[4]').fill_in('transcription_fields__label', with: 'Second field')
-#     page.find('#new-fields tr[4]').select('textarea', from: 'transcription_fields__input_type')
-#     page.find('#new-fields tr[5]').fill_in('transcription_fields__label', with: 'Third field')
-#     page.find('#new-fields tr[5]').select('select', from: 'transcription_fields__input_type')
-#     click_button 'Save'
-#     expect(page).to have_content("Select fields must have an options list.")
-#     expect(TranscriptionField.last.input_type).to eq "text"
-#     expect(TranscriptionField.all.count).to eq 3
-#     expect(TranscriptionField.first.percentage).to eq 20
-#   end
 
 #   it "checks the field preview on edit page" do
 #     #check the field preview
