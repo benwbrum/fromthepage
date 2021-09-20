@@ -13,6 +13,7 @@ es:
       meta_description: "Eres libre de elegir entre los muchos proyectos interesantes disponibles en FromThePage. Puedes comenzar leyendo los escritos históricos que ya han sido transcritos por otros miembros. Te invitamos a colaborar en uno de los grandes proyectos de la era digital."
     hierarchical_collections_and_document_sets:
       start_transcribing: "Comenzar a Transcribir"
+      project_by: "Proyecto por %{author}"
     landing_page:
       previous_image: "Imagen anterior"
       next_image: "Siguiente imagen"
