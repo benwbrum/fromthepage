@@ -56,3 +56,10 @@ en:
       sup_description: "Superscript text."
       unclear_description: "Marks unclear text."
       u_description: "Marks underlined text."      
+    description_tabs:
+      nav_info: "Work %{position} of %{size}"
+      overview: "Overview"
+      describe: "Describe"
+      versions: "Versions"
+      help: "Help"
+

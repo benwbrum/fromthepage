@@ -81,8 +81,12 @@
           =link_to({ :page_id => lower_item.id }, class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -elsif selected == 3 # if we're in "transcribe"
-          =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
-            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+          -if @collection.metadata_entry?
+            =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Describe work', 'aria-label' => 'Describe work', onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Describe metadata'
+          -else
+            =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
         -else 
           span.page-nav_next =svg_symbol '#icon-arrow-right', class: 'icon'
 .tabs
