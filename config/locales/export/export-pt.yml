@@ -49,7 +49,7 @@ pt:
       subjects_and_indices: "Assuntos e Índices"
       categories: "Categorias:"
       pages: "Páginas:"
-          facing_edition:
+      facing_edition:
       export_metadata: "Exportação FromThePage de %{work} de %{collection} feita em %{time}."
       identifier: "Identificador: %{work}"
       fromthepage_version: "Versão FromThePage: %{version}"

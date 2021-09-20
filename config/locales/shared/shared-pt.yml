@@ -35,7 +35,7 @@ pt:
       settings: "Configurações"
       pages: "Páginas"
       help: "Ajuda"
-     download: "Download"
+      download: "Download"
     handsontable:
       date_tooltip: "As datas devem ser formatadas AAAA-MM-DD (ano de quatro dígitos, mês de dois dígitos, dia de dois dígitos, com hifens entre eles)."
     codemirror:
