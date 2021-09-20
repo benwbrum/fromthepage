@@ -1,6 +1,7 @@
 pt:
   user:
     owner_profile:
+      api_keys: "API Keys"
       edit_profile: "Editar Perfil"
       login_and_password: "Usuário &amp; Senha"
       website: "Site"
@@ -41,7 +42,9 @@ pt:
       owner_stats: "Um e-mail cada noite com a atividade nas coleções que você controla"
       add_as_collaborator: "Adicionado como colaborador a uma obra privada"
       add_as_owner: "Adicionado como dono a uma obra privada"
+      add_as_reviewer: "Adicionado à coleção como revisor autorizado"
       page_edited: "Nota adicionada em resposta a um comentário que você fez"
       update_profile: "Atualizar Perfil"
+      picture: "Foto do perfil"
     update:
       user_updated: "O perfil do usuário foi atualizado"
