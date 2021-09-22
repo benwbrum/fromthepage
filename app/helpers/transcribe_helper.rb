@@ -68,7 +68,7 @@ module TranscribeHelper
       elsif browser.platform.ios? && browser.webkit?
         ["#{url_for(:root)}image-service/#{page.id}/info.json"]
       else
-        {type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json
+        [{type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json]
       end
     end
   end
