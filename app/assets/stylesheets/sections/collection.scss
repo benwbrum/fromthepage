@@ -91,6 +91,9 @@
     margin: 0.5em 0 0 0;
     font-size: $fontSizeSmall;
   }
+  &_action {
+    font-style: italic;
+  }
   &_stats {
     width: 100%;
     color: $bodyFgFaded;
