@@ -28,7 +28,14 @@
 
   .page-column
     .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
-      ==html_metadata(JSON.parse(@work.metadata_description || '[]'))
+      -if @work.description_status == Work::DescriptionStatus::UNDESCRIBED
+        p.collection-work_action 
+          =t('collection.show.this_work_has_not_been_described')
+          span &nbsp;
+          =link_to(t('collection.show.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, @work))
+
+      -else
+        ==html_metadata(JSON.parse(@work.metadata_description || '[]'))
 
 h2.legend =t('notes_and_questions')
 .page-notes
