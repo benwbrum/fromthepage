@@ -10,8 +10,8 @@ class ContactController < ApplicationController
 
   def send_email
     render
-
     unless params[email_param].blank? && 
+      binding.pry
       ContactMailer.contact(
         first_name: params[:first_name],
         last_name:  params[:last_name],

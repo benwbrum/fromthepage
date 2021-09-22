@@ -37,6 +37,16 @@
                 =link_to image_tag(work.thumbnail, alt: work.title), default_path
           h4.collection-work_title =link_to work.title, default_path
           p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
+          -if @collection.text_entry? && work.next_untranscribed_page
+            p.collection-work_action 
+              =t('.this_work_has_pages_that_need_work')
+              span &nbsp;
+              =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page))
+          -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
+            p.collection-work_action 
+              =t('.this_work_has_not_been_described')
+              span &nbsp;
+              =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work))
           -if @collection.text_entry?
             .collection-work_stats
               -work_stats(work)
