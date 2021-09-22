@@ -83,7 +83,7 @@
         -elsif selected == 3 # if we're in "transcribe"
           -if @collection.metadata_entry?
             =link_to(describe_collection_work_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Describe work', 'aria-label' => 'Describe work', onclick: 'unsavedTranscription(event);')
-              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Describe metadata'
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Create metadata'
           -else
             =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
               =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
