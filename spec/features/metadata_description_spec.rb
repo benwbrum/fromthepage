@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "Metadata Description" do
   before :all do
     @owner = User.find_by(login: OWNER)
-    # DatabaseCleaner.start
+    DatabaseCleaner.start
   end
   before :each do
     login_as(@owner, :scope => :user)
