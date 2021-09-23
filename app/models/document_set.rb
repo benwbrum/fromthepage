@@ -42,6 +42,16 @@ class DocumentSet < ApplicationRecord
     self.description
   end
 
+
+  def text_entry?
+    self.collection.text_entry?
+  end
+
+  def metadata_entry?
+    self.collection.text_entry?
+  end
+
+
   def hide_completed
     self.collection.hide_completed
   end
@@ -132,6 +142,22 @@ class DocumentSet < ApplicationRecord
 
   def transcription_fields
     self.collection.transcription_fields
+  end
+
+  def metadata_fields
+    self.collection.metadata_fields
+  end
+
+  def description_instructions
+    self.collection.description_instructions
+  end
+
+  def text_entry?
+    self.collection.text_entry?
+  end
+
+  def metadata_entry?
+    self.collection.metadata_entry?
   end
 
   def set_next_untranscribed_page

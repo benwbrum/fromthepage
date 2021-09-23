@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_26_144142) do
+ActiveRecord::Schema.define(version: 2021_09_16_185542) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -190,6 +190,8 @@ ActiveRecord::Schema.define(version: 2021_08_26_144142) do
     t.boolean "facets_enabled", default: false
     t.boolean "user_download", default: false
     t.string "review_type", default: "optional"
+    t.string "data_entry_type", default: "text"
+    t.text "description_instructions"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
   end
@@ -361,6 +363,17 @@ ActiveRecord::Schema.define(version: 2021_08_26_144142) do
     t.integer "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "metadata_description_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "metadata_description"
+    t.integer "user_id", null: false
+    t.integer "work_id", null: false
+    t.integer "version_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_metadata_description_versions_on_user_id"
+    t.index ["work_id"], name: "index_metadata_description_versions_on_work_id"
   end
 
   create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -575,6 +588,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_144142) do
     t.float "top_offset", default: 0.0
     t.float "bottom_offset", default: 1.0
     t.boolean "row_highlight", default: false
+    t.string "field_type", default: "transcription"
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -725,7 +739,11 @@ ActiveRecord::Schema.define(version: 2021_08_26_144142) do
     t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
+    t.text "metadata_description"
+    t.integer "metadata_description_version_id"
+    t.string "description_status", default: "undescribed"
     t.index ["collection_id"], name: "index_works_on_collection_id"
+    t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
     t.index ["slug"], name: "index_works_on_slug", unique: true
   end
@@ -736,6 +754,9 @@ ActiveRecord::Schema.define(version: 2021_08_26_144142) do
   add_foreign_key "cdm_bulk_imports", "users"
   add_foreign_key "editor_buttons", "collections"
   add_foreign_key "facet_configs", "metadata_coverages"
+  add_foreign_key "metadata_description_versions", "users"
+  add_foreign_key "metadata_description_versions", "works"
   add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "work_facets", "works"
+  add_foreign_key "works", "metadata_description_versions"
 end

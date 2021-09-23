@@ -26,3 +26,11 @@ en:
       work_updated: "Work updated successfully"
     edit:
       additional_metadata: "Additional Metadata"
+    description_versions:
+      help_description: "View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color."
+      revision: "revision"
+      author_contributed_at: "%{author} at %{date}"
+      compared_with: "Compared with"
+    save_description:
+      work_described: "Your description has been saved"
+

@@ -53,15 +53,23 @@ module TranscribeHelper
     output
   end
 
-  def osd_source(page)
-    if page.sc_canvas
-      ["#{@page.sc_canvas.sc_service_id}/info.json"]
-    elsif page.ia_leaf
-      [@page.ia_leaf.iiif_image_info_url]
-    elsif browser.platform.ios? && browser.webkit?
-      ["#{url_for(:root)}image-service/#{page.id}/info.json"]
+  def osd_source(page, work)
+    if page.nil?
+      sources = []
+      work.pages.each do |page|
+        sources += osd_source(page, work)
+      end
+      sources
     else
-      {type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json
+      if page.sc_canvas
+        ["#{page.sc_canvas.sc_service_id}/info.json"]
+      elsif page.ia_leaf
+        [page.ia_leaf.iiif_image_info_url]
+      elsif browser.platform.ios? && browser.webkit?
+        ["#{url_for(:root)}image-service/#{page.id}/info.json"]
+      else
+        [{type: 'image', url: file_to_url(page.canonical_facsimile_url)}.to_json]
+      end
     end
   end
 end

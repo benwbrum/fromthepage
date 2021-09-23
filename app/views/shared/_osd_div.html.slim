@@ -53,8 +53,10 @@
         visibilityRatio: 1,
         fitBounds: true,
         preserveViewport: true,
-        sequenceMode: false, //we want fromthepage to handle pages sequentially, rather than openseadragon
-        tileSources: #{raw(osd_source(@page))}
+        showReferenceStrip: #{@page.nil?},
+        referenceStripScroll: 'vertical',
+        sequenceMode: #{@page.nil?},
+        tileSources: #{raw(osd_source(@page, @work))}
       });
 
       viewer.addHandler('reset-bounds', function() {

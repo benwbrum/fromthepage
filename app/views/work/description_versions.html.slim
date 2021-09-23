@@ -1,0 +1,63 @@
+=render({ :partial => '/shared/description_tabs', :locals => { :selected => 3, :work_id => @work.id }})
+
+-selected_version_date = @selected_version.created_at.localtime.strftime("%b %d, %Y %I:%M %p")
+-selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
+
+p.diff-help =t('.help_description').html_safe
+
+table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
+  tr
+    th: h5.nomargin =pluralize(@work.metadata_description_versions.size, t('.revision'))
+    th = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
+    th
+      =form_tag(description_versions_collection_work_path(@work.slug), :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
+        =hidden_field_tag :metadata_description_version_id, @selected_version.id
+        =label_tag :compare_version_id, t('.compared_with')
+        =select_tag :compare_version_id, options_from_collection_for_select(@work.metadata_description_versions.all.to_a, :id, :display, (@previous_version ? @previous_version.id.to_s : ''))
+  tr
+
+    td.diff-list
+      .scroll-container
+        -@work.metadata_description_versions.each do |version|
+          =link_to(description_versions_collection_work_path(@work.slug, :metadata_description_version_id => version.id), class: ('selected' if version == @selected_version))
+            =time_tag(version.created_at)
+              =version.created_at.strftime("%b %d, %Y")
+            small =version.user.display_name
+
+    td.diff-version[*language_attrs(@collection)]
+      div(data-diff-transcription="changed" data-empty="No transcription provided")
+        / TODO: make this displayable on parallel with xml_to_html for page versions
+        ==html_metadata(JSON.parse(@selected_version.metadata_description))
+
+    td.diff-version[*language_attrs(@collection)]
+      div(data-diff-transcription="original" data-empty="No transcription provided")
+        / TODO: make this displayable as well
+        ==html_metadata(JSON.parse(@previous_version.metadata_description))
+
+-content_for :javascript
+  =javascript_include_tag 'textdiff'
+  javascript:
+    $(function() {
+      $('.diff-versions')
+        .prettyTextDiff({
+          debug: true,
+          cleanup: true,
+          changedContainer:  '[data-diff-transcription=changed]',
+          originalContainer: '[data-diff-transcription=original]',
+          diffContainer:     '[data-diff-transcription=original]'
+        });
+
+      // Awful workaround to make sure containers
+      // do not contain empty text nodes
+      $('[data-empty]').each(function() {
+        $element = $(this);
+        if(!$.trim($element.html())) {
+          $element.empty();
+        }
+      });
+
+      // Auto submit form when select value changed
+      $('select#compare_version_id').on('change', function() {
+        $(this).closest('form').submit();
+      });
+    });
