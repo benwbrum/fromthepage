@@ -11,7 +11,11 @@ tr.sortable-field id="#{field_id}"
   td.field-form_label
     =text_field_tag "transcription_fields[][label]", "#{label_value}", 'aria-label' => 'Field label'
   td.field-form_type
-    =select_tag("transcription_fields[][input_type]", options_for_select(TranscriptionField::INPUTS, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type')
+    -if field_type == TranscriptionField::FieldType::TRANSCRIPTION
+      -inputs = TranscriptionField::TRANSCRIPTION_INPUTS
+    -else
+      -inputs = TranscriptionField::METADATA_INPUTS
+    =select_tag("transcription_fields[][input_type]", options_for_select(inputs, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type')
   td.field-form_options
     -if input_type_value == 'spreadsheet'
       =link_to 'Configure Spreadsheet', transcription_field_spreadsheet_column_path(field.id), class: 'button'

@@ -24,5 +24,16 @@
         td
           -page_action(page)
           =link_to @wording, @path, class: 'button small outline'
+    -if @collection.metadata_entry?
+      tr
+        td
+          =link_to(describe_collection_work_path(@work.slug))
+            =svg_symbol '#icon-page', class: 'icon'
+            span Metadata
+        td.nowrap
+          TODO
+        td
+          =link_to 'Describe', describe_collection_work_path(@work.slug), class: 'button small outline'
+
 
 =render({ :partial => '/shared/collection_footer' })

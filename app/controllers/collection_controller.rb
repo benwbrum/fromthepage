@@ -306,6 +306,18 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection
   end
 
+  def enable_metadata_entry
+    @collection.data_entry_type = Collection::DataEntryType::TEXT_AND_METADATA
+    @collection.save!
+    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+  end
+
+  def disable_metadata_entry
+    @collection.data_entry_type = Collection::DataEntryType::TEXT_ONLY
+    @collection.save!
+    redirect_to action: 'edit', collection_id: @collection
+  end
+
   def delete
     @collection.destroy
     redirect_to dashboard_owner_path

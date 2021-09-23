@@ -15,7 +15,8 @@ class Collection < ApplicationRecord
   has_many :categories, -> { order 'title' }
   has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
   has_one :sc_collection, :dependent => :destroy
-  has_many :transcription_fields, :dependent => :destroy
+  has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, :dependent => :destroy
+  has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
   has_many :bulk_exports, :dependent => :destroy
   has_many :editor_buttons, :dependent => :destroy
 
@@ -52,6 +53,21 @@ class Collection < ApplicationRecord
     carousel
     reorder(Arel.sql("RAND()")) unless sample_size > 1
     limit(sample_size).reorder(Arel.sql("RAND()"))
+  end
+
+  module DataEntryType
+    TEXT_ONLY = 'text'
+    METADATA_ONLY = 'metadata'
+    TEXT_AND_METADATA = 'text_and_metadata'
+  end
+
+
+  def text_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY
+  end
+
+  def metadata_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
   end
 
   module ReviewType 

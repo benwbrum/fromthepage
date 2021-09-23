@@ -95,6 +95,12 @@
     -else
       -output += collection
 
+-when DeedType::DESCRIBED_METADATA
+  -output += t('.described_metadata')
+
+-when DeedType::EDITED_METADATA
+  -output += t('.edited_metadata')
+
 -if(!deed.work.nil?)
   -output += t('.in_the_work', work: work)
 
