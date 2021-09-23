@@ -176,3 +176,24 @@ es:
       # next section is admin only
     disable_ocr:
       notice: "La corrección OCR se ha deshabilitado para todas las obras."
+    facets:
+      metadata_facets: "Faceta de metadatos"
+      metadata_facets_description: "Configura la faceta de metadatos revisando los metadatos en tu colección y etiquetando los campos que serán mostrados a los transcriptores."
+      field_label: "Etiqueta del campo"
+      occurrences: "Eventos"
+      label: "Etiqueta"
+      type: "Tipo"
+      order: "Orden"
+    facet_form:
+      filter: "Filtro"
+    reviewer_dashboard:
+      description: Trabajos con páginas que necesitan revisión  
+      no_works_need_review: Ningún trabajo necesita revisión
+      title: Título
+      needs_review: Necesita revisión
+      incomplete: Incompleto
+      complete: Completo
+      total: Total
+      contributors: Contribuidores
+      last_activity: Última actividad
+      filter_works: Filtro

@@ -6,17 +6,19 @@
   :name => t('.about'),
   :selected => 3,
   :path => "#{collection_work_about_path(@collection.owner, @collection, @work)}",
-},{\
-  :name => t('.contents'),
-  :selected => 2,
-  :path => "#{collection_work_contents_path(@collection.owner, @collection, @work)}",
-},{\
+}]
+-if @collection.text_entry?
+  -tabs += [{\
+    :name => t('.contents'),
+    :selected => 2,
+    :path => "#{collection_work_contents_path(@collection.owner, @collection, @work)}",
+}]
+-tabs += [{\
   :name => t('.versions'),
   :selected => 4,
   :path => "#{versions_collection_work_path(@collection.owner, @collection, @work)}",
 }]
-
--if user_signed_in? && ((feature_enabled?(:download) && @collection.user_download) || current_user.like_owner?(@collection))
+-if user_signed_in? && (@collection.user_download || current_user.like_owner?(@collection))
   -tabs += [{\
     :name => t('.download'),
     :selected => 5,

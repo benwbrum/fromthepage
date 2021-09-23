@@ -25,42 +25,54 @@ class WorkController < ApplicationController
     end
   end
 
-  def make_pdf
-    # don't think there should be much to do here.
+
+  def describe
+    @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 
-  # TODO: refactor author to include docbook elements like fn, ln, on, hon, lin
-  def create_pdf
-    # render to string
-    string = render_to_string :file => "#{Rails.root}/app/views/work/work.docbook"
-    # spew string to docbook tempfile
+  def save_description
+    @field_cells = request.params[:fields]
+    @metadata_array = @work.process_fields(@field_cells)
+    if @work.save
+      # TODO record_description_deed(@work)
+      if @work.saved_change_to_description_status?
+        record_deed(@work, DeedType::DESCRIBED_METADATA, current_user)
+      else
+        record_deed(@work, DeedType::EDITED_METADATA, current_user)
+      end
 
-    File.open(doc_tmp_path, "w") { |f| f.write(string) }
-    if $?
-        render(:plain => "file write failed")
-      return
+      flash[:notice] = t('.work_described')
+      render :describe
+    else
+      render :describe
     end
 
-    dp_cmd = "#{DOCBOOK_2_PDF} #{doc_tmp_path} -o #{tmp_path}  -V bop-footnotes=t -V tex-backend > #{tmp_path}/d2p.out 2> #{tmp_path}/d2p.err"
-    logger.debug("DEBUG #{dp_cmd}")
-    #IO.popen(dp_cmd)
-
-    if !system(dp_cmd)
-      render_docbook_error
-      return
-    end
-
-    if !File.exists?(pdf_tmp_path)
-      render(:plain => "#{dp_cmd} did not generate #{pdf_tmp_path}")
-      return
-    end
-
-    if !File.copy(pdf_tmp_path, pdf_pub_path)
-      render(:plain => "could not copy pdf file to public/docs")
-      return
-    end
-    @pdf_file = pdf_pub_path
   end
+
+  def description_versions
+    # @selected_version = @page_version.present? ? @page_version : @page.page_versions.first
+    # @previous_version = params[:compare_version_id] ? PageVersion.find(params[:compare_version_id]) : @selected_version.prev
+    selected_version_id = params[:metadata_description_version_id]
+    if selected_version_id
+      @selected_version= MetadataDescriptionVersion.find(selected_version_id)
+    else
+      @selected_version= @work.metadata_description_versions.first
+    end
+    # NB: Unlike in page versions (which are created when we first create the page), metadata description versions may be nil
+    compare_version_id = params[:compare_version_id]
+    if compare_version_id
+      @previous_version = MetadataDescriptionVersion.find(compare_version_id)
+    else
+      if @selected_version.version_number > 1
+        @previous_version = @work.metadata_description_versions.second
+      else
+        @previous_version = @selected_version
+      end
+    end
+    # again, both may be blank here
+  end
+
+
 
   def delete
     @work.destroy
@@ -118,7 +130,7 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
 
     if @work.save
-      record_deed(@work)
+      record_deed(@work, DeedType::WORK_ADDED, work.owner)
       flash[:notice] = t('.work_created')
       ajax_redirect_to(work_pages_tab_path(:work_id => @work.id, :anchor => 'create-page'))
     else
@@ -177,7 +189,7 @@ class WorkController < ApplicationController
   end
 
   def change_collection(work)
-    record_deed(work)
+    record_deed(work, DeedType::WORK_ADDED, work.owner)
     unless work.articles.blank?
       #delete page_article_links for this work
       page_ids = work.pages.ids
@@ -209,56 +221,14 @@ class WorkController < ApplicationController
     redirect_back fallback_location: @work
   end
 
-  private
-  def print_fn_stub
-    @stub ||= DateTime.now.strftime("w#{@work.id}v#{@work.transcription_version}d%Y%m%dt%H%M%S")
-  end
-
-  def doc_fn
-    "#{print_fn_stub}.docbook"
-  end
-
-  def pdf_fn
-    "#{print_fn_stub}.pdf"
-  end
-
-  def tmp_path
-    "#{Rails.root}/tmp"
-  end
-
-  def pub_path
-    "#{Rails.root}/public/docs"
-  end
-
-  def pdf_tmp_path
-    "#{tmp_path}/#{pdf_fn}"
-  end
-
-  def pdf_pub_path
-    "#{pub_path}/#{pdf_fn}"
-  end
-
-  def doc_tmp_path
-    "#{tmp_path}/#{doc_fn}"
-  end
-
-  def render_docbook_error
-    msg = "docbook2pdf failure: <br /><br /> " +
-      "stdout:<br />"
-    File.new("#{tmp_path}/d2p.out").each { |l| msg+= l + "<br />"}
-    msg += "<br />stderr:<br />"
-    File.new("#{tmp_path}/d2p.err").each { |l| msg+= l + "<br />"}
-    render(:plain => msg )
-  end
-
   protected
 
-  def record_deed(work)
+  def record_deed(work, deed_type, user)
     deed = Deed.new
     deed.work = work
-    deed.deed_type = DeedType::WORK_ADDED
+    deed.deed_type = deed_type
     deed.collection = work.collection
-    deed.user = work.owner
+    deed.user = user
     deed.save!
   end
 
