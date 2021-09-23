@@ -14,7 +14,7 @@
       h2 =t('.works')
 
       .start_link
-        -if @collection.has_untranscribed_pages? && @collection.active?
+        -if @collection.has_untranscribed_pages? && @collection.active? && @collection.text_entry?
           p
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(@collection.owner, @collection, @collection.next_untranscribed_page.work, @collection.next_untranscribed_page), class: 'button'
@@ -27,22 +27,37 @@
 
     .collection-works
       -@works.each do |work|
+        -if @collection.text_entry?
+          -default_path = collection_read_work_path(@collection.owner, @collection, work)
+        -else
+          -default_path = metadata_overview_collection_work_path(@collection.owner, @collection, work)
         .collection-work
           .collection-work_image
             -unless work.thumbnail.nil?
-              =link_to image_tag(work.thumbnail, alt: work.title), collection_read_work_path(@collection.owner, @collection, work)
-          h4.collection-work_title =link_to work.title, collection_read_work_path(@collection.owner, @collection, work)
+                =link_to image_tag(work.thumbnail, alt: work.title), default_path
+          h4.collection-work_title =link_to work.title, default_path
           p.collection-work_snippet =truncate(strip_tags(work.description), length: 300, separator: ' ') || ''
-          .collection-work_stats
-            -work_stats(work)
-            span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
-            span
-              span.progress
-                -unless @collection.subjects_disabled
-                  span(style="width:#{@progress_annotated}%")
-                span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
-                -unless @progress_review == 0
-                  span(style="width:#{@progress_review}%")
+          -if @collection.text_entry? && work.next_untranscribed_page
+            p.collection-work_action 
+              =t('.this_work_has_pages_that_need_work')
+              span &nbsp;
+              =link_to(t('.help_transcribe_or_correct'), collection_transcribe_page_path(@collection.owner, @collection, work, work.next_untranscribed_page))
+          -if @collection.metadata_entry? && work.description_status != Work::DescriptionStatus::DESCRIBED && !work.has_untranscribed_pages?
+            p.collection-work_action 
+              =t('.this_work_has_not_been_described')
+              span &nbsp;
+              =link_to(t('.help_create_metadata'), describe_collection_work_path(@collection.owner, @collection, work))
+          -if @collection.text_entry?
+            .collection-work_stats
+              -work_stats(work)
+              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+              span
+                span.progress
+                  -unless @collection.subjects_disabled
+                    span(style="width:#{@progress_annotated}%")
+                  span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
+                  -unless @progress_review == 0
+                    span(style="width:#{@progress_review}%")
 
       =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 

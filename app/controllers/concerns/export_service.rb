@@ -318,8 +318,11 @@ private
 
       raw_metadata_strings = collection.works.pluck(:original_metadata)
       metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
+      # append the headers for described metadata, read from the metadata_field configuration for the project
+      static_description_headers = ['Description Status', 'Described By']
+      described_headers = collection.metadata_fields.map {|field| field.label}
 
-      csv << static_headers + metadata_headers
+      csv << static_headers + metadata_headers + static_description_headers + described_headers
 
       collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
         row = [
@@ -348,6 +351,25 @@ private
           metadata_headers.each do |header|
             # look up the value for this index
             row << metadata[header]
+          end
+        end
+
+        unless work.metadata_description.blank?
+          # description status
+          row << work.description_status
+          # described by
+          row << User.find(work.metadata_description_versions.pluck(:user_id)).map{|u| u.display_name}.join('; ')
+
+          metadata = JSON.parse(work.metadata_description)
+          # we rely on a consistent order of fields returned by collection.metadata_fields to prevent scrambling columns
+          collection.metadata_fields.each do |field|
+            element = metadata.detect{|candidate| candidate['transcription_field_id'] == field.id}
+            if element 
+              row << element['value'] 
+            else
+              row << nil
+            end 
+            # TODO: handle multi-value elements
           end
         end
 

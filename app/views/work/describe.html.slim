@@ -1,0 +1,149 @@
+=render({ :partial => '/shared/description_tabs', :locals => { :selected => 2, :page_id => @work.slug }})
+
+-editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
+
+=form_for(@work, :url => { :action => 'save_description' }, :html => { class: editor_class }) do |f|
+  =hidden_field_tag(:work_id, @work.slug)
+  =validation_summary @work.errors
+
+  .page-toolbar
+    .flex-toolbar
+      .flex-toolbar_group
+        button#toggleImage.button.outline type="button" =t('.show_image')
+        a.button.outline(data-fullscreen-toggle)
+          =svg_symbol "#icon-expand", class: 'icon'
+          span.hide-l =t('.fullscreen')
+        -layout_modes = { 'ltr' => t('.image_at_the_left'), 'rtl' => t('.image_at_the_right'), 'ttb' => t('.image_at_the_top'), 'btt' => t('.image_at_the_bottom') }
+        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+          dt.button.outline
+            =svg_symbol "#icon-layout-#{@layout_mode}", class: 'icon'
+            span.hide-l =t('.layout')
+          dd
+            -layout_modes.each do |mode, text|
+              a(data-layout-set="#{mode}")
+                =svg_symbol "#icon-layout-#{mode}", class: 'icon'
+                span =text
+
+      .flex-toolbar_group.hide-m
+        label.auto-fullscreen
+          =check_box_tag 'auto-fullscreen', 'yes', @auto_fullscreen == 'yes'
+          |&nbsp;
+          span =t('.always_show_fullscreen')
+
+
+      .flex-toolbar_group
+        / check status of page and configuration of collection
+        =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+
+
+
+  .page-columns(data-layout-mode="#{@layout_mode}")
+    .page-column
+      .page-preview(*language_attrs(@collection))
+        .work-page_content
+          -@work.pages.each do |page|
+            -if page.work.pages_are_meaningful
+              h4.work-page_title =page.title
+
+            .work-page_text[*language_attrs(@collection)]
+              -transcription = xml_to_html(page.xml_text, false)
+              -if page.status == Page::STATUS_BLANK
+                p.nodata_text ==t('.this_page_is_blank')
+              -elsif transcription.present?
+                ==transcription.force_encoding('utf-8')
+      .page-imagescan
+        =render :partial => '/shared/osd_div'
+
+
+    .page-column
+      .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
+        =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
+
+        -if @collection.description_instructions.present?
+          .fgfaded ==@collection.description_instructions
+
+h2.legend =t('notes_and_questions')
+.page-notes
+  =render :partial => "notes/notes"
+
+
+=render({ :partial => '/shared/collection_footer' })
+
+-unless @current_user_alerted
+  -unless current_user.slug.nil?
+    -content_for :javascript
+      javascript:
+        setInterval("transcribe_periodic_timer()", 60000);
+
+        function transcribe_periodic_timer() {
+          $.ajax({
+            url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, 0)}",
+
+            complete: function() {
+              $(".page-busy-overlay").hide();
+            }
+          });
+        }
+
+        transcribe_periodic_timer();
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      var fromImage = true;
+      updateDisplay(fromImage);
+
+
+      $('#toggleImage').click(function(){
+        fromImage = !fromImage;
+
+        updateDisplay(fromImage)
+        Cookies.set('fromImage', fromImage, { expires: 365, path: '/' });
+      });
+
+      function updateDisplay(){
+        $('.page-imagescan').toggle(fromImage);
+        $('.page-preview').toggle(!fromImage);
+
+        var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
+        $('#toggleImage').html(buttonText);
+      }
+
+
+      $('[data-fullscreen-toggle]').on('click', function() {
+        $(this).toggleClass('pressed');
+        $('.page-editor').toggleClass('fullscreen');
+
+        if (typeof hot !== 'undefined') {
+          hot.updateSettings({});
+        }
+      });
+
+      $('[data-layout-set]').on('click', function() {
+        var mode = $(this).data('layout-set');
+        Cookies.set('transcribe_layout_mode', mode, { expires: 365 });
+        $('[data-layout-mode]').attr('data-layout-mode', mode);
+
+        if (typeof viewer !== 'undefined') {
+          requestAnimationFrame(() => viewer.raiseEvent('reset-bounds'));
+        };
+
+        if (typeof hot !== 'undefined') {
+          hot.updateSettings({});
+        };
+      });
+
+      $('#auto-fullscreen').on('change', function() {
+        var checked = this.checked ? 'yes' : 'no';
+        Cookies.set('auto_fullscreen', checked, { expires: 365 });
+      });
+
+      $('#page_needs_review').click(function(){
+        $('#page_mark_blank').prop('checked', false);
+      });
+
+      $('#page_mark_blank').click(function(){
+        $('#page_needs_review').prop('checked', false);
+      });
+    });
+
