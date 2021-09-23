@@ -148,6 +148,18 @@ class DocumentSet < ApplicationRecord
     self.collection.metadata_fields
   end
 
+  def description_instructions
+    self.collection.description_instructions
+  end
+
+  def text_entry?
+    self.collection.text_entry?
+  end
+
+  def metadata_entry?
+    self.collection.metadata_entry?
+  end
+
   def set_next_untranscribed_page
     first_work = works.order_by_incomplete.first
     first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
