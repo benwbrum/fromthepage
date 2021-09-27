@@ -95,7 +95,7 @@
       =button_tag t('.search')
       =label_tag 'search', "Search by Title", class: 'hidden'
 
-    -if @collection.active?
+    -if @collection.active? && @collection.text_entry?
       =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
       =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
