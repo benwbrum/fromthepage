@@ -174,3 +174,24 @@ pt:
       # next section is admin only
     disable_ocr:
       notice: "A correção de OCR foi desativada para todas as obras."
+    facets:
+      metadata_facets: "Facetas de metadados"
+      metadata_facets_description: "Configure as facetas de metadados revisando os metadados em sua coleção e marcando os campos a serem exibidos aos transcritores."
+      field_label: "Field Label"
+      occurrences: "Ocorrências"
+      label: "Rótulo"
+      type: "Tipo"
+      order: "Ordem"
+    facet_form:
+      filter: "Filtro"
+    reviewer_dashboard:
+      description: "Obras com páginas que precisam de revisão"  
+      no_works_need_review: "Nenhuma obra precisa de revisão"
+      title: "Título"
+      needs_review: "Precisa de revisão"
+      incomplete: "Incompleto"
+      complete: "Completo"
+      total: "Total"
+      contributors: "Contribuidores"
+      last_activity: "Última atividade"
+      filter_works: "Filtro"
