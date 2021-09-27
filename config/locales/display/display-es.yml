@@ -1,12 +1,12 @@
 es:
   display:
     #TODO next 6 messages
-    correct: ""
-    transcribe: ""
-    blank_page: ""
-    review: ""
-    translate: ""
-    completed: ""
+    correct: "Corregir"
+    transcribe: "Transcribir"
+    blank_page: "Página en blanco"
+    review: "Revisar"
+    translate: "Traducir"
+    completed: "Completado"
     display_page:
       facsimile: "Facsímil"
       translation: "Traducción"
@@ -19,6 +19,7 @@ es:
       please_help_this_page: "Por favor, %{help_link} esta página"
       or_mark_blank: "<br>o %{mark_blank}"
       collaboration_is_restricted: "La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción."
+      collection_is_not_active: "Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta."
       page_notes: "Notas de Página"
     multi_page:
       search_in_collection: "Buscar en la colección..."
@@ -37,6 +38,7 @@ es:
       unable_to_find_pages: "No pudimos encontrar ninguna página que coincida con la solicitud"
       this_page_is_blank: "Esta página está en blanco"
       this_page_is_not: "Esta página no es %{status}, por favor %{help} esta página"
+      collection_is_not_active: "Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta."
       collaboration_is_restricted: "La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción."
       this_page_is_blank: "Esta página está en blanco"
       help_translate: "ayuda a traducir"
