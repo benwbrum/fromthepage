@@ -10,7 +10,7 @@
         h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
         -unless snippet.empty?
           p.collection_snippet =snippet
-        -if cds.has_untranscribed_pages? && cds.active?
+        -if cds.has_untranscribed_pages? && cds.active? && cds.text_entry?
           p
           -if user_signed_in?
             =link_to t('.start_transcribing'), collection_transcribe_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
@@ -33,9 +33,9 @@
           h4.collection_title =link_to cds.title, collection_path(cds.owner, cds)
           -unless snippet.empty?
             p.collection_snippet =snippet
-          -if cds.has_untranscribed_pages? && cds.active?
-          p
-            =link_to t('.start_transcribing'), collection_start_transcribing_path(cds.owner, cds), class: 'button'
+          -if cds.has_untranscribed_pages? && cds.active? && cds.text_entry?
+            p
+              =link_to t('.start_transcribing'), collection_start_transcribing_path(cds.owner, cds), class: 'button'
           .collection_summary
             span =t('.project_by', author: owner_link).html_safe 
   
