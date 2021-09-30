@@ -2,6 +2,10 @@ en:
   transcription_field:
     field_layout:
       instructions: "Instructions"
+    multiselect_form:
+      save: Save
+      options_form_title: Multi select Options
+      options_form_description: Enter options for the multi select metadata field, with each option on a separate line
     line_form:
       field_options: "Field options (separate with semicolons)"
       field_options_title: "Options for select fields."
