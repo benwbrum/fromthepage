@@ -5,6 +5,19 @@ class TranscriptionFieldController < ApplicationController
   #no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil}
 
+  def multiselect_form
+    @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
+    @collection = @transcription_field.collection
+  end
+
+  def save_multiselect
+    @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
+    @transcription_field.options = params[:options]
+    @transcription_field.save!
+    @collection = @transcription_field.collection
+    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+  end
+
   def delete
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])

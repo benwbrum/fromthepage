@@ -318,10 +318,8 @@ class Work < ApplicationRecord
 
 
         cell_data.each do |key, value|
-          # if value.scan('<').count != value.scan('>').count # broken tags or actual < / > signs
-          #   value = ERB::Util.html_escape(value)
-          # end
           element['label'] = key
+
           element['value'] = value
         end
 

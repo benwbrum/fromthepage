@@ -296,6 +296,8 @@ Fromthepage::Application.routes.draw do
     get 'edit_metadata_fields', to: 'transcription_field#edit_metadata_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
+    get ':transcription_field_id/configure_multiselect_options', to: 'transcription_field#multiselect_form', as: 'configure_multiselect_options'
+    post ':transcription_field_id/save_multiselect_options', to: 'transcription_field#save_multiselect', as: 'save_multiselect_options'
 
     scope 'spreadsheet_column', as: 'spreadsheet_column' do
       patch 'reorder', to: 'transcription_field#reorder_columns'
