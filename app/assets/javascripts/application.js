@@ -186,6 +186,24 @@ $.fn.categoriesSelect = function() {
   });
 };
 
+$.fn.multiSelect = function() {
+  return this.each(function() {
+    var $element = $(this);
+
+    $element.select2({
+      placeholder: 'Choose...',
+      templateResult: function(category) {
+        if(!category.id) { return category.text; }
+        var level = $(category.element).data('level');
+        var $category = $('<div>').css('margin-left', level * 15).text(category.text);
+        return $category;
+      }
+    });
+  });
+};
+
+
+
 
 // Custom input file
 $.fn.inputFile = function() {
@@ -273,6 +291,8 @@ $(function() {
 
   // Manage subject categories
   $('[data-assign-categories]').categoriesSelect();
+
+  $('[data-multi-select]').multiSelect();
 
   // Category tree expand/collapse
   $('.tree-bullet').on('click', function(e) {
