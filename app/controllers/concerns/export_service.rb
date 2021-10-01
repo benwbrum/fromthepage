@@ -364,12 +364,15 @@ private
           # we rely on a consistent order of fields returned by collection.metadata_fields to prevent scrambling columns
           collection.metadata_fields.each do |field|
             element = metadata.detect{|candidate| candidate['transcription_field_id'] == field.id}
-            if element 
-              row << element['value'] 
+            if element
+              value = element['value'] 
+              if value.is_a? Array
+                value = value.join("; ")
+              end
+              row << value 
             else
               row << nil
             end 
-            # TODO: handle multi-value elements
           end
         end
 
