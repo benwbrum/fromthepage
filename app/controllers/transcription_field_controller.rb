@@ -15,7 +15,7 @@ class TranscriptionFieldController < ApplicationController
     @transcription_field.options = params[:options]
     @transcription_field.save!
     @collection = @transcription_field.collection
-    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+    ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
   end
 
   def delete
