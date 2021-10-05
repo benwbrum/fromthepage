@@ -28,7 +28,10 @@
           -elsif field.input_type == "multiselect"
             / add aria label
             / figure out the data attributes
-            -options = field.options.split("\n").map{ |e| e.chomp } unless field.options.nil?
+            -if field.options
+              -options = field.options.split("\n").map{ |e| e.chomp } unless field.options.nil?
+            -else
+              -options=[]
             =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
           -elsif field.input_type == "description"
             =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
