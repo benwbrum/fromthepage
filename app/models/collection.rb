@@ -35,7 +35,7 @@ class Collection < ApplicationRecord
   before_create :set_transcription_conventions
   before_create :set_help
   before_create :set_link_help
-  after_save :create_categories
+  after_create :create_categories
   after_save :set_next_untranscribed_page
 
   mount_uploader :picture, PictureUploader
