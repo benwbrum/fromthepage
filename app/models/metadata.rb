@@ -60,6 +60,10 @@ class Metadata
         output_file(@rowset_errors)
       else
         work.original_metadata=metadata.to_json
+        title = metadata.detect{|e| e[:label] == 'title'}
+        if !title.blank? && title[:value] != work.title
+          work.title = title[:value]
+        end
         work.save!
         success+=1
       end
