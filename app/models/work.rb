@@ -371,6 +371,9 @@ class Work < ApplicationRecord
       om.each do |m|
         unless m['label'].blank?
           label = m['label']
+          if label.is_a? Array
+            label=label.first['@value']
+          end
 
           collection = self.collection
 
