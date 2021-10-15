@@ -182,7 +182,12 @@ module ApplicationHelper
   def html_metadata(metadata_hash)
     html = ""
     metadata_hash.each do |md|
-      html += "<p><b>#{md["label"]}</b>: #{value_to_html(md["value"])} </p>\n\n"
+      label = md['label']
+      if label.is_a? Array
+        label = label.first['@value']
+      end
+
+      html += "<p><b>#{label}</b>: #{value_to_html(md["value"])} </p>\n\n"
     end
     html
   end
