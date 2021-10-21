@@ -106,7 +106,7 @@ html lang="en-US"
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), privacy_path
           =mail_to 'support@fromthepage.com', t('.contact_us')
-          -if request.original_url.include?("localhost")
+          -if request.original_url.include?("fromthepage.com")
             =link_to t('.pricing'), pricing_path
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
