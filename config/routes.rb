@@ -220,6 +220,7 @@ Fromthepage::Application.routes.draw do
     get 'metadata', to: 'static#metadata'
     get 'faq', to: redirect('/faq', status: 301)
     get 'privacy', to: redirect('/privacy', status: 301)
+    get 'pricing', to: redirect('/pricing', status: 301)
   end
 
   scope 'page_version', as: 'page_version' do
@@ -407,6 +408,7 @@ Fromthepage::Application.routes.draw do
   get '/about', to: 'static#about', as: :about_us
   get '/faq', to: 'static#faq', as: :faq
   get '/privacy', to: 'static#privacy', as: :privacy
+  get 'pricing', to: 'static#pricing', as: :pricing
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/:token/contact', to: 'contact#form', as: 'contact'
   get '/at', to: 'static#at', as: :at
