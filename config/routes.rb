@@ -218,9 +218,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'static', as: 'static' do
     get 'metadata', to: 'static#metadata'
-    get 'faq', to: redirect('/faq', status: 301)
-    get 'privacy', to: redirect('/privacy', status: 301)
-    get 'pricing', to: redirect('/pricing', status: 301)
   end
 
   scope 'page_version', as: 'page_version' do
