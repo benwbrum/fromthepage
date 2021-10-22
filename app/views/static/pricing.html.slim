@@ -1,55 +1,15 @@
--content_for :page_title, "Software"
--content_for :meta_description, "FromThePage is open-source software for collaborating on texts. The tool supports projects from simple, plain-text transcription through bilingual digital editions."
+-content_for :page_title, "Pricing"
+-content_for :meta_description, "Pricing for FromThePage collaborative transcription for libraries, archives and museums."
 
 #software
-  h2 Collaborative transcription made easy.
+  h2 Transcribers are always Free!
 
-  section#transcription
-    .content
-      h3 Transcription
-      p Add and edit transcriptions while viewing scanned images of a document. Collaborate with others to transcribe a document.
+  p FromThePage connects volunteers transcribers to institutions with material needing transcription.  Institutions pay to host projects on FromThePage, but transcribers -- who are giving their time freely -- are always free.
 
-    =image_tag('static/software/transcription.png', alt: "Transcribe a document")
-
-  section#annotation
-    .content
-      h3 Indexing & Annotation
-      p Index a document by tagging people, places, and other subjects of interest. Search by subject and add articles to tagged subjects to create annotations for collaborators.
-
-    =image_tag('static/software/indexing-annotation.png', alt: "Index and Annotate")
-
-  section#dashboard
-    .content
-      h3 Dashboard
-      p See all the activity within a project at a glance with customized project owner and collaborator views.
-
-    =image_tag('static/software/dashboard.png', alt: "Project Dashboard")
-
-  #features
-    section#version_control
-      h3 Version Control
-      p FromThePage displays the edit history of a document’s transcription and logs collaborator activity.
-
-    section#markup
-      h3 Automatic Markup
-      p FromThePage suggests subject tags based on previously transcribed documents.
-
-    section#ocr_correction
-      h3 OCR Correction
-      p FromThePage imports raw optical character recognition (OCR) text and provides a workflow optimized for OCR correction projects.
-
-    section#translation
-      h3 Language Support & Translation
-      p FromThePage supports transcription in any language, including right-to-left scripts, and enables collaborative translation with parallel text comparison.
-
-  section#video
-    h2 Easy to Get Started
-    #video_wrapper
-      <iframe title="Get Started" width="560" height="315" src="https://www.youtube.com/embed/UcNXSY0q9uE?controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
   section#pricing
-    h2 FromThePage Pricing
-
+    h2 FromThePage Pricing for Organizations of All Sizes
+    p Our pricing is based on how much you expect to use, both in terms of distinct projects and number of page images.
     .pricing
       .pricing_grid
         .pricing_grid_row
@@ -92,7 +52,7 @@
           .pricing_grid_cell
             .pricing_price
               span.pricing_price_value $80
-              .pricing_price_billing per month, billed monthly or
+              .pricing_price_billing per month, billed monthly or 
               span.pricing_price_value $960
               .pricing_price_billing per year, billed annually
           .pricing_grid_cell
@@ -116,27 +76,25 @@
           .pricing_grid_cell
             =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
 
-    h3 Ready to buy?  
-    p #{link_to('Send us a note', contact_path(contact_form_token))} and we'll send you an invoice, payable either by credit card or by your organization's accounting department.  Need additional paperwork for a PO?  Just let us know.
+  h4 Ready to buy?  
+  p #{link_to('Send us a note', contact_path(contact_form_token))} and we'll send you an invoice, payable either by credit card or by your organization's accounting department.  Need additional paperwork for a PO?  Just let us know.
 
-  #integrations
-    h2 Integrations
+  h3 What's a page?
 
-    section
-      h3 International Image Interoperability Framework (IIIF)
-      p FromThePage enables you to import documents to transcribe from any system that supports IIIF and share your transcribed documents with IIIF systems.
+  p Every image you upload for transcription is a page.
 
-    section
-      h3 OCLC's CONTENTdm
-      p FromThePage supports single-click import and export with OCLC's CONTENTdm including metadata and OCR text.
+  h3 What's a project?
 
-    section
-      h3 Internet Archive & Omeka
-      p FromThePage integrates with Omeka and Internet Archive directly, so no upload is necessary if your documents are hosted on those platforms.
+  p Projects are distinct in that they are usually the same archival or research collection with the same transcription conventions and other settings (public/private for example).  "Distinct projects" have different transcription conventions and configurations.  For instance, you couldn't do a ledger book and a set of letters in the same project because the configuration is very different for structured data and more textual documents.
 
-    hr
+  p Sometimes we'll use the words "project" and "collection" interchangeably.
 
-javascript:  mixpanel.track("Contact Us");
+  h3 What happens when we're done transcribing?
 
+  p Page counts are for active projects; once a project is completed you can mark it as inactive and it won't count against your page totals.  Inactive projects are "read only" -- you can view and export the transcriptions, but you can't change them.
 
+  h3 So which one should I choose?
 
+  p The small organization plan is the most popular; most universities fall under it.  State archives usually fit into the large organization plan.  An estimate of the number of pages you'll be working on and how diverse your collections are is the best way to tell.
+
+  h5 Confused?  #{link_to('Drop us a line', contact_path(contact_form_token))} and we'll help you find the best plan for your organization.
