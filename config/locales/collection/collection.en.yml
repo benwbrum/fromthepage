@@ -258,6 +258,13 @@ en:
       label: "Label"
       type: "Type"
       order: "Order"
+      translate: 'Translate'
+    localize:
+      translate_facets: Translate Facet Labels
+      metadata_facets_localize_description: Provide language-specific labels for each facet.
+      label: Facet
+      translation: Translation
+      save: Save
     facet_form:
       filter: "Filter"
     reviewer_dashboard:
