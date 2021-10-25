@@ -43,6 +43,14 @@ class DocumentSet < ApplicationRecord
   end
 
 
+  def reviewers
+    self.collection.reviewers
+  end
+
+  def facet_configs
+    self.collection.facet_configs
+  end
+
   def text_entry?
     self.collection.text_entry?
   end
