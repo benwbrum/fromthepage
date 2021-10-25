@@ -19,7 +19,6 @@ p =t('.metadata_facets_localize_description')
         -@collection.facet_configs.order(:order).each do |facet_config|
           -unless facet_config.label.blank?
             tr
-              binding.pry
               td =JSON.parse(facet_config.label).first[1]
               td =text_field_tag("facets[#{facet_config.id}][#{locale_option}]", facet_config.label_hash[locale_option.to_s])
 
