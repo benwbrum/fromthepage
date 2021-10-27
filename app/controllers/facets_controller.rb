@@ -1,4 +1,5 @@
 class FacetsController < ApplicationController
+
   def enable
     @collection = Collection.find(params[:collection_id])
     @collection.facets_enabled = true
@@ -59,10 +60,18 @@ class FacetsController < ApplicationController
       unless metadata.nil?
         if !metadata['order'].blank?  
           facet_label = metadata['label'].blank? ? m.key : metadata['label']
+          if m.facet_config.label.nil?
+            label_hash = {}
+          else
+            label_hash = JSON.parse(m.facet_config.label)
+          end
+          label_hash[locale.to_s] = facet_label
+          facet_label = label_hash.to_json
         else
           facet_label = nil
         end
-        m.facet_config.update(label:  facet_label,
+
+        m.facet_config.update(label: facet_label,
                               input_type: metadata['input_type'],
                               order: metadata['order'])
       end
@@ -88,6 +97,23 @@ class FacetsController < ApplicationController
     else
       render('collection/facets', :locals => { :@metadata_coverages => collection.metadata_coverages, :@errors => errors })
     end
+  end
+
+
+  def localize
+    render('collection/localize', layout: false)
+  end
+
+  def update_localization
+    facet_params = params[:facets]
+    facet_params.each do |facet_config_id, labels|
+      facet_config = @collection.facet_configs.where(id: facet_config_id).first
+      if facet_config
+        facet_config.label = labels.to_json
+        facet_config.save!
+      end
+    end
+    ajax_redirect_to collection_facets_path(@collection.owner, @collection)
   end
 end
 
