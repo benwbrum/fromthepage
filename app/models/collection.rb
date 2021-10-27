@@ -7,6 +7,7 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+  before_save :uniquify_slug
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -148,6 +149,12 @@ class Collection < ApplicationRecord
 
   def normalize_friendly_id(string)
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
+  end
+
+  def uniquify_slug
+    if DocumentSet.where(slug: self.slug).exists?
+      self.slug = self.slug+'-collection'
+    end
   end
 
   def blank_out_collection
