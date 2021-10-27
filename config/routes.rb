@@ -56,6 +56,8 @@ Fromthepage::Application.routes.draw do
     get 'enable', to: 'facets#enable'
     get 'disable', to: 'facets#disable'
     post 'update', to: 'facets#update'
+    get ':collection_id/localize', to: 'facets#localize', as: 'localize'
+    post 'update_localization', to: 'facets#update_localization'
   end
 
   scope 'collection', as: 'collection' do
