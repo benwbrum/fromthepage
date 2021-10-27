@@ -3,6 +3,8 @@ class DocumentSet < ApplicationRecord
 
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+  before_save :uniquify_slug
+  # validate :slug_uniqueness_across_objects
 
   mount_uploader :picture, PictureUploader
 
@@ -42,6 +44,11 @@ class DocumentSet < ApplicationRecord
     self.description
   end
 
+  def uniquify_slug
+    if Collection.where(slug: self.slug).exists?
+      self.slug = self.slug+'-set'
+    end
+  end
 
   def reviewers
     self.collection.reviewers
