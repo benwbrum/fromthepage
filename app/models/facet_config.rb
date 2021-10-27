@@ -5,6 +5,21 @@ class FacetConfig < ApplicationRecord
   validates :order, inclusion: { in: 0..2, if: :type_date? }, allow_blank: true
 
 
+  def label_hash
+    label_hash = JSON.parse(self.label)
+  end
+  
+  def localized_label(locale)
+    return nil if self.label.nil? 
+
+    locale_label = label_hash[locale.to_s]
+    if locale_label
+      locale_label
+    else
+      label_hash.first[1]
+    end
+  end
+
   # static method to recalculate all work facet values
   def self.populate_facets(collection)
     works = collection.works

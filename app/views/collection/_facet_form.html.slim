@@ -27,7 +27,7 @@ h3 =t('.filter')
       -unless facet_config.label.blank?
         -if facet_config.input_type == "date"
           =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search", id: "search#{count}" } do |f|
-            h4 =f.label "facet_config_date_#{count}", facet_config.label
+            h4 =f.label "facet_config_date_#{count}", facet_config.localized_label(locale)
             =f.text_field :date, readonly: true, id: "facet_search_facet_config_date_#{count}"
             =f.hidden_field :label, value: facet_config.label, id: "facet_config_label_#{count}"
             =f.hidden_field :date_order, value: facet_config.order, id: "facet_config_order_#{count}"
@@ -37,7 +37,8 @@ h3 =t('.filter')
   -if !facet_config.label.blank? && facet_config.input_type == "text"
     -i = facet_config.order.to_i
     h4
-      a(href="#" class="facet-label" onclick="return false;" id="#{(facet_config[:label]).parameterize.underscore}")               =facet_config[:label]
+      a(href="#" class="facet-label" onclick="return false;" id="#{(facet_config[:label]).parameterize.underscore}")
+        =facet_config.localized_label(locale)
     section style="display: none"
       -selector = "s#{i}".to_sym
       -[selector].each do |filter_name|
