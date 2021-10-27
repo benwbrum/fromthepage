@@ -60,7 +60,11 @@ class FacetsController < ApplicationController
       unless metadata.nil?
         if !metadata['order'].blank?  
           facet_label = metadata['label'].blank? ? m.key : metadata['label']
-          label_hash = JSON.parse(m.facet_config.label)
+          if m.facet_config.label.nil?
+            label_hash = {}
+          else
+            label_hash = JSON.parse(m.facet_config.label)
+          end
           label_hash[locale.to_s] = facet_label
           facet_label = label_hash.to_json
         else
