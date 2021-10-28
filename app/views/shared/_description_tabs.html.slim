@@ -32,10 +32,10 @@
       nav.page-nav
         -index = @collection.works.index(@work)
         -if @collection.text_entry?
-          =link_to({ :page_id => @work.pages.last.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+          =link_to(collection_transcribe_page_path(@collection.owner, @collection, @work, @work.pages.last.id), class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
 
-          span.page-nav_info = t('.nav_info', position: index+1, size: @collection.works.size)
+          span.page-nav_info = t('.metadata')
 
           =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
