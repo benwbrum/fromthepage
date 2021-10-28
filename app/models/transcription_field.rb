@@ -16,5 +16,5 @@ class TranscriptionField < ApplicationRecord
 
 
   TRANSCRIPTION_INPUTS = ["text", "select", "textarea", "description", "instruction", "spreadsheet"]
-  METADATA_INPUTS = ["text", "select", "multiselect", "textarea", "description", "instruction"]
+  METADATA_INPUTS = ["text", "select", "multiselect", "textarea", "instruction"]
 end
