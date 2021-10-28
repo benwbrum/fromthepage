@@ -9,7 +9,8 @@
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group
-        button#toggleImage.button.outline type="button" =t('.show_image')
+        -if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
+          button#toggleImage.button.outline type="button" =t('.show_image')
         a.button.outline(data-fullscreen-toggle)
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
