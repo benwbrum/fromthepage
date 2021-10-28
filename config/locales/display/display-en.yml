@@ -32,6 +32,7 @@ en:
       translations_need_indexing: "Translations That Need Indexing"
       search_for: "Search for %{search_string}"
       categories: "Categories"
+      describe: Describe Metadata
     pages_view:
       no_pages_found: "No pages found"
       unable_to_find_pages: "We were unable to find any pages matching your request"
