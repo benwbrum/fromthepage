@@ -13,10 +13,6 @@
               br
               =radio_button_tag :data_entry_type, Collection::DataEntryType::METADATA_ONLY, @collection.data_entry_type == Collection::DataEntryType::METADATA_ONLY
               =label_tag "data_entry_type_#{Collection::DataEntryType::METADATA_ONLY}", t('.data_entry_type_metadata_only')
-          tr
-            td(colspan="1")
-              =label_tag :description_instructions, t('.description_instructions_label'), class: "above"
-              =text_area_tag :description_instructions, @collection.description_instructions, :rows => 4
     table.field-form#new-fields
       -unless @current_fields.blank?
         -@current_fields.group_by(&:line_number).each do |line, field|
@@ -33,15 +29,30 @@
       .flex-toolbar_group
         =button_tag t('.add_additional_line'), type: 'button', id: 'add-line', class: 'button', remote: true
         =button_tag t('.add_additional_field'), type: 'button', id: 'add-field', class: 'button'
-      .flex-toolbar_group.push-right
-        =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
-        =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button'
-        =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
+      -if field_type != TranscriptionField::FieldType::METADATA
+        .flex-toolbar_group.push-right
+          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
+          =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button'
+          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
+    -if field_type == TranscriptionField::FieldType::METADATA
+      table.form
+        tbody
+          tr
+            td(colspan="1")
+              =label_tag :description_instructions, t('.description_instructions_label'), class: "above"
+              =text_area_tag :description_instructions, @collection.description_instructions, :rows => 4
+      .flex-toolbar
+        .flex-toolbar_group.push-right
+          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
+          =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button'
+          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
 
 h2 =t('.preview')
 div.fields-preview
   -if field_type == TranscriptionField::FieldType::METADATA
     =render({partial: 'metadata_field_layout', locals: {collection_id: @collection, owner_preview: true}})
+    -if @collection.description_instructions.present?
+      .fgfaded ==@collection.description_instructions
   -else
     =render({partial: 'field_layout', locals: {collection_id: @collection}})
 
