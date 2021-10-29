@@ -48,6 +48,7 @@ class Work < ApplicationRecord
   scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
+  scope :incomplete_description, -> { where(description_status: DescriptionStatus::UNDESCRIBED) }
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
