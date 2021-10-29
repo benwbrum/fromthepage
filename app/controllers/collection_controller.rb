@@ -152,6 +152,11 @@ class CollectionController < ApplicationController
         #combine ids anduse to get works that aren't complete
         ids = translation_ids + transcription_ids
 
+        if @collection.metadata_entry?
+          description_ids = @collection.works.incomplete_description.pluck(:id)
+          ids += description_ids
+        end
+
         works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
 
         if works.empty?
