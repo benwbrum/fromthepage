@@ -11,8 +11,8 @@
   .page-toolbar
     .flex-toolbar
       .flex-toolbar_group
-        -if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
-          button#toggleImage.button.outline type="button" =t('.show_image')
+        /if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
+          /button#toggleImage.button.outline type="button" =t('.show_image')
         a.button.outline(data-fullscreen-toggle)
           =svg_symbol "#icon-expand", class: 'icon'
           span.hide-l =t('.fullscreen')
@@ -25,6 +25,14 @@
             -layout_modes.each do |mode, text|
               a(data-layout-set="#{mode}")
                 =svg_symbol "#icon-layout-#{mode}", class: 'icon'
+                span =text
+        -view_modes = { 'image' => t('.page_images'), 'transcript' => t('.text'), 'metadata' => t('.metadata') }
+        dl.dropdown.page-columns-layout(data-dropdown='{ "selectable": true }')
+          dt.button.outline
+            span.hide-l =t('.view_original')
+          dd
+            -view_modes.each do |mode, text|
+              a(data-view-set="#{mode}")
                 span =text
 
       .flex-toolbar_group.hide-m
@@ -56,6 +64,10 @@
                 ==transcription.force_encoding('utf-8')
       .page-imagescan
         =render :partial => '/shared/osd_div'
+      .page-original
+        h5 Original Metadata
+        .big =raw(html_metadata_from_work(@work))
+
 
 
     .page-column
@@ -118,6 +130,32 @@ h2.legend =t('notes_and_questions')
           hot.updateSettings({});
         };
       });
+
+
+      $('[data-view-set]').on('click', function() {
+        var mode = $(this).data('view-set');
+
+        switch(mode) {
+          case 'image':
+            $('.page-imagescan').toggle(true);
+            $('.page-preview').toggle(false);
+            $('.page-original').toggle(false);
+            break;
+          case 'metadata':
+            $('.page-imagescan').toggle(false);
+            $('.page-preview').toggle(false);
+            $('.page-original').toggle(true);
+            break;
+          case 'transcript':
+            $('.page-imagescan').toggle(false);
+            $('.page-preview').toggle(true);
+            $('.page-original').toggle(false);
+            break;
+        };
+
+      });
+
+
 
       $('#auto-fullscreen').on('change', function() {
         var checked = this.checked ? 'yes' : 'no';
