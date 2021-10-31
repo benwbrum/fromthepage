@@ -11,7 +11,7 @@
           .field-wrapper.spreadsheet
             =render({ :partial => '/shared/handsontable', :locals => {:transcription_field => field, :preview_cells => @field_preview[field.id]} })
         -else
-          -span_width = !field.percentage.blan=k? ? field.percentage : @width
+          -span_width = !field.percentage.blank? ? field.percentage : @width
           .field-wrapper(style="width: #{span_width}%")
             -if field.input_type == "instruction"
               div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
