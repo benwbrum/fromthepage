@@ -406,7 +406,6 @@ Fromthepage::Application.routes.draw do
   get '/software', to: 'static#software', as: :about
   get '/about', to: 'static#about', as: :about_us
   get '/faq', to: 'static#faq', as: :faq
-  get '/privacy', to: 'static#privacy', as: :privacy
   get 'pricing', to: 'static#pricing', as: :pricing
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
   get '/:token/contact', to: 'contact#form', as: 'contact'
