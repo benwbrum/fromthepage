@@ -32,13 +32,25 @@
       nav.page-nav
         -index = @collection.works.index(@work)
         -if @collection.text_entry?
-          =link_to({ :page_id => @work.pages.last.id }, class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
+          =link_to(collection_transcribe_page_path(@collection.owner, @collection, @work, @work.pages.last.id), class: 'page-nav_prev', title: 'Previous page', 'aria-label' => 'Previous page', onclick: 'unsavedTranscription(event);')
             =svg_symbol '#icon-arrow-left', class: 'icon', title: 'Previous page'
 
-          span.page-nav_info = t('.nav_info', position: index+1, size: @collection.works.size)
+          span.page-nav_info = t('.metadata')
+          -next_works = @collection.works.to_a[index+1..]
+          -next_work = next_works.detect {|candidate| candidate.pages.where(status: [nil, Page::STATUS_INCOMPLETE]).first || candidate.description_status == Work::DescriptionStatus::UNDESCRIBED }
+          -if next_work
+            -next_page = next_work.pages.where(status: [nil, Page::STATUS_INCOMPLETE]).first
+            -if next_page
+              =link_to(collection_transcribe_page_path(@collection.owner, @collection, @work, @work.pages.last.id), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+            -else
+              =link_to(describe_collection_work_path(@collection.owner, @collection, next_work), class: 'page-nav_next', title: 'Next work', 'aria-label' => 'Next work', onclick: 'unsavedTranscription(event);')
+                =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next work'
+          -else
+            =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
+              =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
 
-          =link_to(collection_next_untranscribed_page_path(@collection.owner, @collection, @work), class: 'page-nav_next', title: 'Next page', 'aria-label' => 'Next page', onclick: 'unsavedTranscription(event);')
-            =svg_symbol '#icon-arrow-right', class: 'icon', title: 'Next page'
+
         -else
           -if index > 0
             =link_to(describe_collection_work_path(@collection.owner, @collection, @collection.works[index-1]), class: 'page-nav_prev', title: 'Previous work', 'aria-label' => 'Previous work', onclick: 'unsavedTranscription(event);')

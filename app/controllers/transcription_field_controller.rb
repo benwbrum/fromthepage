@@ -74,9 +74,12 @@ class TranscriptionFieldController < ApplicationController
         else
           #otherwise update field if anything changed
           transcription_field = TranscriptionField.find_by(id: fields[:id])
-          #remove ID from params before update
-          fields.delete(:id)
-          transcription_field.update(fields.permit!)
+          transcription_field.label = fields[:label]
+          transcription_field.input_type = fields[:input_type]
+          transcription_field.options = fields[:options] if fields[:input_type] == 'select'
+          transcription_field.line_number = fields[:line_number]
+          transcription_field.percentage = fields[:percentage]
+          transcription_field.save
         end
       end
     end

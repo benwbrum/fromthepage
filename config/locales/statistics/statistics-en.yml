@@ -20,6 +20,7 @@ en:
       page: "Page"
       page_edits: "Page edits"
       ocr_correction: "OCR Correction"
+      works_described: "Described work"
     collaborators:
       collaborators: "Collaborators"
       mailing_list_export: "Mailing List Export"

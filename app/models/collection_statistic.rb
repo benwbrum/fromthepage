@@ -58,6 +58,7 @@ module CollectionStatistic
       :subjects     => self.articles.where(timeframe(start_date, end_date, 'created_on')).count,
       :mentions     => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
       :contributors => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
+      :descriptions => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count
     }
 
     stats.merge(deeds)
