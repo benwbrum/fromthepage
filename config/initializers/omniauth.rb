@@ -33,6 +33,17 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             name: ['preferredname'] 
           }
         }
+      elsif identity_provider_id == 'harvard'
+        options = {
+          idp_cert: ENV['IDP_CERT_HARVARD'],
+          idp_sso_target_url: 'https://fed.huit.harvard.edu/idp/shibboleth',
+          issuer: 'https://fromthepage.com',
+          attribute_statements: { 
+            external_id: ['eppn'], 
+            email: ['mail'], 
+            name: ['displayName'] 
+          }
+        }      
       elsif identity_provider_id == 'samling'
         options = {
           idp_sso_target_url: 'https://capriza.github.io/samling/samling.html',
