@@ -62,4 +62,5 @@ en:
       describe: "Describe"
       versions: "Versions"
       help: "Help"
+      metadata: Metadata
 

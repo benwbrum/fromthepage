@@ -74,6 +74,11 @@ class Page < ApplicationRecord
   MAIN_STATUSES = ALL_STATUSES - [STATUS_TRANSLATED]
   TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_INCOMPLETE, STATUS_TRANSCRIBED]
 
+  NEEDS_WORK_STATUSES = [
+    nil,
+    STATUS_INCOMPLETE
+  ]
+
   # tested
   def collection
     work.collection

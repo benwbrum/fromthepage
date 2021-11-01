@@ -12,5 +12,9 @@
       .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_EDIT]}") =t('.page_edits')
       -unless subjects_disabled
         .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_INDEXED]}") #{t('.page').pluralize(stats[DeedType::PAGE_INDEXED])} indexed
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSLATED]}") #{t('.page').pluralize(stats[DeedType::PAGE_TRANSLATED])} translated
-      .counter(data-prefix="#{number_with_delimiter stats[DeedType::OCR_CORRECTED]}") #{t('.ocr_correction').pluralize(stats[DeedType::OCR_CORRECTED])}
+      -if @collection.works.where(supports_translation: true).exists?
+        .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSLATED]}") #{t('.page').pluralize(stats[DeedType::PAGE_TRANSLATED])} translated
+      -if @collection.works.where(ocr_correction: true).exists?
+        .counter(data-prefix="#{number_with_delimiter stats[DeedType::OCR_CORRECTED]}") #{t('.ocr_correction').pluralize(stats[DeedType::OCR_CORRECTED])}
+      -if @collection.metadata_entry?      
+        .counter(data-prefix="#{number_with_delimiter stats[:descriptions]}") #{t('.works_described').pluralize(stats[:descriptions])}

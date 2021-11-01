@@ -3,10 +3,11 @@
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
 
-.page-toolbar
-  .flex-toolbar
-    .flex-toolbar_group
-      button#toggleImage.button.outline type="button" =t('.show_image')
+-if @collection.text_entry? || @work.pages.where.not(xml_text: nil).exists? 
+  .page-toolbar
+    .flex-toolbar
+      .flex-toolbar_group
+        button#toggleImage.button.outline type="button" =t('.show_image')
 
 .page-columns
   .page-column
