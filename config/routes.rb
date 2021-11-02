@@ -278,6 +278,8 @@ Fromthepage::Application.routes.draw do
     get 'remove_from_set', to: 'document_sets#remove_from_set'
     post 'create', :to => 'document_sets#create'
     post 'assign_works', :to => 'document_sets#assign_works'
+    get 'transfer_works', :to => 'document_sets#transfer_form', :as => 'transfer_form'
+    post 'transfer_works', :to => 'document_sets#transfer', :as => 'transfer_works'
   end
 
   scope 'document_sets', as: 'document_sets' do
