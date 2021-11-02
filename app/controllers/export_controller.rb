@@ -8,7 +8,7 @@ class ExportController < ApplicationController
   layout Proc.new { |controller| controller.request.xhr? ? false : nil } #, :only => [:update, :update_profile]
 
   def index
-    @collection = Collection.friendly.find(params[:collection_id])
+    # @collection = Collection.friendly.find(params[:collection_id])
     #check if there are any translated works in the collection
     if @collection.works.where(supports_translation: true).exists?
       @header = "Translated"
