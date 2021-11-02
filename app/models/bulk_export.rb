@@ -4,6 +4,7 @@ class BulkExport < ApplicationRecord
 
   belongs_to :user
   belongs_to :collection
+  belongs_to :document_set, optional: true
   belongs_to :work, optional: true
 
 
@@ -33,7 +34,9 @@ class BulkExport < ApplicationRecord
     begin
       if self.work
         works=[self.work]
-      else
+      elsif self.document_set
+        works = self.document_set.works.includes(pages: [:notes, {page_versions: :user}])
+      elsif
         works = Work.includes(pages: [:notes, {page_versions: :user}]).where(collection_id: self.collection.id)
       end
 
