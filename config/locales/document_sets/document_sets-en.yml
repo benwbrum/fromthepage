@@ -80,7 +80,7 @@ en:
       source_and_target_can_not_be_the_same: Source and target cannot be the same.
     transfer_form:
       transfer_works: Transfer Works
-      transfer_works_description: Transfer works between document sets.  (Copying will place the same work within two document sets at the saem time.)
+      transfer_works_description: Transfer works between document sets.  (Copying will place the same work within two document sets at the same time.)
       transfer_type_label: Transfer Type
       move: Move
       copy: Copy (does not create duplicate works)
