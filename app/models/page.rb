@@ -8,7 +8,7 @@ class Page < ApplicationRecord
   before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
-  before_save :update_line_count
+  before_update :update_line_count
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
@@ -282,16 +282,21 @@ class Page < ApplicationRecord
   end
 
   def calculate_line_count
-    if field_based
-      # count table rows
-      self.table_cells.pluck(:row).uniq.count
-    else
-      # count non-blank lines in the source
-      if self.source_text.nil?
-        0
+    if self.work && self.collection
+      if field_based
+        # count table rows
+        self.table_cells.pluck(:row).uniq.count
       else
-        self.source_text.lines.select{|line| line.match(/\S/)}.count
+        # count non-blank lines in the source
+        if self.source_text.nil?
+          0
+        else
+          self.source_text.lines.select{|line| line.match(/\S/)}.count
+        end
       end
+    else
+      # intermediary format -- collection is probably being imported
+      0
     end
   end
 
