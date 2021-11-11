@@ -98,6 +98,7 @@ class WorkStatistic < ApplicationRecord
 
     self[:complete]             = pct_completed
     self[:translation_complete] = pct_translation_completed
+    self[:line_count]           = stats[:line_count]
 
     save!
   end
@@ -106,7 +107,8 @@ class WorkStatistic < ApplicationRecord
     {
       transcription: work.pages.group(:status).count,
       translation: work.pages.group(:translation_status).count,
-      total: work.pages.count
+      total: work.pages.count,
+      line_count: work.pages.sum(:line_count)
     }
   end
   private
