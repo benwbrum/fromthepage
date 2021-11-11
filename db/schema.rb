@@ -541,6 +541,7 @@ ActiveRecord::Schema.define(version: 2021_11_02_194016) do
     t.text "metadata"
     t.datetime "edit_started_at"
     t.integer "edit_started_by_user_id"
+    t.integer "line_count"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
@@ -693,7 +694,7 @@ ActiveRecord::Schema.define(version: 2021_11_02_194016) do
     t.datetime "remember_token_expires_at"
     t.string "location"
     t.string "website"
-    t.string "about"
+    t.text "about"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -792,6 +793,7 @@ ActiveRecord::Schema.define(version: 2021_11_02_194016) do
     t.integer "translated_annotated"
     t.integer "complete"
     t.integer "translation_complete"
+    t.integer "line_count"
   end
 
   create_table "works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
