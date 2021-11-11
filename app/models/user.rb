@@ -251,7 +251,18 @@ class User < ApplicationRecord
   end
 
   def visible_collections_and_document_sets(user)
-    collections_and_document_sets.select {|cds| cds.show_to?(user) }
+    # collection show_to? logic:
+    #  (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    # document set show_to? logic:
+    #     (!self.restricted && self.works.present?) || (user && user.like_owner?(self)) || (user && user.collaborator?(self))
+    public_collections = self.unrestricted_collections
+    collaborator_collections = self.all_owner_collections.where(:restricted => true).joins(:collaborators).where("collection_collaborators.user_id = ?", current_user.id)
+    owned_collections = self.owned_collections
+
+    public_sets = self.unrestricted_document_sets
+    collaborator_sets = self.document_sets.where(:is_public => false).joins(:collaborators).where("document_set_collaborators.user_id = ?", current_user.id)
+
+    (public_collections+collaborator_collections+owned_collections+public_sets+collaborator_sets).uniq
   end
 
   def slug_candidates
