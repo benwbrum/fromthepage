@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_03_155043) do
+ActiveRecord::Schema.define(version: 2021_11_10_192819) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -694,7 +694,7 @@ ActiveRecord::Schema.define(version: 2021_11_03_155043) do
     t.datetime "remember_token_expires_at"
     t.string "location"
     t.string "website"
-    t.string "about"
+    t.text "about"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
