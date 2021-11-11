@@ -5,13 +5,45 @@ class DocumentSetsController < ApplicationController
   respond_to :html
 
   # no layout if xhr request
-  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update]
+  layout Proc.new { |controller| controller.request.xhr? ? false : nil }, :only => [:new, :create, :edit, :update, :transfer_form]
 
   def authorized?
     unless user_signed_in? && @collection && current_user.like_owner?(@collection)
       ajax_redirect_to dashboard_path
     end
   end
+
+  def transfer_form
+  end
+
+  def transfer
+    source_set = @collection.document_sets.where(slug: params[:source_set]).first
+    target_set = @collection.document_sets.where(slug: params[:target_set]).first
+
+    if source_set == target_set
+      flash[:error] = t('.source_and_target_can_not_be_the_same')
+      render :action => 'transfer_form', :layout => false
+      flash.clear
+    else
+      if params[:status_filter] == 'all'
+        works = source_set.works
+      else
+        works = source_set.works.joins(:work_statistic).where('work_statistics.complete' => 100)
+      end
+
+      works.each do |work|
+        unless work.document_sets.include? target_set
+          work.document_sets << target_set
+        end
+        if params[:transfer_type] == 'move'
+          work.document_sets.delete(source_set)
+        end
+      end
+
+      ajax_redirect_to document_sets_path(:collection_id => @collection)
+    end
+  end
+
 
   def index
     page = params[:page]
