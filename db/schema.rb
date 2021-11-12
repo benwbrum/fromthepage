@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_22_134925) do
+ActiveRecord::Schema.define(version: 2021_11_10_192819) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -100,7 +100,9 @@ ActiveRecord::Schema.define(version: 2021_10_22_134925) do
     t.boolean "text_pdf_work"
     t.boolean "text_docx_work"
     t.boolean "static"
+    t.integer "document_set_id"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
+    t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
     t.index ["work_id"], name: "index_bulk_exports_on_work_id"
   end
@@ -459,6 +461,7 @@ ActiveRecord::Schema.define(version: 2021_10_22_134925) do
     t.text "metadata"
     t.timestamp "edit_started_at"
     t.integer "edit_started_by_user_id"
+    t.integer "line_count"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
@@ -606,7 +609,7 @@ ActiveRecord::Schema.define(version: 2021_10_22_134925) do
     t.datetime "remember_token_expires_at"
     t.string "location"
     t.string "website"
-    t.string "about"
+    t.text "about"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -704,6 +707,7 @@ ActiveRecord::Schema.define(version: 2021_10_22_134925) do
     t.integer "translated_annotated"
     t.integer "complete"
     t.integer "translation_complete"
+    t.integer "line_count"
   end
 
   create_table "works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -749,6 +753,7 @@ ActiveRecord::Schema.define(version: 2021_10_22_134925) do
   end
 
   add_foreign_key "bulk_exports", "collections"
+  add_foreign_key "bulk_exports", "document_sets"
   add_foreign_key "bulk_exports", "users"
   add_foreign_key "bulk_exports", "works"
   add_foreign_key "cdm_bulk_imports", "users"
