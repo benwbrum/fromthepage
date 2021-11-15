@@ -7,6 +7,10 @@ module CollectionStatistic
     Collection.count_by_sql("SELECT COUNT(*) FROM pages p INNER JOIN works w ON p.work_id = w.id WHERE w.collection_id = #{self.id}")
   end
 
+  def line_count
+    self.works.includes(:work_statistic).sum(:line_count)
+  end
+
   def subject_count(last_days=nil)
     self.articles.where("#{timeframe_clause(last_days, 'created_on')}").count
   end
@@ -58,7 +62,8 @@ module CollectionStatistic
       :subjects     => self.articles.where(timeframe(start_date, end_date, 'created_on')).count,
       :mentions     => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
       :contributors => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
-      :descriptions => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count
+      :descriptions => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
+      :line_count   => self.line_count
     }
 
     stats.merge(deeds)

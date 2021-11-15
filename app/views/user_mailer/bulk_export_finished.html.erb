@@ -2,6 +2,10 @@
 <p>
   Your export of 
   <%= @bulk_export.collection.title %> 
+  <% if @bulk_export.document_set %>
+    --
+    <%= @bulk_export.document_set.title %>
+  <% end %>
   <% if @bulk_export.work %>
     --
     <%= @bulk_export.work.title %>
