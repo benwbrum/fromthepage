@@ -19,6 +19,8 @@ class DocumentSet < ApplicationRecord
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
 
+  has_many :bulk_exports, :dependent => :delete_all
+
   after_save :set_next_untranscribed_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
@@ -90,6 +92,19 @@ class DocumentSet < ApplicationRecord
   def editor_buttons
     self.collection.editor_buttons
   end
+
+  def export_subject_index_as_csv
+    subject_link = SubjectExporter::Exporter.new(self)
+
+    subject_link.export
+  end
+
+  def export_subject_details_as_csv
+    subjects = SubjectDetailsExporter::Exporter.new(self)
+
+    subjects.export
+  end
+
 
   def articles
     Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct

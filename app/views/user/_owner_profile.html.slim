@@ -23,7 +23,7 @@ section.user-profile
       -if user.website.present?
         =link_to t('.website'), user.website, target: '_blank', rel: 'nofollow'
       -if user.about.present?
-        p.big =user.about
+        div ==user.about
 
 -unless carousel_collections.blank?
   .carousel

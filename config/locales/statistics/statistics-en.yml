@@ -21,6 +21,8 @@ en:
       page_edits: "Page edits"
       ocr_correction: "OCR Correction"
       works_described: "Described work"
+      records_indexed: Indexed record
+      lines_transcribed: Text line
     collaborators:
       collaborators: "Collaborators"
       mailing_list_export: "Mailing List Export"
