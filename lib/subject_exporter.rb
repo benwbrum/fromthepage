@@ -29,7 +29,7 @@ module SubjectExporter
               else
                 categories = []
                 article.categories.each { |category| categories << category.title }
-                article_link = Rails.application.routes.url_helpers.collection_article_show_path(article.collection.owner, article.collection, article.id, :only_path => false)
+                article_link = Rails.application.routes.url_helpers.collection_article_show_url(article.collection.owner, article.collection, article.id, :only_path => false)
   
                 categories.sort!
                 section_header = sections_by_link[link.id] 
