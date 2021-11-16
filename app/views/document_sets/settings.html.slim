@@ -21,7 +21,7 @@
         thead
           tr
             th =t('.work')
-            th =t('.collaboration')
+            th =t('.status')
             th =t('.add')
         tbody
           -@works.each do |work|
@@ -35,8 +35,17 @@
                   span
                      ocr
               td
-                i
-                  =work.restrict_scribes  ? t('.restricted') : t('.unrestricted')
+                -work_stats(work)
+                .progress
+                  -unless @collection.subjects_disabled
+                    span(style="width:#{@progress_annotated}%")
+                    span(style="width:#{@progress_completed - @progress_annotated}%")
+                    span(style="width:#{@progress_review}%")
+
+                  -else
+                    span(style="width:#{@progress_completed}%")
+                    span(style="width:#{@progress_review}%")
+
               td.document_set
                 =check_box_tag("work[#{work.id}]", "work[#{work.id}]", false, {"title" => t('.add_work_title_to_document_set', work_title: work.title)})
       br
