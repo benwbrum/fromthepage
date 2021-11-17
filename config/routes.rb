@@ -262,7 +262,7 @@ Fromthepage::Application.routes.draw do
     get 'explore_manifest', to: 'sc_collections#explore_manifest'
     get 'explore_collection', to: 'sc_collections#explore_collection'
     post 'import_cdm', to: 'sc_collections#import_cdm'
-    get 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
+    get ':collection_id/cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_new', as: 'cdm_bulk_import_new'
     post 'cdm_bulk_import', to: 'sc_collections#cdm_bulk_import_create', as: 'cdm_bulk_import_create'
     match 'import', to: 'sc_collections#import', via: [:get, :post]
     match 'convert_manifest', to: 'sc_collections#convert_manifest', via: [:get, :post]

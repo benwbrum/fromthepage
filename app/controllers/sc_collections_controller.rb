@@ -43,7 +43,7 @@ class ScCollectionsController < ApplicationController
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
       flash[:notice] = t('.using_manifest_for', url: cdm_url)
-      redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
+      redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url, :collection_id => @collection.slug
     rescue => e
       logger.error t('.bad_contentdm_url', url: cdm_url, message: e.message)
       flash[:error] = e.message
@@ -53,6 +53,7 @@ class ScCollectionsController < ApplicationController
 
   def import
     at_id = params[:at_id]
+
     begin
       service = find_service(at_id)
 
