@@ -20,7 +20,8 @@
             td
               .input-file
                 =text_field_tag :at_id
-                =hidden_field_tag :collection_id, @collection.slug
+                -if @collection
+                  =hidden_field_tag :collection_id, @collection.slug
                 =button_tag 'Import', :id => 'iiif_import'
 
     h3
@@ -33,10 +34,14 @@
             td
               .input-file
                 =text_field_tag :cdm_url
-                =hidden_field_tag :collection_id, @collection.slug
+                -if @collection
+                  =hidden_field_tag :collection_id, @collection.slug
                 =button_tag 'Import', :id => 'cdm_import'
         =t('.or_import_many')
-        =link_to(t('.import_many_link'), sc_collections_cdm_bulk_import_new_path(@collection.slug))
+        -if @collection
+          =link_to(t('.import_many_link'), sc_collections_cdm_bulk_import_new_path(collection_id: @collection.slug))
+        -else
+          =link_to(t('.import_many_link'), sc_collections_cdm_bulk_import_new_path)
 
     h3
       a(href="#" class="title" onclick="return false;" id="import-internet-archive") =t('.import_from_the_internet_archive')
