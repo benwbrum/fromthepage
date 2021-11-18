@@ -267,6 +267,8 @@ class ScCollectionsController < ApplicationController
       @collection = Collection.find_by(id: session[:iiif_collection])
       session[:iiif_collection]=nil
       return @collection
+    else
+      return @collection
     end
   end
 
