@@ -202,9 +202,11 @@ class CollectionController < ApplicationController
   end
 
   def add_owner
-    @user.owner = true
-    @user.account_type = "Staff"
-    @user.save!
+    unless @user.owner
+      @user.owner = true
+      @user.account_type = "Staff"
+      @user.save!
+    end
     @collection.owners << @user
     @user.notification.owner_stats = true
     @user.notification.save!
