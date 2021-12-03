@@ -50,7 +50,10 @@
           -if @collection.text_entry?
             .collection-work_stats
               -work_stats(work)
-              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+              span 
+                ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+                -if @collection.metadata_entry?
+                  span =t("work.#{work.description_status}")
               span
                 span.progress
                   -unless @collection.subjects_disabled
@@ -58,6 +61,9 @@
                   span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
                   -unless @progress_review == 0
                     span(style="width:#{@progress_review}%")
+          -else
+            .collection-work_stats
+              span =t("work.#{work.description_status}")
 
       =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
