@@ -176,7 +176,11 @@ module ApplicationHelper
   end
 
   def html_metadata_from_work(work)
-    html_metadata(JSON.parse(work.original_metadata))
+    if work.original_metadata.blank?
+      ""
+    else
+      html_metadata(JSON.parse(work.original_metadata))
+    end
   end
 
   def html_metadata(metadata_hash)

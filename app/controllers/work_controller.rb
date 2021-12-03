@@ -33,6 +33,19 @@ class WorkController < ApplicationController
   def save_description
     @field_cells = request.params[:fields]
     @metadata_array = @work.process_fields(@field_cells)
+
+    if params['save_to_incomplete'] && params[:work]['needs_review'] != '1' 
+      @work.description_status = Work::DescriptionStatus::INCOMPLETE
+    elsif params['save_to_needs_review'] || params[:work]['needs_review'] == '1'
+      @work.description_status = Work::DescriptionStatus::NEEDS_REVIEW
+    elsif (params['save_to_transcribed'] && params[:work]['needs_review'] != '1') || params['approve_to_transcribed']
+      @work.description_status = Work::DescriptionStatus::DESCRIBED
+    else
+      # unexpected state
+    end
+
+
+
     if @work.save
       # TODO record_description_deed(@work)
       if @work.saved_change_to_description_status?

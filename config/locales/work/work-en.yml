@@ -33,4 +33,16 @@ en:
       compared_with: "Compared with"
     save_description:
       work_described: "Your description has been saved"
+    describe:
+      edit_transcription: "Edit transcription"
+      save_changes: "Save"
+      done: "Done"
+      approve: "Approve"
+      approve_to_transcribed_tooltip: "Save and approve this metadata"
+      finish_to_needs_review_tooltip: "Save completed metadata"
+      finish_to_transcribed_tooltip: "Save completed metadata"
+      save_to_transcribed_tooltip: "Save your changes"
+      save_to_needs_review_tooltip: "Save your changes"
+      save_to_incomplete_tooltip: "Save incomplete metadata"
+
 

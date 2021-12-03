@@ -63,6 +63,10 @@ module CollectionHelper
     else
       @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')}"
     end
+
+    if @collection.metadata_entry?
+      @wording += t("work.#{work.description_status}")
+    end
   end
 
   def find_transcribe_pages
