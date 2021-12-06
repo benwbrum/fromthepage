@@ -1,5 +1,10 @@
 en:
   work:
+    # global values
+    undescribed: "No metadata."
+    incomplete: "Incomplete metadata."
+    needsreview: "Metadata needs review."
+    described: "Metadata completed."
     show:
       description: "Description"
       physical_description: "Physical Description"
