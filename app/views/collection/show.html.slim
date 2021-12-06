@@ -52,8 +52,6 @@
               -work_stats(work)
               span 
                 ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
-                -if @collection.metadata_entry?
-                  span =t("work.#{work.description_status}")
               span
                 span.progress
                   -unless @collection.subjects_disabled
