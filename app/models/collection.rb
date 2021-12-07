@@ -193,7 +193,7 @@ class Collection < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR original_metadata like ?", "%#{search}%", "%#{search}%")
+    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
   def self.search(search)

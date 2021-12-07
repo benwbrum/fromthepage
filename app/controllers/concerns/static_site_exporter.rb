@@ -356,13 +356,7 @@ EOF_FOOTER_INCLUDE
     path = File.join dirname, 'pages', 'works', "#{work.slug}.md"
     out.put_next_entry path
 
-    metadata = []
-    if work.original_metadata
-      metadata += JSON[work.original_metadata]
-    end
-    work_metadata = work.attributes.except("id", "title", "next_untranscribed_page_id", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "in_scope").delete_if{|k,v| v.blank?}
-
-    work_metadata.each_pair { |label,value| metadata << { "label" => label.titleize, "value" => value.to_s } }
+    metadata = work.merge_metadata
 
     frontmatter = {
       'title' => work.title,
