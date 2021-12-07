@@ -48,7 +48,7 @@
           =f.label 'needs_review', t('.needs_review')
           =f.check_box('needs_review', {checked: @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW})
 
-      .flex-toolbar_group
+      .flex-toolbar_group class=(@collection.review_workflow ? 'push-right' : '')
         / check status of page and configuration of collection
         -if @work.description_status.nil? || @work.description_status == Work::DescriptionStatus::INCOMPLETE || @work.description_status == Work::DescriptionStatus::UNDESCRIBED
           =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"

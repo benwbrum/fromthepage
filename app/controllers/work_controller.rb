@@ -30,15 +30,19 @@ class WorkController < ApplicationController
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 
+  def needs_review_checkbox_checked
+    params[:work] && params[:work]['needs_review'] == '1'
+  end
+
   def save_description
     @field_cells = request.params[:fields]
     @metadata_array = @work.process_fields(@field_cells)
 
-    if params['save_to_incomplete'] && params[:work]['needs_review'] != '1' 
+    if params['save_to_incomplete'] && !needs_review_checkbox_checked 
       @work.description_status = Work::DescriptionStatus::INCOMPLETE
-    elsif params['save_to_needs_review'] || params[:work]['needs_review'] == '1'
+    elsif params['save_to_needs_review'] || needs_review_checkbox_checked
       @work.description_status = Work::DescriptionStatus::NEEDS_REVIEW
-    elsif (params['save_to_transcribed'] && params[:work]['needs_review'] != '1') || params['approve_to_transcribed']
+    elsif (params['save_to_transcribed'] && !needs_review_checkbox_checked) || params['approve_to_transcribed']
       @work.description_status = Work::DescriptionStatus::DESCRIBED
     else
       # unexpected state
