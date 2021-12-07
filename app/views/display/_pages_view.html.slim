@@ -9,6 +9,9 @@
         -work_title = page.work.title
         -if !@work && work_title != old_work_title
           h3 =work_title
+          -if page.work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
+            =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button'
+
 
         .work-page 
           .work-page_thumbnail
