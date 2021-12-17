@@ -40,9 +40,7 @@ describe "collection metadata", :order => :defined do
     c = Collection.where(title: "ladi").first
     visit edit_collection_path(@owner, c)
     expect(page).to have_content("Allow users to browse works within this collection via metadata.")
-    binding.pry
     click_link "Upload Metadata"
-    binding.pry
     expect(page).to have_content("To update metadata for several works within this collection")
 
     # workaround
@@ -63,7 +61,6 @@ describe "collection metadata", :order => :defined do
     visit edit_collection_path(@owner, c)
     expect(page).to have_content("Allow users to browse works within this collection via metadata.")
     click_link "Upload Metadata"
-    binding.pry
     expect(page).to have_content("To update metadata for several works within this collection")
 
     # workaround
