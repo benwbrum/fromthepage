@@ -35,6 +35,7 @@ module CollectionHelper
   end
 
   def work_stats(work)
+    @wording=''
     @progress_blank = work.work_statistic.pct_blank.round
     unless work.supports_translation
       @progress_annotated = work.work_statistic.pct_annotated.round
@@ -62,6 +63,11 @@ module CollectionHelper
       @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed}% #{@type}"
     else
       @wording = "#{@progress_annotated}% #{t('collection.indexed')}, #{@progress_completed+@progress_review}% #{@type}, #{@progress_review}% #{t('collection.needs_review')}"
+    end
+
+    if @collection.metadata_entry?
+      @wording += '. '
+      @wording += t("work.#{work.description_status}")
     end
   end
 
