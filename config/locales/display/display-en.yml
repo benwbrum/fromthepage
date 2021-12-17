@@ -47,6 +47,7 @@ en:
       transcribed: "transcribed"
       help_transcribe: "help transcribe"
       last_edit: "Last edit %{edit_time} ago by %{user_link}"
+      review_metadata: Review Metadata
     list_pages:
       no_pages_found: "No pages found"
       no_pages_in_work: "This work does not contain any pages yet, go to %{link} to create a new page"
