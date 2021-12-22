@@ -1,6 +1,25 @@
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+
+  PUBLIC_ATTRIBUTES =
+    ["title",
+     "description",
+     "created_on",
+     "physical_description",
+     "document_history",
+     "permission_description",
+     "location_of_composition",
+     "author",
+     "identifier",
+     "genre",
+     "source_location",
+     "source_collection_name",
+     "source_box_folder",
+     "in_scope",
+     "editorial_notes",
+     "document_date",
+     "uploaded_filename"]
   
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -24,6 +43,8 @@ class Work < ApplicationRecord
   has_one :work_facet, :dependent => :destroy
   has_many :bulk_exports, :dependent => :delete_all
   has_many :metadata_description_versions, -> { order 'version_number DESC' }, :dependent => :destroy
+
+  before_save :update_derivatives
 
   after_save :create_version
   after_save :update_statistic
@@ -94,6 +115,30 @@ class Work < ApplicationRecord
         nil
       end
     end
+  end
+
+  def update_derivatives
+    # searchable_metadata is currently the only derivative
+    metadata_hash = self.merge_metadata(true)
+    value_array = metadata_hash.map {|e| e['value']}
+
+    self.searchable_metadata = value_array.flatten.join("\n\n")
+  end
+
+  def merge_metadata(include_user=false)
+    metadata = []
+    if self.original_metadata
+      metadata += JSON[self.original_metadata]
+    end
+    work_metadata = self.attributes.select{|k,v| PUBLIC_ATTRIBUTES.include?(k) && !v.blank?}
+
+    work_metadata.each_pair { |label,value| metadata << { "label" => label.titleize, "value" => value.to_s } }
+
+    if include_user && !self.metadata_description.blank?
+      metadata += JSON[self.metadata_description]
+    end
+
+    metadata
   end
 
 
