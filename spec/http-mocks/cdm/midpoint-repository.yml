@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/elements
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/elements
     body:
       encoding: UTF-8
       string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
@@ -37,14 +37,14 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
-      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"7629c0d8-e081-4f91-ac50-74b72819255a"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"6141f9e6-e494-4177-89f8-67c42b2b4b1e"}]}'
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/execute/sync
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/execute/sync
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -91,7 +91,7 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
-        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"7629c0d8-e081-4f91-ac50-74b72819255a"}]}'
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"6141f9e6-e494-4177-89f8-67c42b2b4b1e"}]}'
     headers:
       Accept:
       - application/json
@@ -115,18 +115,18 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":true}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/execute/sync
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/execute/sync
     body:
       encoding: UTF-8
       string: '{"script":"return arguments[0].matches('':disabled, select:disabled
-        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"7629c0d8-e081-4f91-ac50-74b72819255a"}]}'
+        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"6141f9e6-e494-4177-89f8-67c42b2b4b1e"}]}'
     headers:
       Accept:
       - application/json
@@ -150,18 +150,18 @@ http_interactions:
       Content-Length:
       - '15'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":false}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/execute/sync
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/execute/sync
     body:
       encoding: UTF-8
       string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
-        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"7629c0d8-e081-4f91-ac50-74b72819255a"},["tagName","type"]]}'
+        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"6141f9e6-e494-4177-89f8-67c42b2b4b1e"},["tagName","type"]]}'
     headers:
       Accept:
       - application/json
@@ -185,17 +185,17 @@ http_interactions:
       Content-Length:
       - '26'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":["INPUT","text"]}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/execute/sync
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/execute/sync
     body:
       encoding: UTF-8
-      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"7629c0d8-e081-4f91-ac50-74b72819255a"}]}'
+      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"6141f9e6-e494-4177-89f8-67c42b2b4b1e"}]}'
     headers:
       Accept:
       - application/json
@@ -219,14 +219,14 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/element/7629c0d8-e081-4f91-ac50-74b72819255a/value
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/element/6141f9e6-e494-4177-89f8-67c42b2b4b1e/value
     body:
       encoding: UTF-8
       string: '{"value":["h","t","t","p"],"text":"http"}'
@@ -253,19 +253,19 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/execute/sync
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/execute/sync
     body:
       encoding: UTF-8
       string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
         (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
-        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"7629c0d8-e081-4f91-ac50-74b72819255a"},"s://cdm16488.contentdm.oclc.o"]}'
+        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"6141f9e6-e494-4177-89f8-67c42b2b4b1e"},"s://cdm16488.contentdm.oclc.o"]}'
     headers:
       Accept:
       - application/json
@@ -289,14 +289,14 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/element/7629c0d8-e081-4f91-ac50-74b72819255a/value
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/element/6141f9e6-e494-4177-89f8-67c42b2b4b1e/value
     body:
       encoding: UTF-8
       string: '{"value":["r","g","/"],"text":"rg/"}'
@@ -323,14 +323,14 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/elements
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/elements
     body:
       encoding: UTF-8
       string: '{"using":"css selector","value":"#cdm_import"}'
@@ -357,14 +357,14 @@ http_interactions:
       Content-Length:
       - '90'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
-      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"4d6a85bf-990c-4a5c-bda1-cc732d709c13"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"9cb1f24e-8573-40f0-a4c9-cf607cb72bac"}]}'
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/execute/sync
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/execute/sync
     body:
       encoding: UTF-8
       string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
@@ -411,7 +411,7 @@ http_interactions:
         e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
         i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
         e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
-        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"4d6a85bf-990c-4a5c-bda1-cc732d709c13"}]}'
+        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"9cb1f24e-8573-40f0-a4c9-cf607cb72bac"}]}'
     headers:
       Accept:
       - application/json
@@ -435,11 +435,11 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":true}'
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
@@ -459,7 +459,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -480,7 +480,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
       Content-Length:
       - '262'
       Content-Type:
@@ -495,7 +495,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Fri, 12 Nov 2021 14:24:54 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:30 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
@@ -515,7 +515,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -534,7 +534,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
       Content-Length:
       - '240'
       Content-Type:
@@ -549,7 +549,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Fri, 12 Nov 2021 14:24:55 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:31 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
@@ -569,7 +569,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -598,12 +598,12 @@ http_interactions:
       Content-Length:
       - '751'
       Set-Cookie:
-      - JSESSIONID=YjliMDNjYTMtMzBiMi00YWIzLTg0NWEtYTQ2ZTU2NTRlOGNh; Path=/; HttpOnly;
+      - JSESSIONID=NzYyYTM2ZDYtNzlhZS00NTBmLTkxMzEtZTM4MzI0MjczYzg1; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll10/manifest.json","@type":"sc:Collection","label":"City
@@ -633,7 +633,7 @@ http_interactions:
         Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
         Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
         Aids"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:24:55 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:31 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
@@ -653,7 +653,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -674,7 +674,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
       Content-Length:
       - '262'
       Content-Type:
@@ -689,7 +689,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Fri, 12 Nov 2021 14:24:55 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:31 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
@@ -709,7 +709,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -728,7 +728,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
       Content-Length:
       - '240'
       Content-Type:
@@ -743,7 +743,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Fri, 12 Nov 2021 14:24:55 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:31 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
@@ -763,7 +763,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -792,12 +792,12 @@ http_interactions:
       Content-Length:
       - '751'
       Set-Cookie:
-      - JSESSIONID=NDZjZWNjZjctYzYzMC00NTQxLWE4N2UtNjcyOTA3YzZmYjIz; Path=/; HttpOnly;
+      - JSESSIONID=Mzc2MmQ1YTQtNTdlYy00NmY2LWEwMGUtZTQ3MmEzOWEwNmY2; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:55 GMT
+      - Fri, 17 Dec 2021 14:29:31 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll10/manifest.json","@type":"sc:Collection","label":"City
@@ -827,7 +827,7 @@ http_interactions:
         Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
         Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
         Aids"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:24:56 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:32 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/info/manifest.json
@@ -847,7 +847,7 @@ http_interactions:
       message: Moved Permanently
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:56 GMT
+      - Fri, 17 Dec 2021 14:29:32 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -868,7 +868,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:56 GMT
+      - Fri, 17 Dec 2021 14:29:32 GMT
       Content-Length:
       - '262'
       Content-Type:
@@ -883,7 +883,7 @@ http_interactions:
         <h1>Moved Permanently</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Fri, 12 Nov 2021 14:24:56 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:32 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/manifest.json
@@ -903,7 +903,7 @@ http_interactions:
       message: Found
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:56 GMT
+      - Fri, 17 Dec 2021 14:29:32 GMT
       Server:
       - Apache
       X-Content-Type-Options:
@@ -922,7 +922,7 @@ http_interactions:
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:56 GMT
+      - Fri, 17 Dec 2021 14:29:32 GMT
       Content-Length:
       - '240'
       Content-Type:
@@ -937,7 +937,7 @@ http_interactions:
         <h1>Found</h1>
         <p>The document has moved <a href="https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json">here</a>.</p>
         </body></html>
-  recorded_at: Fri, 12 Nov 2021 14:24:56 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:32 GMT
 - request:
     method: get
     uri: https://cdm16488.contentdm.oclc.org/iiif/2/manifest.json
@@ -957,7 +957,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Fri, 12 Nov 2021 14:24:56 GMT
+      - Fri, 17 Dec 2021 14:29:32 GMT
       Server:
       - Apache
       Access-Control-Allow-Origin:
@@ -986,12 +986,12 @@ http_interactions:
       Content-Length:
       - '751'
       Set-Cookie:
-      - JSESSIONID=MjBhNjJlNmEtMWJiOS00N2YxLTg5ZTctNjEwYWJhZjBjNWNl; Path=/; HttpOnly;
+      - JSESSIONID=MDMxNDIzZGMtNzRiMC00ZTQzLWI1ZGQtNjcyNTU4YjNjMThm; Path=/; HttpOnly;
         SameSite=Lax
       Cache-Control:
       - max-age=0
       Expires:
-      - Fri, 12 Nov 2021 14:24:56 GMT
+      - Fri, 17 Dec 2021 14:29:32 GMT
     body:
       encoding: ASCII-8BIT
       string: '{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://cdm16488.contentdm.oclc.org/iiif/manifest.json","@type":"sc:Collection","collections":[{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll10/manifest.json","@type":"sc:Collection","label":"City
@@ -1021,10 +1021,10 @@ http_interactions:
         Family Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/Art/manifest.json","@type":"sc:Collection","label":"MidPointe
         Library System Art Collection"},{"@id":"https://cdm16488.contentdm.oclc.org/iiif/p16488coll12/manifest.json","@type":"sc:Collection","label":"Finding
         Aids"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:24:56 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:32 GMT
 - request:
     method: post
-    uri: http://127.0.0.1:4445/session/dd1bfa66-c4bb-452e-8216-4b9c9b42e269/element/4d6a85bf-990c-4a5c-bda1-cc732d709c13/click
+    uri: http://127.0.0.1:4444/session/3293759e-33d1-4c5d-bbf3-22d65969216b/element/9cb1f24e-8573-40f0-a4c9-cf607cb72bac/click
     body:
       encoding: UTF-8
       string: "{}"
@@ -1051,957 +1051,9 @@ http_interactions:
       Content-Length:
       - '14'
       Date:
-      - Fri, 12 Nov 2021 14:24:54 GMT
+      - Fri, 17 Dec 2021 14:29:30 GMT
     body:
       encoding: UTF-8
       string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:24:57 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/elements
-    body:
-      encoding: UTF-8
-      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
-        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
-        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
-        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
-        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
-        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
-        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
-        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
-        or (./@type = ''file'')))]"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '635'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '90'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"9a55ecce-e753-4423-8553-194e372ffb0a"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
-        e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
-        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
-        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
-        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
-        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
-        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
-        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
-        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
-        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
-        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
-        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
-        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
-        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
-        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
-        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
-        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
-        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
-        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
-        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
-        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
-        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
-        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
-        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
-        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
-        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
-        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
-        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
-        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
-        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
-        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
-        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
-        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
-        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
-        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
-        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
-        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
-        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
-        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
-        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
-        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
-        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
-        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
-        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
-        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"9a55ecce-e753-4423-8553-194e372ffb0a"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '5067'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":true}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
-        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"9a55ecce-e753-4423-8553-194e372ffb0a"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '160'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '15'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":false}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
-        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"9a55ecce-e753-4423-8553-194e372ffb0a"},["tagName","type"]]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '247'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '26'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":["INPUT","text"]}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"9a55ecce-e753-4423-8553-194e372ffb0a"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '122'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/element/9a55ecce-e753-4423-8553-194e372ffb0a/value
-    body:
-      encoding: UTF-8
-      string: '{"value":["h","t","t","p"],"text":"http"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '41'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
-        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
-        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"9a55ecce-e753-4423-8553-194e372ffb0a"},"s://cdm16488.contentdm.oclc.o"]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '331'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/element/9a55ecce-e753-4423-8553-194e372ffb0a/value
-    body:
-      encoding: UTF-8
-      string: '{"value":["r","g","/"],"text":"rg/"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '36'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/elements
-    body:
-      encoding: UTF-8
-      string: '{"using":"css selector","value":"#cdm_import"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '46'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '90'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"e37f313c-58ed-43a4-bed7-e714e1071bd5"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
-        e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
-        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
-        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
-        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
-        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
-        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
-        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
-        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
-        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
-        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
-        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
-        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
-        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
-        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
-        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
-        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
-        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
-        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
-        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
-        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
-        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
-        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
-        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
-        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
-        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
-        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
-        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
-        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
-        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
-        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
-        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
-        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
-        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
-        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
-        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
-        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
-        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
-        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
-        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
-        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
-        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
-        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
-        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
-        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"e37f313c-58ed-43a4-bed7-e714e1071bd5"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '5067'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":true}'
-  recorded_at: Fri, 12 Nov 2021 14:34:25 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/ba60ed77-16ea-45e2-bd9e-f0d2fb2882a6/element/e37f313c-58ed-43a4-bed7-e714e1071bd5/click
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '2'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:34:25 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:34:26 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/elements
-    body:
-      encoding: UTF-8
-      string: '{"using":"xpath","value":"./descendant::*[self::input | self::textarea][not(((((((./@type
-        = ''submit'') or (./@type = ''image'')) or (./@type = ''radio'')) or (./@type
-        = ''checkbox'')) or (./@type = ''hidden'')) or (./@type = ''file'')))][((((./@id
-        = ''cdm_url'') or (./@name = ''cdm_url'')) or (./@placeholder = ''cdm_url''))
-        or (./@id = //label[(normalize-space(string(.)) = ''cdm_url'')]/@for))] |
-        .//label[(normalize-space(string(.)) = ''cdm_url'')]//./descendant::*[self::input
-        | self::textarea][not(((((((./@type = ''submit'') or (./@type = ''image''))
-        or (./@type = ''radio'')) or (./@type = ''checkbox'')) or (./@type = ''hidden''))
-        or (./@type = ''file'')))]"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '635'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '90'
-      Date:
-      - Fri, 12 Nov 2021 14:43:34 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"8c0c3f9b-df96-49d9-a17d-4a5eeedbc056"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:43:34 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
-        e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
-        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
-        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
-        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
-        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
-        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
-        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
-        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
-        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
-        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
-        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
-        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
-        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
-        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
-        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
-        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
-        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
-        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
-        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
-        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
-        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
-        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
-        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
-        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
-        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
-        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
-        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
-        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
-        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
-        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
-        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
-        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
-        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
-        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
-        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
-        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
-        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
-        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
-        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
-        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
-        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
-        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
-        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
-        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"8c0c3f9b-df96-49d9-a17d-4a5eeedbc056"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '5067'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:34 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":true}'
-  recorded_at: Fri, 12 Nov 2021 14:43:34 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return arguments[0].matches('':disabled, select:disabled
-        *'')","args":[{"element-6066-11e4-a52e-4f735466cecf":"8c0c3f9b-df96-49d9-a17d-4a5eeedbc056"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '160'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '15'
-      Date:
-      - Fri, 12 Nov 2021 14:43:34 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":false}'
-  recorded_at: Fri, 12 Nov 2021 14:43:34 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return (function(el, names){\n  return names.map(function(name){\n    return
-        el[name]\n  });\n})(arguments[0], arguments[1]);\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"8c0c3f9b-df96-49d9-a17d-4a5eeedbc056"},["tagName","type"]]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '247'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '26'
-      Date:
-      - Fri, 12 Nov 2021 14:43:34 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":["INPUT","text"]}'
-  recorded_at: Fri, 12 Nov 2021 14:43:34 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"arguments[0].select()","args":[{"element-6066-11e4-a52e-4f735466cecf":"8c0c3f9b-df96-49d9-a17d-4a5eeedbc056"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '122'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:34 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:43:34 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/element/8c0c3f9b-df96-49d9-a17d-4a5eeedbc056/value
-    body:
-      encoding: UTF-8
-      string: '{"value":["h","t","t","p"],"text":"http"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '41'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:35 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:43:35 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"(function(el, value) {\n  value = el.value + value;\n  if
-        (el.maxLength && el.maxLength != -1){\n    value = value.slice(0, el.maxLength);\n  }\n  el.value
-        = value;\n})(arguments[0], arguments[1])\n","args":[{"element-6066-11e4-a52e-4f735466cecf":"8c0c3f9b-df96-49d9-a17d-4a5eeedbc056"},"s://cdm16488.contentdm.oclc.o"]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '331'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:35 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:43:35 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/element/8c0c3f9b-df96-49d9-a17d-4a5eeedbc056/value
-    body:
-      encoding: UTF-8
-      string: '{"value":["r","g","/"],"text":"rg/"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '36'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:35 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:43:35 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/elements
-    body:
-      encoding: UTF-8
-      string: '{"using":"css selector","value":"#cdm_import"}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '46'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '90'
-      Date:
-      - Fri, 12 Nov 2021 14:43:35 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":[{"element-6066-11e4-a52e-4f735466cecf":"63c42829-b668-4510-88a0-cf13c65dff9c"}]}'
-  recorded_at: Fri, 12 Nov 2021 14:43:35 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/execute/sync
-    body:
-      encoding: UTF-8
-      string: '{"script":"return ((function(){function d(t,e,n){function r(t){var
-        e=x(t);if(0<e.height&&0<e.width)return!0;if(\"PATH\"==t.tagName.toUpperCase()&&(0<e.height||0<e.width)){var
-        n=window.getComputedStyle(t)[\"stroke-width\"];return!!n&&0<parseInt(n,10)}return\"hidden\"!=window.getComputedStyle(t).overflow&&Array.prototype.slice.call(t.childNodes).some(function(t){return
-        t.nodeType==Node.TEXT_NODE||t.nodeType==Node.ELEMENT_NODE&&r(t)})}function
-        i(t){return C(t)==T.HIDDEN&&Array.prototype.slice.call(t.childNodes).every(function(t){return
-        t.nodeType!=Node.ELEMENT_NODE||i(t)||!r(t)})}var o=t.tagName.toUpperCase();if(\"BODY\"==o)return!0;if(\"OPTION\"==o||\"OPTGROUP\"==o){var
-        a=c(t,function(t){return\"SELECT\"==t.tagName.toUpperCase()});return!!a&&d(a,!0,n)}var
-        u=s(t);if(u)return!!u.image&&0<u.rect.width&&0<u.rect.height&&d(u.image,e,n);if(\"INPUT\"==o&&\"hidden\"==t.type.toLowerCase())return!1;if(\"NOSCRIPT\"==o)return!1;var
-        l=window.getComputedStyle(t).visibility;return\"collapse\"!=l&&\"hidden\"!=l&&(!!n(t)&&(!(!e&&0==f(t))&&(!!r(t)&&!i(t))))}function
-        E(t){var e=x(t);return{left:e.left,right:e.left+e.width,top:e.top,bottom:e.top+e.height}}function
-        D(t){return t.parentElement}function C(t){function e(t){function e(t){if(t==u)return!0;var
-        e=window.getComputedStyle(t),n=e.display;return 0!=n.indexOf(\"inline\")&&\"contents\"!=n&&(\"absolute\"!=r||\"static\"!=e.position)}var
-        r=window.getComputedStyle(t).position;if(\"fixed\"==r)return i=!0,t==u?null:u;for(var
-        n=D(t);n&&!e(n);)n=D(n);return n}function n(t){var e=t;if(\"visible\"==d)if(t==u&&l)e=l;else
-        if(t==l)return{x:\"visible\",y:\"visible\"};var n=window.getComputedStyle(e),r={x:n[\"overflow-x\"],y:n[\"overflow-y\"]};return
-        t==u&&(r.x=\"visible\"==r.x?\"auto\":r.x,r.y=\"visible\"==r.y?\"auto\":r.y),r}function
-        r(t){return t==u?{x:window.scrollX,y:window.scrollY}:{x:t.scrollLeft,y:t.scrollTop}}for(var
-        i,o=E(t),a=t.ownerDocument,u=a.documentElement,l=a.body,d=window.getComputedStyle(u).overflow,f=e(t);f;f=e(f)){var
-        h=n(f);if(\"visible\"!=h.x||\"visible\"!=h.y){var s=x(f);if(0==s.width||0==s.height)return
-        T.HIDDEN;var p=o.right<s.left,c=o.bottom<s.top;if(p&&\"hidden\"==h.x||c&&\"hidden\"==h.y)return
-        T.HIDDEN;if(p&&\"visible\"!=h.x||c&&\"visible\"!=h.y){var v=r(f),g=o.right<s.left-v.x,w=o.bottom<s.top-v.y;return
-        g&&\"visible\"!=h.x||w&&\"visible\"!=h.x?T.HIDDEN:C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}var
-        N=o.left>=s.left+s.width,m=o.top>=s.top+s.height;if(N&&\"hidden\"==h.x||m&&\"hidden\"==h.y)return
-        T.HIDDEN;if(N&&\"visible\"!=h.x||m&&\"visible\"!=h.y){if(i){var y=r(f);if(o.left>=u.scrollWidth-y.x||o.right>=u.scrollHeight-y.y)return
-        T.HIDDEN}return C(f)==T.HIDDEN?T.HIDDEN:T.SCROLL}}}return T.NONE}function
-        o(t){var e=t.document.documentElement;return{width:e.clientWidth,height:e.clientHeight}}function
-        p(t,e,n,r){return{left:t,top:e,width:n,height:r}}function x(t){var e,n=s(t);if(n)return
-        n.rect;if(\"HTML\"==t.tagName.toUpperCase()){t.ownerDocument;var r=o(window);return
-        p(0,0,r.width,r.height)}try{e=t.getBoundingClientRect()}catch(i){return p(0,0,0,0)}return
-        p(e.left,e.top,e.right-e.left,e.bottom-e.top)}function f(t){var e=1,n=window.getComputedStyle(t).opacity;n&&(e=Number(n));var
-        r=D(t);return r&&r.nodeType==Node.ELEMENT_NODE&&(e*=f(r)),e}function h(t){var
-        e=t.shape.toLowerCase(),n=t.coords.split(\",\");if(\"rect\"==e&&4==n.length){var
-        r=n[0],i=n[1];return p(r,i,n[2]-r,n[3]-i)}if(\"circle\"==e&&3==n.length){var
-        o=n[0],a=n[1],u=n[2];return p(o-u,a-u,2*u,2*u)}if(\"poly\"==e&&2<n.length){for(var
-        l=n[0],d=n[1],f=l,h=d,s=2;s+1<n.length;s+=2)l=Math.min(l,n[s]),f=Math.max(f,n[s]),d=Math.min(d,n[s+1]),h=Math.max(h,n[s+1]);return
-        p(l,d,f-l,h-d)}return p(0,0,0,0)}function s(t){var e=t.tagName.toUpperCase(),n=\"MAP\"==e;if(!n&&\"AREA\"!=e)return
-        null;var r=n?t:\"MAP\"==D(t).tagName.toUpperCase()?D(t):null,i=null,o=null;if(r&&r.name&&((i=r.ownerDocument.querySelector(\"*[usemap=''#\"+r.name+\"'']\"))&&(o=x(i),!n&&\"default\"!=t.shape.toLowerCase()))){var
-        a=h(t),u=Math.min(Math.max(a.left,0),o.width),l=Math.min(Math.max(a.top,0),o.height),d=Math.min(a.width,o.width-u),f=Math.min(a.height,o.height-l);o=p(u+o.left,l+o.top,d,f)}return{image:i,rect:o||p(0,0,0,0)}}function
-        c(t,e){for(t&&(t=D(t));t;){if(e(t))return t;t=D(t)}return null}function r(t){var
-        e=t.parentNode;if(e&&e.shadowRoot&&t.assignedSlot!==undefined)return t.assignedSlot?t.assignedSlot.parentNode:null;if(t.getDestinationInsertionPoints){var
-        n=t.getDestinationInsertionPoints();if(0<n.length)return n[n.length-1]}return
-        e}var T={NONE:\"none\",HIDDEN:\"hidden\",SCROLL:\"scroll\"};return function
-        i(t,e){function n(t){if(\"none\"==window.getComputedStyle(t).display)return!1;var
-        e=r(t);if(\"function\"==typeof ShadowRoot&&e instanceof ShadowRoot){if(e.host.shadowRoot!==e)return!1;e=e.host}return!(!e||e.nodeType!=Node.DOCUMENT_NODE&&e.nodeType!=Node.DOCUMENT_FRAGMENT_NODE)||!(e&&e.tagName&&\"DETAILS\"==e.tagName.toUpperCase()&&!e.open&&\"SUMMARY\"!=t.tagName)&&(e&&n(e))}return
-        d(t,!!e,n)}})()).apply(null, arguments)","args":[{"element-6066-11e4-a52e-4f735466cecf":"63c42829-b668-4510-88a0-cf13c65dff9c"}]}'
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '5067'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:35 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":true}'
-  recorded_at: Fri, 12 Nov 2021 14:43:35 GMT
-- request:
-    method: post
-    uri: http://127.0.0.1:4445/session/03b746b4-aa55-43f7-aa2d-03a62602eca0/element/63c42829-b668-4510-88a0-cf13c65dff9c/click
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      Accept:
-      - application/json
-      Content-Type:
-      - application/json; charset=UTF-8
-      User-Agent:
-      - selenium/3.142.7 (ruby linux)
-      Content-Length:
-      - '2'
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json; charset=utf-8
-      Cache-Control:
-      - no-cache
-      Content-Length:
-      - '14'
-      Date:
-      - Fri, 12 Nov 2021 14:43:35 GMT
-    body:
-      encoding: UTF-8
-      string: '{"value":null}'
-  recorded_at: Fri, 12 Nov 2021 14:43:35 GMT
+  recorded_at: Fri, 17 Dec 2021 14:29:33 GMT
 recorded_with: VCR 6.0.0
