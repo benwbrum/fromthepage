@@ -205,7 +205,15 @@ module ApplicationHelper
       end
     end
 
-    options_for_select(option_data)
+    if @collection
+      if @collection.is_a? Collection
+        options_for_select(option_data, @collection.id)
+      else
+        options_for_select(option_data, "D#{@collection.id}")
+      end
+    else
+      options_for_select(option_data)
+    end      
   end
 
   def feature_enabled?(feature)
