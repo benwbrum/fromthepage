@@ -19,7 +19,7 @@
       -if @collection.metadata_entry?      
         .counter(data-prefix="#{number_with_delimiter stats[:descriptions]}") #{t('.works_described').pluralize(stats[:descriptions])}
       -if stats[:line_count] > 0
-        -if @collection.field_based?
+        -if @collection.field_based
           .counter(data-prefix="#{number_with_delimiter stats[:line_count]}") #{t('.records_indexed').pluralize(stats[:line_count])}
         -else
           .counter(data-prefix="#{number_with_delimiter stats[:line_count]}") #{t('.lines_transcribed').pluralize(stats[:line_count])}
