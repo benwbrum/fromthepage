@@ -12,7 +12,7 @@ en:
       all_complete: "All works are fully transcribed."
       start_transcribing: "Start Transcribing"
       search_the_text: "Search the text..."
-      search_by_title: "Search by title..."
+      search_by_title: "Search by title or metadata..."
       search_in_collection: "Search in collection..."
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"

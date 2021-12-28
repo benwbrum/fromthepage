@@ -20,6 +20,16 @@
          li
            =link_to json_collection['label'], {:action => 'explore_collection', :at_id => json_collection['@id']}
 
+
+    -if @sc_collection.service['first'] || @sc_collection.service['next'] || @sc_collection.service['prev']
+      p This collection is divided across multiple pages
+      -if @sc_collection.service['first']  
+        =link_to 'First Page', {:action => 'explore_collection', :at_id => @sc_collection.service['first']['@id']}
+      -if @sc_collection.service['next']
+        =link_to 'Next Page', {:action => 'explore_collection', :at_id => @sc_collection.service['next']['@id']}
+      -if @sc_collection.service['prev']
+        =link_to 'Previous Page', {:action => 'explore_collection', :at_id => @sc_collection.service['prev']['@id']}
+
     -unless @sc_collection.service.manifests.empty?
       h4 Manifests: 
 
