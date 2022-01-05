@@ -169,8 +169,7 @@
 
     -if @work.restrict_scribes
       h3 Allowed Collaborators
-      =form_tag({ :action => 'add_scribe' }, class: 'user-select-form') do
-        =hidden_field_tag :work_id, @work.id
+      =form_tag(add_scribe_collection_work_path(@collection.owner, @collection.slug, @work.slug), class: 'user-select-form') do
         =select_tag 'user_id', options_from_collection_for_select(@nonscribes, 'id', 'name_with_identifier'), include_blank: true
         =button_tag 'Add'
       -if @scribes.empty?
