@@ -555,9 +555,11 @@ private
     # are we in row 1?  fill the running data with non-spreadsheet fields
     if rownum == 1
       cell_array.each do |cell|
-        unless cell.transcription_field.input_type == 'spreadsheet'
-          running_data << cell
-        end 
+        if cell.transcription_field
+          unless cell.transcription_field.input_type == 'spreadsheet'
+            running_data << cell
+          end 
+        end
       end
     else
       # are we in row 2 or greater?
