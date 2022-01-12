@@ -239,16 +239,16 @@
         =svg_symbol '#icon-unlock', class: 'icon'
         span =t('.make_collection_active')
 
-    -if @collection.text_entry?
-      h3 =t('.blank_collection')
-      p =t('.blank_collection_description')
-      =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
-        span =t('.blank_collection')
 
-
-    h3 =t('.delete_collection')
-    =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
-      span =t('.delete_collection')
+    -if current_user == @collection.owner
+      -if @collection.text_entry?
+        h3 =t('.blank_collection')
+        p =t('.blank_collection_description')
+        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
+          span =t('.blank_collection')
+      h3 =t('.delete_collection')
+      =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
+        span =t('.delete_collection')
 
 =render({ :partial => '/shared/collection_footer' })
 
