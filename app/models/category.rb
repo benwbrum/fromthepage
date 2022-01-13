@@ -9,7 +9,7 @@ class Category < ApplicationRecord
 
   def articles_list(collection)
     if collection.is_a?(DocumentSet)
-      Article.joins(:pages).where(pages: {work_id: collection.works.ids}).joins(:categories).where(categories: {id: self.id}).distinct
+      Article.joins(:pages).where(pages: {work_id: collection.works.ids}).joins(:categories).where(categories: {id: self.id}).order(:title).distinct
     else
       self.articles
     end
