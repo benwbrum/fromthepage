@@ -278,3 +278,12 @@ en:
       contributors: Contributors
       last_activity: Last Activity
       filter_works: Filter
+      one_off_contributions: One-off contributions
+    one_off_list:
+      one_off_title: One-off Contributions
+      one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
+      filter_contributions: Filter
+      review: Review
+      user: User
+      date: Date
+      title: Page (Work)

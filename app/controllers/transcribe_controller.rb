@@ -192,7 +192,11 @@ class TranscribeController  < ApplicationController
               return
             end
           end
-          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
+          if params[:flow] == 'one-off' && @page.status != Page::STATUS_NEEDS_REVIEW
+            redirect_to collection_one_off_list_path(@collection.owner, @collection)
+          else
+            redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
+          end
         else
           log_transcript_error(message)
           render :action => 'display_page'

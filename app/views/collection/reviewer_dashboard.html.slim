@@ -2,6 +2,12 @@
 
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
 
+section.collection-stats
+  .collection-stats_counters
+    .counter(data-prefix="#{number_with_delimiter(@one_off_page_count)}")
+      =link_to(t('.one_off_contributions').pluralize(@one_off_page_count), collection_one_off_list_path(@collection))
+
+
 -if @works.empty?
   h4 =t '.no_works_need_review'
 -else
