@@ -35,9 +35,17 @@ class CollectionController < ApplicationController
 
   def reviewer_dashboard
     # works which have at least one page needing review
+    @one_off_page_count = @collection.pages_needing_review_for_one_off.count
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
   end
 
+  def one_off_list
+    @pages = @collection.pages_needing_review_for_one_off
+  end
+
+  def recent_contributor_list
+
+  end
 
   def edit_buttons
     @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
