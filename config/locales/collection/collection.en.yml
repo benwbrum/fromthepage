@@ -279,6 +279,7 @@ en:
       last_activity: Last Activity
       filter_works: Filter
       one_off_contributions: One-off contributions
+      unreviewed_contributors: New contributors
     one_off_list:
       one_off_title: One-off Contributions
       one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
@@ -287,3 +288,20 @@ en:
       user: User
       date: Date
       title: Page (Work)
+    recent_contributor_list:
+      filter_users: Filter
+      recent_contributor_title: Recent Contributors
+      recent_contributor_description: These collaborators have begun working on the project recently, but their work has never been reviewed.
+      user: User
+      date: First Contribution Date
+      number_of_contributions: Total Contributions
+    user_contribution_list:
+      user_contribution_title: User Contributions Needing Review
+      user_contribution_description: Pages needing review by user %{user_name}
+      filter_contributions: Filter
+      review: Review
+      user: User
+      date: Date
+      title: Page (Work)
+      
+

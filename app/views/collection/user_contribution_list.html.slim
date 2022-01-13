@@ -1,0 +1,51 @@
+=stylesheet_link_tag 'datatables.min'
+
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+
+/todo page title, back-links?
+
+h3 =t '.user_contribution_title'
+p =t '.user_contribution_description', user_name: @user.display_name
+
+p =link_to(t('.user_profile'), user_profile_path(@user))
+-if user_signed_in? && current_user.like_owner?(@collection)
+  -if  @user.activity_email
+    p Email: =@user.email
+  -unless @user.real_name.blank?
+    p Real Name: #{@user.real_name}
+
+
+-if @pages.empty?
+  h5 =t '.no_contributions'
+-else
+  table#contributions.stripe
+    thead
+      tr
+        th.vbottom
+        th.vbottom =t('.date')
+        th.vbottom =t('.title')
+    tbody
+      -@pages.each do |page|
+        -recent_version = page.page_versions.first
+        tr
+          td.vbottom 
+            =link_to(t('.review'), collection_transcribe_page_path(@collection.owner, @collection, page.work, page.id, flow: "user-contributions #{@user.slug}"), class: 'review-button')
+          td.vbottom =recent_version.created_on
+          td.vbottom ="#{page.title} (#{page.work.title})"
+    
+  
+
+=render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+
+    $(document).ready( function() {
+        $('#contributions').DataTable({ 
+          paging: false,
+          language: {
+            searchPlaceholder: "#{t('.filter_contributions')}",
+            search: ""
+          } 
+        });
+    } );

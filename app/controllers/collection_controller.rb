@@ -36,6 +36,7 @@ class CollectionController < ApplicationController
   def reviewer_dashboard
     # works which have at least one page needing review
     @one_off_page_count = @collection.pages_needing_review_for_one_off.count
+    @unreviewed_users = @collection.never_reviewed_users
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
   end
 
@@ -44,7 +45,13 @@ class CollectionController < ApplicationController
   end
 
   def recent_contributor_list
+    @unreviewed_users = @collection.never_reviewed_users
+  end
 
+  def user_contribution_list
+    #pages_needing_review = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW)
+    needs_review_page_ids = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW).pluck(:page_id)
+    @pages = Page.find(needs_review_page_ids)
   end
 
   def edit_buttons
