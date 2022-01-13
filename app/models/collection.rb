@@ -85,6 +85,12 @@ class Collection < ApplicationRecord
     self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(id: one_off_pages)
   end
 
+  def never_reviewed_users
+    users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
+    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => Page::STATUS_NEEDS_REVIEW).pluck(:user_id).uniq
+    unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
+  end
+
   def review_workflow
     review_type != ReviewType::OPTIONAL
   end

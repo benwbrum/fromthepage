@@ -430,7 +430,7 @@ Fromthepage::Application.routes.draw do
       get 'review', as: :review, to: 'collection#reviewer_dashboard'
       get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
       get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
-      get 'user_contribution_list/:review_user_slug', as: :user_contribution_list, to: 'collection#user_contribution_list'
+      get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
