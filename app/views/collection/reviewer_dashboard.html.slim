@@ -4,10 +4,11 @@
 
 section.collection-stats
   .collection-stats_counters
-    .counter(data-prefix="#{number_with_delimiter(@one_off_page_count)}")
-      =link_to(t('.one_off_contributions').pluralize(@one_off_page_count), collection_one_off_list_path(@collection))
     .counter(data-prefix="#{number_with_delimiter(@unreviewed_users.count)}")
       =link_to(t('.unreviewed_contributors').pluralize(@unreviewed_users.count), collection_recent_contributor_list_path(@collection))
+    .counter(data-prefix="#{number_with_delimiter(@one_off_page_count)}")
+      =link_to(t('.one_off_contributions').pluralize(@one_off_page_count), collection_one_off_list_path(@collection))
+
 
 
 -if @works.empty?

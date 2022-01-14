@@ -24,6 +24,7 @@ p =link_to(t('.user_profile'), user_profile_path(@user))
         th.vbottom
         th.vbottom =t('.date')
         th.vbottom =t('.title')
+        th.vbottom =t('.notes')
     tbody
       -@pages.each do |page|
         -recent_version = page.page_versions.first
@@ -32,6 +33,9 @@ p =link_to(t('.user_profile'), user_profile_path(@user))
             =link_to(t('.review'), collection_transcribe_page_path(@collection.owner, @collection, page.work, page.id, flow: "user-contributions #{@user.slug}"), class: 'review-button')
           td.vbottom =recent_version.created_on
           td.vbottom ="#{page.title} (#{page.work.title})"
+          td.vbottom 
+            -page.notes.each do |note|
+              =render({ partial: 'notes/note', locals: { note: note }})
     
   
 
