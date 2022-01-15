@@ -1,0 +1,8 @@
+{
+  "@context": [
+    {
+      "fromthepage": "http://fromthepage.org/services#",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+    }
+  ]
+}
