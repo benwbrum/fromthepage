@@ -238,6 +238,9 @@ class IiifController < ApplicationController
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#plaintext-for-full-text-search", 
         "@id" => iiif_work_export_plaintext_searchable_url(work.id)
     }
+    if work.collection.metadata_entry?
+      manifest.seeAlso << structured_data_reference(work)
+    end
     manifest.service << status_service_for_manifest(work)
     sequence = iiif_sequence_from_work_id(work_id)
     manifest.sequences << sequence
@@ -348,6 +351,46 @@ class IiifController < ApplicationController
     render :plain => layer.to_json(pretty: true), :content_type => "application/json"
   end
 
+  # endpoint containing actual contents of strucured data
+  def structured_data_endpoint
+    if @page
+      on = {
+        '@type' => 'sc:Canvas',
+        '@id' => iiif_canvas_url(@work.id,@page.id),
+        'within' => iiif_manifest_url(@work.id)
+      }
+      response = page_field_contributions(@page)
+    else
+      on = {
+        '@type' => 'sc:Manifest',
+        '@id' => iiif_manifest_url(@work.id)
+      }
+      response = work_metadata_contributions(@work)
+    end
+    response['on'] = on
+    response['@id'] = structured_data_id(@work,@page)
+    response['label'] = structured_data_label(@work,@page)
+    if @page && !@page.notes.blank?
+      response['notes'] = url_for({:controller => 'iiif', :action => 'list', :page_id => @page.id, :annotation_type => 'notes', :only_path => false})
+    end
+    if @page
+      response['page_status'] = JSON.parse(status_service_for_page(@page).to_json)
+    end
+    response['work_status'] = JSON.parse(status_service_for_manifest(@work).to_json)
+
+
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  # id to structured data endpoint
+  def structured_data_id(work, page=nil)
+    if page.nil?
+      iiif_work_strucured_data_url(work.id)
+    else
+      iiif_page_strucured_data_url(work.id, page.id)
+    end
+  end
+
   def sequence
     work_id = @work.id
     sequence = iiif_sequence_from_work_id(work_id)
@@ -447,6 +490,26 @@ class IiifController < ApplicationController
   end
 
 private
+  def structured_data_label(work, page=nil)
+    if page
+      "Structured data (field-based or spreadsheet transcriptions) for canvas"
+    else
+      "Structured data (user-created metadata) for manifest"
+    end
+  end
+
+
+  # stanza to embed within manifests or canvas documents
+  def structured_data_reference(work, page=nil)
+    {
+      '@id' => structured_data_id(work,page),
+      'label' => structured_data_label(work,page),
+      'format' => 'application/ld+json',
+      "@context" => "http://www.fromthepage.org/jsonld/structured/1/context.json",
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#structured-data-service"
+    }
+  end
+
   def iiif_page_note(page, noteid)
     note = IIIF::Presentation::Annotation.new({'motivation' => 'oa:commenting'})
     #note['@id'] = url_for({:controller => 'iiif', :action => 'note', :page_id => @page.id, :note_id => noteid, :only_path => false})
@@ -782,6 +845,10 @@ private
         "@id" => iiif_page_export_plaintext_translation_emended_url(page.work_id, page.id)
       }
     end
+    if page.collection.field_based
+      canvas.seeAlso << structured_data_reference(page.work,page)
+    end
+
   end
 
  def annotationlist_from_page(page,type)

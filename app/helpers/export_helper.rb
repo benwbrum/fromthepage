@@ -608,4 +608,92 @@ module ExportHelper
       return doc
     end
   end
+
+
+  def work_metadata_contributions(work)
+    {
+      contributors: work_metadata_contributors_to_array,
+      configuration: field_configuration_to_array(work.collection, TranscriptionField::FieldType::METADATA),
+      data: work_metadata_to_hash(work),
+    }
+  end
+
+  def page_field_contributions(page)
+    {
+      contributors: page_contributors_to_array(page),
+      configuration: field_configuration_to_array(page.work.collection, TranscriptionField::FieldType::TRANSCRIPTION),
+      data: field_data_to_hash(page),
+    }
+  end
+
+
+
+  def work_metadata_to_hash
+    nil
+  end
+
+  def field_data_to_hash(page)
+    page.table_cells.map{|cell| {row: cell.row, label: cell.header, value: cell.content}}
+  end
+
+  def spreadsheet_data_to_array
+  end
+
+  def field_configuration_to_array(collection, field_type)
+    array = []
+    if field_type == TranscriptionField::FieldType::TRANSCRIPTION
+      fields = collection.transcription_fields
+    else
+      fields = collection.metadata_fields
+    end
+    fields.each do |field|
+      element = {label: field.label, input_type: field.input_type, position: field.position, line: field.line_number}
+      if field.options
+        if field.input_type == 'multiselect'
+          element[:options] = field.options.split(/[\n\r]+/)
+        else
+          element[:options] = field.options.split(";")
+        end
+      end
+      if field.page_number
+        element[:page_number] = field.page_number
+      end
+      if field.input_type == 'spreadsheet'
+        columns=[]
+        field.spreadsheet_columns.each do |column|
+          column_config = {label: column.label, input_type: column.input_type, position: column.position}
+          if column.options
+            column_config[:options] = column.options.split(";")
+          end
+          columns << column_config
+        end
+
+        element[:spreadsheet_columns] = columns
+      end
+      array << element
+    end
+
+    array
+  end
+
+  def page_contributors_to_array(page)
+    array = []
+
+    user_ids = page.deeds.where(deed_type: DeedType.transcriptions_or_corrections).pluck(:user_id).uniq
+    User.find(user_ids).each do |user|
+      element = { user_name: user.display_name}
+      element[:real_name] = user.real_name unless user.real_name.blank?
+      element[:orcid] = user.real_name unless user.orcid.blank?
+      array << element
+    end
+
+    array
+  end
+
+  def work_metadata_contributors_to_array(work)
+    nil
+  end
+
+
+
 end
