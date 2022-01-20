@@ -1,10 +1,8 @@
 =stylesheet_link_tag 'datatables.min'
 
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+=render(partial: '/shared/review_breadcrumbs')
 
-/todo page title, back-links?
-
-h3 =t '.one_off_title'
 p =t '.one_off_description'
 
 
@@ -25,7 +23,7 @@ p =t '.one_off_description'
         -recent_version = page.page_versions.first
         tr
           td.vbottom 
-            =link_to(t('.review'), collection_transcribe_page_path(@collection.owner, @collection, page.work, page.id, flow: 'one-off'), class: 'review-button')
+            =link_to(t('.review'), collection_oneoff_review_page_path(@collection.owner, @collection, page.id, flow: 'one-off'), class: 'review-button')
           td.vbottom =recent_version.created_on
           td.vbottom =recent_version.user.display_name
           td.vbottom ="#{page.title} (#{page.work.title})"

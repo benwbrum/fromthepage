@@ -1,10 +1,8 @@
 =stylesheet_link_tag 'datatables.min'
 
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+=render(partial: '/shared/review_breadcrumbs')
 
-/todo page title, back-links?
-
-h3 =t '.user_contribution_title'
 p =t '.user_contribution_description', user_name: @user.display_name
 
 p =link_to(t('.user_profile'), user_profile_path(@user))
@@ -30,7 +28,7 @@ p =link_to(t('.user_profile'), user_profile_path(@user))
         -recent_version = page.page_versions.first
         tr
           td.vbottom 
-            =link_to(t('.review'), collection_transcribe_page_path(@collection.owner, @collection, page.work, page.id, flow: "user-contributions #{@user.slug}"), class: 'review-button')
+            =link_to(t('.review'), collection_user_review_page_path(@collection.owner, @collection, @user.slug, page.id, flow: "user-contributions #{@user.slug}"), class: 'review-button')
           td.vbottom =recent_version.created_on
           td.vbottom ="#{page.title} (#{page.work.title})"
           td.vbottom 

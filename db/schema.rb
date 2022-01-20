@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_10_192819) do
+ActiveRecord::Schema.define(version: 2022_01_19_172642) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -832,6 +832,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_192819) do
     t.text "metadata_description"
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
+    t.text "searchable_metadata"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
