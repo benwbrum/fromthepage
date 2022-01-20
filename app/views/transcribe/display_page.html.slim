@@ -1,6 +1,11 @@
 =javascript_include_tag "transcribe"
 
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
+-if current_page?(collection_oneoff_review_page_path) || current_page?(collection_user_review_page_path)
+  =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+  .review-breadcrumbs
+    =render(partial: '/shared/review_breadcrumbs')
+-else
+  =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 

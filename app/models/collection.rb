@@ -80,9 +80,7 @@ class Collection < ApplicationRecord
   def pages_needing_review_for_one_off
     all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
     one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
-    # TODO what if a user modified a page twice then went away?  These may not be counted.
-    one_off_pages = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).where(user_id: one_off_editors).pluck(:page_id)
-    self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(id: one_off_pages)
+    self.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
   end
 
   def never_reviewed_users

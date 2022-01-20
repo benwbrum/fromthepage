@@ -1,10 +1,8 @@
 =stylesheet_link_tag 'datatables.min'
 
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+=render(partial: '/shared/review_breadcrumbs')
 
-/todo page title, back-links?
-
-h3 =t '.recent_contributor_title'
 p =t '.recent_contributor_description'
 
 

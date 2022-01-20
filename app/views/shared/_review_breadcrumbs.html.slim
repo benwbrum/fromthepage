@@ -1,0 +1,30 @@
+-path = []
+
+
+-if current_page? collection_review_path
+  -path.push(t('.dashboard'))
+-elsif current_page? collection_one_off_list_path
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('collection.one_off_list.one_off_title'))
+-elsif @page && current_page?(collection_oneoff_review_page_path)
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('collection.one_off_list.one_off_title'),collection_one_off_list_path))
+  -path.push("#{@page.title} (#{@work.title})")
+-elsif current_page? collection_recent_contributor_list_path
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('collection.recent_contributor_list.recent_contributor_title'))
+-elsif current_page? collection_user_contribution_list_path
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('collection.recent_contributor_list.recent_contributor_title'), collection_recent_contributor_list_path(@collection.owner, @collection)))
+  -path.push(@user.display_name)
+-elsif current_page? collection_user_review_page_path
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('collection.recent_contributor_list.recent_contributor_title'), collection_recent_contributor_list_path(@collection.owner, @collection)))
+  -path.push(link_to(@user.display_name, collection_user_contribution_list_path(@collection.owner, @collection, @user)))
+  -path.push("#{@page.title} (#{@work.title})")
+
+
+-if path.present?
+  ul.breadcrumbs
+    -path.each do |item|
+      li ==item

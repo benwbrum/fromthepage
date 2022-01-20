@@ -431,6 +431,12 @@ Fromthepage::Application.routes.draw do
       get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
       get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
       get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
+      get 'review/one_off/:page_id', as: 'oneoff_review_page', to: 'transcribe#display_page'
+      get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
+      patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
+      patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
+
+
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
       get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'

@@ -229,6 +229,8 @@ class Page < ApplicationRecord
       version.page_version = previous_version.page_version + 1
     end
     version.save!
+
+    self.update_column(:page_version_id, version.id)
   end
 
   def update_sections_and_tables

@@ -8,6 +8,7 @@
   -path.push(link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work))
 
 -if path.present?
-  ul.breadcrumbs
-    -path.each do |item|
-      li ==item
+  -unless (@work && @page &&current_page?(collection_oneoff_review_page_path)) || (@work && @page && @user && current_page?(collection_user_review_page_path))
+    ul.breadcrumbs
+      -path.each do |item|
+        li ==item
