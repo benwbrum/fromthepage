@@ -428,6 +428,7 @@ Fromthepage::Application.routes.draw do
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'review', as: :review, to: 'collection#reviewer_dashboard'
+      get 'works_to_review', as: :works_to_review, to: 'collection#works_to_review'
       get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
       get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
       get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
