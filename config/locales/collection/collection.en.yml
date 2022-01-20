@@ -267,7 +267,7 @@ en:
       save: Save
     facet_form:
       filter: "Filter"
-    reviewer_dashboard:
+    works_to_review:
       description: Works with Pages Needing Review  
       no_works_need_review: No works need review
       title: Title
@@ -278,8 +278,13 @@ en:
       contributors: Contributors
       last_activity: Last Activity
       filter_works: Filter
+    reviewer_dashboard:
       one_off_contributions: One-off contributions
       unreviewed_contributors: New contributors
+      total_page: Total Page
+      transcribed_page: Transcribed Page
+      pages_needing_review: Pages to Review
+      works_to_review: Works to Review
     one_off_list:
       one_off_title: One-off Contributions
       one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.

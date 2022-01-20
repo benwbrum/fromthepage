@@ -63,4 +63,6 @@ en:
       versions: "Versions"
       help: "Help"
       metadata: Metadata
+    review_breadcrumbs:
+      dashboard: Review Dashboard
 
