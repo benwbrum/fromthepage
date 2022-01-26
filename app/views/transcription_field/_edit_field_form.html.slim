@@ -36,16 +36,10 @@
       .flex-toolbar_group
         =button_tag t('.add_additional_line'), type: 'button', id: 'add-line', class: 'button', remote: true
         =button_tag t('.add_additional_field'), type: 'button', id: 'add-field', class: 'button'
-      -if field_type != TranscriptionField::FieldType::METADATA
-        .flex-toolbar_group.push-right
-          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
-          =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button'
-          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
-      .flex-toolbar
-        .flex-toolbar_group.push-right
-          =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
-          =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button'
-          =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
+      .flex-toolbar_group.push-right
+        =button_tag t('.save'), name: 'save', type: 'submit', class: 'button'
+        =link_to t('.cancel'), edit_collection_path(@collection.owner, @collection), class: 'button'
+        =button_tag t('.done'), name: 'done', type: 'submit', class: 'button'
 
 h2 =t('.preview')
 div.fields-preview
