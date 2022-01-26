@@ -14,7 +14,7 @@ en:
       page: "Page"
       page_title: "For multi-page forms, which page should this field appear on? (Leave blank to display on each page.)"
     edit_metadata_fields:
-      edit_metadata_fields: "Edit Metadata Description Fields"
+      edit_metadata_fields: "Edit Metadata Fields"
     edit_fields:
       edit_transcription_fields: "Edit Transcription Fields"
       transcription_warning: "This project has already been partially transcribed. Adding fields is fine, but deleting or changing fields may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename fields."
@@ -47,7 +47,7 @@ en:
 
     edit_field_form:
       description_instructions_label: "Metadata Description Instructions"
-      data_entry_type_label: "Description Type"
+      data_entry_type_label: "Metadata Flow"
       data_entry_type_text_and_metadata: "Users transcribe text and create metadata"
       data_entry_type_metadata_only: "Users only create metadata"
 
