@@ -437,6 +437,9 @@ Fromthepage::Application.routes.draw do
       patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
       patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
 
+      resources :quality_samplings
+      get 'quality_sampling/:quality_sampling_id/:page_id', as: 'sampling_review_page', to: 'transcribe#display_page'
+      patch 'quality_sampling/:quality_sampling_id/:user_id/:page_id', as: 'sampling_review_page_save', to: 'transcribe#save_transcription'
 
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'

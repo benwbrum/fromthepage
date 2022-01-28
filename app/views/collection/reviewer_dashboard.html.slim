@@ -17,6 +17,9 @@
         =link_to collection_works_to_review_path do
           .counter.link(data-prefix="#{number_with_delimiter(@works_to_review)}")
             =t('.works_to_review')
+        =link_to collection_quality_samplings_path do
+          .counter.link(data-prefix="#{number_with_delimiter(@quality_samplings)}")
+            =t('.quality_samplings')
 
   aside.sidecol
     section.collection-stats

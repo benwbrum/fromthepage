@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_19_172642) do
+ActiveRecord::Schema.define(version: 2022_01_27_161308) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -560,6 +560,19 @@ ActiveRecord::Schema.define(version: 2022_01_19_172642) do
     t.integer "version"
   end
 
+  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.decimal "percent", precision: 10
+    t.timestamp "start_time"
+    t.timestamp "previous_start"
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.text "field", size: :medium
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_quality_samplings_on_collection_id"
+    t.index ["user_id"], name: "index_quality_samplings_on_user_id"
+  end
+
   create_table "sc_canvases", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "sc_id"
     t.integer "sc_manifest_id"
@@ -848,6 +861,8 @@ ActiveRecord::Schema.define(version: 2022_01_19_172642) do
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"
   add_foreign_key "metadata_description_versions", "works"
+  add_foreign_key "quality_samplings", "collections"
+  add_foreign_key "quality_samplings", "users"
   add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "work_facets", "works"
   add_foreign_key "works", "metadata_description_versions"
