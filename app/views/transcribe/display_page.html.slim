@@ -1,6 +1,6 @@
 =javascript_include_tag "transcribe"
 
--if current_page?(collection_oneoff_review_page_path) || current_page?(collection_user_review_page_path)
+-if current_page?(collection_oneoff_review_page_path) || collection_sampling_review_page_path || current_page?(collection_user_review_page_path)
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
   .review-breadcrumbs
     =render(partial: '/shared/review_breadcrumbs')

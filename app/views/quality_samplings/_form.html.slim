@@ -1,0 +1,15 @@
+=form_with(model: [@collection, @quality_sampling], local: true) do |form|
+  =validation_summary @quality_sampling.errors
+
+  table.form
+    tbody
+      tr
+        th.big =form.label :starting_rows, t('.percent')
+        td.big =form.number_field(:percent, {min: 1, max: 100, class: 'field percent'})
+        td.w100.fglight =t('.percent_description', {page_count: @quality_sampling.possible_field.count})
+
+  =form.hidden_field :collection_id, value: @collection.slug
+
+    
+  .toolbar
+    .toolbar_group =form.submit t('.submit')

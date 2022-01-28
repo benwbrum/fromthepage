@@ -1,0 +1,12 @@
+en:
+  quality_samplings:
+    show:
+    edit:
+    new:
+      description: To begin the statistical review process, we'll start by sampling a small percentage of the pages needing review.
+    update:
+    create:
+    form:
+      percent: Percent
+      percent_description: (percentage of %{page_count} pages needing review to sample)
+      submit: Sample
