@@ -4,7 +4,7 @@
 p =t '.description'
 
 /TODO style table
-table
+table.datagrid.striped
   thead
     tr
       th =t('.started')
@@ -17,14 +17,14 @@ table
       -@quality_samplings.each do |quality_sampling|
         tr
           td =quality_sampling.start_time
-          td =quality_sampling.percent
+          td.toleft =quality_sampling.percent
           td 
             -if quality_sampling.sampled?
               =t('.sampled')
             -else
               =t('.needs_sampling')
-          td =quality_sampling.total_field_size
-          td =quality_sampling.needs_review_pages.size
+          td.toleft =quality_sampling.total_field_size
+          td.toleft =quality_sampling.needs_review_pages.size
           td
             -next_page = quality_sampling.next_unsampled_page
             -if next_page
