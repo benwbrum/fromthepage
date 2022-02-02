@@ -16,7 +16,7 @@
             -if field.input_type == "instruction"
               div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
                 h5 =t('.instructions')
-                p =field.label
+                p ==field.label
             -else
               =label_tag field.label, field.label
               -content = cell.nil? ? nil : cell.content
