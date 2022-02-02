@@ -49,7 +49,7 @@ en:
       large_institution: "Large Institution"
       trial: "Trial"
       legacy: "Legacy"
-      legacy: "Staff"
+      staff: "Staff"
       start_date: "Start Date"
       acct_expiration: "Acct Expiration"
       downgrade: "Downgrade"
