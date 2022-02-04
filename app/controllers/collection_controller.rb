@@ -388,10 +388,11 @@ class CollectionController < ApplicationController
       @collection.update(collection_params)
     end
 
-    if @collection.save!
+    if @collection.save
       flash[:notice] = t('.notice')
       redirect_to action: 'edit', collection_id: @collection.id
     else
+      edit # load the appropriate variables
       render action: 'edit'
     end
   end
