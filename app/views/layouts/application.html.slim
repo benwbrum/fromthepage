@@ -52,7 +52,12 @@ html lang="en-US"
           -if user_signed_in?
             =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
-            =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
+            -if @collection 
+              =link_to 'Sign Up To Transcribe', new_for_owner_path(@collection.owner), class: 'header_link'              
+            -elsif @user && @user.owner?
+              =link_to 'Sign Up To Transcribe', new_for_owner_path(@user), class: 'header_link'              
+            -else
+              =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right
