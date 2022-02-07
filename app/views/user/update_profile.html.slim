@@ -32,6 +32,9 @@
           th URL: 
           td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}
         tr
+          th Sign-up URL: 
+          td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}/sign_up
+        tr
           th =f.label :slug, "URL"
           td =f.text_field :slug, value: @user.slug
         tr
