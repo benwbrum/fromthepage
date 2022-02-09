@@ -8,6 +8,9 @@ class QualitySamplingsController < ApplicationController
 
   # GET /quality_samplings/1
   def show
+    @work_samplings, @user_samplings = @quality_sampling.sampling_objects
+    @works = Work.find(@work_samplings.keys)
+    @users = User.find(@user_samplings.keys)
   end
 
   # GET /quality_samplings/new

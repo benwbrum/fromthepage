@@ -32,10 +32,14 @@
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
   -path.push(link_to(t('.collection.quality_sampling'), collection_quality_samplings_path(@collection.owner, @collection)))
   -path.push(t('collection.new_sampling'))
--elsif current_page?(collection_sampling_review_page_path)
+-elsif @page && current_page?(collection_sampling_review_page_path)
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
   -path.push(link_to(t('.collection.quality_sampling'), collection_quality_samplings_path(@collection.owner, @collection)))
-  -path.push("#{@page.title} (#{@work.title})")
+  -path.push("Page #{@quality_sampling.index_within_sample(@page)+1} of #{@quality_sampling.sample_page_count}")
+-elsif current_page?(collection_quality_sampling_path)
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('.collection.quality_sampling'), collection_quality_samplings_path(@collection.owner, @collection)))
+  -path.push(t('collection.current_sampling'))
 
 
 -if path.present?

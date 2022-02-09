@@ -12,6 +12,7 @@
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
   =hidden_field_tag(:flow, params[:flow])
+  =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
   =validation_summary @page.errors
 
   .page-toolbar
