@@ -13,7 +13,7 @@
             ==c.intro_block
             -unless @works.empty?
               -@works.each do |w|
-                li =link_to w.title, edit_collection_work_path(c.owner, c, w.id)
+                li =link_to w.title, collection_read_work_path(c.owner, c, w)
               -more_works = link_to t('.see_all_works'), collection_works_list_path(c.owner, c)
               -start_project = link_to t('.start_a_project'), dashboard_startproject_path(:collection_id => c.id)
               p.nodata_text = t('.total_work_count', count: @count)
