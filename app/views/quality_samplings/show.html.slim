@@ -1,0 +1,77 @@
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+=render(partial: '/shared/review_breadcrumbs')
+
+p =t '.description'
+
+
+-unless @quality_sampling.sampled?
+  p
+    =t('.not_fully_sampled_yet')
+    =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'review-button')
+
+p
+  strong =t('.percent_sampled')
+  =@quality_sampling.percent
+
+p
+  strong =t('.start_time')
+  =@quality_sampling.start_time
+
+p
+  strong =t('.previous_sampling')
+  =@quality_sampling.previous_start || t('.no_previous_sampling')
+
+p
+  strong =t('.sample_field_size')
+  =@quality_sampling.field.size
+
+
+table
+  thead
+    tr
+      th User
+      th Total Pages
+      th Pages Sampled
+      th Pages Corrected
+      th Mean Approval Delta
+  -@users.each do |user|
+    -page_sampling = @user_samplings[user.id]
+    tr
+      td
+        =user.display_name
+      td
+        =page_sampling.total_page_count
+      td
+        =page_sampling.reviewed_page_count
+      td
+        =page_sampling.corrected_page_count
+      td
+        =page_sampling.mean_approval_delta
+
+
+
+table
+  thead
+    tr
+      th Work
+      th Total Pages
+      th Pages Sampled
+      th Pages Corrected
+      th Mean Approval Delta
+  -@works.each do |work|
+    -page_sampling = @work_samplings[work.id]
+    tr
+      td
+        =work.title
+      td
+        =page_sampling.total_page_count
+      td
+        =page_sampling.reviewed_page_count
+      td
+        =page_sampling.corrected_page_count
+      td
+        =page_sampling.mean_approval_delta
+
+
+=render({ :partial => '/shared/collection_footer' })
+
