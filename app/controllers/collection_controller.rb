@@ -357,6 +357,8 @@ class CollectionController < ApplicationController
   end
 
   def update
+    @collection.subjects_disabled = (params[:collection][:subjects_enabled] == "0") #:subjects_enabled is "0" or "1"
+    
     if params[:collection][:slug] == ""
       @collection.update(collection_params.except(:slug))
       title = @collection.title.parameterize
