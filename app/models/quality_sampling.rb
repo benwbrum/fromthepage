@@ -63,12 +63,16 @@ class QualitySampling < ApplicationRecord
     end
   end
 
+  def max_approval_delta
+    Page.where(id:field).where.not(approval_delta: nil).maximum(:approval_delta)
+  end
+
   def sampling_objects
     work_hash = {}
     user_hash = {}
     Page.where(id:field).each do |page|
       work_sampling = work_hash[page.work_id] ||= PageSampling.new
-      user_sampling = user_hash[page.last_transcriber.id] ||= PageSampling.new
+      user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
 
       work_sampling.total_page_count += 1
       user_sampling.total_page_count += 1
@@ -91,38 +95,6 @@ class QualitySampling < ApplicationRecord
     end
 
     [work_hash, user_hash]
-  end
-
-  def pages_sampled_for(user)
-    reviewed_pages = Page.where(status: Page::COMPLETED_STATUSES).where(id: field)
-    reviewed_pages.select{|page| page.last_transcriber == user}.count
-  end
-
-  def mean_approval_delta_for(user)
-    reviewed_pages = Page.where(status: Page::COMPLETED_STATUSES).where(id: field)
-    user_pages = reviewed_pages.select{|page| page.last_transcriber == user}
-    approval_deltas = user_pages.map { |page| page.approval_delta}
-    approval_deltas.sum / approval_deltas.count
-  end
-
-  def pages_corrected_for(user)
-    reviewed_pages = Page.where(status: Page::COMPLETED_STATUSES).where(id: field)
-    user_pages = reviewed_pages.select{|page| page.last_transcriber == user}
-    approval_deltas = user_pages.map { |page| page.approval_delta}
-    approval_deltas.select{|delta| delta > 0.0}.count
-  end
-
-  def pages_in_field_for(user)
-    reviewed_pages = Page.where(id: field)
-    reviewed_pages.select{|page| page.last_transcriber == user}.count
-  end
-
-  def sampled_transcribers
-    reviewed_pages = Page.where(status: Page::COMPLETED_STATUSES).where(id: field)
-
-    transcribers = reviewed_pages.map{|page| page.last_transcriber}.uniq
-
-    transcribers
   end
 
   def sampled?

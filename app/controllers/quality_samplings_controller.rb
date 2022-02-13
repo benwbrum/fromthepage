@@ -11,6 +11,7 @@ class QualitySamplingsController < ApplicationController
     @work_samplings, @user_samplings = @quality_sampling.sampling_objects
     @works = Work.find(@work_samplings.keys)
     @users = User.find(@user_samplings.keys)
+    @max_approval_delta = @quality_sampling.max_approval_delta
   end
 
   # GET /quality_samplings/new

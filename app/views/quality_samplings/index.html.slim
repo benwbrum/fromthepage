@@ -23,8 +23,8 @@ table.datagrid.striped
               =t('.sampled')
             -else
               =t('.needs_sampling')
-          td.toleft =quality_sampling.total_field_size
-          td.toleft =quality_sampling.needs_review_pages.size
+          td.aright =quality_sampling.total_field_size
+          td.aright =quality_sampling.needs_review_pages.size
           td
             -next_page = quality_sampling.next_unsampled_page
             -if next_page
@@ -32,7 +32,6 @@ table.datagrid.striped
               =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, quality_sampling, next_page.id, flow: "quality-sampling"), class: 'review-button')
             /TODO conditionalize based on status 
             =link_to 'Show', collection_quality_sampling_path(@collection.owner, @collection, quality_sampling)
-            =link_to 'Edit', edit_collection_quality_sampling_path(@collection.owner, @collection, quality_sampling)
 
 =link_to t('.new_sampling'), new_collection_quality_sampling_path, class:'button'
 

@@ -1,6 +1,26 @@
 en:
   quality_samplings:
     show:
+      description: Quality samplings let you spot-check contributions randomly, then evaluate 
+        pages to review based on the quantity of text corrected for a particular user or work.
+      approval_delta_display_0: Very low
+      approval_delta_display_1: Low
+      approval_delta_display_2: Average
+      approval_delta_display_3: High
+      approval_delta_display_4: Very high
+      user: Contributor
+      work: Work
+      total_pages: Total Pages
+      percent_sampled: Percent to be  Sampled
+      pages_sampled: Pages Sampled
+      pages_corrected: Pages Corrected
+      relative_corrections: Relative Corrections
+      total_pages_desc: Number of pages within this quality sampling, whether reviewed or not.
+      pages_sampled_desc: Number of pages sampled so far from the total field of the sampling.
+      pages_corrected_desc: Pages that required correction during approval (low is better).
+      relative_corrections_desc: How many corrections were required before approval, relative to other users in this sampling?
+      not_fully_sampled_yet: This sampling has not been fully sampled yet.
+      sample: Sample
     edit:
     new:
       description: To begin the statistical review process, we'll start by sampling a small percentage of the pages needing review.
