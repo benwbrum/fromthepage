@@ -307,6 +307,7 @@ private
         'FromThePage URL',
         'Identifier',
         'Originating Manifest ID',
+        'Creation Date',
         'Total Pages',
         'Pages Transcribed',
         'Pages Corrected',
@@ -318,8 +319,11 @@ private
 
       raw_metadata_strings = collection.works.pluck(:original_metadata)
       metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
+      # append the headers for described metadata, read from the metadata_field configuration for the project
+      static_description_headers = ['Description Status', 'Described By']
+      described_headers = collection.metadata_fields.map {|field| field.label}
 
-      csv << static_headers + metadata_headers
+      csv << static_headers + metadata_headers + static_description_headers + described_headers
 
       collection.works.includes(:document_sets, :work_statistic, :sc_manifest).reorder(:id).each do |work| 
         row = [
@@ -332,6 +336,7 @@ private
           collection_read_work_url(collection.owner, collection, work),
           work.identifier,
           work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
+          work.created_on,
           work.work_statistic.total_pages,
           work.work_statistic.transcribed_pages,
           work.work_statistic.corrected_pages,
@@ -348,6 +353,28 @@ private
           metadata_headers.each do |header|
             # look up the value for this index
             row << metadata[header]
+          end
+        end
+
+        unless work.metadata_description.blank?
+          # description status
+          row << work.description_status
+          # described by
+          row << User.find(work.metadata_description_versions.pluck(:user_id)).map{|u| u.display_name}.join('; ')
+
+          metadata = JSON.parse(work.metadata_description)
+          # we rely on a consistent order of fields returned by collection.metadata_fields to prevent scrambling columns
+          collection.metadata_fields.each do |field|
+            element = metadata.detect{|candidate| candidate['transcription_field_id'] == field.id}
+            if element
+              value = element['value'] 
+              if value.is_a? Array
+                value = value.join("; ")
+              end
+              row << value 
+            else
+              row << nil
+            end 
           end
         end
 
@@ -528,9 +555,11 @@ private
     # are we in row 1?  fill the running data with non-spreadsheet fields
     if rownum == 1
       cell_array.each do |cell|
-        unless cell.transcription_field.input_type == 'spreadsheet'
-          running_data << cell
-        end 
+        if cell.transcription_field
+          unless cell.transcription_field.input_type == 'spreadsheet'
+            running_data << cell
+          end 
+        end
       end
     else
       # are we in row 2 or greater?

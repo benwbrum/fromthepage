@@ -11,6 +11,11 @@ module DocumentSetStatistic
     pages.count
   end
 
+  def line_count
+    self.works.includes(:work_statistic).sum(:line_count)
+  end
+
+
   def subject_count(last_days=nil)
     self.articles.where("#{last_days_clause(last_days, 'articles.created_on')}").count
   end
@@ -64,6 +69,7 @@ module DocumentSetStatistic
     end
     return clause
   end
+
   def get_stats_hash(start_date=nil, end_date=nil)
     deeds = DeedType.generate_zero_counts_hash
     deeds.merge!(self.deeds.where(timeframe(start_date, end_date)).group('deed_type').count)
@@ -75,6 +81,7 @@ module DocumentSetStatistic
       :subjects     => self.articles.where(timeframe(start_date, end_date, 'articles.created_on')).count,
       :mentions     => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
       :contributors => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
+      :line_count   => self.line_count
     }
 
     stats.merge(deeds)

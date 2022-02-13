@@ -12,7 +12,7 @@ en:
       all_complete: "All works are fully transcribed."
       start_transcribing: "Start Transcribing"
       search_the_text: "Search the text..."
-      search_by_title: "Search by title..."
+      search_by_title: "Search by title or metadata..."
       search_in_collection: "Search in collection..."
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
@@ -27,6 +27,11 @@ en:
       search: "Search"
       time_ago_in_words: "%{time} ago"
       project_by: "Project by"
+      this_work_has_pages_that_need_work: Some pages still need work.
+      help_transcribe_or_correct: Help out!
+      this_work_has_not_been_described: This work needs better metadata.
+      help_create_metadata: Help out!
+
     collection_works:
       work_title: "Work title"
       progress: "Progress"
@@ -128,7 +133,10 @@ en:
       collection_reviewers_description: "These users will be able to review and approve transcriptions, as well as edit them."
       add_reviewer: "Add Reviewer"
       remove_reviewer: "Remove Reviewer"
-
+      metadata_entry: Metadata Description
+      edit_metadata_fields: "Edit Fields"
+      revert_from_description_to_transcription: "Disable Description"
+      enable_metadata_description: "Enable Metadata Description"
       transcription_type: "Transcription Type"
       transcription_type_description: "Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled."
       field_based_transcription: "Field based transcription"
@@ -250,6 +258,13 @@ en:
       label: "Label"
       type: "Type"
       order: "Order"
+      translate: 'Translate'
+    localize:
+      translate_facets: Translate Facet Labels
+      metadata_facets_localize_description: Provide language-specific labels for each facet.
+      label: Facet
+      translation: Translation
+      save: Save
     facet_form:
       filter: "Filter"
     reviewer_dashboard:

@@ -5,6 +5,19 @@ class TranscriptionFieldController < ApplicationController
   #no layout if xhr request
   layout Proc.new { |controller| controller.request.xhr? ? false : nil}
 
+  def multiselect_form
+    @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
+    @collection = @transcription_field.collection
+  end
+
+  def save_multiselect
+    @transcription_field = TranscriptionField.find_by(id: params[:transcription_field_id])
+    @transcription_field.options = params[:options]
+    @transcription_field.save!
+    @collection = @transcription_field.collection
+    ajax_redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+  end
+
   def delete
     @collection = Collection.friendly.find(params[:collection_id])
     field = TranscriptionField.find_by(id: params[:field_id])
@@ -18,8 +31,22 @@ class TranscriptionFieldController < ApplicationController
     @field_preview = {}
   end
 
+  def edit_metadata_fields
+    @current_fields = @collection.metadata_fields.order(:line_number).order(:position)
+    @field_preview = {}
+  end
+
   def add_fields
     @collection = Collection.friendly.find(params[:collection_id])
+
+    if params[:description_instructions]
+      @collection.update(:description_instructions => params[:description_instructions])
+    end
+    if params[:data_entry_type]
+      @collection.update(:data_entry_type => params[:data_entry_type])
+    end
+
+    field_type = params[:field_type]
     new_fields = params[:transcription_fields]
 
     new_fields.each_with_index do |fields, index|
@@ -42,13 +69,17 @@ class TranscriptionFieldController < ApplicationController
           transcription_field = TranscriptionField.new(fields.permit!)
           transcription_field.starting_rows = 1
           transcription_field.collection_id = params[:collection_id]
+          transcription_field.field_type = field_type
           transcription_field.save
         else
           #otherwise update field if anything changed
           transcription_field = TranscriptionField.find_by(id: fields[:id])
-          #remove ID from params before update
-          fields.delete(:id)
-          transcription_field.update(fields.permit!)
+          transcription_field.label = fields[:label]
+          transcription_field.input_type = fields[:input_type]
+          transcription_field.options = fields[:options] if fields[:input_type] == 'select'
+          transcription_field.line_number = fields[:line_number]
+          transcription_field.percentage = fields[:percentage]
+          transcription_field.save
         end
       end
     end
@@ -56,7 +87,11 @@ class TranscriptionFieldController < ApplicationController
       flash[:error] = errors[:base].uniq.join(" ")
     end
     if params[:done].nil?
-      redirect_to collection_edit_fields_path(@collection.owner, @collection)
+      if field_type == TranscriptionField::FieldType::TRANSCRIPTION
+        redirect_to collection_edit_fields_path(@collection.owner, @collection)
+      else
+        redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+      end
     else
       redirect_to edit_collection_path(@collection.owner, @collection)
     end
@@ -93,6 +128,7 @@ class TranscriptionFieldController < ApplicationController
   def line_form
     @line_count = params[:line_count].strip.next
     @count = @line_count.split(" ").last.to_i
+    @field_type = params[:field_type]
     respond_to do |format|
       format.js
     end

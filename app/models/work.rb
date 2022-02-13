@@ -1,6 +1,25 @@
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+
+  PUBLIC_ATTRIBUTES =
+    ["title",
+     "description",
+     "created_on",
+     "physical_description",
+     "document_history",
+     "permission_description",
+     "location_of_composition",
+     "author",
+     "identifier",
+     "genre",
+     "source_location",
+     "source_collection_name",
+     "source_box_folder",
+     "in_scope",
+     "editorial_notes",
+     "document_date",
+     "uploaded_filename"]
   
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -10,7 +29,7 @@ class Work < ApplicationRecord
 
   belongs_to :collection, counter_cache: :works_count, optional: true
   has_many :deeds, -> { order 'created_at DESC' }, :dependent => :destroy
-  has_many :notes, through: :pages
+  has_many :notes #, through: :pages
   has_one :ia_work, :dependent => :destroy
   has_one :sc_manifest, :dependent => :destroy
   has_one :work_statistic, :dependent => :destroy
@@ -23,7 +42,11 @@ class Work < ApplicationRecord
   has_many :document_sets, through: :document_set_works
   has_one :work_facet, :dependent => :destroy
   has_many :bulk_exports, :dependent => :delete_all
+  has_many :metadata_description_versions, -> { order 'version_number DESC' }, :dependent => :destroy
 
+  before_save :update_derivatives
+
+  after_save :create_version
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
 
@@ -46,10 +69,24 @@ class Work < ApplicationRecord
   scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
+  scope :incomplete_description, -> { where(description_status: DescriptionStatus::NEEDS_WORK) }
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
   after_commit :save_metadata, on: [:create, :update]
+
+  module DescriptionStatus
+    UNDESCRIBED = 'undescribed'
+    NEEDS_REVIEW = 'needsreview'
+    INCOMPLETE = 'incomplete'
+    DESCRIBED = 'described'
+    NEEDS_WORK = [
+      UNDESCRIBED,
+      INCOMPLETE
+    ]
+  end
+
+
 
   module TitleStyle
     REPLACE = 'REPLACE'
@@ -78,6 +115,30 @@ class Work < ApplicationRecord
         nil
       end
     end
+  end
+
+  def update_derivatives
+    # searchable_metadata is currently the only derivative
+    metadata_hash = self.merge_metadata(true)
+    value_array = metadata_hash.map {|e| e['value']}
+
+    self.searchable_metadata = value_array.flatten.join("\n\n")
+  end
+
+  def merge_metadata(include_user=false)
+    metadata = []
+    if self.original_metadata
+      metadata += JSON[self.original_metadata]
+    end
+    work_metadata = self.attributes.select{|k,v| PUBLIC_ATTRIBUTES.include?(k) && !v.blank?}
+
+    work_metadata.each_pair { |label,value| metadata << { "label" => label.titleize, "value" => value.to_s } }
+
+    if include_user && !self.metadata_description.blank?
+      metadata += JSON[self.metadata_description]
+    end
+
+    metadata
   end
 
 
@@ -295,6 +356,58 @@ class Work < ApplicationRecord
     next_untranscribed_page.present?
   end
 
+  def process_fields(field_cells)
+    metadata_fields = []
+    # new_table_cells = []
+    unless field_cells.blank?
+      field_cells.each do |id, cell_data|
+        field = TranscriptionField.find(id.to_i)
+        input_type = field.input_type
+
+        # TODO don't save instruction or description types
+
+        element = {}
+        element['transcription_field_id'] = id.to_i
+
+
+        cell_data.each do |key, value|
+          element['label'] = key
+
+          element['value'] = value
+        end
+
+        metadata_fields << element
+      end
+    end
+    self.metadata_description = metadata_fields.to_json
+    self.description_status = DescriptionStatus::DESCRIBED
+    # add this to versions here
+    metadata_fields
+  end
+
+  def create_version
+    # only do this if metadata description has saved
+    if saved_change_to_metadata_description?
+      version = MetadataDescriptionVersion.new
+      version.work = self
+      version.metadata_description = self.metadata_description
+      unless User.current_user.nil?
+        version.user = User.current_user
+      else
+        version.user = User.find_by(id: self.work.owner_user_id)
+      end
+
+      previous_version = MetadataDescriptionVersion.where("work_id = ?", self.id).order("version_number DESC").first
+      if previous_version
+        version.version_number = previous_version.version_number + 1
+      else
+        version.version_number = 1
+      end
+      version.save!
+    end
+  end
+
+
   def alert_intercom
     if (defined? INTERCOM_ACCESS_TOKEN) && INTERCOM_ACCESS_TOKEN
       if self.owner.owner_works.count == 1
@@ -311,6 +424,9 @@ class Work < ApplicationRecord
       om.each do |m|
         unless m['label'].blank?
           label = m['label']
+          if label.is_a? Array
+            label=label.first['@value']
+          end
 
           collection = self.collection
 

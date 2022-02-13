@@ -205,7 +205,21 @@ class ArticleController < ApplicationController
     @collection = Collection.find params[:upload][:collection_id]
     # read the file
     file = params[:upload][:file].tempfile
-    csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
+
+#    csv = CSV.read(params[:upload][:file].tempfile, :headers => true)
+    begin
+      csv = CSV.read(params[:upload][:file].tempfile, :headers=>true)
+    rescue
+      contents = File.read(params[:upload][:file].tempfile)
+      detection = CharlockHolmes::EncodingDetector.detect(contents)
+
+      csv = CSV.read(params[:upload][:file].tempfile, 
+                      :encoding => "bom|#{detection[:encoding]}",
+                      :liberal_parsing => true,
+                      :headers => true)
+    end
+
+
     provenance = params[:upload][:file].original_filename + " (uploaded #{Time.now} UTC)"
     # check the values
     if csv.headers.include?('HEADING') && csv.headers.include?('URI') && csv.headers.include?('ARTICLE') && csv.headers.include?('CATEGORY')

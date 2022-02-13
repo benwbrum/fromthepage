@@ -167,6 +167,7 @@ describe "owner actions", :order => :defined do
   it "moves a work to another collection" do
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @title).click
+    page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @collections.second.title)
@@ -230,6 +231,7 @@ describe "owner actions", :order => :defined do
   it "deletes a work" do
     visit dashboard_owner_path
     page.find('.maincol').find('a', text: @title).click
+    page.find('.tabs').click_link('Settings')
     expect(page).to have_content(@title)
     expect(page).to have_content("Work title")
     click_link("Delete Work")

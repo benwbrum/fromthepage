@@ -35,7 +35,7 @@ describe "Spam user safeguards" do
     fill_in name: 'user[about]', with: "<i>He's just some guy, you know?</i>"
     click_button("Update Profile")
     expect(page).to have_content("just some guy")
-    expect(page).to have_content("<i>He's just some guy, you know?</i>")
+    expect(page).to have_content("He's just some guy, you know?")
     #display is only of the word website, not the actual url
     expect(page).to have_content("Website")
   end

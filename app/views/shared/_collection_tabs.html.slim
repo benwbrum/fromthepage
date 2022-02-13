@@ -34,11 +34,7 @@
       :name => t('.settings'),
       :selected => 5,
       :path => "#{edit_collection_path(@collection.owner, @collection)}",
-    },{\
-        :name => t('.export'),
-        :selected => 6,
-        :path => "#{collection_export_path(@collection.owner, @collection)}",
-     }]
+    }]
      
   -else
     -tabs += [{\
@@ -46,6 +42,12 @@
     :selected => 5,
     :path => "#{collection_settings_path(@collection.owner, @collection)}",
     }]
+
+  -tabs += [{\
+        :name => t('.export'),
+        :selected => 6,
+        :path => "#{collection_export_path(@collection.owner, @collection)}",
+     }]
     
   -if @collection.is_a?(Collection) && @collection.active?
     -tabs += [{\
@@ -61,7 +63,14 @@
       :path => "#{collection_edit_fields_path(@collection.owner, @collection)}",
     }]
 
-  
+  -if @collection.metadata_entry?
+    -tabs += [{\
+      :name => t('.edit_metadata_fields'),
+      :selected => 13,
+      :path => "#{collection_edit_metadata_fields_path(@collection.owner, @collection)}",
+    }]
+
+    
 
   -if @collection.supports_document_sets
     -tabs += [{\

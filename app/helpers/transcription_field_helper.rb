@@ -3,6 +3,10 @@ module TranscriptionFieldHelper
     @fields = collection.transcription_fields.order(:line_number).order(:position).group_by(&:line_number)
   end
 
+  def metadata_field_order(collection)
+    @fields = collection.metadata_fields.order(:line_number).order(:position).group_by(&:line_number)
+  end
+
   def field_layout(array)
     count = array.count
     @width = (100.0 / count).round(5) unless count == nil

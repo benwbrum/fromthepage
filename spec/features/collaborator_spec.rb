@@ -93,6 +93,8 @@ describe "Collaborator actions" do
             )}
             let(:docset){ create(:document_set, :private,
                 collection: collection,
+                owner: collection.owner,
+                owner_user_id: collection.owner.id
             )}
             it "can view the private collection" do
                 login_as(collaborator, :scope => :user)

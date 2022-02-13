@@ -152,6 +152,11 @@ class CollectionController < ApplicationController
         #combine ids anduse to get works that aren't complete
         ids = translation_ids + transcription_ids
 
+        if @collection.metadata_entry?
+          description_ids = @collection.works.incomplete_description.pluck(:id)
+          ids += description_ids
+        end
+
         works = @collection.works.includes(:work_statistic).where(id: ids).paginate(page: params[:page], per_page: 10)
 
         if works.empty?
@@ -172,7 +177,7 @@ class CollectionController < ApplicationController
         @works = @collection.works.joins(:work_facet).where('work_facets.id in (?)', facet_ids).includes(:work_facet).paginate(page: params[:page], :per_page => @per_page) unless params[:search].is_a?(String)
 
         @date_ranges = []
-        date_configs = @collection.facet_configs.where(:input_type => 'date').order('"order"')
+        date_configs = @collection.facet_configs.where(:input_type => 'date').where.not(:order => nil).order('"order"')
         if date_configs.size > 0
           collection_facets = WorkFacet.joins(:work).where("works.collection_id = #{@collection.id}")
           date_configs.each do |facet_config|
@@ -197,9 +202,11 @@ class CollectionController < ApplicationController
   end
 
   def add_owner
-    @user.owner = true
-    @user.account_type = "Staff"
-    @user.save!
+    unless @user.owner
+      @user.owner = true
+      @user.account_type = "Staff"
+      @user.save!
+    end
     @collection.owners << @user
     @user.notification.owner_stats = true
     @user.notification.save!
@@ -306,6 +313,18 @@ class CollectionController < ApplicationController
     redirect_to action: 'edit', collection_id: @collection
   end
 
+  def enable_metadata_entry
+    @collection.data_entry_type = Collection::DataEntryType::TEXT_AND_METADATA
+    @collection.save!
+    redirect_to collection_edit_metadata_fields_path(@collection.owner, @collection)
+  end
+
+  def disable_metadata_entry
+    @collection.data_entry_type = Collection::DataEntryType::TEXT_ONLY
+    @collection.save!
+    redirect_to action: 'edit', collection_id: @collection
+  end
+
   def delete
     @collection.destroy
     redirect_to dashboard_owner_path
@@ -346,10 +365,11 @@ class CollectionController < ApplicationController
       @collection.update(collection_params)
     end
 
-    if @collection.save!
+    if @collection.save
       flash[:notice] = t('.notice')
       redirect_to action: 'edit', collection_id: @collection.id
     else
+      edit # load the appropriate variables
       render action: 'edit'
     end
   end

@@ -3,14 +3,14 @@
 h2.nomargin =t('.export_all_works')
 p.big
   span.fright(style="margin-left: 30px")
-    =link_to(bulk_export_new_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnExportAll')
+    =link_to(bulk_export_new_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnExportAll')
       =svg_symbol '#icon-export', class: 'icon'
       span =t('.export_all_works')
 
   span =t('.export_all_works_description')
 
 
--if ContentdmTranslator.collection_is_cdm? @collection
+-if ContentdmTranslator.collection_is_cdm?(@collection) && @collection.text_entry? && @collection.is_a?(Collection)
   h2 =t('.export_to_contentdm')
   p.big
     span.fright(style="margin-left: 30px")
@@ -19,97 +19,99 @@ p.big
         span =t('.export_to_contentdm')
     span =t('.export_to_contentdm_description')
 
-h2 =t('.export_individual_works')
-p.big =t('.export_individual_works_description')
-table.datagrid
-  tr
-    th.w80 =t('.work_title')
-    th =t('.pages')
-    -unless @collection.subjects_disabled
-      th =t('.indexed')
-    th #{@header}
-    th =t('.review')
-    th.w100 =t('.progress')
-    th(colspan="6") =t('.export_as')
-
-  -for work in @works
-    -work_stats(work)
-
+-if @collection.text_entry?
+  h2 =t('.export_individual_works')
+  p.big =t('.export_individual_works_description')
+  table.datagrid
     tr
-      td.big =link_to work.title, display_read_work_path(:work_id => work.id)
-      td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
+      th.w80 =t('.work_title')
+      th =t('.pages')
       -unless @collection.subjects_disabled
-        td.nowrap.fgfaded.tocenter ="#{@progress_annotated}%"
-      td.nowrap.fgfaded.tocenter ="#{@progress_completed}%"
-      td.nowrap.fgfaded.tocenter ="#{@progress_review}%"
-      td
-        .progress
-          -unless @collection.subjects_disabled
-            span(style="width:#{@progress_annotated}%")
-            span(style="width:#{@progress_completed - @progress_annotated}%")
-            span(style="width:#{@progress_review}%")
+        th =t('.indexed')
+      th #{@header}
+      th =t('.review')
+      th.w100 =t('.progress')
+      th(colspan="6") =t('.export_as')
 
-          -else
-            span(style="width:#{@progress_completed}%")
-            span(style="width:#{@progress_review}%")
+    -for work in @works
+      -work_stats(work)
 
-      td.nowrap
-        =link_to(export_show_path(:work_id => work.id))
+      tr
+        td.big =link_to work.title, display_read_work_path(:work_id => work.id)
+        td.nowrap.fgfaded =pluralize(work.work_statistic.total_pages, 'page')
+        -unless @collection.subjects_disabled
+          td.nowrap.fgfaded.tocenter ="#{@progress_annotated}%"
+        td.nowrap.fgfaded.tocenter ="#{@progress_completed}%"
+        td.nowrap.fgfaded.tocenter ="#{@progress_review}%"
+        td
+          .progress
+            -unless @collection.subjects_disabled
+              span(style="width:#{@progress_annotated}%")
+              span(style="width:#{@progress_completed - @progress_annotated}%")
+              span(style="width:#{@progress_review}%")
+
+            -else
+              span(style="width:#{@progress_completed}%")
+              span(style="width:#{@progress_review}%")
+
+        td.nowrap
+          =link_to(export_show_path(:work_id => work.id))
+            =svg_symbol '#icon-export', class: 'icon'
+            span HTML
+        td.nowrap
+          =link_to(export_work_plaintext_verbatim_path(:work_id => work.id))
+            =svg_symbol '#icon-export', class: 'icon'
+            span =t('.plain_text')
+        td.nowrap
+          =link_to(export_tei_path(work.slug))
+            =svg_symbol '#icon-export', class: 'icon'
+            span TEI
+        td.nowrap
+          =link_to iiif_manifest_path(work.id)
+            =svg_symbol '#icon-export', class: 'icon'
+            span IIIF
+        -unless work.table_cells.blank?
+          -if work.table_cells.count < 10000
+            td.nowrap
+              =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
+                =svg_symbol '#icon-export', class: 'icon'
+                span =t('.table_csv')
+        td.nowrap
+          =link_to download_collection_work_path(@collection.owner, @collection, work), title: t('.more_export_formats')
+            span =t('.more')
+
+  =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
+
+  -unless @collection.subjects_disabled
+    h2 =t('.export_subject_index')
+    p.big
+      span.fright(style="margin-left: 30px")
+        =link_to(export_subject_csv_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnCsvExport')
           =svg_symbol '#icon-export', class: 'icon'
-          span HTML
-      td.nowrap
-        =link_to(export_work_plaintext_verbatim_path(:work_id => work.id))
+          span =t('.export_subjects_as_csv')
+      span =t('.export_subject_index_description')
+    p.big
+      span.fright(style="margin-left: 30px")
+        =link_to(export_subject_details_csv_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnCsvDetailExport')
           =svg_symbol '#icon-export', class: 'icon'
-          span =t('.plain_text')
-      td.nowrap
-        =link_to(export_tei_path(work.slug))
+          span =t('.export_subject_details_as_csv')
+      span =t('.export_subject_details_description')
+    -if @collection.is_a? Collection
+      p.big
+        span.fright(style="margin-left: 30px")
+          =link_to(export_subject_coocurrence_csv_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnCsvCoocurrenceExport')
+            =svg_symbol '#icon-export', class: 'icon'
+            span =t('.export_subject_coocurrence_as_csv')
+        span =t('.export_subject_coocurrence_description')
+
+  -unless @table_export.blank?
+    h2 =t('.export_all_tables')
+    p.big
+      span.fright(style="margin-left: 30px")
+        =link_to(export_export_all_tables_path(:collection_id => @collection.slug), class: 'button btnExport', id: 'btnExportTables')
           =svg_symbol '#icon-export', class: 'icon'
-          span TEI
-      td.nowrap
-        =link_to iiif_manifest_path(work.id)
-          =svg_symbol '#icon-export', class: 'icon'
-          span IIIF
-      -unless work.table_cells.blank?
-        -if work.table_cells.count < 10000
-          td.nowrap
-            =link_to({ :controller => 'export', :action => 'table_csv', :work_id => work.id }, class: 'btnCsvTblExport btnExport')
-              =svg_symbol '#icon-export', class: 'icon'
-              span =t('.table_csv')
-      td.nowrap
-        =link_to download_collection_work_path(@collection.owner, @collection, work), title: t('.more_export_formats')
-          span =t('.more')
-
-=render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
-
--unless @collection.subjects_disabled
-  h2 =t('.export_subject_index')
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to(export_subject_csv_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnCsvExport')
-        =svg_symbol '#icon-export', class: 'icon'
-        span =t('.export_subjects_as_csv')
-    span =t('.export_subject_index_description')
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to(export_subject_details_csv_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnCsvDetailExport')
-        =svg_symbol '#icon-export', class: 'icon'
-        span =t('.export_subject_details_as_csv')
-    span =t('.export_subject_details_description')
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to(export_subject_coocurrence_csv_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnCsvCoocurrenceExport')
-        =svg_symbol '#icon-export', class: 'icon'
-        span =t('.export_subject_coocurrence_as_csv')
-    span =t('.export_subject_coocurrence_description')
-
--unless @table_export.blank?
-  h2 =t('.export_all_tables')
-  p.big
-    span.fright(style="margin-left: 30px")
-      =link_to(export_export_all_tables_path(:collection_id => @collection.id), class: 'button btnExport', id: 'btnExportTables')
-        =svg_symbol '#icon-export', class: 'icon'
-        span =t('.export_all_table_data_as_csv')
-    span =t('.export_all_tables_description')
+          span =t('.export_all_table_data_as_csv')
+      span =t('.export_all_tables_description')
 
 h2 =t('.export_work_metadata')
 p.big

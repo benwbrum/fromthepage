@@ -27,13 +27,13 @@
           h5 Voyant
           p.nomargin Send the transcription of this work to a Voyant Tools for analysis.
         .bulk-export_options
-          span =link_to("Analyze", "https://voyant-tools.org/?corpus=#{CGI.escape(@collection.title)}&archive=#{iiif_work_export_plaintext_emended_url(@work.id)}", class: 'button')
+          span =link_to("Analyze", "https://voyant-tools.org/?corpus=#{CGI.escape(@collection.title)}&archive=#{iiif_work_export_plaintext_emended_url(@work.id)}", class: 'button', target: :_blank)
       li
         .bulk-export_format
           h5 Word Trees
           p.nomargin Send the transcription of this work to Jason Davies' Word Trees visualizer for analysis.
         .bulk-export_options
-          span =link_to("Analyze", "https://www.jasondavies.com/wordtree/?source=#{CGI.escape(iiif_work_export_plaintext_emended_url(@work.id))}", class: 'button')
+          span =link_to("Analyze", "https://www.jasondavies.com/wordtree/?source=#{CGI.escape(iiif_work_export_plaintext_emended_url(@work.id))}", class: 'button', target: :_blank)
 
 
 

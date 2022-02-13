@@ -176,13 +176,22 @@ module ApplicationHelper
   end
 
   def html_metadata_from_work(work)
-    html_metadata(JSON.parse(work.original_metadata))
+    if work.original_metadata.blank?
+      ""
+    else
+      html_metadata(JSON.parse(work.original_metadata))
+    end
   end
 
   def html_metadata(metadata_hash)
     html = ""
     metadata_hash.each do |md|
-      html += "<p><b>#{md["label"]}</b>: #{value_to_html(md["value"])} </p>"
+      label = md['label']
+      if label.is_a? Array
+        label = label.first['@value']
+      end
+
+      html += "<p><b>#{label}</b>: #{value_to_html(md["value"])} </p>\n\n"
     end
     html
   end
@@ -196,7 +205,15 @@ module ApplicationHelper
       end
     end
 
-    options_for_select(option_data)
+    if @collection
+      if @collection.is_a? Collection
+        options_for_select(option_data, @collection.id)
+      else
+        options_for_select(option_data, "D#{@collection.id}")
+      end
+    else
+      options_for_select(option_data)
+    end      
   end
 
   def feature_enabled?(feature)

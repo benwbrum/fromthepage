@@ -1,0 +1,100 @@
+-content_for :page_title, "Pricing"
+-content_for :meta_description, "Pricing for FromThePage collaborative transcription for libraries, archives and museums."
+
+#software
+  h2 Transcribers are always Free!
+
+  p FromThePage connects volunteers transcribers to institutions with material needing transcription.  Institutions pay to host projects on FromThePage, but transcribers -- who are giving their time freely -- are always free.
+
+
+  section#pricing
+    h2 FromThePage Pricing for Organizations of All Sizes
+    p Our pricing is based on how much you expect to use, both in terms of distinct projects and number of page images.
+    .pricing
+      .pricing_grid
+        .pricing_grid_row
+          .pricing_grid_cell
+            h4.pricing_title Researcher
+            ul.pricing_features
+              li.pricing_feature Collaborative transcription, translation, OCR correction and subject indexing
+              li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+              li.pricing_feature 1 project
+              li.pricing_feature Unlimited documents
+              li.pricing_feature Up to 10,000 pages
+              li.pricing_feature E-mail support
+          .pricing_grid_cell
+            h4.pricing_title Small Organization
+            ul.pricing_features
+              li.pricing_feature Collaborative transcription, translation, OCR correction and subject indexing
+              li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+              li.pricing_feature Unlimited projects
+              li.pricing_feature Unlimited documents
+              li.pricing_feature Up to 50,000 pages
+              li.pricing_feature E-mail and chat support
+              li.pricing_feature Phone consultation on new projects
+          .pricing_grid_cell
+            h4.pricing_title Large Institution
+            ul.pricing_features
+              li.pricing_feature Collaborative transcription, translation, subject indexing, and OCR correction
+              li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
+              li.pricing_feature Unlimited projects
+              li.pricing_feature Unlimited documents
+              li.pricing_feature Up to 100,000 pages
+              li.pricing_feature Contact us for pricing for additional pages
+              li.pricing_feature E-mail and chat support
+              li.pricing_feature Phone consultation on new projects and strategic consultation
+              li.pricing_feature
+                strong PLUS
+              li.pricing_feature Single Sign On
+              li.pricing_feature On Demand Custom Reports
+              li.pricing_feature Integration Consulting
+        .pricing_grid_row
+          .pricing_grid_cell
+            .pricing_price
+              span.pricing_price_value $80
+              .pricing_price_billing per month, billed monthly or 
+              span.pricing_price_value $960
+              .pricing_price_billing per year, billed annually
+          .pricing_grid_cell
+            .pricing_price
+              span.pricing_price_value $300
+              .pricing_price_billing per month, billed monthly or 
+              span.pricing_price_value $3000
+              .pricing_price_billing per year, billed annually
+          .pricing_grid_cell
+            .pricing_price
+              span.pricing_price_value $500
+              .pricing_price_billing per month, billed monthly or 
+              span.pricing_price_value $5000
+              .pricing_price_billing per year, billed annually
+
+        .pricing_grid_row
+          .pricing_grid_cell
+            =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+          .pricing_grid_cell
+            =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+          .pricing_grid_cell
+            =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+
+  h4 Ready to buy?  
+  p #{link_to('Send us a note', contact_path(contact_form_token))} and we'll send you an invoice, payable either by credit card or by your organization's accounting department.  Need additional paperwork for a PO?  Just let us know.
+
+  h3 What's a page?
+
+  p Every image you upload for transcription is a page.
+
+  h3 What's a project?
+
+  p Projects are distinct in that they are usually the same archival or research collection with the same transcription conventions and other settings (public/private for example).  "Distinct projects" have different transcription conventions and configurations.  For instance, you couldn't do a ledger book and a set of letters in the same project because the configuration is very different for structured data and more textual documents.
+
+  p Sometimes we'll use the words "project" and "collection" interchangeably.
+
+  h3 What happens when we're done transcribing?
+
+  p Page counts are for active projects; once a project is completed you can mark it as inactive and it won't count against your page totals.  Inactive projects are "read only" -- you can view and export the transcriptions, but you can't change them.
+
+  h3 So which one should I choose?
+
+  p The small organization plan is the most popular; most universities fall under it.  State archives usually fit into the large organization plan.  An estimate of the number of pages you'll be working on and how diverse your collections are is the best way to tell.
+
+  h5 Confused?  #{link_to('Drop us a line', contact_path(contact_form_token))} and we'll help you find the best plan for your organization.

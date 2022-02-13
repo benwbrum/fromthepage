@@ -7,6 +7,7 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+  before_save :uniquify_slug
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -15,7 +16,8 @@ class Collection < ApplicationRecord
   has_many :categories, -> { order 'title' }
   has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
   has_one :sc_collection, :dependent => :destroy
-  has_many :transcription_fields, :dependent => :destroy
+  has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, :dependent => :destroy
+  has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
   has_many :bulk_exports, :dependent => :destroy
   has_many :editor_buttons, :dependent => :destroy
 
@@ -34,7 +36,7 @@ class Collection < ApplicationRecord
   before_create :set_transcription_conventions
   before_create :set_help
   before_create :set_link_help
-  after_save :create_categories
+  after_create :create_categories
   after_save :set_next_untranscribed_page
 
   mount_uploader :picture, PictureUploader
@@ -52,6 +54,21 @@ class Collection < ApplicationRecord
     carousel
     reorder(Arel.sql("RAND()")) unless sample_size > 1
     limit(sample_size).reorder(Arel.sql("RAND()"))
+  end
+
+  module DataEntryType
+    TEXT_ONLY = 'text'
+    METADATA_ONLY = 'metadata'
+    TEXT_AND_METADATA = 'text_and_metadata'
+  end
+
+
+  def text_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY
+  end
+
+  def metadata_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
   end
 
   module ReviewType 
@@ -134,6 +151,12 @@ class Collection < ApplicationRecord
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def uniquify_slug
+    if DocumentSet.where(slug: self.slug).exists?
+      self.slug = self.slug+'-collection'
+    end
+  end
+
   def blank_out_collection
     puts "Reset all data in the #{self.title} collection to blank"
     works = Work.where(collection_id: self.id)
@@ -170,7 +193,7 @@ class Collection < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR original_metadata like ?", "%#{search}%", "%#{search}%")
+    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
   def self.search(search)

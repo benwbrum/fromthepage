@@ -3,6 +3,8 @@ class DocumentSet < ApplicationRecord
 
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+  before_save :uniquify_slug
+  # validate :slug_uniqueness_across_objects
 
   mount_uploader :picture, PictureUploader
 
@@ -16,6 +18,8 @@ class DocumentSet < ApplicationRecord
   has_many :works, -> { order 'title' }, through: :document_set_works
 
   has_and_belongs_to_many :collaborators, :class_name => 'User', :join_table => :document_set_collaborators
+
+  has_many :bulk_exports, :dependent => :delete_all
 
   after_save :set_next_untranscribed_page
 
@@ -42,6 +46,29 @@ class DocumentSet < ApplicationRecord
     self.description
   end
 
+  def uniquify_slug
+    if Collection.where(slug: self.slug).exists?
+      self.slug = self.slug+'-set'
+    end
+  end
+
+  def reviewers
+    self.collection.reviewers
+  end
+
+  def facet_configs
+    self.collection.facet_configs
+  end
+
+  def text_entry?
+    self.collection.text_entry?
+  end
+
+  def metadata_entry?
+    self.collection.text_entry?
+  end
+
+
   def hide_completed
     self.collection.hide_completed
   end
@@ -65,6 +92,19 @@ class DocumentSet < ApplicationRecord
   def editor_buttons
     self.collection.editor_buttons
   end
+
+  def export_subject_index_as_csv
+    subject_link = SubjectExporter::Exporter.new(self)
+
+    subject_link.export
+  end
+
+  def export_subject_details_as_csv
+    subjects = SubjectDetailsExporter::Exporter.new(self)
+
+    subjects.export
+  end
+
 
   def articles
     Article.joins(:pages).where(pages: {work_id: self.works.ids}).distinct
@@ -134,6 +174,22 @@ class DocumentSet < ApplicationRecord
     self.collection.transcription_fields
   end
 
+  def metadata_fields
+    self.collection.metadata_fields
+  end
+
+  def description_instructions
+    self.collection.description_instructions
+  end
+
+  def text_entry?
+    self.collection.text_entry?
+  end
+
+  def metadata_entry?
+    self.collection.metadata_entry?
+  end
+
   def set_next_untranscribed_page
     first_work = works.order_by_incomplete.first
     first_page = first_work.nil? ? nil : first_work.next_untranscribed_page
@@ -187,7 +243,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR original_metadata like ?", "%#{search}%", "%#{search}%")
+    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
   def search_collection_works(search)

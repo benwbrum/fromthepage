@@ -22,6 +22,9 @@
             td
               -if bulk_export.collection.present?
                 =link_to(bulk_export.collection.title, collection_url(bulk_export.user, bulk_export.collection))
+              -if bulk_export.document_set.present?
+                br
+                =link_to(bulk_export.document_set.title, collection_url(bulk_export.user, bulk_export.document_set.slug))
               -if bulk_export.work.present?
                 br
                 =link_to(bulk_export.work.title, collection_read_work_path(bulk_export.collection.owner, bulk_export.collection, bulk_export.work))

@@ -3,6 +3,10 @@
 h2.nomargin =t('.metadata_facets')
 p =t('.metadata_facets_description')
 
+.toolbar
+  .toolbar-group.aright =link_to(t('.translate'), facets_localize_path(@collection), class: 'button', :data => { litebox: { hash: 'localize-facets-buttons', noscroll: false  }})
+
+
 -if @errors
   -@errors.each do |error|
     p =error
@@ -23,7 +27,7 @@ p =t('.metadata_facets_description')
           td =metadata[:count]
           =fields_for :metadata do |m|
             =m.fields_for metadata[:key] do |t|
-              td =t.text_field :label, value: metadata.facet_config.label
+              td =t.text_field :label, value: metadata.facet_config.localized_label(locale)
             =m.fields_for metadata[:key] do |t|
               td =t.select :input_type, ['text', 'date'], selected: metadata.facet_config.input_type
             =m.fields_for metadata[:key] do |t|
@@ -31,3 +35,4 @@ p =t('.metadata_facets_description')
   =hidden_field_tag :collection_id, @collection.id
   .toolbar
     .toolbar-group.aright =f.submit
+

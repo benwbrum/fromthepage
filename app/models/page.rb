@@ -8,6 +8,7 @@ class Page < ApplicationRecord
   before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
+  before_update :update_line_count
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
@@ -44,7 +45,8 @@ class Page < ApplicationRecord
 
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: [nil, STATUS_INCOMPLETE])  }
+  scope :needs_transcription, -> { where(status: [nil])  }
+  scope :needs_completion, -> { where(status: [STATUS_INCOMPLETE])  }
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
@@ -73,6 +75,11 @@ class Page < ApplicationRecord
 
   MAIN_STATUSES = ALL_STATUSES - [STATUS_TRANSLATED]
   TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_INCOMPLETE, STATUS_TRANSCRIBED]
+
+  NEEDS_WORK_STATUSES = [
+    nil,
+    STATUS_INCOMPLETE
+  ]
 
   # tested
   def collection
@@ -268,6 +275,29 @@ class Page < ApplicationRecord
       if tex_figure.changed?
         tex_figure.save!
       end
+    end
+  end
+
+  def update_line_count
+    self.line_count = calculate_line_count
+  end
+
+  def calculate_line_count
+    if self.work && self.collection
+      if field_based
+        # count table rows
+        self.table_cells.pluck(:row).uniq.count
+      else
+        # count non-blank lines in the source
+        if self.source_text.nil?
+          0
+        else
+          self.source_text.lines.select{|line| line.match(/\S/)}.count
+        end
+      end
+    else
+      # intermediary format -- collection is probably being imported
+      0
     end
   end
 
