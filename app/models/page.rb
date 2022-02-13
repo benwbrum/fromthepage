@@ -14,6 +14,8 @@ class Page < ApplicationRecord
 
   belongs_to :work, optional: true
   acts_as_list :scope => :work
+  belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_user_id', optional: true
+
 
   has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
@@ -225,13 +227,6 @@ class Page < ApplicationRecord
     end
   end
 
-  def last_transcriber
-    presumed_approver_version = self.page_versions.first
-    last_transcriber_version = self.page_versions.where.not(user_id: presumed_approver_version.user_id).first
-    last_transcriber_version.user
-  end
-
-  # tested
   def create_version
     version = PageVersion.new
     version.page = self

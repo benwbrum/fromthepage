@@ -672,3 +672,12 @@ li.document_set input[type="checkbox"] {
   margin-top: 0.5em;
   margin-bottom: 1em;
 }
+
+
+.approval-delta {
+  &-0 { background-color: #3B3; }
+  &-1 { background-color: #E6C; }
+  &-2 { background-color: #6AF; }
+  &-3 { background-color: #773; }
+  &-4 { background-color: #F66; }
+}

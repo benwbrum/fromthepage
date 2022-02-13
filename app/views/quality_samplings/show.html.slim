@@ -1,77 +1,111 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
 =render(partial: '/shared/review_breadcrumbs')
 
-p =t '.description'
+.article-columns.columns
+  article.maincol
 
 
--unless @quality_sampling.sampled?
-  p
-    =t('.not_fully_sampled_yet')
-    =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'review-button')
-
-p
-  strong =t('.percent_sampled')
-  =@quality_sampling.percent
-
-p
-  strong =t('.start_time')
-  =@quality_sampling.start_time
-
-p
-  strong =t('.previous_sampling')
-  =@quality_sampling.previous_start || t('.no_previous_sampling')
-
-p
-  strong =t('.sample_field_size')
-  =@quality_sampling.field.size
+    p =t '.description'
 
 
-table
-  thead
-    tr
-      th User
-      th Total Pages
-      th Pages Sampled
-      th Pages Corrected
-      th Mean Approval Delta
-  -@users.each do |user|
-    -page_sampling = @user_samplings[user.id]
-    tr
-      td
-        =user.display_name
-      td
-        =page_sampling.total_page_count
-      td
-        =page_sampling.reviewed_page_count
-      td
-        =page_sampling.corrected_page_count
-      td
-        =page_sampling.mean_approval_delta
+    -unless @quality_sampling.sampled?
+      p
+        =t('.not_fully_sampled_yet')
+        =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'review-button')
+
+    table.datagrid.striped
+      thead
+        tr
+          th =t('.user')
+          th =t('.total_pages')
+          th =t('.pages_sampled')
+          th =t('.pages_corrected')
+          th =t('.relative_corrections')
+          th =t('.actions')
+      -@users.each do |user|
+        -page_sampling = @user_samplings[user.id]
+        tr
+          td
+            =user.display_name
+          td.aright
+            =page_sampling.total_page_count
+          td.aright
+            =page_sampling.reviewed_page_count
+          -if page_sampling.reviewed_page_count > 0
+            td.aright
+              =page_sampling.corrected_page_count
+            td
+              span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
+          -else
+            td.aright
+              i =t('.not_applicable')
+            td
+              i =t('.not_applicable')
+          td
+            =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'button')
 
 
 
-table
-  thead
-    tr
-      th Work
-      th Total Pages
-      th Pages Sampled
-      th Pages Corrected
-      th Mean Approval Delta
-  -@works.each do |work|
-    -page_sampling = @work_samplings[work.id]
-    tr
-      td
-        =work.title
-      td
-        =page_sampling.total_page_count
-      td
-        =page_sampling.reviewed_page_count
-      td
-        =page_sampling.corrected_page_count
-      td
-        =page_sampling.mean_approval_delta
 
+    table.datagrid.striped
+      thead
+        tr
+          th =t('.work')
+          th =t('.total_pages')
+          th =t('.pages_sampled')
+          th =t('.pages_corrected')
+          th =t('.relative_corrections')
+          th =t('.actions')
+      -@works.each do |work|
+        -page_sampling = @work_samplings[work.id]
+        tr
+          td
+            =work.title
+          td.aright
+            =page_sampling.total_page_count
+          td.aright
+            =page_sampling.reviewed_page_count
+          -if page_sampling.reviewed_page_count > 0
+            td.aright
+              =page_sampling.corrected_page_count
+            td
+              span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
+          -else
+            td
+              i =t('.not_applicable')
+            td
+              i =t('.not_applicable')
+
+  aside.sidecol
+
+    p
+      strong =t('.percent_sampled')
+      =@quality_sampling.percent
+
+      =link_to 'Edit', edit_collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling), class:'button'
+
+    p
+      strong =t('.start_time')
+      =@quality_sampling.start_time
+
+    p
+      strong =t('.previous_sampling')
+      =@quality_sampling.previous_start || t('.no_previous_sampling')
+
+    p
+      strong =t('.sample_field_size')
+      =@quality_sampling.field.size
+
+    p =t('.sidecol_explanation')
+    dl
+      dt =t('.total_pages')
+      dd =t('.total_pages_desc')
+      dt =t('.pages_sampled')
+      dd =t('.pages_sampled_desc')
+      dt =t('.pages_corrected')
+      dd =t('.pages_corrected_desc')
+      dt =t('.relative_corrections')
+      dd =t('.relative_corrections_desc')
 
 =render({ :partial => '/shared/collection_footer' })
 
