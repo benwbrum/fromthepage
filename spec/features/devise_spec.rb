@@ -41,7 +41,7 @@ describe "Devise" do
     it "redirects user to previous path (if present) after signup" do 
       # Previous page
       visit old_path
-      click_link('Sign Up To Transcribe')
+      click_link('Sign Up')
 #      visit new_user_registration_path
       page.fill_in 'User Name', with: user.login
       page.fill_in 'Email Address', with: user.email
