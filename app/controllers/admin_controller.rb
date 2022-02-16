@@ -17,17 +17,22 @@ class AdminController < ApplicationController
   def index
     @users = User.all
     @owners = User.where(owner: true)
+    
+    transcription_deeds = Deed.where(deed_type: DeedType.transcriptions_or_corrections_no_edits)
+    contributor_deeds = Deed.where(deed_type: DeedType.contributor_types)
 
     # Count stats for dashboard
-    @collections_count  = Collection.all.count
-    @articles_count     = Article.all.count
-    @works_count        = Work.all.count
-    @ia_works_count     = IaWork.all.count
-    @pages_count        = Page.all.count
-    @transcribed_count  = Page.where.not(status: nil).count
-    @notes_count        = Note.all.count
-    @users_count        = User.all.count
-    @owners_count       = User.where(owner: true).count
+    @pages_per_hour         = transcription_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
+    @contributions_per_hour = contributor_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
+    @collections_count      = Collection.all.count
+    @articles_count         = Article.all.count
+    @works_count            = Work.all.count
+    @ia_works_count         = IaWork.all.count
+    @pages_count            = Page.all.count
+    @transcribed_count      = Page.where.not(status: nil).count
+    @notes_count            = Note.all.count
+    @users_count            = User.all.count
+    @owners_count           = User.where(owner: true).count
 
     @version = ActiveRecord::Migrator.current_version
 =begin
@@ -218,9 +223,6 @@ class AdminController < ApplicationController
       @activity_project_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:collection_id)
       @unique_contributor_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:user_id)
     end
-
-    @pages_per_hour = transcription_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
-    @contributions_per_hour = contributor_deeds.where("created_at between ? and ?", Time.now - 1.hour, Time.now).count
   end
 
   def settings
