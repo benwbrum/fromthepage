@@ -123,7 +123,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def deeds
-    self.collection.deeds.where(work_id: self.works.ids)
+    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work)
   end
 
   def restricted

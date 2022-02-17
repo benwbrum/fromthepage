@@ -11,7 +11,7 @@
     -unless @quality_sampling.sampled?
       p
         =t('.not_fully_sampled_yet')
-        =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'review-button')
+        =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'button')
 
     table.datagrid.striped
       thead
@@ -78,6 +78,9 @@
 
   aside.sidecol
 
+    p
+      strong =t('.review_url')
+      =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
     p
       strong =t('.percent_sampled')
       =@quality_sampling.percent
