@@ -80,7 +80,7 @@ en:
       help: "Basic Help Text"
       suggestions_help_tab: "Suggestions for your help tab."
       link_help: "Subject Linking Help Text (not displayed if subjects are disabled)"
-      subjects_disabled: "Disable subject indexing"
+      subjects_enabled: "Enable subject indexing"
       review_type: "Review Type"
       review_type_optional: " Optional: Collaborators may request review of their transcriptions."
       review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
