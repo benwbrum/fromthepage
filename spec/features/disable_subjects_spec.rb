@@ -17,8 +17,8 @@ describe "disable subject linking", :order => :defined do
   it "disables subject indexing in a collection" do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    expect(page).to have_content("Disable subject indexing")
-    check('collection_subjects_disabled')
+    expect(page).to have_content("Enable subject indexing")
+    uncheck('collection_subjects_enabled')
     click_button('Save Changes')
     #have to find the collection again to make sure it's been updated
     collection = Collection.where(owner_user_id: @owner.id).first
@@ -90,8 +90,8 @@ describe "disable subject linking", :order => :defined do
   it "enables subject indexing" do
     visit collection_path(@collection.owner, @collection)
     page.find('.tabs').click_link("Settings")
-    expect(page).to have_content("Disable subject indexing")
-    uncheck('collection_subjects_disabled')
+    expect(page).to have_content("Enable subject indexing")
+    check('collection_subjects_enabled')
     click_button('Save Changes')
     #have to find the collection again to make sure it's been updated
     collection = Collection.where(owner_user_id: @owner.id).first
