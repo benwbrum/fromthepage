@@ -1,40 +1,40 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
 =render(partial: '/shared/review_breadcrumbs')
+.article-columns.columns
+  article.maincol
 
-p =t '.description'
 
-/TODO style table
-table.datagrid.striped
-  thead
-    tr
-      th =t('.started')
-      th =t('.sample_percentage')
-      th =t('.status')
-      th =t('.total_pages')
-      th =t('.needs_review_pages')
-      th =t('.actions')
-    tbody
-      -@quality_samplings.each do |quality_sampling|
+    p =t '.description'
+
+    /TODO style table
+    table.datagrid.striped
+      thead
         tr
-          td =quality_sampling.start_time
-          td.toleft =quality_sampling.percent
-          td 
-            -if quality_sampling.sampled?
-              =t('.sampled')
-            -else
-              =t('.needs_sampling')
-          td.aright =quality_sampling.total_field_size
-          td.aright =quality_sampling.needs_review_pages.size
-          td
-            -next_page = quality_sampling.next_unsampled_page
-            -if next_page
-              =next_page.title
-              =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, quality_sampling, next_page.id, flow: "quality-sampling"), class: 'review-button')
-            /TODO conditionalize based on status 
-            =link_to 'Show', collection_quality_sampling_path(@collection.owner, @collection, quality_sampling)
+          th =t('.started')
+          th =t('.sample_percentage')
+          th =t('.status')
+          th =t('.total_pages')
+          th =t('.needs_review_pages')
+          th 
+        tbody
+          -@quality_samplings.each do |quality_sampling|
+            tr
+              td =quality_sampling.start_time
+              td.toleft =quality_sampling.percent
+              td 
+                -if quality_sampling.sampled?
+                  =t('.sampled')
+                -else
+                  =t('.needs_sampling')
+              td.aright =quality_sampling.total_field_size
+              td.aright =quality_sampling.needs_review_pages.size
+              td
+                =link_to( t('.details'), collection_quality_sampling_path(@collection.owner, @collection, quality_sampling), class: 'button')
 
-=link_to t('.new_sampling'), new_collection_quality_sampling_path, class:'button'
+    =link_to t('.new_sampling'), new_collection_quality_sampling_path, class:'button'
 
+  aside.sidecol
+    p =t('.help_text')
 
 =render({ :partial => '/shared/collection_footer' })
 

@@ -47,10 +47,10 @@ class Work < ApplicationRecord
   before_save :update_derivatives
 
   after_save :create_version
-  after_save :update_statistic
-  after_save :update_next_untranscribed_pages
+#  after_save :update_statistic
+#  after_save :update_next_untranscribed_pages
 
-  after_destroy :cleanup_images
+#  after_destroy :cleanup_images
 
   after_create :alert_intercom
 
@@ -251,10 +251,10 @@ class Work < ApplicationRecord
   end
 
   def update_statistic(changed_page=nil) #association callbacks pass the page being added/removed, but we don't care
-    unless self.work_statistic
-      self.work_statistic = WorkStatistic.new
-    end
-    self.work_statistic.recalculate
+    # unless self.work_statistic
+    #   self.work_statistic = WorkStatistic.new
+    # end
+    # self.work_statistic.recalculate
   end
 
   def set_transcription_conventions

@@ -1,5 +1,5 @@
 class QualitySamplingsController < ApplicationController
-  before_action :set_quality_sampling, only: [:show, :edit, :update, :destroy]
+  before_action :set_quality_sampling, only: [:show, :edit, :update, :destroy, :review]
 
   # GET /quality_samplings
   def index
@@ -22,6 +22,10 @@ class QualitySamplingsController < ApplicationController
 
   # GET /quality_samplings/1/edit
   def edit
+  end
+
+  def review
+    redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling")
   end
 
   # POST /quality_samplings
