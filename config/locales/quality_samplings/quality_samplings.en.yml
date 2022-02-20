@@ -11,7 +11,6 @@ en:
       user: Contributor
       work: Work
       total_pages: Total Pages
-      percent_sampled: Percent to be  Sampled
       pages_sampled: Pages Sampled
       pages_corrected: Pages Corrected
       relative_corrections: Relative Corrections
@@ -23,10 +22,14 @@ en:
       sample: Sample
     edit:
     new:
-      description: To begin the statistical review process, we'll start by sampling a small percentage of the pages needing review.
+      description: To begin the statistical review process, we'll start by sampling a small set of the pages needing review.  Quality sampling is a trade-off between effort and rigor; choosing sample types with higher page counts or adding additional pages may provide a better analysis of the quality of contributions.
     update:
     create:
     form:
-      percent: Percent
-      percent_description: (percentage of %{page_count} pages needing review to sample)
       submit: Sample
+      sample_type: Sample Type
+      each_user: Each User
+      each_work: Each Work
+      together: Together
+      permutations: All Permutations
+      additional_pages: Additional Pages

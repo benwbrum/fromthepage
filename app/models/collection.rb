@@ -23,7 +23,7 @@ class Collection < ApplicationRecord
   has_many :quality_samplings, :dependent => :destroy
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
-  has_many :pages, through: :works
+  has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
   has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
 

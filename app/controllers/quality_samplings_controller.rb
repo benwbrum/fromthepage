@@ -64,6 +64,6 @@ class QualitySamplingsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def quality_sampling_params
-      params.require(:quality_sampling).permit(:percent, :start_time, :previous_start, :user_id, :collection_id, :field)
+      params.require(:quality_sampling).permit(:sample_type, :start_time, :previous_start, :user_id, :collection_id, :field, :additional_pages)
     end
 end
