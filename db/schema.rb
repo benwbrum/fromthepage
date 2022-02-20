@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_09_205457) do
+ActiveRecord::Schema.define(version: 2022_02_17_214352) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -563,7 +563,6 @@ ActiveRecord::Schema.define(version: 2022_02_09_205457) do
   end
 
   create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.decimal "percent", precision: 10
     t.timestamp "start_time"
     t.timestamp "previous_start"
     t.integer "user_id", null: false
@@ -571,6 +570,8 @@ ActiveRecord::Schema.define(version: 2022_02_09_205457) do
     t.text "field", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "pages_in_sample"
+    t.string "sample_type"
     t.index ["collection_id"], name: "index_quality_samplings_on_collection_id"
     t.index ["user_id"], name: "index_quality_samplings_on_user_id"
   end

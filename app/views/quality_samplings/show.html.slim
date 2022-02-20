@@ -75,6 +75,7 @@
               i =t('.not_applicable')
             td
               i =t('.not_applicable')
+          td =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
 
   aside.sidecol
 
@@ -82,10 +83,12 @@
       strong =t('.review_url')
       =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
     p
-      strong =t('.percent_sampled')
-      =@quality_sampling.percent
+      strong =t('.sample_type')
+      =t(".#{@quality_sampling.sample_type}")
 
-      =link_to 'Edit', edit_collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling), class:'button'
+    p
+      strong =t('.sample_size')
+      =t(".#{@quality_sampling.sample_type}")
 
     p
       strong =t('.start_time')
@@ -98,6 +101,9 @@
     p
       strong =t('.sample_field_size')
       =@quality_sampling.field.size
+    p
+      strong =t('.sample_set_size')
+      =@quality_sampling.pages_in_sample
 
     p =t('.sidecol_explanation')
     dl
