@@ -107,12 +107,15 @@ html lang="en-US"
         .footer_nav
           =link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
           =link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank'
-          =link_to t('.about'), about_us_path
+          =link_to t('.about'), 'https://content.fromthepage.com/about-us/'
           =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
           =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
           =mail_to 'support@fromthepage.com', t('.contact_us')
           -if request.original_url.include?("fromthepage.com")
             =link_to t('.pricing'), pricing_path
+          -if request.original_url.include?("fromthepage.com") 
+            =link_to "Transcription for Linguists", 'https://content.fromthepage.com/transcription-for-linguists/'
+            =link_to "Transcription for Archives and Special Collections", 'https://content.fromthepage.com/special-collections/'
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
         =link_to 'https://twitter.com/_FromThePage_', target: '_blank'
