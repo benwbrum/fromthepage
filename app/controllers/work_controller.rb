@@ -165,16 +165,16 @@ class WorkController < ApplicationController
     collection_convention = @work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      @work.assign_attributes(work_params.except(:transcription_conventions))
+      @work.attributes = work_params.except(:transcription_conventions)
     else
-      @work.assign_attributes(work_params)
+      @work.attributes = work_params
     end
 
     #if the slug field param is blank, set slug to original candidate
-    if params[:work][:slug] == ""
-      title = @work.title.parameterize
-      @work.assign_attributes(slug: title)
+    if work_params[:slug].blank?
+      @work.slug = @work.title.parameterize
     end
+    
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)
