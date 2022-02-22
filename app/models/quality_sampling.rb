@@ -62,11 +62,11 @@ class QualitySampling < ApplicationRecord
   end
 
   def covered_set_per_user
-    possible_field.group(:last_editor_user_id).minimum(:last_editor_user_id).values
+    possible_field.group(:last_editor_user_id).minimum('pages.id').values
   end
 
   def covered_set_per_work
-    possible_field.group(:work_id).minimum(:page_id).values
+    possible_field.group(:work_id).minimum('pages.id').values
   end
 
 
