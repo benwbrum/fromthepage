@@ -1,8 +1,10 @@
 =render(:partial => 'header', :locals => { :selected => 1 })
 
 section.admin-counters
+  .counter
   .counter(data-prefix="#{number_with_delimiter(@pages_per_hour)}") Pages Transcribed per Hour
   .counter(data-prefix="#{number_with_delimiter(@contributions_per_hour)}") Contributions per Hour
+  .counter
   =link_to admin_collection_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @collections_count}") #{'Collection'.pluralize(@collections_count)}
   =link_to admin_work_list_path do
@@ -13,7 +15,6 @@ section.admin-counters
   .counter(data-prefix="#{number_with_delimiter @pages_count}") #{'Page'.pluralize(@pages_count)}
   =link_to deed_notes_path do
     .counter.link(data-prefix="#{number_with_delimiter @notes_count}") #{'Note'.pluralize(@notes_count)}
-  .counter
   =link_to admin_owner_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @owners_count}") #{'Owner'.pluralize(@owners_count)}
   =link_to admin_user_list_path do
