@@ -11,6 +11,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
@@ -654,7 +655,23 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
-  private
+private
+  def authorized?
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+    end
+
+    if @collection &&  !current_user.like_owner?(@collection)
+      ajax_redirect_to dashboard_path
+    end
+  end
+
+  def review_authorized?
+    unless user_signed_in? && current_user.can_review?(@collection)
+      redirect_to new_user_session_path
+    end
+  end
+
 
   def set_collection
     unless @collection

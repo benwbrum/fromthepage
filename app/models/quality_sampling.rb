@@ -160,19 +160,21 @@ class QualitySampling < ApplicationRecord
     self.pages_in_sample
   end
 
+  def sampled?
+    pages_already_sampled = total_field_size - needs_review_pages.count
+    pages_already_sampled > sample_page_count
+  end
 
-  class PageSampling
-    attr_accessor :reviewed_page_count, :total_page_count, :approval_delta_sum, :corrected_page_count
-    def mean_approval_delta
-      approval_delta_sum.to_f / reviewed_page_count.to_f
+  def field
+    if self[:field].blank?
+      []
+    else
+      JSON.parse(self[:field])
     end
+  end
 
-    def initialize
-      @reviewed_page_count = 0
-      @total_page_count = 0
-      @approval_delta_sum = 0.0
-      @corrected_page_count = 0
-    end
+  def field=(array)
+    self[:field]=array.to_json
   end
 
   def max_approval_delta
@@ -182,6 +184,7 @@ class QualitySampling < ApplicationRecord
   def sampling_objects
     work_hash = {}
     user_hash = {}
+
     Page.where(id:field).each do |page|
       work_sampling = work_hash[page.work_id] ||= PageSampling.new
       user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
@@ -209,20 +212,19 @@ class QualitySampling < ApplicationRecord
     [work_hash, user_hash]
   end
 
-  def sampled?
-    pages_already_sampled = total_field_size - needs_review_pages.count
-    pages_already_sampled > sample_page_count
-  end
+  class PageSampling
+    attr_accessor :reviewed_page_count, :total_page_count, :approval_delta_sum, :corrected_page_count
+    def mean_approval_delta
+      approval_delta_sum.to_f / reviewed_page_count.to_f
+    end
 
-  def field
-    if self[:field].blank?
-      []
-    else
-      JSON.parse(self[:field])
+    def initialize
+      @reviewed_page_count = 0
+      @total_page_count = 0
+      @approval_delta_sum = 0.0
+      @corrected_page_count = 0
     end
   end
 
-  def field=(array)
-    self[:field]=array.to_json
-  end
+
 end
