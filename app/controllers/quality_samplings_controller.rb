@@ -1,9 +1,12 @@
 class QualitySamplingsController < ApplicationController
   before_action :set_quality_sampling, only: [:show, :edit, :update, :destroy, :review]
+  before_action :authorized?
+
+
 
   # GET /quality_samplings
   def index
-    @quality_samplings = @collection.quality_samplings
+    @quality_samplings = @collection.quality_samplings.order(created_at: 'desc')
   end
 
   # GET /quality_samplings/1
@@ -57,6 +60,12 @@ class QualitySamplingsController < ApplicationController
   end
 
   private
+    def authorized?
+      unless user_signed_in? && current_user.can_review?(@collection)
+        redirect_to new_user_session_path
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_quality_sampling
       @quality_sampling = QualitySampling.find(params[:id])
