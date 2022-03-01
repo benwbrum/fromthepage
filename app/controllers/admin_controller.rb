@@ -33,8 +33,24 @@ class AdminController < ApplicationController
     @notes_count            = Note.all.count
     @users_count            = User.all.count
     @owners_count           = User.where(owner: true).count
+    
+    @transcription_counts = {}
+    @contribution_counts = {}
+    @activity_project_counts = {}
+    @unique_contributor_counts = {}
+    @week_intervals=[1,2,4,12,26,52,104,156,208]
+    @week_intervals.each do |weeks_ago|
+      start_date = Date.yesterday - weeks_ago.weeks
+      end_date = start_date + 1.week
+      @transcription_counts[weeks_ago] = transcription_deeds.where("created_at between ? and ?", start_date, end_date).count
+      @contribution_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).count
+      @activity_project_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:collection_id)
+      @unique_contributor_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:user_id)
+    end
 
     @version = ActiveRecord::Migrator.current_version
+
+    
 =begin
     sql_online =
       'SELECT count(DISTINCT user_id) count '+
@@ -204,25 +220,6 @@ class AdminController < ApplicationController
 
   def page_list
     @pages = Page.order(:title).paginate(:page => params[:page], :per_page => PAGES_PER_SCREEN)
-  end
-
-  def progress_metrics
-    transcription_deeds = Deed.where(deed_type: DeedType.transcriptions_or_corrections_no_edits)
-    contributor_deeds = Deed.where(deed_type: DeedType.contributor_types)
-
-    @transcription_counts = {}
-    @contribution_counts = {}
-    @activity_project_counts = {}
-    @unique_contributor_counts = {}
-    @week_intervals=[1,2,4,12,26,52,104,156,208]
-    @week_intervals.each do |weeks_ago|
-      start_date = Date.yesterday - weeks_ago.weeks
-      end_date = start_date + 1.week
-      @transcription_counts[weeks_ago] = transcription_deeds.where("created_at between ? and ?", start_date, end_date).count
-      @contribution_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).count
-      @activity_project_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:collection_id)
-      @unique_contributor_counts[weeks_ago] = contributor_deeds.where("created_at between ? and ?", start_date, end_date).distinct.count(:user_id)
-    end
   end
 
   def settings
