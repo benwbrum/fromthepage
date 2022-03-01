@@ -1,20 +1,48 @@
 =render(:partial => 'header', :locals => { :selected => 1 })
 
 section.admin-counters
-  .counter
   .counter(data-prefix="#{number_with_delimiter(@pages_per_hour)}") Pages Transcribed per Hour
   .counter(data-prefix="#{number_with_delimiter(@contributions_per_hour)}") Contributions per Hour
-  .counter
+  .counter(data-prefix="#{number_with_delimiter @transcribed_count}") #{'Transcribed Page'.pluralize(@transcribed_count)}
+  .counter(data-prefix="#{number_with_delimiter @pages_count}") #{'Page'.pluralize(@pages_count)}
+  
+table.dmin-grid.datagrid.striped
+  thead
+    tr
+      th
+        = "Week Beginning "
+        i ="(Ago)"
+      -@week_intervals.each do |week_interval|
+        th.aright 
+          =Date.yesterday - week_interval.weeks
+          i =" (#{week_interval})"
+  tbody
+    tr
+      td Pages Transcribed
+      -@week_intervals.each do |week_interval|
+        td.aright =@transcription_counts[week_interval]
+    tr
+      td Contributions
+      -@week_intervals.each do |week_interval|
+        td.aright =@contribution_counts[week_interval]
+    tr
+      td Collections with Activity
+      -@week_intervals.each do |week_interval|
+        td.aright =@activity_project_counts[week_interval]
+    tr
+      td Unique Active Contributors
+      -@week_intervals.each do |week_interval|
+        td.aright =@unique_contributor_counts[week_interval]
+  
+.section.admin-counters
   =link_to admin_collection_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @collections_count}") #{'Collection'.pluralize(@collections_count)}
   =link_to admin_work_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @works_count}") #{'Work'.pluralize(@works_count)}
   .counter(data-prefix="#{number_with_delimiter @articles_count}") #{'Article'.pluralize(@articles_count)}
-  =link_to admin_progress_metrics_path do
-    .counter.link(data-prefix="#{number_with_delimiter @transcribed_count}") #{'Transcribed Page'.pluralize(@transcribed_count)}
-  .counter(data-prefix="#{number_with_delimiter @pages_count}") #{'Page'.pluralize(@pages_count)}
   =link_to deed_notes_path do
     .counter.link(data-prefix="#{number_with_delimiter @notes_count}") #{'Note'.pluralize(@notes_count)}
+  .counter
   =link_to admin_owner_list_path do
     .counter.link(data-prefix="#{number_with_delimiter @owners_count}") #{'Owner'.pluralize(@owners_count)}
   =link_to admin_user_list_path do

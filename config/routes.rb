@@ -27,7 +27,6 @@ Fromthepage::Application.routes.draw do
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
     get 'collection_list', to: 'admin#collection_list'
-    get 'progress_metrics', to: 'admin#progress_metrics'
     get 'work_list', to: 'admin#work_list'
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
