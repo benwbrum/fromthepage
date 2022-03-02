@@ -160,9 +160,6 @@ describe "editor actions" , :order => :defined do
       page.find('.tabs').click_link("About")
       expect(page).to have_content(@work.title)
       expect(page).to have_content("Description")
-      #Versions
-      page.find('.tabs').click_link("Versions")
-      expect(page).to have_content("Revision 0")
       #Help
       page.find('.tabs').click_link("Help")
       expect(page).to have_content("Transcribing")
