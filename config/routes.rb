@@ -116,7 +116,6 @@ Fromthepage::Application.routes.draw do
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
     get 'revert', to: 'work#revert'
-    get 'versions', to: 'work#versions'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
     patch 'update_work', :to => 'work#update_work'
