@@ -32,20 +32,7 @@ class QualitySampling < ApplicationRecord
     review_triples_by_work = review_triples.group_by { |triple| triple[0] } # work_id
     review_triples_by_user = review_triples.select{ |triple| !triple[1].nil? }.group_by{ |triple| triple[1] }# user_id
 
-    # for each work, add the relevant pages to the sample
-    review_triples_by_work.each do |work_id, review_triples_for_work|
-      # how many of this work's pages are in the set?
-      work_page_ids = all_triples_by_work[work_id].map{|work_triple| work_triple[2]}
-      work_pages_in_set = working_set & work_page_ids
-      if work_pages_in_set.size < MINIMUM_SAMPLE_SIZE
-        # append target pages
-        work_review_page_ids = review_triples_for_work.map{|review_triple| review_triple[2]}
-        work_review_page_ids_not_in_set = work_review_page_ids - working_set
-        working_set += work_review_page_ids_not_in_set.sample(MINIMUM_SAMPLE_SIZE - work_pages_in_set.size)
-      end
-    end
-
-    # do the same for users
+    # for each user, add the relevant pages to the sample
     review_triples_by_user.each do |user_id, review_triples_for_user|
       # how many of this user's pages are in the set?
       user_page_ids = all_triples_by_user[user_id].map{|user_triple| user_triple[2]}
@@ -55,6 +42,19 @@ class QualitySampling < ApplicationRecord
         user_review_page_ids = review_triples_for_user.map{|review_triple| review_triple[2]}
         user_review_page_ids_not_in_set = user_review_page_ids - working_set
         working_set += user_review_page_ids_not_in_set.sample(MINIMUM_SAMPLE_SIZE - user_pages_in_set.size)
+      end
+    end
+
+    # do the same for works
+    review_triples_by_work.each do |work_id, review_triples_for_work|
+      # how many of this work's pages are in the set?
+      work_page_ids = all_triples_by_work[work_id].map{|work_triple| work_triple[2]}
+      work_pages_in_set = working_set & work_page_ids
+      if work_pages_in_set.size < MINIMUM_SAMPLE_SIZE
+        # append target pages
+        work_review_page_ids = review_triples_for_work.map{|review_triple| review_triple[2]}
+        work_review_page_ids_not_in_set = work_review_page_ids - working_set
+        working_set += work_review_page_ids_not_in_set.sample(MINIMUM_SAMPLE_SIZE - work_pages_in_set.size)
       end
     end
 
