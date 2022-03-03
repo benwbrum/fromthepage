@@ -35,14 +35,14 @@ class Page < ApplicationRecord
   after_save :create_version
   after_save :update_sections_and_tables
   after_save :update_tex_figures
-#  after_save do
-#    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
-#  end
+  after_save do
+    work.update_next_untranscribed_pages if self == work.next_untranscribed_page or work.next_untranscribed_page.nil?
+  end
 
   after_initialize :defaults
-#  after_destroy :update_work_stats
+  after_destroy :update_work_stats
   #after_destroy :delete_deeds
-#  after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
+  after_destroy :update_featured_page, if: Proc.new {|page| page.work.featured_page == page.id}
 
   serialize :metadata, Hash
 
