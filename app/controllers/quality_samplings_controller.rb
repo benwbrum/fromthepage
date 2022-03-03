@@ -7,6 +7,9 @@ class QualitySamplingsController < ApplicationController
   # GET /quality_samplings
   def index
     # do we have a sampling?
+    if @collection.quality_sampling.present?
+      redirect_to collection_quality_sampling_path(@collection.owner, @collection, @collection.quality_sampling)
+    end
   end
 
   # GET /quality_samplings/1
