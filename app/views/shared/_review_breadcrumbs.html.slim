@@ -38,8 +38,7 @@
   -path.push("Page #{@quality_sampling.index_within_sample(@page)+1} of #{@quality_sampling.sample_page_count}")
 -elsif current_page?(collection_quality_sampling_path)
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
-  -path.push(link_to(t('.collection.quality_sampling'), collection_quality_samplings_path(@collection.owner, @collection)))
-  -path.push(t('collection.current_sampling'))
+  -path.push(t('.collection.quality_sampling'))
 
 
 -if path.present?

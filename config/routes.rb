@@ -439,6 +439,7 @@ Fromthepage::Application.routes.draw do
       patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
 
       resources :quality_samplings
+      post 'quality_sampling/initialize', as: 'initialize_sample', to: 'quality_samplings#initialize_sample'
       get 'quality_sampling/review/:id', as: 'sampling_review_flow', to: 'quality_samplings#review'
       get 'quality_sampling/:quality_sampling_id/:page_id', as: 'sampling_review_page', to: 'transcribe#display_page'
       patch 'quality_sampling/:quality_sampling_id/:user_id/:page_id', as: 'sampling_review_page_save', to: 'transcribe#save_transcription'

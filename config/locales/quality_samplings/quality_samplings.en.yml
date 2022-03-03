@@ -21,15 +21,8 @@ en:
       not_fully_sampled_yet: This sampling has not been fully sampled yet.
       sample: Sample
     edit:
-    new:
-      description: To begin the statistical review process, we'll start by sampling a small set of the pages needing review.  Quality sampling is a trade-off between effort and rigor; choosing sample types with higher page counts or adding additional pages may provide a better analysis of the quality of contributions.
     update:
+    index:
+      description: Quality sampling allows you to spot-check contributions, gathering data about quality as you review each contribution.
+      new_sampling: Start Sampling
     create:
-    form:
-      submit: Sample
-      sample_type: Sample Type
-      each_user: Each User
-      each_work: Each Work
-      together: Together
-      permutations: All Permutations
-      additional_pages: Additional Pages

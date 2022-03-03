@@ -6,32 +6,7 @@
 
     p =t '.description'
 
-    /TODO style table
-    table.datagrid.striped
-      thead
-        tr
-          th =t('.started')
-          th =t('.sample_type')
-          th =t('.status')
-          th =t('.pages_in_sample')
-          th =t('.pages_needing_review')
-          th 
-        tbody
-          -@quality_samplings.each do |quality_sampling|
-            tr
-              td =quality_sampling.start_time
-              td.toleft =t(".#{quality_sampling.sample_type}")
-              td 
-                -if quality_sampling.sampled?
-                  =t('.sampled')
-                -else
-                  =t('.needs_sampling')
-              td.aright =quality_sampling.total_field_size
-              td.aright =quality_sampling.needs_review_pages.size
-              td
-                =link_to( t('.details'), collection_quality_sampling_path(@collection.owner, @collection, quality_sampling), class: 'button')
-
-    =link_to t('.new_sampling'), new_collection_quality_sampling_path, class:'button'
+    =button_to t('.new_sampling'), collection_initialize_sample_path
 
   aside.sidecol
     p =t('.help_text')

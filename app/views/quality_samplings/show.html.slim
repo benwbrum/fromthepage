@@ -11,7 +11,7 @@
     -unless @quality_sampling.sampled?
       p
         =t('.not_fully_sampled_yet')
-        =link_to(t('.review'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'button')
+        =link_to(t('.sample'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'button')
 
     table.datagrid.striped
       thead
@@ -83,27 +83,11 @@
       strong =t('.review_url')
       =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
     p
-      strong =t('.sample_type')
-      =t(".#{@quality_sampling.sample_type}")
-
-    p
-      strong =t('.sample_size')
-      =t(".#{@quality_sampling.sample_type}")
-
-    p
-      strong =t('.start_time')
-      =@quality_sampling.start_time
-
-    p
-      strong =t('.previous_sampling')
-      =@quality_sampling.previous_start || t('.no_previous_sampling')
-
-    p
       strong =t('.sample_field_size')
-      =@quality_sampling.field.size
+      =@quality_sampling.current_field.size
     p
       strong =t('.sample_set_size')
-      =@quality_sampling.pages_in_sample
+      =@quality_sampling.sample_set.size
 
     p =t('.sidecol_explanation')
     dl
