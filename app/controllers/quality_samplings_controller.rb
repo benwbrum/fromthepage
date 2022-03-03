@@ -6,7 +6,7 @@ class QualitySamplingsController < ApplicationController
 
   # GET /quality_samplings
   def index
-    @quality_samplings = @collection.quality_samplings.order(created_at: 'desc')
+    # do we have a sampling?
   end
 
   # GET /quality_samplings/1
@@ -17,30 +17,21 @@ class QualitySamplingsController < ApplicationController
     @max_approval_delta = @quality_sampling.max_approval_delta
   end
 
-  # GET /quality_samplings/new
-  def new
-    @quality_sampling = QualitySampling.new
-    @quality_sampling.collection = @collection
-  end
-
-  # GET /quality_samplings/1/edit
-  def edit
-  end
 
   def review
     redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling")
   end
 
-  # POST /quality_samplings
-  def create
-    @quality_sampling = QualitySampling.new(quality_sampling_params)
+  def initialize_sample
+    @quality_sampling = QualitySampling.new
     @quality_sampling.collection = @collection
     @quality_sampling.user = current_user
 
     if @quality_sampling.save
-      redirect_to collection_quality_samplings_path, notice: 'Quality sampling was successfully created.'
+      # redirect_to collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling), notice: 'Quality sampling was successfully created.'
+      redirect_to collection_sampling_review_flow_path(@collection.owner, @collection, @quality_sampling)
     else
-      render :new
+      render :index
     end
   end
 

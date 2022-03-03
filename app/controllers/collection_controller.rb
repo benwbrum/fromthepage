@@ -42,7 +42,6 @@ class CollectionController < ApplicationController
     @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
     @transcribed_pages=@collection.pages.where(status: Page::COMPLETED_STATUSES).count
     @works_to_review = @collection.works.joins(:work_statistic).where.not('work_statistics.needs_review' => 0).count
-    @quality_samplings = @collection.quality_samplings.count
   end
 
   def works_to_review
