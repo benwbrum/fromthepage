@@ -38,7 +38,7 @@ class Collection < ApplicationRecord
   before_create :set_help
   before_create :set_link_help
   after_create :create_categories
-#  after_save :set_next_untranscribed_page
+  after_save :set_next_untranscribed_page
 
   mount_uploader :picture, PictureUploader
 
@@ -271,12 +271,12 @@ class Collection < ApplicationRecord
   end
 
   def update_works_stats
-    # works = self.works.includes(:work_statistic)
-    # works_stats = get_works_stats_hash(works.ids)
-    # works.each do |w|
-    #   w.work_statistic.recalculate_from_hash(works_stats[w.id])
-    # end
-    # calculate_complete
+    works = self.works.includes(:work_statistic)
+    works_stats = get_works_stats_hash(works.ids)
+    works.each do |w|
+      w.work_statistic.recalculate_from_hash(works_stats[w.id])
+    end
+    calculate_complete
   end
 
   def enable_ocr
