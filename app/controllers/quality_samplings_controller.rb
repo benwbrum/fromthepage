@@ -15,8 +15,8 @@ class QualitySamplingsController < ApplicationController
   # GET /quality_samplings/1
   def show
     @work_samplings, @user_samplings = @quality_sampling.sampling_objects
-    @works = Work.find(@work_samplings.keys)
-    @users = User.find(@user_samplings.keys)
+    @works = Work.find(@work_samplings.keys).sort{|a,b| a.id <=> b.id }
+    @users = User.find(@user_samplings.keys).sort{|a,b| a.id <=> b.id }
     @max_approval_delta = @quality_sampling.max_approval_delta
   end
 
