@@ -24,25 +24,26 @@
           th =t('.actions')
       -@users.each do |user|
         -page_sampling = @user_samplings[user.id]
-        tr
-          td
-            =user.display_name
-          td.aright
-            =page_sampling.total_page_count
-          td.aright
-            =page_sampling.reviewed_page_count
-          -if page_sampling.reviewed_page_count > 0
-            td.aright
-              =page_sampling.corrected_page_count
+        -if true || page_sampling.reviewed_page_count < page_sampling.total_page_count
+          tr
             td
-              span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
-          -else
+              =user.display_name
             td.aright
-              i =t('.not_applicable')
+              =page_sampling.total_page_count
+            td.aright
+              =page_sampling.reviewed_page_count
+            -if page_sampling.reviewed_page_count > 0
+              td.aright
+                =page_sampling.corrected_page_count
+              td
+                span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
+            -else
+              td.aright
+                i =t('.not_applicable')
+              td
+                i =t('.not_applicable')
             td
-              i =t('.not_applicable')
-          td
-            =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'button')
+              =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'button')
 
 
 
