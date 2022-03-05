@@ -77,7 +77,7 @@ class QualitySampling < ApplicationRecord
     next_unsampled_page_id = sample_set.detect do |id|
       candidate_ids.include? id # TODO add check for current editing
     end
-    Page.find(next_unsampled_page_id)
+    Page.where(id: next_unsampled_page_id).first
   end
 
   def index_within_sample(page)
@@ -112,6 +112,22 @@ class QualitySampling < ApplicationRecord
     work_hash = {}
     user_hash = {}
 
+    ## this is wrong!  we should display the stats for the whole collection, not just the set
+    # for users:
+    ## total_page_count should be all pages the user has worked on (pr just been last editor on)
+    ## approval_delta should be the total for the pages the user has been last_editor on.
+    ##    (note that we may need to calcuate the average completely differently than we do now)
+    ## corrected_page_count should be the pages that had an approval count > 0
+    # replace reviewed page count with pages needing review
+
+
+    # for works: 
+    ## total page count should be the total pages in the work
+    ## approval delta should be the total/average for the pages in the work that have one and 
+    ##    are in a completed state (since reviewed pages can be opened again)
+    ## corrected_page_count should be pages in completed state with approval delta > 0
+    #  replace reviewed_page_count with pages needing review. 
+    ## 
     Page.where(id:sample_set).each do |page|
       work_sampling = work_hash[page.work_id] ||= PageSampling.new
       user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
