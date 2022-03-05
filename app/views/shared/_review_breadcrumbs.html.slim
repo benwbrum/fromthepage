@@ -31,6 +31,8 @@
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
   -path.push(link_to(t('.collection.quality_sampling'), collection_quality_samplings_path(@collection.owner, @collection)))
   -path.push(t('collection.new_sampling'))
+-elsif @page && current_page?(collection_transcribe_page_path)
+  / no reviewer breadcrumbs here
 -elsif @page && current_page?(collection_sampling_review_page_path)
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
   -path.push(link_to(t('.collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
