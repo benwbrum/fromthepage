@@ -305,7 +305,6 @@
 .collection-stats {
   &_counters {
     text-align: center;
-    font-size: 0;
     margin-bottom: $gapSize;
     padding-bottom: $gapSize;
     border-bottom: 1px solid rgba(#000, 0.1);
@@ -315,13 +314,28 @@
       border: 0;
       padding: 0;
     }
+    .samplings {
+      width: 90%;
+      margin: 1em 0;
+      max-width: 800px;
+    }
     .counter {
-      min-width: 20%;
+      width: 30%;
+      max-width: 300px;
       line-height: 1.2;
       font-size: 2.344vw;
       vertical-align: top;
       border-left: 1px solid rgba(#000, 0.1);
       &:first-child { border: 0; }
+    }
+    a.counter {
+      text-decoration: none;
+      &:before {
+        color: inherit;
+      }
+      span {
+        text-decoration: underline;
+      }
     }
 
     @media screen and (max-width: $widthMin) {
