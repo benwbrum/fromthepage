@@ -316,7 +316,7 @@
       padding: 0;
     }
     .counter {
-      min-width: 12%;
+      min-width: 20%;
       line-height: 1.2;
       font-size: 2.344vw;
       vertical-align: top;
@@ -336,7 +336,7 @@
     font-size: 0;
     margin-bottom: $gapSize * 2;
     .counter {
-      width: 11%;
+      width: 12%;
       font-size: 15px;
       line-height: 1.2;
       vertical-align: top;
@@ -675,9 +675,49 @@ li.document_set input[type="checkbox"] {
 
 
 .approval-delta {
-  &-0 { background-color: #3B3; }
-  &-1 { background-color: #E6C; }
-  &-2 { background-color: #6AF; }
-  &-3 { background-color: #773; }
-  &-4 { background-color: #F66; }
+  color: $fgWhite;
+  padding: 0 0.5em;
+  line-height: 1.75;
+  border-radius: 3px;
+  white-space: nowrap;
+  display: inline-block;
+
+  &-0 { background-color: #490; }
+  &-1 { background-color: #990; }
+  &-2 { background-color: #E90; }
+  &-3 { background-color: #E60; }
+  &-4 { background-color: #D33; }
+}
+
+.sidecol-url {
+  padding: 0.75em;
+  border-radius: 4px;
+  background: rgba(#FFF, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(#000, 0.08);
+
+  small {
+    display: block;
+  }
+
+  a {
+    width: 100%;
+    display: block;
+    overflow: scroll;
+    padding: 0.75em 0;
+    margin: -0.75em 0;
+    white-space: nowrap;
+  }
+}
+
+.sidecol-desc {
+  margin-top: 2em;
+
+  dt {
+    margin-top: 1em;
+    font-weight: bold;
+  }
+
+  dd {
+    color: $bodyFgFaded;
+  }
 }
