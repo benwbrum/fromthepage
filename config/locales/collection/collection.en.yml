@@ -279,12 +279,14 @@ en:
       last_activity: Last Activity
       filter_works: Filter
     reviewer_dashboard:
-      one_off_contributions: One-off contributions
-      unreviewed_contributors: New contributors
+      one_off_contributions: One-off Contributions
+      unreviewed_contributors: New Contributors
       total_page: Total Page
       transcribed_page: Transcribed Page
       pages_needing_review: Pages to Review
       works_to_review: Works to Review
+      quality_sampling: Quality Sampling
+      quality_sampling_desc: Quality samplings let you spot-check contributions randomly, then evaluate pages to review based on the quantity of text corrected for a particular user or work.
     one_off_list:
       one_off_title: One-off Contributions
       one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
