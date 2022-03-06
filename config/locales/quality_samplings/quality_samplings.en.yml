@@ -20,6 +20,9 @@ en:
       relative_corrections_desc: How many corrections were required before approval, relative to other users in this sampling?
       not_fully_sampled_yet: This sampling has not been fully sampled yet.
       sample: Sample
+      not_applicable: N/A
+      sample_field_size: 'Sample Field Size:'
+      sample_set_size: 'Sample Set Size:'
     edit:
     update:
     index:

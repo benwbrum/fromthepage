@@ -1198,3 +1198,22 @@ button, .button, .dropdown dd a {
     content: attr(data-empty);
   }
 }
+
+
+.notice {
+  display: flex;
+  padding: 2rem;
+  margin: 1.5em 0;
+  border-radius: 5px;
+  align-items: center;
+  background: rgba(#000, 0.1);
+  justify-content: space-between;
+
+  &_content {
+    color: $bodyFgLight;
+  }
+
+  &_aside {
+    margin-left: 2rem;
+  }
+}

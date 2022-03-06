@@ -1,17 +1,14 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
 =render(partial: '/shared/review_breadcrumbs')
 
-.article-columns.columns
+.columns.fixed
   article.maincol
-
-
-    p =t '.description'
-
+    p.big =t('.description')
 
     -unless @quality_sampling.sampled?
-      p
-        =t('.not_fully_sampled_yet')
-        =link_to(t('.sample'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'button')
+      .notice
+        .notice_content =t('.not_fully_sampled_yet')
+        .notice_aside =link_to(t('.sample'), collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, @quality_sampling.next_unsampled_page, flow: "quality-sampling"), class: 'button')
 
     table.datagrid.striped
       thead
@@ -28,25 +25,23 @@
           tr
             td
               =user.display_name
-            td.aright
+            td.acenter
               =page_sampling.total_page_count
-            td.aright
+            td.acenter
               =page_sampling.reviewed_page_count
             -if page_sampling.reviewed_page_count > 0
-              td.aright
+              td.acenter
                 =page_sampling.corrected_page_count
               td
-                span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
+                small(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
             -else
-              td.aright
-                i =t('.not_applicable')
-              td
-                i =t('.not_applicable')
+              td =t('.not_applicable')
+              td =t('.not_applicable')
             td
               =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'button')
 
-
-
+    br
+    br
 
     table.datagrid.striped
       thead
@@ -62,36 +57,34 @@
         tr
           td
             =work.title
-          td.aright
+          td.acenter
             =page_sampling.total_page_count
-          td.aright
+          td.acenter
             =page_sampling.reviewed_page_count
           -if page_sampling.reviewed_page_count > 0
-            td.aright
+            td.acenter
               =page_sampling.corrected_page_count
             td
               span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
           -else
-            td
-              i =t('.not_applicable')
-            td
-              i =t('.not_applicable')
+            td =t('.not_applicable')
+            td =t('.not_applicable')
           td =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
 
   aside.sidecol
-
-    p
-      strong =t('.review_url')
+    .sidecol-url
+      small =t('.review_url')
       =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
-    p
-      strong =t('.sample_field_size')
-      =@quality_sampling.current_field.size
-    p
-      strong =t('.sample_set_size')
-      =@quality_sampling.sample_set.size
+    h5
+      span.fgfaded =t('.sample_field_size')
+      | &nbsp;
+      span =@quality_sampling.current_field.size
+    h5
+      span.fgfaded =t('.sample_set_size')
+      | &nbsp;
+      span =@quality_sampling.sample_set.size
 
-    p =t('.sidecol_explanation')
-    dl
+    dl.sidecol-desc
       dt =t('.total_pages')
       dd =t('.total_pages_desc')
       dt =t('.pages_sampled')
