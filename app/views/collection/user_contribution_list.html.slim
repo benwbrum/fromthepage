@@ -1,7 +1,10 @@
 =stylesheet_link_tag 'datatables.min'
 
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
-=render(partial: '/shared/review_breadcrumbs')
+-if @quality_sampling.nil?
+  =render(partial: '/shared/review_breadcrumbs', locals: { selection: :user_contribution_list})
+-else
+  =render(partial: '/shared/review_breadcrumbs', locals: { selection: :user_contribution_list_from_sampling})
 
 p =t '.user_contribution_description', user_name: @user.display_name
 
