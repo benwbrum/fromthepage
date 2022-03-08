@@ -1,7 +1,7 @@
 =stylesheet_link_tag 'datatables.min'
 
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
-=render(partial: '/shared/review_breadcrumbs')
+=render(partial: '/shared/review_breadcrumbs', locals: {selection: :one_off_list})
 
 p =t '.one_off_description'
 

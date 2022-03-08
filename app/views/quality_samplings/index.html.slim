@@ -1,5 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
-=render(partial: '/shared/review_breadcrumbs')
+=render(partial: '/shared/review_breadcrumbs', locals: {selection: :quality_sampling_index})
 
 .notice.big
   .notice_content =t('.description')

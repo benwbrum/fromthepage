@@ -1,8 +1,13 @@
 =javascript_include_tag "transcribe"
--if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || collection_sampling_review_page_path(@collection.owner, @collection, @page) || current_page?(collection_user_review_page_path(@collection.owner, @collection, @page))
+-if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || collection_sampling_review_page_path(@collection.owner, @collection, @page) || @user
   =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
   .review-breadcrumbs
-    =render(partial: '/shared/review_breadcrumbs')
+    -if current_page? collection_oneoff_review_page_path(@collection.owner, @collection, @page)
+      =render(partial: '/shared/review_breadcrumbs', locals: {selection: :one_off_review_page})
+    -elsif @quality_sampling
+      =render(partial: '/shared/review_breadcrumbs', locals: {selection: :quality_sampling_review_page})
+    -elsif @user
+      =render(partial: '/shared/review_breadcrumbs', locals: {selection: :user_review_page})
 -else
   =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 

@@ -1,5 +1,5 @@
 =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
-=render(partial: '/shared/review_breadcrumbs')
+=render(partial: '/shared/review_breadcrumbs', locals: {selection: :quality_sampling_index})
 
 .columns.fixed
   article.maincol
@@ -15,8 +15,8 @@
         tr
           th =t('.user')
           th =t('.total_pages')
-          th =t('.pages_sampled')
-          th =t('.pages_corrected')
+          th =t('.pages_to_be_reviewed')
+          th =t('.quality_score')
           th =t('.relative_corrections')
           th =t('.actions')
       -@users.each do |user|
@@ -28,14 +28,15 @@
             td.acenter
               =page_sampling.total_page_count
             td.acenter
-              =page_sampling.reviewed_page_count
+              =@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => user.id).count
             -if page_sampling.reviewed_page_count > 0
               td.acenter
-                =page_sampling.corrected_page_count
+                =(1.0 - @collection.pages.where(status: Page::COMPLETED_STATUSES).where(:last_editor_user_id => user.id).average(:approval_delta)).truncate(3)*100
+                span %
               td
                 small(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
             -else
-              td =t('.not_applicable')
+              td.acenter =t('.not_applicable')
               td =t('.not_applicable')
             td
               =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'button')
@@ -48,8 +49,8 @@
         tr
           th =t('.work')
           th =t('.total_pages')
-          th =t('.pages_sampled')
-          th =t('.pages_corrected')
+          th =t('.pages_to_be_reviewed')
+          th =t('.quality_score')
           th =t('.relative_corrections')
           th =t('.actions')
       -@works.each do |work|
@@ -72,8 +73,9 @@
           td =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
 
   aside.sidecol
+    h5
+      span.fgfaded =t('.review_url')
     .sidecol-url
-      small =t('.review_url')
       =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
     h5
       span.fgfaded =t('.sample_field_size')
@@ -85,12 +87,14 @@
       span =@quality_sampling.sample_set.size
 
     dl.sidecol-desc
+      dt =t('.review_url')
+      dd =t('.review_url_desc')
       dt =t('.total_pages')
       dd =t('.total_pages_desc')
-      dt =t('.pages_sampled')
-      dd =t('.pages_sampled_desc')
-      dt =t('.pages_corrected')
-      dd =t('.pages_corrected_desc')
+      dt =t('.pages_to_be_reviewed')
+      dd =t('.pages_to_be_reviewed_desc')
+      dt =t('.quality_score')
+      dd =t('.quality_score_desc')
       dt =t('.relative_corrections')
       dd =t('.relative_corrections_desc')
 
