@@ -48,8 +48,6 @@
   -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
   -path.push(link_to(t('.collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
   -path.push(@user.display_name)
--else
-  -binding.pry
 
 -if path.present?
   ul.breadcrumbs
