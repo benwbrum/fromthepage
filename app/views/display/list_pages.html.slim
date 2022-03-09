@@ -6,7 +6,7 @@
     p.nodata_text == t('.no_pages_in_work', link: link_to('Pages tab', work_pages_tab_path(work_id: @work.id)))
 -else
   -if @work.description.present? && !@work.ia_work
-    .big =raw(@work.description)
+    .big =raw(@work.description.gsub(/Metadata:.*/m,""))
   table.datagrid.work-contents
     tr
       th.w100 =t('.page_title')
