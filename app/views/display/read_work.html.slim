@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/work_tabs', :locals => { :selected => 1, :work_id => @work }})
 -if @work.description.present? && !@work.ia_work
-	.big =raw(@work.description)
+	.big =raw(@work.description.gsub(/Metadata:.*/m,""))
 =render({ :partial => 'multi_page'})
 
 =render({ :partial => '/shared/collection_footer' })
