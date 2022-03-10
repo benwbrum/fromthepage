@@ -1,6 +1,6 @@
 -working_pages = @pages
 
--if @pages.size == 0 && @review.nil?
+-if @pages.size == 0 && (@review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
   .nodata
     h4.nodata_title =t('.no_pages_found')
     p.nodata_text =t('.unable_to_find_pages')
