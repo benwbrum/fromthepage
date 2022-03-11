@@ -123,7 +123,7 @@ class TranscribeController  < ApplicationController
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
 
-    if params[:quality_sampling_id]
+    unless params[:quality_sampling_id].blank?
       @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     end
 
