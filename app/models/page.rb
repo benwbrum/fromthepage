@@ -214,15 +214,19 @@ class Page < ApplicationRecord
     if COMPLETED_STATUSES.include? self.status
       most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
       if most_recent_not_approver_version
-        old_transcription = most_recent_not_approver_version.transcription
+        old_transcription = most_recent_not_approver_version.transcription || ''
       else
         old_transcription = ''
       end
       new_transcription = self.source_text
 
-      self.approval_delta = 
-        Text::Levenshtein.distance(old_transcription, new_transcription).to_f / 
-          (old_transcription.size + new_transcription.size).to_f
+      if new_transcription.blank? && old_transcription.blank?
+        self.approval_delta = nil
+      else
+        self.approval_delta = 
+          Text::Levenshtein.distance(old_transcription, new_transcription).to_f / 
+            (old_transcription.size + new_transcription.size).to_f
+      end
     else # zero out deltas if the page is not complete
       self.approval_delta = nil 
     end
