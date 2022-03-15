@@ -34,7 +34,7 @@ class TranscribeController  < ApplicationController
     session[:col_id] = @collection.slug
     @current_user_alerted = false
     @field_preview ||= {}
-    if params[:quality_sampling_id]
+    unless params[:quality_sampling_id].blank?
       @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
     end
 
