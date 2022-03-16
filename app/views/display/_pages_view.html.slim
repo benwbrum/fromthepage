@@ -1,6 +1,6 @@
 -working_pages = @pages
 
--if @pages.size == 0 && (@review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
+-if @pages.size == 0 && (@incomplete_pages.blank? || @review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
   .nodata
     h4.nodata_title =t('.no_pages_found')
     p.nodata_text =t('.unable_to_find_pages')
@@ -10,6 +10,7 @@
       h4.nodata_title =t('.pages_needing_completion')
       p.nodata_text =t('.no_pages_needing_transcription_found_these_pages_are_incomplete')
       -working_pages += @incomplete_pages
+
 
   -work_title = nil
   -for page in working_pages
