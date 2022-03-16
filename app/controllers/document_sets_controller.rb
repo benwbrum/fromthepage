@@ -126,20 +126,22 @@ class DocumentSetsController < ApplicationController
   end
 
   def update
-    if params[:document_set][:slug] == ""
-      @document_set.update(document_set_params.except(:slug))
-      title = @document_set.title.parameterize
-      @document_set.update(slug: title)
-    else
-      @document_set.update(document_set_params)
+    @document_set.attributes = document_set_params
+    
+    if document_set_params[:slug].blank?
+      @document_set.slug = @document_set.title.parameterize
     end
 
-    @document_set.save!
-    flash[:notice] = t('.document_updated')
-    unless request.referrer.include?("/settings")
-      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    if @document_set.save
+      flash[:notice] = t('.document_updated')
+      unless request.referrer.include?("/settings")
+        ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+      else
+        redirect_to request.referrer
+      end
     else
-      redirect_to request.referrer
+      edit
+      render :edit
     end
   end
 
