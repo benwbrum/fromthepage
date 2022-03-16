@@ -13,6 +13,8 @@ en:
         slug: "URL"
       work:
         slug: "URL"
+      document_set:
+        slug: "URL"
     errors:
       models:
         collection:
@@ -25,4 +27,8 @@ en:
             slug:
               blank: "is required"
               invalid: "must have at least one letter"
-  
+        document_set:
+          attributes:
+            slug:
+              blank: "is required"
+              invalid: "must have at least one letter"

@@ -24,6 +24,7 @@ class DocumentSet < ApplicationRecord
   after_save :set_next_untranscribed_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :slug, format: { with: /[[:alpha:]]/ }
 
   scope :unrestricted, -> { where(is_public: true)}
   scope :restricted, -> { where(is_public: false)}
