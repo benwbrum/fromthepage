@@ -101,10 +101,6 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
   end
 
-  def versions
-    @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('page_versions.created_on DESC').paginate(page: params[:page], per_page: 20)
-  end
-
   def edit
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes

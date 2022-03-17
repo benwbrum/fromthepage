@@ -1,0 +1,45 @@
+=stylesheet_link_tag 'datatables.min'
+
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+=render(partial: '/shared/review_breadcrumbs', locals: {selection: :one_off_list})
+
+p =t '.one_off_description'
+
+
+
+
+-if @pages.empty?
+  h5 =t '.no_contributions_need_review'
+-else
+  table#contributions.stripe
+    thead
+      tr
+        th.vbottom
+        th.vbottom =t('.date')
+        th.vbottom =t('.user')
+        th.vbottom =t('.title')
+    tbody
+      -@pages.each do |page|
+        -recent_version = page.page_versions.first
+        tr
+          td.vbottom 
+            =link_to(t('.review'), collection_oneoff_review_page_path(@collection.owner, @collection, page.id, flow: 'one-off'), class: 'review-button')
+          td.vbottom =recent_version.created_on
+          td.vbottom =recent_version.user.display_name
+          td.vbottom ="#{page.title} (#{page.work.title})"
+  
+
+=render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+
+    $(document).ready( function() {
+        $('#contributions').DataTable({ 
+          paging: false,
+          language: {
+            searchPlaceholder: "#{t('.filter_contributions')}",
+            search: ""
+          } 
+        });
+    } );
