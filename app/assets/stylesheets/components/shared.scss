@@ -583,6 +583,14 @@ button, .button, .dropdown dd a {
   .icon { vertical-align: -8%; }
 }
 
+.review-breadcrumbs{
+  padding: 0;
+  width: 100%;
+  vertical-align: top;
+  display: inline-block;
+  margin: 0 0 $gapSize * 1.5 0;
+}
+
 .tabs {
   $textColor: #322;
   $borderColor: rgba(#000, 0.15);
@@ -1188,5 +1196,24 @@ button, .button, .dropdown dd a {
   [data-empty]:empty:before {
     opacity: 0.5;
     content: attr(data-empty);
+  }
+}
+
+
+.notice {
+  display: flex;
+  padding: 2rem;
+  margin: 1.5em 0;
+  border-radius: 5px;
+  align-items: center;
+  background: rgba(#000, 0.1);
+  justify-content: space-between;
+
+  &_content {
+    color: $bodyFgLight;
+  }
+
+  &_aside {
+    margin-left: 2rem;
   }
 }
