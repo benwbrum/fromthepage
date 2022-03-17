@@ -1,11 +1,22 @@
 =javascript_include_tag "transcribe"
-
-=render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
+-if current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page)) || @quality_sampling || @user
+  =render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+  .review-breadcrumbs
+    -if current_page? collection_oneoff_review_page_path(@collection.owner, @collection, @page)
+      =render(partial: '/shared/review_breadcrumbs', locals: {selection: :one_off_review_page})
+    -elsif @quality_sampling
+      =render(partial: '/shared/review_breadcrumbs', locals: {selection: :quality_sampling_review_page})
+    -elsif @user
+      =render(partial: '/shared/review_breadcrumbs', locals: {selection: :user_review_page})
+-else
+  =render({ :partial => '/shared/page_tabs', :locals => { :selected => 3, :page_id => @page.id }})
 
 -editor_class = 'page-editor' + (@auto_fullscreen == 'yes' ? ' fullscreen' : '')
 
 =form_for(@page, :url => { :action => 'save_transcription' }, :html => { class: editor_class }) do |f|
   =hidden_field_tag(:page_id, @page.id)
+  =hidden_field_tag(:flow, params[:flow])
+  =hidden_field_tag(:quality_sampling_id, params[:quality_sampling_id])
   =validation_summary @page.errors
 
   .page-toolbar

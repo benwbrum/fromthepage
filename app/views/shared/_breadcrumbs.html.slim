@@ -7,7 +7,11 @@
 -if @work && @work.title.present? && (@page || @article)
   -path.push(link_to @work.title, collection_read_work_path(@collection.owner, @collection, @work))
 
--if path.present?
-  ul.breadcrumbs
-    -path.each do |item|
-      li ==item
+-if path.present? && @quality_sampling.nil?
+  -unless (controller_name == 'transcribe' && @collection && @work && @page && current_page?(collection_oneoff_review_page_path(@collection.owner, @collection, @page))) || (@work && @page && @user && current_page?(collection_user_review_page_path))
+    ul.breadcrumbs
+      -path.each do |item|
+        li ==item
+
+
+  

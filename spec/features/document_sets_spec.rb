@@ -344,9 +344,6 @@ describe "document sets", :order => :defined do
     page.find('.tabs').click_link("Contents")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/contents"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
-    page.find('.tabs').click_link("Versions")
-    expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/versions"
-    expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)
     page.find('.tabs').click_link("Help")
     expect(page.current_path).to eq "/#{@owner.slug}/#{@set.slug}/#{work.slug}/help"
     expect(page.find('.breadcrumbs')).to have_selector('a', text: @set.title)

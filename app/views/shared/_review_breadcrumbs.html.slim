@@ -1,0 +1,55 @@
+-path = []
+
+-if    selection == :reviewer_dashboard
+  -path.push(t('.dashboard'))
+
+-elsif selection == :works_to_review
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('collection.reviewer_dashboard.works_to_review'))
+
+-elsif selection == :one_off_list
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('collection.one_off_list.one_off_title'))
+
+-elsif selection == :one_off_review_page
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('collection.one_off_list.one_off_title'),collection_one_off_list_path))
+  -path.push("#{@page.title} (#{@work.title})")
+
+-elsif selection == :recent_contributor_list
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('collection.recent_contributor_list.recent_contributor_title'))
+
+-elsif selection == :user_contribution_list
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('collection.recent_contributor_list.recent_contributor_title'), collection_recent_contributor_list_path(@collection.owner, @collection)))
+  -path.push(@user.display_name)
+
+-elsif selection == :user_review_page
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('collection.recent_contributor_list.recent_contributor_title'), collection_recent_contributor_list_path(@collection.owner, @collection)))
+  -path.push(link_to(@user.display_name, collection_user_contribution_list_path(@collection.owner, @collection, @user)))
+  -path.push("#{@page.title} (#{@work.title})")
+
+-elsif selection == :quality_sampling_index
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('collection.quality_sampling'))
+
+-elsif selection == :quality_sampling_review_page
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('.collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
+  -path.push("Page #{@quality_sampling.index_within_sample(@page)+1} of #{@quality_sampling.sample_page_count}")
+
+-elsif selection == :quality_sampling
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(t('.collection.quality_sampling'))
+
+-elsif selection == :user_contribution_list_from_sampling
+  -path.push(link_to(t('.dashboard'), collection_review_path(@collection.owner, @collection)))
+  -path.push(link_to(t('.collection.quality_sampling'), collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)))
+  -path.push(@user.display_name)
+
+-if path.present?
+  ul.breadcrumbs
+    -path.each do |item|
+      li ==item
