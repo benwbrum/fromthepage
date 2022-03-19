@@ -92,7 +92,36 @@
   .field__label {
     color: #86634d;
   }
+  .incomplete_text {
+    display: flex;
+    padding: 0.5em 0;
+    color: $bodyFgLight;
+    align-items: center;
+    margin-bottom: 0.5em;
+    justify-content: space-between;
+    border-bottom: 1px solid $borderColor;
+  }
   .incomplete_transcription {
+    margin: 0.3em 0;
+    overflow: hidden;
+    position: relative;
+    max-height: 4.125em;
+    text-overflow: ellipsis;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    &:after {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2em;
+      content: '';
+      position: absolute;
+      background-image: linear-gradient(to bottom, transparent, #f3ead7);
+    }
+    > p {
+      margin: 0;
+    }
   }
 
 
