@@ -93,13 +93,13 @@
     color: #86634d;
   }
   .incomplete_text {
-    display: flex;
-    padding: 0.5em 0;
+    text-align: center;
     color: $bodyFgLight;
-    align-items: center;
-    margin-bottom: 0.5em;
-    justify-content: space-between;
-    border-bottom: 1px solid $borderColor;
+    padding-bottom: 0.5em;
+    b {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
   }
   .incomplete_transcription {
     margin: 0.3em 0;
@@ -114,8 +114,8 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 2em;
       content: '';
+      height: 2.5em;
       position: absolute;
       background-image: linear-gradient(to bottom, transparent, #f3ead7);
     }
