@@ -62,11 +62,11 @@
             p.nodata_text ==t('.this_page_is_blank')
           -elsif transcription.present?
             -if page.status == Page::STATUS_INCOMPLETE
+              .incomplete_transcription
+                ==transcription.force_encoding('utf-8')
               .incomplete_text
                 b ==t('.this_page_is_incomplete')
                 =link_to(t('.help_complete'), action, class: 'button')
-              .incomplete_transcription
-                ==transcription.force_encoding('utf-8')
             -else
               ==transcription.force_encoding('utf-8')
 
