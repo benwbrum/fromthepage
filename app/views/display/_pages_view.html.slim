@@ -1,15 +1,15 @@
 -working_pages = @pages
 
--if @pages.size == 0 && (@incomplete_pages.blank? || @review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
-  .nodata
-    h4.nodata_title =t('.no_pages_found')
-    p.nodata_text =t('.unable_to_find_pages')
+-if @review == 'transcription' && @pages.blank? && !@incomplete_pages.blank?
+    h4.nodata_title =t('.pages_needing_completion')
+    p.nodata_text =t('.no_pages_needing_transcription_found_these_pages_are_incomplete')
+    -working_pages += @incomplete_pages
 -else
-  -if @incomplete_pages && @review == 'transcription'
-    -if @pages.count == 0
-      h4.nodata_title =t('.pages_needing_completion')
-      p.nodata_text =t('.no_pages_needing_transcription_found_these_pages_are_incomplete')
-      -working_pages += @incomplete_pages
+  h3 =t('.pages_that_need_transcription')
+  -if @pages.size == 0 && (@incomplete_pages.blank? || @review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
+    .nodata
+      h4.nodata_title =t('.no_pages_found')
+      p.nodata_text =t('.unable_to_find_pages')
 
 
   -work_title = nil
