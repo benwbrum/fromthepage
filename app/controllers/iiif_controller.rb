@@ -575,14 +575,14 @@ private
     if page.sc_canvas
       page.sc_canvas.sc_canvas_id
     elsif page.ia_leaf
-      "http://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_num}/canvas"
+      "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
     else
       url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
     end
   end
 
   def manifest_uri_from_ia(ia_work)
-    "http://iiif.archivelab.org/iiif/#{ia_work.book_id}/manifest.json"
+    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}/manifest.json"
   end
 
   def region_from_page(page)
@@ -596,11 +596,11 @@ private
         :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://iiif.io/api/image/2/level1.json',
+        :profile => 'https://iiif.io/api/image/2/level1.json',
 
        })
 
-    image_resource.service['@context'] = 'http://iiif.io/api/image/2/context.json'
+    image_resource.service['@context'] = 'https://iiif.io/api/image/2/context.json'
     image_resource
   end
 
@@ -611,11 +611,11 @@ private
         :resource_id => page.sc_canvas.sc_resource_id,
         :height => (page.base_height || page.sc_canvas.height),
         :width => (page.base_width || page.sc_canvas.width),
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
+        :profile => 'https://iiif.io/api/image/1.1/compliance/#level2',
        })
     #image_resource.service_id = page.sc_canvas.sc_service_id
     #image_resource.resource_id = page.sc_canvas.sc_resource_id
-    #image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
+    #image_resource.service['@context'] = 'https://iiif.io/api/image/1/context.json'
 
     image_resource.service['@context'] = page.sc_canvas.sc_service_context
     image_resource
@@ -644,7 +644,7 @@ private
   end
 
   def canvas_from_ia_page(page)
-    id_base = "http://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
+    id_base = "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
 
     canvas = IIIF::Presentation::Canvas.new
     canvas.label = page.title
@@ -658,10 +658,10 @@ private
         :resource_id => "#{id_base}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
+        :profile => 'https://iiif.io/api/image/1.1/compliance/#level2',
        })
 
-    image_resource.service['@context'] = "http://iiif.io/api/image/2/context.json"
+    image_resource.service['@context'] = "https://iiif.io/api/image/2/context.json"
 
     annotation = IIIF::Presentation::Annotation.new
     annotation.resource = image_resource
