@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_170045) do
+ActiveRecord::Schema.define(version: 2022_03_22_183841) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "collection_id"
     t.string "activity"
     t.integer "minutes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["date", "collection_id", "user_id", "activity"], name: "ahoy_activity_day_user_collection", unique: true
   end
 
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "user_id"
     t.string "name"
     t.text "properties"
-    t.timestamp "time"
+    t.datetime "time"
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["user_id", "name"], name: "index_ahoy_events_on_user_id_and_name"
     t.index ["visit_id", "name"], name: "index_ahoy_events_on_visit_id_and_name"
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
 
   create_table "article_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
-    t.text "source_text"
-    t.text "xml_text"
+    t.text "source_text", size: :medium
+    t.text "xml_text", size: :medium
     t.integer "user_id"
     t.integer "article_id"
     t.integer "version", default: 0
@@ -57,10 +57,10 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
 
   create_table "articles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
-    t.text "source_text"
+    t.text "source_text", size: :medium
     t.datetime "created_on"
     t.integer "lock_version", default: 0
-    t.text "xml_text"
+    t.text "xml_text", size: :medium
     t.string "graph_image"
     t.integer "collection_id"
     t.decimal "latitude", precision: 7, scale: 5
@@ -130,15 +130,15 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
   create_table "clientperf_results", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "clientperf_uri_id"
     t.integer "milliseconds"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["clientperf_uri_id"], name: "index_clientperf_results_on_clientperf_uri_id"
   end
 
   create_table "clientperf_uris", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "uri"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["uri"], name: "index_clientperf_uris_on_uri"
   end
 
@@ -150,8 +150,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
   create_table "collection_owners", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -167,8 +167,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "title"
     t.integer "owner_user_id"
     t.datetime "created_on"
-    t.text "intro_block"
-    t.string "footer_block", limit: 2000
+    t.text "intro_block", size: :medium
+    t.text "footer_block", size: :medium
     t.boolean "restricted", default: false
     t.string "picture"
     t.boolean "supports_document_sets", default: false
@@ -181,13 +181,13 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.boolean "field_based", default: false
     t.boolean "voice_recognition", default: false
     t.string "language"
-    t.string "license_key"
     t.string "text_language"
+    t.string "license_key"
     t.integer "pct_completed"
     t.string "default_orientation"
     t.boolean "is_active", default: true
-    t.integer "next_untranscribed_page_id"
     t.integer "works_count", default: 0
+    t.integer "next_untranscribed_page_id"
     t.boolean "api_access", default: false
     t.boolean "facets_enabled", default: false
     t.boolean "user_download", default: false
@@ -195,7 +195,21 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "data_entry_type", default: "text"
     t.text "description_instructions"
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
+    t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
+  end
+
+  create_table "comments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "parent_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.integer "commentable_id", default: 0, null: false
+    t.string "commentable_type", default: "", null: false
+    t.integer "depth"
+    t.string "title"
+    t.text "body", size: :medium
+    t.string "comment_type", limit: 10, default: "annotation"
+    t.string "comment_status", limit: 10
   end
 
   create_table "deeds", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -206,13 +220,15 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "article_id"
     t.integer "user_id"
     t.integer "note_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer "visit_id"
     t.string "prerender", limit: 2047
     t.string "prerender_mailer", limit: 2047
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
+    t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
+    t.index ["collection_id", "user_id"], name: "index_deeds_on_collection_id_user_id"
     t.index ["collection_id"], name: "index_deeds_on_collection_id"
     t.index ["created_at"], name: "index_deeds_on_created_at"
     t.index ["note_id"], name: "index_deeds_on_note_id"
@@ -233,13 +249,13 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "title"
     t.text "description"
     t.string "picture"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "slug"
     t.integer "pct_completed"
     t.string "default_orientation"
-    t.integer "next_untranscribed_page_id"
     t.integer "works_count", default: 0
+    t.integer "next_untranscribed_page_id"
     t.index ["collection_id"], name: "index_document_sets_on_collection_id"
     t.index ["owner_user_id"], name: "index_document_sets_on_owner_user_id"
     t.index ["slug"], name: "index_document_sets_on_slug", unique: true
@@ -255,8 +271,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "user_id"
     t.integer "collection_id"
     t.string "file"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "status", default: "new"
     t.boolean "preserve_titles", default: false
     t.boolean "ocr", default: false
@@ -295,15 +311,14 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "reporter_user_id"
     t.integer "auditor_user_id"
     t.datetime "content_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["article_version_id"], name: "index_flags_on_article_version_id"
     t.index ["auditor_user_id"], name: "index_flags_on_auditor_user_id"
     t.index ["author_user_id"], name: "index_flags_on_author_user_id"
     t.index ["note_id"], name: "index_flags_on_note_id"
     t.index ["page_version_id"], name: "index_flags_on_page_version_id"
     t.index ["reporter_user_id"], name: "index_flags_on_reporter_user_id"
-    t.index ["status"], name: "index_flags_on_status"
   end
 
   create_table "friendly_id_slugs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -326,8 +341,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "leaf_number"
     t.string "page_number"
     t.string "page_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text "ocr_text"
     t.index ["page_id"], name: "index_ia_leaves_on_page_id"
   end
@@ -349,8 +364,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "sponsor"
     t.string "image_count"
     t.integer "title_leaf"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "image_format", default: "jp2"
     t.string "archive_format", default: "zip"
     t.string "scandata_file"
@@ -380,15 +395,15 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
 
   create_table "notes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
-    t.text "body"
+    t.text "body", size: :medium
     t.integer "user_id"
     t.integer "collection_id"
     t.integer "work_id"
     t.integer "page_id"
     t.integer "parent_id"
     t.integer "depth"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["page_id"], name: "index_notes_on_page_id"
   end
 
@@ -399,9 +414,74 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.boolean "owner_stats", default: false
     t.boolean "user_activity", default: true
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean "add_as_reviewer", default: true
+  end
+
+  create_table "oai_repositories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "oai_sets", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "set_spec"
+    t.string "repository_url"
+    t.integer "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "omeka_collections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "omeka_id"
+    t.integer "collection_id"
+    t.string "title"
+    t.string "description"
+    t.integer "omeka_site_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "omeka_files", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "omeka_id"
+    t.integer "omeka_item_id"
+    t.string "mime_type"
+    t.string "fullsize_url"
+    t.string "thumbnail_url"
+    t.string "original_filename"
+    t.integer "omeka_order"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "page_id"
+    t.index ["omeka_id"], name: "index_omeka_files_on_omeka_id"
+  end
+
+  create_table "omeka_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "subject"
+    t.string "description"
+    t.string "rights"
+    t.string "creator"
+    t.string "format"
+    t.string "coverage"
+    t.integer "omeka_site_id"
+    t.integer "omeka_id"
+    t.string "omeka_url"
+    t.integer "omeka_collection_id"
+    t.integer "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "work_id"
+  end
+
+  create_table "omeka_sites", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "api_url"
+    t.string "api_key"
+    t.integer "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "page_article_links", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -419,16 +499,16 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "view"
     t.string "tag"
     t.string "description"
-    t.text "html"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text "html", size: :medium
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["controller", "view"], name: "index_page_blocks_on_controller_and_view"
   end
 
   create_table "page_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
-    t.text "transcription"
-    t.text "xml_transcription"
+    t.text "transcription", size: :medium
+    t.text "xml_transcription", size: :medium
     t.integer "user_id"
     t.integer "page_id"
     t.integer "work_version", default: 0
@@ -442,7 +522,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
 
   create_table "pages", id: :integer, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
-    t.text "source_text"
+    t.text "source_text", size: :medium
     t.string "base_image"
     t.integer "base_width"
     t.integer "base_height"
@@ -451,7 +531,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.datetime "created_on"
     t.integer "position"
     t.integer "lock_version", default: 0
-    t.text "xml_text"
+    t.text "xml_text", size: :medium
     t.integer "page_version_id"
     t.string "status"
     t.text "source_translation"
@@ -459,7 +539,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.text "search_text"
     t.string "translation_status"
     t.text "metadata"
-    t.timestamp "edit_started_at"
+    t.datetime "edit_started_at"
     t.integer "edit_started_by_user_id"
     t.integer "line_count"
     t.float "approval_delta"
@@ -475,6 +555,11 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "section_id", null: false
     t.index ["page_id", "section_id"], name: "index_pages_sections_on_page_id_and_section_id"
     t.index ["section_id", "page_id"], name: "index_pages_sections_on_section_id_and_page_id"
+  end
+
+  create_table "plugin_schema_info", id: false, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "plugin_name"
+    t.integer "version"
   end
 
   create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -494,8 +579,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "sc_canvas_id"
     t.string "sc_canvas_label"
     t.string "sc_service_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer "height"
     t.integer "width"
     t.string "sc_resource_id"
@@ -506,8 +591,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
 
   create_table "sc_collections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "at_id"
     t.integer "parent_id"
     t.string "label"
@@ -518,12 +603,12 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "work_id"
     t.integer "sc_collection_id"
     t.string "sc_id"
-    t.text "label", size: :tiny
+    t.text "label"
     t.text "metadata"
     t.string "first_sequence_id"
     t.string "first_sequence_label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "at_id"
     t.integer "collection_id"
     t.index ["sc_collection_id"], name: "index_sc_manifests_on_sc_collection_id"
@@ -535,16 +620,16 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "depth"
     t.integer "position"
     t.integer "work_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["work_id"], name: "index_sections_on_work_id"
   end
 
   create_table "sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "session_id", default: "", null: false
+    t.text "data", size: :medium
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id"
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
@@ -554,7 +639,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "position"
     t.string "label"
     t.string "input_type"
-    t.string "options"
+    t.text "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
@@ -567,8 +652,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "header"
     t.text "content"
     t.integer "row"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer "transcription_field_id"
     t.index ["page_id"], name: "index_table_cells_on_page_id"
     t.index ["section_id"], name: "index_table_cells_on_section_id"
@@ -580,8 +665,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "page_id"
     t.integer "position"
     t.text "source"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["page_id"], name: "index_tex_figures_on_page_id"
   end
 
@@ -646,6 +731,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "preferred_locale"
     t.string "api_key"
     t.string "picture"
+    t.index ["deleted"], name: "index_users_on_deleted"
     t.index ["login"], name: "index_users_on_login"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
@@ -677,7 +763,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "utm_term"
     t.string "utm_content"
     t.string "utm_campaign"
-    t.timestamp "started_at"
+    t.datetime "started_at"
     t.index ["user_id"], name: "index_visits_on_user_id"
     t.index ["visit_token"], name: "index_visits_on_visit_token", unique: true
   end
@@ -707,8 +793,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.integer "transcribed_pages"
     t.integer "annotated_pages"
     t.integer "total_pages"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer "blank_pages", default: 0
     t.integer "incomplete_pages", default: 0
     t.integer "corrected_pages"
@@ -724,17 +810,17 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
 
   create_table "works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
-    t.string "description", limit: 4000
+    t.text "description", size: :medium
     t.datetime "created_on"
     t.integer "owner_user_id"
     t.boolean "restrict_scribes", default: false
     t.integer "transcription_version", default: 0
-    t.text "physical_description"
-    t.text "document_history"
-    t.text "permission_description"
+    t.text "physical_description", size: :medium
+    t.text "document_history", size: :medium
+    t.text "permission_description", size: :medium
     t.string "location_of_composition"
     t.string "author"
-    t.text "transcription_conventions"
+    t.text "transcription_conventions", size: :medium
     t.integer "collection_id"
     t.boolean "scribes_can_edit_titles", default: false
     t.boolean "supports_translation", default: false
@@ -747,7 +833,6 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
-    t.string "uploaded_filename"
     t.string "genre"
     t.string "source_location"
     t.string "source_collection_name"
@@ -755,6 +840,7 @@ ActiveRecord::Schema.define(version: 2022_03_02_170045) do
     t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
+    t.string "uploaded_filename"
     t.text "metadata_description"
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
