@@ -2,8 +2,6 @@ div
   h1 =@collection.title
 .columns
   article.maincol
-    -if @pages.size > 0
-      h3 =t('.pages_that_need_transcription')
     =render 'display/pages_view'
 
     =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })
