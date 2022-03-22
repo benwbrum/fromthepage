@@ -133,10 +133,10 @@ class CollectionController < ApplicationController
 
   def load_settings
     @main_owner = @collection.owner
-    @owners = [@main_owner] + @collection.owners
+    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
     @works_not_in_collection = current_user.owner_works - @collection.works
-    @collaborators = @collection.collaborators
-    @reviewers = @collection.reviewers
+    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
+    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
     if User.count > 100
       @nonowners = []
       @noncollaborators = []
