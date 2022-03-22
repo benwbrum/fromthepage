@@ -28,10 +28,11 @@
             td.acenter
               =page_sampling.total_page_count
             td.acenter
-              =@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => user.id).count
-            -if page_sampling.reviewed_page_count > 0
+              =page_sampling.pages_needing_review_count
+            -if page_sampling.approval_delta_sum
               td.acenter
-                =(1.0 - @collection.pages.where(status: Page::COMPLETED_STATUSES).where(:last_editor_user_id => user.id).average(:approval_delta)).truncate(3)*100
+                /=(1.0 - @collection.pages.where(status: Page::COMPLETED_STATUSES).where(:last_editor_user_id => user.id).average(:approval_delta)).truncate(3)*100
+                =page_sampling.quality_score
                 span %
               td
                 small(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
@@ -61,10 +62,10 @@
           td.acenter
             =page_sampling.total_page_count
           td.acenter
-            =page_sampling.reviewed_page_count
-          -if page_sampling.reviewed_page_count > 0
+            =page_sampling.pages_needing_review_count
+          -if page_sampling.approval_delta_sum
             td.acenter
-              =page_sampling.corrected_page_count
+              =page_sampling.quality_score
             td
               span(class="#{approval_delta_to_style(page_sampling.mean_approval_delta, @max_approval_delta)}") =approval_delta_to_display(page_sampling.mean_approval_delta, @max_approval_delta)
           -else

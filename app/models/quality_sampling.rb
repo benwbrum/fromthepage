@@ -128,35 +128,48 @@ class QualitySampling < ApplicationRecord
     ## corrected_page_count should be pages in completed state with approval delta > 0
     #  replace reviewed_page_count with pages needing review. 
     ## 
-    Page.where(id:sample_set).each do |page|
+
+    # loop through all pages regardless of status/editor
+    self.collection.pages.each do |page|
       work_sampling = work_hash[page.work_id] ||= PageSampling.new
-      user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
-
       work_sampling.total_page_count += 1
-      user_sampling.total_page_count += 1
 
-      if page.approval_delta # unreviewed pages will have no delta
-        work_sampling.approval_delta_sum += page.approval_delta
-        user_sampling.approval_delta_sum += page.approval_delta
-
-        if page.approval_delta > 0
-          work_sampling.corrected_page_count += 1
-          user_sampling.corrected_page_count += 1
-        end
+      user_sampling = nil # blank before conditional setting
+      if page.last_editor_user_id
+        user_sampling = user_hash[page.last_editor_user_id] ||= PageSampling.new
+        user_sampling.total_page_count += 1
       end
 
       if Page::COMPLETED_STATUSES.include? page.status
         work_sampling.reviewed_page_count += 1
-        user_sampling.reviewed_page_count += 1
+        user_sampling.reviewed_page_count += 1 if user_sampling
       end
 
+      if page.status == Page::STATUS_NEEDS_REVIEW
+        work_sampling.pages_needing_review_count += 1
+        user_sampling.pages_needing_review_count += 1 if user_sampling
+      end
+
+      if page.approval_delta # unreviewed pages will have no delta
+        work_sampling.approval_delta_sum ||= 0.0
+        work_sampling.approval_delta_sum += page.approval_delta
+        if user_sampling
+          user_sampling.approval_delta_sum ||= 0.0
+          user_sampling.approval_delta_sum += page.approval_delta
+        end
+
+        if page.approval_delta > 0
+          work_sampling.corrected_page_count += 1
+          user_sampling.corrected_page_count += 1 if user_sampling
+        end
+      end
     end
 
     [work_hash, user_hash]
   end
 
   class PageSampling
-    attr_accessor :reviewed_page_count, :total_page_count, :approval_delta_sum, :corrected_page_count
+    attr_accessor :reviewed_page_count, :total_page_count, :approval_delta_sum, :corrected_page_count, :pages_needing_review_count
     def mean_approval_delta
       approval_delta_sum.to_f / reviewed_page_count.to_f
     end
@@ -164,8 +177,13 @@ class QualitySampling < ApplicationRecord
     def initialize
       @reviewed_page_count = 0
       @total_page_count = 0
-      @approval_delta_sum = 0.0
+      @approval_delta_sum = nil
       @corrected_page_count = 0
+      @pages_needing_review_count = 0
+    end
+
+    def quality_score
+      (1.0 - mean_approval_delta.truncate(3))*100
     end
   end
 

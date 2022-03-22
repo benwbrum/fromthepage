@@ -16,6 +16,8 @@ class QualitySamplingsController < ApplicationController
   def show
     @work_samplings, @user_samplings = @quality_sampling.sampling_objects
     # TODO sometimes work_samplings returns bad data -- why?
+    @work_samplings.select! { |key,sample| sample.pages_needing_review_count > 0}
+    @user_samplings.select! { |key,sample| sample.pages_needing_review_count > 0}
     @works = Work.where(id: @work_samplings.keys).sort{|a,b| a.id <=> b.id }
     @users = User.where(id: @user_samplings.keys).sort{|a,b| a.id <=> b.id }
     @max_approval_delta = @quality_sampling.max_approval_delta
