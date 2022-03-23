@@ -11,6 +11,7 @@ class CollectionController < ApplicationController
                                    :set_collection_footer_block]
 
   before_action :authorized?, :only => [:new, :edit, :update, :delete, :works_list]
+  before_action :review_authorized?, :only => [:reviewer_dashboard, :works_to_review, :one_off_list, :recent_contributor_list, :user_contribution_list]
   before_action :set_collection, :only => [:show, :edit, :update, :contributors, :new_work, :works_list, :needs_transcription_pages, :needs_review_pages, :start_transcribing]
   before_action :load_settings, :only => [:edit, :update, :upload, :edit_owners, :remove_owner, :edit_collaborators, :remove_collaborator, :edit_reviewers, :remove_reviewer]
 
@@ -35,9 +36,31 @@ class CollectionController < ApplicationController
 
   def reviewer_dashboard
     # works which have at least one page needing review
+    @one_off_page_count = @collection.pages_needing_review_for_one_off.count
+    @unreviewed_users = @collection.never_reviewed_users
+    @total_pages=@collection.pages.count
+    @pages_needing_review=@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+    @transcribed_pages=@collection.pages.where(status: Page::NOT_INCOMPLETE_STATUSES).count
+    @works_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).pluck(:work_id).uniq.count
+  end
+
+  def works_to_review
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
   end
 
+  def one_off_list
+    @pages = @collection.pages_needing_review_for_one_off
+  end
+
+  def recent_contributor_list
+    @unreviewed_users = @collection.never_reviewed_users
+  end
+
+  def user_contribution_list
+    #pages_needing_review = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW)
+    needs_review_page_ids = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW).pluck(:page_id)
+    @pages = Page.find(needs_review_page_ids)
+  end
 
   def edit_buttons
     @prefer_html = @collection.editor_buttons.where(:prefer_html => true).exists?
@@ -110,10 +133,10 @@ class CollectionController < ApplicationController
 
   def load_settings
     @main_owner = @collection.owner
-    @owners = [@main_owner] + @collection.owners
+    @owners = ([@main_owner] + @collection.owners).sort_by { |owner| owner.display_name }
     @works_not_in_collection = current_user.owner_works - @collection.works
-    @collaborators = @collection.collaborators
-    @reviewers = @collection.reviewers
+    @collaborators = @collection.collaborators.sort_by { |collaborator| collaborator.display_name }
+    @reviewers = @collection.reviewers.sort_by { |reviewer| reviewer.display_name }
     if User.count > 100
       @nonowners = []
       @noncollaborators = []
@@ -357,6 +380,8 @@ class CollectionController < ApplicationController
   end
 
   def update
+    @collection.subjects_disabled = (params[:collection][:subjects_enabled] == "0") #:subjects_enabled is "0" or "1"
+    
     if params[:collection][:slug] == ""
       @collection.update(collection_params.except(:slug))
       title = @collection.title.parameterize
@@ -631,7 +656,23 @@ class CollectionController < ApplicationController
     redirect_to edit_collection_path(@collection.owner, @collection)
   end
 
-  private
+private
+  def authorized?
+    unless user_signed_in?
+      ajax_redirect_to dashboard_path
+    end
+
+    if @collection &&  !current_user.like_owner?(@collection)
+      ajax_redirect_to dashboard_path
+    end
+  end
+
+  def review_authorized?
+    unless user_signed_in? && current_user.can_review?(@collection)
+      redirect_to new_user_session_path
+    end
+  end
+
 
   def set_collection
     unless @collection

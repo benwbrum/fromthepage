@@ -20,9 +20,10 @@ class Collection < ApplicationRecord
   has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
   has_many :bulk_exports, :dependent => :destroy
   has_many :editor_buttons, :dependent => :destroy
+  has_one :quality_sampling, :dependent => :destroy
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
-  has_many :pages, through: :works
+  has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
   has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
 
@@ -70,11 +71,27 @@ class Collection < ApplicationRecord
   def metadata_entry?
     self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
   end
+  
+  def subjects_enabled
+    !subjects_disabled
+  end
 
   module ReviewType 
     OPTIONAL = 'optional'
     REQUIRED = 'required'
     RESTRICTED = 'restricted'
+  end
+
+  def pages_needing_review_for_one_off
+    all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
+    one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
+    self.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
+  end
+
+  def never_reviewed_users
+    users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
+    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => Page::STATUS_NEEDS_REVIEW).pluck(:user_id).uniq
+    unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
   end
 
   def review_workflow

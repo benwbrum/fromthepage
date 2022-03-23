@@ -13,6 +13,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-sass-rails'
 gem 'savon', '~> 2.12.0'
 gem 'mysql2'
+gem 'text'
 
 gem "recaptcha", require: "recaptcha/rails"
 
