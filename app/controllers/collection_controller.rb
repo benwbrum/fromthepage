@@ -622,11 +622,16 @@ class CollectionController < ApplicationController
 
   def needs_transcription_pages
     work_ids = @collection.works.pluck(:id)
+    @review='transcription'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_transcription.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
+    @count = @pages.count
+    @incomplete_pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_completion.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
+    @incomplete_count = @incomplete_pages.count
   end
 
   def needs_review_pages
     work_ids = @collection.works.pluck(:id)
+    @review='review'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
   end
 
