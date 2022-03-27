@@ -415,7 +415,8 @@ Fromthepage::Application.routes.draw do
   get '/NatsStory', to: 'static#natsstory', as: :natsstory
   get '/natsstory', to: 'static#natsstory', as: :natsstory_lower
   get '/MeredithsStory', to: 'static#meredithsstory', as: :meredithsstory
-  get '/meredithsstory', to: 'static#meredithsstory', as:  :meredithsstory_lower
+  get '/meredithsstory', to: 'static#meredithsstory', as: :meredithsstory_lower
+  get '/onboarding', to: 'static#onboarding', as: :onboarding
 
   resources :document_sets, except: [:show, :create, :edit]
 
