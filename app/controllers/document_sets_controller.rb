@@ -140,8 +140,8 @@ class DocumentSetsController < ApplicationController
         redirect_to request.referrer
       end
     else
-      edit
-      render :edit
+      settings
+      render :settings
     end
   end
 
@@ -153,7 +153,7 @@ class DocumentSetsController < ApplicationController
       @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
     end
     #document set edit needs the @document set variable
-    @document_set = @collection
+    @document_set = @collection unless @document_set
     @collaborators = @document_set.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators
   end
