@@ -126,20 +126,22 @@ class DocumentSetsController < ApplicationController
   end
 
   def update
-    if params[:document_set][:slug] == ""
-      @document_set.update(document_set_params.except(:slug))
-      title = @document_set.title.parameterize
-      @document_set.update(slug: title)
-    else
-      @document_set.update(document_set_params)
+    @document_set.attributes = document_set_params
+    
+    if document_set_params[:slug].blank?
+      @document_set.slug = @document_set.title.parameterize
     end
 
-    @document_set.save!
-    flash[:notice] = t('.document_updated')
-    unless request.referrer.include?("/settings")
-      ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+    if @document_set.save
+      flash[:notice] = t('.document_updated')
+      unless request.referrer.include?("/settings")
+        ajax_redirect_to({ action: 'index', collection_id: @document_set.collection_id })
+      else
+        redirect_to request.referrer
+      end
     else
-      redirect_to request.referrer
+      settings
+      render :settings
     end
   end
 
@@ -151,7 +153,7 @@ class DocumentSetsController < ApplicationController
       @works = @collection.collection.works.where.not(id: @collection.work_ids).order(:title).paginate(page: params[:page], per_page: 20)
     end
     #document set edit needs the @document set variable
-    @document_set = @collection
+    @document_set = @collection unless @document_set
     @collaborators = @document_set.collaborators
     @noncollaborators = User.order(:display_name) - @collaborators
   end
