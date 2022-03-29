@@ -77,7 +77,11 @@ class PageController < ApplicationController
 
   def update
     page = Page.find(params[:id])
-    page.update_columns(page_params.to_h) # bypass page version callbacks
+    attributes = page_params.to_h
+    if page_params[:status].blank?
+      attributes['status'] = nil
+    end   
+    page.update_columns(attributes) # bypass page version callbacks
     flash[:notice] = t('.page_updated')
     page.work.work_statistic.recalculate if page.work.work_statistic
 
