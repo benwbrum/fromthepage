@@ -23,7 +23,7 @@
               =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
             span
               span.progress
-                -if page.status.nil?
+                -if page.status.blank?
                   -progress_pct = 0
                 -elsif page.status == Page::STATUS_INCOMPLETE
                   -progress_pct = 33
