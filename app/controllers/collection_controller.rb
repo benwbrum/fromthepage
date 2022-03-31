@@ -381,15 +381,14 @@ class CollectionController < ApplicationController
 
   def update
     @collection.subjects_disabled = (params[:collection][:subjects_enabled] == "0") #:subjects_enabled is "0" or "1"
-    
-    if params[:collection][:slug] == ""
-      @collection.update(collection_params.except(:slug))
-      title = @collection.title.parameterize
-      @collection.update(slug: title)
-    else
-      @collection.update(collection_params)
-    end
+    params[:collection].delete(:subjects_enabled)
 
+    @collection.attributes = collection_params
+
+    if collection_params[:slug].blank?
+      @collection.slug = @collection.title.parameterize
+    end
+   
     if @collection.save
       flash[:notice] = t('.notice')
       redirect_to action: 'edit', collection_id: @collection.id
@@ -622,11 +621,16 @@ class CollectionController < ApplicationController
 
   def needs_transcription_pages
     work_ids = @collection.works.pluck(:id)
+    @review='transcription'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_transcription.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
+    @count = @pages.count
+    @incomplete_pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_completion.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
+    @incomplete_count = @incomplete_pages.count
   end
 
   def needs_review_pages
     work_ids = @collection.works.pluck(:id)
+    @review='review'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
   end
 
@@ -701,6 +705,6 @@ private
   end
 
   def collection_params
-    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
+    params.require(:collection).permit(:title, :slug, :intro_block, :footer_block, :transcription_conventions, :help, :link_help, :subjects_disabled, :subjects_enabled, :review_type, :hide_completed, :text_language, :default_orientation, :voice_recognition, :picture, :user_download)
   end
 end

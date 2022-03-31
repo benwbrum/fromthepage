@@ -25,7 +25,7 @@
           -elsif field.input_type == "date"
             =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input edtf', data: { inputmask: '"alias": "datetime", "inputFormat": "isoDate"'}
           -elsif field.input_type == "select"
-            -options = field.options.split(";") unless field.options.nil?
+            -options = field.options.split(";").map{|option| option.strip} unless field.options.nil?
             =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
           -elsif field.input_type == "multiselect"
             / add aria label
