@@ -22,7 +22,7 @@
             span =t('.this_user_is_an_owner')
       tr
         th =f.label :account_type
-        td =f.select(:account_type, options_for_select([t('.individual_researcher'), t('.small_organization'), t('.large_institution'), t('.trial'), t('.legacy')], selected: @user.account_type))
+        td =f.select(:account_type, options_for_select([t('.individual_researcher'), t('.small_organization'), t('.large_institution'), t('.trial'), t('.staff'), t('.legacy')], selected: @user.account_type))
       tr
         th =f.label :start_date, t('.start_date')
         td =f.text_field :start_date, placeholder: 'YYYY-MM-DD'

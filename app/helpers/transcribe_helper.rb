@@ -62,7 +62,8 @@ module TranscribeHelper
       sources
     else
       if page.sc_canvas
-        ["#{page.sc_canvas.sc_service_id}/info.json"]
+        service_id = page.sc_canvas.sc_service_id.sub(/\/$/,'')
+        ["#{service_id}/info.json"]
       elsif page.ia_leaf
         [page.ia_leaf.iiif_image_info_url]
       elsif browser.platform.ios? && browser.webkit?

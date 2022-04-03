@@ -101,10 +101,6 @@ class WorkController < ApplicationController
     @collections = current_user.all_owner_collections
   end
 
-  def versions
-    @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('page_versions.created_on DESC').paginate(page: params[:page], per_page: 20)
-  end
-
   def edit
     @scribes = @work.scribes
     @nonscribes = User.all - @scribes
@@ -165,16 +161,16 @@ class WorkController < ApplicationController
     collection_convention = @work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      @work.assign_attributes(work_params.except(:transcription_conventions))
+      @work.attributes = work_params.except(:transcription_conventions)
     else
-      @work.assign_attributes(work_params)
+      @work.attributes = work_params
     end
 
     #if the slug field param is blank, set slug to original candidate
-    if params[:work][:slug] == ""
-      title = @work.title.parameterize
-      @work.assign_attributes(slug: title)
+    if work_params[:slug].blank?
+      @work.slug = @work.title.parameterize
     end
+    
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)

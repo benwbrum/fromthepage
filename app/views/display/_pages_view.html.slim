@@ -1,88 +1,103 @@
-    -if @pages.size == 0
-      .nodata
-        h4.nodata_title =t('.no_pages_found')
-        p.nodata_text =t('.unable_to_find_pages')
-    -else
-      -work_title = nil
-      -for page in @pages
-        -old_work_title = work_title
-        -work_title = page.work.title
-        -if !@work && work_title != old_work_title
-          h3 =work_title
-          -if page.work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
-            =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button'
+-working_pages = @pages
 
+-if @review == 'transcription' && @pages.blank? && !@incomplete_pages.blank?
+    h4.nodata_title =t('.pages_needing_completion')
+    p.nodata_text =t('.no_pages_needing_transcription_found_these_pages_are_incomplete')
+    -working_pages += @incomplete_pages
+-else
+  h3 =t('.pages_that_need_transcription')
+  -if @pages.size == 0 && (@incomplete_pages.blank? || @review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
+    .nodata
+      h4.nodata_title =t('.no_pages_found')
+      p.nodata_text =t('.unable_to_find_pages')
 
-        .work-page 
-          .work-page_thumbnail
-            -if page.ia_leaf
-              =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page) )
-            -elsif page.sc_canvas
-              =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page))
+-work_title = nil
+-for page in working_pages
+  -old_work_title = work_title
+  -work_title = page.work.title
+  -if !@work && work_title != old_work_title
+    h3 =work_title
+    -if page.work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
+      =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button'
+
+  .work-page 
+    .work-page_thumbnail
+      -if page.ia_leaf
+        =link_to(image_tag(page.ia_leaf.thumb_url, alt: page.title), page_params(page) )
+      -elsif page.sc_canvas
+        =link_to(image_tag(page.sc_canvas.thumbnail_url, alt: page.title), page_params(page))
+      -else
+        =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
+      span
+        span.progress
+          -if page.status.nil?
+            -progress_pct = 0
+          -elsif page.status == Page::STATUS_INCOMPLETE
+            -progress_pct = 33
+            span(style="width:0%")
+            span(style="width:0%")
+          -elsif page.status == Page::STATUS_NEEDS_REVIEW
+            -progress_pct = 67
+            span(style="width:0%")
+          -else
+            -progress_pct = 100
+          span(style="width:#{progress_pct}%")
+      .page_status
+        =t("page.edit.page_status_#{page.status}")
+
+    .work-page_content
+      -if page.work.pages_are_meaningful
+        h4.work-page_title =link_to page.title, page_params(page)
+
+      .work-page_text[*language_attrs(@collection)]
+        -transcription = xml_to_html(page.xml_text, false)
+        -if current_user
+          -action = page_params(page)
+        -else
+          -action = page_params(page)
+
+        -if page.status == Page::STATUS_BLANK
+          p.nodata_text ==t('.this_page_is_blank')
+        -elsif transcription.present?
+          -if page.status == Page::STATUS_INCOMPLETE
+            .incomplete_transcription
+              ==transcription.force_encoding('utf-8')
+            .incomplete_text
+              b ==t('.this_page_is_incomplete')
+              =link_to(t('.help_complete'), action, class: 'button')
+          -else
+            ==transcription.force_encoding('utf-8')
+
+        -else
+          -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
+            -if @collection.active?
+              -if page.work.ocr_correction
+                -status = t('.corrected')
+                -help = link_to('help correct', action)
+              -else
+                -status = t('.transcribed')
+                -help = link_to(t('.help_transcribe'), action)
+              p.nodata_text == t('.this_page_is_not', status: status, help: help)
             -else
-              =link_to image_tag(file_to_url(page.thumbnail_image), alt: page.title), page_params(page)
-            span
-              span.progress
-                -if page.status.nil?
-                  -progress_pct = 0
-                -elsif page.status == Page::STATUS_INCOMPLETE
-                  -progress_pct = 33
-                  span(style="width:0%")
-                  span(style="width:0%")
-                -elsif page.status == Page::STATUS_NEEDS_REVIEW
-                  -progress_pct = 67
-                  span(style="width:0%")
-                -else
-                  -progress_pct = 100
-                span(style="width:#{progress_pct}%")
-            .page_status
-              =t("page.edit.page_status_#{page.status}")
+              p.nodata_text 
+          -else
+            p.nodata_text == t('.collaboration_is_restricted')
 
-          .work-page_content
-            -if page.work.pages_are_meaningful
-              h4.work-page_title =link_to page.title, page_params(page)
+      -if page.work.supports_translation
+        button.outline.work-page_toggle-view Translation
+        .work-page_text(style="display:none")
+          -translation = xml_to_html(page.xml_translation, false)
+          -if page.translation_status == 'blank'
+            p.nodata_text == t('.this_page_is_blank')
+          -elsif translation.present?
+            ==translation.force_encoding('utf-8')
+          -else
+            -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page))
+            p.nodata_text == t('.page_not_translated', help_translate: help_translate)
 
-            .work-page_text[*language_attrs(@collection)]
-              -transcription = xml_to_html(page.xml_text, false)
-              -if current_user
-                -action = page_params(page)
-              -else
-                -action = page_params(page)
-
-              -if page.status == Page::STATUS_BLANK
-                p.nodata_text ==t('.this_page_is_blank')
-              -elsif transcription.present?
-                ==transcription.force_encoding('utf-8')
-              -else
-                -if (current_user && current_user.can_transcribe?(page.work)) || (!page.work.restrict_scribes)
-                  -if @collection.active?
-                    -if page.work.ocr_correction
-                      -status = t('.corrected')
-                      -help = link_to('help correct', action)
-                    -else
-                      -status = t('.transcribed')
-                      -help = link_to(t('.help_transcribe'), action)
-                    p.nodata_text == t('.this_page_is_not', status: status, help: help)
-                  -else
-                    p.nodata_text 
-                -else
-                  p.nodata_text == t('.collaboration_is_restricted')
-
-            -if page.work.supports_translation
-              button.outline.work-page_toggle-view Translation
-              .work-page_text(style="display:none")
-                -translation = xml_to_html(page.xml_translation, false)
-                -if page.translation_status == 'blank'
-                  p.nodata_text == t('.this_page_is_blank')
-                -elsif translation.present?
-                  ==translation.force_encoding('utf-8')
-                -else
-                  -help_translate = link_to(t('.help_translate'), collection_translate_page_path(@collection.owner, @collection, page.work, page))
-                  p.nodata_text == t('.page_not_translated', help_translate: help_translate)
-
-            -current_version = page.page_versions[0]
-            -if current_version && current_version.page_version > 0
-              small.work-page_edited
-                -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
-                -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
-                = t('.last_edit', edit_time: edit_time, user_link: user_link).html_safe
+      -current_version = page.page_versions[0]
+      -if current_version && current_version.page_version > 0
+        small.work-page_edited
+          -user_link = link_to(current_version.user.display_name, user_profile_path(current_version.user))
+          -edit_time = distance_of_time_in_words(current_version.created_on, Time.now, include_seconds: true)
+          = t('.last_edit', edit_time: edit_time, user_link: user_link).html_safe

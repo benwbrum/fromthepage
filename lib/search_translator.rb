@@ -48,7 +48,19 @@ private
     doc.xpath("//div").each { |n| n.add_next_sibling("\n")}
     doc.xpath("//abbr").each { |n| n.replace(n['expan']) unless n['expan'].blank? }
     doc.xpath("//catchword").each { |n| n.remove }
-    
+
+    table_text="\n\n"
+    doc.xpath("//tr").each do |row|
+      row.xpath('td').each do |cell|
+        table_text << cell.text
+        table_text << " "
+      end
+      table_text << "\n"
+    end
+
+    doc.xpath("//table").each { |n| n.replace(table_text)}
+
+
     no_tags = doc.text
     no_linefeeds = no_tags.gsub(/\s/, ' ')
     single_spaces = no_linefeeds.gsub(/ +/, ' ').strip

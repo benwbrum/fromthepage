@@ -112,6 +112,9 @@
 .columns {
   width: 100%;
   display: table;
+  &.fixed {
+    table-layout: fixed;
+  }
   > * {
     padding: 0 $gapSize;
     display: table-cell;
