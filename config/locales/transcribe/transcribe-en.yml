@@ -19,7 +19,12 @@ en:
       save_to_transcribed_tooltip: "Save your changes"
       save_to_needs_review_tooltip: "Save your changes"
       save_to_incomplete_tooltip: "Save an incomplete page"
-
+      preview: "Preview"
+      edit: "Edit"
+      autolink: "Autolink"
+      preview_tooltip: "Preview this page"
+      edit_tooltip: "Edit this page"
+      autolink_tooltip: "Suggest subject tags automatically"
     display_page:
       fullscreen: "Fullscreen"
       image_at_the_left: "Image at the left"

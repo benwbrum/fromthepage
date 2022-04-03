@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_10_192819) do
+ActiveRecord::Schema.define(version: 2022_03_24_010254) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -542,6 +542,8 @@ ActiveRecord::Schema.define(version: 2021_11_10_192819) do
     t.datetime "edit_started_at"
     t.integer "edit_started_by_user_id"
     t.integer "line_count"
+    t.float "approval_delta"
+    t.integer "last_editor_user_id"
     t.index ["edit_started_by_user_id"], name: "index_pages_on_edit_started_by_user_id"
     t.index ["search_text"], name: "pages_search_text_index", type: :fulltext
     t.index ["status", "work_id"], name: "index_pages_on_status_and_work_id"
@@ -558,6 +560,16 @@ ActiveRecord::Schema.define(version: 2021_11_10_192819) do
   create_table "plugin_schema_info", id: false, options: "ENGINE=MyISAM DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "plugin_name"
     t.integer "version"
+  end
+
+  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "collection_id", null: false
+    t.text "sample_set", size: :medium
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_quality_samplings_on_collection_id"
+    t.index ["user_id"], name: "index_quality_samplings_on_user_id"
   end
 
   create_table "sc_canvases", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -627,7 +639,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_192819) do
     t.integer "position"
     t.string "label"
     t.string "input_type"
-    t.string "options"
+    t.text "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["transcription_field_id"], name: "index_spreadsheet_columns_on_transcription_field_id"
@@ -832,6 +844,7 @@ ActiveRecord::Schema.define(version: 2021_11_10_192819) do
     t.text "metadata_description"
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
+    t.text "searchable_metadata"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
@@ -847,6 +860,8 @@ ActiveRecord::Schema.define(version: 2021_11_10_192819) do
   add_foreign_key "facet_configs", "metadata_coverages"
   add_foreign_key "metadata_description_versions", "users"
   add_foreign_key "metadata_description_versions", "works"
+  add_foreign_key "quality_samplings", "collections"
+  add_foreign_key "quality_samplings", "users"
   add_foreign_key "spreadsheet_columns", "transcription_fields"
   add_foreign_key "work_facets", "works"
   add_foreign_key "works", "metadata_description_versions"

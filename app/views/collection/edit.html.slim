@@ -41,16 +41,16 @@
               =f.text_area :link_help, rows: 10, value: @collection.link_help
           tr
             td(colspan="2")
-              =f.check_box :subjects_disabled, value: @collection.subjects_disabled
-              =f.label :subjects_disabled, t('.subjects_disabled')
+              =f.check_box :subjects_enabled
+              =f.label :subjects_enabled, t('.subjects_enabled')
         tr
           td(colspan="2")
-            =f.check_box :hide_completed, value: @collection.hide_completed
+            =f.check_box :hide_completed
             =f.label :hide_completed, t('.hide_completed')
         -if @collection.text_entry?
           tr
             td(colspan="2")
-              =f.check_box :user_download, value: @collection.user_download
+              =f.check_box :user_download
               =f.label :user_download, t('.user_download')
           tr
             td(colspan="2")
@@ -65,7 +65,7 @@
         -if @ssl && !@collection.field_based && @collection.text_entry?
           tr
             td(colspan="2")
-              =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
+              =f.check_box :voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, t('.voice_recognition')
         -if @collection.text_entry?
           tr

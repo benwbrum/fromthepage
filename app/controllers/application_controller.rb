@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
   #find the guest user account if a guest user session is currently active
   def guest_user
     unless session[:guest_user_id].nil?
-      User.find(session[:guest_user_id])
+      User.where(id: session[:guest_user_id]).first
     end
   end
 
