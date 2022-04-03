@@ -351,6 +351,28 @@ class IiifController < ApplicationController
     render :plain => layer.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def structured_data_field_config_endpoint
+    @transcription_field = TranscriptionField.find(params[:transcription_field_id])
+    response = transcription_field_config(@transcription_field, true)
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  def structured_data_page_config_endpoint
+    response = {}
+    response['@id'] = iiif_page_strucured_data_config_url(@collection.id)
+    response[:label] = "Transcription field configuration for #{@collection.title}"
+    response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::TRANSCRIPTION)
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
+  def structured_data_work_config_endpoint
+    response = {}
+    response['@id'] = iiif_work_strucured_data_config_url(@collection.id)
+    response[:label] = "Metadata field configuration for #{@collection.title}"
+    response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::METADATA)
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
   # endpoint containing actual contents of strucured data
   def structured_data_endpoint
     if @page
@@ -360,12 +382,14 @@ class IiifController < ApplicationController
         'within' => iiif_manifest_url(@work.id)
       }
       response = page_field_contributions(@page)
+      response[:config] = iiif_page_strucured_data_config_url(@collection.id)
     else
       on = {
         '@type' => 'sc:Manifest',
         '@id' => iiif_manifest_url(@work.id)
       }
       response = work_metadata_contributions(@work)
+      response[:config] = iiif_work_strucured_data_config_url(@collection.id)
     end
     response['on'] = on
     response['@id'] = structured_data_id(@work,@page)

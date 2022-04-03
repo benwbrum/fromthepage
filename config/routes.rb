@@ -356,6 +356,9 @@ Fromthepage::Application.routes.draw do
   get '/iiif/:work_id/status', :to => 'iiif#manifest_status'
   get '/iiif/:work_id/structured', :to => 'iiif#structured_data_endpoint', as: 'iiif_work_strucured_data'
   get '/iiif/:work_id/structured/:page_id', :to => 'iiif#structured_data_endpoint', as: 'iiif_page_strucured_data'
+  get '/iiif/:collection_id/structured/config/work', :to => 'iiif#structured_data_work_config_endpoint', as: 'iiif_work_strucured_data_config'
+  get '/iiif/:collection_id/structured/config/page', :to => 'iiif#structured_data_page_config_endpoint', as: 'iiif_page_strucured_data_config'
+  get '/iiif/structured/config/field/:transcription_field_id', :to => 'iiif#structured_data_field_config_endpoint', as: 'iiif_strucured_data_field_config'
   get '/iiif/:work_id/:page_id/status', :to => 'iiif#canvas_status'
   # {scheme}://{host}/{prefix}/{identifier}/annotation/{name}
   get '/iiif/:page_id/annotation/:annotation_type', :to => 'iiif#annotation'

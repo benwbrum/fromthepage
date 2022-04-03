@@ -615,7 +615,6 @@ module ExportHelper
   def work_metadata_contributions(work)
     {
       contributors: work_metadata_contributors_to_array,
-      configuration: field_configuration_to_array(work.collection, TranscriptionField::FieldType::METADATA),
       data: work_metadata_to_hash(work),
     }
   end
@@ -623,7 +622,6 @@ module ExportHelper
   def page_field_contributions(page)
     {
       contributors: page_contributors_to_array(page),
-      configuration: field_configuration_to_array(page.work.collection, TranscriptionField::FieldType::TRANSCRIPTION),
       data: field_data_to_hash(page),
     }
   end
@@ -635,10 +633,61 @@ module ExportHelper
   end
 
   def field_data_to_hash(page)
-    page.table_cells.map{|cell| {row: cell.row, label: cell.header, value: cell.content}}
+    collection=page.collection
+    fields = {}
+    collection.transcription_fields.each { |field| fields[field.label] = field}
+
+    page.table_cells.map do |cell| 
+      field = fields[cell.header]
+      element = {value: cell.content, label: cell.header}
+      if field #field-based project
+        element[:config] = iiif_strucured_data_field_config_url(field.id)
+        # TODO process spreadsheets here
+      else
+        element[:row] = cell.row
+      end
+
+      element
+    end
   end
 
   def spreadsheet_data_to_array
+  end
+
+  def transcription_field_config(field, include_within)
+    element = {label: field.label, input_type: field.input_type, position: field.position, line: field.line_number}
+    element['@id'] = iiif_strucured_data_field_config_url(field.id)
+    if field.options
+      if field.input_type == 'multiselect'
+        element[:options] = field.options.split(/[\n\r]+/)
+      else
+        element[:options] = field.options.split(";")
+      end
+    end
+    if field.page_number
+      element[:page_number] = field.page_number
+    end
+    if field.input_type == 'spreadsheet'
+      columns=[]
+      field.spreadsheet_columns.each do |column|
+        column_config = {label: column.label, input_type: column.input_type, position: column.position}
+        if column.options
+          column_config[:options] = column.options.split(";")
+        end
+        columns << column_config
+      end
+
+      element[:spreadsheet_columns] = columns
+    end
+    if include_within
+      if field.field_type == TranscriptionField::FieldType::TRANSCRIPTION
+        element[:within] = iiif_page_strucured_data_config_url(field.collection.id)
+      else
+        element[:within] = iiif_work_strucured_data_config_url(field.collection.id)
+      end
+    end
+
+    element
   end
 
   def field_configuration_to_array(collection, field_type)
@@ -649,30 +698,7 @@ module ExportHelper
       fields = collection.metadata_fields
     end
     fields.each do |field|
-      element = {label: field.label, input_type: field.input_type, position: field.position, line: field.line_number}
-      if field.options
-        if field.input_type == 'multiselect'
-          element[:options] = field.options.split(/[\n\r]+/)
-        else
-          element[:options] = field.options.split(";")
-        end
-      end
-      if field.page_number
-        element[:page_number] = field.page_number
-      end
-      if field.input_type == 'spreadsheet'
-        columns=[]
-        field.spreadsheet_columns.each do |column|
-          column_config = {label: column.label, input_type: column.input_type, position: column.position}
-          if column.options
-            column_config[:options] = column.options.split(";")
-          end
-          columns << column_config
-        end
-
-        element[:spreadsheet_columns] = columns
-      end
-      array << element
+      array << transcription_field_config(field, false)
     end
 
     array
