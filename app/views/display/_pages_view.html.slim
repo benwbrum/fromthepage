@@ -20,7 +20,6 @@
     -if page.work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
       =link_to t('.review_metadata'), describe_collection_work_path(@collection.owner, @collection, page.work), class: 'button review-button'
 
-
   .work-page 
     .work-page_thumbnail
       -if page.ia_leaf
