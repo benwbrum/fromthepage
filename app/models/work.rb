@@ -55,7 +55,7 @@ class Work < ApplicationRecord
   after_create :alert_intercom
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-a-zA-Z_]+/ }
+  validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
