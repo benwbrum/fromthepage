@@ -90,6 +90,7 @@ class ScCollectionsController < ApplicationController
         render 'explore_manifest', at_id: at_id
       end
     rescue => e
+      logger.error(e)
       case params[:source]
       when 'contentdm'
         flash[:error] = t('.no_manifest_exist', url: params[:source_url])
