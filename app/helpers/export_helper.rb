@@ -636,22 +636,74 @@ module ExportHelper
     collection=page.collection
     fields = {}
     collection.transcription_fields.each { |field| fields[field.label] = field}
+    spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet'}
+    columns = {}
+    spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column}
 
-    page.table_cells.map do |cell| 
-      field = fields[cell.header]
-      element = {value: cell.content, label: cell.header}
-      if field #field-based project
-        element[:config] = iiif_strucured_data_field_config_url(field.id)
-        # TODO process spreadsheets here
-      else
-        element[:row] = cell.row
+    response_array = []
+    page.table_cells.each do |cell| 
+      unless columns[cell.header]
+
+        field = fields[cell.header]
+        element = {label: cell.header, value: cell.content}
+        if field #field-based project
+          element[:config] = iiif_strucured_data_field_config_url(field.id)
+        else
+          element[:row] = cell.row
+          element[:config] = 'spreadsheet?'
+        end
+
+        response_array << element
+      end
+    end
+
+    spreadsheet_array = []
+    page.table_cells.includes(:transcription_field).group_by(&:row).each do |row, cell_array|
+      row = []
+      cell_array.each do |cell|
+        # eliminate header cells
+        unless fields[cell.header]
+          unless cell.content.blank?
+            element = {label: cell.header, value: cell.content}
+            column = columns[cell.header]
+            unless column.blank?
+              element[:config] = iiif_strucured_data_column_config_url(column.id)
+            end
+            row << element
+          end
+        end
+      end
+      spreadsheet_array << row
+    end
+
+    unless spreadsheet_array.blank?
+      spreadsheet_field = collection.transcription_fields.where(input_type: 'spreadsheet').first
+      element = {
+        data: spreadsheet_array
+      }
+      if spreadsheet_field
+        element[:config] = iiif_strucured_data_field_config_url(spreadsheet_field.id)
       end
 
-      element
+      response_array << element
     end
+
+    response_array
   end
 
-  def spreadsheet_data_to_array
+
+  def spreadsheet_column_config(column, include_within)
+    column_config = {label: column.label, input_type: column.input_type, position: column.position}
+    if column.options
+      column_config[:options] = column.options.split(";")
+    end
+    column_config['@id'] = iiif_strucured_data_column_config_url(column.id)
+
+    if include_within
+      column_config['within'] = iiif_strucured_data_field_config_url(column.transcription_field.id)
+    end
+
+    column_config
   end
 
   def transcription_field_config(field, include_within)
@@ -670,11 +722,7 @@ module ExportHelper
     if field.input_type == 'spreadsheet'
       columns=[]
       field.spreadsheet_columns.each do |column|
-        column_config = {label: column.label, input_type: column.input_type, position: column.position}
-        if column.options
-          column_config[:options] = column.options.split(";")
-        end
-        columns << column_config
+        columns << spreadsheet_column_config(column, false)
       end
 
       element[:spreadsheet_columns] = columns

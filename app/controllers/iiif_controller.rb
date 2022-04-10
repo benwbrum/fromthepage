@@ -357,6 +357,12 @@ class IiifController < ApplicationController
     render :plain => response.to_json(pretty: true), :content_type => "application/json"
   end
 
+  def structured_data_column_config_endpoint
+    @spreadsheet_column = SpreadsheetColumn.find(params[:spreadsheet_column_id])
+    response = spreadsheet_column_config(@spreadsheet_column, true)
+    render :plain => response.to_json(pretty: true), :content_type => "application/json"
+  end
+
   def structured_data_page_config_endpoint
     response = {}
     response['@id'] = iiif_page_strucured_data_config_url(@collection.id)
