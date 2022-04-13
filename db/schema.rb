@@ -562,7 +562,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.integer "version"
   end
 
-  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "collection_id", null: false
     t.text "sample_set", size: :medium

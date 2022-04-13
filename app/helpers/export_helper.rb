@@ -7,6 +7,8 @@ module ExportHelper
     preprocessed = xml_text || ''
     preprocessed.gsub!("[","\\[")
     preprocessed.gsub!("]","\\]")
+    preprocessed.gsub!('&', '&amp;') # escape ampersands
+    preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
 
     doc = REXML::Document.new(preprocessed)
