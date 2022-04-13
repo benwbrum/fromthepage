@@ -104,7 +104,7 @@ gem 'slim'
 gem 'gravatar_image_tag'
 
 #Admin masquerade as a user
-gem 'devise_masquerade', '~> 1.2.0'
+gem 'devise_masquerade', '~> 1.3.1'
 
 #friendly routes
 gem 'friendly_id'
