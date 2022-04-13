@@ -43,7 +43,11 @@ class ScCollectionsController < ApplicationController
     begin
       at_id = ContentdmTranslator.cdm_url_to_iiif(cdm_url)
       flash[:notice] = t('.using_manifest_for', url: cdm_url)
-      redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
+      if @collection
+        redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url, :collection_id => @collection.slug
+      else
+        redirect_to :action => :import, :at_id => at_id, :source => 'contentdm', :source_url => cdm_url
+      end
     rescue => e
       logger.error t('.bad_contentdm_url', url: cdm_url, message: e.message)
       flash[:error] = e.message
@@ -53,6 +57,7 @@ class ScCollectionsController < ApplicationController
 
   def import
     at_id = params[:at_id]
+
     begin
       service = find_service(at_id)
 
@@ -85,6 +90,7 @@ class ScCollectionsController < ApplicationController
         render 'explore_manifest', at_id: at_id
       end
     rescue => e
+      logger.error(e)
       case params[:source]
       when 'contentdm'
         flash[:error] = t('.no_manifest_exist', url: params[:source_url])
@@ -213,7 +219,11 @@ class ScCollectionsController < ApplicationController
       ocr_text = ocr ? 'and OCR text ' : ''
       flash[:notice] = t('.metadata_is_being_imported', ocr_text: ocr_text)
     end
-    redirect_to :controller => 'display', :action => 'read_work', :work_id => work.id
+    if @collection.text_entry?
+      redirect_to collection_read_work_path(@collection.owner, @collection, work)
+    else
+      redirect_to describe_collection_work_path(@collection.owner, @collection, work)
+    end
   end
 
   def show
@@ -261,6 +271,8 @@ class ScCollectionsController < ApplicationController
     if session[:iiif_collection]
       @collection = Collection.find_by(id: session[:iiif_collection])
       session[:iiif_collection]=nil
+      return @collection
+    else
       return @collection
     end
   end

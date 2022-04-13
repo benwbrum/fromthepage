@@ -12,11 +12,13 @@ en:
       all_complete: "All works are fully transcribed."
       start_transcribing: "Start Transcribing"
       search_the_text: "Search the text..."
-      search_by_title: "Search by title..."
+      search_by_title: "Search by title or metadata..."
       search_in_collection: "Search in collection..."
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
       pages_need_review: "Pages That Need Review"
+      pages_need_correction: "Pages That Need Correction"
+      pages_need_correction_or_transcription: "Pages That Need Correction or Transcription"
       show_more: "Show More"
       about: "About"
       works: "Works"
@@ -80,7 +82,7 @@ en:
       help: "Basic Help Text"
       suggestions_help_tab: "Suggestions for your help tab."
       link_help: "Subject Linking Help Text (not displayed if subjects are disabled)"
-      subjects_disabled: "Disable subject indexing"
+      subjects_enabled: "Enable subject indexing"
       review_type: "Review Type"
       review_type_optional: " Optional: Collaborators may request review of their transcriptions."
       review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
@@ -267,7 +269,7 @@ en:
       save: Save
     facet_form:
       filter: "Filter"
-    reviewer_dashboard:
+    works_to_review:
       description: Works with Pages Needing Review  
       no_works_need_review: No works need review
       title: Title
@@ -278,3 +280,37 @@ en:
       contributors: Contributors
       last_activity: Last Activity
       filter_works: Filter
+    reviewer_dashboard:
+      one_off_contributions: One-off Contributions
+      unreviewed_contributors: New Contributors
+      total_page: Total Page
+      transcribed_page: Transcribed Page
+      pages_needing_review: Pages to Review
+      works_to_review: Works to Review
+      quality_sampling: Quality Sampling
+      quality_sampling_desc: Quality samplings let you spot-check contributions randomly, then evaluate pages to review based on the quantity of text corrected for a particular user or work.
+    one_off_list:
+      one_off_title: One-off Contributions
+      one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
+      filter_contributions: Filter
+      review: Review
+      user: User
+      date: Date
+      title: Page (Work)
+    recent_contributor_list:
+      filter_users: Filter
+      recent_contributor_title: Recent Contributors
+      recent_contributor_description: These collaborators have begun working on the project recently, but their work has never been reviewed.
+      user: User
+      date: First Contribution Date
+      number_of_contributions: Total Contributions
+    user_contribution_list:
+      user_contribution_title: User Contributions Needing Review
+      user_contribution_description: Pages needing review by user %{user_name}
+      filter_contributions: Filter
+      review: Review
+      user: User
+      date: Date
+      title: Page (Work)
+      
+

@@ -42,9 +42,33 @@
           span =t('.always_show_fullscreen')
 
 
-      .flex-toolbar_group.push-right
+
+      -if !@collection.review_workflow
+        .flex-toolbar_group.push-right
+          =f.label 'needs_review', t('.needs_review')
+          =f.check_box('needs_review', {checked: @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW})
+
+      .flex-toolbar_group class=(@collection.review_workflow ? 'push-right' : '')
         / check status of page and configuration of collection
-        =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+        -if @work.description_status.nil? || @work.description_status == Work::DescriptionStatus::INCOMPLETE || @work.description_status == Work::DescriptionStatus::UNDESCRIBED
+          =button_tag t('.save_changes'), :name => 'save_to_incomplete', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_incomplete_tooltip')}"
+
+        -if [Work::DescriptionStatus::NEEDS_REVIEW, Work::DescriptionStatus::DESCRIBED].include?(@work.description_status)
+          -if @collection.review_workflow
+            =button_tag t('.save_changes'), :name => 'save_to_needs_review', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_needs_review_tooltip')}"
+          -else
+            =button_tag t('.save_changes'), :name => 'save_to_transcribed', type: 'submit', id: 'save_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.save_to_transcribed_tooltip')}", class: "bggreen"
+
+        -if [Work::DescriptionStatus::UNDESCRIBED, Work::DescriptionStatus::INCOMPLETE].include?(@work.description_status)
+          -if @collection.review_workflow
+            =button_tag t('.done'), :name => 'save_to_needs_review', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_needs_review_tooltip')}", class: "bggreen"
+          -else
+            =button_tag t('.done'), :name => 'save_to_transcribed', type: 'submit', id: 'finish_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.finish_to_transcribed_tooltip')}", class: "bggreen"
+
+        -if @collection.review_workflow && @work.description_status == Work::DescriptionStatus::NEEDS_REVIEW && current_user.can_review?(@collection)
+          =button_tag t('.approve'), :name => 'approve_to_transcribed', type: 'submit', id: 'approve_button_top', onclick: 'unsavedNotes(event);', title: "#{t('.approve_to_transcribed_tooltip')}", class: "bggreen"
+
+
 
 
 
@@ -71,11 +95,11 @@
 
 
     .page-column
+      -if @collection.description_instructions.present?
+        .fgfaded ==@collection.description_instructions
       .page-editarea(style=("display:none" if @preview_xml) *language_attrs(@collection))
         =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
 
-        -if @collection.description_instructions.present?
-          .fgfaded ==@collection.description_instructions
 
 h2.legend =t('notes_and_questions')
 .page-notes

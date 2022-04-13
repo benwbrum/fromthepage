@@ -9,18 +9,9 @@
 </p>
 
 <% 
-  metadata_array = [] 
-  if @work.original_metadata 
-    metadata_array = JSON(@work.original_metadata).keep_if{|e| !e["value"].blank? }.map{|e| {e["label"] => e["value"]}}
-  end
-  metadata_array += @work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page_id", "in_scope").delete_if{|k,v| v.blank?}.map{|e| {e[0] => e[1]}}
+  xml_metadata = @work.merge_metadata.map{|e| "#{e['label']}: #{e['value']}"}.join("<lb/>\n")
 %>
-<% xml_metadata = metadata_array.map do |element_hash| 
-  "<i>#{element_hash.keys.first}</i> #{element_hash.values.first}"
-end
-xml_metadata = xml_metadata.join("<lb/>\n")
-%>
-<%= xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false) %>
+<%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
 \newpage
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
