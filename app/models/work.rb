@@ -55,7 +55,7 @@ class Work < ApplicationRecord
   after_create :alert_intercom
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  validates :slug, uniqueness: { case_sensitive: true }
+  validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
@@ -303,8 +303,12 @@ class Work < ApplicationRecord
 
   def normalize_friendly_id(string)
     string = string.truncate(230, separator: ' ', omission: '')
+    unless string.match? /[[:alpha:]]/
+      string = "work-#{string}"
+    end
     super.gsub('_', '-')
   end
+
 
   def slug_candidates
     if self.slug

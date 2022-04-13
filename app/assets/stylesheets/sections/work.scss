@@ -92,6 +92,39 @@
   .field__label {
     color: #86634d;
   }
+  .incomplete_text {
+    text-align: center;
+    color: $bodyFgLight;
+    padding-bottom: 0.5em;
+    b {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  }
+  .incomplete_transcription {
+    margin: 0.3em 0;
+    overflow: hidden;
+    position: relative;
+    max-height: 4.125em;
+    text-overflow: ellipsis;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    &:after {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: '';
+      height: 2.5em;
+      position: absolute;
+      background-image: linear-gradient(to bottom, transparent, #f3ead7);
+    }
+    > p {
+      margin: 0;
+    }
+  }
+
+
 }
 
 .review-button {
