@@ -1,7 +1,7 @@
 section.collection-stats_recent
     .counter(data-prefix="#{number_with_delimiter stats[:contributors]}") #{t('.collaborator').pluralize(stats[:contributors])}
     .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_TRANSCRIPTION]}") #{t('.page').pluralize(stats[DeedType::PAGE_TRANSCRIPTION])} #{t('.transcribed')}
-    .counter(data-prefix="#{number_with_delimiter stats[DeedType::NEEDS_REVIEW]}") #{t('.page').pluralize(stats[DeedType::NEEDS_REVIEW])} #{t('.marked_needs_review')}
+    .counter(data-prefix="#{number_with_delimiter stats[DeedType::NEEDS_REVIEW]}") #{t('.page').pluralize(stats[DeedType::NEEDS_REVIEW])} #{t('.marked_needing_review')}
     .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_REVIEWED]}") #{t('.page').pluralize(stats[DeedType::PAGE_REVIEWED])} #{t('.reviewed')}
     .counter(data-prefix="#{number_with_delimiter stats[DeedType::PAGE_EDIT]}") #{t('.page')} #{t('.edit').pluralize(stats[DeedType::PAGE_EDIT])}
     -if @collection.works.where(supports_translation: true).exists?

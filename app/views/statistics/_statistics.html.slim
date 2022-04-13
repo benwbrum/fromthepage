@@ -11,23 +11,31 @@
         .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count}") #{t('.reference').pluralize(@statistics_object.mention_count)}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count}") #{t('.collaborator').pluralize(@statistics_object.contributor_count)}
     .collection-stats_counters
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count}") #{t('.page').pluralize(@statistics_object.transcription_count)} transcribed
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count}") =t('.page_edits')
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count}") #{t('.page').pluralize(@statistics_object.transcription_count)} #{t('.transcribed')}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.incomplete_page_count}") #{t('.incomplete_page').pluralize(@statistics_object.incomplete_page_count)}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.needs_review_count}") #{t('.page').pluralize(@statistics_object.needs_review_count)} #{t('.needing_review')}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.review_count}") #{t('.page').pluralize(@statistics_object.review_count)} #{t('.reviewed')}
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count}") #{t('.page')} #{t('.edit').pluralize(@statistics_object.edit_count)}
       -unless subjects_disabled
-        .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count}") #{t('.page').pluralize(@statistics_object.index_count)} indexed
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count}") #{t('.page').pluralize(@statistics_object.translation_count)} translated
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count}") #{t('.ocr_correction').pluralize(@statistics_object.ocr_count)}
+        .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count}") #{t('.page').pluralize(@statistics_object.index_count)} #{t('.indexed')}
+      -if @works.where(supports_translation: true).exists?
+        .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count}") #{t('.page').pluralize(@statistics_object.translation_count)} #{t('.translated')}
+      -if @works.where(ocr_correction: true).exists?
+        .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count}") #{t('.ocr_correction').pluralize(@statistics_object.ocr_count)}
 
   h4.legend.fglight =t('.last_days_statistics')
   section.collection-stats_recent
     .counter(data-prefix="#{number_with_delimiter @statistics_object.contributor_count(7)}") #{t('.collaborator').pluralize(@statistics_object.contributor_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(7)}") #{t('.page').pluralize(@statistics_object.transcription_count(7))} transcribed
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(7)}") #{t('.page_edits').pluralize(@statistics_object.edit_count(7))}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.transcription_count(7)}") #{t('.page').pluralize(@statistics_object.transcription_count(7))} #{t('.transcribed')}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.needs_review_count(7)}") #{t('.page').pluralize(@statistics_object.needs_review_count(7))} #{t('.marked_needing_review')}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.review_count(7)}") #{t('.page').pluralize(@statistics_object.review_count(7))} #{t('.reviewed')}
+    .counter(data-prefix="#{number_with_delimiter @statistics_object.edit_count(7)}") #{t('.page')} #{t('.edit').pluralize(@statistics_object.edit_count)}
     -unless subjects_disabled
-      .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(7)}") #{t('.page').pluralize(@statistics_object.index_count(7))} indexed
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.index_count(7)}") #{t('.page').pluralize(@statistics_object.index_count(7))} #{t('.indexed')}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.mention_count(7)}") #{t('.reference').pluralize(@statistics_object.mention_count(7))}
       .counter(data-prefix="#{number_with_delimiter @statistics_object.subject_count(7)}") #{t('.new_subject').pluralize(@statistics_object.subject_count(7))}
     .counter(data-prefix="#{number_with_delimiter @statistics_object.comment_count(7)}") #{t('.note').pluralize(@statistics_object.comment_count(7))}
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(7)}") #{t('.page').pluralize(@statistics_object.translation_count(7))} translated
-    .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(7)}") #{t('.ocr_correction').pluralize(@statistics_object.ocr_count(7))}
-
+    -if @works.where(supports_translation: true).exists?
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.translation_count(7)}") #{t('.page').pluralize(@statistics_object.translation_count(7))} #{t('.translated')}
+    -if @works.where(supports_translation: true).exists?
+      .counter(data-prefix="#{number_with_delimiter @statistics_object.ocr_count(7)}") #{t('.ocr_correction').pluralize(@statistics_object.ocr_count(7))}
