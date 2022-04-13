@@ -15,7 +15,7 @@
   :path => "#{collection_subjects_path(@collection.owner, @collection)}",
 }]
 
--if user_signed_in? && current_user.can_review?(@collection) && @collection.review_type
+-if @collection.active? && user_signed_in? && current_user.can_review?(@collection) && @collection.review_type
   -tabs +=[{\
   :name => t('.review'),
   :selected => 12,

@@ -119,7 +119,7 @@ class IaController < ApplicationController
 
   def import_work
     detail_url = params[:detail_url]
-    id = detail_url.split('/').last
+    id = detail_url.sub(/.*archive.org\/details\//,'').sub(/\/.*/,'')
 
     # pull relevant info about the work from here
     @ia_work = IaWork.new

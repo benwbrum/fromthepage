@@ -7,7 +7,9 @@
     =render 'edit'
 
     h2#manage =t('.manage_works')
-    =form_tag({:controller => 'document_sets', :action => 'settings'}, method: :get, enforce_utf8: false, class: 'collection-search') do
+    
+    =form_tag(collection_settings_path(@collection.owner, @collection), method: :get, enforce_utf8: false, class: 'collection-search') do
+      =validation_summary @collection.errors
       =hidden_field_tag('collection_id', @collection.slug)
       =search_field_tag :search, params[:search], placeholder: t('.search_for_works')
       =button_tag t('.search')

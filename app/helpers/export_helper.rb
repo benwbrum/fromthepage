@@ -7,6 +7,8 @@ module ExportHelper
     preprocessed = xml_text || ''
     preprocessed.gsub!("[","\\[")
     preprocessed.gsub!("]","\\]")
+    preprocessed.gsub!('&', '&amp;') # escape ampersands
+    preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
 
     doc = REXML::Document.new(preprocessed)
@@ -314,6 +316,9 @@ module ExportHelper
     tei = "          <category xml:id=\"S#{subject.id}\">\n"
     tei << "            <catDesc>\n"
     tei << "              <term>#{ERB::Util.html_escape(subject.title)}</term>\n"
+    unless subject.uri.blank?
+      tei << "              <idno>#{subject.uri}</idno>\n"
+    end
     tei << '              <note type="categorization">Categories:'
     subject.categories.each do |category|
       tei << '<ab>'

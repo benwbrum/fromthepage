@@ -30,9 +30,26 @@ class WorkController < ApplicationController
     @metadata_array = JSON.parse(@work.metadata_description || '[]')
   end
 
+  def needs_review_checkbox_checked
+    params[:work] && params[:work]['needs_review'] == '1'
+  end
+
   def save_description
     @field_cells = request.params[:fields]
     @metadata_array = @work.process_fields(@field_cells)
+
+    if params['save_to_incomplete'] && !needs_review_checkbox_checked 
+      @work.description_status = Work::DescriptionStatus::INCOMPLETE
+    elsif params['save_to_needs_review'] || needs_review_checkbox_checked
+      @work.description_status = Work::DescriptionStatus::NEEDS_REVIEW
+    elsif (params['save_to_transcribed'] && !needs_review_checkbox_checked) || params['approve_to_transcribed']
+      @work.description_status = Work::DescriptionStatus::DESCRIBED
+    else
+      # unexpected state
+    end
+
+
+
     if @work.save
       # TODO record_description_deed(@work)
       if @work.saved_change_to_description_status?
@@ -82,10 +99,6 @@ class WorkController < ApplicationController
   def new
     @work = Work.new
     @collections = current_user.all_owner_collections
-  end
-
-  def versions
-    @page_versions = PageVersion.joins(:page).where(['pages.work_id = ?', @work.id]).order('page_versions.created_on DESC').paginate(page: params[:page], per_page: 20)
   end
 
   def edit
@@ -148,16 +161,16 @@ class WorkController < ApplicationController
     collection_convention = @work.collection.transcription_conventions
 
     if params_convention == collection_convention
-      @work.assign_attributes(work_params.except(:transcription_conventions))
+      @work.attributes = work_params.except(:transcription_conventions)
     else
-      @work.assign_attributes(work_params)
+      @work.attributes = work_params
     end
 
     #if the slug field param is blank, set slug to original candidate
-    if params[:work][:slug] == ""
-      title = @work.title.parameterize
-      @work.assign_attributes(slug: title)
+    if work_params[:slug].blank?
+      @work.slug = @work.title.parameterize
     end
+    
     if params[:work][:collection_id] != id.to_s
       if @work.save
         change_collection(@work)

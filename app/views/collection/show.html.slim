@@ -50,7 +50,8 @@
           -if @collection.text_entry?
             .collection-work_stats
               -work_stats(work)
-              span ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
+              span 
+                ="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}"
               span
                 span.progress
                   -unless @collection.subjects_disabled
@@ -58,6 +59,9 @@
                   span(style="width:#{@progress_completed - @progress_annotated + @progress_blank}%")
                   -unless @progress_review == 0
                     span(style="width:#{@progress_review}%")
+          -else
+            .collection-work_stats
+              span =t("work.#{work.description_status}")
 
       =render(:partial => 'shared/pagination', :locals => { :model => @works, :entries_info => true })
 
@@ -97,7 +101,12 @@
       =label_tag 'search', "Search by Title", class: 'hidden'
 
     -if @collection.active? && @collection.text_entry?
-      =link_to t('.pages_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+      -if @collection.works.where(:ocr_correction => true).present? && @collection.works.where(:ocr_correction => false).present?
+        =link_to t('.pages_need_correction_or_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+      -elsif @collection.works.where(:ocr_correction => true).present?
+        =link_to t('.pages_need_correction'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
+      -else
+        =link_to t('.pages_that_need_transcription'), collection_needs_transcription_path(@collection.owner, @collection), class: 'button review-button'
 
       =link_to t('.pages_need_review'), collection_needs_review_path(@collection.owner, @collection), class: 'button review-button'
  

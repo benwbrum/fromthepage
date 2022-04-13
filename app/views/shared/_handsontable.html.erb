@@ -127,6 +127,7 @@
   };
 
   var updateHotHeight = function() {
+    document.getElementById('<%= "fields-#{transcription_field.id}" %>').value = JSON.stringify(this.getData());
     hot.updateSettings({ height: getHotHeight(hot.countRows()) });
   };
 

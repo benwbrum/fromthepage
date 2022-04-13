@@ -307,13 +307,15 @@ private
         'FromThePage URL',
         'Identifier',
         'Originating Manifest ID',
+        'Creation Date',
         'Total Pages',
         'Pages Transcribed',
         'Pages Corrected',
         'Pages Indexed',
         'Pages Translated',
         'Pages Needing Review',
-        'Pages Marked Blank'
+        'Pages Marked Blank',
+        'work_id'
       ]
 
       raw_metadata_strings = collection.works.pluck(:original_metadata)
@@ -335,13 +337,15 @@ private
           collection_read_work_url(collection.owner, collection, work),
           work.identifier,
           work.sc_manifest.nil? ? '' : work.sc_manifest.at_id,
+          work.created_on,
           work.work_statistic.total_pages,
           work.work_statistic.transcribed_pages,
           work.work_statistic.corrected_pages,
           work.work_statistic.annotated_pages,
           work.work_statistic.translated_pages,
           work.work_statistic.needs_review,
-          work.work_statistic.blank_pages
+          work.work_statistic.blank_pages,
+          work.id
         ]
 
         unless work.original_metadata.blank?
@@ -553,9 +557,11 @@ private
     # are we in row 1?  fill the running data with non-spreadsheet fields
     if rownum == 1
       cell_array.each do |cell|
-        unless cell.transcription_field.input_type == 'spreadsheet'
-          running_data << cell
-        end 
+        if cell.transcription_field
+          unless cell.transcription_field.input_type == 'spreadsheet'
+            running_data << cell
+          end 
+        end
       end
     else
       # are we in row 2 or greater?

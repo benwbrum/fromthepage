@@ -1,0 +1,46 @@
+=stylesheet_link_tag 'datatables.min'
+
+=render({ :partial => '/shared/collection_tabs', :locals => { :selected => 12, :collection_id => @collection.id }})
+=render(partial: '/shared/review_breadcrumbs', locals: { selection: :recent_contributor_list})
+
+p =t '.recent_contributor_description'
+
+
+
+
+-if @unreviewed_users.empty?
+  h5 =t '.no_contributions_need_review'
+-else
+  table#contributions.stripe
+    thead
+      tr
+        th.vbottom
+        th.vbottom =t('.user')
+        th.vbottom =t('.date')
+        th.vbottom =t('.number_of_contributions')
+    tbody
+      -@unreviewed_users.each do |user|
+        -user_deeds = @collection.deeds.where(user_id: user.id)
+        tr
+          td.vbottom 
+            =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'review-button')
+          td.vbottom =user.display_name
+          td.vbottom =user_deeds.last.created_at
+          td.vbottom =user_deeds.count
+  
+
+=render({ :partial => '/shared/collection_footer' })
+
+-content_for :javascript
+  javascript:
+
+    $(document).ready( function() {
+        $('#contributions').DataTable({ 
+          paging: false,
+          order: [[2, "desc"]],
+          language: {
+            searchPlaceholder: "#{t('.filter_users')}",
+            search: ""
+          } 
+        });
+    } );

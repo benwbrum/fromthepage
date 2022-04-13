@@ -24,6 +24,7 @@ class DocumentSet < ApplicationRecord
   after_save :set_next_untranscribed_page
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :slug, format: { with: /[[:alpha:]]/ }
 
   scope :unrestricted, -> { where(is_public: true)}
   scope :restricted, -> { where(is_public: false)}
@@ -123,7 +124,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def deeds
-    self.collection.deeds.where(work_id: self.works.ids)
+    self.collection.deeds.where(work_id: self.works.ids).joins(:work).includes(:work)
   end
 
   def restricted
@@ -243,7 +244,7 @@ class DocumentSet < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR original_metadata like ?", "%#{search}%", "%#{search}%")
+    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
   def search_collection_works(search)

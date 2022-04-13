@@ -1,6 +1,25 @@
 class Work < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+
+  PUBLIC_ATTRIBUTES =
+    ["title",
+     "description",
+     "created_on",
+     "physical_description",
+     "document_history",
+     "permission_description",
+     "location_of_composition",
+     "author",
+     "identifier",
+     "genre",
+     "source_location",
+     "source_collection_name",
+     "source_box_folder",
+     "in_scope",
+     "editorial_notes",
+     "document_date",
+     "uploaded_filename"]
   
   has_many :pages, -> { order 'position' }, :dependent => :destroy, :after_add => :update_statistic, :after_remove => :update_statistic
   belongs_to :owner, :class_name => 'User', :foreign_key => 'owner_user_id', optional: true
@@ -25,6 +44,8 @@ class Work < ApplicationRecord
   has_many :bulk_exports, :dependent => :delete_all
   has_many :metadata_description_versions, -> { order 'version_number DESC' }, :dependent => :destroy
 
+  before_save :update_derivatives
+
   after_save :create_version
   after_save :update_statistic
   after_save :update_next_untranscribed_pages
@@ -34,7 +55,7 @@ class Work < ApplicationRecord
   after_create :alert_intercom
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
-  validates :slug, uniqueness: { case_sensitive: true }
+  validates :slug, uniqueness: { case_sensitive: true }, format: { with: /[-_[:alpha:]]/ }
   validate :document_date_is_edtf
 
   mount_uploader :picture, PictureUploader
@@ -48,7 +69,7 @@ class Work < ApplicationRecord
   scope :order_by_translation_completed, -> { joins(:work_statistic).reorder('work_statistics.translation_complete DESC')}
   scope :incomplete_transcription, -> { where(supports_translation: false).joins(:work_statistic).where.not(work_statistics: {complete: 100})}
   scope :incomplete_translation, -> { where(supports_translation: true).joins(:work_statistic).where.not(work_statistics: {translation_complete: 100})}
-  scope :incomplete_description, -> { where(description_status: DescriptionStatus::UNDESCRIBED) }
+  scope :incomplete_description, -> { where(description_status: DescriptionStatus::NEEDS_WORK) }
 
   scope :ocr_enabled, -> { where(ocr_correction: true) }
   scope :ocr_disabled, -> { where(ocr_correction: false) }
@@ -56,8 +77,15 @@ class Work < ApplicationRecord
 
   module DescriptionStatus
     UNDESCRIBED = 'undescribed'
+    NEEDS_REVIEW = 'needsreview'
+    INCOMPLETE = 'incomplete'
     DESCRIBED = 'described'
+    NEEDS_WORK = [
+      UNDESCRIBED,
+      INCOMPLETE
+    ]
   end
+
 
 
   module TitleStyle
@@ -87,6 +115,30 @@ class Work < ApplicationRecord
         nil
       end
     end
+  end
+
+  def update_derivatives
+    # searchable_metadata is currently the only derivative
+    metadata_hash = self.merge_metadata(true)
+    value_array = metadata_hash.map {|e| e['value']}
+
+    self.searchable_metadata = value_array.flatten.join("\n\n")
+  end
+
+  def merge_metadata(include_user=false)
+    metadata = []
+    if self.original_metadata
+      metadata += JSON[self.original_metadata]
+    end
+    work_metadata = self.attributes.select{|k,v| PUBLIC_ATTRIBUTES.include?(k) && !v.blank?}
+
+    work_metadata.each_pair { |label,value| metadata << { "label" => label.titleize, "value" => value.to_s } }
+
+    if include_user && !self.metadata_description.blank?
+      metadata += JSON[self.metadata_description]
+    end
+
+    metadata
   end
 
 
@@ -251,8 +303,12 @@ class Work < ApplicationRecord
 
   def normalize_friendly_id(string)
     string = string.truncate(230, separator: ' ', omission: '')
+    unless string.match? /[[:alpha:]]/
+      string = "work-#{string}"
+    end
     super.gsub('_', '-')
   end
+
 
   def slug_candidates
     if self.slug

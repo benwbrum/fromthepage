@@ -41,16 +41,16 @@
               =f.text_area :link_help, rows: 10, value: @collection.link_help
           tr
             td(colspan="2")
-              =f.check_box :subjects_disabled, value: @collection.subjects_disabled
-              =f.label :subjects_disabled, t('.subjects_disabled')
+              =f.check_box :subjects_enabled
+              =f.label :subjects_enabled, t('.subjects_enabled')
         tr
           td(colspan="2")
-            =f.check_box :hide_completed, value: @collection.hide_completed
+            =f.check_box :hide_completed
             =f.label :hide_completed, t('.hide_completed')
         -if @collection.text_entry?
           tr
             td(colspan="2")
-              =f.check_box :user_download, value: @collection.user_download
+              =f.check_box :user_download
               =f.label :user_download, t('.user_download')
           tr
             td(colspan="2")
@@ -65,7 +65,7 @@
         -if @ssl && !@collection.field_based && @collection.text_entry?
           tr
             td(colspan="2")
-              =f.check_box :voice_recognition, value: @collection.voice_recognition, onchange: 'showLang(event)'
+              =f.check_box :voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, t('.voice_recognition')
         -if @collection.text_entry?
           tr
@@ -167,7 +167,6 @@
           span =t('.revert_document_based_transcription')
         =link_to t('.edit_fields'), transcription_field_edit_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')
 
-    -if feature_enabled?(:description)
       h3 =t('.metadata_entry')
       -if @collection.metadata_entry?
         =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
@@ -239,16 +238,16 @@
         =svg_symbol '#icon-unlock', class: 'icon'
         span =t('.make_collection_active')
 
-    -if @collection.text_entry?
-      h3 =t('.blank_collection')
-      p =t('.blank_collection_description')
-      =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
-        span =t('.blank_collection')
 
-
-    h3 =t('.delete_collection')
-    =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
-      span =t('.delete_collection')
+    -if current_user == @collection.owner
+      -if @collection.text_entry?
+        h3 =t('.blank_collection')
+        p =t('.blank_collection_description')
+        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
+          span =t('.blank_collection')
+      h3 =t('.delete_collection')
+      =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
+        span =t('.delete_collection')
 
 =render({ :partial => '/shared/collection_footer' })
 
