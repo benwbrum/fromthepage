@@ -17,6 +17,8 @@ en:
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
       pages_need_review: "Pages That Need Review"
+      pages_need_correction: "Pages That Need Correction"
+      pages_need_correction_or_transcription: "Pages That Need Correction or Transcription"
       show_more: "Show More"
       about: "About"
       works: "Works"
