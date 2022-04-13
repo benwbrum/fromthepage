@@ -82,6 +82,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     if @user.save
+      bypass_sign_in(@user)
       flash[:notice] = t('user.update.user_updated')
       ajax_redirect_to({ :controller => 'user', :action => 'profile', :user_id => @user.slug, :anchor => '' })
     else
