@@ -5,10 +5,11 @@ class ScCanvas < ApplicationRecord
   belongs_to :page, optional: true
 
   def thumbnail_url
+    service_id = sc_service_id.sub(/\/$/,'')
     if sc_service_context ==  "http://iiif.io/api/image/1/context.json"
-      "#{sc_service_id}/full/100,/0/native.jpg"
+      "#{service_id}/full/100,/0/native.jpg"
     else
-      "#{sc_service_id}/full/100,/0/default.jpg"
+      "#{service_id}/full/100,/0/default.jpg"
     end
   end
 
