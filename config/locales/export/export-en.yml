@@ -17,6 +17,8 @@ en:
       export_as: "Export As"
       plain_text: "Plain text"
       table_csv: "Table CSV"
+      more: "More"
+      more_export_formats: "Additional export formats"
       export_subject_index: "Export Subjects"
       export_subject_index_description: "Click the button to export subject indexes from the entire collection in a single CSV file.  (The export process could take some time to complete, so please wait until you get the File Save dialog.)"
       export_subjects_as_csv: "Export Index as CSV"
@@ -33,7 +35,7 @@ en:
       iiif_collection_api_endpoint: "IIIF Collection API Endpoint: %{link}"
       export_work_metadata: "Export Work Metadata"
       export_work_metadata_as_csv: "Export Work Metadata As CSV" 
-      export_work_metadata_description: "Export a spreadsheet containing a row for each work in the collection, with columns for statistcs about pages transcribed and metadata for the work."
+      export_work_metadata_description: "Export a spreadsheet containing a row for each work in the collection, with columns for statistics about pages transcribed and metadata for the work."
     edit_contentdm_credentials:
       contentdm_credentials: "CONTENTdm Credentials"
       contentdm_credentials_description: "Enter your CONTENTdm license key and your login credentials to export to CONTENTdm"
@@ -63,7 +65,7 @@ en:
     tei:
       edition_created: "Edition created from new transcripts of this manuscript."
       initial_upload: "Initial upload of this work's facsimile images and metadata to FromThePage for editing"
-      administrator: "Adminstrator of the %{collection} transcription project on FromThePage"
+      administrator: "Administrator of the %{collection} transcription project on FromThePage"
       made_one_edit_on: "made one edit on"
       made_edits_between: "made %{count} edits between"
       dynamic_tei_export: "Dynamic TEI export from FromThePage (version %{version})"

@@ -1,0 +1,45 @@
+-metadata_field_order(@collection)
+-@fields.each do |line, array|
+  -page_number = array.map{|field| field.page_number}.uniq.first
+  .fields-row
+    -field_layout(array)
+    -@field_array.each do |field, cell|
+      -span_width = !field.percentage.blank? ? field.percentage : @width
+      .field-wrapper(style="width: #{span_width}%")
+        -if field.input_type == "instruction"
+          div id="fields[#{field.id}][#{field.label}]" class="field-instructions"
+            h5 =t('.instructions')
+            p ==field.label
+        -else
+          =label_tag field.label, field.label
+          -if (defined? owner_preview) && owner_preview
+            -cell=nil
+          -else
+            -if @field_preview && @field_preview[field.id]
+              -cell = @field_preview[field.id].first
+            -else
+              -cell = @metadata_array.detect{|element| element["transcription_field_id"] == field.id}
+          -content = cell.nil? ? nil : cell['value']
+          -if field.input_type == "text"
+            =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+          -elsif field.input_type == "date"
+            =text_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input edtf', data: { inputmask: '"alias": "datetime", "inputFormat": "isoDate"'}
+          -elsif field.input_type == "select"
+            -options = field.options.split(";").map{|option| option.strip} unless field.options.nil?
+            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input')
+          -elsif field.input_type == "multiselect"
+            / add aria label
+            / figure out the data attributes
+            -if field.options
+              -options = field.options.split("\n").map{ |e| e.chomp } unless field.options.nil?
+            -else
+              -options=[]
+            =select_tag("fields[#{field.id}][#{field.label}]", options_for_select(options, content), class: 'field-input', 'data-multi-select': true, size: 1, multiple: true)
+          -elsif field.input_type == "description"
+            =hidden_field_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+          -else
+            =text_area_tag "fields[#{field.id}][#{field.label}]", content, class: 'field-input'
+
+-content_for :javascript
+  javascript:
+    $('.edtf').inputmask();

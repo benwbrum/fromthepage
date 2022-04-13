@@ -26,18 +26,19 @@ h3 =t('.filter')
     -@collection.facet_configs.each do |facet_config|
       -unless facet_config.label.blank?
         -if facet_config.input_type == "date"
-          h4 =facet_config.label
           =form_for :facet_search, :url => collection_search_path(@collection.owner, @collection), remote: true, html: { class: "collection-search", id: "search#{count}" } do |f|
-            =f.text_field :date, readonly: true
-            =f.hidden_field :label, value: facet_config.label
-            =f.hidden_field :date_order, value: facet_config.order
+            h4 =f.label "facet_config_date_#{count}", facet_config.localized_label(locale)
+            =f.text_field :date, readonly: true, id: "facet_search_facet_config_date_#{count}"
+            =f.hidden_field :label, value: facet_config.label, id: "facet_config_label_#{count}"
+            =f.hidden_field :date_order, value: facet_config.order, id: "facet_config_order_#{count}"
             =f.button "Search", id: "slider-search#{count}"
             div id="slider#{count += 1}"
 -@collection.facet_configs.order(:order).each do |facet_config|
   -if !facet_config.label.blank? && facet_config.input_type == "text"
     -i = facet_config.order.to_i
     h4
-      a(href="#" class="facet-label" onclick="return false;" id="import-iiif-manifest")               =facet_config[:label]
+      a(href="#" class="facet-label" onclick="return false;" id="#{(facet_config[:label]).parameterize.underscore}")
+        =facet_config.localized_label(locale)
     section style="display: none"
       -selector = "s#{i}".to_sym
       -[selector].each do |filter_name|
@@ -74,8 +75,10 @@ h3 =t('.filter')
           slide: function( event, ui ) {
             $( this.closest("form")[0] ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
           }
+        });  //.attr('aria-label', 'mycustomname')
+        $(".ui-slider-handle").each(function() {
+          $(this).attr("aria-label", "handle");
         });
-
         $( this.closest("form")[0] ).val( $( this ).slider( "values", 0 ) + " - " + $( this ).slider( "values", 1 ) );
       });
     });

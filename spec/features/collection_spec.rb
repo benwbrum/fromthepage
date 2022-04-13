@@ -180,8 +180,9 @@ describe "collection settings js tasks", :order => :defined do
     end
 
     it "transcribing doesn't work for inactive collections" do
-      visit collection_display_page_path(@collection.owner, @collection, @page.work, @page.id)
-      #expect(page).not_to have_link('Transcribe') #for FromThePage there is a "Sign Up to Transcribe" link
+      unstarted_page = @page.work.pages.where(status: nil).first
+      visit collection_display_page_path(@collection.owner, @collection, @page.work, unstarted_page)
+      expect(page).to have_content('not active')
     end
 
     it "toggles collection active" do
@@ -244,7 +245,7 @@ describe "collection settings js tasks", :order => :defined do
     visit collection_path(@collection.owner, @collection)
     expect(page).to have_content("About")
     expect(page).to have_content("Works")
-    page.click_link("Pages That Need Transcription")
+    page.click_link(I18n.t('collection.show.pages_need_correction_or_transcription'))
     expect(page).to have_selector('h3', text: "Pages That Need Transcription")
     #make sure a page exists; don't specify which one
     expect(page).to have_selector('.work-page')
@@ -285,7 +286,6 @@ describe "collection spec (isolated)" do
       visit dashboard_owner_path
 
       page.find('.collections').click_link('Stats Test Work')
-      page.find('.tabs').click_link('Read')
       page.find('.maincol h4').click_link('Page 1')
       fill_in_editor_field('Transcription')
       page.find('#finish_button_top').click

@@ -34,6 +34,9 @@ class TranscribeController  < ApplicationController
     session[:col_id] = @collection.slug
     @current_user_alerted = false
     @field_preview ||= {}
+    unless params[:quality_sampling_id].blank?
+      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    end
 
     if @page.edit_started_by_user_id != current_user.id &&
        @page.edit_started_at > Time.now - 1.minute
@@ -120,12 +123,16 @@ class TranscribeController  < ApplicationController
   def save_transcription
     old_link_count = @page.page_article_links.where(text_type: 'transcription').count
 
+    unless params[:quality_sampling_id].blank?
+      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    end
+
     if @page.field_based
       @field_cells = request.params[:fields]
       table_cells = @page.process_fields(@field_cells)
     end
 
-    @page.attributes = page_params
+    @page.attributes = page_params unless page_params.empty?
     #if page has been marked blank, call the mark_blank code 
     unless params[:page]['needs_review'] == '1'
       mark_page_blank(redirect: 'transcribe') or return
@@ -151,7 +158,7 @@ class TranscribeController  < ApplicationController
 
       begin
         if @page.save
-          if @page.field_based
+          if @page.field_based && !table_cells.empty?
             @page.replace_table_cells(table_cells)
           end
 
@@ -192,7 +199,21 @@ class TranscribeController  < ApplicationController
               return
             end
           end
-          redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
+          if params[:flow] == 'one-off' && @page.status != Page::STATUS_NEEDS_REVIEW
+            redirect_to collection_one_off_list_path(@collection.owner, @collection)
+          elsif params[:flow] =~ /user-contributions/ && @page.status != Page::STATUS_NEEDS_REVIEW
+            user_slug = params[:flow].sub('user-contributions ', '')
+            redirect_to collection_user_contribution_list_path(@collection.owner, @collection, user_slug)       
+          elsif @quality_sampling
+            next_page = @quality_sampling.next_unsampled_page
+            if next_page
+              redirect_to collection_sampling_review_page_path(@collection.owner, @collection, @quality_sampling, next_page.id, flow: "quality-sampling")            
+            else
+              redirect_to collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling)
+            end
+          else
+            redirect_to :action => 'assign_categories', page_id: @page.id, collection_id: @collection
+          end
         else
           log_transcript_error(message)
           render :action => 'display_page'
@@ -361,8 +382,10 @@ class TranscribeController  < ApplicationController
   end
 
   def still_editing
-    @page = Page.find(params[:page_id])
-    @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+    if current_user
+      @page = Page.find(params[:page_id])
+      @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+    end
     render plain: ''
   end
 

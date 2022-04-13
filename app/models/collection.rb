@@ -7,6 +7,7 @@ class Collection < ApplicationRecord
   include CollectionStatistic
   extend FriendlyId
   friendly_id :slug_candidates, :use => [:slugged, :history]
+  before_save :uniquify_slug
 
   has_many :works, -> { order 'title' }, :dependent => :destroy #, :order => :position
   has_many :notes, -> { order 'created_at DESC' }, :dependent => :destroy
@@ -15,12 +16,14 @@ class Collection < ApplicationRecord
   has_many :categories, -> { order 'title' }
   has_many :deeds, -> { order 'deeds.created_at DESC' }, :dependent => :destroy
   has_one :sc_collection, :dependent => :destroy
-  has_many :transcription_fields, :dependent => :destroy
+  has_many :transcription_fields, -> { where field_type: TranscriptionField::FieldType::TRANSCRIPTION }, :dependent => :destroy
+  has_many :metadata_fields, -> { where field_type: TranscriptionField::FieldType::METADATA }, :class_name => 'TranscriptionField', :dependent => :destroy
   has_many :bulk_exports, :dependent => :destroy
   has_many :editor_buttons, :dependent => :destroy
+  has_one :quality_sampling, :dependent => :destroy
 
   belongs_to :next_untranscribed_page, foreign_key: 'next_untranscribed_page_id', class_name: "Page", optional: true
-  has_many :pages, through: :works
+  has_many :pages, -> { reorder('works.title, pages.position') }, through: :works
   has_many :metadata_coverages, :dependent => :destroy
   has_many :facet_configs, -> { order 'input_type, "order" ASC'}, :through => :metadata_coverages 
 
@@ -30,11 +33,12 @@ class Collection < ApplicationRecord
   has_and_belongs_to_many :reviewers, :class_name => 'User', :join_table => :collection_reviewers
 
   validates :title, presence: true, length: { minimum: 3, maximum: 255 }
+  validates :slug, format: { with: /[[:alpha:]]/ }
 
   before_create :set_transcription_conventions
   before_create :set_help
   before_create :set_link_help
-  after_save :create_categories
+  after_create :create_categories
   after_save :set_next_untranscribed_page
 
   mount_uploader :picture, PictureUploader
@@ -54,10 +58,41 @@ class Collection < ApplicationRecord
     limit(sample_size).reorder(Arel.sql("RAND()"))
   end
 
+  module DataEntryType
+    TEXT_ONLY = 'text'
+    METADATA_ONLY = 'metadata'
+    TEXT_AND_METADATA = 'text_and_metadata'
+  end
+
+
+  def text_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::TEXT_ONLY
+  end
+
+  def metadata_entry?
+    self.data_entry_type == DataEntryType::TEXT_AND_METADATA || self.data_entry_type == DataEntryType::METADATA_ONLY
+  end
+  
+  def subjects_enabled
+    !subjects_disabled
+  end
+
   module ReviewType 
     OPTIONAL = 'optional'
     REQUIRED = 'required'
     RESTRICTED = 'restricted'
+  end
+
+  def pages_needing_review_for_one_off
+    all_edits_by_user = self.deeds.where(deed_type: DeedType.transcriptions_or_corrections).group(:user_id).count
+    one_off_editors = all_edits_by_user.select{|k,v| v == 1}.map{|k,v| k}
+    self.pages.where(status: Page::STATUS_NEEDS_REVIEW).joins(:current_version).where('page_versions.user_id in (?)', one_off_editors)
+  end
+
+  def never_reviewed_users
+    users_with_complete_pages = self.deeds.joins(:page).where('pages.status' => Page::COMPLETED_STATUSES).pluck(:user_id).uniq
+    users_with_needs_review_pages = self.deeds.joins(:page).where('pages.status' => Page::STATUS_NEEDS_REVIEW).pluck(:user_id).uniq
+    unreviewed_users = User.find(users_with_needs_review_pages - users_with_complete_pages)
   end
 
   def review_workflow
@@ -134,6 +169,12 @@ class Collection < ApplicationRecord
     super.truncate(240, separator: '-', omission: '').gsub('_', '-')
   end
 
+  def uniquify_slug
+    if DocumentSet.where(slug: self.slug).exists?
+      self.slug = self.slug+'-collection'
+    end
+  end
+
   def blank_out_collection
     puts "Reset all data in the #{self.title} collection to blank"
     works = Work.where(collection_id: self.id)
@@ -170,7 +211,7 @@ class Collection < ApplicationRecord
   end
 
   def search_works(search)
-    self.works.where("title LIKE ? OR original_metadata like ?", "%#{search}%", "%#{search}%")
+    self.works.where("title LIKE ? OR searchable_metadata like ?", "%#{search}%", "%#{search}%")
   end
 
   def self.search(search)

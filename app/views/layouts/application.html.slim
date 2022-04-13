@@ -52,7 +52,12 @@ html lang="en-US"
           -if user_signed_in?
             =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
-            =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
+            -if @collection 
+              =link_to 'Sign Up To Transcribe', new_for_owner_path(@collection.owner), class: 'header_link'              
+            -elsif @user && @user.owner?
+              =link_to 'Sign Up To Transcribe', new_for_owner_path(@user), class: 'header_link'              
+            -else
+              =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right
@@ -102,10 +107,12 @@ html lang="en-US"
         .footer_nav
           =link_to t('.documentation'), 'http://content.fromthepage.com/project-owner-documentation/', target: '_blank'
           =link_to t('.blog'), 'http://content.fromthepage.com', target: '_blank'
-          =link_to t('.about'), about_path
-          =link_to t('.terms_and_conditions'), 'http://fromthepage.wpengine.com/terms-of-service/'
-          =link_to t('.privacy_policy'), privacy_path
+          =link_to t('.about'), about_us_path
+          =link_to t('.terms_and_conditions'), 'https://content.fromthepage.com/terms-of-service/'
+          =link_to t('.privacy_policy'), 'https://content.fromthepage.com/privacy-policy/'
           =mail_to 'support@fromthepage.com', t('.contact_us')
+          -if request.original_url.include?("fromthepage.com")
+            =link_to t('.pricing'), pricing_path
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
         =link_to 'https://twitter.com/_FromThePage_', target: '_blank'

@@ -107,6 +107,9 @@ xml:id="export">
           <% @person_articles.each do |person| %>
             <person xml:id="S<%=person.id%>">
               <persName><%= person.title %></persName>
+              <% unless person.uri.blank? %>
+                <idno><%= person.uri %></idno>
+              <% end %>
               <% if person.categories %>
                 <note type="categorization">
                   Categories:
@@ -143,6 +146,9 @@ xml:id="export">
           <% @place_articles.each do |place| %>
             <place xml:id="S<%=place.id%>">
               <placeName><%= place.title %></placeName>
+              <% unless place.uri.blank? %>
+                <idno><%= place.uri %></idno>
+              <% end %>
               <% if place.categories %>
                 <note type="categorization">
                   Categories:

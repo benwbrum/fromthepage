@@ -24,6 +24,9 @@
         span.filter_label Threshold
         =range_field_tag 'filter-threshold', 0, min: -10, max: 10, step: 1, 'data-filter': 'threshold'
         span.filter_value 0
+  -if @page.nil?
+    a#osd_prev =svg_symbol "#icon-arrow-left", class: 'icon'
+    a#osd_next =svg_symbol "#icon-arrow-right", class: 'icon'
 
 .image-container(id="image_container")
 
@@ -49,12 +52,16 @@
         fullPageButton: "osd_fullpage",
         rotateLeftButton: "osd_rotate_left",
         rotateRightButton: "osd_rotate_right",
+        previousButton: "osd_prev",
+        nextButton: "osd_next",
         maxZoomPixelRatio: 10,
         visibilityRatio: 1,
         fitBounds: true,
         preserveViewport: true,
-        sequenceMode: false, //we want fromthepage to handle pages sequentially, rather than openseadragon
-        tileSources: #{raw(osd_source(@page))}
+        showReferenceStrip: #{@page.nil?},
+        referenceStripScroll: 'vertical',
+        sequenceMode: #{@page.nil?},
+        tileSources: #{raw(osd_source(@page, @work))}
       });
 
       viewer.addHandler('reset-bounds', function() {
@@ -125,9 +132,6 @@
         });
       }
     });
-
-    $(function() {
-    });    
 
 noscript
   p OpenSeadragon is not available unless JavaScript is enabled.

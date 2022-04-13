@@ -5,6 +5,8 @@
     h4.nodata_title =t('.no_pages_found')
     p.nodata_text == t('.no_pages_in_work', link: link_to('Pages tab', work_pages_tab_path(work_id: @work.id)))
 -else
+  -if @work.description.present? && !@work.ia_work
+    .big =raw(@work.description.gsub(/Metadata:.*/m,""))
   table.datagrid.work-contents
     tr
       th.w100 =t('.page_title')
@@ -24,5 +26,16 @@
         td
           -page_action(page)
           =link_to @wording, @path, class: 'button small outline'
+    -if @collection.metadata_entry?
+      tr
+        td
+          =link_to(describe_collection_work_path(@work.slug))
+            =svg_symbol '#icon-page', class: 'icon'
+            span Metadata
+        td.nowrap
+          TODO
+        td
+          =link_to 'Describe', describe_collection_work_path(@work.slug), class: 'button small outline'
+
 
 =render({ :partial => '/shared/collection_footer' })

@@ -12,12 +12,22 @@ class BulkExportController < ApplicationController
 
   def new
     @bulk_export = BulkExport.new
-    @bulk_export.collection = @collection
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection    
+    else
+      @bulk_export.collection = @collection
+    end
   end
 
   def create
     @bulk_export = BulkExport.new(bulk_export_params)
-    @bulk_export.collection = @collection
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection    
+    else
+      @bulk_export.collection = @collection
+    end
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
 
@@ -31,7 +41,12 @@ class BulkExportController < ApplicationController
 
   def create_for_work
     @bulk_export = BulkExport.new(bulk_export_params)
-    @bulk_export.collection = @collection
+    if @collection.is_a? DocumentSet
+      @bulk_export.document_set = @collection
+      @bulk_export.collection = @collection.collection    
+    else
+      @bulk_export.collection = @collection
+    end
     @bulk_export.work = @work
     @bulk_export.user = current_user
     @bulk_export.status = BulkExport::Status::NEW
@@ -84,6 +99,7 @@ class BulkExportController < ApplicationController
         :work_metadata_csv,
         :facing_edition_work,
         :text_docx_work,
-        :text_pdf_work)
+        :text_pdf_work,
+        :static)
     end
 end

@@ -8,10 +8,14 @@ class Page < ApplicationRecord
   before_update :validate_blank_page
   before_update :process_source
   before_update :populate_search
+  before_update :update_line_count
+  before_save :calculate_approval_delta
   validate :validate_source, :validate_source_translation
 
   belongs_to :work, optional: true
   acts_as_list :scope => :work
+  belongs_to :last_editor, :class_name => 'User', :foreign_key => 'last_editor_user_id', optional: true
+
 
   has_many :page_article_links, :dependent => :destroy
   has_many :articles, :through => :page_article_links
@@ -44,7 +48,8 @@ class Page < ApplicationRecord
 
   scope :review, -> { where(status: 'review')}
   scope :translation_review, -> { where(translation_status: 'review')}
-  scope :needs_transcription, -> { where(status: [nil, STATUS_INCOMPLETE])  }
+  scope :needs_transcription, -> { where(status: [nil])  }
+  scope :needs_completion, -> { where(status: [STATUS_INCOMPLETE])  }
   scope :needs_translation, -> { where(translation_status: nil)}
   scope :needs_index, -> { where.not(status: nil).where.not(status: 'indexed')}
   scope :needs_translation_index, -> { where.not(translation_status: nil).where.not(translation_status: 'indexed')}
@@ -73,6 +78,13 @@ class Page < ApplicationRecord
 
   MAIN_STATUSES = ALL_STATUSES - [STATUS_TRANSLATED]
   TRANSLATION_STATUSES = ALL_STATUSES - [STATUS_INCOMPLETE, STATUS_TRANSCRIBED]
+  COMPLETED_STATUSES = [STATUS_TRANSCRIBED, STATUS_TRANSLATED, STATUS_INDEXED, STATUS_BLANK]
+  NOT_INCOMPLETE_STATUSES = COMPLETED_STATUSES + [STATUS_NEEDS_REVIEW]
+
+  NEEDS_WORK_STATUSES = [
+    nil,
+    STATUS_INCOMPLETE
+  ]
 
   # tested
   def collection
@@ -198,7 +210,28 @@ class Page < ApplicationRecord
     end
   end
 
-  # tested
+  def calculate_approval_delta
+    if COMPLETED_STATUSES.include? self.status
+      most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
+      if most_recent_not_approver_version
+        old_transcription = most_recent_not_approver_version.transcription || ''
+      else
+        old_transcription = ''
+      end
+      new_transcription = self.source_text
+
+      if new_transcription.blank? && old_transcription.blank?
+        self.approval_delta = nil
+      else
+        self.approval_delta = 
+          Text::Levenshtein.distance(old_transcription, new_transcription).to_f / 
+            (old_transcription.size + new_transcription.size).to_f
+      end
+    else # zero out deltas if the page is not complete
+      self.approval_delta = nil 
+    end
+  end
+
   def create_version
     version = PageVersion.new
     version.page = self
@@ -221,6 +254,8 @@ class Page < ApplicationRecord
       version.page_version = previous_version.page_version + 1
     end
     version.save!
+
+    self.update_column(:page_version_id, version.id)
   end
 
   def update_sections_and_tables
@@ -268,6 +303,29 @@ class Page < ApplicationRecord
       if tex_figure.changed?
         tex_figure.save!
       end
+    end
+  end
+
+  def update_line_count
+    self.line_count = calculate_line_count
+  end
+
+  def calculate_line_count
+    if self.work && self.collection
+      if field_based
+        # count table rows
+        self.table_cells.pluck(:row).uniq.count
+      else
+        # count non-blank lines in the source
+        if self.source_text.nil?
+          0
+        else
+          self.source_text.lines.select{|line| line.match(/\S/)}.count
+        end
+      end
+    else
+      # intermediary format -- collection is probably being imported
+      0
     end
   end
 

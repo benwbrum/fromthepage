@@ -1,0 +1,52 @@
+.litebox-embed(style="width:550px")
+  -flash.each do |type, message|
+    -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign' }
+    .flash(class='flash-#{type}')
+      span.flash_message
+        =svg_symbol flash_icon[type], class: 'icon'
+        span =message
+      a.flash_close &times;
+
+  h3 =t('.transfer_works')
+  p.fglight =t('.transfer_works_description')
+  =form_tag(document_set_transfer_works_path) do
+    =hidden_field_tag :collection_id, @collection.id
+    =validation_summary @errors
+    table.form
+      tbody
+        tr
+          td(colspan="2")
+            =label_tag :transfer_type, t('.transfer_type_label'), class: "above"
+            br
+            =radio_button_tag :transfer_type, 'move', true 
+            =label_tag "transfer_type_move", t('.move')
+            br
+            =radio_button_tag :transfer_type, 'copy', false 
+            =label_tag "transfer_type_move", t('.copy')
+        tr
+          td(colspan="2")
+            =label_tag :source_set, t('.source_set'), class: "above"
+            br
+            =select_tag(:source_set, options_from_collection_for_select(@collection.document_sets, :slug, :title))
+        tr
+          td(colspan="2")
+            =label_tag :target_set, t('.target_set'), class: "above"
+            br
+            =select_tag(:target_set, options_from_collection_for_select(@collection.document_sets, :slug, :title))
+        tr
+          td(colspan="2")
+            =label_tag :status_filter, t('.status_filter'), class: "above"
+            br
+            =radio_button_tag :status_filter, 'all', true 
+            =label_tag "status_filter_all", t('.all')
+            br
+            =radio_button_tag :status_filter, 'completed', false 
+            =label_tag "status_filter_completed", t('.completed')
+    .toolbar
+      .toolbar_group.aright
+        =submit_tag('Transfer')
+        =link_to('Cancel', document_sets_path(:collection_id => @collection), class: 'button')
+
+
+
+

@@ -6,6 +6,7 @@ Fromthepage::Application.routes.draw do
 
   devise_scope :user do
     get "users/new_trial" => "registrations#new_trial"
+    get ":user_slug/sign_up", to: "registrations#owner_new", as: 'new_for_owner'
     post "registrations/choose_provider", to: 'registrations#choose_saml'
     post "registrations/set_provider", to: 'registrations#set_saml'
     match '/users/auth/saml/:identity_provider_id/callback',
@@ -26,7 +27,6 @@ Fromthepage::Application.routes.draw do
   scope 'admin', as: 'admin' do
     get '/' => 'admin#index'
     get 'collection_list', to: 'admin#collection_list'
-    get 'progress_metrics', to: 'admin#progress_metrics'
     get 'work_list', to: 'admin#work_list'
     get 'owner_list', to: 'admin#owner_list'
     get 'user_list', to: 'admin#user_list'
@@ -56,6 +56,8 @@ Fromthepage::Application.routes.draw do
     get 'enable', to: 'facets#enable'
     get 'disable', to: 'facets#disable'
     post 'update', to: 'facets#update'
+    get ':collection_id/localize', to: 'facets#localize', as: 'localize'
+    post 'update_localization', to: 'facets#update_localization'
   end
 
   scope 'collection', as: 'collection' do
@@ -67,6 +69,7 @@ Fromthepage::Application.routes.draw do
     get 'toggle_collection_api_access', to: 'collection#toggle_collection_api_access'
     get 'contributors_download', to: 'collection#contributors_download'
     get 'enable_fields', to: 'collection#enable_fields'
+    get 'enable_metadata_entry', to: 'collection#enable_metadata_entry'
     get 'enable_document_sets', to: 'collection#enable_document_sets'
     get 'enable_ocr', to: 'collection#enable_ocr'
     get 'disable_ocr', to: 'collection#disable_ocr'
@@ -78,6 +81,7 @@ Fromthepage::Application.routes.draw do
     post 'remove_reviewer', to: 'collection#remove_reviewer'
     get 'disable_document_sets', to: 'collection#disable_document_sets'
     get 'disable_fields', to: 'collection#disable_fields'
+    get 'disable_metadata_entry', to: 'collection#disable_metadata_entry'
     get 'publish_collection', to: 'collection#publish_collection'
     get ':collection_id/edit_collaborators', to: 'collection#edit_collaborators', as: 'edit_collaborators'
     get 'restrict_collection', to: 'collection#restrict_collection'
@@ -87,6 +91,7 @@ Fromthepage::Application.routes.draw do
     post 'add_owner', to: 'collection#add_owner'
     post 'remove_owner', to: 'collection#remove_owner'
     post 'create', to: 'collection#create'
+    get ':collection_id/search_users', to: 'collection#search_users', as: 'search_users'
     match 'update/:id', to: 'collection#update', via: [:get, :post], as: 'update'
 
     scope 'metadata', as: 'metadata' do
@@ -110,7 +115,6 @@ Fromthepage::Application.routes.draw do
     get 'pages_tab', to: 'work#pages_tab'
     get 'edit', to: 'work#edit'
     get 'revert', to: 'work#revert'
-    get 'versions', to: 'work#versions'
     post 'update', to: 'work#update'
     post 'create', to: 'work#create'
     patch 'update_work', :to => 'work#update_work'
@@ -215,8 +219,6 @@ Fromthepage::Application.routes.draw do
 
   scope 'static', as: 'static' do
     get 'metadata', to: 'static#metadata'
-    get 'faq', to: redirect('/faq', status: 301)
-    get 'privacy', to: redirect('/privacy', status: 301)
   end
 
   scope 'page_version', as: 'page_version' do
@@ -275,6 +277,8 @@ Fromthepage::Application.routes.draw do
     get 'remove_from_set', to: 'document_sets#remove_from_set'
     post 'create', :to => 'document_sets#create'
     post 'assign_works', :to => 'document_sets#assign_works'
+    get 'transfer_works', :to => 'document_sets#transfer_form', :as => 'transfer_form'
+    post 'transfer_works', :to => 'document_sets#transfer', :as => 'transfer_works'
   end
 
   scope 'document_sets', as: 'document_sets' do
@@ -290,8 +294,11 @@ Fromthepage::Application.routes.draw do
     patch 'reorder', to: 'transcription_field#reorder_fields'
     get 'delete', to: 'transcription_field#delete'
     get 'edit_fields', to: 'transcription_field#edit_fields'
+    get 'edit_metadata_fields', to: 'transcription_field#edit_metadata_fields'
     get 'line_form', to: 'transcription_field#line_form'
     post 'add_fields', to: 'transcription_field#add_fields'
+    get ':transcription_field_id/configure_multiselect_options', to: 'transcription_field#multiselect_form', as: 'configure_multiselect_options'
+    post ':transcription_field_id/save_multiselect_options', to: 'transcription_field#save_multiselect', as: 'save_multiselect_options'
 
     scope 'spreadsheet_column', as: 'spreadsheet_column' do
       patch 'reorder', to: 'transcription_field#reorder_columns'
@@ -398,10 +405,11 @@ Fromthepage::Application.routes.draw do
   get '/rails/mailers/*path' => "rails/mailers#preview"
 
   get '/software', to: 'static#software', as: :about
+  get '/about', to: 'static#about', as: :about_us
   get '/faq', to: 'static#faq', as: :faq
-  get '/privacy', to: 'static#privacy', as: :privacy
+  get 'pricing', to: 'static#pricing', as: :pricing
   post '/contact/send', to: 'contact#send_email', as: 'send_contact_email'
-  get '/contact', to: 'contact#form', as: 'contact'
+  get '/:token/contact', to: 'contact#form', as: 'contact'
   get '/at', to: 'static#at', as: :at
   get '/AT', to: 'static#at', as: :at_caps
   get '/NatsStory', to: 'static#natsstory', as: :natsstory
@@ -419,8 +427,24 @@ Fromthepage::Application.routes.draw do
       get 'settings', as: :settings, to: 'document_sets#settings'
       get 'subjects', as: :subjects, to: 'article#list'
       get 'review', as: :review, to: 'collection#reviewer_dashboard'
+      get 'works_to_review', as: :works_to_review, to: 'collection#works_to_review'
+      get 'one_off_list', as: :one_off_list, to: 'collection#one_off_list'
+      get 'recent_contributor_list', as: :recent_contributor_list, to: 'collection#recent_contributor_list'
+      get 'user_contribution_list/:user_id', as: :user_contribution_list, to: 'collection#user_contribution_list'
+      get 'review/one_off/:page_id', as: 'oneoff_review_page', to: 'transcribe#display_page'
+      get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
+      patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
+      patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
+
+      resources :quality_samplings
+      post 'quality_sampling/initialize', as: 'initialize_sample', to: 'quality_samplings#initialize_sample'
+      get 'quality_sampling/review/:id', as: 'sampling_review_flow', to: 'quality_samplings#review'
+      get 'quality_sampling/:quality_sampling_id/:page_id', as: 'sampling_review_page', to: 'transcribe#display_page'
+      patch 'quality_sampling/:quality_sampling_id/:user_id/:page_id', as: 'sampling_review_page_save', to: 'transcribe#save_transcription'
+
       get 'export', as: :export, to: 'export#index'
       get 'edit_fields', as: :edit_fields, to: 'transcription_field#edit_fields'
+      get 'edit_metadata_fields', as: :edit_metadata_fields, to: 'transcription_field#edit_metadata_fields'
       get 'facets'
       post 'search'
 
@@ -444,6 +468,10 @@ Fromthepage::Application.routes.draw do
         patch 'update_work', on: :member, as: :update
         post 'add_scribe', on: :member
         get 'remove_scribe', on: :member
+        get 'describe', on: :member
+        patch 'save_description', on: :member, to: 'work#save_description'
+        get 'description_versions', on: :member
+        get 'metadata_overview', on: :member
       end
 
       get ':work_id/about', param: :work_id, as: :work_about, to: 'work#show'

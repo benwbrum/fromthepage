@@ -14,6 +14,23 @@ module OwnerStatistic
       .where(work_id: self.owner_works.ids)
       .where(:'collections.is_active' => true).count
   end
+  
+  def incomplete_page_count
+    Page.where(work_id: self.owner_works.ids)
+      .where(status: Page::NEEDS_WORK_STATUSES).count
+  end
+  
+  def needs_review_count(last_days=nil)
+    Page.where(work_id: self.owner_works.ids)
+      .where("#{last_days_clause(last_days, "edit_started_at")}")
+      .where(status: Page::STATUS_NEEDS_REVIEW).count
+  end
+  
+  def review_count(last_days=nil)
+    Deed.where(work_id: self.owner_works.ids)
+      .where("#{last_days_clause(last_days)}")
+      .where(deed_type: DeedType::PAGE_REVIEWED).count
+  end
 
   def owner_subjects
    Article.where(collection_id: self.all_owner_collections.ids)

@@ -6,7 +6,18 @@ class IiifController < ApplicationController
 
   before_action :set_cors_headers
   before_action :set_api_user
+  before_action :load_objects_from_ids
   before_action :check_api_access, except: [:collections, :contributions, :for, :collection_for_domain]
+
+  def load_objects_from_ids
+    if @work && params[:work_id]
+      if params[:work_id] =~ /^\d+$/
+        if @work.id != params[:work_id].to_i
+          @work = Work.find(params[:work_id].to_i)
+        end
+      end
+    end
+  end
 
   def collections
     site_collection = IIIF::Presentation::Collection.new
@@ -168,12 +179,8 @@ class IiifController < ApplicationController
     else
       manifest.metadata = []
     end
-    if work.original_metadata
-      manifest.metadata += JSON[work.original_metadata]
-    end
-    work_metadata = work.attributes.except("id", "title", "description","created_on", "transcription_version", "owner_user_id", "restrict_scribes", "transcription_version", "transcription_conventions", "collection_id", "scribes_can_edit_titles", "supports_translation", "translation_instructions", "pages_are_meaningful", "ocr_correction", "slug", "picture", "featured_page", "original_metadata", "next_untranscribed_page", "in_scope").delete_if{|k,v| v.blank?}
 
-    work_metadata.each_pair { |label,value| manifest.metadata << { "label" => label.titleize, "value" => value.to_s } }
+    manifest.metadata += work.merge_metadata
 
     if work.sc_manifest
       manifest.description = "This is an annotated version of the original manifest produced by FromThePage"
@@ -493,10 +500,10 @@ private
       { "label" => "Verbatim Plaintext",
         "format" => "text/plain",
         "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#verbatim-plaintext",
-        "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work)
+        "@id" => collection_work_export_plaintext_verbatim_url(work.collection.owner, work.collection, work.id)
       },
-      { "@id" => iiif_work_export_html_url(work.slug), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
-      { "@id" => iiif_work_export_tei_url(work.slug), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
+      { "@id" => iiif_work_export_html_url(work.id), "label" => "XHTML Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#xhtml"},
+      { "@id" => iiif_work_export_tei_url(work.id), "label" => "TEI Export", "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#tei-xml"}
     ]
     pages = work.pages
     pages.each do |page|
@@ -568,14 +575,14 @@ private
     if page.sc_canvas
       page.sc_canvas.sc_canvas_id
     elsif page.ia_leaf
-      "http://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_num}/canvas"
+      "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}/canvas"
     else
       url_for({ :controller => 'iiif', :action => 'canvas', :page_id => page.id, :work_id => page.work.id, :only_path => false })
     end
   end
 
   def manifest_uri_from_ia(ia_work)
-    "http://iiif.archivelab.org/iiif/#{ia_work.book_id}/manifest.json"
+    "https://iiif.archivelab.org/iiif/#{ia_work.book_id}/manifest.json"
   end
 
   def region_from_page(page)
@@ -589,11 +596,11 @@ private
         :resource_id => "#{url_for(:root)}image-service/#{page.id}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://iiif.io/api/image/2/level1.json',
+        :profile => 'https://iiif.io/api/image/2/level1.json',
 
        })
 
-    image_resource.service['@context'] = 'http://iiif.io/api/image/2/context.json'
+    image_resource.service['@context'] = 'https://iiif.io/api/image/2/context.json'
     image_resource
   end
 
@@ -604,11 +611,11 @@ private
         :resource_id => page.sc_canvas.sc_resource_id,
         :height => (page.base_height || page.sc_canvas.height),
         :width => (page.base_width || page.sc_canvas.width),
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
+        :profile => 'https://iiif.io/api/image/1.1/compliance/#level2',
        })
     #image_resource.service_id = page.sc_canvas.sc_service_id
     #image_resource.resource_id = page.sc_canvas.sc_resource_id
-    #image_resource.service['@context'] = 'http://iiif.io/api/image/1/context.json'
+    #image_resource.service['@context'] = 'https://iiif.io/api/image/1/context.json'
 
     image_resource.service['@context'] = page.sc_canvas.sc_service_context
     image_resource
@@ -637,7 +644,7 @@ private
   end
 
   def canvas_from_ia_page(page)
-    id_base = "http://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
+    id_base = "https://iiif.archivelab.org/iiif/#{page.work.ia_work.book_id}$#{page.ia_leaf.leaf_number}"
 
     canvas = IIIF::Presentation::Canvas.new
     canvas.label = page.title
@@ -651,10 +658,10 @@ private
         :resource_id => "#{id_base}/full/full/0/default.jpg",
         :height => page.base_height,
         :width => page.base_width,
-        :profile => 'http://library.stanford.edu/iiif/image-api/1.1/compliance.html#level2',
+        :profile => 'https://iiif.io/api/image/1.1/compliance/#level2',
        })
 
-    image_resource.service['@context'] = "http://iiif.io/api/image/2/context.json"
+    image_resource.service['@context'] = "https://iiif.io/api/image/2/context.json"
 
     annotation = IIIF::Presentation::Annotation.new
     annotation.resource = image_resource

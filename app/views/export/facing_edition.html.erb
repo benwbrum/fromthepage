@@ -1,7 +1,18 @@
 <%= @work.title %> {.work-title}
 =======================
 
+
+\newpage
+### Metadata
+<p>
 <%= t('.export_metadata', work: @work.title, collection: @work.collection.title, time: Time.now) %>
+</p>
+
+<% 
+  xml_metadata = @work.merge_metadata.map{|e| "#{e['label']}: #{e['value']}"}.join("<lb/>\n")
+%>
+<%= raw(xml_to_pandoc_md("<p>#{xml_metadata}</p>", true, true, nil, false)) %>
+\newpage
 
 <% @work.pages.includes(:notes, :ia_leaf, :sc_canvas).each do |page| %>
 
@@ -20,4 +31,27 @@
 ### <%= page.title %>
 <%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
 
+<% end %>
+
+
+\newpage
+This document would not be possible without the editorial contributions of the following people:
+
+<% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
+<% contributor_names = [] %>
+<% contributor_ids.each do |user_id| %>
+  <% user = User.find(user_id) 
+    if user.real_name.blank?
+      name = user.display_name
+    else
+      name = user.real_name
+    end
+    contributor_names << name unless name.blank?
+  %>
+<% end %>
+
+<% if contributor_names.size > 1 %>
+  <%= contributor_names[0..-2].join(', ') %> and <%= contributor_names.last %>
+<% else %>
+  <%= contributor_names.first %>
 <% end %>

@@ -14,8 +14,8 @@
         = label_tag :last_name
         = text_field_tag :last_name, nil, autofocus: true
       .signon_field
-        =label_tag :email, 'Email address'
-        =email_field_tag :email
+        =label_tag email_param, 'Email address'
+        =email_field_tag email_param
       .signon_field
         =label_tag :reason, 'Contact Reason'
         =select_tag :reason, options_for_select(['', 'Product question', 'Large Institution quote', 'Free trial', 'Event', 'Press', 'Other'])

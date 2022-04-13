@@ -4,6 +4,11 @@ class RegistrationsController < Devise::RegistrationsController
     super
   end
 
+  def owner_new
+    @owner = User.where(slug: params[:user_slug]).first
+    new
+  end
+
   def new_trial
     new
   end
@@ -17,6 +22,10 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def create
+    unless params[:owner_slug].blank?
+      @owner = User.where(slug: params[:owner_slug]).first
+    end
+
     #merge the new user information into the guest user id to change into normal user
     if current_user && current_user.guest?
       @user = current_user
@@ -105,7 +114,13 @@ class RegistrationsController < Devise::RegistrationsController
       "#{dashboard_owner_path}#freetrial" 
     else
       # New users should be returned to where they were or to their dashboard/watchlist
-      session[:user_return_to] || dashboard_watchlist_path
+      if session[:user_return_to]
+        session[:user_return_to]
+      elsif @owner
+        user_profile_path(@owner)
+      else
+        dashboard_watchlist_path
+      end
     end
   end
 

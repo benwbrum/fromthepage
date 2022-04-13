@@ -46,11 +46,6 @@ describe "User deletion" do
   it "does not break deed list" do
     visit url_for(:action => 'list', :controller => 'deed')        
   end
-  
-  it "does not break work versions" do
-    visit collection_read_work_path(@work.collection.owner, @work.collection, @work)
-    click_link("Versions")
-  end
 
   it "does not break page versions" do
     visit "/display/display_page?page_id=#{@page1.id}"

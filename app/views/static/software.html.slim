@@ -9,21 +9,21 @@
       h3 Transcription
       p Add and edit transcriptions while viewing scanned images of a document. Collaborate with others to transcribe a document.
 
-    =image_tag 'static/software/transcription.png'
+    =image_tag('static/software/transcription.png', alt: "Transcribe a document")
 
   section#annotation
     .content
       h3 Indexing & Annotation
       p Index a document by tagging people, places, and other subjects of interest. Search by subject and add articles to tagged subjects to create annotations for collaborators.
 
-    =image_tag 'static/software/indexing-annotation.png'
+    =image_tag('static/software/indexing-annotation.png', alt: "Index and Annotate")
 
   section#dashboard
     .content
       h3 Dashboard
       p See all the activity within a project at a glance with customized project owner and collaborator views.
 
-    =image_tag 'static/software/dashboard.png'
+    =image_tag('static/software/dashboard.png', alt: "Project Dashboard")
 
   #features
     section#version_control
@@ -45,7 +45,7 @@
   section#video
     h2 Easy to Get Started
     #video_wrapper
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/UcNXSY0q9uE?controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe title="Get Started" width="560" height="315" src="https://www.youtube.com/embed/UcNXSY0q9uE?controls=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
   section#pricing
     h2 FromThePage Pricing
@@ -79,19 +79,22 @@
               li.pricing_feature Multiple export formats (TEI, CSV, HTML, IIIF/Open Annotation)
               li.pricing_feature Unlimited projects
               li.pricing_feature Unlimited documents
-              li.pricing_feature Over 50,000 pages
+              li.pricing_feature Up to 100,000 pages
+              li.pricing_feature Contact us for pricing for additional pages
               li.pricing_feature E-mail and chat support
               li.pricing_feature Phone consultation on new projects and strategic consultation
               li.pricing_feature
                 strong PLUS
-              li.pricing_feature Custom integration
-              li.pricing_feature Custom feature development
-              li.pricing_feature Custom import/export formats
+              li.pricing_feature Single Sign On
+              li.pricing_feature On Demand Custom Reports
+              li.pricing_feature Integration Consulting
         .pricing_grid_row
           .pricing_grid_cell
             .pricing_price
               span.pricing_price_value $80
-              .pricing_price_billing per month, billed monthly
+              .pricing_price_billing per month, billed monthly or
+              span.pricing_price_value $960
+              .pricing_price_billing per year, billed annually
           .pricing_grid_cell
             .pricing_price
               span.pricing_price_value $300
@@ -100,8 +103,10 @@
               .pricing_price_billing per year, billed annually
           .pricing_grid_cell
             .pricing_price
-              span.pricing_price_request Contact Us
-              .pricing_price_billing=="Pricing based on institution-specific requirements. Please #{ link_to 'contact us', contact_path } for a custom quote."
+              span.pricing_price_value $500
+              .pricing_price_billing per month, billed monthly or 
+              span.pricing_price_value $5000
+              .pricing_price_billing per year, billed annually
 
         .pricing_grid_row
           .pricing_grid_cell
@@ -111,7 +116,8 @@
           .pricing_grid_cell
             =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
 
-    h3=="Ready to get started? #{link_to 'Contact us.', contact_path}"
+    h3 Ready to buy?  
+    p #{link_to('Send us a note', contact_path(contact_form_token))} and we'll send you an invoice, payable either by credit card or by your organization's accounting department.  Need additional paperwork for a PO?  Just let us know.
 
   #integrations
     h2 Integrations

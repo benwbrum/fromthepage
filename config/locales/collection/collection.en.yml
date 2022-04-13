@@ -12,11 +12,13 @@ en:
       all_complete: "All works are fully transcribed."
       start_transcribing: "Start Transcribing"
       search_the_text: "Search the text..."
-      search_by_title: "Search by title..."
+      search_by_title: "Search by title or metadata..."
       search_in_collection: "Search in collection..."
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
       pages_need_review: "Pages That Need Review"
+      pages_need_correction: "Pages That Need Correction"
+      pages_need_correction_or_transcription: "Pages That Need Correction or Transcription"
       show_more: "Show More"
       about: "About"
       works: "Works"
@@ -27,6 +29,11 @@ en:
       search: "Search"
       time_ago_in_words: "%{time} ago"
       project_by: "Project by"
+      this_work_has_pages_that_need_work: Some pages still need work.
+      help_transcribe_or_correct: Help out!
+      this_work_has_not_been_described: This work needs better metadata.
+      help_create_metadata: Help out!
+
     collection_works:
       work_title: "Work title"
       progress: "Progress"
@@ -75,7 +82,7 @@ en:
       help: "Basic Help Text"
       suggestions_help_tab: "Suggestions for your help tab."
       link_help: "Subject Linking Help Text (not displayed if subjects are disabled)"
-      subjects_disabled: "Disable subject indexing"
+      subjects_enabled: "Enable subject indexing"
       review_type: "Review Type"
       review_type_optional: " Optional: Collaborators may request review of their transcriptions."
       review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
@@ -84,7 +91,7 @@ en:
       hide_completed: "Hide completed works by default"
       text_language: "Select the language of the transcription text"
       default_orientation: "Select the default page transcription orientation"
-      voice_recognition: "Speech to text available for transcribing"
+      voice_recognition: "Speech to text available for transcribing (not compatible with advanced editor)"
       confirm_delete_collection: "Are you sure you want to delete this collection? After deleting you won't be able to recover it!"
       delete_collection: "Delete Collection"
       save_changes: "Save Changes"
@@ -128,7 +135,10 @@ en:
       collection_reviewers_description: "These users will be able to review and approve transcriptions, as well as edit them."
       add_reviewer: "Add Reviewer"
       remove_reviewer: "Remove Reviewer"
-
+      metadata_entry: Metadata Description
+      edit_metadata_fields: "Edit Fields"
+      revert_from_description_to_transcription: "Disable Description"
+      enable_metadata_description: "Enable Metadata Description"
       transcription_type: "Transcription Type"
       transcription_type_description: "Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled."
       field_based_transcription: "Field based transcription"
@@ -162,6 +172,7 @@ en:
       editor_buttons_description: "Choose mark-up buttons to appear on the transcription editor."
       edit_buttons: "Configure Buttons"
       user_download: "Allow users to download works."
+      alert: "Please configure fields or choose document based transcription under Transcription Type."
     edit_buttons:
       heading: "Transcription Editor Configuration"
       description: "FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up."
@@ -249,9 +260,16 @@ en:
       label: "Label"
       type: "Type"
       order: "Order"
+      translate: 'Translate'
+    localize:
+      translate_facets: Translate Facet Labels
+      metadata_facets_localize_description: Provide language-specific labels for each facet.
+      label: Facet
+      translation: Translation
+      save: Save
     facet_form:
       filter: "Filter"
-    reviewer_dashboard:
+    works_to_review:
       description: Works with Pages Needing Review  
       no_works_need_review: No works need review
       title: Title
@@ -262,3 +280,37 @@ en:
       contributors: Contributors
       last_activity: Last Activity
       filter_works: Filter
+    reviewer_dashboard:
+      one_off_contributions: One-off Contributions
+      unreviewed_contributors: New Contributors
+      total_page: Total Page
+      transcribed_page: Transcribed Page
+      pages_needing_review: Pages to Review
+      works_to_review: Works to Review
+      quality_sampling: Quality Sampling
+      quality_sampling_desc: Quality samplings let you spot-check contributions randomly, then evaluate pages to review based on the quantity of text corrected for a particular user or work.
+    one_off_list:
+      one_off_title: One-off Contributions
+      one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
+      filter_contributions: Filter
+      review: Review
+      user: User
+      date: Date
+      title: Page (Work)
+    recent_contributor_list:
+      filter_users: Filter
+      recent_contributor_title: Recent Contributors
+      recent_contributor_description: These collaborators have begun working on the project recently, but their work has never been reviewed.
+      user: User
+      date: First Contribution Date
+      number_of_contributions: Total Contributions
+    user_contribution_list:
+      user_contribution_title: User Contributions Needing Review
+      user_contribution_description: Pages needing review by user %{user_name}
+      filter_contributions: Filter
+      review: Review
+      user: User
+      date: Date
+      title: Page (Work)
+      
+

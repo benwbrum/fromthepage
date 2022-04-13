@@ -13,19 +13,21 @@
   table.datagrid
     tr
       th Page Title
-      th Page Status
+      -unless @work.ia_work || @work.sc_manifest
+        th Image Status
       th Actions
       th Position
     -@work.pages.each do |page|
       tr
         td.w100 =link_to page.title, { controller: 'display', action: 'display_page', page_id: page.id }
-        td.nowrap.fgfaded
-          -if page.base_image.empty?
-            =svg_symbol '#icon-warning-sign', class: 'icon'
-            =="#{link_to 'Upload', { controller: 'page', action: 'edit', page_id: page.id }} page image"
-          -else
-            =svg_symbol '#icon-check-sign', class: 'icon a50'
-            =="Ready to #{link_to 'transcribe', { controller: 'transcribe', action: 'display_page', page_id: page.id }}"
+        -unless @work.ia_work || @work.sc_manifest
+          td.nowrap.fgfaded
+            -if page.base_image.empty?
+              =svg_symbol '#icon-warning-sign', class: 'icon'
+              =="#{link_to 'Upload', { controller: 'page', action: 'edit', page_id: page.id }} page image"
+            -else
+              =svg_symbol '#icon-check-sign', class: 'icon a50'
+              =="Ready to #{link_to 'transcribe', { controller: 'transcribe', action: 'display_page', page_id: page.id }}"
         td.nowrap.fglight
           -if @work.featured_page == page.id
             b &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Featured Page &nbsp;&nbsp;&nbsp;
