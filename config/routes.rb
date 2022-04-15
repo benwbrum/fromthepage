@@ -320,6 +320,7 @@ Fromthepage::Application.routes.draw do
   get 'dashboard_role' => 'dashboard#dashboard_role'
   get 'guest_dashboard' => 'dashboard#guest'
   get 'findaproject', to: 'dashboard#landing_page', as: :landing_page
+  get 'newfindaproject', to: 'dashboard#new_landing_page', as: :new_landing_page
   get 'collections', to: 'dashboard#collections_list', as: :collections_list
   post 'display_search', to: 'display#search'
   get 'paged_search', to: 'display#paged_search'

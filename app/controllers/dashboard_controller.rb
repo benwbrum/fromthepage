@@ -159,6 +159,17 @@ class DashboardController < ApplicationController
     end
   end
 
+  def new_landing_page
+    # Get random Collections and DocSets from paying users
+    @owners = User.findaproject_owners.order(:display_name).joins(:collections).left_outer_joins(:document_sets).includes(:collections)
+
+    # Sampled Randomly down to 8 items for Carousel
+    docsets = DocumentSet.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+    colls = Collection.carousel.includes(:owner).where(owner_user_id: @owners.ids.uniq).sample(5)
+    @collections = (docsets + colls).sample(8)
+  end
+
+
   def collaborator_time_export
     start_date = params[:start_date]
     end_date = params[:end_date]
