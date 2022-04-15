@@ -47,7 +47,7 @@ br
       thead
         tr
           th =t('.work')
-          th =t('.collaboration')
+          th =t('.status')
           -@collection.document_sets.each do |document_set|
             th
               =document_set.title
@@ -57,9 +57,19 @@ br
           tr
             td
               =work.title
+
+            -work_stats(work)
             td
-              i
-                =work.restrict_scribes  ? t('.restricted') : t('.unrestricted')
+              span(title="#{pluralize(work.work_statistic.total_pages, 'page')}: #{@wording}")
+                .progress
+                  -unless @collection.subjects_disabled
+                    span(style="width:#{@progress_annotated}%")
+                    span(style="width:#{@progress_completed - @progress_annotated}%")
+                    span(style="width:#{@progress_review}%")
+                  -else
+                    span(style="width:#{@progress_completed}%")
+                    span(style="width:#{@progress_review}%")
+
             -ids = work.document_sets.ids
             -@collection.document_sets.each do |document_set|
               td
