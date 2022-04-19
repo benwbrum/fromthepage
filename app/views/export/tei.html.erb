@@ -15,9 +15,6 @@ xml:id="export">
       <author>
         <persName><%= @work.author %></persName>
       </author>
-      <recipient>
-        <persName><%= @work.recipient %></persName>
-      </recipient>
     </titleStmt>
 
     <editionStmt>
@@ -242,6 +239,17 @@ xml:id="export">
       <% end %>
     </listChange>
   </revisionDesc>
+  
+  <% unless @work.recipient.blank? %>
+    <correspDesc>
+      <correspAction type="sent">
+        <persName><%= @work.author %></persName>
+      </correspAction>
+      <correspAction type="received">
+        <persName><%= @work.recipient %></persName>
+      </correspAction>
+    </correspDesc>
+  <% end %>
 </teiHeader>
 
 <text>
