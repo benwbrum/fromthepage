@@ -114,8 +114,9 @@ html lang="en-US"
           -if request.original_url.include?("fromthepage.com")
             =link_to t('.pricing'), pricing_path
           -if request.original_url.include?("fromthepage.com") 
-            =link_to "Transcription for Linguists", 'https://content.fromthepage.com/transcription-for-linguists/'
             =link_to "Transcription for Archives and Special Collections", 'https://content.fromthepage.com/special-collections/'
+            =link_to "Transcription for State & Provincial Archives", 'https://content.fromthepage.com/state-provincial-landing-page/'
+            =link_to "Transcription for Linguists", 'https://content.fromthepage.com/transcription-for-linguists/'
         .footer_copyright &copy; #{Time.now.year} #{link_to 'FromThePage', root_path}. #{t('.all_rights_reserved')}
       .footer_social
         =link_to 'https://twitter.com/_FromThePage_', target: '_blank'
