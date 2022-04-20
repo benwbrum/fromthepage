@@ -198,6 +198,17 @@ xml:id="export">
 
 
   <profileDesc>
+    <% unless @work.recipient.blank? %>
+      <correspDesc>
+        <correspAction type="sent">
+          <persName><%= @work.author %></persName>
+        </correspAction>
+        <correspAction type="received">
+          <persName><%= @work.recipient %></persName>
+        </correspAction>
+      </correspDesc>
+    <% end %>
+  
     <% unless @work.location_of_composition.blank? && @work.document_date.blank? %>
       <creation>
         <% unless @work.location_of_composition.blank? %>
@@ -239,17 +250,6 @@ xml:id="export">
       <% end %>
     </listChange>
   </revisionDesc>
-  
-  <% unless @work.recipient.blank? %>
-    <correspDesc>
-      <correspAction type="sent">
-        <persName><%= @work.author %></persName>
-      </correspAction>
-      <correspAction type="received">
-        <persName><%= @work.recipient %></persName>
-      </correspAction>
-    </correspDesc>
-  <% end %>
 </teiHeader>
 
 <text>
