@@ -11,6 +11,7 @@ class Work < ApplicationRecord
      "permission_description",
      "location_of_composition",
      "author",
+     "recipient",
      "identifier",
      "genre",
      "source_location",

@@ -12,6 +12,8 @@ permission_description: ''
 location_of_composition: Renan, Virginia
 # author or creator (brief string)
 author: Julia Ann Craddock Brumfield (1844-1938)
+# Recipient -- the recipient of the document, i.e. for a letter or other targeted document
+recipient: ''
 # HTML transcription conventions.  Only specified to override the transcription conventions for the collection
 transcription_conventions: "<p><b>Transcription Conventions for 1918</b>\r\n<ul><li><i>Spelling:</i>Use
   original spelling if possible.</li>\r\n<li><i>Capitalization:</i>Modernize for readability</li>\r\n<li><i>Punctuation:</i>Add
