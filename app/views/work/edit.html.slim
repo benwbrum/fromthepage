@@ -90,6 +90,9 @@
           th =f.label :author
           td =f.text_field :author, value: @work.author
         tr
+          th =f.label :recipient
+          td =f.text_field :recipient, value: @work.recipient
+        tr
           th =f.label :location_of_composition, 'Place of Creation'
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr

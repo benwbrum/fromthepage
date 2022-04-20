@@ -30,7 +30,10 @@
     -if @work.author.present?
       h5 =t('.author_name')
       .big =@work.author
-
+      
+    -if @work.recipient.present?
+      h5 =t('.recipient_name')
+      .big =@work.recipient
 
     -if @work.document_date.present?
       h5 =t('.document_date')

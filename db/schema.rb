@@ -845,6 +845,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
     t.text "searchable_metadata"
+    t.string "recipient"
     t.index ["collection_id"], name: "index_works_on_collection_id"
     t.index ["metadata_description_version_id"], name: "index_works_on_metadata_description_version_id"
     t.index ["owner_user_id"], name: "index_works_on_owner_user_id"
