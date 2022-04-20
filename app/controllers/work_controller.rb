@@ -257,6 +257,7 @@ class WorkController < ApplicationController
       :ocr_correction, 
       :transcription_conventions,
       :author, 
+      :recipient,
       :location_of_composition, 
       :identifier, 
       :pages_are_meaningful, 
