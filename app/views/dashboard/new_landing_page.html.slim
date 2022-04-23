@@ -21,16 +21,11 @@
 
 
 .columns.project-list
-
   article.maincol
-    .tagcloud
-    -tagged_collections.each do |tag, collection_list|
-      / TO-DO Replace Completely
-      .tag(style="font-size: #{collection_list.size}px")
-        span(title="#{collection_list.map{|c| c.title}.join(' ')}")=tag
-
-
-
+    ul.tagcloud
+      -tagged_collections.each do |tag, collection_list|
+        li data-weight="#{collection_list.size}"
+          a title="#{collection_list.map{|c| c.title}.join(', ')}" =tag
 
     -if @search_results && @owners.empty?
       -@search_results.each do |sr|
