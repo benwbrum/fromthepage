@@ -9,6 +9,7 @@ class Page < ApplicationRecord
   before_update :process_source
   before_update :populate_search
   before_update :update_line_count
+  before_save :calculate_last_editor
   before_save :calculate_approval_delta
   validate :validate_source, :validate_source_translation
 
@@ -207,6 +208,12 @@ class Page < ApplicationRecord
       self.sc_canvas.thumbnail_url
     else
       file_to_url(self.thumbnail_image)
+    end
+  end
+
+  def calculate_last_editor
+    unless COMPLETED_STATUSES.include? self.status
+      self.last_editor = User.current_user
     end
   end
 

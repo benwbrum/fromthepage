@@ -14,6 +14,14 @@ class QualitySamplingsController < ApplicationController
 
   # GET /quality_samplings/1
   def show
+    old_set_size = @quality_sampling.sample_set.size
+    @quality_sampling.calculate_set
+    new_set_size = @quality_sampling.sample_set.size
+    if new_set_size > old_set_size
+      @quality_sampling.save!
+      flash[:notice] = "Sample set has increased by #{new_set_size - old_set_size} pages"
+    end
+
     @work_samplings, @user_samplings = @quality_sampling.sampling_objects
     # TODO sometimes work_samplings returns bad data -- why?
     @works = Work.where(id: @work_samplings.keys).sort{|a,b| a.id <=> b.id }
