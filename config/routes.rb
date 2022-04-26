@@ -435,6 +435,7 @@ Fromthepage::Application.routes.draw do
       get 'review/user/:user_id/:page_id', as: 'user_review_page', to: 'transcribe#display_page'
       patch 'review/one_off/:page_id', as: 'oneoff_review_page_save', to: 'transcribe#save_transcription'
       patch 'review/user/:user_id/:page_id', as: 'user_review_page_save', to: 'transcribe#save_transcription'
+      patch 'review/user/:user_id/approve_all/:quality_sampling_id', as: 'user_review_approve_all', to: 'collection#approve_all'
 
       resources :quality_samplings
       post 'quality_sampling/initialize', as: 'initialize_sample', to: 'quality_samplings#initialize_sample'

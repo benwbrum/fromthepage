@@ -38,7 +38,7 @@
             td.acenter =t('.not_applicable')
             td =t('.not_applicable')
           td
-            =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user), class: 'button')
+            =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user, quality_sampling_id: @quality_sampling.id), class: 'button')
 
     br
     br
