@@ -406,6 +406,7 @@ private
       page_cells = [
         'Work Title',
         'Work Identifier',
+        'FromThePage Identifier',
         'Page Title',
         'Page Position',
         'Page URL',
@@ -453,6 +454,7 @@ private
         page_cells = [
           work.title,
           work.identifier,
+          work.id,
           page.title,
           page.position,
           page_url,
