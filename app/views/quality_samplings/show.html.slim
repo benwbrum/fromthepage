@@ -21,13 +21,14 @@
           th =t('.actions')
       -@users.each do |user|
         -page_sampling = @user_samplings[user.id]
+        -pages_to_review = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => user.id).count
         tr
           td
             =user.display_name
           td.acenter
             =page_sampling.total_page_count
           td.acenter
-            =@collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => user.id).count
+            =pages_to_review
           -if page_sampling.reviewed_page_count > 0
             td.acenter
               =(1.0 - @collection.pages.where(status: Page::COMPLETED_STATUSES).where(:last_editor_user_id => user.id).average(:approval_delta)).truncate(3)*100
@@ -38,7 +39,8 @@
             td.acenter =t('.not_applicable')
             td =t('.not_applicable')
           td
-            =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user, quality_sampling_id: @quality_sampling.id), class: 'button')
+            -if pages_to_review > 0
+              =link_to(t('.review'), collection_user_contribution_list_path(@collection.owner, @collection, user, quality_sampling_id: @quality_sampling.id), class: 'button')
 
     br
     br
@@ -54,13 +56,14 @@
           th =t('.actions')
       -@works.each do |work|
         -page_sampling = @work_samplings[work.id]
+        -pages_to_review = work.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
         tr
           td
             =work.title
           td.acenter
             =page_sampling.total_page_count
           td.acenter
-            =work.pages.where(status: Page::STATUS_NEEDS_REVIEW).count
+            =pages_to_review
           -if page_sampling.reviewed_page_count > 0
             td.acenter
               =page_sampling.corrected_page_count
@@ -69,7 +72,9 @@
           -else
             td =t('.not_applicable')
             td =t('.not_applicable')
-          td =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
+          td 
+            -if pages_to_review > 0
+              =link_to t('.review'), {controller: 'display', action: "read_work", work_id: work.id, needs_review: 'review' }, class: 'button'
 
   aside.sidecol
     h5
