@@ -48,6 +48,8 @@ en:
       recent_subject_indexing: "Recent Subject Indexing"
       recent_translation_subject_indexing: "Recent Translation Subject Indexing"
       recent_works_added: "Recent Works Added"
+    approve_all:
+      approved_n_pages: Approved %{page_count} pages.
     #next section is admin only
     contributors:
       contributions: "Contributions Between %{start_deed} and %{end_deed}"
