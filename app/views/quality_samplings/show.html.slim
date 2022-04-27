@@ -74,8 +74,9 @@
   aside.sidecol
     h5
       span.fgfaded =t('.review_url')
-    .sidecol-url
-      =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
+    h7
+      p =t('.review_url_desc')
+      p =link_to collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling), collection_sampling_review_flow_url(@collection.owner, @collection, @quality_sampling)
     h5
       span.fgfaded =t('.sample_field_size')
       | &nbsp;
@@ -86,8 +87,6 @@
       span =@quality_sampling.sample_set.size
 
     dl.sidecol-desc
-      dt =t('.review_url')
-      dd =t('.review_url_desc')
       dt =t('.pages_in_sample')
       dd =t('.pages_in_sample_desc')
       dt =t('.pages_to_be_reviewed')
