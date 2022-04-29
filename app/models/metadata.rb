@@ -64,6 +64,10 @@ class Metadata
         if !title.blank? && title[:value] != work.title
           work.title = title[:value]
         end
+        identifier = metadata.detect{|e| e[:label] == 'identifier'}
+        if !identifier.blank? && identifier[:value] != work.identifier
+          work.identifier = identifier[:value]
+        end
         work.save!
         success+=1
       end
@@ -104,10 +108,10 @@ class Metadata
 
   def self.create_example(collection)
     csv_string = CSV.generate(headers: true) do |csv|
-      csv << ['work_id', 'title', 'your metadata_field_one', 'your_metadata_field_two']
+      csv << ['work_id', 'title', 'identifier', 'your metadata_field_one', 'your_metadata_field_two']
 
       collection.works.each do |work|
-        csv << [work.id, work.title]
+        csv << [work.id, work.title, work.identifier]
       end
     end
 
