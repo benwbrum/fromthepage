@@ -11,6 +11,7 @@ class Work < ApplicationRecord
      "permission_description",
      "location_of_composition",
      "author",
+     "recipient",
      "identifier",
      "genre",
      "source_location",
@@ -303,8 +304,12 @@ class Work < ApplicationRecord
 
   def normalize_friendly_id(string)
     string = string.truncate(230, separator: ' ', omission: '')
+    unless string.match? /[[:alpha:]]/
+      string = "work-#{string}"
+    end
     super.gsub('_', '-')
   end
+
 
   def slug_candidates
     if self.slug
