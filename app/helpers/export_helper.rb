@@ -614,7 +614,7 @@ module ExportHelper
 
   def work_metadata_contributions(work)
     {
-      contributors: work_metadata_contributors_to_array,
+      contributors: work_metadata_contributors_to_array(work),
       data: work_metadata_to_hash(work),
     }
   end
@@ -628,8 +628,24 @@ module ExportHelper
 
 
 
-  def work_metadata_to_hash
-    nil
+  def work_metadata_to_hash(work)
+    collection=work.collection
+    fields = {}
+    collection.metadata_fields.each { |field| fields[field.id] = field}
+    metadata = JSON.parse(work.metadata_description)
+    # TODO remember description status!
+    response_array = []
+    metadata.each do |metadata_hash|
+      value = metadata_hash['value']
+      unless value.blank?
+        element = {label: metadata_hash['label'], value: value}
+        element[:config] = iiif_strucured_data_field_config_url(metadata_hash['transcription_field_id'])
+
+        response_array << element
+      end
+    end
+
+    response_array
   end
 
   def field_data_to_hash(page)
@@ -767,7 +783,17 @@ module ExportHelper
   end
 
   def work_metadata_contributors_to_array(work)
-    nil
+    array = []
+
+    user_ids = work.deeds.where(deed_type: DeedType.metadata_creation_or_edits).pluck(:user_id).uniq
+    User.find(user_ids).each do |user|
+      element = { user_name: user.display_name}
+      element[:real_name] = user.real_name unless user.real_name.blank?
+      element[:orcid] = user.real_name unless user.orcid.blank?
+      array << element
+    end
+
+    array
   end
 
 
