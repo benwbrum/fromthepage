@@ -654,7 +654,9 @@ module ExportHelper
     collection.transcription_fields.each { |field| fields[field.label] = field}
     spreadsheet = collection.transcription_fields.detect { |field| field.input_type == 'spreadsheet'}
     columns = {}
-    spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column}
+    if spreadsheet
+      spreadsheet.spreadsheet_columns.each { |column| columns[column.label] = column}
+    end
 
     response_array = []
     page.table_cells.each do |cell| 
@@ -692,7 +694,7 @@ module ExportHelper
       spreadsheet_array << row
     end
 
-    unless spreadsheet_array.blank?
+    unless spreadsheet_array.flatten.empty?
       spreadsheet_field = collection.transcription_fields.where(input_type: 'spreadsheet').first
       element = {
         data: spreadsheet_array
@@ -709,7 +711,12 @@ module ExportHelper
 
 
   def spreadsheet_column_config(column, include_within)
-    column_config = {label: column.label, input_type: column.input_type, position: column.position}
+    column_config = {
+      label: column.label, 
+      input_type: column.input_type, 
+      position: column.position,
+      profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-spreadsheet-column-configuration-response'
+    }
     if column.options
       column_config[:options] = column.options.split(";")
     end
@@ -723,7 +730,13 @@ module ExportHelper
   end
 
   def transcription_field_config(field, include_within)
-    element = {label: field.label, input_type: field.input_type, position: field.position, line: field.line_number}
+    element = {
+      label: field.label, 
+      input_type: field.input_type, 
+      position: field.position, 
+      line: field.line_number,
+      profile: 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-field-configuration-response'
+    }
     element['@id'] = iiif_strucured_data_field_config_url(field.id)
     if field.options
       if field.input_type == 'multiselect'
@@ -773,8 +786,8 @@ module ExportHelper
 
     user_ids = page.deeds.where(deed_type: DeedType.transcriptions_or_corrections).pluck(:user_id).uniq
     User.find(user_ids).each do |user|
-      element = { user_name: user.display_name}
-      element[:real_name] = user.real_name unless user.real_name.blank?
+      element = { 'userName' => user.display_name}
+      element['realName'] = user.real_name unless user.real_name.blank?
       element[:orcid] = user.real_name unless user.orcid.blank?
       array << element
     end
@@ -787,8 +800,8 @@ module ExportHelper
 
     user_ids = work.deeds.where(deed_type: DeedType.metadata_creation_or_edits).pluck(:user_id).uniq
     User.find(user_ids).each do |user|
-      element = { user_name: user.display_name}
-      element[:real_name] = user.real_name unless user.real_name.blank?
+      element = { 'userName' => user.display_name}
+      element['realName'] = user.real_name unless user.real_name.blank?
       element[:orcid] = user.real_name unless user.orcid.blank?
       array << element
     end

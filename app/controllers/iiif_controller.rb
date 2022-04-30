@@ -368,6 +368,7 @@ class IiifController < ApplicationController
     response['@id'] = iiif_page_strucured_data_config_url(@collection.id)
     response[:label] = "Transcription field configuration for #{@collection.title}"
     response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::TRANSCRIPTION)
+    response[:profile] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-configuration-response'
     render :plain => response.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -376,6 +377,7 @@ class IiifController < ApplicationController
     response['@id'] = iiif_work_strucured_data_config_url(@collection.id)
     response[:label] = "Metadata field configuration for #{@collection.title}"
     response[:config] = field_configuration_to_array(@collection, TranscriptionField::FieldType::METADATA)
+    response[:profile] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-configuration-response'
     render :plain => response.to_json(pretty: true), :content_type => "application/json"
   end
 
@@ -397,6 +399,7 @@ class IiifController < ApplicationController
       response = work_metadata_contributions(@work)
       response[:config] = iiif_work_strucured_data_config_url(@collection.id)
     end
+    response['profile'] = 'https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions#structured-data-endpoint-response'
     response['on'] = on
     response['@id'] = structured_data_id(@work,@page)
     response['label'] = structured_data_label(@work,@page)
@@ -404,9 +407,9 @@ class IiifController < ApplicationController
       response['notes'] = url_for({:controller => 'iiif', :action => 'list', :page_id => @page.id, :annotation_type => 'notes', :only_path => false})
     end
     if @page
-      response['page_status'] = JSON.parse(status_service_for_page(@page).to_json)
+      response['pageStatus'] = JSON.parse(status_service_for_page(@page).to_json)
     end
-    response['work_status'] = JSON.parse(status_service_for_manifest(@work).to_json)
+    response['workStatus'] = JSON.parse(status_service_for_manifest(@work).to_json)
 
 
     render :plain => response.to_json(pretty: true), :content_type => "application/json"
@@ -536,7 +539,7 @@ private
       'label' => structured_data_label(work,page),
       'format' => 'application/ld+json',
       "@context" => "http://www.fromthepage.org/jsonld/structured/1/context.json",
-      "profile" => "https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations#structured-data-service"
+      "profile" => "https://github.com/benwbrum/fromthepage/wiki/Structured-Data-API-for-Harvesting-Crowdsourced-Contributions"
     }
   end
 
@@ -930,6 +933,7 @@ private
     service["pctTranslationNeedsReview"] = stats.pct_translation_needs_review
     service["pctTranslationIndexed"] = stats.pct_translation_annotated
     service["pctTranslationMarkedBlank"] = stats.pct_translation_blank
+    service["metadataStatus"] = work.description_status
     service
   end
 
