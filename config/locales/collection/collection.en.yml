@@ -17,6 +17,8 @@ en:
       search_for_works: "Search for works..."
       pages_need_transcription: "Pages That Need Transcription"
       pages_need_review: "Pages That Need Review"
+      pages_need_correction: "Pages That Need Correction"
+      pages_need_correction_or_transcription: "Pages That Need Correction or Transcription"
       show_more: "Show More"
       about: "About"
       works: "Works"
@@ -46,6 +48,8 @@ en:
       recent_subject_indexing: "Recent Subject Indexing"
       recent_translation_subject_indexing: "Recent Translation Subject Indexing"
       recent_works_added: "Recent Works Added"
+    approve_all:
+      approved_n_pages: Approved %{page_count} pages.
     #next section is admin only
     contributors:
       contributions: "Contributions Between %{start_deed} and %{end_deed}"
