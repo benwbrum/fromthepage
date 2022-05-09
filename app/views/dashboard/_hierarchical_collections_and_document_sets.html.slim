@@ -18,7 +18,7 @@
             =link_to t('.start_transcribing'), collection_guest_page_path(cds.owner, cds, cds.next_untranscribed_page.work, cds.next_untranscribed_page), class: 'button'
         .collection_summary
           span =t('.project_by', author: owner_link).html_safe 
-        -if cds.document_sets.count < 20
+        -if cds.document_sets.where(is_public:true).count < 20
           ul
             -cds.document_sets.each do |doc_set|
               li =link_to doc_set.title, collection_path(doc_set.owner, doc_set)
