@@ -27,7 +27,7 @@
         tr
           th.hidden Current URL
           td
-            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_read_work_url}</b>").html_safe
+            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_read_work_url( @work.collection.owner.slug, @work.collection.slug, @work.slug)}</b>").html_safe
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
