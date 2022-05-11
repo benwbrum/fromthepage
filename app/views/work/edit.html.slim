@@ -27,8 +27,7 @@
         tr
           th.hidden Current URL
           td
-            p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
-
+            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_read_work_url( @work.collection.owner.slug, @work.collection.slug, @work.slug)}</b>").html_safe
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
