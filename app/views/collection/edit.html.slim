@@ -13,7 +13,7 @@
         tr
           th.hidden URL
           td
-            p.nomargin.settings =t('.current_url', current_url: "<b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}</b>").html_safe
+            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
         tr
           td(colspan="2")
             =f.label :intro_block, t('.description'), class: "above"
@@ -111,7 +111,7 @@
 
     -if @collection.text_entry?
       h3 =t('.collection_link')
-      p =t('.page_needing_transcription', current_url:  "<b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/start_transcribing</b>").html_safe
+      p =t('.page_needing_transcription', current_url:  "<b>#{collection_start_transcribing_url(@collection.owner.slug, @collection.slug)}</b>").html_safe
 
     h3 =t('.collection_privacy')
     -if @collection.restricted
