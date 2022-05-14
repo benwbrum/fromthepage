@@ -48,6 +48,8 @@ en:
       recent_subject_indexing: "Recent Subject Indexing"
       recent_translation_subject_indexing: "Recent Translation Subject Indexing"
       recent_works_added: "Recent Works Added"
+    approve_all:
+      approved_n_pages: Approved %{page_count} pages.
     #next section is admin only
     contributors:
       contributions: "Contributions Between %{start_deed} and %{end_deed}"
@@ -73,7 +75,7 @@ en:
     #next section is admin only
     edit:
       title: "Title"
-      current_url: "The current URL for this collection is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words."
+      current_url: "The current URL for this collection is %{current_url}. If you want to edit the collection section of the URL, please use lowercase letters and dashes between any words."
       description: "Description"
       footer: "Footer"
       learn_more_footer: "Learn more about configuring the footer."

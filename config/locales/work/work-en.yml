@@ -32,6 +32,7 @@ en:
     edit:
       additional_metadata: "Additional Metadata"
       restricted_work_no_collaborators_warning: "Only project owners can edit this work. Add collaborators to make the work editable by others."
+      current_url: "The current URL for this work is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words."
     description_versions:
       help_description: "View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color."
       revision: "revision"

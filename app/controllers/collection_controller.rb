@@ -57,9 +57,18 @@ class CollectionController < ApplicationController
   end
 
   def user_contribution_list
-    #pages_needing_review = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW)
-    needs_review_page_ids = @user.deeds.where(collection_id: @collection.id).where(deed_type: DeedType.transcriptions_or_corrections).joins(:page).where("pages.status = ?", Page::STATUS_NEEDS_REVIEW).pluck(:page_id)
-    @pages = Page.find(needs_review_page_ids)
+    unless params[:quality_sampling_id].blank?
+      @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    end
+    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+  end
+
+  def approve_all
+    @quality_sampling = QualitySampling.find(params[:quality_sampling_id])
+    @pages = @collection.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(:last_editor_user_id => @user.id)
+    @pages.update_all(status: Page::STATUS_TRANSCRIBED)
+    flash[:notice] = t('.approved_n_pages', page_count: @pages.count)
+    redirect_to(collection_quality_sampling_path(@collection.owner, @collection, @quality_sampling))
   end
 
   def edit_buttons
