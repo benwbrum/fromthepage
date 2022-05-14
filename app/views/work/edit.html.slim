@@ -168,7 +168,7 @@
         =f.check_box :restrict_scribes
         |&nbsp;
         =f.label :restrict_scribes, 'Restrict collaborators'
-      -if @collection.restricted? && @work.restrict_scribes && @scribes.empty?
+      -if @work.restrict_scribes && @scribes.empty?
         p.warning =t('.restricted_work_no_collaborators_warning')
       small.legend =button_tag 'Apply', class: 'outline'
 
