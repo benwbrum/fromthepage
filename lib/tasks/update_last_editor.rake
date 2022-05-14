@@ -4,6 +4,15 @@ namespace :fromthepage do
     Collection.where('id between ? and ?', args[:first_id].to_i, args[:last_id].to_i).each do |collection|
       print "#{collection.slug}\n"
       collection.pages.all.each do |page|
+
+        unless page.current_version
+          current_version = page.page_versions.first
+          if current_version
+            page.update_columns(page_version_id: current_version.id)
+          end
+        end
+
+
         unless page.last_editor_user_id
           version = page.current_version
           if version
