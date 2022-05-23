@@ -31,6 +31,7 @@ en:
       work_updated: "Work updated successfully"
     edit:
       additional_metadata: "Additional Metadata"
+      document_date_hint: "Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)"
     description_versions:
       help_description: "View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color."
       revision: "revision"
