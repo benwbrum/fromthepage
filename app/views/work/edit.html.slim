@@ -98,6 +98,9 @@
           th =f.label :document_date, 'Document Date'
           td =f.text_field :document_date, value: @work.document_date
         tr
+          th.hidden 'Document Date'
+          td =t('.document_date_hint')
+        tr
           th =f.label :genre
           td =f.text_field :genre, value: @work.genre
         tr
