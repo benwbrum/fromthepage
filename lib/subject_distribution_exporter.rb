@@ -1,11 +1,13 @@
-module SubjectCoocurrenceExporter
+module SubjectDistributionExporter
   class Exporter
     include Rails.application.routes.url_helpers
 
-    def initialize(collection, article=nil)
+    def initialize(collection, article)
       @collection=collection
       @article=article
       @subjects = collection.articles.includes(:categories, :page_article_links).order('articles.title')
+
+
       @headers = [
         'Subject Title',
         'Subject ID',
@@ -13,16 +15,18 @@ module SubjectCoocurrenceExporter
         'Subject Latitude',
         'Subject Longitude',
         'Subject Categories',
-        'Coocurrence Title',
-        'Coocurrence ID',
-        'Coocurrence URI',
-        'Coocurrence Latitude',
-        'Coocurrence Longitude',
-        'Shared Page Count'
-      ]
+        'Coocurrence Count',
+        'Work Title',
+        'Work FromThePage ID',
+        'Work Identifier',
+        'Work URI'
+      ] # plus work metadata
     end
 
     def export
+
+
+
         # sql =
         #   'SELECT count(*) as link_count, '+
         #   'a.title as title, '+
@@ -38,29 +42,42 @@ module SubjectCoocurrenceExporter
 
 
 
-      sql =
-        'SELECT count(*) as link_count, '+
-        'from_a.title as from_title, '+
-        'from_a.id as from_article_id, '+
-        'from_a.uri as from_article_uri, '+
-        'from_a.latitude as from_article_longitude, '+
-        'from_a.longitude as from_article_latitude, '+
+
+      # we actually want to find all the works this subject is mentioned in,
+      # then get all the pages in those works and all the subjects in those pages.
+      work_ids = @article.pages.pluck(:work_id)
+      work_ids = work_ids & @collection.works.pluck("works.id")
+      page_in_works_ids = Page.where(work_id: work_ids).pluck(:id)
+
+
+      sql = 
+        'select count(*) as link_count, '+
+        '  works.id as work_id, '+
+        'works.original_metadata as work_original_metadata, '+
+        'works.title as work_title, '+
+        'works.identifier as work_identifier, '+
+        '  to_a.id, '+
         'to_a.title as to_title, '+
         'to_a.id as to_article_id, '+
         'to_a.uri as to_article_uri, '+
         'to_a.latitude as to_article_longitude, '+
         'to_a.longitude as to_article_latitude '+
-        'FROM page_article_links to_links '+
-        'INNER JOIN page_article_links from_links '+
-        '  ON to_links.page_id = from_links.page_id '+
-        'INNER JOIN articles from_a '+
-        '  ON from_links.article_id = from_a.id '+
+        'from page_article_links to_links '+
         'INNER JOIN articles to_a '+
         '  ON to_links.article_id = to_a.id '+
-        "WHERE to_links.article_id != from_links.article_id " +
-        "  AND to_a.collection_id = #{@collection.id} "
-      sql += "GROUP BY from_a.title, from_a.id "
+        'inner join pages p '+
+        'on to_links.page_id = p.id '+
+        'inner join works '+
+        'on works.id = p.work_id '+
+        "WHERE to_links.article_id != #{@article.id} " +
+        "  AND to_links.page_id IN (#{page_in_works_ids.join(',')}) " +
+        'group by works.id, to_a.id'
+
+
       article_links = Article.connection.select_all(sql)
+
+
+
 
       sql = "SELECT articles_categories.article_id as article_id, 
               categories.title as title 
@@ -81,25 +98,24 @@ module SubjectCoocurrenceExporter
         csv << @headers
         current_category_stragg = nil
         article_links.each do |coocurrence|
-          current_categories = category_map[coocurrence['from_article_id']]
+          current_categories = category_map[coocurrence['to_article_id']]
           if current_categories
             current_category_stragg = current_categories.uniq.join (" | ")
           else
             current_category_stragg = ''
           end
+
           csv << [
-            coocurrence['from_title'],
-            coocurrence['from_article_id'],
-            coocurrence['from_article_uri'],
-            coocurrence['from_article_longitude'],
-            coocurrence['from_article_latitude'],
-            current_category_stragg,
             coocurrence['to_title'],
             coocurrence['to_article_id'],
             coocurrence['to_article_uri'],
             coocurrence['to_article_longitude'],
             coocurrence['to_article_latitude'],
-            coocurrence['link_count']
+            current_category_stragg,
+            coocurrence['link_count'],
+            coocurrence['work_title'],
+            coocurrence['work_id'],
+            coocurrence['work_identifier']
           ]            
         end
       end
