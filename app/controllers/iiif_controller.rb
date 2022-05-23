@@ -296,7 +296,7 @@ class IiifController < ApplicationController
 
   def layer
     work_id = params[:id]
-    work = Work.find work_id
+    work = Work.find work_id.to_i
     #params[:type]
     if params[:type]=="transcription"
       seed = {
