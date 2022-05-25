@@ -67,11 +67,16 @@
     p  Only search text of pages which do not link to <em>#{@article.title}</em>
     =button_to "Search Unlinked Pages", { :controller => 'display', :action => 'search', :article_id => @article.id, :unlinked_only => true, :collection_id => @collection}, { :rel => 'nofolllow' }
  
+    -if user_signed_in? && current_user.like_owner?(@collection)
+      h3 Export
+      p Download a spreadsheet of coocurring subjects and works they appear in.
+      =link_to "Download", collection_subject_distribution_path(@collection.owner, @collection, @article), class: 'button btnExport'
  
 
 -content_for :javascript
   javascript:
     $(function() {
+
       $('[data-graph-category]').select2({
         placeholder: 'Select categories...',
         templateResult: function(category) {
@@ -81,4 +86,14 @@
           return $category;
         }
       });
+
+      $('.btnExport').on('click', function() {
+        Cookies.remove('download_finished', {path: '/'});
+        var downloadCheckTimer = window.setInterval(function() {
+          var cookie = Cookies.get('download_finished');
+          if(cookie === 'true') {
+            $('html').removeClass('page-busy');
+            window.clearInterval(downloadCheckTimer);
+          }
+        }, 1000);
     });
