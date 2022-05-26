@@ -511,7 +511,7 @@ Fromthepage::Application.routes.draw do
       get 'article/:article_id/edit', to: 'article#edit', as: 'article_edit'
       get 'article_version/:article_id', to: 'article_version#list', as: 'article_version'
       patch 'article/update/:article_id', to: 'article#update', as: 'article_update'
-      get 'article/:article_id/subject_distribution', to: 'export#subject_distribution_csv'
+      get 'article/:article_id/subject_distribution', to: 'export#subject_distribution_csv', as: 'subject_distribution'
     end
   end
 
