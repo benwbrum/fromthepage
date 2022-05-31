@@ -96,7 +96,7 @@
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
           th =f.label :document_date, 'Document Date'
-          td =f.text_field :document_date, value: @work.document_date
+          td =f.text_field :document_date, value: @work.document_date, placeholder: 'yyyy-mm-dd'
         tr
           th.hidden 'Document Date'
           td =t('.document_date_hint')
