@@ -18,9 +18,12 @@ module SubjectDistributionExporter
         'Coocurrence Count',
         'Work Title',
         'Work FromThePage ID',
-        'Work Identifier',
-        'Work Original Metadata'
+        'Work Identifier'
       ] # plus work metadata
+
+
+      raw_metadata_strings = collection.works.pluck(:original_metadata)
+      @metadata_headers = raw_metadata_strings.map{|raw| raw.nil? ? [] : JSON.parse(raw).map{|element| element["label"] } }.flatten.uniq
     end
 
     def export
@@ -79,7 +82,7 @@ module SubjectDistributionExporter
       end
 
       csv_string = CSV.generate(force_quotes: true) do |csv|
-        csv << @headers
+        csv << @headers + @metadata_headers
         current_category_stragg = nil
         article_links.each do |coocurrence|
           current_categories = category_map[coocurrence['to_article_id']]
@@ -89,7 +92,7 @@ module SubjectDistributionExporter
             current_category_stragg = ''
           end
 
-          csv << [
+          row = [
             coocurrence['to_title'],
             coocurrence['to_article_id'],
             coocurrence['to_article_uri'],
@@ -99,9 +102,21 @@ module SubjectDistributionExporter
             coocurrence['link_count'],
             coocurrence['work_title'],
             coocurrence['work_id'],
-            coocurrence['work_identifier'],
-            coocurrence['work_original_metadata']
-          ]            
+            coocurrence['work_identifier']
+          ]
+          unless coocurrence['work_original_metadata'].blank?
+            metadata = {}
+            JSON.parse(coocurrence['work_original_metadata']).each {|e| metadata[e['label']] = e['value'] }
+
+            @metadata_headers.each do |header|
+              # look up the value for this index
+              row << metadata[header]
+            end
+          end
+
+
+
+          csv << row   
         end
       end
       csv_string
