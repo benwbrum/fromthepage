@@ -98,6 +98,9 @@
           th =f.label :document_date, 'Document Date'
           td =f.text_field :document_date, value: @work.document_date, placeholder: 'yyyy-mm-dd'
         tr
+          th.hidden 'Document Date'
+          td =t('.document_date_hint')
+        tr
           th =f.label :genre
           td =f.text_field :genre, value: @work.genre
         tr
@@ -167,6 +170,8 @@
         =f.check_box :restrict_scribes
         |&nbsp;
         =f.label :restrict_scribes, 'Restrict collaborators'
+      -if @work.restrict_scribes && @scribes.empty?
+        p.warning =t('.restricted_work_no_collaborators_warning')
       small.legend =button_tag 'Apply', class: 'outline'
 
     -if @work.restrict_scribes
