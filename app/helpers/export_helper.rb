@@ -668,7 +668,7 @@ module ExportHelper
           element[:config] = iiif_strucured_data_field_config_url(field.id)
         else
           element[:row] = cell.row
-          element[:config] = 'spreadsheet?'
+          element[:config] = 'N/A'
         end
 
         response_array << element
