@@ -2,6 +2,7 @@ require 'csv'
 require 'subject_exporter'
 require 'subject_details_exporter'
 require 'subject_coocurrence_exporter'
+require 'subject_distribution_exporter'
 
 class Collection < ApplicationRecord
   include CollectionStatistic
@@ -134,6 +135,12 @@ class Collection < ApplicationRecord
 
   def export_subject_coocurrence_as_csv
     subjects = SubjectCoocurrenceExporter::Exporter.new(self)
+
+    subjects.export
+  end
+
+  def export_subject_distribution_as_csv(subject)
+    subjects = SubjectDistributionExporter::Exporter.new(self, subject)
 
     subjects.export
   end
