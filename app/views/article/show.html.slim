@@ -91,9 +91,11 @@
         Cookies.remove('download_finished', {path: '/'});
         var downloadCheckTimer = window.setInterval(function() {
           var cookie = Cookies.get('download_finished');
+
           if(cookie === 'true') {
             $('html').removeClass('page-busy');
             window.clearInterval(downloadCheckTimer);
           }
         }, 1000);
+      });
     });
