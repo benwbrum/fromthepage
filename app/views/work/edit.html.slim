@@ -27,8 +27,7 @@
         tr
           th.hidden Current URL
           td
-            p.nomargin.settings The current URL for this work is <b>www.#{Rails.application.routes.default_url_options[:host]}/#{@collection.owner.slug}/#{@collection.slug}/#{@work.slug}</b>.  If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
-
+            p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_read_work_url( @work.collection.owner.slug, @work.collection.slug, @work.slug)}</b>").html_safe
         tr
           th =f.label :identifier, 'Identifier'
           td =f.text_field :identifier, value: @work.identifier
@@ -97,7 +96,10 @@
           td =f.text_field :location_of_composition, value: @work.location_of_composition
         tr
           th =f.label :document_date, 'Document Date'
-          td =f.text_field :document_date, value: @work.document_date
+          td =f.text_field :document_date, value: @work.document_date, placeholder: 'yyyy-mm-dd'
+        tr
+          th.hidden 'Document Date'
+          td =t('.document_date_hint')
         tr
           th =f.label :genre
           td =f.text_field :genre, value: @work.genre
@@ -168,6 +170,8 @@
         =f.check_box :restrict_scribes
         |&nbsp;
         =f.label :restrict_scribes, 'Restrict collaborators'
+      -if @work.restrict_scribes && @scribes.empty?
+        p.warning =t('.restricted_work_no_collaborators_warning')
       small.legend =button_tag 'Apply', class: 'outline'
 
     -if @work.restrict_scribes
