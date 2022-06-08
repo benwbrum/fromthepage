@@ -1,55 +1,56 @@
+---
 es:
   shared:
     article_tabs:
-      overview: "Resumen General"
-      settings: "Configuración"
-      versions: "Versiones"
-    collection_tabs:
-      overview: "Resumen General"
-      statistics: "Estadísticas"
-      subjects: "Temas"
-      collaborators: "Colaboradores"
-      settings: "Configuración"
-      export: "Exportar"
-      add_work: "Añadir Obra"
-      edit_fields: "Campos"
-      sets: "Conjuntos"
-      works_list: "Lista de Obras"
-    page_tabs:
-      overview: "Resumen General"
-      correct: "Corregir"
-      transcribe: "Transcribir"
-      translate: "Traducción"
-      versions: "Versiones"
-      help: "Ayuda"
-      settings: "Configuración"
-      nav_info: "Página %{position} de %{size}"
-    work_tabs:
-      read: "Leer"
-      about: "Acerca de"
-      contents: "Contenido"
-      versions: "Versiones"
-      print: "Imprimir"
-      settings: "Configuración"
-      pages: "Paginas"
-      help: "Ayuda"
-      download: "Descargar"
-    handsontable:
-      date_tooltip: "Las fechas deben ser conforme el formato YYYY-MM-DD (cuatro dígitos del año, dos dígitos del mes, dos dígitos del dá, con guiones que separen los números)."
+      overview: Resumen General
+      settings: Configuración
+      versions: Versiones
     codemirror:
-      abbr_description: "Marca las abreviaturas abreviaturas en un texto con expansiones en el atributo expan."
-      add_description: "Marca el texto insertado después por el escritor."
-      date_description: "Marca la fecha, con forma estandarizada según el atributo cuándo."
-      del_description: "Marca el texto que ha sido borrado o tachado."
-      expan_description: "Marcas las abreviaturas ampliadas con formularios originales en el atributo abbr."
-      footnote_description: "Incluye el cuerpo de una nota al pie, con el símbolo de nota al pie en el atributo signo."
-      fig_description: "Indica una figura o una línea horizontal."
-      gap_description: "Marca un hueco en el texto, a menudo debido a daños"
-      head_description: "Marca los encabezados dentro del texto"
-      marginalia_description: "Marca el texto en los márgenes del texto principal."
-      reg_description: "Marca una forma regularizada del texto, con formularios originales en el atributo orig."
-      s_description: "Marca el texto que se ha tachado por cualquier motivo."
-      sub_description: "Texto de subíndice."
-      sup_description: "Texto de superíndice."
-      unclear_description: "Marca texto poco claro."
-      u_description: "Marca el texto subrayado."   
+      abbr_description: Marca las abreviaturas abreviaturas en un texto con expansiones en el atributo expan.
+      add_description: Marca el texto insertado después por el escritor.
+      date_description: Marca la fecha, con forma estandarizada según el atributo cuándo.
+      del_description: Marca el texto que ha sido borrado o tachado.
+      expan_description: Marcas las abreviaturas ampliadas con formularios originales en el atributo abbr.
+      fig_description: Indica una figura o una línea horizontal.
+      footnote_description: Incluye el cuerpo de una nota al pie, con el símbolo de nota al pie en el atributo signo.
+      gap_description: Marca un hueco en el texto, a menudo debido a daños
+      head_description: Marca los encabezados dentro del texto
+      marginalia_description: Marca el texto en los márgenes del texto principal.
+      reg_description: Marca una forma regularizada del texto, con formularios originales en el atributo orig.
+      s_description: Marca el texto que se ha tachado por cualquier motivo.
+      sub_description: Texto de subíndice.
+      sup_description: Texto de superíndice.
+      u_description: Marca el texto subrayado.
+      unclear_description: Marca texto poco claro.
+    collection_tabs:
+      add_work: Añadir Obra
+      collaborators: Colaboradores
+      edit_fields: Campos
+      export: Exportar
+      overview: Resumen General
+      sets: Conjuntos
+      settings: Configuración
+      statistics: Estadísticas
+      subjects: Temas
+      works_list: Lista de Obras
+    handsontable:
+      date_tooltip: Las fechas deben ser conforme el formato YYYY-MM-DD (cuatro dígitos del año, dos dígitos del mes, dos dígitos del dá, con guiones que separen los números).
+    page_tabs:
+      correct: Corregir
+      help: Ayuda
+      nav_info: Página %{position} de %{size}
+      overview: Resumen General
+      settings: Configuración
+      transcribe: Transcribir
+      translate: Traducción
+      versions: Versiones
+    work_tabs:
+      about: Acerca de
+      contents: Contenido
+      download: Descargar
+      help: Ayuda
+      pages: Paginas
+      print: Imprimir
+      read: Leer
+      settings: Configuración
+      versions: Versiones

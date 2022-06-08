@@ -1,21 +1,22 @@
+---
 es:
   transcription_field:
-    field_layout:
-      instructions: "Instrucciones"
-    line_form:
-      field_options: "Opciones de campo (separa con punto y coma)"
-      field_options_title: "Opciones para los campos seleccionados."
-      percentage_width: "Ancho %"
-      percentage_title: "Porcentaje del ancho de línea que se utilizará para este campo."
-      page: "Página"
-      page_title: "Para formularios de varias páginas, ¿en qué página debería aparecer este campo? (Déjalo en blanco para mostrar en cada página.)"
-    edit_fields:
-      edit_transcription_fields: "Editar Campos de Transcripción"
-      add_additional_line: "Añadir Línea Adicional"
-      add_additional_field: "Añadir Campo Adicional"
-      save: "Guardar"
-      cancel: "Cancelar"
-      done: "Completado"
-      preview: "Vista Preliminar"
     add_fields:
-      must_have_options_list: "Los campos seleccionados deben tener una lista de opciones. Agregue opciones a cualquier campo seleccionado y vuelva a guardar."
+      must_have_options_list: Los campos seleccionados deben tener una lista de opciones. Agregue opciones a cualquier campo seleccionado y vuelva a guardar.
+    edit_fields:
+      add_additional_field: Añadir Campo Adicional
+      add_additional_line: Añadir Línea Adicional
+      cancel: Cancelar
+      done: Completado
+      edit_transcription_fields: Editar Campos de Transcripción
+      preview: Vista Preliminar
+      save: Guardar
+    field_layout:
+      instructions: Instrucciones
+    line_form:
+      field_options: Opciones de campo (separa con punto y coma)
+      field_options_title: Opciones para los campos seleccionados.
+      page: Página
+      page_title: Para formularios de varias páginas, ¿en qué página debería aparecer este campo? (Déjalo en blanco para mostrar en cada página.)
+      percentage_title: Porcentaje del ancho de línea que se utilizará para este campo.
+      percentage_width: Ancho %

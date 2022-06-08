@@ -1,50 +1,51 @@
+---
 es:
   user:
     owner_profile:
-      api_keys: "Claves API"
-      edit_profile: "Editar Perfil"
-      login_and_password: "Inicio de sesión y Contraseña"
-      website: "Página Web"
-      previous_image: "Imagen anterior"
-      next_image: "Siguiente imagen"
+      api_keys: Claves API
+      edit_profile: Editar Perfil
+      login_and_password: Inicio de sesión y Contraseña
+      next_image: Siguiente imagen
+      previous_image: Imagen anterior
+      website: Página Web
     profile:
-      edit_profile: "Editar Perfil"
-      login_and_password: "Inicio de sesión y Contraseña"
-      user_since: "Usuario desde %{date}"
-      last_seen: "Visto por última vez %{date}"
-      recent_activity_by: "Actividad Reciente de %{user_display_name}"
-      recent_notes: "Notas Recientes"
-      date: "Fecha"
-      page: "Página"
-      note: "Nota"
-      recent_page_edits: "Ediciones de Página Recientes"
-      work: "Obra"
-      version: "Versión"
-      no_work: "No hay obras"
-      revision: "Revisión %{versión}"
-      recent_article_edits: "Ediciones del Artículo Recientes "
-      article: "Artículo"
-      categories: "Categorías"
-      user_deleted: "El perfil del usuario ha sido borrado"
+      article: Artículo
+      categories: Categorías
       contribution:
-        one: "contribución"
-        other: "contribuciones"
-    update_profile:
-      update_user_profile: "Actualizar Perfil de Usuario"
-      name_only_required: "Tu nombre es el único campo obligatorio."
-      name: "Nombre"
-      your_blog_or_homepage: "Tu blog o página de inicio"
-      where_are_you_from: "¿De dónde eres?"
-      about_you: "Acerca de ti"
-      default_dictation_language: "Idioma de dictado predeterminado: "
-      select_notification: "'Selecciona cuál de las siguientes notificaciones deseas recibir:"
-      user_activity: "Correo electrónico nocturno con la actividad de colecciones en las que has trabajado"
-      owner_stats: "Correos electrónicos nocturnos con la actividad de la colección propia"
-      add_as_collaborator: "Añadido a obra privada como colaborador"
-      add_as_owner: "Añadido a obra privada como dueño"
-      add_as_reviewer: "Añadido a la colección como revisor autorizado"
-      page_edited: "Nota añadida en respuesta a un comentario que hiciste"
-      update_profile: "Actualizar Perfil"
-      picture: "Imagen de perfil"
+        one: contribución
+        other: contribuciones
+      date: Fecha
+      edit_profile: Editar Perfil
+      last_seen: Visto por última vez %{date}
+      login_and_password: Inicio de sesión y Contraseña
+      no_work: No hay obras
+      note: Nota
+      page: Página
+      recent_activity_by: Actividad Reciente de %{user_display_name}
+      recent_article_edits: 'Ediciones del Artículo Recientes '
+      recent_notes: Notas Recientes
+      recent_page_edits: Ediciones de Página Recientes
+      revision: Revisión %{versión}
+      user_deleted: El perfil del usuario ha sido borrado
+      user_since: Usuario desde %{date}
+      version: Versión
+      work: Obra
     update:
-      user_updated: "El perfil del usuario ha sido actualizado"
+      user_updated: El perfil del usuario ha sido actualizado
+    update_profile:
+      about_you: Acerca de ti
+      add_as_collaborator: Añadido a obra privada como colaborador
+      add_as_owner: Añadido a obra privada como dueño
+      add_as_reviewer: Añadido a la colección como revisor autorizado
+      default_dictation_language: 'Idioma de dictado predeterminado: '
+      name: Nombre
+      name_only_required: Tu nombre es el único campo obligatorio.
+      owner_stats: Correos electrónicos nocturnos con la actividad de la colección propia
+      page_edited: Nota añadida en respuesta a un comentario que hiciste
+      picture: Imagen de perfil
+      select_notification: "'Selecciona cuál de las siguientes notificaciones deseas recibir:"
+      update_profile: Actualizar Perfil
+      update_user_profile: Actualizar Perfil de Usuario
+      user_activity: Correo electrónico nocturno con la actividad de colecciones en las que has trabajado
+      where_are_you_from: "¿De dónde eres?"
+      your_blog_or_homepage: Tu blog o página de inicio
