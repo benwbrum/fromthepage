@@ -1,56 +1,54 @@
+---
 en:
   work:
-    # global values
-    undescribed: "No metadata."
-    incomplete: "Incomplete metadata."
-    needsreview: "Metadata needs review."
-    described: "Metadata completed."
-    show:
-      description: "Description"
-      physical_description: "Physical Description"
-      document_history: "Document History"
-      permission_description: "Permission Description"
-      location_of_composition: "Location of Composition"
-      author_name: "Author Name"
-      transcription_conventions: "Transcription Conventions"
-      uploaded_by: "Uploaded by"
-      transcription_version: "Transcription Version:&nbsp;"
-      number_of_pages: "Number of Pages:&nbsp;"
-      genre: "Genre"
-      metadata: "Metadata"
-      source_location: "Source Location"
-      source_collection_name: "Source Collection Name"
-      source_box_folder: "Source Box/Folder"
-      scope: "Scope"
-      out_of_scope: "Out of scope"
-      editorial_notes: "Editorial Notes"
-      document_date: "Document Date"
     create:
-      work_created: "Work created successfully"
-    update:
-      work_updated: "Work updated successfully"
-    edit:
-      additional_metadata: "Additional Metadata"
-      restricted_work_no_collaborators_warning: "Only project owners can edit this work. Add collaborators to make the work editable by others."
-      current_url: "The current URL for this work is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words."
-      document_date_hint: "Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)"
-    description_versions:
-      help_description: "View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color."
-      revision: "revision"
-      author_contributed_at: "%{author} at %{date}"
-      compared_with: "Compared with"
-    save_description:
-      work_described: "Your description has been saved"
+      work_created: Work created successfully
     describe:
-      edit_transcription: "Edit transcription"
-      save_changes: "Save"
-      done: "Done"
-      approve: "Approve"
-      approve_to_transcribed_tooltip: "Save and approve this metadata"
-      finish_to_needs_review_tooltip: "Save completed metadata"
-      finish_to_transcribed_tooltip: "Save completed metadata"
-      save_to_transcribed_tooltip: "Save your changes"
-      save_to_needs_review_tooltip: "Save your changes"
-      save_to_incomplete_tooltip: "Save incomplete metadata"
-
-
+      approve: Approve
+      approve_to_transcribed_tooltip: Save and approve this metadata
+      done: Done
+      edit_transcription: Edit transcription
+      finish_to_needs_review_tooltip: Save completed metadata
+      finish_to_transcribed_tooltip: Save completed metadata
+      save_changes: Save
+      save_to_incomplete_tooltip: Save incomplete metadata
+      save_to_needs_review_tooltip: Save your changes
+      save_to_transcribed_tooltip: Save your changes
+    described: Metadata completed.
+    description_versions:
+      author_contributed_at: "%{author} at %{date}"
+      compared_with: Compared with
+      help_description: View and compare the changes that have been made in each revision to work metadata. The left column shows the metadata in the selected revision, right column shows what has been changed. Unchanged text is <span>highlighted in white</span>, deleted text is <del>highlighted in red</del>, and inserted text is <ins>highlighted in green</ins> color.
+      revision: revision
+    edit:
+      additional_metadata: Additional Metadata
+      current_url: The current URL for this work is %{current_url}. If you want to edit the work section of the URL, please use lowercase letters and dashes between any words.
+      document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
+      restricted_work_no_collaborators_warning: Only project owners can edit this work. Add collaborators to make the work editable by others.
+    incomplete: Incomplete metadata.
+    needsreview: Metadata needs review.
+    save_description:
+      work_described: Your description has been saved
+    show:
+      author_name: Author Name
+      description: Description
+      document_date: Document Date
+      document_history: Document History
+      editorial_notes: Editorial Notes
+      genre: Genre
+      location_of_composition: Location of Composition
+      metadata: Metadata
+      number_of_pages: Number of Pages:&nbsp;
+      out_of_scope: Out of scope
+      permission_description: Permission Description
+      physical_description: Physical Description
+      scope: Scope
+      source_box_folder: Source Box/Folder
+      source_collection_name: Source Collection Name
+      source_location: Source Location
+      transcription_conventions: Transcription Conventions
+      transcription_version: Transcription Version:&nbsp;
+      uploaded_by: Uploaded by
+    undescribed: No metadata.
+    update:
+      work_updated: Work updated successfully

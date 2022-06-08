@@ -1,50 +1,51 @@
+---
 en:
   user:
     owner_profile:
-      api_keys: "API Keys"
-      edit_profile: "Edit Profile"
-      login_and_password: "Login &amp; Password"
-      website: "Website"
-      previous_image: "Previous image"
-      next_image: "Next image"
+      api_keys: API Keys
+      edit_profile: Edit Profile
+      login_and_password: Login &amp; Password
+      next_image: Next image
+      previous_image: Previous image
+      website: Website
     profile:
-      edit_profile: "Edit Profile"
-      login_and_password: "Login &amp; Password"
-      user_since: "User since %{date}"
-      last_seen: "Last seen %{date}"
-      recent_activity_by: "Recent Activity by %{user_display_name}"
-      recent_notes: "Recent Notes"
-      date: "Date"
-      page: "Page"
-      note: "Note"
-      recent_page_edits: "Recent Page Edits"
-      work: "Work"
-      version: "Version"
-      no_work: "No work"
-      revision: "Revision %{version}"
-      recent_article_edits: "Recent Article Edits"
-      article: "Article"
-      categories: "Categories"
-      user_deleted: "User profile has been deleted"
+      article: Article
+      categories: Categories
       contribution:
-        one: "Contribution"
-        other: "Contributions"
-    update_profile:
-      update_user_profile: "Update User Profile"
-      name_only_required: "Your name is the only required field."
-      name: "Name"
-      your_blog_or_homepage: "Your blog or homepage"
-      where_are_you_from: "Where are you from?"
-      about_you: "About you"
-      default_dictation_language: "Default dictation language: "
-      select_notification: "Select which of the following notifications you want to receive:"
-      user_activity: "Nightly email with activity in collections you've worked on"
-      owner_stats: "Nightly emails with owned collection activity"
-      add_as_collaborator: "Added to private collection as a collaborator"
-      add_as_owner: "Added to collection as a co-owner"
-      add_as_reviewer: "Added to collection as an authorized reviewer"
-      page_edited: "Note added in response to a comment you made"
-      update_profile: "Update Profile"
-      picture: "Profile Picture"
+        one: Contribution
+        other: Contributions
+      date: Date
+      edit_profile: Edit Profile
+      last_seen: Last seen %{date}
+      login_and_password: Login &amp; Password
+      no_work: No work
+      note: Note
+      page: Page
+      recent_activity_by: Recent Activity by %{user_display_name}
+      recent_article_edits: Recent Article Edits
+      recent_notes: Recent Notes
+      recent_page_edits: Recent Page Edits
+      revision: Revision %{version}
+      user_deleted: User profile has been deleted
+      user_since: User since %{date}
+      version: Version
+      work: Work
     update:
-      user_updated: "User profile has been updated"
+      user_updated: User profile has been updated
+    update_profile:
+      about_you: About you
+      add_as_collaborator: Added to private collection as a collaborator
+      add_as_owner: Added to collection as a co-owner
+      add_as_reviewer: Added to collection as an authorized reviewer
+      default_dictation_language: 'Default dictation language: '
+      name: Name
+      name_only_required: Your name is the only required field.
+      owner_stats: Nightly emails with owned collection activity
+      page_edited: Note added in response to a comment you made
+      picture: Profile Picture
+      select_notification: 'Select which of the following notifications you want to receive:'
+      update_profile: Update Profile
+      update_user_profile: Update User Profile
+      user_activity: Nightly email with activity in collections you've worked on
+      where_are_you_from: Where are you from?
+      your_blog_or_homepage: Your blog or homepage

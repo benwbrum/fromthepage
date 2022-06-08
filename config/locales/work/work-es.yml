@@ -1,22 +1,23 @@
+---
 es:
   work:
     show:
-      description: "Descripción"
-      physical_description: "Descripción Física"
-      document_history: "Historial del Documento"
-      permission_description: "Descripción del Permiso"
-      location_of_composition: "Ubicación de la Composición"
-      author_name: "Nombre del Autor"
-      transcription_conventions: "Convenciones de Transcripción"
-      uploaded_by: "Subido por"
-      transcription_version: "Versión de la Transcripción:&nbsp;"
-      number_of_pages: "Número de Páginas:nbsp;"
-      genre: "Género"
-      metadata: "Metadatos"
-      source_location: "Ubicación de la fuente"
-      source_collection_name: "Nombre de la colección de la fuente"
-      source_box_folder: "Caja/Carpeta de la fuente"
-      scope: "Alcance"
-      out_of_scope: "Fuera del alcance"
-      editorial_notes: "Notas editoriales"
-      document_date: "Fecha del documento"
+      author_name: Nombre del Autor
+      description: Descripción
+      document_date: Fecha del documento
+      document_history: Historial del Documento
+      editorial_notes: Notas editoriales
+      genre: Género
+      location_of_composition: Ubicación de la Composición
+      metadata: Metadatos
+      number_of_pages: Número de Páginas:nbsp;
+      out_of_scope: Fuera del alcance
+      permission_description: Descripción del Permiso
+      physical_description: Descripción Física
+      scope: Alcance
+      source_box_folder: Caja/Carpeta de la fuente
+      source_collection_name: Nombre de la colección de la fuente
+      source_location: Ubicación de la fuente
+      transcription_conventions: Convenciones de Transcripción
+      transcription_version: Versión de la Transcripción:&nbsp;
+      uploaded_by: Subido por

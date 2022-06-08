@@ -1,28 +1,29 @@
+---
 pt:
   work:
-    show:
-      description: "Descrição"
-      physical_description: "Descrição Física"
-      document_history: "Histórico do Documento"
-      permission_description: "Descrição da Permissão"
-      location_of_composition: "Localização da Composição"
-      author_name: "Nome do Autor"
-      transcription_conventions: "Convenções de Transcrição"
-      uploaded_by: "Subido por"
-      transcription_version: "Versão de Transcrição:&nbsp;"
-      number_of_pages: "Número de Páginas:&nbsp;"
-      genre: "Gênero"
-      metadata: "Metadata"
-      source_location: "Localização de fonte"
-      source_collection_name: "Nome de coleção fonte"
-      source_box_folder: "Caixa de fontes"
-      scope: "Escopo"
-      out_of_scope: "Fora do escopo"
-      editorial_notes: "Notas editoriais"
-      document_date: "Data do documento"
     create:
-      work_created: "Trabalho criado com sucesso"
-    update:
-      work_updated: "Trabalho atualizado com sucesso"
+      work_created: Trabalho criado com sucesso
     edit:
-      additional_metadata: "Metadados adicionais"
+      additional_metadata: Metadados adicionais
+    show:
+      author_name: Nome do Autor
+      description: Descrição
+      document_date: Data do documento
+      document_history: Histórico do Documento
+      editorial_notes: Notas editoriais
+      genre: Gênero
+      location_of_composition: Localização da Composição
+      metadata: Metadata
+      number_of_pages: Número de Páginas:&nbsp;
+      out_of_scope: Fora do escopo
+      permission_description: Descrição da Permissão
+      physical_description: Descrição Física
+      scope: Escopo
+      source_box_folder: Caixa de fontes
+      source_collection_name: Nome de coleção fonte
+      source_location: Localização de fonte
+      transcription_conventions: Convenções de Transcrição
+      transcription_version: Versão de Transcrição:&nbsp;
+      uploaded_by: Subido por
+    update:
+      work_updated: Trabalho atualizado com sucesso

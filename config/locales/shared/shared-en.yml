@@ -1,68 +1,68 @@
+---
 en:
   shared:
     article_tabs:
-      overview: "Overview"
-      settings: "Settings"
-      versions: "Versions"
-    collection_tabs:
-      overview: "Overview"
-      statistics: "Statistics"
-      subjects: "Subjects"
-      review: "Review"
-      collaborators: "Collaborators"
-      settings: "Settings"
-      export: "Export"
-      add_work: "Add Work"
-      edit_fields: "Fields"
-      sets: "Sets"
-      works_list: "Works List"
-      facets: "Facets"
-      edit_metadata_fields: "Metadata Fields"
-    page_tabs:
-      overview: "Overview"
-      correct: "Correct"
-      transcribe: "Transcribe"
-      translate: "Translate"
-      versions: "Versions"
-      help: "Help"
-      settings: "Settings"
-      nav_info: "Page %{position} of %{size}"
-    work_tabs:
-      read: "Read"
-      about: "About"
-      contents: "Contents"
-      versions: "Versions"
-      print: "Print"
-      settings: "Settings"
-      pages: "Pages"
-      help: "Help"
-      download: "Download"
-    handsontable:
-      date_tooltip: "Dates should be formatted YYYY-MM-DD (four-digit year, two-digit month, two-digit day, with hyphens between them)."
+      overview: Overview
+      settings: Settings
+      versions: Versions
     codemirror:
-      abbr_description: "Marks abbreviations in a text with expansions in the expan attribute."
-      add_description: "Marks text inserted after-the-fact by the writer."
-      date_description: "Marks dates, with standardized form in the when attribute."
-      del_description: "Marks text that has been removed by erasure or strike-through."
-      expan_description: "Marks expanded abbreviations with original forms in the abbr attribute."
-      footnote_description: "Encloses the body of a footnote, with the footnote symbol in the marker attribute."
-      fig_description: "Indicates a figure or a horizontal line."
-      gap_description: "Marks a gap in the text, often due to damage"
-      head_description: "Marks headings within the text"
-      marginalia_description: "Marks text in the margins of the main text."
-      reg_description: "Marks a regularized form of the text, with original forms in the orig attribute."
-      s_description: "Marks text that has been struck through for any reason."
-      sub_description: "Subscript text."
-      sup_description: "Superscript text."
-      unclear_description: "Marks unclear text."
-      u_description: "Marks underlined text."      
+      abbr_description: Marks abbreviations in a text with expansions in the expan attribute.
+      add_description: Marks text inserted after-the-fact by the writer.
+      date_description: Marks dates, with standardized form in the when attribute.
+      del_description: Marks text that has been removed by erasure or strike-through.
+      expan_description: Marks expanded abbreviations with original forms in the abbr attribute.
+      fig_description: Indicates a figure or a horizontal line.
+      footnote_description: Encloses the body of a footnote, with the footnote symbol in the marker attribute.
+      gap_description: Marks a gap in the text, often due to damage
+      head_description: Marks headings within the text
+      marginalia_description: Marks text in the margins of the main text.
+      reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
+      s_description: Marks text that has been struck through for any reason.
+      sub_description: Subscript text.
+      sup_description: Superscript text.
+      u_description: Marks underlined text.
+      unclear_description: Marks unclear text.
+    collection_tabs:
+      add_work: Add Work
+      collaborators: Collaborators
+      edit_fields: Fields
+      edit_metadata_fields: Metadata Fields
+      export: Export
+      facets: Facets
+      overview: Overview
+      review: Review
+      sets: Sets
+      settings: Settings
+      statistics: Statistics
+      subjects: Subjects
+      works_list: Works List
     description_tabs:
-      nav_info: "Work %{position} of %{size}"
-      overview: "Overview"
-      describe: "Metadata"
-      versions: "Versions"
-      help: "Help"
+      describe: Metadata
+      help: Help
       metadata: Metadata
+      nav_info: Work %{position} of %{size}
+      overview: Overview
+      versions: Versions
+    handsontable:
+      date_tooltip: Dates should be formatted YYYY-MM-DD (four-digit year, two-digit month, two-digit day, with hyphens between them).
+    page_tabs:
+      correct: Correct
+      help: Help
+      nav_info: Page %{position} of %{size}
+      overview: Overview
+      settings: Settings
+      transcribe: Transcribe
+      translate: Translate
+      versions: Versions
     review_breadcrumbs:
       dashboard: Review Dashboard
-
+    work_tabs:
+      about: About
+      contents: Contents
+      download: Download
+      help: Help
+      pages: Pages
+      print: Print
+      read: Read
+      settings: Settings
+      versions: Versions
