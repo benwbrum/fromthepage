@@ -93,12 +93,6 @@ class ArticleController < ApplicationController
   end
 
   def show
-    @categories = []
-    if params[:category_ids]
-      @categories = Category.find(params[:category_ids])
-      @article.graph_image = nil
-    end
-
     #if @article.graph_image && !params[:force]
     #   return
     #end
@@ -113,12 +107,6 @@ class ArticleController < ApplicationController
       '  ON from_links.article_id = a.id '+
       "WHERE to_links.article_id = #{@article.id} "+
       " AND from_links.article_id != #{@article.id} "
-    if params[:category_ids]
-      sql += " AND from_links.article_id IN "+
-        "(SELECT article_id "+
-        "FROM articles_categories "+
-        "WHERE category_id IN (#{params[:category_ids].join(',')}))"
-    end
     sql += "GROUP BY a.title, a.id "
     logger.debug(sql)
     article_links = Article.connection.select_all(sql)
@@ -179,7 +167,6 @@ class ArticleController < ApplicationController
 
     @map = File.read(dot_out_map)
     @article.graph_image = dot_out
-    @min_rank = min_rank
     @article.save!
     session[:col_id] = @collection.slug
   end
