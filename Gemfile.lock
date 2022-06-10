@@ -9,12 +9,6 @@ GIT
       railties (>= 4.2, < 7)
 
 GIT
-  remote: https://github.com/BrumfieldLabs/will_paginate.git
-  revision: fb3a46f26b88742941a11cb72f8062e33c885698
-  specs:
-    will_paginate (3.3.0)
-
-GIT
   remote: https://github.com/benwbrum/osullivan
   revision: 814ac4ddabb2423de9d7e4f6b2dc8d8153317903
   branch: service_is_array
@@ -501,6 +495,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    will_paginate (3.3.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.5.4)
@@ -585,7 +580,7 @@ DEPENDENCIES
   vcr
   warning
   webmock
-  will_paginate!
+  will_paginate
 
 BUNDLED WITH
    2.1.4
