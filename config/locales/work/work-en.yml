@@ -7,7 +7,6 @@ en:
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata
       done: Done
-      edit_transcription: Edit transcription
       finish_to_needs_review_tooltip: Save completed metadata
       finish_to_transcribed_tooltip: Save completed metadata
       save_changes: Save
@@ -37,7 +36,6 @@ en:
       editorial_notes: Editorial Notes
       genre: Genre
       location_of_composition: Location of Composition
-      metadata: Metadata
       number_of_pages: Number of Pages:&nbsp;
       out_of_scope: Out of scope
       permission_description: Permission Description
@@ -46,8 +44,6 @@ en:
       source_box_folder: Source Box/Folder
       source_collection_name: Source Collection Name
       source_location: Source Location
-      transcription_conventions: Transcription Conventions
-      transcription_version: Transcription Version:&nbsp;
       uploaded_by: Uploaded by
     undescribed: No metadata.
     update:

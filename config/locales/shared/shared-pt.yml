@@ -5,23 +5,6 @@ pt:
       overview: Resumo
       settings: Configurações
       versions: Versões
-    codemirror:
-      abbr_description: Marca as abreviações em um texto com expansões no atributo expan.
-      add_description: Marca o texto inserido após o fato pelo escritor.
-      date_description: Marca datas, com forma padronizada no atributo quando.
-      del_description: Marca o texto que foi removido por apagamento ou tachado.
-      expan_description: Marca abreviações expandidas com formas originais no atributo abbr.
-      fig_description: Indica uma figura ou uma linha horizontal.
-      footnote_description: Inclui o corpo de uma nota de rodapé, com o símbolo de nota de rodapé no atributo do marcador.
-      gap_description: Marca uma lacuna no texto, geralmente devido a danos
-      head_description: Marca os títulos dentro do texto
-      marginalia_description: Marca o texto nas margens do texto principal.
-      reg_description: Marca uma forma regularizada do texto, com formas originais no atributo original.
-      s_description: Marca o texto que foi riscado por qualquer motivo.
-      sub_description: Texto subscrito.
-      sup_description: Superscript text.
-      u_description: Marca o texto sublinhado
-      unclear_description: Marca um texto pouco claro
     collection_tabs:
       add_work: Adicionar Obra
       collaborators: Colaboradores
@@ -52,7 +35,5 @@ pt:
       download: Download
       help: Ajuda
       pages: Páginas
-      print: Imprimir
       read: Ler
       settings: Configurações
-      versions: Versões

@@ -89,7 +89,6 @@ en:
     process_upload:
       uploaded_document_queued: Uploaded document has been queued for processing
     settings:
-      flag_blacklist: 'Terms to flag as potential abusive content:'
       save_changes: Save Changes
       welcome_text: 'Project owner welcome email text:'
     tail_logfile:

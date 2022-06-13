@@ -13,7 +13,6 @@ pt:
       user_expunged: Usuário %{user} foi eliminado
     index:
       database_version: Versão da base de dados %{version}
-      last_deed_logged": Última ação documentada há %{date} por %{author}
       software_version: Versão de software %{version}
     process_upload:
       uploaded_document_queued: O documento subido está na fila para ser processado

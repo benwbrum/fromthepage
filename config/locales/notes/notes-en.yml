@@ -12,13 +12,6 @@ en:
       confirm_delete_message: Are you sure you want to delete this note?
       delete: Delete
       edit: Edit
-      html:
-        cancel: Cancel
-        confirm_delete_message: Are you sure you want to delete this note?
-        delete: Delete
-        edit: Edit
-        microphone: Microphone
-        update: Update
       microphone: Microphone
       time_ago_in_words: "%{time} ago"
       update: Update

@@ -8,8 +8,6 @@ en:
       collections: Collections
       meta_description: You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age.
       recent_activity: Recent Activity
-    create_work:
-      work_created: Work created successfully
     empty:
       add_new_collection: Add New Collection
       create_empty_work: Create Empty Work
@@ -51,17 +49,10 @@ en:
       search_for_collections: Search for collections
       search_for_collections_or_owners: Search for collections or owners...
       transcribe_a_page: Transcribe a page
-    new_upload:
-      document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
-      reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.
     new_work:
       acceptable_formats: PNG, GIF, and JPG files are all acceptable.
-      add_source: Add Source
-      delete_site: Delete Site
-      edit_site: Edit Site
       images_should_be_named: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
       images_should_be_oriented: Images should be oriented so that they are right-side-up.
-      images_should_be_split_down: Images should be split down the spine, so that only one page is visible on an image.<br> (See the %{link} tool if you need to split two-page images.)
       import_a_iiif_manifest_or_collection: Import a IIIF Manifest or Collection
       import_from_archive_dot_org: Import From Archive.org
       import_from_contentdm: Import from CONTENTdm
@@ -70,7 +61,6 @@ en:
       or_import_many: 'Or '
       page_image_guidelines: Page Image Guidelines
       paste_in_the_url: Paste in the URL of a compound object or a collection on your CONTENTdm site.
-      you_have_not_connected: You have not connected any Omeka sites. Use the button below to create a new Omeka connection.
     owner:
       create_a_collection: create a collection
       document_sets: Document Sets
@@ -106,12 +96,8 @@ en:
       zip_files_may_contain: ZIP files may contain folders containing images, PDFs, or folders containing pdfs.
     watchlist:
       collections: collections
-      everyone_activity: Everyone's Activity
-      owned_by: Owned by %{author}
       private_collections_you_belong_to: Private projects
-      project_by: Project by %{author}
       projects_you_have_contributed_to: Projects you have contributed to -- by transcribing, editing, or commenting on -- will be listed here with their most recent activity so you can stay up to date with what's going on.
       time_ago_in_words: "%{time} ago"
       try_transcribing_a_page: 'You haven''t participated in any projects yet.  Try transcribing a page from one of these '
-      you_might_want_to_try: 'You haven''t participated in any projects yet.  You might want to try transcribing a page of '
       your_activity: Your Activity

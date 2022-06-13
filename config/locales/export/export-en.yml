@@ -5,10 +5,6 @@ en:
       connect: Connect
       contentdm_credentials: CONTENTdm Credentials
       contentdm_credentials_description: Enter your CONTENTdm license key and your login credentials to export to CONTENTdm
-    facing_edition:
-      html:
-        export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
-        fromthepage_version: 'FromThePage version: %{version}'
     index:
       export_all_table_data_as_csv: Export All Table Data as CSV
       export_all_tables: Export All Tables
@@ -18,10 +14,8 @@ en:
       export_as: Export As
       export_individual_works: Export Individual Works
       export_individual_works_description: You can choose to export individual works in multiple file formats. XHTML exports a work as a single-page XHTML file with transcripts, user comments, subject articles, and internal HREFs linking subjects and pages. TEI exports a work as a P5-compliant TEI-XML document. Text is plaintext.  The zip export will give you all formats of a work and page granularity.
-      export_subject_coocurrence: Export Subject Coocurrence
       export_subject_coocurrence_as_csv: Export Coocurrences as CSV
       export_subject_coocurrence_description: Click the button to export a CSV file with an row for each combination of subjects in the collection which are mentioned within the same page. (The export process could take some time to complete, so please wait until you get the File Save dialog.)
-      export_subject_details: Export Subject Details
       export_subject_details_as_csv: Export Subjects as CSV
       export_subject_details_description: Click the button to export a CSV file with an row for each subject in the collection. (The export process could take some time to complete, so please wait until you get the File Save dialog.)
       export_subject_index: Export Subjects

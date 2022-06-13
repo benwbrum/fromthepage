@@ -5,10 +5,6 @@ pt:
       connect: Conectar
       contentdm_credentials: Credenciais do CONTENTdm
       contentdm_credentials_description: Insira sua chave de licença do CONTENTdm e suas credenciais de login para exportar para o CONTENTdm
-    facing_edition:
-      html:
-        export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
-        fromthepage_version: 'Versão FromThePage: %{version}'
     index:
       export_all_table_data_as_csv: Exportar todas as tabelas como CSV
       export_all_tables: Exportar todas as tabelas
@@ -18,10 +14,8 @@ pt:
       export_as: Exportar como
       export_individual_works: Exportar Obras Individuais
       export_individual_works_description: Você pode escolher exportar trabalhos individuais em vários formatos de arquivo. O XHTML exporta um trabalho como um arquivo XHTML de uma página com transcrições, comentários do usuário, artigos de assunto e HREFs internos vinculando assuntos e páginas. O TEI exporta uma obra como um documento TEI-XML compatível com P5. O texto é texto simples. A exportação zip fornecerá todos os formatos de um trabalho e granularidade de página.
-      export_subject_coocurrence: Exportar Coocorrência de Sujeito
       export_subject_coocurrence_as_csv: Exportar coocorrências como CSV
       export_subject_coocurrence_description: Clique no botão para exportar um arquivo CSV com uma linha para cada combinação de assuntos na coleção que são mencionados na mesma página. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
-      export_subject_details: Exportar detalhes do sujeito
       export_subject_details_as_csv: Exportar sujeitos como CSV
       export_subject_details_description: Clique no botão para exportar um arquivo CSV com uma linha para cada assunto da coleção. (O processo de exportação pode levar algum tempo para ser concluído, portanto, aguarde até obter a caixa de diálogo Salvar arquivo.)
       export_subject_index: Exportar sujeitos
@@ -44,7 +38,6 @@ pt:
     show:
       categories: 'Categorias:'
       export_metadata: Exportação FromThePage de %{work} de %{collection} feita em %{time}.
-      facing_edition: 
       fromthepage_version: 'Versão FromThePage: %{version}'
       identifier: 'Identificador: %{work}'
       notes: 'Notas:'
@@ -86,7 +79,6 @@ pt:
       fromthepage_version: 'Versão FromThePage: %{version}'
       identifier: 'Identificador: %{work}'
       notes: 'Notas:'
-      page_transcripts: Transcrições de página
       page_translations: Traduções de página
     update_contentdm_credentials:
       updating_contentdm_message: Atualizando CONTENTdm.  Você deve receber um e-mail quando a sincronização terminar, e nesse momento teremos que reconstruir o seu índice para as alterações aparecerem.

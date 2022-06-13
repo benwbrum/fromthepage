@@ -46,13 +46,9 @@ en:
       add_a_new_work: Add a new work
       add_another_work_under: You can add another work under %{start_project}
       add_button: Add
-      add_collaborator: Add Collaborator
-      add_owner: Add Owner
-      add_reviewer: Add Reviewer
       alert: Please configure fields or choose document based transcription under Transcription Type.
       api_access: API Access
       api_access_description: Allow access to transcriptions via IIIF API
-      are_you_sure: Are you sure?
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
       close_api: Close API
@@ -116,7 +112,6 @@ en:
       page_on_the_right: Page on the Right
       page_on_the_top: Page on the Top
       picture_to_be_used_message: A picture to be used to illustrate the collection description.
-      remove: Remove
       remove_collaborator: Remove collaborator
       remove_owner: Remove owner
       remove_reviewer: Remove Reviewer
@@ -125,11 +120,9 @@ en:
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
       revert_document_based_transcription: Revert to Document Based Transcription
       revert_from_description_to_transcription: Disable Description
-      review_type: Review Type
       review_type_optional: " Optional: Collaborators may request review of their transcriptions."
       review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
       review_type_restricted: " Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
-      review_workflow: All initial transcriptions need review
       save_changes: Save Changes
       start_a_project: Start A Project
       subjects_enabled: Enable subject indexing
@@ -145,48 +138,14 @@ en:
       user_download: Allow users to download works.
       voice_recognition: Speech to text available for transcribing (not compatible with advanced editor)
     edit_buttons:
-      abbr_description: Marks abbreviations in a text with expansions in the expan attribute.  (Alternate form of expan tag.)
-      abbr_label: Abbreviation
-      add_description: Marks text inserted after-the-fact by the writer.
-      add_label: Addition
-      date_description: Marks dates, with standardized form in the when attribute.
-      date_label: Date
-      del_description: Marks text that has been removed by erasure or strike-through.
-      del_label: Deletion
       description: FromThePage can support mark-up within transcripts in either TEI-XML or HTML forms.  We recommend configuring no more than six buttons to appear on the transcription editor.  Consider whether other systems will be able to use this kind of mark-up; if only plaintext is supported, projects should use letterpress conventions instead of mark-up.
-      expan_description: Marks expanded abbreviations with original forms in the orig attribute.  (Alternate form of abbr tag.)
-      expan_label: Expansion
-      fig_description: Indicates a figure or a horizontal line.
-      fig_label: Figure
-      footnote_description: Contains the body of a footnote.  This tag should be placed next to the text being referenced, where a footnote marker would appear.
-      footnote_label: Footnote
-      gap_description: Marks a gap in the text, often due to damage
-      gap_label: Gap
-      head_description: Marks a heading
-      head_label: Head
       heading: Transcription Editor Configuration
       html: " (HTML)"
-      lb_description: 'Special line break:  Words continued across two lines (using a special continuation marker or none) or a line break within a heading or table.  Normal line breaks do not need this tag, as they are encoded by hitting the enter key.'
-      lb_label: Line Break
-      marginalia_description: Marks any kind of marginal note, including footnotes, glosses, or summaries.
-      marginalia_label: Marginalia
       markup_preference_description: Some tags have equivalents forms in HTML and TEI-XML.  Choose a preference to determine which form of tag is inserted when a user presses the button.
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML
       prefer_tei: Prefer TEI
-      reg_description: Marks a regularized form of the text, with original forms in the orig attribute.
-      reg_label: Regularization
-      s_description: Marks text that has been struck through for any reason.
-      s_label: Strikethrough
-      sub_description: Subscript text.
-      sub_label: Subscript
-      sup_description: Superscript text.
-      sup_label: Superscript
       tei: " (TEI-XML)"
-      u_description: Marks underlined text.
-      u_label: Underline
-      unclear_description: Marks unclear text.
-      unclear_label: Unclear
     enable_ocr:
       notice: OCR correction has been enabled for all works.
     facet_form:
@@ -200,7 +159,6 @@ en:
       order: Order
       translate: Translate
       type: Type
-    incomplete_works: Incomplete Works
     indexed: indexed
     localize:
       label: Facet
@@ -214,7 +172,6 @@ en:
       project_by: Project by
       return_to_collection: Return to collection
     needs_transcription_pages:
-      pages_that_need_transcription: Pages That Need Transcription
       project_by: Project by
       return_to_collection: Return to collection
     new:
@@ -257,14 +214,11 @@ en:
       pages_need_correction: Pages That Need Correction
       pages_need_correction_or_transcription: Pages That Need Correction or Transcription
       pages_need_review: Pages That Need Review
-      pages_need_transcription: Pages That Need Transcription
       project_by: Project by
       recent_edits: Recent Edits
       recent_notes: Recent Notes
       search: Search
       search_by_title: Search by title or metadata...
-      search_for_works: Search for works...
-      search_in_collection: Search in collection...
       search_the_text: Search the text...
       show_more: Show More
       start_transcribing: Start Transcribing
@@ -273,7 +227,6 @@ en:
       this_work_has_pages_that_need_work: Some pages still need work.
       time_ago_in_words: "%{time} ago"
       works: Works
-    show_all: Show All
     start_transcribing:
       notice: Sorry, but there are no qualifying pages in this collection.
     transcribed: transcribed
@@ -285,9 +238,7 @@ en:
       filter_contributions: Filter
       review: Review
       title: Page (Work)
-      user: User
       user_contribution_description: Pages needing review by user %{user_name}
-      user_contribution_title: User Contributions Needing Review
     works_list:
       alphabetical: Alphabetical
       percent_complete: Percent Complete
@@ -295,13 +246,11 @@ en:
       sort_works_by: Sort Works By...
       works: Works
     works_to_review:
-      complete: Complete
       contributors: Contributors
       description: Works with Pages Needing Review
       filter_works: Filter
       incomplete: Incomplete
       last_activity: Last Activity
-      needs_review: Needs Review
       no_works_need_review: No works need review
       title: Title
       total: Total

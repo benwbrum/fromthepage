@@ -44,11 +44,8 @@ es:
       add_a_new_work: Añadir una obra nueva
       add_another_work_under: Puedes añadir otro trabajo en %{start_project}
       add_button: Añadir
-      add_collaborator: Añadir colaborador
-      add_owner: Añadir Dueño
       api_access: Acceso API
       api_access_description: Permitir acceso a transcripciones a través del API IIIF
-      are_you_sure: Confirmar
       blank_collection: Colección en Blanco
       blank_collection_description: Al presionar este botón se restablecerá la colección a un estado en blanco. Se eliminarán todas las transcripciones y otras obras en la colección, como si la misma apenas hubiera sido importada.
       close_api: Cerrar API
@@ -98,14 +95,11 @@ es:
       page_on_the_right: Página a la Derecha
       page_on_the_top: Página de Arriba
       picture_to_be_used_message: La imagen se utilizará para ilustrar la descripción de la colección.
-      remove: Eliminar
       remove_collaborator: Eliminar colaborador
       remove_owner: Eliminar dueño
       revert_document_based_transcription: Revertir a Transcripción Basada en el Documento
-      review_workflow: Todas las transcripciones iniciales necesitan revisión
       save_changes: Guardar Cambios
       start_a_project: Iniciar Un Proyecto
-      subjects_disabled: Deshabilitar la indexación de temas
       suggestions_help_tab: Sugerencias para la pestaña de ayuda.
       suggestions_transcription_conventions: Sugerencias para las convenciones de transcripción.
       text_language: Selecciona el idioma para texto de transcripción
@@ -127,7 +121,6 @@ es:
       occurrences: Eventos
       order: Orden
       type: Tipo
-    incomplete_works: obras incompletas
     indexed: indexado
     needs_review: requiere revisión
     needs_review_pages:
@@ -135,7 +128,6 @@ es:
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     needs_transcription_pages:
-      pages_that_need_transcription: Páginas que Necesitan Transcripción
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     new:
@@ -145,37 +137,22 @@ es:
       enter_collection_title: Para crear una colección nueva, comienza por ingresar el título de la colección. En el siguiente paso, podrás añadir obras a la colección.
       individual_researcher_limited_account: Las Cuentas de Investigador Individual están limitadas a una sola colección. Para actualizar su cuenta, póngase en contacto con support@fromthepage.com.
       title: Título
-    reviewer_dashboard:
-      complete: Completo
-      contributors: Contribuidores
-      description: Trabajos con páginas que necesitan revisión
-      filter_works: Filtro
-      incomplete: Incompleto
-      last_activity: Última actividad
-      needs_review: Necesita revisión
-      no_works_need_review: Ningún trabajo necesita revisión
-      title: Título
-      total: Total
     show:
       about: Acerca de
       add_a_new_work: Añadir una obra nueva
       all_complete: Todas las obras están completamente transcritas.
       pages_need_review: Páginas que Necesitan Revisión
-      pages_need_transcription: Páginas que Necesitan Transcripción
       project_by: Proyecto de
       recent_edits: Ediciones Recientes
       recent_notes: Notas Recientes
       search: Búsqueda
       search_by_title: Buscar por título...
-      search_for_works: Búsqueda de obras...
-      search_in_collection: Buscar en la colección...
       search_the_text: Buscar el texto...
       show_more: Mostrar Más
       start_transcribing: Comenzar a Transcribir
       subject_categories: Categorías de Temas
       time_ago_in_words: Hace %{time}
       works: Obras
-    show_all: mostrar todo
     start_transcribing:
       notice: Lo sentimos, pero no hay páginas cualificadas en esta colección.
     transcribed: transcrito

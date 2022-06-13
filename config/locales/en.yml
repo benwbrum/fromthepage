@@ -1,35 +1,7 @@
 ---
 en:
-  activerecord:
-    attributes:
-      collection:
-        slug: URL
-      document_set:
-        slug: URL
-      work:
-        slug: URL
-    errors:
-      models:
-        collection:
-          attributes:
-            slug:
-              blank: is required
-              invalid: must have at least one letter
-        document_set:
-          attributes:
-            slug:
-              blank: is required
-              invalid: must have at least one letter
-        work:
-          attributes:
-            slug:
-              blank: is required
-              invalid: must have at least one letter
   dashboard:
     collaborator: Collaborator Dashboard
     plain: Dashboard
-  en: English
-  es: Español
-  pt: Português
   time_ago_in_words: "%{time} ago"
   unauthorized_collection: You do not have access to %{project}.  Please log in or contact the project owner to be added.

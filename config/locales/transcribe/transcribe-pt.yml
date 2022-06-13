@@ -12,11 +12,6 @@ pt:
     display_page:
       alert: Esta página está sendo editada por outro usuário!
       always_show_fullscreen: Mostrar sempre em tela cheia
-      approve: Confirmar
-      autolink: Link automático
-      autolink_tooltip: Sugerir links de assunto dentro do texto
-      done: Feito
-      edit: Editar
       edit_transcription: Editar transcrição
       fullscreen: Tela Cheia
       image_at_the_bottom: Imagem inferior
@@ -27,10 +22,6 @@ pt:
       microphone: Microfone
       more_help: Mais ajuda....
       needs_review: Precisa de Revisão
-      notes_and_questions: Notas e Perguntas
-      preview: Pré-Visualizar
-      preview_tooltip: Visualize a página sem salvar as alterações
-      save_changes: Guardar Alterações
       this_page_marked_blank: Esta página foi marcada como em branco
       this_page_marked_needs_review: Esta página foi marcada como "precisa de revisão\". Você pode melhorar esta página, revisando-a contra o original e adicionando ou corrigindo o texto. Quando terminar, desfaça a opção "precisa de revisão" e salve a página.
       title: 'Título:'
@@ -50,7 +41,6 @@ pt:
       approve: Confirmar
       approve_to_transcribed_tooltip: Salve e aprove esta página
       done: Feito
-      edit_transcription: Editar transcrições
       finish_to_needs_review_tooltip: Salvar uma página completa
       finish_to_transcribed_tooltip: Salvar uma página completa
       save_changes: Salvar

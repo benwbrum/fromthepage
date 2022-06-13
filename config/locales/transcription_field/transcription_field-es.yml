@@ -4,13 +4,7 @@ es:
     add_fields:
       must_have_options_list: Los campos seleccionados deben tener una lista de opciones. Agregue opciones a cualquier campo seleccionado y vuelva a guardar.
     edit_fields:
-      add_additional_field: Añadir Campo Adicional
-      add_additional_line: Añadir Línea Adicional
-      cancel: Cancelar
-      done: Completado
       edit_transcription_fields: Editar Campos de Transcripción
-      preview: Vista Preliminar
-      save: Guardar
     field_layout:
       instructions: Instrucciones
     line_form:
