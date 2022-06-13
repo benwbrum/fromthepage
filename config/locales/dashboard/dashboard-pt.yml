@@ -8,6 +8,8 @@ pt:
       collections: Coleções
       meta_description: Você pode escolher entre os muitos projetos interessantes hospedados em FromThePage. Comece a ler os escritos históricos que já foram transcritos por outros membros. Você pode ajudar um dos grandes projetos entrar na era digital.
       recent_activity: Atividade Recente
+    create_work:
+      work_created: Obra criada com sucesso
     hierarchical_collections_and_document_sets:
       project_by: Projeto de %{author}
       start_transcribing: Iniciar Transcrição
@@ -20,6 +22,9 @@ pt:
       search_for_collections: Buscar por coleções
       search_for_collections_or_owners: Buscar por coleções ou donos...
       transcribe_a_page: Transcrever uma página
+    new_upload:
+      document_uploaded: O documento foi subido e será processado em breve. Vamos enviar um e-mail para você em %{email} quando estiver pronto.
+      reload_this_page: O documento foi subido e será processado em breve. Recarregue esta página em alguns minutos para vê-lo.
     new_work:
       acceptable_formats: Os arquivos em formatos PNG, GIF e JPG são todos aceitados.
       images_should_be_named: 'As imagens devem ser nomeadas para que uma ordenação alfabética resulte na ordem de página correta. <br> (Isso pode necessitar o uso de zeros adicionais nos números das páginas: <code>pagina_09.jpg, pagina_10.jpg</code> ficaria na ordem correta, mas <code>pagina_9.jpg, pagina_10.jpg</code> não ficaria.)'

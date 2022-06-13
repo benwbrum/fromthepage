@@ -8,6 +8,8 @@ en:
       collections: Collections
       meta_description: You're free to choose from the many interesting projects hosted on FromThePage. Start reading the historical writings that have been already transcribed by other members. You're welcome to help one of the great projects come into the digital age.
       recent_activity: Recent Activity
+    create_work:
+      work_created: Work created successfully
     empty:
       add_new_collection: Add New Collection
       create_empty_work: Create Empty Work
@@ -49,6 +51,9 @@ en:
       search_for_collections: Search for collections
       search_for_collections_or_owners: Search for collections or owners...
       transcribe_a_page: Transcribe a page
+    new_upload:
+      document_uploaded: Document has been uploaded and will be processed shortly. We'll email you at %{email} when ready.
+      reload_this_page: Document has been uploaded and will be processed shortly. Reload this page in a few minutes to see it.
     new_work:
       acceptable_formats: PNG, GIF, and JPG files are all acceptable.
       images_should_be_named: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
