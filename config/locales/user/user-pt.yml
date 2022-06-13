@@ -9,27 +9,15 @@ pt:
       previous_image: Imagem anterior
       website: Site
     profile:
-      article: Artigo
-      categories: Categorias
       contribution:
         one: Contribuição
         other: Contribuições
-      date: Data
       edit_profile: Editar Perfil
       last_seen: Visto por última vez em %{date}
       login_and_password: Usuário &amp; Senha
-      no_work: Sem obra
-      note: Nota
-      page: Página
       recent_activity_by: Actividade Recente de %{user_display_name}
-      recent_article_edits: Edições Recentes de Artigos
-      recent_notes: Notas Recentes
-      recent_page_edits: Edições Recentes de Páginas
-      revision: Revisão %{version}
       user_deleted: Perfil de usuário foi excluído
       user_since: Usuário desde %{date}
-      version: Versão
-      work: Obra
     update:
       user_updated: O perfil do usuário foi atualizado
     update_profile:

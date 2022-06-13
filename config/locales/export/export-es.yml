@@ -5,10 +5,6 @@ es:
       connect: Conectar
       contentdm_credentials: Credenciales CONTENTdm
       contentdm_credentials_description: Ingresa tu código de licencia CONTENTdm y tus credenciales de inicio de sesión para exportar a CONTENTdm
-    facing_edition:
-      html:
-        export_metadata: Exportar desde FromThePage de %{work} de %{collection} realizada en %{time}.
-        fromthepage_version: 'Versión FromThePage: %{version}'
     index:
       export_all_table_data_as_csv: Exportar todos los datos de la tabla en formato CSV
       export_all_tables: Exportar todas las tablas
@@ -18,10 +14,8 @@ es:
       export_as: Exportar como
       export_individual_works: Exportar Trabajos Individuales
       export_individual_works_description: Puedes elegir exportar trabajos individuales en varios formatos de archivo. XHTML exporta un trabajo como un archivo XHTML de una sola página con transcripciones, comentarios de los usuarios, artículos temáticos y HREF internos que vinculan temas y páginas. TEI exporta un trabajo como documento TEI-XML compatible con P5. El texto no tiene formato. La exportación zip te dará todos los formatos de una obra y una granularidad de página.
-      export_subject_coocurrence: Exportar coocurrencia de asuntos
       export_subject_coocurrence_as_csv: Exportar coocurrencias en formato CSV
       export_subject_coocurrence_description: Haz clic en el botón para exportar un archivo CSV con una fila para cada combinación de asuntos de la colección mencionados en la misma página. (El proceso de exportación puede tardar algún tiempo en completarse, así que espera hasta que aparezca el cuadro de diálogo Guardar archivo).
-      export_subject_details: Exportar detalles del asunto
       export_subject_details_as_csv: Exportar asuntos en formato CSV
       export_subject_details_description: Haz clic en el botón para exportar un archivo CSV con una fila para cada tema o asunto de la colección. (El proceso de exportación puede tardar algún tiempo en completarse, así que espera hasta que aparezca el cuadro de diálogo Guardar archivo).
       export_subject_index: Exportar asuntos

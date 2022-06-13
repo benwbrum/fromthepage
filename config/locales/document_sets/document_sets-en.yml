@@ -14,7 +14,6 @@ en:
       actions: Actions
       aggregating_works_thematic_exhibits: Aggregating works into thematic exhibits
       assign_works_to_document_sets: Assign Works to Document Sets
-      collaboration: Collaboration
       create_a_document_set: Create a Document Set
       delete: Delete
       delete_document_set_confirm_message: Are you sure you want to delete this document set? This will delete your document set, but not any of the works in the document set.
@@ -27,12 +26,10 @@ en:
       private: Private
       public: Public
       publishing_works_private_collection: Publishing works from a private collection. (Any works in a private collection which are added to a public document set will be visible to the public.)
-      restricted: Restricted
       save: Save
       search: Search
       search_for_works: Search for works...
       title: Title
-      unrestricted: Unrestricted
       work: Work
     new:
       create_document_set: Create Document Set
@@ -52,7 +49,6 @@ en:
       add: Add
       add_collaborator: Add Collaborator
       add_work_title_to_document_set: Add %{work_title} to Document Set
-      collaboration: Collaboration
       collaborators_may_transcribe: Collaborators may transcribe and edit private document sets.
       document_set_based_on: This is a document set based on the <b>%{title}</b> collection.  You can manage all works and document sets within that collection by clicking %{link}.
       document_set_collaborators: Document Set Collaborators
@@ -67,11 +63,9 @@ en:
       no_image: No Image
       picture_document_set_description: A picture to be used to illustrate the document set description.
       remove: Remove
-      restricted: Restricted
       save: Save
       search: Search
       search_for_works: Search for works...
-      unrestricted: Unrestricted
       upload_image: Upload Image
       work: Work
     transfer:

@@ -14,7 +14,6 @@ es:
       actions: Acciones
       aggregating_works_thematic_exhibits: Agregando obras a exposiciones temáticas
       assign_works_to_document_sets: Asignar Obras a Conjuntos de Documentos
-      collaboration: Colaboración
       create_a_document_set: Crear un Conjunto de Documentos
       delete: Eliminar
       delete_document_set_confirm_message: "¿De verdad deseas eliminar este conjunto de documentos? Esto eliminará tu conjunto de documentos, pero no borrará ninguna de las obras en el conjunto de documentos."
@@ -27,12 +26,10 @@ es:
       private: Privado
       public: Público
       publishing_works_private_collection: " Publicando obras de una colección privada. (Cualquier obra de una colección privada que se agregue a un conjunto de documentos públicos será visible para el público.)"
-      restricted: Restringido
       save: Guardar
       search: Búsqueda
       search_for_works: Búsqueda de obras...
       title: Título
-      unrestricted: No restringido
       work: Obras
     new:
       create_document_set: Crear Conjunto de Documentos
@@ -52,7 +49,6 @@ es:
       add: Añadir
       add_collaborator: Añadir colaborador
       add_work_title_to_document_set: Añadir %{work_title} al Conjunto de Documentos
-      collaboration: Colaboración
       collaborators_may_transcribe: Los colaboradores pueden transcribir y editar conjuntos de documentos privados.
       document_set_based_on: Este conjunto de documentos está basado en la colección <b>%{title}</b>. Puedes administrar todos los trabajos y conjuntos de documentos dentro de esa colección haciendo clic en %{link}.
       document_set_collaborators: Colaboradores del Conjunto de Documentos
@@ -67,11 +63,9 @@ es:
       no_image: No Hay Imagen
       picture_document_set_description: " Una imagen a ser utilizada para ilustrar la descripción del conjunto de documentos."
       remove: Eliminar
-      restricted: Restringido
       save: Guardar
       search: Búsqueda
       search_for_works: Búsqueda de obras...
-      unrestricted: No restringido
       upload_image: Subir Imagen
       work: Obras
     update:

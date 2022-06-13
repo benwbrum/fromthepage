@@ -22,7 +22,6 @@ es:
       note: Nota
       ocr_correction: Corrección OCR
       page: Página
-      page_edits: Ediciones de página
       reference: Referencia
       subject: Tema
       work: Trabajo
@@ -32,7 +31,6 @@ es:
       note: Nota
       ocr_correction: Corrección OCR
       page: Página
-      page_edit: Edición de página
       reference: Referencia
     statistics:
       active_page: Página activa
@@ -42,7 +40,6 @@ es:
       note: Nota
       ocr_correction: Corrección OCR
       page: Página
-      page_edits: Ediciones de página
       reference: Referencia
       subject: Tema
       total_page: Página total

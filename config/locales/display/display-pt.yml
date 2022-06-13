@@ -1,9 +1,6 @@
 ---
 pt:
   display:
-    blank_page: ''
-    completed: ''
-    correct: ''
     display_page:
       collaboration_is_restricted: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
       collection_is_not_active: Este projeto não está ativo. Entre em contato com o proprietário do projeto em caso de dúvidas.
@@ -39,7 +36,6 @@ pt:
       view_all_pages: Ver Todas as Páginas
     pages_view:
       collaboration_is_restricted: A colaboração é restrita para esta coleção. Por favor, entre em contato com o dono do projeto se você deseja ajudar a transcrever.
-      collection_is_not_active: Este projeto não está ativo. Entre em contato com o proprietário do projeto em caso de dúvidas.
       corrected: corrigiu
       help_transcribe: Por favor, ajude a transcrever
       help_translate: ajudar a traduzir
@@ -50,6 +46,3 @@ pt:
       this_page_is_not: Esta página não está %{status}, por favor %{help} esta página
       transcribed: transcreveu
       unable_to_find_pages: Não conseguimos encontrar nenhuma página correspondente ao seu pedido
-    review: ''
-    transcribe: ''
-    translate: ''

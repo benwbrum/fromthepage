@@ -13,7 +13,6 @@ pt:
       editorial_notes: Notas editoriais
       genre: Gênero
       location_of_composition: Localização da Composição
-      metadata: Metadata
       number_of_pages: Número de Páginas:&nbsp;
       out_of_scope: Fora do escopo
       permission_description: Descrição da Permissão
@@ -22,8 +21,6 @@ pt:
       source_box_folder: Caixa de fontes
       source_collection_name: Nome de coleção fonte
       source_location: Localização de fonte
-      transcription_conventions: Convenções de Transcrição
-      transcription_version: Versão de Transcrição:&nbsp;
       uploaded_by: Subido por
     update:
       work_updated: Trabalho atualizado com sucesso

@@ -9,7 +9,6 @@ es:
       editorial_notes: Notas editoriales
       genre: Género
       location_of_composition: Ubicación de la Composición
-      metadata: Metadatos
       number_of_pages: Número de Páginas:nbsp;
       out_of_scope: Fuera del alcance
       permission_description: Descripción del Permiso
@@ -18,6 +17,4 @@ es:
       source_box_folder: Caja/Carpeta de la fuente
       source_collection_name: Nombre de la colección de la fuente
       source_location: Ubicación de la fuente
-      transcription_conventions: Convenciones de Transcripción
-      transcription_version: Versión de la Transcripción:&nbsp;
       uploaded_by: Subido por

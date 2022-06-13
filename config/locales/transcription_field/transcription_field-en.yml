@@ -8,8 +8,6 @@ en:
     column_form:
       column_options: Column options (separate with semicolons)
       column_options_title: Options for dropdown cells.
-      percentage_title: Percentage of the line width to use for this field.
-      percentage_width: Width %
     edit_columns:
       add_additional_column: Add Additional Column
       cancel: Cancel
@@ -27,13 +25,7 @@ en:
       data_entry_type_text_and_metadata: Users transcribe text and create metadata
       description_instructions_label: Metadata Description Instructions
     edit_fields:
-      add_additional_field: Add Additional Field
-      add_additional_line: Add Additional Line
-      cancel: Cancel
-      done: Done
       edit_transcription_fields: Edit Transcription Fields
-      preview: Fields Preview
-      save: Save
       transcription_warning: This project has already been partially transcribed. Adding fields is fine, but deleting or changing fields may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename fields.
     edit_metadata_fields:
       edit_metadata_fields: Edit Metadata Fields

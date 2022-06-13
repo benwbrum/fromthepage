@@ -1,9 +1,6 @@
 ---
 en:
   display:
-    blank_page: Blank page
-    completed: Completed
-    correct: Correct
     display_page:
       collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
       collection_is_not_active: This project is not active. Please contact the project owner with any questions.
@@ -40,7 +37,6 @@ en:
       view_all_pages: View All Pages
     pages_view:
       collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
-      collection_is_not_active: This project is not active. Please contact the project owner with any questions.
       corrected: corrected
       help_complete: Edit this page
       help_transcribe: help transcribe
@@ -56,6 +52,3 @@ en:
       this_page_is_not: This page is not %{status}, please %{help} this page
       transcribed: transcribed
       unable_to_find_pages: We were unable to find any pages matching your request
-    review: Review
-    transcribe: Transcribe
-    translate: Translate

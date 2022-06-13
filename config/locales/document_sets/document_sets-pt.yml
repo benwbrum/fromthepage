@@ -14,7 +14,6 @@ pt:
       actions: Ações
       aggregating_works_thematic_exhibits: Agregar obras em exposições temáticas
       assign_works_to_document_sets: Atribuir Obras aos Conjuntos de Documentos
-      collaboration: Colaboração
       create_a_document_set: Criar Conjunto de Documentos
       delete: Apagar
       delete_document_set_confirm_message: Tem certeza que deseja apagar este conjunto de documentos? O conjunto de documentos será apagado, mas nenhuma das obras dentro do conjunto de documentos será apagada.
@@ -27,12 +26,10 @@ pt:
       private: Privado
       public: Público
       publishing_works_private_collection: Publicar obras de uma coleção privada. (Quaisquer obras de uma coleção privada que sejam adicionadas a um conjunto de documentos público serão visíveis para o público.)
-      restricted: Restringido
       save: Guardar
       search: Buscar
       search_for_works: Buscar obras...
       title: Titulo
-      unrestricted: Não Restringido
       work: Obra
     new:
       create_document_set: Criar Conjunto de Documentos
@@ -52,7 +49,6 @@ pt:
       add: Adicionar
       add_collaborator: Adicionar Colaborador
       add_work_title_to_document_set: Adicionar %{work_title} ao Conjunto de Documentos
-      collaboration: Colaboração
       collaborators_may_transcribe: Os colaboradores podem transcrever e editar os conjuntos de documentos privados.
       document_set_based_on: Este é um conjunto de documentos baseado na <b>%{title}</b> coleção. Você pode controlar todas as obras e todos os conjuntos de documentos dentro dessa coleção, clicando em %{link}.
       document_set_collaborators: Colaboradores do Conjunto de Documentos
@@ -67,11 +63,9 @@ pt:
       no_image: Sem Imagem
       picture_document_set_description: Uma imagem para ilustrar a descrição do conjunto de documentos.
       remove: Remover
-      restricted: Restringido
       save: Guardar
       search: Buscar
       search_for_works: Buscar obras...
-      unrestricted: Não Restringido
       upload_image: Subir Imagem
       work: Obra
     update:

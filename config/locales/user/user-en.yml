@@ -9,27 +9,15 @@ en:
       previous_image: Previous image
       website: Website
     profile:
-      article: Article
-      categories: Categories
       contribution:
         one: Contribution
         other: Contributions
-      date: Date
       edit_profile: Edit Profile
       last_seen: Last seen %{date}
       login_and_password: Login &amp; Password
-      no_work: No work
-      note: Note
-      page: Page
       recent_activity_by: Recent Activity by %{user_display_name}
-      recent_article_edits: Recent Article Edits
-      recent_notes: Recent Notes
-      recent_page_edits: Recent Page Edits
-      revision: Revision %{version}
       user_deleted: User profile has been deleted
       user_since: User since %{date}
-      version: Version
-      work: Work
     update:
       user_updated: User profile has been updated
     update_profile:

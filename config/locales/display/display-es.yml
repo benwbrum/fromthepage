@@ -1,9 +1,6 @@
 ---
 es:
   display:
-    blank_page: Página en blanco
-    completed: Completado
-    correct: Corregir
     display_page:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
       collection_is_not_active: Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta.
@@ -39,7 +36,6 @@ es:
       view_all_pages: Ver Todas las Páginas
     pages_view:
       collaboration_is_restricted: La colaboración está restringida para esta colección. Por favor, contacta al dueño del proyecto para colaborar con la transcripción.
-      collection_is_not_active: Este proyecto no está activo. Por favor, contacta al dueño del proyecto para caulquier pregunta.
       corrected: corregida
       help_transcribe: Por favor, ayuda a transcribir
       help_translate: ayuda a traducir
@@ -50,6 +46,3 @@ es:
       this_page_is_not: Esta página no es %{status}, por favor %{help} esta página
       transcribed: transcrita
       unable_to_find_pages: No pudimos encontrar ninguna página que coincida con la solicitud
-    review: Revisar
-    transcribe: Transcribir
-    translate: Traducir
