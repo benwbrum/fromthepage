@@ -6,6 +6,7 @@ class ArticleController < ApplicationController
 
   DEFAULT_ARTICLES_PER_GRAPH = 40
   GIS_DECIMAL_PRECISION = 5
+  LIST_NUM_COLUMNS = 3
 
   def authorized?
     unless user_signed_in?
@@ -24,9 +25,23 @@ class ArticleController < ApplicationController
     # 2. List should be displayed within the category treeview
     # 3. Uncategorized articles should be listed below
     if @collection.is_a?(DocumentSet)
-      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL')
+      @uncategorized_articles = @collection.articles.joins('LEFT JOIN articles_categories ac ON articles.id = ac.article_id').where('ac.category_id IS NULL').reorder(:title)
     else
-      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id))
+      @uncategorized_articles = @collection.articles.where.not(:id => @collection.articles.joins(:categories).pluck(:id)).reorder(:title)
+    end
+
+    # Create a 2D array of articles/subjects for each category
+    # where the articles are sorted alphabetically vertically
+    # instead of horizontally -- so, going down each column
+    @vertical_articles = Array.new(@categories.length()) # Holds articles for each category
+    @categories.each_with_index do |category, i|
+      articles = category.articles_list(@collection) # The articles for this category
+      @vertical_articles[i] = sort_vertically(articles)
+    end
+
+    # Do the same for uncategorized articles
+    if @uncategorized_articles.present?
+      @uncategorized_articles = sort_vertically(@uncategorized_articles)
     end
   end
 
@@ -329,6 +344,24 @@ class ArticleController < ApplicationController
     if lon.length == 2 then lon_dec = lon.last.length else lon_dec = 0 end
 
     if lat_dec > dec || lon_dec > dec then return true else return false end
+  end
+
+  def sort_vertically(articles)
+    rows = (articles.length() % LIST_NUM_COLUMNS == 0) ? (articles.length() / LIST_NUM_COLUMNS) : (articles.length()  / LIST_NUM_COLUMNS + 1)
+    vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) } # 2D array of articles
+
+    row = 0
+    col = 0
+    articles.each do |article|
+      vertical_articles[row][col] = article
+      row+=1          # Go down a row each time
+      if row == rows  # When you reach the bottom, move to the next column
+        col+= 1
+        row = 0
+      end
+    end
+
+    return vertical_articles
   end
 
   private
