@@ -3,4 +3,7 @@ pt:
   dashboard:
     collaborator: Painel de Controle do Colaborador
     plain: Painel de Controle
+  en: English
+  es: Español
+  pt: Português
   time_ago_in_words: Há %{time}

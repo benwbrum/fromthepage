@@ -3,4 +3,7 @@ es:
   dashboard:
     collaborator: Panel de Control del Colaborador
     plain: Panel de Control
+  en: English
+  es: Español
+  pt: Português
   time_ago_in_words: Hace %{time}
