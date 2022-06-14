@@ -8,8 +8,6 @@ en:
       description: Description
       document_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
       save_document_set: Save Document Set
-    form:
-      error_explanation: "%{error_count} prohibited this document_set from being saved:"
     index:
       actions: Actions
       aggregating_works_thematic_exhibits: Aggregating works into thematic exhibits

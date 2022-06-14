@@ -64,3 +64,5 @@ en:
       pages: Pages
       read: Read
       settings: Settings
+    validation_summary:
+      form: form      

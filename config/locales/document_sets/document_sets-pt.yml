@@ -8,8 +8,6 @@ pt:
       description: Descrição
       document_is_marked_public: Se o conjunto de documentos está marcado como público, as obras colocadas dentro dele serão acessíveis mesmo que a coleção seja marcada como privada.
       save_document_set: Guardar o Conjunto de Documentos
-    form:
-      error_explanation: "%{error_ count} proibiu que este document_set fosse guardado:"
     index:
       actions: Ações
       aggregating_works_thematic_exhibits: Agregar obras em exposições temáticas
