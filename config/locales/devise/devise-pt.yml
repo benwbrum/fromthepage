@@ -59,7 +59,4 @@ pt:
       expired: expirou, por favor solicite um novo
       not_found: não encontrado
       not_locked: não foi bloqueado
-      not_saved:
-        one: '1 erro proibiu que este %{resource} fosse guardado:'
-        other: "%{count} erros proibiram que este %{resource} fosse guardado:"
       not_signed: 'Não foi possível entrar na sua conta devido ao seguinte erro:'

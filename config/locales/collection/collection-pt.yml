@@ -62,7 +62,7 @@ pt:
       collection_restricted_message: A coleção só pode ser visualizada pelos donos listados abaixo. Você pode tornar a coleção publicamente acessível.
       collection_status: Status da Coleção
       confirm_delete_collection: Tem certeza que deseja apagar esta coleção? Depois de apagar não pode ser recuperada!
-      current_url: O URL atual desta coleção é %{current_ URL}. Se quiser editar a parte da obra no URL, por favor use letras minúsculas e traços entre as palavras.
+      current_url: O URL atual desta coleção é %{current_url}. Se quiser editar a parte da obra no URL, por favor use letras minúsculas e traços entre as palavras.
       default_orientation: Selecione a orientação da página predeterminada da transcrição
       delete_collection: Apagar Coleção
       description: Descrição
