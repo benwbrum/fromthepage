@@ -87,6 +87,7 @@ class IaWork < ApplicationRecord
       page.base_width = leaf.page_w
       page.title = leaf.page_number
       page.source_text = leaf.ocr_text if self.use_ocr
+      binding.pry unless page.valid?
       work.pages << page #necessary to make acts_as_list work here
       work.save!
 
@@ -240,6 +241,7 @@ class IaWork < ApplicationRecord
     # clean any angle braces -- this source won't be HTML
     title.gsub!("<", "&lt;")
     title.gsub!(">", "&gt;")
+    title.gsub!(/\[\[+/, "[")
 
     title
   end
