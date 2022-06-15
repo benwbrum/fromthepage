@@ -27,8 +27,8 @@ en:
       start_rows_label: 'Starting Row Count: '
       transcription_warning: This project has already been partially transcribed. Adding columns is fine, but deleting or changing columns may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename columns.
     edit_field_form:
-      add_additional_field: Add additional field
-      add_additional_line: Add additional line
+      add_additional_field: Add Additional Field
+      add_additional_line: Add Additional Line
       cancel: Cancel
       data_entry_type_label: Metadata Flow
       data_entry_type_metadata_only: Users only create metadata
