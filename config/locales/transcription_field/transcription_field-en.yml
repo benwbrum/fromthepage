@@ -2,28 +2,41 @@
 en:
   transcription_field:
     add_columns:
+      must_have_options_list: Select fields must have an options list. Please add options to any select fields and resave.
       starting_rows_must_not_be_blank: Starting rows must not be blank.
     add_fields:
       must_have_options_list: Select fields must have an options list. Please add options to any select fields and resave.
+    choose_offset:
+      page_layout: Page layout
     column_form:
       column_options: Column options (separate with semicolons)
       column_options_title: Options for dropdown cells.
+      input_type: Input type
+      label: Label
     edit_columns:
       add_additional_column: Add Additional Column
       cancel: Cancel
       done: Done
       edit_spreadsheet_columns: Column Configuration
       edit_spreadsheet_header: Spreadsheet Configuration
+      page_layout: Page layout
       preview: Spreadsheet Preview
       save: Save
+      screen_ruler: Screen ruler
       start_rows_description: Number of rows the spreadsheet should display initially. (Transcribers will be able to add additional rows if needed.)
       start_rows_label: 'Starting Row Count: '
       transcription_warning: This project has already been partially transcribed. Adding columns is fine, but deleting or changing columns may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename columns.
     edit_field_form:
+      add_additional_field: Add additional field
+      add_additional_line: Add additional line
+      cancel: Cancel
       data_entry_type_label: Metadata Flow
       data_entry_type_metadata_only: Users only create metadata
       data_entry_type_text_and_metadata: Users transcribe text and create metadata
       description_instructions_label: Metadata Description Instructions
+      done: Done
+      preview: Preview
+      save: Save
     edit_fields:
       edit_transcription_fields: Edit Transcription Fields
       transcription_warning: This project has already been partially transcribed. Adding fields is fine, but deleting or changing fields may results in lost data. Please contact support@fromthepage.com if you have questions or need to rename fields.
@@ -34,10 +47,14 @@ en:
     line_form:
       field_options: Field options (separate with semicolons)
       field_options_title: Options for select fields.
+      input_type: Input type
+      label: Label
       page: Page
       page_title: For multi-page forms, which page should this field appear on? (Leave blank to display on each page.)
       percentage_title: Percentage of the line width to use for this field.
       percentage_width: Width %
+    metadata_field_layout:
+      instructions: Instructions
     multiselect_form:
       options_form_description: Enter options for the multi select metadata field, with each option on a separate line
       options_form_title: Multi select Options

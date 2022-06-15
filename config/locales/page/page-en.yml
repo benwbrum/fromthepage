@@ -15,6 +15,7 @@ en:
       here_you_can_edit: Here you can edit the page title and upload a new image. If you want to edit page transcription or translation text please switch to the appropriate tab above.
       page_image: Page Image
       page_position: 'Page Position: %{position}'
+      page_status: Page Status
       page_status_: Not Started
       page_status_blank: Blank Page
       page_status_incomplete: Incomplete
@@ -23,6 +24,7 @@ en:
       page_status_transcribed: Complete
       page_status_translated: Translated
       page_title: Page Title
+      page_translation_status: Page Translation Status
       rotate_clockwise: Rotate Clockwise
       rotate_counterclockwise: Rotate Counterclockwise
       save_changes: Save Changes

@@ -1,0 +1,11 @@
+---
+en:
+  bulk_export:
+    index:
+      date: Date
+      show_details: Show details
+      status: Status
+      upload_details: Upload details
+      user: User
+    new:
+      download: Download

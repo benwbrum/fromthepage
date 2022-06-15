@@ -53,6 +53,7 @@ en:
       collaborator: Collaborator
       edit: edit
       incomplete_page: Incomplete page
+      indexed: indexed
       last_days_statistics: Last 7 Days Statistics
       marked_needing_review: marked needing review
       needing_review: needing review
@@ -65,4 +66,5 @@ en:
       subject: Subject
       total_page: Total page
       transcribed: transcribed
+      translated: translated
       work: Work

@@ -4,15 +4,29 @@ en:
     create:
       work_created: Work created successfully
     describe:
+      always_show_fullscreen: Always show fullscreen
       approve: Approve
       approve_to_transcribed_tooltip: Save and approve this metadata
       done: Done
       finish_to_needs_review_tooltip: Save completed metadata
       finish_to_transcribed_tooltip: Save completed metadata
+      fullscreen: Fullscreen
+      image_at_the_bottom: Image at the bottom
+      image_at_the_left: Image at the left
+      image_at_the_right: Image at the right
+      image_at_the_top: Image at the top
+      layout: Layout
+      metadata: Metadata
+      needs_review: Needs review
+      notes_and_questions: Notes and questions
+      page_images: Page images
       save_changes: Save
       save_to_incomplete_tooltip: Save incomplete metadata
       save_to_needs_review_tooltip: Save your changes
       save_to_transcribed_tooltip: Save your changes
+      text: Text
+      this_page_is_blank: This page is blank
+      view_original: View original
     described: Metadata completed.
     description_versions:
       author_contributed_at: "%{author} at %{date}"
@@ -25,6 +39,10 @@ en:
       document_date_hint: Document Date is in the EDTF format (e.g. 1843, 2001-02, 1643-06-30)
       restricted_work_no_collaborators_warning: Only project owners can edit this work. Add collaborators to make the work editable by others.
     incomplete: Incomplete metadata.
+    metadata_overview:
+      notes_and_questions: Notes and questions
+      show_image: Show image
+      this_page_is_blank: This page is blank
     needsreview: Metadata needs review.
     save_description:
       work_described: Your description has been saved
@@ -40,6 +58,7 @@ en:
       out_of_scope: Out of scope
       permission_description: Permission Description
       physical_description: Physical Description
+      recipient_name: Recipient Name
       scope: Scope
       source_box_folder: Source Box/Folder
       source_collection_name: Source Collection Name
