@@ -21,6 +21,7 @@ en:
     exports:
       configuration: Configuration (level)
       date: Export Date
+      download: Download
       exported_item: Exported Collection/Work
       facing_edition_work: Facing Edition PDF (work)
       html_page: HTML (page)
@@ -80,6 +81,7 @@ en:
       your_activity: Your Activity
     owner_header:
       create_a_collection: Create a Collection
+      exports: Exports
       owner_dashboard: Owner Dashboard
       start_a_project: Start A Project
       summary: Summary

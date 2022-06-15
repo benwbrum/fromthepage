@@ -71,7 +71,7 @@
           tr
             td(colspan="2")
               h3
-                =f.label :review_type, t('review_type')
+                =f.label :review_type, t('.review_type')
               =f.radio_button :review_type, Collection::ReviewType::OPTIONAL
               =f.label "review_type_#{Collection::ReviewType::OPTIONAL}", t('.review_type_optional')
               br
@@ -170,7 +170,7 @@
       h3 =t('.metadata_entry')
       -if @collection.metadata_entry?
         =link_to t('.edit_metadata_fields'), transcription_field_edit_metadata_fields_path(:collection_id => @collection), class: 'button fields', 'aria-label' => t('.edit_fields')    
-        =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_metadata_description'))
+        =link_to(collection_disable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.revert_from_description_to_transcription'))
           span =t('.revert_from_description_to_transcription')
       -else
         =link_to(collection_enable_metadata_entry_path(:collection_id => @collection.id), class: 'button', 'aria-label' => t('.enable_metadata_description'))

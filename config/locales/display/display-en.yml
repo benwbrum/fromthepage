@@ -46,9 +46,19 @@ en:
       no_pages_needing_transcription_found_these_pages_are_incomplete: No pages need transcription from scratch.  These pages have been partially transcribed but need to be completed.
       page_not_translated: This page is not translated, please %{help_translate} this page
       pages_needing_completion: Pages needing completion
+      pages_that_need_transcription: Pages that need transcription
       review_metadata: Review Metadata
       this_page_is_blank: This page is blank
       this_page_is_incomplete: This page is incomplete
       this_page_is_not: This page is not %{status}, please %{help} this page
       transcribed: transcribed
       unable_to_find_pages: We were unable to find any pages matching your request
+  display_helper:
+    page_action:
+      blank_page: Blank page
+      completed: Completed
+      correct: Correct
+      index: Index
+      review: Review
+      transcribe: Transcribe
+      translate: Translate

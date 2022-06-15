@@ -49,6 +49,7 @@ en:
       alert: Please configure fields or choose document based transcription under Transcription Type.
       api_access: API Access
       api_access_description: Allow access to transcriptions via IIIF API
+      authorized_reviewers: Authorized reviewers
       blank_collection: Blank Collection
       blank_collection_description: Pressing this button will reset the collection to a blank state.  It will delete all transcriptions and other work on the collection, as though it was newly imported.
       close_api: Close API
@@ -120,6 +121,8 @@ en:
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
       revert_document_based_transcription: Revert to Document Based Transcription
       revert_from_description_to_transcription: Disable Description
+      revert_metadata_description: 
+      review_type: Review Type
       review_type_optional: " Optional: Collaborators may request review of their transcriptions."
       review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"
       review_type_restricted: " Restricted: All transcriptions need review, and only authorized reviewers may approve transcriptions."
@@ -184,17 +187,21 @@ en:
     one_off_list:
       date: Date
       filter_contributions: Filter
+      no_contributions_need_review: No contributions need review
       one_off_description: These contributions were made by users who only edited a single page.  They may need special attention.
       one_off_title: One-off Contributions
       review: Review
       title: Page (Work)
       user: User
+    quality_sampling: Quality Sampling
     recent_contributor_list:
       date: First Contribution Date
       filter_users: Filter
+      no_contributions_need_review: No contributions need review
       number_of_contributions: Total Contributions
       recent_contributor_description: These collaborators have begun working on the project recently, but their work has never been reviewed.
       recent_contributor_title: Recent Contributors
+      review: Review
       user: User
     reviewer_dashboard:
       one_off_contributions: One-off Contributions
@@ -214,6 +221,7 @@ en:
       pages_need_correction: Pages That Need Correction
       pages_need_correction_or_transcription: Pages That Need Correction or Transcription
       pages_need_review: Pages That Need Review
+      pages_need_transcription: Pages That Need Transcription
       project_by: Project by
       recent_edits: Recent Edits
       recent_notes: Recent Notes
@@ -236,9 +244,12 @@ en:
     user_contribution_list:
       date: Date
       filter_contributions: Filter
+      no_contributions: No contributions
+      notes: Notes
       review: Review
       title: Page (Work)
       user_contribution_description: Pages needing review by user %{user_name}
+      user_profile: User profile
     works_list:
       alphabetical: Alphabetical
       percent_complete: Percent Complete
@@ -252,5 +263,11 @@ en:
       incomplete: Incomplete
       last_activity: Last Activity
       no_works_need_review: No works need review
+      notes: Notes
+      review: Review
       title: Title
       total: Total
+  collection_helper:
+    link:
+      incomplete_works: Incomplete works
+      show_all: Show all
