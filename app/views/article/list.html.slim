@@ -18,7 +18,7 @@
           li: a.tree-item(href="#category-none") Uncategorized
 
     .category-articles
-      -@categories.each_with_index do |category, i|
+      -@categories.each do |category|
         dl.category-article(id="category-#{category.id}")
           dt
             .headline
@@ -47,8 +47,8 @@
             -if category.articles_list(@collection).empty?
               p.acenter.fglight There are no subjects for the category selected
             -else
-              -@vertical_articles[i].each do |l|
-                -l.each do |article|
+              -@vertical_articles[category].each do |row|
+                -row.each do |article|
                   -unless article.nil?
                     p[*language_attrs(@collection)]
                       =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
