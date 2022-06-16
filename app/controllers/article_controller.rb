@@ -33,10 +33,10 @@ class ArticleController < ApplicationController
     # Create a 2D array of articles/subjects for each category
     # where the articles are sorted alphabetically vertically
     # instead of horizontally -- so, going down each column
-    @vertical_articles = Array.new(@categories.length()) # Holds articles for each category
-    @categories.each_with_index do |category, i|
+    @vertical_articles = {} # Holds articles for each category
+    @categories.each do |category|
       articles = category.articles_list(@collection) # The articles for this category
-      @vertical_articles[i] = sort_vertically(articles)
+      @vertical_articles[category] = sort_vertically(articles)
     end
 
     # Do the same for uncategorized articles
@@ -347,7 +347,7 @@ class ArticleController < ApplicationController
   end
 
   def sort_vertically(articles)
-    rows = (articles.length() % LIST_NUM_COLUMNS == 0) ? (articles.length() / LIST_NUM_COLUMNS) : (articles.length()  / LIST_NUM_COLUMNS + 1)
+    rows = (articles.length().to_f / LIST_NUM_COLUMNS).ceil
     vertical_articles = Array.new(rows) { Array.new(LIST_NUM_COLUMNS) } # 2D array of articles
 
     row = 0
