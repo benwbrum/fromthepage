@@ -41,7 +41,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
       -if @work.supports_translation
         hr
         h4= t('.translation')
-        div(data-diff-translation="original" data-empty=t('.no_translation_provided')
+        div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
           ==xml_to_html((@previous_version.xml_translation rescue ""))
 
 -content_for :javascript
