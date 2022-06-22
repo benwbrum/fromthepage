@@ -4,7 +4,11 @@ en:
     display_page:
       collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
       collection_is_not_active: This project is not active. Please contact the project owner with any questions.
+      corrected: corrected
       facsimile: Facsimile
+      help_correct: help correct
+      help_transcribe: help transcribe
+      help_translate: help translate
       mark_the_page_blank: mark the page blank
       or_mark_blank: "<br>or %{mark_blank}"
       page_notes: Notes and Questions
@@ -13,14 +17,19 @@ en:
       show_translation: Show Translation
       this_page_is_blank: This page is blank
       this_page_is_not: This page is not %{text_type}
+      transcribed: transcribed
       transcription: Transcription
+      translated: translated
       translation: Translation
     list_pages:
       actions: Actions
+      describe: Describe
+      metadata: Metadata
       no_notes: No notes
       no_pages_found: No pages found
       no_pages_in_work: This work does not contain any pages yet, go to %{link} to create a new page
       page_title: Page Title
+      pages_tab: Pages tab
       user_notes: User Notes
     multi_page:
       categories: Categories
@@ -32,6 +41,7 @@ en:
       search: Search
       search_for: Search for %{search_string}
       search_in_collection: Search in collection...
+      search_in_collection_1: Search in collection
       translations_need_indexing: Translations That Need Indexing
       translations_need_review: Translations That Need Review
       view_all_pages: View All Pages
@@ -39,6 +49,7 @@ en:
       collaboration_is_restricted: Collaboration is restricted for this collection. Please contact the project owner if you wish to help transcribe.
       corrected: corrected
       help_complete: Edit this page
+      help_correct: help correct
       help_transcribe: help transcribe
       help_translate: help translate
       last_edit: Last edit %{edit_time} ago by %{user_link}
@@ -52,6 +63,7 @@ en:
       this_page_is_incomplete: This page is incomplete
       this_page_is_not: This page is not %{status}, please %{help} this page
       transcribed: transcribed
+      translation: Translation
       unable_to_find_pages: We were unable to find any pages matching your request
   display_helper:
     page_action:

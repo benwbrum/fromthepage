@@ -8,6 +8,8 @@ en:
       description: Description
       document_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
       save_document_set: Save Document Set
+      title: Title
+      url: URL
     form:
       error_explanation: "%{error_count} prohibited this document_set from being saved:"
     index:
@@ -21,6 +23,9 @@ en:
       document_sets_for: Document Sets for %{title}
       edit: Edit
       focusing_transcriber_effort: Focusing transcriber effort on a particular group of works.
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
       no_document_sets: This collection has no document sets
       privacy: Privacy
       private: Private
@@ -31,6 +36,7 @@ en:
       search_for_works: Search for works...
       status: Status
       title: Title
+      toggle_work_in_document_set: Toggle %{work} in Document Set %{document_set}
       transfer_works: Transfer Works
       work: Work
     new:
@@ -38,8 +44,13 @@ en:
       create_new_document_set: Create New Document Set
       description: Description
       document_set_is_marked_public: If the document set is marked as public, works put within it will be readable even if the collection is marked as private.
+      public: Public
+      title: Title
     set_works:
       collaboration: Collaboration
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
       progress: Progress
       remove_from_set: Remove from set
       remove_title_from_document_set: Remove %{title} from Document Set
@@ -62,6 +73,12 @@ en:
       make_document_set_private: Make Document Set Private
       make_document_set_public: Make Document Set Public
       manage_works: Manage Works
+      n_contributions:
+        one: 1 contribution
+        other: "%{count} contributions"
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: pl"
       no_image: No Image
       picture_document_set_description: A picture to be used to illustrate the document set description.
       remove: Remove
@@ -75,12 +92,14 @@ en:
       source_and_target_can_not_be_the_same: Source and target cannot be the same.
     transfer_form:
       all: All works
+      cancel: Cancel
       completed: Only completed works
       copy: Copy (does not create duplicate works)
       move: Move
       source_set: Source Document Set
       status_filter: Which works
       target_set: Target Document Set
+      transfer: Transfer
       transfer_type_label: Transfer Type
       transfer_works: Transfer Works
       transfer_works_description: Transfer works between document sets.  (Copying will place the same work within two document sets at the same time.)

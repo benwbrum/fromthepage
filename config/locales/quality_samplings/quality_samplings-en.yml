@@ -2,6 +2,8 @@
 en:
   quality_samplings:
     create: 
+    destroy:
+      quality_sampling_destroyed: Quality sampling was successfully destroyed.
     edit: 
     index:
       description: Quality sampling allows you to spot-check contributions, gathering data about quality as you review each contribution.
@@ -33,8 +35,10 @@ en:
       review_url_desc: URL which will let reviewers approve contributions directly, without displaying this screen.
       sample: Review Sample
       sample_field_size: 'Pages to be Reviewed:'
+      sample_set_has_increased: Sample set has increased by %{increase} pages
       sample_set_size: 'Sample Set Size:'
       total_pages_desc: Number of pages within this collection.
       user: Contributor
       work: Work
-    update: 
+    update:
+      quality_sampling_updated: Quality sampling was successfully updated.

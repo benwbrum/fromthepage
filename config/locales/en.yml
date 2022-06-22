@@ -25,6 +25,7 @@ en:
             slug:
               blank: is required
               invalid: must have at least one letter
+  authentication_failed: Authentication failed
   dashboard:
     collaborator: Collaborator Dashboard
     plain: Dashboard

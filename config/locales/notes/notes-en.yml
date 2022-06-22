@@ -28,6 +28,7 @@ en:
       note_body: Note body
       please_sign_in_to_write: Please %{link} to write a note for this page
       save_note: Save Note
+      sign_in: sign in
       write_a_new_note: Write a new note or ask a question...
     update:
       error_updating_note: Error updating note

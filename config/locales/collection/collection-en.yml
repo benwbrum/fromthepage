@@ -4,6 +4,9 @@ en:
     approve_all:
       approved_n_pages: Approved %{page_count} pages.
     collection_works:
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
       progress: Progress
       work_title: Work title
     contributor_activity:
@@ -32,6 +35,7 @@ en:
       detailed_spreadsheet_export: A detailed spreadsheet export of all collaborators is available on your owner dashboard.
       export_activity_as_csv: Export Activity as CSV
       export_as_csv: Export as CSV
+      find_project_newsletters_recommendations: Find recommendations for project newsletters.
       new_collaborators: New Collaborators
       no_activity_this_time_frame: No activity in this time frame
       no_collaborators: No Collaborators
@@ -67,6 +71,7 @@ en:
       collection_reviewers: Authorized Reviewers
       collection_reviewers_description: These users will be able to review and approve transcriptions, as well as edit them.
       collection_status: Collection Status
+      confirm_blank_collection: Are you sure?
       confirm_delete_collection: Are you sure you want to delete this collection? After deleting you won't be able to recover it!
       current_url: The current URL for this collection is %{current_url}. If you want to edit the collection section of the URL, please use lowercase letters and dashes between any words.
       default_orientation: Select the default page transcription orientation
@@ -77,9 +82,13 @@ en:
       disable_ocr: Disable OCR
       document_sets: Document Sets
       document_sets_description: Document sets are sub-sets of the works in this collection, which can be used to focus an editing project or to create a public exhibition about a particular focus of the documents.
+      done: Done
+      edit_authorized_reviewers: Edit Authorized Reviewers
       edit_buttons: Configure Buttons
+      edit_collaborators: Edit Collaborators
       edit_fields: Fields
       edit_metadata_fields: Edit Fields
+      edit_owners: Edit Owners
       editor_buttons: Editor Buttons
       editor_buttons_description: Choose mark-up buttons to appear on the transcription editor.
       enable_document_sets: Enable Document Sets
@@ -102,6 +111,9 @@ en:
       metadata_entry: Metadata Description
       metadata_facets: Metadata Facets
       metadata_facets_description: Allow users to browse works within this collection via metadata.
+      n_contributions:
+        one: 1 contribution
+        other: "%{count} contributions"
       no_document_sets_in_collection: This collection does not have any document sets.
       no_image: No Image
       ocr_correction: OCR Correction
@@ -138,6 +150,7 @@ en:
       transcription_type_description: Each page can have one free form text entry area (the default) or multiple short entry fields designed for forms.  All pages in the collection have the same type of transcription entries. Voice dictation is not supported and will be disabled.
       upload_image: Upload Image
       upload_metadata: Upload Metadata
+      url: URL
       user_download: Allow users to download works.
       voice_recognition: Speech to text available for transcribing (not compatible with advanced editor)
     edit_buttons:
@@ -148,12 +161,17 @@ en:
       markup_preference_label: Mark-up Style
       prefer_html: Prefer HTML
       prefer_tei: Prefer TEI
+      save: Save
       tei: " (TEI-XML)"
     enable_ocr:
       notice: OCR correction has been enabled for all works.
     facet_form:
+      current_filters: Current Filters
       filter: Filter
+      reset_all_filters: Reset All Filters
+      search: Search
     facets:
+      collection_facets_updated_successfully: Collection facets updated successfully
       field_label: Field Label
       label: Label
       metadata_facets: Metadata Facets
@@ -218,6 +236,9 @@ en:
       all_complete: All works are fully transcribed.
       help_create_metadata: Help out!
       help_transcribe_or_correct: Help out!
+      n_pages:
+        one: '1 page: '
+        other: "%{count} pages: "
       pages_need_correction: Pages That Need Correction
       pages_need_correction_or_transcription: Pages That Need Correction or Transcription
       pages_need_review: Pages That Need Review
@@ -227,7 +248,9 @@ en:
       recent_notes: Recent Notes
       search: Search
       search_by_title: Search by title or metadata...
+      search_by_title_1: Search by title
       search_the_text: Search the text...
+      search_the_text_1: Search the text
       show_more: Show More
       start_transcribing: Start Transcribing
       subject_categories: Subject Categories
@@ -241,11 +264,22 @@ en:
     translated: translated
     update:
       notice: Collection has been updated
+    update_buttons:
+      editor_buttons_updated: Editor Buttons Updated
+    upload:
+      acceptable_image_files: PNG, GIF, and JPG files are all acceptable.
+      image_naming_guidelines: 'Images should be named so that an alphabetical sort will result in the correct page order.<br> (This may require "zero-padding" for any page numbers: <code>page_09.jpg, page_10.jpg</code> will sort correctly, but <code>page_9.jpg, page_10.jpg</code> will not.)'
+      image_orientation_guidelines: Images should be oriented so that they are right-side-up.
+      page_image_guidelines: Page Image Guidelines
     user_contribution_list:
+      approve_all: Approve All
       date: Date
+      email: 'Email: %{email}'
       filter_contributions: Filter
       no_contributions: No contributions
       notes: Notes
+      quality_score: 'Quality score:'
+      real_name: 'Real name: %{user}'
       review: Review
       title: Page (Work)
       user_contribution_description: Pages needing review by user %{user_name}
@@ -257,6 +291,7 @@ en:
       sort_works_by: Sort Works By...
       works: Works
     works_to_review:
+      and_n_more: and %{n} more
       contributors: Contributors
       description: Works with Pages Needing Review
       filter_works: Filter

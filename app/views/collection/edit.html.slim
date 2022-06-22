@@ -8,10 +8,10 @@
           th =f.label :title, t('.title')
           td.w100 =f.text_field :title, value: @collection.title
         tr.big
-          th =f.label :slug, 'URL'
+          th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @collection.slug
         tr
-          th.hidden URL
+          th.hidden =t('.url')
           td
             p.nomargin.settings =t('.current_url', current_url: "<b>#{collection_url(@collection.owner.slug,@collection.slug)}</b>").html_safe
         tr
@@ -88,7 +88,7 @@
                       =profile_picture(user)
                     .username
                       =link_to user.display_name, user_profile_path(user)
-                =link_to('Edit Authorized Reviewers',collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
+                =link_to(t('.edit_authorized_reviewers'), collection_edit_reviewers_path(@collection.slug), class: 'button', :data => { litebox: { hash: 'edit-reviewer-buttons', noscroll: false  }})
                 
 
       .toolbar
@@ -128,7 +128,7 @@
     -if @collection.restricted
       h3 =t('.collection_collaborators')
       p =t('.collection_collaborators_description')
-      p =link_to('Edit Collaborators', collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
+      p =link_to(t('.edit_collaborators'), collection_edit_collaborators_path(@collection.slug), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators', noscroll: false }})
       -@collaborators.each do |user|
         .user-label
           =profile_picture(user)
@@ -148,7 +148,7 @@
 
     h3 =t('.collection_owners')
     p =t('.collection_owners_description')
-    p =link_to('Edit Owners', collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
+    p =link_to(t('.edit_owners'), collection_edit_owners_path(@collection.slug), id: 'edit-owners-button', class: 'button', :data => { litebox: { hash: 'edit-owners', noscroll: false }})
     -@owners.each do |user|
       .user-label
         =profile_picture(user)
@@ -243,7 +243,7 @@
       -if @collection.text_entry?
         h3 =t('.blank_collection')
         p =t('.blank_collection_description')
-        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: "Are you sure?" })
+        =link_to({ :action => 'blank_collection', :collection_id => @collection.id}, class: 'button', data: { confirm: t('.confirm_blank_collection') })
           span =t('.blank_collection')
       h3 =t('.delete_collection')
       =link_to(collection_delete_path(:collection_id => @collection.id), data: { :confirm => t('.confirm_delete_collection') }, class: 'button')
