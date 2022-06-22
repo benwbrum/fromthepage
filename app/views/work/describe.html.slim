@@ -89,7 +89,7 @@
       .page-imagescan
         =render :partial => '/shared/osd_div'
       .page-original
-        h5 Original Metadata
+        h5= t('.original_metadata')
         .big =raw(html_metadata_from_work(@work))
 
 
@@ -101,7 +101,7 @@
         =render ({partial: 'transcription_field/metadata_field_layout', locals: {collection_id: @collection, transcribe: false}})
 
 
-h2.legend =t('notes_and_questions')
+h2.legend =t('.notes_and_questions')
 .page-notes
   =render :partial => "notes/notes"
 

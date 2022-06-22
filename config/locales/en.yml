@@ -1,5 +1,6 @@
 ---
 en:
+  authentication_failed: Authentication failed
   dashboard:
     collaborator: Collaborator Dashboard
     plain: Dashboard

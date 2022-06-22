@@ -5,7 +5,14 @@ en:
       connect: Connect
       contentdm_credentials: CONTENTdm Credentials
       contentdm_credentials_description: Enter your CONTENTdm license key and your login credentials to export to CONTENTdm
+      contentdm_password: CONTENTdm password
+      contentdm_user_name: CONTENTdm username
+      license_key: License key
+    facing_edition:
+      contributions_message: 'This document would not be possible without the editorial contributions of the following people:'
+      export_metadata: FromThePage export of %{work} from %{collection} made on %{time}.
     index:
+      api: API
       export_all_table_data_as_csv: Export All Table Data as CSV
       export_all_tables: Export All Tables
       export_all_tables_description: Click the button to export table data from the entire collection in a single CSV file. Please note that the export process could take some time to complete, so please wait until you get the File Save dialog.
@@ -26,16 +33,23 @@ en:
       export_work_metadata: Export Work Metadata
       export_work_metadata_as_csv: Export Work Metadata As CSV
       export_work_metadata_description: Export a spreadsheet containing a row for each work in the collection, with columns for statistics about pages transcribed and metadata for the work.
+      here: here
+      html: HTML
+      iiif: IIIF
       iiif_api_description: We also have a IIIF-based API for programmatically exporting transcripts from your collections. Learn more %{link}
       iiif_collection_api_endpoint: 'IIIF Collection API Endpoint: %{link}'
       indexed: Indexed
       more: More
       more_export_formats: Additional export formats
+      n_pages:
+        one: 1 page
+        other: "%{count} pages"
       pages: Pages
       plain_text: Plain text
       progress: Progress
       review: Review
       table_csv: Table CSV
+      tei: TEI
       work_title: Work Title
     show:
       categories: 'Categories:'

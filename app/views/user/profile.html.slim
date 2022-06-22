@@ -1,6 +1,6 @@
 -user_name = @user.display_name.presence || @user.login
 -content_for :page_title, user_name
--content_for :meta_description, "#{user_name}'s profile at FromThePage. #{@user.about}"
+-content_for :meta_description, t('.users_profile_at_fromthepage', user: user_name, about: @user.about)
 -if @user.owner?
   =render partial: 'owner_profile', locals: { user: @user, carousel_collections: @carousel_collections, collections_and_document_sets: @collections_and_document_sets }
 -else

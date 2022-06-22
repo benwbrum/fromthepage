@@ -8,12 +8,12 @@ div.columns
           =render :partial => '/shared/osd_div'
   div.aside
     h2 =t('.page_layout')
-    p Resize the rectangle on the image to surround the portion of the page containing a spreadsheet, then click the blue "OK" button and save your selection.
+    p= t('.page_layout_description')
 
-    =link_to 'Save Selection', '#', class: 'button', id: 'save-selection-button'
+    =link_to t('.save_selection'), '#', class: 'button', id: 'save-selection-button'
 
-    p If the example image does not contain a spreadsheet, you can replace it with a different page from the collection, chosen at random.
-    =link_to 'Replace Image', transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
+    p= t('.replace_image_description')
+    =link_to t('.replace_image'), transcription_field_spreadsheet_column_choose_offset_path(@transcription_field), class: 'button'
 
 
 

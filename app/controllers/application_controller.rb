@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
       redirect_to :controller => 'transcribe', :action => 'display_page', :page_id => @page.id
     else
       # TODO: Get some kind of flash notification on failure
-      flash[:error] = "ReCAPTCHA validation failed"
+      flash[:error] = t('layouts.application.recaptcha_validation_failed')
       flash.keep
       redirect_to :controller => 'transcribe', :action => 'guest', :page_id => @page.id
     end
@@ -218,7 +218,7 @@ class ApplicationController < ActionController::Base
           else
             logger.error(ex.message)
             logger.error(ex.backtrace.join("\n"))
-            flash[:error] = "The Internet Archive is experiencing difficulties.  Please try again later."
+            flash[:error] = t('layouts.application.internet_archive_difficulties')
             redirect_to :controller => :collection, :action => :show, :collection_id => @collection.id
             return
           end

@@ -34,7 +34,7 @@ class BulkExportController < ApplicationController
     if @bulk_export.save!
       @bulk_export.submit_export_process
 
-      flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
+      flash[:info] = t('.export_running_message', email: (current_user.email))
     end
     redirect_to dashboard_exports_path
   end
@@ -54,7 +54,7 @@ class BulkExportController < ApplicationController
     if @bulk_export.save
       @bulk_export.submit_export_process
 
-      flash[:info] = "Export running.  Email will be sent to #{current_user.email} on completion."
+      flash[:info] = t('.export_running_message', email: (current_user.email))
     end
     redirect_to dashboard_exports_path
   end
@@ -67,7 +67,7 @@ class BulkExportController < ApplicationController
         :content_type => "application/zip")
       cookies['download_finished'] = 'true'
     else
-      flash[:info] = "This export download has been cleaned.  Please start a new one."
+      flash[:info] = t('.download_cleaned_message')
       redirect_to collection_export_path(@bulk_export.collection.owner, @bulk_export.collection)
     end
   end
