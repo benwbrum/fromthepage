@@ -1,5 +1,5 @@
 -tabs = [{\
-  :name => 'Your Projects',
+  :name => t('.your_projects'),
   :selected => 1,
   :options => {\
     :action => 'watchlist',
@@ -7,9 +7,9 @@
 }]
 
 -selected_tab = tabs.find { |tab| tab[:selected] == selected }[:name] rescue ""
--content_for :page_title, "#{selected_tab} - Collaborator Dashboard"
+-content_for :page_title, "#{selected_tab} - #{t('dashboard.collaborator')}"
 
-h1 Collaborator Dashboard
+h1= t('dashboard.collaborator')
 .tabs
   -for tab in tabs
     =link_to_unless tab[:selected] == selected, tab[:name], tab[:options]

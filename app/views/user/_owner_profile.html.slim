@@ -43,7 +43,7 @@ section.user-profile
       =render partial: '/dashboard/alphabetical_collections_and_document_sets', collection: @collections_and_document_sets, as: :cds
 
   aside.sidecol
-    h2 Recent Activity
+    h2= t('.recent_activity')
     =deeds_for({:owner => user, :limit => 10})
 
 -content_for :javascript

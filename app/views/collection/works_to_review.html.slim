@@ -41,7 +41,7 @@
               =" (#{deed_count})"
               br
             -if user_deed_count.size > max_contributor_rows
-              i ="and #{user_deed_count.size - max_contributor_rows} more"
+              i =t('.and_n_more', n: (user_deed_count.size - max_contributor_rows))
               
 
 

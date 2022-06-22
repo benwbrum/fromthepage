@@ -11,12 +11,21 @@ en:
       create_an_account: Create An Account
       documentation: Documentation
       find_a_project: Find A Project
+      home: Home
+      internet_archive_difficulties: The Internet Archive is experiencing difficulties.  Please try again later.
       owner_dashboard: Owner Dashboard
       pricing: Pricing
       privacy_policy: Privacy Policy
       projects: Projects
+      recaptcha_validation_failed: ReCAPTCHA validation failed
       sign_in: Sign In
       sign_out: Sign Out
+      sign_up_to_transcribe: Sign Up To Transcribe
+      signed_in_as: Signed In As
       terms_and_conditions: Terms & Conditions
+      transcription_for_archives_special_collections: Transcription for Archives and Special Collections
+      transcription_for_digital_scholarship: Transcription for Digital Scholarship
+      transcription_for_linguists: Transcription for Linguists
+      transcription_for_state_provincial_archives: Transcription for State & Provincial Archives
       undo_login_as: Undo Login As
       your_profile: Your Profile

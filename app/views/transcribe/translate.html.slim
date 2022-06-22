@@ -41,14 +41,14 @@
       -if correction_mode?
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
-        -help_word = 'help correct'
-        -text_type = 'corrected'
+        -help_word = t('.help_correct')
+        -text_type = t('.corrected')
 
       -else
         -text = xml_to_html(@page.xml_text)
         -action = 'display_page'
-        -help_word = 'help transcribe'
-        -text_type = 'transcribed'
+        -help_word = t('.help_transcribe')
+        -text_type = t('.transcribed')
 
       .page-preview(*language_attrs(@collection))
         -if @page.status == Page::STATUS_BLANK
