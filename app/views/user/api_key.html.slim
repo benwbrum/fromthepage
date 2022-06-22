@@ -1,17 +1,17 @@
 .litebox-embed(style="width:550px")
-  h1 API Key
+  h1= t('.api_key')
 
-  p <a href="https://content.fromthepage.com/api-keys/">API keys</a> allow access to private collections via the <a href="https://github.com/benwbrum/fromthepage/wiki/FromThePage-Support-for-the-IIIF-Presentation-API-and-Web-Annotations">IIIF API</a> or <a href="http://content.fromthepage.com/bulk-export-api/">bulk export API</a>.
+  p== t('.api_key_description')
 
   -if @user.api_key.blank?
-    p Your account does not have an API key.  Generate one to enable API access.
+    p= t('.no_api_key_description')
 
-    =button_to('Generate Key', user_generate_api_key_path(@user))
+    =button_to(t('.generate_key'), user_generate_api_key_path(@user))
 
   -else
-    p Your account has the following API key, which may be used to access your private collections:
+    p= t('.your_api_key_description')
       
     code =@user.api_key
 
-    p =button_to('Delete Key', user_disable_api_key_path(@user))
+    p =button_to(t('.delete_key'), user_disable_api_key_path(@user))
 

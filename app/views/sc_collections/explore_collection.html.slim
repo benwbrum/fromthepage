@@ -1,8 +1,8 @@
 .columns
   article.maincol
-    h4 Collection: #{@sc_collection.label}
+    h4= t('.collection', sc_collection: (@sc_collection.label))
     .iiif-import 
-      p Id: #{@sc_collection.at_id}
+      p= t('.id', id: (@sc_collection.at_id))
 
     .iiif-collection
       -if @sc_collection.service.thumbnail
@@ -14,7 +14,7 @@
 
 
     -if @sc_collection.service.collections.size > 0
-      h4 Collections:
+      h4= t('.collections')
       ul
         -@sc_collection.service.collections.each do |json_collection|
          li
@@ -22,31 +22,31 @@
 
 
     -if @sc_collection.service['first'] || @sc_collection.service['next'] || @sc_collection.service['prev']
-      p This collection is divided across multiple pages
+      p= t('.this_collection_is_divided')
       -if @sc_collection.service['first']  
-        =link_to 'First Page', {:action => 'explore_collection', :at_id => @sc_collection.service['first']['@id']}
+        =link_to t('.first_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['first']['@id']}
       -if @sc_collection.service['next']
-        =link_to 'Next Page', {:action => 'explore_collection', :at_id => @sc_collection.service['next']['@id']}
+        =link_to t('.next_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['next']['@id']}
       -if @sc_collection.service['prev']
-        =link_to 'Previous Page', {:action => 'explore_collection', :at_id => @sc_collection.service['prev']['@id']}
+        =link_to t('.previous_page'), {:action => 'explore_collection', :at_id => @sc_collection.service['prev']['@id']}
 
     -unless @sc_collection.service.manifests.empty?
-      h4 Manifests: 
+      h4= t('.manifests')
 
       =form_tag({action: 'import_collection'}) do
         -if @sc_collection.service.manifests.size > 0 || ContentdmTranslator.iiif_manifest_is_cdm?(@sc_collection.service.manifests.first['@id'])
-          =label_tag :contentdm_ocr, 'Import OCR text from CONTENTdm'
+          =label_tag :contentdm_ocr, t('.import_ocr_text')
           =check_box_tag :contentdm_ocr
         br
         =hidden_field_tag :sc_collection_id, @sc_collection.id
         -new_collection = @collection ? @collection.id : nil
         .iiif-select-form
-          =select_tag :collection_id, target_collection_options(new_collection), id: 'manifest_import', prompt: '- Select a collection to import into -', required: true, 'aria-label' => "Select a collection"
-          =button_tag 'Import Checked Manifests'
+          =select_tag :collection_id, target_collection_options(new_collection), id: 'manifest_import', prompt: t('.select_a_collection_to_import_into'), required: true, 'aria-label' => t('.select_a_collection')
+          =button_tag t('.import_checked_manifests')
 
         =check_box_tag("select_all", 1, true)
         |&nbsp;&nbsp;
-        =label_tag 'select_all', "Select All Manifests"
+        =label_tag 'select_all', t('.select_all_manifests')
 
         ul.iiif-works-list
           -preimported_pairs = ScManifest.joins(:work => :collection).where(:at_id => @sc_collection.service.manifests.map { |m| m['@id'] } ).pluck('sc_manifests.at_id', 'collections.title')
@@ -54,12 +54,12 @@
           -@sc_collection.service.manifests.each_with_index do |json_manifest, index|
             li
               -at_id = json_manifest["@id"]
-              -label_name = json_manifest['label'].blank? ?  'no label' : json_manifest['label']
+              -label_name = json_manifest['label'].blank? ? t('.no_label') : json_manifest['label']
               =check_box_tag("manifest_id[#{index}]", 1, true, class: "manifest_checks")
               =label_tag "manifest_id[#{index}]", class: 'manifest_labels' do
                 =link_to(label_name, { :action => :explore_manifest, :at_id => json_manifest['@id'], :sc_collection_id => @sc_collection.id})
               -if preimported_collections[json_manifest['@id']]
-                i Already imported into
+                i= t('.already_imported_into')
                 i #{' ' + preimported_collections[json_manifest['@id']].join(", ")}
 
         br

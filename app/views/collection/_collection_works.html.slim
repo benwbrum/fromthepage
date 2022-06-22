@@ -8,7 +8,9 @@
         -work_stats(w)
         li
           span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
-          span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
+          span
+            = t('.n_pages', count: w.work_statistic.total_pages) 
+            = @wording
 
           span
             span.progress

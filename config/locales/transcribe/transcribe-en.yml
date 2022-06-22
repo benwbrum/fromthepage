@@ -65,8 +65,11 @@ en:
       notice: You may save up to %{guest_deed_count} transcriptions as a guest.
     translate:
       autolink: Autolink
+      corrected: corrected
       edit: Edit
       edit_translation: Edit translation
+      help_correct: help correct
+      help_transcribe: help transcribe
       mark_as_blank: Mark as blank
       mark_the_page_blank: mark the page blank
       microphone: Microphone
@@ -80,3 +83,4 @@ en:
       this_page_is_blank: This page is blank
       this_page_is_not: This page is not %{text_type}
       this_page_marked_needs_review: This page has been marked as "needs review". You can improve this page by proofreading it against the original and adding or correcting the text.  When you are done, uncheck "needs review" and save the page.
+      transcribed: transcribed

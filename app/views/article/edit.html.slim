@@ -9,17 +9,17 @@
       =validation_summary @article.errors
       table.form
         tr.big
-          th =f.label :title
+          th =f.label :title, t('.title')
           td.w100 =f.text_field :title
         tr.big
-          th =f.label :uri, "URI"
+          th =f.label :uri, t('.uri')
           td.w100 =f.text_field :uri
         tr
           td.voice-div(colspan="2")
-            =f.label :source_text, 'Description', class: 'above'
+            =f.label :source_text, t('.description'), class: 'above'
             div class=('article-editarea' if @collection.voice_recognition)
               -if @collection.voice_recognition
-                =image_submit_tag 'mic-icon.png', height: '40', alt: 'Microphone', class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
+                =image_submit_tag 'mic-icon.png', height: '40', alt: t('.microphone'), class: 'article-voice', id: 'start_img', onclick: 'startButton(event);'
                 span.voice-info.article-voice
 
               =f.text_area :source_text, class: 'article-editarea_textarea', rows: 15
@@ -29,16 +29,16 @@
       -if @article.gis_enabled?
         table.form
           tr
-            th =f.label :latitude
-            th =f.label :longitude
+            th =f.label :latitude, t('.latitude')
+            th =f.label :longitude, t('.longitude')
           tr
             td.w50 =f.text_field :latitude, :value => (number_with_precision(f.object.latitude, :precision => 5))
             td.w50 =f.text_field :longitude, :value => (number_with_precision(f.object.longitude, :precision => 5))
 
       -update_article_url = url_for({ :controller => 'article', :action => 'article_category', :article_id => @article.id })
 
-      |Categories
-      select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" id="category-select" aria-label="Select categories" multiple)
+      =t('.categories')
+      select(data-assign-categories="#{update_article_url}" data-collection-slug="#{@collection.slug}" size="1" id="category-select" aria-label=t('.select_categories') multiple)
         -@collection.categories.walk_tree do |c, level|
           -selected = true if @article.categories.include?(c)
           option(data-level=level value=c.id selected=selected) =c.title
@@ -48,23 +48,23 @@
 
       .toolbar
         .toolbar_group.w100
-          =f.button 'Autolink', :name => 'autolink'
+          =f.button t('.autolink'), :name => 'autolink'
 
-        .toolbar_group.aright =f.button 'Save Changes', :name => 'save', class: 'big'
+        .toolbar_group.aright =f.button t('.save_changes'), :name => 'save', class: 'big'
 
     -if user_signed_in? && current_user.like_owner?(@collection)
       br
-      =link_to(article_delete_path(:article_id => @article.id, :collection_id => @collection.slug), data: {:confirm => "Are you sure you want to delete this subject?  After deleting you won't be able to recover it!"}, class: 'button')
+      =link_to(article_delete_path(:article_id => @article.id, :collection_id => @collection.slug), data: {:confirm => t('.confirm_delete_subject')}, class: 'button')
         =svg_symbol '#icon-remove-sign', class: 'icon'
-        span Delete Subject
+        span= t('.delete_subject')
 
   aside.sidecol
     -if @article.possible_duplicates.empty?
-      h3 No Duplicates Found
-      p.fglight =="The subject is unique within the collection, there are no possible duplicates to the &ldquo;#{@article.title}&rdquo; subject have been found."
+      h3= t('.no_duplicates_found')
+      p.fglight == t('.no_duplicates_found_description', article: @article.title)
     -else
-      h3 =pluralize(@article.possible_duplicates.size, 'Possible Duplicate')
-      p.fglight =="Please review the list below and select the subjects to combine. Duplicates will be remapped so all existing links will point to the &ldquo;#{@article.title}&rdquo; subject."
+      h3= t('.possible_duplicates', count: @article.possible_duplicates.size)
+      p.fglight ==t('.possible_duplicates_description', article: @article.title)
       =form_tag({ :action => 'combine_duplicate' }) do
         =hidden_field_tag :article_id, @article.id
         ul.article-duplicates
@@ -75,10 +75,10 @@
                 |&nbsp;
                 span =link_to (dup.title), controller: 'article', action: 'show', article_id: dup.id 
               span.article-duplicate_pages 
-                small.label =link_to (pluralize(dup.link_list.size, 'page')), controller: 'display', action: 'read_all_works', article_id: dup.id 
+                small.label =link_to t('.n_pages', count: dup.link_list.size), controller: 'display', action: 'read_all_works', article_id: dup.id 
                 
         .toolbar
-          .toolbar_group.aright =button_tag 'Combine Selected'
+          .toolbar_group.aright =button_tag t('.combine_selected')
 
 -content_for :javascript
   javascript:

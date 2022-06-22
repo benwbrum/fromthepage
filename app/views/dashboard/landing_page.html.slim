@@ -57,7 +57,7 @@
                     =link_to project.title, collection_path(owner, project)
                   -unless snippet.empty?
                     .projects_collection_snippet =snippet
-            .projects_link =link_to "More...", user_profile_path(owner)
+            .projects_link =link_to t('.more'), user_profile_path(owner)
 
     .project-list_link
       =link_to t('.all_collections'), collections_list_path
