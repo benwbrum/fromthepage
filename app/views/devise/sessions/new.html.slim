@@ -1,48 +1,48 @@
--content_for :page_title, "Sign In"
+-content_for :page_title, t('devise.sign_in')
 
 section.signon
   h1 
-    |Sign in 
+    =t('devise.sign_in')
   =form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     =devise_error_messages!
     fieldset.signon_fieldset
       =f.label :login_id, class: 'signon_label'
-        =f.text_field :login_id, autofocus: true, placeholder: 'Login'
+        =f.text_field :login_id, autofocus: true, placeholder: t('devise.login')
         =svg_symbol '#icon-user', class: 'signon_label_icon'
       =f.label :password, class: 'signon_label'
-        =f.password_field :password, autocomplete: 'off', placeholder: 'Password'
+        =f.password_field :password, autocomplete: 'off', placeholder: t('devise.password')
         =svg_symbol '#icon-key', class: 'signon_label_icon'
     .toolbar
       .toolbar_group
-        =f.button 'Sign In', class: 'strong signin'
+        =f.button t('devise.sign_in'), class: 'strong signin'
       -if devise_mapping.rememberable?
         .toolbar_group.aright
           =f.label :remember_me
             =f.check_box :remember_me
-            |&nbsp;Remember me
+            =t('.remember_me')
 
   - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
-    =link_to 'Forgot your password?', new_password_path(resource_name), class: 'forgot'
+    =link_to t('.forgot_your_password'), new_password_path(resource_name), class: 'forgot'
 
   -if ENABLE_SAML  
     hr
-    h4 or
-    =button_to('Sign in with your Institution (SSO)', registrations_choose_provider_path, class: 'strong signin')
+    h4= t('.or')
+    =button_to(t('.sign_in_with_institution'), registrations_choose_provider_path, class: 'strong signin')
 
   hr
 
 
   section#sign_up.signup-links
-    h2 Sign Up
-    p Want to join an existing project as a transcriber? Sign up as a transcriber.
+    h2= t('devise.sign_up')
+    p= t('.sign_up_as_transcriber_message')
 
-    = link_to "Sign Up Now", new_user_registration_path, class: 'button big'
+    = link_to t('.sign_up_now'), new_user_registration_path, class: 'button big'
 
   section#free_trial.signup-links
-    h2 Start Free Trial
-    p Want to begin a new transcription project? Start a free trial.
+    h2= t('.start_free_trial')
+    p= t('.start_free_trial_message')
 
-    =link_to 'Start Free Trial', users_new_trial_path, class: 'button big'
+    =link_to t('.start_free_trial'), users_new_trial_path, class: 'button big'
 
   hr.clearfix
 
