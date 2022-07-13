@@ -1,13 +1,13 @@
--content_for :page_title, "Resend Confirmation"
+-content_for :page_title, t('.resend_confirmation')
 
 section.signon
-  h1 Resend Confirmation
-  p Please enter the email address associated with your FromThePage account and we will resend the confirmation instructions at your email address in a few minutes.
+  h1= t('.resend_confirmation')
+  p= t('.message')
   =form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :email, 'Email address'
+      =f.label :email, t('devise.email_address')
       =f.email_field :email, autofocus: true
-    =f.button 'Resend Instructions', class: 'big'
+    =f.button t('.resend_instructions'), class: 'big'
   hr
   =render 'devise/shared/links'

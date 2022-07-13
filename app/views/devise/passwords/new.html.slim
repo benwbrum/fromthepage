@@ -1,13 +1,13 @@
--content_for :page_title, "Password Recovery"
+-content_for :page_title, t('.password_recovery')
 
 section.signon
-  h1 Password Recovery
-  p Please enter the email address associated with your FromThePage account. If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
+  h1= t('.password_recovery')
+  p= t('.message')
   =form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
     =devise_error_messages!
     .signon_field
-      =f.label :email, 'Email address'
+      =f.label :email, t('devise.email_address')
       =f.email_field :email, autofocus: true
-    =f.button 'Recover Password', class: 'big'
+    =f.button t('.recover_password'), class: 'big'
   hr
   =render 'devise/shared/links'
