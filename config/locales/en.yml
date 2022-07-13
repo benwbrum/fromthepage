@@ -1,30 +1,5 @@
 ---
 en:
-  activerecord:
-    attributes:
-      collection:
-        slug: URL
-      document_set:
-        slug: URL
-      work:
-        slug: URL
-    errors:
-      models:
-        collection:
-          attributes:
-            slug:
-              blank: is required
-              invalid: must have at least one letter
-        document_set:
-          attributes:
-            slug:
-              blank: is required
-              invalid: must have at least one letter
-        work:
-          attributes:
-            slug:
-              blank: is required
-              invalid: must have at least one letter
   authentication_failed: Authentication failed
   dashboard:
     collaborator: Collaborator Dashboard

@@ -59,7 +59,4 @@ es:
       expired: ha expirado, por favor solicite uno nuevo
       not_found: no ha sido encontrado
       not_locked: no estaba bloqueado
-      not_saved:
-        one: '1 error prohibió que se guardara este %{resource}:'
-        other: 'Los errores de %{count} prohibieron que se guardara este %{resource}:'
       not_signed: 'No se pudo iniciar sesión debido al siguiente error:'
