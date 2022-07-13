@@ -30,6 +30,7 @@ module XmlSourceProcessor
 
   #check the text for problems or typos with the subject links
   def validate_links(text)
+    error_scope = [:activerecord, :errors, :models, :xml_source_processor]
     # split on all begin-braces
     tags = text.split('[[')
     # remove the initial string which occurs before the first tag
@@ -40,24 +41,24 @@ module XmlSourceProcessor
       debug(tag)
 
       if tag.include?(']]]')
-        errors.add(:base, "Subject Linking Error: Tags should be created using 2 brackets, not 3")
+        errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('tags_should_not_use_3_brackets', scope: error_scope))
         return
       end
       unless tag.include?(']]')
         tag = tag.strip
-        errors.add(:base, "Subject Linking Error: Wrong number of closing braces after \"[[#{tag}\"")
+        errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('wrong_number_of_closing_braces', tag: '"[['+tag+'"', scope: error_scope))
       end
 
       # just pull the pieces between the braces
       inner_tag = tag.split(']]')[0]
       if inner_tag =~ /^\s*$/
-        errors.add(:base, "Subject Linking Error: Blank tag in \"[[#{tag}\"")
+        errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_tag_in', tag: '"[['+tag+'"', scope: error_scope))
       end
 
       #check for unclosed single bracket
       if inner_tag.include?('[')
         unless inner_tag.include?(']')
-          errors.add(:base, "Subject Linking Error: Unclosed bracket within \"#{inner_tag}\"")
+          errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('unclosed_bracket_within', tag: '"'+inner_tag+'"', scope: error_scope))
         end
       end
       # check for blank title or display name with pipes
@@ -65,10 +66,10 @@ module XmlSourceProcessor
         tag_parts = inner_tag.split('|')
         debug("validate_source: inner tag parts are #{tag_parts.inspect}")
         if tag_parts[0] =~ /^\s*$/
-          errors.add(:base, "Subject Linking Error: Blank subject in \"[[#{inner_tag}]]\"")
+          errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_subject_in', tag: '"[['+inner_tag+']]"', scope: error_scope))
         end
         if tag_parts[1] =~ /^\s*$/
-          errors.add(:base, "Subject Linking Error: Blank text in \"[[#{inner_tag}]]\"")
+          errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_text_in', tag: '"[['+inner_tag+']]"', scopre: error_scope))
         end
       end
     end
