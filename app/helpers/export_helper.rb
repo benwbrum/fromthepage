@@ -64,6 +64,10 @@ module ExportHelper
       export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
     end
 
+    if bulk_export.subject_details_csv_collection
+      export_subject_details_csv(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
     if bulk_export.table_csv_collection
       export_table_csv_collection(dirname: '', out: out, collection: bulk_export.collection)
     end
