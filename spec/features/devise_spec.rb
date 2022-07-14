@@ -72,9 +72,9 @@ describe "Devise" do
     it "creates a new trial owner account" do
       visit users_new_trial_path
       page.fill_in 'Login', with: owner.login
-      page.fill_in 'Email address', with: owner.email
+      page.fill_in 'Email Address', with: owner.email
       page.fill_in 'Password', with: owner.password
-      page.fill_in 'Password confirmation', with: owner.password
+      page.fill_in 'Confirm Password', with: owner.password
       page.fill_in :user_real_name, with: owner.display_name
       click_button('Create Account')
       expect(page).to have_content("Signed In As#{owner.display_name}")
@@ -82,9 +82,9 @@ describe "Devise" do
     it "redirects owner to dashboard/owner#freetrial after signup" do 
       visit users_new_trial_path
       page.fill_in 'Login', with: owner.login
-      page.fill_in 'Email address', with: owner.email
+      page.fill_in 'Email Address', with: owner.email
       page.fill_in 'Password', with: owner.password
-      page.fill_in 'Password confirmation', with: owner.password
+      page.fill_in 'Confirm Password', with: owner.password
       page.fill_in :user_real_name, with: owner.display_name
       click_button('Create Account')
       # This is the closest I can get to testing this path.
@@ -97,9 +97,9 @@ describe "Devise" do
       visit old_path
       visit users_new_trial_path
       page.fill_in 'Login', with: owner.login
-      page.fill_in 'Email address', with: owner.email
+      page.fill_in 'Email Address', with: owner.email
       page.fill_in 'Password', with: owner.password
-      page.fill_in 'Password confirmation', with: owner.password
+      page.fill_in 'Confirm Password', with: owner.password
       page.fill_in :user_real_name, with: owner.display_name
       click_button('Create Account')
       # This is the closest I can get to testing this path.

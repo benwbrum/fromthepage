@@ -69,7 +69,7 @@ module XmlSourceProcessor
           errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_subject_in', tag: '"[['+inner_tag+']]"', scope: error_scope))
         end
         if tag_parts[1] =~ /^\s*$/
-          errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_text_in', tag: '"[['+inner_tag+']]"', scopre: error_scope))
+          errors.add(:base, I18n.t('subject_linking_error', scope: error_scope) + I18n.t('blank_text_in', tag: '"[['+inner_tag+']]"', scope: error_scope))
         end
       end
     end
