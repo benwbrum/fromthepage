@@ -1,7 +1,7 @@
 ---
 en:
   devise:
-    confirm_password: Confirm password
+    confirm_password: Confirm Password
     confirmations:
       confirmed: Your account has been successfully confirmed.
       new:
@@ -11,8 +11,8 @@ en:
       send_instructions: You will receive an email with instructions for how to confirm your account in a few minutes.
       send_paranoid_instructions: If your email address exists in our database, you will receive an email with instructions for how to confirm your account in a few minutes.
     create_account: Create Account
-    display_name: Display name
-    email_address: Email address
+    display_name: Display Name
+    email_address: Email Address
     failure:
       already_authenticated: You are already signed in.
       inactive: Your account is not activated yet.
@@ -58,7 +58,7 @@ en:
       send_paranoid_instructions: If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.
       updated: Your password has been changed successfully. You are now signed in.
       updated_not_active: Your password has been changed successfully.
-    real_name: Real name
+    real_name: Real Name
     real_name_message: Projects may use this when giving you credit. Leave this blank if you do not want to be credited.
     receive_activity_emails: Receive activity emails
     registrations:
@@ -129,7 +129,7 @@ en:
       send_instructions: You will receive an email with instructions for how to unlock your account in a few minutes.
       send_paranoid_instructions: If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.
       unlocked: Your account has been unlocked successfully. Please sign in to continue.
-    user_name: User name
+    user_name: User Name
     user_name_message: You'll use this name to log in. It will be shown publicly.
   errors:
     messages:
