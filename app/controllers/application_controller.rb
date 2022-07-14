@@ -355,7 +355,7 @@ end
 
   def check_api_access
     if (defined? @collection) && @collection
-      if @collection.restricted? && !@collection.api_access
+      if @collection.restricted && !@collection.api_access
         if @api_user.nil? || !(@api_user.like_owner?(@collection))
           render :status => 403, :plain => 'This collection is private.  The collection owner must enable API access to it or make it public for it to appear.'
         end
