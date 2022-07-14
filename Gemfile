@@ -89,6 +89,7 @@ group :development, :test do
   gem 'bullet'
   gem 'listen'
   gem 'i18n-tasks', '~> 0.9.31'
+  gem 'easy_translate'
 end
 
 # Use SassC for stylesheets
