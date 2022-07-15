@@ -7,5 +7,6 @@ en:
   en: English
   es: Español
   pt: Português
+  fr: Français
   time_ago_in_words: "%{time} ago"
   unauthorized_collection: You do not have access to %{project}.  Please log in or contact the project owner to be added.
