@@ -20,7 +20,6 @@ pt:
         microphone: Microfone
         update: Atualizar
       microphone: Microfone
-      time_ago_in_words: Há %{time}
       update: Atualizar
     notes:
       microphone: Microfone

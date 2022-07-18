@@ -1,14 +1,16 @@
 ---
 pt:
   user_mailer:
+    click_here: Clique aqui
+    greeting: Oi %{user} --
+    html:
+      closing: "Gratidão, <br><br> \nFromThePage\n"
+      turn_off_notification: " para desligar esta notificação."
     nightly_user_activity:
-      click_here: Clique aqui
-      greet: Oi %{user} --
-      inform_activity: Só queríamos informar que houve atividade numa colecção em que você trabalhou.
+      html:
+        to_view_note: " para visualizar a nota na página %{page} em %{collection}: %{work}, que foi adicionada desde que você trabalhou nela."
+        to_view_work: " para visualizar %{collection}: %{work}"
+      message: Só queríamos informar que houve atividade numa colecção em que você trabalhou.
       new_notes: Notas Novas
       new_works: Novas Obras
-      thanks: Gratidão, <br><br> FromThePage
-      to_view: "&nbsp; para visualizar %{collection}: %{work}"
-      turn_off_notification: "&nbsp; para desligar esta notificação."
-      user_activity: "%{owner} adicionou %{work} à coleção %{collection}. "
-      view_note_on_page: "&nbsp; para visualizar a nota na página %{page} em %{collection}: %{work}, que foi adicionada desde que você trabalhou nela."
+      work_added: "%{owner} adicionou %{work} à coleção %{collection}. "

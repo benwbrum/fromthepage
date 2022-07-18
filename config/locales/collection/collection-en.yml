@@ -132,8 +132,7 @@ en:
       restricted_completed_works: Restricted Completed Works
       restricted_completed_works_description: This button will restrict the %{work_count} works that are completed but not currently resticted to project owners or designated collaborators.  You may change this setting and add collaborators in each work's settings page.
       revert_document_based_transcription: Revert to Document Based Transcription
-      revert_from_description_to_transcription: Disable Description
-      revert_metadata_description: 
+      revert_metadata_description: Disable Description
       review_type: Review Type
       review_type_optional: " Optional: Collaborators may request review of their transcriptions."
       review_type_required: " Required: All initial transcriptions will be marked as needing review.  (Review may be performed by anyone.)"

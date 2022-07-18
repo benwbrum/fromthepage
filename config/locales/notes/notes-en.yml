@@ -20,7 +20,6 @@ en:
         microphone: Microphone
         update: Update
       microphone: Microphone
-      time_ago_in_words: "%{time} ago"
       update: Update
     notes:
       microphone: Microphone

@@ -1,10 +1,8 @@
 ---
 en:
   quality_samplings:
-    create: 
     destroy:
       quality_sampling_destroyed: Quality sampling was successfully destroyed.
-    edit: 
     index:
       description: Quality sampling allows you to spot-check contributions, gathering data about quality as you review each contribution.
       new_sampling: Start Sampling

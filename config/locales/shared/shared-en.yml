@@ -75,6 +75,8 @@ en:
     review_breadcrumbs:
       dashboard: Review Dashboard
       page: Page
+    validation_summary:
+      form: form
     work_tabs:
       about: About
       contents: Contents
@@ -83,6 +85,4 @@ en:
       pages: Pages
       read: Read
       settings: Settings
-    validation_summary:
-      form: form      
-      work: work
+      work: Work

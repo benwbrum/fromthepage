@@ -15,12 +15,12 @@ en:
     login: Login
     mailer:
       reset_password_instructions:
-        subject: Reset password instructions
+        change_my_password: Change my password
         greeting: Hello %{email}!
         message_1: 'Someone has requested a link to change your password. You can do this through the link below:'
         message_2: If you didn't request this, please ignore this email.
         message_3: Your password won't change until you access the link above and create a new one.
-        change_my_password: Change my password
+        subject: Reset password instructions
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
       success: Successfully authenticated from %{kind} account.

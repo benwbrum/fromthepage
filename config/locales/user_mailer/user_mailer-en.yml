@@ -28,7 +28,6 @@ en:
       message: "%{owner} added you as an authorized reviewer on %{collection}.  You should be able to edit and approve any page needing review."
       text:
         to_view: 'To view %{collection}, visit the following URL: %{url}'
-    fromthepage: FromThePage
     greeting: Hi %{user} --
     html:
       closing: |
@@ -41,7 +40,7 @@ en:
       html:
         to_view_note: " to view the note on page %{page} in %{collection}: %{work}, which has been added since you worked on it."
         to_view_work: " to view %{collection}: %{work}"
-      message: We just wanted to let you know that there"s been activity in a collection that you worked on.
+      message: We just wanted to let you know that there's been activity in a collection that you worked on.
       new_notes: New Notes
       new_works: New Works
       note_added: A note has been added to a page you worked on in work %{work}, in the collection %{collection}.

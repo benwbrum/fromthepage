@@ -104,14 +104,20 @@ search:
 ## Do not consider these keys missing:
 ignore_missing:
   - '{!, !0, next, throw}'
+  - 'deed.deed.*'
 
 ## Consider these keys used:
-# ignore_unused:
-# - 'activerecord.attributes.*'
-# - '{devise,kaminari,will_paginate}.*'
-# - 'simple_form.{yes,no}'
-# - 'simple_form.{placeholders,hints,labels}.*'
-# - 'simple_form.{error_notification,required}.:'
+ignore_unused:
+  - 'activerecord.{errors,attributes}.*'
+  - 'devise.*'
+  - 'errors.*'
+  - 'shared.codemirror.*'
+  - 'will_paginate.*'
+  - '{en,es,pt,fr}'
+  - 'deed.deed.html.*'
+  - 'notes.note.html.*'
+  - 'page.edit.page_status_*'
+  - 'quality_samplings.show.approval_delta_display_{0,1,2,3,4}'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

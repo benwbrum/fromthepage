@@ -10,8 +10,6 @@ en:
       save_document_set: Save Document Set
       title: Title
       url: URL
-    form:
-      error_explanation: "%{error_count} prohibited this document_set from being saved:"
     index:
       actions: Actions
       aggregating_works_thematic_exhibits: Aggregating works into thematic exhibits
