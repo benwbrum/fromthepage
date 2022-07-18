@@ -16,4 +16,39 @@ class ScCanvas < ApplicationRecord
   def facsimile_url
     "#{sc_service_id}/full/full/0/default.jpg"
   end
+
+
+  def transcript_annotations
+    annotation_list = JSON.parse(self.annotations)
+    transcript_list = annotation_list.detect do |element|
+      # Use the page-level annotation if possible
+      element['data']['@type'] == "sc:AnnotationList" && element['data']["textGranularity"] == "page"
+    end
+    unless transcript_list
+      # Use any annotation list if not
+      transcript_list = annotation_list.detect do |element|
+        element['data']['@type'] == "sc:AnnotationList"
+      end
+    end
+
+    transcript_list
+  end
+
+  def has_annotation?
+    transcript_annotations
+  end
+
+  def annotation_text_for_source
+    transcript_list = transcript_annotations
+    resource_format = transcript_list['data']['resources'].first['data']['resource']['data']['format']
+    resource_contents = transcript_list['data']['resources'].first['data']['resource']['data']['chars']
+
+    if resource_format == 'text/html'
+      transcript = Nokogiri::HTML(resource_contents).text
+    else
+      transcript = resource_contents
+    end
+    transcript
+  end
+
 end
