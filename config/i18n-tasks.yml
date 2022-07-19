@@ -103,8 +103,16 @@ search:
 
 ## Do not consider these keys missing:
 ignore_missing:
-  - '{!, !0, next, throw}'
-  - 'deed.deed.*'
+  en: 
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+  es: &NOT_EN
+    - '{!, !0, next, throw}'
+    - 'deed.deed.*'
+    - 'admin.*'
+    - 'admin_mailer.*'
+  pt: *NOT_EN
+  fr: *NOT_EN
 
 ## Consider these keys used:
 ignore_unused:
