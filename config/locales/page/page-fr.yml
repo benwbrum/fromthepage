@@ -1,0 +1,43 @@
+---
+fr:
+  page:
+    create:
+      page_created: Page créée avec succès
+    delete:
+      page_deleted: La page a été supprimée
+    edit:
+      browse: Parcourir
+      click_to_browse_a_file: Cliquez pour parcourir un fichier...
+      created: Créé %{date}
+      delete_confirm_message: Voulez-vous vraiment supprimer cette page ? Après la suppression, vous ne pourrez pas le récupérer !
+      delete_page: Supprimer la page
+      dimensions: 'Dimensions : %{width}×%{height}'
+      here_you_can_edit: Ici, vous pouvez modifier le titre de la page et télécharger une nouvelle image. Si vous souhaitez modifier la transcription de la page ou le texte de traduction, veuillez passer à l'onglet approprié ci-dessus.
+      page_image: Image de la page
+      page_position: 'Position de la page : %{position}'
+      page_status: État de la page
+      page_status_: Pas commencé
+      page_status_blank: Page blanche
+      page_status_incomplete: Incomplet
+      page_status_indexed: Indexé
+      page_status_review: A besoin d'un examen
+      page_status_transcribed: Complet
+      page_status_translated: Traduit
+      page_title: Titre de la page
+      page_translation_status: État de la traduction de la page
+      rotate_clockwise: Le sens des aiguilles d'une montre
+      rotate_counterclockwise: Tourner dans le sens antihoraire
+      save_changes: Sauvegarder les modifications
+      status: 'Statut:'
+    new:
+      add_new_page: Ajouter une nouvelle page
+      browse: Parcourir
+      cancel: Annuler
+      choose_a_title: Choisissez un titre pour la page et sélectionnez une image de page à télécharger.
+      click_to_browse_a_file: Cliquez pour parcourir un fichier...
+      page_image: Image de la page
+      save_and_add_next_page: Enregistrer et ajouter la page suivante
+      save_and_new_work: Enregistrer et nouveau travail
+      title: Titre
+    update:
+      page_updated: Page mise à jour

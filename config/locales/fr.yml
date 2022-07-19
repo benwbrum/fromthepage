@@ -1,0 +1,12 @@
+---
+fr:
+  authentication_failed: Authentification échouée
+  dashboard:
+    collaborator: Tableau de bord des collaborateurs
+    plain: Tableau de bord
+  en: English
+  es: Español
+  fr: Français
+  pt: Português
+  time_ago_in_words: Il y a %{time}
+  unauthorized_collection: Vous n'avez pas accès à %{project}. Veuillez vous connecter ou contacter le propriétaire du projet à ajouter.

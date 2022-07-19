@@ -5,6 +5,6 @@ pt:
     plain: Painel de Controle
   en: English
   es: Español
-  pt: Português
   fr: Français
+  pt: Português
   time_ago_in_words: Há %{time}

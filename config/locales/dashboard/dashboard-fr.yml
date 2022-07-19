@@ -1,0 +1,149 @@
+---
+fr:
+  dashboard:
+    alphabetical_collections_and_document_sets:
+      project_by: Projet par %{author}
+      start_transcribing: Commencez à transcrire
+    collections_list:
+      collections: Collections
+      meta_description: Vous êtes libre de choisir parmi les nombreux projets intéressants hébergés sur FromThePage. Commencez à lire les écrits historiques qui ont déjà été transcrits par d'autres membres. Vous êtes les bienvenus pour aider l'un des grands projets à entrer dans l'ère numérique.
+      recent_activity: Activité récente
+    create_work:
+      work_created: Œuvre créée avec succès
+    editor:
+      activity_stream: Flux d'activité
+      article_in_the_work: "%{article} article dans la collection %{collection}"
+      page_in_the_work: "%{page} page dans l'ouvrage %{work}"
+      revision_version: Révision %{version}
+      view_page: Voir page
+      your_recent_article_edits: Vos modifications d'articles récentes
+      your_recent_notes: Vos notes récentes
+      your_recent_page_edits: Modifications récentes de votre page
+    editor_header:
+      your_projects: Tes projets
+    empty:
+      add_new_collection: Ajouter une nouvelle collection
+      create_empty_work: Créer un travail vide
+      create_empty_work_description: Utilisez cette option pour créer un travail vide. Vous pouvez ensuite télécharger des images de page individuelles dans le travail.
+      create_work: Créer un travail
+      description: La description
+      select_a_collection: "- Sélectionnez une collection -"
+      title: Titre
+    exports:
+      bulk_exports_description: Cela répertorie toutes les exportations en masse que vous avez exécutées. Les exportations sont nettoyées après quelques jours et ne sont plus disponibles au téléchargement
+      configuration: Configuration (niveau)
+      create_bulk_export_description: Créez une exportation en bloc à partir de l'onglet Exporter d'une collection ou de l'onglet Télécharger d'une œuvre.
+      date: Date d'exportation
+      download: Télécharger
+      exported_item: Collection/œuvre exportée
+      facing_edition_work: Face à l'édition PDF (travail)
+      html_page: HTML (page)
+      html_work: HTML (travail)
+      plaintext_emended_page: Texte en clair analytique (page)
+      plaintext_emended_work: Texte en clair analytique (travail)
+      plaintext_searchable_page: Texte en clair consultable (page)
+      plaintext_searchable_work: Texte en clair consultable (travail)
+      plaintext_verbatim_page: Texte brut textuel (page)
+      plaintext_verbatim_work: Texte brut textuel (travail)
+      refresh: Rafraîchir
+      reload_this_page_to: Recharger cette page pour mettre à jour la liste.
+      status: Statut
+      subject_csv_collection: Index des sujets CSV (collection)
+      table_csv_collection: Champ/Table CSV (collection)
+      table_csv_work: Champ/Table CSV (travail)
+      tei_work: TEX-XML (travail)
+      text_docx_work: MS Word .docx (travail)
+      text_pdf_work: Texte PDF (travail)
+      work_metadata_csv: Métadonnées de travail (collection)
+    guest_header:
+      recent_activity: Activité récente
+    hierarchical_collections_and_document_sets:
+      project_by: Projet par %{author}
+      start_transcribing: Commencez à transcrire
+    landing_page:
+      all_collections: Toutes les collections
+      more: Suite...
+      next_image: Image suivante
+      previous_image: Image précédente
+      recent_activity: Activité récente
+      search: Chercher
+      search_for_collections: Rechercher des collections
+      search_for_collections_or_owners: Rechercher des collections ou des propriétaires...
+      transcribe_a_page: Transcrire une page
+    new_upload:
+      document_uploaded: Le document a été téléchargé et sera traité sous peu. Nous vous enverrons un e-mail à %{email} lorsque vous serez prêt.
+      reload_this_page: Le document a été téléchargé et sera traité sous peu. Rechargez cette page dans quelques minutes pour la voir.
+    new_work:
+      acceptable_formats: Les fichiers PNG, GIF et JPG sont tous acceptables.
+      images_should_be_named: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
+      images_should_be_oriented: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
+      import: Importer
+      import_a_iiif_manifest_or_collection: Importer un manifeste ou une collection IIIF
+      import_from_archive_dot_org: Importer depuis Archive.org
+      import_from_contentdm: Importer depuis CONTENTdm
+      import_from_the_internet_archive: Importer à partir des archives Internet
+      import_many_link: importer plusieurs objets composés individuels.
+      or_import_many: Ou
+      page_image_guidelines: Directives relatives aux images de page
+      paste_in_the_url: Collez l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
+    owner:
+      create_a_collection: créer une collection
+      document_sets: Jeux de documents
+      see_all_works: Voir toutes les oeuvres...
+      start_a_project: Démarrer un projet
+      there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection
+      total_work_count: 'Nombre total de travaux : %{count}'
+      you_can_add_another_work: Vous pouvez ajouter une autre œuvre sous %{start_project}
+      you_can_new_collection: Vous pouvez %{new_collection}
+      you_can_upload_documents: Vous pouvez télécharger des documents sous %{start_project}
+      you_dont_have_any_collections: Vous n'avez pas encore de collections
+      your_activity: Votre activité
+    owner_header:
+      account_type: "%{type} compte"
+      actions: Actions
+      collection:
+        one: Le recueil
+        other: Collections
+      create_a_collection: Créer une collection
+      current_subscription_expires: L'abonnement actuel expire %{date}
+      document_set:
+        one: Ensemble de documents
+        other: Jeux de documents
+      exports: Exportations
+      owner_dashboard: Tableau de bord du propriétaire
+      since: depuis %{date}
+      start_a_project: Démarrer un projet
+      summary: Sommaire
+      to_upgrade_contact: Pour mettre à niveau, contactez support@fromthepage.com
+      total_pages: 'Nombre total de pages : %{pages}'
+      work:
+        one: Travailler
+        other: Œuvres
+      your_collections: Vos collections
+    upload:
+      acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
+      browse: Parcourir
+      click_to_browse_a_file: Cliquez pour parcourir un fichier...
+      click_to_browse_files: Cliquez pour parcourir les fichiers
+      each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez donc pas les pages de différents documents dans le même dossier.
+      each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
+      for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre travail et une dernière œuvre contenant les 5 images du dossier.'
+      image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
+      image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
+      import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet.
+      page_image_guidelines: Directives relatives aux images de page
+      select_a_collection: "- Sélectionnez une collection -"
+      to_specify_metadata: Pour spécifier les métadonnées avec les images, incluez un fichier %{link} dans chaque dossier en spécifiant les champs pour le travail.
+      trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
+      upload_file: Téléverser un fichier
+      upload_pdf_or_zip_file: Télécharger un fichier PDF ou ZIP
+      use_image_filenames: " Utilisez des noms de fichiers d'image comme titres de page."
+      use_ocr_from_pdf: " Importez du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
+      zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
+    watchlist:
+      collections: collections
+      private_collections_you_belong_to: Projets privés
+      projects_you_have_contributed_to: Les projets auxquels vous avez contribué - en les transcrivant, en les modifiant ou en les commentant - seront répertoriés ici avec leur activité la plus récente afin que vous puissiez rester au courant de ce qui se passe.
+      time_ago_in_words: Il y a %{time}
+      try_transcribing_a_page: Vous n'avez encore participé à aucun projet. Essayez de transcrire une page de l'un de ces
+      your_activity: Votre activité

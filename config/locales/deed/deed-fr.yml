@@ -1,0 +1,37 @@
+---
+fr:
+  deed:
+    deed:
+      html:
+        added_a_note_to_page: a ajouté une note à la page %{page}
+        added_work: ajouté %{work}
+        corrected_page: page corrigée %{page}
+        described_metadata: métadonnées décrites
+        edited_article: article %{article} modifié
+        edited_metadata: métadonnées modifiées
+        edited_page: page modifiée %{page}
+        edited_translation_of_page: édité la traduction de la page %{page}
+        in_collection: " dans la collection %{collection}"
+        in_the_work: " dans le travail %{work}"
+        indexed_page: page indexée %{page}
+        indexed_translation_of_page: indexé la traduction de la page %{page}
+        joined: rejoint
+        marked_page_as_blank: marqué la page %{page} comme vierge
+        marked_page_as_needing_review: a marqué la page %{page} comme nécessitant une révision
+        marked_translation_page_as_needing_review: a marqué la page de traduction %{page} comme nécessitant une révision
+        reviewed_page: page examinée %{page}
+        reviewed_translation: traduction révisée de la page %{page}
+        saying_deed: ", en disant &laquo;%{title}&rdquo;"
+        this_collection: cette collection
+        transcribed_page: page transcrite %{page}
+        translated_page: page traduite %{page}
+    deeds:
+      show_more: Montre plus
+      time_ago_in_words: Il y a %{time}
+    list:
+      activity_stream: Flux d'activité
+      collection_title: 'Collecte : %{title}'
+      newer_activity: Activité plus récente
+      older_activity: Activité plus ancienne
+      time_ago_in_words: Il y a %{time}
+      user_title: 'Utilisateur : %{title}'
