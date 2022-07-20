@@ -385,8 +385,10 @@ class TranscribeController  < ApplicationController
     if current_user
       @page = Page.find(params[:page_id])
       @page.update_columns(edit_started_at: Time.now, edit_started_by_user_id: current_user.id)
+      render plain: ''
+    else
+      render plain: 'session expired', status: 401
     end
-    render plain: ''
   end
 
   def goto_next_untranscribed_page

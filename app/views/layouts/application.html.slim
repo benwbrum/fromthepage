@@ -28,13 +28,9 @@ html lang="en-US"
       =render :partial => '/layouts/fb_pixel'
 
   body
-    -flash.each do |type, message|
-      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
-      .flash(class='flash-#{type}')
-        span.flash_message
-          =svg_symbol flash_icon[type], class: 'icon'
-          span =message.html_safe
-        a.flash_close &times;
+    #flash_wrapper
+      -flash.each do |type, message|
+        =render :partial => '/shared/flash', :locals => { type: type, message: message }
 
     header.header
       .toolbar
