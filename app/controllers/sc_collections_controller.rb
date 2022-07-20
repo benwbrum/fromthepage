@@ -132,6 +132,8 @@ class ScCollectionsController < ApplicationController
     sc_collection = ScCollection.find_by(id: params[:sc_collection_id])
     collection_id = params[:collection_id]
     cdm_ocr = !params[:contentdm_ocr].blank?
+    annotation_ocr = !params[:annotation_ocr].blank?
+    import_ocr = cdm_ocr || annotation_ocr
 
     #if collection id is set to sc_collection or no collection is set,
     # create a new collection with sc_collection label
@@ -160,7 +162,7 @@ class ScCollectionsController < ApplicationController
     #get a list of the manifests to pass to the rake task
     manifest_ids = manifest_array.join(" ")
     #kick off the rake task here, then redirect to the collection
-    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{cdm_ocr}] --trace >> #{log_file} 2>&1 &"
+    rake_call = "#{RAKE} fromthepage:import_iiif_collection[#{sc_collection.id},'#{manifest_ids}',#{collection_id},#{current_user.id},#{import_ocr}] --trace >> #{log_file} 2>&1 &"
 
     # Nice-up the rake call if we have the appropriate settings
     rake_call = "nice -n #{NICE_RAKE_LEVEL} " << rake_call if NICE_RAKE_ENABLED
@@ -184,11 +186,12 @@ class ScCollectionsController < ApplicationController
 
   def convert_manifest
     at_id = params[:at_id]
+    annotation_ocr = !params[:annotation_ocr].blank?
     @sc_manifest = ScManifest.manifest_for_at_id(at_id)
     work = nil
     if params[:sc_manifest][:collection_id] == 'sc_collection'
       set_sc_collection
-      work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection)
+      work = @sc_manifest.convert_with_sc_collection(current_user, @sc_collection, annotation_ocr)
     else
       collection_id = params[:sc_manifest][:collection_id]
       unless collection_id.blank?
@@ -199,9 +202,9 @@ class ScCollectionsController < ApplicationController
         else
           @collection = Collection.find_by(id: collection_id)
         end
-        work = @sc_manifest.convert_with_collection(current_user, @collection, document_set)
+        work = @sc_manifest.convert_with_collection(current_user, @collection, document_set, annotation_ocr)
       else
-        work = @sc_manifest.convert_with_no_collection(current_user) 
+        work = @sc_manifest.convert_with_no_collection(current_user, annotation_ocr) 
       end
     end
     if ContentdmTranslator.iiif_manifest_is_cdm? at_id
