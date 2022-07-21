@@ -14,7 +14,7 @@ section.signon
         =svg_symbol '#icon-key', class: 'signon_label_icon'
     .toolbar
       .toolbar_group
-        =f.button 'Sign In', class: 'strong'
+        =f.button 'Sign In', class: 'strong signin'
       -if devise_mapping.rememberable?
         .toolbar_group.aright
           =f.label :remember_me

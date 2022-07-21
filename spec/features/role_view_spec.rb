@@ -15,8 +15,8 @@ describe "different user role logins" do
     expect(page).to have_link("Sign In")
     expect(page).not_to have_link(I18n.t('dashboard.plain'))
     first(:link, 'Sign In').click
-    expect(page).to have_link("Sign Up")
-    click_link("Sign Up")
+    expect(page).to have_link("Sign Up Now")
+    click_link("Sign Up Now")
     expect(page.current_path).to eq new_user_registration_path
     click_button('Create Account')
     expect(page).to have_content('3 errors prohibited this user from being saved')
