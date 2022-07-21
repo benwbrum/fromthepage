@@ -112,11 +112,22 @@ h2.legend =t('notes_and_questions')
     -content_for :javascript
       javascript:
         setInterval("transcribe_periodic_timer()", 60000);
-
         function transcribe_periodic_timer() {
           $.ajax({
             url: "#{collection_transcribe_still_editing_path(current_user.slug, @collection.id, @work.id, @page.id)}",
-
+            error: function(xhr) {
+              if(xhr.status==401) {
+                // user has been logged out
+                var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your session may have expired while you were editing.  You may want to copy your work to prevent it getting lost.' }))}}";
+                $('#flash_wrapper').html(flash_message);
+                $('.flash').flashclose();
+              } else {
+                // some connection problem
+                var flash_message = "#{{escape_javascript(render(:partial => '/shared/flash', :locals => { type: 'alert', message: 'Your connection to the website is unstable.  You may want to copy your work to prevent it getting lost.' }))}}";
+                $('#flash_wrapper').html(flash_message);
+                $('.flash').flashclose();
+              }
+            },
             complete: function() {
               $(".page-busy-overlay").hide();
             }
