@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_010254) do
+ActiveRecord::Schema.define(version: 2022_07_18_104413) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.boolean "text_docx_work"
     t.boolean "static"
     t.integer "document_set_id"
+    t.boolean "subject_details_csv_collection"
     t.index ["collection_id"], name: "index_bulk_exports_on_collection_id"
     t.index ["document_set_id"], name: "index_bulk_exports_on_document_set_id"
     t.index ["user_id"], name: "index_bulk_exports_on_user_id"
@@ -585,6 +586,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_010254) do
     t.integer "width"
     t.string "sc_resource_id"
     t.string "sc_service_context"
+    t.text "annotations"
     t.index ["page_id"], name: "index_sc_canvases_on_page_id"
     t.index ["sc_manifest_id"], name: "index_sc_canvases_on_sc_manifest_id"
   end

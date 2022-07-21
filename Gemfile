@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '6.0.3.2'
 
-gem 'will_paginate', git: 'https://github.com/BrumfieldLabs/will_paginate.git'
+gem 'will_paginate'
 gem 'rmagick'
 gem 'nokogiri'
 gem "capistrano", "~> 3.10", require: false
@@ -121,6 +121,5 @@ gem 'rack-mini-profiler'
 gem 'stackprof'
 
 gem 'intercom', '~> 3.9.0'
-gem 'newrelic_rpm'
 
 gem 'open3'

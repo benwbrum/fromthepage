@@ -28,13 +28,9 @@ html lang="en-US"
       =render :partial => '/layouts/fb_pixel'
 
   body
-    -flash.each do |type, message|
-      -flash_icon = { 'notice' => '#icon-check-sign', 'alert' => '#icon-warning-sign', 'error' => '#icon-remove-sign', 'info' => '#icon-warning-sign' }
-      .flash(class='flash-#{type}')
-        span.flash_message
-          =svg_symbol flash_icon[type], class: 'icon'
-          span =message.html_safe
-        a.flash_close &times;
+    #flash_wrapper
+      -flash.each do |type, message|
+        =render :partial => '/shared/flash', :locals => { type: type, message: message }
 
     header.header
       .toolbar
@@ -52,12 +48,7 @@ html lang="en-US"
           -if user_signed_in?
             =link_to t('dashboard.plain'), dashboard_role_path, class: 'header_link'
           -if (user_signed_in? && current_user.guest) || !user_signed_in?
-            -if @collection 
-              =link_to 'Sign Up To Transcribe', new_for_owner_path(@collection.owner), class: 'header_link'              
-            -elsif @user && @user.owner?
-              =link_to 'Sign Up To Transcribe', new_for_owner_path(@user), class: 'header_link'              
-            -else
-              =link_to 'Sign Up To Transcribe', new_user_registration_path, class: 'header_link'
+            =link_to t('.sign_up'), new_user_registration_path, class: 'header_link'
 
           -if user_signed_in?
             dl.dropdown.right

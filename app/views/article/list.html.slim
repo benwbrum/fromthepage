@@ -47,16 +47,26 @@
             -if category.articles_list(@collection).empty?
               p.acenter.fglight There are no subjects for the category selected
             -else
-              -category.articles_list(@collection).each do |article|
-                p[*language_attrs(@collection)]
-                  =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+              -@vertical_articles[category].each do |row|
+                -row.each do |article|
+                  -unless article.nil?
+                    p[*language_attrs(@collection)]
+                      =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+                  -else
+                    p.hidden
+                      a.hidden a
       -if @uncategorized_articles.present?
         dl.category-article#category-none
           dt: h3 Uncategorized subjects
           dd
-            -@uncategorized_articles.each do |article|
-              p[*language_attrs(@collection)]
-                =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+            -@uncategorized_articles.each do |l|
+              -l.each do |article|
+                -unless article.nil?
+                  p[*language_attrs(@collection)]
+                    =link_to article.title, collection_article_show_path(@collection.owner, @collection, article.id)
+                -else
+                  p.hidden
+                    a.hidden a
 -else
   -add_category = link_to 'Create the first category', category_add_new_path(:collection_id => @collection.slug), 'data-litebox' => ''
   .nodata
