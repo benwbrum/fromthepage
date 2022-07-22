@@ -26,6 +26,9 @@
       -if ContentdmTranslator.iiif_manifest_is_cdm?(@sc_manifest.at_id)
         =label_tag :contentdm_ocr, t('.import_ocr_text')
         =check_box_tag :contentdm_ocr
+      -elsif @sc_manifest.has_annotations?
+        =label_tag :annotation_ocr, 'Import text from annotations'
+        =check_box_tag :annotation_ocr
 
         -unless @sc_manifest.service.sequences.empty?
           h5= t('.canvases')
