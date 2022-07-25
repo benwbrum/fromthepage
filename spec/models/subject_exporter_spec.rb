@@ -19,7 +19,7 @@ RSpec.describe SubjectExporter do
     let(:work_2)     { FactoryBot.build(:work, title: 'Work 2', identifier: 'work_id_2', pages: [page_2]) }
 
     let(:user)       { FactoryBot.build(:user, slug: 'owner') }
-    let(:collection) { FactoryBot.create(:collection, works: [work_1, work_2], owner: user ) }
+    let(:collection) { FactoryBot.create(:collection, works: [work_1, work_2], owner: user, articles: [article_a, article_b] ) }
     
     it 'exports all fields from Models' do
       # this is probably the wrong way to do this
