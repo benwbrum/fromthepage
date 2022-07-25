@@ -28,7 +28,7 @@ class ScManifest < ApplicationRecord
     sc_manifest
   end
 
-  def convert_with_sc_collection(user, sc_collection)
+  def convert_with_sc_collection(user, sc_collection, annotation_ocr)
     collection = sc_collection.collection
     unless collection
       collection = Collection.new
@@ -40,18 +40,18 @@ class ScManifest < ApplicationRecord
       sc_collection.save!
     end
 
-    convert_with_collection(user, collection)
+    convert_with_collection(user, collection, nil, annotation_ocr)
   end
 
-  def convert_with_no_collection(user)
+  def convert_with_no_collection(user, annotation_ocr)
     collection = Collection.new
     collection.owner = user
     collection.title = self.label.truncate(255, separator: ' ', omission: '')
     collection.save!
-    convert_with_collection(user, collection)
+    convert_with_collection(user, collection, nil, annotation_ocr)
   end
 
-  def convert_with_collection(user, collection, document_set=nil)
+  def convert_with_collection(user, collection, document_set=nil, annotation_ocr=false)
     self.save!
 
     work = Work.new
@@ -61,11 +61,13 @@ class ScManifest < ApplicationRecord
     work.description = self.html_description
     work.collection = collection
     work.original_metadata = self.service.metadata.to_json
+    work.ocr_correction=annotation_ocr
+
     work.save!
     unless self.service.sequences.empty?
       self.service.sequences.first.canvases.each do |canvas|
         sc_canvas = manifest_canvas_to_sc_canvas(canvas)
-        page = sc_canvas_to_page(sc_canvas)
+        page = sc_canvas_to_page(sc_canvas, annotation_ocr)
         work.pages << page
         sc_canvas.page = page
         sc_canvas.height = canvas.height
@@ -107,11 +109,21 @@ class ScManifest < ApplicationRecord
   end
 
 
-  def sc_canvas_to_page(sc_canvas)
+  def sc_canvas_to_page(sc_canvas, annotation_ocr=false)
     page = Page.new
     page.title = ScManifest.flatten_element(sc_canvas.sc_canvas_label)
+    if annotation_ocr
+      page.source_text=sc_canvas.annotation_text_for_source
+    end
 
     page
+  end
+
+
+  def has_annotations?
+    self.service.sequences.first.canvases.detect do |canvas|
+      canvas.other_content && canvas.other_content.detect { |e| e['@type'] == "sc:AnnotationList" }
+    end
   end
 
   def manifest_canvas_to_sc_canvas(canvas)
@@ -122,6 +134,9 @@ class ScManifest < ApplicationRecord
     sc_canvas.sc_resource_id =          canvas.images.first.resource['@id']
     sc_canvas.sc_service_context = canvas.images.first.resource.service['@context']
     sc_canvas.sc_canvas_label =         canvas.label
+    if canvas.other_content && canvas.other_content.detect { |e| e['@type'] == "sc:AnnotationList" }
+      sc_canvas.annotations = canvas.other_content.to_json
+    end
 
     sc_canvas.save!
     sc_canvas

@@ -9,6 +9,7 @@ class Page < ApplicationRecord
   before_update :process_source
   before_update :populate_search
   before_update :update_line_count
+  before_save :calculate_last_editor
   before_save :calculate_approval_delta
   validate :validate_source, :validate_source_translation
 
@@ -210,6 +211,12 @@ class Page < ApplicationRecord
     end
   end
 
+  def calculate_last_editor
+    unless COMPLETED_STATUSES.include? self.status
+      self.last_editor = User.current_user
+    end
+  end
+
   def calculate_approval_delta
     if COMPLETED_STATUSES.include? self.status
       most_recent_not_approver_version = self.page_versions.where.not(user_id: User.current_user.id).first
@@ -255,7 +262,7 @@ class Page < ApplicationRecord
     end
     version.save!
 
-    self.update_column(:page_version_id, version.id)
+    self.update_column(:page_version_id, version.id) # set current_version
   end
 
   def update_sections_and_tables

@@ -8,7 +8,10 @@ module AbstractXmlController
   ##############################################
 
   #constant - words to ignore when autolinking
-  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it"]
+  STOPWORDS = ["Mrs", "Mrs.", "Mr.", "Mr", "Dr.", "Dr", "Miss", "he", "she", "it", 
+    'wife', 'husband','I','him','her','son','daughter']
+  STOPREGEX = /\b\w\b/
+
 
   def autolink(text)
     #find the list of articles
@@ -36,8 +39,8 @@ module AbstractXmlController
       logger.debug("DEBUG looking for #{match_regex}")
 
       #if the match is a stopword, ignore it and move to the next match
-      if display_text.in?(STOPWORDS)
-
+      if display_text.in?(STOPWORDS) || display_text.match(STOPREGEX)
+        # skip this one
       else
         #find the matches and substitute in as long as the text isn't already in a link
         text.gsub! match_regex do |m|

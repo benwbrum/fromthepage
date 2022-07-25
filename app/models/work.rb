@@ -11,6 +11,7 @@ class Work < ApplicationRecord
      "permission_description",
      "location_of_composition",
      "author",
+     "recipient",
      "identifier",
      "genre",
      "source_location",
@@ -212,7 +213,20 @@ class Work < ApplicationRecord
   end
 
   def document_date
-    Date.edtf(self[:document_date])
+    date = Date.edtf(self[:document_date])
+    
+    if self[:document_date].nil? # there is no document date
+      return nil
+    elsif date.nil? # the document date is invalid
+      return self[:document_date]
+    # assign date precision based on length of document_date string (edtf-ruby does not do this automatically)
+    elsif self[:document_date].length == 7 # YYYY-MM
+      date.month_precision!
+    elsif self[:document_date].length == 4 and not self[:document_date].include? "x" # YYYY
+      date.year_precision!
+    end
+    
+    return date.edtf
   end
 
   def document_date_is_edtf
@@ -303,8 +317,12 @@ class Work < ApplicationRecord
 
   def normalize_friendly_id(string)
     string = string.truncate(230, separator: ' ', omission: '')
+    unless string.match? /[[:alpha:]]/
+      string = "work-#{string}"
+    end
     super.gsub('_', '-')
   end
+
 
   def slug_candidates
     if self.slug
