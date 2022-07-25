@@ -77,8 +77,13 @@ class PageController < ApplicationController
 
   def update
     page = Page.find(params[:id])
-    page.update(page_params)
+    attributes = page_params.to_h.except("base_image")
+    if page_params[:status].blank?
+      attributes['status'] = nil
+    end   
+    page.update_columns(attributes) # bypass page version callbacks
     flash[:notice] = t('.page_updated')
+    page.work.work_statistic.recalculate if page.work.work_statistic
 
     if params[:page][:base_image]
       process_uploaded_file(page, page_params[:base_image])

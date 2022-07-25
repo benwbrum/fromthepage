@@ -116,6 +116,13 @@ class DeedType
       ]
     end
 
+    def metadata_creation_or_edits
+      [
+        DESCRIBED_METADATA,
+        EDITED_METADATA
+      ]
+    end
+
     def edited_and_transcribed_pages
       [
         PAGE_EDIT,
