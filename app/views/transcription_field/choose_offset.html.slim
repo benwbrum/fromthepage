@@ -53,7 +53,7 @@ div.columns
         viewer,
         {
           allowEmpty: true,
-          // disableEditor: true
+          //disableEditor: true
         });
 
 
@@ -67,7 +67,6 @@ div.columns
         };
 
         raw_selector = annotations[0]['target'].selector.value;
-        alert(raw_selector);
 
         $.post(
           "#{transcription_field_spreadsheet_column_save_offset_path(@transcription_field,@page)}", 
