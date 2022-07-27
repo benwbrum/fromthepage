@@ -23,7 +23,8 @@ div.columns
 -x_in_pixels = 0
 -w_in_pixels = @page.base_width
 -y_in_pixels = (@transcription_field.top_offset * @page.base_height).to_i
--h_in_pixels = ((1.0 - (@transcription_field.top_offset+@transcription_field.top_offset)) * @page.base_height).to_i
+-h_in_pixels = @page.base_height - ((@transcription_field.top_offset + @transcription_field.bottom_offset)*@page.base_height).to_i
+
 
 -content_for :javascript
   javascript:
@@ -52,7 +53,7 @@ div.columns
         viewer,
         {
           allowEmpty: true,
-          disableEditor: true
+          // disableEditor: true
         });
 
 
@@ -66,6 +67,8 @@ div.columns
         };
 
         raw_selector = annotations[0]['target'].selector.value;
+        alert(raw_selector);
+
         $.post(
           "#{transcription_field_spreadsheet_column_save_offset_path(@transcription_field,@page)}", 
           {'selector': raw_selector}
