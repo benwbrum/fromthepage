@@ -96,7 +96,15 @@
               span One file per collection
         li
           .bulk-export_format
-            h5 Subject CSV
+            h5 Subject Details CSV
+            p.nomargin A spreadsheet listing each subject in the collection
+          .bulk-export_options
+            =f.label :subject_details_csv_collection
+              =f.check_box :subject_details_csv_collection, value: @bulk_export.subject_details_csv_collection
+              span One file per collection
+        li
+          .bulk-export_format
+            h5 Subject Index CSV
             p.nomargin A spreadsheet listing each place a subject is mentioned within a page within the collection
           .bulk-export_options
             =f.label :subject_csv_collection

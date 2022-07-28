@@ -80,6 +80,12 @@ module ExportService
     out.write(collection.export_subject_index_as_csv)
   end
 
+  def export_subject_details_csv(dirname:, out:, collection:)
+    path = "subject_details.csv"
+    out.put_next_entry(path)
+    out.write(collection.export_subject_details_as_csv)
+  end
+
   def export_table_csv_collection(dirname:, out:, collection:)
     path = "fields_and_tables.csv"
     out.put_next_entry(path)
