@@ -12,26 +12,33 @@ module SubjectExporter
     def export
       csv_string = CSV.generate(force_quotes: true) do |csv|
         csv << @headers
+
+        ac_map = {}
+        collection = @works.first.collection
+        owner = collection.owner
+        collection.articles.includes(:categories).each do |article|
+          ac_map[article] = article.categories.map{|c| c.title}.sort
+        end
+
         @works.each do |work|
+          GC.start
           transcription_sections  = ['']
           translation_sections    = ['']
 
-          work.pages.each do |page|
+          work.pages.includes(:page_article_links, articles: [:page_article_links]).each do |page|
             sections_by_link, transcription_sections, section_to_subjects = links_by_section(page.xml_text, {}, transcription_sections)
             sections_by_link, translation_sections, section_to_subjects = links_by_section(page.xml_translation, sections_by_link, translation_sections, section_to_subjects)
 
             page_url = url_for(:controller => 'display', :action => 'display_page', :page_id => page.id, :only_path => false)
+            # page.page_article_links.includes(:article).each do |link|
             page.page_article_links.each do |link|
               display_text = link.display_text.gsub('<lb/>', ' ').delete("\n")
               article = link.article
               if article.nil?
                 Rails.logger.warn("WARNING: Export could not find article for link #{link.display_text} on page #{page.title}")
               else
-                categories = []
-                article.categories.each { |category| categories << category.title }
-                article_link = Rails.application.routes.url_helpers.collection_article_show_url(article.collection.owner, article.collection, article.id, :only_path => false)
-  
-                categories.sort!
+                categories = ac_map[article] || []
+                article_link = Rails.application.routes.url_helpers.collection_article_show_url(owner, collection, article.id, :only_path => false)
                 section_header = sections_by_link[link.id] 
                 csv << [
                   work.title,
