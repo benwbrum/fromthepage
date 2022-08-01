@@ -20,12 +20,12 @@ fr:
       your_recent_notes: Vos notes récentes
       your_recent_page_edits: Modifications récentes de votre page
     editor_header:
-      your_projects: Tes projets
+      your_projects: Vos projets
     empty:
       add_new_collection: Ajouter une nouvelle collection
-      create_empty_work: Créer un travail vide
-      create_empty_work_description: Utilisez cette option pour créer un travail vide. Vous pouvez ensuite télécharger des images de page individuelles dans le travail.
-      create_work: Créer un travail
+      create_empty_work: Créer une œuvre sans pages
+      create_empty_work_description: Utilisez cette option pour créer une œuvre sans pages. Vous pouvez ensuite téléverser des images de page individuelles dans l'œuvre.
+      create_work: Créer une œuvre
       description: La description
       select_a_collection: "- Sélectionnez une collection -"
       title: Titre
@@ -102,12 +102,12 @@ fr:
       account_type: "%{type} compte"
       actions: Actions
       collection:
-        one: Le recueil
+        one: Collection
         other: Collections
       create_a_collection: Créer une collection
       current_subscription_expires: L'abonnement actuel expire %{date}
       document_set:
-        one: Ensemble de documents
+        one: Jeu de documents
         other: Jeux de documents
       exports: Exportations
       owner_dashboard: Tableau de bord du propriétaire
@@ -117,7 +117,7 @@ fr:
       to_upgrade_contact: Pour mettre à niveau, contactez support@fromthepage.com
       total_pages: 'Nombre total de pages : %{pages}'
       work:
-        one: Travailler
+        one: Œuvre
         other: Œuvres
       your_collections: Vos collections
     upload:
@@ -125,7 +125,7 @@ fr:
       browse: Parcourir
       click_to_browse_a_file: Cliquez pour parcourir un fichier...
       click_to_browse_files: Cliquez pour parcourir les fichiers
-      each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez donc pas les pages de différents documents dans le même dossier.
+      each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez pas les pages de différents documents dans le même dossier.
       each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
       for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre travail et une dernière œuvre contenant les 5 images du dossier.'
       image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
