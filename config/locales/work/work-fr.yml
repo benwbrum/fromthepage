@@ -38,23 +38,23 @@ fr:
       analyze: Analyser
       docx_download_description: Télécharger une version DOCX de ce travail.
       download: Télécharger
-      expanded_plaintext: Texte en clair étendu
-      expanded_plaintext_export_description: Exporter des transcriptions en texte brut en remplaçant le texte textuel par des titres de sujet canoniques sous forme de fichier zip contenant un fichier par page.
+      expanded_plaintext: Texte brut étendu
+      expanded_plaintext_export_description: Exporter des transcriptions en texte brut en remplaçant le texte verbatim par des titres de sujet canoniques sous forme de fichier zip contenant un fichier par page.
       experiment: Analyser
       export: Exporter
-      facing_pdf: Face PDF
-      facing_pdf_export_description: Télécharger une version PDF de cet ouvrage comprenant des images et du texte sur les pages en vis-à-vis.
+      facing_pdf: Livret PDF
+      facing_pdf_export_description: Télécharger une version PDF de cette œuvre comprenant des images et du texte sur les pages en vis-à-vis.
       html: HTML
       html_export_description: Exporter les transcriptions sous forme de fichier zip contenant un fichier HTML par page.
       ms_word: MS Word
       pdf: PDF
       pdf_download_description: Télécharger une version PDF de ce travail.
-      searchable_plaintext: Texte en clair consultable
+      searchable_plaintext: Texte brut optimisé pour la recherche 
       searchable_plaintext_export_description: Exporter des transcriptions en texte brut optimisées pour la recherche en texte intégral sous forme de fichier zip contenant un fichier par page.
       table_field_csv: Tableau/Champ CSV
       table_field_csv_export_description: Exporter toutes les données tabulaires, de feuilles de calcul ou basées sur des champs dans un seul fichier CSV.
-      verbatim_plaintext: Texte brut textuel
-      verbatim_plaintext_export_description: Exporter des transcriptions textuelles en clair sous forme de fichier zip contenant un fichier par page.
+      verbatim_plaintext: Texte brut verbatim
+      verbatim_plaintext_export_description: Exporter des transcriptions verbatims en clair (.txt) sous forme de fichier zip contenant un fichier par page.
       voyant: Voyant
       voyant_analysis_description: Envoyer la transcription de ce travail à un Voyant Tools pour analyse.
       warning_work_not_complete: 'Attention : ce travail peut ne pas être complet.'
