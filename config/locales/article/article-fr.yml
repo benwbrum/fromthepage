@@ -19,7 +19,7 @@ fr:
       combine_selected: Combiner la sélection
       confirm_delete_subject: Voulez-vous vraiment supprimer ce sujet ? Après la suppression, vous ne pourrez pas le récupérer !
       delete_subject: Supprimer le sujet
-      description: La description
+      description: Description
       latitude: Latitude
       longitude: Longitude
       microphone: Microphone
@@ -38,12 +38,12 @@ fr:
       uri: URI
     list:
       actions: Actions
-      add_child_category: Ajouter une catégorie enfant
-      add_root_category: Ajouter une catégorie racine
+      add_child_category: Ajouter une sous-catégorie
+      add_root_category: Ajouter une catégorie principale
       categories: Catégories
       category_back_message: Une fois que vous avez fini de modifier les catégories, %{page_link} pour revenir à la page "%{page}".
       click_here: Cliquez ici
-      confirm_delete_category: Voulez-vous vraiment supprimer cette catégorie et toutes ses sous-catégories ? Après la suppression, vous ne pourrez pas le récupérer !
+      confirm_delete_category: Voulez-vous vraiment supprimer cette catégorie et toutes ses sous-catégories ? Après la suppression, vous ne pourrez pas le récupérer
       create_category_message: "%{link} que vous utiliserez pour regrouper les sujets."
       create_the_first_category: Créer la première catégorie
       delete_category: Supprimer la catégorie
@@ -53,16 +53,16 @@ fr:
       no_categories: Aucune catégorie
       no_categories_message: Il n'y a pas de catégories de sujets dans la collection.<br>
       there_are_no_subjects: Il n'y a pas de sujets pour la catégorie sélectionnée
-      uncategorized: Non classé
-      uncategorized_subjects: Sujets non classés
-      upload_subjects: Télécharger des sujets
+      uncategorized: Non catégorisé
+      uncategorized_subjects: Sujets non catégorisés
+      upload_subjects: Téléverser des sujets
     show:
       all_uncategorized_subjects: Tous les sujets non catégorisés de la collection
       categories: Catégories
-      description: La description
+      description: Description
       download: Télécharger
-      download_description: Téléchargez une feuille de calcul des sujets et des œuvres concomitants dans lesquels ils apparaissent.
-      edit_description_description: Modifiez la description dans l'onglet Paramètres.
+      download_description: Télécharger un tableau CSV des sujets et des œuvres associées dans lesquels ils apparaissent.
+      edit_description_description: Modifiez la description dans l'onglet Réglages.
       export: Exporter
       n_possible_duplicates:
         one: 1 doublon possible
@@ -75,7 +75,7 @@ fr:
       search_all_pages: Rechercher toutes les pages
       search_all_pages_description: Rechercher dans le texte de %{collection} les pages contenant des mots utilisés pour créer un lien vers <em>%{article}</em>
       search_unlinked_pages: Rechercher des pages non liées
-      search_unlinked_pages_description: Rechercher uniquement le texte des pages qui ne renvoient pas à <em>%{article}</em>
+      search_unlinked_pages_description: Rechercher uniquement le texte des pages qui ne sont pas liés au sujet: <em>%{article}</em>
       see_also: 'Voir également:'
       text_search: Recherche de texte
     subject_upload:
