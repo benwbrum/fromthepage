@@ -172,6 +172,8 @@ module ApplicationHelper
         # array of language pairs
         return value.map {|e| e["@value"]}.join("; ")
       end
+    elsif value.is_a? Hash
+      return value.values.map{|value_array| value_array.first}.join('<br/>')
     end
   end
 
@@ -189,9 +191,12 @@ module ApplicationHelper
       label = md['label']
       if label.is_a? Array
         label = label.first['@value']
+      elsif label.is_a? Hash
+        label = label.values.map{|label_array| label_array.first}.join(" / ")
       end
+      value = md['value']
 
-      html += "<p><b>#{label}</b>: #{value_to_html(md["value"])} </p>\n\n"
+      html += "<p><b>#{label}</b>: #{value_to_html(value)} </p>\n\n"
     end
     html
   end

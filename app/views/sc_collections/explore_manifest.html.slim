@@ -3,14 +3,18 @@
     h4 Manifest: #{{@sc_manifest.label}}
     -if @sc_collection
       p Collection: #{@sc_collection.label}
-    -if @sc_manifest.service.description
-      p Description: #{{@sc_manifest.service.description}}
+    -if @sc_manifest.description
+      p Description: #{{@sc_manifest.description}}
 		
-    -if @sc_manifest.service.metadata
-      p Metadata: #{{html_metadata(@sc_manifest.service.metadata)}}
+    -if @sc_manifest.metadata
+      p Metadata: #{{html_metadata(@sc_manifest.metadata)}}
 
-    -if @sc_manifest.service.license
-      p License: #{@sc_manifest.service.license}
+    -if @sc_manifest.v3?
+      -unless @sc_manifest.requiredStatement.blank?
+        p Required Statement: #{@sc_manifest.requiredStatement}
+    -else 
+      -if @sc_manifest.service.license
+        p License: #{@sc_manifest.service.license}
     p 
       'Id: 
       =link_to @sc_manifest.at_id, @sc_manifest.at_id
