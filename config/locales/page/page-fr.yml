@@ -8,19 +8,19 @@ fr:
     edit:
       browse: Parcourir
       click_to_browse_a_file: Cliquez pour parcourir un fichier...
-      created: Créé %{date}
+      created: Créée le %{date}
       delete_confirm_message: Voulez-vous vraiment supprimer cette page ? Après la suppression, vous ne pourrez pas le récupérer !
       delete_page: Supprimer la page
       dimensions: 'Dimensions : %{width}×%{height}'
-      here_you_can_edit: Ici, vous pouvez modifier le titre de la page et télécharger une nouvelle image. Si vous souhaitez modifier la transcription de la page ou le texte de traduction, veuillez passer à l'onglet approprié ci-dessus.
+      here_you_can_edit: Ici, vous pouvez modifier le titre de la page et téléverser une nouvelle image. Si vous souhaitez modifier la transcription de la page ou le texte de traduction, veuillez passer à l'onglet approprié ci-dessus.
       page_image: Image de la page
       page_position: 'Position de la page : %{position}'
-      page_status: État de la page
-      page_status_: Pas commencé
-      page_status_blank: Page blanche
+      page_status: Statut de la page
+      page_status_: Non-trancrite
+      page_status_blank: Page vierge
       page_status_incomplete: Incomplet
       page_status_indexed: Indexé
-      page_status_review: A besoin d'un examen
+      page_status_review: À besoin d'une révision
       page_status_transcribed: Complet
       page_status_translated: Traduit
       page_title: Titre de la page
