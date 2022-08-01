@@ -23,14 +23,14 @@ fr:
       translation: Traduction
     list_pages:
       actions: Actions
-      describe: Décris
+      describe: Décrire
       metadata: Métadonnées
-      no_notes: Aucune remarque
+      no_notes: Aucune note
       no_pages_found: Aucune page trouvée
       no_pages_in_work: Ce travail ne contient pas encore de pages, rendez-vous sur %{link} pour créer une nouvelle page
       page_title: Titre de la page
       pages_tab: Onglet Pages
-      user_notes: Remarques de l'utilisateur
+      user_notes: Notes de l'utilisateur
     multi_page:
       categories: Catégories
       describe: Créer des métadonnées
@@ -62,12 +62,12 @@ fr:
       this_page_is_blank: Cette page est vierge
       this_page_is_incomplete: Cette page est incomplète
       this_page_is_not: Cette page n'est pas %{status}, veuillez %{help} cette page
-      transcribed: transcrit
+      transcribed: transcrite
       translation: Traduction
       unable_to_find_pages: Nous n'avons trouvé aucune page correspondant à votre demande
   display_helper:
     page_action:
-      blank_page: Page blanche
+      blank_page: Page vierge
       completed: Complété
       correct: Corriger
       index: Indice
