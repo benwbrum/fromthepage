@@ -12,7 +12,7 @@ fr:
       user_totals_for_dates: Totaux utilisateur pour les dates
     collaborators:
       collaborators: Collaborateurs
-      editing: Édition
+      editing: Modification
       indexing: Indexage
       mailing_list_export: Exportation de la liste de diffusion
       no_editors: Aucun éditeur
@@ -65,7 +65,7 @@ fr:
       needing_review: besoin d'un examen
       new_subject: Nouveau sujet
       note: Note
-      ocr_correction: Correction OCR
+      ocr_correction: Correction d'OCR
       page: Page
       reference: Référence
       reviewed: revu
