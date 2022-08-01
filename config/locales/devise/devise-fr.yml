@@ -62,9 +62,9 @@ fr:
         fill_in_the_following: Veuillez remplir les informations suivantes pour créer un essai de deux cents pages
         just_want_to_transcribe: Vous souhaitez simplement transcrire ? %{sign_up_here}
         login: Connexion
-        message: Veuillez remplir les informations suivantes pour créer un compte de propriétaire de projet FromThePage d'essai de deux cents pages. Avoir des questions? %{schedule_a_kickoff_call}
+        message: Veuillez remplir les informations suivantes pour créer un compte de propriétaire de projet FromThePage d'essai de deux cents pages. Des questions? %{schedule_a_kickoff_call}
         project_owner_account_have: Compte du propriétaire du projet FromThePage. Avoir des questions?
-        schedule_a_kickoff_call: Planifiez un appel de lancement.
+        schedule_a_kickoff_call: Planifier un rendez-vous en ligne.
         sign_up_for_trial: Inscrivez-vous pour un essai
         sign_up_here: Inscrivez-vous ici
         want_to_transcribe: voulez-vous transcrire?
