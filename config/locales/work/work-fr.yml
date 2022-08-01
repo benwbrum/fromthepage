@@ -108,7 +108,7 @@ fr:
       transcription_conventions: Conventions de transcription
       translation_instructions: Instructions de traduction
       upload_image: Télécharger une image
-      uploaded_by: telechargé par
+      uploaded_by: téléversé par
       url: URL
       work_image: Image de travail
       work_image_description: Une image à utiliser pour illustrer le travail. Si aucune image n'est téléchargée, une image de page sera utilisée.
@@ -170,7 +170,7 @@ fr:
       source_box_folder: Boîte/dossier source
       source_collection_name: Nom de la collection source
       source_location: Emplacement de la source
-      uploaded_by: telechargé par
+      uploaded_by: téléversé par
     undescribed: Aucune métadonnée.
     update:
       work_updated: Travail mis à jour avec succès
