@@ -26,7 +26,7 @@ fr:
         transcribed_page: page transcrite %{page}
         translated_page: page traduite %{page}
     deeds:
-      show_more: Montre plus
+      show_more: Voir plus
       time_ago_in_words: Il y a %{time}
     list:
       activity_stream: Flux d'activité
