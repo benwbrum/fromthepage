@@ -40,7 +40,7 @@ fr:
       works_list: Liste des travaux
     description_tabs:
       describe: Métadonnées
-      help: Aider
+      help: Aide
       metadata: Métadonnées
       nav_info: Travail %{position} sur %{size}
       next_page: Page suivante
@@ -62,7 +62,7 @@ fr:
     page_tabs:
       correct: Corriger
       describe_work: Décrire le travail
-      help: Aider
+      help: Aide
       nav_info: Page %{position} sur %{size}
       next_page: Page suivante
       overview: Lire
@@ -81,7 +81,7 @@ fr:
       about: À propos de
       contents: Contenu
       download: Télécharger
-      help: Aider
+      help: Aide
       pages: pages
       read: Lis
       settings: Réglages
