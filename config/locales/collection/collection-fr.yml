@@ -186,7 +186,7 @@ fr:
       save: sauvegarder
       translate_facets: Traduire les étiquettes de facette
       translation: Traduction
-    needs_review: a besoin d'un examen
+    needs_review: a besoin d'une révision
     needs_review_pages:
       pages_that_need_review: Pages à réviser
       project_by: Projet par
@@ -230,11 +230,11 @@ fr:
       unreviewed_contributors: Nouveaux contributeurs
       works_to_review: Travaux à revoir
     show:
-      about: À propos de
+      about: À propos
       add_a_new_work: Ajouter une nouvelle œuvre
       all_complete: Toutes les œuvres sont entièrement transcrites.
-      help_create_metadata: Aidez-moi !
-      help_transcribe_or_correct: Aidez-moi !
+      help_create_metadata: Aide
+      help_transcribe_or_correct: Aide
       n_pages:
         one: '1 page :'
         other: "%{count} pages :"
@@ -244,14 +244,14 @@ fr:
       pages_need_transcription: Pages nécessitant une transcription
       project_by: Projet par
       recent_edits: Modifications récentes
-      recent_notes: Remarques récentes
+      recent_notes: Notes récentes
       search: Chercher
       search_by_title: Rechercher par titre ou métadonnées...
       search_by_title_1: Rechercher par titre
       search_the_text: Rechercher dans le texte...
       search_the_text_1: Rechercher le texte
-      show_more: Montre plus
-      start_transcribing: Commencez à transcrire
+      show_more: Voir plus
+      start_transcribing: Commencer à transcrire
       subject_categories: Catégories de sujets
       this_work_has_not_been_described: Ce travail a besoin de meilleures métadonnées.
       this_work_has_pages_that_need_work: Certaines pages ont encore besoin de travail.
@@ -275,10 +275,10 @@ fr:
       date: Date
       email: 'Courriel : %{email}'
       filter_contributions: Filtre
-      no_contributions: Aucune cotisation
+      no_contributions: Aucune contribution
       notes: Remarques
       quality_score: 'Niveau de qualité :'
-      real_name: 'Nom réel : %{user}'
+      real_name: 'Nom : %{user}'
       review: Examen
       title: Page (Travail)
       user_contribution_description: Pages nécessitant une révision par l'utilisateur %{user_name}
