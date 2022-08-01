@@ -43,7 +43,7 @@ fr:
       categories: Catégories
       category_back_message: Une fois que vous avez fini de modifier les catégories, %{page_link} pour revenir à la page "%{page}".
       click_here: Cliquez ici
-      confirm_delete_category: Voulez-vous vraiment supprimer cette catégorie et toutes ses sous-catégories ? Après la suppression, vous ne pourrez pas le récupérer
+      confirm_delete_category: Voulez-vous vraiment supprimer cette catégorie et toutes ses sous-catégories ? Après la suppression, vous ne pourrez pas la récupérer
       create_category_message: "%{link} que vous utiliserez pour regrouper les sujets."
       create_the_first_category: Créer la première catégorie
       delete_category: Supprimer la catégorie
