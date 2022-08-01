@@ -48,7 +48,7 @@ fr:
       marked_needing_review: marqué comme ayant besoin d'une révision
       new_subject: Nouveau sujet
       note: Noter
-      ocr_correction: Correction OCR
+      ocr_correction: Correction d'OCR
       page: Page
       reference: Référence
       reviewed: révisée
@@ -59,18 +59,18 @@ fr:
       collaborator: Collaborateur
       edit: Modification
       incomplete_page: Page incomplète
-      indexed: indexé
+      indexed: indexée
       last_days_statistics: Statistiques des 7 derniers jours
-      marked_needing_review: marqué comme nécessitant un examen
-      needing_review: besoin d'un examen
+      marked_needing_review: marqué comme ayant besoin d'une révision
+      needing_review: ayant besoin d'une révision
       new_subject: Nouveau sujet
       note: Note
       ocr_correction: Correction d'OCR
       page: Page
       reference: Référence
-      reviewed: revu
-      subject: Matière
+      reviewed: revisée
+      subject: Sujet
       total_page: Page totale
-      transcribed: transcrit
-      translated: traduit
-      work: Travailler
+      transcribed: transcrite
+      translated: traduite
+      work: Œuvre
