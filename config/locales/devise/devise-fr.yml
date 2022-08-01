@@ -3,7 +3,7 @@ fr:
   devise:
     confirm_password: Confirmez le mot de passe
     create_account: Créer un compte
-    display_name: Afficher un nom
+    display_name: Organisation
     email_address: Adresse e-mail
     failure:
       already_authenticated: Vous êtes déjà connecté.
@@ -12,7 +12,7 @@ fr:
       not_found_in_database: "%{authentication_keys} ou mot de passe non valide."
       timeout: Votre session a expiré. Veuillez vous reconnecter pour continuer.
       unauthenticated: Vous devez vous connecter ou vous inscrire avant de continuer.
-    login: Connexion
+    login: Nom d'utilisateur
     mailer:
       reset_password_instructions:
         change_my_password: Changer mon mot de passe
