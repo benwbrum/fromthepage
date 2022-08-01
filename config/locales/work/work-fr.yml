@@ -18,7 +18,7 @@ fr:
       layout: Disposition
       metadata: Métadonnées
       needs_review: A revoir
-      notes_and_questions: Remarques et questions
+      notes_and_questions: Notes et questions
       original_metadata: Métadonnées d'origine
       page_images: Images de pages
       save_changes: sauvegarder
@@ -116,7 +116,7 @@ fr:
       work_title: Titre de travail
     incomplete: Métadonnées incomplètes.
     metadata_overview:
-      notes_and_questions: Remarques et questions
+      notes_and_questions: Notes et questions
       show_image: Afficher l'image
       this_page_is_blank: Cette page est vierge
     needsreview: Les métadonnées doivent être révisées.
