@@ -32,7 +32,7 @@ fr:
     description_versions:
       author_contributed_at: "%{author} à %{date}"
       compared_with: Comparé à
-      help_description: Afficher et comparez les modifications apportées dans chaque révision aux métadonnées de travail. La colonne de gauche montre les métadonnées dans la révision sélectionnée, la colonne de droite montre ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
+      help_description: Afficher et comparer les modifications apportées dans chaque révision aux métadonnées de travail. La colonne de gauche montre les métadonnées dans la révision sélectionnée, la colonne de droite montre ce qui a été modifié. Le texte inchangé est <span>surligné en blanc</span>, le texte supprimé est <del>surligné en rouge</del> et le texte inséré est <ins>surligné en vert</ins>.
       revision: révision
     download:
       analyze: Analyser
