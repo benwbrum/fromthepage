@@ -23,46 +23,48 @@ fr:
       last_days_statistics: Statistiques des 7 derniers jours
     collection_statistics:
       collaborator: Collaborateur
-      edit: Éditer
+      edit: Modification
       incomplete_page: Page incomplète
       indexed: indexé
-      lines_transcribed: Ligne de texte
-      needing_review: besoin d'un examen
-      note: Noter
+      lines_transcribed:
+        one: Ligne de texte
+        other: Lignes de texte
+      needing_review: ayant besoin d'une révision
+      note: Note
       ocr_correction: Correction OCR
       page: Page
       records_indexed: Notice indexée
       reference: Référence
-      reviewed: revu
-      subject: Matière
-      transcribed: transcrit
-      translated: traduit
-      work: Travailler
+      reviewed: revisée
+      subject: Sujet
+      transcribed: transcrite
+      translated: traduite
+      work: Œuvre
       works_described: Travail décrit
     recent_statistics:
       collaborator: Collaborateur
       edit: Éditer
-      indexed: indexé
-      marked_needing_review: marqué comme nécessitant un examen
+      indexed: indexée
+      marked_needing_review: marqué comme ayant besoin d'une révision
       new_subject: Nouveau sujet
       note: Noter
       ocr_correction: Correction OCR
       page: Page
       reference: Référence
-      reviewed: revu
-      transcribed: transcrit
-      translated: traduit
+      reviewed: révisée
+      transcribed: transcrite
+      translated: traduite
     statistics:
       active_page: Page active
       collaborator: Collaborateur
-      edit: Éditer
+      edit: Modification
       incomplete_page: Page incomplète
       indexed: indexé
       last_days_statistics: Statistiques des 7 derniers jours
       marked_needing_review: marqué comme nécessitant un examen
       needing_review: besoin d'un examen
       new_subject: Nouveau sujet
-      note: Noter
+      note: Note
       ocr_correction: Correction OCR
       page: Page
       reference: Référence
