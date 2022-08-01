@@ -31,7 +31,7 @@ fr:
       possible_duplicates:
         one: Doublon possible
         other: Doublons possibles
-      possible_duplicates_description: Veuillez consulter la liste ci-dessous et sélectionner les sujets à combiner. Les doublons seront remappés afin que tous les liens existants pointent vers le sujet "%{article}".
+      possible_duplicates_description: Veuillez consulter la liste ci-dessous et sélectionner les sujets à combiner. Les doublons seront regroupés afin que tous les liens existants redirigent vers le sujet "%{article}".
       save_changes: Sauvegarder les modifications
       select_categories: Sélectionnez les catégories
       title: Titre
