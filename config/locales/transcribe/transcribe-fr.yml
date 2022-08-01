@@ -25,8 +25,8 @@ fr:
       needs_review: À besoin d'une révision
       notes_and_questions: Remarques et questions
       this_page_marked_blank: Cette page est marquée comme vierge
-      this_page_marked_needs_review: Cette page a été marquée comme "nécessite une révision". Vous pouvez améliorer cette page en la relisant à l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « Nécessite un examen » et enregistrez la page.
-      this_page_marked_needs_review_workflow_version: Cette page doit être révisée. Vous pouvez améliorer cette page en la relussant par rapport à l'original et en ajoutant ou en corrigeant le texte, puis en approuvant le texte.
+      this_page_marked_needs_review: Cette page a été marquée comme "ayant besoin d'une révision". Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « À besoin d'une révision » et enregistrez la page.
+      this_page_marked_needs_review_workflow_version: Cette page doit être révisée. Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte, puis en approuvant le texte.
       title: 'Titre:'
     goto_next_untranscribed_page:
       another_page_notice: Voici une autre page de cet ouvrage.
