@@ -21,7 +21,7 @@ fr:
         marked_translation_page_as_needing_review: a marqué la page à traduire %{page} comme nécessitant une révision
         reviewed_page: a révisé %{page}
         reviewed_translation: a révisé la traduction %{page}
-        saying_deed: ", en disant &laquo;%{title}&rdquo;"
+        saying_deed: ", disant &laquo;%{title}&raquo;"
         this_collection: cette collection
         transcribed_page: a transcrit %{page}
         translated_page: a traduit %{page}
