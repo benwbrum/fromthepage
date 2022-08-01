@@ -9,7 +9,7 @@ fr:
       help_correct: aider à corriger
       help_transcribe: aider à transcrire
       help_translate: aider à traduire
-      mark_the_page_blank: marquer la page blanche
+      mark_the_page_blank: marquer la page comme vierge
       or_mark_blank: "<br>ou %{mark_blank}"
       page_notes: Notes et questions
       please_help_this_page: Veuillez %{help_link} cette page
@@ -17,9 +17,9 @@ fr:
       show_translation: Afficher la traduction
       this_page_is_blank: Cette page est vierge
       this_page_is_not: Cette page n'est pas %{text_type}
-      transcribed: transcrit
+      transcribed: transcrite
       transcription: Transcription
-      translated: traduit
+      translated: traduite
       translation: Traduction
     list_pages:
       actions: Actions
