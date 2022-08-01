@@ -79,7 +79,7 @@ fr:
       new:
         forgot_your_password: Mot de passe oublié?
         or: ou
-        remember_me: " Souviens-toi de moi"
+        remember_me: " Se souvenir de moi"
         sign_in_with_institution: Connectez-vous avec votre établissement (SSO)
         sign_up_as_transcriber_message: Vous souhaitez rejoindre un projet existant en tant que transcripteur ? Inscrivez-vous en tant que transcripteur.
         sign_up_now: S'inscrire maintenant
