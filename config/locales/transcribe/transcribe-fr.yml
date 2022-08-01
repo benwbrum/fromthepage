@@ -19,12 +19,12 @@ fr:
       image_at_the_right: Image à droite
       image_at_the_top: Image en haut
       layout: Disposition
-      mark_as_blank: Marquer comme vide
+      mark_as_blank: Marquer comme vierge
       microphone: Microphone
-      more_help: Plus d'aide....
-      needs_review: A besoin d'un examen
+      more_help: Plus de conseils...
+      needs_review: À besoin d'une révision
       notes_and_questions: Remarques et questions
-      this_page_marked_blank: Cette page est marquée vierge
+      this_page_marked_blank: Cette page est marquée comme vierge
       this_page_marked_needs_review: Cette page a été marquée comme "nécessite une révision". Vous pouvez améliorer cette page en la relisant à l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « Nécessite un examen » et enregistrez la page.
       this_page_marked_needs_review_workflow_version: Cette page doit être révisée. Vous pouvez améliorer cette page en la relussant par rapport à l'original et en ajoutant ou en corrigeant le texte, puis en approuvant le texte.
       title: 'Titre:'
@@ -70,7 +70,7 @@ fr:
       edit_translation: Modifier la traduction
       help_correct: aider à corriger
       help_transcribe: aider à transcrire
-      mark_as_blank: Marquer comme vide
+      mark_as_blank: Marquer comme vierge
       mark_the_page_blank: marquer la page blanche
       microphone: Microphone
       or_mark_blank: "<br>ou %{mark_blank}"
