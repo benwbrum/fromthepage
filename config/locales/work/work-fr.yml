@@ -161,7 +161,7 @@ fr:
       iiif_manifest: Manifeste IIIF
       location_of_composition: Lieu de composition
       metadata: Métadonnées
-      number_of_pages: Nombre de pages : 
+      number_of_pages: 'Nombre de pages : '
       out_of_scope: Hors champ
       permission_description: Description de l'autorisation
       physical_description: Description physique
