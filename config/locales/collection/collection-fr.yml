@@ -10,7 +10,7 @@ fr:
       progress: Progrès
       work_title: Titre de travail
     contributor_activity:
-      recent_notes: Remarques récentes
+      recent_notes: Notes récentes
       recent_ocr_correction: Correction OCR récente
       recent_pages_needing_review: Pages récentes à revoir
       recent_subject_indexing: Indexation des sujets récents
@@ -21,7 +21,7 @@ fr:
       recent_translations_needing_review: Traductions récentes nécessitant une révision
       recent_works_added: Travaux récents ajoutés
     contributors:
-      contributions: Cotisations entre %{start_deed} et %{end_deed}
+      contributions: Contributions entre %{start_deed} et %{end_deed}
       end_date: Date de fin
       select_new_date: Sélectionnez une nouvelle plage de dates
       start_date: Date de début
