@@ -75,7 +75,7 @@ fr:
       search_all_pages: Rechercher toutes les pages
       search_all_pages_description: Rechercher dans le texte de %{collection} les pages contenant des mots utilisés pour créer un lien vers <em>%{article}</em>
       search_unlinked_pages: Rechercher des pages non liées
-      search_unlinked_pages_description: Rechercher uniquement le texte des pages qui ne sont pas liés au sujet: <em>%{article}</em>
+      search_unlinked_pages_description: 'Rechercher uniquement le texte des pages qui ne sont pas liés au sujet: <em>%{article}</em>'
       see_also: 'Voir également:'
       text_search: Recherche de texte
     subject_upload:
