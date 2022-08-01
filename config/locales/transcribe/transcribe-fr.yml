@@ -36,7 +36,7 @@ fr:
       collaboration_restricted_collection: La collaboration est restreinte pour cette collection. Veuillez contacter le propriétaire du projet si vous souhaitez aider à la transcription.
       save_up_to_three_transcriptions: Vous pouvez enregistrer jusqu'à trois transcriptions en tant qu'invité ou vous inscrire maintenant.
       sign_up_now: S'inscrire maintenant
-      sign_up_now_to_transcribe: Inscrivez-vous maintenant pour transcrire.
+      sign_up_now_to_transcribe: Inscrivez-vous pour transcrire.
       transcribe_as_guest: Transcrire en tant qu'invité
     mark_page_blank:
       saved_notice: Enregistré
@@ -71,16 +71,16 @@ fr:
       help_correct: aider à corriger
       help_transcribe: aider à transcrire
       mark_as_blank: Marquer comme vierge
-      mark_the_page_blank: marquer la page blanche
+      mark_the_page_blank: marquer la page comme vierge
       microphone: Microphone
       or_mark_blank: "<br>ou %{mark_blank}"
-      page_needs_review: La page doit être révisée
-      page_notes: Remarques et questions
+      page_needs_review: À besoin d'une révision
+      page_notes: Notes et questions
       please_help_this_page: Veuillez %{help_link} cette page
       preview: Aperçu
-      save_changes: Sauvegarder les modifications
+      save_changes: Sauvegarder
       show_image: Afficher l'image
       this_page_is_blank: Cette page est vierge
       this_page_is_not: Cette page n'est pas %{text_type}
-      this_page_marked_needs_review: Cette page a été marquée comme "nécessite une révision". Vous pouvez améliorer cette page en la relisant à l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « Nécessite un examen » et enregistrez la page.
-      transcribed: transcrit
+      this_page_marked_needs_review: Cette page a été marquée comme "ayant besoin d'une révision". Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « À besoin d'une révision » et enregistrez la page.
+      transcribed: transcrite
