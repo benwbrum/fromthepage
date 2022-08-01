@@ -30,7 +30,7 @@ fr:
       time_ago_in_words: Il y a %{time}
     list:
       activity_stream: Flux d'activité
-      collection_title: 'Collecte : %{title}'
+      collection_title: 'Collection : %{title}'
       newer_activity: Activité plus récente
       older_activity: Activité plus ancienne
       time_ago_in_words: Il y a %{time}
