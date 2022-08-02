@@ -58,7 +58,7 @@ fr:
       contrast: Contraste
       image_filters: Filtres d'images
       open_seadragon_needs_js: OpenSeadragon n'est disponible que si JavaScript est activé.
-      threshold: Au seuil
+      threshold: Seuillage
     page_tabs:
       correct: Corriger
       describe_work: Décrire le travail
