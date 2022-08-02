@@ -25,52 +25,70 @@ fr:
       collaborator: Collaborateur
       edit: Modification
       incomplete_page: Page incomplète
-      indexed: indexé
+      # indexed: indexé
       lines_transcribed:
         one: Ligne de texte
         other: Lignes de texte
-      needing_review: ayant besoin d'une révision
+      # needing_review: ayant besoin d'une révision
       note: Note
       ocr_correction: Correction OCR
       page: Page
+      page_edit:
+      page_indexed:
+      page_needing_review:
+      page_reviewed:
+      page_transcribed:
+      page_translated:
       records_indexed: Notice indexée
       reference: Référence
-      reviewed: revisée
+      # reviewed: revisée
       subject: Sujet
-      transcribed: transcrite
-      translated: traduite
+      # transcribed: transcrite
+      # translated: traduite
       work: Œuvre
       works_described: Œuvre décrite
     recent_statistics:
       collaborator: Collaborateur
-      edit: Éditer
-      indexed: indexée
-      marked_needing_review: marqué comme ayant besoin d'une révision
+      # edit: Éditer
+      # indexed: indexée
+      # marked_needing_review: marqué comme ayant besoin d'une révision
       new_subject: Nouveau sujet
       note: Noter
       ocr_correction: Correction d'OCR
       page: Page
+      page_edit: 
+      page_indexed: 
+      page_marked_needing_review:
+      page_reviewed:
+      page_transcribed:
+      page_translated:
       reference: Référence
-      reviewed: révisée
-      transcribed: transcrite
-      translated: traduite
+      # reviewed: révisée
+      # transcribed: transcrite
+      # translated: traduite
     statistics:
       active_page: Page active
       collaborator: Collaborateur
-      edit: Modification
+      # edit: Modification
       incomplete_page: Page incomplète
-      indexed: indexée
+      # indexed: indexée
       last_days_statistics: Statistiques des 7 derniers jours
-      marked_needing_review: marquée comme ayant besoin d'une révision
-      needing_review: ayant besoin d'une révision
+      # marked_needing_review: marquée comme ayant besoin d'une révision
+      # needing_review: ayant besoin d'une révision
       new_subject: Nouveau sujet
       note: Note
       ocr_correction: Correction d'OCR
       page: Page
+      page_edit:
+      page_indexed: 
+      page_needing_review:
+      page_reviewed:
+      page_transcribed:
+      page_translated:
       reference: Référence
-      reviewed: revisée
+      # reviewed: revisée
       subject: Sujet
       total_page: Page totale
-      transcribed: transcrite
-      translated: traduite
+      # transcribed: transcrite
+      # translated: traduite
       work: Œuvre

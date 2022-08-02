@@ -18,29 +18,75 @@ pt:
     collection:
       last_days_statistics: Estatísticas dos últimos 7 dias
     collection_statistics:
-      collaborator: Colaborador
-      note: Nota
-      ocr_correction: Correção OCR
-      page: Página
-      reference: Referência
-      subject: Assunto
-      work: Trabalho
+      collaborator: 
+        one: Colaborador
+        other: Colaboradores
+      note: 
+        one: Nota
+        other: Notas
+      ocr_correction: 
+        one: Correção OCR
+        other: Correções OCR
+      page: 
+        one: Página
+        other: Páginas
+      reference: 
+        one: Referência
+        other: Referências
+      subject: 
+        one: Assunto
+        other: Assuntos
+      work: 
+        one: Trabalho
+        other: Trabalhos
     recent_statistics:
-      collaborator: Colaborador
-      new_subject: Novo assunto
-      note: Nota
-      ocr_correction: Correção OCR
-      page: Página
-      reference: Referência
+      collaborator: 
+        one: Colaborador
+        other: Colaboradores
+      new_subject: 
+        one: Novo assunto
+        other: Novos assuntos
+      note: 
+        one: Nota
+        other: Notas
+      ocr_correction: 
+        one: Correção OCR
+        other: Correções OCR
+      page: 
+        one: Página
+        other: Páginas
+      reference: 
+        one: Referência
+        other: Referências
     statistics:
-      active_page: Página ativa
-      collaborator: Colaborador
+      active_page: 
+        one: Página ativa
+        other: Páginas ativas
+      collaborator: 
+        one: Colaborador
+        other: Colaboradores
       last_days_statistics: Estatísticas dos últimos 7 dias
-      new_subject: Novo assunto
-      note: Nota
-      ocr_correction: Correção OCR
-      page: Página
-      reference: Referência
-      subject: Assunto
-      total_page: Página total
-      work: trabalho
+      new_subject: 
+        one: Novo assunto
+        other: Novos assuntos
+      note: 
+        one: Nota
+        other: Notas
+      ocr_correction: 
+        one: Correção OCR
+        other: Correções OCR
+      page: 
+        one: Página
+        other: Páginas
+      reference: 
+        one: Referência
+        other: Referências
+      subject: 
+        one: Assunto
+        other: Assuntos
+      total_page: 
+        one: Página total
+        other: Páginas totais
+      work: 
+        one: Trabalho
+        other: Trabalhos
