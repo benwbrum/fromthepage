@@ -23,13 +23,20 @@ en:
       translation: Translation
     list_pages:
       actions: Actions
+      blank_page: Blank Page
+      completed: Completed
+      correct: Correct
       describe: Describe
+      index: Index
       metadata: Metadata
       no_notes: No notes
       no_pages_found: No pages found
       no_pages_in_work: This work does not contain any pages yet, go to %{link} to create a new page
       page_title: Page Title
       pages_tab: Pages tab
+      review: Review
+      transcribe: Transcribe
+      translate: Translate
       user_notes: User Notes
       n_notes:
         one: 1 note
