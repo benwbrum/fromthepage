@@ -31,6 +31,9 @@ fr:
       page_title: Titre de la page
       pages_tab: Onglet Pages
       user_notes: Notes de l'utilisateur
+      n_notes: 
+        one: 1 note
+        other: '%{count} notes'
     multi_page:
       categories: Catégories
       describe: Créer des métadonnées

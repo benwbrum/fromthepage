@@ -22,6 +22,9 @@ pt:
       no_pages_in_work: Esta obra ainda não contém nenhuma página; vá para %{link} para criar uma nova página
       page_title: Título da Página
       user_notes: Notas do Usuário
+      n_notes:
+        one: 1 nota
+        other: '%{count} notas'
     multi_page:
       categories: Categorias
       pages_need_indexing: Páginas para Indexar

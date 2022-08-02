@@ -31,6 +31,9 @@ en:
       page_title: Page Title
       pages_tab: Pages tab
       user_notes: User Notes
+      n_notes:
+        one: 1 note
+        other: '%{count} notes'
     multi_page:
       categories: Categories
       describe: Create Metadata
