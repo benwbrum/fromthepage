@@ -96,8 +96,16 @@
               span= t('.one_file_per_collection')
         li
           .bulk-export_format
-            h5= t('.subject_csv')
-            p.nomargin= t('.subject_csv_description')
+            h5= t('.subject_details_csv')
+            p.nomargin= t('.subject_details_csv_description')
+          .bulk-export_options
+            =f.label :subject_details_csv_collection
+              =f.check_box :subject_details_csv_collection, value: @bulk_export.subject_details_csv_collection
+              span= t('.one_file_per_collection')
+        li
+          .bulk-export_format
+            h5= t('.subject_index_csv')
+            p.nomargin= t('.subject_index_csv_description')
           .bulk-export_options
             =f.label :subject_csv_collection
               =f.check_box :subject_csv_collection, value: @bulk_export.subject_csv_collection

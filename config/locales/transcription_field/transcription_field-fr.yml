@@ -8,7 +8,7 @@ fr:
       must_have_options_list: Les champs sélectionnés doivent avoir une liste d'options. Veuillez ajouter des options à tous les champs sélectionnés et réenregistrer.
     choose_offset:
       page_layout: Mise en page
-      page_layout_description: Redimensionnez le rectangle sur l'image pour entourer la partie de la page contenant une feuille de calcul, puis cliquez sur le bouton bleu "OK" et enregistrez votre sélection.
+      page_layout_description: Redimensionnez le rectangle sur l'image pour entourer la partie de la page contenant une feuille de calcul, puis enregistrez votre sélection.
       replace_image: Remplacer l'image
       replace_image_description: Si l'image d'exemple ne contient pas de feuille de calcul, vous pouvez la remplacer par une page différente de la collection, choisie au hasard.
       save_selection: Enregistrer la sélection

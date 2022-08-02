@@ -8,7 +8,7 @@ en:
       must_have_options_list: Select fields must have an options list. Please add options to any select fields and resave.
     choose_offset:
       page_layout: Page layout
-      page_layout_description: Resize the rectangle on the image to surround the portion of the page containing a spreadsheet, then click the blue "OK" button and save your selection.
+      page_layout_description: Resize the rectangle on the image to surround the portion of the page containing a spreadsheet, then save your selection.
       replace_image: Replace Image
       replace_image_description: If the example image does not contain a spreadsheet, you can replace it with a different page from the collection, chosen at random.
       save_selection: Save Selection

@@ -5,30 +5,31 @@ module ExportHelper
 
     # do some escaping of the document for markdown
     preprocessed = xml_text || ''
-    preprocessed.gsub!("[","\\[")
-    preprocessed.gsub!("]","\\]")
+    # preprocessed.gsub!("[","\\[")
+    # preprocessed.gsub!("]","\\]")
     preprocessed.gsub!('&', '&amp;') # escape ampersands
     preprocessed.gsub!(/&(amp;)+/, '&amp;') # clean double escapes
 
 
     doc = REXML::Document.new(preprocessed)
     doc.elements.each_with_index("//footnote") do |e,i|
-      marker = "#{i}" #e.attributes['marker'] || '*'
+      marker = "#{i+1}" #e.attributes['marker'] || '*'
 
-      doc.root.add REXML::Text.new("\n\n[^#{marker}]: ")
+      doc.root.add REXML::Text.new("\n\n#{marker}: ")
       e.children.each do |child|
         doc.root.add child
       end
-      doc.root.add REXML::Text.new("\n")
+      doc.root.add REXML::Text.new(" \n")
 
-      e.replace_with(REXML::Text.new("[^#{marker}]"))
+      sup = REXML::Element.new("sup")
+      sup.add(REXML::Text.new(marker))
+      e.replace_with(sup)
     end
 
 
 
     postprocessed = ""
     doc.write(postprocessed)
-
     html = xml_to_html(postprocessed, preserve_lb, flatten_links, collection)
     if div_pad
       doc = REXML::Document.new("<div>#{html}</div>")
@@ -62,6 +63,10 @@ module ExportHelper
     # collection-level exports
     if bulk_export.subject_csv_collection
       export_subject_csv(dirname: '', out: out, collection: bulk_export.collection)
+    end
+
+    if bulk_export.subject_details_csv_collection
+      export_subject_details_csv(dirname: '', out: out, collection: bulk_export.collection)
     end
 
     if bulk_export.table_csv_collection

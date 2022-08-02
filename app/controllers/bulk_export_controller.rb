@@ -94,6 +94,7 @@ class BulkExportController < ApplicationController
         :html_page, 
         :html_work, 
         :subject_csv_collection, 
+        :subject_details_csv_collection,
         :table_csv_work, 
         :table_csv_collection,
         :work_metadata_csv,

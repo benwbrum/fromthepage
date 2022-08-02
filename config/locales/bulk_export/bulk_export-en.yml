@@ -36,8 +36,10 @@ en:
       static_site: Static Site
       static_site_description: A static Jekyll website containing the entire edition
       status: Status
-      subject_csv: Subject CSV
-      subject_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the collection
+      subject_details_csv: Subject Details CSV
+      subject_details_csv_description: A spreadsheet listing each subject in the collection
+      subject_index_csv: Subject Index CSV
+      subject_index_csv_description: A spreadsheet listing each place a subject is mentioned within a page within the collection
       table_field_csv: Table/Field CSV
       table_field_csv_description: Exports a spreadsheet with field-based or tabular data.
       tei_xml: TEI XML

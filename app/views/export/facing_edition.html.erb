@@ -31,6 +31,11 @@
 ### <%= page.title %>
 <%= raw(xml_to_pandoc_md(page.xml_text, @edition_type!='text', true)) %>
 
+<% if @work.supports_translation && !page.xml_translation.blank?%>
+### <%= page.title %>
+<%= raw(xml_to_pandoc_md(page.xml_translation, @edition_type!='text', true)) %>
+<% end %>
+
 <% end %>
 
 
