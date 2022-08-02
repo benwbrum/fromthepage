@@ -8,7 +8,7 @@ fr:
         one: '1 page :'
         other: "%{count} pages :"
       progress: Progrès
-      work_title: Titre de travail
+      work_title: Titre de œuvre
     contributor_activity:
       recent_notes: Notes récentes
       recent_ocr_correction: Correction OCR récente
@@ -19,7 +19,7 @@ fr:
       recent_translation_subject_indexing: Indexation par sujet des traductions récentes
       recent_translations: Traductions récentes
       recent_translations_needing_review: Traductions récentes nécessitant une révision
-      recent_works_added: Travaux récents ajoutés
+      recent_works_added: Œuvres récents ajoutés
     contributors:
       contributions: Contributions entre %{start_deed} et %{end_deed}
       end_date: Date de fin
@@ -55,7 +55,7 @@ fr:
       api_access_description: Autoriser l'accès aux transcriptions via l'API IIIF
       authorized_reviewers: Examinateurs autorisés
       blank_collection: Collecte vierge
-      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il supprimera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
+      blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il supprimera toutes les transcriptions et autres œuvres sur la collection, comme si elle venait d'être importée.
       close_api: Fermer l'API
       collection_active_message: Ceci est une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
       collection_collaborators: Collaborateurs de collecte
@@ -99,7 +99,7 @@ fr:
       field_based_transcription: Transcription basée sur le champ
       footer: Bas de page
       help: Texte d'aide de base
-      hide_completed: Masquer les travaux terminés par défaut
+      hide_completed: Masquer les œuvres terminés par défaut
       learn_more_footer: En savoir plus sur la configuration du pied de page.
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
       make_collection_active: Rendre la collecte active
@@ -128,9 +128,9 @@ fr:
       remove_collaborator: Supprimer un collaborateur
       remove_owner: Supprimer le propriétaire
       remove_reviewer: Supprimer l'examinateur
-      restrict_completed_works: Restreindre les travaux terminés
-      restricted_completed_works: Travaux terminés restreints
-      restricted_completed_works_description: Ce bouton limitera les travaux %{work_count} qui sont terminés mais non actuellement restreints aux maîtres d'ouvrage ou collaborateurs désignés. Vous pouvez modifier ce paramètre et ajouter des collaborateurs dans la page des paramètres de chaque travail.
+      restrict_completed_works: Restreindre les œuvres terminés
+      restricted_completed_works: Œuvres terminés restreints
+      restricted_completed_works_description: Ce bouton limitera les œuvres %{work_count} qui sont terminés mais non actuellement restreints aux maîtres d'ouvrage ou collaborateurs désignés. Vous pouvez modifier ce paramètre et ajouter des collaborateurs dans la page des paramètres de chaque œuvre.
       revert_document_based_transcription: Revenir à la transcription basée sur des documents
       revert_metadata_description: Désactiver Description
       review_type: Type d'examen
@@ -208,7 +208,7 @@ fr:
       one_off_description: Ces contributions ont été faites par des utilisateurs qui n'ont édité qu'une seule page. Ils peuvent nécessiter une attention particulière.
       one_off_title: Cotisations uniques
       review: Examen
-      title: Page (Travail)
+      title: Page (Œuvre)
       user: Utilisateur
     quality_sampling: Échantillonnage de qualité
     recent_contributor_list:
@@ -216,7 +216,7 @@ fr:
       filter_users: Filtre
       no_contributions_need_review: Aucune contribution n'a besoin d'être examinée
       number_of_contributions: Cotisations totales
-      recent_contributor_description: Ces collaborateurs ont commencé à travailler sur le projet récemment, mais leur travail n'a jamais été revu.
+      recent_contributor_description: Ces collaborateurs ont commencé à travailler sur le projet récemment, mais leur œuvre n'a jamais été revu.
       recent_contributor_title: Contributeurs récents
       review: Examen
       user: Utilisateur
@@ -224,11 +224,11 @@ fr:
       one_off_contributions: Cotisations uniques
       pages_needing_review: Pages à réviser
       quality_sampling: Échantillonnage de qualité
-      quality_sampling_desc: Les échantillonnages de qualité vous permettent de vérifier les contributions de manière aléatoire, puis d'évaluer les pages à réviser en fonction de la quantité de texte corrigé pour un utilisateur ou un travail particulier.
+      quality_sampling_desc: Les échantillonnages de qualité vous permettent de vérifier les contributions de manière aléatoire, puis d'évaluer les pages à réviser en fonction de la quantité de texte corrigé pour un utilisateur ou un œuvre particulier.
       total_page: Nombre total de pages
       transcribed_page: Page transcrite
       unreviewed_contributors: Nouveaux contributeurs
-      works_to_review: Travaux à revoir
+      works_to_review: Œuvres à revoir
     show:
       about: À propos
       add_a_new_work: Ajouter une nouvelle œuvre
@@ -253,8 +253,8 @@ fr:
       show_more: Voir plus
       start_transcribing: Commencer à transcrire
       subject_categories: Catégories de sujets
-      this_work_has_not_been_described: Ce travail a besoin de meilleures métadonnées.
-      this_work_has_pages_that_need_work: Certaines pages ont encore besoin de travail.
+      this_work_has_not_been_described: Ce œuvre a besoin de meilleures métadonnées.
+      this_work_has_pages_that_need_work: Certaines pages ont encore besoin de œuvre.
       time_ago_in_words: Il y a %{time}
       works: Œuvres
     start_transcribing:
@@ -280,7 +280,7 @@ fr:
       quality_score: 'Niveau de qualité :'
       real_name: 'Nom : %{user}'
       review: Examen
-      title: Page (Travail)
+      title: Page (Œuvre)
       user_contribution_description: Pages nécessitant une révision par l'utilisateur %{user_name}
       user_profile: Profil de l'utilisateur
     works_list:
@@ -296,12 +296,12 @@ fr:
       filter_works: Filtre
       incomplete: Incomplet
       last_activity: Dernière Activité
-      no_works_need_review: Aucun travaux à revoir
+      no_works_need_review: Aucun œuvres à revoir
       notes: Remarques
       review: Examen
       title: Titre
       total: Total
   collection_helper:
     link:
-      incomplete_works: Travaux incomplets
+      incomplete_works: Œuvres incomplets
       show_all: Afficher tout

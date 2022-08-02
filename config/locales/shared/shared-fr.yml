@@ -24,7 +24,7 @@ fr:
       u_description: Marque le texte souligné.
       unclear_description: Marque le texte peu clair.
     collection_tabs:
-      add_work: Ajouter un travail
+      add_work: Ajouter un œuvre
       collaborators: Collaborateurs
       collection: le recueil
       edit_fields: Des champs
@@ -37,17 +37,17 @@ fr:
       settings: Réglages
       statistics: Statistiques
       subjects: Sujets
-      works_list: Liste des travaux
+      works_list: Liste des œuvres
     description_tabs:
       describe: Métadonnées
       help: Aide
       metadata: Métadonnées
-      nav_info: Travail %{position} sur %{size}
+      nav_info: Œuvre %{position} sur %{size}
       next_page: Page suivante
-      next_work: Travail suivant
+      next_work: Œuvre suivant
       overview: Aperçu
       previous_page: Page précédente
-      previous_work: Précédent travail
+      previous_work: Précédent œuvre
       versions: Versions
     handsontable:
       date_tooltip: Les dates doivent être au format AAAA-MM-JJ (année à quatre chiffres, mois à deux chiffres, jour à deux chiffres, avec des traits d'union entre eux).
@@ -61,7 +61,7 @@ fr:
       threshold: Seuillage
     page_tabs:
       correct: Corriger
-      describe_work: Décrire le travail
+      describe_work: Décrire le œuvre
       help: Aide
       nav_info: Page %{position} sur %{size}
       next_page: Page suivante
@@ -85,4 +85,4 @@ fr:
       pages: Pages
       read: Lire
       settings: Réglages
-      work: Travailler
+      work: Œuvre

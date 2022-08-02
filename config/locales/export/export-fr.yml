@@ -30,8 +30,8 @@ fr:
       export_subjects_as_csv: Index d'exportation au format CSV
       export_to_contentdm: Exporter vers CONTENTdm
       export_to_contentdm_description: Cliquez sur le bouton pour exporter les transcriptions terminées de l'ensemble de la collection vers CONTENTdm.
-      export_work_metadata: Exporter les métadonnées de travail
-      export_work_metadata_as_csv: Exporter les métadonnées de travail au format CSV
+      export_work_metadata: Exporter les métadonnées de œuvre
+      export_work_metadata_as_csv: Exporter les métadonnées de œuvre au format CSV
       export_work_metadata_description: Exportez une feuille de calcul contenant une ligne pour chaque œuvre de la collection, avec des colonnes pour les statistiques sur les pages transcrites et les métadonnées de l'œuvre.
       here: ici
       html: HTML
@@ -50,7 +50,7 @@ fr:
       review: Examen
       table_csv: Tableau CSV
       tei: TEI
-      work_title: Titre de travail
+      work_title: Titre de œuvre
     show:
       categories: 'Catégories :'
       export_metadata: Exportation FromThePage de %{work} à partir de %{collection} effectuée sur %{time}.

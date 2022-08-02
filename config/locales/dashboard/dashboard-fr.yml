@@ -36,25 +36,25 @@ fr:
       date: Date d'exportation
       download: Télécharger
       exported_item: Collection/œuvre exportée
-      facing_edition_work: Face à l'édition PDF (travail)
+      facing_edition_work: Face à l'édition PDF (œuvre)
       html_page: HTML (page)
-      html_work: HTML (travail)
+      html_work: HTML (œuvre)
       plaintext_emended_page: Texte en clair analytique (page)
-      plaintext_emended_work: Texte en clair analytique (travail)
+      plaintext_emended_work: Texte en clair analytique (œuvre)
       plaintext_searchable_page: Texte en clair consultable (page)
-      plaintext_searchable_work: Texte en clair consultable (travail)
+      plaintext_searchable_work: Texte en clair consultable (œuvre)
       plaintext_verbatim_page: Texte brut textuel (page)
-      plaintext_verbatim_work: Texte brut textuel (travail)
+      plaintext_verbatim_work: Texte brut textuel (œuvre)
       refresh: Rafraîchir
       reload_this_page_to: Recharger cette page pour mettre à jour la liste.
       status: Statut
       subject_csv_collection: Index des sujets CSV (collection)
       table_csv_collection: Champ/Table CSV (collection)
-      table_csv_work: Champ/Table CSV (travail)
-      tei_work: TEX-XML (travail)
-      text_docx_work: MS Word .docx (travail)
-      text_pdf_work: Texte PDF (travail)
-      work_metadata_csv: Métadonnées de travail (collection)
+      table_csv_work: Champ/Table CSV (œuvre)
+      tei_work: TEX-XML (œuvre)
+      text_docx_work: MS Word .docx (œuvre)
+      text_pdf_work: Texte PDF (œuvre)
+      work_metadata_csv: Métadonnées de œuvre (collection)
     guest_header:
       recent_activity: Activité récente
     hierarchical_collections_and_document_sets:
@@ -92,7 +92,7 @@ fr:
       see_all_works: Voir toutes les oeuvres...
       start_a_project: Démarrer un projet
       there_are_no_works: Il n'y a pas encore d'œuvres dans cette collection
-      total_work_count: 'Nombre total de travaux : %{count}'
+      total_work_count: 'Nombre total de œuvres : %{count}'
       you_can_add_another_work: Vous pouvez ajouter une autre œuvre sous %{start_project}
       you_can_new_collection: Vous pouvez %{new_collection}
       you_can_upload_documents: Vous pouvez télécharger des documents sous %{start_project}
@@ -127,13 +127,13 @@ fr:
       click_to_browse_files: Cliquez pour parcourir les fichiers
       each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez pas les pages de différents documents dans le même dossier.
       each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
-      for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre travail et une dernière œuvre contenant les 5 images du dossier.'
+      for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre œuvre et une dernière œuvre contenant les 5 images du dossier.'
       image_naming_guidelines: 'Les images doivent être nommées de manière à ce qu''un tri alphabétique aboutisse à l''ordre correct des pages.<br> (Cela peut nécessiter un "zéro remplissage" pour tous les numéros de page : <code>page_09.jpg, page_10.jpg</code> triera correctement, mais <code>page_9.jpg, page_10.jpg</code> ne le sera pas.)'
       image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
       import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet.
       page_image_guidelines: Directives relatives aux images de page
       select_a_collection: "- Sélectionnez une collection -"
-      to_specify_metadata: Pour spécifier les métadonnées avec les images, incluez un fichier %{link} dans chaque dossier en spécifiant les champs pour le travail.
+      to_specify_metadata: Pour spécifier les métadonnées avec les images, incluez un fichier %{link} dans chaque dossier en spécifiant les champs pour le œuvre.
       trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
       upload_file: Téléverser un fichier
       upload_pdf_or_zip_file: Télécharger un fichier PDF ou ZIP

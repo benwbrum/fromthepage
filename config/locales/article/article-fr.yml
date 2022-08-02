@@ -8,7 +8,7 @@ fr:
       n_subjects_refer_to:
         one: 1 sujet fait référence à %{article}
         other: "%{count} sujets font référence à %{article}"
-      show_pages_that_mention: Afficher les pages qui mentionnent %{article} dans tous les travaux
+      show_pages_that_mention: Afficher les pages qui mentionnent %{article} dans tous les œuvres
     combine_duplicate:
       selected_subjects_combined: Sujets sélectionnés combinés avec %{title}
     delete:

@@ -50,4 +50,4 @@ fr:
       verbatim_plaintext: Texte brut textuel
       verbatim_plaintext_description: Ce fichier en clair représentera les sauts de ligne avec une seule nouvelle ligne, les sauts de paragraphe avec une double nouvelle ligne et les sauts de page avec une triple nouvelle ligne. Il contiendra le texte textuel, avec tous les formatages, corrections et liens de sujet supprimés.
       work_metadata_csv: Métadonnées professionnelles CSV
-      work_metadata_csv_description: Une feuille de calcul répertoriant chaque travail avec le nombre de pages et les métadonnées.
+      work_metadata_csv_description: Une feuille de calcul répertoriant chaque œuvre avec le nombre de pages et les métadonnées.

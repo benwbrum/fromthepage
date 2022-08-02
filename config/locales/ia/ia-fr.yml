@@ -10,25 +10,25 @@ fr:
       import_from_archive_org: Importer depuis Archive.org
       not_converted_into_work: mais n'a pas été converti en une œuvre FromThePage.
       please_enter_valid_url: Veuillez saisir une URL de livre Archive.org valide à importer
-      was_converted_into_work: et a été converti en travail FromThePage
+      was_converted_into_work: et a été converti en œuvre FromThePage
     convert:
       converted_to_work: "%{title} a été converti en une œuvre FromThePage"
     ia_book_form:
       book_url: URL du livre
       import_book_description: Pour importer un livre, veuillez ouvrir ce livre sur www.archive.org, puis copiez l'URL du livre à partir de la barre d'adresse du navigateur et collez-la ci-dessous.
       import_from_archive_org: Importer depuis Archive.org
-      import_work: Importer le travail
+      import_work: Importer le œuvre
     import_work:
       imported_into_staging: "%{title} a été importé dans votre zone de staging"
     manage:
       actions: Actions
-      book_imported_description: Ce livre a été importé des archives Internet mais n'a pas encore été converti en œuvre. Ci-dessous, vous voyez la liste des pages importées et leur texte OCR. Utilisez le menu actions pour définir la première page (masquer toutes les pages précédentes) et la dernière page (masquer toutes les pages suivantes). Vous pouvez également gérer les titres des pages à partir du texte OCR et enfin convertir cet import en œuvre en le publiant dans une collection. Pour plus d'informations sur cet écran, consultez l'article Wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive" target="_blank">Importation de travaux à partir des archives Internet</a>.
+      book_imported_description: Ce livre a été importé des archives Internet mais n'a pas encore été converti en œuvre. Ci-dessous, vous voyez la liste des pages importées et leur texte OCR. Utilisez le menu actions pour définir la première page (masquer toutes les pages précédentes) et la dernière page (masquer toutes les pages suivantes). Vous pouvez également gérer les titres des pages à partir du texte OCR et enfin convertir cet import en œuvre en le publiant dans une collection. Pour plus d'informations sur cet écran, consultez l'article Wiki <a href="https://github.com/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive" target="_blank">Importation de œuvres à partir des archives Internet</a>.
       conceal_following_pages: Masquer les pages suivantes
       conceal_preceding_pages: Masquer les pages précédentes
       first_line_of_ocr: Première ligne d'OCR
       first_line_of_ocr_description: "<b>La première ligne de l'OCR</b> remplace les titres de page par la première ligne du texte OCR sur chaque page. Ceci est utile pour les agendas et les livres de jour, puisque la première ligne est généralement une date."
       last_line_of_ocr: Dernière ligne de l'OCR
-      last_line_of_ocr_description: "<b>La dernière ligne de l'OCR</b> remplace les titres de page par la dernière ligne du texte OCR sur chaque page. Ceci est utile pour les travaux imprimés dans lesquels les numéros de page apparaissent en bas."
+      last_line_of_ocr_description: "<b>La dernière ligne de l'OCR</b> remplace les titres de page par la dernière ligne du texte OCR sur chaque page. Ceci est utile pour les œuvres imprimés dans lesquels les numéros de page apparaissent en bas."
       manage_archive_org_import: Gérer l'importation Archive.org
       ocr_for_page_contents: Utiliser le texte OCR pour le contenu de la page ?
       ocr_for_page_contents_description: Cochez cette case pour remplir la transcription initiale de chaque page avec le contenu de l'OCR correspondant. (Ne le faites pas si vos pages contiennent une écriture manuscrite que vous souhaitez transcrire.)
@@ -36,7 +36,7 @@ fr:
       page_n_of_n: Page %{n} sur %{total} (%{n2})
       page_titles: Titres des pages
       publish_to_collaborators: Publier aux collaborateurs
-      publish_work: Publier le travail
+      publish_work: Publier le œuvre
       publish_work_description: Une fois que vous avez les titres et les feuilles prêts, cliquez sur Publier pour convertir le livre en une œuvre FromThePage prête à être transcrite. Ce processus prendra plusieurs minutes à s'exécuter.
       select_a_collection: "- Sélectionnez une collection -"
       select_a_collection_1: Sélectionnez une collection
