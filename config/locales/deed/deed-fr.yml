@@ -15,7 +15,7 @@ fr:
         in_the_work: " dans le travail %{work}"
         indexed_page: a indexée %{page}
         indexed_translation_of_page: a indexé la traduction de %{page}
-        joined: a rejoint
+        joined: 'a rejoint '
         marked_page_as_blank: a marqué la page %{page} comme vierge
         marked_page_as_needing_review: a marqué la page %{page} comme nécessitant une révision
         marked_translation_page_as_needing_review: a marqué la page à traduire %{page} comme nécessitant une révision
