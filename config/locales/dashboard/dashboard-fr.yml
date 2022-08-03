@@ -83,7 +83,7 @@ fr:
       import_from_contentdm: Importer depuis CONTENTdm
       import_from_the_internet_archive: Importer à partir des archives Internet
       import_many_link: importer plusieurs objets composés individuels.
-      or_import_many: Ou
+      or_import_many: 'Ou '
       page_image_guidelines: Directives relatives aux images de page
       paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
