@@ -58,7 +58,7 @@ class ScCollectionsController < ApplicationController
   def import
     at_id = params[:at_id]
 
-    # begin
+    begin
       version = detect_version(at_id)
       if version == 2
         service = find_service(at_id)
@@ -109,16 +109,16 @@ class ScCollectionsController < ApplicationController
 
 
       end
-    # rescue => e
-    #   logger.error(e)
-    #   case params[:source]
-    #   when 'contentdm'
-    #     flash[:error] = t('.no_manifest_exist', url: params[:source_url])
-    #   else
-    #     flash[:error] = t('.please_enter_valid_url')
-    #   end
-    #   redirect_back fallback_location: { action: 'import' }
-    # end
+    rescue => e
+      logger.error(e)
+      case params[:source]
+      when 'contentdm'
+        flash[:error] = t('.no_manifest_exist', url: params[:source_url])
+      else
+        flash[:error] = t('.please_enter_valid_url')
+      end
+      redirect_back fallback_location: { action: 'import' }
+    end
   end
 
 
