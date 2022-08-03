@@ -18,75 +18,75 @@ pt:
     collection:
       last_days_statistics: Estatísticas dos últimos 7 dias
     collection_statistics:
-      collaborator: 
+      collaborator:
         one: Colaborador
         other: Colaboradores
-      note: 
+      note:
         one: Nota
         other: Notas
-      ocr_correction: 
+      ocr_correction:
         one: Correção OCR
         other: Correções OCR
-      page: 
+      page:
         one: Página
         other: Páginas
-      reference: 
+      reference:
         one: Referência
         other: Referências
-      subject: 
+      subject:
         one: Assunto
         other: Assuntos
-      work: 
+      work:
         one: Trabalho
         other: Trabalhos
     recent_statistics:
-      collaborator: 
+      collaborator:
         one: Colaborador
         other: Colaboradores
-      new_subject: 
+      new_subject:
         one: Novo assunto
         other: Novos assuntos
-      note: 
+      note:
         one: Nota
         other: Notas
-      ocr_correction: 
+      ocr_correction:
         one: Correção OCR
         other: Correções OCR
-      page: 
+      page:
         one: Página
         other: Páginas
-      reference: 
+      reference:
         one: Referência
         other: Referências
     statistics:
-      active_page: 
+      active_page:
         one: Página ativa
         other: Páginas ativas
-      collaborator: 
+      collaborator:
         one: Colaborador
         other: Colaboradores
       last_days_statistics: Estatísticas dos últimos 7 dias
-      new_subject: 
+      new_subject:
         one: Novo assunto
         other: Novos assuntos
-      note: 
+      note:
         one: Nota
         other: Notas
-      ocr_correction: 
+      ocr_correction:
         one: Correção OCR
         other: Correções OCR
-      page: 
+      page:
         one: Página
         other: Páginas
-      reference: 
+      reference:
         one: Referência
         other: Referências
-      subject: 
+      subject:
         one: Assunto
         other: Assuntos
-      total_page: 
+      total_page:
         one: Página total
         other: Páginas totais
-      work: 
+      work:
         one: Trabalho
         other: Trabalhos

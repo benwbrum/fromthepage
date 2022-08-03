@@ -25,23 +25,21 @@ fr:
       collaborator:
         one: Collaborateur
         other: Collaborateurs
-      edit: 
+      edit:
         one: Modification
         other: Modification
-      incomplete_page: 
+      incomplete_page:
         one: Page incomplète
         other: Pages incomplètes
-      # indexed: indexé
       lines_transcribed:
         one: Ligne de texte
         other: Lignes de texte
-      # needing_review: ayant besoin d'une révision
       note:
         one: Note
         other: Notes
-      ocr_correction: 
-        one: "Correction d'OCR"
-        other: "Corrections d'OCR"
+      ocr_correction:
+        one: Correction d'OCR
+        other: Corrections d'OCR
       page:
         one: Page
         other: Pages
@@ -63,28 +61,19 @@ fr:
       page_translated:
         one: Page traduite
         other: Pages traduites
-      reference: 
-        one: Référence
-        other: Références
       records_indexed: Notice indexée
       reference:
         one: Référence
         other: Références
-      # reviewed: revisée
       subject:
         one: Sujet
         other: Sujets
-      # transcribed: transcrite
-      # translated: traduite
-      work: 
+      work:
         one: Œuvre
         other: Œuvres
       works_described: Œuvre décrite
     recent_statistics:
       collaborator: Collaborateur
-      # edit: Éditer
-      # indexed: indexée
-      # marked_needing_review: marqué comme ayant besoin d'une révision
       new_subject: Nouveau sujet
       note: Noter
       ocr_correction: Correction d'OCR
@@ -95,7 +84,7 @@ fr:
       page_indexed:
         one: Page indexée
         other: Pages indexées
-      page_marked_needing_review: 
+      page_marked_needing_review:
         one: Page marquée comme ayant besoin d'une révision
         other: Pages marquées comme ayant besoin d'une révision
       page_reviewed:
@@ -107,32 +96,25 @@ fr:
       page_translated:
         one: Page traduite
         other: Pages traduites
-      reference: 
+      reference:
         one: Référence
         other: Références
-      # reviewed: révisée
-      # transcribed: transcrite
-      # translated: traduite
     statistics:
-      active_page: 
+      active_page:
         one: Page active
         other: Pages actives
-      collaborator: 
+      collaborator:
         one: Collaborateur
         other: Collaborateurs
-      # edit: Modification
-      incomplete_page: 
+      incomplete_page:
         one: Page incomplète
         other: Pages incomplètes
-      # indexed: indexée
       last_days_statistics: Statistiques des 7 derniers jours
-      # marked_needing_review: marquée comme ayant besoin d'une révision
-      # needing_review: ayant besoin d'une révision
       new_subject: Nouveau sujet
-      note: 
+      note:
         one: Note
         other: Notes
-      ocr_correction: 
+      ocr_correction:
         one: Correction d'OCR
         other: Corrections d'OCR
       page:
@@ -141,7 +123,7 @@ fr:
       page_edit:
         one: Modification
         other: Modifications
-      page_indexed: 
+      page_indexed:
         one: Page indexée
         other: Pages indexées
       page_marked_needing_review:
@@ -159,18 +141,15 @@ fr:
       page_translated:
         one: Page traduite
         other: Pages traduites
-      reference: 
+      reference:
         one: Référence
         other: Références
-      # reviewed: revisée
-      subject: 
+      subject:
         one: Sujet
         other: Sujets
       total_page:
         one: Page totale
         other: Pages totales
-      # transcribed: transcrite
-      # translated: traduite
-      work: 
+      work:
         one: Œuvre
         other: Œuvres

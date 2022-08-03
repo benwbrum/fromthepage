@@ -49,7 +49,7 @@ fr:
       ms_word: MS Word
       pdf: PDF
       pdf_download_description: Télécharger une version PDF de ce œuvre.
-      searchable_plaintext: Texte brut optimisé pour la recherche 
+      searchable_plaintext: Texte brut optimisé pour la recherche
       searchable_plaintext_export_description: Exporter des transcriptions en texte brut optimisées pour la recherche en texte intégral sous forme de fichier zip contenant un fichier par page.
       table_field_csv: Tableau/Champ CSV
       table_field_csv_export_description: Exporter toutes les données tabulaires, de feuilles de calcul ou basées sur des champs dans un seul fichier CSV.
@@ -161,7 +161,7 @@ fr:
       iiif_manifest: Manifeste IIIF
       location_of_composition: Lieu de composition
       metadata: Métadonnées
-      number_of_pages: 'Nombre de pages : '
+      number_of_pages: Nombre de pages : 
       out_of_scope: Hors de portée
       permission_description: Description de l'autorisation
       physical_description: Description physique

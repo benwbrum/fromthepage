@@ -29,6 +29,9 @@ fr:
       describe: Décrire
       index: Indice
       metadata: Métadonnées
+      n_notes:
+        one: 1 note
+        other: "%{count} notes"
       no_notes: Aucune note
       no_pages_found: Aucune page trouvée
       no_pages_in_work: Ce œuvre ne contient pas encore de pages, rendez-vous sur %{link} pour créer une nouvelle page
@@ -38,9 +41,6 @@ fr:
       transcribe: Transcrire
       translate: Traduire
       user_notes: Notes de l'utilisateur
-      n_notes: 
-        one: 1 note
-        other: '%{count} notes'
     multi_page:
       categories: Catégories
       describe: Créer des métadonnées

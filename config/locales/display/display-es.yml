@@ -17,14 +17,14 @@ es:
       translation: Traducción
     list_pages:
       actions: Acciones
+      n_notes:
+        one: 1 nota
+        other: "%{count} notas"
       no_notes: No hay notas
       no_pages_found: No se encontró ninguna página
       no_pages_in_work: Esta obra aún no contiene ninguna página, ve a %{link} para crear una nueva página
       page_title: Título de la Página
       user_notes: Notas del Usuario
-      n_notes:
-        one: 1 nota
-        other: '%{count} notas'
     multi_page:
       categories: Categorías
       pages_need_indexing: Páginas que Necesitan Indexación

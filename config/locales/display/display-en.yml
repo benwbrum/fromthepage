@@ -29,6 +29,9 @@ en:
       describe: Describe
       index: Index
       metadata: Metadata
+      n_notes:
+        one: 1 note
+        other: "%{count} notes"
       no_notes: No notes
       no_pages_found: No pages found
       no_pages_in_work: This work does not contain any pages yet, go to %{link} to create a new page
@@ -38,9 +41,6 @@ en:
       transcribe: Transcribe
       translate: Translate
       user_notes: User Notes
-      n_notes:
-        one: 1 note
-        other: '%{count} notes'
     multi_page:
       categories: Categories
       describe: Create Metadata
