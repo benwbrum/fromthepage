@@ -4,7 +4,7 @@ fr:
     added_note:
       html:
         view_note: " pour afficher la note en %{collection} : %{work}."
-      message: Nous voulions simplement vous informer que la note suivante a été ajoutée à une page sur laquelle vous avez travaillé dans le œuvre %{work}, dans la collection %{collection}.
+      message: Nous voulions simplement vous informer que la note suivante a été ajoutée à une page sur laquelle vous avez travaillé dans l'œuvre %{work}, dans la collection %{collection}.
       text:
         view_note: 'Vous pouvez afficher la note dans %{collection} : %{work} à l''URL : %{url}.'
     bulk_export_finished:
@@ -43,7 +43,7 @@ fr:
       message: Nous voulions juste vous faire savoir qu'il y a eu une activité dans une collection sur laquelle vous avez travaillé.
       new_notes: Nouveaux billets
       new_works: Nouvelles œuvres
-      note_added: Une note a été ajoutée à une page sur laquelle vous avez travaillé dans le œuvre %{work}, dans la collection %{collection}.
+      note_added: Une note a été ajoutée à une page sur laquelle vous avez travaillé dans l'œuvre %{work}, dans la collection %{collection}.
       text:
         to_view_note: 'Pour afficher la note sur la page %{work} : %{page}, visitez l''URL suivante : %{url}'
         to_view_work: 'Pour afficher %{collection} : %{work}, visitez l''URL suivante : %{url}'

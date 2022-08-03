@@ -12,7 +12,7 @@ fr:
         edited_page: a modifié %{page}
         edited_translation_of_page: a édité la traduction de %{page}
         in_collection: " dans la collection %{collection}"
-        in_the_work: " dans le œuvre %{work}"
+        in_the_work: " dans l'œuvre %{work}"
         indexed_page: a indexée %{page}
         indexed_translation_of_page: a indexé la traduction de %{page}
         joined: 'a rejoint '

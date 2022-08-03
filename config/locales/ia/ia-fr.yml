@@ -17,7 +17,7 @@ fr:
       book_url: URL du livre
       import_book_description: Pour importer un livre, veuillez ouvrir ce livre sur www.archive.org, puis copiez l'URL du livre à partir de la barre d'adresse du navigateur et collez-la ci-dessous.
       import_from_archive_org: Importer depuis Archive.org
-      import_work: Importer le œuvre
+      import_work: Importer l'œuvre
     import_work:
       imported_into_staging: "%{title} a été importé dans votre zone de staging"
     manage:
@@ -36,7 +36,7 @@ fr:
       page_n_of_n: Page %{n} sur %{total} (%{n2})
       page_titles: Titres des pages
       publish_to_collaborators: Publier aux collaborateurs
-      publish_work: Publier le œuvre
+      publish_work: Publier l'œuvre
       publish_work_description: Une fois que vous avez les titres et les feuilles prêts, cliquez sur Publier pour convertir le livre en une œuvre FromThePage prête à être transcrite. Ce processus prendra plusieurs minutes à s'exécuter.
       select_a_collection: "- Sélectionnez une collection -"
       select_a_collection_1: Sélectionnez une collection

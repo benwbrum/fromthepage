@@ -61,7 +61,7 @@ fr:
       threshold: Seuillage
     page_tabs:
       correct: Corriger
-      describe_work: Décrire le œuvre
+      describe_work: Décrire l'œuvre
       help: Aide
       nav_info: Page %{position} sur %{size}
       next_page: Page suivante
