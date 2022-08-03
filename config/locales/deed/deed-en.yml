@@ -1,6 +1,10 @@
 ---
 en:
   deed:
+    article_edit: Article Edited
+    collection_active: Collection Active
+    collection_inactive: Collection Inactive
+    collection_joined: Collection Joined
     deed:
       html:
         added_a_note_to_page: added a note to page %{page}
@@ -28,6 +32,8 @@ en:
     deeds:
       show_more: Show More
       time_ago_in_words: "%{time} ago"
+    described_metadata: Described Metadata
+    edited_metadata: Edited Metadata Description
     list:
       activity_stream: Activity Stream
       collection_title: 'Collection: %{title}'
@@ -35,3 +41,17 @@ en:
       older_activity: Older Activity
       time_ago_in_words: "%{time} ago"
       user_title: 'User: %{title}'
+    needs_review: Page Needs Review
+    note_added: Note Added
+    ocr_corrected: Page OCR Corrected
+    page_edit: Page Edited
+    page_indexed: Page Indexed
+    page_marked_blank: Page Marked Blank
+    page_reviewed: Page Reviewed
+    page_transcription: Page Transcribed
+    page_translated: Page Translated
+    page_translation_edit: Translation Page Edited
+    translation_indexed: Translation Page Indexed
+    translation_review: Translation Page Needs Review
+    translation_reviewed: Translation Reviewed
+    work_added: Work Added
