@@ -11,7 +11,7 @@ fr:
       work_title: Titre de œuvre
     contributor_activity:
       recent_notes: Notes récentes
-      recent_ocr_correction: Correction OCR récente
+      recent_ocr_correction: Correction d'OCR récente
       recent_pages_needing_review: Pages récentes à revoir
       recent_subject_indexing: Indexation des sujets récents
       recent_subjects: Sujets récents
@@ -31,7 +31,7 @@ fr:
       all_collaborator_emails: Tous les e-mails des collaborateurs
       collaborator_stats: Statistiques des collaborateurs %{start_deed} à %{end_deed}
       collaborators: Collaborateurs
-      collection: " (Collecte : %{collection_time} minutes | Total : %{total_time} minutes)"
+      collection: " (Collection : %{collection_time} minutes | Total : %{total_time} minutes)"
       detailed_spreadsheet_export: Une exportation détaillée de la feuille de calcul de tous les collaborateurs est disponible sur votre tableau de bord propriétaire.
       export_activity_as_csv: Exporter l'activité au format CSV
       export_as_csv: Exporter au format CSV
@@ -45,7 +45,7 @@ fr:
     create:
       notice: La collection a été créée
     disable_ocr:
-      notice: La correction OCR a été désactivée pour toutes les œuvres.
+      notice: La correction d'OCR a été désactivée pour toutes les œuvres.
     edit:
       add_a_new_work: Ajouter une nouvelle œuvre
       add_another_work_under: Vous pouvez ajouter une autre œuvre sous %{start_project}
@@ -76,29 +76,29 @@ fr:
       current_url: L'URL actuelle de cette collection est %{current_url}. Si vous souhaitez modifier la section de collection de l'URL, veuillez utiliser des lettres minuscules et des tirets entre les mots.
       default_orientation: Sélectionnez l'orientation de transcription de page par défaut
       delete_collection: Supprimer la collection
-      description: La description
-      disable_document_sets: Désactiver les ensembles de documents
+      description: Description
+      disable_document_sets: Désactiver les jeux de documents
       disable_facets: Désactiver les facettes
-      disable_ocr: Désactiver la ROC
+      disable_ocr: Désactiver la OCR
       document_sets: Jeux de documents
-      document_sets_description: Les ensembles de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
-      done: Fait
+      document_sets_description: Les jeux de documents sont des sous-ensembles des œuvres de cette collection, qui peuvent être utilisés pour cibler un projet d'édition ou pour créer une exposition publique sur un thème particulier des documents.
+      done: Terminer
       edit_authorized_reviewers: Modifier les réviseurs autorisés
       edit_buttons: Configurer les boutons
       edit_collaborators: Modifier les collaborateurs
-      edit_fields: Des champs
+      edit_fields: Champs
       edit_metadata_fields: Modifier les champs
       edit_owners: Modifier les propriétaires
       editor_buttons: Boutons de l'éditeur
       editor_buttons_description: Choisissez les boutons de balisage à afficher dans l'éditeur de transcription.
-      enable_document_sets: Activer les ensembles de documents
+      enable_document_sets: Activer les jeux de documents
       enable_facets: Activer les facettes
       enable_field_based_transcription: Activer la transcription basée sur les champs
       enable_metadata_description: Activer la description des métadonnées
-      enable_ocr: Activer la ROC
-      field_based_transcription: Transcription basée sur le champ
-      footer: Bas de page
-      help: Texte d'aide de base
+      enable_ocr: Activer OCR
+      field_based_transcription: Transcription basée sur les champs
+      footer: Bas de chaque page
+      help: Texte de la page d'aide
       hide_completed: Masquer les œuvres terminés par défaut
       learn_more_footer: En savoir plus sur la configuration du pied de page.
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
@@ -112,12 +112,12 @@ fr:
       metadata_facets: Facettes des métadonnées
       metadata_facets_description: Autoriser les utilisateurs à parcourir les œuvres de cette collection via les métadonnées.
       n_contributions:
-        one: 1 cotisation
-        other: "%{count} cotisations"
-      no_document_sets_in_collection: Cette collection ne contient aucun ensemble de documents.
+        one: 1 contribution
+        other: "%{count} contributions"
+      no_document_sets_in_collection: Cette collection ne contient aucun jeux de documents.
       no_image: Pas d'image
-      ocr_correction: Correction OCR
-      ocr_correction_description: Activez ou désactivez la correction OCR pour toutes les œuvres de cette collection.
+      ocr_correction: Correction d'OCR
+      ocr_correction_description: Activez ou désactivez la correction d'OCR pour toutes les œuvres de cette collection.
       open_api: Ouvrir l'API
       page_needing_transcription: 'Ce lien enverra les transcripteurs directement vers une page nécessitant une transcription : %{current_url}'
       page_on_the_bottom: Page en bas
@@ -133,7 +133,7 @@ fr:
       restricted_completed_works_description: Ce bouton limitera les œuvres %{work_count} qui sont terminés mais non actuellement restreints aux maîtres d'ouvrage ou collaborateurs désignés. Vous pouvez modifier ce paramètre et ajouter des collaborateurs dans la page des paramètres de chaque œuvre.
       revert_document_based_transcription: Revenir à la transcription basée sur des documents
       revert_metadata_description: Désactiver Description
-      review_type: Type d'examen
+      review_type: Type de révision
       review_type_optional: " Facultatif : les collaborateurs peuvent demander la révision de leurs transcriptions."
       review_type_required: " Obligatoire : toutes les transcriptions initiales seront marquées comme nécessitant une révision. (La révision peut être effectuée par n'importe qui.)"
       review_type_restricted: " Restreint : toutes les transcriptions doivent être révisées, et seuls les réviseurs autorisés peuvent approuver les transcriptions."
@@ -163,7 +163,7 @@ fr:
       save: sauvegarder
       tei: " (TEI-XML)"
     enable_ocr:
-      notice: La correction OCR a été activée pour toutes les œuvres.
+      notice: La correction d'OCR a été activée pour toutes les œuvres.
     facet_form:
       current_filters: Filtres actuels
       filter: Filtre
@@ -207,21 +207,21 @@ fr:
       no_contributions_need_review: Aucune contribution n'a besoin d'être examinée
       one_off_description: Ces contributions ont été faites par des utilisateurs qui n'ont édité qu'une seule page. Ils peuvent nécessiter une attention particulière.
       one_off_title: Cotisations uniques
-      review: Examen
+      review: Révision
       title: Page (Œuvre)
       user: Utilisateur
     quality_sampling: Échantillonnage de qualité
     recent_contributor_list:
       date: Date de la première cotisation
       filter_users: Filtre
-      no_contributions_need_review: Aucune contribution n'a besoin d'être examinée
-      number_of_contributions: Cotisations totales
-      recent_contributor_description: Ces collaborateurs ont commencé à travailler sur le projet récemment, mais leur œuvre n'a jamais été revu.
+      no_contributions_need_review: Aucune contribution n'a besoin d'une révision
+      number_of_contributions: Contributions totales
+      recent_contributor_description: Ces collaborateurs ont commencé à travailler sur le projet récemment, mais leur contributions n'a jamais été révisées.
       recent_contributor_title: Contributeurs récents
-      review: Examen
+      review: Révision
       user: Utilisateur
     reviewer_dashboard:
-      one_off_contributions: Cotisations uniques
+      one_off_contributions: Contributions uniques
       pages_needing_review: Pages à réviser
       quality_sampling: Échantillonnage de qualité
       quality_sampling_desc: Les échantillonnages de qualité vous permettent de vérifier les contributions de manière aléatoire, puis d'évaluer les pages à réviser en fonction de la quantité de texte corrigé pour un utilisateur ou un œuvre particulier.
@@ -259,8 +259,8 @@ fr:
       works: Œuvres
     start_transcribing:
       notice: Désolé, mais il n'y a pas de pages de qualification dans cette collection.
-    transcribed: transcrit
-    translated: traduit
+    transcribed: transcrite
+    translated: traduite
     update:
       notice: La collection a été mise à jour
     update_buttons:
@@ -279,7 +279,7 @@ fr:
       notes: Remarques
       quality_score: 'Niveau de qualité :'
       real_name: 'Nom : %{user}'
-      review: Examen
+      review: Révision
       title: Page (Œuvre)
       user_contribution_description: Pages nécessitant une révision par l'utilisateur %{user_name}
       user_profile: Profil de l'utilisateur
@@ -298,7 +298,7 @@ fr:
       last_activity: Dernière Activité
       no_works_need_review: Aucun œuvres à revoir
       notes: Remarques
-      review: Examen
+      review: Révision
       title: Titre
       total: Total
   collection_helper:

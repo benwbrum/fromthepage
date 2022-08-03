@@ -21,7 +21,7 @@ fr:
       add_additional_column: Ajouter une colonne supplémentaire
       cancel: Annuler
       disable_ruler: Désactiver la règle
-      done: Fait
+      done: Terminer
       edit_spreadsheet_columns: Configuration de la colonne
       edit_spreadsheet_header: Configuration de la feuille de calcul
       enable_ruler: Activer la règle
@@ -46,7 +46,7 @@ fr:
       done: Fait
       line: Ligne
       preview: Aperçu
-      save: sauvegarder
+      save: Sauvegarder
     edit_fields:
       edit_transcription_fields: Modifier les champs de transcription
       transcription_warning: Ce projet a déjà été partiellement retranscrit. L'ajout de champs est acceptable, mais la suppression ou la modification de champs peut entraîner la perte de données. Veuillez contacter support@fromthepage.com si vous avez des questions ou si vous avez besoin de renommer des champs.
@@ -68,7 +68,7 @@ fr:
     multiselect_form:
       options_form_description: Entrez les options pour le champ de métadonnées à sélection multiple, chaque option sur une ligne distincte
       options_form_title: Options de sélection multiple
-      save: sauvegarder
+      save: Sauvegarder
     new_column_form:
       delete_column: Supprimer la colonne
       field_label: Étiquette de champ

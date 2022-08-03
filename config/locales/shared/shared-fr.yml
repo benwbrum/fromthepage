@@ -4,7 +4,7 @@ fr:
     article_tabs:
       overview: Aperçu
       settings: Réglages
-      subject: matière
+      subject: Sujet
       versions: Versions
     codemirror:
       abbr_description: Marque les abréviations dans un texte avec des extensions dans l'attribut expan.
@@ -26,14 +26,14 @@ fr:
     collection_tabs:
       add_work: Ajouter un œuvre
       collaborators: Collaborateurs
-      collection: le recueil
-      edit_fields: Des champs
+      collection: Collection
+      edit_fields: Champs
       edit_metadata_fields: Champs de métadonnées
       export: Exporter
       facets: Facettes
       overview: Aperçu
-      review: Examen
-      sets: Ensembles
+      review: Réviser
+      sets: Jeux
       settings: Réglages
       statistics: Statistiques
       subjects: Sujets
