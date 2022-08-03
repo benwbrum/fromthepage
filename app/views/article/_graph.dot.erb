@@ -1,5 +1,5 @@
 graph G {
-  graph [label="Subjects Mentioned Frequently With <%=@article.title %>"];
+  graph [label="<%=t('.title', subject: @article.title)%>"];
   node [fontsize=8,fontname="Helvetica"];
   <%= @article.id %> 
     [style=filled,
