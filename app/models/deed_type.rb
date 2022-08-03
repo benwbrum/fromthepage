@@ -31,26 +31,26 @@ class DeedType
   # groups of deed types and also their human-readable names. Any new deed type
   # constant should also be added here.
   TYPES = {
-    PAGE_TRANSCRIPTION => I18n.t('deed.page_transcription'),
-    PAGE_EDIT => I18n.t('deed.page_edit'),
-    PAGE_INDEXED => I18n.t('deed.page_indexed'),
-    PAGE_MARKED_BLANK => I18n.t('deed.page_marked_blank'),
-    ARTICLE_EDIT => I18n.t('deed.article_edit'),
-    NOTE_ADDED => I18n.t('deed.note_added'),
-    PAGE_TRANSLATED => I18n.t('deed.page_translated'),
-    PAGE_TRANSLATION_EDIT => I18n.t('deed.page_translation_edit'),
-    OCR_CORRECTED => I18n.t('deed.ocr_corrected'),
-    NEEDS_REVIEW => I18n.t('deed.needs_review'),
-    TRANSLATION_REVIEW => I18n.t('deed.translation_review'),
-    TRANSLATION_INDEXED => I18n.t('deed.translation_indexed'),
-    WORK_ADDED => I18n.t('deed.work_added'),
-    COLLECTION_ACTIVE => I18n.t('deed.collection_active'),
-    COLLECTION_INACTIVE => I18n.t('deed.collection_inactive'),
-    COLLECTION_JOINED => I18n.t('deed.collection_joined'),
-    PAGE_REVIEWED => I18n.t('deed.page_reviewed'),
-    TRANSLATION_REVIEWED => I18n.t('deed.translation_reviewed'),
-    DESCRIBED_METADATA => I18n.t('deed.described_metadata'),
-    EDITED_METADATA => I18n.t('deed.edited_metadata') 
+    PAGE_TRANSCRIPTION => 'deed.page_transcription',
+    PAGE_EDIT => 'deed.page_edit',
+    PAGE_INDEXED => 'deed.page_indexed',
+    PAGE_MARKED_BLANK => 'deed.page_marked_blank',
+    ARTICLE_EDIT => 'deed.article_edit',
+    NOTE_ADDED => 'deed.note_added',
+    PAGE_TRANSLATED => 'deed.page_translated',
+    PAGE_TRANSLATION_EDIT => 'deed.page_translation_edit',
+    OCR_CORRECTED => 'deed.ocr_corrected',
+    NEEDS_REVIEW => 'deed.needs_review',
+    TRANSLATION_REVIEW => 'deed.translation_review',
+    TRANSLATION_INDEXED => 'deed.translation_indexed',
+    WORK_ADDED => 'deed.work_added',
+    COLLECTION_ACTIVE => 'deed.collection_active',
+    COLLECTION_INACTIVE => 'deed.collection_inactive',
+    COLLECTION_JOINED => 'deed.collection_joined',
+    PAGE_REVIEWED => 'deed.page_reviewed',
+    TRANSLATION_REVIEWED => 'deed.translation_reviewed',
+    DESCRIBED_METADATA => 'deed.described_metadata',
+    EDITED_METADATA => 'deed.edited_metadata' 
   }
 
   # This `class << self` inherited group replaces the need to call `self.` on
