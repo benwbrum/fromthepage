@@ -105,7 +105,7 @@ class ScManifest < ApplicationRecord
     if self.v3?
       @v3_hash['items']
     else
-      self.sequences.first.canvases
+      self.service.sequences.first.canvases
     end
   end
 
