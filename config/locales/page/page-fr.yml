@@ -7,7 +7,7 @@ fr:
       page_deleted: La page a été supprimée
     edit:
       browse: Parcourir
-      click_to_browse_a_file: Cliquez pour parcourir un fichier...
+      click_to_browse_a_file: Cliquer pour parcourir un fichier...
       created: Créée le %{date}
       delete_confirm_message: Voulez-vous vraiment supprimer cette page ? Après la suppression, vous ne pourrez pas le récupérer !
       delete_page: Supprimer la page
@@ -25,7 +25,7 @@ fr:
       page_status_translated: Traduit
       page_title: Titre de la page
       page_translation_status: État de la traduction de la page
-      rotate_clockwise: Le sens des aiguilles d'une montre
+      rotate_clockwise: Tourner dans le sens horaire
       rotate_counterclockwise: Tourner dans le sens antihoraire
       save_changes: Sauvegarder les modifications
       status: 'Statut:'
@@ -33,8 +33,8 @@ fr:
       add_new_page: Ajouter une nouvelle page
       browse: Parcourir
       cancel: Annuler
-      choose_a_title: Choisissez un titre pour la page et sélectionnez une image de page à télécharger.
-      click_to_browse_a_file: Cliquez pour parcourir un fichier...
+      choose_a_title: Choisir un titre pour la page et sélectionnez une image de page à télécharger.
+      click_to_browse_a_file: Cliquer pour parcourir un fichier...
       page_image: Image de la page
       save_and_add_next_page: Enregistrer et ajouter la page suivante
       save_and_new_work: Enregistrer et nouveau œuvre

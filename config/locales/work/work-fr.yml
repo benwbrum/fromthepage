@@ -78,8 +78,8 @@ fr:
       document_date_hint: La date du document est au format EDTF (par exemple, 1843, 2001-02, 1643-06-30)
       document_history: Historique du document
       editorial_notes: Notes éditoriales
-      enable_ocr_correction: Activer la correction OCR
-      enable_ocr_correction_description: Un œuvre peut commencer par un texte OCR qui doit être corrigé. Lorsqu'il est coché, l'onglet Transcrire sera remplacé par un onglet Corriger.
+      enable_ocr_correction: Activer la correction d'OCR
+      enable_ocr_correction_description: Un œuvre peut commencer par un texte océrisé qui doit être corrigé. Lorsqu'il est coché, l'onglet Transcrire sera remplacé par un onglet Corriger.
       genre: Genre
       identifier: Identifiant
       identifier_description: Identifiant de systèmes extérieurs à FromThePage, à utiliser pour corréler les exportations avec des enregistrements externes. (Ce champ n'est pas visible publiquement.)
@@ -103,7 +103,7 @@ fr:
       source_box_folder: Boîte/dossier source
       source_collection_name: Nom de la collection source
       source_location: Emplacement de la source
-      support_translation: Soutenir la traduction
+      support_translation: Autoriser la traduction
       support_translation_description: Une œuvre peut aussi bien être traduite que transcrite. Lorsque cette case est cochée, le œuvre aura un onglet Traduction pour chaque page.
       transcription_conventions: Conventions de transcription
       translation_instructions: Instructions de traduction
@@ -133,10 +133,10 @@ fr:
       actions: Actions
       add_new_page: Ajouter une nouvelle page
       confirm_delete_page: Voulez-vous vraiment supprimer cette page ? Après la suppression, vous ne pourrez pas le récupérer !
-      delete: Effacer
-      featured_page: Page en vedette
+      delete: Supprimer
+      featured_page: Page à la une
       image_status: État de l'image
-      make_featured_page: Créer une page en vedette
+      make_featured_page: Marquer comme page à la une
       move_down: Descendre
       move_up: Déplacer vers le haut
       no_pages_found: Aucune page trouvée
