@@ -9,7 +9,7 @@ fr:
       download_cleaned_message: Ce téléchargement d'exportation a été nettoyé. Veuillez en commencer un nouveau.
     index:
       actions: Actions
-      collection: 'Le recueil:'
+      collection: 'Collection:'
       date: Date
       file_name: 'Nom de fichier:'
       show_details: Afficher les détails
@@ -18,10 +18,10 @@ fr:
       user: Utilisateur
     new:
       download: Télécharger
-      expanded_plaintext: Texte en clair étendu
+      expanded_plaintext: Texte brut étendu
       expanded_plaintext_description: Comme le texte brut verbatim, ce fichier de texte brut représentera les sauts de ligne avec un seul saut de ligne, les sauts de paragraphe avec un double saut de ligne et les sauts de page avec un triple saut de ligne. Il diffère du texte verbatim, en ce que la normalisation sera appliquée à tous les sujets mentionnés, de sorte que si le texte verbatim peut se lire "J'ai salué M. Jones et sa femme ce matin.", le texte en clair modifié se lira "J'ai salué James Jones et Elizabeth Smith Jones ce matin ». Ce texte artificiel est utile pour l'analyse programmatique, mais n'est pas destiné à être lu par des humains.
       export_all_works: Exporter toutes les œuvres
-      facing_edition_pdf: Face à l'édition PDF
+      facing_edition_pdf: Livret PDF
       facing_edition_pdf_description: Un fichier PDF contenant des images et des transcriptions sur les pages opposées.
       html: HTML
       html_description: Cela peut être utile pour la conservation dans d'autres systèmes ou comme point de départ pour l'affichage sur un autre site Web.
@@ -47,7 +47,7 @@ fr:
       text_pdf: Texte PDF
       text_pdf_description: Un fichier PDF contenant des transcriptions de texte.
       time: Temps
-      verbatim_plaintext: Texte brut textuel
-      verbatim_plaintext_description: Ce fichier en clair représentera les sauts de ligne avec une seule nouvelle ligne, les sauts de paragraphe avec une double nouvelle ligne et les sauts de page avec une triple nouvelle ligne. Il contiendra le texte textuel, avec tous les formatages, corrections et liens de sujet supprimés.
-      work_metadata_csv: Métadonnées professionnelles CSV
+      verbatim_plaintext: Texte brut verbatim
+      verbatim_plaintext_description: Ce fichier de texte brut représentera les sauts de ligne avec une seule nouvelle ligne, les sauts de paragraphe avec une double nouvelle ligne et les sauts de page avec une triple nouvelle ligne. Il contiendra le texte textuel, avec tous les formatages, corrections et liens de sujet supprimés.
+      work_metadata_csv: Métadonnées CSV
       work_metadata_csv_description: Une feuille de calcul répertoriant chaque œuvre avec le nombre de pages et les métadonnées.

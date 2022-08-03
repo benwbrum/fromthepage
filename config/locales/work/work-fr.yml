@@ -21,7 +21,7 @@ fr:
       notes_and_questions: Notes et questions
       original_metadata: Métadonnées d'origine
       page_images: Images de pages
-      save_changes: sauvegarder
+      save_changes: Sauvegarder
       save_to_incomplete_tooltip: Enregistrer les métadonnées incomplètes
       save_to_needs_review_tooltip: Enregistrer vos modifications
       save_to_transcribed_tooltip: Enregistrer vos modifications
@@ -108,12 +108,12 @@ fr:
       transcription_conventions: Conventions de transcription
       translation_instructions: Instructions de traduction
       upload_image: Télécharger une image
-      uploaded_by: téléversé par
+      uploaded_by: Téléversé par
       url: URL
-      work_image: Image du œuvre
-      work_image_description: Une image à utiliser pour illustrer le œuvre. Si aucune image n'est téléchargée, une image de page sera utilisée.
+      work_image: Image de l'œuvre
+      work_image_description: Une image à utiliser pour illustrer l'e 'œuvre. Si aucune image n'est téléchargée, une image de page sera utilisée.
       work_thumbnail: Vignette de œuvre
-      work_title: Titre du œuvre
+      work_title: Titre de l'œuvre
     incomplete: Métadonnées incomplètes.
     metadata_overview:
       notes_and_questions: Notes et questions
@@ -146,14 +146,14 @@ fr:
       position: Position
       ready_to_transcribe: Prêt à %{transcribe}
       settings: Réglages
-      transcribe: transcrire
+      transcribe: Transcrire
       upload: Télécharger
       upload_page_image: Image de la page %{upload}
     save_description:
       work_described: Votre description a été enregistrée
     show:
       author_name: Nom de l'auteur
-      description: La description
+      description: Description
       document_date: Date du document
       document_history: Historique du document
       editorial_notes: Notes éditoriales
@@ -162,7 +162,7 @@ fr:
       location_of_composition: Lieu de composition
       metadata: Métadonnées
       number_of_pages: 'Nombre de pages : '
-      out_of_scope: Hors champ
+      out_of_scope: Hors de portée
       permission_description: Description de l'autorisation
       physical_description: Description physique
       recipient_name: Nom du destinataire
@@ -170,7 +170,7 @@ fr:
       source_box_folder: Boîte/dossier source
       source_collection_name: Nom de la collection source
       source_location: Emplacement de la source
-      uploaded_by: téléversé par
+      uploaded_by: Téléversé par
     undescribed: Aucune métadonnée.
     update:
       work_updated: Œuvre mis à jour avec succès

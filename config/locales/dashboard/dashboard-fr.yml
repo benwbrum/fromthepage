@@ -39,12 +39,12 @@ fr:
       facing_edition_work: Face à l'édition PDF (œuvre)
       html_page: HTML (page)
       html_work: HTML (œuvre)
-      plaintext_emended_page: Texte en clair analytique (page)
-      plaintext_emended_work: Texte en clair analytique (œuvre)
-      plaintext_searchable_page: Texte en clair consultable (page)
-      plaintext_searchable_work: Texte en clair consultable (œuvre)
-      plaintext_verbatim_page: Texte brut textuel (page)
-      plaintext_verbatim_work: Texte brut textuel (œuvre)
+      plaintext_emended_page: Texte brut analytique (page)
+      plaintext_emended_work: Texte brut analytique (œuvre)
+      plaintext_searchable_page: Texte brut consultable (page)
+      plaintext_searchable_work: Texte brut consultable (œuvre)
+      plaintext_verbatim_page: Texte brut verbatim (page)
+      plaintext_verbatim_work: Texte brut verbatim (œuvre)
       refresh: Rafraîchir
       reload_this_page_to: Recharger cette page pour mettre à jour la liste.
       status: Statut
@@ -85,7 +85,7 @@ fr:
       import_many_link: importer plusieurs objets composés individuels.
       or_import_many: Ou
       page_image_guidelines: Directives relatives aux images de page
-      paste_in_the_url: Collez l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
+      paste_in_the_url: Coller l'URL d'un objet composé ou d'une collection sur votre site CONTENTdm.
     owner:
       create_a_collection: créer une collection
       document_sets: Jeux de documents
@@ -95,7 +95,7 @@ fr:
       total_work_count: 'Nombre total de œuvres : %{count}'
       you_can_add_another_work: Vous pouvez ajouter une autre œuvre sous %{start_project}
       you_can_new_collection: Vous pouvez %{new_collection}
-      you_can_upload_documents: Vous pouvez télécharger des documents sous %{start_project}
+      you_can_upload_documents: Vous pouvez téléverser des documents sous %{start_project}
       you_dont_have_any_collections: Vous n'avez pas encore de collections
       your_activity: Votre activité
     owner_header:
@@ -123,8 +123,8 @@ fr:
     upload:
       acceptable_image_files: Les fichiers PNG, GIF et JPG sont tous acceptables.
       browse: Parcourir
-      click_to_browse_a_file: Cliquez pour parcourir un fichier...
-      click_to_browse_files: Cliquez pour parcourir les fichiers
+      click_to_browse_a_file: Cliquer pour parcourir un fichier...
+      click_to_browse_files: Cliquer pour parcourir les fichiers
       each_folder_will_be_treated: Chaque dossier sera traité comme un document différent, ne mélangez pas les pages de différents documents dans le même dossier.
       each_pdf_will_be_treated: Chaque PDF sera traité comme son propre document, donc ne divisez pas les pages du même document entre plusieurs PDF.
       for_example_a_zip_file: 'Par exemple, un fichier ZIP avec 3 images, 2 PDF et 1 dossier contenant 5 images supplémentaires créerait 4 œuvres : les images de niveau supérieur en une, chaque PDF dans son propre œuvre et une dernière œuvre contenant les 5 images du dossier.'
@@ -132,13 +132,13 @@ fr:
       image_orientation_guidelines: Les images doivent être orientées de manière à ce qu'elles soient à l'endroit.
       import_form_message: En utilisant ce formulaire, vous pouvez importer vos images de page dans FromThePage. Vous devez sélectionner une collection cible dans laquelle importer et joindre un fichier ZIP ou PDF contenant des images de page à utiliser pour votre projet.
       page_image_guidelines: Directives relatives aux images de page
-      select_a_collection: "- Sélectionnez une collection -"
+      select_a_collection: "- Sélectionner une collection -"
       to_specify_metadata: Pour spécifier les métadonnées avec les images, incluez un fichier %{link} dans chaque dossier en spécifiant les champs pour le œuvre.
       trial_accounts_are_limited: Les comptes d'essai sont limités à 200 pages. Veuillez contacter support@fromthepage.com pour mettre à niveau votre compte.
       upload_file: Téléverser un fichier
-      upload_pdf_or_zip_file: Télécharger un fichier PDF ou ZIP
-      use_image_filenames: " Utilisez des noms de fichiers d'image comme titres de page."
-      use_ocr_from_pdf: " Importez du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
+      upload_pdf_or_zip_file: Téléverser un fichier PDF ou ZIP
+      use_image_filenames: " Utiliser des noms de fichiers d'image comme titres de page."
+      use_ocr_from_pdf: " Importer du texte à partir de calques de texte PDF, de fichiers texte ou de fichiers XML."
       zip_files_may_contain: Les fichiers ZIP peuvent contenir des dossiers contenant des images, des fichiers PDF ou des dossiers contenant des fichiers PDF.
     watchlist:
       collections: collections
