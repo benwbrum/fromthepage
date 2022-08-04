@@ -4,9 +4,16 @@ en:
   dashboard:
     collaborator: Collaborator Dashboard
     plain: Dashboard
+  date:
+    formats:
+      default: "%b %d, %Y"
   en: English
   es: Español
   fr: Français
   pt: Português
+  time:
+    formats:
+      default: "%b %d, %Y %I:%M %p"
+      short: "%m/%d/%Y at %I:%M %p"
   time_ago_in_words: "%{time} ago"
   unauthorized_collection: You do not have access to %{project}.  Please log in or contact the project owner to be added.

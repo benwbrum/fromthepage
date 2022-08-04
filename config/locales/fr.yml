@@ -4,9 +4,16 @@ fr:
   dashboard:
     collaborator: Tableau de bord des collaborateurs
     plain: Tableau de bord
+  date:
+    formats:
+      default: "%d %b %Y"
   en: English
   es: Español
   fr: Français
   pt: Português
+  time:
+    formats:
+      default: "%d %b %Y %Hh%M"
+      short: "%d/%m/%Y à %Hh%M"
   time_ago_in_words: Il y a %{time}
   unauthorized_collection: Vous n'avez pas accès à %{project}. Veuillez vous connecter ou contacter le propriétaire du projet à ajouter.

@@ -1,6 +1,6 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 2, :page_id => @page.id }})
 
--selected_version_date = @selected_version.created_on.localtime.strftime("%b %d, %Y %I:%M %p")
+-selected_version_date = l(@selected_version.created_on.localtime)
 -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
 
 p.diff-help =t('.help_description').html_safe
@@ -21,7 +21,7 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         -@page.page_versions.each do |version|
           =link_to(page_version_show_path(:page_version_id => version.id), class: ('selected' if version == @selected_version))
             =time_tag(version.created_on)
-              =version.created_on.strftime("%b %d, %Y")
+              =l(version.created_on.to_date)
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]

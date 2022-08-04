@@ -44,11 +44,11 @@
     -unless (current_user.start_date == nil)
       span 
         |&nbsp;
-        =t('.since', date: current_user.start_date.strftime('%b %d, %Y'))
+        =t('.since', date: l(current_user.start_date.to_date))
     -unless (current_user.paid_date == nil)
       span 
         |&nbsp;&middot;&nbsp;
-        =t('.current_subscription_expires', date: current_user.paid_date.strftime('%b %d, %Y'))
+        =t('.current_subscription_expires', date: l(current_user.paid_date.to_date))
     span 
       |&nbsp;&middot;&nbsp;
       =t('.total_pages', pages: current_user.page_count)

@@ -3,8 +3,15 @@ es:
   dashboard:
     collaborator: Panel de Control del Colaborador
     plain: Panel de Control
+  date:
+    formats:
+      default: "%d de %b de %Y"
   en: English
   es: Español
   fr: Français
   pt: Português
+  time:
+    formats:
+      default: "%d de %b de %Y %I:%M %p"
+      short: "%d/%m/%Y a las %I:%M %p"
   time_ago_in_words: Hace %{time}

@@ -142,7 +142,7 @@
         -@collection.bulk_exports.where.not(:status => BulkExport::Status::CLEANED).order(:created_at => :desc).each do |bulk_export|
           tr
             td.nowrap
-              =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+              =l(bulk_export.created_at.localtime, format: :short)
             td.nowrap
               small.label(class="upload-status-#{bulk_export.status}") =bulk_export.status.titleize
               -if bulk_export.status == BulkExport::Status::FINISHED

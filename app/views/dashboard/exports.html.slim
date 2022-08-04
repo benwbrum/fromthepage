@@ -30,7 +30,7 @@
                 =link_to(bulk_export.work.title, collection_read_work_path(bulk_export.collection.owner, bulk_export.collection, bulk_export.work))
             td.nowrap
               p
-                =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+                =l(bulk_export.created_at.localtime, format: :short)
             td.nowrap
               -bulk_export.attributes.select{|k,v| v == true}.keys.each do |flag|
                 div =t(".#{flag.to_s}")
