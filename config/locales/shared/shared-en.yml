@@ -56,9 +56,15 @@ en:
     osd_div:
       brightness: Brightness
       contrast: Contrast
+      full_page: Toggle full page
+      home: Go home
       image_filters: Image filters
       open_seadragon_needs_js: OpenSeadragon is not available unless JavaScript is enabled.
+      rotate_left: Rotate left
+      rotate_right: Rotate right
       threshold: Threshold
+      zoom_in: Zoom in
+      zoom_out: Zoom out
     page_tabs:
       correct: Correct
       describe_work: Describe work

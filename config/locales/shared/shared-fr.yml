@@ -56,9 +56,15 @@ fr:
     osd_div:
       brightness: Luminosité
       contrast: Contraste
+      full_page: Basculer en pleine page
+      home: Rentrer chez soi
       image_filters: Filtres d'images
       open_seadragon_needs_js: OpenSeadragon n'est disponible que si JavaScript est activé.
+      rotate_left: Tourne à gauche
+      rotate_right: Tourner à droite
       threshold: Seuillage
+      zoom_in: Agrandir
+      zoom_out: Dézoomer
     page_tabs:
       correct: Corriger
       describe_work: Décrire l'œuvre

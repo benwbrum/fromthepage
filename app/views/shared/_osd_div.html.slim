@@ -38,6 +38,13 @@
     var lastFocused = null; // last focused field in the edit area
 
     $(function() {
+      OpenSeadragon.setString("Tooltips.ZoomIn", "#{t('.zoom_in')}");
+      OpenSeadragon.setString("Tooltips.ZoomOut", "#{t('.zoom_out')}");
+      OpenSeadragon.setString("Tooltips.Home", "#{t('.home')}");
+      OpenSeadragon.setString("Tooltips.FullPage", "#{t('.full_page')}");
+      OpenSeadragon.setString("Tooltips.RotateLeft", "#{t('.rotate_left')}");
+      OpenSeadragon.setString("Tooltips.RotateRight", "#{t('.rotate_right')}");
+      
       viewer = OpenSeadragon({
         id: "image_container",
         toolbar: "image_toolbar",
