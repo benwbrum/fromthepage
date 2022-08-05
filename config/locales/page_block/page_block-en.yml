@@ -1,11 +1,12 @@
+---
 en:
   page_block:
     edit:
-      html_block_for: "HTML Block for %{description}"
+      html_block_for: HTML Block for %{description}
     html_block:
-      edit_help_text: "Edit Help Text"
-      create_help_text: "Create Help Text"
+      create_help_text: Create Help Text
+      edit_help_text: Edit Help Text
     list:
-      page_block: "Page Block"
-      action: "Action"
-      edit: "edit"
+      action: Action
+      edit: edit
+      page_block: Page Block

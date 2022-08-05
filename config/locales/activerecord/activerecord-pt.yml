@@ -1,0 +1,18 @@
+---
+pt:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Titulo
+      document_set:
+        slug: URL
+        title: Titulo
+      work:
+        slug: URL
+        title: Titulo
+  errors:
+    messages:
+      not_saved:
+        one: '1 erro proibiu que este %{resource} fosse guardado:'
+        other: "%{count} erros proibiram que este %{resource} fosse guardado:"

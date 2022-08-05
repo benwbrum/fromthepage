@@ -9,36 +9,36 @@
 
 tr.sortable-field id="#{field_id}"
   td.field-form_label
-    =text_field_tag "transcription_fields[][label]", "#{label_value}", 'aria-label' => 'Field label'
+    =text_field_tag "transcription_fields[][label]", "#{label_value}", 'aria-label' => t('.field_label')
   td.field-form_type
     -if field_type == TranscriptionField::FieldType::TRANSCRIPTION
       -inputs = TranscriptionField::TRANSCRIPTION_INPUTS
     -else
       -inputs = TranscriptionField::METADATA_INPUTS
-    =select_tag("transcription_fields[][input_type]", options_for_select(inputs, "#{input_type_value}"), 'aria-label' => 'Input type', class: 'input_type')
+    =select_tag("transcription_fields[][input_type]", options_for_select(inputs, "#{input_type_value}"), 'aria-label' => t('.input_type'), class: 'input_type')
   td.field-form_options
     -if input_type_value == 'spreadsheet'
-      =link_to 'Configure Spreadsheet', transcription_field_spreadsheet_column_path(field.id), class: 'button'
+      =link_to t('.configure_spreadsheet'), transcription_field_spreadsheet_column_path(field.id), class: 'button'
     -elsif input_type_value == 'multiselect'
-      span =link_to 'Configure Options', transcription_field_configure_multiselect_options_path(field.id), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators' }}
+      span =link_to t('.configure_options'), transcription_field_configure_multiselect_options_path(field.id), id: 'edit-collaboators-button', class: 'button', :data => { litebox: { hash: 'edit-collaborators' }}
       span =options_value
     -else
-      =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => 'Field options', class: 'field-options', disabled: true
+      =text_area_tag "transcription_fields[][options]", "#{options_value}", 'aria-label' => t('.field_options'), class: 'field-options', disabled: true
   td.field-form_width
-    =number_field_tag "transcription_fields[][percentage]", "#{percentage_value}", min: 0, max: 100, 'aria-label' => 'Width Percentage', class: 'percent'
+    =number_field_tag "transcription_fields[][percentage]", "#{percentage_value}", min: 0, max: 100, 'aria-label' => t('.width_percentage'), class: 'percent'
   td.field-form_page
-    =number_field_tag "transcription_fields[][page_number]", "#{page_number}", 'aria-label' => 'Page Number', class: 'page_number'
+    =number_field_tag "transcription_fields[][page_number]", "#{page_number}", 'aria-label' => t('.page_number'), class: 'page_number'
   td.field-form_actions
     =hidden_field_tag "transcription_fields[][line_number]", "#{line_number_value}"
     -if !field.blank?
       =hidden_field_tag "transcription_fields[][id]", field.id
-      =link_to transcription_field_delete_path(field_id: field.id, collection_id: @collection), class: 'field_icons', title: 'Delete field', 'aria-label' => 'Delete field'
+      =link_to transcription_field_delete_path(field_id: field.id, collection_id: @collection), class: 'field_icons', title: t('.delete_field'), 'aria-label' => t('.delete_field')
         =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete field'
-      span.field-form_icon.reorder title="Reorder field"
+      span.field-form_icon.reorder title=t('.reorder_field')
         =svg_symbol '#icon-reorder', class: 'icon', title: 'Reorder field'
     -else
-      a.field-form_icon title="Delete field" data-delete-field=""
+      a.field-form_icon title=t('.delete_field') data-delete-field=""
         =svg_symbol '#icon-remove-sign', class: 'icon', title: 'Delete field'
-      span.field-form_icon.reorder title="Reorder field"
+      span.field-form_icon.reorder title=t('.reorder_field')
         =svg_symbol '#icon-reorder', class: 'icon', title: 'Reorder field'
 

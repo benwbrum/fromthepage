@@ -1,4 +1,4 @@
-.litebox-embed(style="width:550px")
+.litebox-embed(style="width:570px")
   h1 =t('.update_user_profile')
   -if @user.owner
     p =t('.name_only_required')
@@ -18,8 +18,8 @@
         th =f.label :real_name, t('.name')
         td.w100 =f.text_field :real_name
       tr
-        th =f.label :orcid, "ORCID ID"
-        td =f.text_field :orcid, :placeholder => 'Your ORCID ID'
+        th =f.label :orcid, t('.ocrid_id')
+        td =f.text_field :orcid, :placeholder => t('.your_ocrid_id')
       -if @user.owner
         tr
           th =f.label :picture, t('.picture')
@@ -28,19 +28,19 @@
             -if @user.picture_url(:thumb)
               .userpic =image_tag(@user.picture_url(:thumb), alt: @user.display_name)
         tr
-          th URL: 
+          th= t('.user_url')
           td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}
         tr
-          th Sign-up URL: 
+          th= t('.sign_up_url')
           td www.#{Rails.application.routes.default_url_options[:host]}/#{@user.slug}/sign_up
         tr
-          th =f.label :slug, "URL"
+          th =f.label :slug, t('.url')
           td =f.text_field :slug, value: @user.slug
         tr
-          th =f.label :website
+          th =f.label :website, t('.website')
           td =f.text_field :website, :placeholder => t('.your_blog_or_homepage')
         tr
-          th =f.label :location
+          th =f.label :location, t('.location')
           td =f.text_field :location, :placeholder => t('.where_are_you_from')
         tr
           td(colspan="2")

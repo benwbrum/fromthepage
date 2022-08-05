@@ -36,7 +36,7 @@
   .sidecol
     big = t('.page_position', position: @page.position)
     =time_tag @page.created_on
-      =t('.created', date: @page.created_on.localtime.strftime("%b %d, %Y %I:%M %p"))
+      =t('.created', date: l(@page.created_on.localtime))
     p.small.fglight =t('.here_you_can_edit')
 
 -if @page.base_image.present?

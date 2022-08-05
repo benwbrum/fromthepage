@@ -1,13 +1,13 @@
 =render({ :partial => '/shared/page_tabs', :locals => { :selected => 2, :page_id => @page.id }})
 
--selected_version_date = @selected_version.created_on.localtime.strftime("%b %d, %Y %I:%M %p")
+-selected_version_date = l(@selected_version.created_on.localtime)
 -selected_version_user = link_to(@selected_version.user.display_name, user_profile_path(:user_id => @selected_version.user.id))
 
 p.diff-help =t('.help_description').html_safe
 
 table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
   tr
-    th: h5.nomargin =pluralize(@page.page_versions.size, t('.revision'))
+    th: h5.nomargin =t('.n_revisions', count: @page.page_versions.size)
     th = t('.author_contributed_at', author: selected_version_user, date: selected_version_date).html_safe
     th
       =form_tag({ :action => 'show' }, :method => 'get', :enforce_utf8 => false, :'data-compare-with' => '') do
@@ -21,27 +21,27 @@ table.diff-versions(data-fullheight='{ "bottom": 30, "cssrule": "min-height" }')
         -@page.page_versions.each do |version|
           =link_to(page_version_show_path(:page_version_id => version.id), class: ('selected' if version == @selected_version))
             =time_tag(version.created_on)
-              =version.created_on.strftime("%b %d, %Y")
+              =l(version.created_on.to_date)
             small =version.user.display_name
 
     td.diff-version[*language_attrs(@collection)]
-      h4(data-diff-title="changed" data-empty="Untitled") =@selected_version.title ? @selected_version.title : "Untitled"
-      div(data-diff-transcription="changed" data-empty="No transcription provided")
+      h4(data-diff-title="changed" data-empty=t('.untitled')) =@selected_version.title ? @selected_version.title : t('.untitled')
+      div(data-diff-transcription="changed" data-empty=t('.no_transcription_provided'))
         ==xml_to_html(@selected_version.xml_transcription)
       -if @work.supports_translation
         hr
-        h4 Translation
-        div(data-diff-translation="changed" data-empty="No translation provided")
+        h4= t('.translation')
+        div(data-diff-translation="changed" data-empty=t('.no_translation_provided'))
           ==xml_to_html(@selected_version.xml_translation)
 
     td.diff-version[*language_attrs(@collection)]
-      h4(data-diff-title="original" data-empty="Untitled") =(@previous_version.title rescue "")
-      div(data-diff-transcription="original" data-empty="No transcription provided")
+      h4(data-diff-title="original" data-empty=t('.untitled')) =(@previous_version.title rescue "")
+      div(data-diff-transcription="original" data-empty=t('.no_transcription_provided'))
         ==xml_to_html((@previous_version.xml_transcription rescue ""))
       -if @work.supports_translation
         hr
-        h4 Translation
-        div(data-diff-translation="original" data-empty="No translation provided")
+        h4= t('.translation')
+        div(data-diff-translation="original" data-empty=t('.no_translation_provided'))
           ==xml_to_html((@previous_version.xml_translation rescue ""))
 
 -content_for :javascript
