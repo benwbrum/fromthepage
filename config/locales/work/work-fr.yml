@@ -57,7 +57,7 @@ fr:
       verbatim_plaintext_export_description: Exporter des transcriptions verbatims en clair (.txt) sous forme de fichier zip contenant un fichier par page.
       voyant: Voyant
       voyant_analysis_description: Envoyer la transcription de ce œuvre à un Voyant Tools pour analyse.
-      warning_work_not_complete: 'Attention : ce œuvre peut ne pas être complet.'
+      warning_work_not_complete: 'Attention : ce travail peut ne pas être complet.'
       word_trees: Word Trees
       word_trees_analysis_description: Envoyer la transcription de ce œuvre au visualiseur Word Trees de Jason Davies pour analyse.
       zip_export_only_project_owners: Formats d'exportation de fichiers zip accessibles uniquement aux propriétaires de projets.
