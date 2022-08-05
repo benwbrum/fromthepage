@@ -36,6 +36,19 @@ en:
           tags_should_not_use_3_brackets: Tags should be created using 2 brackets, not 3
           unclosed_bracket_within: Unclosed bracket within %{tag}
           wrong_number_of_closing_braces: Wrong number of closing braces after %{tag}
+    models:
+      bulk_export:
+        one: bulk export
+        other: bulk exports
+      ia_leaf:
+        one: page
+        other: pages
+      page:
+        one: page
+        other: pages
+      work:
+        one: work
+        other: works
   errors:
     messages:
       not_saved:
