@@ -86,9 +86,6 @@ en:
       ocr_correction:
         one: OCR Correction
         other: OCR Corrections
-      page:
-        one: Page
-        other: Pages
       page_edit:
         one: Page edit
         other: Page edits
@@ -130,15 +127,15 @@ en:
       ocr_correction:
         one: OCR Correction
         other: OCR Corrections
-      page:
-        one: Page
-        other: Pages
       page_edit:
         one: Page edit
         other: Page edits
       page_indexed:
         one: Page indexed
         other: Pages indexed
+      page_marked_needing_review:
+        one: Page marked needing review
+        other: Pages marked needing review
       page_needing_review:
         one: Page needing review
         other: Pages needing review

@@ -25,9 +25,6 @@ fr:
       collaborator:
         one: Collaborateur
         other: Collaborateurs
-      edit:
-        one: Modification
-        other: Modification
       incomplete_page:
         one: Page incomplète
         other: Pages incomplètes
@@ -77,7 +74,6 @@ fr:
       new_subject: Nouveau sujet
       note: Noter
       ocr_correction: Correction d'OCR
-      page: Page
       page_edit:
         one: Modification
         other: Modifications
@@ -117,9 +113,6 @@ fr:
       ocr_correction:
         one: Correction d'OCR
         other: Corrections d'OCR
-      page:
-        one: Page
-        other: Pages
       page_edit:
         one: Modification
         other: Modifications

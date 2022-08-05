@@ -36,8 +36,10 @@ fr:
       static_site: Site statique
       static_site_description: Un site Jekyll statique contenant l'intégralité de l'édition
       status: Statut
-      subject_csv: Objet CSV
-      subject_csv_description: Une feuille de calcul répertoriant chaque endroit où un sujet est mentionné dans une page de la collection
+      subject_details_csv: Détails du sujet CSV
+      subject_details_csv_description: Une feuille de calcul répertoriant chaque sujet de la collection
+      subject_index_csv: Index des sujets CSV
+      subject_index_csv_description: Une feuille de calcul répertoriant chaque endroit où un sujet est mentionné dans une page de la collection
       table_field_csv: Tableau/Champ CSV
       table_field_csv_description: Exporte une feuille de calcul avec des données basées sur des champs ou tabulaires.
       tei_xml: XML TEI
