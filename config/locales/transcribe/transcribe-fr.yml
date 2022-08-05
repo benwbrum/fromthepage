@@ -80,6 +80,7 @@ fr:
       preview: Aperçu
       save_changes: Sauvegarder
       show_image: Afficher l'image
+      show_transcription: Afficher la Transcription
       this_page_is_blank: Cette page est vierge
       this_page_is_not: Cette page n'est pas %{text_type}
       this_page_marked_needs_review: Cette page a été marquée comme "ayant besoin d'une révision". Vous pouvez améliorer cette page en relisant l'original et en ajoutant ou en corrigeant le texte. Lorsque vous avez terminé, décochez « À besoin d'une révision » et enregistrez la page.

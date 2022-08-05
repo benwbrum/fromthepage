@@ -115,7 +115,7 @@ h2.legend =t('.page_notes')
         $('.page-imagescan').toggle(fromImage);
         $('.page-preview').toggle(!fromImage);
 
-        var buttonText = (fromImage) ? "Show Transcription" : "Show Image";
+        var buttonText = (fromImage) ? "#{t('.show_transcription')}" : "#{t('.show_image')}";
         $('#toggleImage').html(buttonText);
       }
     });
