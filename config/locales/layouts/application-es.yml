@@ -1,21 +1,21 @@
+---
 es:
   layouts:
     application:
-      projects: "Proyectos"
-      find_a_project: "Encontrar Un Proyecto"
-      sign_up: "Registrarse"
-      create_an_account: "Crear Una Cuenta"
-      admin_dashboard: "Panel de Control del Administrador"
-      owner_dashboard: "Panel de Control del Dueño"
-      collaborator_dashboard: "Panel de Control del Colaborador"
-      your_profile: "Tu Perfil"
-      sign_out: "Cerrar Sesión"
-      sign_in: "Iniciar Sesión"
-      undo_login_as: "Deshacer Inicio de Sesión Como"
-      documentation: "Documentación"
-      blog: "Blog"
-      about: "Acerca de"
-      terms_and_conditions: "Términos y Condiciones"
-      privacy_policy: "Política de Privacidad"
-      contact_us: "Contáctanos"
-      all_rights_reserved: "Todos los derechos reservados."
+      about: Acerca de
+      admin_dashboard: Panel de Control del Administrador
+      all_rights_reserved: Todos los derechos reservados.
+      blog: Blog
+      collaborator_dashboard: Panel de Control del Colaborador
+      contact_us: Contáctanos
+      create_an_account: Crear Una Cuenta
+      documentation: Documentación
+      find_a_project: Encontrar Un Proyecto
+      owner_dashboard: Panel de Control del Dueño
+      privacy_policy: Política de Privacidad
+      projects: Proyectos
+      sign_in: Iniciar Sesión
+      sign_out: Cerrar Sesión
+      terms_and_conditions: Términos y Condiciones
+      undo_login_as: Deshacer Inicio de Sesión Como
+      your_profile: Tu Perfil

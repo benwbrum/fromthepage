@@ -1,9 +1,9 @@
 -content_for :page_title, "Archive.org Import"
 
-h1 Manage Archive.org Import
+h1= t('.manage_archive_org_import')
 .columns
   article.maincol
-    p This book has been imported from the Internet Archive but has not yet been converted to a work. Below you see the list of imported pages and their OCR text. Use actions menu to define the first page (conceal all preceding pages) and the last page (conceal all following pages). You can also manage page titles from the OCR text and finally convert this import into a work by publishing it into a collection. For more information on this screen, see the Wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive" target="_blank">Importing Works from the Internet Archive</a>.
+    p== t('.book_imported_description')
 
     .ia-import
       -pages_total = @ia_work.ia_leaves.length
@@ -13,13 +13,13 @@ h1 Manage Archive.org Import
         .ia-import_headline
           dl.dropdown.right
             dt tabindex=0
-              span Actions
+              span= t('.actions')
               =svg_symbol '#icon-list', class: 'icon'
             dd
-              =link_to 'Conceal preceding pages', { :action => 'mark_beginning', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
-              =link_to 'Conceal following pages', { :action => 'mark_end', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
+              =link_to t('.conceal_preceding_pages'), { :action => 'mark_beginning', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
+              =link_to t('.conceal_following_pages'), { :action => 'mark_end', :ia_work_id => @ia_work.id, :ia_leaf_id => leaf.id }
           h5.legend.legend-left
-              span Page #{page_index} of #{pages_total} (#{leaf.page_number})
+              span= t('.page_n_of_n', n: page_index, total: pages_total, n2: (leaf.page_number))
 
         .ia-import_page
           .ia-import_image =image_tag(leaf.small_url)
@@ -29,25 +29,25 @@ h1 Manage Archive.org Import
     =render(:partial => 'shared/pagination', :locals => { :model => @ia_leaves, :entries_info => true })
 
   aside.sidecol
-    h3 Page Titles
+    h3= t('.page_titles')
     p
       .button-stack.w100
-        =link_to 'First line of OCR', { :action => 'title_from_ocr_top', :ia_work_id => @ia_work.id }, class: 'button w50'
-        =link_to 'Last line of OCR', { :action => 'title_from_ocr_bottom', :ia_work_id => @ia_work.id }, class: 'button w50'
-    .ia-form_help <b>First line of OCR</b> replaces the page titles with the top line of OCR text on each page. This is useful for diaries and daybooks, since the first line is generally a date.
-    .ia-form_help <b>Last line of OCR</b> replaces the page titles with the bottom line of OCR text on each page. This is useful for printed works in which page numbers appear at the bottom.
-    .ia-form_help This process will take several seconds to run, since it requires parsing the entire OCR text for the book and updating each page title. After the book has been converted to a FromThePage work, you will be able to correct page titles manually.
+        =link_to t('.first_line_of_ocr'), { :action => 'title_from_ocr_top', :ia_work_id => @ia_work.id }, class: 'button w50'
+        =link_to t('.last_line_of_ocr'), { :action => 'title_from_ocr_bottom', :ia_work_id => @ia_work.id }, class: 'button w50'
+    .ia-form_help== t('.first_line_of_ocr_description')
+    .ia-form_help== t('.last_line_of_ocr_description')
+    .ia-form_help= t('.ocr_page_titles_description')
 
-    h3 Publish to Collaborators
+    h3= t('.publish_to_collaborators')
     =form_tag({ :action => :convert }, class: 'ia-form') do
       =hidden_field_tag :ia_work_id, @ia_work.id
       .ia-form_field
         =label_tag :use_ocr
           =check_box_tag :use_ocr
           |&nbsp;
-          span Use OCR text for page contents?
-        .ia-form_help Select this check-box to populate each page's initial transcript with the contents of the corresponding OCR.  (Don't do this if your pages contain handwriting you want to be transcribed.)
+          span= t('.ocr_for_page_contents')
+        .ia-form_help= t('.ocr_for_page_contents_description')
       .ia-form_field
-        =select_tag :collection_id, options_from_collection_for_select(current_user.collections.sort{|a,b| a.title <=> b.title}, 'id', 'title'), prompt: '- Select a collection -', required: true, 'aria-label' => 'Select a collection'
-      =button_tag 'Publish Work', class: 'ia-form_submit'
-      .ia-form_help Once you've got titles and leaves ready, click Publish to convert the book to a ready-to-transcribe FromThePage work. This process will take several minutes to run.
+        =select_tag :collection_id, options_from_collection_for_select(current_user.collections.sort{|a,b| a.title <=> b.title}, 'id', 'title'), prompt: t('.select_a_collection'), required: true, 'aria-label' => t('.select_a_collection_1')
+      =button_tag t('.publish_work'), class: 'ia-form_submit'
+      .ia-form_help= t('.publish_work_description')

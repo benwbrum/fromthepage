@@ -1,0 +1,18 @@
+---
+es:
+  activerecord:
+    attributes:
+      collection:
+        slug: URL
+        title: Título
+      document_set:
+        slug: URL
+        title: Título
+      work:
+        slug: URL
+        title: Título
+  errors:
+    messages:
+      not_saved:
+        one: '1 error prohibió que se guardara este %{resource}:'
+        other: 'Los errores de %{count} prohibieron que se guardara este %{resource}:'

@@ -69,7 +69,7 @@ class ArticleController < ApplicationController
         record_deed
         flash[:notice] = t('.subject_successfully_updated')
         if gis_truncated 
-          flash[:notice] << " (GIS coordinates truncated to #{GIS_DECIMAL_PRECISION} decimal " << "place".pluralize(GIS_DECIMAL_PRECISION) <<")"
+          flash[:notice] << t('.gis_coordinates_truncated', precision: GIS_DECIMAL_PRECISION, count: GIS_DECIMAL_PRECISION)
         end
         redirect_to :action => 'edit', :article_id => @article.id
       else

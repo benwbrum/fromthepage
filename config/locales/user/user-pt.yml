@@ -1,50 +1,39 @@
+---
 pt:
   user:
     owner_profile:
-      api_keys: "API Keys"
-      edit_profile: "Editar Perfil"
-      login_and_password: "Usuário &amp; Senha"
-      website: "Site"
-      previous_image: "Imagem anterior"
-      next_image: "Imagem seguinte"
+      api_keys: API Keys
+      edit_profile: Editar Perfil
+      login_and_password: Usuário &amp; Senha
+      next_image: Imagem seguinte
+      previous_image: Imagem anterior
+      website: Site
     profile:
-      edit_profile: "Editar Perfil"
-      login_and_password: "Usuário &amp; Senha"
-      user_since: "Usuário desde %{date}"
-      last_seen: "Visto por última vez em %{date}"
-      recent_activity_by: "Actividade Recente de %{user_display_name}"
-      recent_notes: "Notas Recentes"
-      date: "Data"
-      page: "Página"
-      note: "Nota"
-      recent_page_edits: "Edições Recentes de Páginas"
-      work: "Obra"
-      version: "Versão"
-      no_work: "Sem obra"
-      revision: "Revisão %{version}"
-      recent_article_edits: "Edições Recentes de Artigos"
-      article: "Artigo"
-      categories: "Categorias"
-      user_deleted: "Perfil de usuário foi excluído"
       contribution:
-        one: "Contribuição"
-        other: "Contribuições"
-    update_profile:
-      update_user_profile: "Atualizar Perfil do Usuário"
-      name_only_required: "O seu nome é o único campo requerido."
-      name: "Nome"
-      your_blog_or_homepage: "Seu blog ou site pessoal"
-      where_are_you_from: "Você é de onde?"
-      about_you: "Sobre você"
-      default_dictation_language: "Idioma de ditado automático: "
-      select_notification: "Selecione quais das seguintes notificações você gostaria de receber:"
-      user_activity: "Um e-mail cada noite com a atividade nas coleções nas quais você colabora"
-      owner_stats: "Um e-mail cada noite com a atividade nas coleções que você controla"
-      add_as_collaborator: "Adicionado como colaborador a uma obra privada"
-      add_as_owner: "Adicionado como dono a uma obra privada"
-      add_as_reviewer: "Adicionado à coleção como revisor autorizado"
-      page_edited: "Nota adicionada em resposta a um comentário que você fez"
-      update_profile: "Atualizar Perfil"
-      picture: "Foto do perfil"
+        one: Contribuição
+        other: Contribuições
+      edit_profile: Editar Perfil
+      last_seen: Visto por última vez em %{date}
+      login_and_password: Usuário &amp; Senha
+      recent_activity_by: Actividade Recente de %{user_display_name}
+      user_deleted: Perfil de usuário foi excluído
+      user_since: Usuário desde %{date}
     update:
-      user_updated: "O perfil do usuário foi atualizado"
+      user_updated: O perfil do usuário foi atualizado
+    update_profile:
+      about_you: Sobre você
+      add_as_collaborator: Adicionado como colaborador a uma obra privada
+      add_as_owner: Adicionado como dono a uma obra privada
+      add_as_reviewer: Adicionado à coleção como revisor autorizado
+      default_dictation_language: 'Idioma de ditado automático: '
+      name: Nome
+      name_only_required: O seu nome é o único campo requerido.
+      owner_stats: Um e-mail cada noite com a atividade nas coleções que você controla
+      page_edited: Nota adicionada em resposta a um comentário que você fez
+      picture: Foto do perfil
+      select_notification: 'Selecione quais das seguintes notificações você gostaria de receber:'
+      update_profile: Atualizar Perfil
+      update_user_profile: Atualizar Perfil do Usuário
+      user_activity: Um e-mail cada noite com a atividade nas coleções nas quais você colabora
+      where_are_you_from: Você é de onde?
+      your_blog_or_homepage: Seu blog ou site pessoal

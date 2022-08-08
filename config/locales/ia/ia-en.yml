@@ -1,16 +1,50 @@
+---
 en:
   ia:
+    confirm_import:
+      book_already_imported_description: 'The works listed below may have been imported from the same source:'
+      book_already_imported_warning: 'Warning: This book may have already imported!'
+      book_was_imported: 'Internet Archive book "%{book}"; was imported by %{user} on %{date} '
+      cancel_import: Cancel Import
+      import_anyway: Import Anyway
+      import_from_archive_org: Import From Archive.org
+      not_converted_into_work: but has not been converted into a FromThePage work.
+      please_enter_valid_url: Please enter a valid Archive.org book URL to import
+      was_converted_into_work: 'and was converted into FromThePage work '
     convert:
       converted_to_work: "%{title} has been converted into a FromThePage work"
-    mark_beginning:
-      preceding_the_beginning: "Pages preceding the beginning of the text have been concealed"
-    mark_end:
-      pages_following_the_end: "Pages following the end of the text have been concealed"
-    title_from_ocr_top:
-      pages_has_been_renamed: "Pages have been renamed with the top line of OCR text"
-    title_from_ocr_bottom:
-      pages_has_been_renamed: "Pages have been renamed with the bottom line of OCR text"
-    confirm_import:
-      please_enter_valid_url: "Please enter a valid Archive.org book URL to import"
+    ia_book_form:
+      book_url: Book URL
+      import_book_description: To import a book please open this book at www.archive.org then copy the book URL from the browser's address bar and paste it below.
+      import_from_archive_org: Import From Archive.org
+      import_work: Import Work
     import_work:
       imported_into_staging: "%{title} has been imported into your staging area"
+    manage:
+      actions: Actions
+      book_imported_description: This book has been imported from the Internet Archive but has not yet been converted to a work. Below you see the list of imported pages and their OCR text. Use actions menu to define the first page (conceal all preceding pages) and the last page (conceal all following pages). You can also manage page titles from the OCR text and finally convert this import into a work by publishing it into a collection. For more information on this screen, see the Wiki article <a href="https://github.com/benwbrum/fromthepage/wiki/Importing-Works-from-the-Internet-Archive" target="_blank">Importing Works from the Internet Archive</a>.
+      conceal_following_pages: Conceal following pages
+      conceal_preceding_pages: Conceal preceding pages
+      first_line_of_ocr: First line of OCR
+      first_line_of_ocr_description: "<b>First line of OCR</b> replaces the page titles with the top line of OCR text on each page. This is useful for diaries and daybooks, since the first line is generally a date."
+      last_line_of_ocr: Last line of OCR
+      last_line_of_ocr_description: "<b>Last line of OCR</b> replaces the page titles with the bottom line of OCR text on each page. This is useful for printed works in which page numbers appear at the bottom."
+      manage_archive_org_import: Manage Archive.org Import
+      ocr_for_page_contents: Use OCR text for page contents?
+      ocr_for_page_contents_description: Select this check-box to populate each page's initial transcript with the contents of the corresponding OCR. (Don't do this if your pages contain handwriting you want to be transcribed.)
+      ocr_page_titles_description: This process will take several seconds to run, since it requires parsing the entire OCR text for the book and updating each page title. After the book has been converted to a FromThePage work, you will be able to correct page titles manually.
+      page_n_of_n: Page %{n} of %{total} (%{n2})
+      page_titles: Page Titles
+      publish_to_collaborators: Publish to Collaborators
+      publish_work: Publish Work
+      publish_work_description: Once you've got titles and leaves ready, click Publish to convert the book to a ready-to-transcribe FromThePage work. This process will take several minutes to run.
+      select_a_collection: "- Select a collection -"
+      select_a_collection_1: Select a collection
+    mark_beginning:
+      preceding_the_beginning: Pages preceding the beginning of the text have been concealed
+    mark_end:
+      pages_following_the_end: Pages following the end of the text have been concealed
+    title_from_ocr_bottom:
+      pages_has_been_renamed: Pages have been renamed with the bottom line of OCR text
+    title_from_ocr_top:
+      pages_has_been_renamed: Pages have been renamed with the top line of OCR text

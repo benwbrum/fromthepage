@@ -21,9 +21,9 @@
               small =bulk_export.user.email
             td
               -if bulk_export.collection.present?
-                p.fgfaded(data-prefix="Collection: ")
+                p.fgfaded(data-prefix=t('.collection'))
                   =link_to(bulk_export.collection.title, collection_url(bulk_export.user, bulk_export.collection))
-              .small.fgfaded(data-prefix="File Name: ")
+              .small.fgfaded(data-prefix=t('.file_name'))
                 =bulk_export.zip_file_name
             td.nowrap
               p
@@ -33,7 +33,7 @@
             td.nowrap
               dl.dropdown.right
                 dt tabindex=0
-                  span Actions
+                  span= t('.actions')
                   =svg_symbol '#icon-list', class: 'icon'
                 dd
                   =link_to(t('.show_details'), bulk_export_show_path(:bulk_export_id => bulk_export.id))

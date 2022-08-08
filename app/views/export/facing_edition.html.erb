@@ -40,7 +40,7 @@
 
 
 \newpage
-This document would not be possible without the editorial contributions of the following people:
+<%= t('.contributions_message') %>
 
 <% contributor_ids = @work.deeds.group(:user_id).count.sort{|a,b| b[1] <=> a[1]}.map{|e| e[0]} %>
 <% contributor_names = [] %>

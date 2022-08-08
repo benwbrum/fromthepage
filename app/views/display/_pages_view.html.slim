@@ -73,7 +73,7 @@
             -if @collection.active?
               -if page.work.ocr_correction
                 -status = t('.corrected')
-                -help = link_to('help correct', action)
+                -help = link_to(t('.help_correct'), action)
               -else
                 -status = t('.transcribed')
                 -help = link_to(t('.help_transcribe'), action)
@@ -84,7 +84,7 @@
             p.nodata_text == t('.collaboration_is_restricted')
 
       -if page.work.supports_translation
-        button.outline.work-page_toggle-view Translation
+        button.outline.work-page_toggle-view= t('.translation')
         .work-page_text(style="display:none")
           -translation = xml_to_html(page.xml_translation, false)
           -if page.translation_status == 'blank'
