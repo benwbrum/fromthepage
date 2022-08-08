@@ -74,6 +74,7 @@ pt:
       enable_document_sets: Ativar Conjuntos de Documentos
       enable_field_based_transcription: Ativar a Transcrição Baseada em Campos de Formulário
       enable_ocr: Ativar OCR
+      enable_spellcheck: Ativar verificação ortográfica (não é adequado para textos com ortografia irregular)
       field_based_transcription: Transcrição baseada em campos de formulário
       footer: Rodapé
       help: Texto de Ajuda Básica

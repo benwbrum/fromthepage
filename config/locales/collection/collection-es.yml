@@ -74,6 +74,7 @@ es:
       enable_document_sets: Habilitar Conjuntos de Documentos
       enable_field_based_transcription: Habilitar transcripción basada en campos
       enable_ocr: Habilitar OCR
+      enable_spellcheck: Habilitar el corrector ortográfico (no apto para textos con ortografía irregular)
       field_based_transcription: Transcripción basada en campos
       footer: Pie de página
       help: Texto de Ayuda Básica
