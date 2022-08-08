@@ -11,7 +11,7 @@
           table.form.collection-settings
             tr
               =f.label :collection_id, class: "hidden"
-              td =f.select :collection_id, options_from_collection_for_select(current_user.collections.sort { |a,b| a.title <=> b.title }, 'id', 'title', @document_upload.collection_id), {prompt: '- Select a collection -'}
+              td =f.select :collection_id, options_from_collection_for_select(current_user.collections.sort { |a,b| a.title <=> b.title }, 'id', 'title', @document_upload.collection_id), {prompt: t('.select_a_collection')}
             tr
               td
                 .input-file

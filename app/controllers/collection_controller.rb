@@ -90,7 +90,7 @@ class CollectionController < ApplicationController
       end
     end
 
-    flash[:notice] = 'Editor Buttons Updated'
+    flash[:notice] = t('.editor_buttons_updated')
     ajax_redirect_to(edit_collection_path(@collection.owner, @collection))
 
   end

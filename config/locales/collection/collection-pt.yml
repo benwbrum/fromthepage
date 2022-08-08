@@ -1,0 +1,167 @@
+---
+pt:
+  collection:
+    collection_works:
+      progress: Progresso
+      work_title: Título da obra
+    contributor_activity:
+      recent_notes: Notas Recentes
+      recent_ocr_correction: Correção de OCR recente
+      recent_pages_needing_review: Páginas Recentes para Revisar
+      recent_subject_indexing: Indexação Recente
+      recent_subjects: Temas Recentes
+      recent_transcriptions: Transcrições Recentes
+      recent_translation_subject_indexing: Indexação Recente de Tradução
+      recent_translations: Traduções Recentes
+      recent_translations_needing_review: Traduções Recentes para Revisar
+      recent_works_added: Recentes Obras Adicionadas
+    contributors:
+      contributions: Contribuições entre %{start_deed} e %{end_deed}
+      end_date: Data de finalizar
+      select_new_date: Selecionar um novo intervalo de datas
+      start_date: Data de iniciar
+      update: Atualizar
+    contributors_body:
+      active_collaborators: Colaboradores Ativos
+      all_collaborator_emails: Todos os e-mails dos Colaboradores
+      collaborator_stats: Estatísticas de Colaborador %{start_ deed} até %{end_deed}
+      collaborators: Colaboradores
+      collection: " (Coleção: %{collection_time} minutos / Total: %{total_time} minutos)"
+      detailed_spreadsheet_export: Uma planilha detalhada de todos os colaboradores está disponível para exportar no painel de controle do dono.
+      export_activity_as_csv: Exportar Atividade em formato .CSV
+      export_as_csv: Exportar em formato .CSV
+      new_collaborators: Novos Colaboradores
+      no_activity_this_time_frame: Nenhuma atividade neste período de tempo
+      no_collaborators: Sem Colaboradores
+      total_time: 'Tempo Total: %{hours} horas, %{minutes} minutos.'
+      view_activity: Visualizar Atividade
+    corrected: Corrigido
+    create:
+      notice: A coleção foi criada
+    disable_ocr:
+      notice: A correção de OCR foi desativada para todas as obras.
+    edit:
+      add_a_new_work: Adicionar uma nova obra
+      add_another_work_under: Você pode adicionar uma nova obra em %{start_project}
+      add_button: Adicionar
+      api_access: Acesso API
+      api_access_description: Permitir o acesso a transcrições através de IIIF API
+      blank_collection: Repor Coleção em Branco
+      blank_collection_description: Este botão repõe a coleção num estado em branco. Ele exclui todas as transcrições e outros trabalhos sobre a coleção, como se fosse recentemente importado.
+      close_api: Fechar API
+      collection_active_message: Esta é uma coleção ativa. Tornar uma coleção inativa impede os utilizadores de editar o conteúdo dentro da coleção. O status da coleção não afeta a definição de privacidade da coleção.
+      collection_collaborators: Colaboradores da Coleção
+      collection_collaborators_description: Os colaboradores podem transcrever e editar coleções privadas.
+      collection_image: Imagem da Coleção
+      collection_inactive_message: Esta é uma coleção inativa. Tornar uma coleção ativa permite os utilizadores a editar o conteúdo dentro da coleção. O status da coleção não afeta a definição de privacidade da coleção.
+      collection_link: Link da Coleção
+      collection_owners: Donos da Coleção
+      collection_owners_description: Os donos podem adicionar obras à coleção e subir imagens de página, bem como transcrever e ler obras na coleção.
+      collection_privacy: Privacidade da Coleção
+      collection_public_message: A coleção pode ser visualizada por qualquer pessoa na Internet. Você pode tornar a coleção privada para restringir a visualização apenas aos donos.
+      collection_restricted_message: A coleção só pode ser visualizada pelos donos listados abaixo. Você pode tornar a coleção publicamente acessível.
+      collection_status: Status da Coleção
+      confirm_delete_collection: Tem certeza que deseja apagar esta coleção? Depois de apagar não pode ser recuperada!
+      current_url: O URL atual desta coleção é %{current_url}. Se quiser editar a parte da obra no URL, por favor use letras minúsculas e traços entre as palavras.
+      default_orientation: Selecione a orientação da página predeterminada da transcrição
+      delete_collection: Apagar Coleção
+      description: Descrição
+      disable_document_sets: Desativar Conjuntos de Documentos
+      disable_ocr: Desativar OCR
+      document_sets: Conjuntos de Documentos
+      document_sets_description: Conjuntos de documentos são subconjuntos das obras desta coleção, que podem ser usados para focar um projeto de edição ou para criar uma exposição pública com um foco particular dos documentos.
+      edit_fields: Campos
+      enable_document_sets: Ativar Conjuntos de Documentos
+      enable_field_based_transcription: Ativar a Transcrição Baseada em Campos de Formulário
+      enable_ocr: Ativar OCR
+      field_based_transcription: Transcrição baseada em campos de formulário
+      footer: Rodapé
+      help: Texto de Ajuda Básica
+      hide_completed: Automaticamente não mostrar as obras completadas
+      learn_more_footer: Saiba mais sobre a configuração do rodapé.
+      link_help: Texto de Ajuda para Vinculação de Temas (não mostrado se o uso de temas está desativado)
+      make_collection_active: Tornar a Coleção Ativa
+      make_collection_inactive: Tornar a Coleção Inativa
+      make_collection_private: Tornar a Coleção Privada
+      make_collection_public: Tornar a Coleção Pública
+      no_document_sets_in_collection: Esta coleção não tem nenhum conjunto de documentos.
+      no_image: Sem Imagem
+      ocr_correction: Correcção de OCR
+      ocr_correction_description: Ativar ou desativar a correção de OCR para todas as obras desta coleção.
+      open_api: Abrir API
+      page_needing_transcription: 'Este link enviará transcritores diretamente para uma página que necessita de transcrição: %{current_url}'
+      page_on_the_bottom: Página Inferior
+      page_on_the_left: Página à Esquerda
+      page_on_the_right: Página à Direita
+      page_on_the_top: Página Superior
+      picture_to_be_used_message: Uma imagem para ilustrar a descrição da coleção.
+      remove_collaborator: Remover Colaborador
+      remove_owner: Remover Dono
+      revert_document_based_transcription: Reverter para a Transcrição Baseada em Documento
+      save_changes: Guardar Alterações
+      start_a_project: Iniciar um Projeto
+      suggestions_help_tab: Sugestões para a sua aba de ajuda.
+      suggestions_transcription_conventions: Sugestões para as suas convenções de transcrição.
+      text_language: Selecione o idioma da transcrição
+      title: Titulo
+      transcription_conventions: Convenções de Transcrição
+      transcription_type: Tipo de Transcrição
+      transcription_type_description: Cada página pode ter uma área livre de entrada de texto (o padrão) ou vários campos de entrada curtos criados para formulários.  Todas as páginas da coleção têm o mesmo tipo de entrada de texto da transcrição. O ditado de voz não é suportado e será desativado.
+      upload_image: Subir Imagem
+      voice_recognition: Voz para texto disponível para a transcrição
+    enable_ocr:
+      notice: A correção de OCR foi ativada para todas as obras.
+    facet_form:
+      filter: Filtro
+    facets:
+      field_label: Field Label
+      label: Rótulo
+      metadata_facets: Facetas de metadados
+      metadata_facets_description: Configure as facetas de metadados revisando os metadados em sua coleção e marcando os campos a serem exibidos aos transcritores.
+      occurrences: Ocorrências
+      order: Ordem
+      type: Tipo
+    indexed: indexado
+    needs_review: Precisa ser revisado
+    needs_review_pages:
+      pages_that_need_review: Páginas para Revisar
+      project_by: Projeto por
+      return_to_collection: Voltar à Coleção
+    needs_transcription_pages:
+      project_by: Projeto por
+      return_to_collection: Voltar à Coleção
+    new:
+      collection_description: Descrição Da Colecção
+      create_collection: Criar Coleção
+      create_new_collection: Criar Nova Coleção
+      enter_collection_title: Para criar uma nova coleção, introduza o título da coleção. No próximo passo você poderá adicionar obras na coleção.
+      individual_researcher_limited_account: Uma Conta de Investigador Individual se limita a uma única coleção. Para elevar a sua conta entre em contato com support@fromthepage.com.
+      title: Titulo
+    show:
+      about: Sobre
+      add_a_new_work: Adicionar uma nova obra
+      all_complete: Todas as obras estão totalmente transcritas.
+      pages_need_review: Páginas para Revisar
+      project_by: Projeto por
+      recent_edits: Edições Recentes
+      recent_notes: Notas Recentes
+      search: Buscar
+      search_by_title: Buscar por título...
+      search_the_text: Buscar o texto...
+      show_more: Mostrar Mais
+      start_transcribing: Iniciar Transcrição
+      subject_categories: Categorias de Temas
+      time_ago_in_words: Há %{time}
+      works: Obras
+    start_transcribing:
+      notice: Desculpe, mas não há páginas com esses critérios nesta coleção.
+    transcribed: Transcrito
+    translated: traduzido
+    update:
+      notice: A coleção foi atualizada
+    works_list:
+      alphabetical: Alfabético
+      percent_complete: Percentagem Completa
+      recent_activity: Atividade Recente
+      sort_works_by: Ordenar Obras por...
+      works: Obras

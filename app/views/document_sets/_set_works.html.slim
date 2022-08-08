@@ -10,7 +10,9 @@
           -work_stats(w)
           li.document_set
             span =link_to w.title, collection_read_work_path(w.collection.owner, w.collection, w)
-            span ="#{pluralize(w.work_statistic.total_pages, 'page')}: #{@wording}"
+            span 
+              = t('.n_pages', count: w.work_statistic.total_pages)
+              = @wording
             span =w.restrict_scribes  ? t('.restricted') : t('.unrestricted')
             span =check_box_tag("work[#{w.id}]", "work[#{w.id}]", false,{"title" => t('.remove_title_from_document_set', title: w.title)})
       br

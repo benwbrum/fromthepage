@@ -1,0 +1,36 @@
+---
+es:
+  devise:
+    failure:
+      already_authenticated: Ya has iniciado sesión.
+      inactive: Tu cuenta aún no ha sido activada.
+      invalid: La contraseña o %{authentication_keys} son inválidos.
+      not_found_in_database: La contraseña o %{authentication_keys} son inválidos.
+      timeout: La sesión expiró. Por favor vuelve a iniciar sesión para continuar.
+      unauthenticated: Para continuar debes iniciar sesión o crear una cuenta.
+    mailer:
+      reset_password_instructions:
+        subject: Instrucciones para reestablecer la contraseña
+    omniauth_callbacks:
+      failure: No se pudo corroborar tu información de %{kind} ya que %{reason}.
+      success: Corroborado exitosamente por la cuenta %{kind}.
+    passwords:
+      no_token: Esta página solo puede ser accesada desde un  correo para reestablecer la contraseña. Si este es el caso, por favor asegúrate de haber usado el URL entero que se proveyó en el correo para reestablecer la contraseña.
+      send_instructions: Recibirás un correo con las instrucciones para reestablecer la contraseña en unos minutos.
+      send_paranoid_instructions: Si tu dirección de correo electrónico ya existe en nuestra base de datos, dentro de unos minutos recibirás un enlace para recuperar su contraseña en el buzón de entrada de tu correo.
+      updated: La contraseña ha sido cambiada exitosamente. Has iniciado sesión.
+      updated_not_active: La contraseña ha sido cambiada exitosamente.
+    registrations:
+      destroyed: "¡Adiós! La cuenta ha sido cancelada exitosamente. Esperamos verte de nuevo pronto."
+      signed_up: "¡Te damos la bienvenida! Has iniciado sesión exitosamente."
+      updated: La cuenta se ha actualizado correctamente.
+      updated_but_not_signed_in: La cuenta se ha actualizado exitosamente, pero dado que se cambió la contraseña, debes volver a iniciar sesión
+    sessions:
+      already_signed_out: Has cerrado sesión exitosamente.
+      signed_in: Has iniciado sesión exitosamente.
+      signed_out: Has cerrado sesión exitosamente.
+  errors:
+    messages:
+      expired: ha expirado, por favor solicite uno nuevo
+      not_found: no ha sido encontrado
+      not_signed: 'No se pudo iniciar sesión debido al siguiente error:'
