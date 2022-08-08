@@ -103,7 +103,7 @@ en:
       source_box_folder: Source Box/Folder
       source_collection_name: Source Collection Name
       source_location: Source Location
-      support_translation: Support Translation
+      support_translation: Enable Translation
       support_translation_description: A work can be translated as well as transcribed. When checked, the work will have a Translation tab for each page.
       transcription_conventions: Transcription conventions
       translation_instructions: Translation instructions
