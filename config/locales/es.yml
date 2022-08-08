@@ -1,5 +1,6 @@
 ---
 es:
+  authentication_failed: Autenticación fallida
   dashboard:
     collaborator: Panel de Control del Colaborador
     plain: Panel de Control
@@ -15,3 +16,4 @@ es:
       default: "%d de %b de %Y %I:%M %p"
       short: "%d/%m/%Y a las %I:%M %p"
   time_ago_in_words: Hace %{time}
+  unauthorized_collection: No tienes acceso a %{project}. Inicie sesión o comuníquese con el propietario del proyecto para ser agregado.
