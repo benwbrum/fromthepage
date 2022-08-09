@@ -4,9 +4,9 @@
 
 .columns
   article.maincol
-    p This lists all bulk exports you have run.  Exports are cleaned after a few days, and are no longer available for download
+    p= t('.bulk_exports_description')
 
-    p Create a bulk export from the Export tab of a collection or the Download tab of a work.
+    p= t('.create_bulk_export_description')
 
     table.admin-grid.datagrid.striped.
       thead
@@ -30,7 +30,7 @@
                 =link_to(bulk_export.work.title, collection_read_work_path(bulk_export.collection.owner, bulk_export.collection, bulk_export.work))
             td.nowrap
               p
-                =bulk_export.created_at.localtime.strftime("%m/%d/%Y at %I:%M %p")
+                =l(bulk_export.created_at.localtime, format: :short)
             td.nowrap
               -bulk_export.attributes.select{|k,v| v == true}.keys.each do |flag|
                 div =t(".#{flag.to_s}")
@@ -48,8 +48,8 @@
     =render(:partial => 'shared/pagination', :locals => { :model => @bulk_exports, :entries_info => true })
 
   aside.sidecol
-    p Reload this page to update the list.
-    =link_to 'Refresh', dashboard_exports_path, class: 'button'
+    p= t('.reload_this_page_to')
+    =link_to t('.refresh'), dashboard_exports_path, class: 'button'
 
 
 -content_for :javascript

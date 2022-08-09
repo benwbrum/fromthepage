@@ -277,7 +277,6 @@ describe "collection spec (isolated)" do
 
       page.find(:css, '#create-empty-work').click
 
-
       fill_in('work_title', with: 'Stats Test Work')
       click_button('Create Work')
       page.find('#new_page')
@@ -289,7 +288,6 @@ describe "collection spec (isolated)" do
       page.find('.maincol h4').click_link('Page 1')
       fill_in_editor_field('Transcription')
       page.find('#finish_button_top').click
-      # expect(page).to have_content('Saved')
 
       page.find('.breadcrumbs').click_link('Stats Test Collection')
       expect(page).to have_content("All works are fully transcribed.")

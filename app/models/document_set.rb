@@ -53,6 +53,10 @@ class DocumentSet < ApplicationRecord
     end
   end
 
+  def enable_spellcheck
+    self.collection.enable_spellcheck
+  end
+
   def reviewers
     self.collection.reviewers
   end

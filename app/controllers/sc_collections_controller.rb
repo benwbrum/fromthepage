@@ -26,7 +26,7 @@ class ScCollectionsController < ApplicationController
 
     import.submit_background_task
 
-    flash[:info] = "Your import has been started.  When it is complete, you should receive email at #{current_user.email}."
+    flash[:info] = t('.import_started', email: (current_user.email))
     redirect_to dashboard_owner_path
   end
 

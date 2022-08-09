@@ -240,7 +240,7 @@ class IaWork < ApplicationRecord
     # clean any angle braces -- this source won't be HTML
     title.gsub!("<", "&lt;")
     title.gsub!(">", "&gt;")
-    title.gsub!(/\[\[+/, "[") #this
+    title.gsub!(/\[\[+/, "[")
 
     title
   end
