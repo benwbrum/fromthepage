@@ -4,7 +4,7 @@ pt:
     collection_stats_by_owner:
       comments_from_your_collaborators: 'Comentários de Seus Colaboradores:'
       how_is_your_project_going: Como vai o seu projeto?
-      opt_out_email: Se prefere não receber estes e-mails, entre em contato com support@fromthepage.com para não participar.
+      opt_out_email: Se prefere não receber estes e-mails, clique em %{link} para não participar.
       other_recent_activity: 'Mais Atividade Recente nas Suas Coleções:'
       recent_activity: Atividade recente no seu projeto de FromThePage
       what_is_easy: O que é fácil? O que é difícil? O que podemos fazer para melhorar FromThePage? Adoraríamos saber a sua opinião &mdash; é só responder a este e-mail.
