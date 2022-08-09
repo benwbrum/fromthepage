@@ -8,3 +8,7 @@ pt:
       n_revisions:
         one: 1 revisão
         other: "%{count} revisões"
+      no_transcription_provided: Nenhuma transcrição fornecida
+      no_translation_provided: Nenhuma tradução fornecida
+      translation: Tradução
+      untitled: Sem título
