@@ -16,7 +16,7 @@ en:
         edited_page: edited %{page}
         edited_translation_of_page: edited the translation of %{page}
         in_collection: " in %{collection}"
-        in_the_work: " in the %{work}"
+        in_the_work: " in %{work}"
         indexed_page: indexed %{page}
         indexed_translation_of_page: indexed the translation of %{page}
         joined: 'joined '
