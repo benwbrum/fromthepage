@@ -64,6 +64,12 @@
 
         -if @ssl && !@collection.field_based && @collection.text_entry?
           tr
+          td(colspan="2")
+              =f.check_box :enable_spellcheck
+              =f.label :enable_spellcheck, t('.enable_spellcheck')
+
+        -if @ssl && !@collection.field_based && @collection.text_entry?
+          tr
             td(colspan="2")
               =f.check_box :voice_recognition, onchange: 'showLang(event)'
               =f.label :voice_recognition, t('.voice_recognition')

@@ -96,6 +96,7 @@ pt:
       enable_field_based_transcription: Ativar a Transcrição Baseada em Campos de Formulário
       enable_metadata_description: Ativar descrição de metadados
       enable_ocr: Ativar OCR
+      enable_spellcheck: Ativar verificação ortográfica (não é adequado para textos com ortografia irregular)
       field_based_transcription: Transcrição baseada em campos de formulário
       footer: Rodapé
       help: Texto de Ajuda Básica

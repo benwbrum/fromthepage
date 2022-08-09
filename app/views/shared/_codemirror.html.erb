@@ -92,6 +92,8 @@
       },
       lineWrapping: true,
       hintOptions: {schemaInfo: fromthepage_tags},
-      buttons: button_config
+      buttons: button_config,
+      inputStyle: 'contenteditable',
+      spellcheck: <%= @collection.enable_spellcheck %>
     });
 </script>

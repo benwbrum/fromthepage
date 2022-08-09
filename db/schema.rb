@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_18_104413) do
+ActiveRecord::Schema.define(version: 2022_07_28_190940) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 2022_07_18_104413) do
     t.datetime "updated_at"
   end
 
-  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "collection_id"
     t.datetime "created_at", null: false
@@ -193,8 +193,10 @@ ActiveRecord::Schema.define(version: 2022_07_18_104413) do
     t.boolean "facets_enabled", default: false
     t.boolean "user_download", default: false
     t.string "review_type", default: "optional"
+    t.boolean "review_workflow", default: false
     t.string "data_entry_type", default: "text"
     t.text "description_instructions"
+    t.boolean "enable_spellcheck", default: false
     t.index ["owner_user_id"], name: "index_collections_on_owner_user_id"
     t.index ["restricted"], name: "index_collections_on_restricted"
     t.index ["slug"], name: "index_collections_on_slug", unique: true
@@ -383,7 +385,7 @@ ActiveRecord::Schema.define(version: 2022_07_18_104413) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "metadata_description_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "metadata_description_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.text "metadata_description"
     t.integer "user_id", null: false
     t.integer "work_id", null: false
@@ -563,7 +565,7 @@ ActiveRecord::Schema.define(version: 2022_07_18_104413) do
     t.integer "version"
   end
 
-  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "collection_id", null: false
     t.text "sample_set", size: :medium
