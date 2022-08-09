@@ -96,7 +96,7 @@ en:
       enable_field_based_transcription: Enable Field Based Transcription
       enable_metadata_description: Enable Metadata Description
       enable_ocr: Enable OCR
-      enable_spellcheck: "Enable spellcheck (not suitable for texts with irregular spelling)"
+      enable_spellcheck: Enable spellcheck (not suitable for texts with irregular spelling)
       field_based_transcription: Field based transcription
       footer: Footer
       help: Basic Help Text

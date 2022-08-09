@@ -21,7 +21,7 @@ es:
         marked_page_as_blank: marcó la página %{page} como en blanco
         marked_page_as_needing_review: marcó %{page} la página como en necesidad de revisión
         marked_translation_page_as_needing_review: marcó la página de traducción %{page} como necesitando revisión
-        reviewed_page: 'revisada %{page}'
+        reviewed_page: revisada %{page}
         reviewed_translation: traducción revisada de la página %{page}
         saying_deed: ", diciendo &ldquo;%{title}&rdquo;"
         this_collection: esta colección
