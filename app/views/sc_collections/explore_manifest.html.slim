@@ -7,7 +7,7 @@
       p= t('.description', description: (@sc_manifest.description))
 		
     -if @sc_manifest.metadata
-      p= t('.metadata', metadata: (html_metadata(@sc_manifest.metadata)))
+      p== t('.metadata', metadata: (html_metadata(@sc_manifest.metadata)))
 
     -if @sc_manifest.v3?
       -unless @sc_manifest.requiredStatement.blank?

@@ -173,7 +173,7 @@ class ScManifest < ApplicationRecord
       label=pluck_language_value(label)
       value = hash['value'] || hash['@value']
       value = pluck_language_value(value)
-      { '@label' => label, '@value' => value}
+      { 'label' => label, 'value' => value}
     end
   end
 
@@ -217,7 +217,7 @@ class ScManifest < ApplicationRecord
       image_service = body['service'].first
 
       sc_canvas.sc_canvas_id =            canvas['id']
-      sc_canvas.sc_service_id =           image_service['@id']
+      sc_canvas.sc_service_id =           image_service['@id'] || image_service['id']
       sc_canvas.sc_resource_id =          body['id']
       sc_canvas.sc_service_context =      image_service['profile']
       sc_canvas.sc_canvas_label =         pluck_language_value(canvas['label'])
