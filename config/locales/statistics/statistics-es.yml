@@ -3,8 +3,12 @@ es:
   statistics:
     collaborator_time:
       collaborator_time: Tiempo del colaborador
+      collaborator_time_for_dates: Hora del colaborador para fechas
+      end_date: Fecha final
       export_activity_as_csv: Exportar actividad detallada como CSV
       no_activity_for_date_range: TNo hay actividad para este intervalo de fechas.
+      start_date: Fecha de inicio
+      update: Actualizar
       user_totals_for_dates: Totales de usuarios para fechas
     collaborators:
       collaborators: Colaboradores
@@ -21,6 +25,12 @@ es:
       collaborator:
         one: Colaborador
         other: Colaboradores
+      incomplete_page:
+        one: página incompleta
+        other: páginas incompletas
+      lines_transcribed:
+        one: línea de texto
+        other: lineas de texto
       note:
         one: Nota
         other: Notas
@@ -30,6 +40,27 @@ es:
       page:
         one: Página
         other: Páginas
+      page_edit:
+        one: Editar página
+        other: Ediciones de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_needing_review:
+        one: Página que necesita revisión
+        other: Páginas que necesitan revisión
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traducida
+        other: Páginas traducidas
+      records_indexed:
+        one: registro indexado
+        other: Registros indexados
       reference:
         one: Referencia
         other: Referencias
@@ -39,6 +70,9 @@ es:
       work:
         one: Trabajo
         other: Trabajos
+      works_described:
+        one: trabajo descrito
+        other: obras descritas
     recent_statistics:
       collaborator:
         one: Colaborador
@@ -52,6 +86,24 @@ es:
       ocr_correction:
         one: Corrección OCR
         other: Correcciones OCR
+      page_edit:
+        one: Editar página
+        other: Ediciones de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_marked_needing_review:
+        one: Página marcada que necesita revisión
+        other: Páginas marcadas que necesitan revisión
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traducida
+        other: Páginas traducidas
       reference:
         one: Referencia
         other: Referencias
@@ -62,6 +114,9 @@ es:
       collaborator:
         one: Colaborador
         other: Colaboradores
+      incomplete_page:
+        one: página incompleta
+        other: páginas incompletas
       last_days_statistics: Estadísticas de los últimos 7 días
       new_subject:
         one: Nuevo tema
@@ -72,6 +127,27 @@ es:
       ocr_correction:
         one: Corrección OCR
         other: Correcciones OCR
+      page_edit:
+        one: Editar página
+        other: Ediciones de página
+      page_indexed:
+        one: Página indexada
+        other: Páginas indexadas
+      page_marked_needing_review:
+        one: Página marcada que necesita revisión
+        other: Páginas marcadas que necesitan revisión
+      page_needing_review:
+        one: Página que necesita revisión
+        other: Páginas que necesitan revisión
+      page_reviewed:
+        one: Página revisada
+        other: Páginas revisadas
+      page_transcribed:
+        one: Página transcrita
+        other: Páginas transcritas
+      page_translated:
+        one: Página traducida
+        other: Páginas traducidas
       reference:
         one: Referencia
         other: Referencias
