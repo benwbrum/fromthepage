@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
     # if we can't find that, use browser locale
     if locale.nil?
       # the user might their locale set in the browser
-      locale = http_accept_language.compatible_language_from(I18n.available_locales)
+      locale = http_accept_language.preferred_language_from(I18n.available_locales)
     end
 
     if locale.nil? || !I18n.available_locales.include?(locale.to_sym)
