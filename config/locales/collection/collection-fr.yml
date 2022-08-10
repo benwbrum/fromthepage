@@ -189,10 +189,11 @@ fr:
       translation: Traduction
     needs_review: a besoin d'une révision
     needs_review_pages:
-      pages_that_need_review: Pages à réviser
+      pages_need_review: Pages à réviser
       project_by: Projet par
       return_to_collection: Retour à la collecte
     needs_transcription_pages:
+      pages_need_transcription: Pages nécessitant une transcription
       project_by: Projet par
       return_to_collection: Retour à la collecte
     new:

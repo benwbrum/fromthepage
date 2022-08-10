@@ -189,10 +189,11 @@ en:
       translation: Translation
     needs_review: needs review
     needs_review_pages:
-      pages_that_need_review: Pages That Need Review
+      pages_need_review: Pages That Need Review
       project_by: Project by
       return_to_collection: Return to collection
     needs_transcription_pages:
+      pages_need_transcription: Pages That Need Transcription
       project_by: Project by
       return_to_collection: Return to collection
     new:
