@@ -110,7 +110,7 @@ class ScCollectionsController < ApplicationController
 
       end
     rescue => e
-      logger.error(e + "\n\n" + e.backtrace.join("\n"))
+      logger.error(e.message + "\n\n" + e.backtrace.join("\n"))
       case params[:source]
       when 'contentdm'
         flash[:error] = t('.no_manifest_exist', url: params[:source_url])
