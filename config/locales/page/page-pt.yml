@@ -15,10 +15,20 @@ pt:
       here_you_can_edit: Aqui você pode editar o título da página e subir uma nova imagem. Se quiser editar a transcrição da página ou o texto da tradução, por favor vá para a aba apropriada acima.
       page_image: Imagem da Página
       page_position: 'Posição da Página: %{position}'
+      page_status: Status da página
+      page_status_: não foi iniciado
+      page_status_blank: Página em branco
+      page_status_incomplete: Incompleto
+      page_status_indexed: Indexado
+      page_status_review: Precisa de revisão
+      page_status_transcribed: Completo
+      page_status_translated: Traduzido
       page_title: Título da Página
+      page_translation_status: Status da tradução da página
       rotate_clockwise: Girar Sentido Horário
       rotate_counterclockwise: Girar Sentido Anti-Horário
       save_changes: Guardar Alterações
+      status: 'Status:'
     new:
       add_new_page: Adicionar Página Nova
       browse: Navegar
@@ -28,5 +38,6 @@ pt:
       page_image: Imagem da Página
       save_and_add_next_page: Guardar & Adicionar Página Seguinte
       save_and_new_work: Guardar & Nova Obra
+      title: Título
     update:
       page_updated: Esta página foi atualizada

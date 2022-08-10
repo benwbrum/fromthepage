@@ -96,6 +96,7 @@ fr:
       enable_field_based_transcription: Activer la transcription basée sur les champs
       enable_metadata_description: Activer la description des métadonnées
       enable_ocr: Activer OCR
+      enable_spellcheck: Activer la vérification orthographique (ne convient pas aux textes dont l'orthographe est irrégulière)
       field_based_transcription: Transcription basée sur les champs
       footer: Bas de chaque page
       help: Texte de la page d'aide

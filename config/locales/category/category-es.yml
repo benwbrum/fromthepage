@@ -1,12 +1,21 @@
 ---
 es:
   category:
+    add_new:
+      create_category: Crear categoría
+      enable_gis: Habilitar SIG
+      title: Título
     create:
       category_created: La categoría ha sido creada
     delete:
       category_deleted: La categoría ha sido eliminada
     disable_gis:
       gis_disabled_for: GIS deshabilitado para %{title}
+    edit:
+      edit_category: Editar categoria
+      enable_gis: Habilitar SIG
+      save_changes: Guardar cambio
+      title: Título
     enable_gis:
       gis_enabled_for: GIS habilitado para %{title}
     update:

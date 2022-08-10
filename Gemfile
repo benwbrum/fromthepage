@@ -88,7 +88,7 @@ group :development, :test do
   # https://github.com/dejan/rails_panel
   gem 'bullet'
   gem 'listen'
-  gem 'i18n-tasks', '~> 0.9.31'
+  gem 'i18n-tasks', git: "https://github.com/sylvieed/i18n-tasks", branch: 'main'
   gem 'easy_translate'
 end
 

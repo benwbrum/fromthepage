@@ -3,7 +3,7 @@ en:
   devise:
     confirm_password: Confirm Password
     create_account: Create Account
-    display_name: Display Name
+    display_name: Organization Name
     email_address: Email Address
     failure:
       already_authenticated: You are already signed in.

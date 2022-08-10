@@ -27,6 +27,7 @@ pt:
       note_body: Corpo da nota
       please_sign_in_to_write: Por favor %{link} para escrever uma nota para esta página
       save_note: Guardar Nota
+      sign_in: entrar
       write_a_new_note: Escrever uma nova nota...
     update:
       error_updating_note: Erro ao atualizar a nota
