@@ -14,7 +14,7 @@ fr:
       metadata_is_being_imported: Les métadonnées %{ocr_text} sont en cours d'importation depuis CONTENTdm et devraient apparaître sous peu.
     explore_collection:
       already_imported_into: Déjà importé dans
-      collection: 'Collecte : %{sc_collection}'
+      collection: 'Collection : %{sc_collection}'
       collections: 'Collections :'
       first_page: Première page
       id: 'Identifiant : %{id}'
@@ -30,8 +30,8 @@ fr:
       this_collection_is_divided: Cette collection est divisée en plusieurs pages
     explore_manifest:
       canvases: 'Toiles :'
-      collection: 'Collecte : %{sc_collection}'
-      description: 'Descriptif : %{description}'
+      collection: 'Collection : %{sc_collection}'
+      description: 'Description: %{description}'
       id: 'Identifiant:'
       import_manifest: Importer le manifeste
       import_ocr_text: Importer du texte OCR à partir de CONTENTdm

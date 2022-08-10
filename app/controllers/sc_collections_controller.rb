@@ -110,7 +110,7 @@ class ScCollectionsController < ApplicationController
 
       end
     rescue => e
-      logger.error(e)
+      logger.error(e + "\n\n" + e.backtrace.join("\n"))
       case params[:source]
       when 'contentdm'
         flash[:error] = t('.no_manifest_exist', url: params[:source_url])
@@ -321,6 +321,8 @@ class ScCollectionsController < ApplicationController
   def detect_version(at_id)
     manifest = JSON.parse(fetch_manifest(at_id))
     context = manifest['@context']
+
+    return 3 if context.nil?
 
     if context.is_a? Array
       if context.include? V2_CONTEXT
