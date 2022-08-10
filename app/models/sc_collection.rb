@@ -101,7 +101,7 @@ class ScCollection < ApplicationRecord
     if self.v3?
       v3_hash['items'].select { |item| item['type'] == 'Manifest' }
     else
-      self.service.collections
+      self.service.manifests
     end
   end
 
