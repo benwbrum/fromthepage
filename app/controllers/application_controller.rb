@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
+    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
+
     locale = nil
 
     # use user-record locale
