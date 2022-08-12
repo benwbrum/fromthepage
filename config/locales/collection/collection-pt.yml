@@ -29,7 +29,7 @@ pt:
     contributors_body:
       active_collaborators: Colaboradores Ativos
       all_collaborator_emails: Todos os e-mails dos Colaboradores
-      collaborator_stats: Estatísticas de Colaborador %{start_ deed} até %{end_deed}
+      collaborator_stats: Estatísticas de Colaborador %{start_deed} até %{end_deed}
       collaborators: Colaboradores
       collection: " (Coleção: %{collection_time} minutos / Total: %{total_time} minutos)"
       detailed_spreadsheet_export: Uma planilha detalhada de todos os colaboradores está disponível para exportar no painel de controle do dono.
