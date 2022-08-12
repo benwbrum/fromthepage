@@ -116,6 +116,22 @@ module ApplicationHelper
     render({ :partial => 'deed/deeds', :locals => { :limit => limit, :deeds => deeds, :options => options} })
   end
 
+  def show_prerender(prerender, locale) 
+    begin
+      prerenders = JSON.parse(prerender)
+      if prerenders.key? locale.to_s
+        # show prerender in specified locale
+        prerenders[locale.to_s]
+      else
+        # prerender doesn't have specified locale, show default
+        prerenders[I18n.default_locale.to_s]
+      end
+    rescue JSON::ParserError => e
+      # prerender is a string, not hash
+      prerender
+    end
+  end
+
   def validation_summary(errors)
     if errors.is_a?(Enumerable) && errors.any?
       render({ :partial => 'shared/validation_summary', :locals => { :errors => errors } })

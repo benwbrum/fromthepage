@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_28_190940) do
+ActiveRecord::Schema.define(version: 2022_08_12_203801) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.datetime "updated_at"
   end
 
-  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "collection_reviewers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
     t.integer "collection_id"
     t.datetime "created_at", null: false
@@ -193,7 +193,6 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.boolean "facets_enabled", default: false
     t.boolean "user_download", default: false
     t.string "review_type", default: "optional"
-    t.boolean "review_workflow", default: false
     t.string "data_entry_type", default: "text"
     t.text "description_instructions"
     t.boolean "enable_spellcheck", default: false
@@ -226,8 +225,8 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "visit_id"
-    t.string "prerender", limit: 2047
-    t.string "prerender_mailer", limit: 2047
+    t.string "prerender", limit: 4095
+    t.string "prerender_mailer", limit: 4095
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
@@ -385,7 +384,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "metadata_description_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "metadata_description_versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "metadata_description"
     t.integer "user_id", null: false
     t.integer "work_id", null: false
@@ -565,7 +564,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.integer "version"
   end
 
-  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "quality_samplings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "collection_id", null: false
     t.text "sample_set", size: :medium
@@ -837,6 +836,7 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.string "identifier"
     t.integer "next_untranscribed_page_id"
     t.text "original_metadata"
+    t.string "uploaded_filename"
     t.string "genre"
     t.string "source_location"
     t.string "source_collection_name"
@@ -844,7 +844,6 @@ ActiveRecord::Schema.define(version: 2022_07_28_190940) do
     t.boolean "in_scope", default: true
     t.text "editorial_notes"
     t.string "document_date"
-    t.string "uploaded_filename"
     t.text "metadata_description"
     t.integer "metadata_description_version_id"
     t.string "description_status", default: "undescribed"
