@@ -14,6 +14,6 @@
 
 small.legend
   =link_to t('.show_more'),
-    deed_list_path(:collection_id => @collection ? @collection.slug : nil, :user_id => options[:user_id]),
+    deed_list_path(:collection_id => @collection ? @collection.slug : nil, :user_id => options[:user_id] || options[:owner]),
     class: 'button outline round',
     id: 'show-more-deeds'
