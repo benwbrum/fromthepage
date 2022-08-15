@@ -119,14 +119,12 @@ module ApplicationHelper
   def show_prerender(prerender, locale) 
     begin
       prerenders = JSON.parse(prerender)
-      if prerenders.key? locale.to_s
-        # show prerender in specified locale
-        prerenders[locale.to_s]
-      else
+      unless render = prerenders[locale.to_s] # show prerender in specified locale
         # prerender doesn't have specified locale, show first fallback that prerender has
-        fallback = I18n.fallbacks[locale].select { |locale| prerenders.key? locale.to_s }.first
-        prerenders[fallback.to_s]
+        fallback = (I18n.fallbacks[locale].map(&:to_s) & prerenders.keys).first
+        render = prerenders[fallback]
       end
+      render
     rescue JSON::ParserError => e
       # prerender is a string, not hash
       prerender
