@@ -225,8 +225,8 @@ ActiveRecord::Schema.define(version: 2022_08_12_203801) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "visit_id"
-    t.string "prerender", limit: 4095
-    t.string "prerender_mailer", limit: 4095
+    t.string "prerender", limit: 8191
+    t.string "prerender_mailer", limit: 8191
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"
