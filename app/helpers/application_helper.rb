@@ -123,8 +123,9 @@ module ApplicationHelper
         # show prerender in specified locale
         prerenders[locale.to_s]
       else
-        # prerender doesn't have specified locale, show default
-        prerenders[I18n.default_locale.to_s]
+        # prerender doesn't have specified locale, show first fallback that prerender has
+        fallback = I18n.fallbacks[locale].select { |locale| prerenders.key? locale.to_s }.first
+        prerenders[fallback.to_s]
       end
     rescue JSON::ParserError => e
       # prerender is a string, not hash
