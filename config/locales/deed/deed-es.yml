@@ -37,6 +37,7 @@ es:
       collection_title: 'Colección: %{title}'
       newer_activity: Actividad Más Reciente
       older_activity: Actividad Anterior
+      owner_title: 'Propietario: %{title}'
       time_ago_in_words: Hace %{time}
       user_title: 'Usuario: %{title}'
     needs_review: Página necesita revisión
