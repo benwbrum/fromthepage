@@ -46,6 +46,17 @@ class ApplicationController < ActionController::Base
       # use the default if the above optiosn didn't work
       locale = I18n.default_locale
     end
+
+    # append region to locale
+    related_locales = http_accept_language.user_preferred_languages.select{ |loc| 
+      loc.to_s.include?(locale) &&                # is related to the chosen locale (is the locale, or is a regional version of it)
+      I18n.available_locales.include?(loc.to_sym) # is an available locale
+    }
+    unless related_locales.empty?
+      # first preferred language from the related locales
+      locale = http_accept_language.preferred_language_from(related_locales)
+    end
+
     # execute the action with the locale
     I18n.with_locale(locale, &action)
   end
