@@ -8,10 +8,8 @@ en:
     formats:
       default: "%b %d, %Y"
   en: English
-  en-GB: British English
   es: Español
   fr: Français
-  fr-CA: Francês canadense
   pt: Português
   time:
     formats:
