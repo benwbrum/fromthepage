@@ -3,7 +3,7 @@
     -@collections.each do |c|
       -cache c do
         -link_page = c.next_untranscribed_page
-        -snippet = truncate(Loofah.fragment(c.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+        -snippet = truncate(Loofah.fragment(strip_style(c.intro_block)).text(encode_special_chars: false), length: 300, separator: ' ') || ''
         .carousel_slide
           =link_to image_tag(c.picture_url, alt: c.title), collection_path(c.owner, c), class: 'carousel_slide_image'
           .carousel_slide_content
@@ -31,7 +31,7 @@
                 h5
                   =link_to sr.title, collection_path(sr.owner.slug, sr.id)
                 .projects_collection_snippet
-                  = truncate(Loofah.fragment(sr.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+                  = truncate(Loofah.fragment(strip_style(sr.intro_block)).text(encode_special_chars: false), length: 300, separator: ' ') || ''
     -@owners.each do |owner|
       -if params[:search]
         -projects = @search_results.select{ |p| p.owner_user_id == owner.id}
@@ -47,7 +47,7 @@
                 =owner.about
           .projects
             -projects.each do |project|
-              -snippet = truncate(Loofah.fragment(project.intro_block).text(encode_special_chars: false), length: 300, separator: ' ') || ''
+              -snippet = truncate(Loofah.fragment(strip_style(project.intro_block)).text(encode_special_chars: false), length: 300, separator: ' ') || ''
               div.projects_details
                 -unless project.picture.blank?
                   .projects_details_image

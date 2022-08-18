@@ -14,4 +14,10 @@ module DashboardHelper
       content_for :page_title, "Summary - Owner Dashboard"
     end
   end
+
+  def strip_style(html)
+    doc = Nokogiri::HTML(html)
+    doc.xpath('//style').each { |n| n.remove }
+    doc.to_s
+  end
 end
