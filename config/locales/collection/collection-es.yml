@@ -257,6 +257,7 @@ es:
       this_work_has_not_been_described: Este trabajo necesita mejores metadatos.
       this_work_has_pages_that_need_work: Algunas páginas todavía necesitan trabajo.
       time_ago_in_words: Hace %{time}
+      user_wrote_note: "%{user} escribió %{note}"
       works: Obras
     start_transcribing:
       notice: Lo sentimos, pero no hay páginas cualificadas en esta colección.

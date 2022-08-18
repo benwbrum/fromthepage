@@ -257,6 +257,7 @@ pt:
       this_work_has_not_been_described: Este trabalho precisa de melhores metadados.
       this_work_has_pages_that_need_work: Algumas páginas ainda precisam de trabalho.
       time_ago_in_words: Há %{time}
+      user_wrote_note: "%{user} escreveu %{note}"
       works: Obras
     start_transcribing:
       notice: Desculpe, mas não há páginas com esses critérios nesta coleção.
