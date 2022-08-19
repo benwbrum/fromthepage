@@ -257,6 +257,7 @@ fr:
       this_work_has_not_been_described: Ce œuvre a besoin de meilleures métadonnées.
       this_work_has_pages_that_need_work: Certaines pages ont encore besoin de œuvre.
       time_ago_in_words: Il y a %{time}
+      user_wrote_note: "%{user} a écrit %{note}"
       works: Œuvres
     start_transcribing:
       notice: Désolé, mais il n'y a pas de pages de qualification dans cette collection.
