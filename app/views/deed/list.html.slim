@@ -9,7 +9,10 @@ h1 =t('.activity_stream')
 -if @collection
   h3 =t('.collection_title', title: @collection.title)
 -if @user
-  h3 =t('.user_title', title: @user.display_name)
+  -if @user.owner?
+    h3 =t('.owner_title', title: @user.display_name)
+  -else
+    h3 =t('.user_title', title: @user.display_name)
 
 table.datagrid.striped
   -@deeds.each do |d|

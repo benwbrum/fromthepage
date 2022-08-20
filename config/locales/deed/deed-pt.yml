@@ -37,6 +37,7 @@ pt:
       collection_title: 'Coleção: %{title}'
       newer_activity: Atividade Mais Recente
       older_activity: Atividade Mais Antiga
+      owner_title: 'Proprietário: %{title}'
       time_ago_in_words: Há %{time}
       user_title: 'Usuário: %{title}'
     needs_review: A página precisa de revisão
