@@ -76,12 +76,16 @@ module DocumentSetStatistic
 
     stats =
     {
-      :works        => self.works.count,
-      :pages        => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,
-      :subjects     => self.articles.where(timeframe(start_date, end_date, 'articles.created_on')).count,
-      :mentions     => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
-      :contributors => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
-      :line_count   => self.line_count
+      :works                => self.works.count,
+      :pages                => self.works.joins(:pages).where(timeframe(start_date, end_date, 'pages.created_on')).count,
+      :subjects             => self.articles.where(timeframe(start_date, end_date, 'articles.created_on')).count,
+      :mentions             => self.articles.joins(:page_article_links).where(timeframe(start_date, end_date, 'page_article_links.created_on')).count,
+      :contributors         => self.deeds.where(timeframe(start_date, end_date)).select('user_id').distinct.count,
+      :pages_transcribed    => self.pages.where(status: Page::COMPLETED_STATUSES).where(timeframe(start_date, end_date,'pages.edit_started_at')).count,
+      :pages_incomplete     => self.pages.where(status: Page::NEEDS_WORK_STATUSES).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
+      :pages_needing_review => self.pages.where(status: Page::STATUS_NEEDS_REVIEW).where(timeframe(start_date, end_date, 'pages.edit_started_at')).count,
+      :descriptions         => self.works.where(description_status: Work::DescriptionStatus::DESCRIBED).count,
+      :line_count           => self.line_count
     }
 
     stats.merge(deeds)
