@@ -34,12 +34,22 @@ class Deed < ApplicationRecord
   def calculate_prerender
     unless self.deed_type == DeedType::COLLECTION_INACTIVE || self.deed_type == DeedType::COLLECTION_ACTIVE
       renderer = ApplicationController.renderer.new
-      self.prerender = renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true  })
+      locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
+      self.prerender = locales.to_h { |locale| 
+        [ locale, 
+          renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => false, :prerender => true, locale: locale })
+        ] 
+      }.to_json
     end
   end
 
   def calculate_prerender_mailer
     renderer = ApplicationController.renderer.new
-    self.prerender_mailer = renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true })
+    locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" } # don't include regional locales
+    self.prerender_mailer = locales.to_h { |locale|
+      [ locale,
+        renderer.render(:partial => 'deed/deed.html', :locals => { :deed => self, :long_view => true, :prerender => true, :mailer => true, locale: locale })
+      ]
+    }.to_json
   end
 end
