@@ -75,10 +75,10 @@ fr:
       translation: Traduction
       unable_to_find_pages: Nous n'avons trouvé aucune page correspondant à votre demande
     read_all_works:
-      pages: pages
+      pages: Pages
       pages_that_mention: Pages qui mentionnent %{article}
     read_work:
-      pages: pages
+      pages: Pages
       pages_need_indexing: Pages à indexer
       pages_need_review: Pages à réviser
       pages_need_transcription: Pages nécessitant une transcription
