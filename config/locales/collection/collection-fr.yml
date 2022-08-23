@@ -58,7 +58,7 @@ fr:
       blank_collection_description: Appuyer sur ce bouton réinitialisera la collection à un état vide. Il effacera toutes les transcriptions et autres travaux sur la collection, comme si elle venait d'être importée.
       close_api: Fermer l'API
       collection_active_message: Ceci est une collection active. Rendre une collection inactive empêche les utilisateurs de modifier le contenu de la collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
-      collection_collaborators: Collaborateurs de collecte
+      collection_collaborators: Collaborateurs de la collection
       collection_collaborators_description: Les collaborateurs peuvent transcrire et éditer des collections privées.
       collection_image: Image de la collection
       collection_inactive_message: Il s'agit d'une collection inactive. Activer une collection permet aux utilisateurs de modifier le contenu de cette collection. L'état de la collection n'affecte pas le paramètre de confidentialité de la collection.
@@ -103,10 +103,10 @@ fr:
       hide_completed: Masquer les œuvres terminés par défaut
       learn_more_footer: En savoir plus sur la configuration du pied de page.
       link_help: Texte d'aide sur la liaison par sujet (non affiché si les sujets sont désactivés)
-      make_collection_active: Rendre la collecte active
-      make_collection_inactive: Rendre la collecte inactive
+      make_collection_active: Rendre la collection active
+      make_collection_inactive: Rendre la collection inactive
       make_collection_private: Rendre la collection privée
-      make_collection_public: Rendre la collecte publique
+      make_collection_public: Rendre la collection publique
       metadata: Métadonnées
       metadata_description: Chargez les métadonnées des éléments de cette collection de manière groupée.
       metadata_entry: Description des métadonnées
@@ -191,11 +191,11 @@ fr:
     needs_review_pages:
       pages_need_review: Pages à réviser
       project_by: Projet par
-      return_to_collection: Retour à la collecte
+      return_to_collection: Retour à la collection
     needs_transcription_pages:
       pages_need_transcription: Pages nécessitant une transcription
       project_by: Projet par
-      return_to_collection: Retour à la collecte
+      return_to_collection: Retour à la collection
     new:
       collection_description: Description de la collection
       create_collection: Créer une collection
