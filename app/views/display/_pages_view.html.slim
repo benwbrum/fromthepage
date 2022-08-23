@@ -5,7 +5,7 @@
     p.nodata_text =t('.no_pages_needing_transcription_found_these_pages_are_incomplete')
     -working_pages += @incomplete_pages
 -else
-  h3 =t('.pages_that_need_transcription')
+  h3 =@heading
   -if @pages.size == 0 && (@incomplete_pages.blank? || @review.nil? || @review == 'review' || @review == 'translation_review' || @review == 'translation_index')
     .nodata
       h4.nodata_title =t('.no_pages_found')
