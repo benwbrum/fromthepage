@@ -114,6 +114,7 @@ en:
       collaborator:
         one: Collaborator
         other: Collaborators
+      end_date: End date
       incomplete_page:
         one: Incomplete page
         other: Incomplete pages
@@ -151,12 +152,16 @@ en:
       reference:
         one: Reference
         other: References
+      select_new_date: Select a new date range
+      start_date: Start date
+      statistics_from: Statistics from %{start_date} to %{end_date}
       subject:
         one: Subject
         other: Subjects
       total_page:
         one: Total page
         other: Total pages
+      update: Update
       work:
         one: Work
         other: Works
