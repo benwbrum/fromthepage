@@ -26,7 +26,7 @@
     h3 =t('.active_collaborators')
 
     -unless @active_transcribers.empty?
-      table.tabular
+      table.datagrid.striped(style="width:45%")
         thead 
           tr
             th= t('.user') 
