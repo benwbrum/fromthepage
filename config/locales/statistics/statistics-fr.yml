@@ -66,10 +66,18 @@ fr:
         other: Œuvres
       works_described: Œuvre décrite
     recent_statistics:
-      collaborator: Collaborateur
-      new_subject: Nouveau sujet
-      note: Noter
-      ocr_correction: Correction d'OCR
+      collaborator: 
+        one: Collaborateur
+        other: Collaborateurs
+      new_subject: 
+        one: Nouveau sujet
+        other: Nouveaux sujets
+      note: 
+        one: Note
+        other: Notes
+      ocr_correction: 
+        one: Correction d'OCR
+        other: Corrections d'OCR
       page_edit:
         one: Modification
         other: Modifications
@@ -102,7 +110,9 @@ fr:
       incomplete_page:
         one: Page incomplète
         other: Pages incomplètes
-      new_subject: Nouveau sujet
+      new_subject: 
+        one: Nouveau sujet
+        other: Nouveaux sujets
       note:
         one: Note
         other: Notes
