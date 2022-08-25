@@ -27,6 +27,7 @@ en:
       create_empty_work_description: Use this option to create an empty work. You can then upload individual page images into the work.
       create_work: Create Work
       description: Description
+      description_message: The description will be displayed on the project Overview screen and the project About screen. An abbreviated portion of the description will be displayed in the Organization Home screen and the Find A Project screen.
       select_a_collection: "- Select a collection -"
       title: Title
     exports:

@@ -15,6 +15,7 @@
         tr
           td(colspan="2")
             =f.label :intro_block, t('.collection_description'), class: 'above'
+            br: i =t('.collection_description_message')
             =f.text_area :intro_block, rows: 4
       .toolbar
         .toolbar_group.aright =f.button t('.create_collection'), id: 'create-collection'

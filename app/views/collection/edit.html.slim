@@ -17,6 +17,7 @@
         tr
           td(colspan="2")
             =f.label :intro_block, t('.description'), class: "above"
+            br: i =t('.description_message')
             =f.text_area :intro_block, rows: 10, value: @collection.intro_block
         tr
           td(colspan="2")
@@ -27,6 +28,7 @@
           tr
             td(colspan="2")
               =f.label :transcription_conventions, t('.transcription_conventions'), class: "above"
+              br: i =t('.transcription_conventions_message')
               =f.text_area :transcription_conventions, rows: 8, value: @collection.transcription_conventions
               p.nomargin.settings =link_to t('.suggestions_transcription_conventions'), "https://content.fromthepage.com/writing-transcription-conventions-the-project-help-page/", target: :_blank
         tr
