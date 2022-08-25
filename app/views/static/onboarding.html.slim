@@ -1,0 +1,134 @@
+-content_for :page_title, "Create New Project"
+-content_for :meta_description, "FromThePage is open-source software for collaborating on texts."
+
+.onboarding
+  .onboarding_heading
+    h1 Ready to start a new project?
+    p.big Fill in the form below to create a new project. Project settings will allow you to configure more and change these settings later.
+
+  =form_for :collection do |f|
+    section.onboarding-row
+      .onboarding-row_aside
+        =f.label :title, 'Project Title'
+        p Enter a title of your project.
+      .onboarding-row_content
+        =f.text_field :title, class: 'big'
+
+    section.onboarding-row
+      .onboarding-row_aside
+        =f.label :private, 'Privacy Settings'
+        p Is this a public crowdsourcing project or a private project with a limited set of collaborators?
+      .onboarding-row_content
+        .radio-options
+          .radio-options_option
+            =f.label :private, value: false
+              =f.radio_button :private, false, checked: true
+              span Public project
+            small A public project can be viewed and edited by anyone on the internet.
+          .radio-options_option
+            =f.label :private, value: true
+              =f.radio_button :private, true
+              span Private project
+            small A private project access is limited to a set of collaborators.
+
+    section.onboarding-row
+      .onboarding-row_aside
+        label Allowed Actions
+        p What would you like your collaborators to do? Check all that apply.
+      .onboarding-row_content
+        .checkbox-options#actions
+          =f.label :transcribe_text
+            =f.check_box :transcribe_text, checked: true
+            span Transcribe text
+          =f.label :correct_text
+            =f.check_box :correct_text
+            span Correct existing text from OCR or HTR
+          =f.label :transcribe_forms
+            =f.check_box :transcribe_forms
+            span Transcribe forms with specific fields
+          =f.label :transcribe_spreadsheet
+            =f.check_box :transcribe_spreadsheet
+            span Transcribe onto a spreadsheet with specific columns
+          =f.label :translate
+            =f.check_box :translate
+            span Translate (requires transcribe)
+          =f.label :create_metadata
+            =f.check_box :create_metadata
+            span Create metadata for an item
+          =f.label :index_terms
+            =f.check_box :index_terms
+            span Index terms in the text
+          =f.label :markup_text
+            =f.check_box :markup_text
+            span Mark up text using TEI or HTML
+
+    section.onboarding-row
+      .onboarding-row_aside
+        =f.label :description, 'Description'
+        p Describe the material and project. What is the material? Where did it come from? What will the results of this project be used for?
+      .onboarding-row_content
+        =f.text_area :description, rows: 5
+
+    section.onboarding-row
+      .onboarding-row_aside
+        label Poster Image
+        p Upload an image for the project. This is optional, but recommended.
+      .onboarding-row_content
+        .image-form
+          label(data-empty="No image" data-hover="Upload image" aria-label="Upload image" title="Upload image")
+            =f.file_field :picture, accept: 'image/*'
+
+    section.onboarding-row
+      .onboarding-row_aside
+        =f.label :review_type, 'Review Type'
+        p Think hard about your quality requirements and how much staff time you are willing to spend reviewing before you require review.
+      .onboarding-row_content
+        .radio-options
+          .radio-options_option
+            =f.label :review_type, value: 'optional'
+              =f.radio_button :review_type, 'optional', checked: true
+              span Optional
+            small Collaborators may request review of their transcriptions.
+          .radio-options_option
+            =f.label :review_type, value: 'required'
+              =f.radio_button :review_type, 'required'
+              span Required
+            small All initial transcriptions will be marked as needing review. (Review may be performed by anyone)
+          .radio-options_option
+            =f.label :review_type, value: 'restricted'
+              =f.radio_button :review_type, 'restricted'
+              span Restricted
+            small All transcriptions need review, and only authorized reviewers may approve transcriptions.
+
+    section.onboarding-row
+      .onboarding-row_aside
+        label All Done!
+        p You are ready to publish the project.
+      .onboarding-row_content
+        =f.button 'Publish Project', class: 'big'
+
+
+-content_for :javascript
+  javascript:
+    $(function() {
+      $('#actions :checkbox').on('change', function() {
+        var id = $(this).attr('id');
+
+        if (id === 'collection_transcribe_text') {
+          $('#collection_correct_text').prop('checked', false)
+        }
+        if (id === 'collection_correct_text') {
+          $('#collection_transcribe_text').prop('checked', false)
+        }
+        if (id === 'collection_translate') {
+          if (!$('#collection_transcribe_forms').prop('checked') && !$('#collection_transcribe_spreadsheet').prop('checked')) {
+            $('#collection_transcribe_forms').prop('checked', true);
+          }
+        }
+        if (id === 'collection_transcribe_forms' || id === 'collection_transcribe_spreadsheet') {
+          if (!$('#collection_transcribe_forms').prop('checked') && !$('#collection_transcribe_spreadsheet').prop('checked')) {
+            $('#collection_translate').prop('checked', false);
+          }
+        }
+      });
+    });
