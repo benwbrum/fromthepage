@@ -10,8 +10,13 @@ class DeedController < ApplicationController
       # show more link on collections and document sets
       @deed = @collection.deeds
     elsif @user
-      # user activity stream show more link
-      @deed = @user.deeds.includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      if @user.owner?
+        # owner profile show more link
+        @deed = Deed.where(collection_id: @user.all_owner_collections.ids)
+      else
+        # user activity stream show more link
+        @deed = @user.deeds.includes(:note, :page, :user, :work, :collection).paginate :page => params[:page], :per_page => PAGES_PER_SCREEN
+      end
     else
       # show more link for site-wide/find-a-project Show More links
       if current_user && current_user.admin && params[:private]=='true'

@@ -31,15 +31,17 @@ es:
       all_collaborator_emails: Todos los Correos Electrónicos del Colaborador
       collaborator_stats: Estadísticas del Colaborador %{start_deed} hasta %{end_deed}
       collaborators: Colaboradores
-      collection: " (Colección: %{collection_time} minutos | Total: %{total_time} minutos)"
       detailed_spreadsheet_export: Una hoja de cálculo exportable y detallada de todos los colaboradores está disponible en el panel del dueño.
       export_activity_as_csv: Exportar Actividad Como CSV
-      export_as_csv: Exportar como CSV
+      export_as_csv: Exportar actividad detallada como CSV
       find_project_newsletters_recommendations: Encuentre recomendaciones para boletines de proyectos.
       new_collaborators: Nuevos Colaboradores
       no_activity_this_time_frame: No hubo actividad en este lapso de tiempo
       no_collaborators: No hay colaboradores
+      time_on_ftp: Tiempo en FromThePage
+      time_on_this: Tiempo en esta colección
       total_time: 'Tiempo total: %{hours} horas, %{minutes} minutos.'
+      user: Usuario
       view_activity: Ver Actividad
     corrected: corregido
     create:
@@ -189,10 +191,11 @@ es:
       translation: Traducción
     needs_review: requiere revisión
     needs_review_pages:
-      pages_that_need_review: Páginas que Necesitan Revisión
+      pages_need_review: Páginas que Necesitan Revisión
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     needs_transcription_pages:
+      pages_need_transcription: Páginas que necesitan transcripción
       project_by: Proyecto de
       return_to_collection: Volver a la colección
     new:
@@ -257,6 +260,7 @@ es:
       this_work_has_not_been_described: Este trabajo necesita mejores metadatos.
       this_work_has_pages_that_need_work: Algunas páginas todavía necesitan trabajo.
       time_ago_in_words: Hace %{time}
+      user_wrote_note: "%{user} escribió %{note}"
       works: Obras
     start_transcribing:
       notice: Lo sentimos, pero no hay páginas cualificadas en esta colección.

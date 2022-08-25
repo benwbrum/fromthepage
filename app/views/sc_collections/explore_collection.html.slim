@@ -18,7 +18,7 @@
       ul
         -@sc_collection.collections.each do |json_collection|
          li
-           =link_to json_collection['label'], {:action => 'explore_collection', :at_id => json_collection['@id']}
+           =link_to ScManifest.pluck_language_value(json_collection['label']), {:action => 'explore_collection', :at_id => (json_collection['@id']||json_collection['id'])}
 
 
     -unless @sc_collection.v3?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_10_154411) do
+ActiveRecord::Schema.define(version: 2022_08_12_203801) do
 
   create_table "ahoy_activity_summaries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "date"
@@ -225,8 +225,8 @@ ActiveRecord::Schema.define(version: 2022_08_10_154411) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "visit_id"
-    t.string "prerender", limit: 2047
-    t.string "prerender_mailer", limit: 2047
+    t.string "prerender", limit: 8191
+    t.string "prerender_mailer", limit: 8191
     t.boolean "is_public", default: true
     t.index ["article_id"], name: "index_deeds_on_article_id"
     t.index ["collection_id", "user_id", "created_at"], name: "index_deeds_on_collection_id_user_id_created_at"

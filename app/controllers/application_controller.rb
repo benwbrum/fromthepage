@@ -19,6 +19,8 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
 
   def switch_locale(&action)
+    @dropdown_locales = I18n.available_locales.reject { |locale| locale.to_s.include? "-" }
+
     locale = nil
 
     # use user-record locale
@@ -37,13 +39,24 @@ class ApplicationController < ActionController::Base
     # if we can't find that, use browser locale
     if locale.nil?
       # the user might their locale set in the browser
-      locale = http_accept_language.compatible_language_from(I18n.available_locales)
+      locale = http_accept_language.preferred_language_from(I18n.available_locales)
     end
 
     if locale.nil? || !I18n.available_locales.include?(locale.to_sym)
       # use the default if the above optiosn didn't work
       locale = I18n.default_locale
     end
+
+    # append region to locale
+    related_locales = http_accept_language.user_preferred_languages.select{ |loc| 
+      loc.to_s.include?(locale) &&                # is related to the chosen locale (is the locale, or is a regional version of it)
+      I18n.available_locales.include?(loc.to_sym) # is an available locale
+    }
+    unless related_locales.empty?
+      # first preferred language from the related locales
+      locale = http_accept_language.preferred_language_from(related_locales)
+    end
+
     # execute the action with the locale
     I18n.with_locale(locale, &action)
   end

@@ -148,7 +148,14 @@ class ScCollectionsController < ApplicationController
 
   def explore_collection
     at_id = params[:at_id]
-    @sc_collection = ScCollection.collection_for_at_id(at_id)
+    version = detect_version(at_id)
+
+    if version == 3
+      manifest = JSON.parse(fetch_manifest(at_id))
+      @sc_collection = ScCollection.collection_for_v3_hash(manifest)
+    else
+      @sc_collection = ScCollection.collection_for_at_id(at_id)
+    end
     @collection = set_collection
   end
 

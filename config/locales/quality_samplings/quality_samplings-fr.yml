@@ -16,12 +16,8 @@ fr:
       description: L'échantillonnage de qualité vous permet de vérifier les contributions de manière aléatoire, puis d'évaluer les pages à réviser en fonction de la quantité de texte corrigé pour un utilisateur ou un œuvre particulier. Ce nombre peut augmenter à mesure que d'autres pages sont transcrites.
       not_applicable: N / A
       not_fully_sampled_yet: Cet échantillon n'a pas encore été entièrement revu.
-      pages_corrected: Pages corrigées
-      pages_corrected_desc: Pages nécessitant une correction lors de l'approbation (faible, c'est mieux).
       pages_in_sample: Pages dans l'échantillon
       pages_in_sample_desc: Nombre de pages dans l'échantillon pour l'utilisateur ou l'œuvre.
-      pages_sampled: Pages échantillonnées
-      pages_sampled_desc: Nombre de pages échantillonnées jusqu'à présent par rapport au champ total de l'échantillonnage.
       pages_to_be_reviewed: Pages à réviser
       pages_to_be_reviewed_desc: Nombre de pages qui doivent encore être révisées dans l'ensemble de la collection.
       quality_score: Niveau de qualité
@@ -35,7 +31,6 @@ fr:
       sample_field_size: 'Pages à réviser :'
       sample_set_has_increased: L'ensemble d'échantillons a augmenté de %{increase} pages
       sample_set_size: 'Taille du jeu d''échantillons :'
-      total_pages_desc: Nombre de pages dans cette collection.
       user: Donateur
       work: Œuvre
     update:
