@@ -46,6 +46,7 @@ class CollectionController < ApplicationController
 
   def works_to_review
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
+                        .paginate(:page => params[:page], :per_page => 15)
   end
 
   def one_off_list
