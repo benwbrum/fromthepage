@@ -14,7 +14,7 @@ en:
     edit:
       edit_category: Edit Category
       enable_gis: Enable GIS
-      save_changes: Save Changest
+      save_changes: Save Changes
       title: Title
     enable_gis:
       gis_enabled_for: GIS enabled for %{title}

@@ -2,7 +2,6 @@ div
   h1 =@collection.title
 .columns
   article.maincol
-    h3 =t('.pages_that_need_review')
     =render 'display/pages_view'
 
     =render(:partial => 'shared/pagination', :locals => { :model => @pages, :entries_info => true })

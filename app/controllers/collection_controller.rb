@@ -46,6 +46,7 @@ class CollectionController < ApplicationController
 
   def works_to_review
     @works = @collection.works.joins(:work_statistic).includes(:notes, :pages).where.not('work_statistics.needs_review' => 0).reorder("works.title")
+                        .paginate(:page => params[:page], :per_page => 15)
   end
 
   def one_off_list
@@ -635,12 +636,14 @@ class CollectionController < ApplicationController
     @count = @pages.count
     @incomplete_pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).needs_completion.order(work_id: :asc, position: :asc).paginate(page: params[:page], per_page: 10)
     @incomplete_count = @incomplete_pages.count
+    @heading = t('.pages_need_transcription')
   end
 
   def needs_review_pages
     work_ids = @collection.works.pluck(:id)
     @review='review'
     @pages = Page.where(work_id: work_ids).joins(:work).merge(Work.unrestricted).review.paginate(page: params[:page], per_page: 10)
+    @heading = t('.pages_need_review')
   end
 
   def start_transcribing

@@ -24,26 +24,33 @@ class DisplayController < ApplicationController
       if @review == 'review'
         @pages = Page.where(work_id: params[:work_id]).review.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages_need_review')
       elsif @review == 'transcription'
         @pages = Page.where(work_id: params[:work_id]).needs_transcription.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
         @incomplete_pages = Page.where(work_id: params[:work_id]).needs_completion.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @incomplete_count = @incomplete_pages.count
+        @heading = t('.pages_need_transcription')
       elsif @review == 'index'
         @pages = Page.where(work_id: params[:work_id]).needs_index.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages_need_indexing')
       elsif @review == 'translation'
         @pages = Page.where(work_id: params[:work_id]).needs_translation.order('position').paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages_need_translation')
       elsif @review == 'translation_review'
         @pages = Page.order('position').where(work_id: params[:work_id]).translation_review.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.translations_need_review')
       elsif @review == 'translation_index'
         @pages = Page.order('position').where(work_id: params[:work_id]).needs_translation_index.paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.translations_need_indexing')
       else
         @pages = Page.order('position').where(:work_id => @work.id).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
         @count = @pages.count
+        @heading = t('.pages')
       end
     end
     session[:col_id] = @collection.slug
@@ -54,10 +61,12 @@ class DisplayController < ApplicationController
       # restrict to pages that include that subject
       @pages = Page.order('work_id, position').joins('INNER JOIN page_article_links pal ON pages.id = pal.page_id').where([ 'pal.article_id = ?', @article.id ]).where(work_id: @collection.works.ids).paginate(page: params[:page], per_page: PAGES_PER_SCREEN)
       @pages.distinct!
+      @heading = t('.pages_that_mention', article: @article.title)
     else
       @pages = Page.paginate :all, :page => params[:page],
                                         :order => 'work_id, position',
                                         :per_page => 5
+      @heading = t('.pages')
     end
     session[:col_id] = @collection.slug
   end
