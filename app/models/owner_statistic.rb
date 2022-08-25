@@ -49,7 +49,9 @@ module OwnerStatistic
   end
 
   def contributor_count(days=nil)
-    User.joins(:deeds).where(deeds: {collection_id: collection_ids}).where(date_range_clause(days, 'deeds.created_at')).distinct.count
+    User.joins(:deeds).where(deeds: {collection_id: collection_ids})
+      .where.not(deeds: {deed_type: DeedType::COLLECTION_JOINED})
+      .where(date_range_clause(days, 'deeds.created_at')).distinct.count
   end
 
   def comment_count(days=nil)
